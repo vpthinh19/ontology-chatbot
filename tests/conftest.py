@@ -35,22 +35,22 @@ def sample_texts() -> list[str]:
 
 
 @pytest.fixture
-def sample_labels() -> list[list[str]]:
-    """Labels matching sample_texts."""
+def sample_labels() -> list[str]:
+    """Single-class labels matching sample_texts (multiclass)."""
     return [
-        ["QuyTrinh_DangKyHocPhan"],
-        ["QuyTrinh_NopHocPhi"],
-        ["ChaoHoi", "QuyTrinh_BaoLuu"],
+        "QuyTrinh_DangKyHocPhan",
+        "QuyTrinh_NopHocPhi",
+        "ChaoHoi",
     ]
 
 
 @pytest.fixture
 def tmp_dataset_file(sample_texts, sample_labels, tmp_path):
-    """Create a temporary JSONL dataset file."""
+    """Create a temporary JSONL dataset file (multiclass schema)."""
     path = tmp_path / "test_data.jsonl"
     with open(path, "w", encoding="utf-8") as f:
-        for text, labels in zip(sample_texts, sample_labels):
-            f.write(json.dumps({"text": text, "labels": labels}, ensure_ascii=False) + "\n")
+        for text, label in zip(sample_texts, sample_labels):
+            f.write(json.dumps({"text": text, "label": label}, ensure_ascii=False) + "\n")
     return str(path)
 
 
@@ -61,6 +61,6 @@ def dummy_logits(num_labels) -> torch.Tensor:
 
 
 @pytest.fixture
-def dummy_labels(num_labels) -> torch.Tensor:
-    """Random binary labels tensor (5 samples)."""
-    return torch.zeros(5, num_labels)
+def dummy_labels() -> torch.Tensor:
+    """Random multiclass labels tensor (5 samples)."""
+    return torch.zeros(5, dtype=torch.long)

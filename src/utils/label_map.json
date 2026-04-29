@@ -1,121 +1,128 @@
 [
-    {
-        "QuyTrinh_BaoLuu": {
-            "type": "ontology",
-            "label": "Quy trình xin bảo lưu kết quả học tập",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_BaoLuu"
-        }
-    },
-    {
-        "QuyTrinh_ChuyenNganh": {
-            "type": "ontology",
-            "label": "Quy trình xin chuyển ngành",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_ChuyenNganh"
-        }
-    },
-    {
-        "QuyTrinh_DangKyHocPhan": {
-            "type": "ontology",
-            "label": "Quy trình đăng ký học phần",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_DangKyHocPhan"
-        }
-    },
-    {
-        "QuyTrinh_HocCaiThien": {
-            "type": "ontology",
-            "label": "Quy trình học cải thiện",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_HocCaiThien"
-        }
-    },
-    {
-        "QuyTrinh_HocLai": {
-            "type": "ontology",
-            "label": "Quy trình đăng ký học lại",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_HocLai"
-        }
-    },
-    {
-        "QuyTrinh_NopHocPhi": {
-            "type": "ontology",
-            "label": "Quy trình đóng học phí Đại học chính quy",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_NopHocPhi"
-        }
-    },
-    {
-        "QuyTrinh_RutMonHoc": {
-            "type": "ontology",
-            "label": "Quy trình rút môn học",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_RutMonHoc"
-        }
-    },
-    {
-        "QuyTrinh_XetHocBong": {
-            "type": "ontology",
-            "label": "Quy trình xét học bổng",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_XetHocBong"
-        }
-    },
-    {
-        "QuyTrinh_XetTotNghiep": {
-            "type": "ontology",
-            "label": "Quy trình xét tốt nghiệp",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_XetTotNghiep"
-        }
-    },
-    {
-        "PhongCTSV": {
-            "type": "ontology",
-            "label": "Phòng Công tác Sinh viên",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#PhongCTSV"
-        }
-    },
-    {
-        "PhongKHTC": {
-            "type": "ontology",
-            "label": "Phòng Kế hoạch - Tài chính",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#PhongKHTC"
-        }
-    },
-    {
-        "PhongDaoTaoDaiHoc": {
-            "type": "ontology",
-            "label": "Phòng Đào tạo Đại học",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#PhongDaoTaoDaiHoc"
-        }
-    },
-    {
-        "VanPhongTruong": {
-            "type": "ontology",
-            "label": "Văn phòng Trường",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#VanPhongTruong"
-        }
-    },
-    {
-        "PhuongThucThanhToan": {
-            "type": "ontology",
-            "label": "Phương thức thanh toán",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#PaymentMethod"
-        }
-    },
-    {
-        "DinhMucHocPhi": {
-            "type": "ontology",
-            "label": "Định mức học phí",
-            "uri": "http://www.ntu.edu.vn/ontology/academic#FeeCategory"
-        }
-    },
-    {
-        "ChaoHoi": {
-            "type": "normal",
-            "label": "Chào hỏi",
-            "uri": ""
-        }
-    },
-    {
-        "NgoaiLe": {
-            "type": "normal",
-            "label": "Ngoại lệ",
-            "uri": ""
-        }
+  {
+    "QuyTrinh_BaoLuu": {
+      "type": "ontology",
+      "label": "Quy trình xin bảo lưu kết quả học tập",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_BaoLuu"
     }
+  },
+  {
+    "QuyTrinh_ChuyenNganh": {
+      "type": "ontology",
+      "label": "Quy trình xin chuyển ngành",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_ChuyenNganh"
+    }
+  },
+  {
+    "QuyTrinh_DangKyHocPhan": {
+      "type": "ontology",
+      "label": "Quy trình đăng ký học phần",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_DangKyHocPhan"
+    }
+  },
+  {
+    "QuyTrinh_HocCaiThien": {
+      "type": "ontology",
+      "label": "Quy trình học cải thiện",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_HocCaiThien"
+    }
+  },
+  {
+    "QuyTrinh_HocLai": {
+      "type": "ontology",
+      "label": "Quy trình đăng ký học lại",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_HocLai"
+    }
+  },
+  {
+    "QuyTrinh_NopHocPhi": {
+      "type": "ontology",
+      "label": "Quy trình đóng học phí Đại học chính quy",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_NopHocPhi"
+    }
+  },
+  {
+    "QuyTrinh_RutMonHoc": {
+      "type": "ontology",
+      "label": "Quy trình rút môn học",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_RutMonHoc"
+    }
+  },
+  {
+    "QuyTrinh_XetHocBong": {
+      "type": "ontology",
+      "label": "Quy trình xét học bổng",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_XetHocBong"
+    }
+  },
+  {
+    "QuyTrinh_XetTotNghiep": {
+      "type": "ontology",
+      "label": "Quy trình xét tốt nghiệp",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinh_XetTotNghiep"
+    }
+  },
+  {
+    "PhongBanHanhChinh": {
+      "type": "ontology",
+      "label": "Phòng ban hành chính",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#AdministrativeOffice"
+    }
+  },
+  {
+    "PhongDaoTaoDaiHoc": {
+      "type": "ontology",
+      "label": "Phòng Đào tạo Đại học",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#PhongDaoTaoDaiHoc"
+    }
+  },
+  {
+    "PhongCTSV": {
+      "type": "ontology",
+      "label": "Phòng Công tác Sinh viên",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#PhongCTSV"
+    }
+  },
+  {
+    "PhongKHTC": {
+      "type": "ontology",
+      "label": "Phòng Tài chính",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#PhongKHTC"
+    }
+  },
+  {
+    "VanPhongTruong": {
+      "type": "ontology",
+      "label": "Văn phòng Trường",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#VanPhongTruong"
+    }
+  },
+  {
+    "PhuongThucThanhToan": {
+      "type": "ontology",
+      "label": "Phương thức thanh toán",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#PaymentMethod"
+    }
+  },
+  {
+    "DinhMucHocPhi": {
+      "type": "ontology",
+      "label": "Định mức học phí",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#FeeCategory"
+    }
+  },
+  {
+    "ChaoHoi": {
+      "type": "normal",
+      "label": "Chào hỏi",
+      "uri": ""
+    }
+  },
+  {
+    "NgoaiLe": {
+      "type": "normal",
+      "label": "Ngoại lệ",
+      "uri": ""
+    }
+  }
 ]

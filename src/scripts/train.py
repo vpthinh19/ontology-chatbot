@@ -1,14 +1,12 @@
-"""PhoBERT fine-tuning — BCE vs ASL vs ZLPR.
+"""PhoBERT fine-tuning — multiclass classifier.
 
-Trains models on identical data with different loss strategies:
-    - BCE (baseline)  — BCEWithLogitsLoss
-    - ASL             — asymmetric focusing (Ridnik et al., 2021)
-    - ZLPR            — ranking-based, hyperparameter-free (Su et al., 2022)
+Trains models on identical data. The project originally supported multi-label
+classification; after converting datasets to multiclass (single label per sample),
+we switch to:
 
-Outputs:
-    - Training/validation curves (loss + mAP + F1-macro)
-    - Validation benchmark (2x2 grouped bar + summary table)
-    - UMAP of train embeddings: Base vs BCE vs ASL vs ZLPR
+- problem_type="single_label_classification"
+- standard Trainer loss (CrossEntropyLoss via HF Trainer)
+- multiclass metrics (softmax + argmax)
 
 Usage:
     python -m src.scripts.train
@@ -16,11 +14,12 @@ Usage:
 
 from __future__ import annotations
 
+import gc
 import os
 
-from datasets import load_dataset
 import numpy as np
 import torch
+from datasets import load_dataset
 from transformers import (
     AutoModel,
     AutoModelForSequenceClassification,
@@ -29,12 +28,8 @@ from transformers import (
     Trainer,
     TrainingArguments,
 )
-import gc
 
 from ..core.config import (
-    ASL_CLIP,
-    ASL_GAMMA_NEG,
-    ASL_GAMMA_POS,
     BATCH_SIZE,
     CHECKPOINT_DIR,
     EPOCHS,
@@ -50,9 +45,8 @@ from ..core.config import (
     TRAIN_OUTPUT_DIR,
     VAL_SIZE,
 )
-from ..utils.labels import build_mlb, load_label_names
+from ..utils.labels import load_label_names
 from ..utils.preprocessing import preprocess_batch
-from ..trainers import AsymmetricTrainer, ZLPRTrainer
 from ..utils.inference import extract_embeddings
 from ..utils.metrics import compute_metrics, make_compute_metrics_fn
 from ..viz import (
@@ -63,8 +57,6 @@ from ..viz import (
     plot_umap_comparison,
 )
 
-
-# Training setup
 
 def create_training_arguments(output_dir: str) -> TrainingArguments:
     """Create standard TrainingArguments shared by all models."""
@@ -98,40 +90,33 @@ def create_training_arguments(output_dir: str) -> TrainingArguments:
 
 
 def create_classification_model(num_labels: int) -> AutoModelForSequenceClassification:
-    """Instantiate a fresh PhoBERT model for sequence classification."""
+    """Instantiate a fresh PhoBERT model for sequence classification (multiclass)."""
     return AutoModelForSequenceClassification.from_pretrained(
         MODEL_NAME,
         num_labels=num_labels,
-        problem_type="multi_label_classification",
+        problem_type="single_label_classification",
     )
 
 
-# Pipeline definitions
-
 # (name, model_dir, trainer_cls, trainer_kwargs)
+# For multiclass we currently use standard HF Trainer for all pipelines
+# (CE loss). Keep naming for continuity with existing directories/plots.
 _PIPELINES: list[tuple[str, str, type, dict]] = [
     ("BCE", MODEL_BCE_DIR, Trainer, {}),
-    ("ASL", MODEL_ASL_DIR, AsymmetricTrainer, {
-        "asl_gamma_pos": ASL_GAMMA_POS,
-        "asl_gamma_neg": ASL_GAMMA_NEG,
-        "asl_clip": ASL_CLIP,
-    }),
-    ("ZLPR", MODEL_ZLPR_DIR, ZLPRTrainer, {}),
+    ("ASL", MODEL_ASL_DIR, Trainer, {}),
+    ("ZLPR", MODEL_ZLPR_DIR, Trainer, {}),
 ]
 
-
-# Main execution
 
 def main() -> None:
     os.makedirs(TRAIN_OUTPUT_DIR, exist_ok=True)
     for _, model_dir, _, _ in _PIPELINES:
         os.makedirs(model_dir, exist_ok=True)
 
-    # Load data
     print("Loading Data...")
 
     label_names = load_label_names(LABEL_MAP_PATH)
-    mlb = build_mlb(label_names)
+    label_to_id = {name: i for i, name in enumerate(label_names)}
     num_labels = len(label_names)
 
     raw_dataset = load_dataset("json", data_files={"train": TRAIN_DATASET_PATH})["train"]
@@ -146,11 +131,12 @@ def main() -> None:
 
     # Dataset visualization
     print("Dataset Visualization...")
-    train_labels_raw = train_dataset["labels"]
-    val_labels_raw = val_dataset["labels"]
+    # plot_label_distribution expects List[List[str]]
+    train_labels_raw = train_dataset["label"]
+    val_labels_raw = val_dataset["label"]
 
     plot_label_distribution(
-        {"Train": train_labels_raw, "Val": val_labels_raw},
+        {"Train": [[l] for l in train_labels_raw], "Val": [[l] for l in val_labels_raw]},
         label_names,
         os.path.join(TRAIN_OUTPUT_DIR, "label_distribution.png"),
     )
@@ -167,13 +153,8 @@ def main() -> None:
             truncation=True,
             max_length=MAX_LENGTH,
         )
-        labels_matrix = mlb.transform(examples["labels"])  # type: ignore
-        # Convert sparse matrix to dense array
-        if hasattr(labels_matrix, 'toarray'):
-            labels_array = labels_matrix.toarray()  # type: ignore[attr-defined]
-        else:
-            labels_array = labels_matrix  # type: ignore
-        tokenized["labels"] = labels_array.astype(np.float32).tolist()  # type: ignore[attr-defined]
+        label_ids = [label_to_id[lbl] for lbl in examples["label"]]
+        tokenized["labels"] = label_ids
         return tokenized
 
     cols_to_remove = train_dataset.column_names
@@ -194,14 +175,13 @@ def main() -> None:
 
     # Extract Base Embeddings First
     print("Extracting Base Embeddings (UMAP Prep)...")
-    
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     base_model = AutoModel.from_pretrained(MODEL_NAME).to(device)
     base_embeddings = extract_embeddings(base_model, train_dataset, batch_size=BATCH_SIZE)
     del base_model
     gc.collect()
     torch.cuda.empty_cache()
-    
+
     embeddings: dict[str, np.ndarray] = {"Base PhoBERT": base_embeddings}
     all_metrics: dict[str, dict[str, float]] = {}
     training_logs: dict[str, list[dict]] = {}
@@ -220,41 +200,36 @@ def main() -> None:
             callbacks=[EarlyStoppingCallback(early_stopping_patience=3)],
             **kwargs,
         )
-        
-        # Train
+
         result = trainer.train()
         print(f"  Train Done: {result.metrics}")
 
-        # Save
         trainer.save_model(model_dir)
         tokenizer.save_pretrained(model_dir)
         print(f"  Model saved: {model_dir}")
-        
-        # Save training logs for curves
+
         training_logs[name] = trainer.state.log_history
 
         # Evaluate on validation
         val_out = trainer.predict(val_dataset)
         all_metrics[name] = compute_metrics(val_out.predictions, val_out.label_ids)
-        
+
         # Extract embeddings for UMAP
         print(f"  Extracting {name} fine-tuned embeddings ...")
         embeddings[f"{name} Fine-tuned"] = extract_embeddings(
-            model,  # type: ignore
-            train_dataset, batch_size=BATCH_SIZE,
+            model,  # type: ignore[arg-type]
+            train_dataset,
+            batch_size=BATCH_SIZE,
         )
 
-        # Clear VRAM
         del model
         del trainer
         del val_out
         gc.collect()
         torch.cuda.empty_cache()
 
-
     # Training curves comparison
     print("Plotting Training Curves...")
-
     plot_training_curves(
         training_logs,
         os.path.join(TRAIN_OUTPUT_DIR, "training_curves.png"),
@@ -262,8 +237,6 @@ def main() -> None:
 
     # Validation metrics comparison
     print("Computing Validation Metrics...")
-
-    # Print comparison table
     metric_keys = list(next(iter(all_metrics.values())).keys())
     model_names = list(all_metrics.keys())
     header = f"  {'Metric':<25}" + "".join(f" {n:>12}" for n in model_names)
@@ -289,10 +262,10 @@ def main() -> None:
 
     # UMAP: Base vs fine-tuned on training data
     print("Plotting UMAP - Train Embeddings...")
-
     plot_umap_comparison(
         embeddings,
-        train_labels_raw, label_names,
+        [[l] for l in train_labels_raw],  # labels_list: List[List[str]]
+        label_names,
         os.path.join(TRAIN_OUTPUT_DIR, "umap_train_comparison.png"),
         suptitle="UMAP -- Train Set Embeddings",
     )

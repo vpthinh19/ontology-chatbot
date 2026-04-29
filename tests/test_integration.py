@@ -7,7 +7,7 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 from src.core.config import LABEL_MAP_PATH, TRAIN_DATASET_PATH
-from src.utils.labels import build_mlb, load_label_names
+from src.utils.labels import load_label_names
 from src.utils.preprocessing import preprocess_batch
 
 
@@ -18,7 +18,7 @@ class TestEndToEndPipeline:
         """Smoke test: run entire data pipeline on first 10 samples."""
         # 1. Load
         label_names = load_label_names(LABEL_MAP_PATH)
-        mlb = build_mlb(label_names)
+        label_to_id = {name: i for i, name in enumerate(label_names)}
         
         ds = load_dataset("json", data_files={"train": TRAIN_DATASET_PATH}, split="train[:10]")
 
@@ -35,7 +35,8 @@ class TestEndToEndPipeline:
                 truncation=True,
                 max_length=64,
             )
-            tokenized["labels"] = mlb.transform(examples["labels"]).astype(np.float32).tolist()
+            label_ids = [label_to_id[lbl] for lbl in examples["label"]]
+            tokenized["labels"] = label_ids
             return tokenized
 
         ds = ds.map(process_batch, batched=True, remove_columns=ds.column_names)
@@ -46,8 +47,7 @@ class TestEndToEndPipeline:
         
         assert len(ds) == 10
         item = ds[0]
-        assert item["labels"].dtype == torch.float32
-        assert item["labels"].shape[0] == len(label_names)
+        assert isinstance(item["labels"].item(), (int, np.integer))
         assert item["input_ids"].shape[0] <= 64
 
     def test_label_consistency(self):
@@ -56,11 +56,10 @@ class TestEndToEndPipeline:
         label_set = set(label_names)
         ds = load_dataset("json", data_files={"train": TRAIN_DATASET_PATH}, split="train")
 
-        for i, sample_labels in enumerate(ds["labels"]):
-            for label in sample_labels:
-                assert label in label_set, (
-                    f"Sample {i}: unknown label '{label}' not in label_map"
-                )
+        for i, sample_label in enumerate(ds["label"]):
+            assert sample_label in label_set, (
+                f"Sample {i}: unknown label '{sample_label}' not in label_map"
+            )
 
     def test_no_empty_texts(self):
         """Verify no empty texts in the dataset."""
@@ -71,5 +70,5 @@ class TestEndToEndPipeline:
     def test_no_empty_labels(self):
         """Verify no samples without labels."""
         ds = load_dataset("json", data_files={"train": TRAIN_DATASET_PATH}, split="train")
-        for i, sample_labels in enumerate(ds["labels"]):
-            assert len(sample_labels) > 0, f"Sample {i}: no labels"
+        for i, sample_label in enumerate(ds["label"]):
+            assert isinstance(sample_label, str) and len(sample_label.strip()) > 0, f"Sample {i}: no label"

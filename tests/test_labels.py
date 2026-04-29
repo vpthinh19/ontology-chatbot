@@ -7,7 +7,7 @@ from src.core.config import LABEL_MAP_PATH
 
 class TestLoadLabelNames:
     def test_loads_correct_count(self, label_names):
-        assert len(label_names) == 15
+        assert len(label_names) == 19
 
     def test_returns_strings(self, label_names):
         assert all(isinstance(name, str) for name in label_names)

@@ -1,10 +1,10 @@
-"""Final Evaluation — BCE vs ASL vs ZLPR on Test Set.
+"""Final Evaluation — multiclass classifier.
 
-Loads fine-tuned models and benchmarks on the held-out test set:
+Evaluates fine-tuned PhoBERT multiclass models on the held-out test set:
     - Benchmark comparison (bar chart)
     - Summary table (all metrics x all models)
     - Classification reports
-    - Label co-occurrence heatmap
+    - Label co-occurrence heatmap (one-hot for multiclass)
     - UMAP: Base vs fine-tuned test embeddings
 
 Usage:
@@ -19,7 +19,7 @@ import numpy as np
 import torch
 from datasets import load_dataset
 from sklearn.metrics import classification_report
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoModel
+from transformers import AutoModel, AutoModelForSequenceClassification, AutoTokenizer
 
 from ..core.config import (
     BATCH_SIZE,
@@ -32,7 +32,7 @@ from ..core.config import (
     MODEL_ZLPR_DIR,
     TEST_DATASET_PATH,
 )
-from ..utils.labels import build_mlb, load_label_names
+from ..utils.labels import load_label_names
 from ..utils.preprocessing import preprocess_batch
 from ..utils.inference import extract_embeddings, get_logits
 from ..utils.metrics import compute_metrics
@@ -53,19 +53,18 @@ _MODELS: list[tuple[str, str]] = [
 ]
 
 
-# Main execution
-
 def main() -> None:
     os.makedirs(EVAL_OUTPUT_DIR, exist_ok=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Load test data
     print("Loading Test Data...")
 
     label_names = load_label_names(LABEL_MAP_PATH)
-    mlb = build_mlb(label_names)
+    label_to_id = {name: i for i, name in enumerate(label_names)}
+    num_labels = len(label_names)
 
     test_dataset = load_dataset("json", data_files={"test": TEST_DATASET_PATH})["test"]
+    test_labels_raw = test_dataset["label"]
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_BCE_DIR)
 
@@ -77,20 +76,20 @@ def main() -> None:
             truncation=True,
             max_length=MAX_LENGTH,
         )
-        tokenized["labels"] = mlb.transform(examples["labels"]).astype(np.float32).tolist()
+        label_ids = [label_to_id[lbl] for lbl in examples["label"]]
+        tokenized["labels"] = label_ids
         return tokenized
 
-    test_labels_raw = test_dataset["labels"]
-    
     cols_to_remove = test_dataset.column_names
     test_dataset = test_dataset.map(
         process_batch, batched=True, batch_size=1000, remove_columns=cols_to_remove
     )
     test_dataset.set_format("torch")
-    y_test = test_dataset["labels"][:].detach().cpu().numpy()
+
+    y_test = test_dataset["labels"][:].detach().cpu().numpy().astype(np.int64)
 
     print(f"  Test samples: {len(test_dataset)}")
-    print(f"  Labels: {len(label_names)}")
+    print(f"  Labels: {num_labels}")
 
     # Inference and metrics
     print("Inference on Test Set...")
@@ -109,27 +108,23 @@ def main() -> None:
     for name, model_dir in _MODELS:
         print(f"\n  Evaluating {name} model from: {model_dir}")
         model = AutoModelForSequenceClassification.from_pretrained(model_dir).to(device)
-        
-        # Logits
+
         logits_dict[name] = get_logits(model, test_dataset, batch_size=BATCH_SIZE)
-        probs = torch.sigmoid(torch.tensor(logits_dict[name])).numpy()
-        preds[name] = (probs >= 0.5).astype(np.intp)
-        
+        preds[name] = np.argmax(logits_dict[name], axis=-1).astype(np.int64)
+
         # Metrics
         all_metrics[name] = compute_metrics(logits_dict[name], y_test)
-        
+
         # Embeddings
         print(f"  Extracting {name} fine-tuned embeddings ...")
         embeddings[f"{name} Fine-tuned"] = extract_embeddings(model, test_dataset, batch_size=BATCH_SIZE)
-        
-        # Free memory immediately
+
         del model
         torch.cuda.empty_cache()
 
     # Metrics comparison
     print("Test Metrics...")
 
-    # Print comparison table
     metric_keys = list(next(iter(all_metrics.values())).keys())
     model_names = list(all_metrics.keys())
     header = f"  {'Metric':<25}" + "".join(f" {n:>12}" for n in model_names)
@@ -153,28 +148,34 @@ def main() -> None:
         title="Test Set Summary",
     )
 
-    # Classification reports
+    # Classification reports (multiclass)
     print("Generating Classification Reports...")
-    
-    reports: dict[str, str] = {}
+
+    reports: dict[str, dict] = {}
     for name in model_names:
         reports[name] = classification_report(
-            y_test, preds[name], target_names=label_names, zero_division=0, output_dict=True
+            y_test,
+            preds[name],
+            target_names=label_names,
+            zero_division=0,
+            output_dict=True,
         )
 
     plot_classification_reports(
         reports,
         label_names,
-        EVAL_OUTPUT_DIR
+        EVAL_OUTPUT_DIR,
     )
 
-    # Label Co-occurrence Heatmaps
+    # Label co-occurrence heatmaps (one-hot for multiclass)
     print("Plotting Label Co-occurrence Heatmaps...")
 
-    matrices = {"Ground Truth": y_test}
+    y_true_onehot = np.eye(num_labels, dtype=int)[y_test]
+    matrices = {"Ground Truth": y_true_onehot}
     for name in model_names:
-        matrices[f"{name} Predictions"] = preds[name]
-        
+        y_pred_onehot = np.eye(num_labels, dtype=int)[preds[name]]
+        matrices[f"{name} Predictions"] = y_pred_onehot
+
     plot_label_cooccurrence(
         matrices,
         label_names,
@@ -186,7 +187,8 @@ def main() -> None:
 
     plot_umap_comparison(
         embeddings,
-        test_labels_raw, label_names,
+        [[l] for l in test_labels_raw],  # labels_list: List[List[str]]
+        label_names,
         os.path.join(EVAL_OUTPUT_DIR, "umap_test_comparison.png"),
         suptitle="UMAP -- Test Set Embeddings",
     )
