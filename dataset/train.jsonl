@@ -1,0 +1,1606 @@
+{"text": "Cải thiện điểm có giới hạn thời gian sau khi hoàn thành không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em rớt vì gian lận thi cử, vẫn được đk học lại?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "VP trường tổ chức lễ commencement hàng năm?", "labels": ["VanPhongTruong"]}
+{"text": "Đồng phục trường mua ở đâu v", "labels": ["NgoaiLe"]}
+{"text": "Ngày thành lập trường là ngày nào?", "labels": ["NgoaiLe"]}
+{"text": "Ngành đang học khác xa với những gì em kỳ vọng", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "ĐT thông báo lịch ĐKHP qua kênh nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đủ ĐK TN, HB kỳ cuối vẫn nhận bình thường ko?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Hi, em muốn hỏi CTSV về xác nhận SV để vay vốn", "labels": ["ChaoHoi", "PhongCTSV"]}
+{"text": "Rút môn có bị tính là bỏ học không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Email liên hệ phòng CTSV là gì?", "labels": ["PhongCTSV"]}
+{"text": "Em improve xong điểm tự update hay phải chờ?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn bỏ điểm cũ để lấy điểm mới tốt hơn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Điều kiện để được xét học bổng là gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cải thiện môn có phải đóng HP riêng ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "VP trường quản lý website chính thức ko?", "labels": ["VanPhongTruong"]}
+{"text": "Xin chào admin", "labels": ["ChaoHoi"]}
+{"text": "Cải thiện các môn cơ sở ngành được ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "HB giai đoạn 2 nghĩa là gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Hello bot, em muốn biết cách cải thiện điểm", "labels": ["ChaoHoi", "QuyTrinh_HocCaiThien"]}
+{"text": "Xin chào, có thể giúp mình không?", "labels": ["ChaoHoi"]}
+{"text": "Công ty tuyển dụng có thấy môn đã học lại trên bảng điểm?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em cần biên lai HP để kê khai thuế TNCN", "labels": ["PhongKHTC"]}
+{"text": "Em có thể ủy quyền người thân đóng HP ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Rút HP xong mà đk HP mới bị đầy lớp thì sao?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Giá bitcoin hôm nay", "labels": ["NgoaiLe"]}
+{"text": "Tốt nghiệp cần bao nhiêu tín chỉ?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "xet hb co xet diem ren luyen ko", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chào anh/chị, em muốn biết quy trình xét tốt nghiệp", "labels": ["ChaoHoi", "QuyTrinh_XetTotNghiep"]}
+{"text": "Số hotline phòng đào tạo", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Mệt quá đi", "labels": ["NgoaiLe"]}
+{"text": "Em chưa vượt qua môn tiên quyết, ảnh hưởng sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Cách thức ghi danh vào các lớp học mỗi kỳ", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Thủ tục để officially conclude chương trình học", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Cải thiện môn cũ thì đk ở đâu, trên portal đk môn đúng ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Chuyển ngành có phải thi đầu vào lại không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn bảo lưu kết quả, đến phòng ĐT giờ nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Em đk nhầm nhóm thực hành, đổi sao ạ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "hoc lai khi nao mo lop v", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Trường gửi thông báo nhắc nộp tiền, em phải làm gì?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "CTSV quản lý quỹ HB khuyến khích học tập ko?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Em muốn nâng hạng điểm một vài môn chuyên ngành", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Có xét TN danh dự ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Đk học lại cần CV học tập duyệt ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "HP kỳ nghỉ đóng sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Có thể tạm rời trường mà không ảnh hưởng thành tích?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Dạ chào, em rút môn rồi muốn được hoàn HP, hỏi phòng KHTC", "labels": ["ChaoHoi", "PhongKHTC", "QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Wifi trường mật khẩu gì?", "labels": ["NgoaiLe"]}
+{"text": "Em nợ HP nhỏ, KHTC cho xét TN ko?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "Hi, tôi cần trợ giúp", "labels": ["ChaoHoi"]}
+{"text": "Em bị miss hạn, giờ không có môn nào trong thời khóa biểu", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Cho hỏi quần áo secondhand ở đâu rẻ", "labels": ["NgoaiLe"]}
+{"text": "Chào nhé, mình hỏi giúp con", "labels": ["ChaoHoi"]}
+{"text": "Lúc đăng ký HP có mục chọn cải thiện ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Mình bị mất ví, ai nhặt được ko?", "labels": ["NgoaiLe"]}
+{"text": "Em rớt thực tập cuối khóa, học lại sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Phòng CTSV có chi nhánh ở cơ sở 2 ko?", "labels": ["PhongCTSV"]}
+{"text": "Em bị bệnh nặng không thể đến trường trong thời gian dài", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "VP trường có bộ phận CNTT ko hay phòng riêng?", "labels": ["VanPhongTruong"]}
+{"text": "nop hp qua ngan hang nao v", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Mấy b ơi phòng ĐT ở đâu v", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "ctsv ở đâu v mn", "labels": ["PhongCTSV"]}
+{"text": "Phòng CTSV cấp thẻ SV điện tử ko?", "labels": ["PhongCTSV"]}
+{"text": "Muốn gặp ban giám hiệu thì liên hệ ở đâu?", "labels": ["VanPhongTruong"]}
+{"text": "Em chuyển ngành, VP trường ký xác nhận biên bản ko?", "labels": ["QuyTrinh_ChuyenNganh", "VanPhongTruong"]}
+{"text": "Hi, em đang ở cơ sở 2", "labels": ["ChaoHoi"]}
+{"text": "Phòng ĐT giúp em so sánh chương trình ngành cũ và mới?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Quy trình: đóng tiền → đk HP hay ngược lại?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn chuyển hướng học tập sang lĩnh vực mới", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Cho hỏi chuyển ngành cần GPA bao nhiêu?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "drop mon hoc co bi phat ko", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em hỏi ĐT vì bị trùng lịch khi ĐKHP", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn nghỉ một môn giữa kỳ", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cải thiện nhiều môn cùng lúc có được ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em đk cải thiện thì HP bao nhiêu 1 tín chỉ?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Hello, em vừa rút môn vừa muốn đk môn mới, lên phòng ĐT hả?", "labels": ["ChaoHoi", "PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Phòng ĐT hỗ trợ khi em không đk được HP ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Hồ sơ xin bảo lưu cần những giấy tờ gì?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Học lại mà muốn chuyển ngành luôn, thứ tự sao?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_HocLai"]}
+{"text": "Cải thiện xong em vẫn thấy HP cũ trên portal, bình thường ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Em đã chuyển khoản nhưng hệ thống vẫn báo nợ", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Được phép đk thêm HP ngoài chương trình đào tạo ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Nếu đã cải thiện 1 lần, có cải thiện tiếp lần 2 ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "ko thik ngành đang hok, muốn chuyển qua ngành khác", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng KHTC tính phí trễ hạn nộp HP ntn?", "labels": ["PhongKHTC"]}
+{"text": "Ai biết cách kiếm tiền online cho SV ko?", "labels": ["NgoaiLe"]}
+{"text": "Làm sao để chọn các môn cần học trong kỳ tới?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Quy trình đăng ký lại môn đã trượt ra sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Chuyển ngành xong HP tính theo biểu phí ngành mới à?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Mình cần xác nhận điểm tích lũy để xin thực tập", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "HP lớp học lại có giảm cho SV diện chính sách ko?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "CTSV quản lý ký túc xá ko?", "labels": ["PhongCTSV"]}
+{"text": "Chuyển ngành có cần chờ đến đầu học kỳ mới không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "tim so dt phong dao tao", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em hoàn thành 2 ngành, nhận bao nhiêu bằng?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em có thể đk HP của khóa trên nếu đã hoàn thành tiên quyết?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "QR code nộp HP lấy ở đâu?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn VP trường ký xác nhận cho hồ sơ HB nước ngoài", "labels": ["QuyTrinh_XetHocBong", "VanPhongTruong"]}
+{"text": "Em đứng đầu ngành, có HB tự động ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "CTSV hỗ trợ SV bị bạo lực học đường ko?", "labels": ["PhongCTSV"]}
+{"text": "Cần hoàn tất obligation tài chính trước khi vào kỳ mới", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em gặp phòng đào tạo để hỏi kết quả xét TN", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "VP trường có bộ phận quản lý hành chính ko?", "labels": ["VanPhongTruong"]}
+{"text": "rớt môn tiên quyết thì sao ạ", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em muốn tạm dừng chặng đường đại học của mình", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Có thể ghi đè kết quả cũ bằng kết quả tốt hơn không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em rút 1 môn rồi, hệ thống tự xóa khỏi TKB ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Chuyển ngành xong, phòng CTSV giải quyết BH y tế mới ko?", "labels": ["PhongCTSV", "QuyTrinh_ChuyenNganh"]}
+{"text": "Hệ thống ghi danh lớp hoạt động từ ngày nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng ĐT mở 2 ca tiếp SV ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em cần dành thời gian cho đồ án tốt nghiệp nên muốn bớt môn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Nếu đang nợ HP mà bảo lưu thì khoản nợ có giữ ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Rút bớt môn thì tiền HP có giảm theo ko?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Mấy đợt xét TN trong năm?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em bảo lưu, cần KHTC xác nhận không nợ gì", "labels": ["PhongKHTC", "QuyTrinh_BaoLuu"]}
+{"text": "Có được chuyển sang ngành có điểm đầu vào cao hơn không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Công ty yêu cầu bằng tốt nghiệp, em chưa có", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em drop môn A, add môn B thay thế, quy trình ra sao?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Điểm thi kỳ vừa rồi không phản ánh đúng năng lực em", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "VP trường cấp giấy xác nhận tạm thời thay bằng TN ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "DKHP bắt đầu từ ngày nào", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Chào mọi người ạ", "labels": ["ChaoHoi"]}
+{"text": "ĐT thông báo lịch học qua kênh nào?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "hb bao nhiu tien v", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "cho hỏi bảo lưu kq học tập như nào v", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn đóng học phí, cần gặp phòng tài chính không?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Khoản thu dịch vụ ngoài HP do KHTC thu ko?", "labels": ["PhongKHTC"]}
+{"text": "VP trường có confirm cho SV làm đơn xin HB ko?", "labels": ["QuyTrinh_XetHocBong", "VanPhongTruong"]}
+{"text": "Hệ thống chọn lớp hoạt động ra sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em chuyển từ ngành có HP thấp sang cao, đóng bù sao?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Nộp đơn chuyển ngành ở phòng ĐT cần kèm bảng điểm ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Bảo lưu xong em vẫn sử dụng thẻ sinh viên được không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "rut mon hoc ntn v", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "CTSV xử lý vi phạm nội quy SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Cơ hội được miễn giảm học phí dựa trên kết quả học tập", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Xin giấy chuyển hộ khẩu tạm trú ở phòng CTSV?", "labels": ["PhongCTSV"]}
+{"text": "Rút môn xong GPA có bị ảnh hưởng ko", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cải thiện có ảnh hưởng đến xếp loại tốt nghiệp không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em cải thiện 3 môn, GPA đủ xin HB ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetHocBong"]}
+{"text": "KHTC có hệ thống thông báo nhắc hạn nộp HP ko?", "labels": ["PhongKHTC"]}
+{"text": "Hồ sơ xin học bổng cần những gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em muốn giữ nguyên điểm tích lũy nhưng tạm thời rời trường", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Khoản thu ngoài HP bao gồm những gì?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em cần xin biên lai để khai thuế thu nhập cá nhân", "labels": ["PhongKHTC"]}
+{"text": "Em có thể xin bảo lưu vào đầu kỳ hay chỉ cuối kỳ thôi?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Bảo lưu kết quả học tập thì liên hệ phòng đào tạo hay phòng nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Em không kham nổi các môn chuyên ngành hiện tại", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "ĐKHP ngành mới sau khi chuyển, khóa mình vào lớp nào?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Văn phòng trường giờ làm việc mấy giờ?", "labels": ["VanPhongTruong"]}
+{"text": "Em là SV năm 3, chuyển ngành có quá muộn ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "HP cho lớp cải thiện tính sao ạ?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "ĐT đại học liên hệ qua đâu?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em cần gặp lãnh đạo trường để kiến nghị một vấn đề", "labels": ["VanPhongTruong"]}
+{"text": "KHTC co fanpage ko", "labels": ["PhongKHTC"]}
+{"text": "Em cần in giấy xác nhận không nợ tiền trường", "labels": ["PhongKHTC"]}
+{"text": "Quy trình đăng ký học cải thiện như thế nào?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Tiền HB phòng KHTC chuyển khi nào?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Lớp học lại hiển thị riêng trên hệ thống đk ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Em chuyển ngành, CTSV cập nhật hồ sơ SV ko?", "labels": ["PhongCTSV", "QuyTrinh_ChuyenNganh"]}
+{"text": "Ai có đồ cũ donate cho mình?", "labels": ["NgoaiLe"]}
+{"text": "Em cần phòng ĐT in bảng điểm có dấu đỏ", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phòng ĐT có danh sách môn mở cải thiện kỳ này ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Xét TN đợt cuối mỗi năm vào tháng mấy?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV quản lý hoạt động thể thao của SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Em cần thanh toán chi phí mỗi kỳ cho trường", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Bảo lưu rồi em có nợ HP gì ko ạ?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Bạn là AI à?", "labels": ["NgoaiLe"]}
+{"text": "Loại TN xuất sắc GPA tối thiểu bao nhiêu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hướng dẫn em cách đăng ký môn trên portal", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Vấn đề đóng tiền trường thì phòng KHTC giải quyết phải ko?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng CTSV xác nhận tình trạng SV cho ngân hàng?", "labels": ["PhongCTSV"]}
+{"text": "Muốn xác nhận SV để làm thẻ xe buýt, gặp CTSV?", "labels": ["PhongCTSV"]}
+{"text": "Xin chào, em SV K46 ạ", "labels": ["ChaoHoi"]}
+{"text": "Muốn replace kết quả cũ bằng kết quả mới tốt hơn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn xin giấy xác nhận đang học để đi khám bệnh", "labels": ["PhongCTSV"]}
+{"text": "HB Odon Vallet xin qua trường hay tổ chức?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cửa hàng tiện lợi nào mở 24/7?", "labels": ["NgoaiLe"]}
+{"text": "Điểm học lại có thay thế điểm cũ không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Mình cần thuê xe máy đi du lịch", "labels": ["NgoaiLe"]}
+{"text": "chuyến ngành lam ntn ạ", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Ai ơi chỉ mình cách xin HB với", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Rút môn rồi có được hoàn lại tiền học phí không?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn biết điểm chuẩn chuyển ngành năm nay", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn thay đổi toàn bộ lịch HP, rút hết đk lại được ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Hey, em muốn hỏi", "labels": ["ChaoHoi"]}
+{"text": "Sau khi chuyển ngành, portal ĐKHP tự cập nhật HP mới ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Xin chào, em mới đọc thông tin trên web trường", "labels": ["ChaoHoi"]}
+{"text": "KHTC tiếp SV vào buổi chiều mấy giờ?", "labels": ["PhongKHTC"]}
+{"text": "cải thiện điểm đăng ký chỗ nào v", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Lệ phí đk học lại bao nhiêu?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "ĐT quản lý lịch thi cuối kỳ ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Thủ tục chuyển tiền cho trường mỗi học kỳ ra sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Trường có cho phép chuyển ngành nhiều lần không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Lý do nào được chấp nhận để xin bảo lưu vậy?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Bằng tốt nghiệp có chữ ký hiệu trưởng, lấy ở VP trường à?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "Phí học lại tính bao nhiêu 1 tín chỉ? Đóng ở đâu?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Liên hệ phòng ctsv qua kênh nào?", "labels": ["PhongCTSV"]}
+{"text": "HB khuyến khích học tập và HB toàn phần khác nhau ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Nếu thiếu 1 môn có được xét TN không?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Xét TN mùa thu khác mùa xuân ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "ĐT có ban hành sổ tay SV ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "VP trường quản lý phòng họp và hội trường ko?", "labels": ["VanPhongTruong"]}
+{"text": "Em sắp hoàn thành chương trình, HB cuối kỳ tính sao?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Sinh viên năm nhất có được bảo lưu không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em vừa muốn học lại môn rớt vừa cải thiện môn điểm thấp", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Liên hệ văn phòng trường bằng cách nào?", "labels": ["VanPhongTruong"]}
+{"text": "Xin bảo lưu thì tiền HP xử lý thế nào?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Hi, em bị F muốn đk học lại trên portal", "labels": ["ChaoHoi", "QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Em muốn xin học bổng, nộp hồ sơ ở phòng CTSV à?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Xét TN có xét cả điểm rèn luyện ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "HB có xét theo từng khoa không?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chuyển ngành thì phòng ĐT cập nhật hồ sơ SV luôn ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Muốn vừa đk học lại vừa cải thiện, quy trình có khác nhau ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Hi, em cần tư vấn chuyển ngành và đk HP mới", "labels": ["ChaoHoi", "QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đạt danh hiệu sinh viên xuất sắc, có quyền lợi gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Nếu em bảo lưu giữa kỳ, HP đã đóng có được hoàn ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Mình cần tìm gia sư dạy kèm", "labels": ["NgoaiLe"]}
+{"text": "Hành chính nhà trường ở đâu v", "labels": ["VanPhongTruong"]}
+{"text": "Em cần drop một lớp và enroll lớp khác cùng lúc", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "ĐT phát phiếu kiểm tra điều kiện TN khi nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em rút do giảng viên đổi lịch đột xuất", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cần xin thư xác nhận từ VP trường gửi đại sứ quán", "labels": ["VanPhongTruong"]}
+{"text": "cải thiện môn hok thì gpa tăng ko", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Hạn cuối đóng học phí là ngày nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "VP trường giải quyết vấn đề giữa SV và giảng viên?", "labels": ["VanPhongTruong"]}
+{"text": "tien hoc phi ky nay nhiu v", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Đơn vị nào trong trường hỗ trợ SV gặp khó khăn?", "labels": ["PhongCTSV"]}
+{"text": "Phim hay tuần này là phim gì?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn biết cơ hội nhận aid tài chính từ trường", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em muốn gửi thư kiến nghị lên Ban giám hiệu qua VP", "labels": ["VanPhongTruong"]}
+{"text": "Em bị F 1 môn và 1 môn điểm C, đk lại cả 2 ntn?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Em muốn cải thiện hàng loạt, có gói ưu đãi phí ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Ai muốn ghép nhóm chơi game online ko?", "labels": ["NgoaiLe"]}
+{"text": "VP trường cấp giấy xác nhận lương cho cán bộ ko?", "labels": ["VanPhongTruong"]}
+{"text": "VP trường quản lý đặt phòng sự kiện ko?", "labels": ["VanPhongTruong"]}
+{"text": "Được phép chuyển ngành mấy lần?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Bạn có crush chưa?", "labels": ["NgoaiLe"]}
+{"text": "Gặp vấn đề đk HP thì liên hệ phòng đào tạo đúng ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng CTSV quản lý hoạt động tình nguyện của SV?", "labels": ["PhongCTSV"]}
+{"text": "Em TN ra, bao lâu thì nhận bằng chính thức?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV quản lý quy trình rút HP cho SV diện đặc biệt ko?", "labels": ["PhongCTSV", "QuyTrinh_RutMonHoc"]}
+{"text": "Luận văn có ảnh hưởng đến TN ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC tính phí cải thiện thế nào?", "labels": ["PhongKHTC", "QuyTrinh_HocCaiThien"]}
+{"text": "Dạ chào, em chuyển ngành xong đóng HP kiểu gì ạ?", "labels": ["ChaoHoi", "QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Ngoại ngữ đầu ra TN yêu cầu mức nào?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV có giúp SV viết essay xin HB bên ngoài ko?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Bảo lưu có giữ nguyên mã số sinh viên không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "KHTC xác nhận em đã đóng HP học lại chưa", "labels": ["PhongKHTC", "QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Trường xếp hạng bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "Phòng đào tạo mở lớp học lại khi nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Em cần xin giấy xác nhận để làm hồ sơ vay vốn", "labels": ["PhongCTSV"]}
+{"text": "1234567890", "labels": ["NgoaiLe"]}
+{"text": "Chào, cho mình hỏi", "labels": ["ChaoHoi"]}
+{"text": "hoc lai de cai thien diem co duoc ko", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn hỏi phòng ĐT xem bảo lưu bao lâu thì hết hạn", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Ghi danh học lại cùng thời điểm đk HP phải ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Quy trình xét học bổng gồm mấy bước?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "VP trường ký giấy tờ liên quan đến nghỉ phép dài hạn", "labels": ["QuyTrinh_BaoLuu", "VanPhongTruong"]}
+{"text": "Chào ban tư vấn", "labels": ["ChaoHoi"]}
+{"text": "Người ngoài muốn liên hệ trường thì qua VP à?", "labels": ["VanPhongTruong"]}
+{"text": "Em muốn withdraw một số môn đã đk", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Số tài khoản nộp học phí của trường là gì?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng nào cấp giấy xác nhận sinh viên?", "labels": ["PhongCTSV"]}
+{"text": "Phòng ĐT cấp transcript provisional khi chưa TN ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Mấy giờ rồi nhỉ?", "labels": ["NgoaiLe"]}
+{"text": "Ê cho hỏi bảo lưu ntn đi", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Văn phòng trường cấp bằng tốt nghiệp cho SV?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "Em muốn đk nhiều HP hơn giới hạn, xin ngoại lệ được ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Gia đình em muốn em học ngành khác thiết thực hơn", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn VP trường xác nhận SV đã bảo lưu hợp lệ", "labels": ["QuyTrinh_BaoLuu", "VanPhongTruong"]}
+{"text": "Bảo lưu kết quả học tập có ảnh hưởng đến GPA không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Đang bảo lưu mà nộp đơn chuyển ngành có được ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_ChuyenNganh"]}
+{"text": "ĐT cập nhật GPA sau cải thiện mất bao lâu?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "VP trường quản lý lịch làm việc BGH?", "labels": ["VanPhongTruong"]}
+{"text": "Nếu học lại mà vẫn rớt thì sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Học lại có đóng thêm phí không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Ai có đề cương ôn tập Toán C cho mình xin", "labels": ["NgoaiLe"]}
+{"text": "Quy trình để chính thức trở thành cử nhân", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Phòng ĐT có tiếp nhận đơn qua cổng dịch vụ trực tuyến?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Xin chào, phòng CTSV hỗ trợ xin HB ko ạ?", "labels": ["ChaoHoi", "PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Cho hỏi cách hack wifi", "labels": ["NgoaiLe"]}
+{"text": "Phí học lại đóng ở KHTC hay trên portal?", "labels": ["PhongKHTC", "QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Cải thiện có tính điểm quá trình mới ko hay chỉ thi?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cho hỏi quán cà phê ngon gần đây", "labels": ["NgoaiLe"]}
+{"text": "Phòng đào tạo hướng dẫn thủ tục chuyển ngành cho em nhé", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "đk nhan hoc bong can bao nhiu diem", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em hỏi ĐT xem lịch học lại kỳ hè ra chưa", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "phong tai chinh trường NTU o dau", "labels": ["PhongKHTC"]}
+{"text": "Ngưng theo học 1 lớp cụ thể được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em cần giấy xác nhận tình trạng SV, đến phòng nào?", "labels": ["PhongCTSV"]}
+{"text": "Rớt môn chuyên ngành, em muốn chuyển sang ngành dễ hơn", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_HocLai"]}
+{"text": "HB có bị cắt nếu em vi phạm nội quy ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Bạn bè kể ngành bên kia thú vị hơn nhiều", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Rút môn có bị ghi W trong bảng điểm không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Đóng học phí bằng cách nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn rút môn Vật lý được không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "ĐKHP mà quên mật khẩu thì reset ở đâu?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Xin chào, mình cần trợ giúp", "labels": ["ChaoHoi"]}
+{"text": "Rút môn qua portal SV hay email phòng ĐT?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em sắp hoàn thành toàn bộ chương trình, bước cuối là gì?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Phòng đào tạo số điện thoại là gì?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phòng tài chính có nhận đóng HP bằng tiền mặt không?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Gọi cho phòng CTSV số nào v", "labels": ["PhongCTSV"]}
+{"text": "KHTC gửi biên lai HP qua email ko?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "GPA bao nhiêu thì được học bổng?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "KHTC xử lý hoàn HP khi SV bảo lưu ntn?", "labels": ["PhongKHTC"]}
+{"text": "Review quán bún bò gần cổng trường", "labels": ["NgoaiLe"]}
+{"text": "Dạ cho em xin SĐT phòng KHTC", "labels": ["PhongKHTC"]}
+{"text": "Chuyển ngành có mất quyền ở KTX ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em đang đợi xét TN, đồng thời muốn xin HB kỳ này", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Hoàn học phí khi rút môn được không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "CTSV quản lý danh sách ứng viên HB ko?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Đóng HP tại quầy giao dịch ngân hàng được ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "HB vận động viên thể thao có ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chào, cho tui hỏi chút", "labels": ["ChaoHoi"]}
+{"text": "Em muốn wrap up chương trình đại học", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn học lại môn đã đạt để được điểm tốt hơn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Muốn gặp hiệu trưởng hoặc phó hiệu trưởng thì đến đâu?", "labels": ["VanPhongTruong"]}
+{"text": "Thủ tục xin giấy chứng nhận TN tạm thời", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Rút môn rồi có được đăng ký kỳ sau ngay ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "ĐT có hotline tư vấn lịch học ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em tim phong ctac sv o dau", "labels": ["PhongCTSV"]}
+{"text": "Đội bóng trường thi đấu khi nào?", "labels": ["NgoaiLe"]}
+{"text": "Học lại có phải đóng phí giáo trình lại ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "KHTC có quản lý lương giảng viên ko?", "labels": ["PhongKHTC"]}
+{"text": "Phòng đào tạo chịu trách nhiệm gì?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Chào buổi tối", "labels": ["ChaoHoi"]}
+{"text": "Cho hỏi ship hàng từ SG về Nha Trang bao lâu?", "labels": ["NgoaiLe"]}
+{"text": "Em cần giấy xác nhận đang theo học, liên hệ đâu?", "labels": ["PhongCTSV"]}
+{"text": "Nơi nào là trụ sở chính điều hành của trường?", "labels": ["VanPhongTruong"]}
+{"text": "Hi chatbot", "labels": ["ChaoHoi"]}
+{"text": "Phòng đào tạo có biểu mẫu đơn xin rút môn ko ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Phòng ĐT quản lý kết quả cải thiện ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Em trượt đồ án, phải đk lại đồ án như nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em nhận HB rồi nhưng phòng KHTC chưa cập nhật số tiền", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Văn phòng trường có fanpage ko?", "labels": ["VanPhongTruong"]}
+{"text": "Em đóng thừa tiền, làm sao lấy lại phần dư?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Có chương trình tư vấn hướng nghiệp trước khi chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Cải thiện có được chọn giảng viên khác không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em nộp HP nhầm tài khoản, KHTC xử lý ko?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Thư viện trường mở tới mấy giờ?", "labels": ["NgoaiLe"]}
+{"text": "Chuyển ngành xong bạn cùng lớp có thay đổi ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Cho hỏi chỗ học guitar ở Nha Trang", "labels": ["NgoaiLe"]}
+{"text": "Học lại có ảnh hưởng đến xét tốt nghiệp không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Lệ phí xét TN đóng ở KHTC hay ở đâu?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn bỏ bớt lịch học vì quá tải", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Rút môn thì em có bị tính vắng không phép ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em cần hóa đơn VAT cho khoản HP đã đóng", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Rút môn bằng app SV hay phải lên văn phòng?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Bỏ 1 môn xong chọn lại môn khác, quy trình ra sao?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Nộp HP cải thiện quá hạn bị phạt ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Lớp học lại có tách riêng hay chung với lớp thường?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em rút 2 môn, HP hoàn lại bao nhiêu %?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Sáng nay trời mưa quá", "labels": ["NgoaiLe"]}
+{"text": "Em đk học lại mà chưa đóng HP, bị hủy đk ko?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Hủy hết lịch học trong kỳ và tạm nghỉ", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Học bổng toàn phần và bán phần khác nhau sao?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "KHTC xác nhận tài chính cho SV đi trao đổi ko?", "labels": ["PhongKHTC"]}
+{"text": "Cảm ơn nhé", "labels": ["NgoaiLe"]}
+{"text": "ĐT quản lý phần mềm đăng ký HP ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phòng CTSV có tổ chức tuần lễ hướng nghiệp ko?", "labels": ["PhongCTSV"]}
+{"text": "Cho hỏi đăng ký SIM sinh viên ở đâu?", "labels": ["NgoaiLe"]}
+{"text": "Đk cải thiện nằm trong phần đăng ký học phần hả?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Dạ hello bot, em muốn hỏi nè", "labels": ["ChaoHoi"]}
+{"text": "Em xin bảo lưu có cần chứng từ minh chứng lý do không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Server bị quá tải khi mọi người đổ vào chọn môn", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Học bổng của trường có mấy loại?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em nghe nói đạt 3.8 GPA thì được trường thưởng", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Xin chào, phòng KHTC hỗ trợ về học bổng và HP phải ko?", "labels": ["ChaoHoi", "PhongKHTC", "QuyTrinh_NopHocPhi", "QuyTrinh_XetHocBong"]}
+{"text": "KHTC quản lý khoản thu phí thư viện ko?", "labels": ["PhongKHTC"]}
+{"text": "Em cần VP trường can thiệp vì portal ĐKHP bị khóa", "labels": ["QuyTrinh_DangKyHocPhan", "VanPhongTruong"]}
+{"text": "CTSV có hỗ trợ SV tìm việc làm thêm ko?", "labels": ["PhongCTSV"]}
+{"text": "huy dang ky mon ntn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng KHTC hướng dẫn đóng học phí đúng không ạ?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Nộp đơn học lại ở phòng đào tạo giờ nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Số lần tối đa được học lại 1 môn là bao nhiêu?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em muốn biết mức phí học lại, hỏi KHTC?", "labels": ["PhongKHTC", "QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Sinh viên nợ học phí có được đăng ký môn hay ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đk cải thiện mà lớp full, em đk đợt bổ sung được ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Dạ em chào ạ, em cần tư vấn", "labels": ["ChaoHoi"]}
+{"text": "Cho hỏi cắt tóc ở đâu đẹp", "labels": ["NgoaiLe"]}
+{"text": "Em đã hiểu bài hơn rồi, muốn thể hiện lại kiến thức", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cho hỏi lịch bay từ Cam Ranh đi Hà Nội", "labels": ["NgoaiLe"]}
+{"text": "Chào, em có thể hỏi gì được không?", "labels": ["ChaoHoi"]}
+{"text": "CTSV tiếp nhận phản hồi về chất lượng bếp ăn ko?", "labels": ["PhongCTSV"]}
+{"text": "Xin chào, em đang online nè", "labels": ["ChaoHoi"]}
+{"text": "Em được HB nhưng muốn hoãn nhận, có được ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "KHTC giờ nghỉ trưa là sao ạ", "labels": ["PhongKHTC"]}
+{"text": "Cho hỏi lịch chiếu phim hôm nay", "labels": ["NgoaiLe"]}
+{"text": "Đăng ký môn học bị trùng lịch thì sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Cải thiện GPA lên 3.5 là đủ xét HB chưa?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetHocBong"]}
+{"text": "Biểu phí tín chỉ niên khóa mới xem ở đâu?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Bộ phận tài chính kế toán trường nằm ở đâu?", "labels": ["PhongKHTC"]}
+{"text": "Em muốn thử lại để đạt kết quả tốt hơn ở môn này", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cải thiện điểm rồi thì điểm cũ có xóa không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Quy trình rút môn học như thế nào?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng KHTC xác nhận việc giảm HP do học bổng phải ko?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Nếu rút nhiều môn quá dẫn tới thiếu tín chỉ tối thiểu?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn swap nhóm HP, cần rút rồi đk lại ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Em cần CTSV hỗ trợ vì đang bệnh, muốn rút hết môn", "labels": ["PhongCTSV", "QuyTrinh_RutMonHoc"]}
+{"text": "GPA em rất cao nhưng gia đình khó khăn, có hỗ trợ gì không?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Làm sao để được cấp bằng đại học chính quy?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Cơ chế cho phép làm mới điểm số đã có là gì?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em lên phòng ĐT hỏi về xét tốt nghiệp được ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Hệ thống báo nợ HP nên ko cho đk môn, phải làm sao?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "VP trường ký xác nhận vào bản sao bằng TN ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "KHTC có cổng tra cứu công nợ online ko?", "labels": ["PhongKHTC"]}
+{"text": "KHTC có phát hành hóa đơn GTGT cho HP?", "labels": ["PhongKHTC"]}
+{"text": "Em bảo lưu xong quay lại muốn chuyển ngành luôn được ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_ChuyenNganh"]}
+{"text": "bye bye", "labels": ["NgoaiLe"]}
+{"text": "Kỳ cuối cùng trước khi ra trường, đk HP sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn transfer sang chương trình đào tạo khác", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Mất bao lâu để xử lý đơn xin chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Học lại phải theo đúng giảng viên cũ ko hay được chọn?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Tiêu chí đánh giá để được nhận hỗ trợ học tập là gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em muốn ứng tuyển vào chương trình tài trợ học phí", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Muốn tạm stop học 1 kỳ thì làm sao?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Liên hệ phòng đào tạo đại học như thế nào?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "HP cho lớp cải thiện và lớp học lại khác nhau ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "VP trường quản lý mối quan hệ với doanh nghiệp?", "labels": ["VanPhongTruong"]}
+{"text": "Hello, cho hỏi phòng KHTC giờ làm việc ạ", "labels": ["ChaoHoi", "PhongKHTC"]}
+{"text": "VP trường xác nhận cho SV dự thi chứng chỉ nghề ko?", "labels": ["VanPhongTruong"]}
+{"text": "xin chao", "labels": ["ChaoHoi"]}
+{"text": "Học lại kỳ hè phí có khác kỳ chính ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Hê lô, em cần hỏi thông tin", "labels": ["ChaoHoi"]}
+{"text": "Phòng KHTC quản lý khoản thu ký túc xá ko?", "labels": ["PhongKHTC"]}
+{"text": "Phòng ĐT quản lý hệ thống LMS ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Đóng HP xong mới mở đăng ký môn à?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng ĐT xử lý chuyển điểm từ trường khác ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Rút môn em cần nộp đơn ở phòng đào tạo hay online?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Thủ tục online để nộp đơn bảo lưu có không ạ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng KHTC in giấy xác nhận tài chính bằng tiếng Anh ko?", "labels": ["PhongKHTC"]}
+{"text": "Nộp đơn xin chuyển ngành ở phòng ĐT hay phòng nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT tư vấn em nên bảo lưu hay nghỉ hẳn ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Bảo lưu kỳ này mà em đã đóng HP kỳ sau rồi, xử lý sao?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn bảo lưu, HP kỳ này tính ra sao?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng ĐT duyệt trường hợp đk vượt tín chỉ ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em cần phòng ĐT xác nhận hoàn thành chương trình", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phí học lại tính theo tín chỉ phải không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em đã qua môn rồi nhưng muốn thi lại để đạt điểm cao", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "VP trường quản lý quy chế nội bộ ko?", "labels": ["VanPhongTruong"]}
+{"text": "Chào bạn, cho mình hỏi nhé", "labels": ["ChaoHoi"]}
+{"text": "Đơn vị hành chính tổng hợp trường ở đâu?", "labels": ["VanPhongTruong"]}
+{"text": "CTSV hỗ trợ SV tìm hiểu thông tin TN ko?", "labels": ["PhongCTSV", "QuyTrinh_XetTotNghiep"]}
+{"text": "Mỗi kỳ có bao nhiêu suất HB?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chào ạ, em muốn hỏi về phòng CTSV", "labels": ["ChaoHoi", "PhongCTSV"]}
+{"text": "Em có HB toàn phần, phòng tài chính có tự động giảm HP ko?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Đk HP hè có tính vào số tín chỉ tích lũy ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường cấp thư mời cho khách quốc tế đến trường?", "labels": ["VanPhongTruong"]}
+{"text": "Bảo lưu giữa kỳ thì HP đã nộp có refund ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Bạn ơi cho mượn sách Giải tích với", "labels": ["NgoaiLe"]}
+{"text": "Mức học bổng cao nhất là bao nhiêu?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng ĐT mở bao nhiêu lớp cải thiện mỗi kỳ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Cho hỏi cách đăng ký grab driver", "labels": ["NgoaiLe"]}
+{"text": "Đk học lại phải chờ đến kỳ sau à", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Học phí tăng mỗi năm bao nhiêu phần trăm?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Nhạc Sơn Tùng MTP mới ra hay quá", "labels": ["NgoaiLe"]}
+{"text": "Em rớt 2 môn muốn học lại, 1 môn muốn cải thiện lên A", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Em bảo lưu rồi quay lại, HP tính kỳ mới hay kỳ cũ?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "HB có xét theo từng học kỳ hay cả năm?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Lễ trao bằng TN diễn ra khi nào?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Rút môn bắt buộc trong chương trình đào tạo có được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Số tín chỉ cải thiện tối đa 1 kỳ là bao nhiêu?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Đk cải thiện ở phần nào trên portal ĐKHP?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn biết về nghĩa vụ tài chính sinh viên", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "em sinh viên mới, k biết cách nộp hp", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Xét TN và xét HB có cùng thời điểm không ạ?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Cố vấn học tập phải duyệt đơn rút môn không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "helô", "labels": ["ChaoHoi"]}
+{"text": "Em cần ĐT cấp giấy cho mục đích thị thực du học", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Thời gian biểu lớp học lại có linh hoạt hơn ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Chuyển ngành có ảnh hưởng đến bảo hiểm y tế của SV?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Dạ hello ạ", "labels": ["ChaoHoi"]}
+{"text": "Có được đóng HP từng tháng ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Kết quả thi không phản ánh đúng khả năng, em muốn thử lại", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Phòng KHTC có app thanh toán riêng ko?", "labels": ["PhongKHTC"]}
+{"text": "Em cần cả hai: hoàn thành lại môn rớt và nâng điểm môn cũ", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Em bị nợ tín chỉ, cần phải theo học lại những môn đó", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em nợ HP nhưng vẫn muốn đk học phần, được ko ạ?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Sinh viên diện chính sách có ưu tiên HB không?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Mấy a/c ơi, học lại ntn v", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Email văn phòng trường cho em xin?", "labels": ["VanPhongTruong"]}
+{"text": "rut mon roi nhung tien chua hoan lai", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "KHTC in giấy xác nhận đóng HP mất bao lâu?", "labels": ["PhongKHTC"]}
+{"text": "Hi hi, cho hỏi với", "labels": ["ChaoHoi"]}
+{"text": "VP trường ký xác nhận cho SV bảo lưu đi chứng thực ko?", "labels": ["PhongKHTC", "QuyTrinh_BaoLuu"]}
+{"text": "KHTC phối hợp ngân hàng nào cho SV vay?", "labels": ["PhongKHTC"]}
+{"text": "Thủ tục tạm dừng tiến độ học tập ra sao ạ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Tài khoản trường để chuyển tiền em hỏi ai?", "labels": ["PhongKHTC"]}
+{"text": "Chưa đóng tiền có đăng ký môn được ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Lớp cải thiện học cùng lớp thường hay riêng?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "sdfkjhsdkfj", "labels": ["NgoaiLe"]}
+{"text": "Nộp học phí qua ví điện tử được không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Gửi thư/bưu phẩm cho trường qua bộ phận nào?", "labels": ["VanPhongTruong"]}
+{"text": "Em cải thiện xong mà chưa update GPA, chờ bao lâu?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em cần bảng điểm cuối cùng cho hồ sơ xét TN", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "GPA 3.2 xin HB dc ko a", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Được hoãn thi rồi thi lại ko cần học lại ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Helo bạn ơi", "labels": ["ChaoHoi"]}
+{"text": "Chuyển ngành có phải ký cam kết hoàn thành thêm môn ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Khác nhau giữa học lại và nâng điểm là gì ạ?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Đăng ký học phần có cần cố vấn học tập duyệt không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng CTSV quản lý hoạt động Đoàn-Hội ko?", "labels": ["PhongCTSV"]}
+{"text": "HB có bị ảnh hưởng nếu em vắng nhiều tiết?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng CTSV có giải thưởng SV 5 tốt ko?", "labels": ["PhongCTSV"]}
+{"text": "Wifi ký túc xá chậm quá", "labels": ["NgoaiLe"]}
+{"text": "CTSV hỗ trợ SV khởi nghiệp ko?", "labels": ["PhongCTSV"]}
+{"text": "HP khi chuyển ngành tính từ kỳ nào?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn KHTC xác nhận đã thanh toán đủ cho cơ quan thuế", "labels": ["PhongKHTC"]}
+{"text": "test thử nha", "labels": ["NgoaiLe"]}
+{"text": "Thời gian bảo lưu có tính vào thời gian đào tạo tối đa không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn cải thiện để đủ ĐK xét HB kỳ sau", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetHocBong"]}
+{"text": "Phòng ĐT tổ chức đợt thi phụ khi nào?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phòng ĐT kiểm tra đủ tín chỉ cho TN ko ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Nhận bằng TN ở văn phòng trường phải không ạ?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "Quy trình chuyển ngành như thế nào ạ?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Liên hệ phòng CTSV để biết thêm về chương trình học bổng", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Chào, em muốn hỏi VP trường ạ", "labels": ["ChaoHoi", "VanPhongTruong"]}
+{"text": "Rút rồi đk lại có phải chờ đợt mới ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Dạ em chào, em muốn biết điều kiện HB", "labels": ["ChaoHoi", "QuyTrinh_XetHocBong"]}
+{"text": "Em đã không pass được 5 môn, giờ phải xử lý thế nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Thời hạn nộp hồ sơ xin HB khi nào?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng ĐT quản lý chương trình liên kết quốc tế ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Ngành CNTT ra trường lương bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "Tui khỏe, cảm ơn", "labels": ["NgoaiLe"]}
+{"text": "Tối thiểu phải đăng ký bao nhiêu tín chỉ 1 kỳ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Dạ em chào, em gọi từ Nha Trang ạ", "labels": ["ChaoHoi"]}
+{"text": "Bằng TN có version tiếng Anh ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Sau bảo lưu, GPA vẫn đủ xét HB phải ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Học lại thì đk như bình thường trên cổng thông tin SV à?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Phòng CTSV tổ chức hoạt động ngoại khóa ko?", "labels": ["PhongCTSV"]}
+{"text": "Bảo lưu rồi có phải đóng HP cho kỳ đó không?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Nếu em đk thiếu tín chỉ dưới mức cho phép thì sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng KHTC cấp xác nhận đã đóng đủ HP đúng ko ạ?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Em bị đình chỉ thi vì vi phạm, phải đăng ký lại môn", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Nếu rút hết các môn trong kỳ thì tính là bảo lưu ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng ĐT quản lý đánh giá giảng viên ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em đk trước deadline mà hệ thống chưa xác nhận", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em không hài lòng với điểm, muốn xóa đi làm lại", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn đăng tên vào các môn kỳ sau", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Review cà phê Highlands gần trường", "labels": ["NgoaiLe"]}
+{"text": "HP phải clear trước khi hệ thống cho đk à?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Cho hỏi chỗ ăn chay ngon gần trường", "labels": ["NgoaiLe"]}
+{"text": "Em muốn chuyển từ hệ đại trà sang hệ chất lượng cao", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Dạ em chào, em đang chuẩn bị nhập học", "labels": ["ChaoHoi"]}
+{"text": "Cơ chế cho phép SV quay lại sau khi tạm rời trường?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em nợ 2 tín chỉ, xét TN đợt sau có kịp ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hệ thống enrollment mở khi nào ạ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường có số FAX ko?", "labels": ["VanPhongTruong"]}
+{"text": "Portal đk HP sử dụng trình duyệt gì tốt nhất?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "HP cho SV diện ưu tiên giảm bao nhiêu %?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Tín chỉ nào được công nhận khi chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT giải quyết sai sót trên bảng điểm ntn?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Sinh viên có thành tích tốt được hưởng phần thưởng gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cải thiện có giảm tải GPA nếu kết quả kém hơn ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Mất HB nếu GPA giảm đúng ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Bao nhiêu tín chỉ nợ thì bị buộc thôi học?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Hôm nay ăn gì ngon nhỉ?", "labels": ["NgoaiLe"]}
+{"text": "Nếu chương trình đào tạo thay đổi trong lúc bảo lưu thì sao?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Dạ hello, em cần support gấp", "labels": ["ChaoHoi"]}
+{"text": "Em hỏi ĐT xem cải thiện môn X mở khi nào", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Trường có hạn chót nào cho việc xin tạm ngưng không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em không có đủ tiền đóng đúng hạn, phải làm sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng CTSV giải quyết khiếu nại về điểm rèn luyện?", "labels": ["PhongCTSV"]}
+{"text": "Em hủy môn rồi, phần HP đã đóng có trả lại ko?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Chuyển từ hệ cao đẳng lên đại học khác chuyển ngành ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Tạm nghỉ học mà đã đóng tiền rồi, có lấy lại được ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Đk cải thiện kỳ cuối trước TN có kịp ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Hệ thống ĐKHP có version mobile ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đóng HP nhầm số tiền, xin hoàn lại sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Có được cải thiện môn thực hành/thí nghiệm không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Sinh viên năm cuối có được bảo lưu không ạ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn cải thiện nhưng môn đó không mở lớp kỳ này", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Phòng nào giải quyết miễn giảm cho SV diện chính sách?", "labels": ["PhongCTSV"]}
+{"text": "Bộ phận nào quản lý chương trình đào tạo của trường?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em có thể hỏi phòng ĐT về lịch mở lớp học lại ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Em đến phòng CTSV để hỏi về học bổng được ko?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Ai biết bán vé concert BlackPink ở SG ko?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn nhận bằng TN nhưng ở xa, VP trường gửi bưu điện ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "Trước khi TN em cần KHTC clear hết công nợ?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "Sức khỏe em không tốt, không kham nổi việc học lúc này", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "tui muốn xin bảo lưu, ai chỉ tui cách đi", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "VP trường quản lý các văn bản quy chế ko?", "labels": ["VanPhongTruong"]}
+{"text": "ĐT mở lớp cải thiện theo lịch cố định ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Em không tiếp tục được nữa nhưng vẫn muốn giữ điểm", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em mất HB vì GPA giảm, xin lại kỳ sau được ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng ban nào duyệt đơn xin miễn giảm cho SV?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn xin giấy tờ liên quan đến hỗ trợ tài chính SV", "labels": ["PhongCTSV"]}
+{"text": "Cách nào để hoàn thành tín chỉ bị thiếu do rớt?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em rút nhầm môn, có thể đk lại ngay được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Văn phòng trường ở đâu?", "labels": ["VanPhongTruong"]}
+{"text": "Đk HP xong có email xác nhận không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Điểm rèn luyện em thấp, muốn khiếu nại", "labels": ["PhongCTSV"]}
+{"text": "Rút môn online thao tác sao cho nhanh?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Dạ chào ạ, em muốn biết lịch xét HB kỳ này", "labels": ["ChaoHoi", "QuyTrinh_XetHocBong"]}
+{"text": "Xét TN có yêu cầu TOEIC tối thiểu bao nhiêu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Chào ạ, em có thắc mắc", "labels": ["ChaoHoi"]}
+{"text": "Em nộp đơn rút môn ở ĐT, có nhận biên lai ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Lịch đk HP cho SV diện cảnh báo có khác không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Bảo lưu vì lý do sức khỏe cần giấy tờ bệnh viện không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Làm sao để sắp xếp thời khóa biểu cho kỳ tới?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Chuyển ngành có hoàn HP cho các môn không công nhận ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Bảo lưu rồi khi quay lại có phải học theo chương trình mới không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Học lại tối đa bao nhiêu tín chỉ 1 kỳ?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Khi nào trường xét tốt nghiệp?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Dạ, chào bạn ạ", "labels": ["ChaoHoi"]}
+{"text": "Em cần VP trường xác nhận cho giấy tờ pháp lý", "labels": ["VanPhongTruong"]}
+{"text": "Em sắp TN, cần CTSV cấp giấy xác nhận rèn luyện?", "labels": ["PhongCTSV", "QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC quản lý tài chính HB cho SV ko?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Thủ tục cho sinh viên muốn ghi danh lại môn đã trượt", "labels": ["QuyTrinh_HocLai"]}
+{"text": "dk hoc phan ntn v", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Quy trình để sang một chuyên ngành khác ra sao?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Liệu em đã meet all requirements cho graduation chưa?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em không đủ tiền đóng, trường có hỗ trợ gì ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em cần xác nhận TN tạm trước khi nhận bằng chính thức", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC có chương trình trả góp HP ko?", "labels": ["PhongKHTC"]}
+{"text": "CTSV cấp giấy xác nhận đang ở KTX ko?", "labels": ["PhongCTSV"]}
+{"text": "Thanh toán học phí bằng chuyển khoản như nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Cải thiện và học lại khác nhau chỗ nào?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Mức HP cải thiện 1 tín chỉ bao nhiêu?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Đơn vị giải quyết các vấn đề về tiền bạc trong trường", "labels": ["PhongKHTC"]}
+{"text": "Hồ sơ HB cần xác nhận điểm RL từ CTSV ko?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Em muốn biết về các chương trình hỗ trợ tài chính cho SV giỏi", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Mình đang tìm việc part-time cuối tuần", "labels": ["NgoaiLe"]}
+{"text": "Em rớt nhiều môn quá, đang cân nhắc chuyển ngành", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_HocLai"]}
+{"text": "HP cho chương trình liên kết quốc tế bao nhiêu?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Rút môn có cần đóng phí phạt ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Dạ anh/chị cho em hỏi", "labels": ["ChaoHoi"]}
+{"text": "Em muốn giữ chỗ KTX khi bảo lưu, liên hệ ai?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Ê chào", "labels": ["ChaoHoi"]}
+{"text": "Gửi đơn bảo lưu qua email phòng đào tạo được ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Xin chào, em học lại 2 môn, đóng HP ở đâu ạ?", "labels": ["ChaoHoi", "QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Học bổng 100% cần ĐK gì ạ", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Drop môn sau deadline có mất tiền không ạ?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Em phải đi nghĩa vụ quân sự, muốn giữ kết quả học", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "TN loại TB thì được ghi gì trên bằng?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Bán xe wave cũ ai mua ko", "labels": ["NgoaiLe"]}
+{"text": "Em muốn lighten course load cho kỳ này", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "mn ơi, xin chuyển ngành có khó lắm không", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "HP nộp cho ngành minors riêng ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng CTSV có hỗ trợ SV bảo lưu giải quyết KTX ko?", "labels": ["PhongCTSV", "QuyTrinh_BaoLuu"]}
+{"text": "Nếu chuyển ngành mà thiếu môn tiên quyết thì em phải bổ sung?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "hoc cai thien la gi v", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "VP trường cấp giấy giới thiệu cho SV đi thực tập, lấy form ở CTSV?", "labels": ["QuyTrinh_XetHocBong", "VanPhongTruong"]}
+{"text": "VP trường có bộ phận lễ tân ko?", "labels": ["VanPhongTruong"]}
+{"text": "Chào buổi sáng", "labels": ["ChaoHoi"]}
+{"text": "Bảng điểm em đầy điểm F, giờ xử lý sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Anh em cho hỏi làm cách nào chuyển tiền cho trường nhanh nhất", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em đã thử học 1 kỳ ngành mới rồi muốn chuyển chính thức", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Dạ chào anh ạ", "labels": ["ChaoHoi"]}
+{"text": "Em muốn rút toàn bộ HP kỳ này, có được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Tải app gì để học tiếng Anh tốt?", "labels": ["NgoaiLe"]}
+{"text": "Nếu em bảo lưu thì các môn đã đăng ký có bị mất không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Chi phí đào tạo mỗi kỳ được tính ra sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Điều kiện tốt nghiệp là gì?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em cần nghỉ một thời gian rồi quay lại hoàn thành chương trình", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "hí anh ơi", "labels": ["ChaoHoi"]}
+{"text": "KHTC quản lý các quỹ tài trợ cho SV ko?", "labels": ["PhongKHTC"]}
+{"text": "VP trường giờ nghỉ trưa sao ạ?", "labels": ["VanPhongTruong"]}
+{"text": "Xét HB và xét TN cùng đợt thì ưu tiên cái nào trước?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Phụ huynh có cần ký tên đơn bảo lưu ko?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Rút tối đa bao nhiêu tín chỉ trong 1 kỳ?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Qua kỳ nghỉ hè có nộp đơn chuyển ngành được không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "HP cho SV quốc tế khác SV Việt Nam ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Sau khi chuyển ngành thì đk môn mới ngay được không?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đóng HP quá deadline 2 ngày, có bị khóa portal?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "muốn thi lại nâng điểm thì đk cải thiện đúng ko", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Đăng ký rồi muốn hủy môn thì sao?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng đào tạo xử lý hồ sơ xét TN phải không ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Nộp hồ sơ HB trễ 1 ngày có xét ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Rút môn tại ĐT có thể rút nhiều môn 1 lần ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "CTSV có nhận đơn online qua email ko?", "labels": ["PhongCTSV"]}
+{"text": "cho hỏi trường có bể bơi ko", "labels": ["NgoaiLe"]}
+{"text": "Bằng TN bị sai thông tin, em đến VP trường sửa ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "VP trường có lưu trữ hồ sơ cựu SV ko?", "labels": ["VanPhongTruong"]}
+{"text": "Phòng đào tạo mở portal đk học phần lúc nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Làm sao để thay đổi ngành nghề đang đào tạo?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV có kênh hỗ trợ tâm lý SV 24/7 ko?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn xin giấy chứng nhận kết quả học tập", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Rút môn vì vượt quá tải, có cần giải trình ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Học lại mà lớp không mở trong kỳ này thì chờ kỳ sau?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Sau khi bảo lưu muốn quay lại học thì làm thế nào?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em NTU nhưng thường trú xa, có HB hỗ trợ di chuyển ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Bộ phận nào trong trường phụ trách đời sống sinh viên?", "labels": ["PhongCTSV"]}
+{"text": "Chào ạ, em muốn bảo lưu nhưng lo mất HB", "labels": ["ChaoHoi", "QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Chào nghen", "labels": ["ChaoHoi"]}
+{"text": "Nếu em bảo lưu thì có mất tư cách xét HB không?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Em cần giấy xác nhận SV để xin visa đi nước ngoài", "labels": ["PhongCTSV"]}
+{"text": "Ngành em muốn chuyển tới đã hết chỉ tiêu, chờ kỳ sau?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ban nào tiếp nhận văn bản, công văn chính thức?", "labels": ["VanPhongTruong"]}
+{"text": "Bảo lưu rồi chuyển ngành, tín chỉ cũ tính sao?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_ChuyenNganh"]}
+{"text": "đk hoc lai o dau v", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Hello bot", "labels": ["ChaoHoi"]}
+{"text": "ĐT có form rút môn online ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Chuyển ngành có phải đóng thêm khoản phí nào?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Thủ tục để đổi khoa/ngành đang theo học", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV có kênh tiếp nhận ý kiến SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Chuyển ngành có ảnh hưởng tới track record học tập cũ?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Điểm em vừa đủ đạt nhưng không đủ để xin việc tốt", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn khiếu nại kết quả chấm điểm rèn luyện", "labels": ["PhongCTSV"]}
+{"text": "Phòng ĐT thông báo kết quả xét TN qua kênh nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Rút môn tiên quyết có ảnh hưởng môn đang đk ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Chào buổi trưa!", "labels": ["ChaoHoi"]}
+{"text": "Registr học lại ở đâu v mọi người", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Phòng KHTC có thông báo nhắc nợ HP qua SMS ko?", "labels": ["PhongKHTC"]}
+{"text": "Liệu em còn thiếu gì mà chưa được công nhận hoàn thành?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Trường có quỹ hỗ trợ nào dành cho sinh viên không?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Kỳ phụ đăng ký HP có khác kỳ chính ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "toi can dong hoc phi, huong dan toi", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Hạn nộp đơn xin chuyển ngành khi nào?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV hỗ trợ SV đăng ký hiến máu ko?", "labels": ["PhongCTSV"]}
+{"text": "bảo lưu kq hoc tap co kho khong v", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Rút môn tại phòng đào tạo có nhanh không?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Rút môn có bị mất tiền không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "VP trường hỗ trợ SV tham gia chương trình trao đổi quốc tế?", "labels": ["VanPhongTruong"]}
+{"text": "Điểm cải thiện thay thế điểm cũ hay lấy điểm cao hơn?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Phòng công tác sinh viên ở đâu?", "labels": ["PhongCTSV"]}
+{"text": "Transcript cho nhà tuyển dụng chỉ hiện điểm cao nhất à?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Chào, cho tui hỏi chút nha", "labels": ["ChaoHoi"]}
+{"text": "em đang học ngành A muốn sang ngành B", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "xet tot nghiep khi nao v", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "chuyen nganh lam sao v", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn được theo học lại những môn không qua", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Nộp đơn đk cải thiện ở phòng đào tạo?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Giá phòng KTX bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn nâng GPA từ 3.0 lên 3.5, cần cải thiện mấy môn?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em vắng thi không phép nên bị 0 điểm, phải làm gì?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Chuyển ngành có cần phỏng vấn hay thi không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Yo", "labels": ["ChaoHoi"]}
+{"text": "Hoàn cảnh gia đình khó khăn buộc em phải tạm dừng", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Thi cải thiện có khác gì thi cuối kỳ thông thường?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Học lại đồ án tốt nghiệp tính sao?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Xin chào ạ", "labels": ["ChaoHoi"]}
+{"text": "Làm sao để hủy bỏ một môn đã ghi danh?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "VP trường có tiếp nhận phản ánh qua hòm thư góp ý ko?", "labels": ["VanPhongTruong"]}
+{"text": "Ai biết chỗ in ấn giá rẻ gần trường?", "labels": ["NgoaiLe"]}
+{"text": "Kỳ trước em fail 3 subjects, xử lý sao đây?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Sức khỏe em không tốt, cần giảm tải việc học", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em đóng HP cải thiện ở KHTC, xin biên lai", "labels": ["PhongKHTC", "QuyTrinh_HocCaiThien"]}
+{"text": "Học lại có ảnh hưởng đến ranking xếp loại SV ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "KHTC cấp xác nhận tài chính cho mục đích gì?", "labels": ["PhongKHTC"]}
+{"text": "Không có gì", "labels": ["NgoaiLe"]}
+{"text": "Rút môn có ảnh hưởng đến tiến độ TN ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "tui muốn drop môn, làm sao đây", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Rút HP rồi phần tiền dư chuyển sang kỳ sau ko?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "CTSV có số hotline khẩn cấp ko?", "labels": ["PhongCTSV"]}
+{"text": "Có thể bảo lưu từng môn riêng lẻ không hay phải cả kỳ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Xin giấy SV để miễn nghĩa vụ quân sự tại CTSV?", "labels": ["PhongCTSV"]}
+{"text": "HB cho SV khuyết tật có chương trình riêng ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Nộp đơn xin xét TN ở đâu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "em click đk hp mà hệ thống cứ loading hoài", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đk trùng lịch thi cuối kỳ, hệ thống có cảnh báo ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Thời gian xử lý đơn bảo lưu là bao lâu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Good morning, em cần help", "labels": ["ChaoHoi"]}
+{"text": "CTSV giúp SV chuyển ngành làm thủ tục chuyển KTX?", "labels": ["PhongCTSV", "QuyTrinh_ChuyenNganh"]}
+{"text": "Hồ sơ chuyển ngành có cần thư giới thiệu của khoa cũ?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Lam sao biet minh du dk tot nghiep", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Điểm rèn luyện tối thiểu để xét HB là bao nhiêu?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Lịch thi bị trùng, em buộc phải bỏ một trong hai", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "van phong truong o dau v", "labels": ["VanPhongTruong"]}
+{"text": "Em muốn improve điểm để đủ tiêu chuẩn xét TN giỏi", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cách nào để ghi danh vào các học phần bắt buộc?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Kết quả F nghĩa là em phải theo học lại môn đó phải ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "HP lớp cải thiện đóng trước hay sau khi đk?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Em rút môn rồi mà vẫn thấy trên thời khóa biểu", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Hệ thống ĐKHP phân biệt lớp thường và lớp cải thiện ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Mình đang tìm người yêu", "labels": ["NgoaiLe"]}
+{"text": "Chào, em gọi đây hỏi chút nha", "labels": ["ChaoHoi"]}
+{"text": "Sinh viên năm nhất xuất sắc nhất liệu có được hỗ trợ?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chuyển sang ngành mới thì lịch ĐKHP có thay đổi ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Con mèo nhà mình bị ốm", "labels": ["NgoaiLe"]}
+{"text": "Em ra trường rồi, lên VP trường lấy bằng đúng ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "HP cho SV đang bảo lưu tính ra sao cho kỳ tiếp?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "bluu kt hoctap lam sao a", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Bằng tốt nghiệp nhận ở đâu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Bao lâu sau khi nộp đơn thì biết kết quả chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Đk học lại có nằm trong hệ thống ĐKHP không?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "VP trường tiếp nhận công văn từ bên ngoài?", "labels": ["VanPhongTruong"]}
+{"text": "Cải thiện bằng cách thi lại hay học lại toàn bộ?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em drop 5 tín chỉ, KHTC khi nào refund?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Hello, cho em hỏi cải thiện điểm phí bao nhiêu", "labels": ["ChaoHoi", "QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Có thể hủy đăng ký lớp mà em đã chọn không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em xin bảo lưu để đi thực tập dài hạn ở nước ngoài", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Bạn em nói trường có trao tiền cho SV giỏi, đúng ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em muốn phản ánh về tình trạng KTX, gửi CTSV à?", "labels": ["PhongCTSV"]}
+{"text": "Hệ thống course registration của trường dùng ntn?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Tạm nghỉ 1 kỳ thì suất HB có bị cắt không?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "CTSV xác nhận tình trạng SV bảo lưu cho ngân hàng ko?", "labels": ["PhongCTSV", "QuyTrinh_BaoLuu"]}
+{"text": "Lam sao de rut mon hoc tren portal", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Liên hệ phòng tài chính ở đâu?", "labels": ["PhongKHTC"]}
+{"text": "Nơi nào hỗ trợ về vấn đề học vụ cho sinh viên?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Cho hỏi tiệm giặt ủi gần KTX", "labels": ["NgoaiLe"]}
+{"text": "Không có gì đâu", "labels": ["NgoaiLe"]}
+{"text": "Bảo lưu xong quay lại, SV được xếp vào khóa nào?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Giá xăng hôm nay bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "Ban lãnh đạo nhà trường ngồi ở phòng nào?", "labels": ["VanPhongTruong"]}
+{"text": "Thời gian CTSV trả giấy xác nhận là bao lâu?", "labels": ["PhongCTSV"]}
+{"text": "VP trường xử lý gì khi SV gặp sự cố pháp lý?", "labels": ["VanPhongTruong"]}
+{"text": "Hello, mình cần trao đổi", "labels": ["ChaoHoi"]}
+{"text": "Nên xin bảo lưu hay xin nghỉ học hẳn?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Được phép học lại bao nhiêu tín chỉ 1 kỳ?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Phòng đào tạo có danh sách môn mở cải thiện ko ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Mẹ em muốn liên hệ trường hỏi về tiền đóng mỗi kỳ", "labels": ["PhongKHTC"]}
+{"text": "xin rut mon hoc can gi", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn hoàn tất chương trình đào tạo và nhận bằng", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hello, em sắp ra trường muốn hỏi xét TN", "labels": ["ChaoHoi", "QuyTrinh_XetTotNghiep"]}
+{"text": "Trường nhận thanh toán qua những kênh nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Chuyển sang ngành khác khoa có được không ạ?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV tổ chức buổi giao lưu giữa SV và doanh nghiệp ko?", "labels": ["PhongCTSV"]}
+{"text": "Ai muốn bán laptop cũ ko?", "labels": ["NgoaiLe"]}
+{"text": "Em cần giấy xác nhận đã đóng đủ tiền trường", "labels": ["PhongKHTC"]}
+{"text": "Em muốn đk improve 3 môn + retake 2 môn cùng kỳ", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "ct diem mon hoc ntn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cải thiện có ảnh hưởng đến xếp loại rèn luyện ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "VP trường có giúp SV đk HP khi portal bị lỗi ko?", "labels": ["QuyTrinh_DangKyHocPhan", "VanPhongTruong"]}
+{"text": "Phòng ĐT có hướng dẫn quy trình đk học lại ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Sdt phòng CTSV cho em xin", "labels": ["PhongCTSV"]}
+{"text": "em trượt môn, ai chỉ em cách đk học lại với", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em cần giấy tờ xác nhận tình trạng SV", "labels": ["PhongCTSV"]}
+{"text": "Muốn gặp ban lãnh đạo trường thì đặt lịch ở VP?", "labels": ["VanPhongTruong"]}
+{"text": "Thủ tục kết thúc quá trình học đại học ra sao?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Quy trình nộp tiền theo từng kỳ học", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn chuyển ngành, phải gặp phòng đào tạo trước không?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "VP trường tiếp SV từ mấy giờ đến mấy giờ?", "labels": ["VanPhongTruong"]}
+{"text": "Chào, em là cựu SV muốn hỏi lại", "labels": ["ChaoHoi"]}
+{"text": "Em đóng HP nhưng hệ thống chưa cập nhật, em hỏi phòng KHTC?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng KHTC quản lý ngân sách KTX ko?", "labels": ["PhongKHTC"]}
+{"text": "Cải thiện điểm có giới hạn số lần không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em cần hoàn thành nốt vài môn cuối, đk ở đâu?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đóng HP cải thiện qua kênh nào?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Phí cải thiện tính theo tín chỉ hay theo môn?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "TN sớm 1 kỳ có bị ảnh hưởng loại TN?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV quản lý danh sách SV diện chính sách ko?", "labels": ["PhongCTSV"]}
+{"text": "chuyn nganh co dc ko v", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Chứng chỉ tin học có cần cho TN không?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC có nhận thanh toán bằng tiền mặt tại quầy ko?", "labels": ["PhongKHTC"]}
+{"text": "VP trường quản lý hội đồng trường ko?", "labels": ["VanPhongTruong"]}
+{"text": "phong dao tao o dau v", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "ĐT có danh sách SV đủ ĐK xét TN online ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Khi nào mở lớp học cải thiện?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Có xin review lại kết quả xét TN nếu em bị trượt ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hệ thống đk HP có cho phép đặt lịch nhắc trước ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Xét TN cho SV liên thông có khác ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hey", "labels": ["ChaoHoi"]}
+{"text": "Dạ em xin chào", "labels": ["ChaoHoi"]}
+{"text": "Xin phép vắng mặt dài hạn khỏi trường thì cần gì?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng ĐT quản lý lịch thi kỳ phụ cho SV học lại ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Giờ làm việc phòng KHTC?", "labels": ["PhongKHTC"]}
+{"text": "Nộp hồ sơ bảo lưu ở phòng đào tạo phải không ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "HB tài trợ bởi địa phương có cần xác nhận hộ khẩu?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "nop hoc phi o dau v", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Kỳ mới sắp bắt đầu mà em chưa biết mình cần học những gì", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng CTSV làm việc qua Zalo OA ko?", "labels": ["PhongCTSV"]}
+{"text": "KHTC giải quyết hoàn HP khi rút môn ko?", "labels": ["PhongKHTC"]}
+{"text": "Rút môn có phải qua sự đồng ý của giảng viên ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng CTSV tổ chức hội thảo kỹ năng mềm ko?", "labels": ["PhongCTSV"]}
+{"text": "Em vào portal muộn mà HP muốn đk đã hết chỗ", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn pivot sang lĩnh vực công nghệ", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Khi đk HP trùng giờ với môn khác hệ thống có báo ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Rút môn lab riêng giữ lý thuyết có ảnh hưởng ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn xây dựng lịch học cho semester tới", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Rút môn do trùng lịch thi có được miễn phạt ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Xét HB tự động hay phải nộp đơn?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "CTSV có app riêng cho SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Thầy cho điểm thấp, em muốn có cơ hội thử lại", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "HB được công bố qua kênh nào?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Nếu bị xóa tên kỳ trước, kỳ này có xét TN ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Chào ban quản lý", "labels": ["ChaoHoi"]}
+{"text": "Phòng ban phụ trách hồ sơ học vụ sinh viên ở đâu?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Ai biết chỗ bán laptop giá rẻ ko?", "labels": ["NgoaiLe"]}
+{"text": "Em cần KHTC xác nhận chi phí cho hồ sơ thuế cha mẹ", "labels": ["PhongKHTC"]}
+{"text": "Điểm quá thấp không đạt yêu cầu, em cần hoàn thành lại", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Mấy bạn ơi phòng KHTC ở đâu v", "labels": ["PhongKHTC"]}
+{"text": "Em còn nợ chứng chỉ tiếng Anh có xét TN không?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Thanh toán HP xong bao lâu thì đk được học phần?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Em muốn CTSV hỗ trợ tìm chỗ thực tập", "labels": ["PhongCTSV"]}
+{"text": "Em muốn loại một số môn khỏi lịch học kỳ này", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Nếu hệ thống sập giữa chừng khi đk, giao dịch có giữ ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Bảo lưu ảnh hưởng đến xét HB doanh nghiệp ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Đk HP tự do ngoài chương trình có tính tín chỉ ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường có chi nhánh tại cơ sở 2 ko?", "labels": ["VanPhongTruong"]}
+{"text": "Em cần thời gian để chữa bệnh rồi quay lại học", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Thời tiết hôm nay đẹp ghê", "labels": ["NgoaiLe"]}
+{"text": "Cải thiện cần đăng ký trước bao lâu?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Có thể pause việc học rồi resume lại không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Điểm trung bình tối thiểu để tốt nghiệp?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Chuyển ngành ảnh hưởng đến tiến độ TN thế nào?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Bảo lưu rồi quay lại, em lên phòng ĐT đk lại HP à?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "VP trường quản lý thương hiệu và logo trường?", "labels": ["VanPhongTruong"]}
+{"text": "Có ai muốn nhóm đánh game ko?", "labels": ["NgoaiLe"]}
+{"text": "Có phải nộp phí xét TN không?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "HP cải thiện đóng cùng lúc với HP kỳ chính ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng KHTC quản lý quỹ phúc lợi SV ko?", "labels": ["PhongKHTC"]}
+{"text": "Em muốn đổi chuyên ngành trong cùng một khoa", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Đăng ký học phần tối đa bao nhiêu tín chỉ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng ĐT cấp bảng điểm bao lâu?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em cần giảm tải lịch học, muốn bỏ bớt vài môn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Môn này em thấy quá khó, muốn học kỳ sau", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phụ lục văn bằng là gì, có đi kèm bằng TN ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Muốn xin giấy giới thiệu có con dấu trường, gặp VP?", "labels": ["VanPhongTruong"]}
+{"text": "Thời khóa biểu kỳ tới em lên thế nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn retake để nâng GPA, cần tư vấn lộ trình", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Phòng KHTC hỗ trợ gì cho sinh viên?", "labels": ["PhongKHTC"]}
+{"text": "Em không muốn tiếp tục nữa, tiền đã nộp xin hoàn lại", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Chào, bot có thể giúp gì?", "labels": ["ChaoHoi"]}
+{"text": "Rút môn kỳ hè quy trình có đơn giản hơn ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em cần gặp người có thẩm quyền cao nhất trong trường", "labels": ["VanPhongTruong"]}
+{"text": "GPA em thấp quá so với yêu cầu xin học bổng", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em sắp bị khóa tài khoản vì chưa chuyển tiền cho trường", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "GPA tich luy toi thieu de TN la bn", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Tỷ giá USD hôm nay bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "KHTC có làm việc buổi tối ko", "labels": ["PhongKHTC"]}
+{"text": "Phòng CTSV có danh sách SV được khen thưởng ko?", "labels": ["PhongCTSV"]}
+{"text": "Có chương trình nào cho phép cập nhật điểm cao hơn không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Đăng ký retake và improve trong cùng 1 kỳ được ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Trường có hạn chế ngành nào không cho chuyển vào?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Hệ thống tự động rút nếu em không thanh toán HP đúng hạn ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Bộ phận hành chính trung tâm của nhà trường ở đâu?", "labels": ["VanPhongTruong"]}
+{"text": "Ai có link xem phim online miễn phí?", "labels": ["NgoaiLe"]}
+{"text": "Hello bot, em sắp TN muốn hỏi phòng ĐT", "labels": ["ChaoHoi", "PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em hoàn thành đủ tín chỉ nhưng nợ HP, có xét TN ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Giá vàng hôm nay bao nhiêu?", "labels": ["NgoaiLe"]}
+{"text": "Có cách nào giữ lại thành tích học tập mà tạm dừng không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Rút môn sau giữa kỳ bị ảnh hưởng GPA ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "VP trường có hotline ko ạ", "labels": ["VanPhongTruong"]}
+{"text": "HP cho lớp học lại đóng ở đâu ạ?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Lỗi đk HP trên hệ thống, em hỏi phòng đào tạo?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "ok", "labels": ["NgoaiLe"]}
+{"text": "Phòng ĐT có form xin bảo lưu online ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em muốn đk xếp lịch sao cho nghỉ nguyên ngày thứ 7", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Quy trình tạm ngừng chương trình đào tạo là gì?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Học phí 1 kỳ bao nhiêu tiền?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Chào anh/chị", "labels": ["ChaoHoi"]}
+{"text": "Em nộp đơn bảo lưu tại phòng ĐT, chờ duyệt bao lâu?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Em muốn xét tốt nghiệp, nộp hồ sơ ở phòng đào tạo đúng ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em học 4.5 năm rồi, không biết đã đủ điều kiện chưa", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Sắp đến mùa enrollment rồi, em cần chuẩn bị gì?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đã đủ tín chỉ nhưng chưa đi thực tập, vẫn TN được ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "em cần gặp VP trường để nộp đơn", "labels": ["VanPhongTruong"]}
+{"text": "Em bệnh dài hạn, được miễn thủ tục rút môn ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "KHTC có kênh thanh toán quốc tế ko?", "labels": ["PhongKHTC"]}
+{"text": "VP trường tiếp nhận khiếu nại về hệ thống ĐKHP ko?", "labels": ["QuyTrinh_DangKyHocPhan", "VanPhongTruong"]}
+{"text": "Em bảo lưu mà quên gia hạn, bị tự động thôi học ko?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng ban phụ trách ngân sách trường ở đâu?", "labels": ["PhongKHTC"]}
+{"text": "Cách nào để thanh toán khoản phí đào tạo?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Khi nào nhận bằng tốt nghiệp?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Học bổng doanh nghiệp nộp hồ sơ qua đâu?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Rút môn online hay phải nộp đơn giấy?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Quy trình khôi phục quyền SV sau bảo lưu là gì?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn xin xác nhận SV để gửi cho cơ quan", "labels": ["PhongCTSV"]}
+{"text": "Bằng TN cấp cho SV vừa học vừa làm khác bằng chính quy ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Bằng TN ghi ngày cấp hay ngày xét?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "HB được KHTC chi trả trực tiếp hay trừ HP?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Trường có tài trợ cho SV hoạt động ngoại khóa xuất sắc?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em đang năm 2, liệu chuyển ngành có kịp TN đúng hạn?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Review laptop ASUS vivobook đi", "labels": ["NgoaiLe"]}
+{"text": "Học lại và cải thiện khác nhau chỗ nào? Em cần đăng ký cái nào?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Em cần gặp VP trường gấp ạ", "labels": ["VanPhongTruong"]}
+{"text": "Điều kiện rút môn học là gì?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cải thiện điểm thì ghi danh vào lớp nào trên hệ thống ĐKHP?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Điều kiện đăng ký học cải thiện là gì?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "GPA tối thiểu để được phép chuyển ngành là bao nhiêu?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Mình bị dị ứng thức ăn canteen", "labels": ["NgoaiLe"]}
+{"text": "Em cần nâng GPA để đủ đk ra trường loại giỏi", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em nộp đơn rút môn ở phòng ĐT rồi chờ bao lâu?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Nộp học phí cần mã sinh viên không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Deadline clear tiền trường cho kỳ này là khi nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Web dk học phần lag quá trời", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng KHTC quản lý quỹ dự phòng cho SV ko?", "labels": ["PhongKHTC"]}
+{"text": "Điểm dưới mức quy định thì em phải xử lý thế nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Phòng ĐT in phụ lục văn bằng cho SV tốt nghiệp ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "ĐT quản lý danh sách SV đăng ký học lại ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Em đóng HP kỳ 1 rồi, kỳ 2 deadline khi nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "cải thiện môn chuyên ngành được hông", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Chào nhé, cho hỏi bảo lưu rồi quay lại HP tính sao", "labels": ["ChaoHoi", "QuyTrinh_BaoLuu", "QuyTrinh_NopHocPhi"]}
+{"text": "Ngành mới có chương trình đào tạo khác, em đk HP thế nào?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Bao lâu sau khi kỳ kết thúc mới đk cải thiện được?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em cần xin giấy giới thiệu có chữ ký ban giám hiệu", "labels": ["VanPhongTruong"]}
+{"text": "Các môn đại cương đã học có công nhận khi chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em vừa đk HP thường vừa đk học lại, hệ thống cho ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Chào ạ, em lần đầu liên hệ", "labels": ["ChaoHoi"]}
+{"text": "Thầy cô vấn học tập có phải ký xác nhận khi chuyển ngành?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Bảo lưu nửa kỳ có được ko hay phải nguyên kỳ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Điểm thấp quá không đủ để ra trường, em phải bù lại", "labels": ["QuyTrinh_HocLai"]}
+{"text": "sáng nay ăn gì nhỉ", "labels": ["NgoaiLe"]}
+{"text": "Em muốn thay đổi lĩnh vực chuyên môn đang theo học", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV có hỗ trợ online ko?", "labels": ["PhongCTSV"]}
+{"text": "HP ngành mới khác ngành cũ, thanh toán chênh lệch sao?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Hệ thống ĐKHP bị lag vào giờ cao điểm, có cách nào ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phụ huynh muốn biết cần đóng bao nhiêu mỗi kỳ", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Hồ sơ chuyển ngành nộp ở phòng đào tạo phải không?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "dong tien hoc ntn", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Kỳ trước em ốm nặng không thi được, giờ phải hoàn thành lại", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Gia đình em gặp biến cố, em cần nghỉ một năm", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "app nop hoc phi la app gi", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "KHTC có nhận đóng HP qua ví VNPAY ko?", "labels": ["PhongKHTC"]}
+{"text": "Nếu chuyển ngành mà GPA giảm thì trường có xem xét lại ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Mình buồn quá, không muốn đi học", "labels": ["NgoaiLe"]}
+{"text": "Phòng CTSV có mở cửa thứ 7 không?", "labels": ["PhongCTSV"]}
+{"text": "Chuyển ngành rồi, danh sách HP bắt buộc mới xem ở đâu?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Bảo lưu kết quả học tập được bao lâu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Nếu chuyển ngành mà không đủ chỉ tiêu thì sao?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn rẽ sang con đường học vấn khác", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Chuyển ngành có phải đóng thêm HP cho ngành mới ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_NopHocPhi"]}
+{"text": "Trường có nhận HP qua ZaloPay không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Kỳ cuối trước TN, em đk HB xong rồi TN luôn à?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn nâng điểm GPA bằng cách học cải thiện", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Ngành em đang theo học không có triển vọng nghề nghiệp", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "VP trường tiếp nhận đơn khiếu nại của SV?", "labels": ["VanPhongTruong"]}
+{"text": "Có hình thức nào giảm gánh nặng tài chính khi đóng HP?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Bảo lưu kỳ hè khác bảo lưu kỳ chính ko?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Dạ chào ạ, em là sv NTU", "labels": ["ChaoHoi"]}
+{"text": "Đk cải thiện và học lại cùng 1 lớp hay tách riêng?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Phòng ĐT có ban hành chương trình đào tạo mỗi năm ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em muốn kết thúc cuộc sống sinh viên sớm", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "QT chuyển ngành gồm bao nhiêu bước", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT hỗ trợ check đủ điều kiện TN ko ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Đơn bảo lưu có thể rút lại sau khi đã nộp không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Alo", "labels": ["ChaoHoi"]}
+{"text": "VP trường xác nhận công việc cho cựu SV ko?", "labels": ["VanPhongTruong"]}
+{"text": "Chuyển ngành xong em đk HP mới ở portal cũ ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Xác nhận đăng ký HP thành công bằng cách nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Rút môn sau tuần thứ mấy thì bị tính W?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Học lại có phải đóng thêm HP riêng ko?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "tim VP truong o dau", "labels": ["VanPhongTruong"]}
+{"text": "CTSV có form mẫu online ko hay phải lên phòng lấy?", "labels": ["PhongCTSV"]}
+{"text": "Kết quả không đạt chuẩn, em phải hoàn thành bù lại", "labels": ["QuyTrinh_HocLai"]}
+{"text": "TN trước hạn có cần giấy đề nghị đặc biệt ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Phòng công tác SV ở tòa nào?", "labels": ["PhongCTSV"]}
+{"text": "Đk học cải thiện phải qua phòng đào tạo phải ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Em rớt hết các môn chuyên ngành kỳ vừa rồi", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Cho hỏi ATM gần trường ở đâu?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn nâng kết quả học tập ở một số môn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Chào, em muốn hỏi VP trường về giấy giới thiệu", "labels": ["ChaoHoi", "VanPhongTruong"]}
+{"text": "Ai đi xe Grab từ trường về KTX share với", "labels": ["NgoaiLe"]}
+{"text": "Mẫu đơn xin rút môn lấy ở đâu?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cho hỏi cách ĐKHP trên cổng thông tin sinh viên", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "em muon dang ky hoc phan ma ko biet cach", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Có được chuyển ngành giữa kỳ hay phải chờ đầu kỳ mới?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Chuyển ngành rồi em cần đk lại các HP theo ngành mới?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn sắp xếp các môn mình cần hoàn thành", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Cơ chế cho phép hoàn thành bù những tín chỉ thiếu", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Bảo lưu kết quả có ảnh hưởng đến việc xét học bổng sau này?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng ban nào xác nhận việc đóng tiền cho trường?", "labels": ["PhongKHTC"]}
+{"text": "Em không đăng ký được môn học trên hệ thống", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Có chương trình hỗ trợ nào giảm gánh nặng tài chính cho SV?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Sinh viên bị cảnh báo mà đk học lại nhiều môn có được ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em muốn gap year nhưng vẫn là sinh viên của trường", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em đang trong diện cảnh báo học vụ, vẫn xin bảo lưu được?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn nghỉ tất cả các môn trong kỳ này", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Văn phòng trường hỗ trợ gì?", "labels": ["VanPhongTruong"]}
+{"text": "Có được chia HP thành 2 đợt nộp ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "ĐT cấp giấy xác nhận số tín chỉ tích lũy ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Học lại có phải học đầy đủ giữa kỳ cuối kỳ ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em muốn rút 3 môn, có phải nộp 3 đơn riêng ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn gửi đơn khiếu nại lên ban giám hiệu", "labels": ["VanPhongTruong"]}
+{"text": "Em đăng ký thiếu môn, có thể bổ sung sau không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Nếu học lại vẫn rớt, có phải đổi giảng viên ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em cần lấy transcript tiếng Anh để nộp du học", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Nộp học phí trễ có bị phạt không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Cơ chế giữ chỗ cho sinh viên muốn quay lại sau có không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Hệ thống cho rút và đk cùng lúc ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Cách nấu mì Hàn Quốc ngon?", "labels": ["NgoaiLe"]}
+{"text": "Phòng công tác sinh viên xét duyệt học bổng đúng không?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Phòng CTSV chịu trách nhiệm gì?", "labels": ["PhongCTSV"]}
+{"text": "sdt van phong truong la gi", "labels": ["VanPhongTruong"]}
+{"text": "đk để xin hoc bong la gi", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Thi rớt thì đăng ký học lại ở đâu?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Văn phòng trường ở tòa nào?", "labels": ["VanPhongTruong"]}
+{"text": "Em rớt môn năm 1 mà giờ năm 3, vẫn đk học lại?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em muốn pause 1 năm, có giữ lại tất cả điểm cũ không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Sắp đến lễ trao bằng mà em không biết mình có được không", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "VP trường có bộ phận tiếp công dân ko?", "labels": ["VanPhongTruong"]}
+{"text": "Thành tích học tập có được trường ghi nhận bằng tài chính ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "hoc lai mon nao cung dc ko", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Rút HP rồi đk HP mới, phí chênh lệch xử lý sao?", "labels": ["PhongKHTC", "QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "xet hoc bong khi nao v", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em muốn kiểm tra xem mình còn nợ HP ko", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Nơi nào trong trường giải quyết thủ tục giấy tờ cho SV?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn chuyển vào ngành có chỉ tiêu tuyển cao", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Cải thiện có được tính vào tín chỉ tích lũy ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em cần hỏi về chương trình đào tạo, liên hệ đâu?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Bảng điểm cuối cùng khi xét TN lấy từ đâu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Bằng TN bị mất có cấp lại ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV cấp giấy giới thiệu thực tập ko?", "labels": ["PhongCTSV"]}
+{"text": "Xin chào, cho em hỏi phòng đào tạo ở đâu", "labels": ["ChaoHoi", "PhongDaoTaoDaiHoc"]}
+{"text": "HB cho SV nghiên cứu khoa học tiêu chí sao?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Rút môn có bị mất điểm quá trình đã tích ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Rút môn mà đã dự thi giữa kỳ rồi có được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Hi, mình cần giúp đỡ", "labels": ["ChaoHoi"]}
+{"text": "Email phòng kế hoạch tài chính là gì?", "labels": ["PhongKHTC"]}
+{"text": "SV quá hạn đào tạo có được xét TN đợt bổ sung ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Tot nghiep co can thuc tap xong ko", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Có vấn đề nghiêm trọng em cần phản ánh lên cấp trên", "labels": ["VanPhongTruong"]}
+{"text": "Kết quả học tập không như kỳ vọng, em muốn sửa lại", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em mang thai và cần nghỉ sinh, điểm có được giữ không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em cần GPA cao hơn để nộp du học, muốn nâng điểm", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn chuyển từ ngành kinh tế sang CNTT, có được ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Có giới hạn bao nhiêu kỳ được bảo lưu liên tiếp không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng ctsv mấy giờ mở cửa buổi chiều", "labels": ["PhongCTSV"]}
+{"text": "Phòng KHTC cho biết mức HP kỳ tới khi nào?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "Mình cần thuê phòng trọ gần trường", "labels": ["NgoaiLe"]}
+{"text": "Phòng kế hoạch tài chính ở đâu?", "labels": ["PhongKHTC"]}
+{"text": "CTSV xử lý phản ánh về an toàn thực phẩm canteen?", "labels": ["PhongCTSV"]}
+{"text": "Em vừa được giải nhất Olympic quốc gia, trường có ưu đãi?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Hướng dẫn đk HP cho SV chuyển ngành", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn tạm hoãn việc học, quy trình ra sao?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "phong dt dai hoc lam viec gio nao", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "phong dao tao nam o tang may", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Cho hỏi lịch nghỉ lễ năm nay", "labels": ["NgoaiLe"]}
+{"text": "Em muốn gặp phòng KHTC để hỏi về HP", "labels": ["PhongKHTC"]}
+{"text": "Muốn chuyển ngành em liên hệ phòng đào tạo à?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Em sắp kết thúc năm thứ 4, cần chuẩn bị gì?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Bảo lưu trong thời chiến hoặc thiên tai có chính sách riêng ko?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn biết danh sách SV nhận HB kỳ trước", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Bán cho mình con iPhone 15 đi", "labels": ["NgoaiLe"]}
+{"text": "Chuyển ngành trong cùng khoa dễ hơn khác khoa ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Chuyển ngành có mất các tín chỉ đã tích lũy không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "TN sớm hơn kế hoạch có được ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "HB có xét cho SV đang bị cảnh báo ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng CTSV hỗ trợ SV gặp thiên tai bão lũ ko?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn CTSV tư vấn hồ sơ xin HB", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "Tín chỉ chưa hoàn thành do trượt, bước tiếp theo là gì?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Chào, tui cần hỗ trợ gấp", "labels": ["ChaoHoi"]}
+{"text": "Làm sao nâng GPA khi đã hoàn thành môn rồi?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "KHTC mở cửa mấy giờ?", "labels": ["PhongKHTC"]}
+{"text": "chào, em mới vào trường", "labels": ["ChaoHoi"]}
+{"text": "Phòng ĐT tiếp SV mấy giờ chiều?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em đã cải thiện mà hệ thống chưa ghi nhận điểm mới", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn thử học HP ngành CNTT trước khi chuyển chính thức", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Bảo lưu khác thôi học chỗ nào?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "KHTC phát hành chứng từ thu chi ko?", "labels": ["PhongKHTC"]}
+{"text": "Đơn vị nào trong trường quản lý lịch học và lịch thi?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Nếu điểm cải thiện thấp hơn, trường lấy điểm nào?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "VP trường giải quyết tranh chấp pháp lý cho SV ko?", "labels": ["VanPhongTruong"]}
+{"text": "Dạ em chào, em muốn hỏi xét TN ở phòng đào tạo", "labels": ["ChaoHoi", "PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Xin chào, em là SV khoa CNTT", "labels": ["ChaoHoi"]}
+{"text": "Có scholarship program nào cho SV nghiên cứu ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em khó khăn, CTSV giới thiệu nguồn hỗ trợ đóng HP ko?", "labels": ["PhongCTSV", "QuyTrinh_NopHocPhi"]}
+{"text": "Tiền đóng cho cải thiện điểm bao nhiêu?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Nợ môn năm 3, học lại vào kỳ nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em đi du học trao đổi 1 kỳ, cần bảo lưu ko?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn ĐT xác nhận mình đủ ĐK xét TN", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Có chế độ nào cho sinh viên muốn nghỉ tạm không ạ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Trường có ký túc xá không?", "labels": ["NgoaiLe"]}
+{"text": "Chào, mình có chuyện muốn hỏi", "labels": ["ChaoHoi"]}
+{"text": "CTSV quản lý việc phân bổ chỗ ở KTX ko?", "labels": ["PhongCTSV"]}
+{"text": "Đk HP qua SV app hay chỉ qua website?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường hỗ trợ cung cấp thông tin cho báo chí ko?", "labels": ["VanPhongTruong"]}
+{"text": "Cải thiện môn tiên quyết có unlock các môn sau ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cho hỏi bên nhà sách bán vở ở đâu", "labels": ["NgoaiLe"]}
+{"text": "Em thấy mình phù hợp với lĩnh vực công nghệ hơn", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Muốn xin giấy phép dùng tên trường cho sự kiện, VP?", "labels": ["VanPhongTruong"]}
+{"text": "Hi", "labels": ["ChaoHoi"]}
+{"text": "Bao giờ mở lớp học lại kỳ tới?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em rút bớt tín chỉ, HP giảm, KHTC hoàn ko?", "labels": ["PhongKHTC", "QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Học cải thiện có mất thêm tiền không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Quy trình xét tốt nghiệp gồm những bước nào?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn đk học lại trên portal đăng ký HP", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Môn điểm D em đk học lại hay cải thiện?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Cho hỏi phòng khám mắt uy tín ở Nha Trang", "labels": ["NgoaiLe"]}
+{"text": "Em muốn chuyển sang ngành CNTT thì phải làm sao?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Bạn có biết chỗ sửa điện thoại gần trường ko?", "labels": ["NgoaiLe"]}
+{"text": "Dạ chào ạ", "labels": ["ChaoHoi"]}
+{"text": "Công việc part-time khiến em không kham nổi nhiều môn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cần lý do cụ thể khi nộp đơn rút môn ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em đăng ký nhầm nhóm, muốn chuyển sang nhóm khác", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng đào tạo duyệt hồ sơ TN mất bao lâu?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "phong khtc o dau v", "labels": ["PhongKHTC"]}
+{"text": "ĐT có chi nhánh tại cơ sở phụ ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "mấy b ơi cho hỏi xét TN ntn v", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "H. bổng tài năng dành cho SV năm nhất có ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Chuyển ngành từ kinh tế sang du lịch có dễ ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "ĐT cấp giấy xác nhận đang học cho mục đích gì được?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Cách thanh toán học phí qua ngân hàng", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em đk lại môn tiên quyết để đk được môn tiếp theo cùng kỳ", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Phòng CTSV có bộ phận tâm lý tư vấn ko?", "labels": ["PhongCTSV"]}
+{"text": "Em bị trầm cảm, bác sĩ khuyên nghỉ ngơi dài hạn", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Chào, mình muốn hỏi thủ tục", "labels": ["ChaoHoi"]}
+{"text": "Xin transcript gốc ở phòng ĐT đúng ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Chuyển ngành có ảnh hưởng đến thời gian tốt nghiệp không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em không còn đam mê với ngành đang học nữa", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Rút môn trước tuần 4 được hoàn HP ko?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Phòng CTSV hỗ trợ những gì?", "labels": ["PhongCTSV"]}
+{"text": "Dạ chào anh chị nhé", "labels": ["ChaoHoi"]}
+{"text": "Lịch đăng ký học phần kỳ tới khi nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em cần giấy có con dấu đỏ của trường, gặp phòng nào?", "labels": ["VanPhongTruong"]}
+{"text": "Phòng KHTC xác nhận tiền đặt cọc KTX ko?", "labels": ["PhongKHTC"]}
+{"text": "Trường có CLB nhiếp ảnh ko?", "labels": ["NgoaiLe"]}
+{"text": "Trường có câu lạc bộ bóng rổ ko?", "labels": ["NgoaiLe"]}
+{"text": "Đơn vị nào cấp hóa đơn và biên lai cho SV?", "labels": ["PhongKHTC"]}
+{"text": "Dạ chào ạ, em muốn hỏi thủ tục chuyển ngành", "labels": ["ChaoHoi", "QuyTrinh_ChuyenNganh"]}
+{"text": "Cải thiện mà trùng lịch HP khác thì xử lý sao?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Trường có HB giao lưu quốc tế ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cho hỏi nhà trọ gần trường giá rẻ", "labels": ["NgoaiLe"]}
+{"text": "Cho mình địa chỉ nhà hàng ngon ở Nha Trang", "labels": ["NgoaiLe"]}
+{"text": "Nộp HP học lại deadline khi nào?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Nhà hàng nào ở Nha Trang phục vụ buffet ngon?", "labels": ["NgoaiLe"]}
+{"text": "Dự báo thời tiết ngày mai?", "labels": ["NgoaiLe"]}
+{"text": "Em nhận HB mà KHTC chưa giảm HP, em liên hệ ai?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "phong tai chinh nam o tang may", "labels": ["PhongKHTC"]}
+{"text": "Chuyển ngành xong em đk HP ngay kỳ đó ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Danh sách các loại HB của trường", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Có grant nào cho SV giỏi nhưng hoàn cảnh khó khăn?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Mỗi kỳ em phải đóng khoản gì cho trường?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "KHTC hoàn phí khi em bảo lưu giữa kỳ ntn?", "labels": ["PhongKHTC", "QuyTrinh_BaoLuu"]}
+{"text": "Phí học cải thiện bao nhiêu 1 tín chỉ?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "HB cho SV có hoàn cảnh đặc biệt (mồ côi, con thương binh)?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Rút môn trước midterm và sau midterm khác nhau ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn đk cải thiện trên hệ thống đăng ký HP", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Chuyển ngành có phải học lại từ đầu không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Chuyển ngành xong mà hối hận, chuyển lại được ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Trường có sân tennis ko?", "labels": ["NgoaiLe"]}
+{"text": "Muốn nâng điểm nhưng em đang bị nợ môn vì không đạt", "labels": ["QuyTrinh_HocLai"]}
+{"text": "abc def ghi", "labels": ["NgoaiLe"]}
+{"text": "Kỳ cuối cùng trước khi ra trường vẫn xét HB chứ?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "asdfghjkl", "labels": ["NgoaiLe"]}
+{"text": "Rút môn xong em cần liên hệ phòng KHTC để hoàn HP?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Mẫu đơn xin chuyển ngành lấy ở đâu?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "HP cải thiện và HP học lại mức phí giống nhau ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Hi, em muốn đk học phần nhưng nợ HP, phải đóng trước hả?", "labels": ["ChaoHoi", "QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Em cần bảng điểm có dấu đỏ để nộp hồ sơ xin việc", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Kỳ cuối cải thiện xong, xét TN có tính điểm mới ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetTotNghiep"]}
+{"text": "Có cần phải hoàn tất kỳ học hiện tại trước khi xin bảo lưu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Xin giấy xác nhận hoạt động ngoại khóa ở CTSV?", "labels": ["PhongCTSV"]}
+{"text": "Học lại có được nhóm bạn học cùng ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em cần VP trường cấp giấy để đối chứng pháp lý", "labels": ["VanPhongTruong"]}
+{"text": "KHTC xác nhận tình trạng HP sau khi nhận HB ko?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Nếu rút môn trước hạn thì trường hoàn bao nhiêu phần trăm HP?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Xin chào, em gửi email nhưng chưa được phản hồi", "labels": ["ChaoHoi"]}
+{"text": "Phòng ĐT hỗ trợ bảo lưu cho em được không ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Mẫu đơn xin bảo lưu lấy ở đâu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng ĐT kiểm soát số lần học lại của SV ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Thủ tục rút môn rồi đăng ký lại môn khác ntn?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Rút môn khi đang chờ điểm phúc khảo có được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cha mẹ em bệnh nặng, em cần về quê chăm sóc", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "CTSV có giải quyết đơn phúc khảo điểm rèn luyện ko?", "labels": ["PhongCTSV"]}
+{"text": "Muốn bỏ môn nhưng lo mất tiền HP đã đóng", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Xin chào, em muốn hỏi về bảo lưu kết quả học tập", "labels": ["ChaoHoi", "QuyTrinh_BaoLuu"]}
+{"text": "Đợt xét TN tháng mấy ạ", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Quy trình để có tên trong danh sách lớp học", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng ĐT mở lớp cải thiện vào thời gian nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Không phải trượt nhưng em muốn đăng ký lại môn này cho đẹp bảng điểm", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Học lại mà trùng lịch với môn mới thì ưu tiên cái nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Lịch thi đấu World Cup khi nào?", "labels": ["NgoaiLe"]}
+{"text": "Bảo lưu rồi quay lại, HB có được xét lại ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Phòng đào tạo hỗ trợ đk cải thiện ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "VP trường có lưu giữ quy chế đào tạo ko?", "labels": ["VanPhongTruong"]}
+{"text": "Muốn xin giấy giới thiệu chính thức từ nhà trường", "labels": ["VanPhongTruong"]}
+{"text": "Được phép rút tối đa mấy môn 1 kỳ?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phải đóng HP trước rồi mới đăng ký học phần phải không?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Bộ phận chuyên quản lý hoạt động sinh viên ở đâu?", "labels": ["PhongCTSV"]}
+{"text": "Rút môn rồi có ảnh hưởng đến tiến độ không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em muốn cải thiện để đủ xét TN loại xuất sắc", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetTotNghiep"]}
+{"text": "Cải thiện có thể đăng ký trong kỳ phụ không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em rớt môn tiên quyết, các môn sau bị delay hết", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Hihi chào nè", "labels": ["ChaoHoi"]}
+{"text": "abc xyz 123", "labels": ["NgoaiLe"]}
+{"text": "Ai quản lý về bảng điểm và xác nhận kết quả học tập?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Ai cấp giấy giới thiệu cho SV đi thực tập?", "labels": ["PhongCTSV"]}
+{"text": "VP trường có nhận đơn qua email ko?", "labels": ["VanPhongTruong"]}
+{"text": "Học cải thiện tính điểm thế nào?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Em muốn freeze lại tiến độ học tập trong 1 năm", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn hỏi về chương trình môn học kỳ tới", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "ctsv giup do sv viec gi", "labels": ["PhongCTSV"]}
+{"text": "Em cần tạm ngưng để đi chữa bệnh dài hạn ở nước ngoài", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Cải thiện có áp dụng cho tất cả các loại môn ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Dạ cho em xin SĐT phòng đào tạo", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Gặp phòng KHTC vào lúc nào?", "labels": ["PhongKHTC"]}
+{"text": "em cần liên hệ phòng KHTC gấp", "labels": ["PhongKHTC"]}
+{"text": "Em cần upgrade transcript trước khi apply du học", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Gia đình khó khăn, có cách nào giảm gánh nặng HP?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Thủ tục loại bỏ một lớp học khỏi thời khóa biểu", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Cách nào để plan các môn cần học trong kỳ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "ĐT cấp giấy chứng nhận GPA tiếng Anh ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Dạ chào, em có thắc mắc về nộp HP", "labels": ["ChaoHoi", "QuyTrinh_NopHocPhi"]}
+{"text": "Em cần tờ giấy so sánh chương trình cũ và mới khi chuyển", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "CTSV quản lý câu lạc bộ SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn chuyển sang ngành có cơ hội việc làm tốt hơn", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "xin chào ạ, em muốn biết thông tin", "labels": ["ChaoHoi"]}
+{"text": "Xét TN tự động hay phải nộp đơn?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Miễn HP cho SV có công ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng ĐT mở bao nhiêu lớp học lại mỗi kỳ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Phòng KHTC quản lý quỹ học bổng ko?", "labels": ["PhongKHTC"]}
+{"text": "Các hình thức nộp HP hiện có", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Lịch học bị overload, em cần giảm tải 1-2 lớp", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Tui bị F mấy môn, hoc lại hết à", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Bộ phận nào quản lý các khoản thu chi trong trường?", "labels": ["PhongKHTC"]}
+{"text": "Nộp HP mà ghi sai nội dung chuyển khoản thì sao?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng ĐT có cập nhật điểm học lại tự động ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Em cần verify đã đáp ứng đủ tiêu chí để được cấp bằng", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Có công cụ nào gợi ý HP phù hợp cho em ko?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Nộp hồ sơ xét học bổng ở đâu?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "giay to xet TN gom nhung gi", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hi, em cần liên hệ phòng KHTC", "labels": ["ChaoHoi", "PhongKHTC"]}
+{"text": "Được miễn học lại nếu điểm sát đạt không ạ?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Khi nào là hạn chót nộp đơn xin bảo lưu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "fee 1 tin chi bao nhieu a", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng KHTC xử lý vấn đề gì?", "labels": ["PhongKHTC"]}
+{"text": "Thời tiết Nha Trang tuần này ra sao?", "labels": ["NgoaiLe"]}
+{"text": "Quy trình phỏng vấn chuyển ngành (nếu có) diễn ra khi nào?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn đk HP nhưng chưa nộp học phí, có bị khóa ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "hoc bong nhung ai duoc nhan", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em chỉ muốn rút 1 buổi lab ko phải toàn bộ môn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em cần KHTC xác nhận không nợ trường", "labels": ["PhongKHTC"]}
+{"text": "Em muốn cải thiện điểm, lên phòng ĐT đk à?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocCaiThien"]}
+{"text": "Gia đình em muốn biết tổng chi phí cần trả cho trường", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "link đăng ký học phần ở đâu ạ", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em bị mất thẻ SV, đến CTSV làm lại?", "labels": ["PhongCTSV"]}
+{"text": "KHTC quản lý phí dịch vụ KTX ko?", "labels": ["PhongKHTC"]}
+{"text": "Chuyển ngành có ảnh hưởng đến visa du học trao đổi ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "tui cần switch ngành gấp, cần làm gì", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "ĐT hỗ trợ SV đk HP bổ sung ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "chuyen khoan hp sai so, xu ly sao", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Chào, mình mới vào trường", "labels": ["ChaoHoi"]}
+{"text": "Em muốn VP trường cung cấp profile trường bằng tiếng Anh", "labels": ["VanPhongTruong"]}
+{"text": "Xin chào bot", "labels": ["ChaoHoi"]}
+{"text": "Em sắp TN, muốn biết HB có trao tại lễ TN ko?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "CTSV quản lý BH y tế cho SV bảo lưu ko?", "labels": ["PhongCTSV", "QuyTrinh_BaoLuu"]}
+{"text": "Chỉ mình chỗ mua vé xe bus", "labels": ["NgoaiLe"]}
+{"text": "CTSV xác nhận tình trạng SV cho em rút môn?", "labels": ["PhongCTSV", "QuyTrinh_RutMonHoc"]}
+{"text": "Phòng KHTC có tiếp nhận qua email ko?", "labels": ["PhongKHTC"]}
+{"text": "Lịch đk HP bổ sung có phí thêm không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường tầng mấy?", "labels": ["VanPhongTruong"]}
+{"text": "Lịch mở đăng ký cải thiện khi nào ạ?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "thủ tục cancel môn ntn v", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Bao giờ em được tự do khỏi trường?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn xem danh sách HP sẽ mở trong kỳ tới", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "HP cải thiện có giảm cho SV khó khăn ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "Định hướng nghề nghiệp em thay đổi, muốn đổi ngành", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng đào tạo có sẵn mẫu đơn bảo lưu online ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Em không rớt nhưng điểm quá thấp, muốn học lại cho tốt hơn", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Chao a", "labels": ["ChaoHoi"]}
+{"text": "Rút môn trong tuần đầu tiên có phí ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em có IELTS 7.5, có HB ngoại ngữ ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Ai bán sách cũ ngành kinh tế ko?", "labels": ["NgoaiLe"]}
+{"text": "Em nợ HP thì portal ĐKHP bị khóa, mở lại sao?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "VP trường chịu trách nhiệm gì?", "labels": ["VanPhongTruong"]}
+{"text": "Chào buổi chiều", "labels": ["ChaoHoi"]}
+{"text": "Cho em hỏi muốn bảo lưu kết quả học tập thì làm sao ạ?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em rớt 7 tín chỉ, có bị đuổi ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Bảo lưu 1 kỳ có ảnh hưởng đến xét HB kỳ sau ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Chào bạn", "labels": ["ChaoHoi"]}
+{"text": "Rút môn thực hành/thí nghiệm quy trình có khác ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng CTSV có quản lý BH y tế SV ko?", "labels": ["PhongCTSV"]}
+{"text": "Khi nào xét học bổng kỳ này?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Phòng KHTC tính phí bổ sung cho SV quá hạn đào tạo?", "labels": ["PhongKHTC"]}
+{"text": "Hello, cho em hỏi cách đóng học phí ạ", "labels": ["ChaoHoi", "QuyTrinh_NopHocPhi"]}
+{"text": "Em nghỉ 1 năm, quay lại học ngành khác được ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_ChuyenNganh"]}
+{"text": "Có được đóng học phí trả góp không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "CTSV hỗ trợ SV tham gia cuộc thi học thuật ko?", "labels": ["PhongCTSV"]}
+{"text": "vp truong lam viec gio nao", "labels": ["VanPhongTruong"]}
+{"text": "Xin chào, em muốn biết cách cải thiện điểm và đk HP", "labels": ["ChaoHoi", "QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Kết quả bóng đá tối qua thế nào?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn đk học lại, lên phòng đào tạo nộp đơn à?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "chào mọi người", "labels": ["ChaoHoi"]}
+{"text": "Đăng ký HP có chia theo khóa/năm nhập học không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Hello!", "labels": ["ChaoHoi"]}
+{"text": "Rút môn tiên quyết ảnh hưởng chain các môn sau ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng ĐT mở portal ĐKHP vào ngày nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường giải quyết vấn đề bảo vệ an ninh trường?", "labels": ["VanPhongTruong"]}
+{"text": "CTSV cấp giấy giới thiệu cho SV đi thi chứng chỉ ko?", "labels": ["PhongCTSV"]}
+{"text": "Muốn cải thiện xếp loại TN, em cần làm gì?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "VP trường có chức năng đối ngoại ko?", "labels": ["VanPhongTruong"]}
+{"text": "Em cần tư vấn nên chọn những môn nào cho kỳ tới", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn biết mức HP khi đk học lại các môn rớt", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Phòng CTSV quản lý việc cấp HB cho SV phải ko ạ?", "labels": ["PhongCTSV", "QuyTrinh_XetHocBong"]}
+{"text": "tui muon xin hb, chi tui di", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Học lại có lịch thi riêng ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em đạt điểm A rồi có đk cải thiện lên A+ được ko?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Quy trình xin bảo lưu gồm những bước nào?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em cần VP trường xác nhận để xin việc làm", "labels": ["VanPhongTruong"]}
+{"text": "CTSV hỗ trợ SV nộp HP khi gặp khó khăn tài chính ko?", "labels": ["PhongCTSV", "QuyTrinh_NopHocPhi"]}
+{"text": "Hóa đơn thanh toán tiền học lấy ở đâu?", "labels": ["PhongKHTC"]}
+{"text": "Phòng ĐT giải quyết phúc khảo bài thi ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "CTSV có giải quyết yêu cầu miễn hoạt động ngoại khóa?", "labels": ["PhongCTSV"]}
+{"text": "ĐT in giấy chứng nhận điểm cho SV trao đổi quốc tế", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Chào, em là tân SV", "labels": ["ChaoHoi"]}
+{"text": "Tiêu chí sắp xếp ưu tiên đk HP dựa vào điều gì?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Tại sao em đủ ĐK mà không thấy tên trong danh sách xét TN?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Chào ạ, em muốn chuyển ngành, gặp phòng ĐT đúng ko?", "labels": ["ChaoHoi", "PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT xử lý thủ tục rút môn nhanh ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Tạm biệt", "labels": ["NgoaiLe"]}
+{"text": "Em muốn cải thiện nhưng lo tốn HP thêm", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_NopHocPhi"]}
+{"text": "ĐT công bố danh sách SV bị cảnh báo học vụ ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Điểm tối thiểu để ko phải học lại là bao nhiêu?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Có cách nào chuyển đổi chương trình học hay không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Nếu rút hết các môn, HP được hoàn toàn bộ ko?", "labels": ["QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "Có HB cho SV tình nguyện viên xuất sắc ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em cần xét TN đợt bổ sung vì thiếu 1 chứng chỉ", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "ĐKHP cho SV chuyển ngành có ưu tiên ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Phân biệt retake và improvement trên bảng điểm ntn?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_HocLai"]}
+{"text": "Thủ tục xin chuyển ngành gồm những gì?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Sao hôm nay buồn quá", "labels": ["NgoaiLe"]}
+{"text": "Em vừa muốn bảo lưu vừa muốn chuyển ngành, thứ tự sao?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_ChuyenNganh"]}
+{"text": "Alo alo, có ai không?", "labels": ["ChaoHoi"]}
+{"text": "Chuyển ngành xong em đk HP theo chương trình mới đúng ko?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Vi phạm thi cử ảnh hưởng đến xét TN và cải thiện ko?", "labels": ["QuyTrinh_HocCaiThien", "QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC có làm việc trực tuyến ko?", "labels": ["PhongKHTC"]}
+{"text": "Em đang ở phòng đào tạo, muốn hỏi thủ tục bảo lưu", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Phòng đào tạo mấy giờ nghỉ trưa?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Đóng HP bằng Apple Pay được ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng KHTC confirm tài chính cho SV xét TN khi nào?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "Cho hỏi đường đi ra biển Nha Trang", "labels": ["NgoaiLe"]}
+{"text": "Lịch đk học lại có trùng với đợt đk HP chính ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "hoc bong truong nhieu ko", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Trường có nhóm chạy bộ buổi sáng ko?", "labels": ["NgoaiLe"]}
+{"text": "e muon bao luu ket qua hoc, phai lam gi a?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Giờ làm việc của phòng CTSV?", "labels": ["PhongCTSV"]}
+{"text": "Học lại nhiều môn, có ảnh hưởng đến xét HB ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Xin chào, em muốn được hỗ trợ", "labels": ["ChaoHoi"]}
+{"text": "Phòng đào tạo có nhận đơn xin bảo lưu không?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Em muốn apply cho merit-based award của trường", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Hạn nộp hồ sơ xét TN khi nào?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Phòng CTSV liên hệ số điện thoại nào?", "labels": ["PhongCTSV"]}
+{"text": "Em muốn drop toàn bộ kỳ học này", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn theo đuổi lĩnh vực khác so với hiện tại", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Em muốn swap giữa 2 môn đã đk, phải rút rồi đk lại đúng ko?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_RutMonHoc"]}
+{"text": "Học lại và thi lại khác nhau chỗ nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "CTSV quản lý chương trình mentorship ko?", "labels": ["PhongCTSV"]}
+{"text": "Rút môn quân sự/giáo dục thể chất được ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Phòng KHTC chức năng gì v", "labels": ["PhongKHTC"]}
+{"text": "Em chuyển ngành giữa chừng, bảng điểm ghi sao?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT duyệt đơn rút môn ko ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Ai rảnh đi chơi không?", "labels": ["NgoaiLe"]}
+{"text": "Kết quả xét HB công bố khi nào?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "mn ơi ai biết cách xin bảo lưu ko chỉ mình với", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Phòng đào tạo hỗ trợ thủ tục rút môn học?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_RutMonHoc"]}
+{"text": "Điểm rèn luyện ảnh hưởng đến học bổng không?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cách thức để ngừng theo dõi một môn đã đăng ký", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em bảo lưu, cần CTSV cấp giấy xác nhận vẫn là SV trường", "labels": ["PhongCTSV", "QuyTrinh_BaoLuu"]}
+{"text": "Sau khi rút môn có được hoàn học phí không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "CTSV hỗ trợ SV bị tai nạn trong khuôn viên trường?", "labels": ["PhongCTSV"]}
+{"text": "Bảo lưu vì lý do sức khỏe, CTSV hỗ trợ giấy tờ ko?", "labels": ["PhongCTSV", "QuyTrinh_BaoLuu"]}
+{"text": "Thông báo mức HP kỳ tới ra khi nào?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Phòng đào tạo có tư vấn chuyển ngành không ạ?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Đăng ký học lại tối đa được mấy môn?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Muốn liên hệ phòng truyền thông qua VP trường ko?", "labels": ["VanPhongTruong"]}
+{"text": "KHTC cấp giấy xác nhận không nợ tiền để xét TN?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "HP tính theo tín chỉ hay theo kỳ?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Thủ tục để nhận chứng nhận hoàn thành chương trình đào tạo", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Nộp học phí trực tiếp tại phòng kế hoạch tài chính được ko?", "labels": ["PhongKHTC", "QuyTrinh_NopHocPhi"]}
+{"text": "VP trường cho mượn bằng gốc để công chứng ko?", "labels": ["QuyTrinh_XetTotNghiep", "VanPhongTruong"]}
+{"text": "Học bổng có được trừ thẳng vào HP ko, em hỏi phòng KHTC?", "labels": ["PhongKHTC", "QuyTrinh_XetHocBong"]}
+{"text": "Chào nhé", "labels": ["ChaoHoi"]}
+{"text": "Em chọn nhầm ngành khi nộp hồ sơ tuyển sinh", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Mức học phí mỗi tín chỉ là bao nhiêu?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em đk học lại mà chưa đóng HP, có bị hủy đk ko?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "HP semester 2 bao nhieu tien a", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Đóng HP trước hạn có được giảm giá ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "HB bên ngoài (VALLET, Vingroup...) nộp qua trường ko?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Em thiếu 1 khoản HP nhỏ, bị khóa đk HP luôn à?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Có thể đổi sang chương trình đào tạo khác được không?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Nếu trượt lần 3 thì trường xử lý thế nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Hạn chót rút môn học là khi nào?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Ai muốn rủ đi CF không?", "labels": ["NgoaiLe"]}
+{"text": "Xét TN cần xác nhận đã thanh toán đủ HP từ KHTC?", "labels": ["PhongKHTC", "QuyTrinh_XetTotNghiep"]}
+{"text": "KHTC tiếp nhận thanh toán bằng crypto ko?", "labels": ["PhongKHTC"]}
+{"text": "Cải thiện đk cùng đợt ĐKHP chính hay đợt riêng?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocCaiThien"]}
+{"text": "Em nộp HP qua Internet Banking mà bị pending", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Chào nhé, cho hỏi quy trình bảo lưu nha", "labels": ["ChaoHoi", "QuyTrinh_BaoLuu"]}
+{"text": "Cho hỏi lịch bus tuyến 6", "labels": ["NgoaiLe"]}
+{"text": "Chậm đóng HP 1 tuần có bị phạt ko?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em đang phân vân giữa ngành hiện tại và ngành mới", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "KHTC có liên kết ví MoMo để nộp HP ko?", "labels": ["PhongKHTC"]}
+{"text": "Giờ làm việc phòng đào tạo?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Phòng KHTC quản lý ngân sách hoạt động SV ko?", "labels": ["PhongKHTC"]}
+{"text": "Quy trình đóng học phí đại học chính quy", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Bạn tên gì vậy?", "labels": ["NgoaiLe"]}
+{"text": "Xin bảo lưu có cần sự đồng ý của phụ huynh không?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn theo nghề lập trình nhưng đang học kế toán", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "phòng đào tạo tầng mấy ạ", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Dạ em chào, em rút môn rồi muốn hoàn HP", "labels": ["ChaoHoi", "QuyTrinh_NopHocPhi", "QuyTrinh_RutMonHoc"]}
+{"text": "KHTC hỗ trợ gì cho SV gặp khó khăn tài chính?", "labels": ["PhongKHTC"]}
+{"text": "Xét TN cho SV hệ vừa làm vừa học ntn?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Cách đăng ký học phần online như thế nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Chuyển ngành lần 2 có khó hơn lần 1 ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "ĐT mở lớp thêm cho SV cần học lại gấp ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_HocLai"]}
+{"text": "Em muốn đăng ký HP đợt hè, quy trình ra sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Phòng đào tạo hỗ trợ vấn đề gì?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em chuyển khoản HP nhưng sai mã SV, KHTC xử lý ko?", "labels": ["PhongKHTC"]}
+{"text": "Em chào, cho em hỏi thăm", "labels": ["ChaoHoi"]}
+{"text": "GPA bao nhiêu thì TN loại giỏi?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Hiệu trưởng trường là ai?", "labels": ["NgoaiLe"]}
+{"text": "Em muốn ĐT tư vấn chuyển ngành sang CNTT được ko?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_ChuyenNganh"]}
+{"text": "Cần đáp ứng những yêu cầu gì để hoàn tất bậc đại học?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em muốn xin TN sớm để kịp deadline du học", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Số điện thoại văn phòng trường là gì?", "labels": ["VanPhongTruong"]}
+{"text": "Đơn vị nào xử lý yêu cầu in bảng điểm gốc?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "PhongCTSV có bộ phận hỗ trợ SV năm nhất ko?", "labels": ["PhongCTSV"]}
+{"text": "Hội đồng xét chuyển ngành gồm những ai?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Lớp học lại có mở vào kỳ hè không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em sắp bị cảnh báo học vụ vì nợ quá nhiều tín chỉ", "labels": ["QuyTrinh_HocLai"]}
+{"text": "HB toàn phần bao gồm những khoản gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Làm sao để hoàn tất nghĩa vụ tài chính với nhà trường?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Lịch đăng ký học lại khi nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "VP trường có dịch vụ hợp pháp hóa lãnh sự ko?", "labels": ["VanPhongTruong"]}
+{"text": "Sdt VP trường cho mình xin", "labels": ["VanPhongTruong"]}
+{"text": "Ngân hàng nào liên kết với trường để nộp HP?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "VP trường có quản lý hệ thống camera an ninh ko?", "labels": ["VanPhongTruong"]}
+{"text": "Bảo lưu cần nộp đơn trước bao lâu?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "Em muốn chuyển sang ngành mới mở, có chấp nhận ko?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Phòng ĐT có nhận email tiếng Anh ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "CTSV hỗ trợ SV khuyết tật thế nào?", "labels": ["PhongCTSV"]}
+{"text": "Xin chào, em là sinh viên năm nhất", "labels": ["ChaoHoi"]}
+{"text": "Bạn biết nhạc J-pop gì hay ko?", "labels": ["NgoaiLe"]}
+{"text": "Điểm quá trình học lại có tính ko hay chỉ thi cuối kỳ?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "VP trường xử lý các vấn đề liên quan đến quyền sở hữu trí tuệ?", "labels": ["VanPhongTruong"]}
+{"text": "Thời gian xét TN đợt chính kéo dài bao lâu?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "VP trường mở cửa thứ 7 ko?", "labels": ["VanPhongTruong"]}
+{"text": "Nộp hồ sơ xét TN tại phòng đào tạo vào giờ nào?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_XetTotNghiep"]}
+{"text": "Muốn hỏi về tài chính thì gặp phòng nào?", "labels": ["PhongKHTC"]}
+{"text": "Bảo lưu xong quay lại, em có quyền xin HB ngay ko?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_XetHocBong"]}
+{"text": "Em muốn xin bảo lưu, phải lên phòng đào tạo nộp đơn đúng không?", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_BaoLuu"]}
+{"text": "Có được nộp học phí tại trường không?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Môn học lại đk cùng đợt HP chính hay sau?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_HocLai"]}
+{"text": "Đk HP theo tín chỉ tối thiểu là bao nhiêu mỗi kỳ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đã hoàn thành hết các môn, giờ phải chờ gì?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Học lại kỳ hè có được ko?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "khong đk đc môn hoc, bi loi gi ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em bị rớt môn, muốn đăng ký học lại", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Cổng thanh toán HP trường dùng platform gì?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em cần CTSV xác nhận để được gia hạn nợ tiền nhà trọ", "labels": ["PhongCTSV"]}
+{"text": "Em cần cancel enrollment cho 1 môn", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Nếu bảo lưu quá hạn thì sao?", "labels": ["QuyTrinh_BaoLuu"]}
+{"text": "ai biet cach dk mon hoc tren he thong ko", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em cần tư vấn đk HP sau khi chuyển ngành", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Có thể remove 1 class khỏi schedule của em ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Xin chào!", "labels": ["ChaoHoi"]}
+{"text": "Phòng ĐT có xác nhận tín chỉ đã tích lũy ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Mình muốn mua xe đạp secondhand", "labels": ["NgoaiLe"]}
+{"text": "Nộp học phí Momo được không ạ?", "labels": ["QuyTrinh_NopHocPhi"]}
+{"text": "Em chuyển ngành rồi mà vẫn thấy HP ngành cũ trên portal", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Phí học lại tính theo tín chỉ riêng à?", "labels": ["QuyTrinh_HocLai", "QuyTrinh_NopHocPhi"]}
+{"text": "Phong CTSV nghi trua ko a", "labels": ["PhongCTSV"]}
+{"text": "Wazzup", "labels": ["ChaoHoi"]}
+{"text": "ĐT tổ chức buổi orientation cho SV mới ko?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Em muốn đến VP trường để xin xác nhận cho việc bầu cử", "labels": ["VanPhongTruong"]}
+{"text": "Sinh viên quá hạn có được xét TN không?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Phòng đào tạo ở tầng mấy?", "labels": ["PhongDaoTaoDaiHoc"]}
+{"text": "Chào bạn, có ai giúp mình ko?", "labels": ["ChaoHoi"]}
+{"text": "Điểm cải thiện có ghi chú gì đặc biệt trên bảng điểm?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Có hủy được đơn rút môn sau khi đã nộp ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em bảo lưu 1 kỳ, quay lại đk HP kỳ nào?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_DangKyHocPhan"]}
+{"text": "VP trường quản lý con dấu chính thức?", "labels": ["VanPhongTruong"]}
+{"text": "Em muốn hỏi phòng ĐT về lịch đk HP kỳ tới", "labels": ["PhongDaoTaoDaiHoc", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Nếu cải thiện mà điểm thấp hơn thì tính sao?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Gặp CTSV để giải quyết tranh chấp giữa SV", "labels": ["PhongCTSV"]}
+{"text": "Liệu em có thể chuyển từ khối kinh tế sang kỹ thuật?", "labels": ["QuyTrinh_ChuyenNganh"]}
+{"text": "Nếu thiếu chứng chỉ ngoại ngữ có tạm cấp bằng ko?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "HB nghiên cứu khoa học tiêu chí là gì?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Liên hệ KHTC bằng cách nào?", "labels": ["PhongKHTC"]}
+{"text": "Hạn rút môn online khác hạn nộp đơn giấy ko?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "em thi truot mon ly, lam sao dk hoc lai", "labels": ["QuyTrinh_HocLai"]}
+{"text": "HB kỳ cuối trước khi TN có được xét ko?", "labels": ["QuyTrinh_XetHocBong", "QuyTrinh_XetTotNghiep"]}
+{"text": "Em bị kỷ luật, phải gặp ai để giải quyết?", "labels": ["PhongCTSV"]}
+{"text": "VP trường có dịch vụ dịch thuật công chứng ko?", "labels": ["VanPhongTruong"]}
+{"text": "Danh sách lớp mở kỳ này xem ở đâu?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Bằng TN ghi loại gì nếu em GPA 3.2?", "labels": ["QuyTrinh_XetTotNghiep"]}
+{"text": "Em cần biết mình phải hoàn thành những môn gì cho kỳ này", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Trường có chế độ ưu đãi nào cho SV khó khăn mà học giỏi?", "labels": ["QuyTrinh_XetHocBong"]}
+{"text": "Cách đăng ký học phần trên hệ thống như thế nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn thêm môn học vào danh sách đăng ký học kỳ này", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đăng ký tín chỉ online bị lỗi thì làm sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Hệ thống đăng ký học phần mở từ mấy giờ?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em chưa đăng ký được môn chuyên ngành, hệ thống báo hết chỗ", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đợt đăng ký HP bổ sung khi nào mở?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Sinh viên năm nhất có được tự chọn môn đăng ký không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Làm sao để ghi danh thêm môn tự chọn?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Lịch đăng ký học phần HK2 năm nay bắt đầu từ ngày nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Có thể đăng ký vượt số tín chỉ tối đa không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Điều kiện tiên quyết để đăng ký môn đồ án là gì?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn đăng ký lớp sáng thay vì lớp chiều được không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Mình đăng ký nhầm nhóm thực hành, sửa lại kiểu gì?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Tại sao em không thấy môn học trong danh sách ĐKHP?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đăng ký HP mà bị trùng lịch thi thì hệ thống cảnh báo không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Số tín chỉ tối thiểu phải đăng ký mỗi học kỳ là bao nhiêu?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Có cần CVHT duyệt đăng ký học phần không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đăng ký môn tiếng Anh ở đâu trên portal?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em quên đăng ký HP đúng hạn, còn cách nào bổ sung không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đợt ĐKHP bổ sung có giới hạn số lượng môn không?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Thời gian chốt đăng ký tín chỉ là khi nào?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn chuyển nhóm lớp học phần, thao tác ra sao?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Danh sách môn mở cho kỳ hè xem ở đâu để đăng ký?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Mật khẩu đăng nhập hệ thống ĐKHP bị quên, reset kiểu gì?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Em đăng ký 24 tín chỉ được không hay phải xin phép?", "labels": ["QuyTrinh_DangKyHocPhan"]}
+{"text": "Đăng ký HP xong thì đóng học phí ở đâu?", "labels": ["QuyTrinh_DangKyHocPhan", "QuyTrinh_NopHocPhi"]}
+{"text": "Em vừa đăng ký môn, muốn hỏi PDT về lịch học", "labels": ["QuyTrinh_DangKyHocPhan", "PhongDaoTaoDaiHoc"]}
+{"text": "Chào admin, em muốn hỏi cách đăng ký học phần online", "labels": ["ChaoHoi", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Sau khi chuyển ngành thì phải đăng ký lại HP chuyên ngành mới?", "labels": ["QuyTrinh_ChuyenNganh", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Sinh viên bảo lưu quay lại thì ĐKHP lại từ đầu à?", "labels": ["QuyTrinh_BaoLuu", "QuyTrinh_DangKyHocPhan"]}
+{"text": "Em muốn bỏ bớt một môn đã đăng ký", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Rút môn sau tuần thứ 4 có bị mất tiền không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Hủy đăng ký môn đã chọn có ảnh hưởng GPA không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Thời hạn rút HP không bị điểm F là đến khi nào?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Em lỡ đăng ký dư môn, muốn rút bớt 1 môn được không?", "labels": ["QuyTrinh_RutMonHoc"]}
+{"text": "Môn bị rớt phải học lại hay thi lại?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Em nợ 2 môn, đăng ký học lại kỳ nào?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Điểm F thì bắt buộc phải đăng ký học lại luôn không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Học lại có được chọn giảng viên khác không?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Số lần tối đa được phép học lại 1 môn là bao nhiêu?", "labels": ["QuyTrinh_HocLai"]}
+{"text": "Muốn nâng điểm môn cũ, đăng ký cải thiện ở đâu?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Cải thiện điểm C lên B có được không?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Học cải thiện mấy môn 1 kỳ cũng được hả?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Điểm cải thiện sẽ thay thế điểm cũ hay lấy cao hơn?", "labels": ["QuyTrinh_HocCaiThien"]}
+{"text": "Môn đã đạt C+ rồi mà muốn thi lại để lấy A thì sao?", "labels": ["QuyTrinh_HocCaiThien"]}
