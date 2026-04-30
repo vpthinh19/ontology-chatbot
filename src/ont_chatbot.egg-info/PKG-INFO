@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: ont-chatbot
+Version: 0.1.0
+Summary: Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval
+Requires-Python: >=3.13
+Description-Content-Type: text/markdown
+Requires-Dist: torch
+Requires-Dist: transformers
+Requires-Dist: datasets
+Requires-Dist: accelerate
+Requires-Dist: seqeval
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: seaborn
+Requires-Dist: underthesea
+Requires-Dist: owlready2
+Requires-Dist: rapidfuzz
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: pydantic
+
 # NTU Academic Procedure Chatbot
 
 Vietnamese chatbot grounded on an OWL ontology of academic procedures.

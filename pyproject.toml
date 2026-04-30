@@ -1,28 +1,31 @@
 [project]
 name = "ont-chatbot"
-version = "0.0.1"
-description = "Vietnamese multi-label academic procedure classification — PhoBERT fine-tuning"
+version = "0.1.0"
+description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "torch",
     "transformers",
-    "scikit-learn",
     "datasets",
+    "accelerate",
+    "seqeval",
+    "scikit-learn",
     "matplotlib",
-    "umap-learn",
     "seaborn",
     "underthesea",
-    "accelerate",
-    "onnx",
-    "onnxruntime",
-    "onnxscript"
+    "owlready2",
+    "rapidfuzz",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
 ]
 
 [project.scripts]
-train = "src.scripts.train:main"
-evaluate = "src.scripts.evaluate:main"
-export-onnx = "src.scripts.export_onnx:main"
+build-dataset = "src.data.build_dataset:main"
+train = "src.ner.train:main"
+evaluate = "src.ner.evaluate:main"
+serve = "src.api.server:main"
 
 [[tool.uv.index]]
 name = "pytorch-cu130"
@@ -33,21 +36,11 @@ explicit = true
 torch = { index = "pytorch-cu130" }
 
 [dependency-groups]
-dev = [
-    "pytest>=9.0.3",
-    "pytest-cov>=6.1.1",
-]
+dev = ["pytest>=9.0.3"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-filterwarnings = [
-    "error::UserWarning",
-    "ignore::DeprecationWarning:transformers.*",
-    "ignore::FutureWarning:transformers.*",
-    "ignore::FutureWarning:huggingface_hub.*",
-    "ignore:.*dynamic_axes.*:UserWarning",
-    "ignore:.*shares the same shape constraints.*:UserWarning",
-    "ignore:.*from_dynamic_axes_to_dynamic_shapes is deprecated.*:DeprecationWarning",
-    "ignore:.*isinstance.*treespec.*LeafSpec.*:FutureWarning",
-]
+
+[tool.uv]
+package = true
