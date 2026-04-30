@@ -1,15 +1,8 @@
-"""PhoBERT fine-tuning — multiclass classifier.
+"""PhoBERT fine-tuning for multi-label classification.
 
-Trains models on identical data. The project originally supported multi-label
-classification; after converting datasets to multiclass (single label per sample),
-we switch to:
-
-- problem_type="single_label_classification"
-- standard Trainer loss (CrossEntropyLoss via HF Trainer)
-- multiclass metrics (softmax + argmax)
-
-Usage:
-    python -m src.scripts.train
+The dataset contains noisy text and each sample can have multiple entities.
+This script trains a multi-label classifier using multi-hot labels derived from
+the ``entities`` field.
 """
 
 from __future__ import annotations
@@ -45,10 +38,10 @@ from ..core.config import (
     TRAIN_OUTPUT_DIR,
     VAL_SIZE,
 )
-from ..utils.labels import load_label_names
-from ..utils.preprocessing import preprocess_batch
 from ..utils.inference import extract_embeddings
+from ..utils.labels import build_mlb, encode_multi_labels, extract_sample_labels, load_label_names
 from ..utils.metrics import compute_metrics, make_compute_metrics_fn
+from ..utils.preprocessing import preprocess_batch
 from ..viz import (
     plot_label_distribution,
     plot_metrics_comparison,
@@ -90,17 +83,14 @@ def create_training_arguments(output_dir: str) -> TrainingArguments:
 
 
 def create_classification_model(num_labels: int) -> AutoModelForSequenceClassification:
-    """Instantiate a fresh PhoBERT model for sequence classification (multiclass)."""
+    """Instantiate a fresh PhoBERT model for multi-label sequence classification."""
     return AutoModelForSequenceClassification.from_pretrained(
         MODEL_NAME,
         num_labels=num_labels,
-        problem_type="single_label_classification",
+        problem_type="multi_label_classification",
     )
 
 
-# (name, model_dir, trainer_cls, trainer_kwargs)
-# For multiclass we currently use standard HF Trainer for all pipelines
-# (CE loss). Keep naming for continuity with existing directories/plots.
 _PIPELINES: list[tuple[str, str, type, dict]] = [
     ("BCE", MODEL_BCE_DIR, Trainer, {}),
     ("ASL", MODEL_ASL_DIR, Trainer, {}),
@@ -116,32 +106,27 @@ def main() -> None:
     print("Loading Data...")
 
     label_names = load_label_names(LABEL_MAP_PATH)
-    label_to_id = {name: i for i, name in enumerate(label_names)}
-    num_labels = len(label_names)
+    _ = build_mlb(label_names)
 
     raw_dataset = load_dataset("json", data_files={"train": TRAIN_DATASET_PATH})["train"]
     split_dataset = raw_dataset.train_test_split(test_size=VAL_SIZE, seed=RANDOM_SEED)
-
     train_dataset = split_dataset["train"]
     val_dataset = split_dataset["test"]
 
+    num_labels = len(label_names)
     print(f"  Train : {len(train_dataset)} samples")
     print(f"  Val   : {len(val_dataset)} samples")
     print(f"  Labels: {num_labels}")
 
-    # Dataset visualization
     print("Dataset Visualization...")
-    # plot_label_distribution expects List[List[str]]
-    train_labels_raw = train_dataset["label"]
-    val_labels_raw = val_dataset["label"]
-
+    train_label_lists = [extract_sample_labels(sample) for sample in train_dataset]
+    val_label_lists = [extract_sample_labels(sample) for sample in val_dataset]
     plot_label_distribution(
-        {"Train": [[l] for l in train_labels_raw], "Val": [[l] for l in val_labels_raw]},
+        {"Train": train_label_lists, "Val": val_label_lists},
         label_names,
         os.path.join(TRAIN_OUTPUT_DIR, "label_distribution.png"),
     )
 
-    # Preprocessing and Tokenization
     print("Preprocessing and Tokenization...")
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
@@ -153,8 +138,16 @@ def main() -> None:
             truncation=True,
             max_length=MAX_LENGTH,
         )
-        label_ids = [label_to_id[lbl] for lbl in examples["label"]]
-        tokenized["labels"] = label_ids
+        tokenized["labels"] = [
+            encode_multi_labels(label_names, sample)
+            for sample in (
+                {"entities": entities, "label": label}
+                for entities, label in zip(
+                    examples.get("entities", [[]] * len(texts)),
+                    examples.get("label", [None] * len(texts)),
+                )
+            )
+        ]
         return tokenized
 
     cols_to_remove = train_dataset.column_names
@@ -173,7 +166,6 @@ def main() -> None:
 
     compute_metrics_fn = make_compute_metrics_fn()
 
-    # Extract Base Embeddings First
     print("Extracting Base Embeddings (UMAP Prep)...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     base_model = AutoModel.from_pretrained(MODEL_NAME).to(device)
@@ -186,7 +178,6 @@ def main() -> None:
     all_metrics: dict[str, dict[str, float]] = {}
     training_logs: dict[str, list[dict]] = {}
 
-    # Train models
     for name, model_dir, trainer_cls, kwargs in _PIPELINES:
         print(f"Training & Evaluation: {name}...")
 
@@ -210,14 +201,12 @@ def main() -> None:
 
         training_logs[name] = trainer.state.log_history
 
-        # Evaluate on validation
         val_out = trainer.predict(val_dataset)
         all_metrics[name] = compute_metrics(val_out.predictions, val_out.label_ids)
 
-        # Extract embeddings for UMAP
         print(f"  Extracting {name} fine-tuned embeddings ...")
         embeddings[f"{name} Fine-tuned"] = extract_embeddings(
-            model,  # type: ignore[arg-type]
+            model,
             train_dataset,
             batch_size=BATCH_SIZE,
         )
@@ -228,14 +217,12 @@ def main() -> None:
         gc.collect()
         torch.cuda.empty_cache()
 
-    # Training curves comparison
     print("Plotting Training Curves...")
     plot_training_curves(
         training_logs,
         os.path.join(TRAIN_OUTPUT_DIR, "training_curves.png"),
     )
 
-    # Validation metrics comparison
     print("Computing Validation Metrics...")
     metric_keys = list(next(iter(all_metrics.values())).keys())
     model_names = list(all_metrics.keys())
@@ -260,11 +247,10 @@ def main() -> None:
         title="Validation Summary",
     )
 
-    # UMAP: Base vs fine-tuned on training data
     print("Plotting UMAP - Train Embeddings...")
     plot_umap_comparison(
         embeddings,
-        [[l] for l in train_labels_raw],  # labels_list: List[List[str]]
+        train_label_lists,
         label_names,
         os.path.join(TRAIN_OUTPUT_DIR, "umap_train_comparison.png"),
         suptitle="UMAP -- Train Set Embeddings",
