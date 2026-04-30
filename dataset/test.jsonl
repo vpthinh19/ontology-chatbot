@@ -1,69 +1,427 @@
-{"text":"Em muốn cải thiện điểm C lên B được không?","entities":[{"start":8,"end":20,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"Cố vấn học tập phải duyệt thời khóa biểu của em à?","entities":[{"start":0,"end":12,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Đăng ký môn tiên quyết chưa đạt có được không?","entities":[{"start":0,"end":16,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Thời gian rút môn là từ ngày nào đến ngày nào?","entities":[{"start":10,"end":17,"label":"QuyTrinh_RutMonHoc"}]}
-{"text":"Cải thiện điểm thực tập có áp dụng ko?","entities":[{"start":0,"end":14,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"Em chuyển ngành nhưng vẫn muốn giữ minor ngành cũ được ko?","entities":[{"start":3,"end":15,"label":"QuyTrinh_ChuyenNganh"}]}
-{"text":"Sau khi hết hạn bảo lưu mà em chưa quay lại thì sao?","entities":[{"start":16,"end":24,"label":"QuyTrinh_BaoLuu"}]}
-{"text":"HB có trừ trực tiếp HP hay chuyển vào tài khoản?","entities":[{"start":0,"end":2,"label":"QuyTrinh_XetHocBong"},{"start":20,"end":22,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Đăng ký học phần ở đâu vậy ạ?","entities":[{"start":0,"end":16,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Em quên mật khẩu tài khoản đăng ký học phần","entities":[{"start":27,"end":39,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Mình chào bạn","entities":[{"start":5,"end":9,"label":"ChaoHoi"}]}
-{"text":"Đk học lại được ưu tiên hơn đk HP thường ko?","entities":[{"start":0,"end":8,"label":"QuyTrinh_HocLai"},{"start":29,"end":41,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Dạ chào, em muốn hỏi rút môn xong đk môn khác ntn","entities":[{"start":0,"end":6,"label":"ChaoHoi"},{"start":21,"end":28,"label":"QuyTrinh_RutMonHoc"},{"start":34,"end":45,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Lớp học lại có sĩ số tối đa ko?","entities":[{"start":0,"end":9,"label":"QuyTrinh_HocLai"}]}
-{"text":"Đk HP trước rồi đóng HP sau được ko?","entities":[{"start":0,"end":4,"label":"QuyTrinh_DangKyHocPhan"},{"start":16,"end":25,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"HB cho SV dân tộc thiểu số điều kiện ra sao?","entities":[{"start":0,"end":2,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"Đăng ký học phần có theo thứ tự ưu tiên không?","entities":[{"start":0,"end":16,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"dk tot nghiep ntn","entities":[{"start":0,"end":12,"label":"QuyTrinh_XetTotNghiep"}]}
-{"text":"VP truong tang may","entities":[{"start":0,"end":10,"label":"VanPhongTruong"}]}
-{"text":"Mẹ em hỏi liệu học giỏi có được giảm tiền trường không","entities":[{"start":32,"end":40,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"Em muốn rút 2 môn, thủ tục sao ạ?","entities":[{"start":8,"end":15,"label":"QuyTrinh_RutMonHoc"}]}
-{"text":"Em muốn tạm rời trường vì hoàn cảnh bất khả kháng","entities":[{"start":8,"end":16,"label":"QuyTrinh_BaoLuu"}]}
-{"text":"ĐT duyệt chuyển ngành dựa trên tiêu chí gì?","entities":[{"start":3,"end":15,"label":"QuyTrinh_ChuyenNganh"},{"start":0,"end":2,"label":"PhongDaoTaoDaiHoc"}]}
-{"text":"VP trường công chứng giấy tờ có dấu trường ko?","entities":[{"start":0,"end":10,"label":"VanPhongTruong"}]}
-{"text":"HP kỳ hè tính riêng hay gộp vào kỳ chính?","entities":[{"start":0,"end":2,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Phí học lại và phí cải thiện có giống nhau ko?","entities":[{"start":4,"end":11,"label":"QuyTrinh_HocLai"},{"start":16,"end":28,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"Muốn xin giấy giới thiệu liên hệ VP trường?","entities":[{"start":33,"end":42,"label":"VanPhongTruong"}]}
-{"text":"Kỳ mới em cần hoàn tất thanh toán trước ngày nào?","entities":[{"start":23,"end":33,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Muốn hỏi về chương trình học gặp phòng nào?","entities":[{"start":33,"end":42,"label":"PhongDaoTaoDaiHoc"}]}
-{"text":"Em rút 3 tín chỉ, HP được giảm tương ứng ko?","entities":[{"start":3,"end":10,"label":"QuyTrinh_RutMonHoc"},{"start":18,"end":20,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Điều kiện để được bảo lưu kết quả học tập là gì vậy ạ?","entities":[{"start":18,"end":26,"label":"QuyTrinh_BaoLuu"}]}
-{"text":"Em muốn rút môn này rồi đăng ký môn khác thay thế","entities":[{"start":8,"end":15,"label":"QuyTrinh_RutMonHoc"},{"start":24,"end":36,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Em đăng ký nhầm môn không có trong chương trình","entities":[{"start":3,"end":15,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"VP trường cấp giấy chứng nhận cho SV đi nghĩa vụ?","entities":[{"start":0,"end":10,"label":"VanPhongTruong"}]}
-{"text":"Rút môn này đk môn kia, HP tính lại sao?","entities":[{"start":0,"end":7,"label":"QuyTrinh_RutMonHoc"},{"start":12,"end":23,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Gia đình hỏi bao giờ em lấy bằng được","entities":[{"start":24,"end":28,"label":"QuyTrinh_XetTotNghiep"}]}
-{"text":"Em bảo lưu 2 kỳ rồi, muốn xin bảo lưu thêm 1 kỳ nữa?","entities":[{"start":3,"end":11,"label":"QuyTrinh_BaoLuu"}]}
-{"text":"Giấy tờ có chữ ký hiệu trưởng lấy ở đâu?","entities":[{"start":35,"end":39,"label":"VanPhongTruong"}]}
-{"text":"Em đang nhận HB, nếu bảo lưu thì HB có mất ko?","entities":[{"start":21,"end":29,"label":"QuyTrinh_BaoLuu"},{"start":13,"end":15,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"phong ctsv o dau v","entities":[{"start":0,"end":10,"label":"PhongCTSV"}]}
-{"text":"Phòng KHTC cập nhật số tiền HB vào tài khoản SV khi nào?","entities":[{"start":0,"end":10,"label":"PhongKHTC"},{"start":28,"end":30,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"Muốn giữ lại tín chỉ đã tích lũy khi tạm nghỉ","entities":[{"start":37,"end":45,"label":"QuyTrinh_BaoLuu"}]}
-{"text":"Học lại online có được ko?","entities":[{"start":0,"end":7,"label":"QuyTrinh_HocLai"}]}
-{"text":"ĐT có hỗ trợ SV lập kế hoạch học tập ko?","entities":[{"start":0,"end":2,"label":"PhongDaoTaoDaiHoc"}]}
-{"text":"Khi nào mở đăng ký môn học?","entities":[{"start":11,"end":25,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"muốn nâng điểm trung bình thì cải thiện ntn","entities":[{"start":30,"end":42,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"HP hệ chất lượng cao khác hệ đại trà bao nhiêu?","entities":[{"start":0,"end":2,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Em muốn cải thiện điểm môn Toán, phải đăng ký ở đâu?","entities":[{"start":8,"end":20,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"Nơi nào xử lý vấn đề tài chính của sinh viên?","entities":[{"start":21,"end":29,"label":"PhongKHTC"}]}
-{"text":"Graduation process của trường gồm những bước nào?","entities":[{"start":0,"end":18,"label":"QuyTrinh_XetTotNghiep"}]}
-{"text":"Trường có chính sách khen thưởng cho SV xuất sắc không?","entities":[{"start":21,"end":39,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"Phòng ĐT tổ chức đào tạo từ xa online ko?","entities":[{"start":0,"end":2,"label":"PhongDaoTaoDaiHoc"}]}
-{"text":"Mẹ em hỏi số tài khoản để chuyển tiền cho trường","entities":[{"start":26,"end":37,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Có chính sách nào cho phép cập nhật kết quả tốt hơn?","entities":[{"start":26,"end":38,"label":"QuyTrinh_HocCaiThien"}]}
-{"text":"Đơn rút môn cần chữ ký ai?","entities":[{"start":4,"end":11,"label":"QuyTrinh_RutMonHoc"}]}
-{"text":"Điểm em top đầu lớp, liệu có được hỗ trợ tài chính?","entities":[{"start":34,"end":42,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"Phòng KHTC có nhận qua email ko","entities":[{"start":0,"end":10,"label":"PhongKHTC"}]}
-{"text":"Học lại thì điểm tối đa được bao nhiêu?","entities":[{"start":0,"end":7,"label":"QuyTrinh_HocLai"}]}
-{"text":"Khi nào mở đăng ký môn học?","entities":[{"start":11,"end":25,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Đơn bảo lưu nộp ở phòng công tác sinh viên phải không?","entities":[{"start":4,"end":12,"label":"QuyTrinh_BaoLuu"},{"start":19,"end":40,"label":"PhongCTSV"}]}
-{"text":"Em muốn xin giấy xác nhận đang học để nộp visa.","entities":[{"start":13,"end":24,"label":"PhongCTSV"}]}
-{"text":"Học bổng có trừ trực tiếp vào học phí không?","entities":[{"start":0,"end":8,"label":"QuyTrinh_XetHocBong"},{"start":29,"end":38,"label":"QuyTrinh_NopHocPhi"}]}
-{"text":"Đăng ký học lại có nằm trong hệ thống đăng ký học phần không?","entities":[{"start":0,"end":16,"label":"QuyTrinh_DangKyHocPhan"},{"start":37,"end":49,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Em muốn biết quy trình chọn lớp cho semester mới","entities":[{"start":13,"end":26,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Cố vấn học tập phải duyệt thời khóa biểu của em à?","entities":[{"start":0,"end":12,"label":"QuyTrinh_DangKyHocPhan"}]}
-{"text":"Em muốn cải thiện kết quả nhưng do bị F nên phải đk lại","entities":[{"start":8,"end":20,"label":"QuyTrinh_HocCaiThien"},{"start":49,"end":55,"label":"QuyTrinh_HocLai"}]}
-{"text":"Đăng ký học phần bị lỗi thì liên hệ phòng đào tạo.","entities":[{"start":0,"end":16,"label":"QuyTrinh_DangKyHocPhan"},{"start":36,"end":49,"label":"PhongDaoTaoDaiHoc"}]}
-{"text":"Xin chào, em cần tư vấn hồ sơ xin học bổng.","entities":[{"start":0,"end":8,"label":"ChaoHoi"},{"start":33,"end":41,"label":"QuyTrinh_XetHocBong"}]}
-{"text":"ĐT duyệt chuyển ngành dựa trên tiêu chí gì?","entities":[{"start":3,"end":15,"label":"QuyTrinh_ChuyenNganh"}]}
+{"text": "Em ─æß║ít ─æiß╗âm C muß╗æn cß║úi thiß╗çn l├¬n B ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß╗æ vß║Ñn hß╗ìc tß║¡p phß║úi duyß╗çt thß╗¥i kh├│a biß╗âu cß╗ºa em ├á?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "─É─âng k├╜ m├┤n ti├¬n quyß║┐t ch╞░a ─æß║ít c├│ ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗¥i gian r├║t m├┤n l├á tß╗½ ng├áy n├áo ─æß║┐n ng├áy n├áo?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß║úi thiß╗çn ─æiß╗âm thß╗▒c tß║¡p c├│ ├íp dß╗Ñng ko?", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "Em chuyß╗ân ng├ánh nh╞░ng vß║½n muß╗æn giß╗» minor ng├ánh c┼⌐ ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 74, "label": "QuyTrinhHocVu"}]}
+{"text": "Sau khi hß║┐t hß║ín bß║úo l╞░u m├á em ch╞░a quay lß║íi th├¼ sao?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "HB c├│ trß╗½ trß╗▒c tiß║┐p HP hay chuyß╗ân v├áo t├ái khoß║ún?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "─É─âng k├╜ hß╗ìc phß║ºn ß╗ƒ ─æ├óu vß║¡y ß║í?", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "Em qu├¬n mß║¡t khß║⌐u t├ái khoß║ún ─æ─âng k├╜ hß╗ìc phß║ºn", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "M├¼nh ch├áo bß║ín", "entities": [{"start": 0, "end": 17, "label": "ChaoHoi"}]}
+{"text": "─Ék hß╗ìc lß║íi ─æ╞░ß╗úc ╞░u ti├¬n h╞ín ─æk HP th╞░ß╗¥ng ko?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Dß║í ch├áo, em muß╗æn hß╗Åi r├║t m├┤n xong ─æk m├┤n kh├íc ntn", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "Lß╗¢p hß╗ìc lß║íi c├│ s─⌐ sß╗æ tß╗æi ─æa ko?", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "─Ék HP tr╞░ß╗¢c rß╗ôi ─æ├│ng HP sau ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 48, "label": "QuyTrinhHocVu"}]}
+{"text": "HB cho SV d├ón tß╗Öc thiß╗âu sß╗æ ─æiß╗üu kiß╗çn ra sao?", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "─É─âng k├╜ hß╗ìc phß║ºn c├│ theo thß╗⌐ tß╗▒ ╞░u ti├¬n kh├┤ng?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "dk tot nghiep ntn", "entities": [{"start": 0, "end": 17, "label": "QuyTrinhHocVu"}]}
+{"text": "VP truong tang may", "entities": [{"start": 0, "end": 18, "label": "PhongBanHanhChinh"}]}
+{"text": "Mß║╣ em hß╗Åi liß╗çu hß╗ìc giß╗Åi c├│ ─æ╞░ß╗úc giß║úm tiß╗ün tr╞░ß╗¥ng kh├┤ng", "entities": [{"start": 0, "end": 77, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn r├║t 2 m├┤n, thß╗º tß╗Ñc sao ß║í?", "entities": [{"start": 0, "end": 43, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn tß║ím rß╗¥i tr╞░ß╗¥ng v├¼ ho├án cß║únh bß║Ñt khß║ú kh├íng", "entities": [{"start": 0, "end": 67, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT duyß╗çt chuyß╗ân ng├ánh dß╗▒a tr├¬n ti├¬u ch├¡ g├¼?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng c├┤ng chß╗⌐ng giß║Ñy tß╗¥ c├│ dß║Ñu tr╞░ß╗¥ng ko?", "entities": [{"start": 0, "end": 62, "label": "PhongBanHanhChinh"}]}
+{"text": "HP kß╗│ h├¿ t├¡nh ri├¬ng hay gß╗Öp v├áo kß╗│ ch├¡nh?", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├¡ hß╗ìc lß║íi v├á ph├¡ cß║úi thiß╗çn c├│ giß╗æng nhau ko?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Ai ─æi ─É├á Lß║ít cuß╗æi tuß║ºn n├áy ko?", "entities": [{"start": 0, "end": 40, "label": "NgoaiLe"}]}
+{"text": "M├¼nh muß╗æn mua airpod fake, ai biß║┐t chß╗ù ko?", "entities": [{"start": 0, "end": 49, "label": "NgoaiLe"}]}
+{"text": "Muß╗æn xin giß║Ñy giß╗¢i thiß╗çu li├¬n hß╗ç VP tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 57, "label": "PhongBanHanhChinh"}]}
+{"text": "Kß╗│ mß╗¢i em cß║ºn ho├án tß║Ñt thanh to├ín tr╞░ß╗¢c ng├áy n├áo?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Muß╗æn hß╗Åi vß╗ü ch╞░╞íng tr├¼nh hß╗ìc gß║╖p ph├▓ng n├áo?", "entities": [{"start": 0, "end": 58, "label": "PhongBanHanhChinh"}]}
+{"text": "Em r├║t 3 t├¡n chß╗ë, HP ─æ╞░ß╗úc giß║úm t╞░╞íng ß╗⌐ng ko?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éiß╗üu kiß╗çn ─æß╗â ─æ╞░ß╗úc bß║úo l╞░u kß║┐t quß║ú hß╗ìc tß║¡p l├á g├¼ vß║¡y ß║í?", "entities": [{"start": 0, "end": 83, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn r├║t m├┤n n├áy rß╗ôi ─æ─âng k├╜ m├┤n kh├íc thay thß║┐", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ─âng k├╜ nhß║ºm m├┤n kh├┤ng c├│ trong ch╞░╞íng tr├¼nh", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng cß║Ñp giß║Ñy chß╗⌐ng nhß║¡n cho SV ─æi ngh─⌐a vß╗Ñ?", "entities": [{"start": 0, "end": 64, "label": "PhongBanHanhChinh"}]}
+{"text": "R├║t m├┤n n├áy ─æk m├┤n kia, HP t├¡nh lß║íi sao?", "entities": [{"start": 0, "end": 48, "label": "QuyTrinhHocVu"}]}
+{"text": "Gia ─æ├¼nh hß╗Åi bao giß╗¥ em lß║Ñy bß║▒ng ─æ╞░ß╗úc", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "Em bß║úo l╞░u 2 kß╗│ rß╗ôi, muß╗æn xin bß║úo l╞░u th├¬m 1 kß╗│ nß╗»a?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Giß║Ñy tß╗¥ c├│ chß╗» k├╜ hiß╗çu tr╞░ß╗ƒng lß║Ñy ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 59, "label": "PhongBanHanhChinh"}]}
+{"text": "Em ─æang nhß║¡n HB, nß║┐u bß║úo l╞░u th├¼ HB c├│ mß║Ñt ko?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æang qu├í tß║úi vß╗¢i sß╗æ t├¡n chß╗ë hiß╗çn tß║íi", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "phong ctsv o dau v", "entities": [{"start": 6, "end": 10, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng KHTC cß║¡p nhß║¡t sß╗æ tiß╗ün HB v├áo t├ái khoß║ún SV khi n├áo?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng c├│ nhß║¡n fax quß╗æc tß║┐ ko?", "entities": [{"start": 0, "end": 43, "label": "PhongBanHanhChinh"}]}
+{"text": "Muß╗æn giß╗» lß║íi t├¡n chß╗ë ─æ├ú t├¡ch l┼⌐y khi tß║ím nghß╗ë", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ìc lß║íi online c├│ ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 35, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT c├│ hß╗ù trß╗ú SV lß║¡p kß║┐ hoß║ích hß╗ìc tß║¡p ko?", "entities": [{"start": 0, "end": 56, "label": "PhongBanHanhChinh"}]}
+{"text": "Khi n├áo mß╗ƒ ─æ─âng k├╜ m├┤n hß╗ìc?", "entities": [{"start": 0, "end": 36, "label": "QuyTrinhHocVu"}]}
+{"text": "muß╗æn n├óng ─æiß╗âm trung b├¼nh th├¼ cß║úi thiß╗çn ntn", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "HP hß╗ç chß║Ñt l╞░ß╗úng cao kh├íc hß╗ç ─æß║íi tr├á bao nhi├¬u?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ c╞í chß║┐ n├áo cho ph├⌐p thß╗¡ ng├ánh kh├íc tr╞░ß╗¢c khi chuyß╗ân ch├¡nh thß╗⌐c?", "entities": [{"start": 0, "end": 84, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn cß║úi thiß╗çn ─æiß╗âm m├┤n To├ín, phß║úi ─æ─âng k├╜ ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 72, "label": "QuyTrinhHocVu"}]}
+{"text": "N╞íi n├áo xß╗¡ l├╜ vß║Ñn ─æß╗ü t├ái ch├¡nh cß╗ºa sinh vi├¬n?", "entities": [{"start": 0, "end": 60, "label": "PhongBanHanhChinh"}]}
+{"text": "Graduation process cß╗ºa tr╞░ß╗¥ng gß╗ôm nhß╗»ng b╞░ß╗¢c n├áo?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Ch├áo bß║ín, m├¼nh gß║╖p vß║Ñn ─æß╗ü cß║ºn gi├║p ─æß╗í", "entities": [{"start": 0, "end": 54, "label": "ChaoHoi"}]}
+{"text": "Tr╞░ß╗¥ng c├│ ch├¡nh s├ích khen th╞░ß╗ƒng cho SV xuß║Ñt sß║»c kh├┤ng?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT tß╗ò chß╗⌐c ─æ├áo tß║ío tß╗½ xa online ko?", "entities": [{"start": 0, "end": 53, "label": "PhongBanHanhChinh"}]}
+{"text": "Mß║╣ em hß╗Åi sß╗æ t├ái khoß║ún ─æß╗â chuyß╗ân tiß╗ün cho tr╞░ß╗¥ng", "entities": [{"start": 0, "end": 67, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ ch├¡nh s├ích n├áo cho ph├⌐p cß║¡p nhß║¡t kß║┐t quß║ú tß╗æt h╞ín?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "─É╞ín r├║t m├┤n cß║ºn chß╗» k├╜ ai?", "entities": [{"start": 0, "end": 35, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ├│ng tiß╗ün rß╗ôi m├á muß╗æn nghß╗ë cß║ú kß╗│, tiß╗ün xß╗¡ l├╜ sao?", "entities": [{"start": 0, "end": 72, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éiß╗âm em top ─æß║ºu lß╗¢p, liß╗çu c├│ ─æ╞░ß╗úc hß╗ù trß╗ú t├ái ch├¡nh?", "entities": [{"start": 0, "end": 72, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC c├│ nhß║¡n qua email ko", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "Hß╗ìc lß║íi th├¼ ─æiß╗âm tß╗æi ─æa ─æ╞░ß╗úc bao nhi├¬u?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "B├úi xe ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 18, "label": "NgoaiLe"}]}
+{"text": "Em tr╞░ß╗út 1 m├┤n v├á 2 m├┤n ─æiß╗âm C, ─æk hß║┐t trong 1 kß╗│ ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 76, "label": "QuyTrinhHocVu"}]}
+{"text": "Em sß║»p TN, muß╗æn biß║┐t c├│ ─æ╞░ß╗úc nhß║¡n HB kß╗│ cuß╗æi ko?", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn biß║┐t quy tr├¼nh chß╗ìn lß╗¢p cho semester mß╗¢i", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æc 5.0 muß╗æn cß║úi thiß╗çn l├¬n 7.0", "entities": [{"start": 0, "end": 40, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT c├│ t╞░ vß║Ñn chß╗ìn m├┤n ko?", "entities": [{"start": 0, "end": 40, "label": "PhongBanHanhChinh"}]}
+{"text": "─ÉT quß║ún l├╜ danh mß╗Ñc HP tß╗½ng ng├ánh ko?", "entities": [{"start": 0, "end": 46, "label": "PhongBanHanhChinh"}]}
+{"text": "VP tr╞░ß╗¥ng hß╗ù trß╗ú thß╗º tß╗Ñc cho SV quß╗æc tß║┐?", "entities": [{"start": 0, "end": 55, "label": "PhongBanHanhChinh"}]}
+{"text": "─É─âng k├╜ hß╗ìc phß║ºn muß╗Ön c├│ bß╗ï phß║ít kh├┤ng?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "Nß║┐u ng├ánh mß╗¢i y├¬u cß║ºu th├¬m thß╗▒c h├ánh, em bß╗ò sung sao?", "entities": [{"start": 0, "end": 67, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn cß║úi thiß╗çn kß║┐t quß║ú nh╞░ng do bß╗ï F n├¬n phß║úi ─æk lß║íi", "entities": [{"start": 0, "end": 74, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío duyß╗çt ─æ╞ín ─æk hß╗ìc lß║íi mß║Ñt bao l├óu?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Dß║í em ch├áo, cho em hß╗Åi thß╗º tß╗Ñc hß╗ìc lß║íi", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æß║┐n ph├▓ng ─ÉT hß╗Åi vß╗ü quy tr├¼nh ─æß╗òi ng├ánh ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 73, "label": "QuyTrinhHocVu"}]}
+{"text": "Tiß╗ün ─æ├│ng cho viß╗çc hß╗ìc lß║íi c├│ giß╗æng HP th╞░ß╗¥ng ko?", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng giß║úi quyß║┐t khiß║┐u nß║íi tß╗½ phß╗Ñ huynh?", "entities": [{"start": 0, "end": 59, "label": "PhongBanHanhChinh"}]}
+{"text": "X├⌐t TN t├¡nh tß╗½ kß╗│ n├áo ─æß║┐n kß╗│ n├áo?", "entities": [{"start": 0, "end": 46, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ├ú ├┤n kß╗╣ h╞ín v├á tß╗▒ tin sß║╜ ─æß║ít kß║┐t quß║ú tß╗æt h╞ín", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Em tham gia nhiß╗üu hoß║ít ─æß╗Öng ngoß║íi kh├│a, c├│ gi├║p g├¼ kh├┤ng?", "entities": [{"start": 0, "end": 71, "label": "QuyTrinhHocVu"}]}
+{"text": "Sinh vi├¬n bß║úo l╞░u c├│ ─æ╞░ß╗úc tiß║┐p tß╗Ñc x├⌐t HB ko ß║í?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn ─æk HP cß╗ºa ng├ánh kh├íc v├¼ muß╗æn chuyß╗ân sang ─æ├│", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "Em bß║úo l╞░u, li├¬n hß╗ç CTSV ─æß╗â giß╗» quyß╗ün lß╗úi SV ko?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC sß╗æ ─æiß╗çn thoß║íi bao nhi├¬u?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "ß╗¬m ok", "entities": [{"start": 0, "end": 7, "label": "NgoaiLe"}]}
+{"text": "Giß║úng vi├¬n c├│ quyß╗ün tß╗½ chß╗æi cho r├║t m├┤n ko?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn r├║t 1 nh├│m thß╗▒c h├ánh, giß╗» l├╜ thuyß║┐t ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng CTSV th├┤ng b├ío kß║┐t quß║ú HB qua ─æ├óu?", "entities": [{"start": 0, "end": 49, "label": "QuyTrinhHocVu"}]}
+{"text": "Bi├¬n lai hß╗ìc ph├¡ lß║Ñy ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 37, "label": "QuyTrinhHocVu"}]}
+{"text": "Cho hß╗Åi chß╗ù hß╗ìc b╞íi gß║ºn tr╞░ß╗¥ng", "entities": [{"start": 0, "end": 42, "label": "NgoaiLe"}]}
+{"text": "Em cß║ºn bß║▒ng ─æß╗â nß╗Öp hß╗ô s╞í xin viß╗çc gß║Ñp", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "Khi tß║ím nghß╗ë em c├│ bß╗ï mß║Ñt quyß╗ün lß╗úi bß║úo hiß╗âm y tß║┐ SV?", "entities": [{"start": 0, "end": 72, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng quß║ún l├╜ nghi lß╗à v├á sß╗▒ kiß╗çn tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 60, "label": "PhongBanHanhChinh"}]}
+{"text": "tim phong dao tao o dau", "entities": [{"start": 0, "end": 23, "label": "PhongBanHanhChinh"}]}
+{"text": "M├¼nh cß║ºn gß║╖p ph├▓ng CTSV gß║Ñp", "entities": [{"start": 25, "end": 29, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn ─æ─âng k├╜ m├┤n chuy├¬n ng├ánh cß╗ºa ng├ánh kh├íc", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng c├│ dß╗ïch thuß║¡t chß╗⌐ng chß╗ë ko?", "entities": [{"start": 0, "end": 49, "label": "PhongBanHanhChinh"}]}
+{"text": "Bß║ín c├│ biß║┐t nß║Ñu phß╗ƒ kh├┤ng?", "entities": [{"start": 0, "end": 36, "label": "NgoaiLe"}]}
+{"text": "Sinh vi├¬n n─âm 3 c├│ ─æ╞░ß╗úc chuyß╗ân ng├ánh kh├┤ng?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "Sao bß║ín em chß╗ìn ─æ╞░ß╗úc m├á em th├¼ kh├┤ng?", "entities": [{"start": 0, "end": 48, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng CTSV c├│ fanpage ko?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "Sß╗æ t├¡n chß╗ë tß╗æi ─æa 1 kß╗│ l├á bao nhi├¬u", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC c├│ mß╗ƒ cß╗¡a ng├áy cuß╗æi tuß║ºn ko?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "H├┤m nay nghß╗ë lß╗à g├¼ vß║¡y?", "entities": [{"start": 0, "end": 31, "label": "NgoaiLe"}]}
+{"text": "dang ky mon hoc o dau v", "entities": [{"start": 0, "end": 23, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║úo l╞░u kß║┐t quß║ú c├│ giß╗¢i hß║ín sß╗æ lß║ºn kh├┤ng?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC c├│ dß╗ïch vß╗Ñ thanh to├ín HP tß╗▒ ─æß╗Öng ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "HB cho SV tham gia CLB hß╗ìc thuß║¡t ko?", "entities": [{"start": 0, "end": 40, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ ph├▓ng ban n├áo hß╗ù trß╗ú c├íc vß║Ñn ─æß╗ü c├í nh├ón cß╗ºa SV kh├┤ng?", "entities": [{"start": 0, "end": 74, "label": "PhongBanHanhChinh"}]}
+{"text": "C├│ ch╞░╞íng tr├¼nh vay HP cho SV kh├┤ng?", "entities": [{"start": 0, "end": 41, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ bao nhi├¬u suß║Ñt HB 100% mß╗ùi kß╗│?", "entities": [{"start": 0, "end": 41, "label": "QuyTrinhHocVu"}]}
+{"text": "bao luu ket qua hoc tap can gi", "entities": [{"start": 0, "end": 30, "label": "QuyTrinhHocVu"}]}
+{"text": "Canteen tr╞░ß╗¥ng mß╗ƒ cß╗¡a l├║c mß║Ñy giß╗¥?", "entities": [{"start": 0, "end": 46, "label": "NgoaiLe"}]}
+{"text": "L├ám thß║┐ n├áo ─æß╗â c├│ lß╗ïch hß╗ìc cho hß╗ìc kß╗│ mß╗¢i?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Muß╗æn gß║╖p ph├▓ng CTSV th├¼ ─æß║┐n ─æ├óu?", "entities": [{"start": 20, "end": 24, "label": "PhongBanHanhChinh"}]}
+{"text": "Sß╗æ hotline ph├▓ng KHTC", "entities": [{"start": 20, "end": 24, "label": "PhongBanHanhChinh"}]}
+{"text": "Hoc lai phai nop don o dau", "entities": [{"start": 0, "end": 26, "label": "QuyTrinhHocVu"}]}
+{"text": "Em kh├┤ng pass m├┤n n├áy, cß║ºn re-enroll khi n├áo?", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "Em l├á SV n─âm nhß║Ñt, kh├┤ng biß║┐t n├¬n chß╗ìn HP n├áo", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi, em muß╗æn hß╗Åi ph├▓ng CTSV vß╗ü HB v├á x├⌐t TN", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║▒ng TN em ─æß║┐n VP tr╞░ß╗¥ng nhß║¡n hay ph├▓ng ─æ├áo tß║ío?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT c├│ th├┤ng tin vß╗ü ch╞░╞íng tr├¼nh 2+2 ko?", "entities": [{"start": 0, "end": 54, "label": "PhongBanHanhChinh"}]}
+{"text": "Muß╗æn hß║╣n gß║╖p hiß╗çu tr╞░ß╗ƒng qua VP tr╞░ß╗¥ng ├á?", "entities": [{"start": 0, "end": 56, "label": "PhongBanHanhChinh"}]}
+{"text": "Sau bß║úo l╞░u, ─ÉKHP c├│ ╞░u ti├¬n cho em ko?", "entities": [{"start": 0, "end": 46, "label": "QuyTrinhHocVu"}]}
+{"text": "Hellooo", "entities": [{"start": 0, "end": 5, "label": "ChaoHoi"}]}
+{"text": "Cho hß╗Åi qu├ín tr├á sß╗»a ngon gß║ºn tr╞░ß╗¥ng", "entities": [{"start": 0, "end": 47, "label": "NgoaiLe"}]}
+{"text": "Xß║┐p loß║íi tß╗æt nghiß╗çp t├¡nh thß║┐ n├áo?", "entities": [{"start": 0, "end": 45, "label": "QuyTrinhHocVu"}]}
+{"text": "Xin ch├áo, em ─æang cß║ºn t├¼m hiß╗âu", "entities": [{"start": 31, "end": 33, "label": "ChaoHoi"}]}
+{"text": "HB merit-based kh├íc need-based thß║┐ n├áo?", "entities": [{"start": 0, "end": 43, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC c├│ danh s├ích SV ─æang h╞░ß╗ƒng HB ko?", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC hß╗ù trß╗ú SV quß╗æc tß║┐ thanh to├ín bß║▒ng USD ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Em ─æ├ú t├¡ch l┼⌐y ─æß╗º t├¡n chß╗ë, b├óy giß╗¥ cß║ºn l├ám g├¼ tiß║┐p?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "Xin ch├áo, em muß╗æn r├║t m├┤n ß║í", "entities": [{"start": 0, "end": 34, "label": "QuyTrinhHocVu"}]}
+{"text": "X├⌐t TN ─æß╗út phß╗Ñ nß╗Öp hß╗ô s╞í khi n├áo?", "entities": [{"start": 0, "end": 45, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß║úi thiß╗çn ─æß╗ô ├ín/luß║¡n v─ân c├│ quy tr├¼nh ri├¬ng ko?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "HP lß╗¢p cß║úi thiß╗çn ─æ├│ng ß╗ƒ KHTC hay qua portal?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "Giß║úng vi├¬n m├┤n n├áy dß║íy kh├┤ng ph├╣ hß╗úp vß╗¢i em", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "─É├│ng HP bß║▒ng thß║╗ t├¡n dß╗Ñng ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn xin giß║úm HP v├¼ ho├án cß║únh", "entities": [{"start": 0, "end": 40, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng c├│ k├¬nh Facebook ch├¡nh thß╗⌐c ko?", "entities": [{"start": 0, "end": 49, "label": "PhongBanHanhChinh"}]}
+{"text": "Hß╗ìc ph├¡ kß╗│ h├¿ t├¡nh thß║┐ n├áo?", "entities": [{"start": 0, "end": 37, "label": "QuyTrinhHocVu"}]}
+{"text": "Nß╗Öp hß╗ìc ph├¡ online ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 40, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT tß╗ò chß╗⌐c lß╗¢p hß╗ìc lß║íi theo y├¬u cß║ºu SV ko?", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "Kß╗│ cuß╗æi c├╣ng tr╞░ß╗¢c TN vß║½n ─æ╞░ß╗úc ─æk cß║úi thiß╗çn chß╗⌐?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "SV TN loß║íi giß╗Åi c├│ ─æ╞░ß╗úc HB ─æß║╖c biß╗çt ko?", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß╗òng th├┤ng tin bß╗ï ─æ╞í khi em v├áo chß╗ìn lß╗¢p", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn VP tr╞░ß╗¥ng x├íc nhß║¡n cho hß╗ô s╞í xuß║Ñt khß║⌐u lao ─æß╗Öng", "entities": [{"start": 0, "end": 72, "label": "PhongBanHanhChinh"}]}
+{"text": "Bß║úo l╞░u xong quay lß║íi c├│ phß║úi thi lß║íi c├íc m├┤n ─æ├ú ─æß║ít kh├┤ng?", "entities": [{"start": 0, "end": 77, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß║úi thiß╗çn v├á hß╗ìc lß║íi ─æß╗üu phß║úi ─æi hß╗ìc lß║íi tß╗½ ─æß║ºu ├á?", "entities": [{"start": 0, "end": 75, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ c├ích n├áo ─æß╗â k├⌐o ─æiß╗âm trung b├¼nh t├¡ch l┼⌐y l├¬n kh├┤ng?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t hß║┐t t├¡n chß╗ë kß╗│ n├áy, kß╗│ sau ─æk lß║íi b├¼nh th╞░ß╗¥ng?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "CTSV x├íc nhß║¡n ho├án cß║únh ─æß╗â em xin giß║úm HP", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "ph├▓ng CTSV chß╗⌐c n─âng g├¼", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "─É─âng k├╜ hß╗ìc phß║ºn rß╗ôi c├│ thß╗â ─æß╗òi nh├│m kh├┤ng?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng sinh vi├¬n ß╗ƒ ─æ├óu v mß║Ñy bß║ín", "entities": [{"start": 0, "end": 41, "label": "PhongBanHanhChinh"}]}
+{"text": "Hello, em cß║ºn t╞░ vß║Ñn", "entities": [{"start": 0, "end": 5, "label": "ChaoHoi"}]}
+{"text": "Em c├│ thß╗â giß╗» HB suß╗æt 4 n─âm ko?", "entities": [{"start": 0, "end": 39, "label": "QuyTrinhHocVu"}]}
+{"text": "Ai muß╗æn ─æi karaoke tß╗æi nay?", "entities": [{"start": 0, "end": 32, "label": "NgoaiLe"}]}
+{"text": "Ph├▓ng CTSV c├│ danh s├ích hß╗ìc bß╗òng hiß╗çn c├│ kh├┤ng?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn ho├án th├ánh lß║íi c├íc m├┤n ch╞░a ─æß║ít y├¬u cß║ºu", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn ─æi l├ám kiß║┐m tiß╗ün rß╗ôi quay lß║íi tr╞░ß╗¥ng sau", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║úo l╞░u ngay giß╗»a kß╗│ th├¼ ─æiß╗âm c├íc m├┤n ─æang hß╗ìc t├¡nh thß║┐ n├áo?", "entities": [{"start": 0, "end": 80, "label": "QuyTrinhHocVu"}]}
+{"text": "chao ban", "entities": [{"start": 0, "end": 8, "label": "ChaoHoi"}]}
+{"text": "Quy ─æß╗òi chß╗⌐ng chß╗ë IELTS/TOEIC cho TN thß║┐ n├áo?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗º tß╗Ñc xin bß║úo l╞░u nh╞░ thß║┐ n├áo?", "entities": [{"start": 0, "end": 43, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn cß║úi thiß╗çn tß║Ñt cß║ú m├┤n d╞░ß╗¢i B+", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "─É├│ng HP hß╗ìc lß║íi c├│ bi├¬n lai ri├¬ng ko?", "entities": [{"start": 0, "end": 46, "label": "QuyTrinhHocVu"}]}
+{"text": "Em bß╗ï F do vß║»ng thi, c├│ c├ích n├áo kh├íc ko phß║úi hß╗ìc lß║íi?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗º tß╗Ñc ─æß╗â kh├┤ng tiß║┐p tß╗Ñc theo hß╗ìc mß╗Öt m├┤n n├áo ─æ├│", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Em bß║úo l╞░u v├¼ bß╗çnh, HB c├│ giß╗» cho em khi quay lß║íi ko?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng x├íc nhß║¡n bß║▒ng TN cho em nß╗Öp hß╗ô s╞í xin viß╗çc", "entities": [{"start": 0, "end": 67, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT cß║Ñp x├íc nhß║¡n cho SV ─æi thß╗▒c tß║¡p bß║»t buß╗Öc ko?", "entities": [{"start": 0, "end": 62, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng ─ÉT hß╗ù trß╗ú SV ─æk HP song ng├ánh ko?", "entities": [{"start": 0, "end": 47, "label": "PhongBanHanhChinh"}]}
+{"text": "Chuyß╗ân ng├ánh c├│ thay ─æß╗òi cß╗æ vß║Ñn hß╗ìc tß║¡p ko?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "TN tr╞░ß╗¢c hß║ín 1 kß╗│ c├│ kh├íc quy tr├¼nh th╞░ß╗¥ng ko?", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC xß╗¡ l├╜ y├¬u cß║ºu refund trong bao l├óu?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn KHTC cß║Ñp bß║úng k├¬ chi ph├¡ 4 n─âm hß╗ìc", "entities": [{"start": 10, "end": 14, "label": "PhongBanHanhChinh"}]}
+{"text": "Van phong truong co lam thu 7 ko", "entities": [{"start": 0, "end": 32, "label": "PhongBanHanhChinh"}]}
+{"text": "CTSV tiß║┐p sinh vi├¬n buß╗òi s├íng hay cß║ú ng├áy?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "C├│ phß║úi tß║Ñt cß║ú m├┤n tr╞░ß╗út ─æß╗üu phß║úi hß╗ìc lß║íi kh├┤ng?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗¥i kh├│a biß╗âu mß║½u em xem ß╗ƒ ─æ├óu tr╞░ß╗¢c khi ─ÉKHP?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Em GPA 3.6 c├│ ─æß╗º x├⌐t HB ko ß║í?", "entities": [{"start": 0, "end": 36, "label": "QuyTrinhHocVu"}]}
+{"text": "HB ─æang nhß║¡n, nß║┐u bß║úo l╞░u th├¼ tiß╗ün HB xß╗¡ l├╜ sao?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Chuyß╗ân ng├ánh c├│ ß║únh h╞░ß╗ƒng ─æß║┐n KTX kh├┤ng?", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 29, "label": "PhongBanHanhChinh"}]}
+{"text": "KHTC c├│ hß╗ù trß╗ú chia nhß╗Å khoß║ún HP cho SV kh├│ kh─ân ko?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC ho├án HP cho SV bß║úo l╞░u trong bao l├óu?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗¥i hß║ín bß║úo l╞░u tß╗æi ─æa l├á bao nhi├¬u hß╗ìc kß╗│?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Ngh─⌐a vß╗Ñ t├ái ch├¡nh vß╗¢i tr╞░ß╗¥ng em giß║úi quyß║┐t thß║┐ n├áo?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Bao giß╗¥ l├á hß║ín cuß╗æi r├║t m├┤n kß╗│ n├áy?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Xin ch├áo, em muß╗æn bß║úo l╞░u, cß║ºn gß║╖p ph├▓ng ─æ├áo tß║ío phß║úi ko?", "entities": [{"start": 0, "end": 74, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn kiß║┐n nghß╗ï vß╗ü chß║Ñt l╞░ß╗úng giß║úng dß║íy vß╗¢i l├únh ─æß║ío", "entities": [{"start": 0, "end": 77, "label": "PhongBanHanhChinh"}]}
+{"text": "M├¼nh bß╗ï ─æau ─æß║ºu, c├│ thuß╗æc g├¼ hay ko?", "entities": [{"start": 0, "end": 47, "label": "NgoaiLe"}]}
+{"text": "CTSV tß╗ò chß╗⌐c tuß║ºn sinh hoß║ít c├┤ng d├ón ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Em gß║╖p ph├▓ng KHTC v├áo giß╗¥ n├áo ─æß╗â xin x├íc nhß║¡n nhanh nhß║Ñt?", "entities": [{"start": 16, "end": 20, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng ─ÉT c├│ hß╗ù trß╗ú t╞░ vß║Ñn tr╞░ß╗¢c khi r├║t m├┤n ko?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Portal HP mß╗ƒ cho SV theo thß╗⌐ tß╗▒ ╞░u ti├¬n n─âm mß║Ñy tr╞░ß╗¢c?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Em chuyß╗ân ng├ánh giß╗»a kß╗│, HP ─æang theo lß╗¢p c┼⌐ t├¡nh sao?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "M├┤n hß╗ìc lß║íi c├│ ─æiß╗âm tß╗æi ─æa bao nhi├¬u?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi, m├¼nh l├á phß╗Ñ huynh", "entities": [{"start": 0, "end": 2, "label": "ChaoHoi"}]}
+{"text": "Em thi 3 lß║ºn rß╗ôi vß║½n kh├┤ng qua ─æ╞░ß╗úc m├┤n n├áy", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn KHTC x├íc nhß║¡n ─æ├ú ─æ├│ng ─æß╗º HP ─æß╗â ─æk HP kß╗│ sau", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC c├│ cß╗òng thanh to├ín ri├¬ng cho SV?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "L├ám sao ─æß╗â tß║ím ng╞░ng viß╗çc hß╗ìc m├á kh├┤ng mß║Ñt kß║┐t quß║ú?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n ─æk lß║íi giß╗»a kß╗│ c├│ ─æ╞░ß╗úc ho├án ph├¡ ko?", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "HP cho SV diß╗çn ch├¡nh s├ích c├│ giß║úm ko?", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "Ai quß║ún l├╜ thu ph├¡ v├á chi trß║ú trong nh├á tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 58, "label": "PhongBanHanhChinh"}]}
+{"text": "Cß║úi thiß╗çn c├│ ß║únh h╞░ß╗ƒng ─æß║┐n ranking trong lß╗¢p ko?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn tß║ím dß╗½ng 1 m├┤n trong kß╗│ n├áy", "entities": [{"start": 0, "end": 45, "label": "QuyTrinhHocVu"}]}
+{"text": "Em c├│ thß╗â kiß╗âm tra online ─æ├ú ─æß╗º ─ÉK TN ch╞░a?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n rß╗ôi ─æ─âng k├╜ bß╗ò sung m├┤n mß╗¢i c├│ ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Nß╗Öp tiß╗ün tr╞░ß╗¢c hay ─æk m├┤n tr╞░ß╗¢c?", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "Thß╗º tß╗Ñc chß╗ìn m├┤n cho ch╞░╞íng tr├¼nh ─æ├áo tß║ío cß╗ºa em", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Nß║┐u TN loß║íi xuß║Ñt sß║»c th├¼ c├│ lß╗à vinh danh ko?", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng hß╗ù trß╗ú SV gß║╖p kh├│ kh─ân vß╗¢i c╞í quan chß╗⌐c n─âng?", "entities": [{"start": 0, "end": 72, "label": "PhongBanHanhChinh"}]}
+{"text": "Dß║í ch├áo ß║í, em muß╗æn t├¼m hiß╗âu", "entities": [{"start": 31, "end": 33, "label": "ChaoHoi"}]}
+{"text": "Chuyß╗ân ng├ánh tr╞░ß╗¢c rß╗ôi bß║úo l╞░u hay bß║úo l╞░u xong mß╗¢i chuyß╗ân?", "entities": [{"start": 0, "end": 77, "label": "QuyTrinhHocVu"}]}
+{"text": "C├ích n├áo ─æß╗â x├│a mß╗Öt lß╗¢p ra khß╗Åi danh s├ích ─æ─âng k├╜?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC cß║Ñp bi├¬n lai ─æiß╗çn tß╗¡ ko?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "R├║t m├┤n sau thß╗¥i hß║ín c├│ ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Phß║úi l├ám g├¼ khi kh├┤ng ─æß║ít y├¬u cß║ºu mß╗Öt m├┤n hß╗ìc?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Em r├║t nhß║ºm, hß╗ç thß╗æng c├│ undo ko?", "entities": [{"start": 0, "end": 41, "label": "QuyTrinhHocVu"}]}
+{"text": "em hoc sai ng├ánh r muß╗æn ─æß╗òi", "entities": [{"start": 0, "end": 33, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng l╞░u trß╗» bß║▒ng TN cho SV ch╞░a nhß║¡n ko?", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn bß║úng ─æiß╗âm ─æß║╣p h╞ín tr╞░ß╗¢c khi ra tr╞░ß╗¥ng", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "Em chuyß╗ân ng├ánh xong phß║úi bß║»t ─æß║ºu lß║íi tß╗½ n─âm mß║Ñy?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "HP bß║»t buß╗Öc ch╞░a mß╗ƒ lß╗¢p trong kß╗│ n├áy th├¼ em l├ám sao?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph╞░╞íng thß╗⌐c chi trß║ú khoß║ún ph├¡ cho nh├á tr╞░ß╗¥ng", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║úo l╞░u rß╗ôi th├¼ thß║╗ th╞░ viß╗çn c├│ bß╗ï kh├│a ko?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ô s╞í x├⌐t HB em nß╗Öp cho ph├▓ng CTSV hay ph├▓ng n├áo?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn ─æk lß║íi m├┤n rß╗¢t khi mß╗ƒ ─æß╗út ─æk HP mß╗¢i", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Mß║Ñt HB rß╗ôi c├│ xin lß║íi kß╗│ sau ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi anh ╞íi, em muß╗æn ─æk hß╗ìc phß║ºn", "entities": [{"start": 0, "end": 38, "label": "QuyTrinhHocVu"}]}
+{"text": "Em vß╗½a ─æ╞░ß╗úc giß║úi Olympic, c├│ HB ─æß║╖c biß╗çt ko?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "─Ék lß║íi m├┤n rß╗¢t tr├¬n portal ─ÉKHP ─æ├║ng ko?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Email ph├▓ng ─æ├áo tß║ío ─æß║íi hß╗ìc l├á g├¼?", "entities": [{"start": 0, "end": 46, "label": "PhongBanHanhChinh"}]}
+{"text": "─Éiß╗âm F c├│ bß╗ï ghi v─⌐nh viß╗àn tr├¬n transcript ko?", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT quß║ún l├╜ hß╗ç thß╗æng xß║┐p TKB tß╗▒ ─æß╗Öng ko?", "entities": [{"start": 0, "end": 54, "label": "PhongBanHanhChinh"}]}
+{"text": "Lß╗¢p cß║úi thiß╗çn hiß╗çn tr├¬n hß╗ç thß╗æng ─ÉKHP lu├┤n ko?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC li├¬n hß╗ç qua ─æ├óu?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "Ai biß║┐t chß╗ù mua laptop c┼⌐ gi├í rß║╗?", "entities": [{"start": 0, "end": 41, "label": "NgoaiLe"}]}
+{"text": "Ph├▓ng ─ÉT mß╗ƒ cß╗¡a l├║c mß║Ñy giß╗¥?", "entities": [{"start": 0, "end": 39, "label": "PhongBanHanhChinh"}]}
+{"text": "Em lo kh├┤ng kß╗ïp hß║ín thanh to├ín chi ph├¡ kß╗│ n├áy", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn step back khß╗Åi 1 lß╗¢p ─æ├ú ghi danh", "entities": [{"start": 0, "end": 48, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn biß║┐t tß╗òng chi ph├¡ 4 n─âm hß╗ìc, hß╗Åi KHTC?", "entities": [{"start": 53, "end": 57, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn ─æk hß╗ìc phß║ºn cß║úi thiß╗çn, quy tr├¼nh giß╗æng ─æk HP th╞░ß╗¥ng ko?", "entities": [{"start": 0, "end": 81, "label": "QuyTrinhHocVu"}]}
+{"text": "Chuyß╗ân sang ng├ánh li├¬n th├┤ng c├│ quy tr├¼nh giß╗æng nhau kh├┤ng?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT in phß╗Ñ lß╗Ñc v─ân bß║▒ng mß║Ñt bao l├óu?", "entities": [{"start": 0, "end": 46, "label": "PhongBanHanhChinh"}]}
+{"text": "Bß║ín em ─æ├ú nhß║¡n bß║▒ng rß╗ôi, em th├¼ ch╞░a biß║┐t c├ích", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ch├áo anh/chß╗ï ß║í", "entities": [{"start": 0, "end": 22, "label": "ChaoHoi"}]}
+{"text": "Ph├▓ng ─ÉT c├│ thß╗æng k├¬ tß╗ë lß╗ç chuyß╗ân ng├ánh th├ánh c├┤ng ko?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║úo l╞░u xong quay lß║íi, em ─æk HP tr├¬n portal lu├┤n ko?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n cuß╗æi kß╗│ c├│ bß╗ï ghi F tr├¬n bß║úng ─æiß╗âm ko?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "B╞░ß╗¢c cuß╗æi c├╣ng tr╞░ß╗¢c khi em rß╗¥i tr╞░ß╗¥ng vß╗¢i tß║Ñm bß║▒ng?", "entities": [{"start": 0, "end": 72, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ç thß╗æng treo ho├ái em kh├┤ng chß╗ìn ─æ╞░ß╗úc lß╗¢p", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT giß║úi quyß║┐t hß╗ô s╞í g├¼?", "entities": [{"start": 0, "end": 39, "label": "PhongBanHanhChinh"}]}
+{"text": "Em vß╗½a chuyß╗ân ng├ánh xong, kh├┤ng biß║┐t cß║ºn ─æk HP g├¼ cho kß╗│ tß╗¢i", "entities": [{"start": 0, "end": 76, "label": "QuyTrinhHocVu"}]}
+{"text": "hallo", "entities": [{"start": 0, "end": 5, "label": "ChaoHoi"}]}
+{"text": "Em chß╗ë c├▓n 3 m├┤n nß╗»a l├á xong ch╞░╞íng tr├¼nh", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng quß║ún l├╜ danh s├ích ─æß╗æi t├íc ko?", "entities": [{"start": 0, "end": 50, "label": "PhongBanHanhChinh"}]}
+{"text": "VP tr╞░ß╗¥ng c├│ chß╗⌐c n─âng cß╗æ vß║Ñn ph├íp l├╜ ko?", "entities": [{"start": 0, "end": 54, "label": "PhongBanHanhChinh"}]}
+{"text": "Muß╗æn xin giß║Ñy x├íc nhß║¡n sv gß║╖p ph├▓ng n├áo?", "entities": [{"start": 0, "end": 51, "label": "PhongBanHanhChinh"}]}
+{"text": "Khi n├áo l├á hß║ín cuß╗æi ─æ─âng k├╜ hß╗ìc phß║ºn?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "HP lß╗¢p hß╗ìc lß║íi ─æ├│ng ri├¬ng hay gß╗Öp v├áo HP kß╗│?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT th├┤ng b├ío kß║┐t quß║ú duyß╗çt r├║t m├┤n qua ─æ├óu?", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC c├│ nhß║¡n thanh to├ín quß╗æc tß║┐ qua PayPal ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "H├┤m nay trß╗¥i ─æß║╣p qu├í", "entities": [{"start": 0, "end": 27, "label": "NgoaiLe"}]}
+{"text": "Hß║┐ l├┤, m├¼nh muß╗æn biß║┐t th├¬m", "entities": [{"start": 0, "end": 35, "label": "ChaoHoi"}]}
+{"text": "─æiß╗üu kiß╗çn IELTS ─æß╗â TN l├á bao nhi├¬u", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "HP bao gß╗ôm bß║úo hiß╗âm y tß║┐ ch╞░a?", "entities": [{"start": 0, "end": 39, "label": "QuyTrinhHocVu"}]}
+{"text": "Ch├áo nha, m├¼nh cß║ºn th├┤ng tin", "entities": [{"start": 0, "end": 33, "label": "ChaoHoi"}]}
+{"text": "Ph├▓ng KHTC c├│ chi nh├ính ß╗ƒ c╞í sß╗ƒ 2 ko?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng ban n├áo phß╗Ñ tr├ích bß║úng ─æiß╗âm v├á chuyß╗ân t├¡n chß╗ë?", "entities": [{"start": 0, "end": 68, "label": "PhongBanHanhChinh"}]}
+{"text": "R├║t 1 m├┤n xong ─æk th├¬m m├┤n mß╗¢i ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Em sß║»p complete ch╞░╞íng tr├¼nh, b╞░ß╗¢c final l├á g├¼?", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ─âng k├╜ nhiß╗üu qu├í, lß╗ïch hß╗ìc bß╗ï chß╗ông ch├⌐o", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "M├¼nh cß║ºn t├¼m chß╗ù hß╗ìc l├íi xe", "entities": [{"start": 0, "end": 36, "label": "NgoaiLe"}]}
+{"text": "Hß╗ìc lß║íi t├¡nh ─æiß╗âm mß╗¢i, cß║úi thiß╗çn c┼⌐ng t├¡nh ─æiß╗âm mß╗¢i ├á?", "entities": [{"start": 0, "end": 76, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß║úi thiß╗çn m├á bß╗ï vß║»ng thi th├¼ t├¡nh ─æiß╗âm c┼⌐ hay 0?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Mß║Ñy b ╞íi r├║t m├┤n kiß╗âu g├¼ v", "entities": [{"start": 0, "end": 34, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng KHTC nß║▒m ß╗ƒ c╞í sß╗ƒ n├áo?", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn xin giß║Ñy x├íc nhß║¡n vay vß╗æn SV, ─æß║┐n CTSV?", "entities": [{"start": 54, "end": 58, "label": "PhongBanHanhChinh"}]}
+{"text": "─ækhp bao gß╗ôm mß║Ñy b╞░ß╗¢c v", "entities": [{"start": 0, "end": 31, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT c├│ ─æ╞░ß╗¥ng d├óy n├│ng ko?", "entities": [{"start": 0, "end": 39, "label": "PhongBanHanhChinh"}]}
+{"text": "Hello, cho em hß╗Åi vß╗¢i ß║í", "entities": [{"start": 0, "end": 5, "label": "ChaoHoi"}]}
+{"text": "Kß║┐t quß║ú xß╗ò sß╗æ h├┤m qua?", "entities": [{"start": 0, "end": 31, "label": "NgoaiLe"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío ─æß║íi hß╗ìc c├│ zalo ko", "entities": [{"start": 0, "end": 43, "label": "PhongBanHanhChinh"}]}
+{"text": "VP tr╞░ß╗¥ng in giß║Ñy giß╗¢i thiß╗çu mß║Ñt bao l├óu?", "entities": [{"start": 0, "end": 53, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn biß║┐t m├¼nh ─æ├ú ─æß╗º ti├¬u chuß║⌐n ─æß╗â kß║┐t th├║c kh├│a hß╗ìc ch╞░a", "entities": [{"start": 0, "end": 83, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío duyß╗çt ─æ╞ín chuyß╗ân ng├ánh mß║Ñt bao l├óu?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío c├│ th├┤ng b├ío lß╗ïch x├⌐t TN kh├┤ng?", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn giß║úm sß╗æ l╞░ß╗úng m├┤n ─æang theo hß╗ìc trong kß╗│", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng t├ái ch├¡nh chi trß║ú tiß╗ün hß╗ìc bß╗òng ─æ├║ng kh├┤ng?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn CTSV x├íc nhß║¡n tham gia hoß║ít ─æß╗Öng t├¼nh nguyß╗çn", "entities": [{"start": 10, "end": 14, "label": "PhongBanHanhChinh"}]}
+{"text": "KHTC c├│ hotline hß╗ù trß╗ú thanh to├ín ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Em muß╗æn settle khoß║ún ph├¡ ─æ├áo tß║ío cho kß╗│ mß╗¢i", "entities": [{"start": 0, "end": 56, "label": "QuyTrinhHocVu"}]}
+{"text": "CTSV hß╗ù trß╗ú SV xin giß║Ñy miß╗àn trß╗½ GDQP ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "TN c├│ cß║ºn ho├án th├ánh GDQP ko?", "entities": [{"start": 0, "end": 34, "label": "QuyTrinhHocVu"}]}
+{"text": "Quy tr├¼nh ─æ─âng k├╜ hß╗ìc lß║íi nh╞░ thß║┐ n├áo?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Tr╞░ß╗¥ng cho tham dß╗▒ lß╗¢p ng├ánh mß╗¢i tr╞░ß╗¢c khi quyß║┐t ─æß╗ïnh ko?", "entities": [{"start": 0, "end": 75, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng c├│ l╞░u trß╗» ß║únh gala h├áng n─âm ko?", "entities": [{"start": 0, "end": 53, "label": "PhongBanHanhChinh"}]}
+{"text": "Em cß║ºn giß║Ñy x├íc nhß║¡n ho├án th├ánh kh├│a luß║¡n ─æß╗â x├⌐t TN", "entities": [{"start": 0, "end": 67, "label": "QuyTrinhHocVu"}]}
+{"text": "M├┤n n├áo ─æ╞░ß╗úc ph├⌐p hß╗ìc cß║úi thiß╗çn?", "entities": [{"start": 0, "end": 45, "label": "QuyTrinhHocVu"}]}
+{"text": "C╞í quan quß║ún l├╜ cao nhß║Ñt trong tr╞░ß╗¥ng l├ám viß╗çc ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 69, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng ─ÉT fix lß╗ùi portal ─ÉKHP ko ß║í?", "entities": [{"start": 0, "end": 41, "label": "QuyTrinhHocVu"}]}
+{"text": "CTSV giß║úi quyß║┐t vß║Ñn ─æß╗ü g├¼?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Muß╗æn xin gß║╖p hiß╗çu ph├│ hß╗ìc thuß║¡t, ─æß║╖t lß╗ïch ß╗ƒ VP tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 75, "label": "PhongBanHanhChinh"}]}
+{"text": "cho hß╗Åi chuyß╗ân ng├ánh ntn ─æi mn", "entities": [{"start": 0, "end": 36, "label": "QuyTrinhHocVu"}]}
+{"text": "Lß╗¢p em muß╗æn ─æ├ú hß║┐t chß╗ù, giß╗¥ em phß║úi sao?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "M├¼nh cß║ºn t├¼m chß╗ù in ├ío nh├│m", "entities": [{"start": 0, "end": 35, "label": "NgoaiLe"}]}
+{"text": "Em tham gia nghi├¬n cß╗⌐u khoa hß╗ìc, c├│ ╞░u ti├¬n x├⌐t th╞░ß╗ƒng ko?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n tß╗▒ chß╗ìn c├│ ß║únh h╞░ß╗ƒng ─æß║┐n tß╗æt nghiß╗çp ko?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng CTSV hß╗ù trß╗ú sinh vi├¬n xin hß╗ìc bß╗òng nh╞░ n├áo?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n m├á ─æ├ú ho├án th├ánh thß╗▒c h├ánh rß╗ôi th├¼ sao?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng cß║Ñp giß║Ñy cho SV bß║úo l╞░u ─æi chß╗⌐ng minh nh├ón d├ón", "entities": [{"start": 0, "end": 71, "label": "QuyTrinhHocVu"}]}
+{"text": "CTSV quß║ún l├╜ ─æiß╗âm r├¿n luyß╗çn bao nhi├¬u ti├¬u ch├¡?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng KHTC x├íc nhß║¡n t├ái ch├¡nh cho SV xin visa", "entities": [{"start": 7, "end": 11, "label": "PhongBanHanhChinh"}]}
+{"text": "C├│ ai share ph├▓ng trß╗ì quß║¡n Ng┼⌐ H├ánh S╞ín ko?", "entities": [{"start": 0, "end": 52, "label": "NgoaiLe"}]}
+{"text": "Mß║╣ em muß╗æn gß║╖p hiß╗çu tr╞░ß╗ƒng ─æß╗â trao ─æß╗òi vß╗ü con em", "entities": [{"start": 0, "end": 67, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├¡ phß║ít nß╗Öp HP trß╗à l├á bao nhi├¬u?", "entities": [{"start": 0, "end": 42, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ìc cß║úi thiß╗çn c├│ phß║úi ─æ├│ng th├¬m hß╗ìc ph├¡ kh├┤ng?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éiß╗âm F phß║úi hß╗ìc lß║íi, ─æiß╗âm D muß╗æn cß║úi thiß╗çn, em ─æk c├╣ng l├║c ─æ╞░ß╗úc ko?", "entities": [{"start": 0, "end": 92, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß║ín nß╗Öp hß╗ìc ph├¡ kß╗│ n├áy khi n├áo?", "entities": [{"start": 0, "end": 42, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ìc lß║íi m├á vß║½n tr╞░ß╗út th├¼ bß╗ï buß╗Öc th├┤i hß╗ìc ko?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Tr╞░ß╗¥ng c├│ financial aid cho SV th├ánh t├¡ch cao ko?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "Em vß╗½a retake vß╗½a improve, GPA t├¡nh thß║┐ n├áo?", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Em nhß║¡n ra m├¼nh kh├┤ng c├│ n─âng khiß║┐u vß╗¢i ng├ánh ─æang hß╗ìc", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn hß╗Åi vß╗ü giß║úm HP, c├│ ch├¡nh s├ích miß╗àn giß║úm n├áo ko?", "entities": [{"start": 0, "end": 71, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn li├¬n hß╗ç ph├▓ng ─æ├áo tß║ío", "entities": [{"start": 0, "end": 39, "label": "PhongBanHanhChinh"}]}
+{"text": "X├⌐t TN c├│ t├¡nh ─æiß╗âm kß╗│ hiß╗çn tß║íi hay chß╗ë kß╗│ tr╞░ß╗¢c?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "hgfhfhfhdhd", "entities": [{"start": 0, "end": 11, "label": "NgoaiLe"}]}
+{"text": "Ch├áo buß╗òi chiß╗üu ß║í", "entities": [{"start": 14, "end": 16, "label": "ChaoHoi"}]}
+{"text": "Em cß║ºn bi├¬n lai HP, l├¬n ph├▓ng KHTC xin?", "entities": [{"start": 0, "end": 44, "label": "QuyTrinhHocVu"}]}
+{"text": "Muß╗æn improve ─æiß╗âm th├¼ ─æk cß║úi thiß╗çn ├á?", "entities": [{"start": 0, "end": 49, "label": "QuyTrinhHocVu"}]}
+{"text": "Em hß╗ºy ─æ─âng k├╜ rß╗ôi muß╗æn ghi danh v├áo lß╗¢p kh├íc", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "CV xin thß╗▒c tß║¡p cß║ºn GPA cao h╞ín mß╗⌐c em hiß╗çn c├│", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Ch├áo buß╗òi s├íng sß╗¢m ß║í", "entities": [{"start": 0, "end": 28, "label": "ChaoHoi"}]}
+{"text": "???", "entities": [{"start": 0, "end": 3, "label": "NgoaiLe"}]}
+{"text": "Em tß║ím nghß╗ë 1 kß╗│, HB kß╗│ ─æ├│ c├│ chuyß╗ân qua kß╗│ sau ko?", "entities": [{"start": 0, "end": 66, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ├ú ─æi thß╗▒c tß║¡p xong, b├óy giß╗¥ c├▓n thiß║┐u g├¼ ─æß╗â ra tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 78, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n giß╗»a kß╗│ ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 38, "label": "QuyTrinhHocVu"}]}
+{"text": "KHTC c├│ hß╗ù trß╗ú SV tra cß╗⌐u bi├¬n lai online ko?", "entities": [{"start": 0, "end": 4, "label": "PhongBanHanhChinh"}]}
+{"text": "S├ón b├│ng tr╞░ß╗¥ng ß╗ƒ ─æ├óu v?", "entities": [{"start": 0, "end": 33, "label": "NgoaiLe"}]}
+{"text": "Ch├áo bß║ín, chß╗ë m├¼nh c├ích xin hß╗ìc bß╗òng vß╗¢i", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "M├¼nh muß╗æn tß║¡p gym, ph├▓ng tß║¡p n├áo gß║ºn tr╞░ß╗¥ng?", "entities": [{"start": 0, "end": 58, "label": "NgoaiLe"}]}
+{"text": "Em muß╗æn bß╗Å bß╗¢t m├┤n ─æang theo trong kß╗│ n├áy", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æk m├┤n ng├ánh mß╗¢i th├¼ c├│ cß║ºn chuyß╗ân ng├ánh tr╞░ß╗¢c ko?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "HB kß╗│ cuß╗æi c├│ ß║únh h╞░ß╗ƒng ─æß║┐n loß║íi TN ko?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "Bß║úo l╞░u c├│ cß║ºn x├íc nhß║¡n cß╗ºa cß╗æ vß║Ñn hß╗ìc tß║¡p kh├┤ng?", "entities": [{"start": 0, "end": 69, "label": "QuyTrinhHocVu"}]}
+{"text": "─ÉT hß╗ù trß╗ú chuyß╗ân ─æß╗òi t├¡n chß╗ë tß╗½ tr╞░ß╗¥ng quß╗æc tß║┐ ko?", "entities": [{"start": 0, "end": 72, "label": "PhongBanHanhChinh"}]}
+{"text": "Hi, em khß╗Åe, em muß╗æn hß╗Åi c├íi n├áy", "entities": [{"start": 0, "end": 2, "label": "ChaoHoi"}]}
+{"text": "phong DT co mail ko", "entities": [{"start": 0, "end": 19, "label": "PhongBanHanhChinh"}]}
+{"text": "Em ─æß║ít GPA 3.8, c├│ chß║»c chß║»n ─æ╞░ß╗úc HB ko?", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ├ú ├┤n lß║íi v├á muß╗æn thß╗â hiß╗çn khß║ú n─âng thß╗▒c sß╗▒", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "em con no 2 mon co dc xet TN ko", "entities": [{"start": 0, "end": 31, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─æ├áo tß║ío giß║úi quyß║┐t vß║Ñn ─æß╗ü tr├╣ng lß╗ïch ─æk HP ko?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi, cho hß╗Åi ch├║t th├┤ng tin nhanh", "entities": [{"start": 0, "end": 2, "label": "ChaoHoi"}]}
+{"text": "Cho hß╗Åi chß╗ù kh├ím sß╗⌐c khß╗Åe ngo├ái giß╗¥", "entities": [{"start": 0, "end": 47, "label": "NgoaiLe"}]}
+{"text": "Ph├▓ng ─ÉT x├íc nhß║¡n khß╗æi l╞░ß╗úng hß╗ìc tß║¡p cho SV vay vß╗æn", "entities": [{"start": 0, "end": 67, "label": "PhongBanHanhChinh"}]}
+{"text": "Sau bß║úo l╞░u ph├║c lß╗úi SV ß╗ƒ ph├▓ng ─ÉT c├│ thay ─æß╗òi ko?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ô s╞í x├⌐t tß╗æt nghiß╗çp cß║ºn nhß╗»ng g├¼?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Nß║┐u kh├┤ng ─æ├│ng HP, em c├│ bß╗ï x├│a danh s├ích lß╗¢p ko?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éiß╗üu kiß╗çn ─æß╗â ─æ╞░ß╗úc chuyß╗ân ng├ánh l├á g├¼?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ ch╞░╞íng tr├¼nh TN li├¬n th├┤ng l├¬n thß║íc s─⌐ ko?", "entities": [{"start": 0, "end": 55, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éß╗út bß╗ò sung ─æ─âng k├╜ HP sau ─æß╗út ch├¡nh l├á khi n├áo?", "entities": [{"start": 0, "end": 62, "label": "QuyTrinhHocVu"}]}
+{"text": "N╞íi n├áo xß╗¡ l├╜ giß║Ñy tß╗¥ li├¬n quan ─æß║┐n r├¿n luyß╗çn?", "entities": [{"start": 0, "end": 62, "label": "PhongBanHanhChinh"}]}
+{"text": "em sß║»p ra trg, muß╗æn hß╗Åi quy tr├¼nh x├⌐t TN", "entities": [{"start": 0, "end": 48, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn ─æiß╗âm cao h╞ín ß╗ƒ m├┤n n├áy ─æß╗â ─æß╗º ti├¬u chuß║⌐n thß╗▒c tß║¡p", "entities": [{"start": 0, "end": 78, "label": "QuyTrinhHocVu"}]}
+{"text": "Chuyß╗ân ng├ánh c├│ tß╗æn ph├¡ kh├┤ng ß║í?", "entities": [{"start": 0, "end": 42, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ô s╞í chuyß╗ân ng├ánh cß║ºn nhß╗»ng g├¼ ß║í?", "entities": [{"start": 0, "end": 47, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi, em cß║ºn t╞░ vß║Ñn vß╗ü ─æ─âng k├╜ hß╗ìc phß║ºn", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "Em chuyß╗ân ng├ánh c├│ mß║Ñt t╞░ c├ích x├⌐t HB ko?", "entities": [{"start": 0, "end": 50, "label": "QuyTrinhHocVu"}]}
+{"text": "Em muß╗æn t─âng th├ánh t├¡ch hß╗ìc tß║¡p bß║▒ng c├ích thi lß║íi", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Lß╗¢p hß╗ìc lß║íi mß╗ƒ v├áo tuß║ºn n├áo trong kß╗│?", "entities": [{"start": 0, "end": 51, "label": "QuyTrinhHocVu"}]}
+{"text": "VP tr╞░ß╗¥ng hß╗ù trß╗ú SV chuyß╗ân ng├ánh khi cß║ºn giß║Ñy tß╗¥ ko?", "entities": [{"start": 0, "end": 68, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t m├┤n sau deadline ho├án HP th├¼ mß║Ñt trß║»ng tiß╗ün ├á?", "entities": [{"start": 0, "end": 61, "label": "QuyTrinhHocVu"}]}
+{"text": "Em xin ch├áo ß║í, em l├á SV NTU", "entities": [{"start": 0, "end": 31, "label": "ChaoHoi"}]}
+{"text": "M├┤n bß╗ï ─æiß╗âm F th├¼ phß║úi hß╗ìc lß║íi ─æ├║ng kh├┤ng?", "entities": [{"start": 0, "end": 58, "label": "QuyTrinhHocVu"}]}
+{"text": "Em ─æ├│ng HP rß╗ôi m├á hß╗ç thß╗æng ch╞░a mß╗ƒ ─æk HP", "entities": [{"start": 0, "end": 53, "label": "QuyTrinhHocVu"}]}
+{"text": "T├ái khoß║ún ─æ─âng k├╜ m├┤n bß╗ï kh├│a, c├│ phß║úi v├¼ ch╞░a nß╗Öp tiß╗ün?", "entities": [{"start": 0, "end": 75, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng c├┤ng t├íc sinh vi├¬n ß╗ƒ tß║ºng mß║Ñy?", "entities": [{"start": 0, "end": 46, "label": "PhongBanHanhChinh"}]}
+{"text": "Ph├▓ng t├ái ch├¡nh ß╗ƒ tß║ºng mß║Ñy?", "entities": [{"start": 0, "end": 36, "label": "PhongBanHanhChinh"}]}
+{"text": "Lß╗ïch thi giß╗»a kß╗│ ai quß║ún l├╜ v├á xem ß╗ƒ ─æ├óu?", "entities": [{"start": 0, "end": 55, "label": "PhongBanHanhChinh"}]}
+{"text": "HP kß╗│ bß║úo l╞░u em trß║ú hay khß╗Åi trß║ú?", "entities": [{"start": 0, "end": 45, "label": "QuyTrinhHocVu"}]}
+{"text": "em muß╗æn nghß╗ë 1 n─âm r quay lß║íi hß╗ìc dc ko ß║í", "entities": [{"start": 0, "end": 52, "label": "QuyTrinhHocVu"}]}
+{"text": "Khi kh├┤ng ─æß║ít ─æiß╗âm chuß║⌐n, b╞░ß╗¢c tiß║┐p theo l├á g├¼?", "entities": [{"start": 0, "end": 63, "label": "QuyTrinhHocVu"}]}
+{"text": "Em cß║ºn KHTC x├íc nhß║¡n t├ái ch├¡nh ─æß╗â xin SIM sinh vi├¬n", "entities": [{"start": 9, "end": 13, "label": "PhongBanHanhChinh"}]}
+{"text": "Hß╗ç thß╗æng ─ÉKHP online truy cß║¡p bß║▒ng link n├áo?", "entities": [{"start": 0, "end": 54, "label": "QuyTrinhHocVu"}]}
+{"text": "─É─âng k├╜ m├┤n hß╗ìc kß╗│ h├¿ c├│ kh├íc g├¼ kß╗│ ch├¡nh?", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "Em bß╗ï tr├╣ng giß╗¥ 2 m├┤n, ─æ─âng k├╜ cß║ú hai ─æ╞░ß╗úc kh├┤ng?", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "─Éß╗út ─æ─âng k├╜ HP muß╗Ön c├│ phß║úi nß╗Öp ph├¡ phß╗Ñ thu?", "entities": [{"start": 0, "end": 60, "label": "QuyTrinhHocVu"}]}
+{"text": "Sß╗æ l╞░ß╗úng SV tß╗æi ─æa mß╗ùi lß╗¢p HP l├á bao nhi├¬u?", "entities": [{"start": 0, "end": 57, "label": "QuyTrinhHocVu"}]}
+{"text": "C├│ thß╗â ─æ─âng k├╜ tr╞░ß╗¢c c├íc m├┤n cß╗ºa n─âm tiß║┐p theo kh├┤ng?", "entities": [{"start": 0, "end": 70, "label": "QuyTrinhHocVu"}]}
+{"text": "R├║t bß╗¢t HP sau khi ─æ├ú nß╗Öp tiß╗ün th├¼ ho├án lß║íi kh├┤ng?", "entities": [{"start": 0, "end": 64, "label": "QuyTrinhHocVu"}]}
+{"text": "Hß╗ìc lß║íi m├┤n c├│ bß║»t buß╗Öc phß║úi c├╣ng giß║úng vi├¬n c┼⌐?", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "Cß║úi thiß╗çn ─æiß╗âm cho m├┤n ti├¬n quyß║┐t c├│ cß║¡p nhß║¡t lß║íi quyß╗ün ─ÉK m├┤n sau?", "entities": [{"start": 0, "end": 89, "label": "QuyTrinhHocVu"}]}
+{"text": "Hi bot, em muß╗æn biß║┐t c├ích ─ÉKHP bß╗ò sung", "entities": [{"start": 0, "end": 46, "label": "QuyTrinhHocVu"}]}
+{"text": "Ph├▓ng ─ÉT c├│ hß╗ù trß╗ú ─ÉK hß╗Ö khi hß╗ç thß╗æng lß╗ùi kh├┤ng?", "entities": [{"start": 0, "end": 65, "label": "QuyTrinhHocVu"}]}
+{"text": "Thi lß║íi m├┤n rß╗¢t kh├íc g├¼ vß╗¢i cß║úi thiß╗çn ─æiß╗âm?", "entities": [{"start": 0, "end": 59, "label": "QuyTrinhHocVu"}]}
+{"text": "Mẫu đơn xin bảo lưu lấy ở đâu?", "entities": [{"start": 0, "end": 7, "label": "TaiLieuBieuMau"}]}
+{"text": "Em cần form xin chuyển ngành.", "entities": [{"start": 7, "end": 28, "label": "TaiLieuBieuMau"}]}
+{"text": "Biểu mẫu xin giấy xác nhận sinh viên ở đâu?", "entities": [{"start": 0, "end": 8, "label": "TaiLieuBieuMau"}]}
+{"text": "Cho em xin đơn rút môn học.", "entities": [{"start": 11, "end": 26, "label": "TaiLieuBieuMau"}]}
+{"text": "Xin giấy giới thiệu làm hồ sơ vay vốn.", "entities": [{"start": 4, "end": 19, "label": "TaiLieuBieuMau"}]}
+{"text": "Có mẫu đơn xin học trở lại không?", "entities": [{"start": 3, "end": 10, "label": "TaiLieuBieuMau"}]}
+{"text": "Mẫu xác nhận hoàn thành chương trình lấy ở đâu?", "entities": [{"start": 0, "end": 12, "label": "TaiLieuBieuMau"}]}
+{"text": "Em cần biên lai học phí để nộp hồ sơ.", "entities": [{"start": 7, "end": 23, "label": "TaiLieuBieuMau"}]}
+{"text": "Form xin xác nhận đang học lấy ở phòng nào?", "entities": [{"start": 0, "end": 4, "label": "TaiLieuBieuMau"}]}
+{"text": "Đơn đề nghị xét tốt nghiệp tải ở đâu?", "entities": [{"start": 0, "end": 11, "label": "TaiLieuBieuMau"}]}
+{"text": "Học phí mỗi tín chỉ là bao nhiêu?", "entities": [{"start": 0, "end": 7, "label": "DinhMucHocPhi"}]}
+{"text": "Mức phí một tín chỉ năm nay thế nào?", "entities": [{"start": 4, "end": 19, "label": "DinhMucHocPhi"}]}
+{"text": "Biểu phí áp dụng cho khóa mới ở đâu?", "entities": [{"start": 0, "end": 8, "label": "DinhMucHocPhi"}]}
+{"text": "Cho em hỏi đơn giá học phí theo ngành.", "entities": [{"start": 11, "end": 18, "label": "DinhMucHocPhi"}]}
+{"text": "Phí cải thiện 1 tín chỉ bao nhiêu?", "entities": [{"start": 0, "end": 13, "label": "DinhMucHocPhi"}]}
+{"text": "HP cho lớp học lại có khác lớp thường không?", "entities": [{"start": 0, "end": 2, "label": "DinhMucHocPhi"}]}
+{"text": "Mức học phí hệ chất lượng cao là gì?", "entities": [{"start": 0, "end": 11, "label": "DinhMucHocPhi"}]}
+{"text": "Tín chỉ ngành em tính bao nhiêu tiền?", "entities": [{"start": 0, "end": 7, "label": "DinhMucHocPhi"}]}
+{"text": "Em có thể nộp học phí bằng chuyển khoản không?", "entities": [{"start": 27, "end": 39, "label": "PhuongThucThanhToan"}]}
+{"text": "Trường nhận thanh toán online qua ví điện tử nào?", "entities": [{"start": 12, "end": 29, "label": "PhuongThucThanhToan"}]}
+{"text": "Có đóng học phí bằng MoMo được không?", "entities": [{"start": 21, "end": 25, "label": "PhuongThucThanhToan"}]}
+{"text": "Em muốn trả học phí bằng ZaloPay.", "entities": [{"start": 25, "end": 32, "label": "PhuongThucThanhToan"}]}
+{"text": "Chào bạn, em hỏi chút ạ.", "entities": [{"start": 0, "end": 4, "label": "ChaoHoi"}]}
+{"text": "Mình đang tìm chỗ ăn sáng gần trường.", "entities": [{"start": 14, "end": 25, "label": "NgoaiLe"}]}
