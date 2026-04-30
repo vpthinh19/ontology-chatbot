@@ -16,18 +16,7 @@ def extract_embeddings(
     dataset,
     batch_size: int = 64,
 ) -> np.ndarray:
-    """Extract CLS token embeddings from a model's base encoder.
-
-    Uses mixed-precision inference for speed on GPU.
-
-    Args:
-        model: Model (base or fine-tuned) with a roberta-like encoder.
-        dataset: PyTorch dataset with input_ids and attention_mask.
-        batch_size: Inference batch size.
-
-    Returns:
-        CLS embeddings array of shape (N, hidden_dim).
-    """
+    """Extract CLS token embeddings from a model's base encoder."""
     model.eval()
     device = next(model.parameters()).device
     use_amp = device.type == "cuda"
@@ -46,7 +35,6 @@ def extract_embeddings(
             ids = batch["input_ids"].to(device, non_blocking=True)
             mask = batch["attention_mask"].to(device, non_blocking=True)
 
-            # Access base encoder regardless of wrapper
             base = model.roberta if hasattr(model, "roberta") else model
 
             with torch.amp.autocast("cuda", enabled=use_amp):
@@ -62,16 +50,7 @@ def get_logits(
     dataset,
     batch_size: int = 16,
 ) -> np.ndarray:
-    """Run inference and return raw logits.
-
-    Args:
-        model: Fine-tuned classification model.
-        dataset: PyTorch dataset with input_ids and attention_mask.
-        batch_size: Inference batch size.
-
-    Returns:
-        Logits array of shape (N, num_labels).
-    """
+    """Run inference and return raw logits."""
     model.eval()
     device = next(model.parameters()).device
     use_amp = device.type == "cuda"
@@ -99,19 +78,10 @@ def get_logits(
 
 
 def load_onnx_session(onnx_path: str, providers: list[str] = None) -> ort.InferenceSession:
-    """Load an ONNX model into an InferenceSession.
-
-    Args:
-        onnx_path: Path to the ONNX model file.
-        providers: List of execution providers (e.g., CPUExecutionProvider, CUDAExecutionProvider).
-                   If None, uses default providers.
-    
-    Returns:
-        An ONNX Runtime InferenceSession.
-    """
+    """Load an ONNX model into an InferenceSession."""
     if providers is None:
         providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
-    
+
     return ort.InferenceSession(onnx_path, providers=providers)
 
 
@@ -119,27 +89,14 @@ def predict_onnx(
     session: ort.InferenceSession,
     input_ids: np.ndarray,
     attention_mask: np.ndarray,
-    threshold: float = 0.5
+    threshold: float = 0.5,
 ) -> np.ndarray:
-    """Run inference using an ONNX session.
-
-    Args:
-        session: ONNX Runtime InferenceSession.
-        input_ids: Array of input token IDs.
-        attention_mask: Array of attention masks.
-        threshold: Sigmoid threshold for positive class prediction.
-
-    Returns:
-        Binary predictions array.
-    """
+    """Run inference using an ONNX session and return multi-label predictions."""
     ort_inputs = {
         "input_ids": input_ids,
         "attention_mask": attention_mask,
     }
     ort_outs = session.run(None, ort_inputs)
     logits = ort_outs[0]
-    
-    # Sigmoid
     probs = 1 / (1 + np.exp(-logits))
     return (probs >= threshold).astype(np.intp)
-

@@ -1,10 +1,10 @@
-"""Final Evaluation — multiclass classifier.
+"""Final evaluation for the multi-label PhoBERT classifier.
 
-Evaluates fine-tuned PhoBERT multiclass models on the held-out test set:
+Evaluates fine-tuned PhoBERT models on the held-out test set:
     - Benchmark comparison (bar chart)
     - Summary table (all metrics x all models)
-    - Classification reports
-    - Label co-occurrence heatmap (one-hot for multiclass)
+    - Multi-label classification reports
+    - Label co-occurrence heatmap
     - UMAP: Base vs fine-tuned test embeddings
 
 Usage:
@@ -32,7 +32,7 @@ from ..core.config import (
     MODEL_ZLPR_DIR,
     TEST_DATASET_PATH,
 )
-from ..utils.labels import load_label_names
+from ..utils.labels import build_mlb, encode_multi_labels, extract_sample_labels, load_label_names
 from ..utils.preprocessing import preprocess_batch
 from ..utils.inference import extract_embeddings, get_logits
 from ..utils.metrics import compute_metrics
@@ -60,11 +60,11 @@ def main() -> None:
     print("Loading Test Data...")
 
     label_names = load_label_names(LABEL_MAP_PATH)
-    label_to_id = {name: i for i, name in enumerate(label_names)}
     num_labels = len(label_names)
+    _ = build_mlb(label_names)
 
     test_dataset = load_dataset("json", data_files={"test": TEST_DATASET_PATH})["test"]
-    test_labels_raw = test_dataset["label"]
+    test_labels_raw = [extract_sample_labels(sample) for sample in test_dataset]
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_BCE_DIR)
 
@@ -76,8 +76,16 @@ def main() -> None:
             truncation=True,
             max_length=MAX_LENGTH,
         )
-        label_ids = [label_to_id[lbl] for lbl in examples["label"]]
-        tokenized["labels"] = label_ids
+        tokenized["labels"] = [
+            encode_multi_labels(
+                label_names,
+                {"entities": entities, "label": label},
+            )
+            for entities, label in zip(
+                examples.get("entities", [[]] * len(texts)),
+                examples.get("label", [None] * len(texts)),
+            )
+        ]
         return tokenized
 
     cols_to_remove = test_dataset.column_names
@@ -110,7 +118,7 @@ def main() -> None:
         model = AutoModelForSequenceClassification.from_pretrained(model_dir).to(device)
 
         logits_dict[name] = get_logits(model, test_dataset, batch_size=BATCH_SIZE)
-        preds[name] = np.argmax(logits_dict[name], axis=-1).astype(np.int64)
+        preds[name] = (1 / (1 + np.exp(-logits_dict[name])) >= 0.5).astype(np.int64)
 
         # Metrics
         all_metrics[name] = compute_metrics(logits_dict[name], y_test)
@@ -148,7 +156,7 @@ def main() -> None:
         title="Test Set Summary",
     )
 
-    # Classification reports (multiclass)
+    # Classification reports (multi-label)
     print("Generating Classification Reports...")
 
     reports: dict[str, dict] = {}
@@ -167,14 +175,12 @@ def main() -> None:
         EVAL_OUTPUT_DIR,
     )
 
-    # Label co-occurrence heatmaps (one-hot for multiclass)
+    # Label co-occurrence heatmaps (multi-label)
     print("Plotting Label Co-occurrence Heatmaps...")
 
-    y_true_onehot = np.eye(num_labels, dtype=int)[y_test]
-    matrices = {"Ground Truth": y_true_onehot}
+    matrices = {"Ground Truth": y_test}
     for name in model_names:
-        y_pred_onehot = np.eye(num_labels, dtype=int)[preds[name]]
-        matrices[f"{name} Predictions"] = y_pred_onehot
+        matrices[f"{name} Predictions"] = preds[name]
 
     plot_label_cooccurrence(
         matrices,
@@ -187,7 +193,7 @@ def main() -> None:
 
     plot_umap_comparison(
         embeddings,
-        [[l] for l in test_labels_raw],  # labels_list: List[List[str]]
+        test_labels_raw,
         label_names,
         os.path.join(EVAL_OUTPUT_DIR, "umap_test_comparison.png"),
         suptitle="UMAP -- Test Set Embeddings",
