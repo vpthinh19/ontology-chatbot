@@ -33,7 +33,7 @@ from ..config import (
     TRAIN_OUT_DIR,
     TRAIN_PATH,
     VAL_SIZE,
-    WARMUP_RATIO,
+    WARMUP_STEPS,
     WEIGHT_DECAY,
 )
 from ..viz.training_curves import plot_training_curves
@@ -82,13 +82,13 @@ def main() -> None:
 
     args = TrainingArguments(
         output_dir=str(MODEL_DIR),
-        overwrite_output_dir=True,
         num_train_epochs=EPOCHS,
         per_device_train_batch_size=BATCH_SIZE,
-        per_device_eval_batch_size=BATCH_SIZE * 2,
+        per_device_eval_batch_size=BATCH_SIZE,
+        optim="adamw_torch_fused",
         learning_rate=LEARNING_RATE,
         weight_decay=WEIGHT_DECAY,
-        warmup_ratio=WARMUP_RATIO,
+        warmup_steps=WARMUP_STEPS,
         eval_strategy="epoch",
         save_strategy="epoch",
         save_total_limit=2,
@@ -98,7 +98,7 @@ def main() -> None:
         logging_strategy="epoch",
         report_to="none",
         seed=SEED,
-        fp16=torch.cuda.is_available(),
+        bf16=torch.cuda.is_available(),
     )
 
     trainer = Trainer(
