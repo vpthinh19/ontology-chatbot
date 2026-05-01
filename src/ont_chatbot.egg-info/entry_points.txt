@@ -1,5 +1,0 @@
-[console_scripts]
-build-dataset = src.data.build_dataset:main
-evaluate = src.ner.evaluate:main
-serve = src.api.server:main
-train = src.ner.train:main

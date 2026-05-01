@@ -1,9 +1,0 @@
-__init__
-api
-config
-data
-ner
-ontology
-pipeline
-utils
-viz
