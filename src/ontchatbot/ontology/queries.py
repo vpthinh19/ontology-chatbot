@@ -13,9 +13,13 @@ and cached at the SQLite layer, keeping latency negligible.
 
 from __future__ import annotations
 
+import logging
+
 from owlready2 import default_world
 
 from .loader import load_ontology
+
+log = logging.getLogger(__name__)
 
 _PREFIXES = """
 PREFIX : <http://www.ntu.edu.vn/ontology/academic#>
@@ -153,6 +157,13 @@ def _exists(individual: str) -> bool:
 
 def fetch(tag: str, individual: str) -> dict | None:
     fn = FETCHERS.get(tag)
-    if not fn or not _exists(individual):
+    if not fn:
+        log.warning("[fetch] unknown tag=%s", tag)
         return None
-    return fn(individual)
+    if not _exists(individual):
+        log.warning("[fetch] individual not found tag=%s iri=%s", tag, individual)
+        return None
+    rec = fn(individual)
+    log.info("[fetch] tag=%s iri=%s keys=%s",
+             tag, individual, sorted(k for k, v in rec.items() if v))
+    return rec

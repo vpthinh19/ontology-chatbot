@@ -33,8 +33,6 @@ from ..config import (
     TRAIN_OUT_DIR,
     TRAIN_PATH,
     VAL_SIZE,
-    WARMUP_STEPS,
-    WEIGHT_DECAY,
 )
 from ..viz.training_curves import plot_training_curves
 from .dataset import label_mappings, load_split, make_tokenize_fn
@@ -86,8 +84,8 @@ def main() -> None:
         per_device_eval_batch_size=BATCH_SIZE,
         optim="adamw_torch_fused",
         learning_rate=LEARNING_RATE,
-        weight_decay=WEIGHT_DECAY,
-        warmup_steps=WARMUP_STEPS,
+        weight_decay=0.005,
+        warmup_steps=0.1,
         eval_strategy="epoch",
         save_strategy="epoch",
         save_total_limit=2,

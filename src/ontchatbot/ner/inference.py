@@ -2,13 +2,18 @@
 
 Loads the fine-tuned PhoBERT once (cached) and exposes :func:`extract_entities`
 which decodes the BIO tag sequence into ``(surface, tag)`` spans for the
-downstream fuzzy / SPARQL pipeline. Sub-word logits are aggregated to word
-level by taking the prediction of the first sub-word piece — the standard BIO
-decoding convention.
+downstream fuzzy / SPARQL pipeline.
+
+Word-level prediction is obtained by aggregating sub-word logits with the
+"first sub-word wins" rule (the convention paired with the BIO sub-word
+propagation used at training time). The manual word→sub-word alignment from
+:mod:`ontchatbot.ner.encoding` is reused here so training and inference share
+identical pre-processing.
 """
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from functools import lru_cache
 
@@ -16,7 +21,10 @@ import torch
 from transformers import AutoModelForTokenClassification, AutoTokenizer
 
 from ..config import MAX_LENGTH, MODEL_DIR
+from .encoding import make_word_encoder
 from .preprocessing import clean, segment
+
+log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -29,28 +37,37 @@ class Entity:
 
 @lru_cache(maxsize=1)
 def _load():
-    tok = AutoTokenizer.from_pretrained(str(MODEL_DIR), use_fast=True)
+    log.info("[load] loading PhoBERT NER from %s", MODEL_DIR)
+    tok = AutoTokenizer.from_pretrained(str(MODEL_DIR))
     model = AutoModelForTokenClassification.from_pretrained(str(MODEL_DIR))
     model.eval()
     if torch.cuda.is_available():
         model.cuda()
-    return tok, model
+    encode = make_word_encoder(tok, MAX_LENGTH)
+    log.info("[load] device=%s n_labels=%d", model.device, len(model.config.id2label))
+    return tok, model, encode
 
 
 def predict_word_tags(text: str) -> tuple[list[str], list[str]]:
-    """Return parallel word-level ``(words, tags)`` lists for ``text``."""
-    tok, model = _load()
-    words = segment(clean(text))
+    """Return parallel word-level ``(words, tags)`` arrays for ``text``."""
+    tok, model, encode = _load()
+    cleaned = clean(text)
+    log.debug("[preprocess] raw=%r cleaned=%r", text, cleaned)
+    words = segment(cleaned)
+    log.info("[preprocess] words(n=%d)=%s", len(words), words)
     if not words:
         return [], []
-    enc = tok(words, is_split_into_words=True, truncation=True,
-              max_length=MAX_LENGTH, return_tensors="pt")
-    word_ids = enc.word_ids(batch_index=0)
-    enc = {k: v.to(model.device) for k, v in enc.items()}
+
+    input_ids, word_ids = encode(words)
+    log.debug("[encode] subword_ids(n=%d) word_ids=%s",
+              len(input_ids), word_ids)
+    ids_t = torch.tensor([input_ids], device=model.device)
+    mask_t = torch.ones_like(ids_t)
     with torch.no_grad():
-        logits = model(**enc).logits[0]
+        logits = model(input_ids=ids_t, attention_mask=mask_t).logits[0]
     pred_ids = logits.argmax(dim=-1).tolist()
     id2lab = model.config.id2label
+
     tags = ["O"] * len(words)
     seen: set[int] = set()
     for tid, wid in zip(pred_ids, word_ids):
@@ -58,11 +75,12 @@ def predict_word_tags(text: str) -> tuple[list[str], list[str]]:
             continue
         seen.add(wid)
         tags[wid] = id2lab[tid]
+    log.info("[ner] tags=%s", list(zip(words, tags)))
     return words, tags
 
 
 def decode_bio(words: list[str], tags: list[str]) -> list[Entity]:
-    """Decode parallel ``words/tags`` lists into BIO entity spans."""
+    """Decode parallel ``words/tags`` arrays into BIO entity spans."""
     out: list[Entity] = []
     i = 0
     while i < len(tags):

@@ -31,19 +31,19 @@ OUT_DIR = PROJECT_ROOT / "out"
 MODEL_DIR = PROJECT_ROOT / "models" / "phobert-ner"
 TRAIN_OUT_DIR = OUT_DIR / "training"
 EVAL_OUT_DIR = OUT_DIR / "evaluation"
+LOG_DIR = PROJECT_ROOT / "logs"
+LOG_FILE = LOG_DIR / "chatbot.log"
 
 WEB_DIR = PROJECT_ROOT / "web"
 
 # Model
 MODEL_NAME = "vinai/phobert-base-v2"
-MAX_LENGTH = 128
+MAX_LENGTH = 256
 
 # Training
 EPOCHS = 20
 BATCH_SIZE = 16
 LEARNING_RATE = 3e-5
-WEIGHT_DECAY = 0.005
-WARMUP_STEPS = 0.1
 VAL_SIZE = 0.2
 SEED = 42
 

@@ -9,20 +9,40 @@ Endpoints
 The heavy components (PhoBERT, ontology) are loaded lazily on the first
 request and cached as singletons; the process therefore starts quickly and
 warms up on demand.
+
+Runtime tracing — including each stage of the pipeline and the shape of the
+data passing through it — is written to ``logs/chatbot.log`` (rotated) by
+:mod:`ontchatbot.logging_setup`, which is initialised at server startup.
 """
 
 from __future__ import annotations
 
 import argparse
+import logging
+import time
+import uuid
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from ..config import WEB_DIR
+from ..logging_setup import configure_logging
 from ..pipeline import answer
 
-app = FastAPI(title="NTU Academic Chatbot", version="0.1.0")
+log = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    log_path = configure_logging()
+    log.info("[startup] FastAPI ready log_file=%s", log_path)
+    yield
+    log.info("[shutdown] FastAPI stopping")
+
+
+app = FastAPI(title="NTU Academic Chatbot", version="0.1.0", lifespan=_lifespan)
 
 
 class ChatRequest(BaseModel):
@@ -33,6 +53,23 @@ class ChatResponse(BaseModel):
     reply: str
     greeting: bool
     entities: list[dict]
+
+
+@app.middleware("http")
+async def _trace_requests(request: Request, call_next):
+    """Log each HTTP request with a short request id and wall-time latency."""
+    rid = uuid.uuid4().hex[:8]
+    start = time.perf_counter()
+    log.info("[http] rid=%s %s %s", rid, request.method, request.url.path)
+    try:
+        response = await call_next(request)
+    except Exception:
+        log.exception("[http] rid=%s unhandled exception", rid)
+        raise
+    elapsed_ms = (time.perf_counter() - start) * 1000
+    log.info("[http] rid=%s status=%s elapsed=%.1fms",
+             rid, response.status_code, elapsed_ms)
+    return response
 
 
 @app.get("/", include_in_schema=False)
@@ -56,6 +93,7 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--reload", action="store_true")
     args = parser.parse_args()
+    configure_logging()
     import uvicorn
     uvicorn.run("ontchatbot.api.server:app",
                 host=args.host, port=args.port, reload=args.reload)

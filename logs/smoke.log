@@ -1,0 +1,8 @@
+2026-05-04 01:32:39 | INFO    | ontchatbot                         | [init] logging started log_file=D:\dev\test\logs\smoke.log level=INFO
+2026-05-04 01:32:39 | INFO    | ontchatbot.pipeline                | [recv] message='xin chao em hoi ve bao luu' length=26
+2026-05-04 01:32:39 | INFO    | ontchatbot.pipeline                | [ner] extracted=1 spans=[{'surface': 'bao luu', 'tag': 'QuyTrinhHocVu', 'start': 0, 'end': 2}]
+2026-05-04 01:32:39 | INFO    | ontchatbot.pipeline                | [fuzzy] surface='bao luu' tag=QuyTrinhHocVu candidates=[('QuyTrinh_BaoLuu', 100.0), ('QuyTrinh_HocLai', 42.86), ('QuyTrinh_RutMonHoc', 42.86)]
+2026-05-04 01:32:39 | INFO    | ontchatbot.pipeline                | [fuzzy] pick surface='bao luu' tag=QuyTrinhHocVu -> iri=QuyTrinh_BaoLuu score=100.00
+2026-05-04 01:32:39 | INFO    | ontchatbot.ontology.queries        | [fetch] tag=QuyTrinhHocVu iri=QuyTrinh_BaoLuu keys=['conditions', 'decision', 'description', 'documents', 'handled_by', 'iri', 'kind', 'label']
+2026-05-04 01:32:39 | INFO    | ontchatbot.ontology.response       | [render] tag=QuyTrinhHocVu iri=QuyTrinh_BaoLuu chars=1324
+2026-05-04 01:32:39 | INFO    | ontchatbot.pipeline                | [compose] greeting=True n_matched=1 block_chars=1324 reply_chars=1481

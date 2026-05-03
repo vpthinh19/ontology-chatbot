@@ -8,12 +8,15 @@ small set of accessors used by the SPARQL and fuzzy modules.
 from __future__ import annotations
 
 import json
+import re
 from functools import lru_cache
 from typing import Iterable
 
 from owlready2 import Ontology, default_world
 
 from ..config import LABEL_MAP_PATH, ONTOLOGY_PATH
+
+_CAMEL_RE = re.compile(r"([a-z])([A-Z])")
 
 
 @lru_cache(maxsize=1)
@@ -63,8 +66,13 @@ def short_name(individual) -> str:
 
 
 def primary_label(individual) -> str:
-    """First ``rdfs:label`` if present, otherwise the humanised local name."""
+    """First ``rdfs:label`` if present, otherwise the humanised local name.
+
+    The fallback splits underscores and CamelCase boundaries, so a missing
+    label produces ``"Don Xin Bao Luu"`` rather than ``"DonXinBaoLuu"``.
+    """
     labels = list(getattr(individual, "label", []) or [])
     if labels:
         return str(labels[0])
-    return short_name(individual).replace("_", " ").strip()
+    name = short_name(individual).replace("_", " ")
+    return _CAMEL_RE.sub(r"\1 \2", name).strip()

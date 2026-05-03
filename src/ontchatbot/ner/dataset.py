@@ -1,13 +1,17 @@
 """HuggingFace Dataset adapters for token-classification.
 
 JSONL rows of the form ``{"tokens": [...], "ner_tags": [...]}`` are loaded into
-a ``datasets.Dataset`` and tokenised with ``is_split_into_words=True``.
+a ``datasets.Dataset`` and tokenised through :func:`make_tokenize_fn`.
 
-Sub-word BIO propagation rule: the *first* sub-word of a word inherits the
-word's tag verbatim; every *continuation* sub-word inherits the same tag, but
-``B-X`` is rewritten to ``I-X`` so the entity boundary is asserted only once.
-This is the standard convention recommended by HuggingFace tutorials and
-required for ``seqeval`` to recover the original entity span at evaluation.
+Sub-word BIO propagation
+------------------------
+The first sub-word of a word inherits the word's tag verbatim; every
+*continuation* sub-word inherits the same tag, but ``B-X`` is rewritten to
+``I-X`` so the entity boundary is asserted only once. This convention is what
+``seqeval`` expects for entity-level recovery.
+
+Word→sub-word alignment is delegated to :mod:`ontchatbot.ner.encoding`, which
+implements it manually because PhoBERT v2 only ships a slow tokenizer.
 """
 
 from __future__ import annotations
@@ -20,6 +24,7 @@ from transformers import PreTrainedTokenizerBase
 
 from ..config import MAX_LENGTH
 from ..ontology.loader import bio_label_list
+from .encoding import make_word_encoder
 
 
 def label_mappings() -> tuple[list[str], dict[str, int], dict[int, str]]:
@@ -40,38 +45,42 @@ def load_split(path: Path, l2i: dict[str, int]) -> Dataset:
     })
 
 
-def _b_to_i_table(l2i: dict[str, int]) -> dict[int, int]:
+def b_to_i_table(l2i: dict[str, int]) -> dict[int, int]:
     """Precomputed ``B-X id → I-X id`` map for sub-word continuation rewriting."""
     return {l2i[l]: l2i["I-" + l[2:]] for l in l2i if l.startswith("B-")}
 
 
+def project_labels(word_ids: list[int | None], tag_seq: list[int],
+                   b_to_i: dict[int, int]) -> list[int]:
+    """Map word-level tags onto a sub-word sequence with B→I downgrade."""
+    out: list[int] = []
+    prev: int | None = None
+    for wid in word_ids:
+        if wid is None:
+            out.append(-100)
+        elif wid != prev:
+            out.append(tag_seq[wid])
+        else:
+            t = tag_seq[wid]
+            out.append(b_to_i.get(t, t))
+        prev = wid
+    return out
+
+
 def make_tokenize_fn(tokenizer: PreTrainedTokenizerBase):
     _, l2i, _ = label_mappings()
-    b_to_i = _b_to_i_table(l2i)
+    b_to_i = b_to_i_table(l2i)
+    encode = make_word_encoder(tokenizer, MAX_LENGTH)
 
     def _fn(batch):
-        enc = tokenizer(
-            batch["tokens"],
-            is_split_into_words=True,
-            truncation=True,
-            max_length=MAX_LENGTH,
-            padding=False,
-        )
-        out: list[list[int]] = []
-        for i, tag_seq in enumerate(batch["tags"]):
-            row: list[int] = []
-            prev: int | None = None
-            for wid in enc.word_ids(batch_index=i):
-                if wid is None:
-                    row.append(-100)
-                elif wid != prev:
-                    row.append(tag_seq[wid])
-                else:
-                    # Continuation sub-word: keep the entity but downgrade B→I.
-                    row.append(b_to_i.get(tag_seq[wid], tag_seq[wid]))
-                prev = wid
-            out.append(row)
-        enc["labels"] = out
-        return enc
+        ids_b: list[list[int]] = []
+        masks_b: list[list[int]] = []
+        labels_b: list[list[int]] = []
+        for words, tag_seq in zip(batch["tokens"], batch["tags"]):
+            ids, wids = encode(list(words))
+            labels_b.append(project_labels(wids, list(tag_seq), b_to_i))
+            ids_b.append(ids)
+            masks_b.append([1] * len(ids))
+        return {"input_ids": ids_b, "attention_mask": masks_b, "labels": labels_b}
 
     return _fn

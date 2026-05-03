@@ -11,8 +11,12 @@ contact fields, a procedure lists conditions / documents / steps).
 
 from __future__ import annotations
 
+import logging
+
 from .fuzzy import FuzzyMatch
 from .queries import fetch
+
+log = logging.getLogger(__name__)
 
 
 def _label_or_name(rec: dict) -> str:
@@ -127,11 +131,13 @@ def render_blocks(matches: list[tuple[str, FuzzyMatch]]) -> str:
     for tag, m in matches:
         key = (tag, m.iri)
         if key in seen:
+            log.debug("[render] dedupe tag=%s iri=%s", tag, m.iri)
             continue
         seen.add(key)
         block = render_one(tag, m.iri)
         if block:
             blocks.append(block)
+            log.info("[render] tag=%s iri=%s chars=%d", tag, m.iri, len(block))
     return "\n\n".join(blocks)
 
 

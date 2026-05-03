@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -48,28 +49,52 @@ def segment(text: str) -> list[str]:
     return [t for t in out.split() if t]
 
 
-def collect_surfaces() -> dict[str, list[str]]:
-    """Per-tag pool of surface forms: ``rdfs:label`` + ``hasAlias`` + humanised name.
+# Surface forms must be natural Vietnamese — never the raw CamelCase IRI of an
+# individual (e.g. ``DonXinBaoLuu``). The pattern below catches typical IRI
+# fragments so they cannot leak into the dataset even if a future ontology
+# revision omits an ``rdfs:label``.
+_IRI_LIKE_RE = re.compile(r"[A-Za-z][a-z]*[A-Z][A-Za-z]*[A-Z]")
 
-    For ``DinhMucHocPhi`` we additionally synthesise short forms (``k65``,
-    ``hp k65``…) since the user often abbreviates fee-bracket queries.
+
+def looks_like_iri(s: str) -> bool:
+    """True if ``s`` resembles a CamelCase / mixed-case IRI fragment."""
+    return bool(_IRI_LIKE_RE.search(s))
+
+
+def collect_surfaces() -> dict[str, list[str]]:
+    """Per-tag pool of *natural-language* surface forms.
+
+    Sources, in order of preference:
+        1. ``rdfs:label`` — every individual in this ontology has one.
+        2. ``hasAlias`` literals.
+        3. Class-specific synthesised short forms (e.g. ``k65``, ``hp k65``
+           for ``DinhMucHocPhi``; common payment phrases for
+           ``PhuongThucThanhToan``).
+
+    Forms that resemble raw IRIs are filtered out as a defensive guard.
     """
     load_ontology()
     pool: dict[str, list[str]] = defaultdict(list)
     for tag in ontology_tags():
         for ind in iter_individuals(class_local(tag)):
-            forms: set[str] = {short_name(ind).replace("_", " "), primary_label(ind)}
-            for a in getattr(ind, "hasAlias", None) or []:
-                forms.add(str(a))
+            forms: set[str] = set()
+            label = primary_label(ind)
+            if label:
+                forms.add(label)
             for v in getattr(ind, "label", None) or []:
-                forms.add(str(v))
+                if isinstance(v, str):
+                    forms.add(str(v))
+            for a in getattr(ind, "hasAlias", None) or []:
+                if isinstance(a, str):
+                    forms.add(str(a))
             if tag == "DinhMucHocPhi":
-                base = short_name(ind)
-                for piece in base.split("_"):
+                for piece in short_name(ind).split("_"):
                     if len(piece) >= 2 and piece[0] in "Kk" and piece[1:].isdigit():
                         forms.update({piece.lower(), f"hp {piece.lower()}",
                                       f"học phí {piece.lower()}"})
-            pool[tag].extend(sorted({f.strip() for f in forms if f and f.strip()}))
+            cleaned = sorted({f.strip() for f in forms
+                              if f and f.strip() and not looks_like_iri(f)})
+            pool[tag].extend(cleaned)
     return pool
 
 

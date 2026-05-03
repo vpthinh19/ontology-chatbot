@@ -1,5 +1,5 @@
 [project]
-name = "ont-chatbot"
+name = "ontchatbot"
 version = "0.0.1"
 description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
 readme = "README.md"
@@ -20,10 +20,10 @@ dependencies = [
 ]
 
 [project.scripts]
-ont-build-dataset = "ontchatbot.data.build_dataset:main"
-ont-train = "ontchatbot.ner.train:main"
-ont-evaluate = "ontchatbot.ner.evaluate:main"
-ont-serve = "ontchatbot.api.server:main"
+build_dataset = "ontchatbot.data.build_dataset:main"
+train = "ontchatbot.ner.train:main"
+evaluate = "ontchatbot.ner.evaluate:main"
+serve = "ontchatbot.api.server:main"
 
 [build-system]
 requires = ["hatchling"]
