@@ -147,13 +147,19 @@ OUT_OF_DOMAIN_REPLY = (
 )
 
 
-def compose(reply_blocks: str, *, greeting: bool, has_entities: bool) -> str:
-    """Glue greeting / ontology-blocks / OOD according to the composition rule."""
+def compose(blocks: str, *, greeting: bool) -> str:
+    """Compose the final reply.
+
+    Rules:
+        - a greeting prefix appears whenever ``greeting`` is ``True``;
+        - ontology ``blocks`` are concatenated next when non-empty;
+        - if neither applies, the out-of-domain fallback is returned.
+    """
     parts: list[str] = []
     if greeting:
         parts.append(GREETING_REPLY)
-    if has_entities:
-        parts.append(reply_blocks)
+    if blocks:
+        parts.append(blocks)
     elif not greeting:
         parts.append(OUT_OF_DOMAIN_REPLY)
     return "\n\n".join(parts)

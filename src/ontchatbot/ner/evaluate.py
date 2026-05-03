@@ -6,6 +6,13 @@ de-facto academic standard for NER:
 * Token-level accuracy (sub-word ignored)
 * Entity-level precision / recall / F1 — both macro- and micro-averaged
 * Per-entity-type classification report
+
+Outputs in ``out/evaluation/``:
+    test_metrics.json
+    classification_report.txt
+    per_class_metrics.png
+    confusion_matrix.png
+    summary_table.png
 """
 
 from __future__ import annotations
@@ -30,25 +37,15 @@ from transformers import (
 )
 
 from ..config import BATCH_SIZE, EVAL_OUT_DIR, MODEL_DIR, TEST_PATH
+from ..viz.evaluation import (
+    plot_confusion_matrix,
+    plot_per_class_metrics,
+    plot_summary_table,
+)
 from .dataset import label_mappings, load_split, make_tokenize_fn
 
 
-def main() -> None:
-    _, l2i, i2l = label_mappings()
-    tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR), use_fast=True)
-    model = AutoModelForTokenClassification.from_pretrained(str(MODEL_DIR))
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    model.to(device).eval()
-
-    ds = load_split(TEST_PATH, l2i).map(
-        make_tokenize_fn(tokenizer), batched=True, remove_columns=["tokens", "tags"]
-    )
-    loader = DataLoader(
-        ds,
-        batch_size=BATCH_SIZE,
-        collate_fn=DataCollatorForTokenClassification(tokenizer),
-    )
-
+def _predict(model, loader, device, i2l) -> tuple[list[list[str]], list[list[str]]]:
     true_seqs: list[list[str]] = []
     pred_seqs: list[list[str]] = []
     with torch.no_grad():
@@ -65,6 +62,23 @@ def main() -> None:
                     p.append(i2l[int(pi)])
                 true_seqs.append(t)
                 pred_seqs.append(p)
+    return true_seqs, pred_seqs
+
+
+def main() -> None:
+    labels, l2i, i2l = label_mappings()
+    tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR), use_fast=True)
+    model = AutoModelForTokenClassification.from_pretrained(str(MODEL_DIR))
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model.to(device).eval()
+
+    ds = load_split(TEST_PATH, l2i).map(
+        make_tokenize_fn(tokenizer), batched=True, remove_columns=["tokens", "tags"]
+    )
+    loader = DataLoader(ds, batch_size=BATCH_SIZE,
+                        collate_fn=DataCollatorForTokenClassification(tokenizer))
+
+    true_seqs, pred_seqs = _predict(model, loader, device, i2l)
 
     metrics = {
         "n_test": len(true_seqs),
@@ -76,16 +90,23 @@ def main() -> None:
         "recall_micro": recall_score(true_seqs, pred_seqs, average="micro", zero_division=0),
         "f1_micro": f1_score(true_seqs, pred_seqs, average="micro", zero_division=0),
     }
-    report = classification_report(true_seqs, pred_seqs, digits=4, zero_division=0)
+    text_report = classification_report(true_seqs, pred_seqs, digits=4, zero_division=0)
+    dict_report = classification_report(true_seqs, pred_seqs, output_dict=True,
+                                        zero_division=0)
 
     out = Path(EVAL_OUT_DIR)
     out.mkdir(parents=True, exist_ok=True)
     (out / "test_metrics.json").write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    (out / "classification_report.txt").write_text(report, encoding="utf-8")
+    (out / "classification_report.txt").write_text(text_report, encoding="utf-8")
+    plot_per_class_metrics(dict_report, str(out / "per_class_metrics.png"))
+    plot_confusion_matrix(true_seqs, pred_seqs, labels,
+                          str(out / "confusion_matrix.png"))
+    plot_summary_table(metrics, str(out / "summary_table.png"))
+
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
-    print(report)
+    print(text_report)
 
 
 if __name__ == "__main__":

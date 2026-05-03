@@ -1,9 +1,13 @@
 """HuggingFace Dataset adapters for token-classification.
 
 JSONL rows of the form ``{"tokens": [...], "ner_tags": [...]}`` are loaded into
-a ``datasets.Dataset`` and tokenised with ``is_split_into_words=True``. Word
-labels are propagated to every sub-word piece so that the standard
-``CrossEntropyLoss`` over flattened sub-words matches the NER objective.
+a ``datasets.Dataset`` and tokenised with ``is_split_into_words=True``.
+
+Sub-word BIO propagation rule: the *first* sub-word of a word inherits the
+word's tag verbatim; every *continuation* sub-word inherits the same tag, but
+``B-X`` is rewritten to ``I-X`` so the entity boundary is asserted only once.
+This is the standard convention recommended by HuggingFace tutorials and
+required for ``seqeval`` to recover the original entity span at evaluation.
 """
 
 from __future__ import annotations
@@ -36,7 +40,15 @@ def load_split(path: Path, l2i: dict[str, int]) -> Dataset:
     })
 
 
+def _b_to_i_table(l2i: dict[str, int]) -> dict[int, int]:
+    """Precomputed ``B-X id → I-X id`` map for sub-word continuation rewriting."""
+    return {l2i[l]: l2i["I-" + l[2:]] for l in l2i if l.startswith("B-")}
+
+
 def make_tokenize_fn(tokenizer: PreTrainedTokenizerBase):
+    _, l2i, _ = label_mappings()
+    b_to_i = _b_to_i_table(l2i)
+
     def _fn(batch):
         enc = tokenizer(
             batch["tokens"],
@@ -45,13 +57,21 @@ def make_tokenize_fn(tokenizer: PreTrainedTokenizerBase):
             max_length=MAX_LENGTH,
             padding=False,
         )
-        labels: list[list[int]] = []
+        out: list[list[int]] = []
         for i, tag_seq in enumerate(batch["tags"]):
             row: list[int] = []
+            prev: int | None = None
             for wid in enc.word_ids(batch_index=i):
-                row.append(-100 if wid is None else tag_seq[wid])
-            labels.append(row)
-        enc["labels"] = labels
+                if wid is None:
+                    row.append(-100)
+                elif wid != prev:
+                    row.append(tag_seq[wid])
+                else:
+                    # Continuation sub-word: keep the entity but downgrade B→I.
+                    row.append(b_to_i.get(tag_seq[wid], tag_seq[wid]))
+                prev = wid
+            out.append(row)
+        enc["labels"] = out
         return enc
 
     return _fn
