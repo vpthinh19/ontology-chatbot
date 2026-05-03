@@ -35,16 +35,18 @@ def test_render_blocks_dedupes(onto):
 
 
 def test_compose_greeting_only():
-    out = compose("", greeting=True, has_entities=False)
-    assert out.strip() == GREETING_REPLY
+    assert compose("", greeting=True).strip() == GREETING_REPLY
 
 
 def test_compose_ood_only():
-    out = compose("", greeting=False, has_entities=False)
-    assert out.strip() == OUT_OF_DOMAIN_REPLY
+    assert compose("", greeting=False).strip() == OUT_OF_DOMAIN_REPLY
 
 
 def test_compose_greeting_then_block():
-    out = compose("BLOCK", greeting=True, has_entities=True)
+    out = compose("BLOCK", greeting=True)
     assert out.startswith(GREETING_REPLY)
     assert out.endswith("BLOCK")
+
+
+def test_compose_block_only():
+    assert compose("BLOCK", greeting=False).strip() == "BLOCK"

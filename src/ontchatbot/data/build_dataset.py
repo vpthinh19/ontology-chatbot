@@ -28,7 +28,7 @@ from pathlib import Path
 
 from underthesea import word_tokenize
 
-from ..config import SEED, TEST_PATH, TRAIN_PATH
+from ..config import MAX_LENGTH, OUT_DIR, SEED, TEST_PATH, TRAIN_PATH
 from ..ontology.loader import (
     class_local,
     iter_individuals,
@@ -37,6 +37,7 @@ from ..ontology.loader import (
     primary_label,
     short_name,
 )
+from ..viz.distributions import plot_label_distribution, plot_length_distribution
 from .templates import CONNECTORS, GREETINGS, OUT_OF_DOMAIN, TEMPLATES, perturb
 
 
@@ -213,6 +214,14 @@ def main() -> None:
     write_jsonl(TEST_PATH, test)
     print(f"[train] {_summary(train)}")
     print(f"[test ] {_summary(test)}")
+
+    viz_dir = OUT_DIR / "dataset"
+    plot_label_distribution({"train": train, "test": test},
+                            str(viz_dir / "label_distribution.png"))
+    plot_length_distribution({"train": train, "test": test},
+                             str(viz_dir / "length_distribution.png"),
+                             max_length=MAX_LENGTH)
+    print(f"[viz  ] {viz_dir}")
 
 
 if __name__ == "__main__":

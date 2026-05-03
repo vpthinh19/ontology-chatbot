@@ -1,12 +1,12 @@
 [project]
 name = "ont-chatbot"
-version = "0.1.0"
+version = "0.0.1"
 description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "torch",
-    "transformers>=4.46",
+    "transformers",
     "datasets",
     "accelerate",
     "seqeval",
@@ -16,9 +16,7 @@ dependencies = [
     "underthesea",
     "owlready2",
     "rapidfuzz",
-    "fastapi",
-    "uvicorn[standard]",
-    "pydantic",
+    "fastapi[standard]",
 ]
 
 [project.scripts]
