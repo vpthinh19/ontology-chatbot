@@ -11,3 +11,4 @@ uv.lock
 
 models/
 out/checkpoints/
+logs/
