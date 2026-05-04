@@ -10,5 +10,4 @@ uv.lock
 .sixth/
 
 models/
-out/checkpoints/
 logs/
