@@ -36,11 +36,11 @@ from transformers import (
     DataCollatorForTokenClassification,
 )
 
-from ..config import BATCH_SIZE, EVAL_OUT_DIR, MODEL_DIR, TEST_PATH
+from ..core.config import BATCH_SIZE, EVAL_ARTIFACTS_DIR, MODEL_DIR, TEST_PATH
 from ..viz.evaluation import (
+    plot_benchmark_card,
     plot_confusion_matrix,
     plot_per_class_metrics,
-    plot_summary_table,
 )
 from .dataset import label_mappings, load_split, make_tokenize_fn
 
@@ -91,10 +91,9 @@ def main() -> None:
         "f1_micro": f1_score(true_seqs, pred_seqs, average="micro", zero_division=0),
     }
     text_report = classification_report(true_seqs, pred_seqs, digits=4, zero_division=0)
-    dict_report = classification_report(true_seqs, pred_seqs, output_dict=True,
-                                        zero_division=0)
+    dict_report = classification_report(true_seqs, pred_seqs, output_dict=True, zero_division=0)
 
-    out = Path(EVAL_OUT_DIR)
+    out = Path(EVAL_ARTIFACTS_DIR)
     out.mkdir(parents=True, exist_ok=True)
     (out / "test_metrics.json").write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -103,7 +102,7 @@ def main() -> None:
     plot_per_class_metrics(dict_report, str(out / "per_class_metrics.png"))
     plot_confusion_matrix(true_seqs, pred_seqs, labels,
                           str(out / "confusion_matrix.png"))
-    plot_summary_table(metrics, str(out / "summary_table.png"))
+    plot_benchmark_card(metrics, dict_report, str(out / "benchmark_card.png"))
 
     print(json.dumps(metrics, indent=2, ensure_ascii=False))
     print(text_report)

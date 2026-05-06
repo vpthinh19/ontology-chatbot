@@ -20,17 +20,18 @@ from transformers import (
     DataCollatorForTokenClassification,
     Trainer,
     TrainingArguments,
+    EarlyStoppingCallback,
     set_seed,
 )
 
-from ..config import (
+from ..core.config import (
     BATCH_SIZE,
     EPOCHS,
     LEARNING_RATE,
     MODEL_DIR,
     MODEL_NAME,
     SEED,
-    TRAIN_OUT_DIR,
+    TRAIN_ARTIFACTS_DIR,
     TRAIN_PATH,
     VAL_SIZE,
 )
@@ -82,20 +83,24 @@ def main() -> None:
         num_train_epochs=EPOCHS,
         per_device_train_batch_size=BATCH_SIZE,
         per_device_eval_batch_size=BATCH_SIZE,
-        optim="adamw_torch_fused",
+        optim="adamw_torch_fused" if torch.cuda.is_available() else "adamw_torch",
         learning_rate=LEARNING_RATE,
         weight_decay=0.005,
         warmup_steps=0.1,
-        eval_strategy="epoch",
-        save_strategy="epoch",
+        eval_strategy="steps",
+        eval_steps=50,
+        save_strategy="steps",
+        save_steps=50,
         save_total_limit=2,
         load_best_model_at_end=True,
         metric_for_best_model="f1_macro",
         greater_is_better=True,
-        logging_strategy="epoch",
+        logging_strategy="steps",
+        logging_steps=50,
         report_to="none",
         seed=SEED,
-        bf16=torch.cuda.is_available(),
+        bf16=torch.cuda.is_available() and torch.cuda.is_bf16_supported(),
+        fp16=torch.cuda.is_available() and not torch.cuda.is_bf16_supported(),
     )
 
     trainer = Trainer(
@@ -106,18 +111,19 @@ def main() -> None:
         processing_class=tokenizer,
         data_collator=DataCollatorForTokenClassification(tokenizer),
         compute_metrics=_build_compute_metrics(i2l),
+        # callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]
     )
     trainer.train()
     trainer.save_model(str(MODEL_DIR))
     tokenizer.save_pretrained(str(MODEL_DIR))
 
-    out_dir = Path(TRAIN_OUT_DIR)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "log_history.json").write_text(
+    ARTIFACTS_DIR = Path(TRAIN_ARTIFACTS_DIR)
+    ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+    (ARTIFACTS_DIR / "log_history.json").write_text(
         json.dumps(trainer.state.log_history, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    plot_training_curves(trainer.state.log_history, str(out_dir / "training_curves.png"))
+    plot_training_curves(trainer.state.log_history, str(ARTIFACTS_DIR / "training_curves.png"))
 
 
 if __name__ == "__main__":

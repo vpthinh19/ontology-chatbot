@@ -16,7 +16,7 @@ from functools import lru_cache
 
 from rapidfuzz import fuzz, process
 
-from ..config import FUZZY_MIN_SCORE, FUZZY_TOP_K
+from ..core.config import FUZZY_MIN_SCORE, FUZZY_TOP_K
 from .loader import class_local, iter_individuals, load_ontology, short_name
 
 

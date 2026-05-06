@@ -12,18 +12,18 @@ from ontchatbot.ontology.loader import (
 )
 
 
-def test_label_map_has_seven_keys(label_map):
-    assert len(label_map) == 7
-    assert set(label_map) >= {"QuyTrinhHocVu", "PhongBanHanhChinh",
+def test_label_map_has_five_ontology_keys(label_map):
+    """Greetings and out-of-domain are intent-only and live outside the
+    label map; only the five ontology-backed classes are tagged."""
+    assert set(label_map) == {"QuyTrinhHocVu", "PhongBanHanhChinh",
                               "TaiLieuBieuMau", "DinhMucHocPhi",
-                              "PhuongThucThanhToan", "ChaoHoi", "NgoaiLe"}
+                              "PhuongThucThanhToan"}
 
 
-def test_ontology_tags_excludes_normal_intents():
-    tags = ontology_tags()
-    assert len(tags) == 5
-    assert "ChaoHoi" not in tags
-    assert "NgoaiLe" not in tags
+def test_ontology_tags_returns_all_five():
+    assert set(ontology_tags()) == {"QuyTrinhHocVu", "PhongBanHanhChinh",
+                                    "TaiLieuBieuMau", "DinhMucHocPhi",
+                                    "PhuongThucThanhToan"}
 
 
 def test_bio_label_list_size_matches_tags():
