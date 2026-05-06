@@ -20,7 +20,7 @@ from functools import lru_cache
 import torch
 from transformers import AutoModelForTokenClassification, AutoTokenizer
 
-from ..config import MAX_LENGTH, MODEL_DIR
+from ..core.config import MAX_LENGTH, MODEL_DIR
 from .encoding import make_word_encoder
 from .preprocessing import clean, segment
 
@@ -80,21 +80,30 @@ def predict_word_tags(text: str) -> tuple[list[str], list[str]]:
 
 
 def decode_bio(words: list[str], tags: list[str]) -> list[Entity]:
-    """Decode parallel ``words/tags`` arrays into BIO entity spans."""
+    """Decode parallel ``words/tags`` arrays into BIO entity spans.
+
+    *Lenient* decoding: an ``I-X`` tag preceded by ``O`` (or by a different
+    label) is treated as the start of a new entity. This recovers spans that
+    a model may emit without a leading ``B-X`` — a common failure mode when
+    multiple entities of the same class are mentioned in close proximity
+    (e.g. *"hp k65 và k67"*).
+    """
     out: list[Entity] = []
     i = 0
-    while i < len(tags):
+    n = len(tags)
+    while i < n:
         t = tags[i]
-        if t.startswith("B-"):
-            label = t[2:]
-            j = i + 1
-            while j < len(tags) and tags[j] == f"I-{label}":
-                j += 1
-            surface = " ".join(w.replace("_", " ") for w in words[i:j])
-            out.append(Entity(surface=surface, tag=label, start=i, end=j))
-            i = j
-        else:
+        if t == "O":
             i += 1
+            continue
+        # Both B-X and I-X open a span; the entity type is t[2:].
+        label = t[2:]
+        j = i + 1
+        while j < n and tags[j] == f"I-{label}":
+            j += 1
+        surface = " ".join(w.replace("_", " ") for w in words[i:j])
+        out.append(Entity(surface=surface, tag=label, start=i, end=j))
+        i = j
     return out
 
 

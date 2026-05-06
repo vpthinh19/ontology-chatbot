@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import pytest
 
-from ontchatbot import pipeline
+from ontchatbot.core import pipeline
 from ontchatbot.ner.inference import Entity
 
 

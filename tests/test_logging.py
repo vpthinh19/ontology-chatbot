@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot import logging_setup, pipeline
+from ontchatbot.core import logging_setup, pipeline
 from ontchatbot.ner.inference import Entity
 
 

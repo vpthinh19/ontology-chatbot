@@ -1,205 +1,144 @@
-"""Generate train/test JSONL for PhoBERT NER from ontology + templates.
+"""Compile the hand-curated source corpus into static train / test JSONL.
 
-Pipeline
---------
-1. Load all ontology individuals together with their ``rdfs:label`` and every
-   ``hasAlias`` literal — these become the pool of *surface forms* for each tag.
-2. For every ``(template, surface)`` pair render a word-segmented token
-   sequence and assign BIO tags by tracking the entity slot's position. Both
-   the surrounding text and the entity surface are word-segmented separately
-   (``underthesea``) and then concatenated, so BIO alignment is exact without
-   char-offset bookkeeping.
-3. Add greeting and out-of-domain samples (all ``O``) for non-entity coverage.
-4. Stitch a configurable number of *multi-entity* samples by joining two
-   single-entity sentences with a Vietnamese conversational connector.
-5. Apply mild surface noise to a fraction of samples.
-6. Stratify-split by leading-tag distribution into train/test JSONL files.
+The dataset itself is *static* — it lives in :mod:`ontchatbot.data.sources`
+as an explicit Python list of ``(text, [(surface, tag), …])`` tuples. This
+compiler does only deterministic, reproducible work:
 
-Each output line: ``{"tokens": [...], "ner_tags": [...]}``.
+1. word-segment each text via ``underthesea`` (PhoBERT was pre-trained on
+   word-segmented Vietnamese);
+2. align each annotated surface to a contiguous run of tokens, emitting BIO
+   tags with strict no-overlap accounting;
+3. split deterministically into train / test via a content-hash so the
+   partition is stable across re-compiles even if the source list grows.
+
+There is no randomness, no template expansion, no stochastic noise: the
+JSONL produced here is a faithful one-to-one materialisation of the
+human-authored source.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
-import random
-import re
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
-from underthesea import word_tokenize
+from underthesea import text_normalize, word_tokenize
 
-from ..config import MAX_LENGTH, OUT_DIR, SEED, TEST_PATH, TRAIN_PATH
-from ..ontology.loader import (
-    class_local,
-    iter_individuals,
-    load_ontology,
-    ontology_tags,
-    primary_label,
-    short_name,
-)
+from ..core.config import MAX_LENGTH, ARTIFACTS_DIR, TEST_PATH, TRAIN_PATH
 from ..viz.distributions import plot_label_distribution, plot_length_distribution
-from .templates import CONNECTORS, GREETINGS, OUT_OF_DOMAIN, TEMPLATES, perturb
+from .sources import SAMPLES, Sample
 
 
-def segment(text: str) -> list[str]:
-    """Word-segment with underthesea, returning underscore-joined tokens."""
+def _normalize(text: str) -> str:
+    """Apply ``underthesea.text_normalize`` so source text matches the form
+    the tokenizer subsequently emits — without this, harmless diacritic-
+    placement variants (``khoá`` vs ``khóa``) break char-level alignment."""
+    return text_normalize(text)
+
+
+def _segment(text: str) -> list[str]:
+    """Word-segment with underthesea; returns underscore-joined tokens."""
     out = word_tokenize(text, format="text")
     out = out if isinstance(out, str) else " ".join(out)
     return [t for t in out.split() if t]
 
 
-# Surface forms must be natural Vietnamese — never the raw CamelCase IRI of an
-# individual (e.g. ``DonXinBaoLuu``). The pattern below catches typical IRI
-# fragments so they cannot leak into the dataset even if a future ontology
-# revision omits an ``rdfs:label``.
-_IRI_LIKE_RE = re.compile(r"[A-Za-z][a-z]*[A-Z][A-Za-z]*[A-Z]")
+def _char_spans(text: str, tokens: list[str]) -> list[tuple[int, int]]:
+    """Return ``[(start, end)]`` of each token's character range in ``text``.
 
-
-def looks_like_iri(s: str) -> bool:
-    """True if ``s`` resembles a CamelCase / mixed-case IRI fragment."""
-    return bool(_IRI_LIKE_RE.search(s))
-
-
-def collect_surfaces() -> dict[str, list[str]]:
-    """Per-tag pool of *natural-language* surface forms.
-
-    Sources, in order of preference:
-        1. ``rdfs:label`` — every individual in this ontology has one.
-        2. ``hasAlias`` literals.
-        3. Class-specific synthesised short forms (e.g. ``k65``, ``hp k65``
-           for ``DinhMucHocPhi``; common payment phrases for
-           ``PhuongThucThanhToan``).
-
-    Forms that resemble raw IRIs are filtered out as a defensive guard.
+    The underscore in an underthesea token represents a space in the source
+    text, so we walk the source linearly looking up each token's readable
+    form. This gives us a precise character-level index that downstream
+    alignment can use even when the segmenter glues unrelated words
+    together (e.g. ``có_học``) — a frequent edge case in conversational
+    Vietnamese.
     """
-    load_ontology()
-    pool: dict[str, list[str]] = defaultdict(list)
-    for tag in ontology_tags():
-        for ind in iter_individuals(class_local(tag)):
-            forms: set[str] = set()
-            label = primary_label(ind)
-            if label:
-                forms.add(label)
-            for v in getattr(ind, "label", None) or []:
-                if isinstance(v, str):
-                    forms.add(str(v))
-            for a in getattr(ind, "hasAlias", None) or []:
-                if isinstance(a, str):
-                    forms.add(str(a))
-            if tag == "DinhMucHocPhi":
-                for piece in short_name(ind).split("_"):
-                    if len(piece) >= 2 and piece[0] in "Kk" and piece[1:].isdigit():
-                        forms.update({piece.lower(), f"hp {piece.lower()}",
-                                      f"học phí {piece.lower()}"})
-            cleaned = sorted({f.strip() for f in forms
-                              if f and f.strip() and not looks_like_iri(f)})
-            pool[tag].extend(cleaned)
-    return pool
+    spans: list[tuple[int, int]] = []
+    pos = 0
+    for tok in tokens:
+        readable = tok.replace("_", " ")
+        idx = text.find(readable, pos)
+        if idx < 0:
+            raise ValueError(
+                f"token {tok!r} not locatable from pos={pos} in {text!r}"
+            )
+        spans.append((idx, idx + len(readable)))
+        pos = idx + len(readable)
+    return spans
 
 
-def render_single(template: str, tag: str, surface: str) -> dict:
-    """Render a one-entity sentence into ``{tokens, ner_tags}``."""
-    left, right = template.split("{E}", 1)
-    l_toks = segment(left.strip())
-    r_toks = segment(right.strip())
-    e_toks = segment(surface)
-    if not e_toks:
-        e_toks = [surface]
-    tokens = l_toks + e_toks + r_toks
-    tags = (
-        ["O"] * len(l_toks)
-        + [f"B-{tag}"] + [f"I-{tag}"] * (len(e_toks) - 1)
-        + ["O"] * len(r_toks)
-    )
+def align(sample: Sample) -> dict:
+    """Render one ``(text, entities)`` source row into ``{tokens, ner_tags}``.
+
+    Alignment is *character-driven*: for each annotated surface we find its
+    character span in the source text (case-insensitive, monotonic cursor),
+    then mark every token whose character range overlaps that span. This
+    handles segmenter idiosyncrasies — when ``underthesea`` glues an
+    unrelated leading word into a multi-syllable token, the resulting
+    multi-word token is still tagged correctly at word granularity.
+    """
+    raw_text, entities = sample
+    text = _normalize(raw_text)
+    tokens = _segment(text)
+    spans = _char_spans(text, tokens)
+    tags = ["O"] * len(tokens)
+    text_l = text.lower()
+    used_token_idx: set[int] = set()
+    used_char_spans: list[tuple[int, int]] = []
+    for surface, label in entities:
+        surface = _normalize(surface)
+        target = surface.lower()
+        # Iterate every occurrence and pick the first that does not collide
+        # with a previously annotated span — this lets the source list
+        # annotations in any order while still rejecting accidental overlaps.
+        idx = -1
+        search_from = 0
+        while True:
+            cand = text_l.find(target, search_from)
+            if cand < 0:
+                break
+            cand_end = cand + len(surface)
+            if not any(s < cand_end and e > cand for s, e in used_char_spans):
+                idx = cand
+                break
+            search_from = cand + 1
+        if idx < 0:
+            raise ValueError(
+                f"entity surface {surface!r} ({label}) not found in {text!r} "
+                f"or all occurrences already used"
+            )
+        end = idx + len(surface)
+        hit = [i for i, (s, e) in enumerate(spans) if s < end and e > idx]
+        if not hit:
+            raise ValueError(
+                f"entity {surface!r} ({label}) overlaps no token in {text!r}"
+            )
+        if any(i in used_token_idx for i in hit):
+            raise ValueError(
+                f"entity {surface!r} ({label}) overlaps an earlier annotation in {text!r}"
+            )
+        tags[hit[0]] = f"B-{label}"
+        for j in hit[1:]:
+            tags[j] = f"I-{label}"
+        used_token_idx.update(hit)
+        used_char_spans.append((idx, end))
     return {"tokens": tokens, "ner_tags": tags}
 
 
-def stitch(a: dict, b: dict, connector: str) -> dict:
-    """Concatenate two single-entity samples with a connector phrase."""
-    conn = segment(connector.strip())
-    return {
-        "tokens": a["tokens"] + conn + b["tokens"],
-        "ner_tags": a["ner_tags"] + ["O"] * len(conn) + b["ner_tags"],
-    }
+def _stable_bucket(text: str) -> int:
+    """Map a sample to ``[0, 100)`` deterministically by SHA-1 of its text."""
+    h = hashlib.sha1(text.encode("utf-8")).digest()
+    return int.from_bytes(h[:4], "big") % 100
 
 
-def _sample_no_entity(text: str) -> dict:
-    toks = segment(text)
-    return {"tokens": toks, "ner_tags": ["O"] * len(toks)}
-
-
-def _apply_noise(sample: dict, rng: random.Random) -> dict:
-    raw = " ".join(t.replace("_", " ") for t in sample["tokens"])
-    noisy = perturb(raw, rng)
-    new_toks = segment(noisy)
-    return {**sample, "tokens": new_toks} if len(new_toks) == len(sample["tokens"]) else sample
-
-
-def _leading_tag(sample: dict) -> str:
-    """First non-``O`` tag (used as stratification key); ``O`` if entity-free."""
-    for t in sample["ner_tags"]:
-        if t != "O":
-            return t.split("-", 1)[1]
-    return "O"
-
-
-def build(
-    *,
-    n_per_tag: int = 240,
-    n_multi: int = 220,
-    n_greeting: int = 140,
-    n_ood: int = 180,
-    test_ratio: float = 0.2,
-    noise_ratio: float = 0.4,
-    seed: int = SEED,
-) -> tuple[list[dict], list[dict]]:
-    rng = random.Random(seed)
-    pool = collect_surfaces()
-    samples: list[dict] = []
-
-    # Single-entity
-    for tag, templates in TEMPLATES.items():
-        if not pool.get(tag):
-            continue
-        for _ in range(n_per_tag):
-            samples.append(render_single(rng.choice(templates), tag,
-                                         rng.choice(pool[tag])))
-
-    # Multi-entity (60% cross-class, 40% same-class for hard cases like "hp k65, k67")
-    tags = list(TEMPLATES.keys())
-    for _ in range(n_multi):
-        if rng.random() < 0.6:
-            t1, t2 = rng.sample(tags, 2)
-        else:
-            t1 = t2 = rng.choice(tags)
-        a = render_single(rng.choice(TEMPLATES[t1]), t1, rng.choice(pool[t1]))
-        b = render_single(rng.choice(TEMPLATES[t2]), t2, rng.choice(pool[t2]))
-        samples.append(stitch(a, b, rng.choice(CONNECTORS)))
-
-    # Non-entity intents
-    for _ in range(n_greeting):
-        samples.append(_sample_no_entity(rng.choice(GREETINGS)))
-    for _ in range(n_ood):
-        samples.append(_sample_no_entity(rng.choice(OUT_OF_DOMAIN)))
-
-    # Surface noise
-    samples = [_apply_noise(s, rng) if rng.random() < noise_ratio else s
-               for s in samples]
-    rng.shuffle(samples)
-
-    # Stratified split by leading tag
-    grouped: dict[str, list[dict]] = defaultdict(list)
+def split(samples: list[Sample], *, test_pct: int = 20) -> tuple[list[Sample], list[Sample]]:
+    """Hash-based split — adding new samples does not reshuffle existing ones."""
+    train: list[Sample] = []
+    test: list[Sample] = []
     for s in samples:
-        grouped[_leading_tag(s)].append(s)
-    train: list[dict] = []
-    test: list[dict] = []
-    for items in grouped.values():
-        cut = int(len(items) * (1.0 - test_ratio))
-        train.extend(items[:cut])
-        test.extend(items[cut:])
-    rng.shuffle(train)
-    rng.shuffle(test)
+        (test if _stable_bucket(s[0]) < test_pct else train).append(s)
     return train, test
 
 
@@ -211,42 +150,44 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
 
 
 def _summary(rows: list[dict]) -> str:
-    leading = Counter(_leading_tag(r) for r in rows)
+    leading: Counter[str] = Counter()
+    for r in rows:
+        tag = next((t.split("-", 1)[1] for t in r["ner_tags"] if t != "O"), "O")
+        leading[tag] += 1
     return f"n={len(rows)} leading_tags={dict(leading)}"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--n-per-tag", type=int, default=240)
-    parser.add_argument("--n-multi", type=int, default=220)
-    parser.add_argument("--n-greeting", type=int, default=140)
-    parser.add_argument("--n-ood", type=int, default=180)
-    parser.add_argument("--test-ratio", type=float, default=0.2)
-    parser.add_argument("--noise-ratio", type=float, default=0.4)
-    parser.add_argument("--seed", type=int, default=SEED)
+    parser.add_argument("--test-pct", type=int, default=20)
     args = parser.parse_args()
 
-    train, test = build(
-        n_per_tag=args.n_per_tag,
-        n_multi=args.n_multi,
-        n_greeting=args.n_greeting,
-        n_ood=args.n_ood,
-        test_ratio=args.test_ratio,
-        noise_ratio=args.noise_ratio,
-        seed=args.seed,
-    )
+    # Validate uniqueness — duplicates in the source corrupt train/test isolation.
+    seen: dict[str, int] = {}
+    for i, (text, _) in enumerate(SAMPLES):
+        if text in seen:
+            raise ValueError(f"duplicate source text at index {i} (also at {seen[text]}): {text!r}")
+        seen[text] = i
+
+    aligned = [align(s) for s in SAMPLES]
+
+    train_src, test_src = split(SAMPLES, test_pct=args.test_pct)
+    train = [align(s) for s in train_src]
+    test = [align(s) for s in test_src]
+
     write_jsonl(TRAIN_PATH, train)
     write_jsonl(TEST_PATH, test)
-    print(f"[train] {_summary(train)}")
-    print(f"[test ] {_summary(test)}")
+    print(f"[corpus] {_summary(aligned)}")
+    print(f"[train ] {_summary(train)}")
+    print(f"[test  ] {_summary(test)}")
 
-    viz_dir = OUT_DIR / "dataset"
+    viz_dir = ARTIFACTS_DIR / "dataset"
     plot_label_distribution({"train": train, "test": test},
                             str(viz_dir / "label_distribution.png"))
     plot_length_distribution({"train": train, "test": test},
                              str(viz_dir / "length_distribution.png"),
                              max_length=MAX_LENGTH)
-    print(f"[viz  ] {viz_dir}")
+    print(f"[viz   ] {viz_dir}")
 
 
 if __name__ == "__main__":

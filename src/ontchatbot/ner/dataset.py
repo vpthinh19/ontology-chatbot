@@ -22,7 +22,7 @@ from pathlib import Path
 from datasets import Dataset
 from transformers import PreTrainedTokenizerBase
 
-from ..config import MAX_LENGTH
+from ..core.config import MAX_LENGTH
 from ..ontology.loader import bio_label_list
 from .encoding import make_word_encoder
 

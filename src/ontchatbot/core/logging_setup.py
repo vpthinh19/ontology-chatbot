@@ -63,20 +63,10 @@ def configure_logging(
 
     logger.setLevel(level)
     # Keep propagation enabled so external capture mechanisms (pytest's
-    # ``caplog``, central log aggregators) still see our records. Production
-    # duplication is avoided by uvicorn not installing handlers on the root
-    # logger.
+    # ``caplog``, central log aggregators) still see our records.
     logger.propagate = True
     _CONFIGURED = True
     _ACTIVE_LOG_FILE = target
     logger.info("[init] logging started log_file=%s level=%s",
                 target, logging.getLevelName(level))
     return target
-
-
-def get_logger(name: str) -> logging.Logger:
-    """Convenience accessor — equivalent to ``logging.getLogger(name)`` but
-    guarantees the returned logger sits under the ``ontchatbot`` namespace."""
-    if not name.startswith(_PKG_LOGGER):
-        name = f"{_PKG_LOGGER}.{name}"
-    return logging.getLogger(name)

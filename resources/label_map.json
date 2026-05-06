@@ -33,19 +33,5 @@
       "label": "Phương thức thanh toán",
       "uri": "http://www.ntu.edu.vn/ontology/academic#PaymentMethod"
     }
-  },
-  {
-    "ChaoHoi": {
-      "type": "normal",
-      "label": "Chào hỏi",
-      "uri": ""
-    }
-  },
-  {
-    "NgoaiLe": {
-      "type": "normal",
-      "label": "Ngoại lệ",
-      "uri": ""
-    }
   }
 ]

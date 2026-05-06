@@ -27,9 +27,9 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
-from ..config import WEB_DIR
-from ..logging_setup import configure_logging
-from ..pipeline import answer
+from ..core.config import WEB_DIR
+from ..core.logging_setup import configure_logging
+from ..core.pipeline import answer
 
 log = logging.getLogger(__name__)
 

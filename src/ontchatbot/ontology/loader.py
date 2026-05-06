@@ -14,7 +14,7 @@ from typing import Iterable
 
 from owlready2 import Ontology, default_world
 
-from ..config import LABEL_MAP_PATH, ONTOLOGY_PATH
+from ..core.config import LABEL_MAP_PATH, ONTOLOGY_PATH
 
 _CAMEL_RE = re.compile(r"([a-z])([A-Z])")
 
