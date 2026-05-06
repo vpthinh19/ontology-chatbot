@@ -12,3 +12,4 @@ uv.lock
 
 models/
 logs/
+test.py
