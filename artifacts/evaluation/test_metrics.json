@@ -1,0 +1,10 @@
+{
+  "n_test": 194,
+  "token_accuracy": 0.966785896780787,
+  "precision_macro": 0.8597264746918845,
+  "recall_macro": 0.9075256107171,
+  "f1_macro": 0.8822056579255534,
+  "precision_micro": 0.859375,
+  "recall_micro": 0.8967391304347826,
+  "f1_micro": 0.877659574468085
+}

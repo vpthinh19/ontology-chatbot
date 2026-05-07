@@ -1,0 +1,7 @@
+[Entity(surface='đăng ký học phần', tag='QuyTrinhHocVu', start=0, end=3), Entity(surface='học phí k65 cntt', tag='DinhMucHocPhi', start=8, end=11)]
+[Entity(surface='học phí k65', tag='DinhMucHocPhi', start=0, end=2), Entity(surface='k67', tag='DinhMucHocPhi', start=3, end=4)]
+[Entity(surface='rớt môn', tag='QuyTrinhHocVu', start=1, end=3), Entity(surface='học lại', tag='QuyTrinhHocVu', start=5, end=7)]
+[]
+[Entity(surface='chuyển ngành', tag='QuyTrinhHocVu', start=7, end=9)]
+[Entity(surface='rút học phần', tag='QuyTrinhHocVu', start=9, end=12)]
+[Entity(surface='k67', tag='DinhMucHocPhi', start=0, end=1)]
