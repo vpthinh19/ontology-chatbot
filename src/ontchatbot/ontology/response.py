@@ -1,12 +1,19 @@
 """Render ontology records into a single Vietnamese chat reply.
 
-Composition rule:
-    [greeting?]  + [ontology block 1]  + ... + [ontology block N]   if entities found
-    [greeting?]  + [out-of-domain]                                   otherwise
+Composition rule (v2 — minimal-greeting policy):
+    [ontology block 1]  ...  [ontology block N]   if any entities matched
+    GREETING_REPLY                                  if user greeted but asked nothing else
+    OUT_OF_DOMAIN_REPLY                             otherwise
 
-Within each ontology block the renderer uses a per-class template that is
-tailored to the data the class actually exposes (e.g. an office card lists
-contact fields, a procedure lists conditions / documents / steps).
+The bot does NOT prepend a greeting to substantive answers; it greets back
+only when the user's message is a pure greeting/closing with no recognised
+entity. This matches typical chatbot UX expectations.
+
+Within each ontology block the renderer uses a per-class template tailored
+to the data the class actually exposes. Single-value fields are rendered
+*inline* on the same bullet ("Phòng phụ trách: Phòng Tài chính") rather than
+on a follow-up line, and URLs are emitted as markdown ``[label](url)`` links
+which the frontend converts to clickable anchors.
 """
 
 from __future__ import annotations
@@ -23,14 +30,29 @@ def _label_or_name(rec: dict) -> str:
     return rec.get("label") or rec["iri"].replace("_", " ")
 
 
-def _bullets(items: list[dict], with_url: bool = False) -> str:
-    lines: list[str] = []
-    for it in items:
-        text = it.get("label") or it.get("name", "").replace("_", " ")
-        if with_url and it.get("url"):
-            text = f"{text} ({it['url']})"
-        lines.append(f"  • {text}")
-    return "\n".join(lines)
+def _item_text(it: dict, with_url: bool = False) -> str:
+    text = it.get("label") or it.get("name", "").replace("_", " ")
+    if with_url and it.get("url"):
+        return f"[{text}]({it['url']})"
+    return text
+
+
+def _section(header: str, items: list[dict], with_url: bool = False) -> str:
+    """Render a "Header: items" section.
+
+    Single-item sections collapse to one line ("• Header: item"). Multi-item
+    sections use a sub-bullet on the next line, indented two spaces with an
+    en-dash.
+    """
+    rendered = [_item_text(it, with_url=with_url) for it in items]
+    if len(rendered) == 1:
+        return f"• {header}: {rendered[0]}"
+    bullets = "\n".join(f"  – {t}" for t in rendered)
+    return f"• {header}:\n{bullets}"
+
+
+def _md_link(label: str, url: str | None) -> str:
+    return f"[{label}]({url})" if url else label
 
 
 def _render_quy_trinh(r: dict) -> str:
@@ -38,55 +60,47 @@ def _render_quy_trinh(r: dict) -> str:
     if r["description"]:
         out.append(r["description"])
     if r["based_on"]:
-        out.append("• Căn cứ:")
-        out.append(_bullets(r["based_on"], with_url=True))
+        out.append(_section("Căn cứ", r["based_on"], with_url=True))
     elif r["decision"]:
         out.append(f"• Căn cứ: {r['decision']}")
     if r["handled_by"]:
-        out.append("• Phòng phụ trách:")
-        out.append(_bullets(r["handled_by"]))
+        out.append(_section("Phòng phụ trách", r["handled_by"]))
     if r["executed_via"]:
-        out.append("• Thực hiện qua:")
-        out.append(_bullets(r["executed_via"]))
+        out.append(_section("Thực hiện qua", r["executed_via"]))
     if r["conditions"]:
-        out.append("• Điều kiện:")
-        out.append(_bullets(r["conditions"]))
+        out.append(_section("Điều kiện", r["conditions"]))
     if r["documents"]:
-        out.append("• Biểu mẫu cần chuẩn bị:")
-        out.append(_bullets(r["documents"], with_url=True))
+        out.append(_section("Biểu mẫu cần chuẩn bị", r["documents"], with_url=True))
     if r["steps"]:
-        out.append("• Các bước:")
-        out.append(_bullets(r["steps"]))
+        out.append(_section("Các bước", r["steps"]))
     if r["outputs"]:
-        out.append("• Kết quả đầu ra:")
-        out.append(_bullets(r["outputs"]))
+        out.append(_section("Kết quả đầu ra", r["outputs"]))
     if r["fees"]:
-        out.append("• Mức học phí áp dụng:")
-        out.append(_bullets(r["fees"]))
+        out.append(_section("Mức học phí áp dụng", r["fees"]))
     if r["payments"]:
-        out.append("• Hình thức nộp:")
-        out.append(_bullets(r["payments"]))
+        out.append(_section("Hình thức nộp", r["payments"]))
     if r["fee_note"]:
         out.append(f"• Ghi chú: {r['fee_note']}")
     if r["video_url"]:
-        out.append(f"🎬 Video hướng dẫn: {r['video_url']}")
+        out.append(f"🎬 Video hướng dẫn: {_md_link('xem hướng dẫn', r['video_url'])}")
     return "\n".join(out)
 
 
 def _render_phong_ban(r: dict) -> str:
     out = [f"🏢 {_label_or_name(r)}"]
     for label, key in (("Trưởng phòng", "head"), ("Email", "email"),
-                       ("Địa chỉ", "location"), ("Điện thoại", "phone"),
-                       ("Website", "website")):
+                       ("Địa chỉ", "location"), ("Điện thoại", "phone")):
         if r.get(key):
             out.append(f"• {label}: {r[key]}")
+    if r.get("website"):
+        out.append(f"• Website: {_md_link(r['website'], r['website'])}")
     return "\n".join(out)
 
 
 def _render_tai_lieu(r: dict) -> str:
     out = [f"📄 {_label_or_name(r)}"]
     if r.get("form_url"):
-        out.append(f"• Tải biểu mẫu: {r['form_url']}")
+        out.append(f"• Tải biểu mẫu: {_md_link('tải tại đây', r['form_url'])}")
     return "\n".join(out)
 
 
@@ -99,7 +113,7 @@ def _render_dinh_muc(r: dict) -> str:
     if r.get("decision"):
         out.append(f"• Căn cứ: {r['decision']}")
     if r.get("based_on"):
-        out.append(_bullets(r["based_on"], with_url=True))
+        out.append(_section("Tham chiếu", r["based_on"], with_url=True))
     return "\n".join(out)
 
 
@@ -156,16 +170,13 @@ OUT_OF_DOMAIN_REPLY = (
 def compose(blocks: str, *, greeting: bool) -> str:
     """Compose the final reply.
 
-    Rules:
-        - a greeting prefix appears whenever ``greeting`` is ``True``;
-        - ontology ``blocks`` are concatenated next when non-empty;
-        - if neither applies, the out-of-domain fallback is returned.
+    Rules (minimal-greeting policy):
+        - if there are entity blocks → return blocks alone (no greeting prefix);
+        - else if user greeted → return GREETING_REPLY;
+        - else → return OUT_OF_DOMAIN_REPLY.
     """
-    parts: list[str] = []
-    if greeting:
-        parts.append(GREETING_REPLY)
     if blocks:
-        parts.append(blocks)
-    elif not greeting:
-        parts.append(OUT_OF_DOMAIN_REPLY)
-    return "\n\n".join(parts)
+        return blocks
+    if greeting:
+        return GREETING_REPLY
+    return OUT_OF_DOMAIN_REPLY

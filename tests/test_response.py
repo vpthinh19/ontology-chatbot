@@ -42,10 +42,11 @@ def test_compose_ood_only():
     assert compose("", greeting=False).strip() == OUT_OF_DOMAIN_REPLY
 
 
-def test_compose_greeting_then_block():
-    out = compose("BLOCK", greeting=True)
-    assert out.startswith(GREETING_REPLY)
-    assert out.endswith("BLOCK")
+def test_compose_block_takes_priority_over_greeting():
+    # Minimal-greeting policy: substantive answers do NOT prepend a greeting,
+    # even if the user said "xin chào" first. The bot greets back only when
+    # the message is a pure greeting with no recognised entity.
+    assert compose("BLOCK", greeting=True).strip() == "BLOCK"
 
 
 def test_compose_block_only():

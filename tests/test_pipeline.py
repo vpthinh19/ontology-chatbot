@@ -34,11 +34,12 @@ def test_ontology_block_when_entity_recognised(monkeypatch, onto):
     assert "bảo lưu" in out["reply"].lower()
 
 
-def test_greeting_plus_entity_combined(monkeypatch, onto):
+def test_greeting_plus_entity_returns_block_only(monkeypatch, onto):
+    """Minimal-greeting policy: when the user greets *and* asks something, the
+    bot answers the question without the greeting prefix."""
     fake = [Entity(surface="phòng đào tạo", tag="PhongBanHanhChinh", start=0, end=3)]
     monkeypatch.setattr(pipeline, "extract_entities", lambda _t: fake)
     out = pipeline.answer("xin chào, cho hỏi phòng đào tạo")
-    assert out["greeting"] is True
-    assert out["reply"].startswith("Xin chào")
-    assert "PhongDaoTaoDaiHoc".replace("_", " ").lower() in out["reply"].lower() \
-        or "đào tạo" in out["reply"].lower()
+    assert out["greeting"] is True   # heuristic still detects the greeting
+    assert not out["reply"].startswith("Xin chào")
+    assert "đào tạo" in out["reply"].lower()

@@ -1,17 +1,14 @@
 """Evaluation visualisations for the NER benchmark.
 
-Three artefacts complement the textual ``classification_report.txt``:
+Two artefacts:
 
-* ``per_class_metrics.png`` — precision / recall / F1 bar chart per entity type.
-* ``confusion_matrix.png``  — token-level BIO confusion (``O`` dropped).
-* ``benchmark_card.png``    — a research-style summary card combining KPI
-  tiles (test size, token accuracy, macro / micro F1) with a
-  precision-recall scatter overlaid with iso-F1 contours.
+* ``classification_report.png`` — table chart with per-entity precision /
+  recall / F1 / support rows, plus the standard micro / macro / weighted
+  averages, and a final accent row that surfaces the token-level accuracy.
+  This single chart subsumes the old text classification report, the
+  per-class metrics bar chart, and the JSON metrics dump.
 
-The benchmark card is purposefully *not* a numeric table — that role is
-already filled by the seqeval text report — but a graphical synthesis that
-makes the macro vs micro gap and the per-class trade-offs immediately
-legible.
+* ``confusion_matrix.png`` — token-level BIO confusion (``O`` dropped).
 """
 
 from __future__ import annotations
@@ -29,41 +26,6 @@ import seaborn as sns
 
 def _ensure_dir(path: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
-
-
-# Per-class P/R/F1 bars
-
-def plot_per_class_metrics(report: dict, save_path: str) -> None:
-    classes = [k for k in report.keys()
-               if k not in ("micro avg", "macro avg", "weighted avg")]
-    if not classes:
-        return
-    metrics = ("precision", "recall", "f1-score")
-    values = np.array([[report[c].get(m, 0.0) for m in metrics] for c in classes])
-    x = np.arange(len(classes))
-    width = 0.27
-    colors = ("#3B82F6", "#10B981", "#8B5CF6")
-
-    fig, ax = plt.subplots(figsize=(max(8, len(classes) * 1.6), 5.5))
-    for i, (m, c) in enumerate(zip(metrics, colors)):
-        bars = ax.bar(x + (i - 1) * width, values[:, i], width,
-                      label=m.replace("-score", ""), color=c, edgecolor="white")
-        for b, v in zip(bars, values[:, i]):
-            ax.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.01,
-                    f"{v:.3f}", ha="center", va="bottom", fontsize=8, color="#374151")
-    ax.set_xticks(x)
-    ax.set_xticklabels(classes, rotation=20, ha="right")
-    ax.set_ylim(0, 1.10)
-    ax.set_ylabel("Score")
-    ax.set_title("Per-Entity Precision / Recall / F1", fontsize=13, fontweight="bold")
-    ax.legend(fontsize=10, frameon=True)
-    ax.grid(True, axis="y", alpha=0.2, linestyle="--")
-    sns.despine(ax=ax)
-
-    fig.tight_layout()
-    _ensure_dir(save_path)
-    fig.savefig(save_path, dpi=180, bbox_inches="tight", facecolor="white")
-    plt.close(fig)
 
 
 # Token-level confusion
@@ -105,93 +67,126 @@ def plot_confusion_matrix(
     plt.close(fig)
 
 
-# Benchmark card — KPI tiles + P-R scatter with iso-F1 contours
+# Classification-report table (subsumes per-class bars + benchmark card +
+# the legacy text report).
 
-def _kpi_tile(ax, label: str, value: str, *, accent: str) -> None:
+_HEADER_FILL = "#1F2937"
+_HEADER_TEXT = "#FFFFFF"
+_AVG_FILL = "#EEF2FF"          # lavender for the avg rows
+_ACCURACY_FILL = "#10B981"     # accent green for the final accuracy row
+_ACCURACY_TEXT = "#FFFFFF"
+_ENTITY_FILL = "#FFFFFF"
+_GRID_COLOR = "#D1D5DB"
+
+
+def _fmt_metric(value: float) -> str:
+    return f"{value:.4f}"
+
+
+def _fmt_int(value: int | float | None) -> str:
+    return "—" if value is None else f"{int(value)}"
+
+
+def plot_classification_report(
+    dict_report: dict,
+    accuracy: float,
+    save_path: str,
+    *,
+    title: str = "PhoBERT NER — Classification Report",
+) -> None:
+    """Render seqeval's ``output_dict=True`` report as a styled table chart.
+
+    The chart layout mirrors the textual report (entity rows on top,
+    micro/macro/weighted averages below) and ends with a single accent row
+    for token-level accuracy — keeping the table self-contained so a reader
+    no longer needs the JSON metrics dump.
+    """
+    avg_keys = ("micro avg", "macro avg", "weighted avg")
+    entity_keys = [k for k in dict_report.keys() if k not in avg_keys]
+    entity_keys.sort()
+
+    rows: list[tuple[str, list[str], str, str]] = []  # (label, cells, fill, text_color)
+    headers = ["Entity", "Precision", "Recall", "F1-score", "Support"]
+
+    for k in entity_keys:
+        r = dict_report[k]
+        rows.append((
+            k,
+            [_fmt_metric(r.get("precision", 0.0)),
+             _fmt_metric(r.get("recall", 0.0)),
+             _fmt_metric(r.get("f1-score", 0.0)),
+             _fmt_int(r.get("support", 0))],
+            _ENTITY_FILL, "#111827",
+        ))
+    for k in avg_keys:
+        if k not in dict_report:
+            continue
+        r = dict_report[k]
+        rows.append((
+            k,
+            [_fmt_metric(r.get("precision", 0.0)),
+             _fmt_metric(r.get("recall", 0.0)),
+             _fmt_metric(r.get("f1-score", 0.0)),
+             _fmt_int(r.get("support", 0))],
+            _AVG_FILL, "#111827",
+        ))
+    rows.append((
+        "token accuracy",
+        ["—", "—", _fmt_metric(accuracy), "—"],
+        _ACCURACY_FILL, _ACCURACY_TEXT,
+    ))
+
+    n_rows = len(rows)
+    n_cols = len(headers)
+
+    # Figure sizing — width is fixed to fit text, height scales with rows.
+    fig_w = 11.5
+    fig_h = 1.2 + 0.55 * n_rows
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
     ax.set_xticks([]); ax.set_yticks([])
     for s in ax.spines.values():
         s.set_visible(False)
-    ax.set_facecolor("#F9FAFB")
-    ax.add_patch(plt.Rectangle((0, 0), 1, 1, transform=ax.transAxes,
-                               facecolor="#F9FAFB", edgecolor=accent, lw=2))
-    ax.text(0.5, 0.66, value, ha="center", va="center",
-            fontsize=26, fontweight="bold", color=accent,
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+
+    # Title
+    ax.text(0.5, 0.965, title, ha="center", va="center",
+            fontsize=15, fontweight="bold", color="#111827",
             transform=ax.transAxes)
-    ax.text(0.5, 0.22, label, ha="center", va="center",
-            fontsize=11, color="#374151", transform=ax.transAxes)
 
+    # Layout — first column wider (entity names), the four metric columns equal.
+    col_widths = np.array([0.34, 0.16, 0.16, 0.16, 0.18])
+    col_lefts = np.concatenate([[0.0], np.cumsum(col_widths)[:-1]])
 
-def _draw_iso_f1(ax) -> None:
-    """Overlay iso-F1 contours on a precision-recall axis."""
-    p = np.linspace(0.01, 1, 200)
-    r = np.linspace(0.01, 1, 200)
-    P, R = np.meshgrid(p, r)
-    F1 = 2 * P * R / (P + R + 1e-12)
-    levels = [0.2, 0.4, 0.6, 0.8, 0.9]
-    cs = ax.contour(P, R, F1, levels=levels, colors="#9CA3AF",
-                    linestyles="--", linewidths=0.7, alpha=0.7)
-    ax.clabel(cs, inline=True, fontsize=8,
-              fmt={lv: f"F1={lv:.1f}" for lv in levels})
+    # Rows occupy from y=0 (bottom) up to y=0.92, leaving space for the title.
+    body_top = 0.90
+    body_bot = 0.04
+    row_h = (body_top - body_bot) / (n_rows + 1)  # +1 for header
 
+    def _draw_row(y_top: float, cells: list[str], *, fill: str, text_color: str,
+                  bold: bool = False, header: bool = False) -> None:
+        for i, (left, w, text) in enumerate(zip(col_lefts, col_widths, cells)):
+            ax.add_patch(plt.Rectangle((left, y_top - row_h), w, row_h,
+                                       facecolor=fill, edgecolor=_GRID_COLOR,
+                                       linewidth=0.8, transform=ax.transAxes))
+            ha = "left" if i == 0 else "center"
+            x = left + (0.012 if i == 0 else w / 2)
+            ax.text(x, y_top - row_h / 2, text, ha=ha, va="center",
+                    fontsize=11, color=text_color,
+                    fontweight=("bold" if bold or header else "normal"),
+                    transform=ax.transAxes,
+                    family=("DejaVu Sans Mono" if i > 0 and not header else "DejaVu Sans"))
 
-def plot_benchmark_card(
-    metrics: dict,
-    dict_report: dict,
-    save_path: str,
-) -> None:
-    """Combined KPI + P-R scatter with iso-F1 contours."""
-    classes = [k for k in dict_report.keys()
-               if k not in ("micro avg", "macro avg", "weighted avg")]
-    palette = sns.color_palette("Set2", n_colors=max(3, len(classes)))
+    # Header
+    _draw_row(body_top, headers, fill=_HEADER_FILL, text_color=_HEADER_TEXT, header=True)
 
-    fig = plt.figure(figsize=(15, 9))
-    gs = fig.add_gridspec(2, 4, height_ratios=[1, 3], hspace=0.30, wspace=0.30)
+    # Body rows
+    for i, (label, cells, fill, color) in enumerate(rows):
+        y_top = body_top - row_h * (i + 1)
+        is_avg = label in avg_keys
+        is_accuracy = label == "token accuracy"
+        _draw_row(y_top, [label, *cells], fill=fill, text_color=color,
+                  bold=is_avg or is_accuracy)
 
-    # KPI tiles
-    tiles = [
-        ("Test samples", str(metrics.get("n_test", "—")), "#1F2937"),
-        ("Token accuracy", f"{metrics.get('token_accuracy', 0.0):.3f}", "#10B981"),
-        ("F1-macro", f"{metrics.get('f1_macro', 0.0):.3f}", "#8B5CF6"),
-        ("F1-micro", f"{metrics.get('f1_micro', 0.0):.3f}", "#3B82F6"),
-    ]
-    for i, (lbl, val, col) in enumerate(tiles):
-        _kpi_tile(fig.add_subplot(gs[0, i]), lbl, val, accent=col)
-
-    # Bottom panel: P-R scatter
-    ax = fig.add_subplot(gs[1, :])
-    _draw_iso_f1(ax)
-    for i, c in enumerate(classes):
-        p = dict_report[c].get("precision", 0.0)
-        r = dict_report[c].get("recall", 0.0)
-        sup = dict_report[c].get("support", 1) or 1
-        size = 80 + 18 * np.sqrt(max(sup, 1))
-        ax.scatter(p, r, s=size, color=palette[i], edgecolor="white",
-                   linewidth=1.2, zorder=3, label=f"{c} (n={sup})")
-        ax.annotate(c, (p, r), textcoords="offset points",
-                    xytext=(8, 6), fontsize=9, color="#1F2937")
-
-    # Macro / micro reference markers
-    ax.scatter(metrics.get("precision_macro", 0.0),
-               metrics.get("recall_macro", 0.0),
-               marker="*", s=300, color="#8B5CF6", edgecolor="white",
-               linewidth=1.5, zorder=4, label="macro avg")
-    ax.scatter(metrics.get("precision_micro", 0.0),
-               metrics.get("recall_micro", 0.0),
-               marker="*", s=300, color="#3B82F6", edgecolor="white",
-               linewidth=1.5, zorder=4, label="micro avg")
-
-    ax.set_xlim(0, 1.02)
-    ax.set_ylim(0, 1.02)
-    ax.set_xlabel("Precision", fontsize=12)
-    ax.set_ylabel("Recall", fontsize=12)
-    ax.set_title("Precision–Recall by Entity Type (dot size ∝ √support)",
-                 fontsize=13, fontweight="bold")
-    ax.grid(True, alpha=0.2, linestyle="--")
-    ax.legend(fontsize=9, loc="lower left", frameon=True, ncol=2)
-    sns.despine(ax=ax)
-
-    fig.suptitle("PhoBERT NER — Test-Set Benchmark Card",
-                 fontsize=15, fontweight="bold", y=0.98)
     _ensure_dir(save_path)
     fig.savefig(save_path, dpi=180, bbox_inches="tight", facecolor="white")
     plt.close(fig)
