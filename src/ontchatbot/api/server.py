@@ -29,7 +29,7 @@ from pydantic import BaseModel
 
 from ..core.config import WEB_DIR
 from ..core.logging_setup import configure_logging
-from ..core.pipeline import answer
+from ..core.pipeline import Pipeline
 
 log = logging.getLogger(__name__)
 
@@ -83,8 +83,10 @@ def healthz() -> dict:
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(req: ChatRequest) -> JSONResponse:
-    return JSONResponse(answer(req.message))
+async def chat(req: ChatRequest) -> JSONResponse:
+    """Run the pipeline in a worker thread so the event loop stays free
+    while PyTorch inference (blocking C++) is in flight."""
+    return JSONResponse(await Pipeline.get().aanswer(req.message))
 
 
 def main() -> None:

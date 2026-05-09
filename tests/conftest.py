@@ -1,7 +1,7 @@
 """Shared pytest fixtures.
 
-The ontology takes a few seconds to parse; load it once per session and reuse
-it across the test suite.
+The ontology takes a few seconds to parse; load it once per session and
+reuse it across the test suite.
 """
 
 from __future__ import annotations
@@ -10,12 +10,12 @@ import pytest
 
 
 @pytest.fixture(scope="session")
-def onto():
-    from ontchatbot.ontology.loader import load_ontology
-    return load_ontology()
+def ontology():
+    from ontchatbot.ontology.store import Ontology
+    return Ontology.get()
 
 
+# Backwards-compat alias retained for older fixtures.
 @pytest.fixture(scope="session")
-def label_map():
-    from ontchatbot.ontology.loader import load_label_map
-    return load_label_map()
+def onto(ontology):
+    return ontology

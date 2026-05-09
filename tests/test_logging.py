@@ -1,5 +1,5 @@
-"""Tests for runtime logging — covering both the setup module and the pipeline
-log records that document every stage."""
+"""Tests for runtime logging — covering both the logging-setup module and
+the pipeline log records that document every stage."""
 
 from __future__ import annotations
 
@@ -8,7 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.core import logging_setup, pipeline
+from ontchatbot.core import logging_setup
+from ontchatbot.core.pipeline import Pipeline
 from ontchatbot.ner.inference import Entity
 
 
@@ -24,6 +25,16 @@ def _reset_logging_state(monkeypatch):
     pkg.handlers.clear()
     pkg.handlers.extend(saved)
 
+
+class _StubNer:
+    def __init__(self, entities=None):
+        self._entities = entities or []
+
+    def extract_entities(self, _t):
+        return list(self._entities)
+
+
+# Logging setup
 
 def test_configure_logging_is_idempotent(tmp_path: Path):
     log_file = tmp_path / "first.log"
@@ -48,33 +59,56 @@ def test_configure_logging_writes_init_record(tmp_path: Path):
     assert "hello world" in text
 
 
-def test_pipeline_logs_each_stage(monkeypatch, caplog, onto):
-    """Every pipeline stage emits exactly one identifying tag."""
-    fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
-    monkeypatch.setattr(pipeline, "extract_entities", lambda _t: fake)
+# Pipeline stage trace
 
+def test_pipeline_logs_each_stage(caplog, ontology):
+    """Every pipeline stage emits an identifying log tag."""
+    fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
+    pipeline = Pipeline(ner=_StubNer(fake))
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
         out = pipeline.answer("xin chào, em hỏi về bảo lưu")
-
     assert out["entities"]
-    messages = [r.getMessage() for r in caplog.records]
-    text = "\n".join(messages)
-    for stage in ("[recv]", "[ner]", "[fuzzy]", "[fetch]", "[render]", "[compose]"):
-        assert stage in text, f"missing stage tag {stage} in log:\n{text}"
+    text = "\n".join(r.getMessage() for r in caplog.records)
+    for stage in ("[Pipeline.preprocess]", "[Pipeline.ner]",
+                  "[Pipeline.match]", "[Pipeline.query]",
+                  "[Pipeline.present]"):
+        assert stage in text, f"missing stage tag {stage!r} in log:\n{text}"
 
 
-def test_pipeline_logs_rejected_low_confidence(monkeypatch, caplog, onto):
+def test_pipeline_logs_rejected_low_confidence(caplog, ontology):
     fake = [Entity(surface="hoàn toàn vô nghĩa xyz",
                    tag="QuyTrinhHocVu", start=0, end=4)]
-    monkeypatch.setattr(pipeline, "extract_entities", lambda _t: fake)
+    pipeline = Pipeline(ner=_StubNer(fake))
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
         pipeline.answer("hoàn toàn vô nghĩa xyz")
     text = "\n".join(r.getMessage() for r in caplog.records)
-    assert "[fuzzy] reject" in text
+    assert "[Ontology.resolve]" in text and "reject" in text
 
 
-def test_empty_input_logs_skip(monkeypatch, caplog):
-    monkeypatch.setattr(pipeline, "extract_entities", lambda _t: [])
+def test_empty_input_logs_skip(caplog, ontology):
+    pipeline = Pipeline(ner=_StubNer())
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
         pipeline.answer("")
-    assert any("[skip]" in r.getMessage() for r in caplog.records)
+    assert any("[Pipeline]" in r.getMessage() and "skip" in r.getMessage()
+               for r in caplog.records)
+
+
+def test_per_module_logger_is_independent():
+    """Each module gets its own logger via ``getLogger(__name__)`` so the
+    package hierarchy lets you tune levels independently. Proving the
+    contract works here — operators can ``setLevel(DEBUG)`` on one module
+    without flipping the rest of the package to debug.
+    """
+    # Materialise the intermediate node first; ``getLogger`` builds the
+    # parent chain lazily based on the order names are first requested.
+    intermediate = logging.getLogger("ontchatbot.ontology")
+    child = logging.getLogger("ontchatbot.ontology.store")
+    assert child.parent is intermediate
+    # Level can be tuned on the child without affecting siblings.
+    sibling = logging.getLogger("ontchatbot.ner.preprocessing")
+    child.setLevel(logging.DEBUG)
+    try:
+        assert child.getEffectiveLevel() == logging.DEBUG
+        assert sibling.getEffectiveLevel() != logging.DEBUG
+    finally:
+        child.setLevel(logging.NOTSET)
