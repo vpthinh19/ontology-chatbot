@@ -19,7 +19,7 @@ _RESOURCES_PKG = PKG_ROOT / "resources"
 RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 LABEL_MAP_PATH = RESOURCES / "label_map.json"
-ONTOLOGY_PATH = RESOURCES / "Ontology_AcademicProcedure_v6.owx"
+ONTOLOGY_PATH = RESOURCES / "Ontology_AcademicProcedure_v8.owx"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 # Generated artefacts
