@@ -17,8 +17,9 @@ _RESOURCES_DEV = PROJECT_ROOT / "resources"
 _RESOURCES_PKG = PKG_ROOT / "resources"
 RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
-LABEL_MAP_PATH = RESOURCES / "label_map.json"
-ONTOLOGY_PATH = RESOURCES / "Ontology_AcademicProcedure_v8.owx"
+ONTOLOGY_DIR = RESOURCES / "ontology"
+LABEL_MAP_PATH = ONTOLOGY_DIR / "label_map.json"
+ONTOLOGY_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure_v8.owx"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 # Static training data shipped with the package — bundled under
