@@ -1,24 +1,8 @@
-"""Single source of truth for Vietnamese text preprocessing.
+"""Vietnamese text preprocessing — single source of truth.
 
-The :class:`Preprocessor` consolidates *every* text-cleaning behaviour the
-codebase needs:
-
-* light **normalisation** (NFC + ``underthesea.text_normalize``) — used by
-  the dataset compiler, which needs the raw user phrasing preserved so the
-  hand-curated annotation surfaces still align;
-* full **cleaning** for inference (URL/email strip, repeated-char collapse,
-  sticky-acronym splitting, abbreviation/teen-code expansion) — what the NER
-  model sees at runtime;
-* word **segmentation** via underthesea (used by both training and
-  inference); and
-* a tiny **diacritic stripper** (used by the greeting heuristic).
-
-The OOP entry point is the singleton ``Preprocessor.get()`` (a classmethod
-factory wrapped in ``lru_cache``). All call sites — dataset compiler,
-training tokeniser, NER inference, Pipeline greeting check — go through this
-one instance, so adding a new abbreviation in :data:`ABBREVIATION_MAP` or a
-new teen-code mapping in :data:`TEENCODE_MAP` immediately propagates
-everywhere with no further wiring.
+Owns: light normalisation (dataset path), full cleanup (inference path),
+word segmentation, diacritic stripping, URL detection, fuzzy-match
+normalisation. Singleton via :meth:`Preprocessor.get`.
 """
 
 from __future__ import annotations
@@ -145,6 +129,7 @@ _RE_EMAIL = re.compile(r"\S+@\S+\.\S+")
 _RE_REPEAT = re.compile(r"(.)\1{2,}")
 _RE_WS = re.compile(r"\s+")
 _RE_LETTERS_DIGITS = re.compile(r"^([A-Za-zÀ-ỹđĐ]+)(\d.*)$")
+_RE_NONALNUM = re.compile(r"[^\w\s]+")
 
 
 class Preprocessor:
@@ -162,30 +147,18 @@ class Preprocessor:
     @classmethod
     @lru_cache(maxsize=1)
     def get(cls) -> "Preprocessor":
-        """Process-level singleton. Tests can ``get.cache_clear()`` to reset."""
         return cls()
 
     # Public API
 
     def normalize(self, text: str) -> str:
-        """NFC + underthesea ``text_normalize`` only.
-
-        Used by the *dataset compiler*, which must preserve the human-authored
-        phrasing so character-level annotation alignment still locates each
-        surface form. Notably this does **not** expand teen-code, because
-        training data is already in fully-expanded form.
-        """
+        """NFC + underthesea ``text_normalize`` — dataset path (no expansion)."""
         if not text:
             return ""
         return text_normalize(unicodedata.normalize("NFC", text.strip()))
 
     def clean(self, text: str) -> str:
-        """Full cleanup chain — what the NER model sees at *inference* time.
-
-        Order: normalise → strip URL/email → collapse repeats → split sticky
-        alphanumeric → expand abbreviations and teen-code → collapse
-        whitespace.
-        """
+        """Full cleanup chain for the NER inference path."""
         if not text:
             return ""
         text = self.normalize(text)
@@ -208,12 +181,21 @@ class Preprocessor:
 
     @staticmethod
     def strip_diacritics(s: str) -> str:
-        """Return ``s`` with every Vietnamese tone mark removed.
-
-        Used by the greeting heuristic so ``"cam on"`` (sans diacritics)
-        still triggers the greeting-detected flag.
-        """
+        """Remove Vietnamese tone marks (``cảm ơn`` → ``cam on``)."""
         return s.translate(_DIACRITIC_TABLE)
+
+    @staticmethod
+    def normalize_for_match(text: str) -> str:
+        """Diacritic-stripped, lowercase, alnum-only — keys for the fuzzy index."""
+        nfkd = unicodedata.normalize("NFD", text.lower())
+        no_diac = "".join(c for c in nfkd if not unicodedata.combining(c))
+        no_diac = no_diac.replace("đ", "d").replace("Đ", "d")
+        return _RE_WS.sub(" ", _RE_NONALNUM.sub(" ", no_diac)).strip()
+
+    @staticmethod
+    def is_url(s: object) -> bool:
+        """True iff ``s`` is a string starting with ``http://`` or ``https://``."""
+        return isinstance(s, str) and s.startswith(("http://", "https://"))
 
     # Internal passes
 

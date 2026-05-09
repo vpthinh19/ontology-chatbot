@@ -1,16 +1,15 @@
-"""Centralised configuration: paths, model identifiers, hyper-parameters.
+"""Centralised configuration — paths, model ids, hyper-parameters.
 
-Every filesystem path is derived from the project root so the package is
-location-agnostic (works both as a checked-out source tree and as an
-installed wheel).
+All paths are derived from the package root so the codebase works both as a
+source checkout and as an installed wheel.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-PKG_ROOT = Path(__file__).resolve().parent.parent
-PROJECT_ROOT = PKG_ROOT.parent.parent
+PKG_ROOT = Path(__file__).resolve().parent       # src/ontchatbot/
+PROJECT_ROOT = PKG_ROOT.parent.parent             # repo root
 
 # Static resources (label map, ontology). When installed as a wheel the same
 # files are copied under ``ontchatbot/resources``.
@@ -22,8 +21,9 @@ LABEL_MAP_PATH = RESOURCES / "label_map.json"
 ONTOLOGY_PATH = RESOURCES / "Ontology_AcademicProcedure_v8.owx"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
-# Generated artefacts
-DATASET_DIR = PROJECT_ROOT / "dataset"
+# Static training data shipped with the package — bundled under
+# ``resources/datasets/`` so installed wheels travel with the JSONL.
+DATASET_DIR = RESOURCES / "datasets"
 TRAIN_PATH = DATASET_DIR / "train.jsonl"
 TEST_PATH = DATASET_DIR / "test.jsonl"
 

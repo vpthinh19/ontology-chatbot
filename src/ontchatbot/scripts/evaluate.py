@@ -26,9 +26,9 @@ from transformers import (
     DataCollatorForTokenClassification,
 )
 
-from ..core.config import BATCH_SIZE, EVAL_ARTIFACTS_DIR, MODEL_DIR, TEST_PATH
+from ..config import BATCH_SIZE, EVAL_ARTIFACTS_DIR, MODEL_DIR, TEST_PATH
+from ..ner_model import NerModel
 from ..viz.evaluation import plot_classification_report, plot_confusion_matrix
-from .dataset import label_mappings, load_split, make_tokenize_fn
 
 
 def _predict(model, loader, device, i2l) -> tuple[list[list[str]], list[list[str]]]:
@@ -52,14 +52,15 @@ def _predict(model, loader, device, i2l) -> tuple[list[list[str]], list[list[str
 
 
 def main() -> None:
-    labels, l2i, i2l = label_mappings()
+    labels, l2i, i2l = NerModel.label_mappings()
     tokenizer = AutoTokenizer.from_pretrained(str(MODEL_DIR), use_fast=True)
     model = AutoModelForTokenClassification.from_pretrained(str(MODEL_DIR))
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device).eval()
 
-    ds = load_split(TEST_PATH, l2i).map(
-        make_tokenize_fn(tokenizer), batched=True, remove_columns=["tokens", "tags"]
+    ds = NerModel.load_split(TEST_PATH, l2i).map(
+        NerModel.make_tokenize_fn(tokenizer),
+        batched=True, remove_columns=["tokens", "tags"]
     )
     loader = DataLoader(ds, batch_size=BATCH_SIZE,
                         collate_fn=DataCollatorForTokenClassification(tokenizer))

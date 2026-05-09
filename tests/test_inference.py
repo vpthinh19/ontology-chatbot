@@ -1,9 +1,8 @@
-"""Tests for :class:`ontchatbot.ner.inference.NerModel` — focused on the
-pure BIO span decoder since the PhoBERT head itself is heavyweight."""
+"""Tests for the BIO span decoder on :class:`NerModel`."""
 
 from __future__ import annotations
 
-from ontchatbot.ner.inference import NerModel
+from ontchatbot.ner_model import NerModel
 
 decode_bio = NerModel.decode_bio
 
@@ -37,7 +36,7 @@ def test_decode_bio_extracts_multiple_entities():
 
 
 def test_decode_bio_lenient_treats_orphan_i_as_span_start():
-    """Lenient decoding: an ``I-X`` arriving after ``O`` opens a new entity."""
+    """Lenient: an ``I-X`` after ``O`` opens a new entity."""
     words = ["xin", "k67", "ạ"]
     tags = ["O", "I-DinhMucHocPhi", "O"]
     spans = decode_bio(words, tags)

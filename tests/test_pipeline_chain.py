@@ -1,9 +1,4 @@
-"""Tests for the OOP :class:`Pipeline` chain.
-
-These exercise the threading of :class:`PipelineContext` through the
-methods of :class:`Pipeline`, plus the swap-ability of injected
-collaborators (the whole point of the composition design).
-"""
+"""Tests for the :class:`Pipeline` chain — context threading + collaborator swap."""
 
 from __future__ import annotations
 
@@ -11,8 +6,8 @@ import asyncio
 
 import pytest
 
-from ontchatbot.core.pipeline import Pipeline, PipelineContext
-from ontchatbot.ner.inference import Entity
+from ontchatbot.ner_model import Entity
+from ontchatbot.pipeline import Pipeline, PipelineContext
 
 
 class _StubNer:
@@ -38,20 +33,17 @@ def test_preprocess_handles_empty():
 
 
 def test_pipeline_runs_all_stages_in_order(ontology):
-    """End-to-end: preprocess → ner → match → query → present."""
     fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
     out = Pipeline(ner=_StubNer(fake)).answer("xin chào, em hỏi về bảo lưu")
     assert out["greeting"] is True
     assert out["entities"][0]["tag"] == "QuyTrinhHocVu"
     assert "QuyTrinh_BaoLuu" in out["entities"][0]["iris"]
-    # Minimal-greeting policy
     assert not out["reply"].startswith("Xin chào")
     assert "bảo lưu" in out["reply"].lower()
 
 
 def test_custom_pipeline_swaps_ner_via_constructor(ontology):
-    """A research extension drops in a different NER backend by handing a
-    duck-typed object to the Pipeline constructor — no global patching."""
+    """Inject a different NER backend via constructor — no global patching."""
     fake = [Entity(surface="phòng đào tạo",
                    tag="PhongBanHanhChinh", start=0, end=3)]
     out = Pipeline(ner=_StubNer(fake)).answer("phòng đào tạo")
@@ -67,7 +59,6 @@ def test_empty_query_short_circuits_to_greeting(ontology):
 
 
 def test_class_level_query_renders_listing(ontology):
-    """Class-level question routes to the listing template."""
     fake = [Entity(surface="quy trình học vụ",
                    tag="QuyTrinhHocVu", start=0, end=3)]
     out = Pipeline(ner=_StubNer(fake)).answer(
@@ -78,8 +69,7 @@ def test_class_level_query_renders_listing(ontology):
 
 
 def test_multi_match_renders_every_individual(ontology):
-    """``"k65"`` resolves to multiple fees — every above-threshold IRI
-    is rendered, fixing the historical top-1 collapse."""
+    """``"k65"`` resolves to multiple fees — every above-threshold IRI renders."""
     fake = [Entity(surface="k65", tag="DinhMucHocPhi", start=0, end=1)]
     out = Pipeline(ner=_StubNer(fake)).answer("học phí k65 thế nào")
     assert out["entities"][0]["class_won"] is False
@@ -89,7 +79,6 @@ def test_multi_match_renders_every_individual(ontology):
 
 
 def test_async_aanswer_returns_same_payload(ontology):
-    """The async wrapper produces the same dict as the sync entry."""
     fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
     pipeline = Pipeline(ner=_StubNer(fake))
     sync_out = pipeline.answer("bảo lưu")

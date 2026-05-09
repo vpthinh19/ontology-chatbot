@@ -1,5 +1,4 @@
-"""Tests for runtime logging — covering both the logging-setup module and
-the pipeline log records that document every stage."""
+"""Tests for runtime logging — setup module + per-stage pipeline records."""
 
 from __future__ import annotations
 
@@ -8,14 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.core import logging_setup
-from ontchatbot.core.pipeline import Pipeline
-from ontchatbot.ner.inference import Entity
+from ontchatbot import logging_setup
+from ontchatbot.ner_model import Entity
+from ontchatbot.pipeline import Pipeline
 
 
 @pytest.fixture(autouse=True)
 def _reset_logging_state(monkeypatch):
-    """Each test gets a clean configurator state and an isolated package logger."""
     monkeypatch.setattr(logging_setup, "_CONFIGURED", False)
     monkeypatch.setattr(logging_setup, "_ACTIVE_LOG_FILE", None)
     pkg = logging.getLogger("ontchatbot")
@@ -33,8 +31,6 @@ class _StubNer:
     def extract_entities(self, _t):
         return list(self._entities)
 
-
-# Logging setup
 
 def test_configure_logging_is_idempotent(tmp_path: Path):
     log_file = tmp_path / "first.log"
@@ -55,14 +51,10 @@ def test_configure_logging_writes_init_record(tmp_path: Path):
     for h in logging.getLogger("ontchatbot").handlers:
         h.flush()
     text = log_file.read_text(encoding="utf-8")
-    assert "[init]" in text
-    assert "hello world" in text
+    assert "[init]" in text and "hello world" in text
 
-
-# Pipeline stage trace
 
 def test_pipeline_logs_each_stage(caplog, ontology):
-    """Every pipeline stage emits an identifying log tag."""
     fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
     pipeline = Pipeline(ner=_StubNer(fake))
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
@@ -94,18 +86,11 @@ def test_empty_input_logs_skip(caplog, ontology):
 
 
 def test_per_module_logger_is_independent():
-    """Each module gets its own logger via ``getLogger(__name__)`` so the
-    package hierarchy lets you tune levels independently. Proving the
-    contract works here — operators can ``setLevel(DEBUG)`` on one module
-    without flipping the rest of the package to debug.
-    """
-    # Materialise the intermediate node first; ``getLogger`` builds the
-    # parent chain lazily based on the order names are first requested.
-    intermediate = logging.getLogger("ontchatbot.ontology")
-    child = logging.getLogger("ontchatbot.ontology.store")
+    """Per-module loggers tune levels independently via the package hierarchy."""
+    intermediate = logging.getLogger("ontchatbot")
+    child = logging.getLogger("ontchatbot.ontology")
+    sibling = logging.getLogger("ontchatbot.preprocessor")
     assert child.parent is intermediate
-    # Level can be tuned on the child without affecting siblings.
-    sibling = logging.getLogger("ontchatbot.ner.preprocessing")
     child.setLevel(logging.DEBUG)
     try:
         assert child.getEffectiveLevel() == logging.DEBUG

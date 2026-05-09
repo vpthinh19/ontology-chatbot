@@ -1,21 +1,12 @@
-"""Pure JSON-dict → Vietnamese chat string renderer.
+"""JSON dict → Vietnamese chat string renderer.
 
-The :class:`Renderer` does **not** import owlready2 or any ontology code; it
-operates exclusively on dicts produced by :class:`Ontology.describe` /
-:class:`Ontology.list_class`. This gives us two practical wins:
+Consumes the dict shape emitted by :class:`Ontology.describe` /
+:class:`Ontology.list_class`. Does not import owlready2 — tests use mocked
+dicts and complete in milliseconds.
 
-1. unit tests for the renderer run in milliseconds with mocked dicts, no OWL
-   parsing; and
-2. swapping the knowledge-graph backend (Neo4j, SPARQL endpoint, …) is a
-   one-class change in :mod:`store` — the renderer keeps working as long as
-   the JSON contract is preserved.
-
-JSON contract recap
-~~~~~~~~~~~~~~~~~~~
-Four fixed identity keys (``type``, ``iri``, ``class``, ``label``); every
-other key is the Vietnamese ``rdfs:label`` of a property and is rendered as
-a section header. URL-shaped string values are auto-converted to markdown
-links the frontend resolves to ``<a target="_blank">``.
+Contract: 4 fixed keys (``type``, ``iri``, ``class``, ``label``); every
+other key is a property ``rdfs:label`` and renders as a section header.
+URL-shaped string values become markdown links.
 """
 
 from __future__ import annotations
@@ -23,7 +14,8 @@ from __future__ import annotations
 import logging
 from functools import lru_cache
 
-from ..core.config import RENDER_CLASS_EMOJI
+from .config import RENDER_CLASS_EMOJI
+from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
 
@@ -45,10 +37,6 @@ OUT_OF_DOMAIN_REPLY = (
 )
 
 
-def _is_url(s: object) -> bool:
-    return isinstance(s, str) and s.startswith(("http://", "https://"))
-
-
 def _md_link(label: str, url: str | None) -> str:
     return f"[{label}]({url})" if url else label
 
@@ -62,7 +50,7 @@ def _format_scalar(v) -> str:
 
 
 class Renderer:
-    """Schema-agnostic Vietnamese reply renderer; singleton via ``get()``."""
+    """Vietnamese chat renderer; singleton via ``get()``."""
 
     @classmethod
     @lru_cache(maxsize=1)
@@ -72,7 +60,7 @@ class Renderer:
     # Public API
 
     def render_blocks(self, descriptions: list[dict]) -> str:
-        """Concatenate per-entity blocks. Deduplicates by (class, iri/listing)."""
+        """Concatenate blocks; dedup by (class, iri/listing)."""
         seen: set[tuple[str, str]] = set()
         blocks: list[str] = []
         for d in descriptions:
@@ -90,7 +78,7 @@ class Renderer:
         return "\n\n".join(blocks)
 
     def render(self, description: dict) -> str:
-        """Dispatch to the correct sub-template by ``type`` field."""
+        """Dispatch by the ``type`` key."""
         kind = description.get("type")
         if kind == "listing":
             return self._render_listing(description)
@@ -100,11 +88,7 @@ class Renderer:
         return ""
 
     def compose(self, blocks: str, *, greeting: bool) -> str:
-        """Final reply assembly under the minimal-greeting policy.
-
-        Substantive answer (any blocks) takes precedence; the bot greets
-        back only when the user message is a pure greeting with no entity.
-        """
+        """Final reply: blocks > greeting reply > OOD reply (minimal-greeting policy)."""
         if blocks:
             return blocks
         return GREETING_REPLY if greeting else OUT_OF_DOMAIN_REPLY
@@ -136,16 +120,7 @@ class Renderer:
     # Section formatting
 
     def _format_section(self, header: str, value) -> str:
-        """One ``• Header: …`` (single) or ``• Header:\\n  – …`` (multi) block.
-
-        The branching covers the four shapes ``Ontology.describe`` emits:
-
-        * **list of dicts** → object-property targets, render each as a label
-          (with markdown link if any URL-shaped value sits in the target);
-        * **string** → data scalar, possibly URL → markdown link;
-        * **list of strings/numbers** → multi-valued data, sub-bullets;
-        * **paragraph string** (contains ``\\n``) → free-flow text without bullet.
-        """
+        """``• Header: …`` (scalar) or ``• Header:\\n  – …`` (list)."""
         # Paragraph — Ontology marks free-flow text with a leading newline
         # (see :meth:`Ontology._render_property_value`). This works for both
         # multi-line and single-line paragraph property values, and keeps
@@ -162,7 +137,7 @@ class Renderer:
             return f"• {header}:\n{sub}"
 
         text = _format_scalar(value)
-        if _is_url(text):
+        if Preprocessor.is_url(text):
             text = _md_link(text, text)
         return f"• {header}: {text}"
 
@@ -175,16 +150,11 @@ class Renderer:
 
     @staticmethod
     def _format_object_target(target: dict) -> str:
-        """Render a related entity as ``label`` or ``[label](url)``.
-
-        URL discovery is value-driven: scan the target's non-fixed keys and
-        pick the first URL-shaped value. This stays property-name-agnostic,
-        so a future ``brochureUrl`` works with no code change.
-        """
+        """``[label](url)`` if any URL-shaped value present, else just ``label``."""
         label = target.get("label", "")
         for k, v in target.items():
             if k in _FIXED_KEYS:
                 continue
-            if _is_url(v):
+            if Preprocessor.is_url(v):
                 return _md_link(label, v)
         return label

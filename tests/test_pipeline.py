@@ -1,19 +1,14 @@
-"""Tests for :class:`ontchatbot.core.pipeline.Pipeline`.
-
-The PhoBERT head is heavy, so we inject a stub :class:`NerModel` per-test
-to drive every branch deterministically.
-"""
+"""Tests for :class:`Pipeline` — every branch driven by a stub NerModel."""
 
 from __future__ import annotations
 
 import pytest
 
-from ontchatbot.core.pipeline import Pipeline
-from ontchatbot.ner.inference import Entity
+from ontchatbot.ner_model import Entity
+from ontchatbot.pipeline import Pipeline
 
 
 class _StubNer:
-    """Inline NER backend — driven by a fixed list of entities."""
     def __init__(self, entities: list[Entity] | None = None) -> None:
         self._entities = entities or []
 
@@ -46,8 +41,7 @@ def test_ontology_block_when_entity_recognised(ontology):
 
 
 def test_greeting_plus_entity_returns_block_only(ontology):
-    """Minimal-greeting policy: when the user greets *and* asks something,
-    the bot answers without prepending the greeting."""
+    """Minimal-greeting policy: blocks override the greeting prefix."""
     fake = [Entity(surface="phòng đào tạo", tag="PhongBanHanhChinh", start=0, end=3)]
     out = _pipeline(fake).answer("xin chào, cho hỏi phòng đào tạo")
     assert out["greeting"] is True

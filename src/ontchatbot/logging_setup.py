@@ -1,15 +1,7 @@
-"""Centralised logging configuration for runtime tracing.
+"""Rotating file handler + console handler for the ``ontchatbot`` logger.
 
-A single :func:`configure_logging` call sets up a *rotating* file handler on
-the ``ontchatbot`` logger hierarchy plus a parallel console stream. All
-modules obtain their logger via ``logging.getLogger(__name__)`` and inherit
-this handler set automatically.
-
-The pipeline emits one log record per stage (preprocessing, NER, fuzzy
-disambiguation, SPARQL fetch, response composition), which makes it easy to
-follow the data shape as a query flows through the system. Each record is
-prefixed with a stable stage tag (e.g. ``[recv]``, ``[ner]``, ``[fuzzy]``)
-so log files can be filtered with a simple ``grep``.
+Each module gets its own logger via ``getLogger(__name__)`` so per-module
+levels can be tuned independently.
 """
 
 from __future__ import annotations

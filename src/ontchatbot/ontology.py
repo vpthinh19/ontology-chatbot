@@ -1,52 +1,11 @@
-"""The :class:`Ontology` repository: load, introspect, match, describe.
+"""Ontology repository: load OWL + fuzzy match + JSON description.
 
-Single point of contact with ``owlready2``. Every other layer of the
-chatbot — the renderer, the pipeline, the NER schema accessors — speaks to
-ontology data exclusively through dict objects produced here. Swapping the
-backing store (a SPARQL endpoint, a Neo4j knowledge graph, …) is therefore
-a one-class change.
+Single point of contact with ``owlready2``. Every other layer reads
+ontology data only via dicts produced by :meth:`describe` / :meth:`list_class`.
 
-JSON contract emitted by :meth:`describe` and :meth:`list_class`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The output is *self-describing*: section headers in chat replies are the
-Vietnamese ``rdfs:label`` of each property, used **as keys** in the dict.
-Adding a new property in Protégé and giving it a Vietnamese label is the
-only change required — no Python edit, no schema update.
-
-Four keys are fixed identity metadata (``type``, ``iri``, ``class``,
-``label``); every other key is a property label.
-
-Top-level entity (``depth=1``)::
-
-    {
-      "type": "individual",
-      "iri": "QuyTrinh_NopHocPhi",
-      "class": "AcademicProcedure",
-      "label": "Quy trình đóng học phí",
-      "Mô tả quy trình": "Sinh viên thanh toán...",     # data scalar
-      "Được xử lý bởi": [                                # object → list of nested
-          {"type": "individual", "iri": "PhongKHTC",
-           "class": "AdministrativeOffice",
-           "label": "Phòng Tài chính",
-           "Website": "https://phongkhtc.ntu.edu.vn/"}   # depth=0 only
-      ],
-      "Mức học phí/1 Tín chỉ (VNĐ)": 550000,
-      ...
-    }
-
-Object-property targets (``depth=0``) carry only identity + URL-shaped
-data values — Renderer uses the first such value as the markdown link
-target.
-
-Class listing::
-
-    {
-      "type": "listing",
-      "class": "AcademicProcedure",
-      "label": "Quy trình học vụ",
-      "items": [{"type": "individual", "iri": "...",
-                 "class": "...", "label": "..."}]
-    }
+JSON contract: 4 fixed keys (``type``, ``iri``, ``class``, ``label``);
+all other keys are Vietnamese property ``rdfs:label``. Paragraph-property
+values carry a leading newline as a marker for the renderer.
 """
 
 from __future__ import annotations
@@ -54,7 +13,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import unicodedata
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
@@ -63,7 +21,7 @@ import owlready2
 from owlready2 import default_world
 from rapidfuzz import fuzz, process
 
-from ..core.config import (
+from .config import (
     FUZZY_MIN_SCORE,
     FUZZY_TOP_K,
     LABEL_MAP_PATH,
@@ -72,47 +30,29 @@ from ..core.config import (
     RENDER_PROPERTY_ORDER,
     RENDER_SKIP_PROPERTIES,
 )
+from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
 
 
-# Fixed keys in every JSON dict — Renderer skips them when iterating
-# property-label keys. Exported so Renderer can import the same constant.
+# Fixed keys in every entity dict — Renderer skips them when iterating
+# property-label keys. Re-exported so Renderer can mirror the constant.
 FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 
 _CAMEL_RE = re.compile(r"([a-z])([A-Z])")
-_RE_NONALNUM = re.compile(r"[^\w\s]+")
-_RE_WS = re.compile(r"\s+")
 _PROP_RANK = {name: i for i, name in enumerate(RENDER_PROPERTY_ORDER)}
 _BIG_RANK = len(_PROP_RANK)
 
 
 def _humanise(local: str) -> str:
-    """``DonXinBaoLuu`` → ``Don Xin Bao Luu`` — used as a label fallback."""
+    """``DonXinBaoLuu`` → ``Don Xin Bao Luu``."""
     return _CAMEL_RE.sub(r"\1 \2", local.replace("_", " ")).strip()
 
 
-def _normalize(text: str) -> str:
-    """Diacritic-insensitive, lower-case, alphanumeric-only normalisation
-    for the fuzzy index. Independent of :class:`Preprocessor` so the
-    ontology layer can be exercised without the NER preprocessing chain."""
-    nfkd = unicodedata.normalize("NFD", text.lower())
-    no_diac = "".join(c for c in nfkd if not unicodedata.combining(c))
-    no_diac = no_diac.replace("đ", "d").replace("Đ", "d")
-    return _RE_WS.sub(" ", _RE_NONALNUM.sub(" ", no_diac)).strip()
-
-
-# Match results
-
 @dataclass(frozen=True)
 class MatchResult:
-    """Outcome of resolving one span against the ontology.
-
-    ``class_won`` and ``individuals`` are mutually informative: when the
-    class label wins, ``individuals`` is left empty and the renderer is
-    expected to fall back to a class-listing template; otherwise every
-    IRI scoring at or above the threshold is included.
-    """
+    """One span resolution. ``class_won`` triggers listing; otherwise
+    ``individuals`` are every IRI above the score threshold."""
     tag: str
     class_won: bool
     individuals: list[str] = field(default_factory=list)
@@ -121,21 +61,15 @@ class MatchResult:
 
 @dataclass(frozen=True)
 class _Cand:
-    """Internal index entry."""
-    iri: str            # ``""`` if this row is the class itself
+    """Internal index entry. ``iri=""`` marks the class-label row."""
+    iri: str
     norm: str
     is_class: bool
 
 
-# Ontology repository
-
 class Ontology:
-    """OWL world + label-map + fuzzy index, all behind one façade.
+    """OWL world + label-map + fuzzy index; singleton via ``get()``."""
 
-    Construction is idempotent and process-cheap (parsing the OWX file is
-    the dominant cost), but expensive enough that callers should reuse the
-    singleton via :meth:`get` rather than constructing fresh instances.
-    """
 
     def __init__(self,
                  ontology_path: Path = ONTOLOGY_PATH,
@@ -144,15 +78,15 @@ class Ontology:
                  min_score: float = FUZZY_MIN_SCORE,
                  top_k: int = FUZZY_TOP_K) -> None:
         self._owl = default_world.get_ontology(str(ontology_path)).load()
-        # ``label_map.json`` is authored as a list of single-key dicts so
-        # tag declaration order is preserved by the JSON spec; flatten it
-        # once at load time and forget about that quirk afterwards.
+        # label_map.json is authored as a list of single-key dicts to
+        # preserve declaration order. Flatten once and forget.
         raw = json.loads(Path(label_map_path).read_text(encoding="utf-8"))
         self._label_map: dict[str, dict] = {}
         for item in raw:
             self._label_map.update(item)
         self._min_score = float(min_score)
         self._top_k = int(top_k)
+        self._pre = Preprocessor.get()
         log.info("[Ontology] loaded path=%s tags=%d classes=%d individuals=%d",
                  ontology_path, len(self.tags),
                  len(list(self._owl.classes())),
@@ -163,40 +97,33 @@ class Ontology:
     def get(cls) -> "Ontology":
         return cls()
 
-    # NER schema accessors
+    # NER schema
 
     @property
     def tags(self) -> list[str]:
+        """NER tags backed by an ontology class, in declaration order."""
         return [k for k, v in self._label_map.items()
                 if v.get("type") == "ontology"]
-
-    def bio_labels(self) -> list[str]:
-        out = ["O"]
-        for tag in self.tags:
-            out.extend([f"B-{tag}", f"I-{tag}"])
-        return out
 
     def class_local(self, tag: str) -> str:
         uri = self._label_map.get(tag, {}).get("uri", "")
         return uri.rsplit("#", 1)[-1] if "#" in uri else uri
 
-    # Fuzzy match + score (formerly FuzzyMatcher)
+    # Fuzzy match + score
 
     @lru_cache(maxsize=None)
     def _fuzzy_index(self, tag: str) -> tuple[_Cand, ...]:
-        """Build the per-tag search index — class label + individual surfaces.
+        """Index = class label + every individual surface (label/alias/name).
 
-        Including the class label here makes the matcher *two-mode* in a
-        uniform way: the same RapidFuzz call decides whether the user asked
-        a class-level question (listing) or pointed at specific individuals
-        (description).
+        Putting the class row in the same index gives resolve() its two-mode
+        decision in one RapidFuzz call.
         """
         out: list[_Cand] = []
         cls_local = self.class_local(tag)
         cls = self._owl[cls_local]
         if cls is not None:
             for v in (getattr(cls, "label", None) or []):
-                n = _normalize(str(v))
+                n = self._pre.normalize_for_match(str(v))
                 if n:
                     out.append(_Cand(iri="", norm=n, is_class=True))
         for ind in self._individuals_of_class(cls_local):
@@ -205,32 +132,23 @@ class Ontology:
             forms.update(str(v) for v in (getattr(ind, "label", None) or []))
             forms.update(str(v) for v in (getattr(ind, "hasAlias", None) or []))
             for s in forms:
-                n = _normalize(s)
+                n = self._pre.normalize_for_match(s)
                 if n:
                     out.append(_Cand(iri=iri, norm=n, is_class=False))
         return tuple(out)
 
     def resolve(self, span: str, tag: str) -> MatchResult:
-        """Two-mode fuzzy resolution.
-
-        * **Class wins** — the class label tied or beat every individual at
-          the threshold; downstream renders the listing template.
-        * **Individuals win** — every IRI scoring at or above the threshold
-          is collected, fixing the historical top-1 collapse on ambiguous
-          cohort spans like ``"k65"`` (which legitimately matches *two*
-          fees).
-        """
+        """Two-mode resolve: class-listing or threshold-collected individuals."""
         index = self._fuzzy_index(tag)
-        q = _normalize(span)
+        q = self._pre.normalize_for_match(span)
         if not (index and q):
             log.info("[Ontology.resolve] miss surface=%r tag=%s", span, tag)
             return MatchResult(tag=tag, class_won=False)
-
         raw = process.extract(
             q, {i: e.norm for i, e in enumerate(index)},
             scorer=fuzz.token_set_ratio, limit=self._top_k * 4,
         )
-        # Dedupe by entity (each individual contributes many surface forms).
+        # Dedup per entity (each individual contributes many surface forms).
         seen: set[str] = set()
         ranked: list[tuple[_Cand, float]] = []
         for _, score, idx in raw:
@@ -244,7 +162,6 @@ class Ontology:
                 break
         if not ranked:
             return MatchResult(tag=tag, class_won=False)
-
         top_cand, top_score = ranked[0]
         if top_cand.is_class and top_score >= self._min_score:
             log.info("[Ontology.resolve] class-win surface=%r tag=%s score=%.2f",
@@ -264,37 +181,29 @@ class Ontology:
     # Description → JSON
 
     def describe(self, iri: str, depth: int = 1) -> dict | None:
-        """Render an individual to the JSON contract documented in module docstring.
+        """Serialise an individual to JSON.
 
-        ``depth=1`` (default) produces the full description used at the top
-        of a chat reply. ``depth=0`` produces a minimal target dict suitable
-        for inclusion as an object-property item — only identity + URL-shaped
-        data values are carried, so the renderer can pick the first URL and
-        emit a markdown link to the target's label without recursing
-        further.
+        ``depth=1`` = full description. ``depth=0`` = minimal target form
+        (identity + URL-shaped data only) for nested object-property items.
         """
         ind = self._owl[iri]
         if ind is None:
             log.warning("[Ontology.describe] miss iri=%s", iri)
             return None
-
-        cls_local = self._class_local_of(ind)
         out: dict = {
             "type": "individual",
             "iri": ind.name,
-            "class": cls_local,
+            "class": self._class_local_of(ind),
             "label": self._label_of(ind),
         }
-
-        # Order asserted properties stably so reply layout is deterministic
-        # whether the schema has 5 or 50 properties; unknown property names
-        # are appended alphabetically by their Vietnamese label.
+        # Stable property order — paragraphs first, then by RENDER_PROPERTY_ORDER,
+        # then alphabetically by Vietnamese label. Adding a property in Protégé
+        # never reshuffles existing layout.
         ordered = sorted(
             self._asserted_properties(ind),
             key=lambda kv: (_PROP_RANK.get(kv[0].name, _BIG_RANK),
                             self._property_label(kv[0])),
         )
-
         for prop, values in ordered:
             if prop.name in RENDER_SKIP_PROPERTIES:
                 continue
@@ -302,14 +211,14 @@ class Ontology:
             value = self._render_property_value(prop, values, depth=depth)
             if value in (None, "", []):
                 continue
-            # depth=0 strips non-URL data values to keep target dicts small.
-            if depth == 0 and not _is_url_value(value):
+            # depth=0 strips non-URL data so target dicts stay small.
+            if depth == 0 and not _has_url(value):
                 continue
             out[header] = value
         return out
 
     def list_class(self, tag: str) -> dict:
-        """Class-listing JSON: every individual under the class, label only."""
+        """Class-listing JSON: every individual under the class (label only)."""
         cls_local = self.class_local(tag)
         cls = self._owl[cls_local]
         items: list[dict] = []
@@ -324,12 +233,8 @@ class Ontology:
         label = (str(list(getattr(cls, "label", []) or [])[0])
                  if cls is not None and getattr(cls, "label", None)
                  else self._label_map.get(tag, {}).get("label", tag))
-        return {
-            "type": "listing",
-            "class": cls_local,
-            "label": label,
-            "items": items,
-        }
+        return {"type": "listing", "class": cls_local,
+                "label": label, "items": items}
 
     # Internals
 
@@ -338,12 +243,7 @@ class Ontology:
         return list(cls.instances()) if cls is not None else []
 
     def _class_local_of(self, ind) -> str:
-        """Return the local name of the *most specific* class of ``ind``.
-
-        Falls back to ``"NamedIndividual"`` if the individual has no
-        asserted type (defensive — shouldn't happen with the curated
-        ontology, but a graceful default avoids KeyError downstream).
-        """
+        """Most-specific asserted class of ``ind`` (local name)."""
         for cls in ind.is_a:
             name = getattr(cls, "name", None)
             if name and name != "NamedIndividual":
@@ -370,52 +270,27 @@ class Ontology:
         return out
 
     def _render_property_value(self, prop, values: list, *, depth: int):
-        """Convert a list of values into the JSON-serialisable form.
-
-        * Object property → list of recursive dicts at ``depth - 1``;
-        * paragraph property → joined string preserving authored line breaks;
-        * data property scalar → primitive (single value) or list (multiple).
-        """
+        """Serialise one property's values: object → nested dicts; paragraph
+        → joined string with leading ``\\n``; other → primitive or list."""
         if isinstance(prop, owlready2.ObjectPropertyClass):
             if depth <= 0:
-                return None  # stop recursing at depth 0
-            nested: list[dict] = []
-            for v in values:
-                d = self.describe(v.name, depth=depth - 1)
-                if d:
-                    nested.append(d)
+                return None
+            nested = [d for d in (self.describe(v.name, depth=depth - 1)
+                                  for v in values) if d]
             return nested or None
-
         if prop.name in RENDER_PARAGRAPH_PROPERTIES:
-            # Convention: paragraph values always carry a leading newline so
-            # the renderer can distinguish "free-flow paragraph" (no bullet)
-            # from "single-value bullet" without consulting any per-property
-            # config. A single-line description like
-            # ``"Sinh viên thanh toán..."`` would otherwise look identical
-            # to a normal scalar; the leading ``\n`` is the marker.
-            return "\n" + "\n".join(_format_scalar(v).strip() for v in values)
-
-        rendered = [_format_scalar(v) for v in values]
-        if not rendered:
-            return None
-        return rendered[0] if len(rendered) == 1 else rendered
+            # Leading newline = paragraph marker — works for both single and
+            # multi-line content, regardless of language. Renderer keys off
+            # this convention rather than per-property config.
+            return "\n" + "\n".join(str(v).strip() for v in values)
+        # Owlready2 already returns the right Python primitives; no coercion.
+        return values[0] if len(values) == 1 else list(values)
 
 
-# Helpers — kept module-private; Renderer mirrors them locally so the two
-# layers don't share imports.
-
-def _format_scalar(v) -> object:
-    """Lightly typecast literal values to display-friendly Python primitives."""
-    if isinstance(v, bool):
-        return v
-    if isinstance(v, int):
-        return int(v)
-    return str(v)
-
-
-def _is_url_value(v) -> bool:
-    if isinstance(v, str):
-        return v.startswith(("http://", "https://"))
+def _has_url(v) -> bool:
+    """True if ``v`` (or any element if it's a list) is a URL string."""
+    if Preprocessor.is_url(v):
+        return True
     if isinstance(v, list):
-        return any(_is_url_value(x) for x in v)
+        return any(Preprocessor.is_url(x) for x in v)
     return False

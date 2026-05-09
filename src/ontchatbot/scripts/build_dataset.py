@@ -24,10 +24,10 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from ..core.config import MAX_LENGTH, ARTIFACTS_DIR, TEST_PATH, TRAIN_PATH
-from ..ner.preprocessing import Preprocessor
+from ..config import MAX_LENGTH, ARTIFACTS_DIR, TEST_PATH, TRAIN_PATH
+from ..data.sources import SAMPLES, Sample
+from ..preprocessor import Preprocessor
 from ..viz.distributions import plot_label_distribution, plot_length_distribution
-from .sources import SAMPLES, Sample
 
 # All text passes through the singleton Preprocessor — same code path used
 # by the inference pipeline, modulo the abbrev/teen-code expansion which is
