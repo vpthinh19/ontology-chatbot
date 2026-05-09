@@ -180,7 +180,19 @@
         .chats-container .message .message-text {
             padding: 3px 16px;
             word-wrap: break-word;
+            overflow-wrap: anywhere;
             white-space: pre-line;
+            line-height: 1.55;
+        }
+
+        .chats-container .message .message-text a {
+            color: #1d7efd;
+            text-decoration: underline;
+            word-break: break-word;
+        }
+
+        .chats-container .message .message-text a:hover {
+            color: #0264e3;
         }
 
         .chats-container .bot-message {
@@ -475,20 +487,50 @@
         };
         // Scroll to the bottom of the container
         const scrollToBottom = () => container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
-        // Simulate typing effect for bot responses
+        // Convert plain text with markdown-style links and newlines into safe
+        // HTML. URLs in the form [label](url) become anchor tags; bare http(s)
+        // URLs are auto-linked; everything else is HTML-escaped to prevent
+        // injection.
+        const escapeHtml = (s) => s
+            .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+        const renderRichText = (text) => {
+            const PLACEHOLDER = " LINK ";
+            const links = [];
+            // 1) extract markdown links so their inner HTML survives escaping
+            let pre = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+                (_, label, url) => {
+                    links.push(`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`);
+                    return PLACEHOLDER;
+                });
+            // 2) escape the rest
+            pre = escapeHtml(pre);
+            // 3) auto-link bare URLs (post-escape so the http// chars survived)
+            pre = pre.replace(/(https?:\/\/[^\s<]+)/g,
+                (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`);
+            // 4) restore markdown links
+            let i = 0;
+            pre = pre.replace(new RegExp(PLACEHOLDER, "g"), () => links[i++]);
+            // 5) newlines → <br>
+            return pre.replace(/\n/g, "<br>");
+        };
+        // Simulate typing effect for bot responses. Types word-by-word as
+        // plain text for the streaming feel, then re-renders with rich HTML
+        // (clickable links, line breaks) once typing finishes.
         const typingEffect = (text, textElement, botMsgDiv) => {
             textElement.textContent = "";
             const words = text.split(" ");
             let wordIndex = 0;
-            // Set an interval to type each word
             typingInterval = setInterval(() => {
                 if (wordIndex < words.length) {
                     textElement.textContent += (wordIndex === 0 ? "" : " ") + words[wordIndex++];
                     scrollToBottom();
                 } else {
                     clearInterval(typingInterval);
+                    textElement.innerHTML = renderRichText(text);
                     botMsgDiv.classList.remove("loading");
                     document.body.classList.remove("bot-responding");
+                    scrollToBottom();
                 }
             }, 40); // 40 ms delay
         };

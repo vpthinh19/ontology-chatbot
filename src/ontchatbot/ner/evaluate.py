@@ -4,31 +4,21 @@ Reports ``seqeval`` entity-level metrics (strict BIO matching), which are the
 de-facto academic standard for NER:
 
 * Token-level accuracy (sub-word ignored)
-* Entity-level precision / recall / F1 — both macro- and micro-averaged
-* Per-entity-type classification report
+* Per-entity-type precision / recall / F1 / support
+* Standard micro / macro / weighted averages
 
 Outputs in ``out/evaluation/``:
-    test_metrics.json
-    classification_report.txt
-    per_class_metrics.png
-    confusion_matrix.png
-    summary_table.png
+    classification_report.png   (table chart with all metrics + accuracy row)
+    confusion_matrix.png        (token-level BIO confusion, O dropped)
 """
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 import numpy as np
 import torch
-from seqeval.metrics import (
-    accuracy_score,
-    classification_report,
-    f1_score,
-    precision_score,
-    recall_score,
-)
+from seqeval.metrics import accuracy_score, classification_report
 from torch.utils.data import DataLoader
 from transformers import (
     AutoModelForTokenClassification,
@@ -37,11 +27,7 @@ from transformers import (
 )
 
 from ..core.config import BATCH_SIZE, EVAL_ARTIFACTS_DIR, MODEL_DIR, TEST_PATH
-from ..viz.evaluation import (
-    plot_benchmark_card,
-    plot_confusion_matrix,
-    plot_per_class_metrics,
-)
+from ..viz.evaluation import plot_classification_report, plot_confusion_matrix
 from .dataset import label_mappings, load_split, make_tokenize_fn
 
 
@@ -80,32 +66,18 @@ def main() -> None:
 
     true_seqs, pred_seqs = _predict(model, loader, device, i2l)
 
-    metrics = {
-        "n_test": len(true_seqs),
-        "token_accuracy": accuracy_score(true_seqs, pred_seqs),
-        "precision_macro": precision_score(true_seqs, pred_seqs, average="macro", zero_division=0),
-        "recall_macro": recall_score(true_seqs, pred_seqs, average="macro", zero_division=0),
-        "f1_macro": f1_score(true_seqs, pred_seqs, average="macro", zero_division=0),
-        "precision_micro": precision_score(true_seqs, pred_seqs, average="micro", zero_division=0),
-        "recall_micro": recall_score(true_seqs, pred_seqs, average="micro", zero_division=0),
-        "f1_micro": f1_score(true_seqs, pred_seqs, average="micro", zero_division=0),
-    }
-    text_report = classification_report(true_seqs, pred_seqs, digits=4, zero_division=0)
+    accuracy = accuracy_score(true_seqs, pred_seqs)
     dict_report = classification_report(true_seqs, pred_seqs, output_dict=True, zero_division=0)
 
     out = Path(EVAL_ARTIFACTS_DIR)
     out.mkdir(parents=True, exist_ok=True)
-    (out / "test_metrics.json").write_text(
-        json.dumps(metrics, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    (out / "classification_report.txt").write_text(text_report, encoding="utf-8")
-    plot_per_class_metrics(dict_report, str(out / "per_class_metrics.png"))
+    plot_classification_report(dict_report, accuracy,
+                               str(out / "classification_report.png"))
     plot_confusion_matrix(true_seqs, pred_seqs, labels,
                           str(out / "confusion_matrix.png"))
-    plot_benchmark_card(metrics, dict_report, str(out / "benchmark_card.png"))
 
-    print(json.dumps(metrics, indent=2, ensure_ascii=False))
-    print(text_report)
+    print(f"n_test={len(true_seqs)}  token_accuracy={accuracy:.4f}")
+    print(classification_report(true_seqs, pred_seqs, digits=4, zero_division=0))
 
 
 if __name__ == "__main__":

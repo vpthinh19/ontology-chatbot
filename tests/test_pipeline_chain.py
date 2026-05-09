@@ -42,7 +42,9 @@ def test_pipeline_runs_all_stages_in_order(monkeypatch, onto):
     out = pipeline.answer("xin chào, em hỏi về bảo lưu")
     assert out["greeting"] is True
     assert out["entities"][0]["iri"] == "QuyTrinh_BaoLuu"
-    assert out["reply"].startswith("Xin chào")
+    # Minimal-greeting policy: substantive answer overrides the greeting prefix.
+    assert not out["reply"].startswith("Xin chào")
+    assert "bảo lưu" in out["reply"].lower()
 
 
 def test_custom_pipeline_can_swap_stages(monkeypatch, onto):

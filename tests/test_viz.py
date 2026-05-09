@@ -7,9 +7,8 @@ from ontchatbot.viz.distributions import (
     plot_length_distribution,
 )
 from ontchatbot.viz.evaluation import (
-    plot_benchmark_card,
+    plot_classification_report,
     plot_confusion_matrix,
-    plot_per_class_metrics,
 )
 from ontchatbot.viz.training_curves import _split_history, plot_training_curves
 
@@ -38,17 +37,6 @@ def test_plot_training_curves_writes_file(tmp_path):
     assert out.is_file() and out.stat().st_size > 0
 
 
-def test_plot_per_class_metrics_writes_file(tmp_path):
-    report = {
-        "QuyTrinhHocVu": {"precision": 0.9, "recall": 0.8, "f1-score": 0.85, "support": 30},
-        "PhongBanHanhChinh": {"precision": 0.7, "recall": 0.9, "f1-score": 0.79, "support": 20},
-        "macro avg": {"precision": 0.8, "recall": 0.85, "f1-score": 0.82, "support": 50},
-    }
-    out = tmp_path / "per_class.png"
-    plot_per_class_metrics(report, str(out))
-    assert out.is_file() and out.stat().st_size > 0
-
-
 def test_plot_confusion_matrix_writes_file(tmp_path):
     labels = ["O", "B-X", "I-X"]
     true = [["B-X", "I-X", "O"], ["B-X", "O", "O"]]
@@ -58,20 +46,17 @@ def test_plot_confusion_matrix_writes_file(tmp_path):
     assert out.is_file() and out.stat().st_size > 0
 
 
-def test_plot_benchmark_card_writes_file(tmp_path):
-    metrics = {
-        "n_test": 42, "token_accuracy": 0.95,
-        "precision_macro": 0.88, "recall_macro": 0.84, "f1_macro": 0.86,
-        "precision_micro": 0.90, "recall_micro": 0.88, "f1_micro": 0.89,
-    }
+def test_plot_classification_report_writes_file(tmp_path):
     dict_report = {
-        "QuyTrinhHocVu": {"precision": 0.9, "recall": 0.8, "f1-score": 0.85, "support": 30},
-        "PhongBanHanhChinh": {"precision": 0.7, "recall": 0.95, "f1-score": 0.81, "support": 18},
-        "DinhMucHocPhi": {"precision": 0.95, "recall": 0.7, "f1-score": 0.81, "support": 12},
-        "macro avg": {"precision": 0.88, "recall": 0.84, "f1-score": 0.86, "support": 60},
+        "QuyTrinhHocVu":    {"precision": 0.9355, "recall": 0.9355, "f1-score": 0.9355, "support": 93},
+        "PhongBanHanhChinh": {"precision": 0.9737, "recall": 1.0000, "f1-score": 0.9867, "support": 74},
+        "DinhMucHocPhi":    {"precision": 0.9571, "recall": 0.9437, "f1-score": 0.9504, "support": 71},
+        "micro avg":        {"precision": 0.9481, "recall": 0.9705, "f1-score": 0.9592, "support": 847},
+        "macro avg":        {"precision": 0.9519, "recall": 0.9671, "f1-score": 0.9594, "support": 847},
+        "weighted avg":     {"precision": 0.9481, "recall": 0.9705, "f1-score": 0.9591, "support": 847},
     }
-    out = tmp_path / "card.png"
-    plot_benchmark_card(metrics, dict_report, str(out))
+    out = tmp_path / "report.png"
+    plot_classification_report(dict_report, accuracy=0.9762, save_path=str(out))
     assert out.is_file() and out.stat().st_size > 0
 
 
