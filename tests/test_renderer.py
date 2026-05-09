@@ -1,19 +1,13 @@
-"""Tests for :class:`ontchatbot.ontology.renderer.Renderer`.
+"""Tests for :class:`ontchatbot.renderer.Renderer` — driven by mock dicts.
 
-These run **without** loading the OWL ontology — Renderer only consumes
-plain dicts conforming to the JSON contract emitted by Ontology, so unit
-tests can use synthetic fixtures and complete in milliseconds.
+Loads no OWL — Renderer's contract is a plain dict, so unit tests stay fast.
 """
 
 from __future__ import annotations
 
 import pytest
 
-from ontchatbot.ontology.renderer import (
-    GREETING_REPLY,
-    OUT_OF_DOMAIN_REPLY,
-    Renderer,
-)
+from ontchatbot.renderer import GREETING_REPLY, OUT_OF_DOMAIN_REPLY, Renderer
 
 
 @pytest.fixture(scope="module")
@@ -24,7 +18,6 @@ def renderer() -> Renderer:
 # Compose policy
 
 def test_compose_blocks_take_priority(renderer: Renderer):
-    """Minimal-greeting policy: substantive answer overrides greeting."""
     assert renderer.compose("BLOCK", greeting=True).strip() == "BLOCK"
     assert renderer.compose("BLOCK", greeting=False).strip() == "BLOCK"
 
@@ -37,15 +30,12 @@ def test_compose_out_of_domain(renderer: Renderer):
     assert renderer.compose("", greeting=False).strip() == OUT_OF_DOMAIN_REPLY
 
 
-# Individual rendering — all driven by synthetic dicts
+# Individual rendering — synthetic dicts
 
 def test_render_individual_inline_single_value(renderer: Renderer):
-    """Single-value section collapses to ``• Header: value`` inline."""
     out = renderer.render({
-        "type": "individual",
-        "iri": "X",
-        "class": "AdministrativeOffice",
-        "label": "Phòng Tài chính",
+        "type": "individual", "iri": "X",
+        "class": "AdministrativeOffice", "label": "Phòng Tài chính",
         "Email liên hệ": "ctsv@ntu.edu.vn",
     })
     assert "🏢 Phòng Tài chính" in out
@@ -54,8 +44,8 @@ def test_render_individual_inline_single_value(renderer: Renderer):
 
 def test_render_individual_url_data_becomes_markdown_link(renderer: Renderer):
     out = renderer.render({
-        "type": "individual",
-        "iri": "X", "class": "AdministrativeOffice", "label": "Phòng X",
+        "type": "individual", "iri": "X",
+        "class": "AdministrativeOffice", "label": "Phòng X",
         "Website": "https://example.com/",
     })
     assert "• Website: [https://example.com/](https://example.com/)" in out
@@ -63,8 +53,8 @@ def test_render_individual_url_data_becomes_markdown_link(renderer: Renderer):
 
 def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer):
     out = renderer.render({
-        "type": "individual",
-        "iri": "X", "class": "FeeCategory", "label": "Học phí",
+        "type": "individual", "iri": "X",
+        "class": "FeeCategory", "label": "Học phí",
         "Áp dụng cho đối tượng/ngành": ["CNTT", "QTKD", "Kế toán"],
     })
     assert "• Áp dụng cho đối tượng/ngành:\n" in out
@@ -72,11 +62,9 @@ def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer)
 
 
 def test_render_individual_object_property_with_url(renderer: Renderer):
-    """Object-property target with a URL-shaped data value renders as
-    ``[label](url)`` markdown."""
     out = renderer.render({
-        "type": "individual",
-        "iri": "P", "class": "AcademicProcedure", "label": "Quy trình X",
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
         "Cần biểu mẫu/văn bản": [
             {"type": "individual", "iri": "DonX",
              "class": "Document", "label": "Đơn xin Y",
@@ -87,10 +75,9 @@ def test_render_individual_object_property_with_url(renderer: Renderer):
 
 
 def test_render_individual_object_property_without_url(renderer: Renderer):
-    """No URL value on the target → just the label."""
     out = renderer.render({
-        "type": "individual",
-        "iri": "P", "class": "AcademicProcedure", "label": "Quy trình X",
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
         "Yêu cầu điều kiện": [
             {"type": "individual", "iri": "C1", "class": "Condition",
              "label": "Điều kiện 1"},
@@ -102,22 +89,20 @@ def test_render_individual_object_property_without_url(renderer: Renderer):
 
 
 def test_render_individual_paragraph_property_no_bullet(renderer: Renderer):
-    """Convention: leading newline on a string value marks it as a paragraph
-    — free-flow text, no bullet header. Works for both multi-line and
-    single-line content (the marker is the leading ``\\n``, not the content)."""
+    """Convention: leading newline marks free-flow paragraph (no bullet)."""
     out = renderer.render({
-        "type": "individual",
-        "iri": "P", "class": "AcademicProcedure", "label": "Quy trình X",
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
         "Mô tả quy trình": "\nDòng 1\nDòng 2",
     })
     assert "Dòng 1\nDòng 2" in out
-    assert "• Mô tả quy trình" not in out  # paragraph: no bullet header
+    assert "• Mô tả quy trình" not in out
 
 
 def test_render_individual_paragraph_single_line_no_bullet(renderer: Renderer):
     out = renderer.render({
-        "type": "individual",
-        "iri": "P", "class": "AcademicProcedure", "label": "Quy trình X",
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
         "Mô tả quy trình": "\nMột dòng duy nhất.",
     })
     assert "Một dòng duy nhất." in out
@@ -126,15 +111,14 @@ def test_render_individual_paragraph_single_line_no_bullet(renderer: Renderer):
 
 def test_render_individual_currency_thousands_separator(renderer: Renderer):
     out = renderer.render({
-        "type": "individual",
-        "iri": "F", "class": "FeeCategory", "label": "Học phí K65",
+        "type": "individual", "iri": "F",
+        "class": "FeeCategory", "label": "Học phí K65",
         "Mức học phí/1 Tín chỉ (VNĐ)": 550000,
     })
     assert "550,000" in out
 
 
 def test_render_individual_class_emoji_lookup(renderer: Renderer):
-    """Class-specific emoji is picked from the config map."""
     out = renderer.render({
         "type": "individual", "iri": "X",
         "class": "FeeCategory", "label": "Học phí",
@@ -147,15 +131,14 @@ def test_render_individual_unknown_class_falls_back(renderer: Renderer):
         "type": "individual", "iri": "X",
         "class": "SomeFutureClass", "label": "...",
     })
-    assert out.startswith("• ")  # neutral bullet
+    assert out.startswith("• ")
 
 
-# Listing rendering
+# Listing
 
 def test_render_listing(renderer: Renderer):
     out = renderer.render({
-        "type": "listing",
-        "class": "AcademicProcedure",
+        "type": "listing", "class": "AcademicProcedure",
         "label": "Quy trình học vụ",
         "items": [
             {"type": "individual", "iri": "Q1",
@@ -165,18 +148,13 @@ def test_render_listing(renderer: Renderer):
         ],
     })
     assert "📘 Quy trình học vụ" in out
-    assert "• Quy trình A" in out
-    assert "• Quy trình B" in out
+    assert "• Quy trình A" in out and "• Quy trình B" in out
 
-
-# render_blocks dedup
 
 def test_render_blocks_dedupes_same_iri(renderer: Renderer):
-    d = {
-        "type": "individual", "iri": "X",
-        "class": "AdministrativeOffice", "label": "Phòng X",
-        "Email liên hệ": "x@y.vn",
-    }
+    d = {"type": "individual", "iri": "X",
+         "class": "AdministrativeOffice", "label": "Phòng X",
+         "Email liên hệ": "x@y.vn"}
     out = renderer.render_blocks([d, d])
     assert out.count("x@y.vn") == 1
 

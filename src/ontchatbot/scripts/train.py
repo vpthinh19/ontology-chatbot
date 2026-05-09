@@ -24,7 +24,7 @@ from transformers import (
     set_seed,
 )
 
-from ..core.config import (
+from ..config import (
     BATCH_SIZE,
     EPOCHS,
     LEARNING_RATE,
@@ -35,8 +35,8 @@ from ..core.config import (
     TRAIN_PATH,
     VAL_SIZE,
 )
+from ..ner_model import NerModel
 from ..viz.training_curves import plot_training_curves
-from .dataset import label_mappings, load_split, make_tokenize_fn
 
 
 def _build_compute_metrics(i2l: dict[int, str]):
@@ -65,12 +65,12 @@ def _build_compute_metrics(i2l: dict[int, str]):
 
 def main() -> None:
     set_seed(SEED)
-    labels, l2i, i2l = label_mappings()
+    labels, l2i, i2l = NerModel.label_mappings()
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
-    full = load_split(TRAIN_PATH, l2i)
+    full = NerModel.load_split(TRAIN_PATH, l2i)
     split = full.train_test_split(test_size=VAL_SIZE, seed=SEED)
-    tok_fn = make_tokenize_fn(tokenizer)
+    tok_fn = NerModel.make_tokenize_fn(tokenizer)
     train_ds = split["train"].map(tok_fn, batched=True, remove_columns=split["train"].column_names)
     val_ds = split["test"].map(tok_fn, batched=True, remove_columns=split["test"].column_names)
 

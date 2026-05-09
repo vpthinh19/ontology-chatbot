@@ -4858,4 +4858,56 @@ SAMPLES: list[Sample] = [
     ('học phí k67 nhiệt em đóng theo bảng giá nào kỳ tới nhỉ thầy', [('học phí k67 nhiệt', 'DinhMucHocPhi')]),
     ('học phí k67 cơ điện tử em đóng kèm phí thực hành phòng lab không nhỉ', [('học phí k67 cơ điện tử', 'DinhMucHocPhi')]),
     ('học phí k67 điện em đóng theo lịch kỳ chính khoá hay kỳ phụ thầy nhỉ', [('học phí k67 điện', 'DinhMucHocPhi')]),
+
+    # === wave 6 — phrasing nuances ("đóng tiền"/"nộp tiền"/"trả tiền") ===
+    # NopHocPhi — "đóng tiền"-style phrasings (15)
+    ('em muốn đóng tiền học kỳ này thế nào ạ', [('đóng tiền học', 'QuyTrinhHocVu')]),
+    ('đóng tiền học sao ạ', [('đóng tiền học', 'QuyTrinhHocVu')]),
+    ('nộp tiền học cho học kỳ tới ở đâu', [('nộp tiền học', 'QuyTrinhHocVu')]),
+    ('trả tiền học bằng cách nào', [('trả tiền học', 'QuyTrinhHocVu')]),
+    ('đóng tiền cho 18 tín chỉ kỳ này hết bao nhiêu', [('đóng tiền', 'QuyTrinhHocVu')]),
+    ('em phải đóng bao nhiêu tiền học kỳ này', [('đóng bao nhiêu tiền học', 'QuyTrinhHocVu')]),
+    ('nộp tiền vào tài khoản nào của trường', [('nộp tiền', 'QuyTrinhHocVu')]),
+    ('đóng tiền online qua web sinh viên được không', [('đóng tiền online', 'QuyTrinhHocVu'), ('web sinh viên', 'PhuongThucThanhToan')]),
+    ('em chuyển khoản đóng tiền học vào số tài khoản nào', [('đóng tiền học', 'QuyTrinhHocVu'), ('chuyển khoản', 'PhuongThucThanhToan')]),
+    ('thanh toán tiền học cho cả năm có được giảm không', [('thanh toán tiền học', 'QuyTrinhHocVu')]),
+    ('em quên đóng tiền học, giờ làm sao', [('đóng tiền học', 'QuyTrinhHocVu')]),
+    ('đóng tiền học trễ một tuần thì sao ạ', [('đóng tiền học', 'QuyTrinhHocVu')]),
+    ('nộp tiền học phí qua momo hay qr trường có nhận không', [('nộp tiền học phí', 'QuyTrinhHocVu'), ('momo', 'PhuongThucThanhToan'), ('qr', 'PhuongThucThanhToan')]),
+    ('muốn nộp tiền tận quầy thì đến đâu', [('nộp tiền', 'QuyTrinhHocVu')]),
+    ('em chưa có tiền đóng học, có thể xin trễ không', [('đóng học', 'QuyTrinhHocVu')]),
+
+    # BaoLuu — sentiment biến thể (5)
+    ('em đang ốm nặng cần tạm nghỉ học, làm sao bảo lưu', [('bảo lưu', 'QuyTrinhHocVu')]),
+    ('nghỉ học một thời gian có giữ kết quả không', [('nghỉ học một thời gian', 'QuyTrinhHocVu')]),
+    ('xin tạm dừng học vì lý do gia đình', [('tạm dừng học', 'QuyTrinhHocVu')]),
+    ('em muốn xin nghỉ một kỳ có cần báo trước không', [('nghỉ một kỳ', 'QuyTrinhHocVu')]),
+    ('hoãn việc học một năm rồi học tiếp được không', [('hoãn việc học', 'QuyTrinhHocVu')]),
+
+    # HocLai — biến thể "trả nợ", "thi lại" (4)
+    ('em muốn trả nợ môn fail kỳ trước', [('trả nợ môn', 'QuyTrinhHocVu')]),
+    ('đăng ký lại môn dưới 5.0 thế nào', [('đăng ký lại môn', 'QuyTrinhHocVu')]),
+    ('em rớt môn này có phải học lại không', [('rớt môn', 'QuyTrinhHocVu'), ('học lại', 'QuyTrinhHocVu')]),
+    ('thi lại môn em được mấy lần ạ', [('thi lại môn', 'QuyTrinhHocVu')]),
+
+    # RutMonHoc — biến thể "drop môn", "bỏ môn" (3)
+    ('em drop môn này được không', [('drop môn', 'QuyTrinhHocVu')]),
+    ('muốn bỏ một môn đã đăng ký', [('bỏ một môn', 'QuyTrinhHocVu')]),
+    ('em đăng ký nhầm môn, gỡ ra sao ạ', [('gỡ', 'QuyTrinhHocVu')]),
+
+    # ChuyenNganh — sentiment do dự (3)
+    ('em không thích ngành hiện tại, muốn chuyển sang ngành khác', [('chuyển sang ngành khác', 'QuyTrinhHocVu')]),
+    ('đổi qua ngành cntt được không em đang học kế toán', [('đổi qua ngành', 'QuyTrinhHocVu')]),
+    ('học sai ngành mất rồi, có cứu được không', [('sai ngành', 'QuyTrinhHocVu')]),
+
+    # XetTotNghiep — vội vàng (3)
+    ('em đủ điểm rồi, ra trường sớm được không', [('ra trường sớm', 'QuyTrinhHocVu')]),
+    ('còn 2 môn nữa em có tốt nghiệp đợt này không', [('tốt nghiệp đợt này', 'QuyTrinhHocVu')]),
+    ('em muốn ra trường trước hạn 1 kỳ thì sao', [('ra trường trước hạn', 'QuyTrinhHocVu')]),
+
+    # Distractor / negative-context — defend false positives (4)
+    ('đóng cửa phòng kế toán mấy giờ', []),
+    ('phòng đào tạo có đóng cửa thứ 7 không', []),
+    ('em không có tiền đóng học phí, có thể vay không', []),
+    ('rút thẻ atm tại ngân hàng nào gần', []),
 ]

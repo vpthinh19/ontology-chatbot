@@ -20,10 +20,10 @@ dependencies = [
 ]
 
 [project.scripts]
-build_dataset = "ontchatbot.data.build_dataset:main"
-train = "ontchatbot.ner.train:main"
-evaluate = "ontchatbot.ner.evaluate:main"
-serve = "ontchatbot.api.server:main"
+build_dataset = "ontchatbot.scripts.build_dataset:main"
+train = "ontchatbot.scripts.train:main"
+evaluate = "ontchatbot.scripts.evaluate:main"
+serve = "ontchatbot.scripts.serve:main"
 
 [build-system]
 requires = ["hatchling"]

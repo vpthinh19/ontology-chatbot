@@ -1,19 +1,11 @@
-"""Tests for the manual word→sub-word aligner exposed as
-:meth:`NerModel.make_encoder`.
-
-A static-method smoke test (in-process stub) plus a slow integration test
-that loads the real PhoBERT slow tokenizer to guarantee training and
-inference get identical alignment behaviour.
-"""
+"""Tests for :meth:`NerModel.make_encoder` — the manual word→sub-word aligner."""
 
 from __future__ import annotations
 
 import pytest
 
-from ontchatbot.ner.inference import NerModel
+from ontchatbot.ner_model import NerModel
 
-
-# In-process stub mimicking a slow tokenizer's surface
 
 class _Stub:
     """Splits each word into single-character tokens; ids are codepoints."""
@@ -30,29 +22,24 @@ class _Stub:
 def test_encoder_emits_cls_sep_and_word_ids():
     enc = NerModel.make_encoder(_Stub(), max_length=16)
     ids, wids = enc(["ab", "c"])
-    assert ids[0] == _Stub.cls_token_id
-    assert ids[-1] == _Stub.sep_token_id
+    assert ids[0] == _Stub.cls_token_id and ids[-1] == _Stub.sep_token_id
     assert wids[0] is None and wids[-1] is None
-    # word 0 → 2 sub-words ('a','b'); word 1 → 1 ('c')
     assert wids[1:-1] == [0, 0, 1]
 
 
 def test_encoder_skips_words_that_overflow_budget():
     enc = NerModel.make_encoder(_Stub(), max_length=4)  # cls + 2 subs + sep
     ids, wids = enc(["abc", "d"])
-    # First word "abc" → 3 subs would exceed; encoder must drop it cleanly.
     assert ids[0] == _Stub.cls_token_id and ids[-1] == _Stub.sep_token_id
     assert len([w for w in wids if w is not None]) <= 2
 
 
 def test_encoder_caches_repeated_words():
     enc = NerModel.make_encoder(_Stub(), max_length=64)
-    ids_a, _ = enc(["xin", "chao", "xin", "chao"])
-    ids_b, _ = enc(["xin", "chao", "xin", "chao"])
-    assert ids_a == ids_b  # deterministic — and the second call hits the cache
+    a, _ = enc(["xin", "chao", "xin", "chao"])
+    b, _ = enc(["xin", "chao", "xin", "chao"])
+    assert a == b
 
-
-# Real-tokenizer integration (slow)
 
 @pytest.fixture(scope="module")
 def phobert():

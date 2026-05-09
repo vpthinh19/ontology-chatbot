@@ -27,9 +27,9 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
-from ..core.config import WEB_DIR
-from ..core.logging_setup import configure_logging
-from ..core.pipeline import Pipeline
+from ..config import WEB_DIR
+from ..logging_setup import configure_logging
+from ..pipeline import Pipeline
 
 log = logging.getLogger(__name__)
 
@@ -97,7 +97,7 @@ def main() -> None:
     args = parser.parse_args()
     configure_logging()
     import uvicorn
-    uvicorn.run("ontchatbot.api.server:app",
+    uvicorn.run("ontchatbot.scripts.serve:app",
                 host=args.host, port=args.port, reload=args.reload)
 
 

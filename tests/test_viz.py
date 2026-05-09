@@ -1,4 +1,4 @@
-"""Tests for the ``ontchatbot.viz`` modules — file-creation smoke tests."""
+﻿"""Tests for the ``ontchatbot.viz`` modules — file-creation smoke tests."""
 
 from __future__ import annotations
 
