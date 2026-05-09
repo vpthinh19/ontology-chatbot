@@ -1,9 +1,11 @@
-"""Tests for ``ontchatbot.ner.inference`` — focus on the BIO span decoder
-since the model itself is heavyweight."""
+"""Tests for :class:`ontchatbot.ner.inference.NerModel` — focused on the
+pure BIO span decoder since the PhoBERT head itself is heavyweight."""
 
 from __future__ import annotations
 
-from ontchatbot.ner.inference import decode_bio
+from ontchatbot.ner.inference import NerModel
+
+decode_bio = NerModel.decode_bio
 
 
 def test_decode_bio_extracts_single_entity():

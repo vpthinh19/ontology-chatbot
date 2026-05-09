@@ -23,8 +23,14 @@ from datasets import Dataset
 from transformers import PreTrainedTokenizerBase
 
 from ..core.config import MAX_LENGTH
-from ..ontology.loader import bio_label_list
-from .encoding import make_word_encoder
+from ..ontology.store import Ontology
+from .inference import NerModel
+
+
+def bio_label_list() -> list[str]:
+    """Thin wrapper over :meth:`Ontology.bio_labels` so callers can stay
+    schema-agnostic without holding an Ontology instance."""
+    return Ontology.get().bio_labels()
 
 
 def label_mappings() -> tuple[list[str], dict[str, int], dict[int, str]]:
@@ -70,7 +76,7 @@ def project_labels(word_ids: list[int | None], tag_seq: list[int],
 def make_tokenize_fn(tokenizer: PreTrainedTokenizerBase):
     _, l2i, _ = label_mappings()
     b_to_i = b_to_i_table(l2i)
-    encode = make_word_encoder(tokenizer, MAX_LENGTH)
+    encode = NerModel.make_encoder(tokenizer, MAX_LENGTH)
 
     def _fn(batch):
         ids_b: list[list[int]] = []

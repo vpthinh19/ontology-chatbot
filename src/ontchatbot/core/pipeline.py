@@ -1,168 +1,191 @@
-"""End-to-end answer pipeline: user query → reply.
+"""End-to-end answer pipeline as a 5-stage OOP composition.
 
 Architecture
 ------------
-The orchestration is expressed as a *Pipes-and-Filters* chain (a thin variant
-of Chain-of-Responsibility). A query is wrapped in a :class:`PipelineContext`
-that flows through an ordered list of :class:`Stage` callables; each stage
-reads / writes the same context object and returns it. The final stage
-produces the user-facing reply.
+:class:`Pipeline` injects four collaborator singletons —
+:class:`Preprocessor`, :class:`NerModel`, :class:`Ontology`,
+:class:`Renderer` — and runs them in a fixed sequence:
 
-Benefits
-~~~~~~~~
-* **Stage isolation** — every stage is a single-responsibility callable that
-  can be unit-tested in microseconds (no model load required for most).
-* **Stage swappability** — replacing the NER component or adding a
-  spell-correction stage is a one-line change to :data:`DEFAULT_STAGES`.
-* **Uniform tracing** — :class:`Pipeline` emits a structured log record per
-  stage so a single ``grep`` over ``logs/chatbot.log`` reproduces the data
-  shape as a query traverses the pipeline.
+    preprocess → ner → match → query → present
 
-Stages (in order)
+Each step is one method on :class:`Pipeline`; the data-flow reads
+top-to-bottom in :meth:`Pipeline.answer`. The :class:`PipelineContext` DTO
+accumulates state along the chain so a partial run is still meaningful for
+diagnostics if a stage decides to short-circuit.
+
+Concurrency
+~~~~~~~~~~~
+Two entry points are exposed:
+
+* :meth:`Pipeline.answer` — synchronous, suitable for scripts and tests.
+* :meth:`Pipeline.aanswer` — async wrapper that runs :meth:`answer` via
+  :func:`asyncio.to_thread`. PyTorch CUDA work is blocking C++, so the
+  wrapper buys real concurrency on the FastAPI event loop without forcing
+  every internal method to be ``async``.
+
+Behavioural notes
 ~~~~~~~~~~~~~~~~~
-``trim`` → ``greeting`` → ``ner`` → ``fuzzy`` → ``render`` → ``compose``
+* **Threshold-based fuzzy matching** — every individual scoring above the
+  configured threshold is rendered, so ambiguous cohort spans (``"k65"``)
+  surface *all* applicable fees instead of an arbitrary top-1.
+* **Class-listing fallback** — when the matcher decides the user asked the
+  class-level question, the renderer emits a flat list of every individual
+  of that class instead of zooming into one.
+* **Minimal-greeting policy** — substantive blocks always win; the bot only
+  greets back when the user message is a pure greeting with no entity.
 """
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Callable, Iterable, Sequence
+from functools import lru_cache
 
-from ..data.templates import strip_diacritics
-from ..ner.inference import Entity, extract_entities
-from ..ontology.fuzzy import FuzzyMatch, best, search
-from ..ontology.response import compose, render_blocks
+from ..ner.inference import Entity, NerModel
+from ..ner.preprocessing import Preprocessor
+from ..ontology.renderer import Renderer
+from ..ontology.store import MatchResult, Ontology
 from .config import GREETING_KEYWORDS
 
 log = logging.getLogger(__name__)
 
 
-# Context
-
 @dataclass
 class PipelineContext:
-    """The data envelope mutated by every stage.
+    """DTO threaded through the pipeline stages.
 
-    Attributes accumulate in the order the stages execute, so a partial
-    context is still meaningful for diagnostics if a stage short-circuits.
+    Attributes accumulate top-down; partial contexts remain meaningful for
+    diagnostics even if a stage short-circuits. Each stage adds one or two
+    fields; nothing is removed mid-flight, which keeps trace logs complete.
     """
     query: str
     text: str = ""
     greeting: bool = False
     spans: list[Entity] = field(default_factory=list)
-    matches: list[tuple[str, FuzzyMatch]] = field(default_factory=list)
+    matches: list[MatchResult] = field(default_factory=list)
+    descriptions: list[dict] = field(default_factory=list)
     blocks: str = ""
     reply: str = ""
 
     def to_response(self) -> dict:
+        """Serialise into the JSON shape returned by ``/chat``."""
+        entities: list[dict] = []
+        for ent, m in zip(self.spans, self.matches):
+            entities.append({
+                "surface": ent.surface,
+                "tag": ent.tag,
+                "class_won": m.class_won,
+                "iris": list(m.individuals),
+                "score": m.top_score,
+            })
         return {
             "reply": self.reply,
             "greeting": self.greeting,
-            "entities": [
-                {"surface": ent.surface, "tag": tag,
-                 "iri": m.iri, "score": m.score}
-                for ent, (tag, m) in zip(self.spans, self.matches)
-            ],
+            "entities": entities,
         }
 
 
-# Stage protocol + concrete stages
-
-Stage = Callable[[PipelineContext], PipelineContext]
-
-
-def trim_stage(ctx: PipelineContext) -> PipelineContext:
-    """Strip whitespace; record the cleaned query for downstream stages."""
-    ctx.text = (ctx.query or "").strip()
-    log.info("[recv] message=%r length=%d", ctx.query, len(ctx.query or ""))
-    return ctx
-
-
-def greeting_stage(ctx: PipelineContext) -> PipelineContext:
-    """Diacritic-insensitive keyword match for greetings / closings."""
-    if not ctx.text:
-        return ctx
-    norm = strip_diacritics(ctx.text.lower()).strip()
-    ctx.greeting = any(kw in norm for kw in GREETING_KEYWORDS)
-    log.debug("[greeting] normalised=%r hit=%s", norm, ctx.greeting)
-    return ctx
-
-
-def ner_stage(ctx: PipelineContext) -> PipelineContext:
-    """Run the PhoBERT NER model and attach the recognised spans."""
-    if not ctx.text:
-        return ctx
-    ctx.spans = list(extract_entities(ctx.text))
-    log.info("[ner] extracted=%d spans=%s", len(ctx.spans),
-             [{"surface": e.surface, "tag": e.tag,
-               "start": e.start, "end": e.end} for e in ctx.spans])
-    return ctx
-
-
-def fuzzy_stage(ctx: PipelineContext) -> PipelineContext:
-    """Resolve every span to its best ontology individual (above threshold)."""
-    for ent in ctx.spans:
-        candidates = search(ent.surface, ent.tag, top_k=3)
-        log.info("[fuzzy] surface=%r tag=%s candidates=%s",
-                 ent.surface, ent.tag,
-                 [(c.iri, round(c.score, 2)) for c in candidates])
-        m = best(ent.surface, ent.tag)
-        if m is None:
-            log.info("[fuzzy] reject surface=%r tag=%s (below threshold)",
-                     ent.surface, ent.tag)
-            continue
-        ctx.matches.append((ent.tag, m))
-        log.info("[fuzzy] pick surface=%r tag=%s -> iri=%s score=%.2f",
-                 ent.surface, ent.tag, m.iri, m.score)
-    return ctx
-
-
-def render_stage(ctx: PipelineContext) -> PipelineContext:
-    """Render every matched individual into a per-class reply block."""
-    ctx.blocks = render_blocks(ctx.matches)
-    return ctx
-
-
-def compose_stage(ctx: PipelineContext) -> PipelineContext:
-    """Glue greeting + ontology blocks (or fall back to OOD)."""
-    ctx.reply = compose(ctx.blocks, greeting=ctx.greeting)
-    log.info("[compose] greeting=%s n_matched=%d block_chars=%d reply_chars=%d",
-             ctx.greeting, len(ctx.matches), len(ctx.blocks), len(ctx.reply))
-    return ctx
-
-
-# Pipeline runner
-
-@dataclass(frozen=True)
 class Pipeline:
-    """Composes an ordered list of stages and runs them on a query string."""
-    stages: Sequence[Stage]
+    """Orchestrate query → reply via injected singleton collaborators."""
 
-    def run(self, query: str) -> dict:
+    def __init__(self,
+                 *,
+                 preprocessor: Preprocessor | None = None,
+                 ner: NerModel | None = None,
+                 ontology: Ontology | None = None,
+                 renderer: Renderer | None = None) -> None:
+        self.pre = preprocessor or Preprocessor.get()
+        self.ner = ner or NerModel.get()
+        self.onto = ontology or Ontology.get()
+        self.render = renderer or Renderer.get()
+
+    @classmethod
+    @lru_cache(maxsize=1)
+    def get(cls) -> "Pipeline":
+        return cls()
+
+    # Public entry points
+
+    def answer(self, query: str) -> dict:
+        """Synchronous entry. Used by scripts, tests, and (via to_thread)
+        by the async entry below."""
         ctx = PipelineContext(query=query)
         if not (query or "").strip():
-            log.info("[skip] empty input -> greeting reply")
+            log.info("[Pipeline] skip empty input")
             ctx.greeting = True
-            ctx.reply = compose("", greeting=True)
+            ctx.reply = self.render.compose("", greeting=True)
             return ctx.to_response()
-        for stage in self.stages:
-            ctx = stage(ctx)
-        return ctx.to_response()
+        return self._present(self._query(self._match(self._ner(
+            self._preprocess(ctx))))).to_response()
 
+    async def aanswer(self, query: str) -> dict:
+        """Async wrapper for FastAPI. Runs :meth:`answer` in a worker
+        thread so the event loop stays free during PyTorch inference."""
+        return await asyncio.to_thread(self.answer, query)
 
-DEFAULT_STAGES: tuple[Stage, ...] = (
-    trim_stage,
-    greeting_stage,
-    ner_stage,
-    fuzzy_stage,
-    render_stage,
-    compose_stage,
-)
+    # Stages — one collaborator each
 
-DEFAULT_PIPELINE = Pipeline(stages=DEFAULT_STAGES)
+    def _preprocess(self, ctx: PipelineContext) -> PipelineContext:
+        """Trim whitespace and detect a greeting in one pass.
 
+        Both behaviours are pure text manipulation upstream of the model;
+        keeping them together documents the invariant that nothing past
+        this stage touches raw user characters.
+        """
+        ctx.text = (ctx.query or "").strip()
+        if ctx.text:
+            norm = self.pre.strip_diacritics(ctx.text.lower()).strip()
+            ctx.greeting = any(kw in norm for kw in GREETING_KEYWORDS)
+        log.info("[Pipeline.preprocess] text=%r greeting=%s",
+                 ctx.text, ctx.greeting)
+        return ctx
 
-def answer(query: str) -> dict:
-    """Process a single user query and return ``{reply, greeting, entities}``."""
-    return DEFAULT_PIPELINE.run(query)
+    def _ner(self, ctx: PipelineContext) -> PipelineContext:
+        """Extract BIO spans via the injected :class:`NerModel`."""
+        if not ctx.text:
+            return ctx
+        ctx.spans = list(self.ner.extract_entities(ctx.text))
+        log.info("[Pipeline.ner] extracted=%d spans=%s", len(ctx.spans),
+                 [{"surface": e.surface, "tag": e.tag,
+                   "start": e.start, "end": e.end} for e in ctx.spans])
+        return ctx
+
+    def _match(self, ctx: PipelineContext) -> PipelineContext:
+        """Resolve every span to a :class:`MatchResult` (class or individuals)."""
+        for ent in ctx.spans:
+            res = self.onto.resolve(ent.surface, ent.tag)
+            if res.class_won or res.individuals:
+                ctx.matches.append(res)
+        log.info("[Pipeline.match] matched=%d", len(ctx.matches))
+        return ctx
+
+    def _query(self, ctx: PipelineContext) -> PipelineContext:
+        """Convert each :class:`MatchResult` into JSON descriptions.
+
+        The Ontology is the only layer that knows how to serialise into the
+        property-label-keyed contract; from this point on we operate on
+        plain dicts.
+        """
+        for m in ctx.matches:
+            if m.class_won:
+                ctx.descriptions.append(self.onto.list_class(m.tag))
+                continue
+            for iri in m.individuals:
+                d = self.onto.describe(iri, depth=1)
+                if d:
+                    ctx.descriptions.append(d)
+        log.info("[Pipeline.query] descriptions=%d", len(ctx.descriptions))
+        return ctx
+
+    def _present(self, ctx: PipelineContext) -> PipelineContext:
+        """Render JSON descriptions to text and apply the greeting policy.
+
+        Folds the previous ``_render`` and ``_compose`` stages because both
+        are short pure-presentation steps; one log line is enough to trace.
+        """
+        ctx.blocks = self.render.render_blocks(ctx.descriptions)
+        ctx.reply = self.render.compose(ctx.blocks, greeting=ctx.greeting)
+        log.info("[Pipeline.present] blocks=%d greeting=%s reply_chars=%d",
+                 len(ctx.descriptions), ctx.greeting, len(ctx.reply))
+        return ctx

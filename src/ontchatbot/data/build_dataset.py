@@ -24,25 +24,28 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from underthesea import text_normalize, word_tokenize
-
 from ..core.config import MAX_LENGTH, ARTIFACTS_DIR, TEST_PATH, TRAIN_PATH
+from ..ner.preprocessing import Preprocessor
 from ..viz.distributions import plot_label_distribution, plot_length_distribution
 from .sources import SAMPLES, Sample
 
+# All text passes through the singleton Preprocessor — same code path used
+# by the inference pipeline, modulo the abbrev/teen-code expansion which is
+# inference-only (training samples are already authored in expanded form).
+_PRE = Preprocessor.get()
+
 
 def _normalize(text: str) -> str:
-    """Apply ``underthesea.text_normalize`` so source text matches the form
-    the tokenizer subsequently emits — without this, harmless diacritic-
-    placement variants (``khoá`` vs ``khóa``) break char-level alignment."""
-    return text_normalize(text)
+    """Light NFC + underthesea normalisation. The full ``clean()`` path
+    (URL strip, sticky-acronym splitting, teen-code expansion) is **not**
+    applied here — training data is hand-curated in already-expanded form,
+    so character-level alignment of authored surfaces still works."""
+    return _PRE.normalize(text)
 
 
 def _segment(text: str) -> list[str]:
     """Word-segment with underthesea; returns underscore-joined tokens."""
-    out = word_tokenize(text, format="text")
-    out = out if isinstance(out, str) else " ".join(out)
-    return [t for t in out.split() if t]
+    return Preprocessor.segment(text)
 
 
 def _char_spans(text: str, tokens: list[str]) -> list[tuple[int, int]]:

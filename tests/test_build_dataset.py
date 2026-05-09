@@ -12,7 +12,7 @@ from collections import Counter
 
 from ontchatbot.data.build_dataset import _stable_bucket, align, split
 from ontchatbot.data.sources import SAMPLES
-from ontchatbot.ontology.loader import bio_label_list
+from ontchatbot.ner.dataset import bio_label_list
 
 
 VALID_LABELS = set(bio_label_list())
