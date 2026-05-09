@@ -3451,3 +3451,34 @@
 {"tokens": ["học_phí", "k67_nhiệt", "em", "đóng", "theo", "bảng", "giá", "nào", "kỳ", "tới", "nhỉ", "thầy"], "ner_tags": ["B-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O", "O", "O", "O", "O", "O", "O", "O", "O"]}
 {"tokens": ["học_phí", "k67", "cơ_điện_tử", "em", "đóng", "kèm_phí", "thực_hành", "phòng", "lab", "không", "nhỉ"], "ner_tags": ["B-DinhMucHocPhi", "I-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O", "O", "O", "O", "O", "O", "O"]}
 {"tokens": ["học_phí", "k67", "điện", "em", "đóng", "theo", "lịch_kỳ", "chính_khóa", "hay", "kỳ_phụ", "thầy", "nhỉ"], "ner_tags": ["B-DinhMucHocPhi", "I-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "muốn", "đóng", "tiền", "học_kỳ", "này", "thế_nào", "ạ"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["đóng", "tiền", "học", "sao", "ạ"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O"]}
+{"tokens": ["nộp", "tiền", "học", "cho", "học_kỳ", "tới", "ở", "đâu"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["trả", "tiền", "học", "bằng", "cách", "nào"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["đóng", "tiền", "cho", "18", "tín", "chỉ", "kỳ", "này", "hết", "bao_nhiêu"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "phải", "đóng", "bao_nhiêu", "tiền", "học_kỳ", "này"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O"]}
+{"tokens": ["nộp", "tiền", "vào", "tài_khoản", "nào", "của", "trường"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "quên", "đóng", "tiền", "học", ",", "giờ", "làm_sao"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["đóng", "tiền", "học", "trễ", "một", "tuần", "thì", "sao", "ạ"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["nộp", "tiền", "học_phí", "qua", "momo", "hay", "qr_trường", "có", "nhận", "không"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "B-PhuongThucThanhToan", "O", "B-PhuongThucThanhToan", "O", "O", "O"]}
+{"tokens": ["muốn", "nộp", "tiền", "tận", "quầy", "thì", "đến", "đâu"], "ner_tags": ["O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "chưa", "có", "tiền", "đóng", "học", ",", "có_thể", "xin", "trễ", "không"], "ner_tags": ["O", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["nghỉ", "học", "một", "thời_gian", "có", "giữ", "kết_quả", "không"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O"]}
+{"tokens": ["xin", "tạm", "dừng", "học", "vì", "lý_do", "gia_đình"], "ner_tags": ["O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["em", "muốn", "xin", "nghỉ", "một", "kỳ", "có", "cần", "báo", "trước", "không"], "ner_tags": ["O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["hoãn", "việc", "học", "một", "năm", "rồi", "học", "tiếp", "được", "không"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "muốn", "trả", "nợ", "môn", "fail_kỳ", "trước"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O"]}
+{"tokens": ["đăng_ký", "lại", "môn", "dưới", "5.0", "thế_nào"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["em", "rớt", "môn", "này", "có", "phải", "học", "lại", "không"], "ner_tags": ["O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O"]}
+{"tokens": ["thi", "lại", "môn", "em", "được", "mấy", "lần", "ạ"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "drop_môn", "này", "được", "không"], "ner_tags": ["O", "B-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["muốn", "bỏ", "một", "môn", "đã", "đăng_ký"], "ner_tags": ["O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O"]}
+{"tokens": ["em", "đăng_ký", "nhầm_môn", ",", "gỡ", "ra", "sao", "ạ"], "ner_tags": ["O", "O", "O", "O", "B-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["đổi", "qua", "ngành", "cntt", "được", "không", "em", "đang", "học", "kế_toán"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["học", "sai", "ngành", "mất", "rồi", ",", "có", "cứu", "được", "không"], "ner_tags": ["O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["em", "đủ", "điểm", "rồi", ",", "ra", "trường", "sớm", "được", "không"], "ner_tags": ["O", "O", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O"]}
+{"tokens": ["còn", "2", "môn", "nữa", "em", "có", "tốt_nghiệp", "đợt", "này", "không"], "ner_tags": ["O", "O", "O", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O"]}
+{"tokens": ["em", "muốn", "ra", "trường", "trước", "hạn", "1", "kỳ", "thì", "sao"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O"]}
+{"tokens": ["đóng_cửa", "phòng", "kế_toán", "mấy", "giờ"], "ner_tags": ["O", "O", "O", "O", "O"]}
+{"tokens": ["phòng", "đào_tạo", "có", "đóng_cửa", "thứ", "7", "không"], "ner_tags": ["O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["rút", "thẻ_atm", "tại", "ngân_hàng", "nào", "gần"], "ner_tags": ["O", "O", "O", "O", "O", "O"]}
