@@ -42,7 +42,7 @@ MODEL_NAME = "vinai/phobert-base-v2"
 MAX_LENGTH = 128
 
 # Training
-EPOCHS = 5
+EPOCHS = 10
 BATCH_SIZE = 16
 LEARNING_RATE = 3e-5
 VAL_SIZE = 0.2

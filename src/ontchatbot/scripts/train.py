@@ -20,6 +20,7 @@ from transformers import (
     DataCollatorForTokenClassification,
     Trainer,
     TrainingArguments,
+    EarlyStoppingCallback,
     set_seed,
 )
 
@@ -90,13 +91,13 @@ def main() -> None:
         eval_steps=50,
         save_strategy="steps",
         save_steps=50,
-        save_total_limit=2,
-        load_best_model_at_end=True,
-        metric_for_best_model="f1_macro",
-        greater_is_better=True,
         logging_strategy="steps",
         logging_steps=50,
         report_to="none",
+        save_total_limit=1,
+        load_best_model_at_end=True,
+        metric_for_best_model="f1_macro",
+        greater_is_better=True,
         seed=SEED,
         bf16=torch.cuda.is_available() and torch.cuda.is_bf16_supported(),
         fp16=torch.cuda.is_available() and not torch.cuda.is_bf16_supported(),
@@ -110,6 +111,7 @@ def main() -> None:
         processing_class=tokenizer,
         data_collator=DataCollatorForTokenClassification(tokenizer),
         compute_metrics=_build_compute_metrics(i2l),
+        callbacks=[EarlyStoppingCallback(early_stopping_patience=3)],
     )
     trainer.train()
     trainer.save_model(str(MODEL_DIR))
