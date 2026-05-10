@@ -38,7 +38,9 @@ def test_render_individual_inline_single_value(renderer: Renderer):
         "class": "AdministrativeOffice", "label": "Phòng Tài chính",
         "Email liên hệ": "ctsv@ntu.edu.vn",
     })
-    assert "🏢 Phòng Tài chính" in out
+    # AdministrativeOffice has no class emoji (intentionally removed) —
+    # the title is the bare label.
+    assert out.startswith("Phòng Tài chính")
     assert "• Email liên hệ: ctsv@ntu.edu.vn" in out
 
 
@@ -48,7 +50,21 @@ def test_render_individual_url_data_becomes_markdown_link(renderer: Renderer):
         "class": "AdministrativeOffice", "label": "Phòng X",
         "Website": "https://example.com/",
     })
+    # URL has no parens → encoding is a no-op, matches verbatim.
     assert "• Website: [https://example.com/](https://example.com/)" in out
+
+
+def test_render_md_link_encodes_parens_in_url(renderer: Renderer):
+    """Regression: URL parens are percent-encoded inside the markdown ``href``
+    so the frontend regex doesn't truncate at an inner ``)``. The display
+    label may still show raw parens — only the href needs to be parse-safe."""
+    out = renderer.render({
+        "type": "individual", "iri": "R", "class": "Regulation",
+        "label": "Quyết định 729/QĐ-ĐHNT",
+        "Đường dẫn tải biểu mẫu": "https://x.vn/p-729-(2025)-(2).pdf",
+    })
+    # The href substring must have parens encoded.
+    assert "](https://x.vn/p-729-%282025%29-%282%29.pdf)" in out
 
 
 def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer):
@@ -61,7 +77,47 @@ def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer)
     assert "  – CNTT" in out and "  – QTKD" in out
 
 
-def test_render_individual_object_property_with_url(renderer: Renderer):
+def test_render_individual_object_property_target_with_data(renderer: Renderer):
+    """Single rich target → label inlined with header, sub-sections use ◦."""
+    out = renderer.render({
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
+        "Áp dụng mức học phí": [
+            {"type": "individual", "iri": "Phi_K65", "class": "FeeCategory",
+             "label": "Học phí K65 (CNTT)",
+             "Áp dụng cho đối tượng/ngành": "CNTT",
+             "Mức học phí/1 Tín chỉ (VNĐ)": 620000},
+        ],
+    })
+    # Single target — label inlined as ``• Header: label``
+    assert "• Áp dụng mức học phí: Học phí K65 (CNTT)" in out
+    # Nested data uses ◦ marker, indented one level
+    assert "  ◦ Áp dụng cho đối tượng/ngành: CNTT" in out
+    assert "  ◦ Mức học phí/1 Tín chỉ (VNĐ): 620,000" in out
+
+
+def test_render_individual_multi_object_targets_with_data(renderer: Renderer):
+    """Multi rich targets → list with – markers; data nested under each."""
+    out = renderer.render({
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
+        "Áp dụng mức học phí": [
+            {"type": "individual", "iri": "A", "class": "FeeCategory",
+             "label": "Học phí A", "Mức học phí/1 Tín chỉ (VNĐ)": 100000},
+            {"type": "individual", "iri": "B", "class": "FeeCategory",
+             "label": "Học phí B", "Mức học phí/1 Tín chỉ (VNĐ)": 200000},
+        ],
+    })
+    assert "• Áp dụng mức học phí:" in out
+    # Each target is a ``– label`` item indented under the section
+    assert "  – Học phí A" in out and "  – Học phí B" in out
+    # Target data uses ◦ and is indented one level deeper than the – item
+    assert "    ◦ Mức học phí/1 Tín chỉ (VNĐ): 100,000" in out
+    assert "    ◦ Mức học phí/1 Tín chỉ (VNĐ): 200,000" in out
+
+
+def test_render_target_compact_when_only_url(renderer: Renderer):
+    """Single target with only identity + URL stays compact (no nested ◦)."""
     out = renderer.render({
         "type": "individual", "iri": "P",
         "class": "AcademicProcedure", "label": "Quy trình X",
@@ -71,7 +127,9 @@ def test_render_individual_object_property_with_url(renderer: Renderer):
              "Đường dẫn tải biểu mẫu": "https://example.com/form.docx"}
         ],
     })
+    # Compact — label inlined as link, no ``◦`` sub-bullets needed.
     assert "• Cần biểu mẫu/văn bản: [Đơn xin Y](https://example.com/form.docx)" in out
+    assert "◦" not in out
 
 
 def test_render_individual_object_property_without_url(renderer: Renderer):
@@ -126,12 +184,14 @@ def test_render_individual_class_emoji_lookup(renderer: Renderer):
     assert out.startswith("💰 ")
 
 
-def test_render_individual_unknown_class_falls_back(renderer: Renderer):
+def test_render_individual_unknown_class_no_emoji(renderer: Renderer):
+    """A class without an emoji entry renders its title without any prefix —
+    no fallback bullet, so the label stands clean."""
     out = renderer.render({
         "type": "individual", "iri": "X",
-        "class": "SomeFutureClass", "label": "...",
+        "class": "SomeFutureClass", "label": "Something",
     })
-    assert out.startswith("• ")
+    assert out.strip().startswith("Something")
 
 
 # Listing

@@ -471,7 +471,7 @@
         const themeToggleBtn = document.querySelector("#theme-toggle-btn");
         // API Setup — local FastAPI backend
         const API_URL = "/chat";
-        let controller, typingInterval;
+        let controller;
         const chatHistory = [];
         const userData = { message: "", file: {} };
         // Set initial theme from local storage
@@ -497,8 +497,14 @@
         const renderRichText = (text) => {
             const PLACEHOLDER = " LINK ";
             const links = [];
-            // 1) extract markdown links so their inner HTML survives escaping
-            let pre = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,
+            // 1) extract markdown links so their inner HTML survives escaping.
+            //    The URL group allows one level of balanced parens — needed
+            //    because some upstream PDF URLs contain literal "(YYYY)" or
+            //    "(N)" segments. Backend also percent-encodes parens; this
+            //    regex is defense-in-depth against any URL that slips through
+            //    without encoding.
+            let pre = text.replace(
+                /\[([^\]]+)\]\((https?:\/\/(?:\([^)]*\)|[^()\s])+)\)/g,
                 (_, label, url) => {
                     links.push(`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`);
                     return PLACEHOLDER;
@@ -514,25 +520,14 @@
             // 5) newlines → <br>
             return pre.replace(/\n/g, "<br>");
         };
-        // Simulate typing effect for bot responses. Types word-by-word as
-        // plain text for the streaming feel, then re-renders with rich HTML
-        // (clickable links, line breaks) once typing finishes.
-        const typingEffect = (text, textElement, botMsgDiv) => {
-            textElement.textContent = "";
-            const words = text.split(" ");
-            let wordIndex = 0;
-            typingInterval = setInterval(() => {
-                if (wordIndex < words.length) {
-                    textElement.textContent += (wordIndex === 0 ? "" : " ") + words[wordIndex++];
-                    scrollToBottom();
-                } else {
-                    clearInterval(typingInterval);
-                    textElement.innerHTML = renderRichText(text);
-                    botMsgDiv.classList.remove("loading");
-                    document.body.classList.remove("bot-responding");
-                    scrollToBottom();
-                }
-            }, 40); // 40 ms delay
+        // Render the bot reply immediately as rich HTML — no typing
+        // animation. The chatbot is fast enough that incremental reveal
+        // becomes a delay rather than a delight.
+        const renderReply = (text, textElement, botMsgDiv) => {
+            textElement.innerHTML = renderRichText(text);
+            botMsgDiv.classList.remove("loading");
+            document.body.classList.remove("bot-responding");
+            scrollToBottom();
         };
         // Call the local FastAPI /chat endpoint and stream the reply.
         const generateResponse = async (botMsgDiv) => {
@@ -549,7 +544,7 @@
                 const data = await response.json();
                 if (!response.ok) throw new Error(data.detail || "Server error");
                 const responseText = (data.reply || "").trim();
-                typingEffect(responseText, textElement, botMsgDiv);
+                renderReply(responseText, textElement, botMsgDiv);
                 chatHistory.push({ role: "bot", text: responseText });
             } catch (error) {
                 textElement.textContent = error.name === "AbortError" ? "Đã dừng phản hồi." : error.message;
@@ -613,7 +608,6 @@
         document.querySelector("#stop-response-btn").addEventListener("click", () => {
             controller?.abort();
             userData.file = {};
-            clearInterval(typingInterval);
             chatsContainer.querySelector(".bot-message.loading").classList.remove("loading");
             document.body.classList.remove("bot-responding");
         });

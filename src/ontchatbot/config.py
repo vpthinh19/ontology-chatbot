@@ -49,14 +49,14 @@ VAL_SIZE = 0.2
 SEED = 42
 
 # Inference
-# ``FUZZY_MIN_SCORE`` is the threshold above which an individual surface is
+# ``FUZZY_MIN_SCORE`` is the score threshold above which an individual is
 # admitted as a match. Tuned empirically against the v8 ontology aliases:
-# 80 is high enough to reject incidental shared-word overlaps (e.g. an
-# alias of *Quy trình bảo lưu* mentioning "học phí" no longer steals the
-# *đóng học phí* span) yet low enough that ambiguous cohort spans like
-# "k65" still recover both ``Phi_K65_550k`` and ``Phi_K65_620k``.
+# at 88 we reject "rớt môn" ↔ "rút môn" (single-char visual collision that
+# rapidfuzz scores ≈ 86 via ``token_set_ratio``) while still keeping every
+# perfect-alias match (score 100) — including ambiguous cohort spans like
+# "k65" that legitimately resolve to both ``Phi_K65_550k`` and ``Phi_K65_620k``.
 FUZZY_TOP_K = 8
-FUZZY_MIN_SCORE = 80.0
+FUZZY_MIN_SCORE = 88.0
 
 # Greeting heuristic — case- and diacritic-insensitive substrings
 GREETING_KEYWORDS: tuple[str, ...] = (
@@ -95,10 +95,13 @@ RENDER_PROPERTY_ORDER: tuple[str, ...] = (
     "hasFeeCategory", "hasPaymentMethod", "hasOutput",
 )
 
-# Per-class header emoji. Optional — unknown classes get a neutral bullet.
+# Per-class title emoji. Optional. Classes not listed render their title
+# without an emoji prefix — that is the intentional behaviour for entities
+# whose class label is already self-explanatory in chat (e.g. an
+# AdministrativeOffice whose name already starts with "Phòng …" or "Văn
+# phòng …" — an extra 🏢 would be redundant noise).
 RENDER_CLASS_EMOJI: dict[str, str] = {
     "AcademicProcedure": "📘",
-    "AdministrativeOffice": "🏢",
     "Document": "📄",
     "FeeCategory": "💰",
     "PaymentMethod": "💳",

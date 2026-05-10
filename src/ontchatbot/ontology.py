@@ -180,11 +180,18 @@ class Ontology:
 
     # Description → JSON
 
-    def describe(self, iri: str, depth: int = 1) -> dict | None:
+    def describe(self, iri: str, depth: int = 1, *,
+                 seen_links: frozenset[tuple[str, str]] = frozenset()) -> dict | None:
         """Serialise an individual to JSON.
 
         ``depth=1`` = full description. ``depth=0`` = minimal target form
         (identity + URL-shaped data only) for nested object-property items.
+
+        ``seen_links`` is a set of ``(prop_name, target_iri)`` pairs already
+        asserted by an ancestor in the current describe chain — pairs in
+        this set are silently dropped from the current level so duplicate
+        relationships do not repeat down the tree (e.g. when both a
+        procedure and each of its fee categories link the same regulation).
         """
         ind = self._owl[iri]
         if ind is None:
@@ -199,16 +206,32 @@ class Ontology:
         # Stable property order — paragraphs first, then by RENDER_PROPERTY_ORDER,
         # then alphabetically by Vietnamese label. Adding a property in Protégé
         # never reshuffles existing layout.
+        asserted = self._asserted_properties(ind)
         ordered = sorted(
-            self._asserted_properties(ind),
+            asserted,
             key=lambda kv: (_PROP_RANK.get(kv[0].name, _BIG_RANK),
                             self._property_label(kv[0])),
         )
+        # All outgoing object links from THIS entity — cumulated with the
+        # ancestor set and handed to every child describe call so deeper
+        # levels can dedup against any link asserted by any ancestor on
+        # the chain (not just the immediately preceding property).
+        own_links = frozenset(
+            (prop.name, target.name)
+            for prop, values in asserted
+            if isinstance(prop, owlready2.ObjectPropertyClass)
+            for target in values
+        )
+        descendant_seen = seen_links | own_links
         for prop, values in ordered:
             if prop.name in RENDER_SKIP_PROPERTIES:
                 continue
             header = self._property_label(prop)
-            value = self._render_property_value(prop, values, depth=depth)
+            value = self._render_property_value(
+                prop, values, depth=depth,
+                ancestor_seen=seen_links,
+                descendant_seen=descendant_seen,
+            )
             if value in (None, "", []):
                 continue
             # depth=0 strips non-URL data so target dicts stay small.
@@ -269,14 +292,31 @@ class Ontology:
                 out.append((prop, values))
         return out
 
-    def _render_property_value(self, prop, values: list, *, depth: int):
+    def _render_property_value(self, prop, values: list, *, depth: int,
+                               ancestor_seen: frozenset[tuple[str, str]] = frozenset(),
+                               descendant_seen: frozenset[tuple[str, str]] = frozenset()):
         """Serialise one property's values: object → nested dicts; paragraph
-        → joined string with leading ``\\n``; other → primitive or list."""
+        → joined string with leading ``\\n``; other → primitive or list.
+
+        ``ancestor_seen`` is the set of ``(prop, target)`` pairs already
+        asserted by some ancestor — used to filter values OUT at this
+        level. ``descendant_seen`` adds this entity's own outgoing links
+        (computed once by the caller) and is what we hand down to nested
+        describes so they can dedup against the full ancestor chain.
+        """
         if isinstance(prop, owlready2.ObjectPropertyClass):
             if depth <= 0:
                 return None
-            nested = [d for d in (self.describe(v.name, depth=depth - 1)
-                                  for v in values) if d]
+            # Drop targets already asserted on an ancestor under the same
+            # predicate — same (predicate, target) pair must not repeat
+            # down the tree. Different predicate or different target stays.
+            kept = [v for v in values
+                    if (prop.name, v.name) not in ancestor_seen]
+            if not kept:
+                return None
+            nested = [d for d in (self.describe(v.name, depth=depth - 1,
+                                                seen_links=descendant_seen)
+                                  for v in kept) if d]
             return nested or None
         if prop.name in RENDER_PARAGRAPH_PROPERTIES:
             # Leading newline = paragraph marker — works for both single and

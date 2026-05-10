@@ -53,6 +53,15 @@ def test_resolve_below_threshold_returns_empty(ontology: Ontology):
     assert res.individuals == []
 
 
+def test_resolve_rejects_visual_collision(ontology: Ontology):
+    """Regression: ``"rớt môn"`` (= học lại) must not also match ``"rút môn"``
+    (= drop course). Token-set ratio scores them ≈ 86 — threshold 88 filters."""
+    res = ontology.resolve("rớt môn", "QuyTrinhHocVu")
+    assert res.class_won is False
+    assert "QuyTrinh_HocLai" in res.individuals
+    assert "QuyTrinh_RutMonHoc" not in res.individuals
+
+
 # describe — top-level entity
 
 def test_describe_uses_property_labels_as_keys(ontology: Ontology):
@@ -112,3 +121,19 @@ def test_list_class_emits_every_individual(ontology: Ontology):
     labels = {it["label"] for it in listing["items"]}
     assert "Quy trình đóng học phí" in labels
     assert "Quy trình xin bảo lưu kết quả học tập" in labels
+
+
+def test_describe_dedupes_predicate_target_from_ancestor(ontology: Ontology):
+    """Each fee category links the same regulation as its parent procedure.
+    The dedup mechanism drops the duplicate ``basedOnRegulation`` link from
+    every fee target so the parent's link remains the only assertion."""
+    d = ontology.describe("QuyTrinh_NopHocPhi", depth=2)
+    # Parent has the link.
+    assert "Căn cứ theo quy định" in d
+    # Each fee category target has lost the duplicate link.
+    fees = d["Áp dụng mức học phí"]
+    for fee in fees:
+        assert "Căn cứ theo quy định" not in fee, (
+            f"fee {fee['iri']} should drop the parent's regulation link "
+            f"(got keys {list(fee.keys())})"
+        )

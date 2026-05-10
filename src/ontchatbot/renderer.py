@@ -7,6 +7,13 @@ dicts and complete in milliseconds.
 Contract: 4 fixed keys (``type``, ``iri``, ``class``, ``label``); every
 other key is a property ``rdfs:label`` and renders as a section header.
 URL-shaped string values become markdown links.
+
+Hierarchy markers (generic, schema-agnostic):
+    •   entity-level property section
+    –   list item (multi-value or multi-target)
+    ◦   nested data section under an object-property target
+
+Each marker maps to one semantic role; depth manifests through indentation.
 """
 
 from __future__ import annotations
@@ -19,12 +26,18 @@ from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
 
-# Mirror the constant from :mod:`store` rather than importing it, so the
-# renderer remains structurally independent of the ontology layer.
+# Mirror :data:`store.FIXED_KEYS` here so the renderer stays structurally
+# independent of the ontology layer (tests can use synthetic dicts).
 _FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 
-# User-facing copy. Lives here (not in the Ontology) because it is purely a
-# presentation concern.
+# Visual hierarchy markers. ``ENTITY`` is the top-level entity property
+# bullet; ``ITEM`` opens a list item; ``NESTED`` is the bullet for sub-
+# sections under an object-property target.
+_M_ENTITY = "•"
+_M_ITEM = "–"
+_M_NESTED = "◦"
+_INDENT = "  "  # 2 spaces — used for every level of nesting
+
 GREETING_REPLY = (
     "Xin chào! Mình có thể tra cứu giúp bạn về quy trình học vụ, phòng ban "
     "hành chính, định mức học phí, biểu mẫu hoặc phương thức thanh toán. "
@@ -38,7 +51,11 @@ OUT_OF_DOMAIN_REPLY = (
 
 
 def _md_link(label: str, url: str | None) -> str:
-    return f"[{label}]({url})" if url else label
+    """Markdown link with parens encoded so frontend regex doesn't truncate."""
+    if not url:
+        return label
+    safe = url.replace("(", "%28").replace(")", "%29")
+    return f"[{label}]({safe})"
 
 
 def _format_scalar(v) -> str:
@@ -47,6 +64,11 @@ def _format_scalar(v) -> str:
     if isinstance(v, int):
         return f"{v:,}"
     return str(v)
+
+
+def _indent(text: str, prefix: str = _INDENT) -> str:
+    """Indent every line of ``text`` by ``prefix``."""
+    return "\n".join(prefix + line for line in text.split("\n"))
 
 
 class Renderer:
@@ -96,65 +118,113 @@ class Renderer:
     # Sub-templates
 
     def _render_individual(self, d: dict) -> str:
-        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""), "•")
-        lines: list[str] = [f"{emoji} {d.get('label', '')}"]
-
-        # Iterate all non-fixed keys in dict insertion order — that order
-        # was already imposed by Ontology.describe(), so this layer simply
-        # consumes it.
+        """Top-level entity render. Title + each block separated by a blank
+        line so paragraphs and bullet sections breathe independently."""
+        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""))
+        title_label = d.get("label", "")
+        title = f"{emoji} {title_label}" if emoji else title_label
+        blocks: list[str] = [title]
         for header, value in d.items():
             if header in _FIXED_KEYS:
                 continue
-            section = self._format_section(header, value)
+            section = self._format_section(header, value, marker=_M_ENTITY)
             if section:
-                lines.append(section)
-        return "\n".join(lines)
+                blocks.append(section)
+        return "\n\n".join(blocks)
 
     def _render_listing(self, d: dict) -> str:
-        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""), "•")
-        lines = [f"{emoji} {d.get('label', '')}"]
+        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""))
+        title_label = d.get("label", "")
+        title = f"{emoji} {title_label}" if emoji else title_label
+        lines = [title]
         for it in d.get("items", []):
-            lines.append(f"• {it.get('label', '')}")
+            lines.append(f"{_M_ENTITY} {it.get('label', '')}")
         return "\n".join(lines)
 
-    # Section formatting
+    # Section formatting — generic across hierarchy levels
 
-    def _format_section(self, header: str, value) -> str:
-        """``• Header: …`` (scalar) or ``• Header:\\n  – …`` (list)."""
-        # Paragraph — Ontology marks free-flow text with a leading newline
-        # (see :meth:`Ontology._render_property_value`). This works for both
-        # multi-line and single-line paragraph property values, and keeps
-        # the renderer free of per-property paragraph configuration.
+    def _format_section(self, header: str, value, *, marker: str) -> str:
+        """Render one ``{marker} Header: …`` section.
+
+        ``marker`` is the visual bullet for this section in the hierarchy:
+        :data:`_M_ENTITY` for top-level entity sections,
+        :data:`_M_NESTED` for sections living under an object-property
+        target. List items always use :data:`_M_ITEM` regardless of level.
+        """
+        # Paragraph — leading newline marker from Ontology, no bullet.
         if isinstance(value, str) and value.startswith("\n"):
             return value.lstrip("\n")
 
         if isinstance(value, list) and value and isinstance(value[0], dict):
-            return self._format_object_section(header, value)
+            return self._format_object_section(header, value, marker=marker)
 
         if isinstance(value, list):
             rendered = [_format_scalar(v) for v in value]
-            sub = "\n".join(f"  – {r}" for r in rendered)
-            return f"• {header}:\n{sub}"
+            sub = "\n".join(f"{_INDENT}{_M_ITEM} {r}" for r in rendered)
+            return f"{marker} {header}:\n{sub}"
 
         text = _format_scalar(value)
         if Preprocessor.is_url(text):
             text = _md_link(text, text)
-        return f"• {header}: {text}"
+        return f"{marker} {header}: {text}"
 
-    def _format_object_section(self, header: str, targets: list[dict]) -> str:
-        rendered = [self._format_object_target(t) for t in targets]
-        if len(rendered) == 1:
-            return f"• {header}: {rendered[0]}"
-        sub = "\n".join(f"  – {r}" for r in rendered)
-        return f"• {header}:\n{sub}"
+    def _format_object_section(self, header: str, targets: list[dict], *,
+                               marker: str) -> str:
+        """Render an object-property section.
 
-    @staticmethod
-    def _format_object_target(target: dict) -> str:
-        """``[label](url)`` if any URL-shaped value present, else just ``label``."""
+        Single target → ``{marker} Header: label`` inline; if the target
+        has its own data, sub-sections follow on indented lines with
+        :data:`_M_NESTED` markers.
+
+        Multiple targets → ``{marker} Header:`` then each target as a
+        ``  – label`` item, with target data indented one level further.
+        """
+        if len(targets) == 1:
+            rendered = self._render_target(targets[0])
+            if "\n" not in rendered:
+                return f"{marker} {header}: {rendered}"
+            head, body = rendered.split("\n", 1)
+            return f"{marker} {header}: {head}\n{body}"
+
+        items: list[str] = []
+        for t in targets:
+            rendered = self._render_target(t)
+            if "\n" in rendered:
+                head, body = rendered.split("\n", 1)
+                items.append(f"{_INDENT}{_M_ITEM} {head}\n{_indent(body)}")
+            else:
+                items.append(f"{_INDENT}{_M_ITEM} {rendered}")
+        # Rich items (with their own ``◦`` sub-sections) get a blank line
+        # between them so the eye can group each item's data; compact
+        # one-line items stay tight.
+        sep = "\n\n" if any("\n" in it for it in items) else "\n"
+        return f"{marker} {header}:\n" + sep.join(items)
+
+    def _render_target(self, target: dict) -> str:
+        """Render one object-property target.
+
+        * **Compact** (target carries only identity, possibly a URL value)
+          → returns ``label`` or ``[label](url)``.
+        * **Rich** (target has substantive data sections) → returns a
+          multi-line block: head on the first line, then indented sub-
+          sections with :data:`_M_NESTED` markers. Callers are responsible
+          for the surrounding context (inline-after-header for single,
+          ``–`` list item for multi).
+        """
         label = target.get("label", "")
-        for k, v in target.items():
-            if k in _FIXED_KEYS:
-                continue
-            if Preprocessor.is_url(v):
-                return _md_link(label, v)
-        return label
+        substantive = [(k, v) for k, v in target.items() if k not in _FIXED_KEYS]
+        link_url = next(
+            (v for k, v in substantive if Preprocessor.is_url(v)), None,
+        )
+        head = _md_link(label, link_url) if link_url else label
+
+        non_url = [(k, v) for k, v in substantive
+                   if not Preprocessor.is_url(v)]
+        if not non_url:
+            return head
+
+        lines = [head]
+        for k, v in non_url:
+            section = self._format_section(k, v, marker=_M_NESTED)
+            lines.append(_indent(section))
+        return "\n".join(lines)

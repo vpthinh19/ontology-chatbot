@@ -126,7 +126,10 @@ class Pipeline:
                 ctx.descriptions.append(self.onto.list_class(m.tag))
                 continue
             for iri in m.individuals:
-                d = self.onto.describe(iri, depth=1)
+                # depth=2: top-level entity carries full data, AND its
+                # object-property targets carry their own data fields too
+                # (e.g. each ``Phi_K65_*`` exposes feePerCredit + appliesToTarget).
+                d = self.onto.describe(iri, depth=2)
                 if d:
                     ctx.descriptions.append(d)
         log.info("[Pipeline.query] descriptions=%d", len(ctx.descriptions))
