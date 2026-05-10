@@ -27,7 +27,7 @@ resources/
     ├── train.jsonl
     └── test.jsonl
 
-webui/index.html                    single-page chat UI
+webui/                              chat UI
 artifacts/flow/data_flow.puml       architecture diagram
 tests/                              pytest suite
 ```
