@@ -3482,3 +3482,25 @@
 {"tokens": ["đóng_cửa", "phòng", "kế_toán", "mấy", "giờ"], "ner_tags": ["O", "O", "O", "O", "O"]}
 {"tokens": ["phòng", "đào_tạo", "có", "đóng_cửa", "thứ", "7", "không"], "ner_tags": ["O", "O", "O", "O", "O", "O", "O"]}
 {"tokens": ["rút", "thẻ_atm", "tại", "ngân_hàng", "nào", "gần"], "ner_tags": ["O", "O", "O", "O", "O", "O"]}
+{"tokens": ["liệt_kê", "tất_cả", "quy_trình", "học", "vụ"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu"]}
+{"tokens": ["có", "những", "thủ_tục", "học_vụ", "gì", "ở", "trường"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O"]}
+{"tokens": ["trường", "có", "những", "loại", "quy_trình", "nào"], "ner_tags": ["O", "O", "O", "O", "B-QuyTrinhHocVu", "O"]}
+{"tokens": ["có", "bao_nhiêu", "quy_trình", "học", "vụ", "tại", "trường"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O"]}
+{"tokens": ["trường", "có", "những", "phòng_ban_hành_chính", "nào"], "ner_tags": ["O", "O", "O", "B-PhongBanHanhChinh", "O"]}
+{"tokens": ["liệt_kê", "các", "phòng_ban"], "ner_tags": ["O", "O", "B-PhongBanHanhChinh"]}
+{"tokens": ["danh_sách", "các", "phòng_ban_hành_chính"], "ner_tags": ["O", "O", "B-PhongBanHanhChinh"]}
+{"tokens": ["có", "những", "phòng", "nào", "ở", "trường", "mình"], "ner_tags": ["O", "O", "B-PhongBanHanhChinh", "O", "O", "O", "O"]}
+{"tokens": ["cho", "em", "xin", "danh_sách", "các", "phòng_ban_hành_chính"], "ner_tags": ["O", "O", "O", "O", "O", "B-PhongBanHanhChinh"]}
+{"tokens": ["trường", "mình", "có", "mấy", "phòng_ban"], "ner_tags": ["O", "O", "O", "O", "B-PhongBanHanhChinh"]}
+{"tokens": ["trường", "có", "những", "loại", "biểu_mẫu", "nào"], "ner_tags": ["O", "O", "O", "O", "B-TaiLieuBieuMau", "O"]}
+{"tokens": ["liệt_kê", "các", "tài_liệu", "biểu_mẫu"], "ner_tags": ["O", "O", "B-TaiLieuBieuMau", "I-TaiLieuBieuMau"]}
+{"tokens": ["có", "những", "đơn_từ", "gì", "cần", "điền", "cho", "sinh_viên"], "ner_tags": ["O", "O", "B-TaiLieuBieuMau", "O", "O", "O", "O", "O"]}
+{"tokens": ["danh_sách", "biểu_mẫu", "của", "trường"], "ner_tags": ["O", "B-TaiLieuBieuMau", "O", "O"]}
+{"tokens": ["các", "loại", "tài_liệu", "biểu_mẫu", "trường", "có"], "ner_tags": ["O", "O", "B-TaiLieuBieuMau", "I-TaiLieuBieuMau", "O", "O"]}
+{"tokens": ["có", "những", "mức", "học_phí", "nào"], "ner_tags": ["O", "O", "B-DinhMucHocPhi", "I-DinhMucHocPhi", "O"]}
+{"tokens": ["trường", "có", "các", "bảng", "giá", "học_phí", "gì"], "ner_tags": ["O", "O", "O", "B-DinhMucHocPhi", "I-DinhMucHocPhi", "I-DinhMucHocPhi", "O"]}
+{"tokens": ["các", "mức", "học_phí", "của", "trường"], "ner_tags": ["O", "B-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O"]}
+{"tokens": ["có", "những", "loại", "học_phí", "nào", "ở", "trường"], "ner_tags": ["O", "O", "B-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O", "O"]}
+{"tokens": ["định_mức", "học_phí", "là", "gì", "có", "những", "cái", "nào"], "ner_tags": ["B-DinhMucHocPhi", "I-DinhMucHocPhi", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["trường", "nhận", "các", "hình_thức", "thanh_toán", "gì"], "ner_tags": ["O", "O", "O", "B-PhuongThucThanhToan", "I-PhuongThucThanhToan", "O"]}
+{"tokens": ["có", "những", "kênh", "thanh_toán", "nào", "trường", "chấp_nhận"], "ner_tags": ["O", "O", "B-PhuongThucThanhToan", "I-PhuongThucThanhToan", "O", "O", "O"]}

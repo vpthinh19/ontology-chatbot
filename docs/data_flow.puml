@@ -1,66 +1,123 @@
 @startuml ontchatbot-data-flow
-' Data flow from browser → backend modules → back to browser.
-' One arrow per hop, each annotated with the DTO shape it carries.
-' Reading top-to-bottom matches the order of execution.
+' Data flow as it actually moves through each module's internal stages.
+' Outer rectangle = a module (a top-level singleton); inner rectangle = a
+' real step inside that module. Edge labels carry the *shape of the data*
+' arriving at the next step, so reading top-to-bottom matches one /chat
+' request from the user's keystroke to the rendered reply.
 
-title NTU Academic Chatbot — Data Flow
+title NTU Academic Chatbot — Data Flow (per-module internals)
 
 skinparam defaultTextAlignment left
 skinparam shadowing false
 skinparam backgroundColor #FFFFFF
-skinparam ArrowColor #444
+skinparam ArrowColor #555
 skinparam ArrowFontColor #222
+skinparam ArrowFontSize 11
 skinparam rectangle {
-    BackgroundColor #FAFAFA
-    BorderColor #555
-    FontColor #111
-    RoundCorner 8
+    BackgroundColor<<module>>  #EAF2FB
+    BorderColor<<module>>      #1F4E8C
+    FontColor<<module>>        #1F4E8C
+    FontStyle<<module>>        bold
+    BackgroundColor<<step>>    #FFFFFF
+    BorderColor<<step>>        #888
+    FontColor<<step>>          #222
+    BackgroundColor<<edge>>    #FAFAFA
+    BorderColor<<edge>>        #555
+    RoundCorner                10
 }
-skinparam note {
-    BackgroundColor #FFF8DC
-    BorderColor #B0A060
+
+' ==========================================================
+' Edge nodes — Browser & FastAPI shell
+' ==========================================================
+rectangle "**Browser**\nwebui/index.html" as UI <<edge>>
+rectangle "**FastAPI**\nscripts/serve.py\nPOST /chat" as API <<edge>>
+
+' ==========================================================
+' Pipeline — the orchestrator that threads PipelineContext
+' through every other module in order.
+' ==========================================================
+rectangle "**Pipeline**  (pipeline.py)\nthreads PipelineContext through 5 stages" as PIPE <<module>> {
+    rectangle "build PipelineContext\n(query → ctx)" as PIPE_INIT <<step>>
+    rectangle "to_response()\n→ {reply, greeting, entities}" as PIPE_OUT <<step>>
 }
 
-' === Browser layer ===
-rectangle "**Browser** (webui/index.html)\nuser types message,\nrenders Markdown reply" as UI
+' ==========================================================
+' Preprocessor — used twice: greeting heuristic in Pipeline,
+' AND the full clean()+segment() chain inside NerModel before
+' tokenisation.
+' ==========================================================
+rectangle "**Preprocessor (greeting stage)**\npreprocessor.py" as PRE_G <<module>> {
+    rectangle "strip_diacritics\n(``cảm ơn`` → ``cam on``)" as PRE_G_STRIP <<step>>
+    rectangle "match GREETING_KEYWORDS\n(substring scan)" as PRE_G_MATCH <<step>>
+    PRE_G_STRIP -down-> PRE_G_MATCH : lowercased plain text
+}
 
-' === FastAPI layer ===
-rectangle "**FastAPI** (scripts/serve.py)\nPOST /chat → Pipeline.aanswer" as API
+' ==========================================================
+' NerModel — PhoBERT NER. Calls Preprocessor.clean / segment
+' as its own first stages, then tokenizes, runs the model,
+' and decodes BIO into Entity dataclasses.
+' ==========================================================
+rectangle "**NerModel**  (ner_model.py)" as NER <<module>> {
+    rectangle "Preprocessor.clean\n(URL/email strip → repeat shrink\n→ sticky-acronym split → abbrev/teen expand)" as NER_CLEAN <<step>>
+    rectangle "Preprocessor.segment\n(underthesea word_tokenize)" as NER_SEG <<step>>
+    rectangle "Tokenizer (PhoBERT v2, slow)\nmanual word→subword aligner" as NER_TOK <<step>>
+    rectangle "Model.forward → argmax\n(token-classification head)" as NER_FWD <<step>>
+    rectangle "decode_bio\n(BIO runs → Entity spans)" as NER_DEC <<step>>
+    NER_CLEAN -down-> NER_SEG : cleaned text (str)
+    NER_SEG   -down-> NER_TOK : list[word]  (underscore-joined)
+    NER_TOK   -down-> NER_FWD : input_ids + word_ids
+    NER_FWD   -down-> NER_DEC : list[label_id] (per word)
+}
 
-' === Orchestration ===
-rectangle "**Pipeline** (pipeline.py)\nthreads PipelineContext\nthrough 5 stages" as PIPE
+' ==========================================================
+' Ontology — owlready2 repository. Either fuzzy-resolves a
+' span to individuals OR (when class-level) lists all
+' instances; describe() then walks the OWL into a JSON dict.
+' ==========================================================
+rectangle "**Ontology**  (ontology.py)" as ONTO <<module>> {
+    rectangle "resolve(span, tag)\n(_fuzzy_index ← class label\n+ every individual surface)\ntoken_set_ratio over RapidFuzz" as ONTO_RES <<step>>
+    rectangle "describe(iri, depth=2)\n  | list_class(tag)\nOWL walk → JSON dict\n(4 fixed keys + property labels)" as ONTO_DESC <<step>>
+    ONTO_RES -down-> ONTO_DESC : MatchResult\n(class_won | individuals)
+}
 
-' === OOP modules ===
-rectangle "**Preprocessor**\n.clean / .strip_diacritics" as PRE
-rectangle "**NerModel**\n.extract_entities" as NER
-rectangle "**Ontology**\n.resolve / .describe / .list_class" as ONTO
-rectangle "**Renderer**\n.render_blocks / .compose" as REND
+' ==========================================================
+' Renderer — JSON dict → Vietnamese chat text. No owlready2.
+' Three markers (•, -, ◦) carry the visual hierarchy.
+' ==========================================================
+rectangle "**Renderer**  (renderer.py)" as REND <<module>> {
+    rectangle "render_blocks\n(dedup by (class, iri))" as REND_BLK <<step>>
+    rectangle "render → render_individual\n  | render_listing" as REND_REND <<step>>
+    rectangle "format_section\n(• entity • - item • ◦ nested)" as REND_FMT <<step>>
+    rectangle "compose\n(blocks > greeting > OOD)" as REND_CMP <<step>>
+    REND_BLK  -down-> REND_REND : list[dict]
+    REND_REND -down-> REND_FMT  : per-block lines
+    REND_FMT  -down-> REND_CMP  : assembled blocks (str)
+}
 
-' === Hop-by-hop (top → bottom) ===
-UI       -[#0066CC]-> API   : POST /chat\n{ "message": "đóng học phí" }
-API      -[#0066CC]-> PIPE  : await aanswer(query: str)
+' ==========================================================
+' Inter-module hops — top-to-bottom timeline of one /chat
+' request. Edge labels carry the actual data shape that
+' arrives at the next module.
+' ==========================================================
+UI       -[#0066CC]->     API        : POST /chat\n{ "message": "đóng học phí" }
+API      -[#0066CC]->     PIPE_INIT  : await aanswer(query: str)
 
-PIPE     -[#3399FF]-> PRE   : strip_diacritics(text.lower())
-PRE      -[#3399FF]-> PIPE  : ctx.text: str\nctx.greeting: bool
+PIPE_INIT -[#3399FF]->    PRE_G_STRIP : ctx.text  (raw user input)
+PRE_G_MATCH -[#3399FF]->  NER_CLEAN   : ctx.text  +  greeting:bool
 
-PIPE     -[#3399FF]-> NER   : extract_entities(ctx.text)
-NER      -[#3399FF]-> PIPE  : ctx.spans: list[Entity]\n  Entity(surface, tag, start, end)
+NER_DEC  -[#3399FF]->     ONTO_RES    : ctx.spans : list[Entity]\nEntity(surface, tag, start, end)
 
-PIPE     -[#3399FF]-> ONTO  : for span in ctx.spans:\n  resolve(surface, tag)
-ONTO     -[#3399FF]-> PIPE  : ctx.matches: list[MatchResult]\n  MatchResult(tag, class_won,\n              individuals: list[iri],\n              top_score)
+ONTO_DESC -[#3399FF]->    REND_BLK    : ctx.descriptions : list[dict]\n{type, iri, class, label,\n "<vi-property-label>": value | nested-dict | list, …}
 
-PIPE     -[#3399FF]-> ONTO  : for match in ctx.matches:\n  describe(iri, depth=2)\n  | list_class(tag)
-ONTO     -[#3399FF]-> PIPE  : ctx.descriptions: list[dict]\n  { type, iri, class, label,\n    "Vietnamese property label": value | nested-dict | list,\n    ... }
+REND_CMP -[#3399FF]->     PIPE_OUT    : ctx.reply : str\n(Vietnamese text + markdown links)
 
-PIPE     -[#3399FF]-> REND  : render_blocks(descriptions)\n+ compose(blocks, greeting)
-REND     -[#3399FF]-> PIPE  : ctx.reply: str\n  (Vietnamese text\n  with markdown links)
+PIPE_OUT -[#0066CC]->     API         : { "reply", "greeting", "entities" }
+API      -[#0066CC]->     UI          : 200 OK (JSON)
+UI       -[#888]->        UI          : renderRichText(reply)\n→ HTML (<a> + <br>)
 
-PIPE     -[#0066CC]-> API   : ctx.to_response()
-API      -[#0066CC]-> UI    : 200 OK\n{ "reply": str,\n  "greeting": bool,\n  "entities": [...] }
-
-UI       -[#888]-> UI       : renderRichText(reply)\n→ HTML (anchor + <br>)\n→ message-text.innerHTML
-
-' === Diagrammatic notes ===
+' ==========================================================
+' Reference notes — kept terse so the diagram stays readable.
+' ==========================================================
 note right of PIPE
   PipelineContext (DTO):
    • query, text, greeting
@@ -78,15 +135,15 @@ note right of ONTO
   property. Paragraph values
   carry a leading "\\n" marker.
   Dedup: (predicate, target_iri)
-  pairs from ancestors are
+  pairs from any ancestor are
   silently dropped at children.
 end note
 
 note right of REND
   Hierarchy markers:
    • entity-level section
-   - list item (multi-target)
-   ◦ nested data under target
+   - list item (multi-target / multi-value)
+   ◦ nested data under an object target
 end note
 
 @enduml

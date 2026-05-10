@@ -856,3 +856,11 @@
 {"tokens": ["em", "đang", "ốm", "nặng", "cần", "tạm", "nghỉ", "học", ",", "làm_sao", "bảo_lưu"], "ner_tags": ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O", "B-QuyTrinhHocVu"]}
 {"tokens": ["em", "không", "thích", "ngành", "hiện_tại", ",", "muốn", "chuyển", "sang", "ngành", "khác"], "ner_tags": ["O", "O", "O", "O", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu"]}
 {"tokens": ["em", "không", "có", "tiền", "đóng", "học_phí", ",", "có_thể", "vay", "không"], "ner_tags": ["O", "O", "O", "O", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["trường", "mình", "có", "những", "quy_trình", "học", "vụ", "nào"], "ner_tags": ["O", "O", "O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O"]}
+{"tokens": ["danh_sách", "các", "quy_trình", "học", "vụ"], "ner_tags": ["O", "O", "B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu"]}
+{"tokens": ["quy_trình", "học", "vụ", "là", "gì", "có", "những", "cái", "nào"], "ner_tags": ["B-QuyTrinhHocVu", "I-QuyTrinhHocVu", "I-QuyTrinhHocVu", "O", "O", "O", "O", "O", "O"]}
+{"tokens": ["cho", "em", "xem", "các", "mẫu_đơn", "của", "trường"], "ner_tags": ["O", "O", "O", "O", "B-TaiLieuBieuMau", "O", "O"]}
+{"tokens": ["liệt_kê", "các", "định_mức", "học_phí"], "ner_tags": ["O", "O", "B-DinhMucHocPhi", "I-DinhMucHocPhi"]}
+{"tokens": ["có", "những", "phương_thức", "thanh_toán", "nào"], "ner_tags": ["O", "O", "B-PhuongThucThanhToan", "I-PhuongThucThanhToan", "O"]}
+{"tokens": ["liệt_kê", "các", "cách", "nộp", "tiền"], "ner_tags": ["O", "O", "B-PhuongThucThanhToan", "I-PhuongThucThanhToan", "I-PhuongThucThanhToan"]}
+{"tokens": ["cho", "em", "xem", "các", "phương_thức", "thanh_toán"], "ner_tags": ["O", "O", "O", "O", "B-PhuongThucThanhToan", "I-PhuongThucThanhToan"]}
