@@ -51,7 +51,11 @@ const renderRichText = (text) => {
     // 4) restore markdown links
     let i = 0;
     pre = pre.replace(new RegExp(PLACEHOLDER, "g"), () => links[i++]);
-    // 5) newlines → <br>
+    // 5) horizontal rules: lines with 3+ dashes become <hr>
+    pre = pre.replace(/[\r\n]*---[\r\n]*/g, "<hr>");
+    // 6) double spaces → &nbsp;&nbsp; to preserve intentional spacing (e.g. in code snippets)
+    pre = pre.replace(/  /g, "&nbsp;&nbsp;");
+    // 7) newlines → <br>
     return pre.replace(/\n/g, "<br>");
 };
 // Render the bot reply immediately as rich HTML — no typing

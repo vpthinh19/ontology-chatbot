@@ -36,7 +36,7 @@ _FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 _M_ENTITY = "•"
 _M_ITEM = "-"
 _M_NESTED = "◦"
-_INDENT = "  "  # 2 spaces — used for every level of nesting
+_INDENT = "    "  # 4 spaces — used for every level of nesting
 
 
 # Greeting heuristic — diacritic-stripped tokens the pipeline matches
@@ -150,7 +150,7 @@ class Renderer:
             block = self.render(d)
             if block:
                 blocks.append(block)
-        return "\n\n".join(blocks)
+        return "\n---\n".join(blocks)
 
     def render(self, description: dict) -> str:
         """Dispatch by the ``type`` key."""

@@ -121,6 +121,12 @@ body.chats-active .container .app-header {
     color: #0264e3;
 }
 
+.chats-container .message .message-text hr {
+    border: none;
+    border-top: 1px solid rgba(128, 128, 128, 0.3); /* Màu xám mờ, hợp với cả theme sáng/tối */
+    margin: 16px 0;
+}
+
 .chats-container .bot-message {
     margin: 9px auto;
 }
