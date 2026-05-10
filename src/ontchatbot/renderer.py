@@ -10,7 +10,7 @@ URL-shaped string values become markdown links.
 
 Hierarchy markers (generic, schema-agnostic):
     •   entity-level property section
-    –   list item (multi-value or multi-target)
+    -   list item (multi-value or multi-target)
     ◦   nested data section under an object-property target
 
 Each marker maps to one semantic role; depth manifests through indentation.
@@ -34,7 +34,7 @@ _FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 # bullet; ``ITEM`` opens a list item; ``NESTED`` is the bullet for sub-
 # sections under an object-property target.
 _M_ENTITY = "•"
-_M_ITEM = "–"
+_M_ITEM = "-"
 _M_NESTED = "◦"
 _INDENT = "  "  # 2 spaces — used for every level of nesting
 
@@ -209,7 +209,7 @@ class Renderer:
           multi-line block: head on the first line, then indented sub-
           sections with :data:`_M_NESTED` markers. Callers are responsible
           for the surrounding context (inline-after-header for single,
-          ``–`` list item for multi).
+          ``-`` list item for multi).
         """
         label = target.get("label", "")
         substantive = [(k, v) for k, v in target.items() if k not in _FIXED_KEYS]
