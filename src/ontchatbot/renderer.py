@@ -21,7 +21,6 @@ from __future__ import annotations
 import logging
 from functools import lru_cache
 
-from .config import RENDER_CLASS_EMOJI
 from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
@@ -38,6 +37,16 @@ _M_ITEM = "-"
 _M_NESTED = "◦"
 _INDENT = "  "  # 2 spaces — used for every level of nesting
 
+
+# Greeting heuristic — diacritic-stripped substrings the pipeline matches
+# against the user message to decide whether to greet back. Kept here
+# alongside the chat-facing copy below since both are presentation policy.
+GREETING_KEYWORDS: tuple[str, ...] = (
+    "xin chao", "chao", "hello", "hi ", "hey", "alo",
+    "cam on", "thanks", "tks", "tam biet", "bye",
+)
+
+# User-facing fallback replies.
 GREETING_REPLY = (
     "Xin chào! Mình có thể tra cứu giúp bạn về quy trình học vụ, phòng ban "
     "hành chính, định mức học phí, biểu mẫu hoặc phương thức thanh toán. "
@@ -47,6 +56,31 @@ OUT_OF_DOMAIN_REPLY = (
     "Câu hỏi của bạn nằm ngoài phạm vi tri thức hiện có. Hãy thử hỏi về quy "
     "trình học vụ, phòng ban hành chính, học phí, biểu mẫu hoặc phương thức "
     "thanh toán."
+)
+
+
+# Property-render policy — which OWL data properties read better as
+# free-flow paragraphs rather than bullet sections, and which to skip
+# entirely. Ontology imports these to mark/skip values when serialising,
+# Renderer imports them implicitly via the marker convention (leading "\n"
+# on paragraph values; skip-list filtered server-side).
+PARAGRAPH_PROPERTIES: tuple[str, ...] = ("procedureDescription", "feeNote")
+SKIP_PROPERTIES: tuple[str, ...] = ("hasAlias", "label")
+
+# Stable property order for entity sections — paragraphs first, then a
+# logical "identity → contact → fee → relations" sweep. Properties not
+# listed here are appended alphabetically by Vietnamese label, so adding
+# a new property in Protégé does not require a code change.
+PROPERTY_ORDER: tuple[str, ...] = (
+    "procedureDescription", "feeNote",
+    "appliesToTarget", "feePerCredit",
+    "headOfOffice", "officeLocation",
+    "officeEmail", "officePhoneNumber", "officeWebsite",
+    "formUrl",
+    "handledBy", "executedVia",
+    "basedOnRegulation",
+    "hasCondition", "requiresDocument", "hasStep",
+    "hasFeeCategory", "hasPaymentMethod", "hasOutput",
 )
 
 
@@ -120,10 +154,7 @@ class Renderer:
     def _render_individual(self, d: dict) -> str:
         """Top-level entity render. Title + each block separated by a blank
         line so paragraphs and bullet sections breathe independently."""
-        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""))
-        title_label = d.get("label", "")
-        title = f"{emoji} {title_label}" if emoji else title_label
-        blocks: list[str] = [title]
+        blocks: list[str] = [d.get("label", "")]
         for header, value in d.items():
             if header in _FIXED_KEYS:
                 continue
@@ -133,10 +164,7 @@ class Renderer:
         return "\n\n".join(blocks)
 
     def _render_listing(self, d: dict) -> str:
-        emoji = RENDER_CLASS_EMOJI.get(d.get("class", ""))
-        title_label = d.get("label", "")
-        title = f"{emoji} {title_label}" if emoji else title_label
-        lines = [title]
+        lines = [d.get("label", "")]
         for it in d.get("items", []):
             lines.append(f"{_M_ENTITY} {it.get('label', '')}")
         return "\n".join(lines)
@@ -163,10 +191,10 @@ class Renderer:
             sub = "\n".join(f"{_INDENT}{_M_ITEM} {r}" for r in rendered)
             return f"{marker} {header}:\n{sub}"
 
-        text = _format_scalar(value)
-        if Preprocessor.is_url(text):
-            text = _md_link(text, text)
-        return f"{marker} {header}: {text}"
+        # Data scalar (str/int/bool). URL-shaped values are emitted raw so
+        # the frontend's auto-link regex turns them into clickable anchors;
+        # wrapping ``[url](url)`` would be a redundant alias of the same URL.
+        return f"{marker} {header}: {_format_scalar(value)}"
 
     def _format_object_section(self, header: str, targets: list[dict], *,
                                marker: str) -> str:

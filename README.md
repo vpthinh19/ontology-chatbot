@@ -1,87 +1,160 @@
-# NTU Academic-Procedure Chatbot
+# NTU Academic Chatbot — PhoBERT NER + Ontology-Grounded RAG
 
-Vietnamese chatbot grounded on an OWL ontology of academic procedures.
-PhoBERT is fine-tuned for **token-level Named Entity Recognition** to detect
-mentions of ontology classes in user queries; recognised spans are then
-disambiguated against ontology individuals (and their `hasAlias` / `rdfs:label`
-literals) via **RapidFuzz**, and per-class **SPARQL** queries over the
-**owlready2** world fetch the data that is rendered into a templated reply.
+Chatbot tiếng Việt cho thủ tục học vụ Đại học Nha Trang. Pipeline tách biệt
+hai năng lực: **PhoBERT** fine-tune cho **Named Entity Recognition** (token-
+level BIO) trên 5 lớp ontology, sau đó dùng **RapidFuzz** + **owlready2**
+để gắn span vào individual ontology cụ thể và sinh trả lời bằng template
+schema-agnostic. Toàn bộ giao thức giữa các module là dict JSON nên việc
+mở rộng ontology trên Protégé không cần đụng đến code Python.
 
-## Architecture
+## Kiến trúc
+
+5 module OOP (singleton qua `Cls.get()`) + scripts CLI hướng chức năng.
+
+| Module | Vai trò | API chính |
+|---|---|---|
+| `Preprocessor` (`preprocessor.py`) | Vietnamese text → tokens. Một nguồn duy nhất cho mọi text utility. | `clean`, `normalize`, `segment`, `normalize_for_match`, `strip_diacritics`, `is_url` |
+| `NerModel` (`ner_model.py`) | PhoBERT NER inference + training-data adapter | `extract_entities`, `decode_bio`, `bio_labels`, `make_encoder`, `make_tokenize_fn`, `load_split` |
+| `Ontology` (`ontology.py`) | OWL repository — load, fuzzy match, JSON describe | `tags`, `class_local`, `resolve`, `describe`, `list_class` |
+| `Renderer` (`renderer.py`) | JSON dict → Vietnamese chat string (không phụ thuộc owlready) | `render`, `render_blocks`, `compose` |
+| `Pipeline` (`pipeline.py`) | Orchestrator 5 stages — preprocess → ner → match → query → present | `answer` (sync), `aanswer` (async wrapper) |
+
+Sơ đồ luồng dữ liệu chi tiết: [`docs/data_flow.puml`](docs/data_flow.puml)
+(render online tại <https://www.plantuml.com/plantuml>).
+
+### JSON contract
+
+`Ontology.describe()` trả về dict tự mô tả: 4 fixed identity keys
+(`type`, `iri`, `class`, `label`); mỗi key khác là Vietnamese `rdfs:label`
+của một property. Renderer iterate dict theo insertion order.
+
+```json
+{
+  "type": "individual",
+  "iri": "QuyTrinh_NopHocPhi",
+  "class": "AcademicProcedure",
+  "label": "Quy trình đóng học phí",
+  "Mô tả quy trình": "\nSinh viên thanh toán...",
+  "Được xử lý bởi": [
+    { "type": "individual", "iri": "PhongKHTC", "class": "AdministrativeOffice",
+      "label": "Phòng Tài chính",
+      "Trưởng phòng/Chánh văn phòng": "...", "Website": "https://..." }
+  ],
+  "Áp dụng mức học phí": [ ... ]
+}
+```
+
+Quy ước:
+- Paragraph property values mang leading `\n` (marker → Renderer render
+  free-flow text, không bullet).
+- Dedup tự động: ancestor đã link `(predicate, target_iri)` → con không
+  lặp lại.
+- Recursion mặc định `depth=2`: top-level entity full + object-property
+  targets carry their own data.
+
+### Hierarchy markers (text output)
 
 ```
-user query
-    │
-    ▼
-[ greeting heuristic ]   →  optional greeting block
-    │
-    ▼
-[ PhoBERT NER ]          →  spans tagged with one of 5 ontology classes
-    │
-    ▼
-[ RapidFuzz ]            →  best individual per (span, class)  (skips low score)
-    │
-    ▼
-[ SPARQL ]               →  per-class fetcher returns a structured record
-    │
-    ▼
-[ Renderer ]             →  per-class Vietnamese template; blocks concatenated
+[Title]                  ← bare label, không emoji
+[paragraph property]
+
+• [entity-level section]: value     ← top-level marker
+  ◦ [nested target data]: value     ← under single object target
+• [section]:
+  - [list item / target]            ← multi-target / multi-value
+    ◦ [target's own data]: value
 ```
 
-Composition rule for the final reply:
-* greeting *(if detected)* + ontology blocks, when at least one entity matches;
-* greeting *(if detected)* alone, otherwise the *out-of-domain* fallback.
+3 markers cho 3 ngữ nghĩa: `•` entity section, `-` list item, `◦` nested.
 
-## Layout (src-layout)
+## Cấu trúc thư mục
 
 ```
-resources/                    static assets shipped with the package
-  Ontology_AcademicProcedure_v6.owx
-  Ontology_AcademicProcedure_v6.xml
-  label_map.json
 src/ontchatbot/
-  config.py                   paths, model and training hyper-parameters
-  pipeline.py                 end-to-end answer() function
-  ontology/
-    loader.py                 owlready2 load + label-map utilities
-    fuzzy.py                  rapidfuzz index per class (label + aliases)
-    queries.py                per-class SPARQL fetchers
-    response.py               reply templates + composition rule
-  data/
-    templates.py              dataset-time templates and surface-noise fns
-    build_dataset.py          synthetic train/test JSONL generator
-  ner/
-    preprocessing.py          Vietnamese cleanup + word segmentation
-    dataset.py                HF Dataset + sub-word ↔ word label alignment
-    train.py                  fine-tuning loop (seqeval metrics, BF16 on CUDA)
-    evaluate.py               entity-level benchmark on the test split
-    inference.py              text → entity spans
-  api/server.py               FastAPI server (serves web/index.html)
-  viz/training_curves.py      train/val loss + accuracy + F1 plots
-tests/                        pytest suite (42 tests; no model required)
-web/index.html                chat UI wired to /chat
-dataset/                      generated train.jsonl / test.jsonl
+├── __init__.py            (lazy public exports)
+├── config.py              paths + hyper-params + fuzzy threshold
+├── logging_setup.py       rotating logger
+├── pipeline.py            Pipeline + PipelineContext
+├── preprocessor.py        Preprocessor (text utility)
+├── ner_model.py           NerModel (PhoBERT NER + training adapter)
+├── ontology.py            Ontology (OWL repository + fuzzy + JSON)
+├── renderer.py            Renderer + GREETING/RENDER constants
+├── data/
+│   └── sources.py         hand-curated NER samples
+├── scripts/               functional CLI scripts
+│   ├── build_dataset.py
+│   ├── train.py
+│   ├── evaluate.py
+│   └── serve.py           FastAPI
+└── viz/                   matplotlib visualizations
+
+resources/                  bundled with the wheel
+├── ontology/
+│   ├── label_map.json
+│   └── Ontology_AcademicProcedure_v8.owx
+└── datasets/
+    ├── train.jsonl
+    └── test.jsonl
+
+webui/index.html            single-page chat UI
+docs/data_flow.puml         architecture diagram
+tests/                      pytest (~95 tests)
 ```
 
-## Workflow
+## Yêu cầu
 
-```powershell
-uv sync                            # install deps (CUDA wheels via uv index)
-uv run pytest                      # unit tests (no model needed, ~6 s)
-uv run ont-build-dataset           # regenerate dataset/{train,test}.jsonl
-uv run ont-train                   # fine-tune PhoBERT NER → models/phobert-ner
-uv run ont-evaluate                # entity-level benchmark on the test split
-uv run ont-serve --reload          # start the chatbot at http://127.0.0.1:8000
+- Python 3.13+
+- (Tuỳ chọn) GPU CUDA 13.0+ cho training & inference nhanh
+
+## Quick start
+
+```bash
+uv sync                        # cài dependencies
+uv run pytest                  # chạy 95 tests (~13s)
+uv run build_dataset           # compile JSONL từ data/sources.py
+uv run train                   # fine-tune PhoBERT (~10 phút trên GPU)
+uv run evaluate                # → artifacts/evaluation/*.png
+uv run serve                   # → http://127.0.0.1:8000
 ```
 
-`ont-build-dataset` is deterministic (`--seed`); rerun whenever the ontology
-changes. The dataset emits one JSONL line per sample: `{"tokens": [...], "ner_tags": [...]}`.
-Multi-entity samples are produced by *stitching* two single-entity sentences
-with a Vietnamese connector — covering hard cases like *"hp k65 như nào, k67 nữa"*.
+## Mở rộng ontology — workflow zero-code
 
-## Metrics
+Chỉ cần edit ontology trong Protégé:
 
-Training curves (`out/training/training_curves.png`) plot train loss, val loss,
-val accuracy and val F1 (macro). Evaluation (`out/evaluation/`) emits
-`test_metrics.json` (token accuracy, entity-level precision/recall/F1
-micro & macro) and the seqeval `classification_report.txt`.
+1. Thêm class / individual / object property / data property mới.
+2. Đặt Vietnamese `rdfs:label` cho mỗi entity (sẽ thành section header).
+3. Thêm `hasAlias` literals cho fuzzy match (các cách diễn đạt tự nhiên).
+4. Save → backend tự nhận khi restart, **không sửa code Python**.
+
+Để model NER nhận diện class mới, bổ sung samples trong `data/sources.py`
++ thêm class vào `resources/ontology/label_map.json` + retrain.
+
+## Hành vi đáng chú ý
+
+- **Threshold-based multi-match**: span như `"k65"` resolve thành cả
+  `Phi_K65_550k` và `Phi_K65_620k` — không bị top-1 collapse.
+- **Class-listing fallback**: span match class label (vd `"quy trình học vụ"`)
+  → render flat list mọi individual của class.
+- **Minimal greeting**: chỉ greet khi user nhắn pure greeting; query có
+  entity → trả lời thẳng, không prefix `"Xin chào"`.
+- **Async API**: `Pipeline.aanswer()` wrap qua `asyncio.to_thread` để
+  FastAPI không block event loop trong lúc PhoBERT inference.
+- **Per-module logger**: `logging.getLogger("ontchatbot.ontology")` tune
+  level độc lập với `ontchatbot.preprocessor`.
+
+## Testing
+
+```bash
+uv run pytest                                  # full suite
+uv run pytest tests/test_renderer.py           # chỉ renderer (no OWL load)
+uv run pytest tests/test_ontology.py -v        # ontology + fuzzy + dedup
+```
+
+Renderer tests dùng synthetic dict — không load OWL → chạy ms.
+
+## Tham khảo
+
+- PhoBERT: <https://github.com/VinAIResearch/PhoBERT>
+- Owlready2: <https://owlready2.readthedocs.io/>
+- RapidFuzz: <https://rapidfuzz.github.io/RapidFuzz/>
+- underthesea: <https://github.com/undertheseanlp/underthesea>

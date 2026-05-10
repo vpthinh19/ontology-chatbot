@@ -48,64 +48,14 @@ LEARNING_RATE = 2e-5
 VAL_SIZE = 0.2
 SEED = 42
 
-# Inference
-# ``FUZZY_MIN_SCORE`` is the score threshold above which an individual is
-# admitted as a match. Tuned empirically against the v8 ontology aliases:
-# at 88 we reject "rớt môn" ↔ "rút môn" (single-char visual collision that
-# rapidfuzz scores ≈ 86 via ``token_set_ratio``) while still keeping every
-# perfect-alias match (score 100) — including ambiguous cohort spans like
-# "k65" that legitimately resolve to both ``Phi_K65_550k`` and ``Phi_K65_620k``.
+# Inference — fuzzy threshold tuned at 88: high enough to reject visual
+# collisions like "rớt môn" ↔ "rút môn" (≈86 via token_set_ratio) yet low
+# enough to keep every perfect-alias match (score 100) — including
+# ambiguous cohort spans like "k65" that legitimately resolve to multiple
+# fee categories.
 FUZZY_TOP_K = 8
 FUZZY_MIN_SCORE = 88.0
 
-# Greeting heuristic — case- and diacritic-insensitive substrings
-GREETING_KEYWORDS: tuple[str, ...] = (
-    "xin chao", "chao", "hello", "hi ", "hey", "alo",
-    "cam on", "thanks", "tks", "tam biet", "bye",
-)
-
-# Rendering — one source of truth for the (small) schema-aware exceptions.
-# Everything else (section headers, ordering basis, URL detection) is derived
-# from the ontology itself.
-#
-# ``RENDER_PROPERTY_ORDER`` defines a stable rendering order; properties not
-# listed here are appended alphabetically so adding a new property in Protégé
-# never requires a code change. ``RENDER_PARAGRAPH_PROPERTIES`` are emitted
-# without a bullet header (free-flow descriptions read better that way), and
-# ``RENDER_SKIP_PROPERTIES`` are fully suppressed (aliases are matcher input,
-# not user-facing content; rdfs:label is consumed as the block title).
-RENDER_PARAGRAPH_PROPERTIES: tuple[str, ...] = (
-    "procedureDescription", "feeNote",
-)
-RENDER_SKIP_PROPERTIES: tuple[str, ...] = (
-    "hasAlias", "label",
-)
-RENDER_PROPERTY_ORDER: tuple[str, ...] = (
-    # paragraphs come first by convention
-    "procedureDescription", "feeNote",
-    # individual data properties (logical order: identity → contact → fee)
-    "appliesToTarget", "feePerCredit",
-    "headOfOffice", "officeLocation",
-    "officeEmail", "officePhoneNumber", "officeWebsite",
-    "formUrl",
-    # object properties — logical "who/what" before "rules/outputs"
-    "handledBy", "executedVia",
-    "basedOnRegulation",
-    "hasCondition", "requiresDocument", "hasStep",
-    "hasFeeCategory", "hasPaymentMethod", "hasOutput",
-)
-
-# Per-class title emoji. Optional. Classes not listed render their title
-# without an emoji prefix — that is the intentional behaviour for entities
-# whose class label is already self-explanatory in chat (e.g. an
-# AdministrativeOffice whose name already starts with "Phòng …" or "Văn
-# phòng …" — an extra 🏢 would be redundant noise).
-RENDER_CLASS_EMOJI: dict[str, str] = {
-    "AcademicProcedure": "📘",
-    "Document": "📄",
-    "FeeCategory": "💰",
-    "PaymentMethod": "💳",
-    "Regulation": "📜",
-    "Condition": "✅",
-    "OutputResult": "🏁",
-}
+# Greeting heuristic and rendering policies live in :mod:`renderer` since
+# they are presentation concerns. Pipeline and Ontology import them from
+# there.

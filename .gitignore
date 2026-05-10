@@ -10,6 +10,6 @@ uv.lock
 .sixth/
 .claude/
 
-models/
+models/phobert_ner_ft/model.safetensors
 logs/
 test.py

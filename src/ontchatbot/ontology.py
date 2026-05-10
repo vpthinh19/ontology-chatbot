@@ -26,11 +26,13 @@ from .config import (
     FUZZY_TOP_K,
     LABEL_MAP_PATH,
     ONTOLOGY_PATH,
-    RENDER_PARAGRAPH_PROPERTIES,
-    RENDER_PROPERTY_ORDER,
-    RENDER_SKIP_PROPERTIES,
 )
 from .preprocessor import Preprocessor
+from .renderer import (
+    PARAGRAPH_PROPERTIES as RENDER_PARAGRAPH_PROPERTIES,
+    PROPERTY_ORDER as RENDER_PROPERTY_ORDER,
+    SKIP_PROPERTIES as RENDER_SKIP_PROPERTIES,
+)
 
 log = logging.getLogger(__name__)
 

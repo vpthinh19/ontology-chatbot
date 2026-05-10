@@ -4910,4 +4910,46 @@ SAMPLES: list[Sample] = [
     ('phòng đào tạo có đóng cửa thứ 7 không', []),
     ('em không có tiền đóng học phí, có thể vay không', []),
     ('rút thẻ atm tại ngân hàng nào gần', []),
+
+    # === wave 7 — class-level questions ===
+    # Surface ≈ class label → matcher routes to class-listing template.
+    # QuyTrinhHocVu (class label = "Quy trình học vụ")
+    ('trường mình có những quy trình học vụ nào', [('quy trình học vụ', 'QuyTrinhHocVu')]),
+    ('liệt kê tất cả quy trình học vụ', [('quy trình học vụ', 'QuyTrinhHocVu')]),
+    ('có những thủ tục học vụ gì ở trường', [('thủ tục học vụ', 'QuyTrinhHocVu')]),
+    ('danh sách các quy trình học vụ', [('quy trình học vụ', 'QuyTrinhHocVu')]),
+    ('trường có những loại quy trình nào', [('quy trình', 'QuyTrinhHocVu')]),
+    ('có bao nhiêu quy trình học vụ tại trường', [('quy trình học vụ', 'QuyTrinhHocVu')]),
+    ('quy trình học vụ là gì có những cái nào', [('quy trình học vụ', 'QuyTrinhHocVu')]),
+
+    # PhongBanHanhChinh (class label = "Phòng ban hành chính")
+    ('trường có những phòng ban hành chính nào', [('phòng ban hành chính', 'PhongBanHanhChinh')]),
+    ('liệt kê các phòng ban', [('phòng ban', 'PhongBanHanhChinh')]),
+    ('danh sách các phòng ban hành chính', [('phòng ban hành chính', 'PhongBanHanhChinh')]),
+    ('có những phòng nào ở trường mình', [('phòng', 'PhongBanHanhChinh')]),
+    ('cho em xin danh sách các phòng ban hành chính', [('phòng ban hành chính', 'PhongBanHanhChinh')]),
+    ('trường mình có mấy phòng ban', [('phòng ban', 'PhongBanHanhChinh')]),
+
+    # TaiLieuBieuMau (class label = "Tài liệu biểu mẫu")
+    ('trường có những loại biểu mẫu nào', [('biểu mẫu', 'TaiLieuBieuMau')]),
+    ('liệt kê các tài liệu biểu mẫu', [('tài liệu biểu mẫu', 'TaiLieuBieuMau')]),
+    ('có những đơn từ gì cần điền cho sinh viên', [('đơn từ', 'TaiLieuBieuMau')]),
+    ('danh sách biểu mẫu của trường', [('biểu mẫu', 'TaiLieuBieuMau')]),
+    ('các loại tài liệu biểu mẫu trường có', [('tài liệu biểu mẫu', 'TaiLieuBieuMau')]),
+    ('cho em xem các mẫu đơn của trường', [('mẫu đơn', 'TaiLieuBieuMau')]),
+
+    # DinhMucHocPhi (class label = "Định mức học phí")
+    ('có những mức học phí nào', [('mức học phí', 'DinhMucHocPhi')]),
+    ('liệt kê các định mức học phí', [('định mức học phí', 'DinhMucHocPhi')]),
+    ('trường có các bảng giá học phí gì', [('bảng giá học phí', 'DinhMucHocPhi')]),
+    ('các mức học phí của trường', [('mức học phí', 'DinhMucHocPhi')]),
+    ('có những loại học phí nào ở trường', [('loại học phí', 'DinhMucHocPhi')]),
+    ('định mức học phí là gì có những cái nào', [('định mức học phí', 'DinhMucHocPhi')]),
+
+    # PhuongThucThanhToan (class label = "Phương thức thanh toán")
+    ('có những phương thức thanh toán nào', [('phương thức thanh toán', 'PhuongThucThanhToan')]),
+    ('trường nhận các hình thức thanh toán gì', [('hình thức thanh toán', 'PhuongThucThanhToan')]),
+    ('liệt kê các cách nộp tiền', [('cách nộp tiền', 'PhuongThucThanhToan')]),
+    ('có những kênh thanh toán nào trường chấp nhận', [('kênh thanh toán', 'PhuongThucThanhToan')]),
+    ('cho em xem các phương thức thanh toán', [('phương thức thanh toán', 'PhuongThucThanhToan')]),
 ]

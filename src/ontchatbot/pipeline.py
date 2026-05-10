@@ -13,11 +13,10 @@ import logging
 from dataclasses import dataclass, field
 from functools import lru_cache
 
-from .config import GREETING_KEYWORDS
 from .ner_model import Entity, NerModel
 from .ontology import MatchResult, Ontology
 from .preprocessor import Preprocessor
-from .renderer import Renderer
+from .renderer import GREETING_KEYWORDS, Renderer
 
 log = logging.getLogger(__name__)
 

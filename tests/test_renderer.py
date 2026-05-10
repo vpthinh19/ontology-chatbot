@@ -44,27 +44,34 @@ def test_render_individual_inline_single_value(renderer: Renderer):
     assert "• Email liên hệ: ctsv@ntu.edu.vn" in out
 
 
-def test_render_individual_url_data_becomes_markdown_link(renderer: Renderer):
+def test_render_individual_url_data_emitted_raw(renderer: Renderer):
+    """URL-typed data values are printed raw — frontend auto-link turns
+    them into anchors. Wrapping them in ``[url](url)`` would only repeat
+    the same string."""
     out = renderer.render({
         "type": "individual", "iri": "X",
         "class": "AdministrativeOffice", "label": "Phòng X",
         "Website": "https://example.com/",
     })
-    # URL has no parens → encoding is a no-op, matches verbatim.
-    assert "• Website: [https://example.com/](https://example.com/)" in out
+    assert "• Website: https://example.com/" in out
+    assert "[https://example.com/]" not in out  # no markdown wrap
 
 
-def test_render_md_link_encodes_parens_in_url(renderer: Renderer):
-    """Regression: URL parens are percent-encoded inside the markdown ``href``
-    so the frontend regex doesn't truncate at an inner ``)``. The display
-    label may still show raw parens — only the href needs to be parse-safe."""
+def test_render_object_target_url_still_uses_markdown(renderer: Renderer):
+    """Object-property targets keep the ``[label](url)`` markdown form
+    because their label is meaningful (≠ url) and parens in the href
+    must be encoded for the frontend regex."""
     out = renderer.render({
-        "type": "individual", "iri": "R", "class": "Regulation",
-        "label": "Quyết định 729/QĐ-ĐHNT",
-        "Đường dẫn tải biểu mẫu": "https://x.vn/p-729-(2025)-(2).pdf",
+        "type": "individual", "iri": "P",
+        "class": "AcademicProcedure", "label": "Quy trình X",
+        "Cần biểu mẫu/văn bản": [
+            {"type": "individual", "iri": "R", "class": "Regulation",
+             "label": "Quyết định 729/QĐ-ĐHNT",
+             "Đường dẫn tải biểu mẫu": "https://x.vn/p-729-(2025)-(2).pdf"}
+        ],
     })
-    # The href substring must have parens encoded.
-    assert "](https://x.vn/p-729-%282025%29-%282%29.pdf)" in out
+    # Markdown wrapping with parens encoded.
+    assert "[Quyết định 729/QĐ-ĐHNT](https://x.vn/p-729-%282025%29-%282%29.pdf)" in out
 
 
 def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer):
@@ -74,7 +81,7 @@ def test_render_individual_multi_value_data_uses_sub_bullets(renderer: Renderer)
         "Áp dụng cho đối tượng/ngành": ["CNTT", "QTKD", "Kế toán"],
     })
     assert "• Áp dụng cho đối tượng/ngành:\n" in out
-    assert "  – CNTT" in out and "  – QTKD" in out
+    assert "  - CNTT" in out and "  - QTKD" in out
 
 
 def test_render_individual_object_property_target_with_data(renderer: Renderer):
@@ -110,7 +117,7 @@ def test_render_individual_multi_object_targets_with_data(renderer: Renderer):
     })
     assert "• Áp dụng mức học phí:" in out
     # Each target is a ``– label`` item indented under the section
-    assert "  – Học phí A" in out and "  – Học phí B" in out
+    assert "  - Học phí A" in out and "  - Học phí B" in out
     # Target data uses ◦ and is indented one level deeper than the – item
     assert "    ◦ Mức học phí/1 Tín chỉ (VNĐ): 100,000" in out
     assert "    ◦ Mức học phí/1 Tín chỉ (VNĐ): 200,000" in out
@@ -143,7 +150,7 @@ def test_render_individual_object_property_without_url(renderer: Renderer):
              "label": "Điều kiện 2"},
         ],
     })
-    assert "• Yêu cầu điều kiện:\n  – Điều kiện 1\n  – Điều kiện 2" in out
+    assert "• Yêu cầu điều kiện:\n  - Điều kiện 1\n  - Điều kiện 2" in out
 
 
 def test_render_individual_paragraph_property_no_bullet(renderer: Renderer):
@@ -176,22 +183,16 @@ def test_render_individual_currency_thousands_separator(renderer: Renderer):
     assert "550,000" in out
 
 
-def test_render_individual_class_emoji_lookup(renderer: Renderer):
+def test_render_individual_no_emoji_prefix(renderer: Renderer):
+    """All entity titles render as bare label — emoji decoration removed."""
     out = renderer.render({
         "type": "individual", "iri": "X",
         "class": "FeeCategory", "label": "Học phí",
     })
-    assert out.startswith("💰 ")
-
-
-def test_render_individual_unknown_class_no_emoji(renderer: Renderer):
-    """A class without an emoji entry renders its title without any prefix —
-    no fallback bullet, so the label stands clean."""
-    out = renderer.render({
-        "type": "individual", "iri": "X",
-        "class": "SomeFutureClass", "label": "Something",
-    })
-    assert out.strip().startswith("Something")
+    assert out.strip().startswith("Học phí")
+    # Make sure no class-emoji is leaked into output.
+    for emoji in ("📘", "📄", "💰", "💳", "📜", "🏢"):
+        assert emoji not in out
 
 
 # Listing
@@ -207,7 +208,7 @@ def test_render_listing(renderer: Renderer):
              "class": "AcademicProcedure", "label": "Quy trình B"},
         ],
     })
-    assert "📘 Quy trình học vụ" in out
+    assert out.startswith("Quy trình học vụ")
     assert "• Quy trình A" in out and "• Quy trình B" in out
 
 

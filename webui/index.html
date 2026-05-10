@@ -412,25 +412,6 @@
             <h1 class="heading">Xin chào</h1>
             <h4 class="sub-heading">Mình có thể giúp gì cho bạn?</h4>
         </header>
-        <!-- Suggestions List -->
-        <ul class="suggestions">
-            <li class="suggestions-item">
-                <p class="text">Quy trình bảo lưu thế nào ạ?</p>
-                <span class="icon material-symbols-rounded">draw</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Học phí K65 bao nhiêu một tín chỉ?</p>
-                <span class="icon material-symbols-rounded">lightbulb</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Liên hệ Phòng CTSV như nào?</p>
-                <span class="icon material-symbols-rounded">explore</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Cho em xin đơn xin bảo lưu.</p>
-                <span class="icon material-symbols-rounded">code_blocks</span>
-            </li>
-        </ul>
         <!-- Chats -->
         <div class="chats-container"></div>
         <!-- Prompt Input -->
@@ -439,15 +420,6 @@
                 <form action="#" class="prompt-form">
                     <input type="text" placeholder="Nhập câu hỏi..." class="prompt-input" required />
                     <div class="prompt-actions">
-                        <!-- File Upload Wrapper -->
-                        <div class="file-upload-wrapper">
-                            <img src="#" class="file-preview" />
-                            <input id="file-input" type="file" accept="image/*, .pdf, .txt, .csv" hidden />
-                            <button type="button" class="file-icon material-symbols-rounded">description</button>
-                            <button id="cancel-file-btn" type="button" class="material-symbols-rounded">close</button>
-                            <button id="add-file-btn" type="button"
-                                class="material-symbols-rounded">attach_file</button>
-                        </div>
                         <!-- Send Prompt and Stop Response Buttons -->
                         <button id="stop-response-btn" type="button"
                             class="material-symbols-rounded">stop_circle</button>
@@ -458,7 +430,6 @@
                 <button id="theme-toggle-btn" class="material-symbols-rounded">light_mode</button>
                 <button id="delete-chats-btn" class="material-symbols-rounded">delete</button>
             </div>
-            <p class="disclaimer-text">Câu trả lời được tra cứu từ ontology học vụ — vui lòng đối chiếu với phòng ban liên quan.</p>
         </div>
     </div>
     <script>
@@ -466,14 +437,12 @@
         const chatsContainer = document.querySelector(".chats-container");
         const promptForm = document.querySelector(".prompt-form");
         const promptInput = promptForm.querySelector(".prompt-input");
-        const fileInput = promptForm.querySelector("#file-input");
-        const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
         const themeToggleBtn = document.querySelector("#theme-toggle-btn");
         // API Setup — local FastAPI backend
         const API_URL = "/chat";
         let controller;
         const chatHistory = [];
-        const userData = { message: "", file: {} };
+        const userData = { message: "" };
         // Set initial theme from local storage
         const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
         document.body.classList.toggle("light-theme", isLightTheme);
@@ -552,8 +521,6 @@
                 botMsgDiv.classList.remove("loading");
                 document.body.classList.remove("bot-responding");
                 scrollToBottom();
-            } finally {
-                userData.file = {};
             }
         };
         // Handle the form submission
@@ -564,50 +531,21 @@
             userData.message = userMessage;
             promptInput.value = "";
             document.body.classList.add("chats-active", "bot-responding");
-            fileUploadWrapper.classList.remove("file-attached", "img-attached", "active");
-            // Generate user message HTML with optional file attachment
-            const userMsgHTML = `
-    <p class="message-text"></p>
-    ${userData.file.data ? (userData.file.isImage ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="img-attachment" />` : `<p class="file-attachment"><span class="material-symbols-rounded">description</span>${userData.file.fileName}</p>`) : ""}
-  `;
-            const userMsgDiv = createMessageElement(userMsgHTML, "user-message");
+            const userMsgDiv = createMessageElement(`<p class="message-text"></p>`, "user-message");
             userMsgDiv.querySelector(".message-text").textContent = userData.message;
             chatsContainer.appendChild(userMsgDiv);
             scrollToBottom();
             setTimeout(() => {
-                // Generate bot message HTML and add in the chat container
                 const botMsgHTML = `<span class="avatar material-symbols-rounded" style="display:flex;align-items:center;justify-content:center;color:#1d7efd;">school</span> <p class="message-text">Đang tra cứu...</p>`;
                 const botMsgDiv = createMessageElement(botMsgHTML, "bot-message", "loading");
                 chatsContainer.appendChild(botMsgDiv);
                 scrollToBottom();
                 generateResponse(botMsgDiv);
-            }, 600); // 600 ms delay
+            }, 600);
         };
-        // Handle file input change (file upload)
-        fileInput.addEventListener("change", () => {
-            const file = fileInput.files[0];
-            if (!file) return;
-            const isImage = file.type.startsWith("image/");
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-                fileInput.value = "";
-                const base64String = e.target.result.split(",")[1];
-                fileUploadWrapper.querySelector(".file-preview").src = e.target.result;
-                fileUploadWrapper.classList.add("active", isImage ? "img-attached" : "file-attached");
-                // Store file data in userData obj
-                userData.file = { fileName: file.name, data: base64String, mime_type: file.type, isImage };
-            };
-        });
-        // Cancel file upload
-        document.querySelector("#cancel-file-btn").addEventListener("click", () => {
-            userData.file = {};
-            fileUploadWrapper.classList.remove("file-attached", "img-attached", "active");
-        });
         // Stop Bot Response
         document.querySelector("#stop-response-btn").addEventListener("click", () => {
             controller?.abort();
-            userData.file = {};
             chatsContainer.querySelector(".bot-message.loading").classList.remove("loading");
             document.body.classList.remove("bot-responding");
         });
@@ -623,22 +561,7 @@
             chatsContainer.innerHTML = "";
             document.body.classList.remove("chats-active", "bot-responding");
         });
-        // Handle suggestions click
-        document.querySelectorAll(".suggestions-item").forEach((suggestion) => {
-            suggestion.addEventListener("click", () => {
-                promptInput.value = suggestion.querySelector(".text").textContent;
-                promptForm.dispatchEvent(new Event("submit"));
-            });
-        });
-        // Show/hide controls for mobile on prompt input focus
-        document.addEventListener("click", ({ target }) => {
-            const wrapper = document.querySelector(".prompt-wrapper");
-            const shouldHide = target.classList.contains("prompt-input") || (wrapper.classList.contains("hide-controls") && (target.id === "add-file-btn" || target.id === "stop-response-btn"));
-            wrapper.classList.toggle("hide-controls", shouldHide);
-        });
-        // Add event listeners for form submission and file input click
         promptForm.addEventListener("submit", handleFormSubmit);
-        promptForm.querySelector("#add-file-btn").addEventListener("click", () => fileInput.click());
     </script>
 </body>
 

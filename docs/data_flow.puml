@@ -1,0 +1,92 @@
+@startuml ontchatbot-data-flow
+' Data flow from browser → backend modules → back to browser.
+' One arrow per hop, each annotated with the DTO shape it carries.
+' Reading top-to-bottom matches the order of execution.
+
+title NTU Academic Chatbot — Data Flow
+
+skinparam defaultTextAlignment left
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #444
+skinparam ArrowFontColor #222
+skinparam rectangle {
+    BackgroundColor #FAFAFA
+    BorderColor #555
+    FontColor #111
+    RoundCorner 8
+}
+skinparam note {
+    BackgroundColor #FFF8DC
+    BorderColor #B0A060
+}
+
+' === Browser layer ===
+rectangle "**Browser** (webui/index.html)\nuser types message,\nrenders Markdown reply" as UI
+
+' === FastAPI layer ===
+rectangle "**FastAPI** (scripts/serve.py)\nPOST /chat → Pipeline.aanswer" as API
+
+' === Orchestration ===
+rectangle "**Pipeline** (pipeline.py)\nthreads PipelineContext\nthrough 5 stages" as PIPE
+
+' === OOP modules ===
+rectangle "**Preprocessor**\n.clean / .strip_diacritics" as PRE
+rectangle "**NerModel**\n.extract_entities" as NER
+rectangle "**Ontology**\n.resolve / .describe / .list_class" as ONTO
+rectangle "**Renderer**\n.render_blocks / .compose" as REND
+
+' === Hop-by-hop (top → bottom) ===
+UI       -[#0066CC]-> API   : POST /chat\n{ "message": "đóng học phí" }
+API      -[#0066CC]-> PIPE  : await aanswer(query: str)
+
+PIPE     -[#3399FF]-> PRE   : strip_diacritics(text.lower())
+PRE      -[#3399FF]-> PIPE  : ctx.text: str\nctx.greeting: bool
+
+PIPE     -[#3399FF]-> NER   : extract_entities(ctx.text)
+NER      -[#3399FF]-> PIPE  : ctx.spans: list[Entity]\n  Entity(surface, tag, start, end)
+
+PIPE     -[#3399FF]-> ONTO  : for span in ctx.spans:\n  resolve(surface, tag)
+ONTO     -[#3399FF]-> PIPE  : ctx.matches: list[MatchResult]\n  MatchResult(tag, class_won,\n              individuals: list[iri],\n              top_score)
+
+PIPE     -[#3399FF]-> ONTO  : for match in ctx.matches:\n  describe(iri, depth=2)\n  | list_class(tag)
+ONTO     -[#3399FF]-> PIPE  : ctx.descriptions: list[dict]\n  { type, iri, class, label,\n    "Vietnamese property label": value | nested-dict | list,\n    ... }
+
+PIPE     -[#3399FF]-> REND  : render_blocks(descriptions)\n+ compose(blocks, greeting)
+REND     -[#3399FF]-> PIPE  : ctx.reply: str\n  (Vietnamese text\n  with markdown links)
+
+PIPE     -[#0066CC]-> API   : ctx.to_response()
+API      -[#0066CC]-> UI    : 200 OK\n{ "reply": str,\n  "greeting": bool,\n  "entities": [...] }
+
+UI       -[#888]-> UI       : renderRichText(reply)\n→ HTML (anchor + <br>)\n→ message-text.innerHTML
+
+' === Diagrammatic notes ===
+note right of PIPE
+  PipelineContext (DTO):
+   • query, text, greeting
+   • spans (list[Entity])
+   • matches (list[MatchResult])
+   • descriptions (list[dict])
+   • blocks, reply
+end note
+
+note right of ONTO
+  JSON contract — 4 fixed keys
+  (type, iri, class, label) +
+  every other key is the
+  Vietnamese rdfs:label of a
+  property. Paragraph values
+  carry a leading "\\n" marker.
+  Dedup: (predicate, target_iri)
+  pairs from ancestors are
+  silently dropped at children.
+end note
+
+note right of REND
+  Hierarchy markers:
+   • entity-level section
+   - list item (multi-target)
+   ◦ nested data under target
+end note
+
+@enduml
