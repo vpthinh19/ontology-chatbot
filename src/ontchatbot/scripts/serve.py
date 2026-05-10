@@ -25,6 +25,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from ..config import WEB_DIR
@@ -88,6 +89,7 @@ async def chat(req: ChatRequest) -> JSONResponse:
     while PyTorch inference (blocking C++) is in flight."""
     return JSONResponse(await Pipeline.get().aanswer(req.message))
 
+app.mount("/", StaticFiles(directory=WEB_DIR), name="webui")
 
 def main() -> None:
     parser = argparse.ArgumentParser()
