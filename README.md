@@ -6,18 +6,18 @@ Vietnamese chatbot for NTU academic procedures: PhoBERT fine-tuned for token-lev
 
 ```
 src/ontchatbot/
-├── config.py              paths + hyper-params + fuzzy threshold
-├── logging_setup.py       rotating logger
-├── pipeline.py            Pipeline + PipelineContext (orchestrator)
-├── preprocessor.py        Preprocessor  (text utility)
-├── ner_model.py           NerModel      (PhoBERT NER)
-├── ontology.py            Ontology      (OWL repo + fuzzy + JSON)
-├── renderer.py            Renderer      (JSON dict → text)
+├── config.py                       paths + hyper-params + fuzzy threshold
+├── logging_setup.py                rotating logger
+├── pipeline.py                     Pipeline + PipelineContext (orchestrator)
+├── preprocessor.py                 Preprocessor  (text utility)
+├── ner_model.py                    NerModel      (PhoBERT NER)
+├── ontology.py                     Ontology      (OWL repo + fuzzy + JSON)
+├── renderer.py                     Renderer      (JSON dict → text)
 ├── scripts/
 │   ├── train.py
 │   ├── evaluate.py
-│   └── serve.py           FastAPI
-└── viz/                   matplotlib visualisations
+│   └── serve.py                    FastAPI
+└── viz/                            matplotlib visualisations
 
 resources/
 ├── ontology/
@@ -27,9 +27,9 @@ resources/
     ├── train.jsonl
     └── test.jsonl
 
-webui/index.html           single-page chat UI
-docs/data_flow.puml        architecture diagram
-tests/                     pytest suite
+webui/index.html                    single-page chat UI
+artifacts/flow/data_flow.puml       architecture diagram
+tests/                              pytest suite
 ```
 
 ## Scripts
