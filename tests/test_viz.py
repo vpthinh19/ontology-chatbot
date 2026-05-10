@@ -2,10 +2,6 @@
 
 from __future__ import annotations
 
-from ontchatbot.viz.distributions import (
-    plot_label_distribution,
-    plot_length_distribution,
-)
 from ontchatbot.viz.evaluation import (
     plot_classification_report,
     plot_confusion_matrix,
@@ -60,26 +56,3 @@ def test_plot_classification_report_writes_file(tmp_path):
     assert out.is_file() and out.stat().st_size > 0
 
 
-def test_plot_label_distribution_writes_file(tmp_path):
-    splits = {
-        "train": [
-            {"tokens": ["a", "b"], "ner_tags": ["B-QuyTrinhHocVu", "O"]},
-            {"tokens": ["c"], "ner_tags": ["O"]},
-        ],
-        "test": [
-            {"tokens": ["d", "e"], "ner_tags": ["B-PhongBanHanhChinh", "I-PhongBanHanhChinh"]},
-        ],
-    }
-    out = tmp_path / "dist.png"
-    plot_label_distribution(splits, str(out))
-    assert out.is_file() and out.stat().st_size > 0
-
-
-def test_plot_length_distribution_writes_file(tmp_path):
-    splits = {
-        "train": [{"tokens": ["a", "b", "c"], "ner_tags": ["O", "O", "O"]}],
-        "test": [{"tokens": ["x"], "ner_tags": ["O"]}],
-    }
-    out = tmp_path / "lengths.png"
-    plot_length_distribution(splits, str(out), max_length=128)
-    assert out.is_file() and out.stat().st_size > 0

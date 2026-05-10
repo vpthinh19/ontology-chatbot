@@ -20,7 +20,6 @@ dependencies = [
 ]
 
 [project.scripts]
-build_dataset = "ontchatbot.scripts.build_dataset:main"
 train = "ontchatbot.scripts.train:main"
 evaluate = "ontchatbot.scripts.evaluate:main"
 serve = "ontchatbot.scripts.serve:main"
