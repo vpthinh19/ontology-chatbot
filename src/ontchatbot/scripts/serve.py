@@ -2,7 +2,7 @@
 
 Endpoints
 ---------
-``GET  /``         — serve the static UI (``web/index.html``)
+``GET  /``         — serve the static UI (``webui/index.html``)
 ``POST /chat``     — JSON ``{"message": str}`` → ``{"reply": str, ...}``
 ``GET  /healthz``  — liveness probe
 

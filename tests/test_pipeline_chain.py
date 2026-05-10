@@ -18,16 +18,16 @@ class _StubNer:
         return list(self._entities)
 
 
-def test_preprocess_records_text_and_greeting():
+def test_intent_records_text_and_greeting():
     p = Pipeline(ner=_StubNer())
-    ctx = p._preprocess(PipelineContext(query="  cam on  "))
+    ctx = p._intent(PipelineContext(query="  cam on  "))
     assert ctx.text == "cam on"
     assert ctx.greeting is True
 
 
-def test_preprocess_handles_empty():
+def test_intent_handles_empty():
     p = Pipeline(ner=_StubNer())
-    ctx = p._preprocess(PipelineContext(query=""))
+    ctx = p._intent(PipelineContext(query=""))
     assert ctx.text == ""
     assert ctx.greeting is False
 

@@ -19,13 +19,14 @@ Each marker maps to one semantic role; depth manifests through indentation.
 from __future__ import annotations
 
 import logging
+import re
 from functools import lru_cache
 
 from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
 
-# Mirror :data:`store.FIXED_KEYS` here so the renderer stays structurally
+# Mirror :data:`ontology.FIXED_KEYS` here so the renderer stays structurally
 # independent of the ontology layer (tests can use synthetic dicts).
 _FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 
@@ -38,13 +39,31 @@ _M_NESTED = "◦"
 _INDENT = "  "  # 2 spaces — used for every level of nesting
 
 
-# Greeting heuristic — diacritic-stripped substrings the pipeline matches
+# Greeting heuristic — diacritic-stripped tokens the pipeline matches
 # against the user message to decide whether to greet back. Kept here
 # alongside the chat-facing copy below since both are presentation policy.
+# Casual fillers (``haha``, ``hihi``, …) are included so a one-word filler
+# message lands a friendly greeting reply instead of an OOD fallback.
 GREETING_KEYWORDS: tuple[str, ...] = (
-    "xin chao", "chao", "hello", "hi ", "hey", "alo",
+    "xin chao", "chao", "hello", "hi", "hey", "alo",
     "cam on", "thanks", "tks", "tam biet", "bye",
+    "haha", "hihi", "hehe", "huhu", "kkk",
 )
+
+# Word-boundary match avoids substring false-positives such as ``chao``
+# matching inside ``chao đảo`` (→ ``chao dao``); equally lets bare ``hi``
+# at end-of-sentence trigger when the old space-suffixed pattern missed.
+_GREETING_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(k) for k in GREETING_KEYWORDS) + r")\b"
+)
+
+
+def is_greeting(text: str) -> bool:
+    """Diacritic-stripped, word-boundary check against :data:`GREETING_KEYWORDS`."""
+    if not text:
+        return False
+    norm = Preprocessor.strip_diacritics(text.lower()).strip()
+    return bool(_GREETING_RE.search(norm))
 
 # User-facing fallback replies.
 GREETING_REPLY = (
@@ -238,21 +257,29 @@ class Renderer:
           sections with :data:`_M_NESTED` markers. Callers are responsible
           for the surrounding context (inline-after-header for single,
           ``-`` list item for multi).
+
+        Only the *first* URL is consumed for the inline label link; any
+        further URL-typed values render as their own ``◦`` sub-sections so
+        no link is silently dropped.
         """
         label = target.get("label", "")
         substantive = [(k, v) for k, v in target.items() if k not in _FIXED_KEYS]
-        link_url = next(
-            (v for k, v in substantive if Preprocessor.is_url(v)), None,
+        link_idx = next(
+            (i for i, (_, v) in enumerate(substantive) if Preprocessor.is_url(v)),
+            None,
         )
-        head = _md_link(label, link_url) if link_url else label
+        if link_idx is not None:
+            head = _md_link(label, substantive[link_idx][1])
+            rest = [kv for i, kv in enumerate(substantive) if i != link_idx]
+        else:
+            head = label
+            rest = substantive
 
-        non_url = [(k, v) for k, v in substantive
-                   if not Preprocessor.is_url(v)]
-        if not non_url:
+        if not rest:
             return head
 
         lines = [head]
-        for k, v in non_url:
+        for k, v in rest:
             section = self._format_section(k, v, marker=_M_NESTED)
             lines.append(_indent(section))
         return "\n".join(lines)

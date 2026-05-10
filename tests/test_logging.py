@@ -61,7 +61,7 @@ def test_pipeline_logs_each_stage(caplog, ontology):
         out = pipeline.answer("xin chào, em hỏi về bảo lưu")
     assert out["entities"]
     text = "\n".join(r.getMessage() for r in caplog.records)
-    for stage in ("[Pipeline.preprocess]", "[Pipeline.ner]",
+    for stage in ("[Pipeline.intent]", "[Pipeline.ner]",
                   "[Pipeline.match]", "[Pipeline.query]",
                   "[Pipeline.present]"):
         assert stage in text, f"missing stage tag {stage!r} in log:\n{text}"

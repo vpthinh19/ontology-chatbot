@@ -16,7 +16,7 @@ from functools import lru_cache
 from .ner_model import Entity, NerModel
 from .ontology import MatchResult, Ontology
 from .preprocessor import Preprocessor
-from .renderer import GREETING_KEYWORDS, Renderer
+from .renderer import Renderer, is_greeting
 
 log = logging.getLogger(__name__)
 
@@ -81,7 +81,7 @@ class Pipeline:
             ctx.reply = self.render.compose("", greeting=True)
             return ctx.to_response()
         return self._present(self._query(self._match(self._ner(
-            self._preprocess(ctx))))).to_response()
+            self._intent(ctx))))).to_response()
 
     async def aanswer(self, query: str) -> dict:
         """Async entry — runs :meth:`answer` in a worker thread."""
@@ -89,13 +89,17 @@ class Pipeline:
 
     # Stages — one collaborator each
 
-    def _preprocess(self, ctx: PipelineContext) -> PipelineContext:
-        """Trim whitespace and detect a greeting."""
+    def _intent(self, ctx: PipelineContext) -> PipelineContext:
+        """Trim the raw query and detect a greeting.
+
+        Note: full text cleaning (URL strip, abbrev/teen-code expansion,
+        word segmentation) happens *inside* :class:`NerModel` later — this
+        stage only normalises whitespace and runs the greeting heuristic.
+        """
         ctx.text = (ctx.query or "").strip()
         if ctx.text:
-            norm = self.pre.strip_diacritics(ctx.text.lower()).strip()
-            ctx.greeting = any(kw in norm for kw in GREETING_KEYWORDS)
-        log.info("[Pipeline.preprocess] text=%r greeting=%s",
+            ctx.greeting = is_greeting(ctx.text)
+        log.info("[Pipeline.intent] text=%r greeting=%s",
                  ctx.text, ctx.greeting)
         return ctx
 

@@ -10,8 +10,6 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap");
-
         * {
             margin: 0;
             padding: 0;
@@ -53,7 +51,7 @@
             scrollbar-color: var(--scrollbar-color) transparent;
         }
 
-        .container :where(.app-header, .suggestions, .message, .prompt-wrapper) {
+        .container :where(.app-header, .message, .prompt-wrapper) {
             position: relative;
             margin: 0 auto;
             width: 100%;
@@ -79,68 +77,8 @@
             color: var(--subheading-color);
         }
 
-        .container .suggestions {
-            width: 100%;
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            margin-top: 9.5vh;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-        }
-
-        body.chats-active .container :where(.app-header, .suggestions) {
+        body.chats-active .container .app-header {
             display: none;
-        }
-
-        .suggestions .suggestions-item {
-            cursor: pointer;
-            padding: 18px;
-            width: 228px;
-            flex-shrink: 0;
-            display: flex;
-            scroll-snap-align: center;
-            flex-direction: column;
-            align-items: flex-end;
-            border-radius: 12px;
-            justify-content: space-between;
-            background: var(--secondary-color);
-            transition: 0.3s ease;
-        }
-
-        .suggestions .suggestions-item:hover {
-            background: var(--secondary-hover-color);
-        }
-
-        .suggestions .suggestions-item .text {
-            font-size: 1.1rem;
-        }
-
-        .suggestions .suggestions-item .icon {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            font-size: 1.4rem;
-            margin-top: 35px;
-            align-self: flex-end;
-            align-items: center;
-            border-radius: 50%;
-            justify-content: center;
-            color: #1d7efd;
-            background: var(--primary-color);
-        }
-
-        .suggestions .suggestions-item:nth-child(2) .icon {
-            color: #28a745;
-        }
-
-        .suggestions .suggestions-item:nth-child(3) .icon {
-            color: #ffc107;
-        }
-
-        .suggestions .suggestions-item:nth-child(4) .icon {
-            color: #6f42c1;
         }
 
         .container .chats-container {
@@ -211,26 +149,6 @@
             border-radius: 13px 13px 3px 13px;
         }
 
-        .chats-container .user-message .img-attachment {
-            margin-top: -7px;
-            width: 50%;
-            border-radius: 13px 3px 13px 13px;
-        }
-
-        .chats-container .user-message .file-attachment {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            padding: 10px;
-            margin-top: -7px;
-            border-radius: 13px 3px 13px 13px;
-            background: var(--secondary-color);
-        }
-
-        .chats-container .user-message .file-attachment span {
-            color: #1d7efd;
-        }
-
         .container .prompt-container {
             position: fixed;
             width: 100%;
@@ -282,7 +200,7 @@
             transition: 0.3s ease;
         }
 
-        .prompt-wrapper :is(button:hover, #cancel-file-btn, .file-icon) {
+        .prompt-wrapper button:hover {
             background: var(--secondary-hover-color);
         }
 
@@ -291,7 +209,7 @@
             margin-right: 7px;
         }
 
-        .prompt-wrapper .prompt-form :where(.file-upload-wrapper, button, img) {
+        .prompt-wrapper .prompt-form button {
             position: relative;
             height: 45px;
             width: 45px;
@@ -311,46 +229,16 @@
             background: #0264e3;
         }
 
-        .prompt-form .file-upload-wrapper :where(button, img) {
-            display: none;
-            border-radius: 50%;
-            object-fit: cover;
-            position: absolute;
-        }
-
-        .prompt-form .file-upload-wrapper.active #add-file-btn {
-            display: none;
-        }
-
-        .prompt-form .file-upload-wrapper #add-file-btn,
-        .prompt-form .file-upload-wrapper.active.img-attached img,
-        .prompt-form .file-upload-wrapper.active.file-attached .file-icon,
-        .prompt-form .file-upload-wrapper.active:hover #cancel-file-btn {
-            display: block;
-        }
-
-        .prompt-form :is(#stop-response-btn:hover, #cancel-file-btn) {
+        .prompt-form #stop-response-btn:hover {
             color: #d62939;
         }
 
-        .prompt-wrapper .prompt-form .file-icon {
-            color: #1d7efd;
-        }
-
-        .prompt-form #stop-response-btn,
-        body.bot-responding .prompt-form .file-upload-wrapper {
+        .prompt-form #stop-response-btn {
             display: none;
         }
 
         body.bot-responding .prompt-form #stop-response-btn {
             display: block;
-        }
-
-        .prompt-container .disclaimer-text {
-            font-size: 0.9rem;
-            text-align: center;
-            padding: 16px 20px 0;
-            color: var(--placeholder-color);
         }
 
         /* Responsive media query code for small screens */
@@ -385,17 +273,13 @@
                 width: 53px;
             }
 
-            .prompt-form :is(.file-upload-wrapper, button, img) {
+            .prompt-form button {
                 height: 42px;
                 width: 42px;
             }
 
             .prompt-form .prompt-input {
                 padding-left: 20px;
-            }
-
-            .prompt-form .file-upload-wrapper.active #cancel-file-btn {
-                opacity: 0;
             }
 
             .prompt-wrapper.hide-controls :where(#theme-toggle-btn, #delete-chats-btn) {
@@ -546,7 +430,7 @@
         // Stop Bot Response
         document.querySelector("#stop-response-btn").addEventListener("click", () => {
             controller?.abort();
-            chatsContainer.querySelector(".bot-message.loading").classList.remove("loading");
+            chatsContainer.querySelector(".bot-message.loading")?.classList.remove("loading");
             document.body.classList.remove("bot-responding");
         });
         // Toggle dark/light theme

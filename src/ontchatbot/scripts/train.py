@@ -1,9 +1,9 @@
-"""Fine-tune PhoBERT for token-level NER on the synthetic academic-procedure corpus.
+"""Fine-tune PhoBERT for token-level NER on the academic-procedure corpus.
 
 Outputs:
-    - ``models/phobert-ner/``      best checkpoint, tokenizer, label maps
-    - ``out/training/log_history.json``
-    - ``out/training/training_curves.png``  train loss / val loss / accuracy / F1-macro
+    - ``models/phobert_ner_ft/``                best checkpoint, tokenizer, label maps
+    - ``artifacts/training/log_history.json``
+    - ``artifacts/training/training_curves.png``  train loss / val loss / accuracy / F1-macro
 """
 
 from __future__ import annotations
@@ -20,7 +20,6 @@ from transformers import (
     DataCollatorForTokenClassification,
     Trainer,
     TrainingArguments,
-    EarlyStoppingCallback,
     set_seed,
 )
 
@@ -111,7 +110,6 @@ def main() -> None:
         processing_class=tokenizer,
         data_collator=DataCollatorForTokenClassification(tokenizer),
         compute_metrics=_build_compute_metrics(i2l),
-        # callbacks=[EarlyStoppingCallback(early_stopping_patience=3)]
     )
     trainer.train()
     trainer.save_model(str(MODEL_DIR))

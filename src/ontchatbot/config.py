@@ -55,7 +55,3 @@ SEED = 42
 # fee categories.
 FUZZY_TOP_K = 8
 FUZZY_MIN_SCORE = 88.0
-
-# Greeting heuristic and rendering policies live in :mod:`renderer` since
-# they are presentation concerns. Pipeline and Ontology import them from
-# there.

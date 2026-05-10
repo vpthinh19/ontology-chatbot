@@ -119,14 +119,16 @@ TEENCODE_MAP: dict[str, str] = {
     "bik": "biết", "bjk": "biết", "bjt": "biết",
     "fai": "phải", "phai": "phải",
     "khgo": "không có", "kgcg": "không có gì",
-    "haha": "", "hihi": "", "hehe": "", "huhu": "",
-    "kkk": "", "kk": "", "uk": "", "uhm": "", "uhmm": "",
 }
 
 
 _RE_URL = re.compile(r"(?:https?://|www\.)\S+")
 _RE_EMAIL = re.compile(r"\S+@\S+\.\S+")
 _RE_REPEAT = re.compile(r"(.)\1{2,}")
+# Used as a fallback when token-level lookup misses: collapse consecutive
+# duplicates (2+) to a single char so user emphasis like ``okkkk`` still
+# matches teen-code ``ok``.
+_RE_REPEAT_FULL = re.compile(r"(.)\1+")
 _RE_WS = re.compile(r"\s+")
 _RE_LETTERS_DIGITS = re.compile(r"^([A-Za-zÀ-ỹđĐ]+)(\d.*)$")
 _RE_NONALNUM = re.compile(r"[^\w\s]+")
@@ -246,15 +248,26 @@ class Preprocessor:
         return " ".join(out)
 
     def _expand_token(self, tok: str) -> list[str]:
-        """Look the token up in both maps; substitute or pass through."""
+        """Look the token up in both maps; substitute or pass through.
+
+        Fallback: if a direct lookup misses, also try the fully-collapsed
+        form (consecutive duplicates squashed to one char) so user emphasis
+        like ``okkkk`` still resolves to teen-code ``ok``.
+        """
         if tok in self._abbrev:
             return self._abbrev[tok].split()
         upper = tok.upper()
         if upper in self._abbrev:
             return self._abbrev[upper].split()
-        repl = self._teencode.get(tok.lower())
+        lower = tok.lower()
+        repl = self._teencode.get(lower)
         if repl is not None:
             return repl.split()
+        collapsed = _RE_REPEAT_FULL.sub(r"\1", lower)
+        if collapsed != lower:
+            repl = self._teencode.get(collapsed)
+            if repl is not None:
+                return repl.split()
         return [tok]
 
     def _expand(self, words: list[str]) -> list[str]:
