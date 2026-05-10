@@ -27,8 +27,10 @@ resources/
     ├── train.jsonl
     └── test.jsonl
 
+models/phobert_ner_ft/              model directory
+
 webui/                              chat UI
-artifacts/flow/data_flow.puml       architecture diagram
+artifacts/flow/data_flow.png       architecture diagram
 tests/                              pytest suite
 ```
 
