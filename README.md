@@ -30,7 +30,7 @@ resources/
 models/phobert_ner_ft/              model directory
 
 webui/                              chat UI
-artifacts/flow/data_flow.png       architecture diagram
+artifacts/flow/data_flow.png        architecture diagram
 tests/                              pytest suite
 ```
 
