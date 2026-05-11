@@ -27,7 +27,7 @@ resources/
     ├── train.jsonl
     └── test.jsonl
 
-models/phobert_ner_ft/              model directory
+models/phobert_ner_ft/              model directory (after fine-tuning)
 
 webui/                              chat UI
 artifacts/flow/data_flow.png        architecture diagram
@@ -38,11 +38,12 @@ tests/                              pytest suite
 
 | Lệnh | Mô tả |
 |---|---|
-| `uv sync` | Cài dependencies (PyTorch CUDA 13.0+ index). |
-| `uv run pytest` | Chạy bộ test (renderer chạy ms vì không load OWL). |
-| `uv run train` | Fine-tune PhoBERT trên `resources/datasets/train.jsonl`. |
+| `uv sync --extra cuda` | Cài dependencies (cho thiết bị có NVIDIA CUDA 12.8+). |
+| `uv sync --extra cpu` | Cài dependencies (cho thiết bị chỉ có CPU). |
+| `uv run pytest` | Chạy bộ test (unit test). |
+| `uv run train` | Fine-tune PhoBERT và lưu model ở `models/phobert_ner_ft/`. |
 | `uv run evaluate` | Sinh `artifacts/evaluation/*.png` (confusion matrix, report). |
-| `uv run serve` | FastAPI tại <http://127.0.0.1:8000> (UI + `/chat` + `/healthz`). |
+| `uv run serve` | FastAPI tại <http://127.0.0.1:8000><br>(Nếu đã train thì sẽ tự động nạp model từ `models/phobert_ner_ft/`,<br>nếu chưa train thì sẽ tự động tải fine-tuned model từ `vpthinh19/phobert-base-v2`) |
 
 ## Tham khảo
 
