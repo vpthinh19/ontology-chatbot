@@ -39,6 +39,7 @@ WEB_DIR = PROJECT_ROOT / "webui"
 
 # Model
 MODEL_NAME = "vinai/phobert-base-v2"
+FINETUNED_MODEL_NAME = "vpthinh19/phobert-base-v2"
 MAX_LENGTH = 128
 
 # Training

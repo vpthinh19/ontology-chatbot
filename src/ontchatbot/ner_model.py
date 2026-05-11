@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import json
 import logging
 from dataclasses import dataclass
@@ -17,7 +18,7 @@ from transformers import (
     PreTrainedTokenizerBase,
 )
 
-from .config import MAX_LENGTH, MODEL_DIR
+from .config import MAX_LENGTH, MODEL_DIR, FINETUNED_MODEL_NAME
 from .ontology import Ontology
 from .preprocessor import Preprocessor
 
@@ -40,7 +41,7 @@ class NerModel:
                  model_dir=MODEL_DIR,
                  max_length: int = MAX_LENGTH,
                  preprocessor: Preprocessor | None = None) -> None:
-        self._model_dir = str(model_dir)
+        self._model_dir = str(model_dir) if Path(model_dir).is_dir() else FINETUNED_MODEL_NAME
         self._max_length = int(max_length)
         self._pre = preprocessor or Preprocessor.get()
         self._tok = None
