@@ -148,7 +148,7 @@ class Ontology:
             return MatchResult(tag=tag, class_won=False)
         raw = process.extract(
             q, {i: e.norm for i, e in enumerate(index)},
-            scorer=fuzz.token_set_ratio, limit=self._top_k * 4,
+            scorer=fuzz.WRatio, limit=self._top_k * 4,
         )
         # Dedup per entity (each individual contributes many surface forms).
         seen: set[str] = set()
