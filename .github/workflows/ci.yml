@@ -1,0 +1,141 @@
+# CI/CD for ontchatbot.
+#
+# Flow on push to main:
+#   test  → check-version → release (Docker + GitHub release)
+#
+# Flow on pull_request to main:
+#   test  (release jobs are gated by `github.event_name == 'push'`)
+#
+# Required repository secrets:
+#   DOCKERHUB_TOKEN     access token from https://hub.docker.com/settings/security
+#                       (the username is hardcoded as `vpt19` to match the
+#                        image namespace below)
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel an in-flight run when a newer commit lands on the same branch — saves
+# CI minutes during rapid iteration. The release job is short enough that an
+# interrupted docker push is harmless (layers are content-addressed).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: vpt19/ontchatbot
+
+jobs:
+  test:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies (cpu extras + dev)
+        run: uv sync --frozen --extra cpu --dev
+
+      - name: Run tests
+        run: uv run pytest -q
+
+  check-version:
+    name: Detect version bump
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.detect.outputs.version }}
+      should_release: ${{ steps.detect.outputs.should_release }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need every tag for the latest-tag comparison
+
+      - id: detect
+        name: Compare pyproject version with latest git tag
+        run: |
+          VERSION=$(grep -m1 '^version = ' pyproject.toml | sed -E 's/version *= *"(.+)"/\1/')
+          LATEST_TAG=$(git tag --sort=-version:refname | head -n1)
+          echo "pyproject version: $VERSION"
+          echo "latest git tag   : ${LATEST_TAG:-<none>}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [ "v$VERSION" = "$LATEST_TAG" ]; then
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Version $VERSION already tagged — skipping release"
+          else
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Version $VERSION is new — proceeding to release"
+          fi
+
+  release:
+    name: Build, scan, push, tag
+    needs: check-version
+    if: needs.check-version.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
+    # `contents: write` is required so `softprops/action-gh-release` can
+    # create the v<version> tag on the repo.
+    permissions:
+      contents: write
+    env:
+      VERSION: ${{ needs.check-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: vpt19
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build with `load: true` so the image lands in the local docker daemon
+      # for Trivy. GHA cache speeds repeat builds when only source changes.
+      - name: Build image (load for scan)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ${{ env.IMAGE }}:${{ env.VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE }}:${{ env.VERSION }}
+          format: table
+          exit-code: '1'
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+
+      # Push the already-built image (no rebuild — buildx reuses the cache).
+      - name: Push image
+        run: |
+          docker tag ${{ env.IMAGE }}:${{ env.VERSION }} ${{ env.IMAGE }}:latest
+          docker push ${{ env.IMAGE }}:${{ env.VERSION }}
+          docker push ${{ env.IMAGE }}:latest
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
+          generate_release_notes: true
+          body: |
+            Docker image: `${{ env.IMAGE }}:${{ env.VERSION }}`
+
+            Pull:
+            ```
+            docker pull ${{ env.IMAGE }}:${{ env.VERSION }}
+            ```
