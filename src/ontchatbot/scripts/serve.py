@@ -52,7 +52,6 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
-    greeting: bool
     entities: list[dict]
 
 
