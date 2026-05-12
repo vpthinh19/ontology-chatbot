@@ -15,19 +15,28 @@ def renderer() -> Renderer:
     return Renderer.get()
 
 
-# Compose policy
+# Reply policy — render_reply owns greeting / OOD fallback decisions
 
-def test_compose_blocks_take_priority(renderer: Renderer):
-    assert renderer.compose("BLOCK", greeting=True).strip() == "BLOCK"
-    assert renderer.compose("BLOCK", greeting=False).strip() == "BLOCK"
-
-
-def test_compose_greeting_only(renderer: Renderer):
-    assert renderer.compose("", greeting=True).strip() == GREETING_REPLY
+_DATA = [{"type": "individual", "iri": "X",
+          "class": "AdministrativeOffice", "label": "BLOCK"}]
 
 
-def test_compose_out_of_domain(renderer: Renderer):
-    assert renderer.compose("", greeting=False).strip() == OUT_OF_DOMAIN_REPLY
+def test_render_reply_blocks_take_priority(renderer: Renderer):
+    """Data wins regardless of whether the text is a greeting."""
+    assert "BLOCK" in renderer.render_reply("xin chào", _DATA)
+    assert "BLOCK" in renderer.render_reply("trận bóng tối qua", _DATA)
+
+
+def test_render_reply_greeting_when_no_data(renderer: Renderer):
+    assert renderer.render_reply("xin chào ạ", []).strip() == GREETING_REPLY
+    # Empty text is treated as greeting (friendly default).
+    assert renderer.render_reply("", []).strip() == GREETING_REPLY
+    assert renderer.render_reply("   ", []).strip() == GREETING_REPLY
+
+
+def test_render_reply_out_of_domain(renderer: Renderer):
+    assert renderer.render_reply(
+        "trận bóng tối qua ai thắng", []).strip() == OUT_OF_DOMAIN_REPLY
 
 
 # Individual rendering — synthetic dicts
@@ -150,7 +159,7 @@ def test_render_individual_object_property_without_url(renderer: Renderer):
              "label": "Điều kiện 2"},
         ],
     })
-    assert "• Yêu cầu điều kiện:\n  - Điều kiện 1\n  - Điều kiện 2" in out
+    assert "• Yêu cầu điều kiện:\n    - Điều kiện 1\n    - Điều kiện 2" in out
 
 
 def test_render_individual_paragraph_property_no_bullet(renderer: Renderer):
@@ -220,9 +229,10 @@ def test_render_blocks_dedupes_same_iri(renderer: Renderer):
     assert out.count("x@y.vn") == 1
 
 
-def test_render_blocks_separates_with_blank_line(renderer: Renderer):
+def test_render_blocks_separates_with_hr_marker(renderer: Renderer):
+    """Blocks are joined by ``\\n---\\n`` so the frontend can render an <hr>."""
     out = renderer.render_blocks([
         {"type": "individual", "iri": "A", "class": "FeeCategory", "label": "A"},
         {"type": "individual", "iri": "B", "class": "FeeCategory", "label": "B"},
     ])
-    assert "\n\n" in out
+    assert "\n---\n" in out

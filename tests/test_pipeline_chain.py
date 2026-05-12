@@ -14,28 +14,29 @@ class _StubNer:
     def __init__(self, entities: list[Entity] | None = None) -> None:
         self._entities = entities or []
 
-    def extract_entities(self, _t: str) -> list[Entity]:
+    def extract_entities(self, _words: list[str]) -> list[Entity]:
         return list(self._entities)
 
 
-def test_intent_records_text_and_greeting():
+def test_preprocess_records_text_and_words():
+    """_preprocess strips raw input AND drives clean+segment for downstream NER."""
     p = Pipeline(ner=_StubNer())
-    ctx = p._intent(PipelineContext(query="  cam on  "))
-    assert ctx.text == "cam on"
-    assert ctx.greeting is True
+    ctx = p._preprocess(PipelineContext(query="  cảm ơn nhé  "))
+    assert ctx.text == "cảm ơn nhé"
+    assert ctx.words  # underthesea returns at least one token
 
 
-def test_intent_handles_empty():
+def test_preprocess_handles_empty():
+    """Empty input leaves ctx.words=[] so downstream stages short-circuit."""
     p = Pipeline(ner=_StubNer())
-    ctx = p._intent(PipelineContext(query=""))
+    ctx = p._preprocess(PipelineContext(query=""))
     assert ctx.text == ""
-    assert ctx.greeting is False
+    assert ctx.words == []
 
 
 def test_pipeline_runs_all_stages_in_order(ontology):
     fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
     out = Pipeline(ner=_StubNer(fake)).answer("xin chào, em hỏi về bảo lưu")
-    assert out["greeting"] is True
     assert out["entities"][0]["tag"] == "QuyTrinhHocVu"
     assert "QuyTrinh_BaoLuu" in out["entities"][0]["iris"]
     assert not out["reply"].startswith("Xin chào")
@@ -53,7 +54,6 @@ def test_custom_pipeline_swaps_ner_via_constructor(ontology):
 
 def test_empty_query_short_circuits_to_greeting(ontology):
     out = Pipeline(ner=_StubNer()).answer("   ")
-    assert out["greeting"] is True
     assert out["entities"] == []
     assert "Xin chào" in out["reply"]
 

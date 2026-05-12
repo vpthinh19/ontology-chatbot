@@ -8,6 +8,7 @@ Outputs:
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -27,7 +28,9 @@ from transformers import (
 from ..config import (
     BATCH_SIZE,
     EPOCHS,
+    FINETUNED_MODEL_NAME,
     LEARNING_RATE,
+    MAX_LENGTH,
     MODEL_DIR,
     MODEL_NAME,
     SEED,
@@ -63,7 +66,113 @@ def _build_compute_metrics(i2l: dict[int, str]):
     return _compute
 
 
+def _export_to_onnx(model_dir: Path) -> None:
+    """Convert fine-tuned PyTorch weights → ONNX in-place using optimum.
+
+    Uses ``optimum.exporters.onnx.main_export`` (current API as of optimum
+    1.16+). The older pattern ``ORTModel.from_pretrained(..., export=True)``
+    is deprecated. ``do_validation=True`` triggers optimum's internal
+    atol-based parity check during export; we still run an independent
+    check in :func:`_verify_onnx_parity` for visible logging + strict
+    argmax equality (which matters for BIO tag prediction).
+    """
+    from optimum.exporters.onnx import main_export
+
+    print(f"[export] converting → ONNX at {model_dir}")
+    main_export(
+        model_name_or_path=str(model_dir),
+        output=str(model_dir),
+        task="token-classification",
+        framework="pt",
+        do_validation=True,
+    )
+    onnx_path = model_dir / "model.onnx"
+    if not onnx_path.exists():
+        raise RuntimeError(
+            f"main_export ran without error but {onnx_path} is missing"
+        )
+    size_mb = onnx_path.stat().st_size / 1024 / 1024
+    print(f"[export] wrote {onnx_path} ({size_mb:.1f} MB)")
+
+
+def _verify_onnx_parity(model_dir: Path) -> None:
+    """Run a sample through PyTorch + ONNX; assert logits ≈ and argmax identical.
+
+    Fails loudly with the observed diff so a botched export does not ship.
+    A max-abs-diff above 1e-3 indicates numerical drift severe enough to
+    risk BIO tag prediction changes — small enough to absorb FP16/FP32
+    rounding, big enough to flag a real bug.
+    """
+    from optimum.onnxruntime import ORTModelForTokenClassification
+
+    print("[verify] loading PyTorch + ONNX checkpoints for parity check")
+    pt = AutoModelForTokenClassification.from_pretrained(str(model_dir))
+    pt.eval()
+    ort = ORTModelForTokenClassification.from_pretrained(str(model_dir))
+
+    tokenizer = AutoTokenizer.from_pretrained(str(model_dir))
+    encode = NerModel.make_encoder(tokenizer, MAX_LENGTH)
+    sample_words = ["xin", "chào", "phòng", "đào_tạo", "cho", "hỏi"]
+    input_ids, _ = encode(sample_words)
+    ids_t = torch.tensor([input_ids])
+    mask_t = torch.ones_like(ids_t)
+
+    with torch.no_grad():
+        pt_logits = pt(input_ids=ids_t, attention_mask=mask_t).logits
+    ort_logits = ort(input_ids=ids_t, attention_mask=mask_t).logits
+
+    diff = (pt_logits - ort_logits).abs().max().item()
+    pt_pred = pt_logits.argmax(dim=-1)
+    ort_pred = ort_logits.argmax(dim=-1)
+    argmax_eq = torch.equal(pt_pred, ort_pred)
+
+    print(f"[verify] max abs logit diff = {diff:.6e}")
+    print(f"[verify] argmax identical    = {argmax_eq}")
+    if diff > 1e-3:
+        raise RuntimeError(
+            f"ONNX parity check FAILED: logit diff {diff:.6e} > 1e-3. "
+            f"Refusing to ship a model whose ONNX output drifts from PyTorch."
+        )
+    if not argmax_eq:
+        raise RuntimeError(
+            "ONNX parity check FAILED: PyTorch and ONNX disagree on argmax. "
+            "BIO tag predictions would diverge in production."
+        )
+    print("[verify] OK — ONNX matches PyTorch within tolerance")
+
+
+def _push_to_hub(model_dir: Path, repo_id: str) -> None:
+    """Upload entire ``model_dir`` to HF Hub at ``repo_id``.
+
+    Auth: expects ``huggingface-cli login`` to have been run once, or env
+    ``HF_TOKEN`` to be set. ``HfApi`` reads either source automatically.
+    """
+    from huggingface_hub import HfApi
+
+    api = HfApi()
+    print(f"[push] ensuring repo {repo_id} exists")
+    api.create_repo(repo_id, exist_ok=True, private=False)
+    print(f"[push] uploading {model_dir} → {repo_id}")
+    api.upload_folder(
+        folder_path=str(model_dir),
+        repo_id=repo_id,
+        commit_message=(
+            f"Fine-tuned PhoBERT NER (epochs={EPOCHS}, lr={LEARNING_RATE})"
+        ),
+    )
+    print(f"[push] done → https://huggingface.co/{repo_id}")
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--push", action="store_true",
+        help=("After training + ONNX export, upload the full MODEL_DIR to "
+              f"HF Hub at {FINETUNED_MODEL_NAME}. Requires `huggingface-cli "
+              "login` or HF_TOKEN env var."),
+    )
+    args = parser.parse_args()
+
     set_seed(SEED)
     labels, l2i, i2l = NerModel.label_mappings()
 
@@ -124,6 +233,14 @@ def main() -> None:
         encoding="utf-8",
     )
     plot_training_curves(trainer.state.log_history, str(ARTIFACTS_DIR / "training_curves.png"))
+
+    # ONNX export pipeline: convert → verify parity → optionally push.
+    # Verification runs BEFORE push so a broken ONNX never reaches HF Hub.
+    model_path = Path(MODEL_DIR)
+    _export_to_onnx(model_path)
+    _verify_onnx_parity(model_path)
+    if args.push:
+        _push_to_hub(model_path, FINETUNED_MODEL_NAME)
 
 
 if __name__ == "__main__":

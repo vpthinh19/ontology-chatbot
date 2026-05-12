@@ -12,7 +12,7 @@ class _StubNer:
     def __init__(self, entities: list[Entity] | None = None) -> None:
         self._entities = entities or []
 
-    def extract_entities(self, _text: str) -> list[Entity]:
+    def extract_entities(self, _words: list[str]) -> list[Entity]:
         return list(self._entities)
 
 
@@ -22,13 +22,12 @@ def _pipeline(entities: list[Entity] | None = None) -> Pipeline:
 
 def test_greeting_only_short_circuits_without_model(ontology):
     out = _pipeline([]).answer("xin chào ạ")
-    assert out["greeting"] is True and out["entities"] == []
+    assert out["entities"] == []
     assert "Xin chào" in out["reply"]
 
 
 def test_out_of_domain_when_no_entity(ontology):
     out = _pipeline([]).answer("trận bóng tối qua ai thắng")
-    assert out["greeting"] is False
     assert "ngoài phạm vi" in out["reply"]
 
 
@@ -44,6 +43,5 @@ def test_greeting_plus_entity_returns_block_only(ontology):
     """Minimal-greeting policy: blocks override the greeting prefix."""
     fake = [Entity(surface="phòng đào tạo", tag="PhongBanHanhChinh", start=0, end=3)]
     out = _pipeline(fake).answer("xin chào, cho hỏi phòng đào tạo")
-    assert out["greeting"] is True
     assert not out["reply"].startswith("Xin chào")
     assert "đào tạo" in out["reply"].lower()

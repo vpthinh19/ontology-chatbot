@@ -28,11 +28,6 @@ from .config import (
     ONTOLOGY_PATH,
 )
 from .preprocessor import Preprocessor
-from .renderer import (
-    PARAGRAPH_PROPERTIES as RENDER_PARAGRAPH_PROPERTIES,
-    PROPERTY_ORDER as RENDER_PROPERTY_ORDER,
-    SKIP_PROPERTIES as RENDER_SKIP_PROPERTIES,
-)
 
 log = logging.getLogger(__name__)
 
@@ -41,8 +36,33 @@ log = logging.getLogger(__name__)
 # property-label keys. Re-exported so Renderer can mirror the constant.
 FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
 
+
+# Property-serialisation policy — which OWL data properties read better as
+# free-flow paragraphs (rendered without a bullet) and which to skip
+# entirely. Renderer keys off the leading-``\n`` marker convention rather
+# than reading these constants directly, so they live here in the data
+# layer where they belong.
+PARAGRAPH_PROPERTIES: tuple[str, ...] = ("procedureDescription", "feeNote")
+SKIP_PROPERTIES: tuple[str, ...] = ("hasAlias", "label")
+
+# Stable property order for entity sections — paragraphs first, then a
+# logical "identity → contact → fee → relations" sweep. Properties not
+# listed here are appended alphabetically by Vietnamese label, so adding
+# a new property in Protégé does not require a code change.
+PROPERTY_ORDER: tuple[str, ...] = (
+    "procedureDescription", "feeNote",
+    "appliesToTarget", "feePerCredit",
+    "headOfOffice", "officeLocation",
+    "officeEmail", "officePhoneNumber", "officeWebsite",
+    "formUrl",
+    "handledBy", "executedVia",
+    "basedOnRegulation",
+    "hasCondition", "requiresDocument", "hasStep",
+    "hasFeeCategory", "hasPaymentMethod", "hasOutput",
+)
+
 _CAMEL_RE = re.compile(r"([a-z])([A-Z])")
-_PROP_RANK = {name: i for i, name in enumerate(RENDER_PROPERTY_ORDER)}
+_PROP_RANK = {name: i for i, name in enumerate(PROPERTY_ORDER)}
 _BIG_RANK = len(_PROP_RANK)
 
 
@@ -205,7 +225,7 @@ class Ontology:
             "class": self._class_local_of(ind),
             "label": self._label_of(ind),
         }
-        # Stable property order — paragraphs first, then by RENDER_PROPERTY_ORDER,
+        # Stable property order — paragraphs first, then by PROPERTY_ORDER,
         # then alphabetically by Vietnamese label. Adding a property in Protégé
         # never reshuffles existing layout.
         asserted = self._asserted_properties(ind)
@@ -226,7 +246,7 @@ class Ontology:
         )
         descendant_seen = seen_links | own_links
         for prop, values in ordered:
-            if prop.name in RENDER_SKIP_PROPERTIES:
+            if prop.name in SKIP_PROPERTIES:
                 continue
             header = self._property_label(prop)
             value = self._render_property_value(
@@ -320,7 +340,7 @@ class Ontology:
                                                 seen_links=descendant_seen)
                                   for v in kept) if d]
             return nested or None
-        if prop.name in RENDER_PARAGRAPH_PROPERTIES:
+        if prop.name in PARAGRAPH_PROPERTIES:
             # Leading newline = paragraph marker — works for both single and
             # multi-line content, regardless of language. Renderer keys off
             # this convention rather than per-property config.

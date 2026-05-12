@@ -28,7 +28,7 @@ class _StubNer:
     def __init__(self, entities=None):
         self._entities = entities or []
 
-    def extract_entities(self, _t):
+    def extract_entities(self, _words):
         return list(self._entities)
 
 
@@ -61,7 +61,7 @@ def test_pipeline_logs_each_stage(caplog, ontology):
         out = pipeline.answer("xin chào, em hỏi về bảo lưu")
     assert out["entities"]
     text = "\n".join(r.getMessage() for r in caplog.records)
-    for stage in ("[Pipeline.intent]", "[Pipeline.ner]",
+    for stage in ("[Pipeline.preprocess]", "[Pipeline.ner]",
                   "[Pipeline.match]", "[Pipeline.query]",
                   "[Pipeline.present]"):
         assert stage in text, f"missing stage tag {stage!r} in log:\n{text}"
@@ -81,7 +81,8 @@ def test_empty_input_logs_skip(caplog, ontology):
     pipeline = Pipeline(ner=_StubNer())
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
         pipeline.answer("")
-    assert any("[Pipeline]" in r.getMessage() and "skip" in r.getMessage()
+    assert any("[Pipeline.preprocess]" in r.getMessage()
+               and "skip" in r.getMessage()
                for r in caplog.records)
 
 

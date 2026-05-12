@@ -13,14 +13,12 @@ from typing import Callable
 import torch
 from datasets import Dataset
 from transformers import (
-    AutoModelForTokenClassification,
     AutoTokenizer,
     PreTrainedTokenizerBase,
 )
 
 from .config import MAX_LENGTH, MODEL_DIR, FINETUNED_MODEL_NAME
 from .ontology import Ontology
-from .preprocessor import Preprocessor
 
 log = logging.getLogger(__name__)
 
@@ -39,11 +37,9 @@ class NerModel:
 
     def __init__(self,
                  model_dir=MODEL_DIR,
-                 max_length: int = MAX_LENGTH,
-                 preprocessor: Preprocessor | None = None) -> None:
+                 max_length: int = MAX_LENGTH) -> None:
         self._model_dir = str(model_dir) if Path(model_dir).is_dir() else FINETUNED_MODEL_NAME
         self._max_length = int(max_length)
-        self._pre = preprocessor or Preprocessor.get()
         self._tok = None
         self._model = None
         self._encode = None
@@ -55,9 +51,16 @@ class NerModel:
 
     # Inference
 
-    def extract_entities(self, text: str) -> list[Entity]:
-        """text → list of BIO-decoded :class:`Entity` spans."""
-        words, tags = self._predict_word_tags(text)
+    def extract_entities(self, words: list[str]) -> list[Entity]:
+        """Pre-segmented words → BIO-decoded :class:`Entity` spans.
+
+        Cleaning + word-segmentation is the caller's responsibility (the
+        :class:`Pipeline._preprocess` stage handles it) so the model layer
+        stays pure inference and does not depend on :class:`Preprocessor`.
+        """
+        if not words:
+            return []
+        tags = self._predict_tags(words)
         return self.decode_bio(words, tags)
 
     @staticmethod
@@ -202,25 +205,32 @@ class NerModel:
     def _ensure_loaded(self) -> None:
         if self._model is not None:
             return
-        log.info("[NerModel] loading PhoBERT NER from %s", self._model_dir)
-        self._tok = AutoTokenizer.from_pretrained(self._model_dir)
-        self._model = AutoModelForTokenClassification.from_pretrained(self._model_dir)
-        self._model.eval()
-        if torch.cuda.is_available():
-            self._model.cuda()
-        self._encode = NerModel.make_encoder(self._tok, self._max_length)
-        log.info("[NerModel] device=%s n_labels=%d",
-                 self._model.device, len(self._model.config.id2label))
+        # Lazy-import optimum so unit tests that only touch BIO static methods
+        # don't pay the import cost (~hundreds of ms).
+        from optimum.onnxruntime import ORTModelForTokenClassification
 
-    def _predict_word_tags(self, text: str) -> tuple[list[str], list[str]]:
-        """Word-level ``(words, tags)`` arrays from a clean-then-segment pass."""
+        log.info("[NerModel] loading ONNX runtime from %s", self._model_dir)
+        # Slow tokenizer from transformers — PhoBERT v2 has no fast tokenizer
+        # and ONNX runtime doesn't ship its own tokenizer for this BPE variant.
+        self._tok = AutoTokenizer.from_pretrained(self._model_dir)
+        # ORTModelForTokenClassification is a drop-in replacement for the
+        # transformers AutoModel — same ``model(input_ids=, attention_mask=)
+        # .logits`` API, but inference runs through onnxruntime instead of
+        # PyTorch. Optimum picks CUDA provider automatically when
+        # onnxruntime-gpu is installed.
+        provider = ("CUDAExecutionProvider"
+                    if torch.cuda.is_available() else "CPUExecutionProvider")
+        self._model = ORTModelForTokenClassification.from_pretrained(
+            self._model_dir, provider=provider,
+        )
+        self._encode = NerModel.make_encoder(self._tok, self._max_length)
+        log.info("[NerModel] provider=%s n_labels=%d",
+                 provider, len(self._model.config.id2label))
+
+    def _predict_tags(self, words: list[str]) -> list[str]:
+        """Run PhoBERT forward pass on pre-segmented ``words`` and return
+        one BIO tag per word (sub-word alignment handled internally)."""
         self._ensure_loaded()
-        cleaned = self._pre.clean(text)
-        log.debug("[NerModel] cleaned=%r", cleaned)
-        words = Preprocessor.segment(cleaned)
-        log.info("[NerModel] words(n=%d)=%s", len(words), words)
-        if not words:
-            return [], []
         input_ids, word_ids = self._encode(words)
         ids_t = torch.tensor([input_ids], device=self._model.device)
         mask_t = torch.ones_like(ids_t)
@@ -236,4 +246,4 @@ class NerModel:
             seen.add(wid)
             tags[wid] = id2lab[tid]
         log.info("[NerModel] tags=%s", list(zip(words, tags)))
-        return words, tags
+        return tags

@@ -1,4 +1,4 @@
-"""JSON dict → Vietnamese chat string renderer.
+"""JSON dict → Vietnamese chat string renderer + reply policy.
 
 Consumes the dict shape emitted by :class:`Ontology.describe` /
 :class:`Ontology.list_class`. Does not import owlready2 — tests use mocked
@@ -14,6 +14,11 @@ Hierarchy markers (generic, schema-agnostic):
     ◦   nested data section under an object-property target
 
 Each marker maps to one semantic role; depth manifests through indentation.
+
+Reply policy owned here: :meth:`Renderer.render_reply` picks
+data-blocks → greeting → out-of-domain. Pipeline hands raw text +
+descriptions and gets the final string back — it does not need to know
+about greeting detection.
 """
 
 from __future__ import annotations
@@ -39,31 +44,15 @@ _M_NESTED = "◦"
 _INDENT = "    "  # 4 spaces — used for every level of nesting
 
 
-# Greeting heuristic — diacritic-stripped tokens the pipeline matches
-# against the user message to decide whether to greet back. Kept here
-# alongside the chat-facing copy below since both are presentation policy.
-# Casual fillers (``haha``, ``hihi``, …) are included so a one-word filler
-# message lands a friendly greeting reply instead of an OOD fallback.
+# Greeting detection keywords — diacritic-stripped tokens the policy matches
+# against the user message to decide whether to greet back. Casual fillers
+# (``haha``, ``hihi``, …) are included so a one-word filler lands a friendly
+# greeting reply instead of an OOD fallback.
 GREETING_KEYWORDS: tuple[str, ...] = (
     "xin chao", "chao", "hello", "hi", "hey", "alo",
     "cam on", "thanks", "tks", "tam biet", "bye",
     "haha", "hihi", "hehe", "huhu", "kkk",
 )
-
-# Word-boundary match avoids substring false-positives such as ``chao``
-# matching inside ``chao đảo`` (→ ``chao dao``); equally lets bare ``hi``
-# at end-of-sentence trigger when the old space-suffixed pattern missed.
-_GREETING_RE = re.compile(
-    r"\b(?:" + "|".join(re.escape(k) for k in GREETING_KEYWORDS) + r")\b"
-)
-
-
-def is_greeting(text: str) -> bool:
-    """Diacritic-stripped, word-boundary check against :data:`GREETING_KEYWORDS`."""
-    if not text:
-        return False
-    norm = Preprocessor.strip_diacritics(text.lower()).strip()
-    return bool(_GREETING_RE.search(norm))
 
 # User-facing fallback replies.
 GREETING_REPLY = (
@@ -75,31 +64,6 @@ OUT_OF_DOMAIN_REPLY = (
     "Câu hỏi của bạn nằm ngoài phạm vi tri thức hiện có. Hãy thử hỏi về quy "
     "trình học vụ, phòng ban hành chính, học phí, biểu mẫu hoặc phương thức "
     "thanh toán."
-)
-
-
-# Property-render policy — which OWL data properties read better as
-# free-flow paragraphs rather than bullet sections, and which to skip
-# entirely. Ontology imports these to mark/skip values when serialising,
-# Renderer imports them implicitly via the marker convention (leading "\n"
-# on paragraph values; skip-list filtered server-side).
-PARAGRAPH_PROPERTIES: tuple[str, ...] = ("procedureDescription", "feeNote")
-SKIP_PROPERTIES: tuple[str, ...] = ("hasAlias", "label")
-
-# Stable property order for entity sections — paragraphs first, then a
-# logical "identity → contact → fee → relations" sweep. Properties not
-# listed here are appended alphabetically by Vietnamese label, so adding
-# a new property in Protégé does not require a code change.
-PROPERTY_ORDER: tuple[str, ...] = (
-    "procedureDescription", "feeNote",
-    "appliesToTarget", "feePerCredit",
-    "headOfOffice", "officeLocation",
-    "officeEmail", "officePhoneNumber", "officeWebsite",
-    "formUrl",
-    "handledBy", "executedVia",
-    "basedOnRegulation",
-    "hasCondition", "requiresDocument", "hasStep",
-    "hasFeeCategory", "hasPaymentMethod", "hasOutput",
 )
 
 
@@ -125,14 +89,34 @@ def _indent(text: str, prefix: str = _INDENT) -> str:
 
 
 class Renderer:
-    """Vietnamese chat renderer; singleton via ``get()``."""
+    """Vietnamese chat renderer + reply-policy gate; singleton via ``get()``."""
+
+    # Word-boundary match avoids substring false-positives such as ``chao``
+    # matching inside ``chao đảo`` (→ ``chao dao``); equally lets bare ``hi``
+    # at end-of-sentence trigger when the old space-suffixed pattern missed.
+    _GREETING_RE = re.compile(
+        r"\b(?:" + "|".join(re.escape(k) for k in GREETING_KEYWORDS) + r")\b"
+    )
 
     @classmethod
     @lru_cache(maxsize=1)
     def get(cls) -> "Renderer":
         return cls()
 
-    # Public API
+    # Public API — Pipeline only calls render_reply.
+
+    def render_reply(self, text: str, descriptions: list[dict]) -> str:
+        """Final-reply policy: data-blocks > greeting > out-of-domain.
+
+        ``text`` is the raw (stripped) user query — used solely for greeting
+        detection. ``descriptions`` is the list of ontology JSON dicts from
+        the pipeline's query stage. When descriptions yield non-empty
+        content, that content always wins (minimal-greeting policy).
+        """
+        blocks = self.render_blocks(descriptions)
+        if blocks:
+            return blocks
+        return GREETING_REPLY if self._should_greet(text) else OUT_OF_DOMAIN_REPLY
 
     def render_blocks(self, descriptions: list[dict]) -> str:
         """Concatenate blocks; dedup by (class, iri/listing)."""
@@ -162,11 +146,20 @@ class Renderer:
         log.warning("[Renderer.render] unknown kind=%r", kind)
         return ""
 
-    def compose(self, blocks: str, *, greeting: bool) -> str:
-        """Final reply: blocks > greeting reply > OOD reply (minimal-greeting policy)."""
-        if blocks:
-            return blocks
-        return GREETING_REPLY if greeting else OUT_OF_DOMAIN_REPLY
+    # Internal — greeting policy
+
+    @classmethod
+    def _should_greet(cls, text: str) -> bool:
+        """True if ``text`` is empty or contains a greeting keyword.
+
+        Empty input defaults to greeting (a friendly UX choice — the user
+        hit enter on nothing, they want to start a chat, not be told they
+        are out of domain).
+        """
+        if not text or not text.strip():
+            return True
+        norm = Preprocessor.strip_diacritics(text.lower()).strip()
+        return bool(cls._GREETING_RE.search(norm))
 
     # Sub-templates
 

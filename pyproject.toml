@@ -3,12 +3,12 @@ name = "ontchatbot"
 version = "0.0.4"
 description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
 readme = "README.md"
-requires-python = ">=3.13,<3.14"
+requires-python = ">=3.10"
 dependencies = [
     "transformers",
+    "huggingface-hub",
     "datasets",
     "seqeval",
-    "scikit-learn",
     "matplotlib",
     "seaborn",
     "underthesea",
@@ -18,8 +18,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-cpu = ["torch", "accelerate"]
-cuda = ["torch", "accelerate"]
+cpu = ["torch", "accelerate", "onnxruntime"]
+cuda = ["torch", "accelerate", "onnxruntime-gpu"]
 
 [project.scripts]
 train = "ontchatbot.scripts.train:main"

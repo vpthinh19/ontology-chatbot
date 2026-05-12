@@ -4,6 +4,9 @@
 Each stage is a method that mutates the shared :class:`PipelineContext`.
 :meth:`Pipeline.answer` is synchronous; :meth:`Pipeline.aanswer` wraps it
 via :func:`asyncio.to_thread` for FastAPI.
+
+Greeting detection and out-of-domain fallback are owned by
+:class:`Renderer.render_reply` — Pipeline carries no greeting state.
 """
 
 from __future__ import annotations
@@ -16,7 +19,7 @@ from functools import lru_cache
 from .ner_model import Entity, NerModel
 from .ontology import MatchResult, Ontology
 from .preprocessor import Preprocessor
-from .renderer import Renderer, is_greeting
+from .renderer import Renderer
 
 log = logging.getLogger(__name__)
 
@@ -26,11 +29,10 @@ class PipelineContext:
     """Mutable DTO threaded through the stages; fields accumulate top-down."""
     query: str
     text: str = ""
-    greeting: bool = False
+    words: list[str] = field(default_factory=list)
     spans: list[Entity] = field(default_factory=list)
     matches: list[MatchResult] = field(default_factory=list)
     descriptions: list[dict] = field(default_factory=list)
-    blocks: str = ""
     reply: str = ""
 
     def to_response(self) -> dict:
@@ -44,11 +46,7 @@ class PipelineContext:
                 "iris": list(m.individuals),
                 "score": m.top_score,
             })
-        return {
-            "reply": self.reply,
-            "greeting": self.greeting,
-            "entities": entities,
-        }
+        return {"reply": self.reply, "entities": entities}
 
 
 class Pipeline:
@@ -75,13 +73,8 @@ class Pipeline:
     def answer(self, query: str) -> dict:
         """Synchronous entry — scripts, tests, and the async wrapper."""
         ctx = PipelineContext(query=query)
-        if not (query or "").strip():
-            log.info("[Pipeline] skip empty input")
-            ctx.greeting = True
-            ctx.reply = self.render.compose("", greeting=True)
-            return ctx.to_response()
         return self._present(self._query(self._match(self._ner(
-            self._intent(ctx))))).to_response()
+            self._preprocess(ctx))))).to_response()
 
     async def aanswer(self, query: str) -> dict:
         """Async entry — runs :meth:`answer` in a worker thread."""
@@ -89,25 +82,28 @@ class Pipeline:
 
     # Stages — one collaborator each
 
-    def _intent(self, ctx: PipelineContext) -> PipelineContext:
-        """Trim the raw query and detect a greeting.
+    def _preprocess(self, ctx: PipelineContext) -> PipelineContext:
+        """Strip raw query; clean + word-segment so NerModel gets pure tokens.
 
-        Note: full text cleaning (URL strip, abbrev/teen-code expansion,
-        word segmentation) happens *inside* :class:`NerModel` later — this
-        stage only normalises whitespace and runs the greeting heuristic.
+        Empty input short-circuits here: ``ctx.words`` stays empty and
+        every downstream stage no-ops on the guard ``if not ctx.words``.
+        Renderer treats an empty-text + empty-descriptions situation as a
+        greeting trigger.
         """
         ctx.text = (ctx.query or "").strip()
-        if ctx.text:
-            ctx.greeting = is_greeting(ctx.text)
-        log.info("[Pipeline.intent] text=%r greeting=%s",
-                 ctx.text, ctx.greeting)
+        if not ctx.text:
+            log.info("[Pipeline.preprocess] skip empty input")
+            return ctx
+        ctx.words = self.pre.clean_and_segment(ctx.text)
+        log.info("[Pipeline.preprocess] text=%r words(n=%d)=%s",
+                 ctx.text, len(ctx.words), ctx.words)
         return ctx
 
     def _ner(self, ctx: PipelineContext) -> PipelineContext:
-        """Extract BIO spans."""
-        if not ctx.text:
+        """Extract BIO spans from pre-segmented words."""
+        if not ctx.words:
             return ctx
-        ctx.spans = list(self.ner.extract_entities(ctx.text))
+        ctx.spans = list(self.ner.extract_entities(ctx.words))
         log.info("[Pipeline.ner] extracted=%d spans=%s", len(ctx.spans),
                  [{"surface": e.surface, "tag": e.tag,
                    "start": e.start, "end": e.end} for e in ctx.spans])
@@ -139,9 +135,8 @@ class Pipeline:
         return ctx
 
     def _present(self, ctx: PipelineContext) -> PipelineContext:
-        """Render to text + apply the greeting policy."""
-        ctx.blocks = self.render.render_blocks(ctx.descriptions)
-        ctx.reply = self.render.compose(ctx.blocks, greeting=ctx.greeting)
-        log.info("[Pipeline.present] blocks=%d greeting=%s reply_chars=%d",
-                 len(ctx.descriptions), ctx.greeting, len(ctx.reply))
+        """Hand text + descriptions to Renderer; greeting policy lives there."""
+        ctx.reply = self.render.render_reply(ctx.text, ctx.descriptions)
+        log.info("[Pipeline.present] descriptions=%d reply_chars=%d",
+                 len(ctx.descriptions), len(ctx.reply))
         return ctx
