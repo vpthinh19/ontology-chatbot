@@ -67,29 +67,52 @@ def _build_compute_metrics(i2l: dict[int, str]):
 
 
 def _export_to_onnx(model_dir: Path) -> None:
-    """Convert fine-tuned PyTorch weights → ONNX in-place using optimum.
+    """Convert fine-tuned PyTorch weights → ONNX in-place via ``torch.onnx``.
 
-    Uses ``optimum.exporters.onnx.main_export`` (current API as of optimum
-    1.16+). The older pattern ``ORTModel.from_pretrained(..., export=True)``
-    is deprecated. ``do_validation=True`` triggers optimum's internal
-    atol-based parity check during export; we still run an independent
-    check in :func:`_verify_onnx_parity` for visible logging + strict
-    argmax equality (which matters for BIO tag prediction).
+    Uses the dynamo path (default in torch 2.6+) with ``onnxscript`` as the
+    op translator. The legacy TorchScript exporter does **not** work on
+    transformers ≥ 4.50 because the masking utilities call ``torch.export``-
+    style shape APIs that only resolve under ``torch.export.export`` —
+    exactly what dynamo uses internally.
+
+    ``dynamic_shapes`` declares ``batch`` and ``seq`` as varying dims so
+    the same ``.onnx`` file serves any input length up to ``MAX_LENGTH``.
+    Opset 18 is the minimum compatible with the dynamo translator and is
+    fully supported by onnxruntime 1.16+.
     """
-    from optimum.exporters.onnx import main_export
+    from torch.export import Dim
 
     print(f"[export] converting → ONNX at {model_dir}")
-    main_export(
-        model_name_or_path=str(model_dir),
-        output=str(model_dir),
-        task="token-classification",
-        framework="pt",
-        do_validation=True,
-    )
+    model = AutoModelForTokenClassification.from_pretrained(str(model_dir)).to("cpu")
+    model.eval()
+
+    # Dummy inputs: shape doesn't matter since batch+seq are dynamic; values
+    # just need to be valid token ids. seq=4 ≥ ``seq`` Dim min.
+    dummy_ids = torch.tensor([[0, 1, 2, 2]], dtype=torch.long)
+    dummy_mask = torch.ones_like(dummy_ids)
+
+    batch = Dim("batch")
+    seq = Dim("seq", min=2, max=MAX_LENGTH)
+    dynamic_shapes = {
+        "input_ids":      {0: batch, 1: seq},
+        "attention_mask": {0: batch, 1: seq},
+    }
+
     onnx_path = model_dir / "model.onnx"
+    torch.onnx.export(
+        model,
+        (dummy_ids, dummy_mask),
+        str(onnx_path),
+        input_names=["input_ids", "attention_mask"],
+        output_names=["logits"],
+        dynamic_shapes=dynamic_shapes,
+        opset_version=18,
+        dynamo=True,
+        verbose=False,
+    )
     if not onnx_path.exists():
         raise RuntimeError(
-            f"main_export ran without error but {onnx_path} is missing"
+            f"torch.onnx.export returned without error but {onnx_path} missing"
         )
     size_mb = onnx_path.stat().st_size / 1024 / 1024
     print(f"[export] wrote {onnx_path} ({size_mb:.1f} MB)")
@@ -100,26 +123,34 @@ def _verify_onnx_parity(model_dir: Path) -> None:
 
     Fails loudly with the observed diff so a botched export does not ship.
     A max-abs-diff above 1e-3 indicates numerical drift severe enough to
-    risk BIO tag prediction changes — small enough to absorb FP16/FP32
-    rounding, big enough to flag a real bug.
+    risk BIO tag prediction changes — small enough to absorb FP32 rounding
+    noise from graph reordering, big enough to flag a real bug.
     """
-    from optimum.onnxruntime import ORTModelForTokenClassification
+    import onnxruntime as ort
 
     print("[verify] loading PyTorch + ONNX checkpoints for parity check")
-    pt = AutoModelForTokenClassification.from_pretrained(str(model_dir))
+    pt = AutoModelForTokenClassification.from_pretrained(str(model_dir)).to("cpu")
     pt.eval()
-    ort = ORTModelForTokenClassification.from_pretrained(str(model_dir))
+    session = ort.InferenceSession(
+        str(model_dir / "model.onnx"),
+        providers=["CPUExecutionProvider"],
+    )
 
     tokenizer = AutoTokenizer.from_pretrained(str(model_dir))
     encode = NerModel.make_encoder(tokenizer, MAX_LENGTH)
     sample_words = ["xin", "chào", "phòng", "đào_tạo", "cho", "hỏi"]
     input_ids, _ = encode(sample_words)
-    ids_t = torch.tensor([input_ids])
+    ids_t = torch.tensor([input_ids], dtype=torch.long)
     mask_t = torch.ones_like(ids_t)
 
     with torch.no_grad():
         pt_logits = pt(input_ids=ids_t, attention_mask=mask_t).logits
-    ort_logits = ort(input_ids=ids_t, attention_mask=mask_t).logits
+
+    ort_outputs = session.run(
+        None,
+        {"input_ids": ids_t.numpy(), "attention_mask": mask_t.numpy()},
+    )
+    ort_logits = torch.from_numpy(ort_outputs[0])
 
     diff = (pt_logits - ort_logits).abs().max().item()
     pt_pred = pt_logits.argmax(dim=-1)
