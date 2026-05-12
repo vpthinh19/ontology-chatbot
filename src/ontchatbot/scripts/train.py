@@ -34,6 +34,7 @@ from ..config import (
     MODEL_DIR,
     MODEL_NAME,
     SEED,
+    CHECKPOINT_DIR,
     TRAIN_ARTIFACTS_DIR,
     TRAIN_PATH,
     VAL_SIZE,
@@ -197,12 +198,11 @@ def _push_to_hub(model_dir: Path, repo_id: str) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--push", action="store_true",
-        help=("After training + ONNX export, upload the full MODEL_DIR to "
-              f"HF Hub at {FINETUNED_MODEL_NAME}. Requires `huggingface-cli "
-              "login` or HF_TOKEN env var."),
+        "--push", default=False, nargs="?", const=FINETUNED_MODEL_NAME,
+        help=("After training + ONNX export, upload the full MODEL_DIR to HF Hub"
+              f"Requires `huggingface-cli login` or HF_TOKEN env var."),
     )
-    args = parser.parse_args()
+    cli_args = parser.parse_args()
 
     set_seed(SEED)
     labels, l2i, i2l = NerModel.label_mappings()
@@ -219,7 +219,7 @@ def main() -> None:
     )
 
     args = TrainingArguments(
-        output_dir=str(MODEL_DIR),
+        output_dir=str(CHECKPOINT_DIR),
         num_train_epochs=EPOCHS,
         per_device_train_batch_size=BATCH_SIZE,
         per_device_eval_batch_size=BATCH_SIZE,
@@ -234,7 +234,7 @@ def main() -> None:
         logging_strategy="steps",
         logging_steps=50,
         report_to="none",
-        save_total_limit=1,
+        save_total_limit=2,
         load_best_model_at_end=True,
         metric_for_best_model="f1_macro",
         greater_is_better=True,
@@ -270,8 +270,8 @@ def main() -> None:
     model_path = Path(MODEL_DIR)
     _export_to_onnx(model_path)
     _verify_onnx_parity(model_path)
-    if args.push:
-        _push_to_hub(model_path, FINETUNED_MODEL_NAME)
+    if cli_args.push:
+        _push_to_hub(model_path, cli_args.push)
 
 
 if __name__ == "__main__":

@@ -10,6 +10,6 @@ uv.lock
 .sixth/
 .claude/
 
+checkpoints/
 models/
 logs/
-test.py
