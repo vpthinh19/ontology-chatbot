@@ -1,8 +1,13 @@
-"""NerModel: PhoBERT NER inference + training-data utilities."""
+"""NerModel: PhoBERT NER inference (onnxruntime) + training-data utilities.
+
+Runtime path uses :mod:`onnxruntime` directly — no optimum wrapper — so the
+dependency tree stays minimal and free from optimum's version churn.
+Tokenizer remains :class:`transformers.AutoTokenizer` because PhoBERT v2
+ships only a slow tokenizer that ORT cannot replicate.
+"""
 
 from __future__ import annotations
 
-import os
 import json
 import logging
 from dataclasses import dataclass
@@ -10,9 +15,11 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Callable
 
+import numpy as np
 import torch
 from datasets import Dataset
 from transformers import (
+    AutoConfig,
     AutoTokenizer,
     PreTrainedTokenizerBase,
 )
@@ -41,7 +48,8 @@ class NerModel:
         self._model_dir = str(model_dir) if Path(model_dir).is_dir() else FINETUNED_MODEL_NAME
         self._max_length = int(max_length)
         self._tok = None
-        self._model = None
+        self._session = None
+        self._config = None
         self._encode = None
 
     @classmethod
@@ -203,47 +211,80 @@ class NerModel:
     # Internals — inference path
 
     def _ensure_loaded(self) -> None:
-        if self._model is not None:
+        if self._session is not None:
             return
-        # Lazy-import optimum so unit tests that only touch BIO static methods
-        # don't pay the import cost (~hundreds of ms).
-        from optimum.onnxruntime import ORTModelForTokenClassification
+        # Lazy imports — onnxruntime + hf_hub_download only touched the first
+        # time a real inference is requested. Unit tests that exercise
+        # ``decode_bio`` / encoder static methods never trigger this path.
+        import onnxruntime as ort
 
         log.info("[NerModel] loading ONNX runtime from %s", self._model_dir)
-        # Slow tokenizer from transformers — PhoBERT v2 has no fast tokenizer
-        # and ONNX runtime doesn't ship its own tokenizer for this BPE variant.
+        # Slow tokenizer from transformers (PhoBERT v2 has no fast variant);
+        # AutoTokenizer transparently pulls from HF Hub when the path is a
+        # repo id instead of a local directory.
         self._tok = AutoTokenizer.from_pretrained(self._model_dir)
-        # ORTModelForTokenClassification is a drop-in replacement for the
-        # transformers AutoModel — same ``model(input_ids=, attention_mask=)
-        # .logits`` API, but inference runs through onnxruntime instead of
-        # PyTorch. Optimum picks CUDA provider automatically when
-        # onnxruntime-gpu is installed.
-        provider = ("CUDAExecutionProvider"
-                    if torch.cuda.is_available() else "CPUExecutionProvider")
-        self._model = ORTModelForTokenClassification.from_pretrained(
-            self._model_dir, provider=provider,
-        )
+        # Config is loaded separately because the InferenceSession doesn't
+        # carry one — we need ``id2label`` to map argmax ids back to BIO
+        # strings. ``AutoConfig.from_pretrained`` only fetches config.json
+        # (a few KB), no model weights.
+        self._config = AutoConfig.from_pretrained(self._model_dir)
+
+        onnx_path = self._resolve_onnx_path()
+        providers = (["CUDAExecutionProvider", "CPUExecutionProvider"]
+                     if torch.cuda.is_available()
+                     else ["CPUExecutionProvider"])
+        self._session = ort.InferenceSession(str(onnx_path), providers=providers)
         self._encode = NerModel.make_encoder(self._tok, self._max_length)
-        log.info("[NerModel] provider=%s n_labels=%d",
-                 provider, len(self._model.config.id2label))
+        log.info("[NerModel] providers=%s n_labels=%d",
+                 self._session.get_providers(), len(self._config.id2label))
+
+    def _resolve_onnx_path(self) -> Path:
+        """Locate ``model.onnx`` — local dir if present, else fetch from HF Hub.
+
+        When ``self._model_dir`` is a local directory containing the file,
+        return that path. When it is an HF Hub repo id (fallback set in
+        ``__init__``), use :func:`huggingface_hub.hf_hub_download` which
+        caches the download under ``~/.cache/huggingface/`` so subsequent
+        starts are instant.
+        """
+        if Path(self._model_dir).is_dir():
+            local = Path(self._model_dir) / "model.onnx"
+            if not local.exists():
+                raise FileNotFoundError(
+                    f"{local} not found — run `uv run train` to export ONNX, "
+                    f"or delete the directory to fall back to HF Hub."
+                )
+            return local
+        from huggingface_hub import hf_hub_download
+        log.info("[NerModel] pulling model.onnx from HF repo %s",
+                 self._model_dir)
+        return Path(hf_hub_download(
+            repo_id=self._model_dir, filename="model.onnx",
+        ))
 
     def _predict_tags(self, words: list[str]) -> list[str]:
-        """Run PhoBERT forward pass on pre-segmented ``words`` and return
-        one BIO tag per word (sub-word alignment handled internally)."""
+        """Run onnxruntime inference on ``words`` and return word-level BIO tags."""
         self._ensure_loaded()
         input_ids, word_ids = self._encode(words)
-        ids_t = torch.tensor([input_ids], device=self._model.device)
-        mask_t = torch.ones_like(ids_t)
-        with torch.no_grad():
-            logits = self._model(input_ids=ids_t, attention_mask=mask_t).logits[0]
-        pred_ids = logits.argmax(dim=-1).tolist()
-        id2lab = self._model.config.id2label
+        ids = np.asarray([input_ids], dtype=np.int64)
+        mask = np.ones_like(ids)
+        # InferenceSession.run returns a list (one ndarray per output node).
+        # Our exported graph has a single ``logits`` output → outputs[0].
+        # Drop batch dim ([0]) so logits shape is (seq, n_labels).
+        logits = self._session.run(
+            None,
+            {"input_ids": ids, "attention_mask": mask},
+        )[0][0]
+        pred_ids = logits.argmax(axis=-1).tolist()
+        id2lab = self._config.id2label
         tags = ["O"] * len(words)
         seen: set[int] = set()
         for tid, wid in zip(pred_ids, word_ids):
             if wid is None or wid in seen:
                 continue
             seen.add(wid)
-            tags[wid] = id2lab[tid]
+            # transformers normalizes id2label keys to int when loading
+            # config.json, so direct int lookup is safe.
+            tags[wid] = id2lab[int(tid)]
         log.info("[NerModel] tags=%s", list(zip(words, tags)))
         return tags
