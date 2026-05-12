@@ -1,0 +1,92 @@
+{"text": "cho hỏi về Quy trình xin bảo lưu kết quả học tập", "expected_iris": ["QuyTrinh_BaoLuu"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "tôi muốn quy trinh xin bao luu ket qua hoc tap", "expected_iris": ["QuyTrinh_BaoLuu"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "làm sao để bao luu", "expected_iris": ["QuyTrinh_BaoLuu"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "tôi muốn Quy trình xin chuyển ngành", "expected_iris": ["QuyTrinh_ChuyenNganh"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "làm sao để quy trinh xin chuyen nganh", "expected_iris": ["QuyTrinh_ChuyenNganh"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "cho hỏi về doi nganh", "expected_iris": ["QuyTrinh_ChuyenNganh"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "làm sao để Quy trình đăng ký học phần", "expected_iris": ["QuyTrinh_DangKyHocPhan"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "cho hỏi về quy trinh dang ky hoc phan", "expected_iris": ["QuyTrinh_DangKyHocPhan"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "tôi muốn dkmh", "expected_iris": ["QuyTrinh_DangKyHocPhan"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "cho hỏi về Quy trình học cải thiện", "expected_iris": ["QuyTrinh_HocCaiThien"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "tôi muốn quy trinh hoc cai thien", "expected_iris": ["QuyTrinh_HocCaiThien"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "làm sao để nang diem", "expected_iris": ["QuyTrinh_HocCaiThien"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "tôi muốn Quy trình đăng ký học lại", "expected_iris": ["QuyTrinh_HocLai"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "làm sao để quy trinh dang ky hoc lai", "expected_iris": ["QuyTrinh_HocLai"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "cho hỏi về no mon", "expected_iris": ["QuyTrinh_HocLai"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "làm sao để Quy trình đóng học phí", "expected_iris": ["QuyTrinh_NopHocPhi"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "cho hỏi về quy trinh dong hoc phi", "expected_iris": ["QuyTrinh_NopHocPhi"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "tôi muốn hoc phi", "expected_iris": ["QuyTrinh_NopHocPhi"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "cho hỏi về Quy trình rút môn học", "expected_iris": ["QuyTrinh_RutMonHoc"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "tôi muốn quy trinh rut mon hoc", "expected_iris": ["QuyTrinh_RutMonHoc"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "làm sao để hủy hp", "expected_iris": ["QuyTrinh_RutMonHoc"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "tôi muốn Quy trình xét học bổng", "expected_iris": ["QuyTrinh_XetHocBong"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "làm sao để quy trinh xet hoc bong", "expected_iris": ["QuyTrinh_XetHocBong"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "cho hỏi về xet hb", "expected_iris": ["QuyTrinh_XetHocBong"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "làm sao để Quy trình xét tốt nghiệp", "expected_iris": ["QuyTrinh_XetTotNghiep"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "exact_label"}
+{"text": "cho hỏi về quy trinh xet tot nghiep", "expected_iris": ["QuyTrinh_XetTotNghiep"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "no_diacritic"}
+{"text": "tôi muốn xet tn", "expected_iris": ["QuyTrinh_XetTotNghiep"], "expected_class_won": false, "tag": "QuyTrinhHocVu", "category": "alias"}
+{"text": "Phòng Công tác Sinh viên ở đâu", "expected_iris": ["PhongCTSV"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "exact_label"}
+{"text": "địa chỉ phong cong tac sinh vien", "expected_iris": ["PhongCTSV"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "no_diacritic"}
+{"text": "ctsv làm việc giờ nào", "expected_iris": ["PhongCTSV"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "alias"}
+{"text": "địa chỉ Phòng Đào tạo Đại học", "expected_iris": ["PhongDaoTaoDaiHoc"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "exact_label"}
+{"text": "phong dao tao dai hoc làm việc giờ nào", "expected_iris": ["PhongDaoTaoDaiHoc"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "no_diacritic"}
+{"text": "pdt ở đâu", "expected_iris": ["PhongDaoTaoDaiHoc"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "alias"}
+{"text": "Phòng Tài chính làm việc giờ nào", "expected_iris": ["PhongKHTC"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "exact_label"}
+{"text": "phong tai chinh ở đâu", "expected_iris": ["PhongKHTC"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "no_diacritic"}
+{"text": "địa chỉ KH-TC", "expected_iris": ["PhongKHTC"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "alias"}
+{"text": "Văn phòng Trường ở đâu", "expected_iris": ["VanPhongTruong"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "exact_label"}
+{"text": "địa chỉ van phong truong", "expected_iris": ["VanPhongTruong"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "no_diacritic"}
+{"text": "vpt làm việc giờ nào", "expected_iris": ["VanPhongTruong"], "expected_class_won": false, "tag": "PhongBanHanhChinh", "category": "alias"}
+{"text": "tải Đơn gia hạn thời gian nộp học phí ở đâu", "expected_iris": ["DonGiaHanThoiGianNopHocPhi"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "exact_label"}
+{"text": "cần don gia han thoi gian nop hoc phi", "expected_iris": ["DonGiaHanThoiGianNopHocPhi"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "no_diacritic"}
+{"text": "cần Đơn đề nghị xét tốt nghiệp", "expected_iris": ["DonXetTotNghiepSom"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "exact_label"}
+{"text": "biểu mẫu don de nghi xet tot nghiep", "expected_iris": ["DonXetTotNghiepSom"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "no_diacritic"}
+{"text": "biểu mẫu Đơn xin nghỉ học tạm thời", "expected_iris": ["DonXinBaoLuu"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "exact_label"}
+{"text": "tải don xin nghi hoc tam thoi ở đâu", "expected_iris": ["DonXinBaoLuu"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "no_diacritic"}
+{"text": "tải Đơn xin chuyển ngành ở đâu", "expected_iris": ["DonXinChuyenNganh"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "exact_label"}
+{"text": "cần don xin chuyen nganh", "expected_iris": ["DonXinChuyenNganh"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "no_diacritic"}
+{"text": "cần Đơn xin học trở lại", "expected_iris": ["DonXinHocTroLai"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "exact_label"}
+{"text": "biểu mẫu don xin hoc tro lai", "expected_iris": ["DonXinHocTroLai"], "expected_class_won": false, "tag": "TaiLieuBieuMau", "category": "no_diacritic"}
+{"text": "Học phí Giáo dục tổng quát bao nhiêu", "expected_iris": ["Phi_GiaoDucTongQuat"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "mức hoc phi giao duc tong quat thế nào", "expected_iris": ["Phi_GiaoDucTongQuat"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "mức Học phí K63 (Công Nghệ Sinh học) thế nào", "expected_iris": ["Phi_K63_600k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k63 (cong nghe sinh hoc) mỗi tín chỉ", "expected_iris": ["Phi_K63_600k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K63 (Công nghệ chế biến thủy sản, Kỹ thuật tàu thủy, Nuôi trồng thủy sản) mỗi tín chỉ", "expected_iris": ["Phi_K63_620K"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k63 (cong nghe che bien thuy san, ky thuat tau thuy, nuoi trong thuy san) bao nhiêu", "expected_iris": ["Phi_K63_620K"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K65 (Quản Trị Kinh Doanh, Kế toán, Quản trị Khách Sạn) bao nhiêu", "expected_iris": ["Phi_K65_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "mức hoc phi k65 (quan tri kinh doanh, ke toan, quan tri khach san) thế nào", "expected_iris": ["Phi_K65_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "mức Học phí K65 (Công nghệ thông tin) thế nào", "expected_iris": ["Phi_K65_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k65 (cong nghe thong tin) mỗi tín chỉ", "expected_iris": ["Phi_K65_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K66 (Ngôn ngữ Anh) mỗi tín chỉ", "expected_iris": ["Phi_K66_510k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k66 (ngon ngu anh) bao nhiêu", "expected_iris": ["Phi_K66_510k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K66 (Kinh Doanh Thương mại, Tài chính, Du lịch) bao nhiêu", "expected_iris": ["Phi_K66_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "mức hoc phi k66 (kinh doanh thuong mai, tai chinh, du lich) thế nào", "expected_iris": ["Phi_K66_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "mức Học phí K66 (Cơ khí, Ô tô, Xây dựng, Thực phẩm, Quản Lý Thủy sản) thế nào", "expected_iris": ["Phi_K66_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k66 (co khi, o to, xay dung, thuc pham, quan ly thuy san) mỗi tín chỉ", "expected_iris": ["Phi_K66_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K67 (Marketing, Hệ Thống Thông Tin Quản Lý, Luật, Kinh tế Phát Triển, Khoa Học Hàng hải) mỗi tín chỉ", "expected_iris": ["Phi_K67_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "hoc phi k67 (marketing, he thong thong tin quan ly, luat, kinh te phat trien, khoa hoc hang hai) bao nhiêu", "expected_iris": ["Phi_K67_550k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "Học phí K67 (Nhiệt, Cơ điện tử, Điện) bao nhiêu", "expected_iris": ["Phi_K67_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "exact_label"}
+{"text": "mức hoc phi k67 (nhiet, co dien tu, dien) thế nào", "expected_iris": ["Phi_K67_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "no_diacritic"}
+{"text": "cách Thanh toán tại quầy giao dịch của ngân hàng Agribank hoặc Vietinbank để nộp tiền mặt", "expected_iris": ["BankTransfer"], "expected_class_won": false, "tag": "PhuongThucThanhToan", "category": "exact_label"}
+{"text": "thanh toan tai quay giao dich cua ngan hang agribank hoac vietinbank de nop tien mat ra sao", "expected_iris": ["BankTransfer"], "expected_class_won": false, "tag": "PhuongThucThanhToan", "category": "no_diacritic"}
+{"text": "Thanh toán trên website sinhvien.ntu.edu.vn ra sao", "expected_iris": ["PayOnline"], "expected_class_won": false, "tag": "PhuongThucThanhToan", "category": "exact_label"}
+{"text": "thanh toan tren website sinhvien.ntu.edu.vn thực hiện thế nào", "expected_iris": ["PayOnline"], "expected_class_won": false, "tag": "PhuongThucThanhToan", "category": "no_diacritic"}
+{"text": "học phí k63 bao nhiêu", "expected_iris": ["Phi_K63_600k", "Phi_K63_620K"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "multi_match"}
+{"text": "học phí k65 thế nào", "expected_iris": ["Phi_K65_550k", "Phi_K65_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "multi_match"}
+{"text": "học phí k66 ra sao", "expected_iris": ["Phi_K66_510k", "Phi_K66_550k", "Phi_K66_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "multi_match"}
+{"text": "học phí k67 mỗi tín chỉ", "expected_iris": ["Phi_K67_550k", "Phi_K67_620k"], "expected_class_won": false, "tag": "DinhMucHocPhi", "category": "multi_match"}
+{"text": "các quy trình học vụ trường có những gì", "expected_iris": [], "expected_class_won": true, "tag": "QuyTrinhHocVu", "category": "class_listing"}
+{"text": "trường có những phòng ban hành chính nào", "expected_iris": [], "expected_class_won": true, "tag": "PhongBanHanhChinh", "category": "class_listing"}
+{"text": "có những biểu mẫu nào tải được", "expected_iris": [], "expected_class_won": true, "tag": "TaiLieuBieuMau", "category": "class_listing"}
+{"text": "trường có những định mức học phí nào", "expected_iris": [], "expected_class_won": true, "tag": "DinhMucHocPhi", "category": "class_listing"}
+{"text": "phương thức thanh toán nào có sẵn", "expected_iris": [], "expected_class_won": true, "tag": "PhuongThucThanhToan", "category": "class_listing"}
+{"text": "thời tiết hôm nay thế nào", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "trận bóng tối qua ai thắng", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "phim hay nhất 2024", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "cách nấu phở bò chuẩn", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "lập trình python cho người mới", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "giá vàng hôm nay bao nhiêu", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "xem giờ tàu hỏa chạy", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "đặt vé máy bay nội địa", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "thuê nhà gần trường giá rẻ", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
+{"text": "ai là ca sĩ nổi tiếng nhất", "expected_iris": [], "expected_class_won": false, "tag": "", "category": "negative"}
