@@ -1,6 +1,6 @@
 [project]
 name = "ontchatbot"
-version = "0.0.9"
+version = "0.1.0"
 description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -61,9 +61,6 @@ pythonpath = ["src"]
 
 [tool.uv]
 package = true
-# inference (onnxruntime) and train (onnxruntime-gpu) both provide the
-# `onnxruntime` Python module — installing both would shadow one with
-# the other. Force the user to pick exactly one.
 conflicts = [
     [ { extra = "inference" }, { extra = "train" } ],
 ]
