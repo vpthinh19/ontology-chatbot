@@ -99,14 +99,34 @@ jobs:
           username: vpt19
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Resolve the current HF Hub commit for the NER model and pin it into
+      # the Docker layer that bakes the model. This makes the image fully
+      # reproducible — rebuilding the same Git commit pulls the same SHA
+      # from cache — and surfaces the exact revision in the release notes
+      # for forensics. ubuntu-latest ships curl + jq; no extra setup.
+      - id: model
+        name: Resolve HF Hub model revision
+        run: |
+          REVISION=$(curl -sf https://huggingface.co/api/models/vpthinh19/phobert-base-v2 | jq -r .sha)
+          if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
+            echo "::error::Failed to resolve HF Hub revision"
+            exit 1
+          fi
+          echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
+          echo "::notice::Baking model revision $REVISION"
+
       # Build with `load: true` so the image lands in the local docker daemon
       # for Trivy. GHA cache speeds repeat builds when only source changes.
+      # MODEL_REVISION pins the snapshot_download layer so it cache-hits on
+      # rebuild of the same image version.
       - name: Build image (load for scan)
         uses: docker/build-push-action@v7
         with:
           context: .
           load: true
           tags: ${{ env.IMAGE }}:${{ env.VERSION }}
+          build-args: |
+            MODEL_REVISION=${{ steps.model.outputs.revision }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -140,6 +160,7 @@ jobs:
           generate_release_notes: true
           body: |
             Docker image: `${{ env.IMAGE }}:${{ env.VERSION }}`
+            Baked model revision: [`${{ steps.model.outputs.revision }}`](https://huggingface.co/vpthinh19/phobert-base-v2/commit/${{ steps.model.outputs.revision }})
 
             Pull:
             ```

@@ -53,6 +53,30 @@ COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 # Logging path used by ``configure_logging`` — writable by the app user.
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
+# Pre-create the HF Hub cache so the first cold-start ``from_pretrained`` does
+# not have to mkdir it lazily under the unprivileged user. ``useradd
+# --create-home`` builds /home/ontchatbot but leaves the .cache subtree
+# absent, so without this, huggingface_hub dies with PermissionError before
+# the first network request — even though it would have written into a
+# directory the user technically owns. Kept as defensive fallback even
+# though the baked model below removes the runtime HF Hub dependency.
+RUN mkdir -p /home/ontchatbot/.cache/huggingface && \
+    chown -R ontchatbot:ontchatbot /home/ontchatbot/.cache
+
+# Bake the fine-tuned NER model into the image so cold-start does not depend
+# on HF Hub availability and the first /chat reply lands in seconds instead
+# of minutes. Pinning the revision via ARG keeps this layer cacheable across
+# code edits — bump it with --build-arg MODEL_REVISION=<sha> after pushing a
+# new quantized checkpoint. NerModel.__init__ checks if MODEL_DIR is a
+# local directory first, so the baked files are used without any HF Hub
+# round-trip at request time.
+ARG MODEL_REVISION=main
+RUN /app/.venv/bin/python -c "from huggingface_hub import snapshot_download; \
+snapshot_download(repo_id='vpthinh19/phobert-base-v2', revision='${MODEL_REVISION}', \
+local_dir='/app/artifacts/models/phobert_ner_ft', \
+allow_patterns=['*.json', '*.txt', '*.codes', 'model.onnx*'])" \
+    && chown -R ontchatbot:ontchatbot /app/artifacts
+
 # PATH brings the `serve` console script (declared in [project.scripts]) into
 # scope. HF_HOME redirects model downloads under the unprivileged home so the
 # first cold-start cache is persisted across container restarts when /home is
@@ -65,9 +89,12 @@ ENV PATH="/app/.venv/bin:$PATH" \
 USER ontchatbot
 EXPOSE 8000
 
-# start-period=120s covers the worst-case first-request cold start where
-# HF Hub download (~500 MB) and ONNX Runtime session init happen lazily.
-HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 \
+# start-period=300s is a defensive ceiling: with the model baked in (above),
+# cold-start is just ORT session init (~10 s) and the first request lands
+# fast; without baking (e.g. an override build), cold-start re-downloads
+# ~130 MB INT8 + tokenizer files, which can take minutes on a constrained
+# uplink. The longer start-period absorbs both scenarios without flapping.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=300s --retries=3 \
     CMD python -c "import urllib.request, sys; \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
