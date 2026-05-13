@@ -11,7 +11,7 @@ external data) exists transiently to anchor the strict parity check and is
 deleted before push.
 
 Outputs:
-    - ``models/phobert_ner_ft/``                best checkpoint + tokenizer + INT8 ONNX
+    - ``artifacts/models/phobert_ner_ft/``                best checkpoint + tokenizer + INT8 ONNX
     - ``artifacts/training/log_history.json``
     - ``artifacts/training/training_curves.png``  train loss / val loss / accuracy / F1-macro
 """

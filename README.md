@@ -27,8 +27,6 @@ resources/
     ├── train.jsonl
     └── test.jsonl
 
-models/phobert_ner_ft/              model directory (after fine-tuning)
-
 webui/                              chat UI
 artifacts/flow/data_flow.png        architecture diagram
 tests/                              pytest suite
@@ -38,12 +36,12 @@ tests/                              pytest suite
 
 | Lệnh | Mô tả |
 |---|---|
-| `uv sync --extra cuda` | Cài dependencies (cho thiết bị có NVIDIA CUDA 12.8+). |
-| `uv sync --extra cpu` | Cài dependencies (cho thiết bị chỉ có CPU). |
+| `uv sync --extra train` | Cài dependencies cho huấn luyện model (Cần NVIDIA CUDA 12.8+). |
+| `uv sync --extra inference` | Cài dependencies cho sử dụng model (Chỉ cần CPU). |
 | `uv run pytest` | Chạy bộ test (unit test). |
-| `uv run train [--push <hf_repo>]` | Fine-tune PhoBERT và lưu model ở `models/phobert_ner_ft/`</br>có thể chỉ định <hf_repo> để đẩy model lên |
-| `uv run evaluate [--target {finetuned,baseline,both}]` | Sinh `artifacts/evaluation/` (confusion matrix, report, [comparison]). |
-| `uv run serve` | FastAPI tại <http://0.0.0.0:8000><br>(Nếu đã train thì sẽ tự động nạp model từ `models/phobert_ner_ft/`,<br>nếu chưa train thì sẽ tự động tải fine-tuned model từ `vpthinh19/phobert-base-v2`) |
+| `uv run train` | Fine-tune và lưu model ở `artifacts/models/phobert_ner_ft/`</br>`--help` để xem các đối số |
+| `uv run evaluate` | Sinh `artifacts/evaluation/` (confusion matrix, report)</br>`--help` để xem các đối số |
+| `uv run serve` | FastAPI tại <http://0.0.0.0:8000><br>(Dùng model từ `models/phobert_ner_ft/`,<br>hoặc tải từ `vpthinh19/phobert-base-v2`) |
 
 ## Tham khảo
 
