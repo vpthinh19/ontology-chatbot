@@ -102,7 +102,7 @@ jobs:
       # Build with `load: true` so the image lands in the local docker daemon
       # for Trivy. GHA cache speeds repeat builds when only source changes.
       - name: Build image (load for scan)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true
