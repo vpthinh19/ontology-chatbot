@@ -55,5 +55,5 @@ SEED = 42
 # enough to keep every perfect-alias match (score 100) — including
 # ambiguous cohort spans like "k65" that legitimately resolve to multiple
 # fee categories.
-FUZZY_TOP_K = 8
-FUZZY_MIN_SCORE = 88.0
+FUZZY_TOP_K = 10
+FUZZY_MIN_SCORE = 86.0
