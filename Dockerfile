@@ -10,7 +10,7 @@
 # on first inference, then caches it under ``$HF_HOME`` for subsequent calls.
 
 # ---------- builder ----------
-FROM python:3.11-slim AS builder
+FROM python:3.14-slim AS builder
 
 # Pull the uv binary from its official image (faster + version-pinned).
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
@@ -37,7 +37,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra cpu --no-dev
 
 # ---------- runtime ----------
-FROM python:3.11-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 # uid 1000 matches the typical desktop-Linux user id so bind-mounted volumes
 # from the host (e.g. ./logs) round-trip ownership cleanly.
