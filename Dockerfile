@@ -4,20 +4,11 @@
 #
 #   builder  → resolve + install deps + project with `uv sync --extra inference`
 #   runtime  → slim image with only the venv + source needed at request time
-#
-# The ``inference`` extra (pyproject.toml) is deliberately tiny — only
-# onnxruntime CPU on top of the core deps. No torch, no datasets, no plotting.
-# This keeps the runtime image's resident memory under Render's free-tier
-# 512 MB cap. Training / evaluation deps live under the ``train`` extra and
-# are NOT installed here.
-#
-# The PhoBERT ONNX (INT8) model is baked into the image at the
-# ``snapshot_download`` step below — first inference does not hit HF Hub.
+
 
 # ---------- builder ----------
 FROM python:3.14-slim AS builder
 
-# Pull the uv binary from its official image (faster + version-pinned).
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
 
 WORKDIR /app
@@ -29,13 +20,10 @@ ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
 
-# Step 1 — install dependencies only (no project) so this layer is cached as
-# long as pyproject.toml + uv.lock stay unchanged.
 COPY pyproject.toml uv.lock README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project --extra inference --no-dev
 
-# Step 2 — bring in the project source and install ontchatbot itself.
 COPY src/ ./src/
 COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -87,7 +75,7 @@ allow_patterns=['*.json', '*.txt', '*.codes', 'model.onnx*'])" \
 # first cold-start cache is persisted across container restarts when /home is
 # mounted as a volume.
 #
-# Memory tuning for low-RAM hosts (Render free tier = 512 MB):
+# Memory tuning for low-RAM hosts:
 #   MALLOC_ARENA_MAX=2 — glibc by default reserves 8×NCPU malloc arenas;
 #                       each holds memory across free() calls and fragments
 #                       heavily on multi-threaded apps. Capping at 2 drops
@@ -107,16 +95,9 @@ ENV PATH="/app/.venv/bin:$PATH" \
 USER ontchatbot
 EXPOSE 8000
 
-# start-period=300s is a defensive ceiling: with the model baked in (above),
-# cold-start is just ORT session init (~10 s) and the first request lands
-# fast; without baking (e.g. an override build), cold-start re-downloads
-# ~130 MB INT8 + tokenizer files, which can take minutes on a constrained
-# uplink. The longer start-period absorbs both scenarios without flapping.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=300s --retries=3 \
     CMD python -c "import urllib.request, sys; \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
 
-# Bind to 0.0.0.0 so the container is reachable from outside; serve.py's
-# argparse default is 127.0.0.1 (correct for local dev, wrong for Docker).
 CMD ["serve", "--host", "0.0.0.0", "--port", "8000"]

@@ -16,7 +16,8 @@ src/ontchatbot/
 ├── scripts/
 │   ├── train.py
 │   ├── evaluate.py
-│   └── serve.py                    FastAPI
+│   ├── serve.py                    FastAPI
+│   └── bench_fuzzy
 └── viz/                            matplotlib visualisations
 
 resources/
@@ -28,7 +29,7 @@ resources/
     └── test.jsonl
 
 webui/                              chat UI
-artifacts/flow/data_flow.png        architecture diagram
+artifacts/                          artifacts output
 tests/                              pytest suite
 ```
 
@@ -39,9 +40,11 @@ tests/                              pytest suite
 | `uv sync --extra train` | Cài dependencies cho huấn luyện model (Cần NVIDIA CUDA 12.8+). |
 | `uv sync --extra inference` | Cài dependencies cho sử dụng model (Chỉ cần CPU). |
 | `uv run pytest` | Chạy bộ test (unit test). |
-| `uv run train` | Fine-tune và lưu model ở `artifacts/models/phobert_ner_ft/`</br>`--help` để xem các đối số |
-| `uv run evaluate` | Sinh `artifacts/evaluation/` (confusion matrix, report)</br>`--help` để xem các đối số |
-| `uv run serve` | FastAPI tại <http://0.0.0.0:8000><br>(Dùng model từ `models/phobert_ner_ft/`,<br>hoặc tải từ `vpthinh19/phobert-base-v2`) |
+| `uv run train` | Fine-tune và lưu model ở `artifacts/models/phobert_ner_ft/` |
+| `uv run evaluate` | Sinh `artifacts/evaluation/` (confusion matrix, report) |
+| `uv run serve` | FastAPI tại <http://0.0.0.0:8000><br>(Dùng model từ `artifacts/models/phobert_ner_ft/` (nếu có)<br>hoặc tải từ Hugging Face repo `vpthinh19/phobert-base-v2`) |
+
+`--help` để xem thêm thông tin và các đối số tùy chọn
 
 ## Tham khảo
 

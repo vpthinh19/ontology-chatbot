@@ -152,8 +152,6 @@ def main() -> None:
             model, tokenizer, labels, l2i, i2l,
             "finetuned", out_root / "finetuned",
         )
-        # Free the model before loading the next one — keeps peak RAM at one
-        # model's worth (~520MB for PhoBERT-base) rather than two.
         del model, tokenizer
 
     if args.target in ("baseline", "both"):
