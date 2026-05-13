@@ -1,7 +1,17 @@
 """Fine-tune PhoBERT for token-level NER on the academic-procedure corpus.
 
+Pipeline (in ``main``):
+    train → save_model → ONNX(FP32, intermediate) → parity check vs PyTorch
+          → dynamic INT8 quantization → ONNX(INT8, deployment artifact)
+          → (optional) push to HF Hub
+
+The deployment artifact is **only** the INT8 ``model.onnx`` (single self-
+contained file, ~130 MB). The FP32 intermediate (``model_fp32.onnx`` +
+external data) exists transiently to anchor the strict parity check and is
+deleted before push.
+
 Outputs:
-    - ``models/phobert_ner_ft/``                best checkpoint, tokenizer, label maps
+    - ``models/phobert_ner_ft/``                best checkpoint + tokenizer + INT8 ONNX
     - ``artifacts/training/log_history.json``
     - ``artifacts/training/training_curves.png``  train loss / val loss / accuracy / F1-macro
 """
@@ -67,8 +77,13 @@ def _build_compute_metrics(i2l: dict[int, str]):
     return _compute
 
 
-def _export_to_onnx(model_dir: Path) -> None:
-    """Convert fine-tuned PyTorch weights → ONNX in-place via ``torch.onnx``.
+def _export_to_onnx(model_dir: Path) -> Path:
+    """Convert fine-tuned PyTorch weights → FP32 ONNX (intermediate).
+
+    Writes to ``model_fp32.onnx`` rather than ``model.onnx`` because the
+    final deployment artifact is the INT8 quantization downstream — the
+    FP32 file is just the anchor for the strict parity check. Returns the
+    path of the FP32 file so the caller can chain into quantization.
 
     Uses the dynamo path (default in torch 2.6+) with ``onnxscript`` as the
     op translator. The legacy TorchScript exporter does **not** work on
@@ -83,7 +98,7 @@ def _export_to_onnx(model_dir: Path) -> None:
     """
     from torch.export import Dim
 
-    print(f"[export] converting → ONNX at {model_dir}")
+    print(f"[export] converting → FP32 ONNX at {model_dir}")
     model = AutoModelForTokenClassification.from_pretrained(str(model_dir)).to("cpu")
     model.eval()
 
@@ -99,11 +114,11 @@ def _export_to_onnx(model_dir: Path) -> None:
         "attention_mask": {0: batch, 1: seq},
     }
 
-    onnx_path = model_dir / "model.onnx"
+    fp32_path = model_dir / "model_fp32.onnx"
     torch.onnx.export(
         model,
         (dummy_ids, dummy_mask),
-        str(onnx_path),
+        str(fp32_path),
         input_names=["input_ids", "attention_mask"],
         output_names=["logits"],
         dynamic_shapes=dynamic_shapes,
@@ -111,29 +126,32 @@ def _export_to_onnx(model_dir: Path) -> None:
         dynamo=True,
         verbose=False,
     )
-    if not onnx_path.exists():
+    if not fp32_path.exists():
         raise RuntimeError(
-            f"torch.onnx.export returned without error but {onnx_path} missing"
+            f"torch.onnx.export returned without error but {fp32_path} missing"
         )
-    size_mb = onnx_path.stat().st_size / 1024 / 1024
-    print(f"[export] wrote {onnx_path} ({size_mb:.1f} MB)")
+    size_mb = fp32_path.stat().st_size / 1024 / 1024
+    print(f"[export] wrote {fp32_path} ({size_mb:.1f} MB)")
+    return fp32_path
 
 
-def _verify_onnx_parity(model_dir: Path) -> None:
+def _verify_onnx_parity(model_dir: Path, onnx_path: Path) -> None:
     """Run a sample through PyTorch + ONNX; assert logits ≈ and argmax identical.
 
+    Strict tolerance (1e-3) is calibrated for the FP32 ONNX: it absorbs
+    rounding from graph reordering but flags a real bug. **Do not call
+    this on a quantized ONNX** — INT8 weights shift logits by far more
+    than 1e-3 even when the model is fine.
+
     Fails loudly with the observed diff so a botched export does not ship.
-    A max-abs-diff above 1e-3 indicates numerical drift severe enough to
-    risk BIO tag prediction changes — small enough to absorb FP32 rounding
-    noise from graph reordering, big enough to flag a real bug.
     """
     import onnxruntime as ort
 
-    print("[verify] loading PyTorch + ONNX checkpoints for parity check")
+    print(f"[verify] PyTorch ⇄ ONNX parity check on {onnx_path.name}")
     pt = AutoModelForTokenClassification.from_pretrained(str(model_dir)).to("cpu")
     pt.eval()
     session = ort.InferenceSession(
-        str(model_dir / "model.onnx"),
+        str(onnx_path),
         providers=["CPUExecutionProvider"],
     )
 
@@ -171,6 +189,36 @@ def _verify_onnx_parity(model_dir: Path) -> None:
             "BIO tag predictions would diverge in production."
         )
     print("[verify] OK — ONNX matches PyTorch within tolerance")
+
+
+def _quantize_to_int8(src: Path, dst: Path) -> None:
+    """Dynamic INT8 quantization — replaces FP32 ONNX as the deployment artifact.
+
+    Dynamic quantization is the standard for transformer encoders: weights
+    drop to int8 (4× compression, ~537 MB → ~130 MB), activations stay FP32
+    so no calibration data is needed, and ORT runs int8 MatMul kernels on
+    CPU (~1.5–3× faster at this size). Output is a single self-contained
+    file under 2 GB — eliminates the protobuf-external-data machinery
+    entirely, which is what bit us in production before.
+
+    Accuracy impact is small (~0.3–0.5% F1 typical for BERT-family); the
+    operator should still smoke-test by hitting /chat with a few queries
+    before considering the new model production-ready.
+    """
+    from onnxruntime.quantization import quantize_dynamic, QuantType
+
+    print(f"[quantize] {src.name} → {dst.name} (dynamic INT8)")
+    quantize_dynamic(
+        model_input=str(src),
+        model_output=str(dst),
+        weight_type=QuantType.QInt8,
+    )
+    if not dst.exists():
+        raise RuntimeError(
+            f"quantize_dynamic returned without error but {dst} missing"
+        )
+    size_mb = dst.stat().st_size / 1024 / 1024
+    print(f"[quantize] wrote {dst} ({size_mb:.1f} MB)")
 
 
 def _push_to_hub(model_dir: Path, repo_id: str) -> None:
@@ -265,11 +313,20 @@ def main() -> None:
     )
     plot_training_curves(trainer.state.log_history, str(ARTIFACTS_DIR / "training_curves.png"))
 
-    # ONNX export pipeline: convert → verify parity → optionally push.
-    # Verification runs BEFORE push so a broken ONNX never reaches HF Hub.
+    # ONNX export pipeline: FP32 export → parity check vs PyTorch → INT8
+    # quantization → cleanup FP32 intermediates → optionally push. The strict
+    # parity check runs on FP32 (where 1e-3 tolerance is meaningful) BEFORE
+    # quantization; INT8 ships only after the FP32 anchor passed.
     model_path = Path(MODEL_DIR)
-    _export_to_onnx(model_path)
-    _verify_onnx_parity(model_path)
+    fp32_path = _export_to_onnx(model_path)
+    _verify_onnx_parity(model_path, fp32_path)
+    int8_path = model_path / "model.onnx"
+    _quantize_to_int8(fp32_path, int8_path)
+    # The FP32 ONNX + its external-data sidecar were only needed to anchor
+    # the parity check; deleting them keeps MODEL_DIR (and the eventual HF
+    # Hub push) free of the larger, fragile FP32 artifact.
+    fp32_path.unlink(missing_ok=True)
+    (model_path / "model_fp32.onnx.data").unlink(missing_ok=True)
     if cli_args.push:
         _push_to_hub(model_path, cli_args.push)
 

@@ -241,13 +241,11 @@ class NerModel:
     def _resolve_onnx_path(self) -> Path:
         """Locate ``model.onnx`` — local dir if present, else fetch from HF Hub.
 
-        The dynamo path of ``torch.onnx.export`` writes weights into a
-        co-located ``model.onnx.data`` file when any initializer exceeds
-        ~1 MiB (keeps the .onnx protobuf under its 2 GiB hard cap). ONNX
-        Runtime resolves that filename relative to the .onnx file, so both
-        must land in the same directory — ``snapshot_download`` with an
-        ``allow_patterns`` filter pulls every matched file into one
-        revision-locked folder in a single API call.
+        The deployment artifact is the INT8-quantized ONNX (single self-
+        contained file < 2 GB, no external-data sidecar). The ``model.onnx*``
+        pattern still admits an external-data file should a future export
+        re-introduce one — snapshot_download will simply ignore the pattern
+        for files that do not exist in the repo.
         """
         if Path(self._model_dir).is_dir():
             local = Path(self._model_dir) / "model.onnx"
@@ -258,11 +256,10 @@ class NerModel:
                 )
             return local
         from huggingface_hub import snapshot_download
-        log.info("[NerModel] pulling model.onnx (+ external data) from HF repo %s",
-                 self._model_dir)
+        log.info("[NerModel] pulling model.onnx from HF repo %s", self._model_dir)
         snapshot_dir = snapshot_download(
             repo_id=self._model_dir,
-            allow_patterns=["model.onnx", "model.onnx.data"],
+            allow_patterns=["model.onnx*"],
         )
         return Path(snapshot_dir) / "model.onnx"
 
