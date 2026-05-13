@@ -30,6 +30,7 @@ train = [
 train = "ontchatbot.scripts.train:main"
 evaluate = "ontchatbot.scripts.evaluate:main"
 serve = "ontchatbot.scripts.serve:main"
+bench_fuzzy = "ontchatbot.scripts.bench_fuzzy:main"
 
 [build-system]
 requires = ["hatchling"]
