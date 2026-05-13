@@ -5,22 +5,26 @@ description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "transformers",
+    "fastapi[standard]",
     "huggingface-hub",
+    "transformers",
+    "underthesea",
+    "owlready2",
+    "rapidfuzz",
+]
+
+[project.optional-dependencies]
+inference = ["onnxruntime"]
+train = [
+    "torch",
+    "accelerate",
+    "onnxruntime-gpu",
     "onnxscript",
     "datasets",
     "seqeval",
     "matplotlib",
     "seaborn",
-    "underthesea",
-    "owlready2",
-    "rapidfuzz",
-    "fastapi[standard]",
 ]
-
-[project.optional-dependencies]
-cpu = ["torch", "accelerate", "onnxruntime"]
-cuda = ["torch", "accelerate", "onnxruntime-gpu"]
 
 [project.scripts]
 train = "ontchatbot.scripts.train:main"
@@ -38,19 +42,13 @@ packages = ["src/ontchatbot"]
 "resources" = "ontchatbot/resources"
 
 [[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
-[[tool.uv.index]]
 name = "pytorch-cuda"
 url = "https://download.pytorch.org/whl/cu128"
 explicit = true
 
 [tool.uv.sources]
 torch = [
-    { index = "pytorch-cpu", extra = "cpu" },
-    { index = "pytorch-cuda", extra = "cuda", marker = "sys_platform != 'darwin'" }
+    { index = "pytorch-cuda", extra = "train", marker = "sys_platform != 'darwin'" }
 ]
 
 [dependency-groups]
@@ -62,6 +60,9 @@ pythonpath = ["src"]
 
 [tool.uv]
 package = true
+# inference (onnxruntime) and train (onnxruntime-gpu) both provide the
+# `onnxruntime` Python module — installing both would shadow one with
+# the other. Force the user to pick exactly one.
 conflicts = [
-    [ { extra = "cpu" }, { extra = "cuda" } ],
+    [ { extra = "inference" }, { extra = "train" } ],
 ]

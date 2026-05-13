@@ -16,13 +16,17 @@ from pathlib import Path
 from typing import Callable
 
 import numpy as np
-import torch
-from datasets import Dataset
 from transformers import (
     AutoConfig,
     AutoTokenizer,
     PreTrainedTokenizerBase,
 )
+
+# ``torch`` and ``datasets`` are training-only deps (the ``train`` extra in
+# pyproject.toml). The inference image installs neither, so they are
+# imported lazily inside the two callsites that need them: GPU-provider
+# detection in ``_ensure_loaded`` uses onnxruntime instead of torch, and
+# ``load_split`` imports ``datasets.Dataset`` inside the function body.
 
 from .config import MAX_LENGTH, MODEL_DIR, FINETUNED_MODEL_NAME
 from .ontology import Ontology
@@ -196,8 +200,12 @@ class NerModel:
         return _fn
 
     @staticmethod
-    def load_split(path: Path, l2i: dict[str, int]) -> Dataset:
+    def load_split(path: Path, l2i: dict[str, int]) -> "Dataset":  # noqa: F821
         """JSONL → HuggingFace ``Dataset`` with ``tokens`` and ``tags`` columns."""
+        # Lazy import — ``datasets`` is a heavy train-only dep (~60 MB resident,
+        # pulls pyarrow). Keeping it out of module import lets the inference
+        # image skip installing it entirely.
+        from datasets import Dataset
         rows: list[dict] = []
         with Path(path).open("r", encoding="utf-8") as f:
             for line in f:
@@ -230,10 +238,31 @@ class NerModel:
         self._config = AutoConfig.from_pretrained(self._model_dir)
 
         onnx_path = self._resolve_onnx_path()
+        # GPU detection via ORT (not torch): the inference image does not
+        # install torch, so the previous ``torch.cuda.is_available()`` check
+        # would ImportError at module load. ``get_available_providers()``
+        # surfaces ``CUDAExecutionProvider`` only when the onnxruntime-gpu
+        # wheel is installed AND the CUDA libs are loadable.
+        available = ort.get_available_providers()
         providers = (["CUDAExecutionProvider", "CPUExecutionProvider"]
-                     if torch.cuda.is_available()
+                     if "CUDAExecutionProvider" in available
                      else ["CPUExecutionProvider"])
-        self._session = ort.InferenceSession(str(onnx_path), providers=providers)
+        # Memory-tight session options for low-RAM hosts (Render free tier
+        # = 512 MB hard cap). Single-threaded execution suits the 0.1 vCPU
+        # quota — multi-thread on a throttled core only adds context-switch
+        # overhead. Disabling the CPU mem arena skips a ~50-80 MB upfront
+        # allocation; ``enable_mem_pattern=False`` skips the planning pass
+        # whose pre-allocation grows with max seq × batch. Both trade ~10-30
+        # ms latency per request for a meaningful RSS reduction; for one
+        # sentence at a time on a chatbot, the trade is one-sided.
+        sess_options = ort.SessionOptions()
+        sess_options.intra_op_num_threads = 1
+        sess_options.inter_op_num_threads = 1
+        sess_options.enable_mem_pattern = False
+        sess_options.enable_cpu_mem_arena = False
+        self._session = ort.InferenceSession(
+            str(onnx_path), sess_options, providers=providers,
+        )
         self._encode = NerModel.make_encoder(self._tok, self._max_length)
         log.info("[NerModel] providers=%s n_labels=%d",
                  self._session.get_providers(), len(self._config.id2label))

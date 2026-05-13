@@ -2,12 +2,17 @@
 #
 # Multi-stage build for the ontchatbot FastAPI server.
 #
-#   builder  → resolve + install deps + project with `uv sync --extra cpu`
+#   builder  → resolve + install deps + project with `uv sync --extra inference`
 #   runtime  → slim image with only the venv + source needed at request time
 #
-# The PhoBERT ONNX model is NOT baked in. `NerModel._resolve_onnx_path` falls
-# back to ``huggingface_hub.hf_hub_download`` from ``vpthinh19/phobert-base-v2``
-# on first inference, then caches it under ``$HF_HOME`` for subsequent calls.
+# The ``inference`` extra (pyproject.toml) is deliberately tiny — only
+# onnxruntime CPU on top of the core deps. No torch, no datasets, no plotting.
+# This keeps the runtime image's resident memory under Render's free-tier
+# 512 MB cap. Training / evaluation deps live under the ``train`` extra and
+# are NOT installed here.
+#
+# The PhoBERT ONNX (INT8) model is baked into the image at the
+# ``snapshot_download`` step below — first inference does not hit HF Hub.
 
 # ---------- builder ----------
 FROM python:3.14-slim AS builder
@@ -28,13 +33,13 @@ ENV UV_LINK_MODE=copy \
 # long as pyproject.toml + uv.lock stay unchanged.
 COPY pyproject.toml uv.lock README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project --extra cpu --no-dev
+    uv sync --frozen --no-install-project --extra inference --no-dev
 
 # Step 2 — bring in the project source and install ontchatbot itself.
 COPY src/ ./src/
 COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --extra cpu --no-dev
+    uv sync --frozen --extra inference --no-dev
 
 # ---------- runtime ----------
 FROM python:3.14-slim AS runtime
@@ -81,10 +86,23 @@ allow_patterns=['*.json', '*.txt', '*.codes', 'model.onnx*'])" \
 # scope. HF_HOME redirects model downloads under the unprivileged home so the
 # first cold-start cache is persisted across container restarts when /home is
 # mounted as a volume.
+#
+# Memory tuning for low-RAM hosts (Render free tier = 512 MB):
+#   MALLOC_ARENA_MAX=2 — glibc by default reserves 8×NCPU malloc arenas;
+#                       each holds memory across free() calls and fragments
+#                       heavily on multi-threaded apps. Capping at 2 drops
+#                       RSS by ~50-100 MB on typical FastAPI + ORT workloads
+#                       with no measurable latency impact at our 1-req-at-a-
+#                       time traffic profile.
+#   HF_HUB_DISABLE_TELEMETRY=1 — kills the background HEAD request HF Hub
+#                       fires on import; tiny RAM win but also one less
+#                       network dependency at cold-start.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    HF_HOME=/home/ontchatbot/.cache/huggingface
+    HF_HOME=/home/ontchatbot/.cache/huggingface \
+    MALLOC_ARENA_MAX=2 \
+    HF_HUB_DISABLE_TELEMETRY=1
 
 USER ontchatbot
 EXPOSE 8000

@@ -120,6 +120,7 @@ TEENCODE_MAP: dict[str, str] = {
     "fai": "phải", "phai": "phải",
     "khgo": "không có", "kgcg": "không có gì",
     "đăn": "đăng", "đag": "đang",
+    "cntt": "công nghệ thông tin",
 }
 
 
