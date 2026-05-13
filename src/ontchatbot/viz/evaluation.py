@@ -1,6 +1,6 @@
 """Evaluation visualisations for the NER benchmark.
 
-Two artefacts:
+Three artefacts:
 
 * ``classification_report.png`` — table chart with per-entity precision /
   recall / F1 / support rows, plus the standard micro / macro / weighted
@@ -9,6 +9,10 @@ Two artefacts:
   per-class metrics bar chart, and the JSON metrics dump.
 
 * ``confusion_matrix.png`` — token-level BIO confusion (``O`` dropped).
+
+* ``comparison.png`` — grouped bar chart over token-accuracy + macro
+  precision/recall/F1 for an arbitrary set of named models (used to put the
+  fine-tuned checkpoint next to the untrained-head baseline in a single view).
 """
 
 from __future__ import annotations
@@ -187,6 +191,83 @@ def plot_classification_report(
         _draw_row(y_top, [label, *cells], fill=fill, text_color=color,
                   bold=is_avg or is_accuracy)
 
+    _ensure_dir(save_path)
+    fig.savefig(save_path, dpi=180, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+
+
+# Multi-model comparison (fine-tuned vs untrained-head baseline)
+
+# Palette is intentionally aligned with the classification-report styling
+# above: green for the model we are championing (the fine-tuned checkpoint),
+# muted grey for the foil. Keeps the artefact set visually consistent.
+_COMPARISON_PALETTE = {
+    "finetuned": "#10B981",
+    "baseline":  "#9CA3AF",
+}
+_COMPARISON_FALLBACK = ["#2563EB", "#F59E0B", "#EF4444"]
+
+
+def plot_comparison(
+    results: dict[str, tuple[float, dict]],
+    save_path: str,
+    *,
+    title: str = "Fine-tuning impact on PhoBERT NER",
+) -> None:
+    """Grouped bar chart over (accuracy, macro precision, macro recall, macro F1).
+
+    ``results`` is a dict ``{model_name: (token_accuracy, dict_report)}`` where
+    ``dict_report`` is the ``output_dict=True`` form of
+    :func:`seqeval.metrics.classification_report`. The "macro avg" row drives
+    the precision/recall/F1 bars; the standalone accuracy float drives the
+    first group. Order of bars within each metric group follows the iteration
+    order of ``results`` — pass ``finetuned`` first so it sits on the left.
+    """
+    metric_labels = ["token accuracy", "precision (macro)", "recall (macro)", "F1 (macro)"]
+    model_names = list(results.keys())
+
+    values = np.zeros((len(model_names), len(metric_labels)), dtype=float)
+    for i, name in enumerate(model_names):
+        accuracy, dict_report = results[name]
+        macro = dict_report.get("macro avg", {}) or {}
+        values[i] = [
+            accuracy,
+            macro.get("precision", 0.0),
+            macro.get("recall", 0.0),
+            macro.get("f1-score", 0.0),
+        ]
+
+    n_models = len(model_names)
+    width = 0.8 / max(n_models, 1)
+    x = np.arange(len(metric_labels))
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.8))
+    for i, name in enumerate(model_names):
+        offset = (i - (n_models - 1) / 2) * width
+        color = _COMPARISON_PALETTE.get(
+            name, _COMPARISON_FALLBACK[i % len(_COMPARISON_FALLBACK)]
+        )
+        bars = ax.bar(
+            x + offset, values[i], width,
+            label=name, color=color,
+            edgecolor="#111827", linewidth=0.6,
+        )
+        for b, v in zip(bars, values[i]):
+            ax.text(b.get_x() + b.get_width() / 2, v + 0.012, f"{v:.3f}",
+                    ha="center", va="bottom", fontsize=9, color="#111827")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(metric_labels, fontsize=11)
+    ax.set_ylim(0.0, 1.08)
+    ax.set_ylabel("Score", fontsize=11)
+    ax.set_title(title, fontsize=14, fontweight="bold", color="#111827", pad=12)
+    ax.legend(loc="upper right", frameon=False, fontsize=11)
+    ax.grid(axis="y", alpha=0.3, linestyle="--", linewidth=0.8)
+    ax.set_axisbelow(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    fig.tight_layout()
     _ensure_dir(save_path)
     fig.savefig(save_path, dpi=180, bbox_inches="tight", facecolor="white")
     plt.close(fig)

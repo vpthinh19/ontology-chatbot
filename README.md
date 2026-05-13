@@ -41,9 +41,9 @@ tests/                              pytest suite
 | `uv sync --extra cuda` | Cài dependencies (cho thiết bị có NVIDIA CUDA 12.8+). |
 | `uv sync --extra cpu` | Cài dependencies (cho thiết bị chỉ có CPU). |
 | `uv run pytest` | Chạy bộ test (unit test). |
-| `uv run train` | Fine-tune PhoBERT và lưu model ở `models/phobert_ner_ft/`. |
-| `uv run evaluate` | Sinh `artifacts/evaluation/*.png` (confusion matrix, report). |
-| `uv run serve` | FastAPI tại <http://127.0.0.1:8000><br>(Nếu đã train thì sẽ tự động nạp model từ `models/phobert_ner_ft/`,<br>nếu chưa train thì sẽ tự động tải fine-tuned model từ `vpthinh19/phobert-base-v2`) |
+| `uv run train [--push <hf_repo>]` | Fine-tune PhoBERT và lưu model ở `models/phobert_ner_ft/`</br>có thể chỉ định <hf_repo> để đẩy model lên |
+| `uv run evaluate [--target {finetuned,baseline,both}]` | Sinh `artifacts/evaluation/` (confusion matrix, report, [comparison]). |
+| `uv run serve` | FastAPI tại <http://0.0.0.0:8000><br>(Nếu đã train thì sẽ tự động nạp model từ `models/phobert_ner_ft/`,<br>nếu chưa train thì sẽ tự động tải fine-tuned model từ `vpthinh19/phobert-base-v2`) |
 
 ## Tham khảo
 
