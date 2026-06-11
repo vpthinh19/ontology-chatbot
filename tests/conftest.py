@@ -18,3 +18,10 @@ def ontology():
 def onto(ontology):
     """Backwards-compat alias retained for older fixtures."""
     return ontology
+
+
+@pytest.fixture(scope="session")
+def graph():
+    """New-architecture graph (TBox planner + ABox traversal); parsed once."""
+    from ontchatbot.graph import Graph
+    return Graph.get()

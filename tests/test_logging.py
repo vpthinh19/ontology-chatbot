@@ -8,7 +8,6 @@ from pathlib import Path
 import pytest
 
 from ontchatbot import logging_setup
-from ontchatbot.ner_model import Entity
 from ontchatbot.pipeline import Pipeline
 
 
@@ -22,14 +21,6 @@ def _reset_logging_state(monkeypatch):
     yield
     pkg.handlers.clear()
     pkg.handlers.extend(saved)
-
-
-class _StubNer:
-    def __init__(self, entities=None):
-        self._entities = entities or []
-
-    def extract_entities(self, _words):
-        return list(self._entities)
 
 
 def test_configure_logging_is_idempotent(tmp_path: Path):
@@ -54,36 +45,30 @@ def test_configure_logging_writes_init_record(tmp_path: Path):
     assert "[init]" in text and "hello world" in text
 
 
-def test_pipeline_logs_each_stage(caplog, ontology):
-    fake = [Entity(surface="bảo lưu", tag="QuyTrinhHocVu", start=0, end=2)]
-    pipeline = Pipeline(ner=_StubNer(fake))
+def test_pipeline_logs_each_stage(caplog, graph):
+    pipeline = Pipeline(graph=graph)
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
-        out = pipeline.answer("xin chào, em hỏi về bảo lưu")
+        out = pipeline.answer("điều kiện bảo lưu là gì")
     assert out["entities"]
     text = "\n".join(r.getMessage() for r in caplog.records)
-    for stage in ("[Pipeline.preprocess]", "[Pipeline.ner]",
-                  "[Pipeline.match]", "[Pipeline.query]",
-                  "[Pipeline.present]"):
+    for stage in ("[nlu]", "[answer]", "[pipeline]"):
         assert stage in text, f"missing stage tag {stage!r} in log:\n{text}"
 
 
-def test_pipeline_logs_rejected_low_confidence(caplog, ontology):
-    fake = [Entity(surface="hoàn toàn vô nghĩa xyz",
-                   tag="QuyTrinhHocVu", start=0, end=4)]
-    pipeline = Pipeline(ner=_StubNer(fake))
+def test_pipeline_logs_rejected_low_confidence(caplog, graph):
+    pipeline = Pipeline(graph=graph)
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
         pipeline.answer("hoàn toàn vô nghĩa xyz")
     text = "\n".join(r.getMessage() for r in caplog.records)
-    assert "[Ontology.resolve]" in text and "reject" in text
+    assert "[Graph.anchor]" in text and "reject" in text
 
 
-def test_empty_input_logs_skip(caplog, ontology):
-    pipeline = Pipeline(ner=_StubNer())
+def test_empty_input_greets(caplog, graph):
+    pipeline = Pipeline(graph=graph)
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
-        pipeline.answer("")
-    assert any("[Pipeline.preprocess]" in r.getMessage()
-               and "skip" in r.getMessage()
-               for r in caplog.records)
+        out = pipeline.answer("")
+    assert out["entities"] == [] and "Xin chào" in out["reply"]
+    assert any("[pipeline]" in r.getMessage() for r in caplog.records)
 
 
 def test_per_module_logger_is_independent():
