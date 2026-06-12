@@ -1,18 +1,22 @@
-"""Answer layer: :class:`Query` → ``Fact[]`` via the schema planner.
+"""Answer layer: :class:`Query` → ``Fact[]`` — execute the query graph.
 
-The generic path is one idea: an intent names a **target class**; the planner
-BFS-finds the shortest class path from the anchor's class to it; the executor
-walks that path over individuals. Forward, inverse, and multi-hop all fall out
-of the same mechanism — no per-question-type handler. Adding a relation in
-Protégé extends what is answerable for free.
+The whole layer is three fixed mechanisms (docs/redesign/03), no
+per-question-type handler:
 
-Three cases sit *outside* the planner because they are set/▢-arithmetic, not
-path-following:
-* ``filter_by`` — intersect a fee set along cohort/program (v9's structured
-  ``appliesToCohort``/``appliesToProgram`` make the intersection exact).
-* ``reason`` — ELIGIBILITY threshold check over v9's structured Condition
-  (``cpa 5.2 >= 5.5`` → a real pass/fail verdict, not prose).
-* ``COMPARE`` — two anchors set side by side.
+* **DNF builder** — order the constraints into *decision groups* with the
+  same-class-substitution rule: a constraint of a class already present in
+  the current group *replaces* it and opens a new group that inherits
+  everything that preceded the replaced one. Two same-dimension values can
+  never intersect to anything, so substitution is the only meaningful
+  reading; separator words need no special handling.
+* **shadow projection** — within a group, every constraint casts its
+  *shadow* onto the subject class: ``walk(c, plan(cls(c) → subject))``.
+  The planner supplies direction and hop count from the schema; a constraint
+  whose class is the subject's own shadows to itself (empty plan), which is
+  how self-description falls out of the same formula.
+* **set algebra** — intersect the shadows inside a group (faceted search),
+  union the groups (one Fact block each). Empty intersection degrades
+  honestly: a note plus each dimension's own set, never a guess.
 """
 
 from __future__ import annotations
@@ -21,173 +25,110 @@ import logging
 from dataclasses import dataclass, field
 
 from .graph import Graph, Node
-from .nlu import ASK_OVERVIEW, GREETING, Query
+from .nlu import GREETING, Query
 
 log = logging.getLogger(__name__)
 
 
 @dataclass
 class Fact:
-    """One answer unit ≈ one triple. ``subject``/``predicate`` empty for a
-    self-description or a class listing; ``verdict``/``note`` carry reasoning."""
-    subject: Node | None
-    predicate: str
+    """One reply block. ``cls`` set ⇒ class listing; otherwise ``objects``
+    are the nodes a decision group resolved to, ``heading`` names the group."""
     objects: list[Node] = field(default_factory=list)
-    intent: str = ""
-    cls: str = ""                 # listing class
-    verdict: bool | None = None   # eligibility outcome (None = undecidable in v8)
+    heading: str = ""
+    cls: str = ""
     note: str = ""
 
 
-# intent → (target class to reach, human predicate label). Class IRIs are the
-# v9 Vietnamese names — kept here, in render._CLASS_LABEL and label_map.json as
-# the only three places a future class rename must touch.
-INTENT_TARGET: dict[str, tuple[str, str]] = {
-    "ASK_CONDITION":  ("DieuKien", "Điều kiện"),
-    "ASK_DOCUMENT":   ("TaiLieuBieuMau", "Biểu mẫu cần nộp"),
-    "ASK_OFFICE":     ("PhongBanHanhChinh", "Phòng phụ trách"),
-    "ASK_FEE":        ("DinhMucHocPhi", "Học phí"),
-    "ASK_PAYMENT":    ("PhuongThucThanhToan", "Phương thức thanh toán"),
-    "ASK_OUTPUT":     ("KetQuaDauRa", "Kết quả"),
-    "ASK_REGULATION": ("QuyDinh", "Căn cứ quy định"),
-    "ASK_PROCEDURE":  ("QuyTrinhHocVu", "Thủ tục phụ trách"),
-    "ASK_STEP":       ("QuyTrinhHocVu", "Các bước thực hiện"),
-}
-
-# intent → class the anchor most likely belongs to (first-pass resolution bias).
-# Procedure is the hub, so relation-from-procedure intents bias to it.
-INTENT_ANCHOR: dict[str, str] = {
-    "ASK_CONDITION": "QuyTrinhHocVu", "ASK_STEP": "QuyTrinhHocVu",
-    "ASK_OUTPUT": "QuyTrinhHocVu", "ASK_REGULATION": "QuyTrinhHocVu",
-    "ASK_OVERVIEW": "QuyTrinhHocVu", "ELIGIBILITY": "QuyTrinhHocVu",
-    "COMPARE": "QuyTrinhHocVu",
-    "ASK_FEE": "DinhMucHocPhi", "ASK_PAYMENT": "PhuongThucThanhToan",
-    "ASK_OFFICE": "PhongBanHanhChinh", "ASK_PROCEDURE": "PhongBanHanhChinh",
-    "ASK_DOCUMENT": "TaiLieuBieuMau",
-}
-
-
 def answer(query: Query, graph: Graph) -> list[Fact]:
-    """Plan + execute a :class:`Query`. Empty list ⇒ greeting/out-of-domain
+    """Execute a :class:`Query`. Empty list ⇒ greeting/out-of-domain
     (the renderer decides the wording)."""
-    if query.intent == GREETING or not query.entities:
+    if query.act == GREETING:
         return []
 
-    ent = query.entities[0]
-    anc = graph.anchor(ent.surface, ent.tag,
-                        prefer_cls=INTENT_ANCHOR.get(query.intent, ""))
+    constraints = [n for n in (graph.node(m.iri) for m in query.constraints)
+                   if n is not None]
+    subject = query.subject_cls or (constraints[0].cls if constraints else "")
+    if not subject:
+        return []                                   # → out-of-domain
 
-    if query.is_listing or anc.class_won:
-        cls = anc.cls or graph.class_of_tag(ent.tag)
-        nodes = graph.instances(cls)
-        return [Fact(subject=None, predicate="", objects=nodes,
-                     intent=query.intent, cls=cls)] if nodes else []
+    if not constraints:
+        if not query.subject_listable:
+            return []                               # bare interrogative → OOD
+        nodes = graph.instances(subject)
+        return [Fact(objects=nodes, cls=subject)] if nodes else []
 
-    if not anc.nodes:
-        return []                       # → out-of-domain
-
-    anchors = anc.nodes
-    if query.intent == "ELIGIBILITY":
-        return _reason(graph, anchors, query.slots)
-    if query.intent == "COMPARE":
-        return _compare(graph, anchors)
-    if query.intent == "ASK_FEE":
-        # Dimensions beat fuzzy: a cohort code and/or a program name select the
-        # fee set structurally. Fuzzy can't tell "K67 (Marketing, …)" from
-        # another cohort's fee (the long label drags the score to the floor),
-        # and it has no notion of *intersection*. With both a cohort and a
-        # program, ``filter_by`` returns the single fee at their intersection.
-        cohort = query.slots.get("cohort", "")
-        program = graph.resolve_program(query.text)
-        if cohort or program:
-            fees = graph.filter_by(graph.instances("DinhMucHocPhi"),
-                                   cohort=cohort, program=program)
-            if fees:
-                anchors = fees
-
-    target_cls, predicate = INTENT_TARGET.get(query.intent, (None, ""))
-    if query.intent == ASK_OVERVIEW or target_cls is None:
-        target_cls = anchors[0].cls     # describe the anchor itself
-
-    # Self-target: the answer *is* the anchored set (its own data) — one Fact.
-    if anchors[0].cls == target_cls:
-        return [Fact(subject=None, predicate=predicate, objects=anchors,
-                     intent=query.intent)]
-
-    # Relation-target: walk the planned path from each anchor.
     facts: list[Fact] = []
-    for a in anchors:
-        steps = graph.plan(a.cls, target_cls)
+    groups = build_groups(constraints)
+    plain = len(groups) == 1 and len(groups[0]) == 1 \
+        and groups[0][0].cls == subject             # pure self-description
+    for group in groups:
+        facts.extend(_execute(graph, subject, group, plain=plain))
+    log.info("[answer] subject=%s groups=%s facts=%d",
+             subject, [[c.iri for c in g] for g in groups], len(facts))
+    return facts
+
+
+def build_groups(constraints: list[Node]) -> list[list[Node]]:
+    """Same-class-substitution DNF. ``[k65, cntt, k67]`` → ``[[k65, cntt],
+    [k67]]``; ``[cntt, k65, k67]`` → ``[[cntt, k65], [cntt, k67]]`` — the new
+    value inherits what preceded the one it replaces."""
+    groups: list[list[Node]] = [[]]
+    cur = groups[0]
+    for c in constraints:
+        idx = next((i for i in range(len(cur) - 1, -1, -1)
+                    if cur[i].cls == c.cls), None)
+        if idx is None:
+            cur.append(c)
+        else:
+            cur = cur[:idx] + [c]
+            groups.append(cur)
+    return groups
+
+
+def _execute(graph: Graph, subject: str, group: list[Node],
+             *, plain: bool) -> list[Fact]:
+    """One decision group → one block (or honest degradation blocks)."""
+    shadows: list[tuple[Node, list[Node]]] = []
+    dropped: list[Node] = []
+    for c in group:
+        steps = graph.plan(c.cls, subject)
         if steps is None:
-            log.info("[answer] no path %s→%s; overview fallback", a.cls, target_cls)
-            facts.append(Fact(subject=None, predicate="", objects=[a],
-                              intent=ASK_OVERVIEW))
+            dropped.append(c)
             continue
-        objs = graph.walk(a, steps)
-        log.info("[answer] %s --%s--> %d", a.iri, steps, len(objs))
-        facts.append(Fact(subject=a, predicate=predicate, objects=objs,
-                          intent=query.intent))
+        shadows.append((c, graph.walk(c, steps)))
+    note = ("Không xét: " + ", ".join(f"«{c.label}»" for c in dropped) +
+            " (không liên quan tới chủ đề hỏi)." if dropped else "")
+    if not shadows:
+        return [Fact(note=note or "Chưa có dữ liệu phù hợp.")]
+
+    heading = "" if plain else _heading(graph, subject, group)
+    inter = _intersect([s for _, s in shadows])
+    if inter:
+        return [Fact(objects=inter, heading=heading, note=note)]
+    if all(not s for _, s in shadows):
+        return [Fact(heading=heading, note=(note + " " if note else "") +
+                     "Chưa có dữ liệu cho mục này.")]
+    # Honest degradation: no node satisfies every dimension at once — say so
+    # and show each dimension's own set instead of guessing.
+    facts = [Fact(heading=heading, note=(note + " " if note else "") +
+                  "Không có mục nào khớp đồng thời các tiêu chí; "
+                  "dữ liệu theo từng tiêu chí:")]
+    for c, shadow in shadows:
+        if shadow:
+            facts.append(Fact(objects=shadow,
+                              heading=f"Theo «{c.label}»"))
     return facts
 
 
-# Special handlers — set / threshold arithmetic the planner does not express.
-
-# Comparator symbol → predicate. v9 conditions carry structured thresholds.
-_COMPARATORS = {
-    ">=": lambda a, b: a >= b, ">": lambda a, b: a > b,
-    "<=": lambda a, b: a <= b, "<": lambda a, b: a < b,
-    "==": lambda a, b: a == b,
-}
+def _heading(graph: Graph, subject: str, group: list[Node]) -> str:
+    crit = " × ".join(c.label for c in group)
+    return f"{graph.class_label(subject)} — {crit}"
 
 
-def _reason(graph: Graph, anchors: list[Node], slots: dict) -> list[Fact]:
-    """ELIGIBILITY. v9 conditions are structured (metric/comparator/threshold),
-    so a supplied CPA yields a real verdict (``5.2 >= 5.5`` → fail) instead of
-    the old prose dump. Qualitative conditions are still listed to self-verify."""
-    provided = {"CPA": slots["cpa"]} if slots.get("cpa") is not None else {}
-    facts: list[Fact] = []
-    for a in anchors:
-        steps = graph.plan(a.cls, "DieuKien")
-        conds = graph.walk(a, steps) if steps is not None else []
-        verdict, note = _evaluate(conds, provided)
-        facts.append(Fact(subject=a, predicate="Điều kiện", objects=conds,
-                          intent="ELIGIBILITY", verdict=verdict, note=note))
-    return facts
-
-
-def _evaluate(conds: list[Node], provided: dict) -> tuple[bool | None, str]:
-    """Check each quantitative condition whose metric the student supplied.
-
-    Returns ``(False, gaps)`` if any fails, ``(True, …)`` if at least one was
-    checked and all passed, ``(None, …)`` if nothing could be decided (no
-    matching metric) — the renderer words each case."""
-    failed: list[str] = []
-    checked = 0
-    for c in conds:
-        if c.data.get("isQuantitative") is not True:
-            continue
-        metric, comp = c.data.get("metric"), str(c.data.get("comparator", ">="))
-        thr, op = c.data.get("thresholdValue"), _COMPARATORS.get(comp)
-        if metric not in provided or op is None or thr is None:
-            continue
-        checked += 1
-        if not op(float(provided[metric]), float(thr)):
-            failed.append(f"{metric} cần {comp} {_num(thr)} "
-                          f"(hiện {_num(provided[metric])})")
-    if not checked:
-        return None, "Cần đối chiếu các điều kiện sau"
-    if failed:
-        return False, "Chưa đủ điều kiện — " + "; ".join(failed)
-    return True, "Đạt các điều kiện định lượng; hãy xác nhận các điều kiện còn lại"
-
-
-def _num(v) -> str:
-    f = float(v)
-    return str(int(f)) if f.is_integer() else str(f)
-
-
-def _compare(graph: Graph, anchors: list[Node]) -> list[Fact]:
-    """COMPARE. Baseline lays the anchored set side by side; multi-entity
-    parsing arrives with the trained NLU."""
-    return [Fact(subject=None, predicate="So sánh", objects=anchors,
-                 intent="COMPARE", note="So sánh các mục")]
+def _intersect(shadows: list[list[Node]]) -> list[Node]:
+    """Ordered intersection: keep the first shadow's order."""
+    if not shadows:
+        return []
+    keep = set.intersection(*({n.iri for n in s} for s in shadows))
+    return [n for n in shadows[0] if n.iri in keep]

@@ -1,192 +1,209 @@
-"""NLU: raw text → :class:`Query` (entities + intent + slots).
+"""NLU: raw text → :class:`Query` (mentions split into subject + constraints).
 
-This is the rule-based **baseline** stand-in for the XLM-R two-head model
-(step 3 swaps the body of :func:`understand` for one ONNX forward; the
-:class:`Query` contract stays). Three jobs:
+This is the rule-based **baseline** stand-in for the XLM-R two-head model.
+Step 3 swaps the *recognition* for one ONNX forward (token head: spans with
+class tags; sentence head: GREETING/QUERY/OOD); the :class:`Query` contract
+and everything downstream stay.
 
-* **intent** — keyword rules over the diacritic-folded text. ``GREETING`` and
-  the listing form are detected here; out-of-domain is *not* decided here —
-  it emerges downstream when the anchor resolves to nothing (a query can name
-  a real procedure with zero domain keywords).
-* **anchor span** — interrogative fillers (``ở đâu``, ``bao nhiêu`` …) are
-  stripped so the residual surface is close to the entity, which the
-  rule-based matcher needs (the trained model will not).
-* **slots** — cohort code (``K65``) and a CPA value, for the v9 ``filter_by``
-  / ``reason`` handlers. Captured now, lightly used in v8.
+The mechanism mirrors the target architecture exactly:
 
-Intent declares the *target relation/class*; the planner derives direction.
+* **scan** — longest-match, left-to-right, non-overlapping matching of the
+  normalised text against the graph's *lexicon* (danh bạ). A row that names a
+  **class** ("học phí", "phòng ban") yields a SUBJECT mention; a row that
+  names an **individual** ("k65", "bảo lưu") yields a CONSTRAINT mention.
+  Ties at equal length: class beats individual ("học phí" reads as the fee
+  class, not the fee-payment procedure's alias; "đóng học phí" is longer and
+  picks the procedure naturally).
+* **interrogatives** — a small closed table of pure question phrases
+  ("phụ trách gì" → QuyTrinhHocVu). They are subject mentions the trained
+  model will tag from context; the table is baseline-only and is *never*
+  extended per edge case (misses become test rows for step 3, not new rules).
+* **subject choice** — one subject per query (scope decision 2026-06-13):
+  a cue-marked mention (interrogative, or a class mention right before a
+  question word) wins over a plain class mention; first occurrence wins
+  within a rank. Leftover subject classes are reported for the
+  "ask separately" notice. No subject mention at all → the first
+  constraint's own class (self-description), else out-of-domain.
+
+There is no fuzzy scoring, no threshold, no intent table and no slot regex —
+those died with the query-graph redesign (docs/redesign/03).
 """
 
 from __future__ import annotations
 
 import logging
-import re
 from dataclasses import dataclass, field
 
-from .text import clean, strip_diacritics
+from .text import clean, normalize_for_match
 
 log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class Entity:
-    """One anchor candidate. ``tag`` empty means 'let the graph pick the
-    class' — the rule-based baseline does not predict NER tags."""
+class Mention:
+    """One linked span. ``kind`` is ``subject`` (names a class — an open
+    variable) or ``constraint`` (names an individual — a constant)."""
     surface: str
-    tag: str = ""
+    cls: str
+    kind: str
+    iri: str = ""
+    cue: bool = False     # subject carried interrogative force
+    listable: bool = False  # subject backed by a real class-label row
 
 
 @dataclass
 class Query:
     """An understood question threaded into the answer layer."""
-    text: str                                   # cleaned, diacritics kept
-    intent: str
-    entities: list[Entity] = field(default_factory=list)
-    slots: dict = field(default_factory=dict)
-    is_listing: bool = False
+    text: str
+    act: str                                    # GREETING | QUERY
+    subject_cls: str = ""
+    subject_listable: bool = False
+    constraints: list[Mention] = field(default_factory=list)
+    extra_subjects: list[str] = field(default_factory=list)  # class labels
 
 
-# Intent vocabulary. ``ASK_*`` map to a target relation/class in answer.py;
-# the three below are handled specially.
 GREETING = "GREETING"
-ASK_OVERVIEW = "ASK_OVERVIEW"     # describe the anchored entity (also the
-                                  # fallback intent; OOD if anchor is empty)
+QUERY = "QUERY"
 
 
-# Keyword rules, evaluated in order — first hit wins. Keywords are matched on
-# the diacritic-folded text so no-diacritic input ("dieu kien") still fires.
-# Order encodes priority; document cues sit above office cues so "tải đơn …
-# ở đâu" reads as a document download, while the explicit office guards in
-# :func:`_classify` reclaim "… nộp phòng nào".
-_GREETING = (
+_GREETING_KEYS = (
     "xin chao", "chao ", " chao", "hello", " hi ", "hey", "alo",
     "cam on", "thanks", "tks", "tam biet", "bye",
     "haha", "hihi", "hehe", "huhu",
 )
-_INTENT_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("ASK_CONDITION", ("dieu kien", "yeu cau gi", "can gi de", "can dieu kien")),
-    ("ASK_PROCEDURE", ("phu trach", "xu ly gi", "lam nhung gi", "giai quyet gi")),
-    ("ASK_REGULATION", ("quy dinh", "can cu", "quyet dinh nao", "van ban nao",
-                        "theo qd")),
-    ("ASK_OUTPUT", ("duoc gi", "nhan duoc gi", "ket qua la gi", "ket qua cua",
-                    "ket qua nhan")),
-    ("ASK_DOCUMENT", ("bieu mau", "mau don", "giay to", "ho so", "form",
-                      "tai don", "tai bieu", "download", "don xin",
-                      "don de nghi", "don gia han")),
-    ("ASK_OFFICE", ("o dau", "dia chi", "lien he", "gap ai", "bo phan nao",
-                    "phong nao", "email", "so dien thoai", "sdt",
-                    "lam viec gio nao", "gio lam viec", "phong ban")),
-    ("ASK_PAYMENT", ("thanh toan", "phuong thuc", "chuyen khoan",
-                     "nop tien", "tra tien")),
-    ("COMPARE", ("so sanh", "khac nhau", "khac gi", " hon ", "chenh lech")),
-    ("ASK_STEP", ("cac buoc", "lam the nao", "thu tuc", "lam sao", "huong dan",
-                  "tien hanh", "quy trinh", "cach ")),
-)
-# ASK_FEE needs "học phí/mức phí" *plus* a price marker (a cohort code also
-# counts) so a bare "đóng học phí" still routes to the procedure, not a fee row.
-_FEE_MARKERS = ("bao nhieu", "moi tin chi", "the nao", "ra sao", "muc")
 
-# Fillers removed to build the anchor surface. Folded bigrams come first so a
-# token that is filler *only in context* is protected elsewhere — e.g. "bao
-# nhieu" drops as a pair while "bao" survives inside "bao luu" (bảo lưu); same
-# for "tin chi" vs the entity word, and "the nao". Then a conservative set of
-# single tokens that never appear in any entity label/alias.
-_FILLER_BIGRAMS = frozenset((
-    ("bao", "nhieu"), ("bao", "gio"), ("moi", "tin"), ("tin", "chi"),
-    ("o", "dau"), ("the", "nao"), ("nhu", "the"), ("ra", "sao"), ("la", "gi"),
-    ("cho", "hoi"), ("thong", "tin"), ("gioi", "thieu"), ("lien", "he"),
-    ("co", "nhung"), ("can", "gi"), ("dia", "chi"),
-))
-# Only unambiguous interrogative/politeness tokens — every entry is verified
-# to never appear (diacritic-folded) inside a real entity label or alias.
-# Context-sensitive ones (ban=bạn/ban, co=có/cơ, de=để/đề, the=thế/thể, la, ra)
-# are left to the bigram rules so the entity sense survives.
-_FILLER_TOKENS = frozenset((
-    "cho", "hoi", "muon", "minh", "toi", "vay", "nhi", "giup", "xem",
-    "duoc", "khong", "nao", "gi", "ve", "cach", "can", "nhung",
-    "san", "sao", "lam", "viec", "gio",
-))
+# Closed interrogative table (folded) — pure question phrases the trained NER
+# will tag from context. Policy: NEVER grown per edge case.
+_INTERROGATIVES: dict[str, str] = {
+    "phu trach gi": "QuyTrinhHocVu",
+    "phu trach nhung gi": "QuyTrinhHocVu",
+    "xu ly gi": "QuyTrinhHocVu",
+    "xu ly nhung gi": "QuyTrinhHocVu",
+    "nop o dau": "PhongBanHanhChinh",
+    "nop o phong nao": "PhongBanHanhChinh",
+    "nop phong nao": "PhongBanHanhChinh",
+    "nop cho ai": "PhongBanHanhChinh",
+    "lien he ai": "PhongBanHanhChinh",
+    "gap ai": "PhongBanHanhChinh",
+    "duoc khong": "DieuKien",
+    "du dieu kien": "DieuKien",
+    "can gi": "DieuKien",
+    "can nhung gi": "DieuKien",
+    "bao nhieu": "DinhMucHocPhi",
+    "duoc gi": "KetQuaDauRa",
+    "nhan duoc gi": "KetQuaDauRa",
+    "can cu nao": "QuyDinh",
+    "quyet dinh nao": "QuyDinh",
+}
 
-_RE_COHORT = re.compile(r"\bk\s?(\d{2})\b", re.IGNORECASE)
-_RE_CPA = re.compile(r"\b(?:cpa|gpa|diem|dtb)\D{0,8}(\d(?:[.,]\d+)?)\b", re.IGNORECASE)
-_RE_LISTING = (
-    re.compile(r"\bnhung\b.*\b(nao|gi)\b"),
-    re.compile(r"\bco\b.*\bnhung\b"),
-    re.compile(r"\bnao\b.*\bco\b"),
-    re.compile(r"\bco san\b"),
-    re.compile(r"\bliet ke\b"),
-)
+# Question words that mark the class mention right before them as the asked
+# thing ("cần giấy tờ GÌ" → giấy tờ is the subject even if another class
+# mention came first).
+_CUE_TOKENS = frozenset(("gi", "nao", "dau", "sao", "nhieu", "khong", "may"))
+_CUE_WINDOW = 2
 
 
-def understand(text: str) -> Query:
-    """Raw user text → :class:`Query`. Pure function; no model, no I/O."""
+def understand(text: str, lexicon) -> Query:
+    """Raw user text → :class:`Query`.
+
+    ``lexicon`` is any iterable of rows with ``phrase/kind/cls/iri``
+    attributes (duck-typed so this module never imports the graph — the
+    dependency arrow stays text → nlu → graph → answer).
+    """
     cleaned = clean(text)
-    folded = strip_diacritics(cleaned.lower())
-    if not cleaned:
-        return Query(text="", intent=GREETING)
-
+    folded = normalize_for_match(cleaned)
+    if not folded:
+        return Query(text="", act=GREETING)
     if _is_greeting(folded):
-        return Query(text=cleaned, intent=GREETING)
+        return Query(text=cleaned, act=GREETING)
 
-    # Slots come from the *raw* (pre-expansion) text: teencode would rewrite
-    # "cpa" → "điểm trung bình tích luỹ" and break the CPA regex.
-    raw_folded = strip_diacritics((text or "").lower())
-    slots: dict = {}
-    if (m := _RE_COHORT.search(raw_folded)):
-        slots["cohort"] = "K" + m.group(1)
-    if (m := _RE_CPA.search(raw_folded)):
-        slots["cpa"] = float(m.group(1).replace(",", "."))
-
-    listing = any(p.search(folded) for p in _RE_LISTING)
-    intent = ASK_OVERVIEW if listing else _classify(folded, slots)
-
-    surface = _anchor_surface(cleaned)
-    entities = [Entity(surface=surface)] if surface else []
-    log.info("[nlu] intent=%s listing=%s surface=%r slots=%s",
-             intent, listing, surface, slots)
-    return Query(text=cleaned, intent=intent, entities=entities,
-                 slots=slots, is_listing=listing)
+    mentions = _scan(folded, lexicon)
+    subject, listable, extras = _choose_subject(mentions)
+    constraints = [m for m in mentions if m.kind == "constraint"]
+    q = Query(text=cleaned, act=QUERY,
+              subject_cls=subject, subject_listable=listable,
+              constraints=constraints, extra_subjects=extras)
+    log.info("[nlu] subject=%s listable=%s constraints=%s extras=%s",
+             subject, listable, [(m.surface, m.cls) for m in constraints],
+             extras)
+    return q
 
 
 def _is_greeting(folded: str) -> bool:
     padded = f" {folded} "
-    return any(k in padded for k in _GREETING)
+    return any(k in padded for k in _GREETING_KEYS)
 
 
-def _classify(folded: str, slots: dict) -> str:
-    # Eligibility: a CPA value (or "đủ điều kiện") aimed at graduation.
-    if "du dieu kien" in folded or (
-        ("cpa" in slots) and any(k in folded for k in ("tot nghiep", "ra truong"))):
-        return "ELIGIBILITY"
-    # Office reclaims the document/office overlap when the focus is "which
-    # office" rather than "where to download".
-    if "phong nao" in folded or ("nop" in folded and "phong" in folded):
-        return "ASK_OFFICE"
-    # Fee needs the entity word *and* a price marker (cohort code counts).
-    if ("hoc phi" in folded or "muc phi" in folded) and (
-        "cohort" in slots or any(k in folded for k in _FEE_MARKERS)):
-        return "ASK_FEE"
-    for intent, keys in _INTENT_RULES:
-        if any(k in folded for k in keys):
-            return intent
-    return ASK_OVERVIEW
+# Scanning — longest-match, left-to-right, non-overlapping.
+
+def _scan(folded: str, lexicon) -> list[Mention]:
+    index, max_len = _index(lexicon)
+    tokens = folded.split()
+    out: list[Mention] = []
+    i = 0
+    while i < len(tokens):
+        hit = None
+        for ln in range(min(max_len, len(tokens) - i), 0, -1):
+            phrase = " ".join(tokens[i:i + ln])
+            entry = index.get(phrase)
+            if entry is not None:
+                hit = (entry, ln)
+                break
+        if hit is None:
+            i += 1
+            continue
+        entry, ln = hit
+        kind, cls, iri, listable = entry
+        cue = kind == "subject" and iri == "?"          # interrogative row
+        if kind == "subject" and not cue:
+            nxt = tokens[i + ln:i + ln + _CUE_WINDOW]
+            cue = any(t in _CUE_TOKENS for t in nxt)
+        out.append(Mention(surface=phrase, cls=cls, kind=kind,
+                           iri="" if kind == "subject" else iri,
+                           cue=cue, listable=listable))
+        i += ln
+    return out
 
 
-def _anchor_surface(cleaned: str) -> str:
-    """Strip interrogative fillers, leaving the entity-bearing residue.
+def _index(lexicon) -> tuple[dict, int]:
+    """phrase → (kind, cls, iri, listable). Precedence on duplicate phrases:
+    interrogative > class > individual."""
+    rank = {"interrog": 2, "class": 1, "individual": 0}
+    best: dict[str, tuple[int, tuple]] = {}
 
-    Folded tokens drive the decision; the original (diacritic) spelling is
-    kept by mapping positionally — the fuzzy index matches better on real
-    spelling. Returns the whole input if stripping would empty it.
-    """
-    orig = cleaned.split()
-    fold = strip_diacritics(cleaned.lower()).split()
-    drop = [False] * len(orig)
-    for i in range(len(fold) - 1):
-        if (fold[i], fold[i + 1]) in _FILLER_BIGRAMS:
-            drop[i] = drop[i + 1] = True
-    for i, f in enumerate(fold):
-        if f in _FILLER_TOKENS:
-            drop[i] = True
-    kept = [orig[i] for i in range(len(orig)) if not drop[i]]
-    return " ".join(kept).strip() or cleaned
+    def put(phrase: str, src: str, row: tuple) -> None:
+        cur = best.get(phrase)
+        if cur is None or rank[src] > cur[0]:
+            best[phrase] = (rank[src], row)
+
+    for e in lexicon:
+        if e.kind == "class":
+            put(e.phrase, "class", ("subject", e.cls, "", True))
+        else:
+            put(e.phrase, "individual", ("constraint", e.cls, e.iri, False))
+    for phrase, cls in _INTERROGATIVES.items():
+        put(phrase, "interrog", ("subject", cls, "?", False))
+
+    index = {p: row for p, (_r, row) in best.items()}
+    max_len = max((p.count(" ") + 1 for p in index), default=1)
+    return index, max_len
+
+
+# Subject choice — one per query.
+
+def _choose_subject(mentions: list[Mention]) -> tuple[str, bool, list[str]]:
+    subs = [m for m in mentions if m.kind == "subject"]
+    if not subs:
+        return "", False, []
+    ranked = [m for m in subs if m.cue] + [m for m in subs if not m.cue]
+    chosen = ranked[0]
+    # Listing needs a real class-label mention of the chosen class — a bare
+    # interrogative ("bao nhiêu?") must not unleash a full class dump.
+    listable = any(m.listable and m.cls == chosen.cls for m in subs)
+    constraint_classes = {m.cls for m in mentions if m.kind == "constraint"}
+    extras: list[str] = []
+    for m in subs:
+        if m.cls != chosen.cls and m.cls not in constraint_classes \
+                and m.cls not in extras:
+            extras.append(m.cls)
+    return chosen.cls, listable, extras

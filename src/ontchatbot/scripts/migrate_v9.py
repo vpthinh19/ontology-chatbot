@@ -101,6 +101,27 @@ RENAME: dict[str, str] = {
     # Regulations
     "Reg_QD1052": "QuyetDinh1052",
     "Reg_QD729": "QuyetDinh729",
+    # Object properties — camelCase tiếng Việt (chốt 2026-06-13)
+    "handledBy": "duocXuLyBoi",
+    "hasCondition": "coDieuKien",
+    "requiresDocument": "canTaiLieu",
+    "hasFeeCategory": "apDungMucHocPhi",
+    "hasOutput": "coKetQua",
+    "hasPaymentMethod": "coPhuongThucThanhToan",
+    "basedOnRegulation": "canCuQuyDinh",
+    "executedVia": "thucHienQua",
+    "hasStep": "coBuoc",
+    # Data properties — camelCase tiếng Việt
+    "procedureDescription": "moTaQuyTrinh",
+    "feeNote": "ghiChuHocPhi",
+    "feePerCredit": "hocPhiMoiTinChi",
+    "formUrl": "duongDanBieuMau",
+    "hasAlias": "tenGoiKhac",
+    "headOfOffice": "truongPhong",
+    "officeEmail": "email",
+    "officeLocation": "diaDiem",
+    "officePhoneNumber": "soDienThoai",
+    "officeWebsite": "website",
 }
 
 
@@ -226,18 +247,33 @@ _PROCEDURE_IRIS = {v for k, v in RENAME.items() if k.startswith("QuyTrinh_")}
 # Output fix: ChuyenNganh's real result.
 NEW_OUTPUT = ("KetQuaDuocChuyenNganh", "Được chuyển sang ngành mới phù hợp")
 
-# New-property rdfs:labels.
+# New-property rdfs:labels (property names are camelCase Vietnamese).
 PROP_LABELS = {
-    "appliesToCohort": "Áp dụng cho khóa",
-    "appliesToProgram": "Áp dụng cho ngành",
-    "cohortCode": "Mã khóa",
-    "metric": "Chỉ số đo",
-    "comparator": "Toán tử so sánh",
-    "thresholdValue": "Ngưỡng",
-    "isQuantitative": "Là điều kiện định lượng",
-    "conditionText": "Diễn giải điều kiện",
+    "apDungChoKhoa": "Áp dụng cho khóa",
+    "apDungChoNganh": "Áp dụng cho ngành",
+    "maKhoa": "Mã khóa",
+    "chiSoDo": "Chỉ số đo",
+    "toanTuSoSanh": "Toán tử so sánh",
+    "giaTriNguong": "Ngưỡng",
+    "laDinhLuong": "Là điều kiện định lượng",
+    "noiDungDieuKien": "Diễn giải điều kiện",
 }
 CLASS_LABELS = {"Khoa": "Khóa học", "Nganh": "Ngành đào tạo"}
+
+# Extra rdfs:label per class — the "class aliases" the lexicon scanner matches
+# as SUBJECT mentions ("học phí" → lớp DinhMucHocPhi). Dimension classes
+# (Khoa/Nganh) deliberately get none: they are filters, never subjects.
+CLASS_ALIASES: dict[str, list[str]] = {
+    "QuyTrinhHocVu": ["quy trình", "thủ tục"],
+    "PhongBanHanhChinh": ["phòng ban", "phòng"],
+    "TaiLieuBieuMau": ["biểu mẫu", "giấy tờ", "tài liệu", "mẫu đơn"],
+    "DinhMucHocPhi": ["học phí", "mức học phí", "giá học phí"],
+    "PhuongThucThanhToan": ["phương thức thanh toán", "cách thanh toán",
+                            "thanh toán"],
+    "DieuKien": ["điều kiện", "yêu cầu"],
+    "KetQuaDauRa": ["kết quả"],
+    "QuyDinh": ["quy định"],
+}
 
 XSD = "http://www.w3.org/2001/XMLSchema#"
 
@@ -369,10 +405,10 @@ def build() -> str:
     # Declarations
     for c in CLASS_LABELS:
         parts.append(_decl("Class", c))
-    for prop in ("appliesToCohort", "appliesToProgram"):
+    for prop in ("apDungChoKhoa", "apDungChoNganh"):
         parts.append(_decl("ObjectProperty", prop))
-    for prop in ("cohortCode", "metric", "comparator", "thresholdValue",
-                 "isQuantitative", "conditionText"):
+    for prop in ("maKhoa", "chiSoDo", "toanTuSoSanh", "giaTriNguong",
+                 "laDinhLuong", "noiDungDieuKien"):
         parts.append(_decl("DataProperty", prop))
     for iri in (*COHORTS, *PROGRAMS, NEW_OUTPUT[0]):
         parts.append(_decl("NamedIndividual", iri))
@@ -385,48 +421,52 @@ def build() -> str:
     parts.append(_class_assertion("KetQuaDauRa", NEW_OUTPUT[0]))
 
     # Fixed ChuyenNganh output + fee dimension edges
-    parts.append(_obj_assertion("hasOutput", "QuyTrinhChuyenNganh", NEW_OUTPUT[0]))
+    parts.append(_obj_assertion("coKetQua", "QuyTrinhChuyenNganh", NEW_OUTPUT[0]))
     for fee, (cohort, programs) in FEE_DIMENSIONS.items():
         if cohort:
-            parts.append(_obj_assertion("appliesToCohort", fee, cohort))
+            parts.append(_obj_assertion("apDungChoKhoa", fee, cohort))
         for prog in programs:
-            parts.append(_obj_assertion("appliesToProgram", fee, prog))
+            parts.append(_obj_assertion("apDungChoNganh", fee, prog))
 
-    # Data: cohort codes, structured conditions, conditionText, aliases
+    # Data: cohort codes, structured conditions, condition text, aliases
     for iri, (code, _lbl, _al) in COHORTS.items():
-        parts.append(_data_assertion("cohortCode", iri, code))
+        parts.append(_data_assertion("maKhoa", iri, code))
     for iri, text_val in cond_text.items():
-        parts.append(_data_assertion("conditionText", iri, text_val))
+        parts.append(_data_assertion("noiDungDieuKien", iri, text_val))
         if iri in QUANT_CONDITIONS:
             metric, comp, thr = QUANT_CONDITIONS[iri]
-            parts.append(_data_assertion("metric", iri, metric))
-            parts.append(_data_assertion("comparator", iri, comp))
+            parts.append(_data_assertion("chiSoDo", iri, metric))
+            parts.append(_data_assertion("toanTuSoSanh", iri, comp))
             thr_s = str(int(thr)) if float(thr).is_integer() else str(thr)
-            parts.append(_data_assertion("thresholdValue", iri, thr_s, XSD + "decimal"))
-            parts.append(_data_assertion("isQuantitative", iri, "true", XSD + "boolean"))
+            parts.append(_data_assertion("giaTriNguong", iri, thr_s, XSD + "decimal"))
+            parts.append(_data_assertion("laDinhLuong", iri, "true", XSD + "boolean"))
         else:
-            parts.append(_data_assertion("isQuantitative", iri, "false", XSD + "boolean"))
+            parts.append(_data_assertion("laDinhLuong", iri, "false", XSD + "boolean"))
     for iri, aliases in KEPT_ALIASES.items():
         for al in aliases:
-            parts.append(_data_assertion("hasAlias", iri, al))
+            parts.append(_data_assertion("tenGoiKhac", iri, al))
     for iri, (_lbl, aliases) in PROGRAMS.items():
         for al in aliases:
-            parts.append(_data_assertion("hasAlias", iri, al))
+            parts.append(_data_assertion("tenGoiKhac", iri, al))
     for iri, (_code, _lbl, aliases) in COHORTS.items():
         for al in aliases:
-            parts.append(_data_assertion("hasAlias", iri, al))
+            parts.append(_data_assertion("tenGoiKhac", iri, al))
 
     # Domains / ranges for new properties
-    parts.append(_obj_domain_range("appliesToCohort", "DinhMucHocPhi", "Khoa"))
-    parts.append(_obj_domain_range("appliesToProgram", "DinhMucHocPhi", "Nganh"))
-    parts.append(_data_domain("cohortCode", "Khoa"))
-    for prop in ("metric", "comparator", "thresholdValue", "isQuantitative",
-                 "conditionText"):
+    parts.append(_obj_domain_range("apDungChoKhoa", "DinhMucHocPhi", "Khoa"))
+    parts.append(_obj_domain_range("apDungChoNganh", "DinhMucHocPhi", "Nganh"))
+    parts.append(_data_domain("maKhoa", "Khoa"))
+    for prop in ("chiSoDo", "toanTuSoSanh", "giaTriNguong", "laDinhLuong",
+                 "noiDungDieuKien"):
         parts.append(_data_domain(prop, "DieuKien"))
 
-    # Labels for new classes / individuals / properties
+    # Labels for new classes / individuals / properties; class aliases are
+    # extra rdfs:label values the lexicon reads as SUBJECT rows.
     for c, lbl in CLASS_LABELS.items():
         parts.append(_label(c, lbl))
+    for c, aliases in CLASS_ALIASES.items():
+        for al in aliases:
+            parts.append(_label(c, al))
     for iri, (_code, lbl, _al) in COHORTS.items():
         parts.append(_label(iri, lbl))
     for iri, (lbl, _al) in PROGRAMS.items():
@@ -450,22 +490,25 @@ def _validate() -> None:
 
     assert "Khoa" in {c.name for c in onto.classes()}, "Khoa class missing"
     assert "Nganh" in {c.name for c in onto.classes()}, "Nganh class missing"
-    assert by_name["KhoaK65"].cohortCode == ["K65"], "cohortCode wrong"
+    assert by_name["KhoaK65"].maKhoa == ["K65"], "maKhoa wrong"
 
     fee = by_name["HocPhiK65CongNgheThongTin"]
-    progs = {p.name for p in fee.appliesToProgram}
+    progs = {p.name for p in fee.apDungChoNganh}
     assert progs == {"NganhCongNgheThongTin"}, f"CNTT fee programs={progs}"
-    assert fee.appliesToCohort[0].name == "KhoaK65"
+    assert fee.apDungChoKhoa[0].name == "KhoaK65"
 
     cpa = by_name["DieuKienTotNghiepCPA"]
-    assert cpa.thresholdValue == [5.5] and cpa.comparator == [">="]
-    assert cpa.isQuantitative == [True] and cpa.conditionText, "CPA condition unstructured"
+    assert cpa.giaTriNguong == [5.5] and cpa.toanTuSoSanh == [">="]
+    assert cpa.laDinhLuong == [True] and cpa.noiDungDieuKien, "CPA condition unstructured"
 
     cn = by_name["QuyTrinhChuyenNganh"]
-    assert {o.name for o in cn.hasOutput} == {"KetQuaDuocChuyenNganh"}, "output not fixed"
+    assert {o.name for o in cn.coKetQua} == {"KetQuaDuocChuyenNganh"}, "output not fixed"
 
-    assert not hasattr(by_name["HocPhiK65CongNgheThongTin"], "appliesToTarget") or \
-        not by_name["HocPhiK65CongNgheThongTin"].appliesToTarget, "appliesToTarget remains"
+    assert not getattr(fee, "appliesToTarget", None), "appliesToTarget remains"
+    assert {str(v) for v in by_name["QuyTrinhBaoLuu"].duocXuLyBoi[0].email} \
+        == {"ctsv@ntu.edu.vn"}, "camelCase object/data props not wired"
+    fee_cls = next(c for c in onto.classes() if c.name == "DinhMucHocPhi")
+    assert "học phí" in [str(v) for v in fee_cls.label], "class alias missing"
 
     n_ind = len(by_name)
     print(f"[migrate_v9] OK — individuals={n_ind} classes={len(list(onto.classes()))} "
