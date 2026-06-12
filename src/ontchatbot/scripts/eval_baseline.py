@@ -14,6 +14,7 @@ Usage: ``uv run --extra inference python -m ontchatbot.scripts.eval_baseline``
 from __future__ import annotations
 
 import json
+import sys
 from collections import defaultdict
 
 from ..config import RESOURCES
@@ -33,6 +34,8 @@ def _ok(anc, exp_iris: set[str], exp_class_won: bool) -> bool:
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):       # Windows console defaults to cp1252
+        sys.stdout.reconfigure(encoding="utf-8")
     g = Graph()
     rows = [json.loads(l) for l in CASES.read_text(encoding="utf-8").splitlines() if l.strip()]
     by_cat: dict[str, list[bool]] = defaultdict(list)

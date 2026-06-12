@@ -1,0 +1,65 @@
+{"text": "bao luu co mat phi khong", "procedure": "QuyTrinhBaoLuu", "intent": ""}
+{"text": "bảo lưu có mất học phí không", "procedure": "QuyTrinhBaoLuu", "intent": ""}
+{"text": "làm sao để bảo lưu", "procedure": "QuyTrinhBaoLuu", "intent": ""}
+{"text": "điều kiện bảo lưu", "procedure": "QuyTrinhBaoLuu", "intent": ""}
+{"text": "lam sao de doi nganh", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "làm sao để đổi ngành", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "muốn chuyển ngành", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "toi nam 2 muon doi nganh", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "tôi năm 2 đổi ngành được không", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "tôi năm 3 đổi ngành được không", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "xin chuyen nganh", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "xin doi nganh", "procedure": "QuyTrinhChuyenNganh", "intent": ""}
+{"text": "dang ki mh", "procedure": "QuyTrinhDangKyHocPhan", "intent": ""}
+{"text": "dang ki tin chi", "procedure": "QuyTrinhDangKyHocPhan", "intent": ""}
+{"text": "dki mon", "procedure": "QuyTrinhDangKyHocPhan", "intent": ""}
+{"text": "đki môn", "procedure": "QuyTrinhDangKyHocPhan", "intent": ""}
+{"text": "cai thien cpa", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "cai thien diem duoc khong", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "cai thien gpa", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "cay lai diem duoc khong", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "cải thiện gpa", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "diem thap qua", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "lam sao cai thien diem", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "làm sao cải thiện điểm môn này", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "môn này điêm của tôi thấp", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "nang diem", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "điểm thấp", "procedure": "QuyTrinhHocCaiThien", "intent": ""}
+{"text": "bi cam thi", "procedure": "QuyTrinhHocLai", "intent": ""}
+{"text": "bị cấm thi", "procedure": "QuyTrinhHocLai", "intent": ""}
+{"text": "bị nợ môn", "procedure": "QuyTrinhHocLai", "intent": ""}
+{"text": "rot mon", "procedure": "QuyTrinhHocLai", "intent": ""}
+{"text": "truot mon", "procedure": "QuyTrinhHocLai", "intent": ""}
+{"text": "cách đóng học phí", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "gia han hoc phi", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "gia han thoi gian dong hoc phi", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "hoc phi dai hoc", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "làm sao để đóng học phí", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "nop tien", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "nop tien hoc", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "nộp học phí đại học", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "nộp học phó đại học", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "quy trình đóng học phí", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "xin gia hạn thời gian đóng học phí", "procedure": "QuyTrinhNopHocPhi", "intent": ""}
+{"text": "huy hoc phan", "procedure": "QuyTrinhRutMonHoc", "intent": ""}
+{"text": "xóa tín chỉ", "procedure": "QuyTrinhRutMonHoc", "intent": ""}
+{"text": "diem toi nhu nay duoc hoc bong khong", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "diem toi đc hb ko", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "dk hoc bong", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "dkien xet hb", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "hb xet sao vay", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "hoc bong xet the nao", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "học bổng xét thế nào", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "lam sao duoc hoc bong", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "toi muon duoc xet hb", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "tôi có điểm như này được hb ko", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "xet hoc bong", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "điểm tôi như này được học bổng không", "procedure": "QuyTrinhXetHocBong", "intent": ""}
+{"text": "co tn dc khong", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "có tốt nghiệp được không", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "diem toi nhu nay tot nghiep duoc khong", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "dk xet tot nghiep", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "muốn tốt nghiệp cần gì", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "muốn xét tn", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "tot nghiep som", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}
+{"text": "điểm tôi như này tốt nghiệp được không", "procedure": "QuyTrinhXetTotNghiep", "intent": ""}

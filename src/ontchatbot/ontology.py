@@ -24,8 +24,8 @@ from rapidfuzz import fuzz, process
 from .config import (
     FUZZY_MIN_SCORE,
     FUZZY_TOP_K,
-    LABEL_MAP_PATH,
-    ONTOLOGY_PATH,
+    LEGACY_LABEL_MAP_PATH as LABEL_MAP_PATH,  # legacy class stays on v8 until step 3
+    LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH,
 )
 from .preprocessor import Preprocessor
 

@@ -31,7 +31,7 @@ def test_out_of_domain(pipe):
 
 def test_condition_forward_walk(pipe):
     out = pipe.answer("điều kiện bảo lưu là gì")
-    assert any(e["iri"] == "QuyTrinh_BaoLuu" for e in out["entities"])
+    assert any(e["iri"] == "QuyTrinhBaoLuu" for e in out["entities"])
     assert "Điều kiện" in out["reply"]
 
 
@@ -60,8 +60,24 @@ def test_listing_renders_all(pipe):
 def test_multi_match_fees_via_cohort(pipe):
     out = pipe.answer("học phí k65 thế nào")
     iris = {e["iri"] for e in out["entities"]}
-    assert {"Phi_K65_550k", "Phi_K65_620k"} <= iris
+    assert {"HocPhiK65QuanTriKinhDoanh", "HocPhiK65CongNgheThongTin"} <= iris
     assert "550.000" in out["reply"] and "620.000" in out["reply"]
+
+
+def test_fee_cohort_program_intersects_to_one(pipe):
+    # K65 ∩ CNTT → a single fee (620k), not the whole K65 cohort. This is the
+    # set GIAO a top-1 similarity score cannot do.
+    out = pipe.answer("học phí k65 ngành công nghệ thông tin bao nhiêu")
+    iris = {e["iri"] for e in out["entities"]}
+    assert iris == {"HocPhiK65CongNgheThongTin"}
+    assert "620.000" in out["reply"] and "550.000" not in out["reply"]
+
+
+def test_eligibility_threshold_verdict(pipe):
+    # Structured Condition → a real fail verdict, not a prose dump.
+    out = pipe.answer("CPA 5.2 tốt nghiệp được không")
+    assert "Chưa đủ điều kiện" in out["reply"]
+    assert "5.5" in out["reply"]
 
 
 def test_async_matches_sync(pipe):

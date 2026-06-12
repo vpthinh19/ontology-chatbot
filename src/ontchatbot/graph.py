@@ -12,10 +12,13 @@ Four traversal primitives replace the old recursive ``describe`` dump:
 ``anchor`` (resolve text → a *set* of nodes), ``walk`` (run a plan over the
 ABox), ``filter_by`` (intersect along a dimension), ``instances`` (listing).
 
-v8 caveat: the TBox is incomplete (``basedOnRegulation`` has no declared
-domain; ``executedVia``/``hasStep`` carry zero assertions). We therefore
-infer domain/range from **TBox ∪ ABox** at load so the class graph has no
-holes. The v9 remodel makes the declared schema authoritative.
+The TBox can still be sparse (``executedVia``/``hasStep`` carry zero
+assertions even in v9), so domain/range are inferred from **TBox ∪ ABox** at
+load and the class graph has no holes. Inverse traversal is *synthesised* from
+domain/range here rather than declared as ``owl:inverseOf`` in the ontology —
+an undeclared-but-unasserted inverse property would make a forward ``walk``
+read an empty relation, so the planner owning both directions is both safer
+and the cleaner statement of the research claim.
 """
 
 from __future__ import annotations
@@ -207,34 +210,62 @@ class Graph:
         prop = getattr(ind, step.prop, None) or []
         return [v.name for v in prop if hasattr(v, "name")]
 
-    def filter_by(self, nodes: list[Node], **dims: str) -> list[Node]:
-        """Intersect a node set along named dimensions.
+    def filter_by(self, nodes: list[Node], *,
+                  cohort: str = "", program: str = "") -> list[Node]:
+        """Intersect a fee set along the v9 structured dimensions.
 
-        v8 has no structured Cohort/Program (the v9 remodel adds them), so the
-        only dimension we can honour now is a substring match against the IRI
-        / ``appliesToTarget`` text. Unmatched dims are ignored — the full set
-        is returned, which is the correct ``multi_match`` behaviour for v8.
-        Real set-intersection lands with the v9 schema.
+        ``cohort`` (a code like ``K65``) matches a fee's ``appliesToCohort →
+        Khoa.cohortCode``; ``program`` (a ``Nganh`` IRI) matches membership in
+        the fee's ``appliesToProgram`` set. Each dimension narrows *only when it
+        bites*, so a bare cohort returns the whole cohort (the multi_match
+        contract) while cohort ∩ program collapses to the single fee — the set
+        arithmetic a top-1 similarity score cannot express.
         """
         out = nodes
-        for _dim, value in dims.items():
-            if not value:
-                continue
-            key = normalize_for_match(value)
-            hit = [n for n in out if key and self._matches_dim(n, key)]
-            if hit:                       # only narrow when the dim actually bites
+        if cohort:
+            hit = [n for n in out if self._fee_in_cohort(n.iri, cohort)]
+            if hit:
+                out = hit
+        if program:
+            hit = [n for n in out if program in self._fee_programs(n.iri)]
+            if hit:
                 out = hit
         return out
 
-    @staticmethod
-    def _matches_dim(node: Node, key: str) -> bool:
-        hay = [normalize_for_match(node.iri)]
-        tgt = node.data.get("appliesToTarget")
-        if isinstance(tgt, str):
-            hay.append(normalize_for_match(tgt))
-        elif isinstance(tgt, list):
-            hay.extend(normalize_for_match(str(t)) for t in tgt)
-        return any(key in h for h in hay)
+    def _fee_in_cohort(self, fee_iri: str, code: str) -> bool:
+        want = code.casefold()
+        for kh in self._neighbors(fee_iri, Step("appliesToCohort", inverse=False)):
+            ind = self._owl[kh]
+            if any(str(c).casefold() == want
+                   for c in (getattr(ind, "cohortCode", None) or [])):
+                return True
+        return False
+
+    def _fee_programs(self, fee_iri: str) -> set[str]:
+        return set(self._neighbors(fee_iri, Step("appliesToProgram", inverse=False)))
+
+    def resolve_program(self, text: str) -> str:
+        """Resolve a program (``Nganh``) IRI from free text via label/alias.
+
+        Whole-phrase (space-delimited) match, longest wins — so ``"ngành công
+        nghệ thông tin"`` beats the short ``"it"`` alias and a stray ``"it"``
+        inside another word never fires. Returns ``""`` on no match. Feeding the
+        result to :meth:`filter_by` is what turns ``"học phí K65 ngành CNTT"``
+        into a one-node answer."""
+        q = normalize_for_match(text)
+        cls = self._owl["Nganh"] if q else None
+        if cls is None:
+            return ""
+        padded = f" {q} "
+        best, best_len = "", 0
+        for ind in cls.instances():
+            forms = {str(v) for v in (getattr(ind, "label", None) or [])}
+            forms.update(str(v) for v in (getattr(ind, "hasAlias", None) or []))
+            for f in forms:
+                key = normalize_for_match(f)
+                if key and f" {key} " in padded and len(key) > best_len:
+                    best, best_len = ind.name, len(key)
+        return best
 
     def instances(self, cls: str) -> list[Node]:
         """Every individual of ``cls`` (label-sorted) — class listing."""

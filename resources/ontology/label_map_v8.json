@@ -3,35 +3,35 @@
     "QuyTrinhHocVu": {
       "type": "ontology",
       "label": "Quy trình học vụ",
-      "uri": "http://www.ntu.edu.vn/ontology/academic#QuyTrinhHocVu"
+      "uri": "http://www.ntu.edu.vn/ontology/academic#AcademicProcedure"
     }
   },
   {
     "PhongBanHanhChinh": {
       "type": "ontology",
       "label": "Phòng ban hành chính",
-      "uri": "http://www.ntu.edu.vn/ontology/academic#PhongBanHanhChinh"
+      "uri": "http://www.ntu.edu.vn/ontology/academic#AdministrativeOffice"
     }
   },
   {
     "TaiLieuBieuMau": {
       "type": "ontology",
       "label": "Tài liệu biểu mẫu",
-      "uri": "http://www.ntu.edu.vn/ontology/academic#TaiLieuBieuMau"
+      "uri": "http://www.ntu.edu.vn/ontology/academic#Document"
     }
   },
   {
     "DinhMucHocPhi": {
       "type": "ontology",
       "label": "Định mức học phí",
-      "uri": "http://www.ntu.edu.vn/ontology/academic#DinhMucHocPhi"
+      "uri": "http://www.ntu.edu.vn/ontology/academic#FeeCategory"
     }
   },
   {
     "PhuongThucThanhToan": {
       "type": "ontology",
       "label": "Phương thức thanh toán",
-      "uri": "http://www.ntu.edu.vn/ontology/academic#PhuongThucThanhToan"
+      "uri": "http://www.ntu.edu.vn/ontology/academic#PaymentMethod"
     }
   }
 ]

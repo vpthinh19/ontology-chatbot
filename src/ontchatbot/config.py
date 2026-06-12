@@ -18,8 +18,13 @@ RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 # Resources
 ONTOLOGY_DIR = RESOURCES / "ontology"
-LABEL_MAP_PATH = ONTOLOGY_DIR / "label_map.json"
-ONTOLOGY_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure_v8.owx"
+LABEL_MAP_PATH = ONTOLOGY_DIR / "label_map.json"            # v9 class URIs (new graph)
+LEGACY_LABEL_MAP_PATH = ONTOLOGY_DIR / "label_map_v8.json"  # v8 class URIs (legacy)
+# Active ontology for the new pipeline (graph.py). The legacy ``Ontology``
+# class (ontology.py) stays pinned to v8 until step 3 retires it, so its tests
+# and any training that reads it are unaffected by the v9 remodel.
+ONTOLOGY_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure_v9.owx"
+LEGACY_ONTOLOGY_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure_v8.owx"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 DATASET_DIR = RESOURCES / "datasets"

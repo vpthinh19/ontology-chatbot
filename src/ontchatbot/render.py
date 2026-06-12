@@ -34,7 +34,6 @@ _DATA_LABEL: dict[str, str] = {
     "procedureDescription": "Mô tả",
     "feeNote": "Lưu ý",
     "feePerCredit": "Học phí mỗi tín chỉ",
-    "appliesToTarget": "Áp dụng cho",
     "headOfOffice": "Phụ trách",
     "officeLocation": "Địa chỉ",
     "officeEmail": "Email",
@@ -44,15 +43,24 @@ _DATA_LABEL: dict[str, str] = {
 }
 _DATA_ORDER = list(_DATA_LABEL)
 
+# v9 props consumed programmatically (cohort/program edges, structured-condition
+# reasoning, conditionText which the label already conveys) — never shown raw.
+_HIDDEN_DATA = frozenset({
+    "metric", "comparator", "thresholdValue", "isQuantitative",
+    "conditionText", "cohortCode",
+})
+
+# v9 class IRIs (Vietnamese). One of the three rename touch-points alongside
+# answer.INTENT_TARGET and label_map.json.
 _CLASS_LABEL: dict[str, str] = {
-    "AcademicProcedure": "quy trình học vụ",
-    "AdministrativeOffice": "phòng ban hành chính",
-    "Document": "biểu mẫu",
-    "FeeCategory": "định mức học phí",
-    "PaymentMethod": "phương thức thanh toán",
-    "Condition": "điều kiện",
-    "OutputResult": "kết quả",
-    "Regulation": "quy định",
+    "QuyTrinhHocVu": "quy trình học vụ",
+    "PhongBanHanhChinh": "phòng ban hành chính",
+    "TaiLieuBieuMau": "biểu mẫu",
+    "DinhMucHocPhi": "định mức học phí",
+    "PhuongThucThanhToan": "phương thức thanh toán",
+    "DieuKien": "điều kiện",
+    "KetQuaDauRa": "kết quả",
+    "QuyDinh": "quy định",
 }
 
 
@@ -96,7 +104,11 @@ def _render_relation(f: Fact) -> str:
 
 
 def _render_reason(f: Fact) -> str:
-    lines = [f"{f.subject.label if f.subject else ''} — {f.note}:"]
+    """ELIGIBILITY: a verdict badge + the note, then the conditions to verify.
+    The badge reflects the structured threshold check done in the answer layer."""
+    badge = {True: "✅ ", False: "❌ ", None: ""}[f.verdict]
+    subj = f.subject.label if f.subject else ""
+    lines = [f"{subj} — {badge}{f.note}:"]
     for n in f.objects:
         lines.append(f"• {n.label}")
     if not f.objects:
@@ -126,7 +138,7 @@ def _render_node(node: Node, *, bullet: str = "") -> str:
 
 def _ordered_keys(data: dict) -> list[str]:
     known = [k for k in _DATA_ORDER if k in data]
-    rest = [k for k in data if k not in _DATA_LABEL]
+    rest = [k for k in data if k not in _DATA_LABEL and k not in _HIDDEN_DATA]
     return known + rest
 
 
