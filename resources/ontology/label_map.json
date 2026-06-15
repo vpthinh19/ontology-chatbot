@@ -33,5 +33,19 @@
       "label": "Phương thức thanh toán",
       "uri": "http://www.ntu.edu.vn/ontology/academic#PhuongThucThanhToan"
     }
+  },
+  {
+    "KhoaHoc": {
+      "type": "ontology",
+      "label": "Khóa học",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#Khoa"
+    }
+  },
+  {
+    "NganhDaoTao": {
+      "type": "ontology",
+      "label": "Ngành đào tạo",
+      "uri": "http://www.ntu.edu.vn/ontology/academic#Nganh"
+    }
   }
 ]

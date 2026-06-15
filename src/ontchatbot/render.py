@@ -1,13 +1,15 @@
 """Render ``Fact[]`` → a Vietnamese chat reply.
 
-One small template per fact *shape* (listing / self-set / relation / reason /
-compare). Because the answer layer already produced edge-correct facts, the
-renderer never reaches into the ontology — it only formats nodes, so it has no
-owlready2 dependency and tests run on plain dataclasses.
+The answer layer already produced edge-correct blocks, so the renderer only
+formats nodes — no owlready2 dependency, tests run on plain dataclasses. Three
+block shapes: a **class listing** (``cls`` set), a **self-description** (no
+heading → the node's full data, no bullet), and a **group block** (heading +
+bulleted nodes, the cohort×program / relation results).
 
 Greeting / out-of-domain are policy, not data: an empty fact list with a
-``GREETING`` intent greets; an empty list otherwise apologises with scope.
-There is no keyword regex — the intent already decided.
+``GREETING`` act greets; an empty list otherwise apologises with scope. When
+the query named a second subject (scope = one subject/query), a closing line
+invites the user to ask that part separately.
 """
 
 from __future__ import annotations
@@ -31,27 +33,26 @@ OUT_OF_DOMAIN_REPLY = (
 # Data-property local name → header, in display order. Unlisted props are
 # appended in declaration order, so a new property in Protégé still shows.
 _DATA_LABEL: dict[str, str] = {
-    "procedureDescription": "Mô tả",
-    "feeNote": "Lưu ý",
-    "feePerCredit": "Học phí mỗi tín chỉ",
-    "headOfOffice": "Phụ trách",
-    "officeLocation": "Địa chỉ",
-    "officeEmail": "Email",
-    "officePhoneNumber": "Điện thoại",
-    "officeWebsite": "Website",
-    "formUrl": "Tải biểu mẫu",
+    "moTaQuyTrinh": "Mô tả",
+    "ghiChuHocPhi": "Lưu ý",
+    "hocPhiMoiTinChi": "Học phí mỗi tín chỉ",
+    "truongPhong": "Phụ trách",
+    "diaDiem": "Địa chỉ",
+    "email": "Email",
+    "soDienThoai": "Điện thoại",
+    "website": "Website",
+    "duongDanBieuMau": "Tải biểu mẫu",
 }
 _DATA_ORDER = list(_DATA_LABEL)
 
-# v9 props consumed programmatically (cohort/program edges, structured-condition
-# reasoning, conditionText which the label already conveys) — never shown raw.
+# Props consumed programmatically or already conveyed by the label (the
+# condition prose carries its own threshold) — never shown as raw fields.
 _HIDDEN_DATA = frozenset({
-    "metric", "comparator", "thresholdValue", "isQuantitative",
-    "conditionText", "cohortCode",
+    "chiSoDo", "toanTuSoSanh", "giaTriNguong", "laDinhLuong",
+    "noiDungDieuKien", "maKhoa",
 })
 
-# v9 class IRIs (Vietnamese). One of the three rename touch-points alongside
-# answer.INTENT_TARGET and label_map.json.
+# v9 class IRIs (Vietnamese) → human label for listings / the closing notice.
 _CLASS_LABEL: dict[str, str] = {
     "QuyTrinhHocVu": "quy trình học vụ",
     "PhongBanHanhChinh": "phòng ban hành chính",
@@ -61,29 +62,37 @@ _CLASS_LABEL: dict[str, str] = {
     "DieuKien": "điều kiện",
     "KetQuaDauRa": "kết quả",
     "QuyDinh": "quy định",
+    "Khoa": "khóa",
+    "Nganh": "ngành",
 }
 
 
 def render_reply(query: Query, facts: list[Fact]) -> str:
-    """Final reply policy: facts win; else greeting vs out-of-domain by intent."""
+    """Final reply policy: facts win; else greeting vs out-of-domain by act."""
     if not facts:
-        return GREETING_REPLY if query.intent == GREETING else OUT_OF_DOMAIN_REPLY
+        return GREETING_REPLY if query.act == GREETING else OUT_OF_DOMAIN_REPLY
     blocks = [b for b in (_render_fact(f) for f in facts) if b]
     if not blocks:
         return OUT_OF_DOMAIN_REPLY
-    return "\n---\n".join(blocks)
+    reply = "\n---\n".join(blocks)
+    if query.extra_subjects:
+        labels = ", ".join(f"«{_CLASS_LABEL.get(c, c)}»" for c in query.extra_subjects)
+        reply += (f"\n\n(Câu hỏi của bạn còn nhắc tới {labels} — bạn hỏi riêng "
+                  "ý đó giúp mình nhé.)")
+    return reply
 
 
 def _render_fact(f: Fact) -> str:
-    if f.intent == "ELIGIBILITY":
-        return _render_reason(f)
-    if f.intent == "COMPARE":
-        return _render_compare(f)
-    if f.cls and f.subject is None and f.predicate == "":
+    if f.cls:
         return _render_listing(f)
-    if f.subject is None:                      # self-set: anchors' own data
-        return "\n\n".join(_render_node(n) for n in f.objects)
-    return _render_relation(f)                 # walked relation
+    lines: list[str] = []
+    if f.heading:
+        lines.append(f"{f.heading}:")
+    if f.note:
+        lines.append(f.note)
+    if f.objects:
+        lines.append(_render_objects(f))
+    return "\n".join(l for l in lines if l)
 
 
 def _render_listing(f: Fact) -> str:
@@ -91,36 +100,14 @@ def _render_listing(f: Fact) -> str:
     return "\n".join([head, *(f"• {n.label}" for n in f.objects)])
 
 
-def _render_relation(f: Fact) -> str:
-    """``<anchor> — <predicate>:`` then each walked target."""
-    subj = f.subject.label if f.subject else ""
-    if not f.objects:
-        return f"{subj}\nHiện chưa có dữ liệu cho \"{f.predicate.lower()}\"."
-    head = f"{subj} — {f.predicate}:"
+def _render_objects(f: Fact) -> str:
+    """Bulleted nodes under a heading; or a single node's full data (no bullet)
+    for the self-description block (no heading)."""
+    if not f.heading and len(f.objects) == 1:
+        return _render_node(f.objects[0])
     items = [_render_node(n, bullet="•") for n in f.objects]
-    # Compact (label-only) targets stay tight; rich ones breathe.
     sep = "\n\n" if any("\n" in it for it in items) else "\n"
-    return head + "\n" + sep.join(items)
-
-
-def _render_reason(f: Fact) -> str:
-    """ELIGIBILITY: a verdict badge + the note, then the conditions to verify.
-    The badge reflects the structured threshold check done in the answer layer."""
-    badge = {True: "✅ ", False: "❌ ", None: ""}[f.verdict]
-    subj = f.subject.label if f.subject else ""
-    lines = [f"{subj} — {badge}{f.note}:"]
-    for n in f.objects:
-        lines.append(f"• {n.label}")
-    if not f.objects:
-        lines.append("• (chưa có điều kiện nào được khai báo)")
-    return "\n".join(lines)
-
-
-def _render_compare(f: Fact) -> str:
-    lines = ["So sánh:"]
-    for n in f.objects:
-        lines.append(_render_node(n, bullet="•"))
-    return "\n".join(lines)
+    return sep.join(items)
 
 
 def _render_node(node: Node, *, bullet: str = "") -> str:
@@ -144,7 +131,7 @@ def _ordered_keys(data: dict) -> list[str]:
 
 def _format_field(key: str, value) -> str:
     header = _DATA_LABEL.get(key, key)
-    if key == "feePerCredit" and isinstance(value, (int, float)):
+    if key == "hocPhiMoiTinChi" and isinstance(value, (int, float)):
         return f"- {header}: {int(value):,} đ/tín chỉ".replace(",", ".")
     if isinstance(value, list):
         return f"- {header}: " + ", ".join(_scalar(v) for v in value)

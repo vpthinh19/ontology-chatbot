@@ -1,6 +1,8 @@
-"""Graph: schema BFS planner + ABox traversal + fuzzy anchor.
+"""Graph: schema BFS planner + ABox traversal + lexicon.
 
-Asserts on stable v9 IRIs so a planner regression surfaces immediately.
+Asserts on stable v9 IRIs and camelCase property names so a planner or schema
+regression surfaces immediately. The fuzzy anchor / filter_by handlers are gone
+(query-graph redesign); resolution now lives in nlu via the lexicon.
 """
 
 from __future__ import annotations
@@ -11,19 +13,22 @@ from ontchatbot.graph import Step
 # Planner — direction is derived from the schema, never hard-coded.
 
 def test_plan_forward_single_hop(graph):
-    assert graph.plan("QuyTrinhHocVu", "DieuKien") == [Step("hasCondition", False)]
+    assert graph.plan("QuyTrinhHocVu", "DieuKien") == [Step("coDieuKien", False)]
 
 
 def test_plan_inverse_when_anchor_is_range(graph):
-    # An office sits on the range side of handledBy → reach procedures via inverse.
     assert graph.plan("PhongBanHanhChinh", "QuyTrinhHocVu") == [
-        Step("handledBy", True)]
+        Step("duocXuLyBoi", True)]
 
 
 def test_plan_two_hop_document_to_office(graph):
-    # Document → (which procedure needs it) → (which office handles it).
     assert graph.plan("TaiLieuBieuMau", "PhongBanHanhChinh") == [
-        Step("requiresDocument", True), Step("handledBy", False)]
+        Step("canTaiLieu", True), Step("duocXuLyBoi", False)]
+
+
+def test_plan_cohort_to_fee_is_inverse(graph):
+    # A cohort sits on the range side of apDungChoKhoa → reach fees inverse.
+    assert graph.plan("Khoa", "DinhMucHocPhi") == [Step("apDungChoKhoa", True)]
 
 
 def test_plan_self_is_empty(graph):
@@ -31,7 +36,6 @@ def test_plan_self_is_empty(graph):
 
 
 def test_plan_unreachable_is_none(graph):
-    # A target class absent from the schema graph is unreachable → None.
     assert graph.plan("QuyTrinhHocVu", "KhongTonTai") is None
 
 
@@ -41,7 +45,7 @@ def test_walk_forward_lists_conditions(graph):
     node = graph.node("QuyTrinhBaoLuu")
     out = graph.walk(node, graph.plan("QuyTrinhHocVu", "DieuKien"))
     assert {n.cls for n in out} == {"DieuKien"}
-    assert len(out) >= 3
+    assert len(out) == 4
 
 
 def test_walk_inverse_office_to_procedures(graph):
@@ -56,55 +60,38 @@ def test_walk_two_hop_document_to_office(graph):
     assert [n.iri for n in out] == ["PhongCongTacSinhVien"]
 
 
+def test_walk_cohort_to_fees(graph):
+    node = graph.node("KhoaK65")
+    out = graph.walk(node, graph.plan("Khoa", "DinhMucHocPhi"))
+    assert {n.iri for n in out} == {"HocPhiK65QuanTriKinhDoanh",
+                                    "HocPhiK65CongNgheThongTin"}
+
+
 def test_walk_empty_steps_returns_self(graph):
     node = graph.node("PhongCongTacSinhVien")
     assert [n.iri for n in graph.walk(node, [])] == ["PhongCongTacSinhVien"]
 
 
-# Anchor — resolve text → node set.
-
-def test_anchor_exact_label(graph):
-    anc = graph.anchor("Phòng Công tác Sinh viên", "PhongBanHanhChinh")
-    assert [n.iri for n in anc.nodes] == ["PhongCongTacSinhVien"]
-
-
-def test_anchor_class_label_wins_listing(graph):
-    anc = graph.anchor("phòng ban hành chính")
-    assert anc.class_won and anc.cls == "PhongBanHanhChinh"
-
-
-def test_anchor_prefer_cls_breaks_alias_pollution(graph):
-    # "học phí k65" matches the NopHocPhi procedure alias too; the fee bias wins.
-    anc = graph.anchor("học phí k65", prefer_cls="DinhMucHocPhi")
-    assert anc.cls == "DinhMucHocPhi"
-
-
-def test_anchor_below_threshold_is_empty(graph):
-    assert graph.anchor("thời tiết hôm nay").nodes == []
+def test_instances_lists_a_class(graph):
+    iris = {n.iri for n in graph.instances("PhongBanHanhChinh")}
+    assert iris == {"PhongCongTacSinhVien", "PhongDaoTaoDaiHoc",
+                    "PhongKeHoachTaiChinh", "VanPhongTruong"}
 
 
 def test_node_data_has_no_object_links(graph):
     # Node.data carries only data properties; relations come via walk().
     data = graph.node("PhongCongTacSinhVien").data
-    assert "officeEmail" in data and "handledBy" not in data
+    assert "email" in data and "duocXuLyBoi" not in data
 
 
-# v9 fee dimensions — cohort and program set arithmetic.
+# Lexicon — the danh bạ the NLU scans against.
 
-def test_filter_by_cohort_narrows_fees(graph):
-    fees = graph.instances("DinhMucHocPhi")
-    k65 = graph.filter_by(fees, cohort="K65")
-    assert {n.iri for n in k65} == {"HocPhiK65QuanTriKinhDoanh",
-                                    "HocPhiK65CongNgheThongTin"}
-
-
-def test_filter_by_cohort_and_program_intersects_to_one(graph):
-    # The research claim: K65 ∩ CNTT collapses two fee rows to exactly one.
-    fees = graph.instances("DinhMucHocPhi")
-    one = graph.filter_by(fees, cohort="K65", program="NganhCongNgheThongTin")
-    assert [n.iri for n in one] == ["HocPhiK65CongNgheThongTin"]
-
-
-def test_resolve_program_from_alias(graph):
-    assert graph.resolve_program("học phí k65 ngành cntt") == "NganhCongNgheThongTin"
-    assert graph.resolve_program("học phí k65") == ""
+def test_lexicon_marks_class_vs_individual(graph):
+    lex = graph.lexicon()
+    by_phrase: dict[str, set] = {}
+    for e in lex:
+        by_phrase.setdefault(e.phrase, set()).add((e.kind, e.cls, e.iri))
+    # "học phí" is a class alias (subject); "k65" an individual (constraint).
+    assert ("class", "DinhMucHocPhi", "") in by_phrase["hoc phi"]
+    assert ("individual", "Khoa", "KhoaK65") in by_phrase["k65"]
+    assert ("individual", "Nganh", "NganhCongNgheThongTin") in by_phrase["cntt"]

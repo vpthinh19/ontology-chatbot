@@ -55,12 +55,17 @@ def test_pipeline_logs_each_stage(caplog, graph):
         assert stage in text, f"missing stage tag {stage!r} in log:\n{text}"
 
 
-def test_pipeline_logs_rejected_low_confidence(caplog, graph):
+def test_pipeline_logs_out_of_domain(caplog, graph):
+    # No lexicon mention matches → out-of-domain: nlu logs empty constraints
+    # and the pipeline reports zero facts (the query-graph successor to the
+    # old fuzzy-reject log).
     pipeline = Pipeline(graph=graph)
     with caplog.at_level(logging.INFO, logger="ontchatbot"):
-        pipeline.answer("hoàn toàn vô nghĩa xyz")
+        out = pipeline.answer("hoàn toàn vô nghĩa xyz")
+    assert out["entities"] == []
     text = "\n".join(r.getMessage() for r in caplog.records)
-    assert "[Graph.anchor]" in text and "reject" in text
+    assert "[nlu]" in text and "constraints=[]" in text
+    assert "facts=0" in text
 
 
 def test_empty_input_greets(caplog, graph):

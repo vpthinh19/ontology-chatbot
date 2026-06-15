@@ -35,11 +35,11 @@ class Pipeline:
 
     def answer(self, query: str) -> dict:
         """Synchronous entry — returns the ``/chat`` JSON dict."""
-        q = nlu.understand(query)
+        q = nlu.understand(query, self.graph.lexicon())
         facts = answer_mod.answer(q, self.graph)
         reply = _render(q, facts)
-        log.info("[pipeline] intent=%s facts=%d reply_chars=%d",
-                 q.intent, len(facts), len(reply))
+        log.info("[pipeline] act=%s subject=%s facts=%d reply_chars=%d",
+                 q.act, q.subject_cls, len(facts), len(reply))
         return {"reply": reply, "entities": _entities(facts)}
 
     async def aanswer(self, query: str) -> dict:
@@ -55,19 +55,14 @@ def _render(q, facts: list[Fact]) -> str:
 
 
 def _entities(facts: list[Fact]) -> list[dict]:
-    """Flatten the resolved anchor(s) into the response's debug list.
-
-    The anchor is the ``subject`` of a relation fact, or the ``objects`` of a
-    self-set / listing fact. Deduped by IRI, declaration order preserved.
-    """
+    """Flatten the resolved result nodes into the response's debug list,
+    deduped by IRI with declaration order preserved."""
     out: list[dict] = []
     seen: set[str] = set()
     for f in facts:
-        nodes = [f.subject] if f.subject is not None else f.objects
-        for n in nodes:
+        for n in f.objects:
             if n is None or n.iri in seen:
                 continue
             seen.add(n.iri)
-            out.append({"iri": n.iri, "label": n.label, "class": n.cls,
-                        "intent": f.intent})
+            out.append({"iri": n.iri, "label": n.label, "class": n.cls})
     return out

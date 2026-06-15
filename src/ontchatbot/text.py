@@ -92,7 +92,12 @@ TEENCODE_MAP: dict[str, str] = {
     "bik": "biết", "bjk": "biết", "bjt": "biết",
     "fai": "phải", "phai": "phải",
     "khgo": "không có", "kgcg": "không có gì",
-    "đăn": "đăng", "cntt": "công nghệ thông tin",
+    "đăn": "đăng",
+    # NB: domain-entity surface forms (e.g. "cntt") deliberately do NOT live
+    # here — they are ontology aliases owned by the graph lexicon. Teencode is
+    # only for generic chat abbreviations; expanding "cntt" → "công nghệ thông
+    # tin" would let longest-match swallow it into a fee label and break the
+    # cohort×program intersection.
 }
 
 
