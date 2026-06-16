@@ -44,7 +44,7 @@ WEB_DIR = PROJECT_ROOT / "webui"
 # Model — ViT5-base seq2seq (text → cây JSON). Train cục bộ (GPU) phiên sau;
 # serve nạp local nếu có, không thì snapshot_download từ HF repo người dùng.
 MODEL_NAME = "VietAI/vit5-base"
-FINETUNED_MODEL_NAME = "vpthinh19/vit5-academic-tree"   # repo MỚI cho ViT5
+FINETUNED_MODEL_NAME = "vpthinh19/vit5-ontology-tree"   # repo MỚI cho ViT5
 MAX_SOURCE_LENGTH = 128
 MAX_TARGET_LENGTH = 256
 
