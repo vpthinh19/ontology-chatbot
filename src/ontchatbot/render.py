@@ -37,7 +37,7 @@ def render_reply(tree: Tree, result: Result) -> str:
         return GREETING_REPLY
     if tree.act == OOD:
         return OOD_REPLY
-    if tree.act == VAGUE:
+    if tree.act == VAGUE or result.vague:          # vague: act, hoặc gốc trỏ class/quan-hệ
         return VAGUE_REPLY
     # query
     blocks = [_render_value(v) for v in result.values]

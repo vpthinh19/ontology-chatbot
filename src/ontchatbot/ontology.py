@@ -30,6 +30,7 @@ log = logging.getLogger(__name__)
 
 _ALIAS_PROP = "tenGoiKhac"          # data-prop chứa alias cá thể (không phải con tra cứu)
 _CAMEL_SPLIT = re.compile(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=[0-9])")
+_ROOT_MARGIN = 10.0                 # class/property phải hơn cá thể margin này mới ép vague
 
 
 @dataclass(frozen=True)
@@ -50,10 +51,15 @@ class DataValue:
 
 @dataclass
 class Result:
-    """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được."""
+    """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được.
+
+    ``vague=True`` = gốc trỏ vào CLASS/quan-hệ chứ không phải cá thể (namespace mismatch,
+    §4) → render trả "Không hiểu câu hỏi". Đây là LƯỚI AN TOÀN: bắt cả khi model lỡ sinh
+    gốc là tên lớp/nhãn property thay vì cá thể."""
     nodes: list[OntNode] = field(default_factory=list)
     values: list[DataValue] = field(default_factory=list)
     misses: list[str] = field(default_factory=list)
+    vague: bool = False
 
 
 class Ontology:
@@ -68,6 +74,7 @@ class Ontology:
         self._obj_labels = {p: self._norm_labels(p) for p in self._obj_props}
         self._data_labels = {p: self._norm_labels(p)
                              for p in self._data_props if p != _ALIAS_PROP}
+        self._class_labels = {c.name: self._norm_labels(c.name) for c in self._owl.classes()}
         # bề mặt khớp (đã chuẩn hoá) cho từng cá thể: tên(camel) + label + alias
         self._forms = {ind.name: self._surface_forms(ind)
                        for ind in self._owl.individuals()}
@@ -105,6 +112,47 @@ class Ontology:
                 best, best_score = prop, s
         return best
 
+    def _root_resolve(self, label: str) -> tuple[str, list[str]]:
+        """Khớp GỐC có kiểm namespace (type-safety, không phải luật nghiệp vụ).
+
+        Gốc theo hợp đồng phải là **cá thể**. Nếu label khớp tên CLASS / nhãn PROPERTY rõ
+        hơn cá thể ⇒ model sinh sai category ⇒ trả ``vague`` thay vì khớp-một-phần ra rác.
+        Trả ``("ok", iris) | ("vague", []) | ("miss", [])``.
+
+        Quy tắc (conservative, theo gợi ý Codex):
+        - cá thể exact (=100) thắng cả khi class/property cũng 100 (label lưỡng tính như
+          "học phí": ở GỐC phải là cá thể quy trình).
+        - class/property exact mà cá thể không exact → vague (namespace mismatch).
+        - class/property cao (≥90) hơn cá thể một margin → vague.
+        - cá thể đủ chắc (≥80: exact/đủ-token/chuỗi-con) → ok; BỎ "trùng-một-phần" thấp ở gốc.
+        """
+        q = normalize_for_match(label)
+        if not q:
+            return ("miss", [])
+        i_score, iris = self._score_individuals(q)
+        if i_score >= 100.0:
+            return ("ok", iris)
+        s = max(self._best_label_score(q, self._class_labels.values()),
+                self._best_label_score(q, self._obj_labels.values()),
+                self._best_label_score(q, self._data_labels.values()))
+        if s >= 100.0:
+            return ("vague", [])
+        if s >= 90.0 and s >= i_score + _ROOT_MARGIN:
+            return ("vague", [])
+        if i_score >= 80.0:
+            return ("ok", iris)
+        return ("miss", [])
+
+    def _score_individuals(self, q: str) -> tuple[float, list[str]]:
+        """Điểm cá thể tốt nhất + danh sách IRI đạt điểm đó (q đã chuẩn hoá)."""
+        scored = [(iri, _score(q, forms)) for iri, forms in self._forms.items()]
+        top = max((s for _, s in scored), default=0.0)
+        return top, [iri for iri, s in scored if s == top and s > 0.0]
+
+    @staticmethod
+    def _best_label_score(q: str, label_lists) -> float:
+        return max((_score(q, labels) for labels in label_lists), default=0.0)
+
     # ── Thuật toán duyệt (§5) ────────────────────────────────────────────────
 
     def traverse(self, tree: Tree) -> Result:
@@ -112,7 +160,10 @@ class Ontology:
         result = Result()
         if tree.act != QUERY or tree.root is None:
             return result
-        roots = self._match_individuals(tree.root.label, self._forms.keys())
+        reason, roots = self._root_resolve(tree.root.label)
+        if reason == "vague":
+            result.vague = True                    # gốc là class/quan-hệ, không có cá thể (§4)
+            return result
         if not roots:
             result.misses.append(tree.root.label)
             return result

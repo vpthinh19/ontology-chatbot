@@ -85,3 +85,36 @@ def test_root_miss(ont):
 
 def test_non_query_yields_empty(ont):
     assert ont.traverse(parse({"act": "greeting", "entities": []})).nodes == []
+
+
+# ── Lưới an toàn: gốc rơi vào class / nhãn property → vague (namespace mismatch) ──
+
+def _root(ont, label):
+    return ont.traverse(parse({"act": "query", "entities": [_ind(label)]}))
+
+
+def test_root_class_label_is_vague(ont):
+    r = _root(ont, "quy trình học vụ")          # tên CLASS, không phải cá thể
+    assert r.vague and not r.nodes
+
+
+def test_root_object_property_label_is_vague(ont):
+    r = _root(ont, "điều kiện")                 # nhãn OBJECT-property
+    assert r.vague and not r.nodes
+
+
+def test_root_data_property_label_is_vague(ont):
+    for lbl in ("email", "địa chỉ"):            # nhãn DATA-property
+        r = _root(ont, lbl)
+        assert r.vague and not r.nodes, lbl
+
+
+def test_dual_role_label_prefers_individual_at_root(ont):
+    # "học phí" = alias cá thể quy trình (100) ⊕ nhãn property (100) → GỐC ưu tiên cá thể
+    r = _root(ont, "học phí")
+    assert not r.vague and {n.iri for n in r.nodes} == {"QuyTrinhNopHocPhi"}
+
+
+def test_real_individual_roots_unaffected(ont):
+    assert {n.iri for n in _root(ont, "bảo lưu").nodes} == {"QuyTrinhBaoLuu"}
+    assert {n.iri for n in _root(ont, "phòng đào tạo đại học").nodes} == {"PhongDaoTaoDaiHoc"}

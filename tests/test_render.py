@@ -56,3 +56,8 @@ def test_miss_render():
 
 def test_empty_query_falls_back():
     assert _qreply(Result()) == OOD_REPLY
+
+
+def test_vague_result_overrides_query():
+    # gốc trỏ class/quan-hệ → dù act=query, render trả "Không hiểu câu hỏi"
+    assert _qreply(Result(vague=True)) == VAGUE_REPLY
