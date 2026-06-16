@@ -9,7 +9,7 @@ Endpoints
 The heavy components (ViT5, ontology) are loaded lazily on the first request
 and cached as singletons; the process therefore starts quickly and warms up on
 demand. Note: ``/chat`` needs the trained ViT5 model; until it exists it raises
-``ModelChuaSanSang`` (xem docs/redesign/PROGRESS.md — train phiên sau).
+``ModelNotReady`` (xem docs/redesign/PROGRESS.md — train phiên sau).
 
 Runtime tracing — including each stage of the pipeline and the shape of the
 data passing through it — is written to ``logs/chatbot.log`` (rotated) by

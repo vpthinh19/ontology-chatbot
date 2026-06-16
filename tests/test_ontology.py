@@ -25,21 +25,21 @@ def _nodes(ont, root):
 
 def test_khop_individual_strong_alias_wins(ont):
     # alias mạnh "học phí" thắng từng mức phí (chỉ chứa "học phí" trong nhãn dài)
-    assert ont.khop("học phí", "individual") == ["QuyTrinhNopHocPhi"]
+    assert ont.resolve("học phí", "individual") == ["QuyTrinhNopHocPhi"]
 
 
 def test_khop_individual_cohort_multi(ont):
-    assert set(ont.khop("k65", "individual")) == {"PhiK65550k", "PhiK65620k"}
+    assert set(ont.resolve("k65", "individual")) == {"PhiK65550k", "PhiK65620k"}
 
 
 def test_khop_object_label(ont):
-    assert ont.khop("điều kiện", "object") == "yeuCauDieuKien"
-    assert ont.khop("phòng xử lý", "object") == "duocXuLyBoi"
+    assert ont.resolve("điều kiện", "object") == "yeuCauDieuKien"
+    assert ont.resolve("phòng xử lý", "object") == "duocXuLyBoi"
 
 
 def test_khop_data_label(ont):
-    assert ont.khop("email", "data") == "email"
-    assert ont.khop("nội dung", "data") == "noiDung"
+    assert ont.resolve("email", "data") == "email"
+    assert ont.resolve("nội dung", "data") == "noiDung"
 
 
 # ── Duyệt (§5) ──────────────────────────────────────────────────────────────

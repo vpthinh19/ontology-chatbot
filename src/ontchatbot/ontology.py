@@ -3,7 +3,7 @@
 Tầng này **chỉ tra thông tin** trên ontology theo đúng cây model đưa — không suy luận,
 không planner, không liệt kê lớp. Hai việc:
 
-* :meth:`khop` (resolve theo ``loai``): individual → khớp tên/alias cá thể (chứa-token,
+* :meth:`resolve` (khớp theo ``kind``): individual → khớp tên/alias cá thể (chứa-token,
   điểm cao nhất KHÔNG ngưỡng); object → khớp nhãn object-property; data → khớp nhãn
   datatype-property.
 * :meth:`traverse`: đi theo cây, giữ một **"tập hiện tại"** các cá thể (§5). Cha→con = VÀ
@@ -24,7 +24,7 @@ from owlready2 import World
 
 from .config import ONTOLOGY_PATH
 from .preprocess import normalize_for_match
-from .tree import DATA, INDIVIDUAL, OBJECT, QUERY, Cay, CayNode
+from .tree import DATA, INDIVIDUAL, OBJECT, QUERY, Tree, TreeNode
 
 log = logging.getLogger(__name__)
 
@@ -42,17 +42,17 @@ class OntNode:
 
 
 @dataclass(frozen=True)
-class GiaTri:
+class DataValue:
     """Một lá ``data``: giá trị của một datatype-property trên tập hiện tại."""
     prop: str          # local name (vd "email")
     values: tuple      # các giá trị
 
 
 @dataclass
-class KetQua:
+class Result:
     """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được."""
     nodes: list[OntNode] = field(default_factory=list)
-    values: list[GiaTri] = field(default_factory=list)
+    values: list[DataValue] = field(default_factory=list)
     misses: list[str] = field(default_factory=list)
 
 
@@ -80,13 +80,13 @@ class Ontology:
     def get(cls) -> "Ontology":
         return cls()
 
-    # ── Khớp (resolve theo loai) ─────────────────────────────────────────────
+    # ── Khớp (resolve theo kind) ─────────────────────────────────────────────
 
-    def khop(self, label: str, loai: str) -> list[str] | str | None:
+    def resolve(self, label: str, kind: str) -> list[str] | str | None:
         """individual → list IRI khớp; object/data → tên property; None nếu trượt."""
-        if loai == INDIVIDUAL:
+        if kind == INDIVIDUAL:
             return self._match_individuals(label, self._forms.keys())
-        index = self._obj_labels if loai == OBJECT else self._data_labels
+        index = self._obj_labels if kind == OBJECT else self._data_labels
         return self._best_property(label, index)
 
     def _match_individuals(self, label: str, iris) -> list[str]:
@@ -107,54 +107,54 @@ class Ontology:
 
     # ── Thuật toán duyệt (§5) ────────────────────────────────────────────────
 
-    def traverse(self, cay: Cay) -> KetQua:
-        """Đi theo cây → :class:`KetQua`. act != query → KetQua rỗng (render lo)."""
-        kq = KetQua()
-        if cay.act != QUERY or cay.goc is None:
-            return kq
-        roots = self._match_individuals(cay.goc.label, self._forms.keys())
+    def traverse(self, tree: Tree) -> Result:
+        """Đi theo cây → :class:`Result`. act != query → Result rỗng (render lo)."""
+        result = Result()
+        if tree.act != QUERY or tree.root is None:
+            return result
+        roots = self._match_individuals(tree.root.label, self._forms.keys())
         if not roots:
-            kq.misses.append(cay.goc.label)
-            return kq
-        self._descend(cay.goc, roots, kq)
+            result.misses.append(tree.root.label)
+            return result
+        self._descend(tree.root, roots, result)
         # gộp + khử trùng node theo IRI, giữ thứ tự
         seen: set[str] = set()
-        kq.nodes = [n for n in kq.nodes if not (n.iri in seen or seen.add(n.iri))]
-        return kq
+        result.nodes = [n for n in result.nodes if not (n.iri in seen or seen.add(n.iri))]
+        return result
 
-    def _descend(self, node: CayNode, current: list[str], kq: KetQua) -> None:
+    def _descend(self, node: TreeNode, current: list[str], result: Result) -> None:
         """Tập hiện tại = ``current``. Không con → terminal (gộp node). Có con →
         mỗi con là một nhánh độc lập (anh em = gộp) xuất phát từ ``current``."""
-        if not node.con:
-            kq.nodes.extend(self._node(iri) for iri in current)
+        if not node.children:
+            result.nodes.extend(self._node(iri) for iri in current)
             return
-        for child in node.con:
-            self._step(child, current, kq)
+        for child in node.children:
+            self._step(child, current, result)
 
-    def _step(self, child: CayNode, current: list[str], kq: KetQua) -> None:
-        if child.loai == DATA:
+    def _step(self, child: TreeNode, current: list[str], result: Result) -> None:
+        if child.kind == DATA:
             prop = self._best_property(child.label, self._data_labels)
             if prop is None:
-                kq.misses.append(child.label)
+                result.misses.append(child.label)
                 return
             vals = tuple(v for iri in current
                          for v in (getattr(self._owl[iri], prop, []) or []))
             if vals:
-                kq.values.append(GiaTri(prop=prop, values=vals))
+                result.values.append(DataValue(prop=prop, values=vals))
             else:
-                kq.misses.append(child.label)
+                result.misses.append(child.label)
             return
 
-        if child.loai == OBJECT:
+        if child.kind == OBJECT:
             prop = self._best_property(child.label, self._obj_labels)
             if prop is None:
-                kq.misses.append(child.label)
+                result.misses.append(child.label)
                 return
             nxt = _dedup(t for iri in current for t in self._neighbors(iri, prop))
             if not nxt:
-                kq.misses.append(child.label)
+                result.misses.append(child.label)
                 return
-            self._descend(child, nxt, kq)          # con của child lồng vào (VÀ); nếu không có → terminal
+            self._descend(child, nxt, result)      # con của child lồng vào (VÀ); nếu không có → terminal
             return
 
         # individual: thu hẹp trong (tập hiện tại ∪ node cách 1 bước object)
@@ -162,9 +162,9 @@ class Ontology:
                             + [t for iri in current for t in self._obj_neighbors(iri)])
         matched = self._match_individuals(child.label, candidates)
         if not matched:
-            kq.misses.append(child.label)
+            result.misses.append(child.label)
             return
-        self._descend(child, matched, kq)
+        self._descend(child, matched, result)
 
     # ── Đi cạnh ──────────────────────────────────────────────────────────────
 

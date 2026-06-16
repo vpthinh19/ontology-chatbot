@@ -1,15 +1,15 @@
-"""Render: ``act`` + :class:`KetQua` → câu trả lời tiếng Việt (DESIGN.md §4).
+"""Render: ``act`` + :class:`Result` → câu trả lời tiếng Việt (DESIGN.md §4).
 
 Pha cuối của pipeline: xử lý chào hỏi/ngoại lệ và ghép kết quả duyệt thành chuỗi cho UI.
 **Giọng nghiêm túc, cứng, KHÔNG gợi mở** (chatbot học vụ). Không phụ thuộc owlready2 —
-chỉ format `OntNode`/`GiaTri`, nên test chạy trên dataclass thuần.
+chỉ format `OntNode`/`DataValue`, nên test chạy trên dataclass thuần.
 """
 
 from __future__ import annotations
 
-from .ontology import GiaTri, KetQua, OntNode
+from .ontology import DataValue, OntNode, Result
 from .preprocess import is_url
-from .tree import GREETING, OOD, QUERY, VAGUE, Cay
+from .tree import GREETING, OOD, QUERY, VAGUE, Tree
 
 GREETING_REPLY = "Xin chào. Đây là hệ thống tra cứu thủ tục học vụ Trường Đại học Nha Trang."
 OOD_REPLY = "Không có thông tin."
@@ -31,33 +31,33 @@ _ORDER = list(_HEADER)
 _PARAGRAPH = frozenset({"noiDung", "ghiChuHocPhi"})   # văn xuôi, render không bullet
 
 
-def render_reply(cay: Cay, kq: KetQua) -> str:
+def render_reply(tree: Tree, result: Result) -> str:
     """act thắng trước; trong ``query`` thì dữ liệu thắng, không có → 'không có thông tin'."""
-    if cay.act == GREETING:
+    if tree.act == GREETING:
         return GREETING_REPLY
-    if cay.act == OOD:
+    if tree.act == OOD:
         return OOD_REPLY
-    if cay.act == VAGUE:
+    if tree.act == VAGUE:
         return VAGUE_REPLY
     # query
-    blocks = [_render_value(v) for v in kq.values]
-    if kq.nodes:
-        blocks.append(_render_nodes(kq.nodes))
+    blocks = [_render_value(v) for v in result.values]
+    if result.nodes:
+        blocks.append(_render_nodes(result.nodes))
     blocks = [b for b in blocks if b]
     if blocks:
         return "\n".join(blocks)
-    if kq.misses:
-        labels = ", ".join(f"«{m}»" for m in _dedup(kq.misses))
+    if result.misses:
+        labels = ", ".join(f"«{m}»" for m in _dedup(result.misses))
         return f"Không có thông tin {labels}."
     return OOD_REPLY
 
 
-def _render_value(gt: GiaTri) -> str:
+def _render_value(dv: DataValue) -> str:
     """Một lá data → một dòng (hoặc văn xuôi với noiDung/ghiChú)."""
-    header = _HEADER.get(gt.prop, gt.prop)
-    if gt.prop in _PARAGRAPH:
-        return "\n".join(str(v).strip() for v in gt.values)
-    return f"{header}: " + ", ".join(_field_value(gt.prop, v) for v in gt.values)
+    header = _HEADER.get(dv.prop, dv.prop)
+    if dv.prop in _PARAGRAPH:
+        return "\n".join(str(v).strip() for v in dv.values)
+    return f"{header}: " + ", ".join(_field_value(dv.prop, v) for v in dv.values)
 
 
 def _render_nodes(nodes: list[OntNode]) -> str:
