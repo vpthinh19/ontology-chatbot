@@ -1,294 +1,219 @@
-"""Ontology repository: load OWL + fuzzy match + JSON description.
+"""Ontology: nạp owl + khớp theo type + thuật toán duyệt (DESIGN.md §5).
 
-Single point of contact with ``owlready2``. Every other layer reads
-ontology data only via dicts produced by :meth:`describe` / :meth:`list_class`.
+Tầng này **chỉ tra thông tin** trên ontology theo đúng cây model đưa — không suy luận,
+không planner, không liệt kê lớp. Hai việc:
 
-JSON contract: 4 fixed keys (``type``, ``iri``, ``class``, ``label``);
-all other keys are Vietnamese property ``rdfs:label``. Paragraph-property
-values carry a leading newline as a marker for the renderer.
+* :meth:`khop` (resolve theo ``loai``): individual → khớp tên/alias cá thể (chứa-token,
+  điểm cao nhất KHÔNG ngưỡng); object → khớp nhãn object-property; data → khớp nhãn
+  datatype-property.
+* :meth:`traverse`: đi theo cây, giữ một **"tập hiện tại"** các cá thể (§5). Cha→con = VÀ
+  (lọc dần theo chuỗi lồng nhau); anh em cùng cha = nhánh độc lập → gộp.
+
+Chỉ duyệt **xuôi** (theo chiều hub đi ra). Duyệt ngược (§6.8) chưa làm.
 """
 
 from __future__ import annotations
 
-import json
 import logging
 import re
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
-import owlready2
-from owlready2 import default_world
-from rapidfuzz import fuzz, process
+from owlready2 import World
 
-from .config import (
-    FUZZY_MIN_SCORE,
-    FUZZY_TOP_K,
-    LEGACY_LABEL_MAP_PATH as LABEL_MAP_PATH,  # legacy class stays on v8 until step 3
-    LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH,
-)
-from .preprocessor import Preprocessor
+from .config import ONTOLOGY_PATH
+from .preprocess import normalize_for_match
+from .tree import DATA, INDIVIDUAL, OBJECT, QUERY, Cay, CayNode
 
 log = logging.getLogger(__name__)
 
-
-# Fixed keys in every entity dict — Renderer skips them when iterating
-# property-label keys. Re-exported so Renderer can mirror the constant.
-FIXED_KEYS: frozenset[str] = frozenset({"type", "iri", "class", "label"})
-
-
-# Property-serialisation policy — which OWL data properties read better as
-# free-flow paragraphs (rendered without a bullet) and which to skip
-# entirely. Renderer keys off the leading-``\n`` marker convention rather
-# than reading these constants directly, so they live here in the data
-# layer where they belong.
-PARAGRAPH_PROPERTIES: tuple[str, ...] = ("procedureDescription", "feeNote")
-SKIP_PROPERTIES: tuple[str, ...] = ("hasAlias", "label")
-
-# Stable property order for entity sections — paragraphs first, then a
-# logical "identity → contact → fee → relations" sweep. Properties not
-# listed here are appended alphabetically by Vietnamese label, so adding
-# a new property in Protégé does not require a code change.
-PROPERTY_ORDER: tuple[str, ...] = (
-    "procedureDescription", "feeNote",
-    "appliesToTarget", "feePerCredit",
-    "headOfOffice", "officeLocation",
-    "officeEmail", "officePhoneNumber", "officeWebsite",
-    "formUrl",
-    "handledBy", "executedVia",
-    "basedOnRegulation",
-    "hasCondition", "requiresDocument", "hasStep",
-    "hasFeeCategory", "hasPaymentMethod", "hasOutput",
-)
-
-_CAMEL_RE = re.compile(r"([a-z])([A-Z])")
-_PROP_RANK = {name: i for i, name in enumerate(PROPERTY_ORDER)}
-_BIG_RANK = len(_PROP_RANK)
-
-
-def _humanise(local: str) -> str:
-    """``DonXinBaoLuu`` → ``Don Xin Bao Luu``."""
-    return _CAMEL_RE.sub(r"\1 \2", local.replace("_", " ")).strip()
+_ALIAS_PROP = "tenGoiKhac"          # data-prop chứa alias cá thể (không phải con tra cứu)
+_CAMEL_SPLIT = re.compile(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=[0-9])")
 
 
 @dataclass(frozen=True)
-class MatchResult:
-    """One span resolution. ``class_won`` triggers listing; otherwise
-    ``individuals`` are every IRI above the score threshold."""
-    tag: str
-    class_won: bool
-    individuals: list[str] = field(default_factory=list)
-    top_score: float = 0.0
-
-
-@dataclass(frozen=True)
-class _Cand:
-    """Internal index entry. ``iri=""`` marks the class-label row."""
+class OntNode:
+    """Một cá thể ontology đã phẳng hoá cho render/eval."""
     iri: str
-    norm: str
-    is_class: bool
+    cls: str
+    label: str
+    data: dict = field(default_factory=dict)   # data-prop local-name → giá trị (bỏ alias)
+
+
+@dataclass(frozen=True)
+class GiaTri:
+    """Một lá ``data``: giá trị của một datatype-property trên tập hiện tại."""
+    prop: str          # local name (vd "email")
+    values: tuple      # các giá trị
+
+
+@dataclass
+class KetQua:
+    """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được."""
+    nodes: list[OntNode] = field(default_factory=list)
+    values: list[GiaTri] = field(default_factory=list)
+    misses: list[str] = field(default_factory=list)
 
 
 class Ontology:
-    """OWL world + label-map + fuzzy index; singleton via ``get()``."""
+    """OWL world + chỉ mục khớp; singleton qua :meth:`get`."""
 
-
-    def __init__(self,
-                 ontology_path: Path = ONTOLOGY_PATH,
-                 label_map_path: Path = LABEL_MAP_PATH,
-                 *,
-                 min_score: float = FUZZY_MIN_SCORE,
-                 top_k: int = FUZZY_TOP_K) -> None:
-        self._owl = default_world.get_ontology(str(ontology_path)).load()
-        # label_map.json is authored as a list of single-key dicts to
-        # preserve declaration order. Flatten once and forget.
-        raw = json.loads(Path(label_map_path).read_text(encoding="utf-8"))
-        self._label_map: dict[str, dict] = {}
-        for item in raw:
-            self._label_map.update(item)
-        self._min_score = float(min_score)
-        self._top_k = int(top_k)
-        self._pre = Preprocessor.get()
-        log.info("[Ontology] loaded path=%s tags=%d classes=%d individuals=%d",
-                 ontology_path, len(self.tags),
-                 len(list(self._owl.classes())),
-                 len(list(self._owl.individuals())))
+    def __init__(self, ontology_path: Path = ONTOLOGY_PATH) -> None:
+        self._owl = World().get_ontology(
+            "file://" + Path(ontology_path).resolve().as_posix()).load()
+        self._obj_props = [p.name for p in self._owl.object_properties()]
+        self._data_props = [p.name for p in self._owl.data_properties()]
+        # nhãn-khớp (đã chuẩn hoá) cho từng property
+        self._obj_labels = {p: self._norm_labels(p) for p in self._obj_props}
+        self._data_labels = {p: self._norm_labels(p)
+                             for p in self._data_props if p != _ALIAS_PROP}
+        # bề mặt khớp (đã chuẩn hoá) cho từng cá thể: tên(camel) + label + alias
+        self._forms = {ind.name: self._surface_forms(ind)
+                       for ind in self._owl.individuals()}
+        log.info("[Ontology] classes=%d individuals=%d obj=%d data=%d",
+                 len(list(self._owl.classes())), len(self._forms),
+                 len(self._obj_props), len(self._data_props))
 
     @classmethod
     @lru_cache(maxsize=1)
     def get(cls) -> "Ontology":
         return cls()
 
-    # NER schema
+    # ── Khớp (resolve theo loai) ─────────────────────────────────────────────
 
-    @property
-    def tags(self) -> list[str]:
-        """NER tags backed by an ontology class, in declaration order."""
-        return [k for k, v in self._label_map.items()
-                if v.get("type") == "ontology"]
+    def khop(self, label: str, loai: str) -> list[str] | str | None:
+        """individual → list IRI khớp; object/data → tên property; None nếu trượt."""
+        if loai == INDIVIDUAL:
+            return self._match_individuals(label, self._forms.keys())
+        index = self._obj_labels if loai == OBJECT else self._data_labels
+        return self._best_property(label, index)
 
-    def class_local(self, tag: str) -> str:
-        uri = self._label_map.get(tag, {}).get("uri", "")
-        return uri.rsplit("#", 1)[-1] if "#" in uri else uri
+    def _match_individuals(self, label: str, iris) -> list[str]:
+        """Cho điểm mọi IRI trong ``iris`` theo nhãn; giữ nhóm điểm cao nhất (>0)."""
+        q = normalize_for_match(label)
+        scored = [(iri, _score(q, self._forms[iri])) for iri in iris]
+        top = max((s for _, s in scored), default=0.0)
+        return [iri for iri, s in scored if s == top and s > 0.0] if top > 0.0 else []
 
-    # Fuzzy match + score
+    def _best_property(self, label: str, index: dict[str, list[str]]) -> str | None:
+        q = normalize_for_match(label)
+        best, best_score = None, 0.0
+        for prop, labels in index.items():
+            s = _score(q, labels)
+            if s > best_score:
+                best, best_score = prop, s
+        return best
 
-    @lru_cache(maxsize=None)
-    def _fuzzy_index(self, tag: str) -> tuple[_Cand, ...]:
-        """Index = class label + every individual surface (label/alias/name).
+    # ── Thuật toán duyệt (§5) ────────────────────────────────────────────────
 
-        Putting the class row in the same index gives resolve() its two-mode
-        decision in one RapidFuzz call.
-        """
-        out: list[_Cand] = []
-        cls_local = self.class_local(tag)
-        cls = self._owl[cls_local]
-        if cls is not None:
-            for v in (getattr(cls, "label", None) or []):
-                n = self._pre.normalize_for_match(str(v))
-                if n:
-                    out.append(_Cand(iri="", norm=n, is_class=True))
-        for ind in self._individuals_of_class(cls_local):
-            iri = ind.name
-            forms: set[str] = {iri.replace("_", " ")}
-            forms.update(str(v) for v in (getattr(ind, "label", None) or []))
-            forms.update(str(v) for v in (getattr(ind, "hasAlias", None) or []))
-            for s in forms:
-                n = self._pre.normalize_for_match(s)
-                if n:
-                    out.append(_Cand(iri=iri, norm=n, is_class=False))
-        return tuple(out)
-
-    def resolve(self, span: str, tag: str) -> MatchResult:
-        """Two-mode resolve: class-listing or threshold-collected individuals."""
-        index = self._fuzzy_index(tag)
-        q = self._pre.normalize_for_match(span)
-        if not (index and q):
-            log.info("[Ontology.resolve] miss surface=%r tag=%s", span, tag)
-            return MatchResult(tag=tag, class_won=False)
-        raw = process.extract(
-            q, {i: e.norm for i, e in enumerate(index)},
-            scorer=fuzz.WRatio, limit=self._top_k * 4,
-        )
-        # Dedup per entity (each individual contributes many surface forms).
+    def traverse(self, cay: Cay) -> KetQua:
+        """Đi theo cây → :class:`KetQua`. act != query → KetQua rỗng (render lo)."""
+        kq = KetQua()
+        if cay.act != QUERY or cay.goc is None:
+            return kq
+        roots = self._match_individuals(cay.goc.label, self._forms.keys())
+        if not roots:
+            kq.misses.append(cay.goc.label)
+            return kq
+        self._descend(cay.goc, roots, kq)
+        # gộp + khử trùng node theo IRI, giữ thứ tự
         seen: set[str] = set()
-        ranked: list[tuple[_Cand, float]] = []
-        for _, score, idx in raw:
-            cand = index[idx]
-            key = "__class__" if cand.is_class else cand.iri
-            if key in seen:
-                continue
-            seen.add(key)
-            ranked.append((cand, float(score)))
-            if len(ranked) >= self._top_k:
-                break
-        if not ranked:
-            return MatchResult(tag=tag, class_won=False)
-        top_cand, top_score = ranked[0]
-        if top_cand.is_class and top_score >= self._min_score:
-            log.info("[Ontology.resolve] class-win surface=%r tag=%s score=%.2f",
-                     span, tag, top_score)
-            return MatchResult(tag=tag, class_won=True, top_score=top_score)
-        kept = [c.iri for c, s in ranked
-                if not c.is_class and s >= self._min_score]
-        if not kept:
-            log.info("[Ontology.resolve] reject surface=%r tag=%s top=%.2f (below %.0f)",
-                     span, tag, top_score, self._min_score)
-            return MatchResult(tag=tag, class_won=False, top_score=top_score)
-        log.info("[Ontology.resolve] pick surface=%r tag=%s n=%d top=%.2f iris=%s",
-                 span, tag, len(kept), top_score, kept)
-        return MatchResult(tag=tag, class_won=False,
-                           individuals=kept, top_score=top_score)
+        kq.nodes = [n for n in kq.nodes if not (n.iri in seen or seen.add(n.iri))]
+        return kq
 
-    # Description → JSON
+    def _descend(self, node: CayNode, current: list[str], kq: KetQua) -> None:
+        """Tập hiện tại = ``current``. Không con → terminal (gộp node). Có con →
+        mỗi con là một nhánh độc lập (anh em = gộp) xuất phát từ ``current``."""
+        if not node.con:
+            kq.nodes.extend(self._node(iri) for iri in current)
+            return
+        for child in node.con:
+            self._step(child, current, kq)
 
-    def describe(self, iri: str, depth: int = 1, *,
-                 seen_links: frozenset[tuple[str, str]] = frozenset()) -> dict | None:
-        """Serialise an individual to JSON.
+    def _step(self, child: CayNode, current: list[str], kq: KetQua) -> None:
+        if child.loai == DATA:
+            prop = self._best_property(child.label, self._data_labels)
+            if prop is None:
+                kq.misses.append(child.label)
+                return
+            vals = tuple(v for iri in current
+                         for v in (getattr(self._owl[iri], prop, []) or []))
+            if vals:
+                kq.values.append(GiaTri(prop=prop, values=vals))
+            else:
+                kq.misses.append(child.label)
+            return
 
-        ``depth=1`` = full description. ``depth=0`` = minimal target form
-        (identity + URL-shaped data only) for nested object-property items.
+        if child.loai == OBJECT:
+            prop = self._best_property(child.label, self._obj_labels)
+            if prop is None:
+                kq.misses.append(child.label)
+                return
+            nxt = _dedup(t for iri in current for t in self._neighbors(iri, prop))
+            if not nxt:
+                kq.misses.append(child.label)
+                return
+            self._descend(child, nxt, kq)          # con của child lồng vào (VÀ); nếu không có → terminal
+            return
 
-        ``seen_links`` is a set of ``(prop_name, target_iri)`` pairs already
-        asserted by an ancestor in the current describe chain — pairs in
-        this set are silently dropped from the current level so duplicate
-        relationships do not repeat down the tree (e.g. when both a
-        procedure and each of its fee categories link the same regulation).
-        """
+        # individual: thu hẹp trong (tập hiện tại ∪ node cách 1 bước object)
+        candidates = _dedup(list(current)
+                            + [t for iri in current for t in self._obj_neighbors(iri)])
+        matched = self._match_individuals(child.label, candidates)
+        if not matched:
+            kq.misses.append(child.label)
+            return
+        self._descend(child, matched, kq)
+
+    # ── Đi cạnh ──────────────────────────────────────────────────────────────
+
+    def _neighbors(self, iri: str, prop: str) -> list[str]:
         ind = self._owl[iri]
-        if ind is None:
-            log.warning("[Ontology.describe] miss iri=%s", iri)
-            return None
-        out: dict = {
-            "type": "individual",
-            "iri": ind.name,
-            "class": self._class_local_of(ind),
-            "label": self._label_of(ind),
-        }
-        # Stable property order — paragraphs first, then by PROPERTY_ORDER,
-        # then alphabetically by Vietnamese label. Adding a property in Protégé
-        # never reshuffles existing layout.
-        asserted = self._asserted_properties(ind)
-        ordered = sorted(
-            asserted,
-            key=lambda kv: (_PROP_RANK.get(kv[0].name, _BIG_RANK),
-                            self._property_label(kv[0])),
-        )
-        # All outgoing object links from THIS entity — cumulated with the
-        # ancestor set and handed to every child describe call so deeper
-        # levels can dedup against any link asserted by any ancestor on
-        # the chain (not just the immediately preceding property).
-        own_links = frozenset(
-            (prop.name, target.name)
-            for prop, values in asserted
-            if isinstance(prop, owlready2.ObjectPropertyClass)
-            for target in values
-        )
-        descendant_seen = seen_links | own_links
-        for prop, values in ordered:
-            if prop.name in SKIP_PROPERTIES:
-                continue
-            header = self._property_label(prop)
-            value = self._render_property_value(
-                prop, values, depth=depth,
-                ancestor_seen=seen_links,
-                descendant_seen=descendant_seen,
-            )
-            if value in (None, "", []):
-                continue
-            # depth=0 strips non-URL data so target dicts stay small.
-            if depth == 0 and not _has_url(value):
-                continue
-            out[header] = value
+        return [v.name for v in (getattr(ind, prop, []) or []) if hasattr(v, "name")]
+
+    def _obj_neighbors(self, iri: str) -> list[str]:
+        """Mọi cá thể cách ``iri`` đúng 1 bước theo BẤT KỲ object-property."""
+        ind = self._owl[iri]
+        out: list[str] = []
+        for p in self._obj_props:
+            out += [v.name for v in (getattr(ind, p, []) or []) if hasattr(v, "name")]
         return out
 
-    def list_class(self, tag: str) -> dict:
-        """Class-listing JSON: every individual under the class (label only)."""
-        cls_local = self.class_local(tag)
-        cls = self._owl[cls_local]
-        items: list[dict] = []
-        for ind in sorted(self._individuals_of_class(cls_local),
-                          key=lambda x: self._label_of(x).casefold()):
-            items.append({
-                "type": "individual",
-                "iri": ind.name,
-                "class": cls_local,
-                "label": self._label_of(ind),
-            })
-        label = (str(list(getattr(cls, "label", []) or [])[0])
-                 if cls is not None and getattr(cls, "label", None)
-                 else self._label_map.get(tag, {}).get("label", tag))
-        return {"type": "listing", "class": cls_local,
-                "label": label, "items": items}
+    # ── Dựng OntNode + chỉ mục ───────────────────────────────────────────────
 
-    # Internals
+    def _node(self, iri: str) -> OntNode:
+        ind = self._owl[iri]
+        if ind is None:
+            return OntNode(iri=iri, cls="", label=iri)
+        return OntNode(iri=ind.name, cls=self._class_of(ind),
+                       label=self._label_of(ind), data=self._data_of(ind))
 
-    def _individuals_of_class(self, cls_local: str) -> list:
-        cls = self._owl[cls_local]
-        return list(cls.instances()) if cls is not None else []
+    def node(self, iri: str) -> OntNode | None:
+        return self._node(iri) if self._owl[iri] is not None else None
 
-    def _class_local_of(self, ind) -> str:
-        """Most-specific asserted class of ``ind`` (local name)."""
+    def _data_of(self, ind) -> dict:
+        out: dict = {}
+        for p in self._data_props:
+            if p == _ALIAS_PROP:
+                continue
+            vals = list(getattr(ind, p, []) or [])
+            if vals:
+                out[p] = vals[0] if len(vals) == 1 else list(vals)
+        return out
+
+    def _surface_forms(self, ind) -> tuple[str, ...]:
+        forms = {_CAMEL_SPLIT.sub(" ", ind.name)}
+        forms.update(str(v) for v in (getattr(ind, "label", None) or []))
+        forms.update(str(v) for v in (getattr(ind, _ALIAS_PROP, None) or []))
+        return tuple(sorted({normalize_for_match(f) for f in forms if normalize_for_match(f)}))
+
+    def _norm_labels(self, prop_name: str) -> list[str]:
+        p = self._owl[prop_name]
+        return [normalize_for_match(str(l)) for l in (getattr(p, "label", None) or [])
+                if normalize_for_match(str(l))]
+
+    def _class_of(self, ind) -> str:
         for cls in ind.is_a:
             name = getattr(cls, "name", None)
             if name and name != "NamedIndividual":
@@ -297,62 +222,49 @@ class Ontology:
 
     def _label_of(self, node) -> str:
         labels = list(getattr(node, "label", []) or [])
-        if labels:
-            return str(labels[0])
-        return _humanise(getattr(node, "name", str(node)))
+        return str(labels[0]) if labels else _CAMEL_SPLIT.sub(" ", getattr(node, "name", str(node)))
 
-    def _property_label(self, prop) -> str:
-        labels = list(getattr(prop, "label", []) or [])
-        return str(labels[0]) if labels else _humanise(prop.name)
+    def class_label(self, cls: str) -> str:
+        owl_cls = self._owl[cls]
+        labels = list(getattr(owl_cls, "label", []) or []) if owl_cls is not None else []
+        return str(labels[0]) if labels else cls
 
-    @staticmethod
-    def _asserted_properties(individual) -> list[tuple[object, list]]:
-        out: list[tuple[object, list]] = []
-        for prop in individual.get_properties():
-            values = list(prop[individual])
-            if values:
-                out.append((prop, values))
-        return out
-
-    def _render_property_value(self, prop, values: list, *, depth: int,
-                               ancestor_seen: frozenset[tuple[str, str]] = frozenset(),
-                               descendant_seen: frozenset[tuple[str, str]] = frozenset()):
-        """Serialise one property's values: object → nested dicts; paragraph
-        → joined string with leading ``\\n``; other → primitive or list.
-
-        ``ancestor_seen`` is the set of ``(prop, target)`` pairs already
-        asserted by some ancestor — used to filter values OUT at this
-        level. ``descendant_seen`` adds this entity's own outgoing links
-        (computed once by the caller) and is what we hand down to nested
-        describes so they can dedup against the full ancestor chain.
-        """
-        if isinstance(prop, owlready2.ObjectPropertyClass):
-            if depth <= 0:
-                return None
-            # Drop targets already asserted on an ancestor under the same
-            # predicate — same (predicate, target) pair must not repeat
-            # down the tree. Different predicate or different target stays.
-            kept = [v for v in values
-                    if (prop.name, v.name) not in ancestor_seen]
-            if not kept:
-                return None
-            nested = [d for d in (self.describe(v.name, depth=depth - 1,
-                                                seen_links=descendant_seen)
-                                  for v in kept) if d]
-            return nested or None
-        if prop.name in PARAGRAPH_PROPERTIES:
-            # Leading newline = paragraph marker — works for both single and
-            # multi-line content, regardless of language. Renderer keys off
-            # this convention rather than per-property config.
-            return "\n" + "\n".join(str(v).strip() for v in values)
-        # Owlready2 already returns the right Python primitives; no coercion.
-        return values[0] if len(values) == 1 else list(values)
+    def property_label(self, prop: str) -> str:
+        p = self._owl[prop]
+        labels = list(getattr(p, "label", []) or []) if p is not None else []
+        return str(labels[0]) if labels else prop
 
 
-def _has_url(v) -> bool:
-    """True if ``v`` (or any element if it's a list) is a URL string."""
-    if Preprocessor.is_url(v):
-        return True
-    if isinstance(v, list):
-        return any(Preprocessor.is_url(x) for x in v)
-    return False
+# ── Cho điểm khớp (chứa-token/alias, KHÔNG ngưỡng cứng) ──────────────────────
+
+def _score(q: str, forms) -> float:
+    """Điểm khớp ``q`` (đã chuẩn hoá) với tập ``forms`` (đã chuẩn hoá).
+
+    Khớp đúng cả chuỗi alias ⟶ 100 (alias mạnh thắng); mọi token của q là token con
+    của form ⟶ 90; q là chuỗi con ⟶ 80; trùng một phần ⟶ tỉ lệ. Dùng chứa-token nên
+    "k65" khớp được mẩu nhỏ trong nhãn dài, không bị fuzzy cả chuỗi kéo điểm xuống.
+    """
+    if not q:
+        return 0.0
+    qtoks = q.split()
+    best = 0.0
+    for f in forms:
+        if not f:
+            continue
+        if q == f:
+            return 100.0
+        ftoks = set(f.split())
+        if all(t in ftoks for t in qtoks):
+            best = max(best, 90.0)
+        elif q in f:
+            best = max(best, 80.0)
+        else:
+            hit = sum(1 for t in qtoks if t in ftoks)
+            if hit:
+                best = max(best, 50.0 * hit / len(qtoks))
+    return best
+
+
+def _dedup(items) -> list[str]:
+    seen: set[str] = set()
+    return [x for x in items if not (x in seen or seen.add(x))]

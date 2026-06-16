@@ -1,11 +1,13 @@
-"""Pipeline: query → reply, wiring the three layers.
+"""Pipeline: điều phối các pha, một chiều phụ thuộc.
 
-    understand (text→Query)  →  answer (Query→Fact[])  →  render (Fact[]→str)
+    preprocess → model (text→cây) → tree.parse → ontology.traverse → render
 
-One direction of dependency, no shared mutable state. :meth:`answer` is
-synchronous (scripts, tests); :meth:`aanswer` offloads it to a worker thread
-for FastAPI. The response shape ``{"reply", "entities"}`` is preserved so the
-server and web UI need no change.
+Không chứa logic nghiệp vụ; chỉ nối dây. :meth:`answer` chạy đồng bộ (script/test),
+:meth:`aanswer` đẩy sang worker thread cho FastAPI. Response giữ ``{"reply","entities"}``
+để server/web UI không phải đổi.
+
+Lưu ý phiên này: ViT5 chưa train nên :meth:`answer` (cần model) sẽ báo lỗi; test/eval dùng
+:meth:`answer_cay` nạp thẳng cây JSON vàng (không qua model).
 """
 
 from __future__ import annotations
@@ -14,55 +16,52 @@ import asyncio
 import logging
 from functools import lru_cache
 
-from . import answer as answer_mod
-from . import nlu
-from .answer import Fact
-from .graph import Graph
+from .model import TreeModel
+from .ontology import KetQua, Ontology
+from .preprocess import clean
+from .render import render_reply
+from .tree import Cay, parse
 
 log = logging.getLogger(__name__)
 
 
 class Pipeline:
-    """Understand → answer → render, over a single shared :class:`Graph`."""
-
-    def __init__(self, graph: Graph | None = None) -> None:
-        self.graph = graph or Graph.get()
+    def __init__(self, ontology: Ontology | None = None, model: TreeModel | None = None) -> None:
+        self.ontology = ontology or Ontology.get()
+        self._model = model
 
     @classmethod
     @lru_cache(maxsize=1)
     def get(cls) -> "Pipeline":
         return cls()
 
-    def answer(self, query: str) -> dict:
-        """Synchronous entry — returns the ``/chat`` JSON dict."""
-        q = nlu.understand(query, self.graph.lexicon())
-        facts = answer_mod.answer(q, self.graph)
-        reply = _render(q, facts)
-        log.info("[pipeline] act=%s subject=%s facts=%d reply_chars=%d",
-                 q.act, q.subject_cls, len(facts), len(reply))
-        return {"reply": reply, "entities": _entities(facts)}
+    @property
+    def model(self) -> TreeModel:
+        if self._model is None:
+            self._model = TreeModel.get()
+        return self._model
 
-    async def aanswer(self, query: str) -> dict:
-        """Async entry — runs :meth:`answer` in a worker thread."""
-        return await asyncio.to_thread(self.answer, query)
+    def answer(self, text: str) -> dict:
+        """Luồng thật: text → model sinh cây → duyệt → render. Cần ViT5 (chưa train)."""
+        raw = self.model.sinh_cay(clean(text))
+        return self._run(parse(raw))
+
+    async def aanswer(self, text: str) -> dict:
+        return await asyncio.to_thread(self.answer, text)
+
+    def answer_cay(self, cay_or_raw) -> dict:
+        """Entry không cần model (test/eval): nhận :class:`Cay` hoặc dict cây JSON vàng."""
+        cay = cay_or_raw if isinstance(cay_or_raw, Cay) else parse(cay_or_raw)
+        return self._run(cay)
+
+    def _run(self, cay: Cay) -> dict:
+        kq = self.ontology.traverse(cay)
+        reply = render_reply(cay, kq)
+        log.info("[pipeline] act=%s nodes=%d values=%d misses=%s",
+                 cay.act, len(kq.nodes), len(kq.values), kq.misses)
+        return {"reply": reply, "entities": _entities(kq)}
 
 
-def _render(q, facts: list[Fact]) -> str:
-    # Imported lazily so the answer/test layers can use the pipeline without
-    # pulling the renderer's string templates.
-    from .render import render_reply
-    return render_reply(q, facts)
-
-
-def _entities(facts: list[Fact]) -> list[dict]:
-    """Flatten the resolved result nodes into the response's debug list,
-    deduped by IRI with declaration order preserved."""
-    out: list[dict] = []
-    seen: set[str] = set()
-    for f in facts:
-        for n in f.objects:
-            if n is None or n.iri in seen:
-                continue
-            seen.add(n.iri)
-            out.append({"iri": n.iri, "label": n.label, "class": n.cls})
-    return out
+def _entities(kq: KetQua) -> list[dict]:
+    """Tập node kết quả phẳng cho UI debug (đã khử trùng trong traverse)."""
+    return [{"iri": n.iri, "label": n.label, "class": n.cls} for n in kq.nodes]

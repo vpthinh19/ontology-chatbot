@@ -1,16 +1,14 @@
 [project]
 name = "ontchatbot"
 version = "0.1.0"
-description = "Vietnamese academic-procedure chatbot — PhoBERT NER + ontology-grounded retrieval"
+description = "Vietnamese academic-procedure chatbot — ViT5 (text→cây JSON) + ontology traversal"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]",
     "huggingface-hub",
     "transformers",
-    "underthesea",
     "owlready2",
-    "rapidfuzz",
     "sentencepiece>=0.2.1",
     "tokenizers>=0.22.2",
 ]
@@ -23,17 +21,14 @@ train = [
     "onnxruntime-gpu",
     "onnxscript",
     "datasets",
-    "seqeval",
     "matplotlib",
     "seaborn",
 ]
 
 [project.scripts]
-train = "ontchatbot.scripts.train:main"
-evaluate = "ontchatbot.scripts.evaluate:main"
 serve = "ontchatbot.scripts.serve:main"
-bench_fuzzy = "ontchatbot.scripts.bench_fuzzy:main"
-eval_baseline = "ontchatbot.scripts.eval_baseline:main"
+build_ontology = "ontchatbot.scripts.build_ontology:main"
+eval_traversal = "ontchatbot.scripts.eval_traversal:main"
 
 [build-system]
 requires = ["hatchling"]

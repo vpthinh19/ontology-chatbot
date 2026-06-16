@@ -1,14 +1,14 @@
-"""Vietnamese chat-input cleaning — runtime, segmentation-free.
+"""Tiền xử lý text TRƯỚC khi đưa vào model — pha "preprocess" của pipeline.
 
-Replaces the old ``preprocessor`` on the inference path. XLM-R ingests raw
-syllables, so we deliberately do **not** word-segment (no underthesea import
-here — runtime stays torch/underthesea-free). Two jobs only:
+Nguyên tắc (DESIGN.md §2/§9): module này phải **"ngu"** — chỉ làm sạch ký tự, KHÔNG
+trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho ViT5. Không
+word-segment (ViT5 nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
 
-* :func:`clean` — NFC + teencode/acronym expansion for the NLU path.
-* :func:`normalize_for_match` / :func:`strip_diacritics` — keys for the
-  ontology fuzzy index (diacritic-stripped, alnum-only).
+* :func:`clean` — NFC + bung teencode/viết tắt → chuỗi sạch nạp cho ViT5.
+* :func:`normalize_for_match` / :func:`strip_diacritics` / :func:`is_url` — chuẩn hoá
+  thấp (bỏ dấu, alnum) dùng chung cho `ontology` khi khớp alias.
 
-All callables are module-level functions; there is no state to carry.
+Mọi hàm ở mức module; không trạng thái.
 """
 
 from __future__ import annotations
@@ -125,9 +125,9 @@ def normalize(text: str) -> str:
 
 
 def clean(text: str) -> str:
-    """Full NLU-input cleanup: NFC → strip URLs/emails → expand teencode.
+    """Làm sạch input cho model: NFC → bỏ URL/email → bung teencode.
 
-    No word segmentation — XLM-R tokenises raw syllables directly.
+    Không word-segment — ViT5 tokenise raw syllable trực tiếp.
     """
     if not text:
         return ""

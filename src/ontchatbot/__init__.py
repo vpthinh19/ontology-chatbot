@@ -4,24 +4,17 @@ __version__ = "0.1.0"
 
 
 def __getattr__(name):
-    """Lazy public exports so importing the package does not load PhoBERT
-    or the OWL ontology unless one of the heavy classes is actually used."""
+    """Export lười: import gói không kéo theo owlready2/ViT5 trừ khi thực sự dùng."""
     if name == "Pipeline":
         from .pipeline import Pipeline
         return Pipeline
-    if name == "Preprocessor":
-        from .preprocessor import Preprocessor
-        return Preprocessor
-    if name == "NerModel":
-        from .ner_model import NerModel
-        return NerModel
     if name == "Ontology":
         from .ontology import Ontology
         return Ontology
-    if name == "Renderer":
-        from .renderer import Renderer
-        return Renderer
+    if name == "TreeModel":
+        from .model import TreeModel
+        return TreeModel
     raise AttributeError(name)
 
 
-__all__ = ["Pipeline", "Preprocessor", "NerModel", "Ontology", "Renderer"]
+__all__ = ["Pipeline", "Ontology", "TreeModel"]
