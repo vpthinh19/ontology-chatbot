@@ -38,16 +38,16 @@ def main() -> None:
         kq = ont.traverse(parse(r["tree"]))
         got = {n.iri for n in kq.nodes}
         exp = set(r.get("expected", []))
-        ok = got == exp
-        vc = r.get("expected_value_contains")
-        if vc is not None:
-            joined = " ".join(str(v) for gv in kq.values for v in gv.values)
-            ok = ok and (vc in joined)
+        ok = got == exp and kq.vague == bool(r.get("expected_vague", False))
+        for ev in r.get("expected_values", []):
+            joined = " ".join(str(v) for gv in kq.values if gv.prop == ev["prop"] for v in gv.values)
+            ok = ok and (ev["contains"] in joined)
         by_cat[r["category"]].append(ok)
         if not ok:
             misses.append(f"  [{r['category']}] {r['text']!r}\n"
-                          f"      exp={exp or '∅'} val~={vc!r}\n"
-                          f"      got={got or '∅'} values={[gv.prop for gv in kq.values]} misses={kq.misses}")
+                          f"      exp={exp or '∅'} vals={r.get('expected_values')}\n"
+                          f"      got={got or '∅'} values={[gv.prop for gv in kq.values]} "
+                          f"vague={kq.vague} misses={kq.misses}")
 
     print(f"{'category':16} {'acc':>6}  n")
     tot_ok = tot_n = 0

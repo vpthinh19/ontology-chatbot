@@ -164,6 +164,7 @@ def build() -> None:
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     onto.save(file=str(OUT_PATH), format="rdfxml")
     _report(onto, inds)
+    _print_lint(onto)
 
 
 def _mk(name, base, label=None, labels=None):
@@ -173,6 +174,108 @@ def _mk(name, base, label=None, labels=None):
     if labels is not None:
         cls.label = list(labels)
     return cls
+
+
+# ── Lint ontology (REVIEW §C8): bắt nhãn/alias bẩn TRƯỚC khi làm oracle dataset ──
+
+_GENERIC_1TOKEN = {"phong", "don", "hoc", "quy", "noi", "ket", "dieu", "muc", "ban"}
+_ALIAS_QUESTION = _ALIAS_BLOCK            # tái dùng tập từ-hỏi ở trên
+_COHORT_RE = re.compile(r"^k\d{2}$")      # mã khoá k63..k67: chia sẻ trong-cohort là CỐ Ý
+_ROOT_SAFE_DUAL = {"hoc phi"}             # nhãn lưỡng vai có chủ đích (alias cá thể ⊕ nhãn property)
+
+# ĐÃ XÁC NHẬN BY-DESIGN (người dùng 2026-06-16) — nghiệp vụ học vụ, KHÔNG sửa:
+_ACK_GENERIC_LABEL = {"don"}              # "đơn" bắt buộc của nghiệp vụ (biểu mẫu/đơn)
+_ACK_LONGALIAS_CLASS = {"DinhMucHocPhi"}  # tên ngành dài (vd "Hệ thống thông tin quản lý") là nghiệp vụ
+_ACK_CROSS_COHORT = True                  # alias ngành chéo khoá tất yếu: 1 ngành có ở nhiều khoá
+
+
+def _camel_words(name: str) -> str:
+    return re.sub(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=[0-9])", " ", name)
+
+
+def lint_ontology(onto) -> tuple[list[str], list[str]]:
+    """Soi nhãn property + alias cá thể. Trả ``(errors, warnings)``.
+
+    ERROR = sai nguyên tắc thiết kế (phải sửa bảng map); WARNING = đáng rà tay (có thể
+    cố ý như alias ngành đa-cohort). Chạy mỗi lần build để chặn rác lọt vào oracle.
+    """
+    errors: list[str] = []
+    warns: list[str] = []
+
+    # nhãn property theo từng kind
+    for kind, props in (("object", list(onto.object_properties())),
+                        ("data", list(onto.data_properties()))):
+        seen: dict[str, str] = {}
+        for p in props:
+            labels = [str(l) for l in (getattr(p, "label", []) or [])]
+            if not labels:
+                errors.append(f"[{kind}] property {p.name!r} KHÔNG có rdfs:label (con không khớp được)")
+            for l in labels:
+                n = _norm(l)
+                if n in seen and seen[n] != p.name:
+                    errors.append(f"[{kind}] nhãn trùng {l!r}: {seen[n]} ⟷ {p.name}")
+                seen[n] = p.name
+                if len(n.split()) == 1 and n in _GENERIC_1TOKEN and n not in _ACK_GENERIC_LABEL:
+                    warns.append(f"[{kind}] nhãn 1-token quá chung {l!r} ({p.name}) — dễ over-match")
+
+    # bề mặt cá thể (name camel + label + alias) → norm
+    surf: dict[str, list[tuple[str, str]]] = {}     # norm → [(individual, class)]
+    alias_cohorts: dict[str, set[str]] = {}         # norm alias → tập mã khoá fee dùng nó
+    prop_labels = {_norm(str(l)) for p in list(onto.object_properties()) + list(onto.data_properties())
+                   for l in (getattr(p, "label", []) or [])}
+    class_labels = {_norm(str(l)) for c in onto.classes() for l in (getattr(c, "label", []) or [])}
+    for ind in onto.individuals():
+        cls = next((c.name for c in ind.is_a if getattr(c, "name", "") != "NamedIndividual"), "?")
+        cohort = re.search(r"[Kk](\d{2})", ind.name)
+        forms = {_camel_words(ind.name)}
+        forms.update(str(l) for l in (getattr(ind, "label", []) or []))
+        aliases = [str(a) for a in (getattr(ind, "tenGoiKhac", []) or [])]
+        forms.update(aliases)
+        for a in aliases:
+            n = _norm(a)
+            toks = n.split()
+            if any(t in _ALIAS_QUESTION for t in toks):
+                errors.append(f"alias chứa từ-hỏi (rác sót): {a!r} trên {ind.name}")
+            elif len(toks) > 5 and cls not in _ACK_LONGALIAS_CLASS:
+                warns.append(f"alias dài {len(toks)} từ {a!r} ({ind.name}) — khó khớp, cân nhắc bỏ")
+            if cohort and not _COHORT_RE.match(n) and len(toks) <= 4:
+                alias_cohorts.setdefault(n, set()).add("k" + cohort.group(1))
+        for f in forms:
+            n = _norm(f)
+            if not n:
+                continue
+            surf.setdefault(n, []).append((ind.name, cls))
+            if n in prop_labels and n not in _ROOT_SAFE_DUAL:
+                warns.append(f"alias/cá thể {n!r} ({ind.name}) trùng NHÃN PROPERTY — gốc dễ thành rác")
+
+    # alias ngành dùng chung qua NHIỀU KHOÁ (vd "kinh doanh" ở k65/k66/k67) → "học phí <ngành>"
+    # không cohort sẽ trả nhiều mức; cần rà tay (có thể cố ý).
+    for n, cohorts in sorted(alias_cohorts.items()):
+        if len(cohorts) > 1 and not _ACK_CROSS_COHORT:
+            warns.append(f"alias ngành {n!r} dùng chung qua khoá {sorted(cohorts)} — truy vấn thiếu khoá sẽ mơ hồ")
+
+    # alias chia sẻ giữa cá thể khác LỚP (mã khoá k## bỏ qua — chia sẻ trong-cohort là cố ý)
+    for n, owners in surf.items():
+        names = sorted({o[0] for o in owners})
+        classes = {o[1] for o in owners}
+        if len(names) > 1 and not _COHORT_RE.match(n) and len(classes) > 1:
+            warns.append(f"alias {n!r} dùng chung qua nhiều LỚP: {names}")
+
+    return errors, warns
+
+
+def _print_lint(onto) -> None:
+    """In report; ERROR → exit non-zero (gate: chặn nhãn/alias bẩn lọt vào ontology)."""
+    import sys
+    errors, warns = lint_ontology(onto)
+    print(f"[lint] {len(errors)} error, {len(warns)} warning")
+    for e in errors:
+        print(f"  ERROR  {e}")
+    for w in warns:
+        print(f"  warn   {w}")
+    if errors:
+        print("[lint] FAIL — sửa bảng map trong build_ontology.py rồi build lại.")
+        sys.exit(1)
 
 
 def _report(onto, inds) -> None:

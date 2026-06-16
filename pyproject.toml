@@ -29,6 +29,7 @@ train = [
 serve = "ontchatbot.scripts.serve:main"
 build_ontology = "ontchatbot.scripts.build_ontology:main"
 eval_traversal = "ontchatbot.scripts.eval_traversal:main"
+validate_dataset = "ontchatbot.scripts.validate_dataset:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -31,6 +31,7 @@ log = logging.getLogger(__name__)
 _ALIAS_PROP = "tenGoiKhac"          # data-prop chứa alias cá thể (không phải con tra cứu)
 _CAMEL_SPLIT = re.compile(r"(?<=[a-z])(?=[A-Z])|(?<=[A-Za-z])(?=[0-9])")
 _ROOT_MARGIN = 10.0                 # class/property phải hơn cá thể margin này mới ép vague
+_PROP_FLOOR = 80.0                  # sàn khớp nhãn property (con object/data): <80 = trùng-một-phần → miss
 
 
 @dataclass(frozen=True)
@@ -49,17 +50,37 @@ class DataValue:
     values: tuple      # các giá trị
 
 
+@dataclass(frozen=True)
+class Step:
+    """Một bước resolve trong duyệt — vết (trace) để oracle so **đường đi**, không chỉ đích.
+
+    REVIEW §C5/§D: node-match chỉ chứng minh *denotation* đúng; cây sai vẫn có thể ra
+    cùng node (vd ``k65>cntt`` vs ``cntt>k65``). Trace ghi tập trước/sau mỗi bước nên
+    validator/mutation-test phát hiện được "may mắn cùng node". KHÔNG ảnh hưởng runtime.
+    """
+    label: str                  # nhãn node trong cây
+    kind: str                   # individual/object/data
+    resolved: tuple             # IRI khớp (individual) | (tên_property,) (obj/data) | () nếu trượt
+    score: float                # điểm khớp tốt nhất
+    runner_up: float            # điểm nhì (để bắt tie/ambiguous ở chế độ nghiêm)
+    before: tuple               # tập hiện tại trước bước
+    after: tuple                # tập sau bước (rỗng với lá data)
+
+
 @dataclass
 class Result:
     """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được.
 
     ``vague=True`` = gốc trỏ vào CLASS/quan-hệ chứ không phải cá thể (namespace mismatch,
     §4) → render trả "Không hiểu câu hỏi". Đây là LƯỚI AN TOÀN: bắt cả khi model lỡ sinh
-    gốc là tên lớp/nhãn property thay vì cá thể."""
+    gốc là tên lớp/nhãn property thay vì cá thể.
+
+    ``trace`` = vết resolve từng node (cho oracle nghiêm; render/eval không dùng)."""
     nodes: list[OntNode] = field(default_factory=list)
     values: list[DataValue] = field(default_factory=list)
     misses: list[str] = field(default_factory=list)
     vague: bool = False
+    trace: list[Step] = field(default_factory=list)
 
 
 class Ontology:
@@ -98,19 +119,55 @@ class Ontology:
 
     def _match_individuals(self, label: str, iris) -> list[str]:
         """Cho điểm mọi IRI trong ``iris`` theo nhãn; giữ nhóm điểm cao nhất (>0)."""
+        return self._match_individuals_scored(label, iris)[0]
+
+    def _match_individuals_scored(self, label: str, iris) -> tuple[list[str], float]:
+        """Như :meth:`_match_individuals` nhưng trả thêm điểm cao nhất (cho trace)."""
         q = normalize_for_match(label)
         scored = [(iri, _score(q, self._forms[iri])) for iri in iris]
         top = max((s for _, s in scored), default=0.0)
-        return [iri for iri, s in scored if s == top and s > 0.0] if top > 0.0 else []
+        matched = [iri for iri, s in scored if s == top and s > 0.0] if top > 0.0 else []
+        return matched, top
 
     def _best_property(self, label: str, index: dict[str, list[str]]) -> str | None:
+        return self._score_property(label, index)[0]
+
+    def _present_index(self, current: list[str], kind: str) -> dict[str, list[str]]:
+        """Chỉ mục nhãn property **CỤC BỘ**: chỉ các property (đúng ``kind``) mà tập
+        ``current`` THỰC SỰ có assertion. Khớp con đi trong phạm vi này → trung thành
+        concept "đi theo cây cục bộ", không để property toàn cục 'cướp' match (REVIEW scope)."""
+        base = self._obj_labels if kind == OBJECT else self._data_labels
+        present: dict[str, list[str]] = {}
+        for iri in current:
+            ind = self._owl[iri]
+            for p, labels in base.items():
+                if p not in present and getattr(ind, p, None):
+                    present[p] = labels
+        return present
+
+    def _resolve_local_prop(self, label: str, current: list[str], kind: str
+                            ) -> tuple[str | None, float, float]:
+        """Khớp nhãn con trong property CỤC BỘ của ``current`` + áp **sàn** ``_PROP_FLOOR``.
+
+        Sàn chặn 'best-of-one': node chỉ có 1 property, nhãn rác trùng-một-phần (<80) sẽ
+        KHÔNG bị kéo vào → trả miss đúng thay vì node sai (REVIEW scope §3)."""
+        prop, score, runner = self._score_property(label, self._present_index(current, kind))
+        if prop is None or score < _PROP_FLOOR:
+            return None, score, runner
+        return prop, score, runner
+
+    def _score_property(self, label: str, index: dict[str, list[str]]
+                        ) -> tuple[str | None, float, float]:
+        """Property khớp tốt nhất + (điểm nhất, điểm nhì). Điểm nhì để bắt tie ở chế độ nghiêm."""
         q = normalize_for_match(label)
-        best, best_score = None, 0.0
+        best, best_score, runner = None, 0.0, 0.0
         for prop, labels in index.items():
             s = _score(q, labels)
             if s > best_score:
-                best, best_score = prop, s
-        return best
+                best, runner, best_score = prop, best_score, s
+            elif s > runner:
+                runner = s
+        return best, best_score, runner
 
     def _root_resolve(self, label: str) -> tuple[str, list[str]]:
         """Khớp GỐC có kiểm namespace (type-safety, không phải luật nghiệp vụ).
@@ -161,6 +218,14 @@ class Ontology:
         if tree.act != QUERY or tree.root is None:
             return result
         reason, roots = self._root_resolve(tree.root.label)
+        q = normalize_for_match(tree.root.label)
+        i_score, _ = self._score_individuals(q)
+        cls_prop = max(self._best_label_score(q, self._class_labels.values()),
+                       self._best_label_score(q, self._obj_labels.values()),
+                       self._best_label_score(q, self._data_labels.values()))
+        result.trace.append(Step(label=tree.root.label, kind=INDIVIDUAL,
+                                 resolved=tuple(roots), score=i_score, runner_up=cls_prop,
+                                 before=(), after=tuple(roots)))
         if reason == "vague":
             result.vague = True                    # gốc là class/quan-hệ, không có cá thể (§4)
             return result
@@ -184,12 +249,14 @@ class Ontology:
 
     def _step(self, child: TreeNode, current: list[str], result: Result) -> None:
         if child.kind == DATA:
-            prop = self._best_property(child.label, self._data_labels)
+            prop, score, runner = self._resolve_local_prop(child.label, current, DATA)
             if prop is None:
+                self._trace(result, child, (), score, runner, current, ())
                 result.misses.append(child.label)
                 return
             vals = tuple(v for iri in current
                          for v in (getattr(self._owl[iri], prop, []) or []))
+            self._trace(result, child, (prop,), score, runner, current, ())
             if vals:
                 result.values.append(DataValue(prop=prop, values=vals))
             else:
@@ -197,11 +264,13 @@ class Ontology:
             return
 
         if child.kind == OBJECT:
-            prop = self._best_property(child.label, self._obj_labels)
+            prop, score, runner = self._resolve_local_prop(child.label, current, OBJECT)
             if prop is None:
+                self._trace(result, child, (), score, runner, current, ())
                 result.misses.append(child.label)
                 return
             nxt = _dedup(t for iri in current for t in self._neighbors(iri, prop))
+            self._trace(result, child, (prop,), score, runner, current, nxt)
             if not nxt:
                 result.misses.append(child.label)
                 return
@@ -211,11 +280,19 @@ class Ontology:
         # individual: thu hẹp trong (tập hiện tại ∪ node cách 1 bước object)
         candidates = _dedup(list(current)
                             + [t for iri in current for t in self._obj_neighbors(iri)])
-        matched = self._match_individuals(child.label, candidates)
+        matched, score = self._match_individuals_scored(child.label, candidates)
+        self._trace(result, child, tuple(matched), score, 0.0, current, matched)
         if not matched:
             result.misses.append(child.label)
             return
         self._descend(child, matched, result)
+
+    @staticmethod
+    def _trace(result: Result, child: TreeNode, resolved: tuple, score: float,
+               runner: float, before, after) -> None:
+        result.trace.append(Step(label=child.label, kind=child.kind, resolved=resolved,
+                                 score=score, runner_up=runner,
+                                 before=tuple(before), after=tuple(after)))
 
     # ── Đi cạnh ──────────────────────────────────────────────────────────────
 

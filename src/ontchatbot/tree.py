@@ -72,6 +72,67 @@ def parse(obj: object) -> Tree:
     return Tree(act=QUERY, root=root)
 
 
+class StrictParseError(ValueError):
+    """Cây không hợp lệ ở chế độ NGHIÊM (oracle validate dataset Phase 4).
+
+    Khác :func:`parse` (khoan dung cho production — bỏ lặng node hỏng): bản nghiêm
+    *từ chối* mọi bất thường để cây dataset không lọt lỗi cấu trúc (REVIEW §C5). Thông
+    điệp ghi ``path`` (vd ``entities[0].children[1]``) để soạn dataset dễ sửa.
+    """
+
+
+def parse_strict(obj: object) -> Tree:
+    """Như :func:`parse` nhưng RAISE :class:`StrictParseError` thay vì khoan dung.
+
+    Bắt đúng các lỗi REVIEW §C5 mà ``parse`` nuốt lặng:
+    * node không phải dict / ``label`` rỗng / ``type`` sai / ``children`` không phải list;
+    * node ``data`` có con (data là lá §3);
+    * ``query`` không có hoặc có **>1** chủ thể (một truy vấn = một cây §3);
+    * gốc không phải ``individual``;
+    * ``act`` sai, hoặc act phi-``query`` lại kèm ``entities``.
+    """
+    if not isinstance(obj, dict):
+        raise StrictParseError(f"gốc phải là dict, gặp {type(obj).__name__}")
+    act = obj.get("act")
+    if act not in _ACTS:
+        raise StrictParseError(f"act không hợp lệ: {act!r}")
+    entities = obj.get("entities")
+    if act != QUERY:
+        if entities:
+            raise StrictParseError(f"act={act!r} không được kèm entities")
+        return Tree(act=act)
+    if not isinstance(entities, list) or not entities:
+        raise StrictParseError("query phải có đúng 1 chủ thể, gặp rỗng")
+    if len(entities) != 1:
+        raise StrictParseError(f"query phải có đúng 1 chủ thể, gặp {len(entities)}")
+    root = _node_strict(entities[0], "entities[0]")
+    if root.kind != INDIVIDUAL:
+        raise StrictParseError(f"gốc phải là individual, gặp {root.kind!r}")
+    return Tree(act=QUERY, root=root)
+
+
+def _node_strict(raw: object, path: str) -> TreeNode:
+    """Dựng một node ở chế độ nghiêm; RAISE với ``path`` khi hỏng."""
+    if not isinstance(raw, dict):
+        raise StrictParseError(f"{path}: node phải là dict, gặp {type(raw).__name__}")
+    label = raw.get("label")
+    if not isinstance(label, str) or not label.strip():
+        raise StrictParseError(f"{path}: label rỗng/không phải chuỗi: {label!r}")
+    kind = raw.get("type")
+    if kind not in _KINDS:
+        raise StrictParseError(f"{path}: type không hợp lệ: {kind!r}")
+    children_raw = raw.get("children", [])
+    if children_raw in (None, ""):
+        children_raw = []
+    if not isinstance(children_raw, list):
+        raise StrictParseError(f"{path}: children phải là list, gặp {type(children_raw).__name__}")
+    if kind == DATA and children_raw:
+        raise StrictParseError(f"{path}: node data là lá, không được có con (§3)")
+    children = tuple(_node_strict(c, f"{path}.children[{i}]")
+                     for i, c in enumerate(children_raw))
+    return TreeNode(label=label.strip(), kind=kind, children=children)
+
+
 def _node(raw: object) -> TreeNode | None:
     """Dựng một node; trả ``None`` nếu hỏng (caller bỏ qua)."""
     if not isinstance(raw, dict):
