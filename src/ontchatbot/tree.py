@@ -1,6 +1,6 @@
 """Hợp đồng CÂY JSON do model sinh ra (DESIGN.md §3) — data contract model↔ontology.
 
-ViT5 sinh một dict ``{"act", "entities"}``; module này **chỉ** kiểm tra hợp lệ và dựng
+BARTpho sinh một dict ``{"act", "entities"}``; module này **chỉ** kiểm tra hợp lệ và dựng
 thành cây Python (`Tree`) cho `ontology.traverse`. Không có luật hiểu-câu ở đây (§9) —
 chỉ validate cấu trúc và **loại node ma** (label rỗng / loại sai) để hệ không gãy (§8).
 

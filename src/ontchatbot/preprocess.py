@@ -1,12 +1,12 @@
 """Tiền xử lý text TRƯỚC khi đưa vào model — pha "preprocess" của pipeline.
 
 Nguyên tắc (DESIGN.md §2/§9): module này phải **"ngu"** — chỉ làm sạch ký tự, KHÔNG
-trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho ViT5. Không
-word-segment (ViT5 nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
+trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho model. Không
+word-segment (BARTpho nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
 
-* :func:`clean` — NFC + bung teencode/viết tắt → chuỗi sạch nạp cho ViT5.
-* :func:`normalize_for_match` / :func:`strip_diacritics` / :func:`is_url` — chuẩn hoá
-  thấp (bỏ dấu, alnum) dùng chung cho `ontology` khi khớp alias.
+* :func:`clean` — NFC + bung teencode/viết tắt → chuỗi sạch nạp cho model.
+* :func:`normalize_for_match` / :func:`is_url` — chuẩn hoá thấp (bỏ dấu, alnum) dùng
+  chung cho `ontology` khi khớp alias.
 
 Mọi hàm ở mức module; không trạng thái.
 """
@@ -15,21 +15,6 @@ from __future__ import annotations
 
 import re
 import unicodedata
-
-# Vietnamese vowel groups paired with their unaccented Latin equivalent.
-_GROUPS: tuple[tuple[str, str], ...] = (
-    ("àáảãạâầấẩẫậăằắẳẵặ", "a"),
-    ("èéẻẽẹêềếểễệ", "e"),
-    ("ìíỉĩị", "i"),
-    ("òóỏõọôồốổỗộơờớởỡợ", "o"),
-    ("ùúủũụưừứửữự", "u"),
-    ("ỳýỷỹỵ", "y"),
-    ("đ", "d"),
-)
-_VOWELS = "".join(g for g, _ in _GROUPS)
-_PLAIN = "".join(p * len(g) for g, p in _GROUPS)
-_DIACRITIC_TABLE = str.maketrans(_VOWELS + _VOWELS.upper(), _PLAIN + _PLAIN.upper())
-
 
 # Domain acronyms — uppercase, multi-letter. Matched case-sensitively first
 # (so ``HK`` does not catch a user typing ``hk`` for ``không``).
@@ -127,7 +112,7 @@ def normalize(text: str) -> str:
 def clean(text: str) -> str:
     """Làm sạch input cho model: NFC → bỏ URL/email → bung teencode.
 
-    Không word-segment — ViT5 tokenise raw syllable trực tiếp.
+    Không word-segment — BARTpho tokenise raw syllable trực tiếp.
     """
     if not text:
         return ""
@@ -138,11 +123,6 @@ def clean(text: str) -> str:
     text = _split_sticky_alnum(text)
     text = " ".join(_expand(text.split()))
     return _RE_WS.sub(" ", text).strip()
-
-
-def strip_diacritics(s: str) -> str:
-    """``cảm ơn`` → ``cam on`` via the precomputed translation table."""
-    return s.translate(_DIACRITIC_TABLE)
 
 
 def normalize_for_match(text: str) -> str:

@@ -111,7 +111,12 @@ class Ontology:
     # ── Khớp (resolve theo kind) ─────────────────────────────────────────────
 
     def resolve(self, label: str, kind: str) -> list[str] | str | None:
-        """individual → list IRI khớp; object/data → tên property; None nếu trượt."""
+        """Khớp 1 nhãn lẻ TOÀN CỤC (individual → list IRI; object/data → tên property; None nếu trượt).
+
+        ⚠️ KHÁC duyệt: property ở đây khớp phạm vi TOÀN CỤC (`_best_property`), KHÔNG phải
+        cục-bộ-theo-tập + sàn `_PROP_FLOOR` như `_resolve_local_prop` mà `traverse` dùng.
+        Đây là API chẩn-đoán / entry cho unit-test (xem test_ontology), KHÔNG phải resolver
+        của traversal — đừng gọi nó để duyệt cây."""
         if kind == INDIVIDUAL:
             return self._match_individuals(label, self._forms.keys())
         index = self._obj_labels if kind == OBJECT else self._data_labels

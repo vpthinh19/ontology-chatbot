@@ -47,7 +47,7 @@ def render_reply(tree: Tree, result: Result) -> str:
     if blocks:
         return "\n".join(blocks)
     if result.misses:
-        labels = ", ".join(f"«{m}»" for m in _dedup(result.misses))
+        labels = ", ".join(f"«{m}»" for m in dict.fromkeys(result.misses))
         return f"Không có thông tin {labels}."
     return OOD_REPLY
 
@@ -113,8 +113,3 @@ def _scalar(v) -> str:
 
 def _safe_url(url: str) -> str:
     return url.replace("(", "%28").replace(")", "%29")
-
-
-def _dedup(items) -> list[str]:
-    seen: set[str] = set()
-    return [x for x in items if not (x in seen or seen.add(x))]

@@ -6,7 +6,7 @@ Không chứa logic nghiệp vụ; chỉ nối dây. :meth:`answer` chạy đồ
 :meth:`aanswer` đẩy sang worker thread cho FastAPI. Response giữ ``{"reply","entities"}``
 để server/web UI không phải đổi.
 
-Lưu ý phiên này: ViT5 chưa train nên :meth:`answer` (cần model) sẽ báo lỗi; test/eval dùng
+Lưu ý phiên này: BARTpho chưa train nên :meth:`answer` (cần model) sẽ báo lỗi; test/eval dùng
 :meth:`answer_tree` nạp thẳng cây JSON vàng (không qua model).
 """
 
@@ -42,7 +42,7 @@ class Pipeline:
         return self._model
 
     def answer(self, text: str) -> dict:
-        """Luồng thật: text → model sinh cây → duyệt → render. Cần ViT5 (chưa train)."""
+        """Luồng thật: text → model sinh cây → duyệt → render. Cần BARTpho (chưa train)."""
         raw = self.model.to_tree(clean(text))
         return self._run(parse(raw))
 

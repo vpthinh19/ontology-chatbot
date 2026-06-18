@@ -28,10 +28,16 @@ DATASET_DIR = RESOURCES / "datasets"
 TRAIN_PATH = DATASET_DIR / "train.jsonl"
 TEST_PATH = DATASET_DIR / "test.jsonl"
 
+# Phase 4 — sinh dataset (catalog truy vấn chuẩn + lô do Codex sinh).
+PHASE4_DIR = RESOURCES / "phase4"
+CATALOG_PATH = PHASE4_DIR / "catalog.jsonl"          # truy vấn chuẩn (sinh từ ontology)
+BATCHES_DIR = PHASE4_DIR / "batches"                 # lô thô + báo cáo validate
+ACCEPTED_DIR = PHASE4_DIR / "accepted"               # cặp đã qua oracle + round-trip
+
 
 # Artifacts
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
-MODEL_DIR = ARTIFACTS_DIR / "models" / "vit5_tree"
+MODEL_DIR = ARTIFACTS_DIR / "models" / "bartpho_tree"
 CHECKPOINT_DIR = ARTIFACTS_DIR / "checkpoints"
 TRAIN_ARTIFACTS_DIR = ARTIFACTS_DIR / "training"
 EVAL_ARTIFACTS_DIR = ARTIFACTS_DIR / "evaluation"
@@ -41,17 +47,26 @@ LOG_FILE = LOG_DIR / "chatbot.log"
 # Web UI
 WEB_DIR = PROJECT_ROOT / "webui"
 
-# Model — ViT5-base seq2seq (text → cây JSON). Train cục bộ (GPU) phiên sau;
-# serve nạp local nếu có, không thì snapshot_download từ HF repo người dùng.
-MODEL_NAME = "VietAI/vit5-base"
-FINETUNED_MODEL_NAME = "vpthinh19/vit5-ontology-tree"   # repo MỚI cho ViT5
+# Model — BARTpho-syllable seq2seq (text → cây JSON). Train cục bộ (GPU) phiên sau;
+# serve nạp model CTranslate2 cục bộ nếu có, không thì snapshot_download từ HF repo.
+# (Đổi từ ViT5 → bartpho-syllable 2026-06-18: benchmark tương đương trên dataset chuẩn,
+#  tác giả VinAI nổi tiếng — cùng nhóm PhoBERT.) BARTpho là mBART (encoder-decoder),
+#  KHÁC T5: inference qua ctranslate2.Translator (xem model.py), KHÔNG dùng generate().
+MODEL_NAME = "vinai/bartpho-syllable"
+FINETUNED_MODEL_NAME = "vpthinh19/bartpho-ontology"    # repo HF cho bartpho fine-tuned
 MAX_SOURCE_LENGTH = 128
 MAX_TARGET_LENGTH = 256
 
-# Training (dùng ở phiên train ViT5)
+# Inference deploy — CTranslate2 (thay ONNX: gọn cho encoder+decoder, CPU int8 nhanh).
+# Convert: thêm `config.normalize_before = True` (pretrained thiếu → CT2 sinh rác nếu
+# bỏ qua) rồi TransformersConverter(quantization="int8"). Thư mục model CT2 sau convert:
+CT2_MODEL_DIR = ARTIFACTS_DIR / "models" / "bartpho_ct2"
+CT2_QUANTIZATION = "int8"
+
+# Training (dùng ở phiên train BARTpho)
 EPOCHS = 10
-BATCH_SIZE = 16
-LEARNING_RATE = 3e-4
+BATCH_SIZE = 8
+LEARNING_RATE = 3e-5
 VAL_SIZE = 0.2
 SEED = 42
 

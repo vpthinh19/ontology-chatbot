@@ -1,10 +1,10 @@
-"""NTU academic-procedure chatbot — Vietnamese ontology-grounded NER + RAG."""
+"""NTU academic-procedure chatbot — model sinh cây truy vấn JSON + duyệt ontology (DESIGN.md)."""
 
 __version__ = "0.1.0"
 
 
 def __getattr__(name):
-    """Export lười: import gói không kéo theo owlready2/ViT5 trừ khi thực sự dùng."""
+    """Export lười: import gói không kéo theo owlready2/BARTpho trừ khi thực sự dùng."""
     if name == "Pipeline":
         from .pipeline import Pipeline
         return Pipeline

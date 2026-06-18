@@ -6,9 +6,9 @@ Endpoints
 ``POST /chat``     — JSON ``{"message": str}`` → ``{"reply": str, ...}``
 ``GET  /healthz``  — liveness probe
 
-The heavy components (ViT5, ontology) are loaded lazily on the first request
+The heavy components (BARTpho, ontology) are loaded lazily on the first request
 and cached as singletons; the process therefore starts quickly and warms up on
-demand. Note: ``/chat`` needs the trained ViT5 model; until it exists it raises
+demand. Note: ``/chat`` needs the trained BARTpho model; until it exists it raises
 ``ModelNotReady`` (xem docs/redesign/PROGRESS.md — train phiên sau).
 
 Runtime tracing — including each stage of the pipeline and the shape of the
@@ -86,7 +86,7 @@ def healthz() -> dict:
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest) -> JSONResponse:
     """Run the pipeline in a worker thread so the event loop stays free
-    while PyTorch inference (blocking C++) is in flight."""
+    while CTranslate2 inference (blocking C++) is in flight."""
     return JSONResponse(await Pipeline.get().aanswer(req.message))
 
 app.mount("/", StaticFiles(directory=WEB_DIR), name="webui")
