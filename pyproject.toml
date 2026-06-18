@@ -1,65 +1,61 @@
-[project]
-name = "ontchatbot"
-version = "0.1.0"
-description = "Vietnamese academic-procedure chatbot — ViT5 (text→cây JSON) + ontology traversal"
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "fastapi[standard]",
-    "huggingface-hub",
-    "transformers",
-    "owlready2",
-    "sentencepiece>=0.2.1",
-    "tokenizers>=0.22.2",
-]
-
-[project.optional-dependencies]
-inference = ["onnxruntime"]
-train = [
-    "torch",
-    "accelerate",
-    "onnxruntime-gpu",
-    "onnxscript",
-    "datasets",
-    "matplotlib",
-    "seaborn",
-]
-
-[project.scripts]
-serve = "ontchatbot.scripts.serve:main"
-build_ontology = "ontchatbot.scripts.build_ontology:main"
-eval_traversal = "ontchatbot.scripts.eval_traversal:main"
-validate_dataset = "ontchatbot.scripts.validate_dataset:main"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/ontchatbot"]
+[project]
+name = "ontchatbot"
+version = "0.1.0"
+description = "Vietnamese academic-procedure chatbot — BARTpho (text→cây JSON) + ontology traversal"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ctranslate2>=4.8.0",
+    "numpy>=2.4.6",
+    "owlready2>=0.50",
+    "sentencepiece>=0.2.1",
+    "tokenizers>=0.22.2",
+    "transformers>=5.12.1",
+]
 
-[tool.hatch.build.targets.wheel.force-include]
-"resources" = "ontchatbot/resources"
+[project.optional-dependencies]
+inference = [
+    "fastapi[standard]>=0.137.1",
+]
+train = [
+    "accelerate>=1.14.0",
+    "bitsandbytes>=0.49.2",
+    "bm25s[core]>=0.3.9",
+    "datasets>=5.0.0",
+    "huggingface-hub>=1.19.0",
+    "matplotlib>=3.11.0",
+    "model2vec>=0.8.2",
+    "torch>=2.12.1",
+]
 
 [[tool.uv.index]]
-name = "pytorch-cuda"
-url = "https://download.pytorch.org/whl/cu132"
+name = "pytorch-index"
+url = "https://download.pytorch.org/whl/cu130"
 explicit = true
 
 [tool.uv.sources]
 torch = [
-    { index = "pytorch-cuda", extra = "train", marker = "sys_platform != 'darwin'" }
+    { index = "pytorch-index" }
 ]
 
 [dependency-groups]
-dev = ["pytest>=9.0.3"]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["src"]
+dev = [
+    "pytest>=9.1.0",
+]
 
 [tool.uv]
-package = true
 conflicts = [
-    [ { extra = "inference" }, { extra = "train" } ],
+    [{ extra = "train" }, { extra = "inference" } ],
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ontchatbot"]
+
+[tool.pytest.ini_options]
+# Chỉ thu thập bộ test chính thức; custom_test/ là script khám phá (chạy code nặng khi
+# import: tải/convert model, cần extra train) — không phải unit test.
+testpaths = ["tests"]
