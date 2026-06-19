@@ -175,17 +175,19 @@ flowchart LR
 
 **Hình 3.** Năm chặng của pipeline ontology.
 
-**Bảng 4.** Chức năng và hình dạng dữ liệu qua từng chặng, minh hoạ cho câu hỏi về phòng xử lý chuyển ngành.
+**Bảng 4.** Chức năng, module hiện thực và hình dạng dữ liệu qua từng chặng, minh hoạ cho câu hỏi về phòng xử lý chuyển ngành. Cột
+Module ghi tên tệp trong gói mã nguồn `src/ontchatbot/` để người đọc tham chiếu sang codebase.
 
-| Chặng | Chức năng | Đầu vào | Đầu ra |
-|---|---|---|---|
-| 1 · Làm sạch | Chuẩn hoá chữ, không phân tích nội dung | "Phòng nào xử lý chuyển ngành?" | "phòng nào xử lý chuyển ngành" |
-| 2 · Mô hình BART | Hiểu câu, sinh cây thực thể | chuỗi đã chuẩn hoá | cây JSON, xem Mục 4.2 |
-| 3 · Kiểm tra cây | Loại phần rác, kiểm tra định dạng | cây JSON thô | cây hợp lệ |
-| 4 · Duyệt ontology | Đi theo cây trên ontology | cây hợp lệ | đối tượng Result, xem Mục 4.3 |
-| 5 · Soạn trả lời | Ghép kết quả thành câu trả lời | Result | chuỗi trả lời |
+| Chặng | Module | Chức năng | Đầu vào | Đầu ra |
+|---|---|---|---|---|
+| 1 · Làm sạch | `preprocess.py` | Chuẩn hoá chữ, không phân tích nội dung | "Phòng nào xử lý chuyển ngành?" | "phòng nào xử lý chuyển ngành" |
+| 2 · Mô hình BART | `model.py` | Hiểu câu, sinh cây thực thể | chuỗi đã chuẩn hoá | cây JSON, xem Mục 4.2 |
+| 3 · Kiểm tra cây | `tree.py` | Loại phần rác, kiểm tra định dạng | cây JSON thô | cây hợp lệ |
+| 4 · Duyệt ontology | `ontology.py` | Đi theo cây trên ontology | cây hợp lệ | đối tượng Result, xem Mục 4.3 |
+| 5 · Soạn trả lời | `render.py` | Ghép kết quả thành câu trả lời | Result | chuỗi trả lời |
 
-Toàn bộ năng lực hiểu ngôn ngữ tập trung ở chặng 2. Các chặng còn lại không chứa luật hiểu câu; riêng chặng 4 chỉ thi hành đúng
+Năm chặng được điều phối bởi module `pipeline.py`, vốn chỉ nối các chặng theo một chiều phụ thuộc mà không chứa luật nghiệp vụ.
+Toàn bộ năng lực hiểu ngôn ngữ tập trung ở chặng 2; các chặng còn lại không chứa luật hiểu câu, và riêng chặng 4 chỉ thi hành đúng
 lộ trình mà cây đã quy định. Thiết kế này giúp hệ thống dễ kiểm chứng và tách bạch trách nhiệm giữa các thành phần.
 
 ### 4.2. Mô hình BART sinh cây thực thể
@@ -279,7 +281,8 @@ flowchart LR
 
 **Hình 4.** Duyệt câu hỏi về email phòng xử lý bảo lưu qua hai bước theo quan hệ.
 
-Kết quả của bước duyệt là một đối tượng Result. Với câu hỏi trên, Result có dạng:
+Kết quả của bước duyệt là một đối tượng Result, được định nghĩa trong module `ontology.py` cùng các kiểu OntNode và DataValue,
+trong khi kiểu cây Tree và TreeNode thuộc module `tree.py`. Với câu hỏi trên, Result có dạng:
 ```json
 { "nodes": [], "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ], "misses": [], "vague": false }
 ```
@@ -366,6 +369,13 @@ Bảng 7 minh hoạ cách chấm ở mức đầu cuối trên câu hỏi về c
 | trả về một phòng ban | đạt | đạt | 0 | 1 | 4 | 0,00 | 0,00 | 0,00 | 0 |
 | JSON hỏng | không | — | — | — | — | — | — | — | 0 |
 
+Trên toàn tập kiểm tra, các chỉ số ở mức câu được gộp lại như sau: exact-match accuracy là tỷ lệ câu có P trùng khít G, còn
+macro-F1 là trung bình F1 của mọi câu. Hai chỉ số này được báo cáo tổng thể và tách theo từng loại câu hỏi, đóng vai trò chỉ số
+chính phản ánh chất lượng đầu cuối; nghiên cứu không gộp mọi độ đo thành một con số có trọng số. Nhóm chẩn đoán gồm tỷ lệ cú pháp
+hợp lệ, tỷ lệ cấu trúc hợp lệ và độ chính xác phân loại act được báo cáo riêng, không cộng vào chỉ số chính, bởi một cây sai cú
+pháp hoặc sai cấu trúc tất yếu duyệt ra đáp án rỗng hoặc sai và đã bị trừ điểm trong các chỉ số đầu cuối. Với câu hỏi dạng giá trị
+như email hay số điện thoại, đáp án là một giá trị đơn nên exact-match trùng với độ chính xác của giá trị.
+
 Trường `act` là một bài toán phân loại bốn lớp thông thường, được đánh giá bằng precision, recall, F1 theo từng lớp kèm ma trận
 nhầm lẫn.
 
@@ -425,7 +435,8 @@ top-k.
 
 Cấu hình thực nghiệm dùng mô hình BGE-M3 cho vòng truy hồi và mô hình BGE-reranker-v2-m3 cho vòng rerank. Đây là một baseline mạnh
 dựa trên mô hình thần kinh đa ngữ, được chọn nhằm tránh phê phán rằng phép đối chứng dùng baseline yếu. Cụm baseline này là một
-module độc lập, được phép dùng GPU khi đánh giá, và không nằm trong bản triển khai CPU của hệ ontology.
+module độc lập, dự kiến đặt tại `src/ontchatbot/baseline/`, được phép dùng GPU khi đánh giá, và không nằm trong bản triển khai CPU
+của hệ ontology.
 
 Cần lưu ý rằng đây là một baseline thuần truy hồi: hệ trả về một tài liệu được xếp hạng cao nhất chứ không trích ra một thuộc tính
 cụ thể. Hệ không đi theo quan hệ, không thực hiện được phép giao, và không tự xác định được số lượng kết quả cần trả mà phải xác
@@ -450,8 +461,10 @@ Cả hai hệ nhận cùng câu hỏi gốc; hệ phẳng không được dùng 
 tuỳ câu hỏi: một tập cá thể, hoặc đúng thuộc tính được hỏi, hoặc một giá trị. Trường hợp tìm đúng tài liệu nhưng sai thuộc tính
 vẫn bị tính là sai; đây là một bất lợi cấu trúc của baseline thuần truy hồi và được nêu rõ khi báo cáo. Bộ dữ liệu đánh giá là tập
 kiểm tra gồm 1.445 câu, tách ra từ tổng số 5.898 câu, trong đó tập kiểm tra dùng cách diễn đạt khác với tập huấn luyện nhằm chống
-hiện tượng học vẹt mẫu câu. Mỗi câu kèm đáp án chuẩn được kiểm chứng tự động bằng thuật toán duyệt. Vì hệ phẳng trả danh sách xếp
-hạng nên phải xác định trước k; báo cáo bổ sung độ đo recall@k và nêu rõ hạn chế này.
+hiện tượng học vẹt mẫu câu. Mỗi câu kèm đáp án chuẩn được kiểm chứng tự động bằng thuật toán duyệt. Việc chấm dùng cùng bộ chỉ số
+precision, recall và F1 như Mục 5, không chỉ đếm số thực thể trùng đáp án, nhằm phạt cả phần trả thừa lẫn phần bỏ sót. Vì hệ phẳng
+trả danh sách xếp hạng nên các chỉ số được tính ở dạng precision@k và recall@k, kèm đường recall@k để nêu rõ hạn chế phải xác định
+trước k.
 
 ### 6.4. Các ví dụ so sánh kèm hình dạng dữ liệu
 
