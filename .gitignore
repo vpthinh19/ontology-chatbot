@@ -12,4 +12,9 @@ __pycache__/
 checkpoints/
 models/
 logs/
-docs/
+docs/*
+!docs/CONCEPT.md
+
+# Artifact model cục bộ stale (lớn, tái tạo được — không commit)
+/bartpho_local/
+/bartpho-ct2-model/
