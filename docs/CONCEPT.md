@@ -1,539 +1,454 @@
 # Chatbot học vụ trên nền Ontology — Khái niệm & Phương pháp
 
-> Tài liệu này giải thích **ý tưởng và cách hoạt động** của hệ thống cho người đọc **không cần biết code**.
-> Mọi thứ trình bày bằng lời + sơ đồ + ví dụ. Đây là bộ khung để viết báo cáo và để hiểu nhanh toàn bộ nghiên cứu.
+> Tài liệu này giải thích **ý tưởng và cách hoạt động** của hệ thống cho người đọc **không cần biết code**: bằng lời + sơ đồ +
+> **dữ liệu JSON thật** lấy từ ontology của đề tài. Đây là bộ khung để viết báo cáo và để hiểu nhanh toàn bộ nghiên cứu.
 >
-> *Lưu ý: các giá trị cụ thể trong ví dụ (email, số điện thoại, mức phí…) mang tính **minh hoạ**; số liệu thật lấy từ ontology.*
+> *Trọng tâm đề tài là **chatbot tra cứu quy trình học vụ bằng ontology**. Phần đối chứng với cơ sở dữ liệu phẳng (phần 6) chỉ là **phần bổ trợ** để làm rõ giá trị của ontology, không phải mục tiêu chính.*
 >
-> *Quy ước **placeholder kết quả**: những ô đánh dấu 📊 là chỗ dành cho **biểu đồ/số liệu thật** (train, test, benchmark) — sẽ chèn vào sau khi chạy. Mỗi ô ghi rõ mô tả + tệp hình dự kiến trong `docs/figures/`.*
+> *Quy ước **placeholder kết quả**: ô đánh dấu 📊 là chỗ dành cho biểu đồ/số liệu thật (train, test, benchmark) — chèn vào sau khi chạy.*
 
 ## Mục lục
 1. [Mục tiêu nghiên cứu](#1-mục-tiêu-nghiên-cứu)
 2. [Bức tranh tổng quan](#2-bức-tranh-tổng-quan)
-3. [Ontology là gì — tấm bản đồ tri thức](#3-ontology-là-gì--tấm-bản-đồ-tri-thức)
-4. [Pipeline Ontology (hệ đề xuất)](#4-pipeline-ontology-hệ-đề-xuất)
-5. [Pipeline CSDL phẳng (hệ đối chứng)](#5-pipeline-csdl-phẳng-hệ-đối-chứng)
-6. [Đánh giá mô hình sinh cây](#6-đánh-giá-mô-hình-sinh-cây)
-7. [Benchmark: Ontology vs CSDL phẳng](#7-benchmark-ontology-vs-csdl-phẳng)
-8. [Tóm tắt luận điểm](#8-tóm-tắt-luận-điểm)
+3. [Ontology — bản đồ tri thức lấy quy trình học vụ làm trung tâm](#3-ontology--bản-đồ-tri-thức-lấy-quy-trình-học-vụ-làm-trung-tâm)
+4. [Pipeline Ontology — hệ thống chính](#4-pipeline-ontology--hệ-thống-chính)
+5. [Đánh giá mô hình sinh cây](#5-đánh-giá-mô-hình-sinh-cây)
+6. [(Bổ trợ) Đối chứng với cơ sở dữ liệu phẳng](#6-bổ-trợ-đối-chứng-với-cơ-sở-dữ-liệu-phẳng)
+7. [Tóm tắt](#7-tóm-tắt)
 
 ---
 
 ## 1. Mục tiêu nghiên cứu
 
-Xây một chatbot tra cứu **thủ tục học vụ** (học phí, bảo lưu, chuyển ngành, phòng ban…) bằng tiếng Việt,
-và **kiểm định giả thuyết**: tổ chức tri thức theo **ontology** (đồ thị quan hệ) cho câu trả lời **đúng và đầy đủ hơn**
-một cơ sở dữ liệu (CSDL) **phẳng** thông thường — đặc biệt ở các câu hỏi **có cấu trúc** (kết hợp nhiều điều kiện,
-đi qua nhiều quan hệ, hỏi cả một nhóm kết quả). *Kết luận chỉ được rút ra **sau** khi có số liệu benchmark (phần 7).*
+Xây một chatbot tiếng Việt tra cứu **quy trình học vụ** của Trường ĐH Nha Trang — *bảo lưu, chuyển ngành, đăng ký học phần,
+học lại, học cải thiện, rút môn, đóng học phí, xét học bổng, xét tốt nghiệp* — bằng cách tổ chức tri thức theo **ontology**
+(đồ thị quan hệ ngữ nghĩa).
 
-Nói cách khác, nghiên cứu có **hai nhân vật** chạy song song trên **cùng câu hỏi**, rồi đem **kết quả** ra so:
+Lý do chọn ontology: **một quy trình học vụ không đứng một mình — nó kết nối tới hầu hết mọi thứ khác**. Hỏi về "bảo lưu" có
+thể là hỏi *phòng nào xử lý*, *cần điều kiện gì*, *nộp đơn nào*, *căn cứ quy định nào*, *kết quả ra sao*. Ontology nắm các
+**quan hệ** đó như những con đường có tên, nên trả lời được cả những câu phải **đi qua nhiều bước**.
 
-- **Hệ đề xuất** — *pipeline ontology*: hiểu câu hỏi rồi **đi trên bản đồ tri thức** để lấy đáp án.
-- **Hệ đối chứng** — *pipeline phẳng*: tìm kiếm trên một danh sách "phiếu" phẳng (kiểu tìm kiếm thông thường).
-
-Toàn bộ chạy **cục bộ**, không gọi dịch vụ AI bên ngoài (ràng buộc đề tài).
+> Phần **6** thêm một phép **đối chứng** với cách lưu trữ "phẳng" (tìm kiếm thông thường) để cho thấy ontology hơn ở đâu — nhưng
+> đó chỉ là **bổ trợ chứng minh**, sức nặng của đề tài nằm ở chính hệ thống ontology (phần 3–5).
 
 ---
 
 ## 2. Bức tranh tổng quan
 
+Hệ thống nhận **câu hỏi** và trả về **câu trả lời**, qua một chuỗi xử lý:
+
 ```mermaid
 flowchart LR
-    Q["Câu hỏi người dùng<br/>vd: 'học phí K65 ngành CNTT?'"]
-    Q --> O["PIPELINE ONTOLOGY<br/>(hệ đề xuất)"]
-    Q --> F["PIPELINE CSDL PHẲNG<br/>(hệ đối chứng)"]
-    O --> OA["Đáp án của hệ A"]
-    F --> FA["Đáp án của hệ B"]
-    OA --> CMP{"So với<br/>ĐÁP ÁN CHUẨN"}
-    FA --> CMP
-    CMP --> R["Kết luận:<br/>hệ nào đúng &amp; đủ hơn?"]
+    Q["Câu hỏi<br/>'email phòng xử lý thủ tục bảo lưu?'"] --> M["Mô hình BART<br/>(hiểu câu → cây)"]
+    M --> T["Cây thực thể<br/>(JSON)"]
+    T --> O["Duyệt ONTOLOGY<br/>(đi theo quan hệ)"]
+    O --> A["Câu trả lời<br/>'Email: ctsv@ntu.edu.vn'"]
 ```
 
-Hai hệ **nhận cùng đầu vào** (câu hỏi gốc) và đều phải **trả về cùng một loại đầu ra** (một *tập sự vật/thông tin*),
-nhờ vậy mới đem ra chấm chung được. Phần 7 nói kỹ cách so.
+Trái tim của hệ là **ontology** (kho tri thức về các quy trình học vụ) và **thuật toán duyệt** đi trên đó. Mô hình BART chỉ
+làm nhiệm vụ **dịch câu hỏi thành một lộ trình** để đi trên ontology.
 
 ---
 
-## 3. Ontology là gì — tấm bản đồ tri thức
+## 3. Ontology — bản đồ tri thức lấy quy trình học vụ làm trung tâm
 
-Hãy hình dung ontology như một **tấm bản đồ**:
+Hình dung ontology như một **tấm bản đồ**:
 
-- **Điểm trên bản đồ** = **sự vật cụ thể**: một thủ tục (*Bảo lưu*), một phòng (*Phòng CTSV*), một mức học phí (*K65 ngành CNTT*).
-- **Đường nối có tên** = **quan hệ** giữa các sự vật: *"được xử lý bởi"*, *"yêu cầu điều kiện"*, *"áp dụng mức học phí"*…
-- **Nhãn dán trên mỗi điểm** = **thuộc tính** (giá trị đọc được): *email*, *số điện thoại*, *địa chỉ*, *nội dung*, *học phí mỗi tín chỉ*…
+- **Điểm trên bản đồ** = **cá thể** (*individual*): một quy trình (*Bảo lưu*), một phòng (*Phòng CTSV*), một điều kiện, một mức học phí…
+- **Đường nối có tên** = **quan hệ** (*object property*): *"được xử lý bởi"*, *"yêu cầu điều kiện"*, *"áp dụng mức học phí"*…
+- **Nhãn dán trên mỗi điểm** = **thuộc tính** (*datatype property*) → **giá trị** (*literal*): email, số điện thoại, nội dung…
 
-Ví dụ một mảnh bản đồ quanh thủ tục **Bảo lưu**:
+### 3.1. Quy trình học vụ là HUB của ontology
+
+Đây là điểm quan trọng nhất: **mỗi quy trình học vụ là một trung tâm (hub) toả ra hầu hết các loại sự vật khác.** Ontology của
+đề tài có **9 quy trình**, mỗi quy trình nối qua tối đa **7 quan hệ**:
 
 ```mermaid
 flowchart TD
-    BL(["Thủ tục Bảo lưu"])
-    CTSV(["Phòng CTSV"])
-    DK1(["Điều kiện: đã học ≥ 1 học kỳ"])
-    DK2(["Điều kiện: không bị kỷ luật"])
-    DON(["Đơn xin bảo lưu"])
-
-    BL -->|được xử lý bởi| CTSV
-    BL -->|yêu cầu điều kiện| DK1
-    BL -->|yêu cầu điều kiện| DK2
-    BL -->|cần tài liệu| DON
-
-    CTSV -.->|email| EM["ctsv@ntu.edu.vn"]
-    CTSV -.->|điện thoại| SDT["0258 xxx xxx"]
-    CTSV -.->|địa chỉ| DC["Số 2 Nguyễn Đình Chiểu"]
+    P(["QUY TRÌNH HỌC VỤ<br/>(vd: Bảo lưu)"])
+    P -->|được xử lý bởi| D(["Phòng ban"])
+    P -->|yêu cầu điều kiện| C(["Điều kiện"])
+    P -->|cần tài liệu| F(["Biểu mẫu / Đơn"])
+    P -->|áp dụng mức học phí| FEE(["Mức học phí"])
+    P -->|có kết quả| R(["Kết quả đầu ra"])
+    P -->|có phương thức thanh toán| PAY(["Phương thức thanh toán"])
+    P -->|căn cứ quy định| REG(["Quy định"])
+    P -.->|nội dung| N["văn bản mô tả quy trình"]
 ```
 
-> Đường **liền** = quan hệ tới sự vật khác. Đường **gạch** = thuộc tính (giá trị lá, đọc xong là có đáp án).
+8 **loại sự vật** (class): Quy trình học vụ, Phòng ban hành chính, Điều kiện, Tài liệu biểu mẫu, Định mức học phí, Kết quả đầu
+ra, Phương thức thanh toán, Quy định.
 
-Điểm mấu chốt: **mọi thông tin đều nằm ở đúng chỗ của nó và được nối với nhau bằng quan hệ có tên**. Đây là thứ
-mà CSDL phẳng (phần 5) **vứt bỏ** — và cũng là lý do ontology trả lời tốt hơn ở câu hỏi có cấu trúc.
+### 3.2. Một quy trình thật trông như thế nào (dữ liệu JSON)
 
-### Bảng thuật ngữ (lời thường ↔ thuật ngữ kỹ thuật)
+Lấy quy trình **Bảo lưu** thật trong ontology. Tri thức được lưu dưới dạng **bộ ba** *(điểm A) —quan hệ→ (điểm B)*:
 
-Tài liệu dùng cách nói hình ảnh ("bản đồ / điểm / đường / nhãn") cho dễ hiểu. Bảng dưới quy về **tên kỹ thuật** để tiện đối chiếu khi viết báo cáo:
+```text
+QuyTrinhBaoLuu  ──được xử lý bởi──►   PhongCTSV
+QuyTrinhBaoLuu  ──yêu cầu điều kiện─► DieuKienBaoLuuYTe, …VuTrang, …QuocTe, …CaNhan   (4 điều kiện)
+QuyTrinhBaoLuu  ──cần tài liệu──────► DonXinBaoLuu, DonXinHocTroLai
+QuyTrinhBaoLuu  ──có kết quả────────► OutputDuocBaoLuu
+QuyTrinhBaoLuu  ──căn cứ quy định───► RegQD1052
+QuyTrinhBaoLuu  ──nội dung (thuộc tính)──► "1. Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả…"
+```
 
-| Lời thường trong tài liệu | Thuật ngữ kỹ thuật | Ví dụ |
+Mỗi **điểm** khi lấy ra có hình dạng (đã làm phẳng cho dễ đọc) — ví dụ điểm **Phòng CTSV** với các **thuộc tính** thật:
+
+```json
+{
+  "iri": "PhongCTSV",
+  "class": "PhongBanHanhChinh",
+  "label": "Phòng Công tác Sinh viên",
+  "data": {
+    "truongPhong": "ThS. Đỗ Quốc Việt",
+    "email": "ctsv@ntu.edu.vn",
+    "soDienThoai": "02582221900",
+    "diaDiem": "Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang",
+    "website": "https://phongctsv.ntu.edu.vn/"
+  }
+}
+```
+
+Điểm mấu chốt: **thông tin nằm đúng chỗ của nó và được nối với nhau bằng quan hệ có tên.** Email không nằm trong "Bảo lưu" mà
+nằm ở "Phòng CTSV" — muốn lấy phải **đi theo quan hệ** *được xử lý bởi*. Đây chính là thứ giúp ontology trả lời các câu nhiều bước.
+
+### 3.3. Bảng thuật ngữ (lời thường ↔ thuật ngữ kỹ thuật)
+
+| Lời thường trong tài liệu | Thuật ngữ kỹ thuật | Ví dụ thật |
 |---|---|---|
-| sự vật / điểm trên bản đồ | **cá thể** (*individual*) | Phòng CTSV, Thủ tục Bảo lưu |
-| loại sự vật | **lớp** (*class*) | Phòng ban hành chính, Quy trình học vụ |
-| đường nối có tên | **quan hệ** (*object property*) | "được xử lý bởi", "áp dụng mức" |
-| nhãn dán / giá trị đọc được | **thuộc tính** (*datatype property*) → **giá trị** (*literal*) | email → "ctsv@ntu.edu.vn" |
-| tờ hướng dẫn đường đi | **cây truy vấn** | đầu ra của mô hình BART |
-| mã định danh của một sự vật | **IRI** | dùng để khớp giữa ontology và hệ phẳng |
+| sự vật / điểm trên bản đồ | **individual** (cá thể) | QuyTrinhBaoLuu, PhongCTSV |
+| loại sự vật | **class** (lớp) | Quy trình học vụ, Phòng ban hành chính |
+| đường nối có tên | **object property** (quan hệ) | duocXuLyBoi ("được xử lý bởi") |
+| nhãn dán → giá trị | **datatype property** → **literal** | email → "ctsv@ntu.edu.vn" |
+| tờ hướng dẫn đường đi | **cây thực thể** (entity tree) | đầu ra của mô hình BART |
+| mã định danh của một điểm | **IRI** | "PhongCTSV" |
 
 ---
 
-## 4. Pipeline Ontology (hệ đề xuất)
+## 4. Pipeline Ontology — hệ thống chính
 
-### 4.1. Hệ gồm những phần nào
-
-Câu hỏi đi qua **5 chặng**, mỗi chặng làm một việc và biến đổi dữ liệu sang một **hình dạng** mới:
+### 4.1. Năm chặng và hình dạng dữ liệu qua mỗi chặng
 
 ```mermaid
 flowchart LR
-    A["Câu hỏi<br/>(chuỗi chữ)"] --> B["1 · Làm sạch"]
-    B -->|"chuỗi đã chuẩn hoá"| C["2 · Mô hình BART"]
+    A["Câu hỏi<br/>(chuỗi)"] --> B["1 · Làm sạch"]
+    B -->|"chuỗi chuẩn hoá"| C["2 · Mô hình BART"]
     C -->|"cây thực thể (JSON)"| D["3 · Kiểm tra cây"]
     D -->|"cây hợp lệ"| E["4 · Duyệt ontology"]
-    E -->|"tập sự thật<br/>(điểm + giá trị)"| F["5 · Soạn trả lời"]
+    E -->|"Result: nodes + values"| F["5 · Soạn trả lời"]
     F --> G["Câu trả lời<br/>(tiếng Việt)"]
 ```
 
-| Chặng | Chức năng | Đầu vào | Đầu ra (hình dạng dữ liệu) |
+| Chặng | Chức năng | Đầu vào | Đầu ra (hình dạng) |
 |---|---|---|---|
-| **1 · Làm sạch** | Chuẩn hoá chữ (viết thường, bỏ ký tự thừa). Cố tình "ngu" — không phân tích gì | `"Học phí K65 ngành CNTT?"` | `"học phí k65 ngành cntt"` |
-| **2 · Mô hình BART** | Hiểu câu, sinh **cây thực thể** (đã train từ dữ liệu) | chuỗi sạch | cây JSON: chủ thể + quan hệ/thuộc tính cần tra |
-| **3 · Kiểm tra cây** | Bảo đảm cây đúng định dạng, loại bỏ phần rác | cây JSON thô | cây hợp lệ (hoặc "mơ hồ" nếu hỏng) |
-| **4 · Duyệt ontology** | **Đi trên bản đồ** theo cây → lấy đáp án | cây hợp lệ | **tập điểm** (sự vật) + **giá trị** (thuộc tính) |
-| **5 · Soạn trả lời** | Ghép kết quả thành câu tiếng Việt, giọng nghiêm túc | tập kết quả | chuỗi trả lời cho người dùng |
+| 1 · Làm sạch | Chuẩn hoá chữ; cố tình "ngu" (không phân tích) | `"Email phòng xử lý bảo lưu?"` | `"email phòng xử lý bảo lưu"` |
+| 2 · Mô hình BART | Hiểu câu → sinh **cây thực thể** | chuỗi sạch | JSON cây (xem 4.2) |
+| 3 · Kiểm tra cây | Bỏ phần rác, bảo đảm đúng định dạng | cây JSON thô | cây hợp lệ (hoặc `vague`) |
+| 4 · Duyệt ontology | **Đi theo cây** trên bản đồ → lấy kết quả | cây hợp lệ | `Result` (xem 4.3) |
+| 5 · Soạn trả lời | Ghép kết quả thành câu, giọng nghiêm túc | `Result` | chuỗi trả lời |
 
-Triết lý: **toàn bộ việc "hiểu câu" dồn vào mô hình BART (chặng 2)**. Các chặng còn lại không có "luật thông minh" nào —
-chặng 4 chỉ **đi theo đúng đường cây đã chỉ**. Nhờ vậy hệ dễ kiểm chứng và không chắp vá.
+### 4.2. Mô hình BART: câu hỏi → cây thực thể (JSON)
 
-### 4.2. Mô hình BART làm gì — ví dụ
+Mô hình biến câu hỏi thành một **cây JSON**: ghi rõ *bắt đầu ở quy trình/sự vật nào*, rồi *đi theo quan hệ nào / đọc thuộc tính
+nào*. Hình dạng cố định:
 
-Mô hình nhận **câu hỏi** và in ra một **cây**: ghi rõ *bắt đầu từ sự vật nào*, rồi *đi theo quan hệ nào / đọc thuộc tính nào*.
-Cây này chính là **tờ hướng dẫn đường đi** cho chặng 4.
-
-Mỗi nút của cây có một **vai trò**:
-- **chủ thể** — sự vật được hỏi tới (luôn là gốc cây);
-- **quan hệ** — một đường nối cần đi theo;
-- **thuộc tính** — một nhãn cần đọc giá trị (là điểm cuối, cho ra đáp án);
-- (chủ thể con) — để **lọc giao** khi câu hỏi ghép nhiều điều kiện.
-
-**Ví dụ 1 — câu đơn giản:** *"phòng công tác sinh viên ở đâu?"*
-```mermaid
-flowchart TD
-    R1["phòng công tác sinh viên<br/>(chủ thể)"] --> C1["địa chỉ<br/>(thuộc tính)"]
+```json
+{ "act": "query",
+  "entities": [ { "label": "...", "type": "individual | object | data", "children": [ ... ] } ] }
 ```
 
-**Ví dụ 2 — đi một quan hệ:** *"phòng nào xử lý thủ tục bảo lưu?"*
-```mermaid
-flowchart TD
-    R2["bảo lưu<br/>(chủ thể)"] --> C2["phòng xử lý<br/>(quan hệ)"]
+- `act` ∈ `query | greeting | ood | vague` (câu hỏi thật / chào / ngoài phạm vi / mơ hồ).
+- mỗi nút: `label` (đoạn chữ), `type` (vai trò), `children` (cây con). **Gốc luôn là `individual`** (chủ thể được hỏi).
+
+**Bốn ví dụ thật** (cùng chủ thể *Bảo lưu*), từ đơn giản đến nhiều bước:
+
+**(a) Tự mô tả** — *"thủ tục bảo lưu là gì"*
+```json
+{ "act": "query", "entities": [ { "label": "bảo lưu", "type": "individual", "children": [] } ] }
 ```
 
-**Ví dụ 3 — đi nhiều chặng:** *"email của phòng xử lý thủ tục bảo lưu?"*
-```mermaid
-flowchart TD
-    R3["bảo lưu<br/>(chủ thể)"] --> C3["phòng xử lý<br/>(quan hệ)"] --> C3b["email<br/>(thuộc tính)"]
+**(b) Đi một quan hệ** — *"phòng nào xử lý thủ tục bảo lưu"*
+```json
+{ "act": "query", "entities": [
+  { "label": "bảo lưu", "type": "individual", "children": [
+    { "label": "phòng xử lý", "type": "object", "children": [] } ] } ] }
 ```
 
-**Ví dụ 4 — ghép điều kiện (giao):** *"học phí khoá K65 ngành CNTT?"* — các tầng **lồng nhau** (K65 → CNTT) nghĩa là *lọc dần* = phép VÀ (xem §4.3).
-```mermaid
-flowchart TD
-    R4["học phí<br/>(chủ thể)"] --> C4["áp dụng mức<br/>(quan hệ)"] --> F1["K65<br/>(lọc)"] --> F2["CNTT<br/>(lọc)"]
+**(c) Đi nhiều bước** — *"email của phòng xử lý thủ tục bảo lưu"*
+```json
+{ "act": "query", "entities": [
+  { "label": "bảo lưu", "type": "individual", "children": [
+    { "label": "phòng xử lý", "type": "object", "children": [
+      { "label": "email", "type": "data", "children": [] } ] } ] } ] }
 ```
 
-**Mô hình học làm việc này nhờ đâu?** Nhờ **bộ dữ liệu huấn luyện ép buộc**: ta cho mô hình xem ~vài nghìn cặp
-*(câu hỏi → cây mẫu đúng)*. Quan trọng là dữ liệu phủ **nhiều cách diễn đạt khác nhau cho cùng một ý**, nên mô hình
-học được **ý**, không học vẹt câu chữ. Ví dụ ba câu sau cho ra **cùng một cây**:
+**(d) Lọc giao** — *"học phí khoá K65 ngành CNTT"* (gốc "học phí" trỏ tới quy trình *Đóng học phí*)
+```json
+{ "act": "query", "entities": [
+  { "label": "học phí", "type": "individual", "children": [
+    { "label": "K65", "type": "individual", "children": [
+      { "label": "CNTT", "type": "individual", "children": [] } ] } ] } ] }
+```
+> Ở (d), "K65" và "CNTT" là **tên các mức học phí đích**, nên là nút `individual` **lồng nhau**; hệ tự dò trong các mức mà quy
+> trình "học phí" liên kết tới (xem 4.3 — lồng nhau = phép GIAO).
+
+**Mô hình làm được nhờ đâu?** Nhờ **bộ dữ liệu huấn luyện** phủ **nhiều cách diễn đạt cho cùng một ý** — nên nó học *ý*, không
+học vẹt câu chữ. Ba câu sau cho ra **cùng một cây** ở ví dụ (d):
 
 | Câu hỏi (diễn đạt khác nhau) | Cây sinh ra |
 |---|---|
-| "học phí K65 ngành CNTT" | học phí → áp dụng mức → {K65, CNTT} |
-| "cho em hỏi sinh viên K65 công nghệ thông tin đóng bao nhiêu một tín" | *(cây y hệt)* |
-| "hp khóa 65 cntt" | *(cây y hệt)* |
+| "học phí K65 ngành CNTT" | (d) |
+| "sinh viên K65 công nghệ thông tin đóng bao nhiêu một tín" | *(y hệt)* |
+| "hp khóa 65 cntt" | *(y hệt)* |
 
-Mô hình còn **phân loại ý định** của câu (gắn ở gốc cây) để hệ biết khi nào **không nên tra**:
+Mô hình còn **phân loại ý định** (gắn ở `act`) để biết khi nào **không nên tra**:
 
-| Loại câu | Ví dụ | Hệ trả lời |
+| `act` | Ví dụ câu | Trả lời |
 |---|---|---|
-| Câu hỏi thật | "điều kiện bảo lưu là gì" | tra ontology rồi trả thông tin |
-| Chào hỏi | "xin chào", "cảm ơn ad" | chào lại |
-| Ngoài phạm vi | "hôm nay trời mưa không" | "Không có thông tin." |
-| Mơ hồ | "thủ tục như nào", "phòng nào" | "Không hiểu câu hỏi." |
+| `query` | "điều kiện bảo lưu" | tra ontology rồi trả thông tin |
+| `greeting` | "xin chào", "cảm ơn ad" | "Xin chào. Đây là hệ thống tra cứu thủ tục học vụ…" |
+| `ood` | "hôm nay trời mưa không" | "Không có thông tin." |
+| `vague` | "thủ tục như nào", "phòng nào" | "Không hiểu câu hỏi." |
 
-### 4.3. Thuật toán duyệt — ví dụ "đi bản đồ"
+### 4.3. Thuật toán duyệt: đi bản đồ theo cây
 
-Chặng 4 chỉ làm **một việc**: đặt ngón tay lên điểm xuất phát, rồi **lần theo đúng những đường mà cây chỉ**. Trong khi đi,
-nó giữ một **"tập điểm hiện tại"** (đang đứng ở những đâu) và biến đổi tập đó qua mỗi nút con:
+Chặng 4 giữ một **"tập điểm hiện tại"** (đang đứng ở đâu) và biến đổi nó qua mỗi nút con:
+- **`object`** → đi theo quan hệ đó → tập hiện tại nhảy sang các điểm đích;
+- **`data`** → đọc thuộc tính → **trả giá trị** (kết thúc nhánh);
+- **`individual`** (không phải gốc) → **lọc**: trong các điểm đang có (và điểm cách 1 bước), chỉ giữ điểm khớp tên → **thu hẹp**.
 
-- gặp **quan hệ** → đi theo đường đó tới các điểm kế tiếp (tập hiện tại **nhảy** sang điểm đích);
-- gặp **thuộc tính** → đọc nhãn → **trả giá trị** (kết thúc nhánh);
-- gặp **chủ thể con (lọc)** → trong các điểm đang có, **chỉ giữ** điểm khớp tên → **thu hẹp** tập.
+**Hai cách ghép — đối nhau, đừng lẫn:**
+- **Lồng nhau (cha → con nối tiếp) = phép VÀ = GIAO.** Mỗi tầng con lọc tiếp trên kết quả tầng cha (thu hẹp dần).
+- **Anh em (nhiều con cùng một cha) = nhánh ĐỘC LẬP = GỘP/HỢP.** Mỗi nhánh chạy riêng rồi cộng kết quả.
 
-Quy tắc ghép có **hai trường hợp đối nhau** — đừng lẫn:
-- **Lồng nhau (cha → con nối tiếp) = phép VÀ = GIAO.** Mỗi tầng con *lọc tiếp* trên kết quả của tầng cha (thu hẹp dần). Dùng cho "K65 **và đồng thời** CNTT".
-- **Anh em (nhiều con cùng một cha) = nhánh ĐỘC LẬP = GỘP/HỢP.** Mỗi nhánh chạy riêng từ cùng điểm rồi **cộng** kết quả. Dùng cho "K65 **với** K67" (hai khoá khác nhau).
-
-**Ví dụ A — đi nhiều chặng** (*"email của phòng xử lý thủ tục bảo lưu"*):
+**Ví dụ đi nhiều bước** — cây (c) ở trên (*"email phòng xử lý bảo lưu"*):
 
 ```mermaid
 flowchart LR
-    S0["{Bảo lưu}"] -->|"đi: được xử lý bởi"| S1["{Phòng CTSV}"] -->|"đọc: email"| S2["ctsv@ntu.edu.vn ✅"]
+    S0["{QuyTrinhBaoLuu}"] -->|"đi: được xử lý bởi"| S1["{PhongCTSV}"] -->|"đọc: email"| S2["ctsv@ntu.edu.vn ✅"]
 ```
 
-Bắt đầu ở *Bảo lưu* → lần theo *được xử lý bởi* → tới *Phòng CTSV* → đọc nhãn *email* → **xong**. Lưu ý: email **không**
-nằm cùng chỗ với "bảo lưu" — phải **đi qua một quan hệ** mới tới. Đây là điều CSDL phẳng rất khó làm.
+Kết quả của bước duyệt có hình dạng `Result` như sau (giá trị thật):
+```json
+{ "nodes": [], "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ], "misses": [], "vague": false }
+```
+→ chặng 5 render thành: `Email: ctsv@ntu.edu.vn`.
 
-**Ví dụ B — lọc giao** (*"học phí K65 ngành CNTT"*):
+**Ví dụ lọc giao (VÀ)** — cây (d) (*"học phí K65 CNTT"*), đáp án đúng = `PhiK65620k`:
 
 ```mermaid
 flowchart LR
-    T0["{Học phí}"] -->|"đi: áp dụng mức"| T1["{550k, 620k, K67-550k, K67-620k}"]
-    T1 -->|"lọc giữ K65"| T2["{K65-550k, K65-620k}"]
-    T2 -->|"lọc giữ CNTT"| T3["{K65-CNTT 620k} ✅"]
+    T0["{Đóng học phí}"] -->|"lọc giữ K65"| T1["{PhiK65550k, PhiK65620k}"] -->|"lọc giữ CNTT"| T2["{PhiK65620k} ✅"]
+```
+```json
+{ "nodes": [ { "iri": "PhiK65620k", "class": "DinhMucHocPhi", "label": "Học phí K65 (Công nghệ thông tin)",
+              "data": { "hocPhiMoiTinChi": 620000 } } ],
+  "values": [], "misses": [], "vague": false }
 ```
 
-Hai phép lọc **VÀ** nối tiếp → từ 4 mức ban đầu thu về **đúng 1 mức**. Đây là **giao điều kiện** — thế mạnh lõi của ontology.
-
-**Ví dụ C — trả cả một tập** (*"học phí khoá K65"* — không nêu ngành):
-
+**Ví dụ gộp/hợp (anh em)** — *"học phí K65 với K67"*: hai nút `individual` **anh em** dưới "học phí":
 ```mermaid
 flowchart LR
-    U0["{Học phí}"] -->|"đi: áp dụng mức"| U1["{mọi mức}"] -->|"lọc giữ K65"| U2["{K65-550k, K65-620k} ✅ (2 kết quả)"]
+    U0["{Đóng học phí}"] -->|"nhánh 1: K65"| U1["{PhiK65550k, PhiK65620k}"]
+    U0 -->|"nhánh 2: K67"| U2["{PhiK67550k, PhiK67620k}"]
+    U1 --> UR["GỘP = 4 mức ✅"]
+    U2 --> UR
 ```
+Lồng nhau (giao) và anh em (hợp) cho kết quả **ngược nhau** — nên mô hình phải học đặt **đúng cấu trúc cây**.
 
-Hệ trả **đúng 2 mức** vì nó **đi tới đúng các điểm** chứ không "đoán lấy mấy kết quả".
-
-**Ví dụ C2 — gộp/hợp** (*"học phí khoá K65 với khoá K67"* — hai nhánh **anh em**, không phải lồng):
-
-```mermaid
-flowchart LR
-    V0["{Học phí}"] -->|"đi: áp dụng mức"| V1["{mọi mức}"]
-    V1 -->|"nhánh 1: lọc K65"| V2["{K65-550k, K65-620k}"]
-    V1 -->|"nhánh 2: lọc K67"| V3["{K67-550k, K67-620k}"]
-    V2 --> VR["GỘP = 4 mức ✅"]
-    V3 --> VR
+**Ví dụ không có dữ liệu** — *"học phí ngành Y khoa"* (ngành không tồn tại): đi tới các mức nhưng không mức nào khớp "Y khoa":
+```json
+{ "nodes": [], "values": [], "misses": ["Y khoa"], "vague": false }
 ```
-
-Hai nhánh chạy độc lập rồi **cộng** lại → ra **cả 4 mức** — khác hẳn phép **giao** (lồng nhau) ở Ví dụ B chỉ còn 1 mức. Đây chính là chỗ
-*lồng nhau* và *anh em* cho kết quả **ngược nhau**, nên mô hình phải học đặt đúng cấu trúc cây.
-
-**Ví dụ D — không có dữ liệu:** *"học phí ngành Y khoa"* (ngành không có trong ontology) → đi tới *áp dụng mức* nhưng
-**không điểm nào khớp "Y khoa"** → hệ trả thẳng *"Không có thông tin «Y khoa»."* (không bịa).
+→ render: `Không có thông tin «Y khoa».` (hệ không bịa).
 
 ---
 
-## 5. Pipeline CSDL phẳng (hệ đối chứng)
+## 5. Đánh giá mô hình sinh cây
 
-Đây là **đối thủ** trong benchmark — đại diện cho cách làm chatbot tra cứu **thông thường** (không dùng ontology).
-Ta xây nó **đàng hoàng, mạnh nhất có thể** để phép so công bằng.
-
-### 5.1. Kho phẳng được xây thế nào — ví dụ
-
-Lấy **mỗi sự vật** trong ontology và "dập phẳng" nó thành **một phiếu** (một đoạn văn bản gộp): tên + tên gọi khác +
-mọi giá trị thuộc tính + loại. **Bỏ hết các đường quan hệ** — chỉ còn văn bản rời.
-
-> Phiếu của **Phòng CTSV** (minh hoạ):
-> ```
-> Phòng Công tác Sinh viên | CTSV | phòng ctsv |
-> email: ctsv@ntu.edu.vn | điện thoại: 0258 xxx xxx |
-> địa chỉ: Số 2 Nguyễn Đình Chiểu | loại: Phòng ban hành chính
-> ```
-
-> Phiếu của mức **K65 ngành CNTT** (minh hoạ):
-> ```
-> Mức học phí K65 CNTT | Công nghệ thông tin | k65 |
-> học phí mỗi tín chỉ: 620.000đ | loại: Định mức học phí
-> ```
-
-Đúng như bạn hình dung: **mỗi phiếu tương ứng một cá thể (individual) trong ontology**, dùng **chung mã định danh (id = IRI)**
-để sau này chấm điểm so được với ontology. Khác biệt **cốt tử**: phiếu là **văn bản rời rạc**, không biết "Phòng CTSV"
-*xử lý* "Bảo lưu" — quan hệ đã bị xoá.
-
-### 5.2. Hệ gồm những phần nào
-
-```mermaid
-flowchart LR
-    subgraph BUILD["GIAI ĐOẠN DỰNG (làm 1 lần, offline)"]
-        ONT["Ontology"] --> DOC["Bộ phiếu<br/>(1 phiếu / sự vật)"]
-        DOC --> IDXK["Chỉ mục từ khoá<br/>(BM25)"]
-        DOC --> IDXS["Chỉ mục ngữ nghĩa<br/>(vector)"]
-    end
-    subgraph QUERY["GIAI ĐOẠN HỎI (mỗi câu)"]
-        Q2["Câu hỏi gốc"] --> SCK["Chấm điểm từ khoá"]
-        Q2 --> SCS["Chấm điểm ngữ nghĩa"]
-        IDXK -.-> SCK
-        IDXS -.-> SCS
-        SCK --> FUSE["Trộn điểm (hybrid)"]
-        SCS --> FUSE
-        FUSE --> RANK["Xếp hạng vòng 1<br/>→ lấy top-k ứng viên"]
-        RANK --> RR["Rerank vòng 2<br/>(đọc câu+phiếu, chấm lại)"]
-        RR --> OUT["Tập phiếu (→ mã IRI)"]
-    end
-```
-
-| Phần | Chức năng | Đầu vào | Đầu ra (hình dạng) |
-|---|---|---|---|
-| Bộ phiếu | Dập phẳng ontology thành văn bản | ontology | danh sách phiếu (văn bản) |
-| Chỉ mục từ khoá | Xếp hạng theo độ khớp từ, có xét độ hiếm (BM25) | bộ phiếu | bảng tra từ → phiếu |
-| Chỉ mục ngữ nghĩa | Biến mỗi phiếu thành **vector** (dãy số biểu diễn nghĩa) | bộ phiếu | danh sách vector |
-| Chấm + trộn | So câu hỏi với từng phiếu theo 2 cách rồi gộp | câu hỏi | điểm số cho mỗi phiếu |
-| Xếp hạng vòng 1 | Sắp theo điểm trộn, lấy top-k ứng viên | điểm số | k phiếu ứng viên |
-| **Rerank vòng 2** | Mô hình đọc **câu hỏi + từng phiếu cùng lúc**, chấm lại độ liên quan | k ứng viên | tập phiếu xếp lại (mã IRI) |
-
-### 5.3. Hybrid search — thuật toán & ví dụ
-
-"Hybrid" = **trộn hai kiểu tìm kiếm** vì mỗi kiểu mạnh một chỗ:
-
-- **Tìm theo từ khoá (BM25):** xếp hạng phiếu theo mức khớp từ, **có xét tần suất và độ hiếm của từ** (từ hiếm trùng nhau cho điểm cao hơn từ phổ biến). *Mạnh* khi dùng đúng từ; *yếu* khi viết tắt/khác chữ
-  (vd "hp" vs "học phí", "dk" vs "điều kiện").
-- **Tìm theo ngữ nghĩa (vector):** biến câu hỏi và phiếu thành **vector số**; hai vector gần nhau = nghĩa gần nhau, **dù khác chữ**.
-  *Mạnh* khi diễn đạt lệch; *yếu* khi cần khớp chính xác mã/tên riêng.
-
-Cách trộn (minh hoạ): chuẩn hoá điểm hai bên về cùng thang `[0..1]` rồi cộng có trọng số.
-
-> **Ví dụ:** câu hỏi *"phòng ctsv liên hệ kiểu gì"*, xét 3 phiếu:
->
-> | Phiếu | Điểm từ khoá | Điểm ngữ nghĩa | Trộn (0.5/0.5) |
-> |---|---|---|---|
-> | **Phòng CTSV** | 0.7 (trùng "ctsv", "phòng") | 0.9 (gần nghĩa "liên hệ") | **0.80** ✅ |
-> | Phòng KHTC | 0.2 | 0.5 | 0.35 |
-> | Thủ tục Bảo lưu | 0.1 | 0.3 | 0.20 |
->
-> → xếp hạng: **Phòng CTSV** đứng đầu → trả phiếu đó.
-
-Hình dạng dữ liệu chạy xuyên qua: `câu hỏi (chữ)` → `2 dãy điểm` → `1 dãy điểm đã trộn` → `danh sách phiếu xếp hạng` → `top-k phiếu`.
-
-### 5.4. Rerank — đọc kỹ lại top-k
-
-Vòng 1 (hybrid) tìm **nhanh** nhưng "thô": nó chấm câu hỏi và phiếu một cách *rời rạc*. **Rerank** là vòng 2 tinh hơn —
-một mô hình **đọc đồng thời câu hỏi VÀ từng phiếu ứng viên** rồi chấm lại độ liên quan, nhờ đọc cùng lúc nên hiểu ngữ cảnh
-tốt hơn. Vì chậm, nó **chỉ chạy trên top-k** phiếu mà vòng 1 lọc ra, không quét toàn kho.
-
-```mermaid
-flowchart LR
-    Q["Câu hỏi"] --> H["Vòng 1: hybrid<br/>(nhanh, thô)"] --> K["top-k ứng viên"]
-    K --> R["Vòng 2: rerank<br/>(đọc câu+phiếu, chậm, kỹ)"] --> O["xếp hạng cuối"]
-```
-
-> *Cấu hình cụ thể (đã thử ở `stress_test_vram.py`): truy hồi bằng **BGE-M3** (một mô hình sinh **cả** vector ngữ nghĩa lẫn trọng số
-> từ khoá), rerank bằng **BGE-reranker-v2-m3**. Đây là baseline phẳng **mạnh** (mô hình thần kinh đa ngữ) — cố ý chọn mạnh để phép so
-> không bị tố "đánh baseline yếu". Cụm baseline này là **module benchmark riêng**, chạy lúc đánh giá (được phép dùng GPU), KHÔNG nằm
-> trong bản triển khai CPU.*
-
-**Lưu ý quan trọng:** dù mạnh, rerank vẫn chỉ **xếp lại các phiếu** — nó **vẫn không đi theo quan hệ, không lọc giao, và trả về một
-phiếu chứ không phải một thuộc tính cụ thể**. Nên các thế mạnh của ontology ở phần 7 vẫn còn nguyên.
-
-> ⚠️ **Giới hạn cố hữu của hệ phẳng** (sẽ lộ ra ở phần 7): nó chỉ tìm được **phiếu giống câu hỏi nhất**. Nó **không đi theo quan hệ**,
-> **không lọc giao**, và **không biết phải trả bao nhiêu** kết quả (phải tự chọn `k`).
-
----
-
-## 6. Đánh giá mô hình sinh cây
-
-Phần này đo **riêng chất lượng mô hình BART** (chặng 2): nó sinh cây tốt tới đâu? Vì đầu ra là **một cấu trúc** (cây JSON)
-chứ không phải một nhãn, ta **không** chấm như bài phân loại thông thường, mà chấm theo **nhiều bước từ lỏng đến chặt**:
+Phần này đo **chất lượng mô hình BART** (chặng 2). Vì đầu ra là **một cấu trúc** (cây JSON) chứ không phải một nhãn, ta chấm
+theo **nhiều bước từ lỏng đến chặt**:
 
 ```mermaid
 flowchart TD
-    O["Cây do model sinh ra"] --> P1{"Đọc được không?<br/>(đúng JSON)"}
+    O["Cây do model sinh ra"] --> P1{"Parse được?<br/>(đúng JSON)"}
     P1 -- không --> X1["❌ Lỗi định dạng"]
-    P1 -- có --> P2{"Đúng dạng cây<br/>quy định?"}
+    P1 -- có --> P2{"Đúng cấu trúc cây?"}
     P2 -- không --> X2["❌ Sai cấu trúc"]
-    P2 -- có --> P3["Đi bản đồ → ĐÁP ÁN CUỐI"]
-    P3 --> P4{"So đáp án với<br/>ĐÁP ÁN CHUẨN"}
-    P4 --> M["Đúng / Thừa / Thiếu<br/>→ điểm"]
+    P2 -- có --> P3["Duyệt → đáp án cuối"]
+    P3 --> P4{"So với đáp án chuẩn"}
+    P4 --> M["precision / recall / F1 / exact match"]
 ```
 
-**Vì sao chấm ở "đáp án cuối" mới đúng:** điều người dùng nhận là **câu trả lời sau khi đi bản đồ**, không phải cây trung gian.
-Hai cây *viết khác nhau* vẫn có thể cho *cùng đáp án đúng* (vd "K65 CNTT" và "CNTT K65" đảo thứ tự). Nếu chấm theo *từng chữ của cây*
-thì phạt oan. Ngược lại, cây *lệch một chút* có thể **đi ra đáp án sai** — chỉ so đáp-án-cuối mới bắt được.
+**Vì sao chấm ở "đáp án cuối":** điều người dùng nhận là **câu trả lời sau khi duyệt**, không phải cây trung gian. Hai cây
+*viết khác nhau* vẫn có thể cho *cùng đáp án đúng* (đảo thứ tự "K65 CNTT"). Còn cây *lệch một chút* có thể **duyệt ra đáp án sai**.
 
-**Cách tính điểm** (ở mức đáp án cuối): với mỗi câu, gọi
-**Đúng** = số kết quả vừa-trả-vừa-đúng · **Thừa** = trả ra nhưng sai · **Thiếu** = đúng nhưng bỏ sót. Khi đó:
+**Các chỉ số** (dùng đúng thuật ngữ chuẩn). Với mỗi câu, gọi tập đáp án mô hình là **P**, tập đúng là **G**:
+- **TP** (true positive, *đúng*) = P ∩ G · **FP** (false positive, *thừa*) = P \ G · **FN** (false negative, *thiếu*) = G \ P
+- **precision** = TP / (TP + FP) — *trong cái trả ra, bao nhiêu đúng*
+- **recall** = TP / (TP + FN) — *trong cái cần có, lấy được bao nhiêu*
+- **F1** = 2·precision·recall / (precision + recall) — *một con số cân bằng*
+- **exact match** (khớp đúng cả tập) = 1 nếu P = G, ngược lại 0 — *thước đo nghiêm nhất*
 
-- **Độ chính xác (precision)** = Đúng ÷ (Đúng + Thừa) → *"trả ra có bị lẫn rác không"*
-- **Độ bao phủ (recall)** = Đúng ÷ (Đúng + Thiếu) → *"có bỏ sót gì không"*
-- **F1** = trung bình hài hoà của hai cái trên (một con số cân bằng)
-- **Khớp-trọn-vẹn** = đúng **y hệt** cả tập (1 hoặc 0) — thước đo nghiêm nhất
+**Ví dụ chấm** — câu *"học phí khoá K65"*, đáp án chuẩn `G = {PhiK65550k, PhiK65620k}`:
 
-**Ví dụ chấm** — câu *"học phí khoá K65"*, đáp án chuẩn = `{K65-550k, K65-620k}`:
-
-| Mô hình trả ra | Đọc được? | Đúng dạng? | Đúng | Thừa | Thiếu | Chính xác | Bao phủ | F1 | Khớp-trọn |
+| Mô hình trả P | parse? | cấu trúc? | TP | FP | FN | precision | recall | F1 | exact |
 |---|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
-| `{K65-550k, K65-620k}` | ✓ | ✓ | 2 | 0 | 0 | 100% | 100% | 100% | ✅ |
-| `{K65-550k, K65-620k, K67-620k}` *(thừa 1)* | ✓ | ✓ | 2 | 1 | 0 | 67% | 100% | 80% | ❌ |
-| `{K65-550k}` *(sót 1)* | ✓ | ✓ | 1 | 0 | 1 | 100% | 50% | 67% | ❌ |
-| `{Phòng CTSV}` *(sai chủ thể)* | ✓ | ✓ | 0 | 1 | 2 | 0% | 0% | 0% | ❌ |
-| `học phí: [ {...` *(JSON vỡ)* | ✗ | – | – | – | – | – | – | – | ❌ (lỗi định dạng) |
+| `{PhiK65550k, PhiK65620k}` | ✓ | ✓ | 2 | 0 | 0 | 1.00 | 1.00 | 1.00 | ✅ |
+| `{PhiK65550k, PhiK65620k, PhiK67620k}` *(thừa)* | ✓ | ✓ | 2 | 1 | 0 | 0.67 | 1.00 | 0.80 | ❌ |
+| `{PhiK65550k}` *(thiếu)* | ✓ | ✓ | 1 | 0 | 1 | 1.00 | 0.50 | 0.67 | ❌ |
+| `{PhongCTSV}` *(sai chủ thể)* | ✓ | ✓ | 0 | 1 | 2 | 0.00 | 0.00 | 0.00 | ❌ |
+| `{"học phí": [ {…` *(JSON vỡ)* | ✗ | – | – | – | – | – | – | – | ❌ (format) |
 
-Ngoài ra, **việc phân loại ý định** (câu hỏi thật / chào / ngoài phạm vi / mơ hồ) **đúng là bài phân loại 4 lớp bình thường**,
-nên chấm theo chuẩn quen thuộc (đúng/sai từng lớp, kèm **ma trận nhầm lẫn** cho thấy lớp nào hay bị lẫn lớp nào).
+Riêng trường `act` là **bài phân loại 4 lớp** thông thường → chấm bằng precision/recall/F1 từng lớp + **confusion matrix**.
 
-**Trực quan hoá (cho báo cáo):** biểu đồ cột điểm theo **từng loại câu hỏi** (đơn / nhiều chặng / giao / trả-tập…) để thấy
-mô hình mạnh/yếu ở đâu; đường cong huấn luyện; ma trận nhầm lẫn cho phần phân loại ý định.
+> 📊 **[PLACEHOLDER — chèn sau khi train]** Đường cong huấn luyện (train loss vs validation loss). `docs/figures/training_curve.png`
 
-> 📊 **[PLACEHOLDER — KẾT QUẢ THỰC, chèn sau khi train xong]**
-> *Đường cong huấn luyện:* mất mát trên tập huấn luyện so với tập kiểm định (validation) theo từng bước — để thấy mô hình hội tụ và không học vẹt.
-> Tệp dự kiến: `docs/figures/training_curve.png`
-> <!-- ![Đường cong huấn luyện](figures/training_curve.png) -->
+> 📊 **[PLACEHOLDER — chèn sau khi đánh giá]** F1 / exact match theo từng loại câu hỏi. `docs/figures/eval_per_category.png`
 
-> 📊 **[PLACEHOLDER — KẾT QUẢ THỰC, chèn sau khi đánh giá]**
-> *Điểm theo từng loại câu hỏi:* biểu đồ cột F1 / khớp-trọn-vẹn cho từng loại (đơn / nhiều chặng / giao / trả-tập / âm tính…).
-> Tệp dự kiến: `docs/figures/eval_per_category.png`
-> <!-- ![Điểm theo loại câu hỏi](figures/eval_per_category.png) -->
+> 📊 **[PLACEHOLDER — chèn sau khi đánh giá]** Confusion matrix phân loại `act`. `docs/figures/intent_confusion.png`
 
-> 📊 **[PLACEHOLDER — KẾT QUẢ THỰC, chèn sau khi đánh giá]**
-> *Ma trận nhầm lẫn phân loại ý định:* 4 lớp (câu hỏi thật / chào / ngoài phạm vi / mơ hồ) — lớp nào hay bị lẫn lớp nào.
-> Tệp dự kiến: `docs/figures/intent_confusion.png`
-> <!-- ![Ma trận nhầm lẫn ý định](figures/intent_confusion.png) -->
-
-> *Lưu ý: BLEU/ROUGE (đo độ giống chữ, dùng cho dịch máy/tóm tắt) **không hợp** làm thước đo chính ở đây — cây JSON không phải
-> văn xuôi, và "giống chữ" không bảo đảm "ra đúng đáp án". Cùng lắm chỉ dùng tham khảo phụ.*
+> *BLEU/ROUGE (đo độ giống chữ) **không hợp** làm thước đo chính: cây JSON không phải văn xuôi, và "giống chữ" không bảo đảm
+> "duyệt ra đúng đáp án".*
 
 ---
 
-## 7. Benchmark: Ontology vs CSDL phẳng
+## 6. (Bổ trợ) Đối chứng với cơ sở dữ liệu phẳng
 
-Đây là phần **chứng minh luận điểm** của đề tài.
+> **Đây là phần phụ.** Mục tiêu: cho thấy *vì sao* tổ chức tri thức theo ontology trả lời tốt hơn cách lưu trữ "phẳng" thông
+> thường, ở các câu hỏi **có cấu trúc**. Hệ chính (phần 3–5) vẫn là chatbot ontology.
 
-### 7.1. So thế nào cho công bằng
+### 6.1. Kho phẳng được xây thế nào (dữ liệu JSON)
+
+Lấy **mỗi cá thể** trong ontology và "dập phẳng" thành **một phiếu** văn bản: gộp tên + tên gọi khác + giá trị thuộc tính + lớp,
+**bỏ hết quan hệ**. Mã phiếu = IRI (để chấm so được với ontology). Ví dụ phiếu của Phòng CTSV và một mức học phí:
+
+```json
+{ "id": "PhongCTSV", "class": "PhongBanHanhChinh",
+  "text": "Phòng Công tác Sinh viên | CTSV | trưởng phòng ThS. Đỗ Quốc Việt | email ctsv@ntu.edu.vn | điện thoại 02582221900 | Tầng 1 Tòa nhà Hiệu Bộ | https://phongctsv.ntu.edu.vn/" }
+```
+```json
+{ "id": "PhiK65620k", "class": "DinhMucHocPhi",
+  "text": "Học phí K65 (Công nghệ thông tin) | Công nghệ thông tin | CNTT | k65 | 620000 đồng mỗi tín chỉ" }
+```
+
+Khác biệt **cốt tử**: phiếu là **văn bản rời rạc**. Nó **không biết** "Phòng CTSV" *xử lý* "Bảo lưu" — quan hệ đã bị xoá.
+
+### 6.2. Pipeline phẳng: hybrid search → rerank
 
 ```mermaid
 flowchart LR
-    QS["Cùng một câu hỏi"] --> ONT["Ontology<br/>→ tập điểm/giá trị"]
-    QS --> FLAT["Phẳng<br/>→ tập phiếu (top-k)"]
-    ONT --> G{"Cùng ĐÁP ÁN CHUẨN<br/>cùng THƯỚC ĐO"}
+    Q["Câu hỏi gốc"] --> S1["Vòng 1: hybrid<br/>(từ khoá + ngữ nghĩa)"]
+    S1 --> K["top-k phiếu ứng viên"]
+    K --> S2["Vòng 2: rerank<br/>(đọc câu+phiếu cùng lúc)"]
+    S2 --> OUT["danh sách phiếu xếp hạng<br/>(→ IRI)"]
+```
+
+- **Vòng 1 — hybrid retrieval:** trộn hai cách tìm. **BM25** (xếp hạng theo độ khớp từ, có xét độ hiếm của từ) + **embedding**
+  (biến câu và phiếu thành vector số; gần nhau = nghĩa gần nhau, dù khác chữ). Lấy ra top-k phiếu ứng viên.
+- **Vòng 2 — reranker (cross-encoder):** một mô hình **đọc đồng thời câu hỏi + từng phiếu ứng viên** rồi chấm lại độ liên quan
+  — chính xác hơn vòng 1 nhưng chậm, nên chỉ chạy trên top-k.
+
+> *Cấu hình đã thử (`stress_test_vram.py`): retrieval **BGE-M3** (sinh cả vector ngữ nghĩa lẫn trọng số từ khoá), rerank
+> **BGE-reranker-v2-m3**. Đây là baseline **mạnh** (mô hình thần kinh đa ngữ) — cố ý chọn mạnh để không bị tố "đánh baseline yếu".
+> Cụm baseline là **module benchmark riêng** (được dùng GPU), KHÔNG nằm trong bản triển khai CPU của hệ ontology.*
+
+> ⚠️ Dù mạnh, hệ phẳng **chỉ tìm phiếu giống câu hỏi nhất**. Nó **không đi theo quan hệ, không lọc giao, trả về một phiếu chứ
+> không phải một thuộc tính cụ thể**, và **không biết phải trả bao nhiêu** kết quả (phải tự chọn `k`).
+
+### 6.3. So sánh thế nào cho công bằng
+
+```mermaid
+flowchart LR
+    QS["Cùng một câu hỏi"] --> ONT["Ontology → tập IRI / giá trị"]
+    QS --> FLAT["Phẳng → top-k phiếu (IRI)"]
+    ONT --> G{"Cùng ĐÁP ÁN CHUẨN<br/>cùng chỉ số (precision/recall/F1)"}
     FLAT --> G
-    G --> V["Đúng / Thừa / Thiếu<br/>cho mỗi hệ"]
+    G --> V["Đúng / Thừa / Thiếu cho mỗi hệ"]
 ```
 
-- **Cùng đầu vào:** cả hai nhận **câu hỏi gốc** (hệ phẳng **không** được mượn cây của mô hình — nếu mượn thì thành so thiên vị).
-- **Cùng đầu ra để so:** quy về cùng dạng **đáp án chuẩn**, gồm 3 kiểu tuỳ câu hỏi — **(a) tập cá thể** (mã IRI), **(b) đúng thuộc tính được hỏi** (email vs điện thoại…), **(c) giá trị** (chuỗi). Chấm bằng cùng bộ thước đo phần 6. **Lấy đúng phiếu nhưng sai thuộc tính = vẫn tính SAI.**
-- **Khác biệt khi chấm:** ontology trả **đúng một tập có lực lượng xác định**; hệ phẳng trả **danh sách xếp hạng** nên phải
-  **đoán lấy `k` phiếu đầu** → ta báo cáo thêm "độ bao phủ trong top-k" **và nêu thẳng hạn chế "phải đoán k"** (bản thân nó là một phát hiện).
+- **Cùng đầu vào:** cả hai nhận **câu hỏi gốc** (hệ phẳng không mượn cây của mô hình — tránh thiên vị).
+- **Cùng đáp án chuẩn**, gồm 3 kiểu: **(a) tập cá thể** (IRI), **(b) đúng thuộc tính được hỏi** (email vs điện thoại), **(c) giá
+  trị**. **Lấy đúng phiếu nhưng sai thuộc tính = vẫn tính SAI.**
+- **Bộ benchmark = bộ test** (5898 câu tổng: train 4453 / test 1445; test tách theo **cách diễn đạt khác** train để chống học vẹt).
+  Mỗi câu có đáp án chuẩn **tự kiểm bằng thuật toán duyệt**.
+- Hệ phẳng trả **danh sách xếp hạng** nên phải đoán `k` → báo cáo thêm **recall@k** và nêu thẳng hạn chế "phải đoán k".
 
-**Các cấu hình hệ phẳng đem so** (để phép so vững và tự phản biện):
-1. **Phẳng cơ bản:** hybrid (từ khoá + ngữ nghĩa) → rerank, ăn câu hỏi gốc.
-2. **Phẳng gộp-sẵn:** mỗi phiếu nhồi luôn thông tin hàng xóm → baseline **khó nhất** cho ontology ở câu nhiều chặng.
-3. **Phẳng + thực-thể (đối chứng bổ trợ):** đưa **thực thể mà mô hình trích được** vào search phẳng. Nếu ontology *vẫn* thắng cấu hình này
-   thì lợi thế đến từ **cách lưu trữ (đồ thị)**, không phải chỉ nhờ khâu hiểu câu — chặn phản biện "bạn thắng chỉ nhờ NLU".
+### 6.4. Các ví dụ so sánh — kèm hình dạng dữ liệu
 
-### 7.2. Bộ dữ liệu benchmark
+> Mỗi ví dụ cho thấy **đáp án chuẩn**, **đầu ra ontology**, **đầu ra phẳng** ở dạng dữ liệu cụ thể, để thấy rõ vì sao thắng/hoà.
 
-Chính là **bộ câu hỏi kiểm tra** (phần để riêng, **không** dùng huấn luyện), mỗi câu kèm **đáp án chuẩn** (tập sự vật/giá trị
-đã biết là đúng). Lưu ý:
-
-- Hệ phẳng **không hề được huấn luyện** — nó chỉ lập chỉ mục các phiếu. Hệ ontology dùng mô hình đã train.
-- Cả hai bị hỏi **những câu chưa từng thấy**, và bộ câu kiểm tra cố tình **diễn đạt khác** với dữ liệu huấn luyện (để không "ăn may").
-- **Quy mô:** tổng **5898 câu** (huấn luyện **4453** / kiểm tra **1445**); mỗi câu kèm đáp án chuẩn **tự kiểm bằng thuật toán duyệt** (sinh từ ontology, không gán tay). Việc tách test theo **cách diễn đạt khác** train chính là bằng chứng cho tuyên bố "mô hình học *ý*, không học vẹt câu chữ".
-
-**Các loại câu hỏi (để chấm tách nhóm):** *đơn* (1 sự vật, đọc 1 thuộc tính) · *nhiều chặng* (đi ≥2 quan hệ nối tiếp) · *giao* (lồng nhiều điều kiện) · *trả-tập* (đáp án là một nhóm) · *âm tính* (đúng ra phải trả "không có thông tin" / "không hiểu câu hỏi").
-
-### 7.3. Các ví dụ so sánh then chốt
-
-> Đây là những tình huống cho thấy **ontology thắng ở đâu và vì sao**.
-
-| Câu hỏi | Loại | Ontology làm được | Hệ phẳng vướng gì | Ai thắng |
-|---|---|---|---|---|
-| "email phòng CTSV" | tra cứu đơn | tới phiếu CTSV, đọc email | cũng tìm đúng phiếu CTSV | **Hoà** |
-| "học phí K65 ngành CNTT" | giao điều kiện | lọc K65 **VÀ** CNTT → đúng 1 | lẫn mức K65 ngành khác + K67 ngành CNTT | **Ontology** |
-| "học phí khoá K65" | trả cả tập | đi tới đúng 2 mức | phải đoán `k`: lấy 1 thì thiếu, lấy 3 thì thừa | **Ontology** |
-| "email phòng xử lý bảo lưu" | nhiều chặng | bảo lưu → phòng → email | phiếu "bảo lưu" **không chứa** email | **Ontology** |
-| "số điện thoại phòng KHTC" vs "email phòng KHTC" | chọn đúng thuộc tính | trả đúng **field** được hỏi | lấy đúng phiếu nhưng phiếu có cả 2 → khó chọn field | **Ontology** |
-
-**Minh hoạ "giao điều kiện"** — *"học phí K65 ngành CNTT"*, đáp án chuẩn = `{K65-CNTT 620k}`:
-
-```mermaid
-flowchart TB
-    subgraph ONT["ONTOLOGY — đi + lọc giao"]
-        direction LR
-        A1["{mọi mức}"] -->|"giữ K65"| A2["{K65-550k, K65-620k}"] -->|"giữ CNTT"| A3["{K65-CNTT 620k} ✅ đúng 1"]
-    end
-    subgraph FLAT["PHẲNG — xếp hạng theo độ giống chữ/nghĩa"]
-        direction LR
-        B0["câu hỏi"] --> B1["1. K65-CNTT 620k ✅<br/>2. K65-550k ❌ (cùng K65)<br/>3. K67-CNTT 620k ❌ (cùng CNTT)"]
-    end
+**Ví dụ 1 — lọc giao** *"học phí K65 ngành CNTT"*
+```json
+gold     : { "type": "set", "answer": ["PhiK65620k"] }
+ontology : { "answer": ["PhiK65620k"] }                       // precision 1.0, recall 1.0, exact ✅
+flat     : { "ranked": ["PhiK65620k", "PhiK65550k", "PhiK67620k", "PhiK66620k"] }  // top-1 đúng, nhưng…
 ```
-→ Hệ phẳng **không làm được phép VÀ**: mọi phiếu chứa "K65" *hoặc* "CNTT" đều nổi lên → lẫn kết quả sai.
+Hệ phẳng **không làm được phép VÀ**: mọi phiếu chứa "K65" *hoặc* "CNTT" đều nổi lên (PhiK65550k = K65 ngành khác; PhiK67620k =
+CNTT khoá khác). Nếu lấy top-3 → **FP = 2** → precision 0.33. → **Ontology thắng.**
 
-**Minh hoạ "nhiều chặng"** — *"email phòng xử lý bảo lưu"*:
-
-```mermaid
-flowchart TB
-    subgraph ONT2["ONTOLOGY — đi 2 chặng"]
-        direction LR
-        C1["Bảo lưu"] -->|"được xử lý bởi"| C2["Phòng CTSV"] -->|"email"| C3["ctsv@ntu.edu.vn ✅"]
-    end
-    subgraph FLAT2["PHẲNG — tìm phiếu giống nhất"]
-        direction LR
-        D1["câu hỏi"] --> D2["phiếu 'Bảo lưu'<br/>(giống chữ nhất)"] --> D3["❌ phiếu này KHÔNG có email"]
-    end
+**Ví dụ 2 — trả cả một tập** *"học phí khoá K65"*
+```json
+gold     : { "type": "set", "answer": ["PhiK65550k", "PhiK65620k"] }
+ontology : { "answer": ["PhiK65550k", "PhiK65620k"] }          // exact ✅ (biết đúng có 2 mức)
+flat     : { "ranked": ["PhiK65620k", "PhiK65550k", "PhiK67550k", "..."] }  // đúng 2 cái đầu, nhưng phải đoán k=?
 ```
-→ Email nằm ở **phiếu khác** (Phòng CTSV), nối với "bảo lưu" qua **một quan hệ** mà hệ phẳng đã xoá → nó **không bắc cầu** được.
+Lấy `k=1` → thiếu (recall 0.5); lấy `k=3` → thừa (precision 0.67). Ontology **đi tới đúng các điểm** nên trả đúng lực lượng. →
+**Ontology thắng.**
 
-> **Biến thể khó nhất cho ontology (để khỏi bị tố "đánh bù nhìn"):** ta còn dựng một kho phẳng **gộp sẵn** (mỗi phiếu nhồi luôn
-> thông tin của hàng xóm). Khi đó câu nhiều chặng dễ hơn cho hệ phẳng — nhưng câu **giao điều kiện** và **trả-cả-tập** thì hệ phẳng
-> vẫn vướng. Báo cáo trung thực cả những chỗ này.
+**Ví dụ 3 — đi nhiều bước** *"email phòng xử lý bảo lưu"*
+```json
+gold     : { "type": "value", "prop": "email", "answer": "ctsv@ntu.edu.vn" }
+ontology : { "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ] }   // ✅ đi 2 bước
+flat     : { "ranked": ["QuyTrinhBaoLuu", "DonXinBaoLuu"] }   // phiếu "bảo lưu" KHÔNG chứa email
+```
+Email nằm ở **phiếu khác** (PhongCTSV), nối qua quan hệ *được xử lý bởi* mà hệ phẳng đã xoá → nó **không bắc cầu** được. →
+**Ontology thắng** (trừ khi dùng biến thể "gộp-sẵn", xem dưới).
 
-### 7.4. Kỳ vọng kết quả (trung thực)
+**Ví dụ 4 — chọn đúng thuộc tính** *"số điện thoại phòng CTSV"* vs *"email phòng CTSV"*
+```json
+gold (sđt)  : { "type": "value", "prop": "soDienThoai", "answer": "02582221900" }
+ontology    : { "values": [ { "prop": "soDienThoai", "values": ["02582221900"] } ] }   // ✅ đúng field
+flat        : { "ranked": ["PhongCTSV"] }   // đúng PHIẾU, nhưng phiếu có cả email lẫn sđt → khó chọn đúng field
+```
+Hệ phẳng (kể cả có rerank) trả về **phiếu**, không tách được **thuộc tính** → dễ trả nhầm email khi hỏi điện thoại. → **Ontology thắng.**
+
+**Ví dụ 5 — tra cứu đơn** *"email phòng CTSV"*
+```json
+gold     : { "type": "value", "prop": "email", "answer": "ctsv@ntu.edu.vn" }
+ontology : { "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ] }   // ✅
+flat     : { "ranked": ["PhongCTSV"] }   // tìm đúng phiếu, email nằm ngay trong phiếu → cũng ra đúng
+```
+Câu một bước, một field rõ ràng → **hai bên HOÀ**. Báo cáo nêu thẳng để phép so đáng tin.
+
+### 6.5. Cấu hình & kỳ vọng
+
+**Các cấu hình hệ phẳng đem so** (tự phản biện): (1) **phẳng cơ bản** (hybrid + rerank); (2) **phẳng gộp-sẵn** — mỗi phiếu nhồi
+luôn thông tin hàng xóm (baseline khó nhất, giúp câu nhiều bước); (3) **phẳng + thực-thể** — đưa thực thể mô hình trích được vào
+search phẳng: nếu ontology *vẫn* thắng thì lợi thế đến từ **cách lưu trữ đồ thị**, không phải chỉ nhờ khâu hiểu câu.
 
 ```mermaid
 flowchart LR
     T1["Tra cứu đơn"] --> R1["Hoà"]
-    T2["Giao điều kiện"] --> R2["Ontology thắng rõ"]
-    T3["Trả cả một tập"] --> R3["Ontology thắng rõ"]
-    T4["Đi nhiều chặng"] --> R4["Ontology thắng"]
+    T2["Lọc giao"] --> R2["Ontology thắng rõ"]
+    T3["Trả cả tập"] --> R3["Ontology thắng rõ"]
+    T4["Đi nhiều bước"] --> R4["Ontology thắng"]
     T5["Chọn đúng thuộc tính"] --> R5["Ontology thắng"]
 ```
 
-Báo cáo nêu **cả chỗ hoà** (tra cứu đơn) để phép so đáng tin, và làm nổi bật chỗ ontology vượt trội: **giao điều kiện, trả-cả-tập, đi nhiều chặng**.
+> 📊 **[PLACEHOLDER — chèn sau khi chạy benchmark]** Cột so sánh Ontology vs Phẳng theo từng loại câu hỏi. `docs/figures/benchmark_per_type.png`
 
-### 7.5. Kết quả benchmark thực (chèn sau)
-
-> 📊 **[PLACEHOLDER — KẾT QUẢ THỰC, chèn sau khi chạy benchmark]**
-> *So sánh chính:* biểu đồ cột Ontology vs Phẳng-từ-khoá vs Phẳng-ngữ-nghĩa, theo **từng loại câu hỏi**, dùng độ chính xác / bao phủ / khớp-trọn-vẹn.
-> Tệp dự kiến: `docs/figures/benchmark_per_type.png`
-> <!-- ![Benchmark theo loại câu hỏi](figures/benchmark_per_type.png) -->
-
-> 📊 **[PLACEHOLDER — KẾT QUẢ THỰC, chèn sau khi chạy benchmark]**
-> *Hạn chế "phải đoán k" của hệ phẳng:* đường cong độ bao phủ theo số phiếu lấy ra (recall@k) — cho thấy hệ phẳng phải đánh đổi giữa thiếu và thừa.
-> Tệp dự kiến: `docs/figures/recall_at_k.png`
-> <!-- ![Recall@k của hệ phẳng](figures/recall_at_k.png) -->
-
-> 📊 **[PLACEHOLDER — BẢNG SỐ TỔNG HỢP, chèn sau khi chạy benchmark]**
-> *Bảng tổng:* điểm trung bình mỗi hệ trên toàn bộ tập kiểm tra + tách theo loại câu hỏi (con số để dẫn trong báo cáo).
+> 📊 **[PLACEHOLDER — chèn sau khi chạy benchmark]** Đường recall@k của hệ phẳng. `docs/figures/recall_at_k.png`
 
 ---
 
-## 8. Tóm tắt luận điểm
+## 7. Tóm tắt
 
-1. **Ontology = bản đồ tri thức**: sự vật là điểm, quan hệ là đường có tên, thuộc tính là nhãn.
-2. **Mô hình BART** biến câu hỏi thành **tờ hướng dẫn đường đi** (cây thực thể) — học được nhờ **dữ liệu huấn luyện ép buộc**, phủ nhiều cách diễn đạt.
-3. **Thuật toán duyệt** chỉ **đi theo đường cây chỉ** trên bản đồ; nhờ đi-theo-quan-hệ mà làm được **giao điều kiện, đi nhiều chặng, trả đúng cả tập**.
-4. **Đánh giá mô hình** chấm ở **đáp án cuối** (Đúng/Thừa/Thiếu → chính xác/bao phủ/F1), không chấm từng chữ của cây.
-5. **Hệ phẳng** (đối chứng) dập tri thức thành phiếu rời + **tìm kiếm lai** (từ khoá + ngữ nghĩa); chỉ tìm "phiếu giống nhất",
-   **không đi theo quan hệ, không lọc giao, phải đoán số kết quả**.
-6. **Benchmark** cho hai hệ **cùng câu hỏi, cùng đáp án chuẩn, cùng thước đo** → **kiểm chứng** giả thuyết ontology trả lời **đúng và đủ hơn** ở câu hỏi có cấu trúc (kết luận dựa trên số liệu phần 7).
+1. **Trọng tâm:** chatbot tra cứu **quy trình học vụ** bằng **ontology**. Mỗi quy trình là **hub** nối tới phòng ban, điều kiện,
+   biểu mẫu, học phí, kết quả, thanh toán, quy định.
+2. **Ontology = bản đồ tri thức**: cá thể là điểm, quan hệ là đường có tên, thuộc tính là nhãn → giá trị.
+3. **Mô hình BART** biến câu hỏi thành **cây thực thể** (lộ trình đi trên bản đồ); học được nhờ dữ liệu phủ nhiều cách diễn đạt.
+4. **Thuật toán duyệt** đi theo cây: **lồng nhau = GIAO**, **anh em = HỢP** → làm được lọc giao, đi nhiều bước, trả đúng cả tập.
+5. **Đánh giá mô hình** chấm ở **đáp án cuối** bằng precision / recall / F1 / exact match, tách theo từng loại câu hỏi.
+6. **(Bổ trợ)** Đối chứng với CSDL phẳng (hybrid + rerank) trên cùng câu hỏi, cùng đáp án chuẩn, cùng chỉ số → cho thấy ontology
+   trả lời đúng và đủ hơn ở câu hỏi có cấu trúc.
