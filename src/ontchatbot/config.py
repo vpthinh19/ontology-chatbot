@@ -19,12 +19,13 @@ RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 # Resources
 ONTOLOGY_DIR = RESOURCES / "ontology"
 # Ontology hệ thống = MỘT file tự-chứa (8 lớp/7 obj/10 data/54 cá thể + nhãn/alias =
-# chìa khoá khớp). Ưu tiên .owx (OWL/XML, nguồn Protégé); fallback .owl (RDF/XML) là bản
-# gộp cho tới khi Save-As .owx trong Protégé. owlready2 nạp cả hai như nhau.
+# chìa khoá khớp). Ưu tiên ontology_v9.owx (OWL/XML, nguồn Protégé — tên CHỐT bởi người
+# dùng 2026-06-20); fallback Ontology_AcademicProcedure.owl (RDF/XML, bản gộp). owlready2
+# nạp cả hai như nhau (đã xác minh: cùng 8 lớp/54 cá thể/7 obj/10 data).
 # Provenance cách dựng nhãn/alias: dev/ontology_build/.
 ONTOLOGY_PATH = (
-    ONTOLOGY_DIR / "Ontology_AcademicProcedure.owx"
-    if (ONTOLOGY_DIR / "Ontology_AcademicProcedure.owx").exists()
+    ONTOLOGY_DIR / "ontology_v9.owx"
+    if (ONTOLOGY_DIR / "ontology_v9.owx").exists()
     else ONTOLOGY_DIR / "Ontology_AcademicProcedure.owl"
 )
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"

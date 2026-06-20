@@ -427,9 +427,9 @@ flowchart LR
 
 **Hình 11.** Hai vòng của hệ truy hồi phẳng.
 
-Vòng một là hybrid search, kết hợp hai cơ chế. Cơ chế BM25 xếp hạng tài liệu theo độ khớp từ, có tính đến tần suất và độ hiếm của
-từ. Cơ chế embedding biểu diễn câu hỏi và tài liệu thành các vector số, hai vector càng gần nhau thì nghĩa càng gần nhau ngay cả
-khi khác chữ. Kết quả là một danh sách top-k tài liệu ứng viên. Vòng hai là rerank bằng một mô hình cross-encoder, đọc đồng thời
+Vòng một là hybrid search, kết hợp hai cơ chế mà mô hình BGE-M3 sinh đồng thời. Cơ chế khớp từ vựng thưa (sparse) xếp hạng tài
+liệu theo mức trùng từ giữa câu hỏi và tài liệu. Cơ chế embedding dày (dense) biểu diễn câu hỏi và tài liệu thành các vector số,
+hai vector càng gần nhau thì nghĩa càng gần nhau ngay cả khi khác chữ. Kết quả là một danh sách top-k tài liệu ứng viên. Vòng hai là rerank bằng một mô hình cross-encoder, đọc đồng thời
 câu hỏi và từng tài liệu ứng viên rồi chấm lại độ liên quan; cơ chế này chính xác hơn vòng một nhưng chậm hơn, nên chỉ áp dụng cho
 top-k.
 
@@ -516,13 +516,13 @@ flat     : { "ranked": ["PhongCTSV"] }
 Với câu hỏi một bước và một thuộc tính rõ ràng, hai hệ cho kết quả tương đương. Báo cáo nêu thẳng trường hợp này để bảo đảm tính
 khách quan.
 
-### 6.5. Cấu hình và kỳ vọng
+### 6.5. Cấu hình và giả thuyết
 
-Phép so dùng ba cấu hình hệ phẳng nhằm kiểm tra độ vững của kết luận. Cấu hình thứ nhất là phẳng cơ bản gồm hybrid search và
-rerank. Cấu hình thứ hai là phẳng gộp sẵn, trong đó mỗi tài liệu được bổ sung thông tin của các cá thể lân cận, tạo thành baseline
-khó vượt nhất ở câu hỏi nhiều bước. Cấu hình thứ ba là phẳng cộng thực thể, trong đó các thực thể do mô hình trích được đưa vào
-tìm kiếm phẳng; nếu ontology vẫn đạt kết quả cao hơn cấu hình này thì lợi thế đến từ cách lưu trữ đồ thị chứ không chỉ nhờ khâu
-hiểu câu.
+Phép so dùng hai cấu hình kho phẳng nhằm kiểm tra độ vững của kết luận. Cấu hình thứ nhất là *phẳng cơ bản* (concise): mỗi tài
+liệu chỉ chứa thông tin của chính cá thể, tương ứng một kho tài liệu thực tế. Cấu hình thứ hai là *phẳng gộp sẵn* (denorm): mỗi
+tài liệu được bổ sung thông tin của các cá thể lân cận theo cả quan hệ đi ra lẫn quan hệ đến, tạo thành một *chỉ mục được vật-chất-hoá
+từ ontology*. Đây là baseline khó vượt nhất ở câu hỏi nhiều bước nhưng không còn là tài liệu tự nhiên, nên được xem là cận trên của
+khâu truy hồi chứ không phải tài liệu thông thường. Cả hai cấu hình dùng chung hệ truy hồi BGE-M3 và rerank ở Mục 6.2.
 
 Giả thuyết về kết quả được tóm tắt ở Hình 13. Kỳ vọng hệ thống đạt mức tương đương ở câu hỏi tra cứu đơn, và đạt kết quả cao hơn ở
 các câu hỏi có cấu trúc gồm phép giao, liệt kê tập và đi nhiều bước.
@@ -538,8 +538,51 @@ flowchart LR
 
 **Hình 13.** Giả thuyết về kết quả theo từng loại câu hỏi.
 
-Báo cáo thực nghiệm sẽ trình bày các kết quả benchmark sau đây. Hình 14 so sánh ontology với hệ phẳng theo từng loại câu hỏi, lưu
-tại `docs/figures/benchmark_per_type.png`. Hình 15 trình bày đường recall@k của hệ phẳng, lưu tại `docs/figures/recall_at_k.png`.
+### 6.6. Kết quả
+
+Phép so chạy trên tập kiểm tra, lấy 1.205 câu truy-hồi-được (phần còn lại là chào hỏi, ngoài tri thức và câu mơ hồ — hệ phẳng không
+có khái niệm từ chối nên không đưa vào so). Đáp án chuẩn được suy từ cây-vàng-đã-qua-oracle theo ngữ nghĩa ontology và lưu lại để
+đối chiếu tại `artifacts/evaluation/gold.jsonl`; cấu hình và phiên bản thư viện ghi trong `artifacts/evaluation/benchmark_report.json`
+để bảo đảm tái lập. Kết quả được tách làm hai tầng để tránh so lệch bản chất.
+
+**Tầng truy hồi (tìm đúng tập tài liệu, cùng đơn vị IRI).** Ontology trả về một tập nên được chấm precision, recall, F1 và tỷ lệ
+trùng-khít-tập (exact-set) theo lối micro. Hệ phẳng trả danh sách xếp hạng nên được chấm recall@k và full@k (tỷ lệ câu mà toàn bộ
+đáp án nằm trong top-k), lấy trung bình theo câu. So "đúng toàn bộ" một cách tương xứng là đối chiếu exact-set của ontology với
+full@k của hệ phẳng.
+
+| Cấu hình | recall | recall@3 | recall@5 | đúng-toàn-bộ |
+|---|---|---|---|---|
+| Ontology (đầu-cuối, mô hình thật) | 0,96 | — | — | 0,97 (exact-set) |
+| Phẳng concise | — | 0,76 | 0,85 | 0,74 (full@3) |
+| Phẳng denorm | — | 0,87 | 0,92 | 0,84 (full@3) |
+
+![Hình 14](figures/benchmark_per_type.png)
+
+**Hình 14.** Recall theo từng loại câu hỏi. Hai hệ tương đương ở câu tra cứu đơn (tự mô tả, thuộc tính, học phí theo khoá/ngành),
+nhưng hệ phẳng tụt rõ ở câu có cấu trúc: đi một quan hệ (0,47), nhiều thuộc tính (0,56) và đi nhiều bước (0,72) so với ontology
+luôn trên 0,90.
+
+![Hình 15](figures/recall_at_k.png)
+
+**Hình 15.** Đường recall@k của hệ phẳng. Recall tăng khi nới k nhưng vẫn nằm dưới mốc ontology kể cả ở k=5, đồng thời phơi hạn
+chế phải xác định trước k: k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
+
+Quan sát chính: (1) ở câu tra cứu đơn một bước, hai hệ tương đương, thậm chí hệ phẳng nhỉnh hơn đôi chút ở vài loại (tự mô tả,
+thuộc tính, học phí mỗi tín chỉ) vì mô hình sinh cây thỉnh thoảng lệch trong khi truy hồi trên 54 tài liệu dễ bắt trúng phiếu hiển
+nhiên — nên kết luận đúng là ontology thắng *tổng thể và đặc biệt ở câu có cấu trúc*, không phải thắng mọi loại; (2) ở câu đi quan
+hệ và đi nhiều bước, hệ phẳng tụt mạnh vì thông tin đáp án nằm ở tài liệu khác với tài liệu chứa từ khoá câu hỏi; (3) cấu hình
+gộp sẵn (denorm) thu hẹp khoảng cách ở các câu đi nhiều bước, chứng tỏ điểm yếu nằm ở *cách lưu trữ phẳng* chứ không chỉ ở khâu
+hiểu câu, nhưng vẫn không đạt mức ontology và còn gây nhiễu ở câu gộp tập (học phí gộp tụt còn 0,34) do nhồi thêm hàng xóm làm các
+phiếu học phí giống nhau.
+
+**Tầng đáp-án-cuối (chỉ câu hỏi thuộc tính).** Sau khi tìm đúng tài liệu còn phải chọn đúng thuộc tính và giá trị. Ontology đạt
+95–98% cho cả ba việc tìm đúng chủ thể, đúng thuộc tính và đúng giá trị. Hệ phẳng thuần truy hồi không trích thuộc tính nên không
+áp dụng được ở tầng này; đây là khác biệt bản chất chứ không phải một con số thấp, và được ghi rõ là không-áp-dụng thay vì trộn
+vào tầng truy hồi.
+
+Lưu ý khi đọc số: full@3 bất lợi về mặt cơ học cho câu có tập đáp án lớn hơn ba (ví dụ học phí gộp có bốn đến năm mức), nên với các
+câu này phải đọc kèm recall@k và full@5; chỉ số ontology chấm theo micro còn hệ phẳng chấm trung bình theo câu, nên so "đúng toàn
+bộ" dùng cặp exact-set với full@k. Toàn bộ kết quả nhất quán với giả thuyết ở Hình 13.
 
 ---
 
