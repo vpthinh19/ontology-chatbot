@@ -1,43 +1,48 @@
 """Model: BARTpho-syllable seq2seq sinh CÂY JSON từ text (DESIGN.md §3).
 
-**Khung cho phiên train sau.** Model chưa train (cần GPU) nên :meth:`to_tree` báo lỗi
-rõ ràng thay vì trả rác. Hợp đồng I/O cố định để `pipeline`/`tree` không phải đổi khi
-model về:
-
-    to_tree(text: str) -> dict   # {"act": ..., "entities": [...]}  (xem tree.parse)
-
-Khi train xong (phiên sau): nạp model **CTranslate2** cục bộ (`config.CT2_MODEL_DIR`) hoặc
-``snapshot_download`` từ HF repo người dùng. BARTpho là mBART (encoder-decoder) → inference
-theo pattern Translator (KHÔNG dùng HF ``generate``):
+Inference qua **CTranslate2** (int8, CPU — ràng buộc deploy). BARTpho là mBART (encoder-decoder)
+nên đi theo pattern :class:`ctranslate2.Translator` token→token (KHÔNG dùng HF ``generate``):
 
     src = tokenizer.convert_ids_to_tokens(tokenizer.encode(text))
     out = translator.translate_batch([src])[0].hypotheses[0]
     json_str = tokenizer.decode(tokenizer.convert_tokens_to_ids(out), skip_special_tokens=True)
 
-rồi ``json.loads(json_str)`` ra dict trên. Nguyên tắc: model làm TOÀN BỘ việc hiểu câu
-(trích xuất, dựng quan hệ, đoán act); không có luật xử-lý-câu ở pipeline (§9).
+rồi ``json.loads`` ra ``{"act", "entities": [...]}`` (xem :func:`tree.parse`). Model làm TOÀN BỘ
+việc hiểu câu (trích xuất, dựng quan hệ, đoán act) — pipeline không có luật xử-lý-câu (§9).
+
+⚠️ :meth:`to_tree` nhận text **ĐÃ qua ``preprocess.clean``** (pipeline clean trước khi gọi — đồng bộ
+với train/eval); KHÔNG clean lại ở đây. JSON model sinh hỏng → trả cây ``vague`` (khoan dung như
+production, không ném lỗi giữa request). Model CT2 nạp từ ``config.CT2_MODEL_DIR`` (convert bằng
+``scripts.convert_ct2``); thiếu cục bộ → ``snapshot_download`` từ HF repo người dùng.
 """
 
 from __future__ import annotations
 
+import json
 import logging
 from functools import lru_cache
+from pathlib import Path
 
-from .config import FINETUNED_MODEL_NAME
+from .config import CT2_MODEL_DIR, CT2_QUANTIZATION, FINETUNED_MODEL_NAME, MAX_SOURCE_LENGTH, MAX_TARGET_LENGTH
+from .tree import from_model_json
 
 log = logging.getLogger(__name__)
 
+_BEAM_SIZE = 4            # khớp evaluate.py/convert_ct2 (giữ parity train↔eval↔serve); tăng=chính xác hơn, chậm hơn
+_VAGUE_TREE = {"act": "vague", "entities": []}
+
 
 class ModelNotReady(RuntimeError):
-    """BARTpho chưa train/chưa nạp được — pipeline không chạy text→cây được."""
+    """Không tìm được model CT2 (chưa convert + không tải được từ HF) → pipeline không chạy text→cây."""
 
 
 class TreeModel:
-    """Giao diện sinh cây. Phiên này chỉ là khung (chưa có weight)."""
+    """Sinh cây JSON từ text qua CTranslate2. Nạp lười (lần gọi đầu) + cache singleton."""
 
-    def __init__(self, model_name: str = FINETUNED_MODEL_NAME) -> None:
-        self.model_name = model_name
-        self._ready = False          # phiên train sau: nạp tokenizer + session ở đây
+    def __init__(self, model_dir: Path | str = CT2_MODEL_DIR) -> None:
+        self._dir = Path(model_dir)
+        self._translator = None      # ctranslate2.Translator (nạp lười)
+        self._tokenizer = None
 
     @classmethod
     @lru_cache(maxsize=1)
@@ -46,13 +51,43 @@ class TreeModel:
 
     @staticmethod
     def available() -> bool:
-        """True khi đã có weight để chạy. Hiện tại: False (chưa train)."""
-        return False
+        """True khi đã có model CT2 cục bộ (``model.bin``). Không xét đường tải HF (mạng)."""
+        return (CT2_MODEL_DIR / "model.bin").exists()
+
+    def _load(self) -> None:
+        """Nạp Translator + tokenizer (lười). Cục bộ trước; thiếu → tải HF; vẫn không có → ModelNotReady."""
+        if self._translator is not None:
+            return
+        import ctranslate2
+        from transformers import AutoTokenizer
+
+        path = self._dir
+        if not (path / "model.bin").exists():
+            log.warning("[model] không thấy CT2 cục bộ ở %s — thử snapshot_download %s",
+                        path, FINETUNED_MODEL_NAME)
+            try:
+                from huggingface_hub import snapshot_download
+                path = Path(snapshot_download(FINETUNED_MODEL_NAME))
+            except Exception as e:                       # noqa: BLE001 — gói mọi lỗi tải về 1 lỗi rõ
+                raise ModelNotReady(
+                    f"Chưa có model CT2 cục bộ ({self._dir}) và không tải được HF "
+                    f"{FINETUNED_MODEL_NAME!r}: {e}. Chạy scripts.convert_ct2 trước.") from e
+        self._translator = ctranslate2.Translator(str(path), device="cpu",
+                                                   compute_type=CT2_QUANTIZATION)
+        self._tokenizer = AutoTokenizer.from_pretrained(str(path))
+        log.info("[model] CT2 sẵn sàng: %s (beam=%d)", path, _BEAM_SIZE)
 
     def to_tree(self, text: str) -> dict:
-        """text → dict cây JSON. Chưa train → báo lỗi rõ ràng."""
-        raise ModelNotReady(
-            "BARTpho chưa train — pipeline text→cây chưa chạy được. "
-            "Phiên này test bằng cây JSON vàng nạp thẳng vào ontology.traverse "
-            "(xem docs/redesign/PROGRESS.md, Phase train sau)."
-        )
+        """text (đã clean) → dict cây JSON. JSON hỏng → cây ``vague`` (khoan dung, không ném lỗi)."""
+        self._load()
+        src = self._tokenizer.convert_ids_to_tokens(
+            self._tokenizer.encode(text, truncation=True, max_length=MAX_SOURCE_LENGTH))
+        hyp = self._translator.translate_batch(
+            [src], beam_size=_BEAM_SIZE, max_decoding_length=MAX_TARGET_LENGTH)
+        json_str = self._tokenizer.decode(
+            self._tokenizer.convert_tokens_to_ids(hyp[0].hypotheses[0]), skip_special_tokens=True)
+        try:
+            return from_model_json(json_str)               # bỏ pad + items→entities → dict cây chuẩn
+        except (json.JSONDecodeError, TypeError):
+            log.warning("[model] JSON hỏng từ model: %r", json_str[:200])
+            return dict(_VAGUE_TREE)

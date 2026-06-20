@@ -4,16 +4,22 @@
 
 Học cặp (câu → cây JSON) ở ``resources/datasets/{train,test}.jsonl`` (mỗi dòng có ``text``
 + ``tree``). Source = ``preprocess.clean(text)`` — **CÙNG hàm** pipeline gọi lúc infer (tránh
-lệch phân phối train↔infer, GIAI_THUAT §4). Target = cây JSON nén (``json.dumps`` compact) để
-model học sinh đúng chuỗi mà ``tree.parse`` đọc lại được.
+lệch phân phối train↔infer, GIAI_THUAT §4). Target = ``tree.to_model_json`` (đổi ``entities``→``items``
++ **space-pad** quanh mọi `"`): tokenizer BARTpho tokenize chữ DÍNH dấu `"` rất tệ (nhãn tiếng Việt
+vỡ vụn, "individual"→"al"); pad làm nó tokenize tự nhiên như pretrain; ``model.from_model_json`` đảo
+ngược lúc infer để ``tree.parse`` đọc lại được.
 
 Mixed precision **bf16** + optimizer **adamw_8bit** (bitsandbytes; vừa 6GB VRAM). Người dùng
 chốt: batch 8, lr 3e-5, lr_scheduler cosine + warmup 100. Mặc định
 nạp ``config.MODEL_NAME`` (bartpho-syllable large ~400M); muốn nhẹ VRAM hơn truyền
 ``--model vinai/bartpho-syllable-base``. ``--grad-checkpointing`` để giảm activation khi VRAM sát.
 
+**Validation** tách TỪ train (``--val-size``, mặc định ``config.VAL_SIZE``) — ``test.jsonl`` KHÔNG
+đụng tới ở script này (giữ sạch cho ``evaluate.py``, tránh chọn checkpoint theo test = rò rỉ).
+``load_best_model_at_end`` lưu checkpoint TỐT NHẤT theo ``eval_loss`` trên VAL, không phải bước cuối.
+
 Eval ĐÚNG-CẠNH (sinh cây → traverse → so node với gold) tách ở ``evaluate.py`` — script này lo
-train + lưu model; ở đây chỉ theo dõi eval-loss.
+train + lưu model; ở đây chỉ theo dõi eval-loss (trên VAL).
 """
 
 from __future__ import annotations
@@ -32,6 +38,7 @@ from transformers import (
     DataCollatorForSeq2Seq,
     Seq2SeqTrainer,
     Seq2SeqTrainingArguments,
+    EarlyStoppingCallback
 )
 
 from ..config import (
@@ -43,10 +50,11 @@ from ..config import (
     MODEL_DIR,
     MODEL_NAME,
     SEED,
-    TEST_PATH,
     TRAIN_PATH,
+    VAL_SIZE,
 )
 from ..preprocess import clean
+from ..tree import from_model_json, to_model_json
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -63,28 +71,67 @@ def _load_pairs(path):
                 continue
             d = json.loads(line)
             src.append(clean(d["text"]))
-            tgt.append(json.dumps(d["tree"], ensure_ascii=False, separators=(",", ":")))
+            # target = tree.to_model_json (space-pad + entities→items): tokenizer BARTpho tokenize chữ
+            # dính dấu `"` rất tệ; pad → tokenize tự nhiên. model.from_model_json đảo ngược lúc infer.
+            tgt.append(to_model_json(d["tree"]))
     return Dataset.from_dict({"source": src, "target": tgt})
 
 
 def _tokenize(batch, tokenizer):
     """source → input_ids; target (JSON cây) → labels."""
     enc = tokenizer(batch["source"], max_length=MAX_SOURCE_LENGTH, truncation=True)
-    enc["labels"] = tokenizer(text_target=batch["target"],
-                              max_length=MAX_TARGET_LENGTH, truncation=True)["input_ids"]
+    enc["labels"] = tokenizer(text_target=batch["target"], max_length=MAX_TARGET_LENGTH, truncation=True)["input_ids"]
     return enc
+
+
+def _check_target_roundtrip(tokenizer) -> None:
+    """TRIPWIRE: target phải SỐNG SÓT qua tokenizer — ``from_model_json`` của chuỗi SAU tokenizer phải
+    == của chuỗi TRƯỚC tokenizer (đo mất-mát tokenizer THUẦN, độc lập việc nắn dấu/đổi key trong
+    to_model_json). Nếu không, model học chuỗi SAI mà không ai biết (vụ "individual"→"al" âm thầm 11%
+    suốt). Luôn IN tỉ lệ; CHẶN train nếu <95%. Bắt mọi hồi quy (đổi serialization, thêm nhãn, đổi tokenizer)."""
+    bad, examples, n = 0, [], 0
+    with open(TRAIN_PATH, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            n += 1
+            s = to_model_json(json.loads(line)["tree"])
+            back = tokenizer.decode(tokenizer.encode(s, add_special_tokens=False),
+                                    skip_special_tokens=True)
+            try:
+                ok = from_model_json(back) == from_model_json(s)
+            except Exception:                    # noqa: BLE001 — JSON hỏng cũng là không round-trip
+                ok = False
+            if not ok:
+                bad += 1
+                if len(examples) < 3:
+                    examples.append((s, back))
+    rate = (n - bad) / n if n else 1.0
+    print(f"[train] target round-trip qua tokenizer: {n - bad}/{n} ({rate:.1%}); hỏng={bad}")
+    for s, b in examples:
+        print(f"        S: {s[:120]}\n        B: {b[:120]}")
+    if rate < 0.95:
+        raise SystemExit(
+            f"[train] ⛔ {bad}/{n} target KHÔNG dựng lại đúng cây qua tokenizer — model sẽ học chuỗi SAI. "
+            "Sửa serialization (tree.to_model_json) / nhãn trước khi train (xem S vs B ở trên).")
 
 
 def train(args: argparse.Namespace) -> None:
     tokenizer = AutoTokenizer.from_pretrained(args.model)
+    _check_target_roundtrip(tokenizer)           # chặn train trên target hỏng (bài học "individual"→"al")
     model = AutoModelForSeq2SeqLM.from_pretrained(args.model)
     if args.grad_checkpointing:
         model.config.use_cache = False          # bắt buộc khi bật gradient checkpointing
 
-    train_ds = _load_pairs(TRAIN_PATH).map(
+    # Tách VAL từ train (seeded, có shuffle). test.jsonl KHÔNG nạp ở đây — giữ sạch cho evaluate.py.
+    split = _load_pairs(TRAIN_PATH).train_test_split(test_size=args.val_size, seed=args.seed, shuffle=True)
+    train_ds = split["train"].map(
         lambda b: _tokenize(b, tokenizer), batched=True, remove_columns=["source", "target"])
-    eval_ds = _load_pairs(TEST_PATH).map(
+    eval_ds = split["test"].map(
         lambda b: _tokenize(b, tokenizer), batched=True, remove_columns=["source", "target"])
+    print(f"[train] split train={len(train_ds)} / val={len(eval_ds)} "
+          f"(val_size={args.val_size}, seed={args.seed}); test.jsonl giữ nguyên cho evaluate.py")
 
     targs = Seq2SeqTrainingArguments(
         output_dir=str(args.output_dir),
@@ -95,16 +142,33 @@ def train(args: argparse.Namespace) -> None:
         learning_rate=args.lr,
         lr_scheduler_type="cosine",
         bf16=True,                               # mixed precision bf16
-        optim="adamw_8bit",                      # fused AdamW (CUDA)
+        optim="adamw_8bit",                      # AdamW 8bit (CUDA)
+        weight_decay=0.005,
         gradient_checkpointing=args.grad_checkpointing,
-        warmup_steps=100,
-        eval_strategy="epoch",
-        save_strategy="epoch",
-        save_total_limit=1,
-        logging_steps=100,
+        warmup_steps=100,                        # cosine warmup 100 BƯỚC (float<1 cũ = ~0 warmup, đã sửa)
+        eval_strategy="steps",
+        eval_steps=0.05,
+        save_strategy="steps",
+        save_steps=0.05,                         # = eval_steps → đủ điều kiện load_best_model_at_end
+        save_total_limit=2,
+        logging_strategy="steps",
+        logging_steps=0.01,
         seed=args.seed,
         report_to="none",
         predict_with_generate=False,             # eval đúng-cạnh ở evaluate.py
+        load_best_model_at_end=True,             # lưu checkpoint TỐT NHẤT trên VAL (không phải bước cuối)
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
+    )
+
+    # threshold = mức eval_loss phải GIẢM mới tính là "tiến bộ". eval_loss ~0.017 nên 0.01 (cũ) coi
+    # như mọi eval đều "không tiến bộ" → dừng sớm oan. Dùng 1e-4 (nhạy với delta thật ~1e-3).
+    # patience=8: eval_loss đôi khi VỌT tạm thời giữa chừng (vd 0.026→0.14 rồi hồi); patience nhỏ sẽ
+    # dừng oan ngay tại cú vọt, để lại model train thiếu. load_best_model_at_end vẫn giữ bản tốt nhất
+    # nên nới patience chỉ tốn thêm thời gian khi thật sự bão hoà, không bao giờ làm model tệ đi.
+    early_stopping = EarlyStoppingCallback(
+        early_stopping_patience=8,
+        early_stopping_threshold=1e-4,
     )
 
     collator = DataCollatorForSeq2Seq(tokenizer, model=model)
@@ -115,14 +179,15 @@ def train(args: argparse.Namespace) -> None:
         eval_dataset=eval_ds,
         data_collator=collator,
         processing_class=tokenizer,
+        callbacks=[early_stopping],
     )
 
     trainer.train()
     trainer.save_model(str(args.output_dir))     # lưu cả model + tokenizer
     tokenizer.save_pretrained(str(args.output_dir))
-    print(f"[train] saved fine-tuned model → {args.output_dir}")
+    print(f"[train] saved BEST-on-val fine-tuned model → {args.output_dir}")
     print(f"[train] model={args.model} epochs={args.epochs} "
-          f"batch={args.batch_size}x{args.grad_accum} bf16=True optim=adamw_8bit")
+          f"batch={args.batch_size}x{args.grad_accum} val_size={args.val_size} bf16=True optim=adamw_8bit")
 
 
 def main() -> None:
@@ -134,6 +199,8 @@ def main() -> None:
     p.add_argument("--grad-accum", type=int, default=1)
     p.add_argument("--lr", type=float, default=LEARNING_RATE)
     p.add_argument("--output-dir", default=MODEL_DIR, type=str)
+    p.add_argument("--val-size", type=float, default=VAL_SIZE,
+                   help="tỉ lệ tách VAL từ train (test.jsonl không đụng tới; mặc định config.VAL_SIZE)")
     p.add_argument("--grad-checkpointing", action="store_true",
                    help="bật gradient checkpointing (giảm activation khi VRAM sát)")
     p.add_argument("--seed", type=int, default=SEED)

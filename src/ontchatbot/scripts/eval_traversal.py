@@ -10,7 +10,7 @@ Mỗi dòng `resources/e2e/cases.jsonl`::
 
 Chấm: chạy `Ontology.traverse(parse(tree))`, so `{node.iri}` với `expected`; nếu có
 `expected_value_contains` thì kiểm thêm giá trị lá. Vì cây vàng + ontology là **xác định**,
-kỳ vọng 100% — đây là lưới an toàn cho thuật toán duyệt khi model ViT5 chưa về.
+kỳ vọng 100% — đây là lưới an toàn cho thuật toán duyệt khi model BARTpho chưa về.
 """
 
 from __future__ import annotations

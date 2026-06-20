@@ -17,7 +17,11 @@ Hình dạng cây (mục §3)::
 
 from __future__ import annotations
 
+import json
+import re
 from dataclasses import dataclass
+
+from .preprocess import normalize_tone
 
 # act hợp lệ (DESIGN.md §4).
 QUERY = "query"
@@ -131,6 +135,42 @@ def _node_strict(raw: object, path: str) -> TreeNode:
     children = tuple(_node_strict(c, f"{path}.children[{i}]")
                      for i, c in enumerate(children_raw))
     return TreeNode(label=label.strip(), kind=kind, children=children)
+
+
+# ── Serialization CHO MODEL: space-pad + đổi tên key để tokenizer round-trip ─
+# BARTpho-syllable (sentencepiece tiếng Việt) tokenize chữ DÍNH dấu `"` (JSON nén) rất tệ:
+# "individual"→"al"; nhãn tiếng Việt vỡ vụn ("Quản"→Qu+ả+n). Thêm KHOẢNG TRẮNG quanh mọi `"` ở
+# đường-biên model → tokenize tự nhiên như lúc pretrain ("▁Quản" 1 token, "▁individual" sạch) → model
+# SINH nhãn chuẩn hơn. NGOẠI LỆ: "entities" khi pad → `<unk>` (enti vỡ) nên đổi tên thành "items"
+# (1 token sạch `▁items`). Thêm `normalize_tone` (nắn dấu kiểu-mới: thủy→thuỷ) → round-trip 97%→100%.
+# Nội bộ + ontology + oracle + DATASET VẪN "entities"/individual/object/data; chỉ chuỗi MODEL thấy/sinh
+# là dạng pad + "items" + dấu-kiểu-mới. (kiểm thực nghiệm 2026-06-19 — xem PROGRESS.md.)
+_QUOTE_PAD = re.compile(r'"')
+_QUOTE_UNPAD = re.compile(r'\s*"\s*')
+
+
+def _rename_key(obj: object, old: str, new: str) -> object:
+    """Đệ quy đổi TÊN KEY ``old``→``new`` trong dict (giá trị giữ nguyên)."""
+    if isinstance(obj, list):
+        return [_rename_key(x, old, new) for x in obj]
+    if not isinstance(obj, dict):
+        return obj
+    return {(new if k == old else k): _rename_key(v, old, new) for k, v in obj.items()}
+
+
+def to_model_json(tree_dict: dict) -> str:
+    """Cây dict → chuỗi JSON CHO MODEL: đổi ``entities``→``items``, nén, **nắn dấu** kiểu-mới (đồng bộ
+    ``clean`` ở source), rồi **space-pad** quanh mọi `"`. Dùng làm TARGET train; ``from_model_json``
+    đảo ngược lúc infer. Nắn dấu chỉ đổi vị-trí dấu (thủy→thuỷ) cho tokenizer — khớp ontology bỏ dấu nên không ảnh hưởng."""
+    compact = json.dumps(_rename_key(tree_dict, "entities", "items"),
+                         ensure_ascii=False, separators=(",", ":"))
+    return _QUOTE_PAD.sub(' " ', normalize_tone(compact))
+
+
+def from_model_json(s: str) -> dict:
+    """Chuỗi MODEL sinh (pad + "items") → dict cây chuẩn: bỏ khoảng trắng quanh `"`, ``json.loads``,
+    đổi ``items``→``entities``. RAISE ``json.JSONDecodeError`` nếu JSON hỏng (caller khoan dung)."""
+    return _rename_key(json.loads(_QUOTE_UNPAD.sub('"', s)), "items", "entities")
 
 
 def _node(raw: object) -> TreeNode | None:

@@ -1,0 +1,2284 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.ntu.edu.vn/ontology/academic"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.ntu.edu.vn/ontology/academic">
+    <Prefix name="" IRI="http://www.ntu.edu.vn/ontology/academic#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#DieuKien"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DinhMucHocPhi"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#KetQuaDauRa"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PhongBanHanhChinh"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PhuongThucThanhToan"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#QuyDinh"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#QuyTrinhHocVu"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TaiLieuBieuMau"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#canTaiLieu"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#coKetQua"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#coPhuongThucThanhToan"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#diaDiem"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#duongDanBieuMau"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#email"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#ghiChuHocPhi"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#noiDung"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#soDienThoai"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#tenGoiKhac"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#truongPhong"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#website"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BankTransfer"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienBaoLuuCaNhan"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienBaoLuuQuocTe"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienBaoLuuVuTrang"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienBaoLuuYTe"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienChuyenNganhNamHoc"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienHocBongDiemHocTap"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienHocBongDiemRenLuyen"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienHocBongThoiGian"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienHocBongTinChi"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienHocLai"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienTotNghiepCPA"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienTotNghiepKyLuat"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienTotNghiepNghiaVu"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienTotNghiepNgoaiNgu"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DieuKienTotNghiepTinChi"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DonGiaHanThoiGianNopHocPhi"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DonXetTotNghiepSom"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DonXinBaoLuu"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DonXinChuyenNganh"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#DonXinHocTroLai"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputCoTenTrongDanhSachLop"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputDuocBaoLuu"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputDuocChuyenNganh"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputDuocXetTotNghiep"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputGhiNhanDiemCaoHon"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputNhanHocBong"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#OutputXoaTenKhoiLop"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PayOnline"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK63600k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK63620K"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK65550k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK65620k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK66510k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK66550k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK66620k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK67550k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhiK67620k"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhongCTSV"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#PhongKHTC"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#RegQD729"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#DieuKien"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DinhMucHocPhi"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#KetQuaDauRa"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PhongBanHanhChinh"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PhuongThucThanhToan"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#QuyDinh"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class IRI="#PhuongThucThanhToan"/>
+        <NamedIndividual IRI="#BankTransfer"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuCaNhan"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuQuocTe"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuVuTrang"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuYTe"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienChuyenNganhNamHoc"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienHocBongDiemHocTap"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienHocBongDiemRenLuyen"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienHocBongThoiGian"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienHocBongTinChi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienHocLai"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepCPA"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepKyLuat"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepNghiaVu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepNgoaiNgu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DieuKien"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepTinChi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <NamedIndividual IRI="#DonGiaHanThoiGianNopHocPhi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <NamedIndividual IRI="#DonXetTotNghiepSom"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <NamedIndividual IRI="#DonXinBaoLuu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <NamedIndividual IRI="#DonXinChuyenNganh"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#TaiLieuBieuMau"/>
+        <NamedIndividual IRI="#DonXinHocTroLai"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputCoTenTrongDanhSachLop"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputDuocBaoLuu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputDuocChuyenNganh"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputDuocXetTotNghiep"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputGhiNhanDiemCaoHon"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputNhanHocBong"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#KetQuaDauRa"/>
+        <NamedIndividual IRI="#OutputXoaTenKhoiLop"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#PhuongThucThanhToan"/>
+        <NamedIndividual IRI="#PayOnline"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DinhMucHocPhi"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#PhongBanHanhChinh"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#PhongBanHanhChinh"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#PhongBanHanhChinh"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyTrinhHocVu"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyDinh"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#QuyDinh"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#PhongBanHanhChinh"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#DieuKienHocBongThoiGian"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepTinChi"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canTaiLieu"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DonXinBaoLuu"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canTaiLieu"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DonXinHocTroLai"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#OutputDuocBaoLuu"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuCaNhan"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuQuocTe"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuVuTrang"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <NamedIndividual IRI="#DieuKienBaoLuuYTe"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canTaiLieu"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <NamedIndividual IRI="#DonXinChuyenNganh"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <NamedIndividual IRI="#OutputDuocChuyenNganh"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <NamedIndividual IRI="#DieuKienChuyenNganhNamHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <NamedIndividual IRI="#OutputCoTenTrongDanhSachLop"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <NamedIndividual IRI="#OutputGhiNhanDiemCaoHon"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <NamedIndividual IRI="#DieuKienHocLai"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#apDungMucHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#RegQD729"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canTaiLieu"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#DonGiaHanThoiGianNopHocPhi"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coPhuongThucThanhToan"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#BankTransfer"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coPhuongThucThanhToan"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PayOnline"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <NamedIndividual IRI="#OutputXoaTenKhoiLop"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#OutputNhanHocBong"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#DieuKienHocBongDiemHocTap"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#DieuKienHocBongDiemRenLuyen"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#DieuKienHocBongThoiGian"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <NamedIndividual IRI="#DieuKienHocBongTinChi"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canCuQuyDinh"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#canTaiLieu"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DonXetTotNghiepSom"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#coKetQua"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#OutputDuocXetTotNghiep"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#duocXuLyBoi"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepCPA"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepKyLuat"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepNghiaVu"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepNgoaiNgu"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#yeuCauDieuKien"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <NamedIndividual IRI="#DieuKienTotNghiepTinChi"/>
+    </ObjectPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#DonGiaHanThoiGianNopHocPhi"/>
+        <Literal>https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/m%E1%BA%ABu%20%C4%91%C6%A1n%20ho%C3%A3n%20%C4%91%C3%B3ng%20h%E1%BB%8Dc%20ph%C3%AD.doc</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#DonXetTotNghiepSom"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2007%20-%20%C4%90%C6%A1n%20%C4%91%E1%BB%81%20ngh%E1%BB%8B%20x%C3%A9t%20t%E1%BB%91t%20nghi%E1%BB%87p.docx</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#DonXinBaoLuu"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#DonXinChuyenNganh"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#DonXinHocTroLai"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#website"/>
+        <NamedIndividual IRI="#PayOnline"/>
+        <Literal>https://sinhvien.ntu.edu.vn/</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">345000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiGiaoDucTongQuat"/>
+        <Literal>Tất cả các khối ngành và chương trình</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">600000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+        <Literal>Công nghệ sinh học</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63600k"/>
+        <Literal>k63</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">620000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <Literal>Công nghệ chế biến thủy sản</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <Literal>Kỹ thuật tàu thủy</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <Literal>Nuôi trồng thủy sản</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK63620K"/>
+        <Literal>k63</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">550000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>Khách sạn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>Kinh doanh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>Kế toán</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>QTKD</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>Quản trị khách sạn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>Quản trị kinh doanh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65550k"/>
+        <Literal>k65</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">620000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+        <Literal>CNTT</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+        <Literal>Công nghệ thông tin</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK65620k"/>
+        <Literal>k65</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">510000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+        <Literal>Ngôn ngữ Anh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66510k"/>
+        <Literal>k66</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">550000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>Du lịch</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>Kinh doanh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>Kinh doanh thương mại</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>Tài chính</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>Tài chính - Ngân hàng</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66550k"/>
+        <Literal>k66</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">620000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Cơ khí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Kỹ thuật</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Kỹ thuật cơ khí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Quản lý thủy sản</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Thực phẩm</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Xây dựng</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>k66</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>thủy sản</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK66620k"/>
+        <Literal>Ô tô</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">550000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Hệ thống thông tin quản lý</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Khoa học hàng hải</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Kinh doanh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Kinh tế phát triển</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Luật</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>Marketing</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67550k"/>
+        <Literal>k67</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#hocPhiMoiTinChi"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">620000</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>Cơ điện tử</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>Kỹ thuật</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>Kỹ thuật nhiệt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>Nhiệt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>k67</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhiK67620k"/>
+        <Literal>Điện</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#diaDiem"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#email"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>ctsv@ntu.edu.vn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#soDienThoai"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>02582221900</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>cog tac sv</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>cong tac chinh tri</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>cong tac sinh vien</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>ct sinh vien</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>ctsv</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#truongPhong"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>ThS. Đỗ Quốc Việt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#website"/>
+        <NamedIndividual IRI="#PhongCTSV"/>
+        <Literal>https://phongctsv.ntu.edu.vn/</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#diaDiem"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#email"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>daotao@ntu.edu.vn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#soDienThoai"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>02583831148</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>p dao tao</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>pdt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>phong ao tao</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>phong dao tao</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>phong dt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>pđt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#truongPhong"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>PGS.TS. Tô Văn Phương</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#website"/>
+        <NamedIndividual IRI="#PhongDaoTaoDaiHoc"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#diaDiem"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#email"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>khtc@ntu.edu.vn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#soDienThoai"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>02583831150</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>KH-TC</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>ke hoach tai chinh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>phong nop tien</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>phong tai chinh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#truongPhong"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>PGS.TS Phạm Hồng Mạnh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#website"/>
+        <NamedIndividual IRI="#PhongKHTC"/>
+        <Literal>https://phongkhtc.ntu.edu.vn/</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <Literal>1. Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả đã học trong các trường hợp: Được điều động vào lực lượng vũ trang, đại diện quốc gia tham dự kỳ thi, bị ốm/thai sản/tai nạn hoặc vì lý do cá nhân khác.
+2. Sinh viên xin nghỉ học tạm thời phải viết đơn xin thôi học gửi Hiệu trưởng thông qua Phòng Công tác sinh viên.
+3. Khi muốn trở lại học tiếp, cần viết đơn gửi Hiệu trưởng thông qua Phòng Công tác sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <Literal>bao luu</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <Literal>bảo lưu</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhBaoLuu"/>
+        <Literal>điều kiện bảo lưu</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>1. Sinh viên có nguyện vọng có thể được xem xét chuyển ngành trong cùng bậc học nếu không là sinh viên năm nhất/năm cuối và đạt điều kiện trúng tuyển.
+2. Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, SV làm đơn xin chuyển ngành để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>chuyen nganh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>chuyển ngành</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>doi nganh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>xin chuyen nganh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>xin doi nganh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhChuyenNganh"/>
+        <Literal>đổi ngành</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>Sinh viên học lực Trung bình trở lên đăng ký từ 15 đến 27 tín chỉ.
+Sinh viên học lực Yếu/Kém đăng ký từ 12 đến 18 tín chỉ.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>dang ki mh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>dang ki mon hoc</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>dang ki tin chi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>dki mon</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>dkmh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>đki môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>đkmh</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>đăng ký môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhDangKyHocPhan"/>
+        <Literal>đăng ký tín chỉ</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>Sinh viên được quyền đăng ký học lại để cải thiện điểm trung bình chung tích lũy (CPA) trên web sinhvien.ntu.edu.vn với cùng mã học phần.
+Kết quả học tập được ghi nhận cho lần học cùng học phần có điểm cao hơn.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cai thien cpa</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cai thien diem</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cai thien gpa</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cày lại điểm</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cải thiện cpa</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>cải thiện gpa</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>diem thap qua</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>học cải thiện</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>nang diem</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>nâng điểm</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocCaiThien"/>
+        <Literal>điểm thấp</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>Sinh viên có học phần bị điểm dưới 5.0 phải đăng ký học lại ở các học kỳ tiếp theo cho đến khi đạt.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>bi cam thi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>bị cấm thi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>bị nợ môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>hoc lai</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>học lại</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>no mon</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>nợ môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>rot mon</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>rớt môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>truot mon</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhHocLai"/>
+        <Literal>trượt môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#ghiChuHocPhi"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>Tuyệt đối không chuyển khoản trực tiếp vào tài khoản trường.
+Thanh toán qua website sinhvien.ntu.edu.vn hoặc nộp trực tiếp tại quầy ngân hàng Agribank hoặc Vietinbank kèm mã số sinh viên.
+Đóng học phí trễ hạn sẽ bị cấm thi. Sinh viên có hoàn cảnh khó khăn muốn gia hạn thời gian đóng học phí thì có thể liên hệ phòng Công tác Sinh viên để được hướng dẫn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>Sinh viên thanh toán học phí cho các học phần đã đăng ký thành công trong học kỳ.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>cách đóng học phí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>dong hoc phi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>gia han hoc phi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>hoc phi</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>hoc phi dai hoc</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>hp</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>học phí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>nop tien</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>nop tien hoc</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>nộp học phí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>đóng học phí</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhNopHocPhi"/>
+        <Literal>đóng tiền học</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>Nhà trường tự động xóa lớp học phần nếu không đủ sinh viên theo quy định. Sinh viên có thể chủ động điều chỉnh hoặc rút bớt học phần trên web sinhvien.ntu.edu.vn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>bỏ học phần</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>huy hoc phan</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>hủy hp</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>hủy môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>rút môn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>xóa môn học</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhRutMonHoc"/>
+        <Literal>xóa tín chỉ</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>Trong học kì, sinh viên có kết quả học tập, rèn luyện từ loại khá trở lên, không bị kỉ luật từ mức khiển trách trở lên sẽ được xét cấp HBKK học tập.
+Tổng số tín chỉ sinh viên đăng kí phải &gt;= 14. Học bổng sẽ được trao cho sinh viên theo thứ tự từ sinh viên có điểm học tập cao nhất lấy xuống đến khi đủ chỉ tiêu học bổng.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>dk hoc bong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>dkien xet hb</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>hoc bong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>học bổng</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>xet hb</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetHocBong"/>
+        <Literal>xet hoc bong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#noiDung"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>Sinh viên được xét tốt nghiệp khi không bị kỷ luật, tích lũy đủ số học phần, CPA &gt;= 5.5, đạt chuẩn ngoại ngữ và hoàn thành GDQP-AN, GDTC.
+Nếu đủ điều kiện sớm, có thể làm đơn xin xét tốt nghiệp sớm.</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>dk xet tot nghiep</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>tot nghiep</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>tot nghiep som</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>tốt nghiệp</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>tốt nghiệp sớm</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>xet tn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#QuyTrinhXetTotNghiep"/>
+        <Literal>xét tốt nghiệp</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#RegQD1052"/>
+        <Literal>https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#duongDanBieuMau"/>
+        <NamedIndividual IRI="#RegQD729"/>
+        <Literal>https://pdtsaudaihoc.ntu.edu.vn/uploads/22/Note/15720/q%C4%91-729-(2025)-(2).pdf.pdf</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#diaDiem"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>Tầng 2 Tòa nhà Hiệu bộ</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#email"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>vpt@ntu.edu.vn</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#soDienThoai"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>02583831149</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>van phong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>van phong truong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>vp truong</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>vpt</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>văn phòng</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#tenGoiKhac"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>văn phòng trường</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#truongPhong"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>Ths. Phạm Ngọc Bích</Literal>
+    </DataPropertyAssertion>
+    <DataPropertyAssertion>
+        <DataProperty IRI="#website"/>
+        <NamedIndividual IRI="#VanPhongTruong"/>
+        <Literal>https://vpt.ntu.edu.vn/</Literal>
+    </DataPropertyAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#BankTransfer</IRI>
+        <Literal>Thanh toán tại quầy giao dịch của ngân hàng Agribank hoặc Vietinbank để nộp tiền mặt</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKien</IRI>
+        <Literal>Điều kiện</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienBaoLuuCaNhan</IRI>
+        <Literal>Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienBaoLuuQuocTe</IRI>
+        <Literal>Được cơ quan có thẩm quyền điều động tham dự các kỳ thi, giải đấu quốc tế</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienBaoLuuVuTrang</IRI>
+        <Literal>Được điều động vào lực lượng vũ trang</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienBaoLuuYTe</IRI>
+        <Literal>Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận hợp lệ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienChuyenNganhNamHoc</IRI>
+        <Literal>Không là sinh viên năm nhất hoặc năm cuối</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienHocBongDiemHocTap</IRI>
+        <Literal>Kết quả học tập từ 7.0 trở lên</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienHocBongDiemRenLuyen</IRI>
+        <Literal>Điểm rèn luyện từ loại khá trở lên</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienHocBongThoiGian</IRI>
+        <Literal>Trong thời gian đào tạo theo kế hoạch của khoá học</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienHocBongTinChi</IRI>
+        <Literal>Tổng số tín chỉ sinh viên đăng kí trong một học kì phải lớn hơn hoặc bằng 14 tín chỉ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienHocLai</IRI>
+        <Literal>Học phần có điểm tổng kết dưới 5.0</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienTotNghiepCPA</IRI>
+        <Literal>Điểm trung bình chung tích lũy (CPA) từ 5.5 trở lên</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienTotNghiepKyLuat</IRI>
+        <Literal>Không bị truy cứu trách nhiệm hình sự</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienTotNghiepNghiaVu</IRI>
+        <Literal>Hoàn thành nghĩa vụ đối với Trường</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienTotNghiepNgoaiNgu</IRI>
+        <Literal>Đạt chuẩn năng lực tiếng Anh theo quy định</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DieuKienTotNghiepTinChi</IRI>
+        <Literal>Tích lũy đủ số tín chỉ theo quy định</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DinhMucHocPhi</IRI>
+        <Literal>Định mức học phí</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DonGiaHanThoiGianNopHocPhi</IRI>
+        <Literal>Đơn gia hạn thời gian nộp học phí</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DonXetTotNghiepSom</IRI>
+        <Literal>Đơn đề nghị xét tốt nghiệp</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DonXinBaoLuu</IRI>
+        <Literal>Đơn xin nghỉ học tạm thời</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DonXinChuyenNganh</IRI>
+        <Literal>Đơn xin chuyển ngành</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DonXinHocTroLai</IRI>
+        <Literal>Đơn xin học trở lại</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#KetQuaDauRa</IRI>
+        <Literal>Kết quả đầu ra</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputCoTenTrongDanhSachLop</IRI>
+        <Literal>Học phần hiển thị trong thời khóa biểu chính thức</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputDuocBaoLuu</IRI>
+        <Literal>Kết quả học tập được bảo lưu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputDuocChuyenNganh</IRI>
+        <Literal>Được chuyển ngành</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputDuocXetTotNghiep</IRI>
+        <Literal>Được xét tốt nghiệp nếu đủ điều kiện</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputGhiNhanDiemCaoHon</IRI>
+        <Literal>Điểm CPA được ghi nhận theo lần học có điểm số cao hơn</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputNhanHocBong</IRI>
+        <Literal>Nhận học bổng khuyến khích học tập nếu đủ điều kiện</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OutputXoaTenKhoiLop</IRI>
+        <Literal>Xóa tên khỏi danh sách lớp, không bị ghi nhận điểm F</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PayOnline</IRI>
+        <Literal>Thanh toán trên website sinhvien.ntu.edu.vn</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiGiaoDucTongQuat</IRI>
+        <Literal>Học phí Giáo dục tổng quát</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK63600k</IRI>
+        <Literal>Học phí K63 (Công Nghệ Sinh học)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK63620K</IRI>
+        <Literal>Học phí K63 (Công nghệ chế biến thủy sản, Kỹ thuật tàu thủy, Nuôi trồng thủy sản)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK65550k</IRI>
+        <Literal>Học phí K65 (Quản Trị Kinh Doanh, Kế toán, Quản trị Khách Sạn)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK65620k</IRI>
+        <Literal>Học phí K65 (Công nghệ thông tin)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK66510k</IRI>
+        <Literal>Học phí K66 (Ngôn ngữ Anh)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK66550k</IRI>
+        <Literal>Học phí K66 (Kinh Doanh Thương mại, Tài chính, Du lịch)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK66620k</IRI>
+        <Literal>Học phí K66 (Cơ khí, Ô tô, Xây dựng, Thực phẩm, Quản Lý Thủy sản)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK67550k</IRI>
+        <Literal>Học phí K67 (Marketing, Hệ Thống Thông Tin Quản Lý, Luật, Kinh tế Phát Triển, Khoa Học Hàng hải)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhiK67620k</IRI>
+        <Literal>Học phí K67 (Nhiệt, Cơ điện tử, Điện)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhongBanHanhChinh</IRI>
+        <Literal>Phòng ban hành chính</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhongCTSV</IRI>
+        <Literal>Phòng Công tác Sinh viên</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhongDaoTaoDaiHoc</IRI>
+        <Literal>Phòng Đào tạo Đại học</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhongKHTC</IRI>
+        <Literal>Phòng Tài chính</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PhuongThucThanhToan</IRI>
+        <Literal>Phương thức thanh toán</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyDinh</IRI>
+        <Literal>Quy định</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhBaoLuu</IRI>
+        <Literal>Quy trình xin bảo lưu kết quả học tập</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhChuyenNganh</IRI>
+        <Literal>Quy trình xin chuyển ngành</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhDangKyHocPhan</IRI>
+        <Literal>Quy trình đăng ký học phần</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhHocCaiThien</IRI>
+        <Literal>Quy trình học cải thiện</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhHocLai</IRI>
+        <Literal>Quy trình đăng ký học lại</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhHocVu</IRI>
+        <Literal>Quy trình học vụ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhNopHocPhi</IRI>
+        <Literal>Quy trình đóng học phí</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhRutMonHoc</IRI>
+        <Literal>Quy trình rút môn học</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhXetHocBong</IRI>
+        <Literal>Quy trình xét học bổng</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#QuyTrinhXetTotNghiep</IRI>
+        <Literal>Quy trình xét tốt nghiệp</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#RegQD1052</IRI>
+        <Literal>Quyết định 1052/QĐ-ĐHNT</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#RegQD729</IRI>
+        <Literal>Quyết định 729/QĐ-ĐHNT</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#TaiLieuBieuMau</IRI>
+        <Literal>Tài liệu biểu mẫu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#VanPhongTruong</IRI>
+        <Literal>Văn phòng Trường</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#apDungMucHocPhi</IRI>
+        <Literal>học phí</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#apDungMucHocPhi</IRI>
+        <Literal>mức học phí</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#canCuQuyDinh</IRI>
+        <Literal>căn cứ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#canCuQuyDinh</IRI>
+        <Literal>quy định</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#canTaiLieu</IRI>
+        <Literal>biểu mẫu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#canTaiLieu</IRI>
+        <Literal>tài liệu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#canTaiLieu</IRI>
+        <Literal>đơn</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#coKetQua</IRI>
+        <Literal>kết quả</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#coPhuongThucThanhToan</IRI>
+        <Literal>phương thức thanh toán</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#coPhuongThucThanhToan</IRI>
+        <Literal>thanh toán</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#diaDiem</IRI>
+        <Literal>địa chỉ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#diaDiem</IRI>
+        <Literal>địa điểm</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#diaDiem</IRI>
+        <Literal>ở đâu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duocXuLyBoi</IRI>
+        <Literal>phòng phụ trách</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duocXuLyBoi</IRI>
+        <Literal>phòng xử lý</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duocXuLyBoi</IRI>
+        <Literal>xử lý</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duongDanBieuMau</IRI>
+        <Literal>link</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duongDanBieuMau</IRI>
+        <Literal>tải biểu mẫu</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#duongDanBieuMau</IRI>
+        <Literal>đường dẫn</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#email</IRI>
+        <Literal>email</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#email</IRI>
+        <Literal>thư điện tử</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ghiChuHocPhi</IRI>
+        <Literal>ghi chú</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ghiChuHocPhi</IRI>
+        <Literal>lưu ý</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hocPhiMoiTinChi</IRI>
+        <Literal>học phí mỗi tín chỉ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hocPhiMoiTinChi</IRI>
+        <Literal>mỗi tín chỉ</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#noiDung</IRI>
+        <Literal>mô tả</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#noiDung</IRI>
+        <Literal>nội dung</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#soDienThoai</IRI>
+        <Literal>số điện thoại</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#soDienThoai</IRI>
+        <Literal>điện thoại</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#tenGoiKhac</IRI>
+        <Literal>tên gọi khác</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#truongPhong</IRI>
+        <Literal>phụ trách</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#truongPhong</IRI>
+        <Literal>trưởng phòng</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#website</IRI>
+        <Literal>trang web</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#website</IRI>
+        <Literal>website</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#yeuCauDieuKien</IRI>
+        <Literal>điều kiện</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

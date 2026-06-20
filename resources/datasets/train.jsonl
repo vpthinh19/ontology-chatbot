@@ -500,6 +500,270 @@
 {"text": "giờ làm sao mới được duyệt ta", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
 {"text": "có phòng nào xử lý nhanh hơn không", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
 {"text": "Nếu chưa rõ yêu cầu thì em phải hỏi bộ phận nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Bot ơi, chào mình một tiếng được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình mới vào chat, cho mình chào bot nhé?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Cho em gửi lời chào trước được không ạ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bot còn ở đây không, em chào ạ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình cảm ơn bot nhé, vậy được chưa?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Giờ mình tạm biệt bot được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bạn ơi, mình chào nhau chút nha?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Em xin phép tạm biệt ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Chúc bot một ngày tốt lành ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "chao ban nhe", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "minh cam on bot", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "tạm biẹt nha bot", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "hii bot ơi", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "hello bot iu", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "thôi mình out nha", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "yo, bot nghe không", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "Bạn ơi cho mình hỏi chút được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Alo bot nghe mình hỏi được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Cảm ơn bạn đã hỗ trợ nha?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình thoát ra rồi, hẹn gặp lại nhé?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Dạ em chào anh chị hỗ trợ ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ cho em hỏi một chút được không ạ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ cảm ơn bot đã trả lời ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Em xin phép hỏi chút ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ em chào, nhờ hỗ trợ giúp em ạ.", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "xin chao ban", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "minh chao bot hoc vu", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hen gap lai nhe", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "xin chàoo ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "helô bot", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "chào nha, mình hỏi tí", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "hí, bot rảnh không", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "cảm ơn nhiều nghen", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "Bot có ở đây không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bạn đang hỗ trợ phải không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình hỏi vài câu được chứ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Có ai hỗ trợ mình với ạ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bot ơi bắt đầu được chưa?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình cảm ơn bot nhé?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Dạ cho em hỏi với ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Cảm ơn bot đã hỗ trợ ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Em xin chào, nhờ bot hỗ trợ giúp em ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "chao ban", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "bot oi", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "cho minh hoi voi", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "alo bot nghe khong", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "minh can hoi chut", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "bot ơi hổ trợ mình với", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "alo bot oi nghe ko", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "bai bot nha", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "ê bot", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "bot ơi cứu với", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "mình hỏi xíu nha", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "thôi mình out đây", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "Bạn có thể hỗ trợ mình một chút được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bot ơi, mình hỏi vài thứ được chứ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Cho mình bắt đầu hỏi nha?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Hôm nay bot trực không vậy?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình chào bot trước rồi hỏi được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Dạ cảm ơn bot nha ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ em xin chào", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "chao ban minh can hoi chut", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hello minh vao hoi ti", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "chao bót ơi", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "cảm on nhiều nha", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "aloo có ai hỗ trợ ko", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "ok cảm ơn nghen", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "chào nha mình hỏi xíu", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "alo alo bot nghe không", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "Bạn có thể hỗ trợ mình được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình hỏi bạn vài câu được chứ?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Chào bạn, giờ mình nhờ tư vấn được không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Bạn đang online không vậy?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Mình cảm ơn bạn nhé, vậy là xong phải không?", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "full_question"}
+{"text": "Dạ em chào anh chị ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ cho em hỏi một chút ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Em xin phép hỏi chút được không ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "Dạ em chào, mong được hỗ trợ ạ", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "polite"}
+{"text": "minh hoi chut duoc khong", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "no_diacritics"}
+{"text": "chao bot nheee", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "aloo có ai ko", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "helo bạn ơi", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "typo"}
+{"text": "bot ơi mình hỏi xíu", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "thôi mình thoát đây", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "chào nha, giúp mình với", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "bye bot, lát hỏi tiếp", "tree": {"act": "greeting", "entities": []}, "catalog_id": "chitchat__greeting", "category": "greeting", "group": "chitchat", "style": "colloquial"}
+{"text": "wifi trường bị lỗi", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "giá gửi xe sinh viên", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "Dạ cho em hỏi cách tính nhanh bài phần trăm được không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Anh chị cho em xin lời khuyên khi cãi nhau với bạn thân ạ.", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "hom nay nong qua co cach nao ngu mat hon khong", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "cach nau com bang noi dien cho khoi bi nhão", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "ca si do moi ra bai gi vay", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "mai đi biển ổn không trời, nắng quá không", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "chỉ tui nấu canh chua lẹ lẹ với", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "crush nhắn vậy là có ý gì ta", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Cho em hỏi cách luộc trứng lòng đào sao cho vừa chín ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "crush seen tin nhắn mà ko rep là sao", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Anh chị gợi ý quán cà phê yên tĩnh gần biển được không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "doi do C sang F nhu nao", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "game nào nhẹ nhẹ cho laptop yếu vậy", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "tin tức giá xăng", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "Em muốn hỏi hôm nay xổ số miền Trung về số mấy ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "ny cũ tự nhiên nhắn lại thì xử lý sao", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "công thức trà sữa", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "game mobile nhẹ cho máy yếu", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "Bạn cho mình hỏi tin tức mới nhất hôm nay có gì nổi bật ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Cho em hỏi nên nhắn gì khi muốn làm hòa với người yêu ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Bạn có thể gợi ý món ăn tối dễ làm cho sinh viên không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "du bao thoi tiet cuoi tuan o nha trang", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "cach giam dau bung nhanh tai nha", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "ai dang la ca si hot nhat bay gio", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "Ê tối nay có trận nào hay không?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Tính giùm cái này với, mình ngu toán quá.", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Chơi game gì đỡ chán giờ nhỉ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Cho em hỏi cách nấu mì Ý sốt kem đơn giản được không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "chi em cong thuc nau canh chua nhanh voi", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "Có game gì chơi đỡ chán giờ không?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Bạn cho mình xin tin tức mới nhất hôm nay với ạ.", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "ca si do sap ra bai moi chua", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "Nay ăn gì rẻ rẻ mà no ở ngoài cổng trường?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "Cho em hỏi dạo này giá xăng tăng hay giảm ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "doi hinh bong da toi nay co ai da", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "no_diacritics"}
+{"text": "Buồn ngủ quá, có cách tỉnh táo liền không?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "colloquial"}
+{"text": "tin idol hẹn hò", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "công thức nấu mì cay đơn giản", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "keyword"}
+{"text": "Dạ cho em hỏi hôm nay có tin tức gì nổi bật không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Anh chị cho em xin vài mẹo tập gym cho người mới với ạ.", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Dạ tư vấn giúp em nên tỏ tình như thế nào được không ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "Cho em hỏi căng tin hôm nay bán món gì ạ?", "tree": {"act": "ood", "entities": []}, "catalog_id": "chitchat__ood", "category": "ood", "group": "chitchat", "style": "polite"}
+{"text": "học phí bao nhiêu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "mức thu mỗi tín chỉ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "cách đóng tiền", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "mẫu đơn cần nộp", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "điều kiện làm giấy tờ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "Học phí hiện giờ tính như thế nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Em phải đóng khoản tiền đó ở đâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Cần chuẩn bị giấy tờ gì để làm thủ tục?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Mẫu đơn đó lấy ở chỗ nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Điều kiện để được xét là gì?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Có thể thanh toán bằng chuyển khoản không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Thủ tục này mất khoảng bao lâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "hoc phi moi tin chi bao nhieu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dong tien qua ngan hang duoc khong", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "can giay to gi de nop", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "mau don nam o dau vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "thu tuc lam nhu nao", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "le phi co bat buoc khong", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dieu kien xet la sao", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hoc phi dong nhu the nao v ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "cho e hoi can mau dơn nao", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thanh toan bi loi thi lam s ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "giay to nop ban goc hay photo vâỵ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thu tuc nay can nhung j", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "dong tien tre co sao k a", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "Cái khoản này đóng kiểu gì vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Ủa học phí tính sao ta?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Giờ cần giấy gì để làm vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Đơn đó kiếm ở đâu nhỉ?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Làm thủ tục này có rắc rối không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Phòng nào dễ tính hơn vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "mức học phí bao nhiêu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "học phí mỗi tín chỉ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "đóng tiền học ở đâu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "điều kiện được xét", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "thủ tục giấy tờ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "căn cứ tính tiền", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "Học phí năm nay tính như thế nào vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Em cần chuẩn bị giấy tờ gì để làm thủ tục?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Muốn đóng tiền thì làm theo cách nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Mẫu đơn đó lấy ở đâu được ạ?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Thủ tục này thường mất bao lâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Nhà trường căn cứ vào đâu để thu vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "hoc phi moi tin chi la bao nhieu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dong tien bang cach nao vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "can mau don gi de nop", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "thu tuc nay lam sao a", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dieu kien nhu the nao moi duoc", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "chuyen khoan hay nop truc tiep", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "giay to lay o dau vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hoc phí đóng sao v ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "em cần mẩu đơn nào vậy ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thủ tục này có khó ko", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "điều kiên xét là gì ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "học phi tính theo gì vậy", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "giấy tờ nộp chổ nào", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "Ủa đóng tiền kiểu gì vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Cái đơn đó kiếm đâu ra ta?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Học phí tính sao á?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Làm thủ tục này có cần giấy gì không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Muốn được duyệt thì cần gì vậy trời?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Nộp tiền online được hông hay sao?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "đóng tiền học", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "điều kiện xét", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "Học phí hiện tại được tính như thế nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Em cần đóng học phí bằng cách nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Quy định này căn cứ vào đâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Thủ tục này làm trong bao lâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Nếu nộp thiếu giấy tờ thì có được bổ sung không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "hoc phi tinh sao vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dong tien bang chuyen khoan duoc khong", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "mau don lay o dau", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "thu tuc lam sao moi dung", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "can cu vao quy dinh nao vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "học phi mỗi tín chỉ bn v ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "đóng hk phí qua ngân hàng đc ko", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "e cần nộp đơn gì vầy", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thủ tục nay cần làm mấy bước ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "nếu trễ hạn thì xử lí sao ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "giấy tờ photo hay bản gốc z", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "tiền học kỳ này khoảng nhiêu vậy", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "chuyển khoản hay phải nộp trực tiếp vậy bạn", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "cái đơn đó kiếm ở đâu ta", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "làm thủ tục kiểu gì cho nhanh vậy", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "mình thiếu một giấy thì có sao không", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "đóng tiền xong có cần báo lại không", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "mức học phí", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "điều kiện đăng ký", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "quy trình học vụ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "Học phí mỗi tín chỉ hiện tính như thế nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Muốn đóng tiền thì phải làm các bước nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Cần chuẩn bị giấy tờ gì để nộp vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Đơn đó lấy ở đâu và điền ra sao?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Nếu nộp trễ thì có bị tính phí không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Căn cứ vào đâu để xét hồ sơ vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "hoc phi mot ky tam bao nhieu", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "can giay to gi de lam thu tuc", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "mau don nay tai o dau vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dieu kien xet la nhu nao", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "nop tien tre co sao khong", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "thu tuc nay hoi ai duoc", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hoc phi tinh kieu j vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "đóng tìn online đc ko", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "e can mau don nao v ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thu tuc lam sao z thầy cô", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "giay to nop co can cong chung k", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "dkien de duoc xet la gi v", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "Cho hỏi cái này làm sao vậy mọi người?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Đóng tiền kiểu chuyển khoản hay sao á?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Học phí kỳ này tầm nhiêu vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Cần giấy gì mang lên nộp không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Phòng nào xử lý vụ này vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Làm hồ sơ vậy có khó không ta?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "cách đóng tiền học", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "keyword"}
+{"text": "Học phí hiện giờ được tính như thế nào vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Muốn đóng tiền thì phải làm theo cách nào?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Em cần chuẩn bị giấy tờ gì để nộp?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "Nếu chưa đóng học phí thì có bị sao không?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "full_question"}
+{"text": "hoc phi bao nhieu vay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "can mau don nao de nop", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "thu tuc lam nhu the nao", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "dieu kien cu the la gi", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "giay xac nhan can gi", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "no_diacritics"}
+{"text": "hoc phi moi tin chi tinh sao zay", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "đóng tiền online dc ko ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "e cần nộp giấy tờ j vậy", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "mẫu đơn đó tải ở dau v", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "thủ tục này co rắc rối ko", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "điều kiện z là như nào ạ", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "typo"}
+{"text": "Học phí tính kiểu gì vậy bạn?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Đóng tiền là chuyển khoản hay sao?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Cái đơn đó kiếm ở đâu vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Giờ muốn làm giấy thì bắt đầu từ đâu?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
+{"text": "Quy trình nào nhanh nhất vậy?", "tree": {"act": "vague", "entities": []}, "catalog_id": "chitchat__vague", "category": "vague", "group": "chitchat", "style": "colloquial"}
 {"text": "trưởng phòng ctsv", "tree": {"act": "query", "entities": [{"label": "ctsv", "type": "individual", "children": [{"label": "trưởng phòng", "type": "data", "children": []}]}]}, "catalog_id": "data__PhongCTSV__truongPhong", "category": "data_leaf", "group": "data_leaf", "style": "keyword"}
 {"text": "Trưởng phòng Công tác Sinh viên là ai?", "tree": {"act": "query", "entities": [{"label": "Phòng Công tác Sinh viên", "type": "individual", "children": [{"label": "trưởng phòng", "type": "data", "children": []}]}]}, "catalog_id": "data__PhongCTSV__truongPhong", "category": "data_leaf", "group": "data_leaf", "style": "full_question"}
 {"text": "truong phong cong tac sinh vien", "tree": {"act": "query", "entities": [{"label": "cong tac sinh vien", "type": "individual", "children": [{"label": "trưởng phòng", "type": "data", "children": []}]}]}, "catalog_id": "data__PhongCTSV__truongPhong", "category": "data_leaf", "group": "data_leaf", "style": "no_diacritics"}
@@ -3972,15 +4236,12 @@
 {"text": "xin form với", "tree": {"act": "query", "entities": [{"label": "Tài liệu biểu mẫu", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Tài liệu biểu mẫu", "category": "neg_root_vague", "group": "negative", "style": "colloquial"}
 {"text": "có mẫu giấy nào tải không", "tree": {"act": "query", "entities": [{"label": "Tài liệu biểu mẫu", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Tài liệu biểu mẫu", "category": "neg_root_vague", "group": "negative", "style": "colloquial"}
 {"text": "định mức học phí", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "keyword"}
-{"text": "mức học phí", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "keyword"}
-{"text": "học phí mỗi tín chỉ", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "keyword"}
 {"text": "định mức học phí là bao nhiêu?", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "full_question"}
 {"text": "mức học phí hiện nay như thế nào?", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "full_question"}
 {"text": "học phí mỗi tín chỉ bao nhiêu tiền?", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "full_question"}
 {"text": "muc hoc phi moi tin chi", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "no_diacritics"}
 {"text": "mức hp", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "abbrev"}
 {"text": "hp/tc", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "abbrev"}
-{"text": "mức hoc phí bao nhiêu", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "typo"}
 {"text": "tiền học một tín chỉ nhiêu vậy", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "colloquial"}
 {"text": "học phí tầm bao nhiêu á", "tree": {"act": "query", "entities": [{"label": "Định mức học phí", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Định mức học phí", "category": "neg_root_vague", "group": "negative", "style": "colloquial"}
 {"text": "kết quả đầu ra", "tree": {"act": "query", "entities": [{"label": "Kết quả đầu ra", "type": "individual", "children": []}]}, "catalog_id": "neg_vague__Kết quả đầu ra", "category": "neg_root_vague", "group": "negative", "style": "keyword"}

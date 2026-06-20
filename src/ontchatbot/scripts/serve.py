@@ -6,10 +6,11 @@ Endpoints
 ``POST /chat``     — JSON ``{"message": str}`` → ``{"reply": str, ...}``
 ``GET  /healthz``  — liveness probe
 
-The heavy components (BARTpho, ontology) are loaded lazily on the first request
-and cached as singletons; the process therefore starts quickly and warms up on
-demand. Note: ``/chat`` needs the trained BARTpho model; until it exists it raises
-``ModelNotReady`` (xem docs/redesign/PROGRESS.md — train phiên sau).
+The heavy components (BARTpho CTranslate2, ontology) are loaded lazily on the
+first request and cached as singletons; the process therefore starts quickly and
+warms up on demand. ``/chat`` runs the full pipeline end-to-end; if the CT2 model
+is missing (chưa convert + không tải được HF) it returns HTTP 503 with a clear
+message instead of crashing (xem scripts.convert_ct2 + docs/redesign/PROGRESS.md).
 
 Runtime tracing — including each stage of the pipeline and the shape of the
 data passing through it — is written to ``logs/chatbot.log`` (rotated) by
@@ -31,6 +32,7 @@ from pydantic import BaseModel
 
 from ..config import WEB_DIR
 from ..logging_setup import configure_logging
+from ..model import ModelNotReady, TreeModel
 from ..pipeline import Pipeline
 
 log = logging.getLogger(__name__)
@@ -39,7 +41,8 @@ log = logging.getLogger(__name__)
 @asynccontextmanager
 async def _lifespan(app: FastAPI):
     log_path = configure_logging()
-    log.info("[startup] FastAPI ready log_file=%s", log_path)
+    log.info("[startup] FastAPI ready log_file=%s model_ct2_available=%s",
+             log_path, TreeModel.available())
     yield
     log.info("[shutdown] FastAPI stopping")
 
@@ -86,8 +89,14 @@ def healthz() -> dict:
 @app.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest) -> JSONResponse:
     """Run the pipeline in a worker thread so the event loop stays free
-    while CTranslate2 inference (blocking C++) is in flight."""
-    return JSONResponse(await Pipeline.get().aanswer(req.message))
+    while CTranslate2 inference (blocking C++) is in flight. Model chưa sẵn sàng
+    (chưa convert CT2) → 503 với thông điệp rõ thay vì 500."""
+    try:
+        return JSONResponse(await Pipeline.get().aanswer(req.message))
+    except ModelNotReady as e:
+        log.error("[chat] model chưa sẵn sàng: %s", e)
+        return JSONResponse(status_code=503,
+                            content={"reply": "Hệ thống chưa nạp được mô hình ngôn ngữ.", "entities": []})
 
 app.mount("/", StaticFiles(directory=WEB_DIR), name="webui")
 

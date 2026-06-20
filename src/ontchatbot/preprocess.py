@@ -4,7 +4,9 @@ Nguyên tắc (DESIGN.md §2/§9): module này phải **"ngu"** — chỉ làm s
 trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho model. Không
 word-segment (BARTpho nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
 
-* :func:`clean` — NFC + bung teencode/viết tắt → chuỗi sạch nạp cho model.
+* :func:`clean` — NFC + :func:`normalize_tone` + bung teencode/viết tắt → chuỗi sạch nạp model.
+* :func:`normalize_tone` — nắn dấu thanh kiểu-cũ→mới (``thủy``→``thuỷ``) cho cụm oa/oe/uy: BARTpho
+  tokenize ``thủy`` → ``<unk>``. Dùng cả ở :func:`clean` (source) lẫn `tree.to_model_json` (target).
 * :func:`normalize_for_match` / :func:`is_url` — chuẩn hoá thấp (bỏ dấu, alnum) dùng
   chung cho `ontology` khi khớp alias.
 
@@ -109,14 +111,37 @@ def normalize(text: str) -> str:
     return _RE_WS.sub(" ", unicodedata.normalize("NFC", text.strip()))
 
 
+# Dấu thanh tổ hợp (NFD): huyền U+0300, sắc U+0301, ngã U+0303, hỏi U+0309, nặng U+0323.
+_TONE_MARKS = "̣̀́̃̉"
+_RE_TONE_MOVE = re.compile(f"([oOuU])([{_TONE_MARKS}])([aeyAEY])")
+# Chỉ 3 cụm này khác nhau giữa "kiểu cũ" (dấu trên nguyên âm đầu) và "kiểu mới" (trên nguyên âm sau).
+_TONE_CLUSTERS = frozenset({("o", "a"), ("o", "e"), ("u", "y")})
+
+
+def normalize_tone(text: str) -> str:
+    """Nắn dấu thanh **kiểu-cũ → kiểu-mới** cho cụm ``oa/oe/uy`` (vd ``thủy``→``thuỷ``, ``khóa``→``khoá``).
+
+    BARTpho-syllable tokenize theo kiểu MỚI (dấu trên nguyên âm SAU): ``thủy`` (dấu trên ``u``) →
+    ``<unk>``; ``thuỷ`` (dấu trên ``y``) → ``▁thu``+``ỷ``. Hàm chỉ DỜI dấu trong 3 cụm oa/oe/uy
+    (chỗ hai kiểu khác nhau); ``của``/``mùa``/``tuần`` (cụm ua/uâ…) giữ NGUYÊN. Idempotent với dạng
+    đã-mới. Khớp ontology vốn bỏ hết dấu (``normalize_for_match``) nên KHÔNG đổi kết quả khớp; đây
+    thuần là để text vào tokenizer round-trip (97%→100%, kiểm 2026-06-19). Cũng làm hệ bền với việc
+    người dùng gõ lẫn hai kiểu."""
+    def _move(m: re.Match) -> str:
+        v1, tone, v2 = m.group(1), m.group(2), m.group(3)
+        return (v1 + v2 + tone) if (v1.lower(), v2.lower()) in _TONE_CLUSTERS else m.group(0)
+    return unicodedata.normalize("NFC", _RE_TONE_MOVE.sub(_move, unicodedata.normalize("NFD", text)))
+
+
 def clean(text: str) -> str:
-    """Làm sạch input cho model: NFC → bỏ URL/email → bung teencode.
+    """Làm sạch input cho model: NFC → nắn dấu kiểu-mới → bỏ URL/email → bung teencode.
 
     Không word-segment — BARTpho tokenise raw syllable trực tiếp.
     """
     if not text:
         return ""
     text = normalize(text)
+    text = normalize_tone(text)                    # thủy→thuỷ… cho tokenizer (đồng bộ với target)
     text = _RE_URL.sub(" ", text)
     text = _RE_EMAIL.sub(" ", text)
     text = _RE_REPEAT.sub(r"\1\1", text)

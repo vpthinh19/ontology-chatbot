@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from ontchatbot.model import ModelNotReady
+from ontchatbot.model import ModelNotReady, TreeModel
 from ontchatbot.pipeline import Pipeline
 
 
@@ -24,7 +24,12 @@ def test_answer_tree_greeting():
     assert "Xin chào" in res["reply"]
 
 
-def test_answer_needs_trained_model():
-    # ViT5 chưa train → luồng text→cây phải báo lỗi rõ ràng, không trả rác.
+def test_answer_raises_without_model(monkeypatch, tmp_path):
+    # Không có model CT2 (cục bộ + không tải được HF) → luồng text→cây báo lỗi rõ, không trả rác.
+    # Hermetic: TreeModel trỏ thư mục rỗng + chặn snapshot_download (không gọi mạng trong test).
+    import huggingface_hub
+    monkeypatch.setattr(huggingface_hub, "snapshot_download",
+                        lambda *a, **k: (_ for _ in ()).throw(OSError("offline (test)")))
+    pipe = Pipeline(model=TreeModel(model_dir=tmp_path))
     with pytest.raises(ModelNotReady):
-        Pipeline.get().answer("xin chào")
+        pipe.answer("xin chào")

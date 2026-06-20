@@ -18,28 +18,28 @@ RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 # Resources
 ONTOLOGY_DIR = RESOURCES / "ontology"
-# Active ontology = the rebuilt graph (scripts/build_ontology.py is its source of
-# truth; this .owl is the generated artifact). Built FROM the v8 source below.
-ONTOLOGY_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure.owl"
-ONTOLOGY_SOURCE_PATH = ONTOLOGY_DIR / "Ontology_AcademicProcedure_v8.owx"
+# Ontology hệ thống = MỘT file tự-chứa (8 lớp/7 obj/10 data/54 cá thể + nhãn/alias =
+# chìa khoá khớp). Ưu tiên .owx (OWL/XML, nguồn Protégé); fallback .owl (RDF/XML) là bản
+# gộp cho tới khi Save-As .owx trong Protégé. owlready2 nạp cả hai như nhau.
+# Provenance cách dựng nhãn/alias: dev/ontology_build/.
+ONTOLOGY_PATH = (
+    ONTOLOGY_DIR / "Ontology_AcademicProcedure.owx"
+    if (ONTOLOGY_DIR / "Ontology_AcademicProcedure.owx").exists()
+    else ONTOLOGY_DIR / "Ontology_AcademicProcedure.owl"
+)
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 DATASET_DIR = RESOURCES / "datasets"
 TRAIN_PATH = DATASET_DIR / "train.jsonl"
 TEST_PATH = DATASET_DIR / "test.jsonl"
 
-# Phase 4 — sinh dataset (catalog truy vấn chuẩn + lô do Codex sinh).
-PHASE4_DIR = RESOURCES / "phase4"
-CATALOG_PATH = PHASE4_DIR / "catalog.jsonl"          # truy vấn chuẩn (sinh từ ontology)
-BATCHES_DIR = PHASE4_DIR / "batches"                 # lô thô + báo cáo validate
-ACCEPTED_DIR = PHASE4_DIR / "accepted"               # cặp đã qua oracle + round-trip
+# Khâu dựng dataset (catalog/Codex/oracle) đã chuyển sang dev/dataset_construction/
+# (dev-only, gitignored); đường dẫn của nó ở dev/dataset_construction/_paths.py.
 
 
 # Artifacts
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 MODEL_DIR = ARTIFACTS_DIR / "models" / "bartpho_tree"
-CHECKPOINT_DIR = ARTIFACTS_DIR / "checkpoints"
-TRAIN_ARTIFACTS_DIR = ARTIFACTS_DIR / "training"
 EVAL_ARTIFACTS_DIR = ARTIFACTS_DIR / "evaluation"
 LOG_DIR = PROJECT_ROOT / "logs"
 LOG_FILE = LOG_DIR / "chatbot.log"
@@ -70,4 +70,3 @@ LEARNING_RATE = 3e-5
 VAL_SIZE = 0.2
 SEED = 42
 
-# Không có ngưỡng fuzzy cứng (DESIGN.md §9): khớp lấy điểm cao nhất, xem ontology._score.

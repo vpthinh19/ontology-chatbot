@@ -9,8 +9,8 @@
 <owl:Ontology rdf:about="http://www.ntu.edu.vn/ontology/academic"/>
 
 <owl:ObjectProperty rdf:about="#duocXuLyBoi">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xử lý</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phòng xử lý</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xử lý</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phòng phụ trách</rdfs:label>
 </owl:ObjectProperty>
 
@@ -19,9 +19,9 @@
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:about="#canTaiLieu">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đơn</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tài liệu</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">biểu mẫu</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đơn</rdfs:label>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:about="#apDungMucHocPhi">
@@ -34,18 +34,18 @@
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:about="#coPhuongThucThanhToan">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thanh toán</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phương thức thanh toán</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thanh toán</rdfs:label>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:about="#canCuQuyDinh">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">căn cứ</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">quy định</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">căn cứ</rdfs:label>
 </owl:ObjectProperty>
 
 <owl:DatatypeProperty rdf:about="#noiDung">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mô tả</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nội dung</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mô tả</rdfs:label>
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#ghiChuHocPhi">
@@ -54,14 +54,14 @@
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#hocPhiMoiTinChi">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học phí mỗi tín chỉ</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mỗi tín chỉ</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học phí mỗi tín chỉ</rdfs:label>
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#duongDanBieuMau">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đường dẫn</rdfs:label>
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">link</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tải biểu mẫu</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">link</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đường dẫn</rdfs:label>
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#truongPhong">
@@ -70,14 +70,14 @@
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#email">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thư điện tử</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">email</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thư điện tử</rdfs:label>
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#diaDiem">
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">địa chỉ</rdfs:label>
-  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">địa điểm</rdfs:label>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ở đâu</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">địa điểm</rdfs:label>
+  <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">địa chỉ</rdfs:label>
 </owl:DatatypeProperty>
 
 <owl:DatatypeProperty rdf:about="#soDienThoai">
@@ -295,8 +295,8 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K63 (Công Nghệ Sinh học)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">600000</hocPhiMoiTinChi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k63</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Công nghệ sinh học</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k63</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhiK63620K">
@@ -304,10 +304,10 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K63 (Công nghệ chế biến thủy sản, Kỹ thuật tàu thủy, Nuôi trồng thủy sản)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">620000</hocPhiMoiTinChi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật tàu thủy</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nuôi trồng thủy sản</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Công nghệ chế biến thủy sản</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật tàu thủy</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k63</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Công nghệ chế biến thủy sản</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhiK65550k">
@@ -315,12 +315,12 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K65 (Quản Trị Kinh Doanh, Kế toán, Quản trị Khách Sạn)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">550000</hocPhiMoiTinChi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k65</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản trị kinh doanh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khách sạn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">QTKD</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản trị khách sạn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản trị kinh doanh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh doanh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k65</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản trị khách sạn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khách sạn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kế toán</tenGoiKhac>
 </owl:NamedIndividual>
 
@@ -329,9 +329,9 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K65 (Công nghệ thông tin)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">620000</hocPhiMoiTinChi>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k65</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Công nghệ thông tin</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CNTT</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k65</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhiK66510k">
@@ -348,12 +348,12 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K66 (Kinh Doanh Thương mại, Tài chính, Du lịch)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">550000</hocPhiMoiTinChi>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tài chính</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Du lịch</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k66</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tài chính</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh doanh thương mại</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh doanh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tài chính - Ngân hàng</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh doanh thương mại</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhiK66620k">
@@ -361,15 +361,15 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K66 (Cơ khí, Ô tô, Xây dựng, Thực phẩm, Quản Lý Thủy sản)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">620000</hocPhiMoiTinChi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cơ khí</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ô tô</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật cơ khí</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thủy sản</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản lý thủy sản</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xây dựng</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thực phẩm</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k66</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cơ khí</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">thủy sản</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Thực phẩm</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật cơ khí</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Xây dựng</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quản lý thủy sản</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ô tô</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhiK67550k">
@@ -377,12 +377,12 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K67 (Marketing, Hệ Thống Thông Tin Quản Lý, Luật, Kinh tế Phát Triển, Khoa Học Hàng hải)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">550000</hocPhiMoiTinChi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luật</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marketing</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hệ thống thông tin quản lý</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khoa học hàng hải</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh doanh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Marketing</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k67</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Khoa học hàng hải</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Luật</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kinh tế phát triển</tenGoiKhac>
 </owl:NamedIndividual>
 
@@ -391,12 +391,12 @@
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Học phí K67 (Nhiệt, Cơ điện tử, Điện)</rdfs:label>
   <hocPhiMoiTinChi rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">620000</hocPhiMoiTinChi>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật nhiệt</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nhiệt</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kỹ thuật nhiệt</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Điện</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">k67</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cơ điện tử</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Điện</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhongCTSV">
@@ -407,11 +407,11 @@
   <diaDiem rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang</diaDiem>
   <soDienThoai rdf:datatype="http://www.w3.org/2001/XMLSchema#string">02582221900</soDienThoai>
   <website rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://phongctsv.ntu.edu.vn/</website>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ct sinh vien</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cong tac sinh vien</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cog tac sv</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ctsv</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cong tac chinh tri</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ct sinh vien</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ctsv</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhongDaoTaoDaiHoc">
@@ -422,12 +422,12 @@
   <diaDiem rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang</diaDiem>
   <soDienThoai rdf:datatype="http://www.w3.org/2001/XMLSchema#string">02583831148</soDienThoai>
   <website rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://pdtdaihoc.ntu.edu.vn/</website>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong dao tao</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">p dao tao</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pdt</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong ao tao</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong dao tao</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pđt</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong dt</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong ao tao</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">pdt</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#PhongKHTC">
@@ -439,20 +439,20 @@
   <soDienThoai rdf:datatype="http://www.w3.org/2001/XMLSchema#string">02583831150</soDienThoai>
   <website rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://phongkhtc.ntu.edu.vn/</website>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">KH-TC</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong tai chinh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ke hoach tai chinh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong nop tien</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ke hoach tai chinh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">phong tai chinh</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhBaoLuu">
   <rdf:type rdf:resource="#QuyTrinhHocVu"/>
   <duocXuLyBoi rdf:resource="#PhongCTSV"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuVuTrang"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuQuocTe"/>
   <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuYTe"/>
   <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuCaNhan"/>
-  <canTaiLieu rdf:resource="#DonXinHocTroLai"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuVuTrang"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienBaoLuuQuocTe"/>
   <canTaiLieu rdf:resource="#DonXinBaoLuu"/>
+  <canTaiLieu rdf:resource="#DonXinHocTroLai"/>
   <coKetQua rdf:resource="#OutputDuocBaoLuu"/>
   <canCuQuyDinh rdf:resource="#RegQD1052"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình xin bảo lưu kết quả học tập</rdfs:label>
@@ -474,12 +474,12 @@
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình xin chuyển ngành</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">1. Sinh viên có nguyện vọng có thể được xem xét chuyển ngành trong cùng bậc học nếu không là sinh viên năm nhất/năm cuối và đạt điều kiện trúng tuyển.
 2. Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, SV làm đơn xin chuyển ngành để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định.</noiDung>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xin doi nganh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đổi ngành</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">doi nganh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xin chuyen nganh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">chuyen nganh</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">chuyển ngành</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xin doi nganh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">chuyen nganh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">doi nganh</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhDangKyHocPhan">
@@ -490,15 +490,15 @@
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình đăng ký học phần</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sinh viên học lực Trung bình trở lên đăng ký từ 15 đến 27 tín chỉ.
 Sinh viên học lực Yếu/Kém đăng ký từ 12 đến 18 tín chỉ.</noiDung>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đkmh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dkmh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dki mon</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dang ki mh</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đăng ký tín chỉ</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đăng ký môn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dang ki tin chi</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đki môn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dang ki mon hoc</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dki mon</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đki môn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đkmh</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đăng ký môn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đăng ký tín chỉ</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dkmh</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhHocCaiThien">
@@ -509,17 +509,17 @@ Sinh viên học lực Yếu/Kém đăng ký từ 12 đến 18 tín chỉ.</noiD
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình học cải thiện</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sinh viên được quyền đăng ký học lại để cải thiện điểm trung bình chung tích lũy (CPA) trên web sinhvien.ntu.edu.vn với cùng mã học phần.
 Kết quả học tập được ghi nhận cho lần học cùng học phần có điểm cao hơn.</noiDung>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cải thiện gpa</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nang diem</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cai thien cpa</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cải thiện cpa</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cải thiện gpa</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cày lại điểm</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nang diem</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cai thien gpa</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">điểm thấp</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">diem thap qua</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học cải thiện</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cai thien diem</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cày lại điểm</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">diem thap qua</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nâng điểm</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">điểm thấp</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cai thien diem</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cai thien gpa</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhHocLai">
@@ -529,33 +529,33 @@ Kết quả học tập được ghi nhận cho lần học cùng học phần c
   <canCuQuyDinh rdf:resource="#RegQD729"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình đăng ký học lại</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sinh viên có học phần bị điểm dưới 5.0 phải đăng ký học lại ở các học kỳ tiếp theo cho đến khi đạt.</noiDung>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">truot mon</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học lại</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bị nợ môn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">no mon</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nợ môn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rot mon</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc lai</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">trượt môn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">truot mon</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bị cấm thi</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rớt môn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bi cam thi</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">trượt môn</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bị cấm thi</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bị nợ môn</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học lại</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nợ môn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc lai</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhNopHocPhi">
   <rdf:type rdf:resource="#QuyTrinhHocVu"/>
   <duocXuLyBoi rdf:resource="#PhongKHTC"/>
   <canTaiLieu rdf:resource="#DonGiaHanThoiGianNopHocPhi"/>
-  <apDungMucHocPhi rdf:resource="#PhiK66510k"/>
-  <apDungMucHocPhi rdf:resource="#PhiGiaoDucTongQuat"/>
-  <apDungMucHocPhi rdf:resource="#PhiK66550k"/>
-  <apDungMucHocPhi rdf:resource="#PhiK63600k"/>
   <apDungMucHocPhi rdf:resource="#PhiK66620k"/>
   <apDungMucHocPhi rdf:resource="#PhiK63620K"/>
   <apDungMucHocPhi rdf:resource="#PhiK67550k"/>
   <apDungMucHocPhi rdf:resource="#PhiK65550k"/>
   <apDungMucHocPhi rdf:resource="#PhiK67620k"/>
   <apDungMucHocPhi rdf:resource="#PhiK65620k"/>
+  <apDungMucHocPhi rdf:resource="#PhiK66510k"/>
+  <apDungMucHocPhi rdf:resource="#PhiGiaoDucTongQuat"/>
+  <apDungMucHocPhi rdf:resource="#PhiK66550k"/>
+  <apDungMucHocPhi rdf:resource="#PhiK63600k"/>
   <coPhuongThucThanhToan rdf:resource="#BankTransfer"/>
   <coPhuongThucThanhToan rdf:resource="#PayOnline"/>
   <canCuQuyDinh rdf:resource="#RegQD729"/>
@@ -564,16 +564,16 @@ Kết quả học tập được ghi nhận cho lần học cùng học phần c
   <ghiChuHocPhi rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tuyệt đối không chuyển khoản trực tiếp vào tài khoản trường.
 Thanh toán qua website sinhvien.ntu.edu.vn hoặc nộp trực tiếp tại quầy ngân hàng Agribank hoặc Vietinbank kèm mã số sinh viên.
 Đóng học phí trễ hạn sẽ bị cấm thi. Sinh viên có hoàn cảnh khó khăn muốn gia hạn thời gian đóng học phí thì có thể liên hệ phòng Công tác Sinh viên để được hướng dẫn</ghiChuHocPhi>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đóng tiền học</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nop tien</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dong hoc phi</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nộp học phí</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc phi dai hoc</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nop tien hoc</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đóng học phí</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cách đóng học phí</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc phi</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">gia han hoc phi</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">cách đóng học phí</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nộp học phí</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc phi</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đóng học phí</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc phi dai hoc</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nop tien</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">đóng tiền học</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">nop tien hoc</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dong hoc phi</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học phí</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hp</tenGoiKhac>
 </owl:NamedIndividual>
@@ -585,43 +585,43 @@ Thanh toán qua website sinhvien.ntu.edu.vn hoặc nộp trực tiếp tại qu�
   <canCuQuyDinh rdf:resource="#RegQD1052"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình rút môn học</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nhà trường tự động xóa lớp học phần nếu không đủ sinh viên theo quy định. Sinh viên có thể chủ động điều chỉnh hoặc rút bớt học phần trên web sinhvien.ntu.edu.vn</noiDung>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">huy hoc phan</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">rút môn</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xóa tín chỉ</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hủy môn</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xóa môn học</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">huy hoc phan</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">bỏ học phần</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hủy hp</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xóa tín chỉ</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xóa môn học</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhXetHocBong">
   <rdf:type rdf:resource="#QuyTrinhHocVu"/>
   <duocXuLyBoi rdf:resource="#PhongCTSV"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienHocBongDiemRenLuyen"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienHocBongDiemHocTap"/>
   <yeuCauDieuKien rdf:resource="#DieuKienHocBongTinChi"/>
   <yeuCauDieuKien rdf:resource="#DieuKienHocBongThoiGian"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienHocBongDiemRenLuyen"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienHocBongDiemHocTap"/>
   <coKetQua rdf:resource="#OutputNhanHocBong"/>
   <canCuQuyDinh rdf:resource="#RegQD1052"/>
   <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Quy trình xét học bổng</rdfs:label>
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trong học kì, sinh viên có kết quả học tập, rèn luyện từ loại khá trở lên, không bị kỉ luật từ mức khiển trách trở lên sẽ được xét cấp HBKK học tập.
 Tổng số tín chỉ sinh viên đăng kí phải &gt;= 14. Học bổng sẽ được trao cho sinh viên theo thứ tự từ sinh viên có điểm học tập cao nhất lấy xuống đến khi đủ chỉ tiêu học bổng.</noiDung>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc bong</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xet hb</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xet hoc bong</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dk hoc bong</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dkien xet hb</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">học bổng</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dkien xet hb</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xet hb</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hoc bong</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dk hoc bong</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#QuyTrinhXetTotNghiep">
   <rdf:type rdf:resource="#QuyTrinhHocVu"/>
   <duocXuLyBoi rdf:resource="#PhongDaoTaoDaiHoc"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepNgoaiNgu"/>
+  <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepKyLuat"/>
   <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepTinChi"/>
   <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepNghiaVu"/>
   <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepCPA"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepNgoaiNgu"/>
-  <yeuCauDieuKien rdf:resource="#DieuKienTotNghiepKyLuat"/>
   <canTaiLieu rdf:resource="#DonXetTotNghiepSom"/>
   <coKetQua rdf:resource="#OutputDuocXetTotNghiep"/>
   <canCuQuyDinh rdf:resource="#RegQD1052"/>
@@ -629,10 +629,10 @@ Tổng số tín chỉ sinh viên đăng kí phải &gt;= 14. Học bổng sẽ 
   <noiDung rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sinh viên được xét tốt nghiệp khi không bị kỷ luật, tích lũy đủ số học phần, CPA &gt;= 5.5, đạt chuẩn ngoại ngữ và hoàn thành GDQP-AN, GDTC.
 Nếu đủ điều kiện sớm, có thể làm đơn xin xét tốt nghiệp sớm.</noiDung>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dk xet tot nghiep</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tốt nghiệp</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tốt nghiệp sớm</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xet tn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tot nghiep som</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tốt nghiệp</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xet tn</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">tot nghiep</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">xét tốt nghiệp</tenGoiKhac>
 </owl:NamedIndividual>
@@ -657,12 +657,12 @@ Nếu đủ điều kiện sớm, có thể làm đơn xin xét tốt nghiệp s
   <diaDiem rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Tầng 2 Tòa nhà Hiệu bộ</diaDiem>
   <soDienThoai rdf:datatype="http://www.w3.org/2001/XMLSchema#string">02583831149</soDienThoai>
   <website rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://vpt.ntu.edu.vn/</website>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">văn phòng trường</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">văn phòng</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van phong</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">vp truong</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van phong truong</tenGoiKhac>
   <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">vpt</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">vp truong</tenGoiKhac>
-  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">van phong</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">văn phòng</tenGoiKhac>
+  <tenGoiKhac rdf:datatype="http://www.w3.org/2001/XMLSchema#string">văn phòng trường</tenGoiKhac>
 </owl:NamedIndividual>
 
 <owl:NamedIndividual rdf:about="#OutputDuocChuyenNganh">
