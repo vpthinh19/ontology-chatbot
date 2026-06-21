@@ -3,10 +3,10 @@
     uv run --extra train python -m ontchatbot.baseline.figures
 
 Đọc ``artifacts/evaluation/benchmark_report.json`` → 2 hình PNG ở ``docs/figures/``:
-* ``benchmark_per_type.png`` (Hình 14): recall theo từng loại câu — ontology vs phẳng concise/denorm.
+* ``benchmark_per_type.png`` (Hình 13): recall theo từng loại câu — ontology vs phẳng concise/denorm.
   Dùng RECALL (cả hai = tỷ lệ tìm được gold) cho công bằng; precision@k của phẳng thấp cơ học (trả k
   phiếu cho câu 1-đáp-án) nên không làm trục headline. Ontology còn đạt precision/exact cao (trả KHÍT).
-* ``recall_at_k.png`` (Hình 15): đường recall@k của phẳng (k=1/3/5) + mốc recall ontology — phơi hạn
+* ``recall_at_k.png`` (Hình 14): đường recall@k của phẳng (k=1/3/5) + mốc recall ontology — phơi hạn
   chế "phải đoán k" và việc phẳng vẫn dưới ontology dù tăng k.
 """
 
@@ -14,9 +14,7 @@ from __future__ import annotations
 
 import json
 
-from ..config import EVAL_ARTIFACTS_DIR, PROJECT_ROOT
-
-FIGURES_DIR = PROJECT_ROOT / "docs" / "figures"
+from ..config import EVAL_ARTIFACTS_DIR, FIGURES_DIR
 
 # thứ tự trình bày: nhóm tra-cứu-đơn trước, nhóm có-cấu-trúc sau (để thấy gradient khó dần)
 _ORDER = ["self_desc", "data_leaf", "fee_data", "fee_intersect", "fee_cohort", "fee_major",
@@ -46,7 +44,7 @@ def make_figures() -> None:
     variants = list(next(iter(per.values()))["flat"].keys())
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ── Hình 14: recall theo loại câu ──
+    # ── Hình 13: recall theo loại câu ──
     ont_recall = [per[c]["ontology"]["recall"] for c in cats]
     flat_recall = {v: [per[c]["flat"][v]["recall@3"] for c in cats] for v in variants}
     x = np.arange(len(cats))
@@ -62,14 +60,14 @@ def make_figures() -> None:
     ax.set_ylim(0, 1.05)
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=30, ha="right")
-    ax.set_title("Hình 14. Recall theo loại câu hỏi — ontology vs cơ sở dữ liệu phẳng")
+    ax.set_title("Hình 13. Recall theo loại câu hỏi — ontology vs cơ sở dữ liệu phẳng")
     ax.legend(loc="lower left")
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
     fig.savefig(FIGURES_DIR / "benchmark_per_type.png", dpi=150)
     plt.close(fig)
 
-    # ── Hình 15: đường recall@k ──
+    # ── Hình 14: đường recall@k ──
     ks = rep["config"]["ks"]
     fo = rep["overall"]["flat"]
     flat_colors = {"concise": "#dd8452", "denorm": "#55a868"}
@@ -83,7 +81,7 @@ def make_figures() -> None:
     ax.set_ylabel("Recall@k (trung bình theo câu)")
     ax.set_xticks(ks)
     ax.set_ylim(0, 1.05)
-    ax.set_title("Hình 15. Đường recall@k của hệ phẳng so với mốc ontology")
+    ax.set_title("Hình 14. Đường recall@k của hệ phẳng so với mốc ontology")
     ax.legend(loc="lower right")
     ax.grid(alpha=0.3)
     fig.tight_layout()

@@ -42,8 +42,14 @@ TEST_PATH = DATASET_DIR / "test.jsonl"
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 MODEL_DIR = ARTIFACTS_DIR / "models" / "bartpho_tree"
 EVAL_ARTIFACTS_DIR = ARTIFACTS_DIR / "evaluation"
+TRAINING_ARTIFACTS_DIR = ARTIFACTS_DIR / "training"
+# log_history (loss/eval_loss theo bước) train.py lưu sau khi train → Hình 8 đường cong huấn luyện.
+TRAIN_LOG_PATH = TRAINING_ARTIFACTS_DIR / "log_history.json"
 LOG_DIR = PROJECT_ROOT / "logs"
 LOG_FILE = LOG_DIR / "chatbot.log"
+
+# Hình trực quan cho docs/CONCEPT.md (eval: train-curve/per-category/confusion; benchmark: per-type/recall@k).
+FIGURES_DIR = PROJECT_ROOT / "docs" / "figures"
 
 # Web UI
 WEB_DIR = PROJECT_ROOT / "webui"

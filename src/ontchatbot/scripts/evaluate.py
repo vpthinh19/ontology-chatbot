@@ -238,6 +238,7 @@ def evaluate(args: argparse.Namespace) -> int:
 
     buckets: dict[str, _Bucket] = defaultdict(_Bucket)
     mismatches: list[dict] = []
+    act_conf: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))  # gold act → pred act → đếm
 
     for r, pred in zip(rows, preds):
         gold_tree = parse(r["tree"])
@@ -251,6 +252,7 @@ def evaluate(args: argparse.Namespace) -> int:
         b.json_ok += pred.json_ok
         b.strict_ok += pred.strict_ok
         b.act_ok += (pred.tree.act == gold_tree.act)
+        act_conf[gold_tree.act][pred.tree.act] += 1       # ma trận nhầm lẫn act (cho Hình 10)
         if is_query:                             # tree_norm/shape chỉ có nghĩa khi gold là cây
             b.tree_norm += (_tree_canon(pred.tree) == _tree_canon(gold_tree))
             b.shape_ok += (pred.tree.root is not None
@@ -272,7 +274,7 @@ def evaluate(args: argparse.Namespace) -> int:
                 "pred_raw": pred.raw,
             })
 
-    _report(buckets, mismatches, model_dir, args)
+    _report(buckets, mismatches, model_dir, args, act_conf)
     overall = sum(b.e2e_exact for b in buckets.values())
     total = sum(b.n for b in buckets.values())
     return 0 if overall == total else 1
@@ -281,7 +283,7 @@ def evaluate(args: argparse.Namespace) -> int:
 # ── In bảng + lưu báo cáo ────────────────────────────────────────────────────
 
 def _report(buckets: dict[str, _Bucket], mismatches: list[dict], model_dir: str,
-            args: argparse.Namespace) -> None:
+            args: argparse.Namespace, act_conf: dict[str, dict[str, int]] | None = None) -> None:
     hdr = (f"{'query-type':16} {'n':>4} {'json':>5} {'strict':>6} {'act':>5} {'tree':>5} "
            f"{'shape':>6} {'P':>5} {'R':>5} {'F1':>5} {'exact':>6}")
     print("\n" + hdr)
@@ -315,6 +317,7 @@ def _report(buckets: dict[str, _Bucket], mismatches: list[dict], model_dir: str,
         "subtotal_nonquery": _bucket_metrics(nq_tot),
         "overall_micro": _bucket_metrics(all_tot),
         "macro_f1": macro_f1, "macro_exact": macro_ex,
+        "act_confusion": {g: dict(d) for g, d in (act_conf or {}).items()},
     }
     (EVAL_ARTIFACTS_DIR / "eval_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

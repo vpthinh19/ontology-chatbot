@@ -259,13 +259,18 @@ def _report(cats: dict, variants: list[str], details: list[dict],
         report["data_tier"][cat] = {"data_n": c["data_n"], "ontology_field_hit": fh,
                                     "ontology_value_exact": ve, "flat": "N/A"}
 
+    # Chỉ run CANONICAL (model + đủ biến thể) mới ghi đè artifact chính; run sanity/giới-hạn ghi
+    # ra file có hậu tố để KHÔNG clobber kết quả thật (vd `--ontology-source gold` để kiểm harness).
+    canonical = args.ontology_source == "model" and bool(variants)
+    tag = "" if canonical else f"_{args.ontology_source}"
+    rep_path = EVAL_ARTIFACTS_DIR / f"benchmark_report{tag}.json"
+    det_path = EVAL_ARTIFACTS_DIR / f"benchmark_details{tag}.jsonl"
     EVAL_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
-    (EVAL_ARTIFACTS_DIR / "benchmark_report.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    (EVAL_ARTIFACTS_DIR / "benchmark_details.jsonl").write_text(
-        "\n".join(json.dumps(d, ensure_ascii=False) for d in details), encoding="utf-8")
-    print(f"\n[bench] báo cáo → {EVAL_ARTIFACTS_DIR / 'benchmark_report.json'}")
-    print(f"[bench] chi tiết per-query → {EVAL_ARTIFACTS_DIR / 'benchmark_details.jsonl'}")
+    rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    det_path.write_text("\n".join(json.dumps(d, ensure_ascii=False) for d in details) + "\n",
+                        encoding="utf-8")
+    print(f"\n[bench] báo cáo → {rep_path}")
+    print(f"[bench] chi tiết per-query → {det_path}")
 
 
 def main() -> None:

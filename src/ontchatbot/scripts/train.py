@@ -50,6 +50,7 @@ from ..config import (
     MODEL_DIR,
     MODEL_NAME,
     SEED,
+    TRAIN_LOG_PATH,
     TRAIN_PATH,
     VAL_SIZE,
 )
@@ -185,7 +186,13 @@ def train(args: argparse.Namespace) -> None:
     trainer.train()
     trainer.save_model(str(args.output_dir))     # lưu cả model + tokenizer
     tokenizer.save_pretrained(str(args.output_dir))
+    # Lưu log_history (loss/eval_loss theo bước) → Hình 8 đường cong huấn luyện (visualize.py đọc).
+    # Bài học: log từng bị xoá khi tái cấu trúc nên mất đường cong; nay lưu cố định cùng artifact.
+    TRAIN_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TRAIN_LOG_PATH.write_text(
+        json.dumps(trainer.state.log_history, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[train] saved BEST-on-val fine-tuned model → {args.output_dir}")
+    print(f"[train] log_history → {TRAIN_LOG_PATH} (cho Hình 8 training_curve)")
     print(f"[train] model={args.model} epochs={args.epochs} "
           f"batch={args.batch_size}x{args.grad_accum} val_size={args.val_size} bf16=True optim=adamw_8bit")
 
