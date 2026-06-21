@@ -27,12 +27,11 @@ COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra inference --no-dev
 
-# huggingface_hub chỉ cần ở BUILD (bake model từ HF bên dưới). Inference KHÔNG cần transformers:
-# model.py dùng sentencepiece + ctranslate2 TRỰC TIẾP (parity ["<s>"]+EncodeAsPieces+["</s>"] ==
-# AutoTokenizer đã verify) → extra `inference` (fastapi + core ctranslate2/sentencepiece/owlready2)
+# huggingface_hub (dùng để bake model từ HF bên dưới + serve cục bộ tải HF-fallback) đã nằm trong
+# extra `inference` (pyproject) → uv sync ở trên đã cài. Inference KHÔNG cần transformers: model.py
+# dùng sentencepiece + ctranslate2 TRỰC TIẾP (parity ["<s>"]+EncodeAsPieces+["</s>"] == AutoTokenizer
+# đã verify) → extra `inference` (fastapi + huggingface_hub + core ctranslate2/sentencepiece/owlready2)
 # là ĐỦ cho serve runtime; không cài thêm transformers/torch.
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install "huggingface_hub>=0.25"
 
 # Bake model CT2 (int8) từ HF vào ĐÚNG config.CT2_MODEL_DIR (=/app/artifacts/models/bartpho_ct2)
 # → cold-start KHÔNG phụ thuộc mạng, /chat trả lời sau vài giây. Repo PUBLIC không cần token; repo
