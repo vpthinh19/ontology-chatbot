@@ -18,6 +18,7 @@ dependencies = [
 [project.optional-dependencies]
 inference = [
     "fastapi[standard]>=0.137.1",
+    "huggingface_hub>=0.25",
 ]
 train = [
     "accelerate>=1.14.0",
