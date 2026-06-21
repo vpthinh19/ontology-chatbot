@@ -118,3 +118,20 @@ def test_dual_role_label_prefers_individual_at_root(ont):
 def test_real_individual_roots_unaffected(ont):
     assert {n.iri for n in _root(ont, "bảo lưu").nodes} == {"QuyTrinhBaoLuu"}
     assert {n.iri for n in _root(ont, "phòng đào tạo đại học").nodes} == {"PhongDaoTaoDaiHoc"}
+
+
+# ── Lưới an toàn: gốc generic HOÀ ≥2 cá thể đồng-điểm → vague (chủ-thể nhập nhằng) ──
+
+def test_ambiguous_root_token_is_vague(ont):
+    # "học phần" trơ trọi khớp ĐỦ-token ≥2 cá thể (QuyTrinhDangKyHocPhan, QuyTrinhRutMonHoc,
+    # DieuKienHocLai, OutputCoTenTrongDanhSachLop) → HOÀ ở gốc → vague, KHÔNG gom union hổ lốn.
+    r = _root(ont, "học phần")
+    assert r.vague and not r.nodes
+
+
+def test_full_subject_root_resolves_despite_shared_token(ont):
+    # Gốc ĐẦY ĐỦ "đăng ký học phần" có 1 cá thể chứa-trọn-chữ thắng tuyệt đối → KHÔNG hoà →
+    # resolve đúng (lưới chỉ bắt khi model lỡ truncate, không hại gốc đúng). Mọi alias tương tự.
+    for lbl in ("đăng ký học phần", "đăng ký môn", "đăng ký tín chỉ", "đkmh"):
+        r = _root(ont, lbl)
+        assert not r.vague and {n.iri for n in r.nodes} == {"QuyTrinhDangKyHocPhan"}, lbl

@@ -187,13 +187,19 @@ class Ontology:
         - class/property exact mà cá thể không exact → vague (namespace mismatch).
         - class/property cao (≥90) hơn cá thể một margin → vague.
         - cá thể đủ chắc (≥80: exact/đủ-token/chuỗi-con) → ok; BỎ "trùng-một-phần" thấp ở gốc.
+        - **LƯỚI AN TOÀN (gốc nhập nhằng):** cá thể đủ chắc NHƯNG ≥2 cá thể HOÀ điểm cao
+          nhất ⇒ vague thay vì gom union hổ lốn. Ví dụ model rút gốc còn token chung
+          "học phần" → trúng 4 cá thể đồng điểm. Hợp lệ vì theo thiết kế MỘT cây = MỘT chủ
+          thể: union chỉ xảy ra ở tầng anh-em (children), nên HOÀ ở GỐC luôn là ca thoái
+          hoá (chủ thể mơ hồ) — không ca hợp-lệ nào bị hại. Gốc đúng (tên quy trình đầy đủ)
+          luôn có 1 cá thể chứa-trọn-chữ thắng tuyệt đối nên không hoà.
         """
         q = normalize_for_match(label)
         if not q:
             return ("miss", [])
         i_score, iris = self._score_individuals(q)
         if i_score >= 100.0:
-            return ("ok", iris)
+            return self._guard_ambiguous_root(iris)
         s = max(self._best_label_score(q, self._class_labels.values()),
                 self._best_label_score(q, self._obj_labels.values()),
                 self._best_label_score(q, self._data_labels.values()))
@@ -202,8 +208,14 @@ class Ontology:
         if s >= 90.0 and s >= i_score + _ROOT_MARGIN:
             return ("vague", [])
         if i_score >= 80.0:
-            return ("ok", iris)
+            return self._guard_ambiguous_root(iris)
         return ("miss", [])
+
+    @staticmethod
+    def _guard_ambiguous_root(iris: list[str]) -> tuple[str, list[str]]:
+        """Gốc khớp đúng 1 cá thể → ``ok``; ≥2 cá thể HOÀ điểm cao nhất → ``vague`` (lưới
+        an toàn chủ-thể-nhập-nhằng, xem :meth:`_root_resolve`)."""
+        return ("ok", iris) if len(iris) == 1 else ("vague", [])
 
     def _score_individuals(self, q: str) -> tuple[float, list[str]]:
         """Điểm cá thể tốt nhất + danh sách IRI đạt điểm đó (q đã chuẩn hoá)."""
