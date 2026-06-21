@@ -23,15 +23,11 @@ train = [
     "accelerate>=1.14.0",
     "bitsandbytes>=0.49.2",
     "datasets>=5.0.0",
+    "flagembedding>=1.4.0",
     "matplotlib>=3.11.0",
+    "scikit-learn>=1.9.0",
     "torch>=2.12.1",
     "transformers>=5.12.1",
-]
-# Phase 8 benchmark (module baseline/, KHÔNG vào deploy): hệ phẳng = BGE-M3 hybrid + reranker.
-# Chạy CÙNG train (dùng chung torch/transformers cu130): --extra train --extra benchmark.
-benchmark = [
-    "FlagEmbedding>=1.3.4",
-    "scikit-learn>=1.5.0",
 ]
 
 [[tool.uv.index]]
