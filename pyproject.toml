@@ -54,6 +54,4 @@ conflicts = [
 packages = ["src/ontchatbot"]
 
 [tool.pytest.ini_options]
-# Chỉ thu thập bộ test chính thức; custom_test/ là script khám phá (chạy code nặng khi
-# import: tải/convert model, cần extra train) — không phải unit test.
 testpaths = ["tests"]
