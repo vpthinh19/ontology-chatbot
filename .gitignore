@@ -14,5 +14,6 @@ models/
 logs/
 docs/*
 !docs/CONCEPT.md
+!docs/figures/
 
 /dev/

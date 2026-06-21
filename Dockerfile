@@ -1,21 +1,19 @@
 # syntax=docker/dockerfile:1.7
 #
-# Multi-stage build for the ontchatbot FastAPI server.
+# Ảnh INFERENCE (CPU) cho ontchatbot: BARTpho CTranslate2 int8 + duyệt ontology. KHÔNG cần torch.
+# (Viết lại từ kiến trúc CŨ PhoBERT-NER/ONNX → BARTpho/CT2, 2026-06-20.)
 #
-#   builder  → resolve + install deps + project with `uv sync --extra inference`
-#   runtime  → slim image with only the venv + source needed at request time
+#   builder → uv sync (core + extra inference) + transformers (tokenizer CT2) + bake model CT2 từ HF
+#   runtime → slim: chỉ venv + src + resources + webui + model CT2 đã bake; chạy non-root.
 
 
 # ---------- builder ----------
-FROM python:3.14-slim AS builder
+FROM python:3.12-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
-
 WORKDIR /app
 
-# UV_LINK_MODE=copy keeps the resulting venv portable across layers (default
-# is hardlink which breaks when the cache lives on a different volume than
-# the destination during a multi-stage COPY).
+# UV_LINK_MODE=copy giữ venv portable khi COPY qua stage; tải-python tắt (dùng python của image).
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
@@ -29,75 +27,55 @@ COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra inference --no-dev
 
+# huggingface_hub chỉ cần ở BUILD (bake model từ HF bên dưới). Inference KHÔNG cần transformers:
+# model.py dùng sentencepiece + ctranslate2 TRỰC TIẾP (parity ["<s>"]+EncodeAsPieces+["</s>"] ==
+# AutoTokenizer đã verify) → extra `inference` (fastapi + core ctranslate2/sentencepiece/owlready2)
+# là ĐỦ cho serve runtime; không cài thêm transformers/torch.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv pip install "huggingface_hub>=0.25"
+
+# Bake model CT2 (int8) từ HF vào ĐÚNG config.CT2_MODEL_DIR (=/app/artifacts/models/bartpho_ct2)
+# → cold-start KHÔNG phụ thuộc mạng, /chat trả lời sau vài giây. Repo PUBLIC không cần token; repo
+# riêng tư truyền --build-arg HF_TOKEN=... (lưu ý: build-arg lộ trong history, repo riêng nên dùng secret mount).
+ARG HF_REPO=vpthinh19/bartpho-ontology
+ARG HF_REVISION=main
+ARG HF_TOKEN=
+RUN HF_TOKEN="${HF_TOKEN}" /app/.venv/bin/python -c "import os; from huggingface_hub import snapshot_download; \
+snapshot_download(repo_id='${HF_REPO}', revision='${HF_REVISION}', \
+local_dir='/app/artifacts/models/bartpho_ct2', token=(os.environ.get('HF_TOKEN') or None))"
+
+
 # ---------- runtime ----------
-FROM python:3.14-slim AS runtime
+FROM python:3.12-slim AS runtime
 
-# uid 1000 matches the typical desktop-Linux user id so bind-mounted volumes
-# from the host (e.g. ./logs) round-trip ownership cleanly.
+# uid 1000 khớp user desktop-Linux để volume bind-mount (vd ./logs) round-trip quyền sạch.
 RUN useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
-
 WORKDIR /app
 
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
+COPY --from=builder --chown=ontchatbot:ontchatbot /app/artifacts /app/artifacts
 COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
-# Logging path used by ``configure_logging`` — writable by the app user.
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
-# Pre-create the HF Hub cache so the first cold-start ``from_pretrained`` does
-# not have to mkdir it lazily under the unprivileged user. ``useradd
-# --create-home`` builds /home/ontchatbot but leaves the .cache subtree
-# absent, so without this, huggingface_hub dies with PermissionError before
-# the first network request — even though it would have written into a
-# directory the user technically owns. Kept as defensive fallback even
-# though the baked model below removes the runtime HF Hub dependency.
-RUN mkdir -p /home/ontchatbot/.cache/huggingface && \
-    chown -R ontchatbot:ontchatbot /home/ontchatbot/.cache
-
-# Bake the fine-tuned NER model into the image so cold-start does not depend
-# on HF Hub availability and the first /chat reply lands in seconds instead
-# of minutes. Pinning the revision via ARG keeps this layer cacheable across
-# code edits — bump it with --build-arg MODEL_REVISION=<sha> after pushing a
-# new quantized checkpoint. NerModel.__init__ checks if MODEL_DIR is a
-# local directory first, so the baked files are used without any HF Hub
-# round-trip at request time.
-ARG MODEL_REVISION=main
-RUN /app/.venv/bin/python -c "from huggingface_hub import snapshot_download; \
-snapshot_download(repo_id='vpthinh19/phobert-base-v2', revision='${MODEL_REVISION}', \
-local_dir='/app/artifacts/models/phobert_ner_ft', \
-allow_patterns=['*.json', '*.txt', '*.codes', 'model.onnx*'])" \
-    && chown -R ontchatbot:ontchatbot /app/artifacts
-
-# PATH brings the `serve` console script (declared in [project.scripts]) into
-# scope. HF_HOME redirects model downloads under the unprivileged home so the
-# first cold-start cache is persisted across container restarts when /home is
-# mounted as a volume.
-#
-# Memory tuning for low-RAM hosts:
-#   MALLOC_ARENA_MAX=2 — glibc by default reserves 8×NCPU malloc arenas;
-#                       each holds memory across free() calls and fragments
-#                       heavily on multi-threaded apps. Capping at 2 drops
-#                       RSS by ~50-100 MB on typical FastAPI + ORT workloads
-#                       with no measurable latency impact at our 1-req-at-a-
-#                       time traffic profile.
-#   HF_HUB_DISABLE_TELEMETRY=1 — kills the background HEAD request HF Hub
-#                       fires on import; tiny RAM win but also one less
-#                       network dependency at cold-start.
+# PATH đưa venv lên đầu (uvicorn, python của venv). HF_HUB_OFFLINE=1 vì model đã bake → không
+# gọi mạng lúc chạy. MALLOC_ARENA_MAX=2 giảm RSS ~50-100MB ở tải 1-request-tại-một-thời-điểm.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    HF_HOME=/home/ontchatbot/.cache/huggingface \
-    MALLOC_ARENA_MAX=2 \
-    HF_HUB_DISABLE_TELEMETRY=1
+    HF_HUB_OFFLINE=1 \
+    HF_HUB_DISABLE_TELEMETRY=1 \
+    MALLOC_ARENA_MAX=2
 
 USER ontchatbot
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=300s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD python -c "import urllib.request, sys; \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
 
-CMD ["serve", "--host", "0.0.0.0", "--port", "8000"]
+# serve.py không khai [project.scripts] nên gọi module trực tiếp (uvicorn nằm trong fastapi[standard]).
+CMD ["python", "-m", "ontchatbot.scripts.serve", "--host", "0.0.0.0", "--port", "8000"]
