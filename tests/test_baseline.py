@@ -10,7 +10,7 @@ import json
 
 import pytest
 
-from ontchatbot.baseline.docstore import CONCISE, DENORM, build_corpus
+from ontchatbot.baseline.docstore import build_corpus
 from ontchatbot.baseline.gold import answer_spec
 from ontchatbot.config import TEST_PATH
 from ontchatbot.ontology import _ALIAS_PROP
@@ -70,14 +70,14 @@ def test_gold_fee_cohort_multiple(ont, rows):
 # ── docstore (kho phiếu phẳng) ───────────────────────────────────────────────
 
 def test_corpus_ids_are_iris(ont):
-    c = build_corpus(ont, CONCISE)
+    c = build_corpus(ont)
     assert len(c) == 54
     assert set(c) == {i.name for i in ont._owl.individuals()}
 
 
-def test_concise_is_faithful(ont):
-    """Mọi giá trị data của cá thể PHẢI xuất hiện nguyên văn trong phiếu concise (không bịa/sót)."""
-    c = build_corpus(ont, CONCISE)
+def test_flat_doc_is_faithful(ont):
+    """Mọi giá trị data của cá thể PHẢI xuất hiện nguyên văn trong phiếu phẳng (không bịa/sót)."""
+    c = build_corpus(ont)
     for ind in ont._owl.individuals():
         doc = c[ind.name]
         for p in ont._data_props:
@@ -89,19 +89,10 @@ def test_concise_is_faithful(ont):
 
 def test_fee_doc_has_all_facets(ont):
     """Phiếu fee chứa đủ alias (mã khoá + tên/alias ngành) → truy vấn GIAO công bằng cho phẳng."""
-    c = build_corpus(ont, CONCISE)
+    c = build_corpus(ont)
     fees = [i for i in ont._owl.individuals() if i.name.startswith("Phi")]
     assert fees
     for ind in fees:
         doc = c[ind.name]
         for a in (getattr(ind, _ALIAS_PROP, []) or []):
             assert str(a) in doc, f"{ind.name} thiếu facet {a!r}"
-
-
-def test_denorm_adds_incoming_context(ont):
-    """denorm nhồi quan-hệ ĐẾN: phiếu Phòng CTSV chứa ngữ cảnh đa-hop (quy trình trỏ tới nó)."""
-    concise = build_corpus(ont, CONCISE)
-    denorm = build_corpus(ont, DENORM)
-    assert "PhongCTSV" in denorm
-    assert len(denorm["PhongCTSV"]) > len(concise["PhongCTSV"])
-    assert "Được nhắc tới trong" in denorm["PhongCTSV"]

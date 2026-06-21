@@ -374,24 +374,35 @@ như email hay số điện thoại, đáp án là một giá trị đơn nên e
 Trường `act` là một bài toán phân loại bốn lớp thông thường, được đánh giá bằng precision, recall, F1 theo từng lớp kèm ma trận
 nhầm lẫn.
 
+Trên tập kiểm tra gồm 1.648 câu, mô hình đạt exact-match accuracy lấy trung bình theo loại (macro) là 0,955 và macro-F1 là
+0,946. Mọi câu đều sinh JSON hợp lệ và đúng hợp đồng cây. Tách theo nhóm, riêng các câu truy vấn đạt F1 0,959, exact-match
+0,965 và độ chính xác phân loại `act` 0,994; các câu này gần như không bị sai ý định. Các loại khó nhất là những câu không
+hỏi về một cá thể cụ thể, và thấp hơn theo đúng độ khó tự nhiên của chúng: câu ngoài tri thức đạt F1 0,874, câu có gốc rơi
+vào lớp hay quan hệ trần (đáng lẽ trả lời "không hiểu") đạt 0,906, còn câu mơ hồ chỉ đạt 0,77 do ranh giới giữa mơ hồ và
+truy vấn vốn nhập nhằng khi câu hỏi thiếu chủ thể cụ thể. So với lần huấn luyện
+trước, các số của hai loại khó nhất đã cải thiện rõ (mơ hồ 0,70 lên 0,77, ngoài tri thức 0,82 lên 0,874) nhờ bổ sung dữ liệu.
+
 Các kết quả định lượng được trình bày dưới đây. Mọi hình ở mục này do `scripts/visualize.py` sinh từ `eval_report.json`
 (và log huấn luyện), nên được dựng lại sau mỗi lần huấn luyện và đánh giá.
 
 ![Hình 8](figures/training_curve.png)
 
-**Hình 8.** Đường cong huấn luyện: train loss và validation loss theo bước. Hình này do `train.py` lưu lại `log_history`
-sau khi huấn luyện rồi `visualize.py` dựng; nó được sinh lại ở lần huấn luyện kế tiếp.
+**Hình 8.** Đường cong huấn luyện: train loss và validation loss theo bước. Validation loss giảm từ 0,063 xuống mức tốt
+nhất 0,013 quanh epoch 8–9, nơi mô hình được chốt theo cơ chế giữ-bản-tốt-nhất-trên-tập-validation. Hình này do `train.py`
+lưu lại `log_history` sau khi huấn luyện rồi `visualize.py` dựng; nó được sinh lại ở mỗi lần huấn luyện.
 
 ![Hình 9](figures/eval_per_category.png)
 
 **Hình 9.** F1 và exact-match theo từng loại câu hỏi (đánh giá đầu-cuối). Các loại tra cứu một bước, phép giao và đi nhiều
-bước đạt gần như tuyệt đối; hai loại không-truy-vấn là câu mơ hồ (F1 0,70) và câu ngoài tri thức (0,82) thấp hơn, phản ánh
+bước đạt gần như tuyệt đối; hai loại không-truy-vấn là câu mơ hồ (F1 0,77) và câu ngoài tri thức (0,874) thấp hơn, phản ánh
 độ khó tự nhiên của việc phân biệt ý định khi câu hỏi thiếu chủ thể cụ thể, chứ không phải khuyết tật của khâu duyệt.
 
 ![Hình 10](figures/intent_confusion.png)
 
 **Hình 10.** Ma trận nhầm lẫn của trường `act` (tô màu theo tỉ lệ hàng). Nhầm lẫn tập trung ở câu mơ hồ bị đoán thành truy
-vấn (26 trên 78) và câu ngoài tri thức bị đoán thành truy vấn (13 trên 103); lớp chào hỏi và truy vấn gần như không nhầm.
+vấn (22 trên 78) và câu ngoài tri thức bị đoán thành truy vấn (8 trên 103); lớp chào hỏi và truy vấn gần như không nhầm
+(truy vấn đúng 1.442 trên 1.451). Ranh giới có xu hướng dịch về phía truy vấn, đúng hướng đề tài là ưu tiên trả lời được câu
+thủ tục diễn đạt khẩu ngữ, nhưng F1 của câu mơ hồ vẫn tăng so với lần trước nhờ bù lại ở các câu mơ hồ thực sự thiếu chủ thể.
 
 Hai độ đo BLEU và ROUGE, vốn đo độ tương đồng văn bản, không phù hợp làm thước đo chính ở đây, bởi cây JSON không phải văn xuôi và
 độ giống chữ không bảo đảm duyệt ra đáp án đúng.
@@ -468,7 +479,7 @@ flowchart LR
 Cả hai hệ nhận cùng câu hỏi gốc; hệ phẳng không được dùng cây của mô hình nhằm bảo đảm tính khách quan. Đáp án chuẩn gồm ba dạng
 tuỳ câu hỏi: một tập cá thể, hoặc đúng thuộc tính được hỏi, hoặc một giá trị. Trường hợp tìm đúng tài liệu nhưng sai thuộc tính
 vẫn bị tính là sai; đây là một bất lợi cấu trúc của baseline thuần truy hồi và được nêu rõ khi báo cáo. Bộ dữ liệu đánh giá là tập
-kiểm tra gồm 1.445 câu, tách ra từ tổng số 5.898 câu, trong đó tập kiểm tra dùng cách diễn đạt khác với tập huấn luyện nhằm chống
+kiểm tra gồm 1.648 câu, tách ra từ tổng số 6.788 câu, trong đó tập kiểm tra dùng cách diễn đạt khác với tập huấn luyện nhằm chống
 hiện tượng học vẹt mẫu câu. Mỗi câu kèm đáp án chuẩn được kiểm chứng tự động bằng thuật toán duyệt. Việc chấm dùng cùng bộ chỉ số
 precision, recall và F1 như Mục 5, không chỉ đếm số thực thể trùng đáp án, nhằm phạt cả phần trả thừa lẫn phần bỏ sót. Vì hệ phẳng
 trả danh sách xếp hạng nên các chỉ số được tính ở dạng precision@k và recall@k, kèm đường recall@k để nêu rõ hạn chế phải xác định
@@ -476,94 +487,115 @@ trước k.
 
 ### 6.4. Các ví dụ so sánh kèm hình dạng dữ liệu
 
-Mỗi ví dụ trình bày ba khối dữ liệu — đáp án chuẩn, đầu ra ontology, đầu ra phẳng — để thấy rõ mỗi hệ *nhận gì và xuất gì*. Ba ví dụ
-dưới đây chọn theo ba tình huống đại diện: ontology thắng ở câu đi nhiều bước, ontology thắng ở câu phép giao, và hai hệ hoà ở câu tra
-cứu đơn. *(Lưu ý: các khối dữ liệu dưới đây là minh hoạ; sau khi đánh giá lại, chúng sẽ được thay bằng đầu ra THẬT trích từ
-`artifacts/evaluation/benchmark_details.jsonl` — mỗi dòng đã có sẵn `text`, `gold`, `ont_pred`, `flat_concise_top5`, `flat_denorm_top5`.)*
+Mỗi ví dụ trình bày ba khối dữ liệu — câu hỏi, đáp án chuẩn (`gold`), đầu ra ontology (`ont_pred`) và năm tài liệu phẳng xếp hạng
+cao nhất (`flat_top5`) — để thấy rõ mỗi hệ *nhận gì và xuất gì*. Cả ba đều trích nguyên văn từ `artifacts/evaluation/benchmark_details.jsonl`,
+là chính các bản ghi của lần đánh giá hiện tại, không phải số liệu giả định. Ba ví dụ chọn theo ba tình huống đại diện: ontology
+thắng ở câu đi nhiều bước, ontology thắng ở câu liệt kê đúng cả tập, và hai hệ hoà ở câu tra cứu trực tiếp.
 
-Ví dụ 1 — **đi nhiều bước**, email của phòng xử lý thủ tục bảo lưu. Ontology thắng.
+Ví dụ 1 — **đi nhiều bước**, phòng xử lý thủ tục bảo lưu nằm ở đâu. Ontology thắng.
 ```json
-gold     : { "type": "value", "prop": "email", "answer": "ctsv@ntu.edu.vn" }
-ontology : { "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ] }
-flat     : { "ranked": ["QuyTrinhBaoLuu", "DonXinBaoLuu"] }
+text     : "bảo lưu phải tới phòng xử lý ở đâu"
+gold     : ["PhongCTSV"]
+ont_pred : ["PhongCTSV"]
+flat_top5: ["QuyTrinhBaoLuu", "OutputDuocBaoLuu", "PhongKHTC", "PhongCTSV", "VanPhongTruong"]
 ```
-Email nằm ở tài liệu Phòng Công tác Sinh viên, nối với bảo lưu qua quan hệ đã bị hệ phẳng loại bỏ — nên hệ phẳng xếp cao tài liệu
-quy trình (chứa từ khoá câu hỏi) nhưng tài liệu đó không chứa email.
+Đáp án là Phòng Công tác Sinh viên, nối với bảo lưu qua quan hệ "được xử lý bởi" mà hệ phẳng đã loại bỏ. Hệ phẳng vì thế xếp cao
+ba tài liệu chứa từ khoá câu hỏi (quy trình bảo lưu, kết quả được bảo lưu, một phòng khác) và chỉ đẩy `PhongCTSV` xuống hạng tư —
+nằm ngoài top-3, nên bị tính là trượt ở recall@3. Ontology đi đúng một bước theo quan hệ và trả thẳng phòng đúng.
 
-Ví dụ 2 — **phép giao**, học phí khoá K65 ngành Công nghệ thông tin. Ontology thắng.
+Ví dụ 2 — **liệt kê đúng cả tập**, các điều kiện được bảo lưu. Ontology thắng.
 ```json
-gold     : { "type": "set", "answer": ["PhiK65620k"] }
-ontology : { "answer": ["PhiK65620k"] }
-flat     : { "ranked": ["PhiK65620k", "PhiK65550k", "PhiK67620k", "PhiK66620k"] }
+text     : "Điều kiện để được bảo lưu kết quả học tập là gì?"
+gold     : ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"]
+ont_pred : ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"]
+flat_top5: ["QuyTrinhBaoLuu", "OutputDuocBaoLuu", "DieuKienHocBongDiemHocTap", "OutputNhanHocBong", "OutputDuocXetTotNghiep"]
 ```
-Hệ phẳng không thực hiện được phép giao: mọi tài liệu chứa K65 *hoặc* Công nghệ thông tin đều xếp cao, trong đó PhiK65550k là ngành
-khác cùng khoá và PhiK67620k là khoá khác cùng ngành — đúng-một-mức chỉ ontology lọc được.
+Đáp án là một tập gồm bốn điều kiện. Ontology đi theo quan hệ "yêu cầu điều kiện" và trả về *trọn vẹn cả bốn*. Hệ phẳng không có
+khái niệm gom tập: nó xếp cao tài liệu quy trình bảo lưu cùng vài điều kiện của thủ tục khác, nhưng không tài liệu bảo lưu nào lọt
+top-5 — vì mỗi điều kiện là một tài liệu riêng và không tài liệu nào một mình "giống" câu hỏi đủ mạnh.
 
-Ví dụ 3 — **tra cứu đơn**, email của Phòng Công tác Sinh viên. Hai hệ hoà.
+Ví dụ 3 — **tra cứu trực tiếp**, trưởng phòng Công tác Sinh viên là ai. Hai hệ hoà.
 ```json
-gold     : { "type": "value", "prop": "email", "answer": "ctsv@ntu.edu.vn" }
-ontology : { "values": [ { "prop": "email", "values": ["ctsv@ntu.edu.vn"] } ] }
-flat     : { "ranked": ["PhongCTSV"] }
+text     : "Cho em hỏi ai là trưởng phòng CTSV ạ?"
+gold     : ["PhongCTSV"]
+ont_pred : ["PhongCTSV"]
+flat_top5: ["PhongCTSV", "PhongDaoTaoDaiHoc", "DonGiaHanThoiGianNopHocPhi", "PhongKHTC", "VanPhongTruong"]
 ```
-Câu một bước, một thuộc tính rõ ràng: hệ phẳng bắt đúng tài liệu ngay. Báo cáo nêu thẳng trường hợp hoà này để bảo đảm khách quan.
-(Hạn chế còn lại của hệ phẳng — không tách được *thuộc tính* trong tài liệu, nên dễ trả nhầm số điện thoại khi hỏi email — được phân
-tích ở tầng đáp-án-cuối tại Mục 6.6.)
+Câu một bước, một thuộc tính của chính cá thể được hỏi: thông tin trưởng phòng nằm ngay trong tài liệu `PhongCTSV`, nên hệ phẳng
+bắt đúng tài liệu ở hạng nhất. Báo cáo nêu thẳng trường hợp hoà này để bảo đảm khách quan. (Hạn chế còn lại của hệ phẳng — chỉ
+trả về *tài liệu* chứ không tách ra *thuộc tính*, nên dễ trả nhầm số điện thoại khi hỏi email — được phân tích ở tầng đáp-án-cuối
+tại Mục 6.6.)
 
-### 6.5. Cấu hình và giả thuyết
+### 6.5. Giả thuyết kiểm chứng
 
-Phép so dùng hai cấu hình kho phẳng để kiểm tra độ vững của kết luận. *Phẳng cơ bản* (concise): mỗi tài liệu chỉ chứa thông tin của
-chính cá thể — tương ứng một kho tài liệu thực tế. *Phẳng gộp sẵn* (denorm): mỗi tài liệu được nhồi thêm thông tin của các cá thể lân
-cận theo cả quan hệ đi ra lẫn đến, tạo thành một *chỉ mục được vật-chất-hoá từ ontology* — baseline khó vượt nhất ở câu nhiều bước
-nhưng không còn là tài liệu tự nhiên, nên xem là cận trên của khâu truy hồi. Cả hai dùng chung hệ truy hồi và rerank ở Mục 6.2.
+Phép so dùng một kho phẳng duy nhất — kho tài liệu thực tế mô tả ở Mục 6.1, mỗi cá thể một tài liệu và đã loại bỏ quan hệ. Việc
+chỉ giữ một kho phản ánh đúng kịch bản triển khai một hệ truy hồi văn bản thông thường, đồng thời cho phép câu chuyện so sánh gọn
+và trung thực, không cần một biến thể nhồi sẵn quan hệ vốn không còn là tài liệu tự nhiên.
 
-**Giả thuyết kiểm chứng:** hai hệ *tương đương* ở câu tra cứu đơn, còn ontology *cao hơn* ở các câu có cấu trúc — phép giao, liệt kê
-tập, đi nhiều bước và chọn đúng thuộc tính. Mục 6.6 đối chiếu giả thuyết này với số đo thật.
+**Giả thuyết kiểm chứng:** hai hệ *tương đương* ở câu tra cứu trực tiếp, còn ontology *cao hơn* ở các câu có cấu trúc — đi theo
+quan hệ, liệt kê đúng cả tập, đi nhiều bước, đọc nhiều thuộc tính và lọc theo ràng buộc. Mục 6.6 đối chiếu giả thuyết này với số
+đo thật.
 
 ### 6.6. Kết quả
 
-Phép so chạy trên tập kiểm tra, lấy 1.205 câu truy-hồi-được (phần còn lại là chào hỏi, ngoài tri thức và câu mơ hồ — hệ phẳng không
-có khái niệm từ chối nên không đưa vào so). Đáp án chuẩn được suy từ cây-vàng-đã-qua-oracle theo ngữ nghĩa ontology và lưu lại để
-đối chiếu tại `artifacts/evaluation/gold.jsonl`; cấu hình và phiên bản thư viện ghi trong `artifacts/evaluation/benchmark_report.json`
+Phép so chạy trên tập kiểm tra, lấy 1.347 câu truy-hồi-được trong tổng 1.648 câu (phần còn lại là chào hỏi, ngoài tri thức và câu
+mơ hồ — hệ phẳng không có khái niệm từ chối nên không đưa vào so). Đáp án chuẩn được suy ra trực tiếp từ ontology theo đúng ngữ
+nghĩa quan hệ, độc lập với mô hình, và đã được bộ kiểm chứng tự động xác nhận; tập đáp án này được lưu lại để đối chiếu tại
+`artifacts/evaluation/gold.jsonl`, còn cấu hình và phiên bản thư viện ghi trong `artifacts/evaluation/benchmark_report.json`
 để bảo đảm tái lập. Kết quả được tách làm hai tầng để tránh so lệch bản chất.
 
 **Tầng truy hồi (tìm đúng tập tài liệu, cùng đơn vị IRI).** Ontology trả về một tập nên được chấm precision, recall, F1 và tỷ lệ
 trùng-khít-tập (exact-set) theo lối micro. Hệ phẳng trả danh sách xếp hạng nên được chấm recall@k và full@k (tỷ lệ câu mà toàn bộ
 đáp án nằm trong top-k), lấy trung bình theo câu. So "đúng toàn bộ" một cách tương xứng là đối chiếu exact-set của ontology với
-full@k của hệ phẳng.
+full@k của hệ phẳng. Số tổng thể:
 
-| Cấu hình | recall | recall@3 | recall@5 | đúng-toàn-bộ |
+| Hệ | recall | recall@3 | recall@5 | đúng-toàn-bộ |
 |---|---|---|---|---|
 | Ontology (đầu-cuối, mô hình thật) | 0,96 | — | — | 0,97 (exact-set) |
-| Phẳng concise | — | 0,76 | 0,85 | 0,74 (full@3) |
-| Phẳng denorm | — | 0,87 | 0,92 | 0,84 (full@3) |
+| Phẳng | 0,51 (@1) | 0,75 | 0,84 | 0,73 (full@3) |
+
+Tách theo năm nhóm năng lực truy vấn — xếp từ dễ đến khó — thấy rõ ontology không thắng đều, mà thắng đúng ở chỗ có cấu trúc:
+
+| Nhóm năng lực | n | Ontology F1 | Ontology exact-set | Phẳng recall@1 | Phẳng recall@3 |
+|---|---|---|---|---|---|
+| Tra cứu trực tiếp | 346 | 0,99 | 0,98 | 0,98 | 1,00 |
+| Đi một quan hệ | 334 | 0,93 | 0,96 | 0,11 | 0,47 |
+| Đi nhiều bước | 308 | 1,00 | 1,00 | 0,19 | 0,72 |
+| Nhiều thuộc tính | 134 | 0,98 | 0,97 | 0,50 | 0,56 |
+| Lọc theo ràng buộc | 225 | 0,98 | 0,96 | 0,80 | 0,93 |
+| **Toàn bộ** | **1.347** | **0,97** | **0,97** | **0,51** | **0,75** |
 
 ![Hình 13](figures/benchmark_per_type.png)
 
-**Hình 13.** Recall theo từng loại câu hỏi — *đọc theo trục đứng, so cặp cột ontology với phẳng*. Hai hệ tương đương ở câu tra cứu đơn
-(tự mô tả, thuộc tính, học phí theo khoá/ngành), nhưng hệ phẳng tụt rõ ở câu có cấu trúc: đi một quan hệ (0,47), nhiều thuộc tính
-(0,56) và đi nhiều bước (0,72) so với ontology luôn trên 0,90 — đây là bằng chứng trực tiếp cho luận điểm trung tâm.
+**Hình 13.** Recall theo nhóm năng lực — *đọc theo trục đứng, so cặp cột ontology với phẳng* (cột ontology là recall, cột phẳng là
+recall@3). Hai hệ tương đương ở nhóm tra cứu trực tiếp, nhưng hệ phẳng tụt rõ ở các nhóm có cấu trúc: đi một quan hệ (0,47), nhiều
+thuộc tính (0,56) và đi nhiều bước (0,72), trong khi ontology giữ recall quanh 0,90 đến 1,00 ở mọi nhóm — đây là bằng chứng trực
+tiếp cho luận điểm trung tâm.
 
 ![Hình 14](figures/recall_at_k.png)
 
-**Hình 14.** Đường recall@k của hệ phẳng. Recall tăng khi nới k nhưng vẫn nằm dưới mốc ontology kể cả ở k=5, đồng thời phơi hạn
-chế phải xác định trước k: k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
+**Hình 14.** Đường recall@k của hệ phẳng (0,51 ở k=1 lên 0,84 ở k=5). Recall tăng khi nới k nhưng vẫn nằm dưới mốc recall 0,96 của
+ontology kể cả ở k=5, đồng thời phơi hạn chế phải xác định trước k: k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
 
-Quan sát chính: (1) ở câu tra cứu đơn một bước, hai hệ tương đương, thậm chí hệ phẳng nhỉnh hơn đôi chút ở vài loại (tự mô tả,
-thuộc tính, học phí mỗi tín chỉ) vì mô hình sinh cây thỉnh thoảng lệch trong khi truy hồi trên 54 tài liệu dễ bắt trúng phiếu hiển
-nhiên — nên kết luận đúng là ontology thắng *tổng thể và đặc biệt ở câu có cấu trúc*, không phải thắng mọi loại; (2) ở câu đi quan
-hệ và đi nhiều bước, hệ phẳng tụt mạnh vì thông tin đáp án nằm ở tài liệu khác với tài liệu chứa từ khoá câu hỏi; (3) cấu hình
-gộp sẵn (denorm) thu hẹp khoảng cách ở các câu đi nhiều bước, chứng tỏ điểm yếu nằm ở *cách lưu trữ phẳng* chứ không chỉ ở khâu
-hiểu câu, nhưng vẫn không đạt mức ontology và còn gây nhiễu ở câu gộp tập (học phí gộp tụt còn 0,34) do nhồi thêm hàng xóm làm các
-phiếu học phí giống nhau.
+Quan sát chính. **Một**, ở nhóm tra cứu trực tiếp hai hệ tương đương, thậm chí hệ phẳng còn nhỉnh hơn đôi chút (recall@3 1,00 so với
+recall ontology 0,98) vì đáp án nằm ngay trong tài liệu chứa từ khoá câu hỏi, mà kho chỉ có 54 tài liệu nên truy hồi gần như luôn
+bắt trúng, trong khi ontology phải qua thêm bước sinh cây của mô hình nên thỉnh thoảng lệch nhẹ — vì vậy kết luận đúng là ontology
+thắng *tổng thể và đặc biệt ở câu có cấu trúc*, không phải thắng mọi loại. **Hai**, khoảng cách lớn nhất lộ ra khi đọc cột
+recall@1: ở nhóm tra cứu trực tiếp hệ phẳng đạt 0,98, nhưng ở nhóm đi một quan hệ chỉ còn 0,11 và đi nhiều bước 0,19. Lý do là khi
+đáp án *rời khỏi* tài liệu chứa từ khoá — sang một phòng ban, một tập điều kiện, hay qua nhiều bước quan hệ — thì tài liệu phẳng
+không còn manh mối nào để xếp đúng nó lên đầu. **Ba**, hệ phẳng cũng không gom được một *tập* đáp án nằm rải ở nhiều tài liệu (như
+bốn điều kiện bảo lưu ở Ví dụ 2), nên ngay cả khi nới k, full@k vẫn khó đạt trọn vẹn.
 
-**Tầng đáp-án-cuối (chỉ câu hỏi thuộc tính).** Sau khi tìm đúng tài liệu còn phải chọn đúng thuộc tính và giá trị. Ontology đạt
-95–98% cho cả ba việc tìm đúng chủ thể, đúng thuộc tính và đúng giá trị. Hệ phẳng thuần truy hồi không trích thuộc tính nên không
-áp dụng được ở tầng này; đây là khác biệt bản chất chứ không phải một con số thấp, và được ghi rõ là không-áp-dụng thay vì trộn
-vào tầng truy hồi.
+**Tầng đáp-án-cuối (chỉ câu hỏi thuộc tính).** Sau khi tìm đúng tài liệu còn phải chọn đúng thuộc tính và giá trị. Ontology đạt từ
+0,90 (nhóm lọc theo ràng buộc) đến 1,00 (đi nhiều bước) cho cả ba việc tìm đúng chủ thể, đúng thuộc tính và đúng giá trị, phần lớn
+trên 0,95. Hệ phẳng thuần truy hồi không trích thuộc tính nên không áp dụng được ở tầng này; đây là khác biệt bản chất chứ không
+phải một con số thấp, và được ghi rõ là không-áp-dụng thay vì trộn vào tầng truy hồi.
 
-Lưu ý khi đọc số: full@3 bất lợi về mặt cơ học cho câu có tập đáp án lớn hơn ba (ví dụ học phí gộp có bốn đến năm mức), nên với các
-câu này phải đọc kèm recall@k và full@5; chỉ số ontology chấm theo micro còn hệ phẳng chấm trung bình theo câu, nên so "đúng toàn
-bộ" dùng cặp exact-set với full@k. Toàn bộ kết quả nhất quán với giả thuyết nêu ở Mục 6.5.
+Lưu ý khi đọc số: full@3 bất lợi về mặt cơ học cho câu có tập đáp án lớn hơn ba (ví dụ liệt kê bốn điều kiện hay học phí gộp nhiều
+mức), nên với các câu này phải đọc kèm recall@5; chỉ số ontology chấm theo micro còn hệ phẳng chấm trung bình theo câu, nên so
+"đúng toàn bộ" dùng cặp exact-set với full@k. Cũng cần đặt kết quả ontology trong đúng bối cảnh: các số gần trần phần lớn do kho chỉ
+gồm 54 tài liệu và đáp án đã được oracle kiểm chứng, phần sai còn lại chủ yếu đến từ bước sinh cây của mô hình (khoảng 3–6%), chứ
+không nên đọc thành "ontology hoàn hảo". Toàn bộ kết quả nhất quán với giả thuyết nêu ở Mục 6.5.
 
 ---
 
