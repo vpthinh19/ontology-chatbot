@@ -81,15 +81,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - id: model
-        name: Resolve HF Hub model revision
+        name: Resolve HF Hub model revision (CT2 model bartpho-ontology)
         run: |
-          REVISION=$(curl -sf https://huggingface.co/api/models/vpthinh19/phobert-base-v2 | jq -r .sha)
+          REVISION=$(curl -sf https://huggingface.co/api/models/vpthinh19/bartpho-ontology | jq -r .sha)
           if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
-            echo "::error::Failed to resolve HF Hub revision"
+            echo "::error::Failed to resolve HF Hub revision (đã upload model CT2 lên HF chưa?)"
             exit 1
           fi
           echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
-          echo "::notice::Baking model revision $REVISION"
+          echo "::notice::Baking CT2 model revision $REVISION"
 
       - name: Build image (load for scan)
         uses: docker/build-push-action@v7
@@ -98,7 +98,8 @@ jobs:
           load: true
           tags: ${{ env.IMAGE }}:${{ env.VERSION }}
           build-args: |
-            MODEL_REVISION=${{ steps.model.outputs.revision }}
+            HF_REPO=vpthinh19/bartpho-ontology
+            HF_REVISION=${{ steps.model.outputs.revision }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -126,7 +127,7 @@ jobs:
           generate_release_notes: true
           body: |
             Docker image: `${{ env.IMAGE }}:${{ env.VERSION }}`
-            Baked model revision: [`${{ steps.model.outputs.revision }}`](https://huggingface.co/vpthinh19/phobert-base-v2/commit/${{ steps.model.outputs.revision }})
+            Baked CT2 model revision: [`${{ steps.model.outputs.revision }}`](https://huggingface.co/vpthinh19/bartpho-ontology/commit/${{ steps.model.outputs.revision }})
 
             Pull:
             ```
