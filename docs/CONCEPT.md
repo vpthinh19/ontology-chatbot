@@ -270,9 +270,9 @@ thể gốc rồi biến đổi mỗi khi đi qua một nút con, tuỳ vai trò
 
 | Nút con | Phép biến đổi tập hiện tại | Kết quả |
 |---|---|---|
-| quan hệ | đi theo quan hệ từ mỗi cá thể trong tập | tập mới gồm các cá thể đích, đi tiếp được |
-| thuộc tính | đọc giá trị thuộc tính trên tập hiện tại | trả về giá trị, kết thúc nhánh |
-| cá thể (không phải gốc) | giữ lại cá thể có tên khớp nhãn | tập thu hẹp, đi tiếp được |
+| quan hệ (object property) | đi theo quan hệ từ mỗi cá thể trong tập | tập mới gồm các cá thể đích, đi tiếp được |
+| thuộc tính (data property) | đọc giá trị thuộc tính trên tập hiện tại | trả về giá trị, kết thúc nhánh |
+| cá thể (individual, không phải gốc) | giữ lại cá thể có tên khớp nhãn | tập thu hẹp, đi tiếp được |
 
 Cách bố trí nút quyết định phép hợp thành. Hai nút **lồng nhau** theo chuỗi cha–con mang nghĩa *và*: tầng con thao tác trên kết quả
 của tầng cha, nên nhiều nút lọc lồng nhau cho **phép giao** các điều kiện. Hai nút **anh em** cùng một cha là hai nhánh độc lập: mỗi
