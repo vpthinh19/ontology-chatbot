@@ -15,6 +15,5 @@ logs/
 docs/*
 !docs/CONCEPT.md
 !docs/figures/
-uv.lock
 
 /dev/
