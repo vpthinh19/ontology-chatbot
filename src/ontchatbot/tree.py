@@ -1,10 +1,10 @@
-"""Hợp đồng CÂY JSON do model sinh ra (DESIGN.md §3) — data contract model↔ontology.
+"""Hợp đồng CÂY JSON do model sinh ra — data contract model↔ontology.
 
 BARTpho sinh một dict ``{"act", "entities"}``; module này **chỉ** kiểm tra hợp lệ và dựng
-thành cây Python (`Tree`) cho `ontology.traverse`. Không có luật hiểu-câu ở đây (§9) —
-chỉ validate cấu trúc và **loại node ma** (label rỗng / loại sai) để hệ không gãy (§8).
+thành cây Python (`Tree`) cho `ontology.traverse`. Không có luật hiểu-câu ở đây —
+chỉ validate cấu trúc và **loại node ma** (label rỗng / loại sai) để hệ không gãy.
 
-Hình dạng cây (mục §3)::
+Hình dạng cây::
 
     { "act": "query",
       "entities": [ {"label": "học phí", "type": "individual", "children": [
@@ -23,14 +23,14 @@ from dataclasses import dataclass
 
 from .preprocess import normalize_tone
 
-# act hợp lệ (DESIGN.md §4).
+# act hợp lệ.
 QUERY = "query"
 GREETING = "greeting"
 OOD = "ood"
 VAGUE = "vague"
 _ACTS = frozenset({QUERY, GREETING, OOD, VAGUE})
 
-# loại node hợp lệ (thuật ngữ OWL, DESIGN.md §3).
+# loại node hợp lệ (thuật ngữ OWL).
 INDIVIDUAL = "individual"
 OBJECT = "object"
 DATA = "data"
@@ -77,10 +77,10 @@ def parse(obj: object) -> Tree:
 
 
 class StrictParseError(ValueError):
-    """Cây không hợp lệ ở chế độ NGHIÊM (oracle validate dataset Phase 4).
+    """Cây không hợp lệ ở chế độ NGHIÊM (oracle validate dataset).
 
     Khác :func:`parse` (khoan dung cho production — bỏ lặng node hỏng): bản nghiêm
-    *từ chối* mọi bất thường để cây dataset không lọt lỗi cấu trúc (REVIEW §C5). Thông
+    *từ chối* mọi bất thường để cây dataset không lọt lỗi cấu trúc. Thông
     điệp ghi ``path`` (vd ``entities[0].children[1]``) để soạn dataset dễ sửa.
     """
 
@@ -88,7 +88,7 @@ class StrictParseError(ValueError):
 def parse_strict(obj: object) -> Tree:
     """Như :func:`parse` nhưng RAISE :class:`StrictParseError` thay vì khoan dung.
 
-    Bắt đúng các lỗi REVIEW §C5 mà ``parse`` nuốt lặng:
+    Bắt đúng các lỗi mà ``parse`` nuốt lặng:
     * node không phải dict / ``label`` rỗng / ``type`` sai / ``children`` không phải list;
     * node ``data`` có con (data là lá §3);
     * ``query`` không có hoặc có **>1** chủ thể (một truy vấn = một cây §3);
@@ -144,7 +144,7 @@ def _node_strict(raw: object, path: str) -> TreeNode:
 # SINH nhãn chuẩn hơn. NGOẠI LỆ: "entities" khi pad → `<unk>` (enti vỡ) nên đổi tên thành "items"
 # (1 token sạch `▁items`). Thêm `normalize_tone` (nắn dấu kiểu-mới: thủy→thuỷ) → round-trip 97%→100%.
 # Nội bộ + ontology + oracle + DATASET VẪN "entities"/individual/object/data; chỉ chuỗi MODEL thấy/sinh
-# là dạng pad + "items" + dấu-kiểu-mới. (kiểm thực nghiệm 2026-06-19 — xem PROGRESS.md.)
+# là dạng pad + "items" + dấu-kiểu-mới.
 _QUOTE_PAD = re.compile(r'"')
 _QUOTE_UNPAD = re.compile(r'\s*"\s*')
 

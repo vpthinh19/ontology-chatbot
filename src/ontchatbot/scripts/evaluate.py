@@ -91,7 +91,7 @@ def _atoms(act: str, res: Result) -> set:
     * greeting/ood → ``("act", act)`` (mỗi loại một câu trả lời riêng, không tra cứu).
     * còn lại: mỗi node terminal → ``("node", iri)``; mỗi giá trị lá data → ``("data", prop, str(v))``
       (gói cả ``prop`` ⇒ sai field = atom khác = SAI); mỗi nhánh không khớp → ``("miss", nhãn)``
-      (phân biệt "không có thông tin về X/Y" và chống empty≡empty ăn điểm — Codex review H4).
+      (phân biệt "không có thông tin về X/Y" và chống empty≡empty ăn điểm).
     """
     if act == VAGUE or res.vague:
         return {("vague",)}
@@ -156,7 +156,7 @@ def _generate(model, tokenizer, texts: list[str], device, num_beams: int, batch_
 @dataclass
 class _Bucket:
     """Thống kê tích luỹ cho một query-type (micro). ``n_query`` = số gold act==query
-    (mẫu số cho tree_norm/shape — hai metric này vô nghĩa với non-query, Codex review M4)."""
+    (mẫu số cho tree_norm/shape — hai metric này vô nghĩa với non-query)."""
     n: int = 0
     n_query: int = 0
     json_ok: int = 0
@@ -177,7 +177,7 @@ class _Bucket:
 def _resolve_model_dir(raw: str) -> str:
     """Trả thư mục có weight để nạp (đường TUYỆT ĐỐI cho local — transformers nhận chắc). Nếu ``raw``
     chưa lưu model cuối (chỉ có ``checkpoint-*``, train chưa xong) → chọn checkpoint bước CAO NHẤT +
-    cảnh báo (Codex review H1). Không phải local model dir → trả nguyên (có thể là HF repo id)."""
+    cảnh báo. Không phải local model dir → trả nguyên (có thể là HF repo id)."""
     p = Path(raw)
     if (p / "config.json").exists():
         return str(p.resolve())
@@ -194,7 +194,7 @@ def _resolve_model_dir(raw: str) -> str:
 
 def _gold_sanity(rows: list[dict], ont: Ontology) -> None:
     """Tripwire chống 'gold drift': gold phải qua parse_strict; gold-query (không phải negative)
-    KHÔNG được ra misses/vague. Chỉ CẢNH BÁO (không chặn eval) — Codex review H3."""
+    KHÔNG được ra misses/vague. Chỉ CẢNH BÁO (không chặn eval)."""
     bad_parse, bad_traverse = [], []
     for r in rows:
         try:
@@ -228,7 +228,7 @@ def evaluate(args: argparse.Namespace) -> int:
     print(f"[eval] model_dir={model_dir} device={device} n={len(rows)} beams={args.num_beams}")
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
     model = AutoModelForSeq2SeqLM.from_pretrained(model_dir, dtype=torch.bfloat16).to(device).eval()
-    gc = model.config                            # log cấu hình generate để soi bẫy mBART (Codex M5)
+    gc = model.config                            # log cấu hình generate để soi bẫy mBART
     print(f"[eval] tokenizer={type(tokenizer).__name__} "
           f"decoder_start={getattr(gc, 'decoder_start_token_id', None)} "
           f"bos={getattr(gc, 'bos_token_id', None)} eos={getattr(gc, 'eos_token_id', None)} "

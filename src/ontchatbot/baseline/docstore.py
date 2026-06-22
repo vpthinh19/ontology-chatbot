@@ -1,14 +1,11 @@
-"""Dựng KHO PHIẾU PHẲNG từ ontology cho baseline truy hồi (Phase 8).
+"""Dựng KHO PHIẾU PHẲNG từ ontology cho baseline truy hồi.
 
 Mỗi cá thể → MỘT phiếu, **id = IRI** (khớp ontology để chấm chung mức IRI). Nội dung là văn
 xuôi tiếng Việt **trung thành tuyệt đối** với fact ontology (sinh chương-trình, không LLM → tái
 lập được, không bịa): chỉ thông tin của CHÍNH cá thể (nhãn + alias + phân loại + giá trị data),
 **loại bỏ mọi quan hệ** — đó chính là điểm yếu cấu trúc mà benchmark phơi ra. Phiếu fee chứa đủ
 **facet** (mã khoá + tên/alias ngành) nên truy vấn lọc-giao có cơ hội công bằng (phẳng thua là do
-thiếu suy luận, không phải lỗi dựng phiếu — Codex review #4).
-
-(Lịch sử: từng có biến thể ``denorm`` nhồi quan-hệ làm cận-trên; đã BỎ 2026-06-21 — chỉ giữ MỘT
-kho phẳng thực-tế để câu chuyện gọn: người đọc chỉ cần "ontology vs phẳng".)
+thiếu suy luận, không phải lỗi dựng phiếu).
 """
 
 from __future__ import annotations

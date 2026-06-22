@@ -3,7 +3,7 @@
     HF_TOKEN=hf_xxx uv run --extra train python -m ontchatbot.scripts.upload_hf \
         [--model-dir artifacts/models/bartpho_ct2] [--repo vpthinh19/bartpho-ontology] [--private]
 
-Mục đích (Phase 7): sau khi train → convert_ct2, đẩy thư mục CT2 lên HF để:
+Mục đích: sau khi train → convert_ct2, đẩy thư mục CT2 lên HF để:
 1. **Inference trực tiếp KHÔNG cần train** — ``model.py`` thiếu CT2 cục bộ sẽ ``snapshot_download``
    từ repo này (``config.FINETUNED_MODEL_NAME``).
 2. **CI/CD** — GitHub Action kéo model này về rồi đóng Docker (``.github/workflows/ci.yml``, job ``release``).

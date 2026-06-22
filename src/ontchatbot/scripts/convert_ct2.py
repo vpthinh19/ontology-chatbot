@@ -1,4 +1,4 @@
-"""Convert fine-tuned BARTpho (HF) → CTranslate2 int8 cho deploy CPU (DESIGN.md, Phase 6).
+"""Convert fine-tuned BARTpho (HF) → CTranslate2 int8 cho deploy CPU.
 
     uv run --extra train python -m ontchatbot.scripts.convert_ct2 \
         [--model-dir artifacts/models/bartpho_tree] [--out artifacts/models/bartpho_ct2]

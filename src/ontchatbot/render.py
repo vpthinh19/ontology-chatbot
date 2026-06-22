@@ -1,4 +1,4 @@
-"""Render: ``act`` + :class:`Result` → câu trả lời tiếng Việt (DESIGN.md §4).
+"""Render: ``act`` + :class:`Result` → câu trả lời tiếng Việt.
 
 Pha cuối của pipeline: xử lý chào hỏi/ngoại lệ và ghép kết quả duyệt thành chuỗi cho UI.
 **Giọng nghiêm túc, cứng, KHÔNG gợi mở** (chatbot học vụ). Không phụ thuộc owlready2 —

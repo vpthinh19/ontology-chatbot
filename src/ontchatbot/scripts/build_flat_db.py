@@ -1,4 +1,4 @@
-"""Vật chất hoá CƠ SỞ DỮ LIỆU PHẲNG từ ontology (đối chứng Phase 8).
+"""Vật chất hoá CƠ SỞ DỮ LIỆU PHẲNG từ ontology (cho đối chứng).
 
     uv run --extra inference python -m ontchatbot.scripts.build_flat_db
 

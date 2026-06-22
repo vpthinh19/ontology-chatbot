@@ -1,4 +1,4 @@
-"""Sinh TẤT CẢ Hình trực quan cho docs/CONCEPT.md (Phase 5 eval + Phase 8 benchmark).
+"""Sinh TẤT CẢ Hình trực quan cho docs/CONCEPT.md (đánh giá mô hình + đối chứng).
 
     uv run --extra train python -m ontchatbot.scripts.visualize
 
@@ -10,7 +10,7 @@ Một lệnh sinh mọi Hình có thể (bỏ qua Hình thiếu nguồn, in cả
   (cần field ``act_confusion`` — evaluate.py phiên mới ghi; report cũ thiếu thì bỏ qua).
 * **Hình 13/14** benchmark — uỷ thác ``baseline.figures`` nếu có ``benchmark_report.json``.
 
-Tách khỏi ``baseline/figures.py`` (benchmark) vì đây là viz cho khâu EVAL (Phase 5). Cả hai ghi
+Tách khỏi ``baseline/figures.py`` (đối chứng) vì đây là viz cho khâu đánh giá mô hình. Cả hai ghi
 vào ``config.FIGURES_DIR`` (= docs/figures/, đã bỏ ignore để CONCEPT.md nhúng được).
 """
 

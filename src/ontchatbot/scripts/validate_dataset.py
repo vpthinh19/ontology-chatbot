@@ -3,7 +3,7 @@
 Hàm :func:`validate_case_strict` được các công cụ dựng dataset trong ``dev/`` gọi để CHỈ giữ lại
 những cặp mà cây duyệt ra đúng đáp án chuẩn. Không thuộc đường chạy/triển khai của hệ thống.
 
-REVIEW §C5/§D: node-match KHÔNG chứng minh cây đúng (cây sai vẫn có thể ra cùng node).
+Lưu ý: node-match KHÔNG chứng minh cây đúng (cây sai vẫn có thể ra cùng node).
 Oracle nghiêm pin **toàn bộ outcome** của một cặp, không chỉ tập node:
 
 * ``parse_strict`` — cây hỏng/nhiều chủ thể/data-có-con → reject (không nuốt lặng như production);
@@ -26,7 +26,7 @@ from dataclasses import dataclass, field
 from ..ontology import DATA, OBJECT, Ontology
 from ..tree import QUERY, StrictParseError, parse_strict
 
-MIN_PROP_SCORE = 80.0      # property/cá thể resolve yếu hơn → reject (REVIEW §A2)
+MIN_PROP_SCORE = 80.0      # property/cá thể resolve yếu hơn → reject
 TIE_MARGIN = 10.0          # property best − nhì < margin (mà best < 100) → nhập nhằng → reject
 
 
@@ -60,7 +60,7 @@ def validate_case_strict(
     """Trả :class:`ValidationReport`; ``ok=False`` kèm lý do từng lỗi (để sửa dataset).
 
     ``expected_trace`` (tuỳ chọn) ghim **đường đi** chứ không chỉ đích — khi đặt, trace
-    thật phải khớp đúng. Đây là vũ khí chống "may mắn cùng node" (REVIEW §C6): hai cây
+    thật phải khớp đúng. Đây là vũ khí chống "may mắn cùng node": hai cây
     khác cấu trúc nhưng cùng denotation sẽ lệch trace ⇒ bị bắt.
     """
     errors: list[str] = []

@@ -1,4 +1,4 @@
-"""Suy ĐÁP ÁN CHUẨN mức-IRI cho benchmark Phase 8 — KHÔNG vòng tròn.
+"""Suy ĐÁP ÁN CHUẨN mức-IRI cho benchmark — KHÔNG vòng tròn.
 
 Mỗi câu trong tập kiểm tra kèm cây đáp án đã qua oracle nghiêm, nhưng không lưu sẵn IRI đáp án.
 Ở đây ta chạy chính cây đó qua :meth:`Ontology.traverse` để vật-chất-hoá đáp án về mức **tập IRI
@@ -6,7 +6,7 @@ tài liệu liên quan** — đơn vị chung để so hệ ontology với hệ 
 
 Vì sao không vòng tròn: cây đáp án đã được oracle độc lập xác nhận đúng *trước* benchmark; traverse
 chỉ đọc fact thô (không suy luận). Đáp án chuẩn được **vật chất hoá ra file** một lần để khâu đánh
-giá đọc tĩnh, không tính-động bằng code đang-bị-đánh-giá (giảm tiếng "nội sinh", Codex review #3).
+giá đọc tĩnh, không tính-động bằng code đang-bị-đánh-giá (giảm tiếng "nội sinh").
 
 Đáp án quy về :class:`AnswerSpec`:
 * ``node`` — truy vấn trả cá thể: ``iris`` = tập IRI node terminal.
@@ -40,7 +40,7 @@ def answer_spec(tree: Tree, ont: Ontology) -> AnswerSpec:
     node_iris = {n.iri for n in res.nodes}
     # Chủ thể của lá data = các IRI trong "before" của bước DATA mà THỰC SỰ có assertion của
     # property đó (KHÔNG lấy nguyên before: `_present_index` coi prop là "present" nếu BẤT KỲ
-    # IRI nào trong current có nó, nên before có thể chứa IRI không mang giá trị — Codex review #2).
+    # IRI nào trong current có nó, nên before có thể chứa IRI không mang giá trị).
     data_subjects: set[str] = set()
     for step in res.trace:
         if step.kind == DATA and step.resolved:

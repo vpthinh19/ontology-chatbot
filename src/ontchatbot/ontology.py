@@ -1,4 +1,4 @@
-"""Ontology: nạp owl + khớp theo type + thuật toán duyệt (DESIGN.md §5).
+"""Ontology: nạp owl + khớp theo type + thuật toán duyệt.
 
 Tầng này **chỉ tra thông tin** trên ontology theo đúng cây model đưa — không suy luận,
 không planner, không liệt kê lớp. Hai việc:
@@ -54,7 +54,7 @@ class DataValue:
 class Step:
     """Một bước resolve trong duyệt — vết (trace) để oracle so **đường đi**, không chỉ đích.
 
-    REVIEW §C5/§D: node-match chỉ chứng minh *denotation* đúng; cây sai vẫn có thể ra
+    Lưu ý: node-match chỉ chứng minh *denotation* đúng; cây sai vẫn có thể ra
     cùng node (vd ``k65>cntt`` vs ``cntt>k65``). Trace ghi tập trước/sau mỗi bước nên
     validator/mutation-test phát hiện được "may mắn cùng node". KHÔNG ảnh hưởng runtime.
     """
@@ -140,7 +140,7 @@ class Ontology:
     def _present_index(self, current: list[str], kind: str) -> dict[str, list[str]]:
         """Chỉ mục nhãn property **CỤC BỘ**: chỉ các property (đúng ``kind``) mà tập
         ``current`` THỰC SỰ có assertion. Khớp con đi trong phạm vi này → trung thành
-        concept "đi theo cây cục bộ", không để property toàn cục 'cướp' match (REVIEW scope)."""
+        concept "đi theo cây cục bộ", không để property toàn cục 'cướp' match."""
         base = self._obj_labels if kind == OBJECT else self._data_labels
         present: dict[str, list[str]] = {}
         for iri in current:
@@ -155,7 +155,7 @@ class Ontology:
         """Khớp nhãn con trong property CỤC BỘ của ``current`` + áp **sàn** ``_PROP_FLOOR``.
 
         Sàn chặn 'best-of-one': node chỉ có 1 property, nhãn rác trùng-một-phần (<80) sẽ
-        KHÔNG bị kéo vào → trả miss đúng thay vì node sai (REVIEW scope §3)."""
+        KHÔNG bị kéo vào → trả miss đúng thay vì node sai."""
         prop, score, runner = self._score_property(label, self._present_index(current, kind))
         if prop is None or score < _PROP_FLOOR:
             return None, score, runner

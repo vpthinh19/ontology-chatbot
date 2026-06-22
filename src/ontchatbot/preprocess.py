@@ -1,6 +1,6 @@
 """Tiền xử lý text TRƯỚC khi đưa vào model — pha "preprocess" của pipeline.
 
-Nguyên tắc (DESIGN.md §2/§9): module này phải **"ngu"** — chỉ làm sạch ký tự, KHÔNG
+Nguyên tắc: module này phải **"ngu"** — chỉ làm sạch ký tự, KHÔNG
 trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho model. Không
 word-segment (BARTpho nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
 
@@ -125,7 +125,7 @@ def normalize_tone(text: str) -> str:
     ``<unk>``; ``thuỷ`` (dấu trên ``y``) → ``▁thu``+``ỷ``. Hàm chỉ DỜI dấu trong 3 cụm oa/oe/uy
     (chỗ hai kiểu khác nhau); ``của``/``mùa``/``tuần`` (cụm ua/uâ…) giữ NGUYÊN. Idempotent với dạng
     đã-mới. Khớp ontology vốn bỏ hết dấu (``normalize_for_match``) nên KHÔNG đổi kết quả khớp; đây
-    thuần là để text vào tokenizer round-trip (97%→100%, kiểm 2026-06-19). Cũng làm hệ bền với việc
+    thuần là để text vào tokenizer round-trip tốt hơn. Cũng làm hệ bền với việc
     người dùng gõ lẫn hai kiểu."""
     def _move(m: re.Match) -> str:
         v1, tone, v2 = m.group(1), m.group(2), m.group(3)

@@ -1,10 +1,10 @@
-"""Model: BARTpho-syllable seq2seq sinh CÂY JSON từ text (DESIGN.md §3).
+"""Model: BARTpho-syllable seq2seq sinh CÂY JSON từ text.
 
 Inference qua **CTranslate2** (int8, CPU — ràng buộc deploy) + **sentencepiece TRỰC TIẾP**
 (KHÔNG cần transformers/torch — deploy chỉ core deps + fastapi). BARTpho là mBART (encoder-decoder),
 đi theo pattern :class:`ctranslate2.Translator` token→token (KHÔNG dùng HF ``generate``):
 
-    src = ["<s>"] + sp.EncodeAsPieces(text) + ["</s>"]   # khớp ĐÚNG transformers (đã verify parity)
+    src = ["<s>"] + sp.EncodeAsPieces(text) + ["</s>"]   # khớp đúng tokenizer transformers
     out = translator.translate_batch([src])[0].hypotheses[0]
     json_str = sp.DecodePieces([t for t in out if t not in SPECIAL])
 

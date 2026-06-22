@@ -1,4 +1,4 @@
-"""Hệ phẳng = truy hồi THUẦN (Phase 8): BGE-M3 hybrid (dense+sparse) → BGE-reranker-v2-m3.
+"""Hệ phẳng = truy hồi THUẦN: BGE-M3 hybrid (dense+sparse) → BGE-reranker-v2-m3.
 
 Trả về danh sách IRI XẾP HẠNG cho mỗi câu hỏi. KHÔNG trích thuộc tính, KHÔNG chọn field,
 KHÔNG giao tập — đúng bản chất "search engine" (ghi nhận trung thực ở báo cáo). Đây là baseline

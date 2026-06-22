@@ -1,10 +1,10 @@
-"""Train BARTpho-syllable (seq2seq): text → cây JSON (DESIGN.md §3, Phase 5).
+"""Train BARTpho-syllable (seq2seq): text → cây JSON.
 
     uv run --extra train python -m ontchatbot.scripts.train [--model ...] [--epochs ...]
 
 Học cặp (câu → cây JSON) ở ``resources/datasets/{train,test}.jsonl`` (mỗi dòng có ``text``
 + ``tree``). Source = ``preprocess.clean(text)`` — **CÙNG hàm** pipeline gọi lúc infer (tránh
-lệch phân phối train↔infer, GIAI_THUAT §4). Target = ``tree.to_model_json`` (đổi ``entities``→``items``
+lệch phân phối train↔infer). Target = ``tree.to_model_json`` (đổi ``entities``→``items``
 + **space-pad** quanh mọi `"`): tokenizer BARTpho tokenize chữ DÍNH dấu `"` rất tệ (nhãn tiếng Việt
 vỡ vụn, "individual"→"al"); pad làm nó tokenize tự nhiên như pretrain; ``model.from_model_json`` đảo
 ngược lúc infer để ``tree.parse`` đọc lại được.

@@ -1,11 +1,11 @@
-"""Benchmark Phase 8 — ontology (duyệt cấu trúc) vs PHẲNG (truy hồi BGE) — 2 TẦNG metric.
+"""Benchmark — ontology (duyệt cấu trúc) vs PHẲNG (truy hồi BGE) — 2 TẦNG metric.
 
     uv run --extra train python -m ontchatbot.baseline.benchmark \
         [--ontology-source model|gold] [--limit N]
     uv run --extra inference python -m ontchatbot.baseline.benchmark --reaggregate
 
 Phân loại theo **NHÓM NĂNG LỰC** (:mod:`.groups`) hợp đề tài quy trình, KHÔNG theo miền học phí.
-Chỉ MỘT kho phẳng (denorm đã bỏ 2026-06-21) → người đọc chỉ thấy "ontology vs phẳng".
+Chỉ MỘT kho phẳng → người đọc chỉ thấy "ontology vs phẳng".
 
 **Tầng 1 — TRUY HỒI (cùng đơn vị: tập IRI):**
 * Ontology trả ĐÚNG TẬP → precision/recall/F1 (micro) + exact-set.
@@ -42,7 +42,7 @@ _FLAT_KEYS = tuple(f"{m}@{k}" for k in _KS for m in ("recall", "precision", "ful
 
 
 def _versions() -> dict:
-    """Phiên bản package để audit/tái lập (Codex review #8) — đọc metadata, không import."""
+    """Phiên bản package để audit/tái lập — đọc metadata, không import."""
     import importlib.metadata as md
     out = {}
     for pkg in ("torch", "transformers", "FlagEmbedding", "scikit-learn", "ctranslate2"):
@@ -301,7 +301,7 @@ def _report(cats: dict, details, args, config: dict) -> None:
 
 
 def main() -> None:
-    p = argparse.ArgumentParser(description="Benchmark Phase 8: ontology vs phẳng (2 tầng metric)")
+    p = argparse.ArgumentParser(description="Benchmark: ontology vs phẳng (2 tầng metric)")
     p.add_argument("--ontology-source", choices=("model", "gold"), default="model")
     p.add_argument("--model-dir", default=None)
     p.add_argument("--num-beams", type=int, default=4)

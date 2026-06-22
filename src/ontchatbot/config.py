@@ -19,8 +19,8 @@ RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 # Resources
 ONTOLOGY_DIR = RESOURCES / "ontology"
 # Ontology hệ thống = MỘT file tự-chứa (8 lớp/7 obj/10 data/54 cá thể + nhãn/alias =
-# chìa khoá khớp). Ưu tiên ontology_v9.owx (OWL/XML, nguồn Protégé — tên CHỐT bởi người
-# dùng 2026-06-20); fallback Ontology_AcademicProcedure.owl (RDF/XML, bản gộp). owlready2
+# chìa khoá khớp). Ưu tiên ontology_v9.owx (OWL/XML, nguồn Protégé); fallback
+# Ontology_AcademicProcedure.owl (RDF/XML, bản gộp). owlready2
 # nạp cả hai như nhau (đã xác minh: cùng 8 lớp/54 cá thể/7 obj/10 data).
 # Provenance cách dựng nhãn/alias: dev/ontology_build/.
 ONTOLOGY_PATH = (
@@ -54,10 +54,8 @@ FIGURES_DIR = PROJECT_ROOT / "docs" / "figures"
 # Web UI
 WEB_DIR = PROJECT_ROOT / "webui"
 
-# Model — BARTpho-syllable seq2seq (text → cây JSON). Train cục bộ (GPU) phiên sau;
-# serve nạp model CTranslate2 cục bộ nếu có, không thì snapshot_download từ HF repo.
-# (Đổi từ ViT5 → bartpho-syllable 2026-06-18: benchmark tương đương trên dataset chuẩn,
-#  tác giả VinAI nổi tiếng — cùng nhóm PhoBERT.) BARTpho là mBART (encoder-decoder),
+# Model — BARTpho-syllable seq2seq (text → cây JSON). Serve nạp model CTranslate2 cục bộ nếu có,
+# không thì snapshot_download từ HF repo. BARTpho là mBART (encoder-decoder),
 #  KHÁC T5: inference qua ctranslate2.Translator (xem model.py), KHÔNG dùng generate().
 MODEL_NAME = "vinai/bartpho-syllable"
 FINETUNED_MODEL_NAME = "vpthinh19/bartpho-ontology"    # repo HF cho bartpho fine-tuned

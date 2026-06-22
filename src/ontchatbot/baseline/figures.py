@@ -1,4 +1,4 @@
-"""Sinh Hình kết quả benchmark cho docs/CONCEPT.md (Phase 8).
+"""Sinh Hình kết quả benchmark cho docs/CONCEPT.md.
 
     uv run --extra train python -m ontchatbot.baseline.figures
 
