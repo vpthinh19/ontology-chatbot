@@ -224,7 +224,7 @@ def evaluate(args: argparse.Namespace) -> int:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[eval] model_dir={model_dir} device={device} n={len(rows)} beams={args.num_beams}")
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir).to(device).eval()
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir, dtype=torch.bfloat16).to(device).eval()
     gc = model.config                            # log cấu hình generate để soi bẫy mBART (Codex M5)
     print(f"[eval] tokenizer={type(tokenizer).__name__} "
           f"decoder_start={getattr(gc, 'decoder_start_token_id', None)} "
