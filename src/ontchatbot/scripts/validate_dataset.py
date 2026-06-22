@@ -1,6 +1,7 @@
-"""Oracle NGHIÊM — validate cặp ``(text, tree)`` trước khi đổ công làm dataset (Phase 4).
+"""Oracle NGHIÊM — validate cặp ``(text, tree)`` khi sinh dataset (công cụ thời sinh-dữ-liệu).
 
-    uv run --extra inference python -m ontchatbot.scripts.validate_dataset
+Hàm :func:`validate_case_strict` được các công cụ dựng dataset trong ``dev/`` gọi để CHỈ giữ lại
+những cặp mà cây duyệt ra đúng đáp án chuẩn. Không thuộc đường chạy/triển khai của hệ thống.
 
 REVIEW §C5/§D: node-match KHÔNG chứng minh cây đúng (cây sai vẫn có thể ra cùng node).
 Oracle nghiêm pin **toàn bộ outcome** của một cặp, không chỉ tập node:
@@ -20,15 +21,10 @@ Oracle nghiêm pin **toàn bộ outcome** của một cặp, không chỉ tập 
 
 from __future__ import annotations
 
-import json
-import sys
 from dataclasses import dataclass, field
 
-from ..config import RESOURCES
 from ..ontology import DATA, OBJECT, Ontology
 from ..tree import QUERY, StrictParseError, parse_strict
-
-CASES = RESOURCES / "e2e" / "cases.jsonl"
 
 MIN_PROP_SCORE = 80.0      # property/cá thể resolve yếu hơn → reject (REVIEW §A2)
 TIE_MARGIN = 10.0          # property best − nhì < margin (mà best < 100) → nhập nhằng → reject
@@ -140,10 +136,8 @@ def _check_trace(trace, min_prop_score: float, tie_margin: float) -> list[str]:
     return errs
 
 
-# ── Nạp case + CLI tự-kiểm cases.jsonl ───────────────────────────────────────
-
 def case_kwargs(row: dict) -> dict:
-    """Một dòng cases.jsonl → kwargs cho :func:`validate_case_strict`."""
+    """Một bản ghi (catalog hoặc case) có ``tree`` + ``expected*`` → kwargs cho :func:`validate_case_strict`."""
     return dict(
         expected_act=row["tree"]["act"],
         expected_nodes=tuple(row.get("expected", [])),
@@ -151,29 +145,3 @@ def case_kwargs(row: dict) -> dict:
         expected_vague=bool(row.get("expected_vague", False)),
         expected_misses=tuple(row.get("expected_misses", [])),
     )
-
-
-def load_cases() -> list[dict]:
-    return [json.loads(l) for l in CASES.read_text(encoding="utf-8").splitlines() if l.strip()]
-
-
-def main() -> None:
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
-    ont = Ontology()
-    rows = load_cases()
-    failed: list[str] = []
-    for r in rows:
-        rep = validate_case_strict(r["text"], r["tree"], ontology=ont, **case_kwargs(r))
-        if not rep.ok:
-            failed.append(f"  [{r['category']}] {r['text']!r}\n      " + "\n      ".join(rep.errors))
-    n = len(rows)
-    print(f"[validate_dataset] strict-oracle: {n - len(failed)}/{n} PASS")
-    if failed:
-        print("\nFAIL:")
-        print("\n".join(failed))
-    sys.exit(1 if failed else 0)
-
-
-if __name__ == "__main__":
-    main()

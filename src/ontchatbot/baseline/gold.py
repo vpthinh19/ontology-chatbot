@@ -1,12 +1,12 @@
-"""Suy GOLD mức-IRI cho benchmark Phase 8 — KHÔNG vòng tròn.
+"""Suy ĐÁP ÁN CHUẨN mức-IRI cho benchmark Phase 8 — KHÔNG vòng tròn.
 
-Test set chỉ có **cây vàng** (đã qua oracle nghiêm `validate_dataset`), không lưu sẵn IRI đáp
-án. Ở đây ta chạy chính cây vàng đó qua :meth:`Ontology.traverse` để vật-chất-hoá đáp án về
-mức **tập IRI tài liệu liên quan** — đơn vị chung để so hệ ontology với hệ phẳng (id phiếu = IRI).
+Mỗi câu trong tập kiểm tra kèm cây đáp án đã qua oracle nghiêm, nhưng không lưu sẵn IRI đáp án.
+Ở đây ta chạy chính cây đó qua :meth:`Ontology.traverse` để vật-chất-hoá đáp án về mức **tập IRI
+tài liệu liên quan** — đơn vị chung để so hệ ontology với hệ phẳng (mã phiếu = IRI cá thể).
 
-Vì sao không vòng tròn: cây vàng đã được oracle độc lập xác nhận đúng *trước* benchmark; traverse
-chỉ đọc fact thô (không suy luận). Gold được **materialize ra file** (`gold.jsonl`) một lần để eval
-đọc tĩnh, không tính-động bằng code đang-bị-đánh-giá (giảm tiếng "nội sinh", Codex review #3).
+Vì sao không vòng tròn: cây đáp án đã được oracle độc lập xác nhận đúng *trước* benchmark; traverse
+chỉ đọc fact thô (không suy luận). Đáp án chuẩn được **vật chất hoá ra file** một lần để khâu đánh
+giá đọc tĩnh, không tính-động bằng code đang-bị-đánh-giá (giảm tiếng "nội sinh", Codex review #3).
 
 Đáp án quy về :class:`AnswerSpec`:
 * ``node`` — truy vấn trả cá thể: ``iris`` = tập IRI node terminal.

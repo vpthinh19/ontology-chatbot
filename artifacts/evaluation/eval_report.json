@@ -2,85 +2,20 @@
   "model_dir": "D:\\dev\\test\\artifacts\\models\\bartpho_tree",
   "num_beams": 4,
   "per_type": {
-    "data_leaf": {
-      "n": 199,
-      "n_query": 199,
+    "filter": {
+      "n": 225,
+      "n_query": 225,
       "json_valid": 1.0,
       "strict_ok": 1.0,
       "act_acc": 1.0,
-      "tree_norm": 0.7336683417085427,
-      "shape_acc": 0.9547738693467337,
-      "precision": 0.9547738693467337,
-      "recall": 0.9547738693467337,
-      "f1": 0.9547738693467337,
-      "exact_set": 0.9547738693467337
+      "tree_norm": 0.88,
+      "shape_acc": 0.9822222222222222,
+      "precision": 0.9749216300940439,
+      "recall": 0.9779874213836478,
+      "f1": 0.9764521193092622,
+      "exact_set": 0.9688888888888889
     },
-    "fee_cohort": {
-      "n": 30,
-      "n_query": 30,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 1.0,
-      "tree_norm": 0.8666666666666667,
-      "shape_acc": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "exact_set": 1.0
-    },
-    "fee_data": {
-      "n": 51,
-      "n_query": 51,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 1.0,
-      "tree_norm": 0.9215686274509803,
-      "shape_acc": 1.0,
-      "precision": 0.9803921568627451,
-      "recall": 0.9803921568627451,
-      "f1": 0.9803921568627451,
-      "exact_set": 0.9803921568627451
-    },
-    "fee_intersect": {
-      "n": 22,
-      "n_query": 22,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 1.0,
-      "tree_norm": 0.9090909090909091,
-      "shape_acc": 0.9545454545454546,
-      "precision": 0.875,
-      "recall": 0.9545454545454546,
-      "f1": 0.9130434782608695,
-      "exact_set": 0.9090909090909091
-    },
-    "fee_major": {
-      "n": 108,
-      "n_query": 108,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 1.0,
-      "tree_norm": 0.8796296296296297,
-      "shape_acc": 0.9722222222222222,
-      "precision": 0.9652173913043478,
-      "recall": 0.9568965517241379,
-      "f1": 0.961038961038961,
-      "exact_set": 0.9629629629629629
-    },
-    "fee_union": {
-      "n": 14,
-      "n_query": 14,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 1.0,
-      "tree_norm": 0.7142857142857143,
-      "shape_acc": 1.0,
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "exact_set": 1.0
-    },
-    "forward_object": {
+    "forward": {
       "n": 642,
       "n_query": 642,
       "json_valid": 1.0,
@@ -106,7 +41,20 @@
       "f1": 1.0,
       "exact_set": 1.0
     },
-    "multi_field": {
+    "lookup": {
+      "n": 444,
+      "n_query": 444,
+      "json_valid": 1.0,
+      "strict_ok": 1.0,
+      "act_acc": 0.9977477477477478,
+      "tree_norm": 0.7432432432432432,
+      "shape_acc": 0.9617117117117117,
+      "precision": 0.9419642857142857,
+      "recall": 0.9504504504504504,
+      "f1": 0.9461883408071748,
+      "exact_set": 0.9504504504504504
+    },
+    "multifield": {
       "n": 134,
       "n_query": 134,
       "json_valid": 1.0,
@@ -119,7 +67,7 @@
       "f1": 0.970873786407767,
       "exact_set": 0.9104477611940298
     },
-    "multi_hop": {
+    "multihop": {
       "n": 308,
       "n_query": 308,
       "json_valid": 1.0,
@@ -170,19 +118,6 @@
       "recall": 0.9029126213592233,
       "f1": 0.9029126213592235,
       "exact_set": 0.9029126213592233
-    },
-    "self_desc": {
-      "n": 245,
-      "n_query": 245,
-      "json_valid": 1.0,
-      "strict_ok": 1.0,
-      "act_acc": 0.9959183673469387,
-      "tree_norm": 0.7510204081632653,
-      "shape_acc": 0.9673469387755103,
-      "precision": 0.9317269076305221,
-      "recall": 0.9469387755102041,
-      "f1": 0.9392712550607287,
-      "exact_set": 0.9469387755102041
     },
     "vague": {
       "n": 68,
@@ -237,8 +172,8 @@
     "f1": 0.9535945226321796,
     "exact_set": 0.9559686888454012
   },
-  "macro_f1": 0.9588442553682223,
-  "macro_exact": 0.9567895835380277,
+  "macro_f1": 0.9641469387617099,
+  "macro_exact": 0.9561949084750033,
   "act_confusion": {
     "greeting": {
       "greeting": 16

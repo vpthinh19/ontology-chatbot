@@ -1,4 +1,4 @@
-"""Đánh giá BARTpho tree-model 2 MỨC (DESIGN.md §7, Phase 5).
+"""Đánh giá BARTpho tree-model ở 2 MỨC.
 
     uv run --extra train python -m ontchatbot.scripts.evaluate \
         [--model-dir artifacts/models/bartpho_tree] [--limit N] [--num-beams 4]
@@ -11,21 +11,23 @@ nhau nhưng ``traverse`` ra node SAI. Nên tách:
   ``parse`` khoan dung "vá" lỗi rồi che đi); ``act`` đúng (``act_acc``); và cây khớp gold sau khi
   chuẩn hoá nhãn + **bất biến thứ tự anh-em** (``tree_norm``, chỉ tính trên gold-query); ``shape``
   = đúng cấu trúc kể cả nhãn sai (chẩn đoán, chỉ trên gold-query).
-* **Mức 2 — đầu-cuối:** ``text → model → cây → traverse`` so với gold = ``traverse(gold_tree)``.
-  Quy đáp án về tập **answer atoms**: ``("node", iri)`` cho node, ``("data", prop, value)`` cho lá
-  data ("đúng phiếu sai field = SAI"), ``("miss", nhãn)`` cho nhánh không khớp (phân biệt "không có
-  thông tin về X" với "về Y" — chống empty≡empty ăn điểm), ``("vague",)`` / ``("act", x)`` cho mơ
-  hồ/chào/ood. Báo Precision / Recall / F1 (micro) + exact-set per query-type, kèm subtotal
-  query / non-query (đừng trộn vì non-query chỉ 1 atom intent) + macro-trung-bình-theo-type.
+* **Mức 2 — đầu-cuối:** ``text → model → cây → traverse`` so với đáp-án-chuẩn = ``traverse(gold_tree)``.
+  Quy đáp án về tập **đơn vị đáp án** (answer atom — đơn vị nhỏ nhất để so theo TẬP, cho điểm phần):
+  ``("node", iri)`` cho mỗi cá thể, ``("data", prop, value)`` cho lá data ("đúng phiếu sai field =
+  SAI"), ``("miss", nhãn)`` cho nhánh không khớp (phân biệt "không có thông tin về X" với "về Y"),
+  ``("vague",)`` / ``("act", x)`` cho mơ hồ/chào/ood. Báo Precision / Recall / F1 (micro) + tỷ lệ
+  trùng-khít-tập **theo 5 NHÓM NĂNG LỰC** (``capabilities.group_of``: tra-cứu / đi-một-quan-hệ /
+  đi-nhiều-bước / nhiều-thuộc-tính / lọc — KHÔNG theo miền học phí), macro trung bình trên 5 nhóm;
+  các loại phi-truy-vấn (vague/ood/greeting/kiểm-âm) báo riêng, không tính vào macro.
 
 ⚠️ HẠN CHẾ ĐÃ BIẾT (báo cáo trung thực): atom data là ``(prop, value)`` KHÔNG kèm subject IRI vì
 ``Result.DataValue`` không lưu chủ thể — nếu hai cá thể khác nhau có cùng (field, value) thì model
 trả sai chủ thể vẫn được tính đúng (hiếm: giá trị thường phân biệt). Khắc phục triệt để cần đổi
 ``ontology.DataValue`` (việc core, ngoài phạm vi script này).
 
-Model nạp = checkpoint HF (torch ``generate``); deploy dùng CTranslate2 (Phase 6) — eval này đo
-TRỌNG SỐ đã train, không phải đường inference triển khai (đối chiếu HF↔CT2 để ở Phase 6). Source =
-``preprocess.clean(text)`` ĐỒNG BỘ với train (train.py dùng cùng hàm) để khỏi lệch phân phối.
+Model nạp = checkpoint HF (torch ``generate``); deploy dùng CTranslate2 — eval này đo TRỌNG SỐ đã
+train, không phải đường inference triển khai. Source = ``preprocess.clean(text)`` ĐỒNG BỘ với train
+(train.py dùng cùng hàm) để khỏi lệch phân phối.
 """
 
 from __future__ import annotations
@@ -47,6 +49,7 @@ from ..config import (
 from ..ontology import Ontology, Result
 from ..preprocess import clean, normalize_for_match
 from ..tree import QUERY, VAGUE, StrictParseError, Tree, TreeNode, from_model_json, parse, parse_strict
+from ..capabilities import GROUP_KEYS, GROUP_LABEL, group_of
 
 if hasattr(sys.stdout, "reconfigure"):           # Windows console mặc định cp1252
     sys.stdout.reconfigure(encoding="utf-8")
@@ -80,7 +83,7 @@ def _shape(node: TreeNode) -> tuple:
 # ── Mức 2: quy đáp án về tập "answer atoms" ──────────────────────────────────
 
 def _atoms(act: str, res: Result) -> set:
-    """Tập atom mô tả đáp án thực mà người dùng nhận.
+    """Tập **đơn vị đáp án** (answer atom) mô tả đáp án thực mà người dùng nhận.
 
     * vague (act=vague HOẶC gốc trỏ class/quan-hệ) → ``("vague",)``. Gộp hai đường vì cùng cho
       "Không hiểu câu hỏi" — khớp đúng điều kiện ``render`` dùng (``act == VAGUE or result.vague``),
@@ -246,7 +249,7 @@ def evaluate(args: argparse.Namespace) -> int:
         gold_atoms, pred_atoms = _atoms(gold_tree.act, gold_res), _atoms(pred.tree.act, pred_res)
         is_query = gold_tree.act == QUERY
 
-        b = buckets[r.get("category", "?")]
+        b = buckets[group_of(r.get("category", "?"))]
         b.n += 1
         b.n_query += is_query
         b.json_ok += pred.json_ok
@@ -290,13 +293,21 @@ def _report(buckets: dict[str, _Bucket], mismatches: list[dict], model_dir: str,
     print("-" * len(hdr))
 
     q_tot, nq_tot = _Bucket(), _Bucket()
-    f1s, exacts = [], []
-    for cat in sorted(buckets):
-        b = buckets[cat]
-        _print_row(cat, b)
-        (q_tot if b.n_query else nq_tot).add(b)
+    cap_f1s, cap_exacts = [], []
+    cap_keys = [k for k in GROUP_KEYS if k in buckets]               # 5 nhóm năng lực, thứ tự khó dần
+    other_keys = sorted(k for k in buckets if k not in GROUP_KEYS)   # phi-năng-lực: vague/ood/greeting + kiểm âm
+    for key in cap_keys:                                            # trục CHÍNH: macro chỉ trung bình 5 nhóm này
+        b = buckets[key]
+        _print_row(GROUP_LABEL[key], b)
+        q_tot.add(b)
         m = _bucket_metrics(b)
-        f1s.append(m["f1"]); exacts.append(m["exact_set"])
+        cap_f1s.append(m["f1"]); cap_exacts.append(m["exact_set"])
+    if other_keys:
+        print("-" * len(hdr))
+        for key in other_keys:
+            b = buckets[key]
+            _print_row(key, b)
+            (q_tot if b.n_query else nq_tot).add(b)
     print("-" * len(hdr))
     if q_tot.n:
         _print_row("SUBTOTAL query", q_tot)
@@ -304,9 +315,9 @@ def _report(buckets: dict[str, _Bucket], mismatches: list[dict], model_dir: str,
         _print_row("SUBTOTAL nonq", nq_tot)
     all_tot = _Bucket(); all_tot.add(q_tot); all_tot.add(nq_tot)
     _print_row("TOTAL (micro)", all_tot)
-    macro_f1 = sum(f1s) / len(f1s) if f1s else 0.0
-    macro_ex = sum(exacts) / len(exacts) if exacts else 0.0
-    print(f"{'MACRO (avg/type)':16} {'':>4} {'':>5} {'':>6} {'':>5} {'':>5} {'':>6} "
+    macro_f1 = sum(cap_f1s) / len(cap_f1s) if cap_f1s else 0.0
+    macro_ex = sum(cap_exacts) / len(cap_exacts) if cap_exacts else 0.0
+    print(f"{'MACRO (5 nhóm)':16} {'':>4} {'':>5} {'':>6} {'':>5} {'':>5} {'':>6} "
           f"{'':>5} {'':>5} {macro_f1:>5.2f} {macro_ex:>6.0%}")
 
     EVAL_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)

@@ -162,34 +162,24 @@
 {"text": "Em nên mua laptop loại nào để học online ổn?", "category": "ood", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Mai Nha Trang có mưa không vậy?", "category": "ood", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Bạn giải giúp mình bài phương trình bậc hai này được không?", "category": "ood", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ cho em hỏi học phí mỗi kỳ khoảng bao nhiêu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em hỏi em cần nộp đơn nào vậy ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ em muốn biết đóng tiền bằng cách nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Thầy cô cho em hỏi giấy tờ cần công chứng không ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ cho em hỏi căn cứ để tính khoản phí này là gì ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em hỏi nếu thiếu hồ sơ thì xử lý sao ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ em cần làm theo thủ tục nào cho đúng ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Cho em hỏi học phí khoảng bao nhiêu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ em muốn hỏi đóng học phí có chuyển khoản được không ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Thầy cô cho em hỏi cần nộp đơn nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ thủ tục cần những giấy tờ gì vậy ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em xin thông tin về điều kiện được duyệt với ạ.", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ em nên hỏi ai để biết cách thanh toán ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em hỏi nếu thiếu giấy tờ thì xử lý sao ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Cho em hỏi mức học phí cụ thể là bao nhiêu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ em muốn hỏi em phải thanh toán tiền học như thế nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Thầy cô cho em hỏi cần dùng mẫu đơn nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em xin hướng dẫn thủ tục với ạ.", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ cho em hỏi điều kiện để được giải quyết là gì ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Em có thể nộp hồ sơ online được không ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em hỏi khoản tiền này đóng ở đâu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ em muốn hỏi mình thanh toán bằng cách nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Em cần nộp hồ sơ thì có yêu cầu gì không ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em xin hướng dẫn thủ tục chung với ạ.", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ nếu chuyển khoản thì ghi nội dung thế nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Em muốn biết quy định áp dụng là theo đâu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Dạ cho em hỏi học phí khoảng bao nhiêu ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
-{"text": "Thầy cô cho em hỏi em nên thanh toán bằng hình thức nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ em muốn hỏi cần đơn gì cho trường hợp này ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Cho em xin thông tin về điều kiện được xét với ạ.", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
 {"text": "Dạ thủ tục cần làm gồm những bước nào ạ?", "category": "vague", "kind": "nonretrievable", "iris": [], "fields": []}
@@ -820,14 +810,329 @@
 {"text": "xét tốt ngiệp biểu mẩu nào", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
 {"text": "cho em hỏi xét tốt nghiệp có kết quả như nào ạ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
 {"text": "dạ xét tn xong kết quả ra sao vậy ạ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "phòng phụ trách bảo lưu", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "bảo lưu ai xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
 {"text": "bl phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "xin bl hỏi p xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng phụ trách bl?", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "Muốn xin bảo lưu thì cần đáp ứng điều kiện nào?", "category": "forward_object", "kind": "node", "iris": ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"], "fields": []}
+{"text": "Bảo lưu cần những điều kiện gì theo trường?", "category": "forward_object", "kind": "node", "iris": ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"], "fields": []}
+{"text": "muốn bao lưu thì điều kiện nhu nào", "category": "forward_object", "kind": "node", "iris": ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"], "fields": []}
+{"text": "Cho em hỏi xin bảo lưu cần biểu mẫu gì ạ?", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "Dạ bảo lưu thì em cần nộp đơn nào ạ?", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "Thầy cô cho em hỏi tài liệu cần chuẩn bị để bảo lưu với ạ", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "biểu mẫu cần cho bảo lưu là gì", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "đơn nào phải nộp khi bảo lưu", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "tài liệu gì cần chuẩn bị để bảo lưu", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
+{"text": "bao luu ket qua gi", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "xin bao luu xong co ket qua gi", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "muốn bảo lưu thì cuối cùng nhận kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu như nào, xong có kết quả gì vậy", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "làm sao để xin bảo lưu, kết quả trả về là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "cách bảo lưu xong kết quả sẽ ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu cần làm gì, kết quả cuối là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "hướng dẫn bảo lưu thì kết quả nhận được là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "chỉ em cách bảo lưu, sau đó có kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "xin bảo lưu kiểu gì, kết quả là giấy gì vậy", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu ra sao, trường trả kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "muốn xin bảo lưu bắt đầu từ đâu, kết quả cuối cùng là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu phải làm sao, khi xong được kết quả nào", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "làm thế nào để bảo lưu, kết quả sau xử lý là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu thế nào, mình sẽ nhận kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "em xin bảo lưu thì kết quả sau cùng là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "bảo lưu làm sao vậy ạ, có kết quả ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "xin bảo lưu xong trường có báo kết quả gì không", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
+{"text": "Quy trình bảo lưu căn cứ theo quy định nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Xin bảo lưu dựa trên căn cứ pháp lý nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Làm sao để xem quy định áp dụng cho bảo lưu?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Bảo lưu kết quả học tập được căn cứ vào văn bản nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy đinh bảo lưu là văn bản nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xin bảo luu căn cứ pháp lý nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "chuyển ngành do phòng nào phụ trách?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "quy trình xin chuyển ngành được xử lý ở phòng nào?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn đổi ngành thì phòng phụ trách là phòng nào?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phòng xử lí chuyển ngành là phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "chuyển nghành phòng phụ trách nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xin chuyển ngành ai xữ lý ở phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "đổi nghành phòng sử lý nào vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "dạ em muốn đổi ngành thì điều kiện thế nào ạ", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "cho mình hỏi xin chuyển ngành cần điều kiện gì với", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "thầy cô cho em hỏi điều kiện để xin đổi ngành ạ", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "điều kiện gì để đổi ngành", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "cần gì về điều kiện khi xin chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "điều kiện để xin đổi ngành gồm gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienChuyenNganhNamHoc"], "fields": []}
+{"text": "doi nganh can don nao", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "xin chuyen nganh bieu mau nhu nao", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "muốn chuyển ngành thì cần biểu mẫu gì", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "đổi ngành cần đơn như nào vậy", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "làm sao để biết xin chuyển ngành cần tài liệu gì", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "chuyển ngành biểu mẫu thế nào bạn", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "xin đổi ngành phải nộp đơn ra sao", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "cách chuẩn bị biểu mẫu chuyển ngành như nào", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "chỉ em tài liệu xin chuyển ngành với", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "đổi ngành bắt đầu từ đơn nào", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "xin chuyển ngành làm sao lấy biểu mẫu", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "hướng dẫn em phần tài liệu chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "muốn đổi ngành thì biểu mẫu cần làm gì", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "xin chuyển ngành giấy tờ tài liệu kiểu gì", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
+{"text": "xin chuyển ngành kết quả", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
+{"text": "kq chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
+{"text": "đổi ngành kq gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
+{"text": "xin cn kq ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
+{"text": "cn ngành xong kq tn", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
+{"text": "cho em hỏi quy định chuyển ngành với ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "dạ em muốn đổi ngành thì căn cứ ở đâu ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "cho mình hỏi xin chuyển ngành theo quy định nào với", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "thầy cô cho em hỏi căn cứ của xin đổi ngành ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy định nào cho chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ gì để đổi ngành", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "theo quy định nào khi xin chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ của xin đổi ngành là văn bản nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Phòng nào xử lý quy trình đăng ký học phần?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Đăng ký học phần thì phòng phụ trách là phòng nào?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Ai là phòng xử lý việc đăng ký môn?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "đăng kí học phần phòng nào xử lí vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "đăng ký môn phong phụ trách là đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "đkmh thì phòng xủ lý nào ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Làm thế nào để đăng ký học phần và phòng xử lý là phòng nào?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Muốn đăng ký tín chỉ thì phải làm gì, phòng nào phụ trách?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Cách để đăng ký môn liên quan phòng xử lý nào?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cách đăng ký học phàn phòng nào xữ lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "đăng ký môn ra kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputCoTenTrongDanhSachLop"], "fields": []}
+{"text": "đkmh kết quả nhận được", "category": "forward_object", "kind": "node", "iris": ["OutputCoTenTrongDanhSachLop"], "fields": []}
+{"text": "dk học phần kq gì", "category": "forward_object", "kind": "node", "iris": ["OutputCoTenTrongDanhSachLop"], "fields": []}
+{"text": "đkmh xong kq ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputCoTenTrongDanhSachLop"], "fields": []}
+{"text": "dki môn có kq gì v", "category": "forward_object", "kind": "node", "iris": ["OutputCoTenTrongDanhSachLop"], "fields": []}
+{"text": "dang ki mon hoc theo quy dinh nao", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "muốn đăng ký môn thì xem căn cứ ở đâu", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "làm sao để đăng ký tín chỉ, quy định nào áp dụng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "cách đăng ký học phần căn cứ ra sao", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "đăng ký môn thế nào, quy định kèm theo là gì", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "đăng ký tín chỉ bắt đầu từ đâu, theo quy định gì", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "chỉ em cách đăng ký môn với, căn cứ là gì", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "đki môn kiểu gì, có quy định nào không", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "muốn dki môn thì căn cứ theo văn bản nào vậy", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "hướng dẫn đăng ký học phần dựa theo quy định nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "đăng ký học phần cần làm gì, căn cứ có ở đâu", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "muon dang ki tin chi thi theo quy dinh nao", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "nâng điểm phòng phụ trách", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cải thiện gpa xử lý phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "học ct phòng xl nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "ct gpa p phụ trách?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "nâng điểm bên nào xử lý v", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hoc cai thien ket qua la gi", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "nang diem xong co ket qua gi", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "cai thien gpa ket qua ntn", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "học cải thiện như nào thì ra kết quả gì vậy", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "muốn nâng điểm thì cuối cùng có kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "làm sao để cải thiện gpa, kết quả nhận được là gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "cách học cải thiện xong kết quả ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "nâng điểm thế nào, sau đó kết quả là gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "cải thiện cpa ra sao vậy, kết quả cuối là gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "học cải thiện bắt đầu từ đâu và kết quả có gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "chỉ em cách nâng điểm với, kết quả sẽ hiện gì", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "cày lại điểm kiểu gì, làm xong kết quả thế nào", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "muốn cai thien diem thì kết quả sau đó là sao vậy", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "hướng dẫn học cải thiện xong có kết quả gì không", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "học cải thiện cần làm gì để có kết quả", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "muon cai thien cpa thi ket qua ra sao", "category": "forward_object", "kind": "node", "iris": ["OutputGhiNhanDiemCaoHon"], "fields": []}
+{"text": "Dạ cho em hỏi quy định về nâng điểm như nào ạ?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Thầy cô cho em xin căn cứ học cải thiện với ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Em muốn hỏi cải thiện gpa căn cứ ra sao ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Cho mình hỏi cày lại điểm có quy định nào không ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ nào cho học cải thiện", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy định nào áp dụng học cải thiện", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ pháp lý nâng điểm là gì", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "theo quy định nào để cải thiện cpa", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ ra sao khi cày lại điểm", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "Cho em hỏi học lại phòng nào xử lý ạ?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Dạ cho em hỏi đăng ký học lại phòng phụ trách là phòng nào ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Em bị nợ môn thì hỏi phòng xử lý nào vậy ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Cho mình hỏi rớt môn học lại phòng nào phụ trách với ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Thầy cô cho em hỏi trượt môn học lại bên nào xử lý ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phòng phụ trách là đâu nếu nợ môn", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "bên xử lý rớt môn học lại là phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phòng nào phụ trách khi trượt môn", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xử lý học lại thuộc phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hoc lai dieu kien nhu nao", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "no mon hoc lai can dieu kien gi", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "rot mon dieu kien hoc lai ra sao", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "truot mon muon hoc lai can gi", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "muốn học lại thì cần điều kiện gì vậy", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "nợ môn rồi muốn học lại cần gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "rớt môn học lại như nào về điều kiện", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "học lại cần làm gì cho đúng điều kiện", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "trượt môn muốn đăng ký học lại thì điều kiện thế nào", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocLai"], "fields": []}
+{"text": "Căn cứ quy định của học lại là gì?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Quy trình đăng ký học lại dựa trên quy định nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Nợ môn học lại có căn cứ pháp lý ra sao?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Rớt môn muốn học lại thì theo quy định nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Làm sao để biết căn cứ của đăng ký học lại?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "học lai căn cứ quy định nào", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "quy đinh học lại ra sao", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "nợ môn căn cư học lại là gì", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "rớt môn hoc lại theo quy định nao", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "trượt môn căn cứ phap lý học lại gì", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "nộp học phí phòng xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "học phí phòng xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "đóng tiền học phòng phụ trách", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "nộp tiền học xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "hp p xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "đóng hp phòng pt", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "nộp hp bên nào xl", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "đóng tiền học p nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "nộp tiền học p phụ trách?", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "Cho em hỏi nộp học phí cần biểu mẫu nào ạ?", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
+{"text": "Dạ cho em xin đơn cần dùng khi đóng học phí với ạ", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
+{"text": "biểu mẫu nào cần cho nộp học phí", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
+{"text": "đơn nào dùng để đóng tiền học", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
+{"text": "Em muốn đóng học phí, cho em hỏi cần tài liệu gì ạ", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
+{"text": "học phí đóng học phí", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
+{"text": "mức học phí đóng tiền học", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
+{"text": "hp mức học phí", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
+{"text": "nộp hp học phí mức nào", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
+{"text": "dong hoc phi thanh toan sao", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "muốn nộp học phí thì thanh toán kiểu gì", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "làm sao để thanh toán nộp học phí", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "cách đóng học phí thanh toán như nào", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "nộp tiền học phương thức thanh toán ra sao", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "hướng dẫn thanh toán khi đóng học phí", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "muốn đóng tiền học thì thanh toán bắt đầu từ đâu", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "chỉ em cách thanh toán nộp học phí", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "đóng học phí có thanh toán online được không", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "nộp học phí phương thức thanh toán làm sao vậy ạ", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "học phí thanh toán bằng gì khi nộp học phí", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "muốn nộp tiền học thì phương thức thanh toán thế nào", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "đóng học phí phải thanh toán qua đâu", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "nộp học phí thanh toán cần làm gì trước", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "cách chọn phương thức thanh toán đóng học phí", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "nộp học phí thanh toán ra sao cho đúng", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "đóng tiền học phương thức thanh toán xem ở đâu", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "thanh toán học phí muốn nộp học phí thì làm sao", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "đóng học phí thanh toán cần làm theo bước nào", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "nộp học phí phương thức thanh toán gồm những gì", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "Đóng học phí dựa trên căn cứ gì?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Cách xem quy định nộp học phí là gì?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "nộp học phi căn cư gì", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "đóng hoc phí quy đinh nào", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "Sinh viên nộp học phí cần căn cứ vào văn bản nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
+{"text": "huy mon phong phu trach nao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn rút môn thì phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hủy môn phải gặp phòng phụ trách nào vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "làm sao biết rút môn do phòng xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xóa tín chỉ thì phòng nào xử lý vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cách liên hệ phòng xử lý rút môn như nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hướng dẫn phòng phụ trách hủy học phần cho em", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn bỏ học phần thì phòng xử lý ở đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "rút môn hỏi phòng phụ trách nào trước", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "chỉ em phòng xử lý rút môn với", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hủy hp thì xử lý qua phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "rút môn phòng xử lý làm sao vậy ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn xóa môn học thì phòng phụ trách nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "rút môn cần qua phòng xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hủy môn phòng xử lý xem ở đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cách biết phòng phụ trách rút môn ra sao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "bỏ học phần do ai xử lý bên phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "rút môn muốn hỏi phòng xử lý thì hỏi đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xóa tín chỉ phòng phụ trách thế nào vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "làm thế nào để biết hủy môn do phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "rút môn phòng phụ trách cần tìm ở đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hủy học phần muốn biết phòng xử lý thì làm sao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cho em hỏi rút môn xong có kết quả gì ạ", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "dạ cho em hỏi kết quả rút môn như nào ạ", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "thầy cô cho em xin kết quả sau khi hủy môn với ạ", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "em muốn biết bỏ học phần thì kết quả thế nào ạ", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "rút môn thì kết quả là gì", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "hủy môn có kết quả như nào", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "kết quả sẽ ra sao nếu rút môn", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "muốn xóa tín chỉ thì kết quả nhận được là gì", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
+{"text": "quy định về rút môn là gì?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "hủy môn thì căn cứ pháp lý ra sao?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xóa môn học áp dụng quy định nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cú rút môn là gì", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy đinh rút môn như nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "hũy môn theo căn cứ nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xóa môn hoc quy định ra sao", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "cho em hỏi xét học bổng phòng nào xử lý ạ", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "dạ học bổng do phòng phụ trách nào vậy ạ", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "thầy cô cho em biết phòng xử lý xét học bổng với ạ", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "em muốn hỏi xét học bổng bên nào xử lý ạ", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "xét học bổng xử lý bởi phòng nào", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng phụ trách là phòng nào khi xét học bổng", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "học bổng muốn hỏi phòng xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ai xử lý việc xet hb", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "xet hb dieu kien nhu nao", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "học bổng cần điều kiện gì vậy", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "xét học bổng điều kiện như nào ạ", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "muốn xin học bổng thì cần gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "làm sao để xét học bổng đủ điều kiện", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "cách xem điều kiện học bổng như nào", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "xét học bổng phải đạt điều kiện gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "điều kiện học bổng bắt đầu xem từ đâu", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "hướng dẫn em phần điều kiện xét học bổng", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "chỉ em học bổng cần điều kiện ra sao", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "xet hb điều kiện kiểu gì vậy", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "muốn được học bổng thì điều kiện sao vậy", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "xét học bổng cần chuẩn bị điều kiện gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
+{"text": "xét học bổng xong kết quả ra sao?", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "học bổng có kết quả như thế nào?", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "sau khi xet hb thì kết quả nhận được là gì?", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "học bỗng có kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "xét học bong ra kết quả sao", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "xet hb kết quã thế nào", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
+{"text": "căn cứ xét học bổng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy định học bổng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xét hb căn cứ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "dkien xet hb quy định", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ xét hb", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "qd học bổng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xet hb theo qd nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xet tn phong phu trach nao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "lam sao biet tot nghiep phong nao xu ly", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tốt nghiệp phòng xử lý là phòng nào vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn hỏi xét tốt nghiệp thì phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tn phòng phụ trách như nào để liên hệ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "làm sao biết xét tốt nghiệp do phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "cách tìm phòng phụ trách xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "tốt nghiệp sớm phòng xử lý ra sao vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tốt nghiệp cần gặp phòng xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "hướng dẫn xem phòng phụ trách xét tn", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tốt nghiệp liên quan phòng xử lý nào ấy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "muốn biết phòng xử lý tốt nghiệp thì coi đâu", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "chỉ em cách xem xét tốt nghiệp phòng nào phụ trách", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tốt nghiệp bắt đầu hỏi phòng xử lý nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phòng xử lý xét tn là bên nào vậy ạ", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tốt nghiệp cần liên hệ phòng phụ trách nào", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "tốt nghiệp phòng nào xử lý hồ sơ vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tn muốn hỏi phòng xử lý thì làm sao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phòng phụ trách tốt nghiệp sớm xem kiểu gì", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "xét tn điều kiện", "category": "forward_object", "kind": "node", "iris": ["DieuKienTotNghiepCPA", "DieuKienTotNghiepKyLuat", "DieuKienTotNghiepNghiaVu", "DieuKienTotNghiepNgoaiNgu", "DieuKienTotNghiepTinChi"], "fields": []}
+{"text": "tn sớm cần đk gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienTotNghiepCPA", "DieuKienTotNghiepKyLuat", "DieuKienTotNghiepNghiaVu", "DieuKienTotNghiepNgoaiNgu", "DieuKienTotNghiepTinChi"], "fields": []}
+{"text": "cần nộp đơn gì để xét tốt nghiệp?", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
+{"text": "tài liệu xét tốt nghiệp gồm những gì?", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
+{"text": "làm sao biết biểu mẫu xét tốt nghiệp cần chuẩn bị?", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
+{"text": "xét tốt nghiêp cần tài liêu gì", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
+{"text": "đơn xet tốt nghiệp nộp sao", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
+{"text": "cho em hỏi kết quả xét tốt nghiệp với ạ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "dạ xét tn có kết quả gì ạ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "cho mình hỏi tốt nghiệp sớm kết quả ra sao ạ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "xét tốt nghiệp ra kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "kết quả gì sau xét tn", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "sau tốt nghiệp sớm kết quả là gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
+{"text": "căn cứ xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy định xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "quy định tốt nghiệp sớm", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "xet tn căn cứ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "qd xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "căn cứ xet tn", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
+{"text": "qd tốt nghiệp sớm ntn", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "bao luu kqht hỏi p nào phụ trách", "category": "forward_object", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
 {"text": "Sinh viên cần đáp ứng điều kiện gì để xin bảo lưu?", "category": "forward_object", "kind": "node", "iris": ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"], "fields": []}
 {"text": "Cho em hỏi bảo lưu cần biểu mẫu nào ạ?", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
 {"text": "Dạ xin bảo lưu thì em phải nộp đơn nào vậy ạ?", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
 {"text": "biểu mẫu bảo lưu cần những gì", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
 {"text": "cần nộp đơn gì khi bảo lưu", "category": "forward_object", "kind": "node", "iris": ["DonXinBaoLuu", "DonXinHocTroLai"], "fields": []}
-{"text": "xin bao luu xong co ket qua gi", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
 {"text": "bảo lưu xong trường trả về cái gì", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
 {"text": "làm bảo lưu xong mình nhận được gì nhỉ", "category": "forward_object", "kind": "node", "iris": ["OutputDuocBaoLuu"], "fields": []}
 {"text": "Bảo lưu kết quả học tập căn cứ theo quy định nào?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
@@ -870,10 +1175,8 @@
 {"text": "đổi ngành thì tải mẫu nào vậy", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
 {"text": "muốn chuyển ngành phải cầm giấy tờ gì", "category": "forward_object", "kind": "node", "iris": ["DonXinChuyenNganh"], "fields": []}
 {"text": "đổi ngành kết quả nhận được", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
-{"text": "kq chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["OutputDuocChuyenNganh"], "fields": []}
 {"text": "Cho em hỏi căn cứ của việc chuyển ngành với ạ", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "Dạ xin chuyển ngành áp dụng theo quy định nào ạ?", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
-{"text": "quy định nào cho chuyển ngành", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "dựa vào căn cứ nào để xin đổi ngành", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "Quy trình đăng ký môn thuộc phòng nào phụ trách?", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "đăng kí học phần phòng nào xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
@@ -901,7 +1204,6 @@
 {"text": "quy đinh bị nợ môn", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
 {"text": "nộp hp p nào phụ trách", "category": "forward_object", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
 {"text": "Dạ đóng học phí có cần đơn nào không ạ", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
-{"text": "nộp học phí cần biểu mẫu gì", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
 {"text": "đơn nào cho đóng học phí", "category": "forward_object", "kind": "node", "iris": ["DonGiaHanThoiGianNopHocPhi"], "fields": []}
 {"text": "đóng học phí mức học phí", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
 {"text": "mức hp nộp hp", "category": "forward_object", "kind": "node", "iris": ["PhiGiaoDucTongQuat", "PhiK63600k", "PhiK63620K", "PhiK65550k", "PhiK65620k", "PhiK66510k", "PhiK66550k", "PhiK66620k", "PhiK67550k", "PhiK67620k"], "fields": []}
@@ -909,10 +1211,8 @@
 {"text": "đóng học phí chuyển khoản hay sao vậy", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
 {"text": "nộp tiền học trả kiểu nào", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
 {"text": "Quy định áp dụng cho việc đóng học phí là gì?", "category": "forward_object", "kind": "node", "iris": ["RegQD729"], "fields": []}
-{"text": "rut mon phong nao xu ly", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "huy hoc phan phong phu trach nao", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "lỡ đăng ký nhầm muốn hủy môn thì ai xử lý", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
-{"text": "Cho em hỏi rút môn xong có kết quả gì ạ?", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
 {"text": "Dạ cho em hỏi hủy học phần thì kết quả trả về là gì với ạ?", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
 {"text": "kết quả là gì nếu rút môn", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
 {"text": "hủy môn thì nhận kết quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputXoaTenKhoiLop"], "fields": []}
@@ -929,8 +1229,6 @@
 {"text": "Kết quả của việc xét học bổng là gì?", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
 {"text": "Sau khi xét học bổng thì sinh viên nhận được kết quả nào?", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
 {"text": "xét hoc bổng xong có kêt quả gì", "category": "forward_object", "kind": "node", "iris": ["OutputNhanHocBong"], "fields": []}
-{"text": "căn cứ xét học bổng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
-{"text": "quy định học bổng", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "xét hb căn cứ qđ nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "hb theo qd nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "xet tot nghiep phong nao xu ly", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
@@ -939,12 +1237,10 @@
 {"text": "chuyện tốt nghiệp ai xử lý bên trường vậy", "category": "forward_object", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "tn cần đk gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienTotNghiepCPA", "DieuKienTotNghiepKyLuat", "DieuKienTotNghiepNghiaVu", "DieuKienTotNghiepNgoaiNgu", "DieuKienTotNghiepTinChi"], "fields": []}
 {"text": "Sinh viên cần chuẩn bị đơn gì để xét tốt nghiệp?", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
-{"text": "xét tốt nghiêp cần tài liêu gì", "category": "forward_object", "kind": "node", "iris": ["DonXetTotNghiepSom"], "fields": []}
 {"text": "Cho em hỏi xét tốt nghiệp xong kết quả là gì ạ?", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
 {"text": "Dạ tốt nghiệp có kết quả như thế nào vậy ạ?", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
 {"text": "kết quả là gì khi xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
 {"text": "xét tốt nghiệp xong ra kết quả nào", "category": "forward_object", "kind": "node", "iris": ["OutputDuocXetTotNghiep"], "fields": []}
-{"text": "căn cứ xét tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "quy định tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "xét tn căn cứ qđ nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
 {"text": "tn theo qd nào", "category": "forward_object", "kind": "node", "iris": ["RegQD1052"], "fields": []}
@@ -1550,14 +1846,118 @@
 {"text": "thong tin ve van phong truong", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
 {"text": "văn phòng trường làm mảng gì vậy", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
 {"text": "muốn biết văn phòng trường là chỗ nào trong trường thì hỏi sao", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
+{"text": "Dạ em muốn xin bảo lưu thì làm thế nào ạ?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "Thầy cô cho em hỏi cách bảo lưu với ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "Em xin hỏi quy trình xin bảo lưu kết quả học tập ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "bảo lưu muốn xin thì làm sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "kết quả học tập bảo lưu kiểu gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "bảo lưu ở trường quy trình ra sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
+{"text": "cach doi nganh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "muon chuyen nganh thi lam gi", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "quy trinh xin chuyen nganh ra sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "muốn chuyển qua ngành khác thì làm gì giờ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "đổi ngành thì phải bắt đầu từ đâu vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "chỉ em cách xin chuyển ngành với", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "chuyển ngành làm kiểu gì cho đúng", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "đang muốn đổi ngành thì cần gì trước", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
+{"text": "đăng ký tín chỉ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "quy trình đăng ký học phần", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "đkmh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "dki mon sao v", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "đki môn làm sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "muốn đkmh cần j", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
+{"text": "Quy trình học cải thiện như thế nào?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "Làm sao để học cải thiện điểm?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "Cách nâng điểm ở trường là gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "Muốn cải thiện gpa thì cần làm gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "Điểm thấp muốn học cải thiện bắt đầu từ đâu?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "cách cải thiện gpa đươc không", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "điểm tháp muốn học cải thiện thì làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
+{"text": "Cho em hỏi học lại làm sao vậy ạ?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "Dạ em rớt môn muốn học lại thì làm thế nào ạ?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "Thầy cô cho em hỏi cách đăng ký học lại với ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "Em xin hỏi quy trình đăng ký học lại ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "Cho mình hỏi bị nợ môn thì học lại cần làm gì ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "học lại cần làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "rớt môn muốn học lại thì sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "nợ môn học lại kiểu gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "đăng ký học lại quy trình ra sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "bị cấm thi học lại phải làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
+{"text": "dong hoc phi lam sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "muon nop tien hoc thi lam gi", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "muốn đóng học phí thì làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "nộp học phí kiểu gì vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "đóng tiền học sao cho đúng", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "học phí phải nộp ra sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "chỉ em cách đóng học phí", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "đóng học phí bắt đầu từ đâu", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "nộp tiền học cần làm những gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "cần làm gì để nộp học phí", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "nộp tiền học có quy trình sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "đóng học phí cần chuẩn bị gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "hướng dẫn nộp tiền học cho sinh viên", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
+{"text": "hủy môn", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "bỏ học phần", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "cách rút môn", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "rút hp ntn", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "hủy hp sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "xóa tc làm sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "muốn rút môn dki thì làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
+{"text": "Quy trình xét học bổng là gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
+{"text": "Làm sao để xin xét học bổng?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
+{"text": "Muốn được học bổng thì cần làm gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
+{"text": "học bổng làm sạo", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
+{"text": "muốn học bổng thì làm zì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
+{"text": "Cho em hỏi xét tốt nghiệp làm sao với ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "Dạ em muốn hỏi cách tốt nghiệp sớm ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "Thầy cô cho em hỏi tốt nghiệp cần làm gì ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "Cho mình hỏi xét tốt nghiệp bắt đầu từ đâu ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "xét tốt nghiệp cần làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "tốt nghiệp sớm muốn làm thì sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "xét tn bắt đầu từ đâu", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
+{"text": "ct sinh vien la phong nao", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng ctsv là chỗ nào vậy", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ctsv xử lý mấy việc gì vậy", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "muốn hỏi phòng công tác sinh viên thì hiểu sao", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng ctsv hỗ trợ gì cho sinh viên", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ctsv là bên nào trong trường", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "công tác sinh viên nghe là phòng gì", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng ctsv có nhiệm vụ ra sao", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "cho biết phòng ctsv làm gì với sinh viên", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ctsv mình cần biết thông tin chung", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng công tác sinh viên phụ trách kiểu gì", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "công tác sinh viên là bộ phận nào vậy", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng ctsv của trường là sao", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ctsv bên trường mình là phòng gì", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "phòng công tác sinh viên lo phần nào", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "mình muốn biết phòng ctsv là gì", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "ctsv có phải phòng công tác sinh viên không", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
+{"text": "pđt", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "pdt trường", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "phong dt", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "pđt là gì", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "pdt làm j", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "info pdt", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "pdt ntn vậy", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
+{"text": "Phòng Tài chính là phòng nào?", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "Phòng KHTC phụ trách những việc gì?", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "Phòng tài chính hỗ trợ sinh viên như thế nào?", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "Làm sao để biết phòng kế hoạch tài chính xử lý mảng gì?", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "Muốn tìm hiểu về phòng tài chính thì xem ra sao?", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "phòng khtc phụ trach gì", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "phong nop tien làm những việc gi", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "kế hoạch tài chinh như nào", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "muốn tìm phong tài chính thì làm sao", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
+{"text": "hoi ve van phong truong nhu nao", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
+{"text": "vpt thong tin ra sao", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
+{"text": "muốn hỏi văn phòng trường thì làm sao vậy", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
+{"text": "văn phòng kiểu gì vậy", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
+{"text": "chỉ em cách tìm hiểu văn phòng trường", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
 {"text": "Cho em hỏi bảo lưu kết quả học tập với ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
 {"text": "kết quả học tập muốn bảo lưu thì sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
-{"text": "quy trinh chuyen nganh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "xin doi nganh can gi", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "em học không hợp ngành muốn chuyển thì sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "giờ muốn đổi ngành được không vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
-{"text": "đăng ký tín chỉ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
-{"text": "dkmh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
 {"text": "Quy trình học cải thiện điểm là gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
 {"text": "Muốn nâng điểm thì sinh viên cần làm thế nào?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
 {"text": "học cải thiẹn điểm", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
@@ -1580,12 +1980,10 @@
 {"text": "em muốn hỏi phòng ctsv là phòng gì", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
 {"text": "dạ em muốn hỏi về quy trình bảo lưu ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
 {"text": "bảo lưu cần làm những gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
-{"text": "xin chuyen nganh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "quy trinh doi nganh", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "học không hợp muốn đổi ngành thì sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "em muốn nhảy sang ngành khác thì làm kiểu gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhChuyenNganh"], "fields": []}
 {"text": "dkmh ntn vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhDangKyHocPhan"], "fields": []}
-{"text": "quy trình học cải thiện như thế nào?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
 {"text": "muốn cải thiện điểm thì cần làm gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
 {"text": "cải thiên gpa phải làm sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocCaiThien"], "fields": []}
 {"text": "cho em hỏi em rớt môn muốn học lại ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhHocLai"], "fields": []}
@@ -1597,7 +1995,6 @@
 {"text": "muốn trả học phí thì nộp kiểu gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
 {"text": "rút mh ntn", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
 {"text": "hủy hp sao ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
-{"text": "quy trình xét học bổng là gì?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
 {"text": "sinh viên muốn được xét học bổng thì làm thế nào?", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
 {"text": "xét học bỗng sao vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
 {"text": "học bổng xét nhu thế nào", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
@@ -1605,7 +2002,6 @@
 {"text": "tốt nghiệp muốn xét thì làm gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
 {"text": "ra trường sớm xét tốt nghiệp thế nào", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
 {"text": "phòng lo việc sinh viên là ctsv đúng không", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
-{"text": "pđt", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "pdt info", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "mình muốn biết về văn phòng trường á", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
 {"text": "Dạ em muốn hỏi quy trình bảo lưu ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhBaoLuu"], "fields": []}
@@ -1626,7 +2022,6 @@
 {"text": "đến kỳ đóng tiền học rồi nộp kiểu gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
 {"text": "em muốn đóng học phí mà chưa biết làm sao", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
 {"text": "hp kỳ này đóng sao vậy mọi người", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhNopHocPhi"], "fields": []}
-{"text": "hủy môn", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
 {"text": "hủy hp sao vậy", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
 {"text": "xóa tín chỉ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhRutMonHoc"], "fields": []}
 {"text": "xét học bỗng cần gì", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetHocBong"], "fields": []}
@@ -1638,10 +2033,11 @@
 {"text": "Cho mình hỏi tốt nghiệp sớm có quy trình gì ạ", "category": "self_desc", "kind": "node", "iris": ["QuyTrinhXetTotNghiep"], "fields": []}
 {"text": "em cần gặp ctsv thì hỏi phòng này sao", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
 {"text": "muốn hỏi chuyện sinh viên thì qua ctsv hả", "category": "self_desc", "kind": "node", "iris": ["PhongCTSV"], "fields": []}
-{"text": "phong dt", "category": "self_desc", "kind": "node", "iris": ["PhongDaoTaoDaiHoc"], "fields": []}
 {"text": "phong kế hoạch tai chính", "category": "self_desc", "kind": "node", "iris": ["PhongKHTC"], "fields": []}
 {"text": "muốn hỏi giấy tờ chung thì qua văn phòng hả", "category": "self_desc", "kind": "node", "iris": ["VanPhongTruong"], "fields": []}
 {"text": "điều kien bảo lưu là gì", "category": "forward_object", "kind": "node", "iris": ["DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe", "DieuKienBaoLuuVuTrang", "DieuKienBaoLuuYTe"], "fields": []}
+{"text": "đóng học phí online hay sao vậy", "category": "forward_object", "kind": "node", "iris": ["BankTransfer", "PayOnline"], "fields": []}
+{"text": "dkien xet hb ra sao", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
 {"text": "dk hoc bong can gi", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}
 {"text": "điều kiện tốt nghiệp", "category": "forward_object", "kind": "node", "iris": ["DieuKienTotNghiepCPA", "DieuKienTotNghiepKyLuat", "DieuKienTotNghiepNghiaVu", "DieuKienTotNghiepNgoaiNgu", "DieuKienTotNghiepTinChi"], "fields": []}
 {"text": "dk hoc bong la gi", "category": "forward_object", "kind": "node", "iris": ["DieuKienHocBongDiemHocTap", "DieuKienHocBongDiemRenLuyen", "DieuKienHocBongThoiGian", "DieuKienHocBongTinChi"], "fields": []}

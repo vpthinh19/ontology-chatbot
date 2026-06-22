@@ -18,18 +18,14 @@ from __future__ import annotations
 
 import json
 
+from ..capabilities import GROUP_KEYS, GROUP_LABEL
 from ..config import EVAL_ARTIFACTS_DIR, FIGURES_DIR, TRAIN_LOG_PATH
 
-_ORDER = ["self_desc", "data_leaf", "fee_data", "fee_intersect", "fee_cohort", "fee_major",
-          "fee_union", "forward_object", "multi_field", "multi_hop",
-          "neg_child_miss", "neg_root_vague", "greeting", "ood", "vague"]
-_LABELS = {
-    "self_desc": "Tự mô tả", "data_leaf": "Thuộc tính", "fee_data": "HP/tín chỉ",
-    "fee_intersect": "HP (giao)", "fee_cohort": "HP (khoá)", "fee_major": "HP (ngành)",
-    "fee_union": "HP (gộp)", "forward_object": "Đi 1 quan hệ", "multi_field": "Nhiều thuộc tính",
-    "multi_hop": "Đi nhiều bước", "neg_child_miss": "Thiếu (con)", "neg_root_vague": "Mơ hồ (gốc)",
-    "greeting": "Chào hỏi", "ood": "Ngoài tri thức", "vague": "Mơ hồ",
-}
+# Hình 9 báo theo NHÓM NĂNG LỰC (5 nhóm, độ khó tăng dần) rồi tới các loại phi-truy-vấn.
+_ORDER = GROUP_KEYS + ["neg_child_miss", "neg_root_vague", "greeting", "ood", "vague"]
+_LABELS = {**GROUP_LABEL,
+           "neg_child_miss": "Thiếu (con)", "neg_root_vague": "Mơ hồ (gốc)",
+           "greeting": "Chào hỏi", "ood": "Ngoài tri thức", "vague": "Mơ hồ"}
 _ACTS = ["query", "greeting", "ood", "vague"]
 _ACT_LABELS = {"query": "truy vấn", "greeting": "chào", "ood": "ngoài tri thức", "vague": "mơ hồ"}
 
@@ -82,7 +78,7 @@ def _eval_per_category(rep: dict) -> bool:
     ax.set_ylim(0, 1.05)
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=35, ha="right")
-    ax.set_title("Hình 9. F1 và exact-match theo loại câu hỏi (đánh giá đầu-cuối)")
+    ax.set_title("Hình 9. F1 và trùng-khít-tập theo nhóm năng lực (đánh giá đầu-cuối)")
     ax.legend(loc="lower left")
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()

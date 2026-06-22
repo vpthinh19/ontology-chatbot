@@ -30,7 +30,7 @@ from ..ontology import Ontology
 from ..preprocess import clean
 from ..tree import parse
 from . import retrieval
-from .docstore import build_corpus
+from .docstore import build_corpus, load_flat_db
 from .gold import AnswerSpec, answer_spec
 from .groups import GROUP_KEYS, GROUP_LABEL, group_of
 
@@ -153,7 +153,10 @@ def run(args: argparse.Namespace) -> int:
 
     # Phẳng: MỘT corpus, rank câu GỐC (chuẩn IR). Chạy sau khi ontology đã nhả VRAM.
     texts = [r["text"] for r, _ in retr]
-    corpus = build_corpus(ont)
+    corpus = load_flat_db()                      # ưu tiên artifact đã vật chất hoá (peer của ontology)
+    if corpus is None:
+        print("[bench] ⚠️ chưa có artifact kho phẳng — dựng tạm; chạy scripts.build_flat_db để vật chất hoá")
+        corpus = build_corpus(ont)
     print(f"[bench] phẳng corpus={len(corpus)} docs → rank {len(texts)} queries…")
     flat_ranked = retrieval.rank_all(corpus, texts)
 
