@@ -8,7 +8,7 @@
 
 
 # ---------- builder ----------
-FROM python:3.12-slim AS builder
+FROM python:3.14-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
 WORKDIR /app
@@ -45,7 +45,7 @@ local_dir='/app/artifacts/models/bartpho_ct2', token=(os.environ.get('HF_TOKEN')
 
 
 # ---------- runtime ----------
-FROM python:3.12-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 # uid 1000 khớp user desktop-Linux để volume bind-mount (vd ./logs) round-trip quyền sạch.
 RUN useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
