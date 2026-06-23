@@ -507,7 +507,7 @@ Bảng 7 minh hoạ cách chấm ở mức đầu cuối trên câu hỏi về c
 Trên toàn tập kiểm tra, các chỉ số được gộp ở mức câu rồi tổ chức thành ba nhóm, nhằm tách bạch *chất lượng đầu cuối* khỏi các chỉ
 số chỉ đóng vai trò chẩn đoán:
 
-- **Hai chỉ số chính** phản ánh chất lượng đầu cuối. *Exact match accuracy* là tỷ lệ câu có tập đáp án P trùng khít đáp án chuẩn G;
+- **Hai chỉ số chính** phản ánh chất lượng đầu cuối. *Trùng khít tập* là tỷ lệ câu có tập đáp án P trùng khít đáp án chuẩn G;
   *macro-F1* là trung bình của F1. Cả hai được tính riêng cho từng nhóm trong năm nhóm năng lực rồi lấy trung bình trên năm nhóm.
   Trục năng lực được dùng thay cho trục miền dữ liệu để con số bám đúng mục tiêu suy luận của đề tài, không bị một miền đông mẫu như
   học phí kéo lệch.
@@ -655,7 +655,7 @@ flowchart LR
     QS --> FLAT["Phẳng trả top-k tài liệu"]
     ONT --> G{"Cùng đáp án chuẩn, cùng chỉ số"}
     FLAT --> G
-    G --> V["precision, recall, F1 cho mỗi hệ"]
+    G --> V["chỉ số phù hợp mỗi hệ"]
 ```
 
 **Hình 12.** Hai hệ nhận cùng đầu vào và được chấm trên cùng đáp án chuẩn.
@@ -666,7 +666,17 @@ Cả hai hệ nhận cùng câu hỏi gốc. Hệ phẳng không được dùng 
 tính vẫn tính là sai — một bất lợi cấu trúc của baseline thuần truy hồi, nêu thẳng khi báo cáo.
 
 Dữ liệu chấm là tập kiểm tra gồm 2.251 câu, tách từ bộ dữ liệu 9.153 câu. Tập kiểm tra dùng cách diễn đạt khác tập huấn luyện, để
-chống học vẹt mẫu câu. Mỗi câu kèm đáp án chuẩn đã được thuật toán duyệt kiểm chứng tự động.
+chống học vẹt mẫu câu.
+
+**Đáp án chuẩn lấy từ đâu — và có thiên vị ontology không?** Mỗi câu hỏi kèm sẵn một *đáp án chuẩn*: tập tài liệu đúng mà một câu
+trả lời hoàn hảo phải nêu — ví dụ câu "phòng xử lý bảo lưu" có đáp án chuẩn là {Phòng Công tác Sinh viên}. Tập này được rút ra bằng
+cách đi theo đúng quan hệ trong ontology, rồi chốt cố định và kiểm chứng tự động *trước* khi chạy thử.
+
+Có thể nghi ngờ: thước đo cũng lấy từ ontology thì phép so có thiên vị ontology không? Không, vì hai lẽ. **Một**, đáp án chuẩn chỉ là
+*danh sách tài liệu đúng* — một sự thật khách quan của câu hỏi, không phụ thuộc hệ nào trả lời; hệ phẳng cũng phải tìm đúng những
+tài liệu đó. **Hai**, hệ phẳng thua không phải vì thước đo lạ, mà vì nó đã *vứt bỏ các quan hệ* nối tài liệu — đúng năng lực đang
+được đo. Nói cách khác, phép so hỏi "có trả lời được câu cần đi theo quan hệ không", và việc hệ phẳng trượt là kết quả thật, không
+phải hệ quả của việc đáp án chuẩn sinh từ ontology.
 
 Việc chấm dùng đúng bộ chỉ số precision, recall, F1 như Mục 5 — không chỉ đếm số thực thể trùng, mà phạt cả phần trả thừa lẫn phần
 bỏ sót.
@@ -680,6 +690,13 @@ Các chỉ số dùng ở phần kết quả được định nghĩa như sau, v
   khoát. recall@k là độ bao phủ khi chỉ xét k tài liệu đứng đầu; full@k là tỷ lệ câu hỏi mà *toàn bộ* đáp án chuẩn nằm gọn trong
   k tài liệu đầu. Phép so cân xứng nhất là đặt trùng khít tập của ontology cạnh full@k của hệ phẳng, vì cả hai cùng đo việc trả
   đúng trọn vẹn cả tập.
+
+**Vì sao đối chứng head-to-head bằng recall.** Recall đo được công bằng ở cả hai hình: một *tập* (ontology) lẫn một *danh sách
+top-k* (phẳng). Precision thì không: hệ phẳng buộc trả cố định k tài liệu, nên một câu chỉ có một đáp án mà trả ba tài liệu sẽ tụt
+precision vì hai cái thừa, dù tài liệu đúng nằm trong đó — đó là phạt *khuôn trả lời*, không phải phạt *sai*. Vì thế F1 (vốn chứa
+precision) không dùng để so head-to-head; nó chỉ được báo cho **ontology** như *chất lượng riêng* — hợp lệ vì ontology trả một tập
+gọn nên precision của nó không bị khuôn ghì. Ngược lại, hệ phẳng được chấm trên recall@k, chỉ số *có lợi nhất* cho nó, mà ontology
+vẫn vượt — nên kết luận là bảo thủ chứ không phải tâng ontology.
 
 Vì hệ phẳng phải chọn trước số tài liệu k, recall@k của nó tăng dần khi k lớn lên. Vẽ recall@k theo các giá trị k cho **đường
 recall**: đường càng phải nới k rộng mới đạt recall cao thì hệ càng yếu ở việc gom đủ đáp án trong một câu trả lời — hạn chế mà
@@ -774,8 +791,10 @@ tiếp cho luận điểm trung tâm.
 
 ![Hình 14](figures/recall_at_k.png)
 
-**Hình 14.** Đường recall@k của hệ phẳng (0,43 ở k=1 lên 0,77 ở k=5). Recall tăng khi nới k nhưng vẫn nằm dưới mốc recall 0,96 của
-ontology kể cả ở k=5, đồng thời phơi hạn chế phải xác định trước k: k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
+**Hình 14.** Đường recall@k của hệ phẳng (0,43 ở k=1 lên 0,77 ở k=5), so với mốc **recall 0,96** của ontology. Mốc này dùng *recall*
+để so cùng loại với recall@k — không phải F1 0,97 ở bảng tổng (F1 là chất lượng tổng hợp, recall là độ bao phủ; cùng một tập, hai
+góc nhìn). Recall của hệ phẳng tăng khi nới k nhưng vẫn dưới mốc ontology kể cả ở k=5, đồng thời phơi hạn chế phải xác định trước k:
+k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
 
 Ba quan sát chính:
 
@@ -802,7 +821,7 @@ Ba lưu ý khi đọc bảng số:
   recall@5.
 - **Hai hệ chấm theo lối khác nhau**: ontology chấm micro, hệ phẳng chấm trung bình theo câu — nên khi so "đúng trọn vẹn cả tập"
   phải đặt đúng cặp trùng khít tập ↔ full@k.
-- **Số ontology gần trần không có nghĩa "hoàn hảo"**: phần lớn nhờ kho chỉ 54 tài liệu và đáp án đã được oracle kiểm chứng; phần sai
+- **Số ontology gần trần không có nghĩa "hoàn hảo"**: phần lớn nhờ kho chỉ 54 tài liệu và đáp án chuẩn đã được kiểm chứng tự động; phần sai
   còn lại (khoảng 3–6%) chủ yếu đến từ bước sinh cây của mô hình.
 
 Toàn bộ kết quả nhất quán với giả thuyết nêu ở Mục 6.5.

@@ -14,7 +14,7 @@ Chỉ MỘT kho phẳng → người đọc chỉ thấy "ontology vs phẳng".
 
 ``--reaggregate`` đọc lại ``benchmark_details.jsonl`` (per-query gold/ont_pred/flat_top5) + lấy
 tầng-2 từ report cũ → dựng lại report+nhóm mà KHÔNG chạy BGE/model (tất định, dùng khi đổi cách
-gom nhóm). Gold suy từ cây-vàng-đã-qua-oracle (:mod:`.gold`). Ontology end-to-end = HF thật.
+gom nhóm). Đáp án chuẩn suy từ cây đáp án đã qua kiểm chứng (:mod:`.gold`). Ontology end-to-end = HF thật.
 """
 
 from __future__ import annotations

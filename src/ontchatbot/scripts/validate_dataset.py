@@ -15,8 +15,7 @@ Oracle nghiêm pin **toàn bộ outcome** của một cặp, không chỉ tập 
 * trace: resolve property phải đủ mạnh (score ≥ ``MIN_PROP_SCORE``) và KHÔNG nhập nhằng
   (best − runner-up ≥ ``TIE_MARGIN``) — chặn nhãn quá chung khớp may rủi.
 
-Đây là oracle dùng để giữ cặp dataset do Codex sinh (Recipe 2). Cũng tự-kiểm
-``resources/e2e/cases.jsonl`` (mọi cây vàng phải PASS nghiêm).
+Đây là bộ kiểm dùng để giữ cặp dataset do Codex sinh (Recipe 2).
 """
 
 from __future__ import annotations
