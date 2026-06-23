@@ -183,8 +183,8 @@ Module ghi tên tệp trong gói mã nguồn `src/ontchatbot/` để người đ
 | 1 · Làm sạch | `preprocess.py` | Chuẩn hoá chữ, không phân tích nội dung | "Phòng nào xử lý chuyển ngành?" | "phòng nào xử lý chuyển ngành" |
 | 2 · Mô hình BART | `model.py` | Hiểu câu, sinh cây thực thể | chuỗi đã chuẩn hoá | cây JSON, xem Mục 4.2 |
 | 3 · Kiểm tra cây | `tree.py` | Loại phần rác, kiểm tra định dạng | cây JSON thô | cây hợp lệ |
-| 4 · Duyệt ontology | `ontology.py` | Đi theo cây trên ontology | cây hợp lệ | đối tượng Result, xem Mục 4.3 |
-| 5 · Soạn trả lời | `render.py` | Ghép kết quả thành câu trả lời | Result | chuỗi trả lời |
+| 4 · Duyệt ontology | `ontology.py` | Đi theo cây trên ontology | cây hợp lệ | kết quả duyệt, xem Mục 4.3 |
+| 5 · Soạn trả lời | `render.py` | Ghép kết quả thành câu trả lời | kết quả duyệt | chuỗi trả lời |
 
 Năm chặng được điều phối bởi module `pipeline.py`, vốn chỉ nối các chặng theo một chiều phụ thuộc mà không chứa luật nghiệp vụ.
 Toàn bộ năng lực hiểu ngôn ngữ tập trung ở chặng 2; các chặng còn lại không chứa luật hiểu câu, và riêng chặng 4 chỉ thi hành đúng
@@ -257,13 +257,50 @@ Sau khi mô hình sinh ra cây JSON, chặng duyệt *thi hành* cây đó trên
 để thu về đáp án. Phần này trình bày ba điều theo thứ tự: cách khớp một nhãn với ontology, trạng thái mà thuật toán duy trì khi đi,
 và một ví dụ duyệt đầy đủ từng bước.
 
-**Khớp một nhãn với ontology.** Mỗi nút mang một nhãn chữ và một vai trò. Vai trò quyết định khớp nhãn vào thành phần nào của ontology:
-nút cá thể khớp với tên và tên gọi khác của các cá thể; nút quan hệ khớp với nhãn của các quan hệ; nút thuộc tính khớp với nhãn của
-các thuộc tính. Với cá thể, phép khớp dựa trên **chứa từ**: nhãn nút khớp một cá thể khi các từ trong nhãn nằm trong tên hoặc tên
-gọi khác của cá thể đó, và khi nhiều cá thể cùng khớp thì chọn cá thể đạt điểm cao nhất chứ không đặt ngưỡng cứng. Nhờ vậy một đoạn
-chữ dài vẫn khớp đúng cá thể mà không cần trùng khít từng chữ; ví dụ nhãn "bảo lưu" khớp cá thể `QuyTrinhBaoLuu` vì cá thể này mang
-các tên gọi khác "bảo lưu", "bảo lưu kết quả", "nghỉ học tạm thời". Với quan hệ và thuộc tính, phép khớp dựa trên nhãn đã khai báo;
-ví dụ nhãn "phòng xử lý" khớp quan hệ `duocXuLyBoi` vì quan hệ này được gán các nhãn "phòng phụ trách", "phòng xử lý" và "xử lý".
+**Khớp một nhãn: cho điểm rồi chọn cao nhất.** Mỗi nút mang một nhãn chữ và một vai trò; vai trò quyết định nhãn được đem so với
+thành phần nào của ontology — nút cá thể so với *tên và tên gọi khác* của các cá thể, nút quan hệ so với *nhãn quan hệ*, nút thuộc
+tính so với *nhãn thuộc tính*. Phép so không đặt ngưỡng cứng mà **cho điểm** từng ứng viên rồi giữ ứng viên có điểm cao nhất. Trước
+khi so, cả nhãn lẫn bề mặt đều được bỏ dấu và hạ chữ thường nên "Bảo Lưu" và "bảo lưu" được coi là một (dưới đây viết bề mặt ở dạng
+đã bỏ dấu như khi máy so, ví dụ `bao luu`).
+
+Điểm giữa một nhãn và một bề mặt được tính theo bốn mức, từ chặt đến lỏng:
+
+| Mức khớp | Điểm | Ví dụ: nhãn → bề mặt |
+|---|---|---|
+| Trùng khít cả chuỗi | 100 | `bao luu` → tên gọi khác `bao luu` |
+| Mọi từ của nhãn đều nằm trong bề mặt | 90 | `bao luu` → tên cá thể `output duoc bao luu` |
+| Nhãn là chuỗi con liền mạch của bề mặt | 80 | `luu` → `bao luu` |
+| Chỉ một phần số từ của nhãn trúng | 50 × tỉ lệ từ trúng | nhãn ba từ trúng một từ → 50 × 1/3 ≈ 17 |
+
+Một cá thể có nhiều bề mặt (tên, tên gọi khác, nhãn hiển thị); điểm của cá thể là điểm cao nhất trong các bề mặt đó. Xét nhãn gốc
+"bảo lưu" (chuẩn hoá thành `bao luu`) chấm trên vài cá thể cùng chứa cụm này:
+
+| Cá thể | Bề mặt khớp tốt nhất | Mức khớp | Điểm |
+|---|---|---|---|
+| `QuyTrinhBaoLuu` | tên gọi khác `bao luu` | trùng khít cả chuỗi | **100** |
+| `OutputDuocBaoLuu` | tên cá thể `output duoc bao luu` | đủ mọi từ | 90 |
+| `DonXinBaoLuu` | tên cá thể `don xin bao luu` | đủ mọi từ | 90 |
+| `DieuKienBaoLuuYTe` | tên cá thể `dieu kien bao luu y te` | đủ mọi từ | 90 |
+
+Chỉ `QuyTrinhBaoLuu` đạt 100 nhờ trùng khít đúng một tên gọi khác; các cá thể còn lại chỉ đạt 90 vì "bảo lưu" là tập con tên chúng
+chứ không trùng khít. Đỉnh điểm là 100 và duy nhất một cá thể chạm tới, nên gốc được chọn dứt khoát là `QuyTrinhBaoLuu`.
+
+**Lưới an toàn khi gốc nhập nhằng.** Quy tắc "chọn điểm cao nhất" chỉ an toàn khi đỉnh có đúng một cá thể. Hai tình huống thoái hoá
+được chặn ngay tại gốc và cho ra phản hồi "Không hiểu câu hỏi":
+
+- *Hoà điểm ở đỉnh.* Điều quyết định không phải con số tuyệt đối mà là **có đúng một cá thể ở đỉnh hay không**. Nếu mô hình rút gốc
+  còn cụm chung — ví dụ chỉ còn "học phần" (`hoc phan`) — thì có tới bốn cá thể cùng đạt 90 ngang nhau (điều kiện học lại, kết quả
+  có tên trong danh sách lớp, quy trình đăng ký học phần, quy trình rút môn học), tức **hoà ở đỉnh**. Vì mỗi cây ứng với đúng một
+  chủ thể, hoà ở gốc nghĩa là chủ thể mơ hồ, nên hệ từ chối thay vì gộp bừa cả nhóm. Ngược lại, nhãn đầy đủ "đăng ký học phần"
+  (`dang ky hoc phan`) cũng chỉ đạt 90, nhưng khi đó **duy nhất** `QuyTrinhDangKyHocPhan` chạm mức ấy (các cá thể khác rớt sâu xuống
+  dưới 40) → đỉnh có đúng một cá thể → đi tiếp bình thường.
+- *Gốc trỏ vào loại, không phải cá thể.* Nếu nhãn gốc khớp tên một *lớp* hay nhãn một *quan hệ* rõ hơn mọi cá thể — ví dụ gốc là
+  "điều kiện" (một lớp) thay vì một quy trình cụ thể — hệ cũng từ chối, vì theo hợp đồng gốc phải là một cá thể chủ thể.
+
+**Với nút quan hệ và nút thuộc tính**, phép cho điểm áp lên *nhãn đã khai báo* của quan hệ/thuộc tính, và chỉ xét những quan hệ/thuộc
+tính mà tập hiện tại thực sự có. Ví dụ nhãn "phòng xử lý" (`phong xu ly`) trùng khít nhãn `phòng xử lý` của quan hệ `duocXuLyBoi`
+→ 100; nhãn "email" trùng khít nhãn thuộc tính `email` → 100. Một nút con phải đạt tối thiểu 80 điểm mới được chấp nhận; dưới mức đó
+coi như không khớp và nhãn được ghi vào danh sách *không tìm thấy*, tránh việc một nhãn rác bị kéo đại vào quan hệ duy nhất của nút.
 
 **Trạng thái duyệt: tập hiện tại.** Thuật toán duy trì một *tập hiện tại*, là tập các cá thể đang được xét. Tập này khởi đầu bằng cá
 thể gốc rồi biến đổi mỗi khi đi qua một nút con, tuỳ vai trò của nút con đó:
@@ -272,7 +309,7 @@ thể gốc rồi biến đổi mỗi khi đi qua một nút con, tuỳ vai trò
 |---|---|---|
 | quan hệ (object property) | đi theo quan hệ từ mỗi cá thể trong tập | tập mới gồm các cá thể đích, đi tiếp được |
 | thuộc tính (data property) | đọc giá trị thuộc tính trên tập hiện tại | trả về giá trị, kết thúc nhánh |
-| cá thể (individual, không phải gốc) | giữ lại cá thể có tên khớp nhãn | tập thu hẹp, đi tiếp được |
+| cá thể (individual, không phải gốc) | trong tập hiện tại và các cá thể cách một bước quan hệ, giữ cá thể có tên khớp nhãn | tập thu hẹp, đi tiếp được |
 
 Cách bố trí nút quyết định phép hợp thành. Hai nút **lồng nhau** theo chuỗi cha–con mang nghĩa *và*: tầng con thao tác trên kết quả
 của tầng cha, nên nhiều nút lọc lồng nhau cho **phép giao** các điều kiện. Hai nút **anh em** cùng một cha là hai nhánh độc lập: mỗi
@@ -290,11 +327,11 @@ nút quan hệ rồi tới một nút thuộc tính lá:
 
 Thuật toán thi hành cây này theo ba bước, mỗi bước biến đổi tập hiện tại theo đúng vai trò của nút:
 
-| Bước | Nhãn nút | Vai trò | Phép làm | Tập hiện tại sau bước |
+| Bước | Nhãn nút | Vai trò | Phép làm (điểm khớp) | Tập hiện tại sau bước — nội dung thật |
 |---|---|---|---|---|
-| 0 | "bảo lưu" | cá thể (gốc) | khớp tên cá thể | `{ QuyTrinhBaoLuu }` |
-| 1 | "phòng xử lý" | quan hệ | đi theo quan hệ `duocXuLyBoi` | `{ PhongCTSV }` |
-| 2 | "email" | thuộc tính | đọc thuộc tính `email` của `PhongCTSV` | giá trị `"ctsv@ntu.edu.vn"`, kết thúc nhánh |
+| 0 | "bảo lưu" | cá thể (gốc) | khớp tên gọi khác (100) | `{ QuyTrinhBaoLuu }` — quy trình "Xin bảo lưu kết quả học tập" |
+| 1 | "phòng xử lý" | quan hệ | đi quan hệ `duocXuLyBoi` (100) | `{ PhongCTSV }` — "Phòng Công tác Sinh viên" |
+| 2 | "email" | thuộc tính | đọc thuộc tính `email` của `PhongCTSV` (100) | giá trị `"ctsv@ntu.edu.vn"` — kết thúc nhánh |
 
 Gốc cho tập hiện tại một phần tử. Nút quan hệ đẩy tập sang cá thể đích, đổi từ quy trình sang phòng. Nút thuộc tính đọc giá trị rồi
 đóng nhánh, nên đáp án cuối là giá trị thư điện tử; chặng soạn trả lời chuyển thành câu "Email: ctsv@ntu.edu.vn". Hình 4 tóm tắt
@@ -341,8 +378,9 @@ nhau** dưới gốc:
       { "label": "Công nghệ thông tin", "type": "individual", "children": [] } ] } ] } ] }
 ```
 
-Mỗi nút cá thể lọc tiếp trên kết quả nút trước: tập khởi đầu là mọi mức của Đóng học phí, nút "K65" giữ lại hai mức khoá K65, nút
-"Công nghệ thông tin" giữ tiếp một mức, thu về đúng một mức như Hình 6.
+Gốc "học phí" khớp cá thể quy trình đóng học phí; các mức phí nằm cách quy trình đúng một bước quan hệ nên lọt vào diện ứng viên của
+nút cá thể con (theo bảng vai trò ở trên). Từ đó mỗi nút cá thể lọc tiếp trên kết quả nút trước: nút "K65" giữ lại hai mức khoá K65,
+nút "Công nghệ thông tin" giữ tiếp một mức, thu về đúng một mức như Hình 6.
 
 ```mermaid
 flowchart LR
@@ -409,47 +447,71 @@ Bảng 7 minh hoạ cách chấm ở mức đầu cuối trên câu hỏi về c
 | trả về một phòng ban | đạt | đạt | 0 | 1 | 4 | 0,00 | 0,00 | 0,00 | 0 |
 | JSON hỏng | không | — | — | — | — | — | — | — | 0 |
 
-Trên toàn tập kiểm tra, các chỉ số ở mức câu được gộp lại như sau: exact match accuracy là tỷ lệ câu có P trùng khít G, còn
-macro-F1 là trung bình F1 lấy theo năm nhóm năng lực. Hai chỉ số này được báo cáo tách theo năm nhóm năng lực rồi lấy trung bình
-trên năm nhóm, đóng vai trò chỉ số chính phản ánh chất lượng đầu cuối. Trục năng lực được chọn thay cho trục miền dữ liệu để việc
-đánh giá bám đúng mục tiêu suy luận của đề tài, thay vì bị chi phối bởi một miền đông mẫu như học phí; các câu phi-truy-vấn được
-báo cáo riêng và không tính vào trung bình năng lực. Nhóm chẩn đoán gồm tỷ lệ cú pháp
-hợp lệ, tỷ lệ cấu trúc hợp lệ và độ chính xác phân loại act được báo cáo riêng, không cộng vào chỉ số chính, bởi một cây sai cú
-pháp hoặc sai cấu trúc tất yếu duyệt ra đáp án rỗng hoặc sai và đã bị trừ điểm trong các chỉ số đầu cuối. Với câu hỏi dạng giá trị
-như email hay số điện thoại, đáp án là một giá trị đơn nên exact-match trùng với độ chính xác của giá trị.
+Trên toàn tập kiểm tra, các chỉ số được gộp ở mức câu rồi tổ chức thành ba nhóm, nhằm tách bạch *chất lượng đầu cuối* khỏi các chỉ
+số chỉ đóng vai trò chẩn đoán:
+
+- **Hai chỉ số chính** phản ánh chất lượng đầu cuối. *Exact match accuracy* là tỷ lệ câu có tập đáp án P trùng khít đáp án chuẩn G;
+  *macro-F1* là trung bình của F1. Cả hai được tính riêng cho từng nhóm trong năm nhóm năng lực rồi lấy trung bình trên năm nhóm.
+  Trục năng lực được dùng thay cho trục miền dữ liệu để con số bám đúng mục tiêu suy luận của đề tài, không bị một miền đông mẫu như
+  học phí kéo lệch.
+- **Các câu không phải truy vấn** (chào hỏi, ngoài tri thức, mơ hồ) được báo cáo riêng và không tính vào trung bình năng lực, vì
+  chúng đo khả năng *từ chối đúng lúc* chứ không đo khả năng suy luận.
+- **Nhóm chẩn đoán** — tỷ lệ cú pháp hợp lệ, tỷ lệ cấu trúc hợp lệ và độ chính xác phân loại ý định — cũng báo cáo riêng, không cộng
+  vào chỉ số chính: một cây sai cú pháp hay sai cấu trúc tất yếu duyệt ra đáp án rỗng hoặc sai, nên đã bị trừ điểm sẵn trong chỉ số
+  đầu cuối.
+
+Với câu hỏi dạng giá trị như email hay số điện thoại, đáp án chỉ là một giá trị đơn, nên exact-match cũng chính là độ chính xác của
+giá trị đó.
 
 Trường `act` là một bài toán phân loại bốn lớp thông thường, được đánh giá bằng precision, recall, F1 theo từng lớp kèm ma trận
 nhầm lẫn.
 
-Trên tập kiểm tra gồm 2.251 câu, mô hình đạt exact match accuracy trung bình theo năm nhóm năng lực là 0,96 và macro-F1 là 0,97.
-Mọi câu đều sinh JSON hợp lệ và đúng hợp đồng cây. Riêng các câu truy vấn đạt exact match 0,96 và độ chính xác phân loại `act`
-1,00, gần như không sai ý định. Tách theo năm nhóm năng lực, kết quả đều ở mức cao và phản ánh đúng độ khó: đi nhiều bước 1,00,
-lọc theo ràng buộc 0,99, nhiều thuộc tính 0,98, tra cứu trực tiếp 0,95 và đi một quan hệ 0,94 (F1). Các loại phi-truy-vấn được báo
-cáo riêng: câu ngoài tri thức đạt F1 0,90, câu có gốc rơi vào lớp hay quan hệ trần (đáng lẽ trả lời "không hiểu") 0,83, và câu mơ
-hồ 0,81 — thấp hơn nhóm truy vấn, phản ánh một đánh đổi có chủ đích khi tăng cường dữ liệu cho các câu truy vấn quy trình vốn là
-trọng tâm của đề tài.
+Trên tập kiểm tra gồm 2.251 câu, mô hình đạt exact match accuracy trung bình theo năm nhóm năng lực là 0,96 và macro-F1 là 0,97;
+mọi câu đều sinh JSON hợp lệ và đúng hợp đồng cây. Riêng các câu truy vấn đạt exact match 0,96 và độ chính xác phân loại ý định
+1,00 — gần như không nhầm ý định.
 
-Các kết quả định lượng được trình bày dưới đây. Mọi hình ở mục này do `scripts/visualize.py` sinh từ `eval_report.json`
-(và log huấn luyện), nên được dựng lại sau mỗi lần huấn luyện và đánh giá.
+Tách theo nhóm, kết quả xếp đúng theo độ khó suy luận (Bảng 8): các nhóm cần đi theo quan hệ hoặc gom cả tập đạt gần như tuyệt đối,
+còn ba loại câu không phải truy vấn thấp hơn vì phải phân biệt ý định khi câu thiếu chủ thể rõ ràng.
+
+**Bảng 8.** F1 đầu cuối theo nhóm. Năm nhóm trên là câu truy vấn, được tính vào trung bình năng lực; ba nhóm dưới (in nghiêng) là
+câu không phải truy vấn, báo cáo riêng.
+
+| Nhóm | F1 |
+|---|---|
+| Đi nhiều bước | 1,00 |
+| Lọc theo ràng buộc | 0,99 |
+| Nhiều thuộc tính | 0,98 |
+| Tra cứu trực tiếp | 0,95 |
+| Đi một quan hệ | 0,94 |
+| *Ngoài tri thức* | *0,90* |
+| *Gốc là lớp hoặc quan hệ trần* | *0,83* |
+| *Mơ hồ* | *0,81* |
+
+Mức thấp hơn của ba loại cuối là một đánh đổi có chủ đích: dữ liệu được tăng cường cho các câu truy vấn quy trình diễn đạt khẩu ngữ
+— trọng tâm của đề tài — nên ranh giới phân loại dịch nhẹ về phía "trả lời được", chấp nhận đôi khi trả lời một câu mơ hồ thay vì
+từ chối.
+
+Ba biểu đồ dưới đây được sinh tự động từ kết quả đánh giá nên luôn khớp với số trong báo cáo, và được dựng lại sau mỗi lần huấn luyện.
 
 ![Hình 8](figures/training_curve.png)
 
-**Hình 8.** Đường cong huấn luyện: train loss và validation loss theo bước. Validation loss giảm từ 0,063 xuống mức tốt
-nhất 0,013 quanh epoch 8–9, nơi mô hình được chốt theo cơ chế giữ-bản-tốt-nhất-trên-tập-validation. Hình này do `train.py`
-lưu lại `log_history` sau khi huấn luyện rồi `visualize.py` dựng; nó được sinh lại ở mỗi lần huấn luyện.
+**Hình 8.** Đường cong huấn luyện. Hai đường là sai số (loss) của mô hình trên tập huấn luyện và trên tập kiểm định, đo lại sau mỗi
+vòng học. Cả hai cùng giảm và bám sát nhau — dấu hiệu mô hình đang thực sự học chứ không học vẹt; nếu sai số trên tập huấn luyện
+giảm trong khi trên tập kiểm định lại tăng thì đó mới là học thuộc lòng. Sai số trên tập kiểm định giảm từ 0,063 xuống mức thấp
+nhất 0,013 quanh vòng học thứ tám đến thứ chín, và bản mô hình ở chính điểm thấp nhất đó được giữ làm bản cuối.
 
 ![Hình 9](figures/eval_per_category.png)
 
-**Hình 9.** F1 và exact-match theo từng loại câu hỏi (đánh giá đầu-cuối). Các loại tra cứu một bước, phép giao và đi nhiều
-bước đạt gần như tuyệt đối; hai loại không-truy-vấn là câu mơ hồ (F1 0,77) và câu ngoài tri thức (0,874) thấp hơn, phản ánh
-độ khó tự nhiên của việc phân biệt ý định khi câu hỏi thiếu chủ thể cụ thể, chứ không phải khuyết tật của khâu duyệt.
+**Hình 9.** F1 và exact-match theo từng nhóm năng lực (đánh giá đầu cuối). Các nhóm đi nhiều bước, lọc theo ràng buộc và nhiều
+thuộc tính đạt gần như tuyệt đối; hai loại không phải truy vấn là câu mơ hồ (F1 0,81) và câu ngoài tri thức (0,90) thấp hơn, phản
+ánh độ khó tự nhiên của việc phân biệt ý định khi câu hỏi thiếu chủ thể cụ thể, chứ không phải khuyết tật của khâu duyệt.
 
 ![Hình 10](figures/intent_confusion.png)
 
-**Hình 10.** Ma trận nhầm lẫn của trường `act` (tô màu theo tỉ lệ hàng). Nhầm lẫn tập trung ở câu mơ hồ bị đoán thành truy
-vấn (22 trên 78) và câu ngoài tri thức bị đoán thành truy vấn (8 trên 103); lớp chào hỏi và truy vấn gần như không nhầm
-(truy vấn đúng 1.442 trên 1.451). Ranh giới có xu hướng dịch về phía truy vấn, đúng hướng đề tài là ưu tiên trả lời được câu
-thủ tục diễn đạt khẩu ngữ, nhưng F1 của câu mơ hồ vẫn tăng so với lần trước nhờ bù lại ở các câu mơ hồ thực sự thiếu chủ thể.
+**Hình 10.** Ma trận nhầm lẫn của bốn loại ý định (tô màu theo tỉ lệ hàng). Nhầm lẫn tập trung ở câu mơ hồ bị đoán thành truy vấn
+(22 trên 75) và câu ngoài tri thức bị đoán thành truy vấn (9 trên 110); lớp chào hỏi và truy vấn gần như không nhầm (truy vấn đúng
+2.040 trên 2.049). Ranh giới có xu hướng dịch về phía truy vấn — đúng hướng đề tài là ưu tiên trả lời được câu thủ tục diễn đạt
+khẩu ngữ, chấp nhận thỉnh thoảng nhận nhầm một câu mơ hồ.
 
 Hai độ đo BLEU và ROUGE, vốn đo độ tương đồng văn bản, không phù hợp làm thước đo chính ở đây, bởi cây JSON không phải văn xuôi và
 độ giống chữ không bảo đảm duyệt ra đáp án đúng.
@@ -586,7 +648,7 @@ phẳng (5 đầu): ["PhongCTSV", "PhongDaoTaoDaiHoc", "DonGiaHanThoiGianNopHocP
 ```
 Câu một bước, một thuộc tính của chính cá thể được hỏi: thông tin trưởng phòng nằm ngay trong tài liệu `PhongCTSV`, nên hệ phẳng
 bắt đúng tài liệu ở hạng nhất. Báo cáo nêu thẳng trường hợp hoà này để bảo đảm khách quan. (Hạn chế còn lại của hệ phẳng — chỉ
-trả về *tài liệu* chứ không tách ra *thuộc tính*, nên dễ trả nhầm số điện thoại khi hỏi email — được phân tích ở tầng đáp-án-cuối
+trả về *tài liệu* chứ không tách ra *thuộc tính*, nên dễ trả nhầm số điện thoại khi hỏi email — được phân tích ở tầng đáp án cuối
 tại Mục 6.6.)
 
 ### 6.5. Giả thuyết kiểm chứng
@@ -612,7 +674,7 @@ phép so cân xứng là đặt trùng khít tập của ontology cạnh full@k 
 
 | Hệ | recall | recall@3 | recall@5 | full@k |
 |---|---|---|---|---|
-| Ontology (đầu-cuối, mô hình thật) | 0,96 | — | — | 0,97 (trùng khít tập) |
+| Ontology (đầu cuối, mô hình thật) | 0,96 | — | — | 0,97 (trùng khít tập) |
 | Phẳng | 0,43 (@1) | 0,67 | 0,77 | 0,65 (full@3) |
 
 Tách theo năm nhóm năng lực truy vấn — xếp từ dễ đến khó — thấy rõ ontology không thắng đều, mà thắng đúng ở chỗ có cấu trúc:
@@ -638,18 +700,21 @@ tiếp cho luận điểm trung tâm.
 **Hình 14.** Đường recall@k của hệ phẳng (0,43 ở k=1 lên 0,77 ở k=5). Recall tăng khi nới k nhưng vẫn nằm dưới mốc recall 0,96 của
 ontology kể cả ở k=5, đồng thời phơi hạn chế phải xác định trước k: k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
 
-Quan sát chính. **Một**, ở nhóm tra cứu trực tiếp hai hệ tương đương, thậm chí hệ phẳng còn nhỉnh hơn đôi chút (recall@3 1,00 so với
-recall ontology 0,96) vì đáp án nằm ngay trong tài liệu chứa từ khoá câu hỏi, mà kho chỉ có 54 tài liệu nên truy hồi gần như luôn
-bắt trúng, trong khi ontology phải qua thêm bước sinh cây của mô hình nên thỉnh thoảng lệch nhẹ — vì vậy kết luận đúng là ontology
-thắng *tổng thể và đặc biệt ở câu có cấu trúc*, không phải thắng mọi loại. **Hai**, khoảng cách lớn nhất lộ ra khi đọc cột
-recall@1: ở nhóm tra cứu trực tiếp hệ phẳng đạt 0,98, nhưng ở nhóm đi một quan hệ chỉ còn 0,11 và đi nhiều bước 0,19. Lý do là khi
-đáp án *rời khỏi* tài liệu chứa từ khoá — sang một phòng ban, một tập điều kiện, hay qua nhiều bước quan hệ — thì tài liệu phẳng
-không còn manh mối nào để xếp đúng nó lên đầu. **Ba**, hệ phẳng cũng không gom được một *tập* đáp án nằm rải ở nhiều tài liệu (như
-bốn điều kiện bảo lưu ở Ví dụ 2), nên ngay cả khi nới k, full@k vẫn khó đạt trọn vẹn.
+Ba quan sát chính:
 
-**Tầng đáp-án-cuối (chỉ câu hỏi thuộc tính).** Sau khi tìm đúng tài liệu còn phải chọn đúng thuộc tính và giá trị. Ontology đạt từ
+- **Hai hệ tương đương ở câu tra cứu trực tiếp**, thậm chí hệ phẳng nhỉnh hơn đôi chút (recall@3 1,00 so với recall ontology 0,96),
+  vì đáp án nằm ngay trong tài liệu chứa từ khoá và kho chỉ có 54 tài liệu nên truy hồi gần như luôn bắt trúng; ontology phải qua
+  thêm bước sinh cây nên thỉnh thoảng lệch nhẹ. Vì vậy kết luận đúng là ontology thắng *tổng thể và đặc biệt ở câu có cấu trúc*,
+  không phải thắng mọi loại.
+- **Khoảng cách lớn nhất lộ ra ở cột recall@1**: nhóm tra cứu trực tiếp hệ phẳng đạt 0,98, nhưng đi một quan hệ chỉ còn 0,11 và đi
+  nhiều bước 0,19. Khi đáp án *rời khỏi* tài liệu chứa từ khoá — sang một phòng ban, một tập điều kiện, hay qua nhiều bước quan hệ —
+  tài liệu phẳng không còn manh mối nào để xếp nó lên đầu.
+- **Hệ phẳng không gom được một *tập* đáp án rải ở nhiều tài liệu** (như bốn điều kiện bảo lưu ở Ví dụ 2), nên ngay cả khi nới k,
+  full@k vẫn khó đạt trọn vẹn.
+
+**Tầng đáp án cuối (chỉ câu hỏi thuộc tính).** Sau khi tìm đúng tài liệu còn phải chọn đúng thuộc tính và giá trị. Ontology đạt từ
 0,89 (nhóm nhiều thuộc tính) đến 1,00 (đi nhiều bước) cho cả việc tìm đúng thuộc tính và đúng giá trị, phần lớn trên 0,95. Hệ phẳng thuần truy hồi không trích thuộc tính nên không áp dụng được ở tầng này; đây là khác biệt bản chất chứ không
-phải một con số thấp, và được ghi rõ là không-áp-dụng thay vì trộn vào tầng truy hồi.
+phải một con số thấp, và được ghi rõ là không áp dụng thay vì trộn vào tầng truy hồi.
 
 Lưu ý khi đọc số: full@3 bất lợi về mặt cơ học cho câu có tập đáp án lớn hơn ba (ví dụ liệt kê bốn điều kiện hay học phí gộp nhiều
 mức), nên với các câu này phải đọc kèm recall@5; chỉ số ontology chấm theo micro còn hệ phẳng chấm trung bình theo câu, nên so
