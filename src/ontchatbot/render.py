@@ -76,7 +76,11 @@ def _render_node(node: OntNode, *, bullet: str = "") -> str:
         if value in (None, "", []):
             continue
         if key in _PARAGRAPH:
-            lines.append(f"   {_HEADER.get(key, key)}: {value}")
+            # Đoạn văn xuôi: nhãn đứng riêng một dòng (cấp 1), từng dòng nội
+            # dung thụt sâu thêm một cấp (cấp 2) để mọi dòng — kể cả dòng tiếp
+            # của câu dài — thẳng hàng dưới nhãn, đọc như một cây.
+            lines.append(f"   {_HEADER.get(key, key)}:")
+            lines += [f"      {ln.strip()}" for ln in str(value).split("\n") if ln.strip()]
         else:
             lines.append("   - " + _format_field(key, value))
     return "\n".join(lines)

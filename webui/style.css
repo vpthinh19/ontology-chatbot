@@ -131,6 +131,29 @@ body.chats-active .container .app-header {
     margin: 9px auto;
 }
 
+/* Bot reply: nhẹ một card để tách khỏi nền, bo góc lệch như bong bóng chat */
+.chats-container .bot-message .message-text {
+    padding: 10px 16px;
+    max-width: 88%;
+    background: var(--secondary-color);
+    border-radius: 3px 14px 14px 14px;
+}
+
+/* Cây đáp án: mỗi dòng thụt trái theo độ sâu (cấp). padding-left áp lên cả
+   block nên dòng dài khi xuống hàng vẫn thẳng lề thụt (hanging indent). */
+.message-text .reply-line {
+    padding-left: calc(var(--depth, 0) * 1.5em);
+    white-space: normal;
+}
+
+.message-text .reply-line.spacer {
+    height: 0.5em;
+}
+
+.message-text .reply-head {
+    font-weight: 600;
+}
+
 .chats-container .user-message {
     flex-direction: column;
     align-items: flex-end;

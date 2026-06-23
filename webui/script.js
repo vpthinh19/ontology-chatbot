@@ -21,42 +21,47 @@ const createMessageElement = (content, ...classes) => {
 };
 // Scroll to the bottom of the container
 const scrollToBottom = () => container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
-// Convert plain text with markdown-style links and newlines into safe
-// HTML. URLs in the form [label](url) become anchor tags; bare http(s)
-// URLs are auto-linked; everything else is HTML-escaped to prevent
-// injection.
+// HTML-escape a string to prevent injection. Markdown links and bare
+// URLs are turned into anchors by renderLineContent below.
 const escapeHtml = (s) => s
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-const renderRichText = (text) => {
-    const PLACEHOLDER = "LINK";
+// Convert ONE line of text into safe HTML: markdown links → anchors,
+// bare URLs auto-linked, everything else HTML-escaped. The URL group
+// allows one level of balanced parens (some upstream PDF URLs contain
+// "(YYYY)"); the backend also percent-encodes parens as defense-in-depth.
+const renderLineContent = (text) => {
+    const PH = "";                 // private-use sentinel, never in real text
     const links = [];
-    // 1) extract markdown links so their inner HTML survives escaping.
-    //    The URL group allows one level of balanced parens — needed
-    //    because some upstream PDF URLs contain literal "(YYYY)" or
-    //    "(N)" segments. Backend also percent-encodes parens; this
-    //    regex is defense-in-depth against any URL that slips through
-    //    without encoding.
     let pre = text.replace(
         /\[([^\]]+)\]\((https?:\/\/(?:\([^)]*\)|[^()\s])+)\)/g,
         (_, label, url) => {
             links.push(`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`);
-            return PLACEHOLDER;
+            return PH;
         });
-    // 2) escape the rest
     pre = escapeHtml(pre);
-    // 3) auto-link bare URLs (post-escape so the http// chars survived)
     pre = pre.replace(/(https?:\/\/[^\s<]+)/g,
         (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`);
-    // 4) restore markdown links
     let i = 0;
-    pre = pre.replace(new RegExp(PLACEHOLDER, "g"), () => links[i++]);
-    // 5) horizontal rules: lines with 3+ dashes become <hr>
-    pre = pre.replace(/[\r\n]*---[\r\n]*/g, "<hr>");
-    // 6) double spaces → &nbsp;&nbsp; to preserve intentional spacing (e.g. in code snippets)
-    pre = pre.replace(/  /g, "&nbsp;&nbsp;");
-    // 7) newlines → <br>
-    return pre.replace(/\n/g, "<br>");
+    return pre.replace(new RegExp(PH, "g"), () => links[i++]);
+};
+// Convert the bot reply into an indented tree. render.py emits 3 spaces
+// per nesting level; here each line becomes a block whose left padding =
+// its depth, so a long line that wraps stays aligned (hanging indent).
+// Depth-0 lines are titles. A blank line becomes a small vertical gap.
+const INDENT_UNIT = 3;
+const renderRichText = (text) => {
+    let html = "";
+    for (const raw of text.split("\n")) {
+        if (/^\s*-{3,}\s*$/.test(raw)) { html += "<hr>"; continue; }
+        const m = raw.match(/^( *)(.*)$/);
+        const depth = Math.floor(m[1].length / INDENT_UNIT);
+        const content = m[2].replace(/\s+$/, "");
+        if (!content) { html += '<div class="reply-line spacer"></div>'; continue; }
+        const cls = depth === 0 ? "reply-line reply-head" : "reply-line";
+        html += `<div class="${cls}" style="--depth:${depth}">${renderLineContent(content)}</div>`;
+    }
+    return html;
 };
 // Render the bot reply immediately as rich HTML — no typing
 // animation. The chatbot is fast enough that incremental reveal
@@ -105,7 +110,7 @@ const handleFormSubmit = (e) => {
     chatsContainer.appendChild(userMsgDiv);
     scrollToBottom();
     setTimeout(() => {
-        const botMsgHTML = `<span class="avatar material-symbols-rounded" style="display:flex;align-items:center;justify-content:center;color:#1d7efd;">school</span> <p class="message-text">Đang tra cứu...</p>`;
+        const botMsgHTML = `<span class="avatar material-symbols-rounded" style="display:flex;align-items:center;justify-content:center;color:#1d7efd;">school</span> <div class="message-text">Đang tra cứu...</div>`;
         const botMsgDiv = createMessageElement(botMsgHTML, "bot-message", "loading");
         chatsContainer.appendChild(botMsgDiv);
         scrollToBottom();
