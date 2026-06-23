@@ -11,7 +11,7 @@ requires-python = ">=3.12"
 dependencies = [
     "ctranslate2>=4.8.0",
     "numpy>=2.4.6",
-    "owlready2>=0.50",
+    "owlready2>=0.51",
     "sentencepiece>=0.2.1",
 ]
 
