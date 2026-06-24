@@ -65,7 +65,7 @@ def convert(args: argparse.Namespace) -> int:
         ctranslate2.converters.TransformersConverter(model_name_or_path=td).convert(
             output_dir=out_dir, quantization="int8", force=True)
     tokenizer.save_pretrained(out_dir)                             # self-contained cho deploy
-    print(f"[convert] ✅ CT2 int8 → {out_dir} (kèm tokenizer)")
+    print(f"[convert]  CT2 int8 → {out_dir} (kèm tokenizer)")
     return 0
 
 

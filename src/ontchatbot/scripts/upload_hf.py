@@ -46,7 +46,7 @@ def main() -> None:
     print(f"[upload] đẩy {md} ({_dir_size_mb(md):.0f} MB) → {args.repo} …")
     api.upload_folder(folder_path=str(md), repo_id=args.repo, repo_type="model",
                       commit_message=args.commit_message)
-    print(f"[upload] ✅ xong → https://huggingface.co/{args.repo}")
+    print(f"[upload]  xong → https://huggingface.co/{args.repo}")
 
 
 def _dir_size_mb(path: Path) -> float:
