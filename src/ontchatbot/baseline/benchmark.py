@@ -1,4 +1,4 @@
-"""Benchmark — ontology (duyệt cấu trúc) vs PHẲNG (truy hồi BGE) — 2 TẦNG metric.
+"""Benchmark - ontology (duyệt cấu trúc) vs PHẲNG (truy hồi BGE) - 2 TẦNG metric.
 
     uv run --extra train python -m ontchatbot.baseline.benchmark \
         [--ontology-source model|gold] [--limit N]
@@ -7,10 +7,10 @@
 Phân loại theo **NHÓM NĂNG LỰC** (:mod:`.groups`) hợp đề tài quy trình, KHÔNG theo miền học phí.
 Chỉ MỘT kho phẳng → người đọc chỉ thấy "ontology vs phẳng".
 
-**Tầng 1 — TRUY HỒI (cùng đơn vị: tập IRI):**
+**Tầng 1 - TRUY HỒI (cùng đơn vị: tập IRI):**
 * Ontology trả ĐÚNG TẬP → precision/recall/F1 (micro) + exact-set.
 * Phẳng trả danh sách xếp hạng → recall@k / precision@k / full@k (k=1/3/5, **headline @3**).
-**Tầng 2 — ĐÁP-ÁN-CUỐI (chỉ truy vấn data):** ontology chọn đúng field+value; phẳng **N/A**.
+**Tầng 2 - ĐÁP-ÁN-CUỐI (chỉ truy vấn data):** ontology chọn đúng field+value; phẳng **N/A**.
 
 ``--reaggregate`` đọc lại ``benchmark_details.jsonl`` (per-query gold/ont_pred/flat_top5) + lấy
 tầng-2 từ report cũ → dựng lại report+nhóm mà KHÔNG chạy BGE/model (tất định, dùng khi đổi cách
@@ -42,7 +42,7 @@ _FLAT_KEYS = tuple(f"{m}@{k}" for k in _KS for m in ("recall", "precision", "ful
 
 
 def _versions() -> dict:
-    """Phiên bản package để audit/tái lập — đọc metadata, không import."""
+    """Phiên bản package để audit/tái lập - đọc metadata, không import."""
     import importlib.metadata as md
     out = {}
     for pkg in ("torch", "transformers", "FlagEmbedding", "scikit-learn", "ctranslate2"):
@@ -155,7 +155,7 @@ def run(args: argparse.Namespace) -> int:
     texts = [r["text"] for r, _ in retr]
     corpus = load_flat_db()                      # ưu tiên artifact đã vật chất hoá (peer của ontology)
     if corpus is None:
-        print("[bench] ⚠️ chưa có artifact kho phẳng — dựng tạm; chạy scripts.build_flat_db để vật chất hoá")
+        print("[bench]  chưa có artifact kho phẳng - dựng tạm; chạy scripts.build_flat_db để vật chất hoá")
         corpus = build_corpus(ont)
     print(f"[bench] phẳng corpus={len(corpus)} docs → rank {len(texts)} queries…")
     flat_ranked = retrieval.rank_all(corpus, texts)
@@ -243,7 +243,7 @@ def _report(cats: dict, details, args, config: dict) -> None:
                 "exact_set": c["ont_exact"] / c["n"] if c["n"] else 0.0}
 
     order = [g for g in GROUP_KEYS if g in cats] + [g for g in cats if g not in GROUP_KEYS]
-    print("\n=== TẦNG 1: TRUY HỒI (tìm đúng tập IRI) — theo NHÓM NĂNG LỰC ===")
+    print("\n=== TẦNG 1: TRUY HỒI (tìm đúng tập IRI) - theo NHÓM NĂNG LỰC ===")
     hdr = (f"{'nhóm năng lực':20} {'n':>4} | {'ONT-P':>6}{'ONT-R':>6}{'ONT-F1':>7}{'ONT-ex':>7} | "
            f"{'PHẲNG-R@3':>10}{'R@5':>6}{'full@3':>7}")
     print(hdr); print("-" * len(hdr))
@@ -276,7 +276,7 @@ def _report(cats: dict, details, args, config: dict) -> None:
     report["overall"] = {"ontology": micro, "flat": flat_overall}
 
     # ── Tầng 2: đáp-án-cuối (data) ──
-    print("\n=== TẦNG 2: ĐÁP-ÁN-CUỐI (truy vấn data) — phẳng = N/A (retrieval-only) ===")
+    print("\n=== TẦNG 2: ĐÁP-ÁN-CUỐI (truy vấn data) - phẳng = N/A (retrieval-only) ===")
     for grp in order:
         c = cats[grp]
         if not c["data_n"]:

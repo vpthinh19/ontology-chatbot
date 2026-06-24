@@ -1,4 +1,4 @@
-"""Centralised configuration — paths, model ids, hyper-parameters.
+"""Centralised configuration - paths, model ids, hyper-parameters.
 
 All paths are derived from the package root so the codebase works both as a
 source checkout and as an installed wheel.
@@ -54,7 +54,7 @@ FIGURES_DIR = PROJECT_ROOT / "docs" / "figures"
 # Web UI
 WEB_DIR = PROJECT_ROOT / "webui"
 
-# Model — BARTpho-syllable seq2seq (text → cây JSON). Serve nạp model CTranslate2 cục bộ nếu có,
+# Model - BARTpho-syllable seq2seq (text → cây JSON). Serve nạp model CTranslate2 cục bộ nếu có,
 # không thì snapshot_download từ HF repo. BARTpho là mBART (encoder-decoder),
 #  KHÁC T5: inference qua ctranslate2.Translator (xem model.py), KHÔNG dùng generate().
 MODEL_NAME = "vinai/bartpho-syllable"
@@ -62,7 +62,7 @@ FINETUNED_MODEL_NAME = "vpthinh19/bartpho-ontology"    # repo HF cho bartpho fin
 MAX_SOURCE_LENGTH = 128
 MAX_TARGET_LENGTH = 256
 
-# Inference deploy — CTranslate2 (thay ONNX: gọn cho encoder+decoder, CPU int8 nhanh).
+# Inference deploy - CTranslate2 (thay ONNX: gọn cho encoder+decoder, CPU int8 nhanh).
 # Convert: thêm `config.normalize_before = True` (pretrained thiếu → CT2 sinh rác nếu
 # bỏ qua) rồi TransformersConverter(quantization="int8"). Thư mục model CT2 sau convert:
 CT2_MODEL_DIR = ARTIFACTS_DIR / "models" / "bartpho_ct2"

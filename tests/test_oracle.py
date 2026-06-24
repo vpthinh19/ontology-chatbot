@@ -1,6 +1,6 @@
 """Oracle nghiêm Phase 3.5: strict-parse + validate + MUTATION (REVIEW §C5/§C6).
 
-Mục tiêu: chứng minh oracle KHÔNG "xanh giả" — cây đột biến (sai type/label/cấu trúc)
+Mục tiêu: chứng minh oracle KHÔNG "xanh giả" - cây đột biến (sai type/label/cấu trúc)
 PHẢI bị từ chối; còn phép hoán đổi commutative (thứ tự sibling, k65↔cntt cùng giao)
 KHÔNG được từ chối. Đây là điều kiện đủ trước khi dùng traverse làm oracle cho dataset.
 """
@@ -49,7 +49,7 @@ def test_parse_strict_accepts_valid():
 
 
 def test_parse_lenient_still_tolerant():
-    # parse() production vẫn khoan dung (không raise) — tách bạch với strict
+    # parse() production vẫn khoan dung (không raise) - tách bạch với strict
     assert parse({"act": "query", "entities": [ind("a"), ind("b")]}).root is not None
 
 

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "ontchatbot"
 version = "0.1.1"
-description = "Vietnamese academic-procedure chatbot — BARTpho (text→cây JSON) + ontology traversal"
+description = "Vietnamese academic-procedure chatbot - BARTpho (text→cây JSON) + ontology traversal"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

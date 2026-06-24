@@ -2,8 +2,8 @@
 
     uv run --extra inference python -m ontchatbot.scripts.build_flat_db
 
-Đọc ontology rồi "đập" mỗi cá thể thành một phiếu văn bản phẳng — gộp nhãn, tên gọi khác, phân
-loại và các giá trị thuộc tính, đồng thời LOẠI BỎ mọi quan hệ — ghi ra artifact
+Đọc ontology rồi "đập" mỗi cá thể thành một phiếu văn bản phẳng - gộp nhãn, tên gọi khác, phân
+loại và các giá trị thuộc tính, đồng thời LOẠI BỎ mọi quan hệ - ghi ra artifact
 ``resources/baseline/flat_db.jsonl`` (mỗi dòng một cá thể). Artifact này là comparand ngang hàng
 với tệp ontology; vì ontology còn được chỉnh sửa, hãy chạy lại lệnh này mỗi khi ontology đổi để
 kho phẳng luôn khớp nội dung. Khâu đối chứng (``baseline.benchmark``) nạp thẳng artifact này.

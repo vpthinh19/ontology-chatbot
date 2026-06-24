@@ -1,4 +1,4 @@
-"""NTU academic-procedure chatbot — model sinh cây truy vấn JSON + duyệt ontology."""
+"""NTU academic-procedure chatbot - model sinh cây truy vấn JSON + duyệt ontology."""
 
 __version__ = "0.1.0"
 

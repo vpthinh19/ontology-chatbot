@@ -3,7 +3,7 @@
 Mỗi cá thể → MỘT phiếu, **id = IRI** (khớp ontology để chấm chung mức IRI). Nội dung là văn
 xuôi tiếng Việt **trung thành tuyệt đối** với fact ontology (sinh chương-trình, không LLM → tái
 lập được, không bịa): chỉ thông tin của CHÍNH cá thể (nhãn + alias + phân loại + giá trị data),
-**loại bỏ mọi quan hệ** — đó chính là điểm yếu cấu trúc mà benchmark phơi ra. Phiếu fee chứa đủ
+**loại bỏ mọi quan hệ** - đó chính là điểm yếu cấu trúc mà benchmark phơi ra. Phiếu fee chứa đủ
 **facet** (mã khoá + tên/alias ngành) nên truy vấn lọc-giao có cơ hội công bằng (phẳng thua là do
 thiếu suy luận, không phải lỗi dựng phiếu).
 """
@@ -15,7 +15,7 @@ import json
 from ..config import RESOURCES
 from ..ontology import Ontology, _ALIAS_PROP
 
-# Artifact kho phẳng đã vật chất hoá (một dòng JSON mỗi cá thể) — ngang hàng với tệp ontology,
+# Artifact kho phẳng đã vật chất hoá (một dòng JSON mỗi cá thể) - ngang hàng với tệp ontology,
 # sinh lại bằng ``scripts.build_flat_db`` mỗi khi ontology đổi.
 FLAT_DB_PATH = RESOURCES / "baseline" / "flat_db.jsonl"
 

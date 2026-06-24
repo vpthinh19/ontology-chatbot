@@ -25,10 +25,7 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
-      # Tests chỉ đụng lõi ontology (owlready2/ctranslate2/sentencepiece) — KHÔNG cần torch/
-      # FlagEmbedding/transformers. Dùng `--extra inference` (= đúng bộ deps image deploy) để CI
-      # nhẹ + chắc: tránh tải torch cu130 (~3.5GB) trên runner CPU, đồng thời xác nhận lõi import
-      # đủ chạy chỉ với deps inference. (Nếu sau này thêm test cần train extra thì đổi lại.)
+
       - name: Install dependencies (inference extra + dev)
         run: uv sync --frozen --extra inference --dev
 
@@ -54,14 +51,12 @@ jobs:
           VERSION=$(grep -m1 '^version = ' pyproject.toml | sed -E 's/version *= *"(.+)"/\1/')
           echo "pyproject version: $VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          # So theo SỰ TỒN TẠI của tag (không so với 'tag mới nhất') — bất biến với việc repo
-          # lẫn nhiều kiểu tag (v1, v0.1.0…); chỉ release khi version này CHƯA có tag.
           if git rev-parse "refs/tags/v$VERSION" >/dev/null 2>&1; then
             echo "should_release=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Tag v$VERSION đã tồn tại — bỏ qua release (bump version trong pyproject.toml để phát hành)"
+            echo "::notice::The tag v$VERSION already exists - skip the release (bump the version in pyproject.toml to release)."
           else
             echo "should_release=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::Version $VERSION chưa có tag — tiến hành build + release"
+            echo "::notice::Version $VERSION has no tag yet - proceed with build and release."
           fi
 
   release:
@@ -89,7 +84,7 @@ jobs:
         run: |
           REVISION=$(curl -sf https://huggingface.co/api/models/vpthinh19/bartpho-ontology | jq -r .sha)
           if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
-            echo "::error::Failed to resolve HF Hub revision (đã upload model CT2 lên HF chưa?)"
+            echo "::error::Failed to resolve HF Hub revision"
             exit 1
           fi
           echo "revision=$REVISION" >> "$GITHUB_OUTPUT"

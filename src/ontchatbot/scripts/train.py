@@ -3,7 +3,7 @@
     uv run --extra train python -m ontchatbot.scripts.train [--model ...] [--epochs ...]
 
 Học cặp (câu → cây JSON) ở ``resources/datasets/{train,test}.jsonl`` (mỗi dòng có ``text``
-+ ``tree``). Source = ``preprocess.clean(text)`` — **CÙNG hàm** pipeline gọi lúc infer (tránh
++ ``tree``). Source = ``preprocess.clean(text)`` - **CÙNG hàm** pipeline gọi lúc infer (tránh
 lệch phân phối train↔infer). Target = ``tree.to_model_json`` (đổi ``entities``→``items``
 + **space-pad** quanh mọi `"`): tokenizer BARTpho tokenize chữ DÍNH dấu `"` rất tệ (nhãn tiếng Việt
 vỡ vụn, "individual"→"al"); pad làm nó tokenize tự nhiên như pretrain; ``model.from_model_json`` đảo
@@ -14,11 +14,11 @@ chốt: batch 8, lr 3e-5, lr_scheduler cosine + warmup 100. Mặc định
 nạp ``config.MODEL_NAME`` (bartpho-syllable large ~400M); muốn nhẹ VRAM hơn truyền
 ``--model vinai/bartpho-syllable-base``. ``--grad-checkpointing`` để giảm activation khi VRAM sát.
 
-**Validation** tách TỪ train (``--val-size``, mặc định ``config.VAL_SIZE``) — ``test.jsonl`` KHÔNG
+**Validation** tách TỪ train (``--val-size``, mặc định ``config.VAL_SIZE``) - ``test.jsonl`` KHÔNG
 đụng tới ở script này (giữ sạch cho ``evaluate.py``, tránh chọn checkpoint theo test = rò rỉ).
 ``load_best_model_at_end`` lưu checkpoint TỐT NHẤT theo ``eval_loss`` trên VAL, không phải bước cuối.
 
-Eval ĐÚNG-CẠNH (sinh cây → traverse → so node với gold) tách ở ``evaluate.py`` — script này lo
+Eval ĐÚNG-CẠNH (sinh cây → traverse → so node với gold) tách ở ``evaluate.py`` - script này lo
 train + lưu model; ở đây chỉ theo dõi eval-loss (trên VAL).
 """
 
@@ -86,7 +86,7 @@ def _tokenize(batch, tokenizer):
 
 
 def _check_target_roundtrip(tokenizer) -> None:
-    """TRIPWIRE: target phải SỐNG SÓT qua tokenizer — ``from_model_json`` của chuỗi SAU tokenizer phải
+    """TRIPWIRE: target phải SỐNG SÓT qua tokenizer - ``from_model_json`` của chuỗi SAU tokenizer phải
     == của chuỗi TRƯỚC tokenizer (đo mất-mát tokenizer THUẦN, độc lập việc nắn dấu/đổi key trong
     to_model_json). Nếu không, model học chuỗi SAI mà không ai biết (vụ "individual"→"al" âm thầm 11%
     suốt). Luôn IN tỉ lệ; CHẶN train nếu <95%. Bắt mọi hồi quy (đổi serialization, thêm nhãn, đổi tokenizer)."""
@@ -102,7 +102,7 @@ def _check_target_roundtrip(tokenizer) -> None:
                                     skip_special_tokens=True)
             try:
                 ok = from_model_json(back) == from_model_json(s)
-            except Exception:                    # noqa: BLE001 — JSON hỏng cũng là không round-trip
+            except Exception:                    # noqa: BLE001 - JSON hỏng cũng là không round-trip
                 ok = False
             if not ok:
                 bad += 1
@@ -114,7 +114,7 @@ def _check_target_roundtrip(tokenizer) -> None:
         print(f"        S: {s[:120]}\n        B: {b[:120]}")
     if rate < 0.95:
         raise SystemExit(
-            f"[train] ⛔ {bad}/{n} target KHÔNG dựng lại đúng cây qua tokenizer — model sẽ học chuỗi SAI. "
+            f"[train]  {bad}/{n} target KHÔNG dựng lại đúng cây qua tokenizer - model sẽ học chuỗi SAI. "
             "Sửa serialization (tree.to_model_json) / nhãn trước khi train (xem S vs B ở trên).")
 
 
@@ -125,7 +125,7 @@ def train(args: argparse.Namespace) -> None:
     if args.grad_checkpointing:
         model.config.use_cache = False          # bắt buộc khi bật gradient checkpointing
 
-    # Tách VAL từ train (seeded, có shuffle). test.jsonl KHÔNG nạp ở đây — giữ sạch cho evaluate.py.
+    # Tách VAL từ train (seeded, có shuffle). test.jsonl KHÔNG nạp ở đây - giữ sạch cho evaluate.py.
     split = _load_pairs(TRAIN_PATH).train_test_split(test_size=args.val_size, seed=args.seed, shuffle=True)
     train_ds = split["train"].map(
         lambda b: _tokenize(b, tokenizer), batched=True, remove_columns=["source", "target"])

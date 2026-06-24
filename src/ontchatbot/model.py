@@ -1,7 +1,7 @@
 """Model: BARTpho-syllable seq2seq sinh CÂY JSON từ text.
 
-Inference qua **CTranslate2** (int8, CPU — ràng buộc deploy) + **sentencepiece TRỰC TIẾP**
-(KHÔNG cần transformers/torch — deploy chỉ core deps + fastapi). BARTpho là mBART (encoder-decoder),
+Inference qua **CTranslate2** (int8, CPU - ràng buộc deploy) + **sentencepiece TRỰC TIẾP**
+(KHÔNG cần transformers/torch - deploy chỉ core deps + fastapi). BARTpho là mBART (encoder-decoder),
 đi theo pattern :class:`ctranslate2.Translator` token→token (KHÔNG dùng HF ``generate``):
 
     src = ["<s>"] + sp.EncodeAsPieces(text) + ["</s>"]   # khớp đúng tokenizer transformers
@@ -9,14 +9,14 @@ Inference qua **CTranslate2** (int8, CPU — ràng buộc deploy) + **sentencepi
     json_str = sp.DecodePieces([t for t in out if t not in SPECIAL])
 
 rồi ``json.loads`` ra ``{"act", "entities": [...]}`` (xem :func:`tree.parse`). Model làm TOÀN BỘ
-việc hiểu câu (trích xuất, dựng quan hệ, đoán act) — pipeline không có luật xử-lý-câu (§9).
+việc hiểu câu (trích xuất, dựng quan hệ, đoán act) - pipeline không có luật xử-lý-câu (§9).
 
-⚠️ Vì sao sentencepiece chứ KHÔNG transformers.AutoTokenizer: đường deploy phải gọn (core +
+ Vì sao sentencepiece chứ KHÔNG transformers.AutoTokenizer: đường deploy phải gọn (core +
 fastapi), tránh kéo cả hệ sinh thái transformers. Người dùng đã test (`dev/inf_test.py`) và parity
 ``["<s>"] + EncodeAsPieces + ["</s>"]`` == ``AutoTokenizer.convert_ids_to_tokens(encode(...))``
 đã được kiểm (khớp tuyệt đối) nên KHÔNG lệch so với lúc train/eval.
 
-⚠️ :meth:`to_tree` nhận text **ĐÃ qua ``preprocess.clean``** (pipeline clean trước khi gọi — đồng bộ
+ :meth:`to_tree` nhận text **ĐÃ qua ``preprocess.clean``** (pipeline clean trước khi gọi - đồng bộ
 với train/eval); KHÔNG clean lại ở đây. JSON model sinh hỏng → trả cây ``vague`` (khoan dung như
 production, không ném lỗi giữa request). Model CT2 nạp từ ``config.CT2_MODEL_DIR`` (convert bằng
 ``scripts.convert_ct2``); thiếu cục bộ → ``snapshot_download`` từ HF repo người dùng.
@@ -71,12 +71,12 @@ class TreeModel:
 
         path = self._dir
         if not (path / "model.bin").exists():
-            log.warning("[model] không thấy CT2 cục bộ ở %s — thử snapshot_download %s",
+            log.warning("[model] không thấy CT2 cục bộ ở %s - thử snapshot_download %s",
                         path, FINETUNED_MODEL_NAME)
             try:
                 from huggingface_hub import snapshot_download
                 path = Path(snapshot_download(FINETUNED_MODEL_NAME))
-            except Exception as e:                       # noqa: BLE001 — gói mọi lỗi tải về 1 lỗi rõ
+            except Exception as e:                       # noqa: BLE001 - gói mọi lỗi tải về 1 lỗi rõ
                 raise ModelNotReady(
                     f"Chưa có model CT2 cục bộ ({self._dir}) và không tải được HF "
                     f"{FINETUNED_MODEL_NAME!r}: {e}. Chạy scripts.convert_ct2 trước.") from e

@@ -3,7 +3,7 @@ const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 const themeToggleBtn = document.querySelector("#theme-toggle-btn");
-// API Setup — local FastAPI backend
+// API Setup - local FastAPI backend
 const API_URL = "/chat";
 let controller;
 const chatHistory = [];
@@ -63,7 +63,7 @@ const renderRichText = (text) => {
     }
     return html;
 };
-// Render the bot reply immediately as rich HTML — no typing
+// Render the bot reply immediately as rich HTML - no typing
 // animation. The chatbot is fast enough that incremental reveal
 // becomes a delay rather than a delight.
 const renderReply = (text, textElement, botMsgDiv) => {

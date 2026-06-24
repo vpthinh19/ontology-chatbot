@@ -1,7 +1,7 @@
-"""Hợp đồng CÂY JSON do model sinh ra — data contract model↔ontology.
+"""Hợp đồng CÂY JSON do model sinh ra - data contract model↔ontology.
 
 BARTpho sinh một dict ``{"act", "entities"}``; module này **chỉ** kiểm tra hợp lệ và dựng
-thành cây Python (`Tree`) cho `ontology.traverse`. Không có luật hiểu-câu ở đây —
+thành cây Python (`Tree`) cho `ontology.traverse`. Không có luật hiểu-câu ở đây -
 chỉ validate cấu trúc và **loại node ma** (label rỗng / loại sai) để hệ không gãy.
 
 Hình dạng cây::
@@ -79,7 +79,7 @@ def parse(obj: object) -> Tree:
 class StrictParseError(ValueError):
     """Cây không hợp lệ ở chế độ NGHIÊM (oracle validate dataset).
 
-    Khác :func:`parse` (khoan dung cho production — bỏ lặng node hỏng): bản nghiêm
+    Khác :func:`parse` (khoan dung cho production - bỏ lặng node hỏng): bản nghiêm
     *từ chối* mọi bất thường để cây dataset không lọt lỗi cấu trúc. Thông
     điệp ghi ``path`` (vd ``entities[0].children[1]``) để soạn dataset dễ sửa.
     """
@@ -161,7 +161,7 @@ def _rename_key(obj: object, old: str, new: str) -> object:
 def to_model_json(tree_dict: dict) -> str:
     """Cây dict → chuỗi JSON CHO MODEL: đổi ``entities``→``items``, nén, **nắn dấu** kiểu-mới (đồng bộ
     ``clean`` ở source), rồi **space-pad** quanh mọi `"`. Dùng làm TARGET train; ``from_model_json``
-    đảo ngược lúc infer. Nắn dấu chỉ đổi vị-trí dấu (thủy→thuỷ) cho tokenizer — khớp ontology bỏ dấu nên không ảnh hưởng."""
+    đảo ngược lúc infer. Nắn dấu chỉ đổi vị-trí dấu (thủy→thuỷ) cho tokenizer - khớp ontology bỏ dấu nên không ảnh hưởng."""
     compact = json.dumps(_rename_key(tree_dict, "entities", "items"),
                          ensure_ascii=False, separators=(",", ":"))
     return _QUOTE_PAD.sub(' " ', normalize_tone(compact))

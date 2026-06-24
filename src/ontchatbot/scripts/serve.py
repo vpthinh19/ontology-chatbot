@@ -2,9 +2,9 @@
 
 Endpoints
 ---------
-``GET  /``         — serve the static UI (``webui/index.html``)
-``POST /chat``     — JSON ``{"message": str}`` → ``{"reply": str, ...}``
-``GET  /healthz``  — liveness probe
+``GET  /``         - serve the static UI (``webui/index.html``)
+``POST /chat``     - JSON ``{"message": str}`` → ``{"reply": str, ...}``
+``GET  /healthz``  - liveness probe
 
 The heavy components (BARTpho CTranslate2, ontology) are loaded lazily on the
 first request and cached as singletons; the process therefore starts quickly and
@@ -12,8 +12,8 @@ warms up on demand. ``/chat`` runs the full pipeline end-to-end; if the CT2 mode
 is missing (chưa convert + không tải được HF) it returns HTTP 503 with a clear
 message instead of crashing (xem scripts.convert_ct2).
 
-Runtime tracing — including each stage of the pipeline and the shape of the
-data passing through it — is written to ``logs/chatbot.log`` (rotated) by
+Runtime tracing - including each stage of the pipeline and the shape of the
+data passing through it - is written to ``logs/chatbot.log`` (rotated) by
 :mod:`ontchatbot.logging_setup`, which is initialised at server startup.
 """
 

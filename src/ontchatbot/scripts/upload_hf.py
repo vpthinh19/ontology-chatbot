@@ -4,9 +4,9 @@
         [--model-dir artifacts/models/bartpho_ct2] [--repo vpthinh19/bartpho-ontology] [--private]
 
 Mục đích: sau khi train → convert_ct2, đẩy thư mục CT2 lên HF để:
-1. **Inference trực tiếp KHÔNG cần train** — ``model.py`` thiếu CT2 cục bộ sẽ ``snapshot_download``
+1. **Inference trực tiếp KHÔNG cần train** - ``model.py`` thiếu CT2 cục bộ sẽ ``snapshot_download``
    từ repo này (``config.FINETUNED_MODEL_NAME``).
-2. **CI/CD** — GitHub Action kéo model này về rồi đóng Docker (``.github/workflows/ci.yml``, job ``release``).
+2. **CI/CD** - GitHub Action kéo model này về rồi đóng Docker (``.github/workflows/ci.yml``, job ``release``).
 
 Token đọc từ ``--token`` hoặc env ``HF_TOKEN`` (tạo ở https://huggingface.co/settings/tokens, quyền write).
 ``huggingface_hub`` có sẵn qua ``--extra train``. Chỉ đẩy CT2 (~400MB int8), KHÔNG đẩy model HF safetensors nặng.
@@ -36,9 +36,9 @@ def main() -> None:
 
     md = Path(args.model_dir)
     if not (md / "model.bin").exists():
-        sys.exit(f"[upload] ⛔ {md} không có model.bin — chạy convert_ct2 trước khi upload.")
+        sys.exit(f"[upload]  {md} không có model.bin - chạy convert_ct2 trước khi upload.")
     if not args.token:
-        sys.exit("[upload] ⛔ thiếu token — đặt env HF_TOKEN hoặc truyền --token (cần quyền write).")
+        sys.exit("[upload]  thiếu token - đặt env HF_TOKEN hoặc truyền --token (cần quyền write).")
 
     from huggingface_hub import HfApi
     api = HfApi(token=args.token)

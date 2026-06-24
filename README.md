@@ -1,9 +1,9 @@
-# NTU Academic Chatbot — BARTpho (text→cây JSON) + Ontology traversal
+# NTU Academic Chatbot - BARTpho (text→cây JSON) + Ontology traversal
 
 Chatbot tiếng Việt tra cứu thủ tục học vụ Trường ĐH Nha Trang. Model seq2seq
 **BARTpho-syllable** biến câu hỏi thành một **cây truy vấn JSON** (`{act, items}`); tầng
 **ontology** (owlready2) **duyệt** cây đó theo quan hệ để lấy đúng thông tin; `render` ghép
-thành câu trả lời. **Không có tầng luật/intent ở giữa** — model lo hiểu ngôn ngữ (mềm dẻo),
+thành câu trả lời. **Không có tầng luật/intent ở giữa** - model lo hiểu ngôn ngữ (mềm dẻo),
 ontology lo tri thức có cấu trúc (chính xác).
 
 Đây là đề tài **nghiên cứu**: chứng minh ưu thế của ontology (truy vấn có cấu trúc) so với một
@@ -26,7 +26,7 @@ src/ontchatbot/
 ├── capabilities.py      năm nhóm năng lực truy vấn (trục đánh giá dùng chung)
 ├── tree.py              hợp đồng cây JSON (parse khoan dung / parse_strict)
 ├── ontology.py          nạp OWL + khớp theo type + thuật toán duyệt
-├── preprocess.py        làm sạch text (NFC, nắn dấu, bung teencode) — không hiểu câu
+├── preprocess.py        làm sạch text (NFC, nắn dấu, bung teencode) - không hiểu câu
 ├── model.py             BARTpho CT2: text → cây JSON (ctranslate2, int8 CPU)
 ├── render.py            định tuyến act (chào/ood/vague) + ghép kết quả → câu trả lời
 ├── pipeline.py          điều phối các pha (một chiều)
@@ -47,7 +47,7 @@ resources/
 
 webui/   giao diện chat       artifacts/   model + báo cáo       tests/   bộ test pytest
 
-dev/   (GITIGNORED — công cụ thời phát triển, giữ làm provenance)
+dev/   (GITIGNORED - công cụ thời phát triển, giữ làm provenance)
 ├── dataset_construction/   khâu dựng dataset (catalog/Codex/oracle/merge)
 └── ontology_build/         build_ontology.py + nguồn (cách dựng nhãn/alias)
 ```

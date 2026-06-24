@@ -1,18 +1,18 @@
-"""Suy ĐÁP ÁN CHUẨN mức-IRI cho benchmark — KHÔNG vòng tròn.
+"""Suy ĐÁP ÁN CHUẨN mức-IRI cho benchmark - KHÔNG vòng tròn.
 
 Mỗi câu trong tập kiểm tra kèm cây đáp án đã qua oracle nghiêm, nhưng không lưu sẵn IRI đáp án.
 Ở đây ta chạy chính cây đó qua :meth:`Ontology.traverse` để vật-chất-hoá đáp án về mức **tập IRI
-tài liệu liên quan** — đơn vị chung để so hệ ontology với hệ phẳng (mã phiếu = IRI cá thể).
+tài liệu liên quan** - đơn vị chung để so hệ ontology với hệ phẳng (mã phiếu = IRI cá thể).
 
 Vì sao không vòng tròn: cây đáp án đã được oracle độc lập xác nhận đúng *trước* benchmark; traverse
 chỉ đọc fact thô (không suy luận). Đáp án chuẩn được **vật chất hoá ra file** một lần để khâu đánh
 giá đọc tĩnh, không tính-động bằng code đang-bị-đánh-giá (giảm tiếng "nội sinh").
 
 Đáp án quy về :class:`AnswerSpec`:
-* ``node`` — truy vấn trả cá thể: ``iris`` = tập IRI node terminal.
-* ``data`` — truy vấn trả giá trị: ``iris`` = IRI **chủ thể** mang giá trị (lấy từ ``trace`` —
+* ``node`` - truy vấn trả cá thể: ``iris`` = tập IRI node terminal.
+* ``data`` - truy vấn trả giá trị: ``iris`` = IRI **chủ thể** mang giá trị (lấy từ ``trace`` -
   tập "before" của bước data đã khớp property); ``fields`` = các (property, giá trị).
-* ``nonretrievable`` — greeting/ood/vague hoặc trượt hết: hệ phẳng không có khái niệm này.
+* ``nonretrievable`` - greeting/ood/vague hoặc trượt hết: hệ phẳng không có khái niệm này.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ class AnswerSpec:
     """Đáp án vật-chất-hoá mức IRI cho một truy vấn."""
     kind: str                       # node | data | nonretrievable
     iris: frozenset[str]            # tập tài liệu (IRI) liên quan = gold cho truy hồi
-    fields: tuple                   # tuple[(prop, tuple[value])] — chỉ có ở kind=data (tầng đáp-án-cuối)
+    fields: tuple                   # tuple[(prop, tuple[value])] - chỉ có ở kind=data (tầng đáp-án-cuối)
 
 
 def answer_spec(tree: Tree, ont: Ontology) -> AnswerSpec:

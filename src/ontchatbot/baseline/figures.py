@@ -3,7 +3,7 @@
     uv run --extra train python -m ontchatbot.baseline.figures
 
 Đọc ``artifacts/evaluation/benchmark_report.json`` (đã gom theo NHÓM NĂNG LỰC, một phẳng) → 2 PNG:
-* ``benchmark_per_type.png`` (Hình 13): chất lượng theo nhóm năng lực — ontology (F1) vs phẳng (recall@3).
+* ``benchmark_per_type.png`` (Hình 13): chất lượng theo nhóm năng lực - ontology (F1) vs phẳng (recall@3).
 * ``recall_at_k.png`` (Hình 14): đường recall@k của phẳng (k=1/3/5) + mốc recall ontology.
 """
 
@@ -38,7 +38,7 @@ def make_figures() -> None:
     labels = [GROUP_LABEL.get(g, g) for g in groups]
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ── Hình 13: chất lượng theo nhóm năng lực — ontology F1 vs phẳng recall@3 ──
+    # ── Hình 13: chất lượng theo nhóm năng lực - ontology F1 vs phẳng recall@3 ──
     ont_f1 = [per[g]["ontology"]["f1"] for g in groups]
     flat_recall = [per[g]["flat"].get("recall@3", 0.0) for g in groups]
     x = np.arange(len(groups))
@@ -50,7 +50,7 @@ def make_figures() -> None:
     ax.set_ylim(0, 1.05)
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=20, ha="right")
-    ax.set_title("Hình 13. Chất lượng theo nhóm năng lực — ontology (F1) vs phẳng (recall@3)")
+    ax.set_title("Hình 13. Chất lượng theo nhóm năng lực - ontology (F1) vs phẳng (recall@3)")
     ax.legend(loc="lower left")
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()

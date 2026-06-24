@@ -4,15 +4,15 @@
         [--model-dir artifacts/models/bartpho_tree] [--out artifacts/models/bartpho_ct2]
 
 2 bước (theo pattern đã verify):
-  ① vá ``model.config.normalize_before = True`` — pretrained BARTpho THIẾU/đặt sai field này; CT2
+  ① vá ``model.config.normalize_before = True`` - pretrained BARTpho THIẾU/đặt sai field này; CT2
      sinh rác nếu bỏ qua. Lưu HF model + tokenizer ra thư mục trung gian (converter đọc từ đĩa).
   ② ``TransformersConverter(quantization="int8")`` → ``CT2_MODEL_DIR``; rồi lưu tokenizer VÀO đó để
      thư mục CT2 self-contained (deploy chỉ cần 1 thư mục: model.bin + vocab + tokenizer).
 
-⚠️ ĐÃ KIỂM THỰC NGHIỆM (đừng làm lại): BARTpho config có ``normalize_before=None``. CT2 converter cho
-``model_type=mbart`` **BẮT BUỘC** ``normalize_before=True`` — đặt False ném ``AttributeError:
+ ĐÃ KIỂM THỰC NGHIỆM (đừng làm lại): BARTpho config có ``normalize_before=None``. CT2 converter cho
+``model_type=mbart`` **BẮT BUỘC** ``normalize_before=True`` - đặt False ném ``AttributeError:
 ...has no attribute 'layer_norm'``. Gán ``model.config`` SAU khi dựng model KHÔNG đổi model in-memory
-(layer chốt giá trị lúc init) — chỉ đổi config GHI ĐĨA → ảnh hưởng CT2.
+(layer chốt giá trị lúc init) - chỉ đổi config GHI ĐĨA → ảnh hưởng CT2.
 
 Script này CHỈ làm một việc: chuyển đổi. Việc đánh giá chất lượng model (kể cả đối chiếu đường HF
 với đường deploy) thuộc về ``scripts.evaluate``.
@@ -40,10 +40,10 @@ def _resolve_model_dir(raw: str) -> str:
     ckpts = sorted([d for d in p.glob("checkpoint-*") if (d / "config.json").exists()],
                    key=lambda d: int(d.name.split("-")[-1]) if d.name.split("-")[-1].isdigit() else -1)
     if ckpts:
-        print(f"[convert] ⚠️ {raw} chưa có model cuối — dùng {ckpts[-1].name}")
+        print(f"[convert]  {raw} chưa có model cuối - dùng {ckpts[-1].name}")
         return str(ckpts[-1].resolve())
     if p.exists():
-        print(f"[convert] ⚠️ {raw} tồn tại nhưng không có config.json/checkpoint-* — để from_pretrained xử lý")
+        print(f"[convert]  {raw} tồn tại nhưng không có config.json/checkpoint-* - để from_pretrained xử lý")
     return raw                  # HF repo id (vd vinai/bartpho-syllable) hoặc để from_pretrained báo lỗi rõ
 
 
@@ -55,7 +55,7 @@ def convert(args: argparse.Namespace) -> int:
     out_dir = str(args.out)
     print(f"[convert] nạp HF model {model_dir} (CPU)")
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir)        # mặc định CPU — không tranh GPU train
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir)        # mặc định CPU - không tranh GPU train
     print(f"[convert] normalize_before (gốc) = {getattr(model.config, 'normalize_before', None)}")
 
     with tempfile.TemporaryDirectory() as td:

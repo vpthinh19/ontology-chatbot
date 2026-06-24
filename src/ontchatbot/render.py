@@ -1,7 +1,7 @@
 """Render: ``act`` + :class:`Result` → câu trả lời tiếng Việt.
 
 Pha cuối của pipeline: xử lý chào hỏi/ngoại lệ và ghép kết quả duyệt thành chuỗi cho UI.
-**Giọng nghiêm túc, cứng, KHÔNG gợi mở** (chatbot học vụ). Không phụ thuộc owlready2 —
+**Giọng nghiêm túc, cứng, KHÔNG gợi mở** (chatbot học vụ). Không phụ thuộc owlready2 -
 chỉ format `OntNode`/`DataValue`, nên test chạy trên dataclass thuần.
 """
 
@@ -77,8 +77,8 @@ def _render_node(node: OntNode, *, bullet: str = "") -> str:
             continue
         if key in _PARAGRAPH:
             # Đoạn văn xuôi: nhãn đứng riêng một dòng (cấp 1), từng dòng nội
-            # dung thụt sâu thêm một cấp (cấp 2) để mọi dòng — kể cả dòng tiếp
-            # của câu dài — thẳng hàng dưới nhãn, đọc như một cây.
+            # dung thụt sâu thêm một cấp (cấp 2) để mọi dòng - kể cả dòng tiếp
+            # của câu dài - thẳng hàng dưới nhãn, đọc như một cây.
             lines.append(f"   {_HEADER.get(key, key)}:")
             lines += [f"      {ln.strip()}" for ln in str(value).split("\n") if ln.strip()]
         else:

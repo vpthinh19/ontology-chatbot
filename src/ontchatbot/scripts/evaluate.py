@@ -3,29 +3,29 @@
     uv run --extra train python -m ontchatbot.scripts.evaluate \
         [--model-dir artifacts/models/bartpho_tree] [--limit N] [--num-beams 4]
 
-Vì sao 2 mức: **eval-loss KHÔNG đủ** chứng minh đúng — hai chuỗi JSON lệch 1 token vẫn loss gần
+Vì sao 2 mức: **eval-loss KHÔNG đủ** chứng minh đúng - hai chuỗi JSON lệch 1 token vẫn loss gần
 nhau nhưng ``traverse`` ra node SAI. Nên tách:
 
-* **Mức 1 — cấu trúc cây (cô lập BART):** model sinh JSON. Đo: JSON hợp lệ (``json_valid``); chuỗi
-  có đúng HỢP ĐỒNG cây nghiêm không (``strict_ok`` = ``tree.parse_strict`` không raise — chống
+* **Mức 1 - cấu trúc cây (cô lập BART):** model sinh JSON. Đo: JSON hợp lệ (``json_valid``); chuỗi
+  có đúng HỢP ĐỒNG cây nghiêm không (``strict_ok`` = ``tree.parse_strict`` không raise - chống
   ``parse`` khoan dung "vá" lỗi rồi che đi); ``act`` đúng (``act_acc``); và cây khớp gold sau khi
   chuẩn hoá nhãn + **bất biến thứ tự anh-em** (``tree_norm``, chỉ tính trên gold-query); ``shape``
   = đúng cấu trúc kể cả nhãn sai (chẩn đoán, chỉ trên gold-query).
-* **Mức 2 — đầu-cuối:** ``text → model → cây → traverse`` so với đáp-án-chuẩn = ``traverse(gold_tree)``.
-  Quy đáp án về tập **đơn vị đáp án** (answer atom — đơn vị nhỏ nhất để so theo TẬP, cho điểm phần):
+* **Mức 2 - đầu-cuối:** ``text → model → cây → traverse`` so với đáp-án-chuẩn = ``traverse(gold_tree)``.
+  Quy đáp án về tập **đơn vị đáp án** (answer atom - đơn vị nhỏ nhất để so theo TẬP, cho điểm phần):
   ``("node", iri)`` cho mỗi cá thể, ``("data", prop, value)`` cho lá data ("đúng phiếu sai field =
   SAI"), ``("miss", nhãn)`` cho nhánh không khớp (phân biệt "không có thông tin về X" với "về Y"),
   ``("vague",)`` / ``("act", x)`` cho mơ hồ/chào/ood. Báo Precision / Recall / F1 (micro) + tỷ lệ
   trùng-khít-tập **theo 5 NHÓM NĂNG LỰC** (``capabilities.group_of``: tra-cứu / đi-một-quan-hệ /
-  đi-nhiều-bước / nhiều-thuộc-tính / lọc — KHÔNG theo miền học phí), macro trung bình trên 5 nhóm;
+  đi-nhiều-bước / nhiều-thuộc-tính / lọc - KHÔNG theo miền học phí), macro trung bình trên 5 nhóm;
   các loại phi-truy-vấn (vague/ood/greeting/kiểm-âm) báo riêng, không tính vào macro.
 
-⚠️ HẠN CHẾ ĐÃ BIẾT (báo cáo trung thực): atom data là ``(prop, value)`` KHÔNG kèm subject IRI vì
-``Result.DataValue`` không lưu chủ thể — nếu hai cá thể khác nhau có cùng (field, value) thì model
+ HẠN CHẾ ĐÃ BIẾT (báo cáo trung thực): atom data là ``(prop, value)`` KHÔNG kèm subject IRI vì
+``Result.DataValue`` không lưu chủ thể - nếu hai cá thể khác nhau có cùng (field, value) thì model
 trả sai chủ thể vẫn được tính đúng (hiếm: giá trị thường phân biệt). Khắc phục triệt để cần đổi
 ``ontology.DataValue`` (việc core, ngoài phạm vi script này).
 
-Model nạp = checkpoint HF (torch ``generate``); deploy dùng CTranslate2 — eval này đo TRỌNG SỐ đã
+Model nạp = checkpoint HF (torch ``generate``); deploy dùng CTranslate2 - eval này đo TRỌNG SỐ đã
 train, không phải đường inference triển khai. Source = ``preprocess.clean(text)`` ĐỒNG BỘ với train
 (train.py dùng cùng hàm) để khỏi lệch phân phối.
 """
@@ -54,7 +54,7 @@ from ..capabilities import GROUP_KEYS, GROUP_LABEL, group_of
 if hasattr(sys.stdout, "reconfigure"):           # Windows console mặc định cp1252
     sys.stdout.reconfigure(encoding="utf-8")
 
-# category mà đáp án ĐÚNG vốn là "không trả node" — để sanity-check gold không nhầm là drift.
+# category mà đáp án ĐÚNG vốn là "không trả node" - để sanity-check gold không nhầm là drift.
 _NEGATIVE_CATS = frozenset({"neg_child_miss", "neg_root_vague", "vague", "ood", "greeting"})
 
 
@@ -64,7 +64,7 @@ def _canon(node: TreeNode) -> tuple:
     """Dạng chuẩn của một node để so cây: (kind, nhãn-chuẩn-hoá, multiset con đã sort).
 
     Sort con → bất biến thứ tự anh-em (anh-em = nhánh độc lập §5, ``k65>cntt`` ≡ ``cntt>k65``).
-    Nhãn chuẩn hoá bằng ``normalize_for_match`` — đúng phép chuẩn hoá mà bộ khớp dùng, nên hai
+    Nhãn chuẩn hoá bằng ``normalize_for_match`` - đúng phép chuẩn hoá mà bộ khớp dùng, nên hai
     nhãn coi-là-bằng ở đây cũng resolve y hệt; không che lỗi chọn-sai-từ (vd học phí≠học bổng)."""
     return (node.kind, normalize_for_match(node.label),
             tuple(sorted(_canon(c) for c in node.children)))
@@ -76,7 +76,7 @@ def _tree_canon(t: Tree) -> tuple:
 
 
 def _shape(node: TreeNode) -> tuple:
-    """Như ``_canon`` nhưng BỎ nhãn — chỉ kind + cấu trúc (chẩn đoán: BART đúng SHAPE chưa)."""
+    """Như ``_canon`` nhưng BỎ nhãn - chỉ kind + cấu trúc (chẩn đoán: BART đúng SHAPE chưa)."""
     return (node.kind, tuple(sorted(_shape(c) for c in node.children)))
 
 
@@ -86,7 +86,7 @@ def _atoms(act: str, res: Result) -> set:
     """Tập **đơn vị đáp án** (answer atom) mô tả đáp án thực mà người dùng nhận.
 
     * vague (act=vague HOẶC gốc trỏ class/quan-hệ) → ``("vague",)``. Gộp hai đường vì cùng cho
-      "Không hiểu câu hỏi" — khớp đúng điều kiện ``render`` dùng (``act == VAGUE or result.vague``),
+      "Không hiểu câu hỏi" - khớp đúng điều kiện ``render`` dùng (``act == VAGUE or result.vague``),
       nếu không model trả lời đúng vẫn bị chấm sai chỉ vì khác đường nội bộ.
     * greeting/ood → ``("act", act)`` (mỗi loại một câu trả lời riêng, không tra cứu).
     * còn lại: mỗi node terminal → ``("node", iri)``; mỗi giá trị lá data → ``("data", prop, str(v))``
@@ -156,7 +156,7 @@ def _generate(model, tokenizer, texts: list[str], device, num_beams: int, batch_
 @dataclass
 class _Bucket:
     """Thống kê tích luỹ cho một query-type (micro). ``n_query`` = số gold act==query
-    (mẫu số cho tree_norm/shape — hai metric này vô nghĩa với non-query)."""
+    (mẫu số cho tree_norm/shape - hai metric này vô nghĩa với non-query)."""
     n: int = 0
     n_query: int = 0
     json_ok: int = 0
@@ -175,7 +175,7 @@ class _Bucket:
 
 
 def _resolve_model_dir(raw: str) -> str:
-    """Trả thư mục có weight để nạp (đường TUYỆT ĐỐI cho local — transformers nhận chắc). Nếu ``raw``
+    """Trả thư mục có weight để nạp (đường TUYỆT ĐỐI cho local - transformers nhận chắc). Nếu ``raw``
     chưa lưu model cuối (chỉ có ``checkpoint-*``, train chưa xong) → chọn checkpoint bước CAO NHẤT +
     cảnh báo. Không phải local model dir → trả nguyên (có thể là HF repo id)."""
     p = Path(raw)
@@ -184,11 +184,11 @@ def _resolve_model_dir(raw: str) -> str:
     ckpts = sorted([d for d in p.glob("checkpoint-*") if (d / "config.json").exists()],
                    key=lambda d: int(d.name.split("-")[-1]) if d.name.split("-")[-1].isdigit() else -1)
     if ckpts:
-        print(f"[eval] ⚠️ {raw} chưa có model cuối — dùng checkpoint mới nhất: {ckpts[-1].name} "
+        print(f"[eval]  {raw} chưa có model cuối - dùng checkpoint mới nhất: {ckpts[-1].name} "
               f"(train xong sẽ có model ở thư mục cha)")
         return str(ckpts[-1].resolve())
     if p.exists():
-        print(f"[eval] ⚠️ {raw} tồn tại nhưng không có config.json/checkpoint-* — để HF xử lý")
+        print(f"[eval]  {raw} tồn tại nhưng không có config.json/checkpoint-* - để HF xử lý")
     return raw                                   # HF repo id hoặc để HF báo lỗi rõ
 
 
@@ -200,7 +200,7 @@ def _gold_sanity(rows: list[dict], ont: Ontology) -> None:
         try:
             parse_strict(r["tree"])
         except StrictParseError as e:
-            bad_parse.append(f"{r.get('category')}: {r['text']!r} — {e}")
+            bad_parse.append(f"{r.get('category')}: {r['text']!r} - {e}")
             continue
         if r.get("category") in _NEGATIVE_CATS:
             continue
@@ -209,7 +209,7 @@ def _gold_sanity(rows: list[dict], ont: Ontology) -> None:
             bad_traverse.append(f"{r.get('category')}: {r['text']!r} "
                                 f"vague={res.vague} misses={res.misses}")
     if bad_parse or bad_traverse:
-        print(f"[eval] ⚠️ GOLD ĐÁNG NGỜ — strict-parse lỗi: {len(bad_parse)}, "
+        print(f"[eval]  GOLD ĐÁNG NGỜ - strict-parse lỗi: {len(bad_parse)}, "
               f"traverse bất thường: {len(bad_traverse)} (eval vẫn chạy, nhưng nên rà):")
         for line in (bad_parse + bad_traverse)[:8]:
             print(f"        {line}")

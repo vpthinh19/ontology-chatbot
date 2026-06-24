@@ -1,4 +1,4 @@
-"""Phân nhóm NĂNG LỰC truy vấn — trục đánh giá chung của cả hệ.
+"""Phân nhóm NĂNG LỰC truy vấn - trục đánh giá chung của cả hệ.
 
 Đề tài lấy quy trình học vụ làm trung tâm, nên việc đánh giá cũng đo theo *năng lực suy luận*
 cần để trả lời, không theo miền dữ liệu (vd học phí). Mỗi loại câu hỏi trong tập dữ liệu được

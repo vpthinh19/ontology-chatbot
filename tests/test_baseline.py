@@ -1,4 +1,4 @@
-"""Test tầng dữ liệu baseline Phase 8 (gold + docstore) — chạy dưới deps LÕI, KHÔNG cần BGE.
+"""Test tầng dữ liệu baseline Phase 8 (gold + docstore) - chạy dưới deps LÕI, KHÔNG cần BGE.
 
 Khoá chặt 2 thứ dễ vỡ âm thầm: (1) suy gold mức-IRI từ cây-vàng đúng kind/iris/field; (2) phiếu
 phẳng TRUNG THÀNH với fact ontology (không bịa, không sót) + đủ facet (chống artifact dựng phiếu).

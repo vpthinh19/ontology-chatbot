@@ -1,7 +1,7 @@
 """Hệ phẳng = truy hồi THUẦN: BGE-M3 hybrid (dense+sparse) → BGE-reranker-v2-m3.
 
 Trả về danh sách IRI XẾP HẠNG cho mỗi câu hỏi. KHÔNG trích thuộc tính, KHÔNG chọn field,
-KHÔNG giao tập — đúng bản chất "search engine" (ghi nhận trung thực ở báo cáo). Đây là baseline
+KHÔNG giao tập - đúng bản chất "search engine" (ghi nhận trung thực ở báo cáo). Đây là baseline
 MẠNH cho khâu truy hồi nhưng vẫn ở mức tài-liệu, để phơi ưu thế suy-luận-cấu-trúc của ontology.
 
 Theo pattern đã validate (`dev/phase8_prototypes/stress_test_vram.py`): alpha=0.5, min-max

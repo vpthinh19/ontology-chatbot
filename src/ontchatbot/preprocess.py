@@ -1,13 +1,13 @@
-"""Tiền xử lý text TRƯỚC khi đưa vào model — pha "preprocess" của pipeline.
+"""Tiền xử lý text TRƯỚC khi đưa vào model - pha "preprocess" của pipeline.
 
-Nguyên tắc: module này phải **"ngu"** — chỉ làm sạch ký tự, KHÔNG
+Nguyên tắc: module này phải **"ngu"** - chỉ làm sạch ký tự, KHÔNG
 trích xuất thực thể / dò intent / quét lexicon. Mọi việc *hiểu câu* dồn cho model. Không
 word-segment (BARTpho nuốt raw syllable; runtime không kéo torch/underthesea). Hai nhóm việc:
 
-* :func:`clean` — NFC + :func:`normalize_tone` + bung teencode/viết tắt → chuỗi sạch nạp model.
-* :func:`normalize_tone` — nắn dấu thanh kiểu-cũ→mới (``thủy``→``thuỷ``) cho cụm oa/oe/uy: BARTpho
+* :func:`clean` - NFC + :func:`normalize_tone` + bung teencode/viết tắt → chuỗi sạch nạp model.
+* :func:`normalize_tone` - nắn dấu thanh kiểu-cũ→mới (``thủy``→``thuỷ``) cho cụm oa/oe/uy: BARTpho
   tokenize ``thủy`` → ``<unk>``. Dùng cả ở :func:`clean` (source) lẫn `tree.to_model_json` (target).
-* :func:`normalize_for_match` / :func:`is_url` — chuẩn hoá thấp (bỏ dấu, alnum) dùng
+* :func:`normalize_for_match` / :func:`is_url` - chuẩn hoá thấp (bỏ dấu, alnum) dùng
   chung cho `ontology` khi khớp alias.
 
 Mọi hàm ở mức module; không trạng thái.
@@ -18,7 +18,7 @@ from __future__ import annotations
 import re
 import unicodedata
 
-# Domain acronyms — uppercase, multi-letter. Matched case-sensitively first
+# Domain acronyms - uppercase, multi-letter. Matched case-sensitively first
 # (so ``HK`` does not catch a user typing ``hk`` for ``không``).
 ABBREVIATION_MAP: dict[str, str] = {
     "ĐKHP": "đăng ký học phần", "DKHP": "đăng ký học phần",
@@ -81,7 +81,7 @@ TEENCODE_MAP: dict[str, str] = {
     "khgo": "không có", "kgcg": "không có gì",
     "đăn": "đăng",
     # NB: domain-entity surface forms (e.g. "cntt") deliberately do NOT live
-    # here — they are ontology aliases owned by the graph lexicon. Teencode is
+    # here - they are ontology aliases owned by the graph lexicon. Teencode is
     # only for generic chat abbreviations; expanding "cntt" → "công nghệ thông
     # tin" would let longest-match swallow it into a fee label and break the
     # cohort×program intersection.
@@ -105,7 +105,7 @@ _KNOWN_PREFIXES: frozenset[str] = frozenset(
 
 
 def normalize(text: str) -> str:
-    """NFC + whitespace collapse — the light path (no expansion)."""
+    """NFC + whitespace collapse - the light path (no expansion)."""
     if not text:
         return ""
     return _RE_WS.sub(" ", unicodedata.normalize("NFC", text.strip()))
@@ -136,7 +136,7 @@ def normalize_tone(text: str) -> str:
 def clean(text: str) -> str:
     """Làm sạch input cho model: NFC → nắn dấu kiểu-mới → bỏ URL/email → bung teencode.
 
-    Không word-segment — BARTpho tokenise raw syllable trực tiếp.
+    Không word-segment - BARTpho tokenise raw syllable trực tiếp.
     """
     if not text:
         return ""
@@ -151,7 +151,7 @@ def clean(text: str) -> str:
 
 
 def normalize_for_match(text: str) -> str:
-    """Diacritic-stripped, lowercase, alnum-only — fuzzy-index keys."""
+    """Diacritic-stripped, lowercase, alnum-only - fuzzy-index keys."""
     nfkd = unicodedata.normalize("NFD", text.lower())
     no_diac = "".join(c for c in nfkd if not unicodedata.combining(c))
     no_diac = no_diac.replace("đ", "d").replace("Đ", "d")

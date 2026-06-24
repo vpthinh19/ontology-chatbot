@@ -3,12 +3,12 @@
     uv run --extra train python -m ontchatbot.scripts.visualize
 
 Một lệnh sinh mọi Hình có thể (bỏ qua Hình thiếu nguồn, in cảnh báo):
-* **Hình 8** ``training_curve.png`` — train/val loss theo bước, đọc ``config.TRAIN_LOG_PATH``
+* **Hình 8** ``training_curve.png`` - train/val loss theo bước, đọc ``config.TRAIN_LOG_PATH``
   (train.py lưu sau khi train). Thiếu log ⇒ bỏ qua (chạy train.py trước).
-* **Hình 9** ``eval_per_category.png`` — F1 + exact-match theo loại câu, đọc ``eval_report.json``.
-* **Hình 10** ``intent_confusion.png`` — ma trận nhầm lẫn trường ``act``, đọc ``eval_report.json``
-  (cần field ``act_confusion`` — evaluate.py phiên mới ghi; report cũ thiếu thì bỏ qua).
-* **Hình 13/14** benchmark — uỷ thác ``baseline.figures`` nếu có ``benchmark_report.json``.
+* **Hình 9** ``eval_per_category.png`` - F1 + exact-match theo loại câu, đọc ``eval_report.json``.
+* **Hình 10** ``intent_confusion.png`` - ma trận nhầm lẫn trường ``act``, đọc ``eval_report.json``
+  (cần field ``act_confusion`` - evaluate.py phiên mới ghi; report cũ thiếu thì bỏ qua).
+* **Hình 13/14** benchmark - uỷ thác ``baseline.figures`` nếu có ``benchmark_report.json``.
 
 Tách khỏi ``baseline/figures.py`` (đối chứng) vì đây là viz cho khâu đánh giá mô hình. Cả hai ghi
 vào ``config.FIGURES_DIR`` (= docs/figures/, đã bỏ ignore để CONCEPT.md nhúng được).
@@ -32,7 +32,7 @@ _ACT_LABELS = {"query": "truy vấn", "greeting": "chào", "ood": "ngoài tri th
 
 def _training_curve() -> bool:
     if not TRAIN_LOG_PATH.exists():
-        print(f"[viz] ⚠️ bỏ Hình 8 — thiếu {TRAIN_LOG_PATH} (chạy train.py trước để có log)")
+        print(f"[viz]  bỏ Hình 8 - thiếu {TRAIN_LOG_PATH} (chạy train.py trước để có log)")
         return False
     import matplotlib
     matplotlib.use("Agg")
@@ -91,7 +91,7 @@ def _eval_per_category(rep: dict) -> bool:
 def _intent_confusion(rep: dict) -> bool:
     conf = rep.get("act_confusion")
     if not conf:
-        print("[viz] ⚠️ bỏ Hình 10 — eval_report.json thiếu 'act_confusion' (chạy lại evaluate.py mới)")
+        print("[viz]  bỏ Hình 10 - eval_report.json thiếu 'act_confusion' (chạy lại evaluate.py mới)")
         return False
     import matplotlib
     matplotlib.use("Agg")
@@ -130,7 +130,7 @@ def make_eval_figures() -> None:
         _eval_per_category(rep)
         _intent_confusion(rep)
     else:
-        print(f"[viz] ⚠️ bỏ Hình 9/10 — thiếu {report_path} (chạy evaluate.py trước)")
+        print(f"[viz]  bỏ Hình 9/10 - thiếu {report_path} (chạy evaluate.py trước)")
 
 
 def main() -> None:
@@ -140,7 +140,7 @@ def main() -> None:
         from ..baseline.figures import make_figures
         make_figures()
     else:
-        print("[viz] ⚠️ bỏ Hình 13/14 — thiếu benchmark_report.json (chạy baseline.benchmark trước)")
+        print("[viz]  bỏ Hình 13/14 - thiếu benchmark_report.json (chạy baseline.benchmark trước)")
 
 
 if __name__ == "__main__":
