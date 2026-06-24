@@ -1,5 +1,4 @@
-# syntax=docker/dockerfile:1.7
-
+# syntax=docker/dockerfile:1
 
 # ---------- builder ----------
 FROM python:3.14-slim AS builder
@@ -7,7 +6,7 @@ FROM python:3.14-slim AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
 WORKDIR /app
 
-# UV_LINK_MODE=copy giữ venv portable khi COPY qua stage; tải-python tắt (dùng python của image).
+# UV_LINK_MODE=copy giữ venv portable khi COPY qua stage; tắt tải python (dùng python của image).
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
@@ -45,8 +44,9 @@ COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
-# PATH đưa venv lên đầu (uvicorn, python của venv). HF_HUB_OFFLINE=1 vì model đã bake → không
-# gọi mạng lúc chạy. MALLOC_ARENA_MAX=2 giảm RSS ~50-100MB ở tải 1-request-tại-một-thời-điểm.
+# PATH đưa venv lên đầu (uvicorn, python của venv).
+# HF_HUB_OFFLINE=1 vì model đã tải sẵn, ko gọi ra internet
+# MALLOC_ARENA_MAX=2 giảm RSS ~50-100MB ở tải "1 request tại một thời điểm".
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -62,5 +62,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
 
-# serve.py không khai [project.scripts] nên gọi module trực tiếp (uvicorn nằm trong fastapi[standard]).
 CMD ["python", "-m", "ontchatbot.scripts.serve", "--host", "0.0.0.0", "--port", "8000"]
