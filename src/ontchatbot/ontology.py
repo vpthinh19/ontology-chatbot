@@ -6,10 +6,10 @@ không planner, không liệt kê lớp. Hai việc:
 * :meth:`resolve` (khớp theo ``kind``): individual → khớp tên/alias cá thể (chứa-token,
   điểm cao nhất KHÔNG ngưỡng); object → khớp nhãn object-property; data → khớp nhãn
   datatype-property.
-* :meth:`traverse`: đi theo cây, giữ một **"tập hiện tại"** các cá thể (§5). Cha→con = VÀ
+* :meth:`traverse`: đi theo cây, giữ một **"tập hiện tại"** các cá thể. Cha→con = VÀ
   (lọc dần theo chuỗi lồng nhau); anh em cùng cha = nhánh độc lập → gộp.
 
-Chỉ duyệt **xuôi** (theo chiều hub đi ra). Duyệt ngược (§6.8) chưa làm.
+Chỉ duyệt **xuôi** (theo chiều hub đi ra); chưa hỗ trợ duyệt ngược.
 """
 
 from __future__ import annotations
@@ -71,8 +71,8 @@ class Step:
 class Result:
     """Kết quả duyệt một cây: node terminal + lá data + nhãn không khớp được.
 
-    ``vague=True`` = gốc trỏ vào CLASS/quan-hệ chứ không phải cá thể (namespace mismatch,
-    §4) → render trả "Không hiểu câu hỏi". Đây là LƯỚI AN TOÀN: bắt cả khi model lỡ sinh
+    ``vague=True`` = gốc trỏ vào CLASS/quan-hệ chứ không phải cá thể (namespace mismatch)
+    → render trả "Không hiểu câu hỏi". Đây là LƯỚI AN TOÀN: bắt cả khi model lỡ sinh
     gốc là tên lớp/nhãn property thay vì cá thể.
 
     ``trace`` = vết resolve từng node (cho oracle nghiêm; render/eval không dùng)."""
@@ -227,7 +227,7 @@ class Ontology:
     def _best_label_score(q: str, label_lists) -> float:
         return max((_score(q, labels) for labels in label_lists), default=0.0)
 
-    # ── Thuật toán duyệt (§5) ────────────────────────────────────────────────
+    # ── Thuật toán duyệt ─────────────────────────────────────────────────────
 
     def traverse(self, tree: Tree) -> Result:
         """Đi theo cây → :class:`Result`. act != query → Result rỗng (render lo)."""
@@ -244,7 +244,7 @@ class Ontology:
                                  resolved=tuple(roots), score=i_score, runner_up=cls_prop,
                                  before=(), after=tuple(roots)))
         if reason == "vague":
-            result.vague = True                    # gốc là class/quan-hệ, không có cá thể (§4)
+            result.vague = True                    # gốc là class/quan-hệ, không có cá thể
             return result
         if not roots:
             result.misses.append(tree.root.label)

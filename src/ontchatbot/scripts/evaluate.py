@@ -63,7 +63,7 @@ _NEGATIVE_CATS = frozenset({"neg_child_miss", "neg_root_vague", "vague", "ood", 
 def _canon(node: TreeNode) -> tuple:
     """Dạng chuẩn của một node để so cây: (kind, nhãn-chuẩn-hoá, multiset con đã sort).
 
-    Sort con → bất biến thứ tự anh-em (anh-em = nhánh độc lập §5, ``k65>cntt`` ≡ ``cntt>k65``).
+    Sort con → bất biến thứ tự anh-em (anh-em = nhánh độc lập, ``k65>cntt`` ≡ ``cntt>k65``).
     Nhãn chuẩn hoá bằng ``normalize_for_match`` - đúng phép chuẩn hoá mà bộ khớp dùng, nên hai
     nhãn coi-là-bằng ở đây cũng resolve y hệt; không che lỗi chọn-sai-từ (vd học phí≠học bổng)."""
     return (node.kind, normalize_for_match(node.label),

@@ -9,7 +9,7 @@ Inference qua **CTranslate2** (int8, CPU - ràng buộc deploy) + **sentencepiec
     json_str = sp.DecodePieces([t for t in out if t not in SPECIAL])
 
 rồi ``json.loads`` ra ``{"act", "entities": [...]}`` (xem :func:`tree.parse`). Model làm TOÀN BỘ
-việc hiểu câu (trích xuất, dựng quan hệ, đoán act) - pipeline không có luật xử-lý-câu (§9).
+việc hiểu câu (trích xuất, dựng quan hệ, đoán act) - pipeline không có luật xử-lý-câu.
 
  Vì sao sentencepiece chứ KHÔNG transformers.AutoTokenizer: đường deploy phải gọn (core +
 fastapi), tránh kéo cả hệ sinh thái transformers. Người dùng đã test (`dev/inf_test.py`) và parity

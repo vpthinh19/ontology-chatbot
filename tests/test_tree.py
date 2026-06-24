@@ -1,4 +1,4 @@
-"""tree.parse: validate cấu trúc cây JSON + bỏ node ma (§3/§8)."""
+"""tree.parse: validate cấu trúc cây JSON + bỏ node ma."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""pipeline: điều phối qua cây vàng (answer_tree) + chốt model chưa sẵn sàng."""
+"""pipeline: điều phối khi đã có cây sẵn (answer_tree) + chốt model chưa sẵn sàng."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Ontology: khớp theo type + thuật toán duyệt §5 (chạy trên ontology thật)."""
+"""Ontology: khớp theo type + thuật toán duyệt (chạy trên ontology thật)."""
 
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ def test_khop_data_label(ont):
     assert ont.resolve("nội dung", "data") == "noiDung"
 
 
-# ── Duyệt (§5) ──────────────────────────────────────────────────────────────
+# ── Duyệt ────────────────────────────────────────────────────────────────────
 
 def test_forward_object_multivalue(ont):
     assert _nodes(ont, _ind("bảo lưu", _obj("điều kiện"))) == {
@@ -68,7 +68,7 @@ def test_self_description(ont):
 
 
 def test_chuyennganh_output_fixed(ont):
-    # Sửa lỗi v8 (§6): chuyển ngành → OutputDuocChuyenNganh, KHÔNG phải OutputDuocBaoLuu
+    # chuyển ngành → OutputDuocChuyenNganh, KHÔNG phải OutputDuocBaoLuu
     assert _nodes(ont, _ind("chuyển ngành", _obj("kết quả"))) == {"OutputDuocChuyenNganh"}
 
 
@@ -110,7 +110,7 @@ def test_root_data_property_label_is_vague(ont):
 
 
 def test_dual_role_label_prefers_individual_at_root(ont):
-    # "học phí" = alias cá thể quy trình (100) ⊕ nhãn property (100) → GỐC ưu tiên cá thể
+    # "học phí" = alias cá thể quy trình (100) + nhãn property (100) → GỐC ưu tiên cá thể
     r = _root(ont, "học phí")
     assert not r.vague and {n.iri for n in r.nodes} == {"QuyTrinhNopHocPhi"}
 

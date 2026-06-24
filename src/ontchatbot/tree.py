@@ -55,7 +55,7 @@ class Tree:
 def parse(obj: object) -> Tree:
     """Dict thô từ model → :class:`Tree`. Khoan dung lỗi: JSON/loại sai → ``vague``.
 
-    Quy tắc loại node ma (§8): node có ``label`` rỗng, hoặc ``type`` không hợp lệ, hoặc
+    Quy tắc loại node ma: node có ``label`` rỗng, hoặc ``type`` không hợp lệ, hoặc
     (với gốc) không phải ``individual`` → coi như không dựng được cây → trả ``vague``.
     Con hỏng bị bỏ lặng lẽ; nhánh vẫn đi tiếp với các con hợp lệ.
     """
@@ -72,7 +72,7 @@ def parse(obj: object) -> Tree:
         return Tree(act=VAGUE)                     # query mà không có chủ thể → mơ hồ
     root = _node(entities[0])                       # một truy vấn = một cây (lấy cây đầu)
     if root is None or root.kind != INDIVIDUAL:
-        return Tree(act=VAGUE)                      # gốc phải là individual (§3)
+        return Tree(act=VAGUE)                      # gốc phải là individual
     return Tree(act=QUERY, root=root)
 
 
@@ -90,8 +90,8 @@ def parse_strict(obj: object) -> Tree:
 
     Bắt đúng các lỗi mà ``parse`` nuốt lặng:
     * node không phải dict / ``label`` rỗng / ``type`` sai / ``children`` không phải list;
-    * node ``data`` có con (data là lá §3);
-    * ``query`` không có hoặc có **>1** chủ thể (một truy vấn = một cây §3);
+    * node ``data`` có con (data là lá);
+    * ``query`` không có hoặc có **>1** chủ thể (một truy vấn = một cây);
     * gốc không phải ``individual``;
     * ``act`` sai, hoặc act phi-``query`` lại kèm ``entities``.
     """
@@ -131,7 +131,7 @@ def _node_strict(raw: object, path: str) -> TreeNode:
     if not isinstance(children_raw, list):
         raise StrictParseError(f"{path}: children phải là list, gặp {type(children_raw).__name__}")
     if kind == DATA and children_raw:
-        raise StrictParseError(f"{path}: node data là lá, không được có con (§3)")
+        raise StrictParseError(f"{path}: node data là lá, không được có con")
     children = tuple(_node_strict(c, f"{path}.children[{i}]")
                      for i, c in enumerate(children_raw))
     return TreeNode(label=label.strip(), kind=kind, children=children)
@@ -185,7 +185,7 @@ def _node(raw: object) -> TreeNode | None:
     if not isinstance(children_raw, list):
         children_raw = []
     children = tuple(n for n in (_node(c) for c in children_raw) if n is not None)
-    # data là lá (§3): bỏ mọi con nếu lỡ có.
+    # data là lá: bỏ mọi con nếu lỡ có.
     if kind == DATA:
         children = ()
     return TreeNode(label=label.strip(), kind=kind, children=children)

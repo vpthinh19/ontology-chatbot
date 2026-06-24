@@ -135,7 +135,7 @@ def make_eval_figures() -> None:
 
 def main() -> None:
     make_eval_figures()
-    # Uỷ thác Hình benchmark (14/15) nếu đã có kết quả benchmark.
+    # Uỷ thác Hình benchmark (13/14) nếu đã có kết quả benchmark.
     if (EVAL_ARTIFACTS_DIR / "benchmark_report.json").exists():
         from ..baseline.figures import make_figures
         make_figures()

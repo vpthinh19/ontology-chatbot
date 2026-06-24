@@ -1,6 +1,6 @@
-"""Test tầng dữ liệu baseline Phase 8 (gold + docstore) - chạy dưới deps LÕI, KHÔNG cần BGE.
+"""Test tầng dữ liệu baseline (gold + docstore) - chạy dưới deps LÕI, KHÔNG cần BGE.
 
-Khoá chặt 2 thứ dễ vỡ âm thầm: (1) suy gold mức-IRI từ cây-vàng đúng kind/iris/field; (2) phiếu
+Khoá chặt 2 thứ dễ vỡ âm thầm: (1) suy gold mức-IRI từ cây đáp án đúng kind/iris/field; (2) phiếu
 phẳng TRUNG THÀNH với fact ontology (không bịa, không sót) + đủ facet (chống artifact dựng phiếu).
 """
 
@@ -26,7 +26,7 @@ def _by_cat(rows: list[dict], cat: str, n: int = 12) -> list[dict]:
     return [r for r in rows if r.get("category") == cat][:n]
 
 
-# ── gold (suy IRI từ cây vàng) ───────────────────────────────────────────────
+# ── gold (suy IRI từ cây đáp án) ─────────────────────────────────────────────
 
 def test_gold_greeting_nonretrievable(ont, rows):
     for r in _by_cat(rows, "greeting"):

@@ -1,6 +1,6 @@
 """Re-export trục nhóm năng lực (đã chuyển về lõi ``ontchatbot.capabilities``).
 
-Giữ tệp này để mã benchmark cũ (``benchmark.py``, ``figures.py``) import không đổi; nguồn đúng
+Giữ tệp này để ``benchmark.py``/``figures.py`` import không đổi; nguồn đúng
 của taxonomy nay ở :mod:`ontchatbot.capabilities` vì nó dùng chung cho cả đánh giá lẫn đối chứng.
 """
 

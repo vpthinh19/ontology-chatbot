@@ -1,4 +1,4 @@
-"""Oracle nghiêm Phase 3.5: strict-parse + validate + MUTATION (REVIEW §C5/§C6).
+"""Oracle nghiêm: strict-parse + validate + MUTATION.
 
 Mục tiêu: chứng minh oracle KHÔNG "xanh giả" - cây đột biến (sai type/label/cấu trúc)
 PHẢI bị từ chối; còn phép hoán đổi commutative (thứ tự sibling, k65↔cntt cùng giao)
@@ -72,7 +72,7 @@ def test_validate_vague_root_ok(ont):
     assert ok(ont, q(ind("điều kiện")), expected_vague=True).ok
 
 
-# ── MUTATION: cây sai PHẢI fail (REVIEW §C6) ─────────────────────────────────
+# ── MUTATION: cây sai PHẢI fail ──────────────────────────────────────────────
 
 BASE = q(ind("bảo lưu", obj("điều kiện")))
 BASE_EXP = {"DieuKienBaoLuuCaNhan", "DieuKienBaoLuuQuocTe",
@@ -134,7 +134,7 @@ def test_sibling_reorder_not_rejected(ont):
     assert ok(ont, b, expected_nodes=exp).ok
 
 
-# ── Trace bắt "may mắn cùng node" (REVIEW §C6/§D) ────────────────────────────
+# ── Trace bắt "may mắn cùng node" ────────────────────────────────────────────
 
 def test_trace_catches_lucky_same_node(ont):
     # gold: học phí > k65 > cntt (3 bước) → PhiK65620k.
@@ -151,7 +151,7 @@ def test_trace_catches_lucky_same_node(ont):
     assert not r.ok
 
 
-# ── Khớp property CỤC BỘ + sàn điểm (REVIEW scope) ───────────────────────────
+# ── Khớp property CỤC BỘ + sàn điểm ──────────────────────────────────────────
 
 def test_local_scope_absent_property_misses(ont):
     # QuyTrinhNopHocPhi KHÔNG có quan hệ "điều kiện" → con object 'điều kiện' phải MISS,

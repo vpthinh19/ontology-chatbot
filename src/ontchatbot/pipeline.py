@@ -50,7 +50,7 @@ class Pipeline:
         return await asyncio.to_thread(self.answer, text)
 
     def answer_tree(self, tree_or_raw) -> dict:
-        """Entry không cần model (test/eval): nhận :class:`Tree` hoặc dict cây JSON vàng."""
+        """Entry không cần model (test/eval): nhận :class:`Tree` hoặc dict cây JSON."""
         tree = tree_or_raw if isinstance(tree_or_raw, Tree) else parse(tree_or_raw)
         return self._run(tree)
 
