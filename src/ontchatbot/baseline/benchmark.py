@@ -93,7 +93,7 @@ def _ontology_preds(rows: list[dict], ont: Ontology, source: str, model_dir: str
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[bench] ontology end-to-end: model={mdir} device={device}")
     tok = AutoTokenizer.from_pretrained(mdir)
-    model = AutoModelForSeq2SeqLM.from_pretrained(mdir).to(device).eval()
+    model = AutoModelForSeq2SeqLM.from_pretrained(mdir, dtype=torch.bfloat16).to(device).eval()
     preds = _generate(model, tok, [clean(r["text"]) for r in rows], device, num_beams, batch_size)
     specs = [answer_spec(p.tree, ont) for p in preds]
     del model, tok                                   # giải phóng trước khi nạp BGE (staging VRAM)
