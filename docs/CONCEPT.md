@@ -528,9 +528,9 @@ Hai độ đo BLEU và ROUGE, vốn đo độ tương đồng văn bản, không
 
 ### 5.3. Kết quả
 
-Trên tập kiểm tra gồm 2.251 câu, mô hình đạt trùng khít tập trung bình theo năm nhóm năng lực là 0,96 và macro-F1 là 0,97;
-mọi câu đều sinh JSON hợp lệ và đúng hợp đồng cây. Riêng các câu truy vấn đạt trùng khít tập 0,96 và độ chính xác phân loại ý định
-1,00 - gần như không nhầm ý định.
+Trên tập kiểm tra gồm 2.251 câu, mô hình đạt trùng khít tập trung bình theo năm nhóm năng lực là 0,97 và macro-F1 là 0,97;
+gần như mọi câu sinh JSON hợp lệ và đúng hợp đồng cây (99,96%). Riêng các câu truy vấn đạt trùng khít tập 0,97 và độ chính xác phân
+loại ý định 1,00 - gần như không nhầm ý định.
 
 Tách theo nhóm, kết quả xếp đúng theo độ khó suy luận (Bảng 8): các nhóm cần đi theo quan hệ hoặc gom cả tập đạt gần như tuyệt đối,
 còn ba loại câu không phải truy vấn thấp hơn vì phải phân biệt ý định khi câu thiếu chủ thể rõ ràng.
@@ -540,14 +540,14 @@ câu không phải truy vấn, báo cáo riêng.
 
 | Nhóm | F1 |
 |---|---|
-| Đi nhiều bước | 1,00 |
-| Lọc theo ràng buộc | 0,99 |
-| Nhiều thuộc tính | 0,98 |
-| Tra cứu trực tiếp | 0,95 |
-| Đi một quan hệ | 0,94 |
-| *Ngoài tri thức* | *0,90* |
-| *Gốc là lớp hoặc quan hệ trần* | *0,83* |
-| *Mơ hồ* | *0,81* |
+| Nhiều thuộc tính | 0,99 |
+| Đi nhiều bước | 0,99 |
+| Lọc theo ràng buộc | 0,98 |
+| Đi một quan hệ | 0,95 |
+| Tra cứu trực tiếp | 0,93 |
+| *Gốc là lớp hoặc quan hệ trần* | *0,91* |
+| *Ngoài tri thức* | *0,79* |
+| *Mơ hồ* | *0,78* |
 
 Mức thấp hơn của ba loại cuối là một đánh đổi có chủ đích: dữ liệu được tăng cường cho các câu truy vấn quy trình diễn đạt khẩu ngữ
 - trọng tâm của đề tài - nên ranh giới phân loại dịch nhẹ về phía "trả lời được", chấp nhận đôi khi trả lời một câu mơ hồ thay vì
@@ -559,20 +559,20 @@ Ba biểu đồ dưới đây được sinh tự động từ kết quả đánh
 
 **Hình 8.** Đường cong huấn luyện. Hai đường là sai số (loss) của mô hình trên tập huấn luyện và trên tập kiểm định, đo lại sau mỗi
 vòng học. Cả hai cùng giảm và bám sát nhau - dấu hiệu mô hình đang thực sự học chứ không học vẹt; nếu sai số trên tập huấn luyện
-giảm trong khi trên tập kiểm định lại tăng thì đó mới là học thuộc lòng. Sai số trên tập kiểm định giảm từ 0,063 xuống mức thấp
-nhất 0,013 quanh vòng học thứ tám đến thứ chín, và bản mô hình ở chính điểm thấp nhất đó được giữ làm bản cuối.
+giảm trong khi trên tập kiểm định lại tăng thì đó mới là học thuộc lòng. Sai số trên tập kiểm định giảm từ 0,054 xuống mức thấp
+nhất 0,012 quanh vòng học thứ tám, và bản mô hình ở chính điểm thấp nhất đó được giữ làm bản cuối.
 
 ![Hình 9](figures/eval_per_category.png)
 
 **Hình 9.** F1 và trùng khít tập theo từng nhóm năng lực (đánh giá đầu cuối). Các nhóm đi nhiều bước, lọc theo ràng buộc và nhiều
-thuộc tính đạt gần như tuyệt đối; hai loại không phải truy vấn là câu mơ hồ (F1 0,81) và câu ngoài tri thức (0,90) thấp hơn, phản
+thuộc tính đạt gần như tuyệt đối; hai loại không phải truy vấn là câu mơ hồ (F1 0,78) và câu ngoài tri thức (0,79) thấp hơn, phản
 ánh độ khó tự nhiên của việc phân biệt ý định khi câu hỏi thiếu chủ thể cụ thể, chứ không phải khuyết tật của khâu duyệt.
 
 ![Hình 10](figures/intent_confusion.png)
 
 **Hình 10.** Ma trận nhầm lẫn của bốn loại ý định (tô màu theo tỉ lệ hàng). Nhầm lẫn tập trung ở câu mơ hồ bị đoán thành truy vấn
-(22 trên 75) và câu ngoài tri thức bị đoán thành truy vấn (9 trên 110); lớp chào hỏi và truy vấn gần như không nhầm (truy vấn đúng
-2.040 trên 2.049). Ranh giới có xu hướng dịch về phía truy vấn - đúng hướng đề tài là ưu tiên trả lời được câu thủ tục diễn đạt
+(25 trên 75) và câu ngoài tri thức bị đoán thành truy vấn (15 trên 110); lớp chào hỏi và truy vấn gần như không nhầm (truy vấn đúng
+2.041 trên 2.049). Ranh giới có xu hướng dịch về phía truy vấn - đúng hướng đề tài là ưu tiên trả lời được câu thủ tục diễn đạt
 khẩu ngữ, chấp nhận thỉnh thoảng nhận nhầm một câu mơ hồ.
 
 ---
@@ -768,19 +768,19 @@ phép so cân xứng là đặt trùng khít tập của ontology cạnh full@k 
 
 | Hệ | Chất lượng | Đúng trọn vẹn cả tập |
 |---|---|---|
-| Ontology (mô hình thật) | F1 **0,97** | trùng khít tập **0,97** |
+| Ontology (mô hình thật) | F1 **0,97** | trùng khít tập **0,98** |
 | Phẳng | recall@1 0,43 · @3 0,67 · @5 0,77 | full@3 0,65 |
 
 Tách theo năm nhóm năng lực truy vấn - xếp từ dễ đến khó - thấy rõ ontology không thắng đều, mà thắng đúng ở chỗ có cấu trúc:
 
 | Nhóm năng lực | n | Ontology F1 | Ontology trùng khít tập | Phẳng recall@1 | Phẳng recall@3 |
 |---|---|---|---|---|---|
-| Tra cứu trực tiếp | 444 | 0,97 | 0,96 | 0,98 | 1,00 |
+| Tra cứu trực tiếp | 444 | 0,96 | 0,96 | 0,98 | 1,00 |
 | Đi một quan hệ | 834 | 0,96 | 0,97 | 0,11 | 0,43 |
 | Đi nhiều bước | 308 | 1,00 | 1,00 | 0,19 | 0,72 |
-| Nhiều thuộc tính | 134 | 0,99 | 0,96 | 0,50 | 0,56 |
-| Lọc theo ràng buộc | 225 | 0,99 | 0,98 | 0,80 | 0,93 |
-| **Toàn bộ** | **1.945** | **0,97** | **0,97** | **0,43** | **0,67** |
+| Nhiều thuộc tính | 134 | 1,00 | 0,99 | 0,50 | 0,56 |
+| Lọc theo ràng buộc | 225 | 0,99 | 0,97 | 0,80 | 0,93 |
+| **Toàn bộ** | **1.945** | **0,97** | **0,98** | **0,43** | **0,67** |
 
 ![Hình 13](figures/benchmark_per_type.png)
 
@@ -810,7 +810,7 @@ Ba quan sát chính:
 
 **Tầng đáp án cuối (chỉ câu hỏi thuộc tính).** Tìm đúng tài liệu rồi vẫn còn phải chọn đúng *thuộc tính* và *giá trị*.
 
-Ontology đạt từ 0,89 (nhóm nhiều thuộc tính) đến 1,00 (đi nhiều bước) cho cả hai việc, phần lớn trên 0,95.
+Ontology đạt từ 0,96 (tra cứu trực tiếp và lọc theo ràng buộc) đến 0,99 (đi nhiều bước) cho cả hai việc, đều trên 0,95.
 
 Hệ phẳng thuần truy hồi không trích thuộc tính nên *không áp dụng được* ở tầng này. Đây là khác biệt bản chất chứ không phải một con
 số thấp - nên ghi rõ "không áp dụng" thay vì trộn vào tầng truy hồi.
@@ -822,7 +822,7 @@ Ba lưu ý khi đọc bảng số:
 - **Hai hệ chấm theo lối khác nhau**: ontology chấm micro, hệ phẳng chấm trung bình theo câu - nên khi so "đúng trọn vẹn cả tập"
   phải đặt đúng cặp trùng khít tập ↔ full@k.
 - **Số ontology gần trần không có nghĩa "hoàn hảo"**: phần lớn nhờ kho chỉ 54 tài liệu và đáp án chuẩn đã được kiểm chứng tự động; phần sai
-  còn lại (khoảng 3–6%) chủ yếu đến từ bước sinh cây của mô hình.
+  còn lại (khoảng 2–4%) chủ yếu đến từ bước sinh cây của mô hình.
 
 Toàn bộ kết quả nhất quán với giả thuyết nêu ở Mục 6.5.
 
