@@ -9,7 +9,7 @@ ontology lo tri thức có cấu trúc (chính xác).
 Đây là đề tài **nghiên cứu**: chứng minh ưu thế của truy vấn có cấu trúc (ontology) so với một
 cơ sở dữ liệu phẳng truy hồi văn bản. Trình bày khái niệm cho người đọc: [`docs/CONCEPT.md`](docs/CONCEPT.md).
 
-## Luồng
+## Luồng cơ bản
 
 ```
 text → preprocess (làm sạch) → BARTpho CT2 (text→cây) → tree.parse → ontology.traverse → render → reply
@@ -55,22 +55,21 @@ tests/        unit test (pytest)
 
 ## Dependencies (uv, tách theo extra)
 
-| Nhóm | Thêm gì | Dùng cho |
+| Nhóm | Gói cài thêm |
 |---|---|---|
-| **core** (mặc định) | ctranslate2, owlready2, sentencepiece, numpy | lõi: sinh cây (CT2) + duyệt ontology |
-| `--extra inference` | + fastapi[standard], huggingface_hub | chạy server (CPU) |
-| `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib | train / evaluate / convert / benchmark |
+| **core** (mặc định) | ctranslate2, owlready2, sentencepiece, numpy |
+| `--extra inference` | + fastapi[standard], huggingface_hub |
+| `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib, triton-windows |
 
-Mấu chốt: **inference KHÔNG cần torch/transformers** — `model.py` chạy CTranslate2 + sentencepiece
-trực tiếp, nên ảnh deploy gọn (chỉ core + fastapi). `uv` khai `conflicts` chặn cài đồng thời
-`train` + `inference`.
+*Gói triton-windows cần môi trường Windows để vận hành*
+
 
 ## Lệnh
 
 | Lệnh | Mô tả |
 |---|---|
 | `uv run pytest` | Unit test |
-| `uv run --extra train python -m ontchatbot.scripts.train` | Train BARTpho (cần GPU) |
+| `uv run --extra train python -m ontchatbot.scripts.train` | Train BARTpho |
 | `uv run --extra train python -m ontchatbot.scripts.convert_ct2` | HF → CTranslate2 int8 |
 | `uv run --extra train python -m ontchatbot.scripts.evaluate` | Đánh giá 2 mức theo 5 nhóm năng lực |
 | `uv run --extra inference python -m ontchatbot.scripts.build_flat_db` | Sinh CSDL phẳng từ ontology |
