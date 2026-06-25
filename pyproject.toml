@@ -29,6 +29,7 @@ train = [
     "scikit-learn>=1.9.0",
     "torch>=2.12.1",
     "transformers>=5.12.1",
+    "triton-windows>=3.7.1.post27",
 ]
 
 [[tool.uv.index]]
