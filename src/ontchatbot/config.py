@@ -71,7 +71,7 @@ CT2_QUANTIZATION = "int8"
 # Training (dùng ở phiên train BARTpho)
 EPOCHS = 10
 BATCH_SIZE = 8
-GRAD_ACCUM = 2
+GRAD_ACCUM = 1
 LEARNING_RATE = 3e-5
 VAL_SIZE = 0.2
 SEED = 42
