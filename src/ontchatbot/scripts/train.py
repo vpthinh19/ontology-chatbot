@@ -40,9 +40,11 @@ from transformers import (
     Seq2SeqTrainingArguments,
     EarlyStoppingCallback
 )
+import torch
 
 from ..config import (
     BATCH_SIZE,
+    GRAD_ACCUM,
     EPOCHS,
     LEARNING_RATE,
     MAX_SOURCE_LENGTH,
@@ -121,7 +123,7 @@ def _check_target_roundtrip(tokenizer) -> None:
 def train(args: argparse.Namespace) -> None:
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     _check_target_roundtrip(tokenizer)           # chặn train trên target hỏng (bài học "individual"→"al")
-    model = AutoModelForSeq2SeqLM.from_pretrained(args.model)
+    model = AutoModelForSeq2SeqLM.from_pretrained(args.model, dtype=torch.bfloat16, attn_implementation="sdpa")
     if args.grad_checkpointing:
         model.config.use_cache = False          # bắt buộc khi bật gradient checkpointing
 
@@ -142,37 +144,32 @@ def train(args: argparse.Namespace) -> None:
         gradient_accumulation_steps=args.grad_accum,
         learning_rate=args.lr,
         lr_scheduler_type="cosine",
-        bf16=True,                               # mixed precision bf16
-        optim="adamw_8bit",                      # AdamW 8bit (CUDA)
+        bf16=True,
+        optim="adamw_8bit",
         weight_decay=0.005,
         gradient_checkpointing=args.grad_checkpointing,
-        warmup_steps=100,                        # cosine warmup 100 BƯỚC (float<1 cũ = ~0 warmup, đã sửa)
+        warmup_steps=0.1,
         eval_strategy="steps",
-        eval_steps=0.05,
+        eval_steps=250,
         save_strategy="steps",
-        save_steps=0.05,                         # = eval_steps → đủ điều kiện load_best_model_at_end
+        save_steps=250,
         save_total_limit=2,
         logging_strategy="steps",
-        logging_steps=0.01,
+        logging_steps=0.05,
         seed=args.seed,
         report_to="none",
-        predict_with_generate=False,             # eval đúng-cạnh ở evaluate.py
-        load_best_model_at_end=True,             # lưu checkpoint TỐT NHẤT trên VAL (không phải bước cuối)
+        predict_with_generate=True,
+        load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         greater_is_better=False,
     )
 
-    # threshold = mức eval_loss phải GIẢM mới tính là "tiến bộ". eval_loss ~0.017 nên 0.01 (cũ) coi
-    # như mọi eval đều "không tiến bộ" → dừng sớm oan. Dùng 1e-4 (nhạy với delta thật ~1e-3).
-    # patience=8: eval_loss đôi khi VỌT tạm thời giữa chừng (vd 0.026→0.14 rồi hồi); patience nhỏ sẽ
-    # dừng oan ngay tại cú vọt, để lại model train thiếu. load_best_model_at_end vẫn giữ bản tốt nhất
-    # nên nới patience chỉ tốn thêm thời gian khi thật sự bão hoà, không bao giờ làm model tệ đi.
     early_stopping = EarlyStoppingCallback(
-        early_stopping_patience=8,
+        early_stopping_patience=5,
         early_stopping_threshold=1e-4,
     )
 
-    collator = DataCollatorForSeq2Seq(tokenizer, model=model)
+    collator = DataCollatorForSeq2Seq(tokenizer, model=model, pad_to_multiple_of=8)
     trainer = Seq2SeqTrainer(
         model=model,
         args=targs,
@@ -186,8 +183,7 @@ def train(args: argparse.Namespace) -> None:
     trainer.train()
     trainer.save_model(str(args.output_dir))     # lưu cả model + tokenizer
     tokenizer.save_pretrained(str(args.output_dir))
-    # Lưu log_history (loss/eval_loss theo bước) → Hình 8 đường cong huấn luyện (visualize.py đọc).
-    # Bài học: log từng bị xoá khi tái cấu trúc nên mất đường cong; nay lưu cố định cùng artifact.
+    
     TRAIN_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     TRAIN_LOG_PATH.write_text(
         json.dumps(trainer.state.log_history, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -203,7 +199,7 @@ def main() -> None:
                    help="HF model id (mặc định bartpho-syllable; --model vinai/bartpho-syllable-base cho nhẹ)")
     p.add_argument("--epochs", type=float, default=EPOCHS)
     p.add_argument("--batch-size", type=int, default=BATCH_SIZE)
-    p.add_argument("--grad-accum", type=int, default=1)
+    p.add_argument("--grad-accum", type=int, default=GRAD_ACCUM)
     p.add_argument("--lr", type=float, default=LEARNING_RATE)
     p.add_argument("--output-dir", default=MODEL_DIR, type=str)
     p.add_argument("--val-size", type=float, default=VAL_SIZE,
