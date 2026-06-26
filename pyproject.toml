@@ -1,7 +1,7 @@
 [project]
 name = "ontchatbot"
 version = "0.1.1"
-description = "Vietnamese academic-procedure chatbot - BARTpho (text→cây JSON) + ontology traversal"
+description = "Chatbot using BARTpho (text to JSON) and Ontology traversal"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
