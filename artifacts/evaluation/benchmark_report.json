@@ -30,10 +30,10 @@
       "label": "Tra cứu trực tiếp",
       "n": 447,
       "ontology": {
-        "precision": 0.9356984478935698,
-        "recall": 0.9440715883668904,
-        "f1": 0.9398663697104678,
-        "exact_set": 0.9440715883668904
+        "precision": 0.9513274336283186,
+        "recall": 0.9619686800894854,
+        "f1": 0.9566184649610678,
+        "exact_set": 0.9619686800894854
       },
       "flat": {
         "recall@1": 0.9664429530201343,
@@ -51,10 +51,10 @@
       "label": "Đi một quan hệ",
       "n": 917,
       "ontology": {
-        "precision": 0.9832,
-        "recall": 0.9212893553223388,
-        "f1": 0.9512383900928792,
-        "exact_set": 0.9716466739367503
+        "precision": 0.983503534956795,
+        "recall": 0.9385307346326837,
+        "f1": 0.9604909858074414,
+        "exact_set": 0.9749182115594329
       },
       "flat": {
         "recall@1": 0.10730643402399129,
@@ -73,9 +73,9 @@
       "n": 308,
       "ontology": {
         "precision": 1.0,
-        "recall": 0.9968051118210862,
-        "f1": 0.9984,
-        "exact_set": 0.9967532467532467
+        "recall": 1.0,
+        "f1": 1.0,
+        "exact_set": 1.0
       },
       "flat": {
         "recall@1": 0.18831168831168832,
@@ -94,9 +94,9 @@
       "n": 187,
       "ontology": {
         "precision": 1.0,
-        "recall": 0.9752747252747253,
-        "f1": 0.9874826147426982,
-        "exact_set": 0.9732620320855615
+        "recall": 0.989010989010989,
+        "f1": 0.994475138121547,
+        "exact_set": 0.9786096256684492
       },
       "flat": {
         "recall@1": 0.47504456327985745,
@@ -114,10 +114,10 @@
       "label": "Lọc theo ràng buộc",
       "n": 225,
       "ontology": {
-        "precision": 0.9810126582278481,
-        "recall": 0.9748427672955975,
-        "f1": 0.9779179810725552,
-        "exact_set": 0.9644444444444444
+        "precision": 0.9809523809523809,
+        "recall": 0.9716981132075472,
+        "f1": 0.976303317535545,
+        "exact_set": 0.96
       },
       "flat": {
         "recall@1": 0.8012592592592591,
@@ -136,22 +136,22 @@
     "lookup": {
       "label": "Tra cứu trực tiếp",
       "data_n": 199,
-      "ontology_field_hit": 0.949748743718593,
-      "ontology_value_exact": 0.949748743718593,
+      "ontology_field_hit": 0.964824120603015,
+      "ontology_value_exact": 0.964824120603015,
       "flat": "N/A"
     },
     "multihop": {
       "label": "Đi nhiều bước",
       "data_n": 308,
-      "ontology_field_hit": 0.9902597402597403,
-      "ontology_value_exact": 0.9902597402597403,
+      "ontology_field_hit": 0.9935064935064936,
+      "ontology_value_exact": 0.9935064935064936,
       "flat": "N/A"
     },
     "multifield": {
       "label": "Nhiều thuộc tính",
       "data_n": 112,
-      "ontology_field_hit": 0.9821428571428571,
-      "ontology_value_exact": 0.9732142857142857,
+      "ontology_field_hit": 0.9107142857142857,
+      "ontology_value_exact": 0.9017857142857143,
       "flat": "N/A"
     },
     "filter": {
@@ -164,10 +164,10 @@
   },
   "overall": {
     "ontology": {
-      "precision": 0.9791356184798807,
-      "recall": 0.946685878962536,
-      "f1": 0.9626373626373627,
-      "exact_set": 0.968809980806142
+      "precision": 0.9819388131220051,
+      "recall": 0.9596541786743515,
+      "f1": 0.9706686099471671,
+      "exact_set": 0.9745681381957774
     },
     "flat": {
       "recall@1": 0.41147632757517594,
