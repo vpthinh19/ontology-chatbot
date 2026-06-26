@@ -43,7 +43,7 @@ ABBREVIATION_MAP: dict[str, str] = {
 TEENCODE_MAP: dict[str, str] = {
     "ko": "không", "kh": "không", "khong": "không",
     "hk": "không", "hong": "không", "kg": "không", "k": "không",
-    "dc": "được", "đc": "được", "dk": "được", "đk": "được", "duoc": "được",
+    "dc": "được", "đc": "được", "dk": "đăng ký", "đk": "đăng ký", "duoc": "được",
     "j": "gì", "ji": "gì", "g": "gì",
     "z": "vậy", "zay": "vậy", "v": "vậy",
     "ntn": "như thế nào", "nth": "như thế nào", "ntnao": "như thế nào",
@@ -62,7 +62,7 @@ TEENCODE_MAP: dict[str, str] = {
     "cx": "cũng", "cg": "cũng", "ms": "mới",
     "r": "rồi", "oy": "rồi", "rui": "rồi",
     "h": "giờ", "jh": "giờ",
-    "hc": "học", "hoc": "học", "hp": "học phí",
+    "hc": "học", "hoc": "học", "hp": "học phần",
     "tn": "tốt nghiệp", "nganh": "ngành",
     "sv": "sinh viên", "gv": "giảng viên",
     "tcsv": "tín chỉ sinh viên", "tbnam": "trung bình năm",
