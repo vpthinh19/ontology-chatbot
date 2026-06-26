@@ -56,7 +56,7 @@ tests/        unit test (pytest)
 ## Dependencies (uv, tách theo extra)
 
 | Nhóm | Gói cài thêm |
-|---|---|---|
+|---|---|
 | **core** (mặc định) | ctranslate2, owlready2, sentencepiece, numpy |
 | `--extra inference` | + fastapi[standard], huggingface_hub |
 | `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib |
@@ -84,7 +84,7 @@ tests/        unit test (pytest)
 ## Inference trực tiếp thông qua Docker
 
 ```
-docker run -p 8000:8000 vpt19/ontchatbot:latest
+docker run --name ontchatbot -p 8000:8000 vpt19/ontchatbot:latest
 # Truy cập http://127.0.0.1:8000
 # POST /chat {"message": "điều kiện bảo lưu"} → {"reply": ..., "entities": [...]}
 # GET  /healthz → {"status": "ok"}
