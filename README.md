@@ -59,23 +59,27 @@ tests/        unit test (pytest)
 |---|---|---|
 | **core** (mặc định) | ctranslate2, owlready2, sentencepiece, numpy |
 | `--extra inference` | + fastapi[standard], huggingface_hub |
-| `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib, triton-windows |
+| `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib |
 
-*Gói triton-windows cần môi trường Windows để vận hành*
-
+## Cấu hình cần thiết cho train:
+| Tiêu chí | Phiên bản | Ghi chú |
+|---|---|---|
+| OS | Linux x86_64 | Đã thử nghiệm trên Fedora 44 KDE Plasma Wayland |
+| GPU | Ada Lovelace trở lên | Đã thử nghiệm trên RTX4050 6GB VRAM, cần cho TensorFloat32 |
+| CUDA driver | >=13.0 | Các thư viện được khoá cứng CUDA 13.0 |
 
 ## Lệnh
 
 | Lệnh | Mô tả |
 |---|---|
 | `uv run pytest` | Unit test |
-| `uv run --extra train python -m ontchatbot.scripts.train` | Train BARTpho |
-| `uv run --extra train python -m ontchatbot.scripts.convert_ct2` | HF → CTranslate2 int8 |
-| `uv run --extra train python -m ontchatbot.scripts.evaluate` | Đánh giá 2 mức theo 5 nhóm năng lực |
-| `uv run --extra inference python -m ontchatbot.scripts.build_flat_db` | Sinh CSDL phẳng từ ontology |
-| `uv run --extra train python -m ontchatbot.baseline.benchmark` | Đối chứng ontology vs CSDL phẳng |
-| `uv run --extra train python -m ontchatbot.scripts.visualize` | Visualize số liệu |
-| `uv run --extra inference python -m ontchatbot.scripts.serve` | FastAPI tại <http://127.0.0.1:8000> |
+| `uv run --extra train train` | Train BARTpho |
+| `uv run --extra train convert_ct2` | HF → CTranslate2 int8 |
+| `uv run --extra train evaluate` | Đánh giá 2 mức theo 5 nhóm năng lực |
+| `uv run --extra train build_flat_db` | Sinh CSDL phẳng từ ontology |
+| `uv run --extra train benchmark` | Đối chứng ontology vs CSDL phẳng |
+| `uv run --extra train visualize` | Visualize số liệu |
+| `uv run --extra inference serve` | FastAPI tại <http://127.0.0.1:8000> |
 
 ## Inference trực tiếp thông qua Docker
 
