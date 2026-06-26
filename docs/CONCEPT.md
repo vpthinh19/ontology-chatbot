@@ -528,30 +528,30 @@ Hai độ đo BLEU và ROUGE, vốn đo độ tương đồng văn bản, không
 
 ### 5.3. Kết quả
 
-Trên tập kiểm tra gồm 2.251 câu, mô hình đạt trùng khít tập trung bình theo năm nhóm năng lực là 0,97 và macro-F1 là 0,97;
-gần như mọi câu sinh JSON hợp lệ và đúng hợp đồng cây (99,96%). Riêng các câu truy vấn đạt trùng khít tập 0,97 và độ chính xác phân
-loại ý định 1,00 - gần như không nhầm ý định.
+Trên tập kiểm tra gồm 2.387 câu, mô hình đạt trùng khít tập trung bình theo năm nhóm năng lực là 0,96 và macro-F1 là 0,96;
+mọi câu đều sinh JSON hợp lệ và gần như tất cả đúng hợp đồng cây (99,96%). Riêng các câu truy vấn đạt trùng khít tập 0,96 và độ
+chính xác phân loại ý định 1,00 - gần như không nhầm ý định.
 
-Tách theo nhóm, kết quả xếp đúng theo độ khó suy luận (Bảng 8): các nhóm cần đi theo quan hệ hoặc gom cả tập đạt gần như tuyệt đối,
-còn ba loại câu không phải truy vấn thấp hơn vì phải phân biệt ý định khi câu thiếu chủ thể rõ ràng.
+Tách theo nhóm (Bảng 8), các nhóm suy luận có cấu trúc - đi nhiều bước, lọc theo ràng buộc, nhiều thuộc tính - đạt gần như tuyệt đối
+(0,97-0,99); đi một quan hệ và tra cứu trực tiếp ở mức 0,91-0,94; ba loại câu không phải truy vấn dao động 0,82-0,94, thấp nhất là
+câu mơ hồ vì mô hình nghiêng nhẹ về phía trả lời.
 
 **Bảng 8.** F1 đầu cuối theo nhóm. Năm nhóm trên là câu truy vấn, được tính vào trung bình năng lực; ba nhóm dưới (in nghiêng) là
 câu không phải truy vấn, báo cáo riêng.
 
 | Nhóm | F1 |
 |---|---|
-| Nhiều thuộc tính | 0,99 |
 | Đi nhiều bước | 0,99 |
-| Lọc theo ràng buộc | 0,98 |
-| Đi một quan hệ | 0,95 |
-| Tra cứu trực tiếp | 0,93 |
-| *Gốc là lớp hoặc quan hệ trần* | *0,91* |
-| *Ngoài tri thức* | *0,79* |
-| *Mơ hồ* | *0,78* |
+| Nhiều thuộc tính | 0,98 |
+| Lọc theo ràng buộc | 0,97 |
+| Đi một quan hệ | 0,94 |
+| Tra cứu trực tiếp | 0,91 |
+| *Gốc là lớp hoặc quan hệ trần* | *0,94* |
+| *Ngoài tri thức* | *0,94* |
+| *Mơ hồ* | *0,82* |
 
-Mức thấp hơn của ba loại cuối là một đánh đổi có chủ đích: dữ liệu được tăng cường cho các câu truy vấn quy trình diễn đạt khẩu ngữ
-- trọng tâm của đề tài - nên ranh giới phân loại dịch nhẹ về phía "trả lời được", chấp nhận đôi khi trả lời một câu mơ hồ thay vì
-từ chối.
+Ranh giới phân loại ý định vẫn nghiêng nhẹ về phía "trả lời được" - một số câu mơ hồ bị nhận thành truy vấn - là đánh đổi có chủ đích
+để ưu tiên câu thủ tục diễn đạt khẩu ngữ, trọng tâm của đề tài.
 
 Ba biểu đồ dưới đây được sinh tự động từ kết quả đánh giá nên luôn khớp với số trong báo cáo, và được dựng lại sau mỗi lần huấn luyện.
 
@@ -559,20 +559,20 @@ Ba biểu đồ dưới đây được sinh tự động từ kết quả đánh
 
 **Hình 8.** Đường cong huấn luyện. Hai đường là sai số (loss) của mô hình trên tập huấn luyện và trên tập kiểm định, đo lại sau mỗi
 vòng học. Cả hai cùng giảm và bám sát nhau - dấu hiệu mô hình đang thực sự học chứ không học vẹt; nếu sai số trên tập huấn luyện
-giảm trong khi trên tập kiểm định lại tăng thì đó mới là học thuộc lòng. Sai số trên tập kiểm định giảm từ 0,054 xuống mức thấp
-nhất 0,012 quanh vòng học thứ tám, và bản mô hình ở chính điểm thấp nhất đó được giữ làm bản cuối.
+giảm trong khi trên tập kiểm định lại tăng thì đó mới là học thuộc lòng. Sai số trên tập kiểm định giảm từ 0,053 xuống mức thấp
+nhất khoảng 0,012 ở khoảng giữa quá trình học rồi đi ngang, và bản mô hình ở chính điểm thấp nhất đó được giữ làm bản cuối.
 
 ![Hình 9](figures/eval_per_category.png)
 
 **Hình 9.** F1 và trùng khít tập theo từng nhóm năng lực (đánh giá đầu cuối). Các nhóm đi nhiều bước, lọc theo ràng buộc và nhiều
-thuộc tính đạt gần như tuyệt đối; hai loại không phải truy vấn là câu mơ hồ (F1 0,78) và câu ngoài tri thức (0,79) thấp hơn, phản
-ánh độ khó tự nhiên của việc phân biệt ý định khi câu hỏi thiếu chủ thể cụ thể, chứ không phải khuyết tật của khâu duyệt.
+thuộc tính đạt gần như tuyệt đối (0,97-0,99); các nhóm còn lại - đi một quan hệ (F1 0,94), tra cứu trực tiếp (0,91) và ba loại không
+phải truy vấn (0,82-0,94) - phần lớn trên 0,90, chỉ câu mơ hồ thấp hơn, cho thấy năng lực trải khá đều giữa các nhóm chứ không dồn vào vài nhóm.
 
 ![Hình 10](figures/intent_confusion.png)
 
 **Hình 10.** Ma trận nhầm lẫn của bốn loại ý định (tô màu theo tỉ lệ hàng). Nhầm lẫn tập trung ở câu mơ hồ bị đoán thành truy vấn
-(25 trên 75) và câu ngoài tri thức bị đoán thành truy vấn (15 trên 110); lớp chào hỏi và truy vấn gần như không nhầm (truy vấn đúng
-2.041 trên 2.049). Ranh giới có xu hướng dịch về phía truy vấn - đúng hướng đề tài là ưu tiên trả lời được câu thủ tục diễn đạt
+(26 trên 75) và câu ngoài tri thức bị đoán thành truy vấn (6 trên 110); lớp chào hỏi và truy vấn gần như không nhầm (truy vấn đúng
+2.180 trên 2.185). Ranh giới có xu hướng dịch về phía truy vấn - đúng hướng đề tài là ưu tiên trả lời được câu thủ tục diễn đạt
 khẩu ngữ, chấp nhận thỉnh thoảng nhận nhầm một câu mơ hồ.
 
 ---
@@ -665,7 +665,7 @@ Cả hai hệ nhận cùng câu hỏi gốc. Hệ phẳng không được dùng 
 Đáp án chuẩn gồm ba dạng tuỳ câu hỏi: một tập cá thể, đúng thuộc tính được hỏi, hoặc một giá trị. Tìm đúng tài liệu nhưng sai thuộc
 tính vẫn tính là sai - một bất lợi cấu trúc của baseline thuần truy hồi, nêu thẳng khi báo cáo.
 
-Dữ liệu chấm là tập kiểm tra gồm 2.251 câu, tách từ bộ dữ liệu 9.153 câu. Tập kiểm tra dùng cách diễn đạt khác tập huấn luyện, để
+Dữ liệu chấm là tập kiểm tra gồm 2.387 câu, tách từ bộ dữ liệu 9.771 câu. Tập kiểm tra dùng cách diễn đạt khác tập huấn luyện, để
 chống học vẹt mẫu câu.
 
 **Đáp án chuẩn lấy từ đâu - và có thiên vị ontology không?** Mỗi câu hỏi kèm sẵn một *đáp án chuẩn*: tập tài liệu đúng mà một câu
@@ -756,7 +756,7 @@ quan hệ, liệt kê đúng cả tập, đi nhiều bước, đọc nhiều thu
 ### 6.6. Kết quả
 
 Phép so chạy trên tập kiểm tra, nhưng chỉ giữ các câu hệ phẳng có thể truy hồi - tức bỏ câu chào hỏi, ngoài tri thức và mơ hồ, vì
-hệ phẳng không có khái niệm từ chối. Sau lọc còn **1.945 câu** truy vấn.
+hệ phẳng không có khái niệm từ chối. Sau lọc còn **2.084 câu** truy vấn.
 
 Đáp án chuẩn được suy thẳng từ ontology theo ngữ nghĩa quan hệ, độc lập với mô hình, và đã được thuật toán duyệt kiểm chứng tự động.
 
@@ -768,41 +768,41 @@ phép so cân xứng là đặt trùng khít tập của ontology cạnh full@k 
 
 | Hệ | Chất lượng | Đúng trọn vẹn cả tập |
 |---|---|---|
-| Ontology (mô hình thật) | F1 **0,97** | trùng khít tập **0,98** |
-| Phẳng | recall@1 0,43 · @3 0,67 · @5 0,77 | full@3 0,65 |
+| Ontology (mô hình thật) | F1 **0,96** | trùng khít tập **0,97** |
+| Phẳng | recall@1 0,41 · @3 0,67 · @5 0,77 | full@3 0,64 |
 
 Tách theo năm nhóm năng lực truy vấn - xếp từ dễ đến khó - thấy rõ ontology không thắng đều, mà thắng đúng ở chỗ có cấu trúc:
 
 | Nhóm năng lực | n | Ontology F1 | Ontology trùng khít tập | Phẳng recall@1 | Phẳng recall@3 |
 |---|---|---|---|---|---|
-| Tra cứu trực tiếp | 444 | 0,96 | 0,96 | 0,98 | 1,00 |
-| Đi một quan hệ | 834 | 0,96 | 0,97 | 0,11 | 0,43 |
+| Tra cứu trực tiếp | 447 | 0,94 | 0,94 | 0,97 | 1,00 |
+| Đi một quan hệ | 917 | 0,95 | 0,97 | 0,11 | 0,43 |
 | Đi nhiều bước | 308 | 1,00 | 1,00 | 0,19 | 0,72 |
-| Nhiều thuộc tính | 134 | 1,00 | 0,99 | 0,50 | 0,56 |
-| Lọc theo ràng buộc | 225 | 0,99 | 0,97 | 0,80 | 0,93 |
-| **Toàn bộ** | **1.945** | **0,97** | **0,98** | **0,43** | **0,67** |
+| Nhiều thuộc tính | 187 | 0,99 | 0,97 | 0,48 | 0,64 |
+| Lọc theo ràng buộc | 225 | 0,98 | 0,96 | 0,80 | 0,93 |
+| **Toàn bộ** | **2.084** | **0,96** | **0,97** | **0,41** | **0,67** |
 
 ![Hình 13](figures/benchmark_per_type.png)
 
 **Hình 13.** Chất lượng theo nhóm năng lực - *đọc theo trục đứng, so cặp cột ontology với phẳng* (cột ontology là F1, cột phẳng là
 recall@3). Hai hệ tương đương ở nhóm tra cứu trực tiếp, nhưng hệ phẳng tụt rõ ở các nhóm có cấu trúc: đi một quan hệ (recall@3 0,43),
-nhiều thuộc tính (0,56) và đi nhiều bước (0,72), trong khi ontology giữ F1 quanh 0,96 đến 1,00 ở mọi nhóm - đây là bằng chứng trực
+nhiều thuộc tính (0,64) và đi nhiều bước (0,72), trong khi ontology giữ F1 quanh 0,94 đến 1,00 ở mọi nhóm - đây là bằng chứng trực
 tiếp cho luận điểm trung tâm.
 
 ![Hình 14](figures/recall_at_k.png)
 
-**Hình 14.** Đường recall@k của hệ phẳng (0,43 ở k=1 lên 0,77 ở k=5), so với mốc **recall 0,96** của ontology. Mốc này dùng *recall*
-để so cùng loại với recall@k - không phải F1 0,97 ở bảng tổng (F1 là chất lượng tổng hợp, recall là độ bao phủ; cùng một tập, hai
+**Hình 14.** Đường recall@k của hệ phẳng (0,41 ở k=1 lên 0,77 ở k=5), so với mốc **recall 0,95** của ontology. Mốc này dùng *recall*
+để so cùng loại với recall@k - không phải F1 0,96 ở bảng tổng (F1 là chất lượng tổng hợp, recall là độ bao phủ; cùng một tập, hai
 góc nhìn). Recall của hệ phẳng tăng khi nới k nhưng vẫn dưới mốc ontology kể cả ở k=5, đồng thời phơi hạn chế phải xác định trước k:
 k nhỏ thì bỏ sót, k lớn thì lẫn tài liệu thừa.
 
 Ba quan sát chính:
 
-- **Hai hệ tương đương ở câu tra cứu trực tiếp**, thậm chí hệ phẳng nhỉnh hơn đôi chút (recall@3 1,00 so với recall ontology 0,96),
+- **Hai hệ tương đương ở câu tra cứu trực tiếp**, thậm chí hệ phẳng nhỉnh hơn đôi chút (recall@3 1,00 so với recall ontology 0,95),
   vì đáp án nằm ngay trong tài liệu chứa từ khoá và kho chỉ có 54 tài liệu nên truy hồi gần như luôn bắt trúng; ontology phải qua
   thêm bước sinh cây nên thỉnh thoảng lệch nhẹ. Vì vậy kết luận đúng là ontology thắng *tổng thể và đặc biệt ở câu có cấu trúc*,
   không phải thắng mọi loại.
-- **Khoảng cách lớn nhất lộ ra ở cột recall@1**: nhóm tra cứu trực tiếp hệ phẳng đạt 0,98, nhưng đi một quan hệ chỉ còn 0,11 và đi
+- **Khoảng cách lớn nhất lộ ra ở cột recall@1**: nhóm tra cứu trực tiếp hệ phẳng đạt 0,97, nhưng đi một quan hệ chỉ còn 0,11 và đi
   nhiều bước 0,19. Khi đáp án *rời khỏi* tài liệu chứa từ khoá - sang một phòng ban, một tập điều kiện, hay qua nhiều bước quan hệ -
   tài liệu phẳng không còn manh mối nào để xếp nó lên đầu.
 - **Hệ phẳng không gom được một *tập* đáp án rải ở nhiều tài liệu** (như bốn điều kiện bảo lưu ở Ví dụ 2), nên ngay cả khi nới k,
@@ -810,7 +810,7 @@ Ba quan sát chính:
 
 **Tầng đáp án cuối (chỉ câu hỏi thuộc tính).** Tìm đúng tài liệu rồi vẫn còn phải chọn đúng *thuộc tính* và *giá trị*.
 
-Ontology đạt từ 0,96 (tra cứu trực tiếp và lọc theo ràng buộc) đến 0,99 (đi nhiều bước) cho cả hai việc, đều trên 0,95.
+Ontology đạt từ 0,95 (tra cứu trực tiếp) đến 0,99 (đi nhiều bước) cho cả hai việc, đều trên 0,95.
 
 Hệ phẳng thuần truy hồi không trích thuộc tính nên *không áp dụng được* ở tầng này. Đây là khác biệt bản chất chứ không phải một con
 số thấp - nên ghi rõ "không áp dụng" thay vì trộn vào tầng truy hồi.
@@ -822,7 +822,7 @@ Ba lưu ý khi đọc bảng số:
 - **Hai hệ chấm theo lối khác nhau**: ontology chấm micro, hệ phẳng chấm trung bình theo câu - nên khi so "đúng trọn vẹn cả tập"
   phải đặt đúng cặp trùng khít tập ↔ full@k.
 - **Số ontology gần trần không có nghĩa "hoàn hảo"**: phần lớn nhờ kho chỉ 54 tài liệu và đáp án chuẩn đã được kiểm chứng tự động; phần sai
-  còn lại (khoảng 2–4%) chủ yếu đến từ bước sinh cây của mô hình.
+  còn lại (khoảng 3–5%) chủ yếu đến từ bước sinh cây của mô hình.
 
 Toàn bộ kết quả nhất quán với giả thuyết nêu ở Mục 6.5.
 
