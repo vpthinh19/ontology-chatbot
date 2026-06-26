@@ -1,6 +1,6 @@
 [project]
 name = "ontchatbot"
-version = "0.1.1"
+version = "0.1.2"
 description = "Chatbot using BARTpho (text to JSON) and Ontology traversal"
 readme = "README.md"
 requires-python = ">=3.12"
