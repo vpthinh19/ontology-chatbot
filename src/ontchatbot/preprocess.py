@@ -62,7 +62,7 @@ TEENCODE_MAP: dict[str, str] = {
     "cx": "cũng", "cg": "cũng", "ms": "mới",
     "r": "rồi", "oy": "rồi", "rui": "rồi",
     "h": "giờ", "jh": "giờ",
-    "hc": "học", "hoc": "học", "hp": "học phần",
+    "hc": "học", "hoc": "học",   # "hp" KHÔNG nở: đa nghĩa (học phí ở câu fee, học phần ở "hủy hp") - để model tự phân biệt theo ngữ cảnh
     "tn": "tốt nghiệp", "nganh": "ngành",
     "sv": "sinh viên", "gv": "giảng viên",
     "tcsv": "tín chỉ sinh viên", "tbnam": "trung bình năm",
@@ -84,7 +84,7 @@ TEENCODE_MAP: dict[str, str] = {
     # here - they are ontology aliases owned by the graph lexicon. Teencode is
     # only for generic chat abbreviations; expanding "cntt" → "công nghệ thông
     # tin" would let longest-match swallow it into a fee label and break the
-    # cohort×program intersection.
+    # cohort x program intersection.
 }
 
 
