@@ -122,8 +122,8 @@ def _check_target_roundtrip(tokenizer) -> None:
 
 def train(args: argparse.Namespace) -> None:
     tokenizer = AutoTokenizer.from_pretrained(args.model)
-    _check_target_roundtrip(tokenizer)           # chặn train trên target hỏng (bài học "individual"→"al")
-    model = AutoModelForSeq2SeqLM.from_pretrained(args.model, dtype=torch.bfloat16, attn_implementation="sdpa")
+    _check_target_roundtrip(tokenizer)           # chặn train trên target hỏng
+    model = AutoModelForSeq2SeqLM.from_pretrained(args.model, attn_implementation="sdpa")
     if args.grad_checkpointing:
         model.config.use_cache = False          # bắt buộc khi bật gradient checkpointing
 
@@ -145,8 +145,12 @@ def train(args: argparse.Namespace) -> None:
         learning_rate=args.lr,
         lr_scheduler_type="cosine",
         bf16=True,
+        tf32=True,
         optim="adamw_8bit",
         weight_decay=0.005,
+        torch_compile=True,
+        torch_compile_backend="inductor",
+        torch_compile_mode="default",
         gradient_checkpointing=args.grad_checkpointing,
         warmup_steps=0.05,
         eval_strategy="steps",
@@ -166,7 +170,6 @@ def train(args: argparse.Namespace) -> None:
 
     early_stopping = EarlyStoppingCallback(
         early_stopping_patience=5,
-        early_stopping_threshold=1e-4,
     )
 
     collator = DataCollatorForSeq2Seq(tokenizer, model=model, pad_to_multiple_of=8)
