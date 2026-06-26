@@ -19,10 +19,6 @@ Một chiều, không vòng lặp, không planner: cây do mô hình sinh đã c
 theo đúng các quan hệ được nêu, lấy điểm khớp cao nhất, không khớp thì trả "không có thông tin «X»".
 
 ## Cấu trúc thư mục
-
-Hệ thống chạy thật và công cụ phát triển tách bạch: `src/` chỉ chứa hệ thống + script tái lập;
-mọi công cụ thời phát triển (dựng dataset, build ontology) nằm trong `dev/` (gitignored).
-
 ```
 src/ontchatbot/
 ├── config.py            đường dẫn, mã model, siêu tham số
