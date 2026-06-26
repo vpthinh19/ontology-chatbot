@@ -3,7 +3,7 @@
     uv run --extra train python -m ontchatbot.scripts.convert_ct2 \
         [--model-dir artifacts/models/bartpho_tree] [--out artifacts/models/bartpho_ct2]
 
-2 bước (theo pattern đã verify):
+2 bước:
   ① vá ``model.config.normalize_before = True`` - pretrained BARTpho THIẾU/đặt sai field này; CT2
      sinh rác nếu bỏ qua. Lưu HF model + tokenizer ra thư mục trung gian (converter đọc từ đĩa).
   ② ``TransformersConverter(quantization="int8")`` → ``CT2_MODEL_DIR``; rồi lưu tokenizer VÀO đó để

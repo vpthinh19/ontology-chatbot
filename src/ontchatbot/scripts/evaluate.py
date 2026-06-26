@@ -58,14 +58,14 @@ if hasattr(sys.stdout, "reconfigure"):           # Windows console mặc định
 _NEGATIVE_CATS = frozenset({"neg_child_miss", "neg_root_vague", "vague", "ood", "greeting"})
 
 
-# ── Mức 1: so cấu trúc cây (chuẩn hoá nhãn, bất biến thứ tự anh-em) ───────────
+# Mức 1: so cấu trúc cây (chuẩn hoá nhãn, bất biến thứ tự anh-em)
 
 def _canon(node: TreeNode) -> tuple:
     """Dạng chuẩn của một node để so cây: (kind, nhãn-chuẩn-hoá, multiset con đã sort).
 
-    Sort con → bất biến thứ tự anh-em (anh-em = nhánh độc lập, ``k65>cntt`` ≡ ``cntt>k65``).
+    Sort con → bất biến thứ tự anh-em (anh-em = nhánh độc lập, ``k65>cntt`` tương đương ``cntt>k65``).
     Nhãn chuẩn hoá bằng ``normalize_for_match`` - đúng phép chuẩn hoá mà bộ khớp dùng, nên hai
-    nhãn coi-là-bằng ở đây cũng resolve y hệt; không che lỗi chọn-sai-từ (vd học phí≠học bổng)."""
+    nhãn coi-là-bằng ở đây cũng resolve y hệt; không che lỗi chọn-sai-từ (vd học phí khác học bổng)."""
     return (node.kind, normalize_for_match(node.label),
             tuple(sorted(_canon(c) for c in node.children)))
 
@@ -80,7 +80,7 @@ def _shape(node: TreeNode) -> tuple:
     return (node.kind, tuple(sorted(_shape(c) for c in node.children)))
 
 
-# ── Mức 2: quy đáp án về tập "answer atoms" ──────────────────────────────────
+# Mức 2: quy đáp án về tập "answer atoms"
 
 def _atoms(act: str, res: Result) -> set:
     """Tập **đơn vị đáp án** (answer atom) mô tả đáp án thực mà người dùng nhận.
@@ -90,8 +90,8 @@ def _atoms(act: str, res: Result) -> set:
       nếu không model trả lời đúng vẫn bị chấm sai chỉ vì khác đường nội bộ.
     * greeting/ood → ``("act", act)`` (mỗi loại một câu trả lời riêng, không tra cứu).
     * còn lại: mỗi node terminal → ``("node", iri)``; mỗi giá trị lá data → ``("data", prop, str(v))``
-      (gói cả ``prop`` ⇒ sai field = atom khác = SAI); mỗi nhánh không khớp → ``("miss", nhãn)``
-      (phân biệt "không có thông tin về X/Y" và chống empty≡empty ăn điểm).
+      (gói cả ``prop`` → sai field = atom khác = SAI); mỗi nhánh không khớp → ``("miss", nhãn)``
+      (phân biệt "không có thông tin về X/Y" và chống empty trùng empty ăn điểm).
     """
     if act == VAGUE or res.vague:
         return {("vague",)}
@@ -114,7 +114,7 @@ def _prf(inter: int, npred: int, ngold: int) -> tuple[float, float, float]:
     return p, r, f
 
 
-# ── Sinh cây từ model (torch generate, theo lô) ──────────────────────────────
+# Sinh cây từ model (torch generate, theo lô)
 
 @dataclass
 class _Pred:
@@ -151,7 +151,7 @@ def _generate(model, tokenizer, texts: list[str], device, num_beams: int, batch_
     return preds
 
 
-# ── Gom số liệu ──────────────────────────────────────────────────────────────
+# Gom số liệu
 
 @dataclass
 class _Bucket:
@@ -283,7 +283,7 @@ def evaluate(args: argparse.Namespace) -> int:
     return 0 if overall == total else 1
 
 
-# ── In bảng + lưu báo cáo ────────────────────────────────────────────────────
+# In bảng + lưu báo cáo
 
 def _report(buckets: dict[str, _Bucket], mismatches: list[dict], model_dir: str,
             args: argparse.Namespace, act_conf: dict[str, dict[str, int]] | None = None) -> None:

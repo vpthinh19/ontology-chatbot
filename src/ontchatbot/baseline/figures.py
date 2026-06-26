@@ -38,7 +38,7 @@ def make_figures() -> None:
     labels = [GROUP_LABEL.get(g, g) for g in groups]
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ── Hình 13: chất lượng theo nhóm năng lực - ontology F1 vs phẳng recall@3 ──
+    # Hình 13: chất lượng theo nhóm năng lực - ontology F1 vs phẳng recall@3
     ont_f1 = [per[g]["ontology"]["f1"] for g in groups]
     flat_recall = [per[g]["flat"].get("recall@3", 0.0) for g in groups]
     x = np.arange(len(groups))
@@ -57,7 +57,7 @@ def make_figures() -> None:
     fig.savefig(FIGURES_DIR / "benchmark_per_type.png", dpi=150)
     plt.close(fig)
 
-    # ── Hình 14: đường recall@k của phẳng + mốc ontology ──
+    # Hình 14: đường recall@k của phẳng + mốc ontology
     ks = rep["config"]["ks"]
     fo = rep["overall"]["flat"]
     fig, ax = plt.subplots(figsize=(7, 5))

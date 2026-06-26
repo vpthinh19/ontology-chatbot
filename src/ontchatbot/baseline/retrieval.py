@@ -51,7 +51,7 @@ def rank_all(corpus: dict[str, str], queries: list[str], *, alpha: float = ALPHA
     iris = list(corpus)                               # thứ tự ổn định (insertion = thứ tự ontology)
     docs = [corpus[i] for i in iris]
 
-    # ── Stage 1: BGE-M3 encode (corpus + queries) ──
+    # Stage 1: BGE-M3 encode (corpus + queries)
     m3 = BGEM3FlagModel(M3_NAME, use_fp16=use_fp16)
     d_out = m3.encode(docs, return_dense=True, return_sparse=True)
     q_out = m3.encode(queries, return_dense=True, return_sparse=True)
@@ -63,7 +63,7 @@ def rank_all(corpus: dict[str, str], queries: list[str], *, alpha: float = ALPHA
     gc.collect()
     _free_cuda()
 
-    # ── Stage 2: hybrid score → top-k ứng viên mỗi câu ──
+    # Stage 2: hybrid score → top-k ứng viên mỗi câu
     from sklearn.metrics.pairwise import cosine_similarity
     dense_all = cosine_similarity(q_dense, doc_dense)                    # (Q, D)
     candidates: list[list[int]] = []
@@ -74,7 +74,7 @@ def rank_all(corpus: dict[str, str], queries: list[str], *, alpha: float = ALPHA
         order = sorted(range(len(iris)), key=lambda j: (-hybrid[j], iris[j]))
         candidates.append(order[:top_k_retrieve])
 
-    # ── Stage 3: rerank cross-encoder top-k ──
+    # Stage 3: rerank cross-encoder top-k
     import torch
     from transformers import AutoModelForSequenceClassification, AutoTokenizer
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -4,10 +4,10 @@
 
 Một lệnh sinh mọi Hình có thể (bỏ qua Hình thiếu nguồn, in cảnh báo):
 * **Hình 8** ``training_curve.png`` - train/val loss theo bước, đọc ``config.TRAIN_LOG_PATH``
-  (train.py lưu sau khi train). Thiếu log ⇒ bỏ qua (chạy train.py trước).
+  (train.py lưu sau khi train). Thiếu log → bỏ qua (chạy train.py trước).
 * **Hình 9** ``eval_per_category.png`` - F1 + exact-match theo loại câu, đọc ``eval_report.json``.
 * **Hình 10** ``intent_confusion.png`` - ma trận nhầm lẫn trường ``act``, đọc ``eval_report.json``
-  (cần field ``act_confusion`` - evaluate.py phiên mới ghi; report cũ thiếu thì bỏ qua).
+  (cần field ``act_confusion``; report thiếu field này thì bỏ qua).
 * **Hình 13/14** benchmark - uỷ thác ``baseline.figures`` nếu có ``benchmark_report.json``.
 
 Tách khỏi ``baseline/figures.py`` (đối chứng) vì đây là viz cho khâu đánh giá mô hình. Cả hai ghi

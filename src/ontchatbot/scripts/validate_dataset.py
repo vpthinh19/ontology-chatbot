@@ -12,10 +12,8 @@ Oracle nghiêm pin **toàn bộ outcome** của một cặp, không chỉ tập 
 * tập node terminal **bằng đúng** ``expected`` (so set IRI);
 * lá data so **đúng property + chuỗi con giá trị** (không chỉ "có chứa" toàn cục);
 * ``misses`` bằng đúng kỳ vọng (nhánh rác KHÔNG được sibling tốt che);
-* trace: resolve property phải đủ mạnh (score ≥ ``MIN_PROP_SCORE``) và KHÔNG nhập nhằng
-  (best − runner-up ≥ ``TIE_MARGIN``) - chặn nhãn quá chung khớp may rủi.
-
-Đây là bộ kiểm dùng để giữ cặp dataset do Codex sinh.
+* trace: resolve property phải đủ mạnh (score >= ``MIN_PROP_SCORE``) và KHÔNG nhập nhằng
+  (best - runner-up >= ``TIE_MARGIN``) - chặn nhãn quá chung khớp may rủi.
 """
 
 from __future__ import annotations
@@ -26,7 +24,7 @@ from ..ontology import DATA, OBJECT, Ontology
 from ..tree import QUERY, StrictParseError, parse_strict
 
 MIN_PROP_SCORE = 80.0      # property/cá thể resolve yếu hơn → reject
-TIE_MARGIN = 10.0          # property best − nhì < margin (mà best < 100) → nhập nhằng → reject
+TIE_MARGIN = 10.0          # property best - nhì < margin (mà best < 100) → nhập nhằng → reject
 
 
 @dataclass(frozen=True)
@@ -60,7 +58,7 @@ def validate_case_strict(
 
     ``expected_trace`` (tuỳ chọn) ghim **đường đi** chứ không chỉ đích - khi đặt, trace
     thật phải khớp đúng. Đây là vũ khí chống "may mắn cùng node": hai cây
-    khác cấu trúc nhưng cùng denotation sẽ lệch trace ⇒ bị bắt.
+    khác cấu trúc nhưng cùng denotation sẽ lệch trace → bị bắt.
     """
     errors: list[str] = []
 

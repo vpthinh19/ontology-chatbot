@@ -10,8 +10,8 @@ Hình dạng cây::
       "entities": [ {"label": "học phí", "type": "individual", "children": [
                       {"label": "k65", "type": "individual", "children": [...]} ]} ] }
 
-- ``act`` ∈ {query, greeting, ood, vague}. Chỉ ``query`` mới chạy duyệt.
-- Mỗi node: ``label`` (đoạn chữ), ``type`` ∈ {individual, object, data}, ``children`` (cây con).
+- ``act`` thuộc {query, greeting, ood, vague}. Chỉ ``query`` mới chạy duyệt.
+- Mỗi node: ``label`` (đoạn chữ), ``type`` thuộc {individual, object, data}, ``children`` (cây con).
 - ``entities`` là **một cây** (một chủ thể / truy vấn); **gốc luôn ``individual``**.
 """
 
@@ -137,7 +137,7 @@ def _node_strict(raw: object, path: str) -> TreeNode:
     return TreeNode(label=label.strip(), kind=kind, children=children)
 
 
-# ── Serialization CHO MODEL: space-pad + đổi tên key để tokenizer round-trip ─
+# Serialization CHO MODEL: space-pad + đổi tên key để tokenizer round-trip
 # BARTpho-syllable (sentencepiece tiếng Việt) tokenize chữ DÍNH dấu `"` (JSON nén) rất tệ:
 # "individual"→"al"; nhãn tiếng Việt vỡ vụn ("Quản"→Qu+ả+n). Thêm KHOẢNG TRẮNG quanh mọi `"` ở
 # đường-biên model → tokenize tự nhiên như lúc pretrain ("▁Quản" 1 token, "▁individual" sạch) → model

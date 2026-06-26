@@ -12,9 +12,9 @@ rồi ``json.loads`` ra ``{"act", "entities": [...]}`` (xem :func:`tree.parse`).
 việc hiểu câu (trích xuất, dựng quan hệ, đoán act) - pipeline không có luật xử-lý-câu.
 
  Vì sao sentencepiece chứ KHÔNG transformers.AutoTokenizer: đường deploy phải gọn (core +
-fastapi), tránh kéo cả hệ sinh thái transformers. Người dùng đã test (`dev/inf_test.py`) và parity
-``["<s>"] + EncodeAsPieces + ["</s>"]`` == ``AutoTokenizer.convert_ids_to_tokens(encode(...))``
-đã được kiểm (khớp tuyệt đối) nên KHÔNG lệch so với lúc train/eval.
+fastapi), tránh kéo cả hệ sinh thái transformers. Parity ``["<s>"] + EncodeAsPieces + ["</s>"]`` ==
+``AutoTokenizer.convert_ids_to_tokens(encode(...))`` đã kiểm (khớp tuyệt đối) nên KHÔNG lệch so với
+lúc train/eval.
 
  :meth:`to_tree` nhận text **ĐÃ qua ``preprocess.clean``** (pipeline clean trước khi gọi - đồng bộ
 với train/eval); KHÔNG clean lại ở đây. JSON model sinh hỏng → trả cây ``vague`` (khoan dung như

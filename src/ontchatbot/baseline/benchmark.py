@@ -59,7 +59,7 @@ def _new_cat() -> dict:
             "flat": defaultdict(float)}
 
 
-# ── Nạp + materialize gold ───────────────────────────────────────────────────
+# Nạp + materialize gold
 
 def _load_rows(limit: int) -> list[dict]:
     rows = [json.loads(l) for l in TEST_PATH.read_text(encoding="utf-8").splitlines() if l.strip()]
@@ -79,12 +79,12 @@ def _build_gold(rows: list[dict], ont: Ontology) -> list[tuple[dict, AnswerSpec]
     return out
 
 
-# ── Phía ontology (end-to-end hoặc gold-sanity) ──────────────────────────────
+# Phía ontology (end-to-end hoặc gold-sanity)
 
 def _ontology_preds(rows: list[dict], ont: Ontology, source: str, model_dir: str,
                     num_beams: int, batch_size: int) -> list[AnswerSpec]:
     if source == "gold":
-        return [answer_spec(parse(r["tree"]), ont) for r in rows]   # sanity: phải ≈ trùng gold
+        return [answer_spec(parse(r["tree"]), ont) for r in rows]   # sanity: phải gần như trùng gold
     from ..scripts.evaluate import _generate, _resolve_model_dir
     import torch
     from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
@@ -103,7 +103,7 @@ def _ontology_preds(rows: list[dict], ont: Ontology, source: str, model_dir: str
     return specs
 
 
-# ── Chấm điểm ────────────────────────────────────────────────────────────────
+# Chấm điểm
 
 def _f1(p: float, r: float) -> float:
     return 2 * p * r / (p + r) if (p + r) else 0.0
@@ -193,7 +193,7 @@ def _live_config(args) -> dict:
                             "loại = NHÓM NĂNG LỰC (groups.py).")}
 
 
-# ── Tái-gom từ details (không chạy BGE/model) ────────────────────────────────
+# Tái-gom từ details (không chạy BGE/model)
 
 def reaggregate() -> int:
     """Dựng lại report+details theo nhóm năng lực TỪ details cũ (per-query) + tầng-2 report cũ."""
@@ -233,7 +233,7 @@ class _ReaggArgs:
     ontology_source = "model"
 
 
-# ── Báo cáo ──────────────────────────────────────────────────────────────────
+# Báo cáo
 
 def _report(cats: dict, details, args, config: dict) -> None:
     def agg_ont(c):
@@ -275,7 +275,7 @@ def _report(cats: dict, details, args, config: dict) -> None:
           f"{flat_overall['recall@3']:>10.2f}{flat_overall['recall@5']:>6.2f}{flat_overall['full@3']:>7.0%}")
     report["overall"] = {"ontology": micro, "flat": flat_overall}
 
-    # ── Tầng 2: đáp-án-cuối (data) ──
+    # Tầng 2: đáp-án-cuối (data)
     print("\n=== TẦNG 2: ĐÁP-ÁN-CUỐI (truy vấn data) - phẳng = N/A (retrieval-only) ===")
     for grp in order:
         c = cats[grp]

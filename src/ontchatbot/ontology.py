@@ -108,7 +108,7 @@ class Ontology:
     def get(cls) -> "Ontology":
         return cls()
 
-    # ── Khớp (resolve theo kind) ─────────────────────────────────────────────
+    # Khớp (resolve theo kind)
 
     def resolve(self, label: str, kind: str) -> list[str] | str | None:
         """Khớp 1 nhãn lẻ TOÀN CỤC (individual → list IRI; object/data → tên property; None nếu trượt).
@@ -178,17 +178,17 @@ class Ontology:
         """Khớp GỐC có kiểm namespace (type-safety, không phải luật nghiệp vụ).
 
         Gốc theo hợp đồng phải là **cá thể**. Nếu label khớp tên CLASS / nhãn PROPERTY rõ
-        hơn cá thể ⇒ model sinh sai category ⇒ trả ``vague`` thay vì khớp-một-phần ra rác.
+        hơn cá thể → model sinh sai category → trả ``vague`` thay vì khớp-một-phần ra rác.
         Trả ``("ok", iris) | ("vague", []) | ("miss", [])``.
 
-        Quy tắc (conservative, theo gợi ý Codex):
+        Quy tắc (thận trọng):
         - cá thể exact (=100) thắng cả khi class/property cũng 100 (label lưỡng tính như
           "học phí": ở GỐC phải là cá thể quy trình).
         - class/property exact mà cá thể không exact → vague (namespace mismatch).
-        - class/property cao (≥90) hơn cá thể một margin → vague.
-        - cá thể đủ chắc (≥80: exact/đủ-token/chuỗi-con) → ok; BỎ "trùng-một-phần" thấp ở gốc.
-        - **LƯỚI AN TOÀN (gốc nhập nhằng):** cá thể đủ chắc NHƯNG ≥2 cá thể HOÀ điểm cao
-          nhất ⇒ vague thay vì gom union hổ lốn. Ví dụ model rút gốc còn token chung
+        - class/property cao (>=90) hơn cá thể một margin → vague.
+        - cá thể đủ chắc (>=80: exact/đủ-token/chuỗi-con) → ok; BỎ "trùng-một-phần" thấp ở gốc.
+        - **LƯỚI AN TOÀN (gốc nhập nhằng):** cá thể đủ chắc NHƯNG >=2 cá thể HOÀ điểm cao
+          nhất → vague thay vì gom union hổ lốn. Ví dụ model rút gốc còn token chung
           "học phần" → trúng 4 cá thể đồng điểm. Hợp lệ vì theo thiết kế MỘT cây = MỘT chủ
           thể: union chỉ xảy ra ở tầng anh-em (children), nên HOÀ ở GỐC luôn là ca thoái
           hoá (chủ thể mơ hồ) - không ca hợp-lệ nào bị hại. Gốc đúng (tên quy trình đầy đủ)
@@ -213,7 +213,7 @@ class Ontology:
 
     @staticmethod
     def _guard_ambiguous_root(iris: list[str]) -> tuple[str, list[str]]:
-        """Gốc khớp đúng 1 cá thể → ``ok``; ≥2 cá thể HOÀ điểm cao nhất → ``vague`` (lưới
+        """Gốc khớp đúng 1 cá thể → ``ok``; >=2 cá thể HOÀ điểm cao nhất → ``vague`` (lưới
         an toàn chủ-thể-nhập-nhằng, xem :meth:`_root_resolve`)."""
         return ("ok", iris) if len(iris) == 1 else ("vague", [])
 
@@ -227,7 +227,7 @@ class Ontology:
     def _best_label_score(q: str, label_lists) -> float:
         return max((_score(q, labels) for labels in label_lists), default=0.0)
 
-    # ── Thuật toán duyệt ─────────────────────────────────────────────────────
+    # Thuật toán duyệt
 
     def traverse(self, tree: Tree) -> Result:
         """Đi theo cây → :class:`Result`. act != query → Result rỗng (render lo)."""
@@ -294,7 +294,7 @@ class Ontology:
             self._descend(child, nxt, result)      # con của child lồng vào (VÀ); nếu không có → terminal
             return
 
-        # individual: thu hẹp trong (tập hiện tại ∪ node cách 1 bước object)
+        # individual: thu hẹp trong (tập hiện tại hợp với node cách 1 bước object)
         candidates = _dedup(list(current)
                             + [t for iri in current for t in self._obj_neighbors(iri)])
         matched, score = self._match_individuals_scored(child.label, candidates)
@@ -311,7 +311,7 @@ class Ontology:
                                  score=score, runner_up=runner,
                                  before=tuple(before), after=tuple(after)))
 
-    # ── Đi cạnh ──────────────────────────────────────────────────────────────
+    # Đi cạnh
 
     def _neighbors(self, iri: str, prop: str) -> list[str]:
         ind = self._owl[iri]
@@ -325,7 +325,7 @@ class Ontology:
             out += [v.name for v in (getattr(ind, p, []) or []) if hasattr(v, "name")]
         return out
 
-    # ── Dựng OntNode + chỉ mục ───────────────────────────────────────────────
+    # Dựng OntNode + chỉ mục
 
     def _node(self, iri: str) -> OntNode:
         ind = self._owl[iri]
@@ -380,13 +380,13 @@ class Ontology:
         return str(labels[0]) if labels else prop
 
 
-# ── Cho điểm khớp (chứa-token/alias, KHÔNG ngưỡng cứng) ──────────────────────
+# Cho điểm khớp (chứa-token/alias, KHÔNG ngưỡng cứng)
 
 def _score(q: str, forms) -> float:
     """Điểm khớp ``q`` (đã chuẩn hoá) với tập ``forms`` (đã chuẩn hoá).
 
-    Khớp đúng cả chuỗi alias ⟶ 100 (alias mạnh thắng); mọi token của q là token con
-    của form ⟶ 90; q là chuỗi con ⟶ 80; trùng một phần ⟶ tỉ lệ. Dùng chứa-token nên
+    Khớp đúng cả chuỗi alias → 100 (alias mạnh thắng); mọi token của q là token con
+    của form → 90; q là chuỗi con → 80; trùng một phần → tỉ lệ. Dùng chứa-token nên
     "k65" khớp được mẩu nhỏ trong nhãn dài, không bị fuzzy cả chuỗi kéo điểm xuống.
     """
     if not q:

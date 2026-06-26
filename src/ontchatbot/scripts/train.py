@@ -9,10 +9,11 @@ lệch phân phối train↔infer). Target = ``tree.to_model_json`` (đổi ``en
 vỡ vụn, "individual"→"al"); pad làm nó tokenize tự nhiên như pretrain; ``model.from_model_json`` đảo
 ngược lúc infer để ``tree.parse`` đọc lại được.
 
-Mixed precision **bf16** + optimizer **adamw_8bit** (bitsandbytes; vừa 6GB VRAM). Người dùng
-chốt: batch 8, lr 3e-5, lr_scheduler cosine + warmup 100. Mặc định
-nạp ``config.MODEL_NAME`` (bartpho-syllable large ~400M); muốn nhẹ VRAM hơn truyền
-``--model vinai/bartpho-syllable-base``. ``--grad-checkpointing`` để giảm activation khi VRAM sát.
+Mixed precision **bf16** + optimizer **adamw_8bit** (bitsandbytes) + lr_scheduler cosine có warmup
+- gọn đủ vừa 6GB VRAM. Siêu tham số (batch/lr/epochs/val_size) lấy mặc định từ ``config`` và ghi đè
+được qua tham số dòng lệnh. Mặc định nạp ``config.MODEL_NAME`` (bartpho-syllable large ~400M); muốn
+nhẹ VRAM hơn truyền ``--model vinai/bartpho-syllable-base``. ``--grad-checkpointing`` giảm activation
+khi VRAM sát.
 
 **Validation** tách TỪ train (``--val-size``, mặc định ``config.VAL_SIZE``) - ``test.jsonl`` KHÔNG
 đụng tới ở script này (giữ sạch cho ``evaluate.py``, tránh chọn checkpoint theo test = rò rỉ).
@@ -90,8 +91,8 @@ def _tokenize(batch, tokenizer):
 def _check_target_roundtrip(tokenizer) -> None:
     """TRIPWIRE: target phải SỐNG SÓT qua tokenizer - ``from_model_json`` của chuỗi SAU tokenizer phải
     == của chuỗi TRƯỚC tokenizer (đo mất-mát tokenizer THUẦN, độc lập việc nắn dấu/đổi key trong
-    to_model_json). Nếu không, model học chuỗi SAI mà không ai biết (vụ "individual"→"al" âm thầm 11%
-    suốt). Luôn IN tỉ lệ; CHẶN train nếu <95%. Bắt mọi hồi quy (đổi serialization, thêm nhãn, đổi tokenizer)."""
+    to_model_json). Nếu không, model học chuỗi SAI mà không ai biết (loại lỗi âm thầm như
+    "individual"→"al"). Luôn IN tỉ lệ; CHẶN train nếu <95%. Bắt mọi hồi quy (đổi serialization, thêm nhãn, đổi tokenizer)."""
     bad, examples, n = 0, [], 0
     with open(TRAIN_PATH, encoding="utf-8") as f:
         for line in f:
