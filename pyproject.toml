@@ -40,16 +40,6 @@ visualize = "ontchatbot.scripts.visualize:main"
 convert_ct2 = "ontchatbot.scripts.convert_ct2:main"
 serve = "ontchatbot.scripts.serve:main"
 
-[[tool.uv.index]]
-name = "pytorch-index"
-url = "https://download.pytorch.org/whl/cu130"
-explicit = true
-
-[tool.uv.sources]
-torch = [
-    { index = "pytorch-index" }
-]
-
 [dependency-groups]
 dev = [
     "pytest>=9.1.0",
