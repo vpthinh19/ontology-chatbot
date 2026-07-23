@@ -25,9 +25,6 @@ train + lưu model; ở đây chỉ theo dõi eval-loss (trên VAL).
 
 from __future__ import annotations
 
-import os
-os.environ["BNB_CUDA_VERSION"] = "130"
-
 import argparse
 import json
 import sys
