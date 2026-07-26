@@ -105,3 +105,15 @@ Sau mỗi giai đoạn, xóa hoặc chuyển lịch sử những thành phần �
 
 Mỗi lần dọn phải chạy test và kiểm tra Git diff để không xóa thay đổi không
 liên quan của người dùng.
+
+## Giai đoạn 7 — Nâng cấp chất lượng dataset v2
+
+Trạng thái: **đã duyệt phương hướng; chưa chỉnh sửa nội dung**.
+
+Không mở lại các giai đoạn chuyển đổi kiến trúc đã hoàn thành. Dataset v1 được
+giữ làm baseline; mọi audit, review family, bổ sung coverage, chia test mới và
+nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
+`docs/DATASET_UPGRADE_PLAN.md`.
+
+Lượt triển khai kế tiếp chỉ bắt đầu bằng audit read-only v1. Không sửa dataset,
+sinh câu hoặc train trước khi báo cáo audit được duyệt.

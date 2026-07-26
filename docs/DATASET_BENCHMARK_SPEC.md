@@ -246,3 +246,8 @@ uv run benchmark_sparql --predictions artifacts/predictions.jsonl --output artif
 Kết quả chính thức 2 model × 3 seed được khóa trong
 `SPARQL_EXPERIMENT_V1.md`. Benchmark v1 không được dùng tiếp để chỉnh dataset
 hoặc chọn hyperparameter.
+
+Quy trình thi công release chất lượng tiếp theo được khóa tại
+`DATASET_UPGRADE_PLAN.md`. Khi hai tài liệu khác nhau về cách thực hiện, file
+này định nghĩa contract dữ liệu còn kế hoạch nâng cấp định nghĩa thứ tự và cổng
+review.

@@ -27,7 +27,9 @@ traversal riêng hay lớp DTO kết quả theo kiến trúc cũ.
    sử dụng dữ liệu cũ, gán target SPARQL và đánh giá hai model.
 4. [`docs/MODEL_TOKENIZER_SPEC.md`](docs/MODEL_TOKENIZER_SPEC.md): contract
    tokenizer có thể tái lập cho BARTpho và ViT5.
-5. [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md): thứ tự thi
+5. [`docs/DATASET_UPGRADE_PLAN.md`](docs/DATASET_UPGRADE_PLAN.md): checklist
+   nâng cấp chất lượng dataset v2, cổng review và nghiệm thu.
+6. [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md): thứ tự thi
    công và điều kiện hoàn thành từng giai đoạn.
 
 Nếu code, artifact hoặc tài liệu lịch sử mâu thuẫn với

@@ -27,6 +27,17 @@ tốt hơn một cơ sở dữ liệu phẳng.
 - Cấu hình riêng của mỗi model được chọn bằng validation, nhưng hai model phải
   dùng cùng dataset, split, target semantics và giao thức benchmark.
 
+### Môi trường thực thi
+
+- Môi trường chuẩn là Fedora Linux x86_64 và Bash.
+- Python 3.12 được quản lý bằng `uv`.
+- Phần cứng chính là NVIDIA GeForce RTX 4050 Laptop 6 GB; tận dụng CUDA, BF16
+  và TF32 cho training.
+- Được tận dụng công cụ Linux như `rg`, `jq`, GNU coreutils, `sha256sum`, Git
+  và `nvidia-smi` cho các bước deterministic và tái lập được.
+- Không thêm lớp tương thích Windows nếu nó làm kiến trúc phức tạp hơn mà đề
+  tài không yêu cầu.
+
 ### Ontology
 
 - Canonical storage: Turtle `.ttl`.
@@ -71,6 +82,8 @@ tốt hơn một cơ sở dữ liệu phẳng.
   có cùng schema; split không lặp lại trong từng record.
 - Metric chính là query thực thi trả đúng kết quả; parse/execution/canonical
   exact là các metric chẩn đoán bắt buộc.
+- `sparql_v1` là baseline bất biến. Đợt nâng cấp chất lượng tiếp theo tạo
+  `sparql_v2` theo checklist tại `DATASET_UPGRADE_PLAN.md`, không sửa v1 tại chỗ.
 
 ## 3. Những thứ tuyệt đối không hồi sinh
 
