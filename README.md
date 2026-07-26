@@ -1,93 +1,68 @@
-# NTU Academic Chatbot — BARTpho (text→cây JSON) + duyệt ontology
+# NTU Ontology Chatbot
 
-Chatbot tiếng Việt tra cứu thủ tục học vụ Trường Đại học Nha Trang. Mô hình seq2seq
-**BARTpho-syllable** biến câu hỏi thành một **cây truy vấn JSON** (`{act, entities}`); tầng
-**ontology** (owlready2) **duyệt** cây đó theo quan hệ để lấy đúng thông tin; `render` ghép kết
-quả thành câu trả lời. **Không có tầng luật/intent ở giữa**: mô hình lo hiểu ngôn ngữ (mềm dẻo),
-ontology lo tri thức có cấu trúc (chính xác).
+Chatbot tiếng Việt tra cứu thông tin học vụ trong ontology RDF. Hướng kiến
+trúc đã chốt của project là:
 
-Đây là đề tài **nghiên cứu**: chứng minh ưu thế của truy vấn có cấu trúc (ontology) so với một
-cơ sở dữ liệu phẳng truy hồi văn bản. Trình bày khái niệm cho người đọc: [`docs/CONCEPT.md`](docs/CONCEPT.md).
-
-## Luồng cơ bản
-
-```
-text → preprocess (làm sạch) → BARTpho CT2 (text→cây) → tree.parse → ontology.traverse → render → reply
+```text
+câu hỏi tiếng Việt
+  → chuẩn hoá nhẹ
+  → BARTpho hoặc ViT5
+  → SPARQL SELECT
+  → RDFLib thực thi trên ontology
+  → label/literal trả cho người dùng
 ```
 
-Một chiều, không vòng lặp, không planner: cây do mô hình sinh đã cho sẵn đường đi; ontology chỉ đi
-theo đúng các quan hệ được nêu, lấy điểm khớp cao nhất, không khớp thì trả "không có thông tin «X»".
+Model sinh trực tiếp SPARQL và được phép biết schema cùng canonical IRI của
+ontology. Backend không có QueryPlan, cây vàng, fuzzy matching, thuật toán
+traversal riêng hay lớp DTO kết quả theo kiến trúc cũ.
 
-## Cấu trúc thư mục
-```
-src/ontchatbot/
-├── config.py            đường dẫn, mã model, siêu tham số
-├── capabilities.py      năm nhóm năng lực truy vấn
-├── tree.py              hợp đồng cho định dạng cây JSON
-├── ontology.py          nạp OWL + nội suy duyệt ontology
-├── preprocess.py        làm sạch text
-├── model.py             BARTpho CT2: text → cây JSON (ctranslate2 + sentencepiece, int8 trên CPU)
-├── render.py            xử lý + ghép kết quả → câu trả lời
-├── pipeline.py          điều phối các module (một chiều)
-├── baseline/            đối chứng: ontology vs csdl phẳng (Semantic + full-text search)
-└── scripts/
-    ├── serve.py            FastAPI: POST /chat, GET /healthz
-    ├── train.py            train BARTpho (GPU) → artifacts/models/bartpho_tree
-    ├── evaluate.py         đánh giá 2 mức (cấu trúc cây + đầu-cuối P/R/F1 theo 5 nhóm năng lực)
-    ├── convert_ct2.py      HF → CTranslate2 int8 (cho deploy)
-    ├── build_flat_db.py    đập ontology → cơ sở dữ liệu phẳng (resources/baseline/flat_db.jsonl)
-    ├── visualize.py        sinh hình cho CONCEPT.md từ báo cáo đánh giá/đối chứng
-    └── upload_hf.py        đẩy model CT2 lên Hugging Face cho deploy
+## Nguồn sự thật
 
-resources/
-├── ontology/                ontology hệ thống (OWL/XML .owx; .owl RDF/XML là fallback)
-├── datasets/                train.jsonl / test.jsonl (câu → cây JSON)
-└── baseline/flat_db.jsonl   cơ sở dữ liệu phẳng sinh từ ontology (cho đối chứng)
+Đọc tài liệu theo thứ tự sau:
 
-webui/        giao diện chat tĩnh
-artifacts/    model + báo cáo đánh giá
-tests/        unit test (pytest)
-```
+1. [`docs/PROJECT_SPEC.md`](docs/PROJECT_SPEC.md): quyết định đã chốt, phạm vi
+   và các bất biến của kiến trúc.
+2. [`docs/CONCEPT.md`](docs/CONCEPT.md): hình dạng khái niệm và luồng dữ liệu.
+3. [`docs/DATASET_BENCHMARK_SPEC.md`](docs/DATASET_BENCHMARK_SPEC.md): cách tái
+   sử dụng dữ liệu cũ, gán target SPARQL và đánh giá hai model.
+4. [`docs/MODEL_TOKENIZER_SPEC.md`](docs/MODEL_TOKENIZER_SPEC.md): contract
+   tokenizer có thể tái lập cho BARTpho và ViT5.
+5. [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md): thứ tự thi
+   công và điều kiện hoàn thành từng giai đoạn.
 
-## Dependencies (uv, tách theo extra)
+Nếu code, artifact hoặc tài liệu lịch sử mâu thuẫn với
+`docs/PROJECT_SPEC.md`, đặc tả project được ưu tiên. Các quyết định mới phải
+được cập nhật vào file đó trước khi triển khai rộng.
 
-| Nhóm | Gói cài thêm |
-|---|---|
-| **core** (mặc định) | ctranslate2, owlready2, sentencepiece, numpy |
-| `--extra inference` | + fastapi[standard], huggingface_hub |
-| `--extra train` | + torch, transformers, datasets, accelerate, bitsandbytes, flagembedding, scikit-learn, matplotlib |
+## Các quyết định chính
 
-## Cấu hình cần thiết cho train:
-| Tiêu chí | Phiên bản | Ghi chú |
-|---|---|---|
-| OS | Linux x86_64 | Đã thử nghiệm trên Fedora 44 KDE Plasma Wayland |
-| GPU | Ada Lovelace trở lên | Đã thử nghiệm trên RTX4050 6GB VRAM, cần cho TensorFloat32 |
-| CUDA driver | >=13.0 | Các thư viện được khoá cứng CUDA 13.0 |
+- Ontology canonical dùng Turtle, RDFLib và OWL-RL khi thực sự cần suy luận.
+- `content` được giữ để trả lời câu hỏi yêu cầu hướng dẫn tổng quát.
+- `Condition` và `Outcome` sẽ được làm phẳng thành datatype property lặp
+  `condition` và `outcome`.
+- Object property chỉ là đường nối. Kết quả cuối là `rdfs:label`, datatype
+  literal hoặc giá trị tổng hợp SPARQL.
+- Output model là một câu `SELECT` SPARQL canonical trên một dòng; backend tự
+  thêm prefix cố định.
+- Hai model nghiên cứu là `vinai/bartpho-syllable` và `VietAI/vit5-base`.
+- Dynamic padding, BF16/TF32 và `torch.compile=False` trên RTX 4050 6 GB.
+- Không dùng cơ sở dữ liệu phẳng làm baseline chính.
+- Khoảng 1.000 câu hỏi cũ được tái sử dụng sau review; target QueryPlan cũ phải
+  được gán lại thành SPARQL theo ontology mới.
 
-## Lệnh
+## Trạng thái chuyển đổi
 
-| Lệnh | Mô tả |
-|---|---|
-| `uv run pytest` | Unit test |
-| `uv run --extra train train` | Train BARTpho |
-| `uv run --extra train convert_ct2` | HF → CTranslate2 int8 |
-| `uv run --extra train evaluate` | Đánh giá 2 mức theo 5 nhóm năng lực |
-| `uv run --extra train build_flat_db` | Sinh CSDL phẳng từ ontology |
-| `uv run --extra train benchmark` | Đối chứng ontology vs CSDL phẳng |
-| `uv run --extra train visualize` | Visualize số liệu |
-| `uv run --extra inference serve` | FastAPI tại <http://127.0.0.1:8000> |
+Repository đang ở giai đoạn chuyển từ prototype QueryPlan sang kiến trúc
+SPARQL trực tiếp. Vì vậy một số code và dữ liệu cũ vẫn còn để làm nguồn chuyển
+đổi, nhưng không còn là contract cần tiếp tục phát triển.
 
-## Inference trực tiếp thông qua Docker
+- [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
+- [x] Kiểm chứng BARTpho và ViT5 có thể học SPARQL ở phép thử nhỏ.
+- [x] Xác định bản vá tokenizer ViT5 không đổi kích thước vocabulary.
+- [ ] Tạo và kiểm định ontology phiên bản mới từ `ontology_v10.ttl`.
+- [ ] Thay runtime QueryPlan bằng executor SPARQL tối giản.
+- [ ] Chuyển và review dataset cũ sang target SPARQL.
+- [ ] Xây lại validation/benchmark rồi train hai model chính thức.
 
-```
-docker run --name ontchatbot -p 8000:8000 vpt19/ontchatbot:latest
-# Truy cập http://127.0.0.1:8000
-# POST /chat {"message": "điều kiện bảo lưu"} → {"reply": ..., "entities": [...]}
-# GET  /healthz → {"status": "ok"}
-```
-
-## Tham khảo
-
-- BARTpho: <https://github.com/VinAIResearch/BARTpho>
-- owlready2: <https://owlready2.readthedocs.io/>
-- CTranslate2: <https://github.com/OpenNMT/CTranslate2>
+Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến
+trúc SPARQL.

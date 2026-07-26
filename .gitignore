@@ -11,8 +11,15 @@ __pycache__/
 checkpoints/
 models/
 logs/
+/artifacts/
 docs/*
 !docs/CONCEPT.md
+!docs/DATASET_BENCHMARK_SPEC.md
+!docs/PROJECT_SPEC.md
+!docs/MODEL_TOKENIZER_SPEC.md
+!docs/IMPLEMENTATION_PLAN.md
+!docs/archive/
+!docs/archive/**
 !docs/figures/
 
 /dev/
