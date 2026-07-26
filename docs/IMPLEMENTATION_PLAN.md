@@ -5,7 +5,7 @@ Không mở rộng code QueryPlan trong thời gian chuyển đổi.
 
 ## Giai đoạn 1 — Ontology mới
 
-Trạng thái: **chưa thực hiện**.
+Trạng thái: **hoàn thành với ontology v11**.
 
 1. Tạo phiên bản ontology mới từ `ontology_v10.ttl`.
 2. Giữ `content` và toàn bộ dữ liệu có giá trị.
@@ -20,7 +20,7 @@ IRI/property canonical đã được khóa.
 
 ## Giai đoạn 2 — Runtime SPARQL tối giản
 
-Trạng thái: **chưa thực hiện**.
+Trạng thái: **hoàn thành**.
 
 1. Tạo canonicalizer/prefix prologue dùng chung.
 2. Validate chỉ `SELECT`, chặn update và `SERVICE`.
@@ -35,7 +35,7 @@ import kiến trúc cũ.
 
 ## Giai đoạn 3 — Tokenizer và trainer
 
-Trạng thái: **đã có bằng chứng thử nghiệm, chưa đóng gói tái lập**.
+Trạng thái: **hoàn thành và có test tái lập**.
 
 1. Viết script chuẩn bị tokenizer ViT5 theo
    `MODEL_TOKENIZER_SPEC.md`.
@@ -49,7 +49,7 @@ model học được tập audit nhỏ.
 
 ## Giai đoạn 4 — Chuyển dataset
 
-Trạng thái: **chưa thực hiện**.
+Trạng thái: **đã có release train/validation SPARQL v1; còn benchmark độc lập**.
 
 1. Kiểm kê khoảng 1.000 câu hỏi cũ theo semantic family.
 2. Lập mapping target cũ → nhu cầu thông tin mới để hỗ trợ review.

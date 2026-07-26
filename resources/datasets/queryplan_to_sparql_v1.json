@@ -2,7 +2,8 @@
   "source": "/home/vpt/dev/ontology-chatbot/resources/datasets_v1/production_v1.jsonl",
   "target": "/home/vpt/dev/ontology-chatbot/resources/datasets/sparql_v1.jsonl",
   "source_records": 960,
-  "converted_records": 900,
+  "converted_records": 948,
+  "manual_extension_records": 48,
   "excluded_dialogue": {
     "clarify": 28,
     "greeting": 16,
@@ -10,18 +11,18 @@
   },
   "legacy_query_targets": 74,
   "validation": {
-    "records": 900,
-    "families": 225,
-    "targets": 74,
+    "records": 948,
+    "families": 237,
+    "targets": 80,
     "split_counts": {
-      "train": 604,
-      "validation": 296
+      "train": 636,
+      "validation": 312
     },
     "register_counts": {
-      "colloquial": 225,
-      "formal": 225,
-      "neutral": 225,
-      "noisy": 225
+      "colloquial": 237,
+      "formal": 237,
+      "neutral": 237,
+      "noisy": 237
     },
     "empty_result_ids": []
   },

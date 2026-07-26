@@ -64,8 +64,9 @@ def test_released_dataset_is_executable() -> None:
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_dataset(load_dataset(DATASET_PATH), load_ontology())
 
-    assert report["records"] == 900
-    assert report["targets"] == 74
+    assert report["records"] == 948
+    assert report["targets"] == 80
+    assert report["split_counts"] == {"train": 636, "validation": 312}
     assert report["empty_result_ids"] == []
 
 

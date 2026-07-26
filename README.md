@@ -59,9 +59,9 @@ SPARQL trực tiếp. Vì vậy một số code và dữ liệu cũ vẫn còn �
 - [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
 - [x] Kiểm chứng BARTpho và ViT5 có thể học SPARQL ở phép thử nhỏ.
 - [x] Xác định bản vá tokenizer ViT5 không đổi kích thước vocabulary.
-- [ ] Tạo và kiểm định ontology phiên bản mới từ `ontology_v10.ttl`.
-- [ ] Thay runtime QueryPlan bằng executor SPARQL tối giản.
-- [ ] Chuyển và review dataset cũ sang target SPARQL.
+- [x] Tạo và kiểm định ontology v11 từ `ontology_v10.ttl`.
+- [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
+- [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
 - [ ] Xây lại validation/benchmark rồi train hai model chính thức.
 
 Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến

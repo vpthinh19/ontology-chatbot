@@ -180,3 +180,20 @@ gán lại target:
 - bổ sung family khi coverage hoặc error analysis chứng minh đang thiếu;
 - không nhồi paraphrase để che một điểm yếu schema;
 - ưu tiên độ đúng target và độ đa dạng tình huống hơn tổng số dòng.
+
+## 11. Trạng thái release SPARQL v1
+
+Bản chuyển đổi hiện tại có:
+
+- 948 câu và 237 semantic family;
+- 636 câu train, 312 câu validation;
+- bốn register cân bằng chính xác, mỗi register 237 câu;
+- 80 target SPARQL canonical;
+- 900 câu được giữ từ production QueryPlan sau khi gán lại target;
+- 48 câu `COUNT`/`FILTER` được viết thủ công có mục tiêu;
+- 60 câu `greeting`/`unrelated`/`clarify` bị loại khỏi core SPARQL.
+
+Toàn bộ 948 target parse và thực thi có kết quả trên ontology v11. Cả 80 target
+duy nhất round-trip chính xác trên BARTpho và ViT5, không có `<unk>`; độ dài
+target tối đa lần lượt là 91 và 123 token. Đây là dataset train/validation,
+không phải benchmark cuối.

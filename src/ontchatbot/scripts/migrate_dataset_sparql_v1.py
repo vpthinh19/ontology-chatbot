@@ -12,6 +12,7 @@ from ..dataset import validate_dataset
 from ..query_engine import load_ontology
 
 SOURCE = RESOURCES / "datasets_v1/production_v1.jsonl"
+EXTENSIONS = RESOURCES / "datasets/sparql_extensions_v1.jsonl"
 MAPPING = RESOURCES / "datasets/queryplan_to_sparql_v1.json"
 _DIALOGUE_OUTPUTS = {"greeting", "unrelated", "clarify"}
 _FLATTENED = {"hasCondition": "condition", "hasOutcome": "outcome"}
@@ -128,7 +129,12 @@ def _route_patterns(route: dict, output_name: str, multi: bool) -> list[str]:
     return patterns
 
 
-def migrate(source: Path = SOURCE, target: Path = DATASET_PATH, mapping_path: Path = MAPPING) -> dict:
+def migrate(
+    source: Path = SOURCE,
+    target: Path = DATASET_PATH,
+    mapping_path: Path = MAPPING,
+    extensions_path: Path = EXTENSIONS,
+) -> dict:
     source_rows = [
         json.loads(line)
         for line in Path(source).read_text(encoding="utf-8").splitlines()
@@ -156,6 +162,13 @@ def migrate(source: Path = SOURCE, target: Path = DATASET_PATH, mapping_path: Pa
             }
         )
 
+    extensions = [
+        json.loads(line)
+        for line in Path(extensions_path).read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    converted.extend(extensions)
+
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
         "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in converted),
@@ -167,6 +180,7 @@ def migrate(source: Path = SOURCE, target: Path = DATASET_PATH, mapping_path: Pa
         "target": str(target),
         "source_records": len(source_rows),
         "converted_records": len(converted),
+        "manual_extension_records": len(extensions),
         "excluded_dialogue": dict(sorted(excluded.items())),
         "legacy_query_targets": len(mapping),
         "validation": report,
@@ -184,8 +198,9 @@ def main() -> None:
     parser.add_argument("--source", type=Path, default=SOURCE)
     parser.add_argument("--target", type=Path, default=DATASET_PATH)
     parser.add_argument("--mapping", type=Path, default=MAPPING)
+    parser.add_argument("--extensions", type=Path, default=EXTENSIONS)
     args = parser.parse_args()
-    manifest = migrate(args.source, args.target, args.mapping)
+    manifest = migrate(args.source, args.target, args.mapping, args.extensions)
     print(json.dumps({key: value for key, value in manifest.items() if key != "mapping"}, ensure_ascii=False, indent=2))
 
 
