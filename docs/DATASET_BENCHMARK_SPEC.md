@@ -78,7 +78,7 @@ SELECT ?procedure ?condition WHERE { VALUES ?node { :AcademicLeaveProcedure :Gra
 Ví dụ lọc học phí:
 
 ```sparql
-SELECT ?answer WHERE { ?rate a :TuitionRate ; :cohortCode "K63"^^xsd:string ; :programName "Công nghệ sinh học"@vi ; :tuitionPerCredit ?answer . }
+SELECT ?answer WHERE { ?rate a :TuitionRate ; :cohortCode ?cohort ; :programName ?program ; :tuitionPerCredit ?answer . FILTER ( STR ( ?cohort ) = "K63" ) FILTER ( STR ( ?program ) = "Công nghệ sinh học" ) }
 ```
 
 Ví dụ đếm:

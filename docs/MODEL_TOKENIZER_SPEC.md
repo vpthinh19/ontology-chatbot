@@ -23,6 +23,12 @@ khoảng trắng quanh `{`, `}`, `.`, toán tử và các thành phần SPARQL �
 ổn định. Training dùng dynamic padding theo batch, không pad toàn dataset về
 một độ dài cố định.
 
+Tập con target chung không dùng `_`, `^`, `<` hoặc `@`: `_` là unknown của
+BARTpho, còn ba ký hiệu sau là unknown của ViT5. Chúng không cần thiết cho
+ontology hiện tại. Literal có datatype/language được so sánh qua `STR`, ví dụ
+`FILTER ( STR ( ?cohort ) = "K63" )`, thay vì sinh `^^xsd:string` hoặc `@vi`.
+Full IRI cũng không xuất hiện vì backend cung cấp prefix cố định.
+
 ## 3. BARTpho
 
 BARTpho nhạy với chuỗi ký hiệu dính liền. Target không dùng dạng

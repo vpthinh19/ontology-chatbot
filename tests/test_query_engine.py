@@ -69,8 +69,10 @@ def test_multiple_columns_preserve_pairing(graph) -> None:
 def test_filter_and_typed_number(graph) -> None:
     rows = execute_select(
         graph,
-        'SELECT ?answer WHERE { ?rate a :TuitionRate ; :cohortCode "K63"^^xsd:string ; '
-        ':programName "Công nghệ sinh học"@vi ; :tuitionPerCredit ?answer . }',
+        "SELECT ?answer WHERE { ?rate a :TuitionRate ; :cohortCode ?cohort ; "
+        ":programName ?program ; :tuitionPerCredit ?answer . "
+        'FILTER ( STR ( ?cohort ) = "K63" ) '
+        'FILTER ( STR ( ?program ) = "Công nghệ sinh học" ) }',
     )
 
     assert rows == [{"answer": 600000}]

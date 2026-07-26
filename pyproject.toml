@@ -32,6 +32,7 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 migrate_ontology_v11 = "ontchatbot.scripts.migrate_ontology_v11:main"
+prepare_vit5_tokenizer = "ontchatbot.scripts.prepare_vit5_tokenizer:main"
 
 [dependency-groups]
 dev = [
