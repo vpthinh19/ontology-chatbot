@@ -67,6 +67,8 @@ tốt hơn một cơ sở dữ liệu phẳng.
 - Chia dữ liệu theo semantic family để tránh paraphrase leakage.
 - Benchmark cuối tách biệt và chỉ đóng băng sau ontology, schema target và
   normalizer.
+- Mỗi release dùng ba file tiêu chuẩn `train.jsonl`, `val.jsonl`, `test.jsonl`
+  có cùng schema; split không lặp lại trong từng record.
 - Metric chính là query thực thi trả đúng kết quả; parse/execution/canonical
   exact là các metric chẩn đoán bắt buộc.
 

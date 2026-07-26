@@ -37,8 +37,8 @@ Giữ JSONL làm định dạng lưu dataset vì dễ kiểm tra và không ph�
 {
   "id": "train-0001",
   "family_id": "academic-leave-condition-01",
-  "split": "train",
   "register": "colloquial",
+  "query_shape": "direct",
   "input": "tui sắp đi nghĩa vụ quân sự, muốn bảo lưu thì cần gì",
   "target": "SELECT ?answer WHERE { :AcademicLeaveProcedure :condition ?answer . }"
 }
@@ -48,14 +48,14 @@ Các field tối thiểu:
 
 - `id`: duy nhất và ổn định;
 - `family_id`: nhóm các paraphrase cùng tình huống ngữ nghĩa;
-- `split`: `train`, `validation` hoặc nằm trong file benchmark riêng;
 - `register`: `formal`, `neutral`, `colloquial`, `noisy`;
+- `query_shape`: dạng truy vấn dùng để phân tích phân bố và lỗi;
 - `input`: câu nguyên bản trước chuẩn hóa;
 - `target`: SPARQL canonical một dòng, không có prefix.
 
-Không bắt buộc `capability_id`. Nếu cần báo cáo theo nhóm, metadata như
-`query_shape` có thể được suy ra hoặc lưu trong catalog benchmark, không được
-biến thành một taxonomy lớn mà model phải học.
+Không bắt buộc `capability_id`. Split được xác định duy nhất bởi tên file
+`train.jsonl`, `val.jsonl` hoặc `test.jsonl`, không lặp lại trong từng record.
+`query_shape` là metadata đánh giá, không phải target mà model phải học.
 
 ## 4. Quy tắc target SPARQL
 
@@ -99,7 +99,7 @@ inference chỉ được:
 Ví dụ có thể chuẩn hóa `nvqs` thành `nghĩa vụ quân sự`. Không đưa entity
 resolution, alias lookup hoặc fuzzy matching vào preprocessing.
 
-## 6. Chia dữ liệu
+## 6. Chia dữ liệu và đóng gói release
 
 Một semantic family là cùng tình huống và cùng nhu cầu thông tin được diễn đạt
 theo nhiều cách. Toàn bộ family phải nằm trong một split.
@@ -117,6 +117,20 @@ Benchmark cuối:
 
 Các câu benchmark QueryPlan cũ có thể làm nguồn biên soạn, nhưng target và
 manifest cũ không còn hợp lệ.
+
+Một release có cấu trúc cố định:
+
+```text
+resources/datasets/sparql_v1/
+├── train.jsonl
+├── val.jsonl
+├── test.jsonl
+├── manifest.json
+└── README.md
+```
+
+Ba file JSONL có cùng schema. `manifest.json` khóa số lượng, phân bố và
+checksum; `test.jsonl` thay thế khái niệm thư mục benchmark riêng trước đây.
 
 ## 7. Cổng kiểm tra tự động
 
@@ -183,10 +197,10 @@ gán lại target:
 
 ## 11. Trạng thái release dataset SPARQL v1
 
-Bản chuyển đổi hiện tại có:
+Bản chuyển đổi hiện tại có 948 câu dùng để phát triển model:
 
 - 948 câu và 237 semantic family;
-- 636 câu train, 312 câu validation;
+- 636 câu train, 312 câu validation (`val.jsonl`);
 - bốn register cân bằng chính xác, mỗi register 237 câu;
 - 80 target SPARQL canonical;
 - 900 câu được giữ từ production QueryPlan sau khi gán lại target;
@@ -195,13 +209,13 @@ Bản chuyển đổi hiện tại có:
 
 Toàn bộ 948 target parse và thực thi có kết quả trên ontology v11. Cả 80 target
 duy nhất round-trip chính xác trên BARTpho và ViT5, không có `<unk>`; độ dài
-target tối đa lần lượt là 91 và 123 token. Đây là dataset train/validation,
-không phải benchmark cuối.
+target tối đa lần lượt là 91 và 123 token. Đây là tổng của `train.jsonl` và
+`val.jsonl`, không bao gồm test cuối.
 
-## 12. Benchmark SPARQL v1 đã đóng băng
+## 12. Test SPARQL v1 đã đóng băng
 
-Benchmark cuối nằm riêng tại `resources/benchmarks/sparql_v1.jsonl` và có 164
-câu không trùng chính xác với dataset:
+Test cuối nằm tại `resources/datasets/sparql_v1/test.jsonl` và có 164 câu
+không trùng chính xác với train/val:
 
 | Query shape | Số câu |
 |---|---:|
@@ -218,7 +232,7 @@ không lấy từ train/validation.
 
 Toàn bộ reference parse, thực thi có kết quả và self-check đạt 100%. Cả 80
 target duy nhất round-trip đúng trên hai tokenizer, không có `<unk>`. Manifest
-khóa số liệu và checksum tại `resources/benchmarks/sparql_v1_manifest.json`.
+khóa số liệu và checksum tại `resources/datasets/sparql_v1/manifest.json`.
 
 Benchmark chỉ được mở để chấm checkpoint đã chọn bằng validation. Lệnh không
 có `--predictions` chỉ self-check evaluator bằng reference, không phải kết quả

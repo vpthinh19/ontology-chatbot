@@ -1,6 +1,6 @@
 """NTU ontology chatbot: Vietnamese text to direct SPARQL."""
 
-from .query_engine import (
+from .runtime.sparql import (
     PREFIXES,
     QueryRow,
     QueryRows,
@@ -9,8 +9,9 @@ from .query_engine import (
     load_ontology,
     validate_select,
 )
-from .inference import CTranslate2Generator, OntologyChatbot
-from .render import render_rows
+from .runtime.model import CTranslate2Generator
+from .runtime.pipeline import OntologyChatbot
+from .runtime.render import render_rows
 
 __version__ = "0.3.0"
 

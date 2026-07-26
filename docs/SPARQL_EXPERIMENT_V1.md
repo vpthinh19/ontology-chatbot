@@ -23,7 +23,7 @@ Revision model được khóa:
 - ViT5: `2209a38d735ede63e88f5aa52bcdc11a05a37b85`.
 
 Checksum dataset, benchmark và ontology nằm trong
-`resources/benchmarks/sparql_v1_manifest.json`. Artifact model và report JSON
+`resources/datasets/sparql_v1/manifest.json`. Artifact model và report JSON
 nằm dưới `artifacts/sparql_official_v1/` và không được commit vì kích thước
 lớn. Các bảng dưới đây báo cáo trung bình ± độ lệch chuẩn mẫu của ba seed.
 

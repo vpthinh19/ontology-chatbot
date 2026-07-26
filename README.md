@@ -70,6 +70,26 @@ Kết quả, chi phí và giới hạn được ghi tại
 [`docs/SPARQL_EXPERIMENT_V1.md`](docs/SPARQL_EXPERIMENT_V1.md). ViT5 đạt trung
 bình 78,05% answer exact, BARTpho đạt 75,00% trên benchmark SPARQL v1.
 
+## Bản đồ source code
+
+Code được chia theo vai trò thay vì đặt phẳng trong một thư mục:
+
+```text
+src/ontchatbot/
+├── settings.py          # đường dẫn và hằng số dùng chung
+├── runtime/             # pipeline chạy thật: model → SPARQL → câu trả lời/API
+├── research/            # dataset, train, evaluation và báo cáo thí nghiệm
+├── tools/               # chuẩn bị tokenizer, convert model, migrate ontology
+└── cli/                 # các entry point của lệnh trong pyproject.toml
+```
+
+`runtime` không phụ thuộc code huấn luyện hay công cụ migration. Muốn hiểu luồng
+chatbot chỉ cần đọc `runtime/pipeline.py`; muốn thay đổi dữ liệu hoặc benchmark
+thì bắt đầu từ `research/dataset.py` và `research/evaluation.py`.
+
+Dataset v1 nằm trọn trong `resources/datasets/sparql_v1/`, gồm `train.jsonl`,
+`val.jsonl`, `test.jsonl`, manifest và README của release.
+
 ## Chạy bản triển khai
 
 Runtime mặc định dùng artifact CTranslate2 ViT5 seed 42 trên CPU/int8:
