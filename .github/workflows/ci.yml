@@ -80,13 +80,19 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - id: model
-        name: Resolve HF Hub model revision (CT2 model bartpho-ontology)
+        name: Resolve the released SPARQL CTranslate2 model
         run: |
-          REVISION=$(curl -sf https://huggingface.co/api/models/vpthinh19/bartpho-ontology | jq -r .sha)
+          REPO="${{ vars.HF_CT2_REPO }}"
+          if [ -z "$REPO" ]; then
+            echo "::error::Set the repository variable HF_CT2_REPO to the converted SPARQL model"
+            exit 1
+          fi
+          REVISION=$(curl -sf "https://huggingface.co/api/models/$REPO" | jq -r .sha)
           if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
             echo "::error::Failed to resolve HF Hub revision"
             exit 1
           fi
+          echo "repo=$REPO" >> "$GITHUB_OUTPUT"
           echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
           echo "::notice::Baking CT2 model revision $REVISION"
 
@@ -96,11 +102,11 @@ jobs:
           context: .
           load: true
           tags: ${{ env.IMAGE }}:${{ env.VERSION }}
-          build-args: |
-            HF_REPO=vpthinh19/bartpho-ontology
-            HF_REVISION=${{ steps.model.outputs.revision }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            HF_REPO=${{ steps.model.outputs.repo }}
+            HF_REVISION=${{ steps.model.outputs.revision }}
 
       - name: Trivy vulnerability scan (OS only)
         uses: aquasecurity/trivy-action@v0.36.0
@@ -126,7 +132,7 @@ jobs:
           generate_release_notes: true
           body: |
             Docker image: `${{ env.IMAGE }}:${{ env.VERSION }}`
-            Baked CT2 model revision: [`${{ steps.model.outputs.revision }}`](https://huggingface.co/vpthinh19/bartpho-ontology/commit/${{ steps.model.outputs.revision }})
+            Baked CT2 model: [`${{ steps.model.outputs.repo }}@${{ steps.model.outputs.revision }}`](https://huggingface.co/${{ steps.model.outputs.repo }}/commit/${{ steps.model.outputs.revision }})
 
             Pull:
             ```

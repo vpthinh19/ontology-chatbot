@@ -139,19 +139,12 @@ body.chats-active .container .app-header {
     border-radius: 3px 14px 14px 14px;
 }
 
-/* Cây đáp án: mỗi dòng thụt trái theo độ sâu (cấp). padding-left áp lên cả
-   block nên dòng dài khi xuống hàng vẫn thẳng lề thụt (hanging indent). */
 .message-text .reply-line {
-    padding-left: calc(var(--depth, 0) * 1.5em);
     white-space: normal;
 }
 
 .message-text .reply-line.spacer {
     height: 0.5em;
-}
-
-.message-text .reply-head {
-    font-weight: 600;
 }
 
 .chats-container .user-message {

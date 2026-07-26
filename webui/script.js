@@ -45,21 +45,14 @@ const renderLineContent = (text) => {
     let i = 0;
     return pre.replace(new RegExp(PH, "g"), () => links[i++]);
 };
-// Convert the bot reply into an indented tree. render.py emits 3 spaces
-// per nesting level; here each line becomes a block whose left padding =
-// its depth, so a long line that wraps stays aligned (hanging indent).
-// Depth-0 lines are titles. A blank line becomes a small vertical gap.
-const INDENT_UNIT = 3;
+// Render each plain-text result line. The SPARQL backend no longer emits a tree.
 const renderRichText = (text) => {
     let html = "";
     for (const raw of text.split("\n")) {
         if (/^\s*-{3,}\s*$/.test(raw)) { html += "<hr>"; continue; }
-        const m = raw.match(/^( *)(.*)$/);
-        const depth = Math.floor(m[1].length / INDENT_UNIT);
-        const content = m[2].replace(/\s+$/, "");
+        const content = raw.replace(/\s+$/, "");
         if (!content) { html += '<div class="reply-line spacer"></div>'; continue; }
-        const cls = depth === 0 ? "reply-line reply-head" : "reply-line";
-        html += `<div class="${cls}" style="--depth:${depth}">${renderLineContent(content)}</div>`;
+        html += `<div class="reply-line">${renderLineContent(content)}</div>`;
     }
     return html;
 };

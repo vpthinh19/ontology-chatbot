@@ -1,9 +1,9 @@
 # syntax=docker/dockerfile:1
 
 # ---------- builder ----------
-FROM python:3.14-slim AS builder
+FROM python:3.12-slim AS builder
 
-COPY --from=ghcr.io/astral-sh/uv:0.5 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /uvx /bin/
 WORKDIR /app
 
 # UV_LINK_MODE=copy giữ venv portable khi COPY qua stage; tắt tải python (dùng python của image).
@@ -20,17 +20,17 @@ COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra inference --no-dev
 
-# tải model từ hf vào workdir
-ARG HF_REPO=vpthinh19/bartpho-ontology
+# Tải artifact CTranslate2 đã convert và kiểm định từ HF Hub.
+ARG HF_REPO=
 ARG HF_REVISION=main
-ARG HF_TOKEN=
-RUN HF_TOKEN="${HF_TOKEN}" /app/.venv/bin/python -c "import os; from huggingface_hub import snapshot_download; \
+RUN test -n "${HF_REPO}" && \
+    /app/.venv/bin/python -c "from huggingface_hub import snapshot_download; \
 snapshot_download(repo_id='${HF_REPO}', revision='${HF_REVISION}', \
-local_dir='/app/artifacts/models/bartpho_ct2', token=(os.environ.get('HF_TOKEN') or None))"
+local_dir='/app/model')"
 
 
 # ---------- runtime ----------
-FROM python:3.14-slim AS runtime
+FROM python:3.12-slim AS runtime
 
 # tạo user với home dir
 RUN useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
@@ -39,7 +39,7 @@ WORKDIR /app
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
-COPY --from=builder --chown=ontchatbot:ontchatbot /app/artifacts /app/artifacts
+COPY --from=builder --chown=ontchatbot:ontchatbot /app/model /app/model
 COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
@@ -62,4 +62,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
 
-CMD ["python", "-m", "ontchatbot.scripts.serve", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["serve_sparql", "--model-dir", "/app/model", "--device", "cpu", "--compute-type", "int8", "--host", "0.0.0.0", "--port", "8000"]

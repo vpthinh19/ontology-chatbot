@@ -19,7 +19,7 @@ __pycache__
 .coverage
 htmlcov
 
-# Test + training artifacts (model is pulled from HF Hub at runtime)
+# Test + training artifacts (the model is pulled from HF Hub while building)
 tests/
 artifacts/
 logs/
