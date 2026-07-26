@@ -7,6 +7,11 @@ import json
 import math
 from pathlib import Path
 
+from ..benchmark import (
+    evaluate_benchmark,
+    load_benchmark,
+    validate_benchmark,
+)
 from ..config import ARTIFACTS_DIR, DATASET_PATH
 from ..dataset import load_dataset, validate_dataset
 from ..evaluation import evaluate_predictions
@@ -46,6 +51,7 @@ def train(args: argparse.Namespace) -> dict:
     try:
         import numpy as np
         import torch
+        import transformers
         from datasets import Dataset
         from huggingface_hub import snapshot_download
         from transformers import (
@@ -112,7 +118,10 @@ def train(args: argparse.Namespace) -> dict:
         len(train_rows) / (spec["batch_size"] * spec["gradient_accumulation"])
     )
     eval_steps = max(1, round(steps_per_epoch * args.eval_every_epochs))
-    output_dir = Path(args.output_dir) / args.model
+    short_run = args.smoke_test or args.learning_audit
+    output_dir = Path(args.output_dir) / (
+        args.model if short_run else f"{args.model}/seed-{args.seed}"
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
 
     def compute_metrics(prediction) -> dict[str, float]:
@@ -130,7 +139,6 @@ def train(args: argparse.Namespace) -> dict:
             "canonical_query_exact_rate": report["overall"]["canonical_query_exact_rate"],
         }
 
-    short_run = args.smoke_test or args.learning_audit
     keep_checkpoints = args.save_model and not short_run
     effective_max_steps = 1 if args.smoke_test else args.max_steps
     training_args = Seq2SeqTrainingArguments(
@@ -186,15 +194,7 @@ def train(args: argparse.Namespace) -> dict:
         torch.cuda.reset_peak_memory_stats()
     train_result = trainer.train()
     trainer.args.per_device_eval_batch_size = 1
-    prediction = trainer.predict(
-        validation_dataset,
-        max_length=MAX_TARGET_LENGTH,
-        num_beams=1,
-    )
-    prediction_ids = prediction.predictions[0] if isinstance(prediction.predictions, tuple) else prediction.predictions
-    prediction_ids = np.asarray(prediction_ids).copy()
-    prediction_ids[prediction_ids < 0] = tokenizer.pad_token_id
-    decoded = [text.strip() for text in tokenizer.batch_decode(prediction_ids, skip_special_tokens=True)]
+    decoded = _predict(trainer, validation_dataset, tokenizer, np)
     report = evaluate_predictions(validation_rows, decoded, graph, include_cases=True)
     report["training"] = {
         "model": args.model,
@@ -213,6 +213,9 @@ def train(args: argparse.Namespace) -> dict:
         "tf32": True,
         "torch_compile": False,
         "dropout_disabled": args.model == "bartpho" and not args.keep_dropout,
+        "optimizer": "adamw_8bit",
+        "learning_rate": args.learning_rate,
+        "evaluation_every_epochs": args.eval_every_epochs,
         "train_runtime_seconds": round(train_result.metrics.get("train_runtime", 0.0), 3),
         "train_loss": round(train_result.metrics.get("train_loss", 0.0), 6),
         "peak_vram_bytes": torch.cuda.max_memory_allocated() if torch.cuda.is_available() else None,
@@ -220,12 +223,65 @@ def train(args: argparse.Namespace) -> dict:
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "smoke_test": args.smoke_test,
         "learning_audit": args.learning_audit,
+        "torch_version": torch.__version__,
+        "transformers_version": transformers.__version__,
+        "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
     }
+    report["training_log"] = trainer.state.log_history
     metrics_path = output_dir / "metrics.json"
     metrics_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if args.save_model:
         trainer.save_model(str(output_dir / "model"))
         tokenizer.save_pretrained(output_dir / "model")
+    if args.benchmark_after_training:
+        benchmark_rows = load_benchmark()
+        benchmark_validation = validate_benchmark(
+            benchmark_rows,
+            graph,
+            training_rows=rows,
+        )
+        benchmark_dataset = _tokenized_dataset(Dataset, benchmark_rows, tokenizer)
+        benchmark_decoded = _predict(trainer, benchmark_dataset, tokenizer, np)
+        benchmark_predictions = dict(
+            zip(
+                (row["id"] for row in benchmark_rows),
+                benchmark_decoded,
+                strict=True,
+            )
+        )
+        benchmark_report = evaluate_benchmark(
+            benchmark_rows,
+            benchmark_predictions,
+            graph,
+            include_cases=True,
+        )
+        benchmark_report["benchmark"] = benchmark_validation
+        (output_dir / "benchmark_metrics.json").write_text(
+            json.dumps(benchmark_report, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        (output_dir / "benchmark_predictions.jsonl").write_text(
+            "".join(
+                json.dumps(
+                    {"id": row["id"], "prediction": prediction},
+                    ensure_ascii=False,
+                )
+                + "\n"
+                for row, prediction in zip(
+                    benchmark_rows,
+                    benchmark_decoded,
+                    strict=True,
+                )
+            ),
+            encoding="utf-8",
+        )
+        print(
+            json.dumps(
+                {"benchmark_overall": benchmark_report["overall"]},
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
     print(json.dumps({"overall": report["overall"], "training": report["training"], "metrics": str(metrics_path)}, ensure_ascii=False, indent=2))
     return report
 
@@ -252,6 +308,28 @@ def _tokenized_dataset(Dataset, rows, tokenizer):
         return encoded
 
     return dataset.map(tokenize, batched=True, remove_columns=["source", "target"])
+
+
+def _predict(trainer, dataset, tokenizer, np) -> list[str]:
+    prediction = trainer.predict(
+        dataset,
+        max_length=MAX_TARGET_LENGTH,
+        num_beams=1,
+    )
+    prediction_ids = (
+        prediction.predictions[0]
+        if isinstance(prediction.predictions, tuple)
+        else prediction.predictions
+    )
+    prediction_ids = np.asarray(prediction_ids).copy()
+    prediction_ids[prediction_ids < 0] = tokenizer.pad_token_id
+    return [
+        text.strip()
+        for text in tokenizer.batch_decode(
+            prediction_ids,
+            skip_special_tokens=True,
+        )
+    ]
 
 
 def _smoke_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]]:
@@ -329,12 +407,17 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--learning-audit", action="store_true")
     parser.add_argument("--save-model", action="store_true")
+    parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
     args = parser.parse_args()
     if args.smoke_test and args.learning_audit:
         parser.error("--smoke-test and --learning-audit are mutually exclusive")
     if args.learning_audit and args.max_steps < 1:
         parser.error("--learning-audit requires a positive --max-steps")
+    if args.benchmark_after_training and not args.save_model:
+        parser.error("--benchmark-after-training requires --save-model")
+    if args.benchmark_after_training and (args.smoke_test or args.learning_audit):
+        parser.error("benchmark is only available after a full training run")
     return args
 
 
