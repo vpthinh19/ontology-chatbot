@@ -1,0 +1,768 @@
+@prefix : <http://www.ntu.edu.vn/ontology/academic#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.ntu.edu.vn/ontology/academic#> .
+
+<http://www.ntu.edu.vn/ontology/academic> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.ntu.edu.vn/ontology/academic#apDungMucHocPhi
+:apDungMucHocPhi rdf:type owl:ObjectProperty ;
+                 rdfs:label "học phí" ,
+                            "mức học phí" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#canCuQuyDinh
+:canCuQuyDinh rdf:type owl:ObjectProperty ;
+              rdfs:label "căn cứ" ,
+                         "quy định" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#canTaiLieu
+:canTaiLieu rdf:type owl:ObjectProperty ;
+            rdfs:label "biểu mẫu" ,
+                       "tài liệu" ,
+                       "đơn" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#coKetQua
+:coKetQua rdf:type owl:ObjectProperty ;
+          rdfs:label "kết quả" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#coPhuongThucThanhToan
+:coPhuongThucThanhToan rdf:type owl:ObjectProperty ;
+                       rdfs:label "phương thức thanh toán" ,
+                                  "thanh toán" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#duocXuLyBoi
+:duocXuLyBoi rdf:type owl:ObjectProperty ;
+             rdfs:label "phòng phụ trách" ,
+                        "phòng xử lý" ,
+                        "xử lý" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#yeuCauDieuKien
+:yeuCauDieuKien rdf:type owl:ObjectProperty ;
+                rdfs:label "điều kiện" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.ntu.edu.vn/ontology/academic#diaDiem
+:diaDiem rdf:type owl:DatatypeProperty ;
+         rdfs:label "địa chỉ" ,
+                    "địa điểm" ,
+                    "ở đâu" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#duongDanBieuMau
+:duongDanBieuMau rdf:type owl:DatatypeProperty ;
+                 rdfs:label "link" ,
+                            "tải biểu mẫu" ,
+                            "đường dẫn" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#email
+:email rdf:type owl:DatatypeProperty ;
+       rdfs:label "email" ,
+                  "thư điện tử" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#ghiChuHocPhi
+:ghiChuHocPhi rdf:type owl:DatatypeProperty ;
+              rdfs:label "ghi chú" ,
+                         "lưu ý" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#hocPhiMoiTinChi
+:hocPhiMoiTinChi rdf:type owl:DatatypeProperty ;
+                 rdfs:label "học phí mỗi tín chỉ" ,
+                            "mỗi tín chỉ" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#noiDung
+:noiDung rdf:type owl:DatatypeProperty ;
+         rdfs:label "mô tả" ,
+                    "nội dung" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#soDienThoai
+:soDienThoai rdf:type owl:DatatypeProperty ;
+             rdfs:label "số điện thoại" ,
+                        "điện thoại" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#tenGoiKhac
+:tenGoiKhac rdf:type owl:DatatypeProperty ;
+            rdfs:label "tên gọi khác" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#truongPhong
+:truongPhong rdf:type owl:DatatypeProperty ;
+             rdfs:label "phụ trách" ,
+                        "trưởng phòng" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#website
+:website rdf:type owl:DatatypeProperty ;
+         rdfs:label "trang web" ,
+                    "website" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKien
+:DieuKien rdf:type owl:Class ;
+          rdfs:subClassOf owl:Thing ;
+          rdfs:label "Điều kiện" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DinhMucHocPhi
+:DinhMucHocPhi rdf:type owl:Class ;
+               rdfs:subClassOf owl:Thing ;
+               rdfs:label "Định mức học phí" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#KetQuaDauRa
+:KetQuaDauRa rdf:type owl:Class ;
+             rdfs:subClassOf owl:Thing ;
+             rdfs:label "Kết quả đầu ra" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhongBanHanhChinh
+:PhongBanHanhChinh rdf:type owl:Class ;
+                   rdfs:subClassOf owl:Thing ;
+                   rdfs:label "Phòng ban hành chính" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhuongThucThanhToan
+:PhuongThucThanhToan rdf:type owl:Class ;
+                     rdfs:subClassOf owl:Thing ;
+                     rdfs:label "Phương thức thanh toán" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyDinh
+:QuyDinh rdf:type owl:Class ;
+         rdfs:subClassOf owl:Thing ;
+         rdfs:label "Quy định" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhHocVu
+:QuyTrinhHocVu rdf:type owl:Class ;
+               rdfs:subClassOf owl:Thing ;
+               rdfs:label "Quy trình học vụ" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#TaiLieuBieuMau
+:TaiLieuBieuMau rdf:type owl:Class ;
+                rdfs:subClassOf owl:Thing ;
+                rdfs:label "Tài liệu biểu mẫu" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.ntu.edu.vn/ontology/academic#BankTransfer
+:BankTransfer rdf:type owl:NamedIndividual ,
+                       :PhuongThucThanhToan ;
+              rdfs:label "Thanh toán tại quầy giao dịch của ngân hàng Agribank hoặc Vietinbank để nộp tiền mặt" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienBaoLuuCaNhan
+:DieuKienBaoLuuCaNhan rdf:type owl:NamedIndividual ,
+                               :DieuKien ;
+                      rdfs:label "Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienBaoLuuQuocTe
+:DieuKienBaoLuuQuocTe rdf:type owl:NamedIndividual ,
+                               :DieuKien ;
+                      rdfs:label "Được cơ quan có thẩm quyền điều động tham dự các kỳ thi, giải đấu quốc tế" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienBaoLuuVuTrang
+:DieuKienBaoLuuVuTrang rdf:type owl:NamedIndividual ,
+                                :DieuKien ;
+                       rdfs:label "Được điều động vào lực lượng vũ trang" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienBaoLuuYTe
+:DieuKienBaoLuuYTe rdf:type owl:NamedIndividual ,
+                            :DieuKien ;
+                   rdfs:label "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận hợp lệ" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienChuyenNganhNamHoc
+:DieuKienChuyenNganhNamHoc rdf:type owl:NamedIndividual ,
+                                    :DieuKien ;
+                           rdfs:label "Không là sinh viên năm nhất hoặc năm cuối" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienHocBongDiemHocTap
+:DieuKienHocBongDiemHocTap rdf:type owl:NamedIndividual ,
+                                    :DieuKien ;
+                           rdfs:label "Kết quả học tập từ 7.0 trở lên" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienHocBongDiemRenLuyen
+:DieuKienHocBongDiemRenLuyen rdf:type owl:NamedIndividual ,
+                                      :DieuKien ;
+                             rdfs:label "Điểm rèn luyện từ loại khá trở lên" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienHocBongThoiGian
+:DieuKienHocBongThoiGian rdf:type owl:NamedIndividual ,
+                                  :DieuKien ;
+                         :canCuQuyDinh :RegQD1052 ;
+                         rdfs:label "Trong thời gian đào tạo theo kế hoạch của khoá học" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienHocBongTinChi
+:DieuKienHocBongTinChi rdf:type owl:NamedIndividual ,
+                                :DieuKien ;
+                       rdfs:label "Tổng số tín chỉ sinh viên đăng kí trong một học kì phải lớn hơn hoặc bằng 14 tín chỉ" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienHocLai
+:DieuKienHocLai rdf:type owl:NamedIndividual ,
+                         :DieuKien ;
+                rdfs:label "Học phần có điểm tổng kết dưới 5.0" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienTotNghiepCPA
+:DieuKienTotNghiepCPA rdf:type owl:NamedIndividual ,
+                               :DieuKien ;
+                      rdfs:label "Điểm trung bình chung tích lũy (CPA) từ 5.5 trở lên" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienTotNghiepKyLuat
+:DieuKienTotNghiepKyLuat rdf:type owl:NamedIndividual ,
+                                  :DieuKien ;
+                         rdfs:label "Không bị truy cứu trách nhiệm hình sự" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienTotNghiepNghiaVu
+:DieuKienTotNghiepNghiaVu rdf:type owl:NamedIndividual ,
+                                   :DieuKien ;
+                          rdfs:label "Hoàn thành nghĩa vụ đối với Trường" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienTotNghiepNgoaiNgu
+:DieuKienTotNghiepNgoaiNgu rdf:type owl:NamedIndividual ,
+                                    :DieuKien ;
+                           rdfs:label "Đạt chuẩn năng lực tiếng Anh theo quy định" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DieuKienTotNghiepTinChi
+:DieuKienTotNghiepTinChi rdf:type owl:NamedIndividual ,
+                                  :DieuKien ;
+                         :canCuQuyDinh :RegQD1052 ;
+                         rdfs:label "Tích lũy đủ số tín chỉ theo quy định" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DonGiaHanThoiGianNopHocPhi
+:DonGiaHanThoiGianNopHocPhi rdf:type owl:NamedIndividual ,
+                                     :TaiLieuBieuMau ;
+                            :duongDanBieuMau "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/m%E1%BA%ABu%20%C4%91%C6%A1n%20ho%C3%A3n%20%C4%91%C3%B3ng%20h%E1%BB%8Dc%20ph%C3%AD.doc" ;
+                            rdfs:label "Đơn gia hạn thời gian nộp học phí" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DonXetTotNghiepSom
+:DonXetTotNghiepSom rdf:type owl:NamedIndividual ,
+                             :TaiLieuBieuMau ;
+                    :duongDanBieuMau "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2007%20-%20%C4%90%C6%A1n%20%C4%91%E1%BB%81%20ngh%E1%BB%8B%20x%C3%A9t%20t%E1%BB%91t%20nghi%E1%BB%87p.docx" ;
+                    rdfs:label "Đơn đề nghị xét tốt nghiệp" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DonXinBaoLuu
+:DonXinBaoLuu rdf:type owl:NamedIndividual ,
+                       :TaiLieuBieuMau ;
+              :duongDanBieuMau "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
+              rdfs:label "Đơn xin nghỉ học tạm thời" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DonXinChuyenNganh
+:DonXinChuyenNganh rdf:type owl:NamedIndividual ,
+                            :TaiLieuBieuMau ;
+                   :duongDanBieuMau "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
+                   rdfs:label "Đơn xin chuyển ngành" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#DonXinHocTroLai
+:DonXinHocTroLai rdf:type owl:NamedIndividual ,
+                          :TaiLieuBieuMau ;
+                 :duongDanBieuMau "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
+                 rdfs:label "Đơn xin học trở lại" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputCoTenTrongDanhSachLop
+:OutputCoTenTrongDanhSachLop rdf:type owl:NamedIndividual ,
+                                      :KetQuaDauRa ;
+                             rdfs:label "Học phần hiển thị trong thời khóa biểu chính thức" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputDuocBaoLuu
+:OutputDuocBaoLuu rdf:type owl:NamedIndividual ,
+                           :KetQuaDauRa ;
+                  rdfs:label "Kết quả học tập được bảo lưu" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputDuocChuyenNganh
+:OutputDuocChuyenNganh rdf:type owl:NamedIndividual ,
+                                :KetQuaDauRa ;
+                       rdfs:label "Được chuyển ngành" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputDuocXetTotNghiep
+:OutputDuocXetTotNghiep rdf:type owl:NamedIndividual ,
+                                 :KetQuaDauRa ;
+                        rdfs:label "Được xét tốt nghiệp nếu đủ điều kiện" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputGhiNhanDiemCaoHon
+:OutputGhiNhanDiemCaoHon rdf:type owl:NamedIndividual ,
+                                  :KetQuaDauRa ;
+                         rdfs:label "Điểm CPA được ghi nhận theo lần học có điểm số cao hơn" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputNhanHocBong
+:OutputNhanHocBong rdf:type owl:NamedIndividual ,
+                            :KetQuaDauRa ;
+                   rdfs:label "Nhận học bổng khuyến khích học tập nếu đủ điều kiện" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#OutputXoaTenKhoiLop
+:OutputXoaTenKhoiLop rdf:type owl:NamedIndividual ,
+                              :KetQuaDauRa ;
+                     rdfs:label "Xóa tên khỏi danh sách lớp, không bị ghi nhận điểm F" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PayOnline
+:PayOnline rdf:type owl:NamedIndividual ,
+                    :PhuongThucThanhToan ;
+           :website "https://sinhvien.ntu.edu.vn/" ;
+           rdfs:label "Thanh toán trên website sinhvien.ntu.edu.vn" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiGiaoDucTongQuat
+:PhiGiaoDucTongQuat rdf:type owl:NamedIndividual ,
+                             :DinhMucHocPhi ;
+                    :canCuQuyDinh :RegQD729 ;
+                    :hocPhiMoiTinChi 345000 ;
+                    :tenGoiKhac "Tất cả các khối ngành và chương trình" ;
+                    rdfs:label "Học phí Giáo dục tổng quát" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK63600k
+:PhiK63600k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 600000 ;
+            :tenGoiKhac "Công nghệ sinh học" ,
+                        "k63" ;
+            rdfs:label "Học phí K63 (Công Nghệ Sinh học)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK63620K
+:PhiK63620K rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 620000 ;
+            :tenGoiKhac "Công nghệ chế biến thủy sản" ,
+                        "Kỹ thuật tàu thủy" ,
+                        "Nuôi trồng thủy sản" ,
+                        "k63" ;
+            rdfs:label "Học phí K63 (Công nghệ chế biến thủy sản, Kỹ thuật tàu thủy, Nuôi trồng thủy sản)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK65550k
+:PhiK65550k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 550000 ;
+            :tenGoiKhac "Khách sạn" ,
+                        "Kinh doanh" ,
+                        "Kế toán" ,
+                        "QTKD" ,
+                        "Quản trị khách sạn" ,
+                        "Quản trị kinh doanh" ,
+                        "k65" ;
+            rdfs:label "Học phí K65 (Quản Trị Kinh Doanh, Kế toán, Quản trị Khách Sạn)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK65620k
+:PhiK65620k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 620000 ;
+            :tenGoiKhac "CNTT" ,
+                        "Công nghệ thông tin" ,
+                        "k65" ;
+            rdfs:label "Học phí K65 (Công nghệ thông tin)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK66510k
+:PhiK66510k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 510000 ;
+            :tenGoiKhac "Ngôn ngữ Anh" ,
+                        "k66" ;
+            rdfs:label "Học phí K66 (Ngôn ngữ Anh)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK66550k
+:PhiK66550k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 550000 ;
+            :tenGoiKhac "Du lịch" ,
+                        "Kinh doanh" ,
+                        "Kinh doanh thương mại" ,
+                        "Tài chính" ,
+                        "Tài chính - Ngân hàng" ,
+                        "k66" ;
+            rdfs:label "Học phí K66 (Kinh Doanh Thương mại, Tài chính, Du lịch)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK66620k
+:PhiK66620k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 620000 ;
+            :tenGoiKhac "Cơ khí" ,
+                        "Kỹ thuật" ,
+                        "Kỹ thuật cơ khí" ,
+                        "Quản lý thủy sản" ,
+                        "Thực phẩm" ,
+                        "Xây dựng" ,
+                        "k66" ,
+                        "thủy sản" ,
+                        "Ô tô" ;
+            rdfs:label "Học phí K66 (Cơ khí, Ô tô, Xây dựng, Thực phẩm, Quản Lý Thủy sản)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK67550k
+:PhiK67550k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 550000 ;
+            :tenGoiKhac "Hệ thống thông tin quản lý" ,
+                        "Khoa học hàng hải" ,
+                        "Kinh doanh" ,
+                        "Kinh tế phát triển" ,
+                        "Luật" ,
+                        "Marketing" ,
+                        "k67" ;
+            rdfs:label "Học phí K67 (Marketing, Hệ Thống Thông Tin Quản Lý, Luật, Kinh tế Phát Triển, Khoa Học Hàng hải)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhiK67620k
+:PhiK67620k rdf:type owl:NamedIndividual ,
+                     :DinhMucHocPhi ;
+            :canCuQuyDinh :RegQD729 ;
+            :hocPhiMoiTinChi 620000 ;
+            :tenGoiKhac "Cơ điện tử" ,
+                        "Kỹ thuật" ,
+                        "Kỹ thuật nhiệt" ,
+                        "Nhiệt" ,
+                        "k67" ,
+                        "Điện" ;
+            rdfs:label "Học phí K67 (Nhiệt, Cơ điện tử, Điện)" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhongCTSV
+:PhongCTSV rdf:type owl:NamedIndividual ,
+                    :PhongBanHanhChinh ;
+           :diaDiem "Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang" ;
+           :email "ctsv@ntu.edu.vn" ;
+           :soDienThoai "02582221900" ;
+           :tenGoiKhac "cog tac sv" ,
+                       "cong tac chinh tri" ,
+                       "cong tac sinh vien" ,
+                       "ct sinh vien" ,
+                       "ctsv" ;
+           :truongPhong "ThS. Đỗ Quốc Việt" ;
+           :website "https://phongctsv.ntu.edu.vn/" ;
+           rdfs:label "Phòng Công tác Sinh viên" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhongDaoTaoDaiHoc
+:PhongDaoTaoDaiHoc rdf:type owl:NamedIndividual ,
+                            :PhongBanHanhChinh ;
+                   :diaDiem "Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang" ;
+                   :email "daotao@ntu.edu.vn" ;
+                   :soDienThoai "02583831148" ;
+                   :tenGoiKhac "p dao tao" ,
+                               "pdt" ,
+                               "phong ao tao" ,
+                               "phong dao tao" ,
+                               "phong dt" ,
+                               "pđt" ;
+                   :truongPhong "PGS.TS. Tô Văn Phương" ;
+                   :website "https://pdtdaihoc.ntu.edu.vn/" ;
+                   rdfs:label "Phòng Đào tạo Đại học" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#PhongKHTC
+:PhongKHTC rdf:type owl:NamedIndividual ,
+                    :PhongBanHanhChinh ;
+           :diaDiem "Tầng 1, Tòa nhà Hiệu Bộ, trường Đại học Nha Trang" ;
+           :email "khtc@ntu.edu.vn" ;
+           :soDienThoai "02583831150" ;
+           :tenGoiKhac "KH-TC" ,
+                       "ke hoach tai chinh" ,
+                       "phong nop tien" ,
+                       "phong tai chinh" ;
+           :truongPhong "PGS.TS Phạm Hồng Mạnh" ;
+           :website "https://phongkhtc.ntu.edu.vn/" ;
+           rdfs:label "Phòng Tài chính" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhBaoLuu
+:QuyTrinhBaoLuu rdf:type owl:NamedIndividual ,
+                         :QuyTrinhHocVu ;
+                :canCuQuyDinh :RegQD1052 ;
+                :canTaiLieu :DonXinBaoLuu ,
+                            :DonXinHocTroLai ;
+                :coKetQua :OutputDuocBaoLuu ;
+                :duocXuLyBoi :PhongCTSV ;
+                :yeuCauDieuKien :DieuKienBaoLuuCaNhan ,
+                                :DieuKienBaoLuuQuocTe ,
+                                :DieuKienBaoLuuVuTrang ,
+                                :DieuKienBaoLuuYTe ;
+                :noiDung """1. Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả đã học trong các trường hợp: Được điều động vào lực lượng vũ trang, đại diện quốc gia tham dự kỳ thi, bị ốm/thai sản/tai nạn hoặc vì lý do cá nhân khác.
+2. Sinh viên xin nghỉ học tạm thời phải viết đơn xin thôi học gửi Hiệu trưởng thông qua Phòng Công tác sinh viên.
+3. Khi muốn trở lại học tiếp, cần viết đơn gửi Hiệu trưởng thông qua Phòng Công tác sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới.""" ;
+                :tenGoiKhac "bao luu" ,
+                            "bảo lưu" ,
+                            "điều kiện bảo lưu" ;
+                rdfs:label "Quy trình xin bảo lưu kết quả học tập" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhChuyenNganh
+:QuyTrinhChuyenNganh rdf:type owl:NamedIndividual ,
+                              :QuyTrinhHocVu ;
+                     :canCuQuyDinh :RegQD1052 ;
+                     :canTaiLieu :DonXinChuyenNganh ;
+                     :coKetQua :OutputDuocChuyenNganh ;
+                     :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                     :yeuCauDieuKien :DieuKienChuyenNganhNamHoc ;
+                     :noiDung """1. Sinh viên có nguyện vọng có thể được xem xét chuyển ngành trong cùng bậc học nếu không là sinh viên năm nhất/năm cuối và đạt điều kiện trúng tuyển.
+2. Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, SV làm đơn xin chuyển ngành để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định.""" ;
+                     :tenGoiKhac "chuyen nganh" ,
+                                 "chuyển ngành" ,
+                                 "doi nganh" ,
+                                 "xin chuyen nganh" ,
+                                 "xin doi nganh" ,
+                                 "đổi ngành" ;
+                     rdfs:label "Quy trình xin chuyển ngành" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhDangKyHocPhan
+:QuyTrinhDangKyHocPhan rdf:type owl:NamedIndividual ,
+                                :QuyTrinhHocVu ;
+                       :canCuQuyDinh :RegQD1052 ;
+                       :coKetQua :OutputCoTenTrongDanhSachLop ;
+                       :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                       :noiDung """Sinh viên học lực Trung bình trở lên đăng ký từ 15 đến 27 tín chỉ.
+Sinh viên học lực Yếu/Kém đăng ký từ 12 đến 18 tín chỉ.""" ;
+                       :tenGoiKhac "dang ki mh" ,
+                                   "dang ki mon hoc" ,
+                                   "dang ki tin chi" ,
+                                   "dki mon" ,
+                                   "dkmh" ,
+                                   "đki môn" ,
+                                   "đkmh" ,
+                                   "đăng ký môn" ,
+                                   "đăng ký tín chỉ" ;
+                       rdfs:label "Quy trình đăng ký học phần" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhHocCaiThien
+:QuyTrinhHocCaiThien rdf:type owl:NamedIndividual ,
+                              :QuyTrinhHocVu ;
+                     :canCuQuyDinh :RegQD1052 ;
+                     :coKetQua :OutputGhiNhanDiemCaoHon ;
+                     :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                     :noiDung """Sinh viên được quyền đăng ký học lại để cải thiện điểm trung bình chung tích lũy (CPA) trên web sinhvien.ntu.edu.vn với cùng mã học phần.
+Kết quả học tập được ghi nhận cho lần học cùng học phần có điểm cao hơn.""" ;
+                     :tenGoiKhac "cai thien cpa" ,
+                                 "cai thien diem" ,
+                                 "cai thien gpa" ,
+                                 "cày lại điểm" ,
+                                 "cải thiện cpa" ,
+                                 "cải thiện gpa" ,
+                                 "diem thap qua" ,
+                                 "học cải thiện" ,
+                                 "nang diem" ,
+                                 "nâng điểm" ,
+                                 "điểm thấp" ;
+                     rdfs:label "Quy trình học cải thiện" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhHocLai
+:QuyTrinhHocLai rdf:type owl:NamedIndividual ,
+                         :QuyTrinhHocVu ;
+                :canCuQuyDinh :RegQD729 ;
+                :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                :yeuCauDieuKien :DieuKienHocLai ;
+                :noiDung "Sinh viên có học phần bị điểm dưới 5.0 phải đăng ký học lại ở các học kỳ tiếp theo cho đến khi đạt." ;
+                :tenGoiKhac "bi cam thi" ,
+                            "bị cấm thi" ,
+                            "bị nợ môn" ,
+                            "hoc lai" ,
+                            "học lại" ,
+                            "no mon" ,
+                            "nợ môn" ,
+                            "rot mon" ,
+                            "rớt môn" ,
+                            "truot mon" ,
+                            "trượt môn" ;
+                rdfs:label "Quy trình đăng ký học lại" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhNopHocPhi
+:QuyTrinhNopHocPhi rdf:type owl:NamedIndividual ,
+                            :QuyTrinhHocVu ;
+                   :apDungMucHocPhi :PhiGiaoDucTongQuat ,
+                                    :PhiK63600k ,
+                                    :PhiK63620K ,
+                                    :PhiK65550k ,
+                                    :PhiK65620k ,
+                                    :PhiK66510k ,
+                                    :PhiK66550k ,
+                                    :PhiK66620k ,
+                                    :PhiK67550k ,
+                                    :PhiK67620k ;
+                   :canCuQuyDinh :RegQD729 ;
+                   :canTaiLieu :DonGiaHanThoiGianNopHocPhi ;
+                   :coPhuongThucThanhToan :BankTransfer ,
+                                          :PayOnline ;
+                   :duocXuLyBoi :PhongKHTC ;
+                   :ghiChuHocPhi """Tuyệt đối không chuyển khoản trực tiếp vào tài khoản trường.
+Thanh toán qua website sinhvien.ntu.edu.vn hoặc nộp trực tiếp tại quầy ngân hàng Agribank hoặc Vietinbank kèm mã số sinh viên.
+Đóng học phí trễ hạn sẽ bị cấm thi. Sinh viên có hoàn cảnh khó khăn muốn gia hạn thời gian đóng học phí thì có thể liên hệ phòng Công tác Sinh viên để được hướng dẫn""" ;
+                   :noiDung "Sinh viên thanh toán học phí cho các học phần đã đăng ký thành công trong học kỳ." ;
+                   :tenGoiKhac "cách đóng học phí" ,
+                               "dong hoc phi" ,
+                               "gia han hoc phi" ,
+                               "hoc phi" ,
+                               "hoc phi dai hoc" ,
+                               "hp" ,
+                               "học phí" ,
+                               "nop tien" ,
+                               "nop tien hoc" ,
+                               "nộp học phí" ,
+                               "đóng học phí" ,
+                               "đóng tiền học" ;
+                   rdfs:label "Quy trình đóng học phí" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhRutMonHoc
+:QuyTrinhRutMonHoc rdf:type owl:NamedIndividual ,
+                            :QuyTrinhHocVu ;
+                   :canCuQuyDinh :RegQD1052 ;
+                   :coKetQua :OutputXoaTenKhoiLop ;
+                   :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                   :noiDung "Nhà trường tự động xóa lớp học phần nếu không đủ sinh viên theo quy định. Sinh viên có thể chủ động điều chỉnh hoặc rút bớt học phần trên web sinhvien.ntu.edu.vn" ;
+                   :tenGoiKhac "bỏ học phần" ,
+                               "huy hoc phan" ,
+                               "hủy hp" ,
+                               "hủy môn" ,
+                               "rút môn" ,
+                               "xóa môn học" ,
+                               "xóa tín chỉ" ;
+                   rdfs:label "Quy trình rút môn học" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhXetHocBong
+:QuyTrinhXetHocBong rdf:type owl:NamedIndividual ,
+                             :QuyTrinhHocVu ;
+                    :canCuQuyDinh :RegQD1052 ;
+                    :coKetQua :OutputNhanHocBong ;
+                    :duocXuLyBoi :PhongCTSV ;
+                    :yeuCauDieuKien :DieuKienHocBongDiemHocTap ,
+                                    :DieuKienHocBongDiemRenLuyen ,
+                                    :DieuKienHocBongThoiGian ,
+                                    :DieuKienHocBongTinChi ;
+                    :noiDung """Trong học kì, sinh viên có kết quả học tập, rèn luyện từ loại khá trở lên, không bị kỉ luật từ mức khiển trách trở lên sẽ được xét cấp HBKK học tập.
+Tổng số tín chỉ sinh viên đăng kí phải >= 14. Học bổng sẽ được trao cho sinh viên theo thứ tự từ sinh viên có điểm học tập cao nhất lấy xuống đến khi đủ chỉ tiêu học bổng.""" ;
+                    :tenGoiKhac "dk hoc bong" ,
+                                "dkien xet hb" ,
+                                "hoc bong" ,
+                                "học bổng" ,
+                                "xet hb" ,
+                                "xet hoc bong" ;
+                    rdfs:label "Quy trình xét học bổng" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#QuyTrinhXetTotNghiep
+:QuyTrinhXetTotNghiep rdf:type owl:NamedIndividual ,
+                               :QuyTrinhHocVu ;
+                      :canCuQuyDinh :RegQD1052 ;
+                      :canTaiLieu :DonXetTotNghiepSom ;
+                      :coKetQua :OutputDuocXetTotNghiep ;
+                      :duocXuLyBoi :PhongDaoTaoDaiHoc ;
+                      :yeuCauDieuKien :DieuKienTotNghiepCPA ,
+                                      :DieuKienTotNghiepKyLuat ,
+                                      :DieuKienTotNghiepNghiaVu ,
+                                      :DieuKienTotNghiepNgoaiNgu ,
+                                      :DieuKienTotNghiepTinChi ;
+                      :noiDung """Sinh viên được xét tốt nghiệp khi không bị kỷ luật, tích lũy đủ số học phần, CPA >= 5.5, đạt chuẩn ngoại ngữ và hoàn thành GDQP-AN, GDTC.
+Nếu đủ điều kiện sớm, có thể làm đơn xin xét tốt nghiệp sớm.""" ;
+                      :tenGoiKhac "dk xet tot nghiep" ,
+                                  "tot nghiep" ,
+                                  "tot nghiep som" ,
+                                  "tốt nghiệp" ,
+                                  "tốt nghiệp sớm" ,
+                                  "xet tn" ,
+                                  "xét tốt nghiệp" ;
+                      rdfs:label "Quy trình xét tốt nghiệp" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#RegQD1052
+:RegQD1052 rdf:type owl:NamedIndividual ,
+                    :QuyDinh ;
+           :duongDanBieuMau "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf" ;
+           rdfs:label "Quyết định 1052/QĐ-ĐHNT" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#RegQD729
+:RegQD729 rdf:type owl:NamedIndividual ,
+                   :QuyDinh ;
+          :duongDanBieuMau "https://pdtsaudaihoc.ntu.edu.vn/uploads/22/Note/15720/q%C4%91-729-(2025)-(2).pdf.pdf" ;
+          rdfs:label "Quyết định 729/QĐ-ĐHNT" .
+
+
+###  http://www.ntu.edu.vn/ontology/academic#VanPhongTruong
+:VanPhongTruong rdf:type owl:NamedIndividual ,
+                         :PhongBanHanhChinh ;
+                :diaDiem "Tầng 2 Tòa nhà Hiệu bộ" ;
+                :email "vpt@ntu.edu.vn" ;
+                :soDienThoai "02583831149" ;
+                :tenGoiKhac "van phong" ,
+                            "van phong truong" ,
+                            "vp truong" ,
+                            "vpt" ,
+                            "văn phòng" ,
+                            "văn phòng trường" ;
+                :truongPhong "Ths. Phạm Ngọc Bích" ;
+                :website "https://vpt.ntu.edu.vn/" ;
+                rdfs:label "Văn phòng Trường" .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

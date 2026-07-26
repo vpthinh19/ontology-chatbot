@@ -1,0 +1,227 @@
+{
+  "source": "ontology_v10.ttl",
+  "target": "ontology_v11.ttl",
+  "source_triples": 493,
+  "target_triples": 410,
+  "flattened_values": [
+    {
+      "source": "AcademicLeaveProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "InternationalEventLeaveCondition",
+      "new_property": "condition",
+      "value": "Được cơ quan có thẩm quyền điều động tham dự các kỳ thi, giải đấu quốc tế",
+      "language": "vi"
+    },
+    {
+      "source": "AcademicLeaveProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "MedicalLeaveCondition",
+      "new_property": "condition",
+      "value": "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận hợp lệ",
+      "language": "vi"
+    },
+    {
+      "source": "AcademicLeaveProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "MilitaryServiceLeaveCondition",
+      "new_property": "condition",
+      "value": "Được điều động vào lực lượng vũ trang",
+      "language": "vi"
+    },
+    {
+      "source": "AcademicLeaveProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "PersonalReasonLeaveCondition",
+      "new_property": "condition",
+      "value": "Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường",
+      "language": "vi"
+    },
+    {
+      "source": "CourseRetakeProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "CourseRetakeGradeCondition",
+      "new_property": "condition",
+      "value": "Học phần có điểm tổng kết dưới 5.0",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "GraduationCreditCompletionCondition",
+      "new_property": "condition",
+      "value": "Tích lũy đủ số tín chỉ theo quy định",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "GraduationDisciplinaryStatusCondition",
+      "new_property": "condition",
+      "value": "Không bị truy cứu trách nhiệm hình sự",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "GraduationGpaCondition",
+      "new_property": "condition",
+      "value": "Điểm trung bình chung tích lũy (CPA) từ 5.5 trở lên",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "GraduationLanguageProficiencyCondition",
+      "new_property": "condition",
+      "value": "Đạt chuẩn năng lực tiếng Anh theo quy định",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "GraduationObligationCondition",
+      "new_property": "condition",
+      "value": "Hoàn thành nghĩa vụ đối với Trường",
+      "language": "vi"
+    },
+    {
+      "source": "MajorChangeProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "MajorChangeStudyYearCondition",
+      "new_property": "condition",
+      "value": "Không là sinh viên năm nhất hoặc năm cuối",
+      "language": "vi"
+    },
+    {
+      "source": "ScholarshipReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "ScholarshipAcademicPerformanceCondition",
+      "new_property": "condition",
+      "value": "Kết quả học tập từ 7.0 trở lên",
+      "language": "vi"
+    },
+    {
+      "source": "ScholarshipReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "ScholarshipConductScoreCondition",
+      "new_property": "condition",
+      "value": "Điểm rèn luyện từ loại khá trở lên",
+      "language": "vi"
+    },
+    {
+      "source": "ScholarshipReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "ScholarshipEnrollmentPeriodCondition",
+      "new_property": "condition",
+      "value": "Trong thời gian đào tạo theo kế hoạch của khoá học",
+      "language": "vi"
+    },
+    {
+      "source": "ScholarshipReviewProcedure",
+      "old_property": "hasCondition",
+      "removed_wrapper": "ScholarshipMinimumCreditsCondition",
+      "new_property": "condition",
+      "value": "Tổng số tín chỉ sinh viên đăng kí trong một học kì phải lớn hơn hoặc bằng 14 tín chỉ",
+      "language": "vi"
+    },
+    {
+      "source": "AcademicLeaveProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "AcademicRecordPreservationOutcome",
+      "new_property": "outcome",
+      "value": "Kết quả học tập được bảo lưu",
+      "language": "vi"
+    },
+    {
+      "source": "CourseRegistrationProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "OfficialScheduleListingOutcome",
+      "new_property": "outcome",
+      "value": "Học phần hiển thị trong thời khóa biểu chính thức",
+      "language": "vi"
+    },
+    {
+      "source": "CourseWithdrawalProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "CourseRemovalOutcome",
+      "new_property": "outcome",
+      "value": "Xóa tên khỏi danh sách lớp, không bị ghi nhận điểm F",
+      "language": "vi"
+    },
+    {
+      "source": "GradeImprovementProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "HigherGradeRecognitionOutcome",
+      "new_property": "outcome",
+      "value": "Điểm CPA được ghi nhận theo lần học có điểm số cao hơn",
+      "language": "vi"
+    },
+    {
+      "source": "GraduationReviewProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "GraduationEligibilityOutcome",
+      "new_property": "outcome",
+      "value": "Được xét tốt nghiệp nếu đủ điều kiện",
+      "language": "vi"
+    },
+    {
+      "source": "MajorChangeProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "MajorChangeApprovalOutcome",
+      "new_property": "outcome",
+      "value": "Được chuyển ngành",
+      "language": "vi"
+    },
+    {
+      "source": "ScholarshipReviewProcedure",
+      "old_property": "hasOutcome",
+      "removed_wrapper": "ScholarshipAwardOutcome",
+      "new_property": "outcome",
+      "value": "Nhận học bổng khuyến khích học tập nếu đủ điều kiện",
+      "language": "vi"
+    }
+  ],
+  "removed_aliases": [
+    {
+      "resource": "AcademicLeaveProcedure",
+      "value": "điều kiện bảo lưu",
+      "language": "vi"
+    },
+    {
+      "resource": "appliesTuitionRate",
+      "value": "học phí",
+      "language": "vi"
+    },
+    {
+      "resource": "documentUrl",
+      "value": "tải biểu mẫu",
+      "language": "vi"
+    },
+    {
+      "resource": "handledBy",
+      "value": "xử lý",
+      "language": "vi"
+    },
+    {
+      "resource": "hasDocument",
+      "value": "đơn",
+      "language": "vi"
+    },
+    {
+      "resource": "headName",
+      "value": "phụ trách",
+      "language": "vi"
+    },
+    {
+      "resource": "location",
+      "value": "ở đâu",
+      "language": "vi"
+    }
+  ],
+  "notes": [
+    "content is preserved unchanged",
+    "Condition and Outcome wrappers were private and are replaced by repeated Vietnamese literals",
+    "two wrapper regulation links were redundant with their parent procedures",
+    "object properties remain graph connectors and are not flattened"
+  ]
+}
