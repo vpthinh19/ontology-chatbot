@@ -86,21 +86,33 @@ Script chính thức phải:
 7. kiểm tra save/reload cho kết quả ID giống hệt;
 8. không gọi `resize_token_embeddings()`.
 
-## 5. Bằng chứng thí nghiệm hiện có
+## 5. Bằng chứng learning audit hiện tại
 
-Learning audit ViT5 với bản sửa sentinel dùng 18 câu train và 6 câu noisy giữ
-riêng, 500 optimizer step, LR `3e-5`, batch vật lý 2, gradient accumulation 4,
-BF16 và không compile:
+Trainer chính thức đã được chạy thật trên GPU với 16 target khác nhau, phủ lấy
+literal trực tiếp, đi qua object property, nhiều cột, `FILTER` và `COUNT`.
+Mỗi model học chính 16 câu đó trong 500 optimizer step, seed 42, LR `3e-5`,
+BF16, TF32, dynamic padding bội số 8 và không compile:
 
-| Seed | Train exact | Holdout parse | Holdout answer |
-|---:|---:|---:|---:|
-| 42 | 18/18 | 6/6 | 5/6 |
-| 7 | 18/18 | 5/6 | 3/6 |
-| 21 | 18/18 | 6/6 | 5/6 |
+| Model | Parse | Execute | Answer exact | Canonical exact | Thời gian | VRAM cấp phát cực đại |
+|---|---:|---:|---:|---:|---:|---:|
+| BARTpho | 16/16 | 16/16 | 16/16 | 16/16 | 130,686 giây | 3.172 MB |
+| ViT5 | 16/16 | 16/16 | 15/16 | 15/16 | 84,682 giây | 2.491 MB |
 
-Phép thử chứng minh tokenizer/model có thể học SPARQL, không phải benchmark
-tổng quát hóa. Kết luận cũ “loại ViT5” dựa trên cách thêm bốn token mới và
-resize embedding đã bị thay thế bởi bản sửa sentinel này.
+Sai khác duy nhất của ViT5 là bỏ một triple `:condition` trong query ba cột;
+query vẫn parse và thực thi. Vì vậy đây là lỗi học trên một audit nhỏ, không
+phải lỗi tokenizer hay runtime.
+
+Phép thử chỉ chứng minh cả tokenizer, collator, label masking, model và bộ sinh
+đều hoạt động đầu-cuối; nó cố ý cho model thấy lại 16 câu và không phải
+benchmark tổng quát hóa. Lệnh tái lập:
+
+```bash
+uv run --extra train train_sparql --model bartpho --learning-audit --max-steps 500 --local-files-only --output-dir artifacts/sparql_learning_audit_v1
+uv run --extra train train_sparql --model vit5 --learning-audit --max-steps 500 --local-files-only --output-dir artifacts/sparql_learning_audit_v1
+```
+
+Kết luận cũ “loại ViT5” dựa trên cách thêm bốn token mới và resize embedding
+đã bị thay thế bởi bản sửa sentinel này.
 
 Tokenizer đã sửa cũng cho phép CTranslate2 convert checkpoint. CTranslate2 có
 thể chạy CPU và không yêu cầu CUDA; CUDA chỉ cần nếu chọn inference GPU.
