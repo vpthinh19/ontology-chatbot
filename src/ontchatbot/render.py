@@ -1,119 +1,28 @@
-"""Render: ``act`` + :class:`Result` → câu trả lời tiếng Việt.
-
-Pha cuối của pipeline: xử lý chào hỏi/ngoại lệ và ghép kết quả duyệt thành chuỗi cho UI.
-**Giọng nghiêm túc, cứng, KHÔNG gợi mở** (chatbot học vụ). Không phụ thuộc owlready2 -
-chỉ format `OntNode`/`DataValue`, nên test chạy trên dataclass thuần.
-"""
+"""Generic rendering for SPARQL rows; no ontology-specific result DTOs."""
 
 from __future__ import annotations
 
-from .ontology import DataValue, OntNode, Result
-from .preprocess import is_url
-from .tree import GREETING, OOD, QUERY, VAGUE, Tree
-
-GREETING_REPLY = "Xin chào. Đây là hệ thống tra cứu thủ tục học vụ Trường Đại học Nha Trang."
-OOD_REPLY = "Không có thông tin."
-VAGUE_REPLY = "Không hiểu câu hỏi."
-
-# data-prop local name → tiêu đề hiển thị, theo thứ tự. Prop ngoài bảng xếp sau, vẫn hiện.
-_HEADER: dict[str, str] = {
-    "noiDung": "Nội dung",
-    "ghiChuHocPhi": "Lưu ý",
-    "hocPhiMoiTinChi": "Học phí mỗi tín chỉ",
-    "truongPhong": "Phụ trách",
-    "diaDiem": "Địa chỉ",
-    "email": "Email",
-    "soDienThoai": "Điện thoại",
-    "website": "Website",
-    "duongDanBieuMau": "Tải biểu mẫu",
-}
-_ORDER = list(_HEADER)
-_PARAGRAPH = frozenset({"noiDung", "ghiChuHocPhi"})   # văn xuôi, render không bullet
+from .query_engine import Primitive, QueryRows
 
 
-def render_reply(tree: Tree, result: Result) -> str:
-    """act thắng trước; trong ``query`` thì dữ liệu thắng, không có → 'không có thông tin'."""
-    if tree.act == GREETING:
-        return GREETING_REPLY
-    if tree.act == OOD:
-        return OOD_REPLY
-    if tree.act == VAGUE or result.vague:          # vague: act, hoặc gốc trỏ class/quan-hệ
-        return VAGUE_REPLY
-    # query
-    blocks = [_render_value(v) for v in result.values]
-    if result.nodes:
-        blocks.append(_render_nodes(result.nodes))
-    blocks = [b for b in blocks if b]
-    if blocks:
-        return "\n".join(blocks)
-    if result.misses:
-        labels = ", ".join(f"«{m}»" for m in dict.fromkeys(result.misses))
-        return f"Không có thông tin {labels}."
-    return OOD_REPLY
+def render_rows(rows: QueryRows) -> str:
+    if not rows:
+        return "Không tìm thấy thông tin phù hợp."
+
+    columns = tuple(rows[0])
+    if any(tuple(row) != columns for row in rows):
+        raise ValueError("all SPARQL rows must have the same columns")
+
+    if len(columns) == 1:
+        values = [_format(row[columns[0]]) for row in rows]
+        return values[0] if len(values) == 1 else "\n".join(f"- {value}" for value in values)
+
+    rendered = [
+        "; ".join(f"{column}: {_format(row[column])}" for column in columns)
+        for row in rows
+    ]
+    return rendered[0] if len(rendered) == 1 else "\n".join(f"- {row}" for row in rendered)
 
 
-def _render_value(dv: DataValue) -> str:
-    """Một lá data → một dòng (hoặc văn xuôi với noiDung/ghiChú)."""
-    header = _HEADER.get(dv.prop, dv.prop)
-    if dv.prop in _PARAGRAPH:
-        return "\n".join(str(v).strip() for v in dv.values)
-    return f"{header}: " + ", ".join(_field_value(dv.prop, v) for v in dv.values)
-
-
-def _render_nodes(nodes: list[OntNode]) -> str:
-    if len(nodes) == 1:
-        return _render_node(nodes[0])
-    items = [_render_node(n, bullet="•") for n in nodes]
-    sep = "\n\n" if any("\n" in it for it in items) else "\n"
-    return sep.join(items)
-
-
-def _render_node(node: OntNode, *, bullet: str = "") -> str:
-    head = f"{bullet} {node.label}".strip() if bullet else node.label
-    lines = [head]
-    for key in _ordered_keys(node.data):
-        value = node.data[key]
-        if value in (None, "", []):
-            continue
-        if key in _PARAGRAPH:
-            # Đoạn văn xuôi: nhãn đứng riêng một dòng (cấp 1), từng dòng nội
-            # dung thụt sâu thêm một cấp (cấp 2) để mọi dòng - kể cả dòng tiếp
-            # của câu dài - thẳng hàng dưới nhãn, đọc như một cây.
-            lines.append(f"   {_HEADER.get(key, key)}:")
-            lines += [f"      {ln.strip()}" for ln in str(value).split("\n") if ln.strip()]
-        else:
-            lines.append("   - " + _format_field(key, value))
-    return "\n".join(lines)
-
-
-def _ordered_keys(data: dict) -> list[str]:
-    known = [k for k in _ORDER if k in data]
-    rest = [k for k in data if k not in _HEADER]
-    return known + rest
-
-
-def _format_field(key: str, value) -> str:
-    header = _HEADER.get(key, key)
-    if isinstance(value, list):
-        return f"{header}: " + ", ".join(_field_value(key, v) for v in value)
-    return f"{header}: {_field_value(key, value)}"
-
-
-def _field_value(key: str, value) -> str:
-    if key == "hocPhiMoiTinChi" and isinstance(value, (int, float)):
-        return f"{int(value):,} đ/tín chỉ".replace(",", ".")
-    if is_url(value):
-        return _safe_url(str(value))
-    return _scalar(value)
-
-
-def _scalar(v) -> str:
-    if isinstance(v, bool):
-        return "Có" if v else "Không"
-    if isinstance(v, int):
-        return f"{v:,}".replace(",", ".")
-    return str(v)
-
-
-def _safe_url(url: str) -> str:
-    return url.replace("(", "%28").replace(")", "%29")
+def _format(value: Primitive) -> str:
+    return "—" if value is None else str(value)
