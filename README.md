@@ -50,11 +50,11 @@ Nếu code, artifact hoặc tài liệu lịch sử mâu thuẫn với
 - Khoảng 1.000 câu hỏi cũ được tái sử dụng sau review; target QueryPlan cũ phải
   được gán lại thành SPARQL theo ontology mới.
 
-## Trạng thái chuyển đổi
+## Trạng thái triển khai
 
-Repository đang ở giai đoạn chuyển từ prototype QueryPlan sang kiến trúc
-SPARQL trực tiếp. Vì vậy một số code và dữ liệu cũ vẫn còn để làm nguồn chuyển
-đổi, nhưng không còn là contract cần tiếp tục phát triển.
+Phần ontology, runtime SPARQL, tokenizer, dataset và benchmark đã chuyển xong
+sang kiến trúc mới. Code cây/traversal và baseline phẳng đã được loại khỏi cây
+nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/archive/`.
 
 - [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
 - [x] Kiểm chứng BARTpho và ViT5 có thể học SPARQL ở phép thử nhỏ.

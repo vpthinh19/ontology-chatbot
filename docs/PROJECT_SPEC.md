@@ -1,6 +1,6 @@
 # Đặc tả project — nguồn sự thật
 
-Trạng thái: **đã chốt thiết kế, chưa hoàn tất chuyển đổi code và dữ liệu**.
+Trạng thái: **đã chốt thiết kế; ontology, runtime và dữ liệu v1 đã chuyển đổi**.
 
 Tài liệu này lưu các quyết định bắt buộc để một lượt làm việc dài hoặc context
 bị rút gọn không kéo project quay lại kiến trúc cũ. Nếu một tài liệu, artifact
@@ -81,8 +81,8 @@ tốt hơn một cơ sở dữ liệu phẳng.
 - T5Gemma/mBART trong benchmark chính.
 - Kết luận cũ rằng ViT5 phải bị loại do tokenizer không đọc `{` và `}`.
 
-Các file code/dataset còn mang các khái niệm này chỉ là vật liệu chuyển đổi hoặc
-lịch sử, không phải đặc tả.
+Lịch sử của các khái niệm này chỉ được giữ trong Git và `docs/archive/`, không
+được đưa lại vào module runtime hoặc contract dữ liệu hiện hành.
 
 ## 4. Bản vá ViT5 bắt buộc
 

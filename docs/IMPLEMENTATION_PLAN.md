@@ -76,6 +76,8 @@ Trạng thái: **benchmark đã đóng băng; còn train chính thức nhiều s
 
 ## Thứ tự dọn code cũ
 
+Trạng thái: **hoàn thành sau khi release SPARQL v1 được khóa**.
+
 Không xóa code/dataset cũ trước khi đã lấy xong câu hỏi và mapping cần thiết.
 Sau mỗi giai đoạn, xóa hoặc chuyển lịch sử những thành phần đã có bản thay thế:
 

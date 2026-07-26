@@ -35,7 +35,12 @@ validation SPARQL, không phải hyperparameter đã khóa.
 
 ## Artifact cũ
 
-Các file `resources/datasets_v1/`, `resources/benchmarks/query_plan_*`, module
-`query_plan.py`, `query_engine.py` và các script liên quan còn có thể được dùng
-để lấy câu hỏi/mapping trong giai đoạn chuyển đổi. Chúng không phải contract
-runtime mới và sẽ được dọn sau khi dataset SPARQL đã được xác nhận.
+Nguồn QueryPlan đã được dùng để biên soạn dataset/benchmark SPARQL v1 rồi được
+loại khỏi cây nguồn hiện hành. Git vẫn giữ đầy đủ các mốc cần audit:
+
+- `61a9edd`: 960 câu nguồn, mapping và release SPARQL đầu tiên;
+- `fc13671`: bổ sung các family aggregate/filter;
+- `d08a7fd`: benchmark SPARQL độc lập đã đóng băng.
+
+Module `query_engine.py` hiện hành là executor SPARQL tối giản, không phải query
+engine traversal của hướng cũ.
