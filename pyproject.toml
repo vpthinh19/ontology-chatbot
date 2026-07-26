@@ -16,6 +16,7 @@ dependencies = [
 inference = [
     "fastapi[standard]>=0.140.0",
     "huggingface-hub>=1.24.0",
+    "transformers>=5.14.1",
 ]
 train = [
     "accelerate>=1.14.0",
@@ -32,11 +33,13 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 benchmark_sparql = "ontchatbot.scripts.benchmark_sparql:main"
+convert_sparql_model = "ontchatbot.scripts.convert_sparql_model:main"
+evaluate_ct2_model = "ontchatbot.scripts.evaluate_ct2_model:main"
 evaluate_sparql_model = "ontchatbot.scripts.evaluate_sparql_model:main"
 migrate_ontology_v11 = "ontchatbot.scripts.migrate_ontology_v11:main"
-migrate_dataset_sparql_v1 = "ontchatbot.scripts.migrate_dataset_sparql_v1:main"
 prepare_vit5_tokenizer = "ontchatbot.scripts.prepare_vit5_tokenizer:main"
 summarize_sparql_experiments = "ontchatbot.scripts.summarize_sparql_experiments:main"
+serve_sparql = "ontchatbot.scripts.serve:main"
 train_sparql = "ontchatbot.scripts.train_sparql:main"
 validate_sparql_dataset = "ontchatbot.scripts.validate_sparql_dataset:main"
 
