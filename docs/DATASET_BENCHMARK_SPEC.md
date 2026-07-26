@@ -228,3 +228,7 @@ model:
 uv run benchmark_sparql
 uv run benchmark_sparql --predictions artifacts/predictions.jsonl --output artifacts/benchmark.json
 ```
+
+Kết quả chính thức 2 model × 3 seed được khóa trong
+`SPARQL_EXPERIMENT_V1.md`. Benchmark v1 không được dùng tiếp để chỉnh dataset
+hoặc chọn hyperparameter.

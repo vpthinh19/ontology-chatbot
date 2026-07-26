@@ -63,7 +63,11 @@ nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/a
 - [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
 - [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
 - [x] Xây dataset và benchmark SPARQL v1 độc lập.
-- [ ] Train và chấm hai model chính thức với nhiều seed.
+- [x] Train và chấm hai model chính thức với ba seed mỗi model.
+
+Kết quả, chi phí và giới hạn được ghi tại
+[`docs/SPARQL_EXPERIMENT_V1.md`](docs/SPARQL_EXPERIMENT_V1.md). ViT5 đạt trung
+bình 78,05% answer exact, BARTpho đạt 75,00% trên benchmark SPARQL v1.
 
 Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến
 trúc SPARQL.

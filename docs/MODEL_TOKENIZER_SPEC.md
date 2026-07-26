@@ -128,3 +128,10 @@ thể chạy CPU và không yêu cầu CUDA; CUDA chỉ cần nếu chọn infer
   metric sinh theo batch lớn rồi báo cáo theo batch 1.
 - Không ép cùng learning rate/dropout nếu validation cho thấy optimum khác;
   tính công bằng nằm ở dữ liệu, target, split, budget đánh giá và cách chấm.
+
+## 7. Thí nghiệm chính thức
+
+Hai model đã được train 60 epoch với seed 7, 21 và 42. Trên benchmark độc lập,
+ViT5 đạt trung bình 78,05% answer exact, BARTpho đạt 75,00%; parse/execute lần
+lượt là 100,00% và 99,59%. Kết quả đầy đủ theo seed, register, query shape,
+thời gian và VRAM nằm tại `SPARQL_EXPERIMENT_V1.md`.

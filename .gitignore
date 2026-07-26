@@ -18,6 +18,7 @@ docs/*
 !docs/PROJECT_SPEC.md
 !docs/MODEL_TOKENIZER_SPEC.md
 !docs/IMPLEMENTATION_PLAN.md
+!docs/SPARQL_EXPERIMENT_V1.md
 !docs/archive/
 !docs/archive/**
 !docs/figures/

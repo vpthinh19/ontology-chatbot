@@ -63,7 +63,7 @@ lượng 1.000 làm release gate.
 
 ## Giai đoạn 5 — Benchmark và train chính thức
 
-Trạng thái: **benchmark đã đóng băng; còn train chính thức nhiều seed**.
+Trạng thái: **hoàn thành với 2 model × 3 seed**.
 
 1. Xây benchmark SPARQL độc lập, phủ direct data, graph hop, multi-column,
    multi-branch, filter và aggregate.
@@ -73,6 +73,10 @@ Trạng thái: **benchmark đã đóng băng; còn train chính thức nhiều s
 5. Báo cáo parse, execution, answer exact, canonical exact, register, shape,
    thời gian và VRAM.
 6. Chỉ sau đó tối ưu CTranslate2/deployment nếu cần.
+
+Báo cáo giao thức, kết quả và giới hạn nằm tại
+`docs/SPARQL_EXPERIMENT_V1.md`. ViT5 đạt trung bình 78,05% answer exact và
+BARTpho đạt 75,00% trên benchmark v1; cả hai đều phù hợp VRAM 6 GB.
 
 ## Thứ tự dọn code cũ
 
