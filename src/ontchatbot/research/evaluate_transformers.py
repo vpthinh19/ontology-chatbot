@@ -1,4 +1,4 @@
-"""Evaluate a saved BARTpho or ViT5 checkpoint without retraining it."""
+"""Evaluate a saved Transformers seq2seq checkpoint without retraining it."""
 
 from __future__ import annotations
 
@@ -12,7 +12,12 @@ from .dataset import load_release, validate_release
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import load_ontology
-from .training import MAX_SOURCE_LENGTH, MAX_TARGET_LENGTH
+from .training import (
+    MAX_SOURCE_LENGTH,
+    MAX_TARGET_LENGTH,
+    MODEL_SPECS,
+    _configure_greedy_generation,
+)
 
 
 def evaluate(args: argparse.Namespace) -> dict:
@@ -35,8 +40,9 @@ def evaluate(args: argparse.Namespace) -> dict:
         args.model_dir,
         local_files_only=True,
         dtype=torch.bfloat16,
-        attn_implementation="sdpa" if args.model == "bartpho" else "eager",
+        attn_implementation=MODEL_SPECS[args.model]["attention"],
     ).to("cuda")
+    _configure_greedy_generation(model.generation_config)
     model.eval()
 
     output_dir = args.output_dir or args.model_dir.parent
@@ -98,6 +104,7 @@ def _generate(model, tokenizer, rows, torch, batch_size: int):
                 **encoded,
                 max_length=MAX_TARGET_LENGTH,
                 num_beams=1,
+                do_sample=False,
             )
             predictions.extend(
                 text.strip()
@@ -141,7 +148,7 @@ def _write_predictions(path: Path, rows, predictions) -> None:
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=("bartpho", "vit5"), required=True)
+    parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--suite", choices=("validation", "benchmark", "both"), default="both")
     parser.add_argument("--batch-size", type=int, default=1)

@@ -1,4 +1,4 @@
-"""Fine-tune BARTpho or ViT5 to generate direct SPARQL."""
+"""Fine-tune a supported encoder-decoder model to generate direct SPARQL."""
 
 from __future__ import annotations
 
@@ -41,6 +41,15 @@ MODEL_SPECS = {
         "batch_size": 8,
         "gradient_accumulation": 1,
         "attention": "eager",
+    },
+    "t5gemma2": {
+        "model_id": "google/t5gemma-2-270m-270m",
+        "revision": "7c38f16641f455ef0685b18431faf1b17722d5a1",
+        "batch_size": 8,
+        "gradient_accumulation": 1,
+        "eval_batch_size": 4,
+        "attention": "sdpa",
+        "gradient_checkpointing": True,
     },
 }
 MAX_SOURCE_LENGTH = 128
@@ -110,6 +119,11 @@ def train(args: argparse.Namespace) -> dict:
         dtype=torch.bfloat16,
     )
     model.config.use_cache = False
+    _configure_greedy_generation(model.generation_config)
+    if spec.get("gradient_checkpointing", False):
+        model.gradient_checkpointing_enable(
+            gradient_checkpointing_kwargs={"use_reentrant": False}
+        )
     if args.model == "bartpho" and not args.keep_dropout:
         _disable_dropout(model, torch)
 
@@ -147,7 +161,7 @@ def train(args: argparse.Namespace) -> dict:
         num_train_epochs=args.epochs,
         max_steps=effective_max_steps,
         per_device_train_batch_size=spec["batch_size"],
-        per_device_eval_batch_size=1,
+        per_device_eval_batch_size=spec.get("eval_batch_size", 1),
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
         lr_scheduler_type="constant",
@@ -157,6 +171,8 @@ def train(args: argparse.Namespace) -> dict:
         bf16=True,
         tf32=True,
         torch_compile=False,
+        gradient_checkpointing=spec.get("gradient_checkpointing", False),
+        gradient_checkpointing_kwargs={"use_reentrant": False},
         eval_strategy="no" if short_run else "steps",
         eval_steps=eval_steps,
         save_strategy="steps" if keep_checkpoints else "no",
@@ -194,7 +210,6 @@ def train(args: argparse.Namespace) -> dict:
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     train_result = trainer.train()
-    trainer.args.per_device_eval_batch_size = 1
     decoded = _predict(trainer, validation_dataset, tokenizer, np)
     report = evaluate_predictions(validation_rows, decoded, graph, include_cases=True)
     report["training"] = {
@@ -213,6 +228,8 @@ def train(args: argparse.Namespace) -> dict:
         "bf16": True,
         "tf32": True,
         "torch_compile": False,
+        "gradient_checkpointing": spec.get("gradient_checkpointing", False),
+        "generation_do_sample": False,
         "dropout_disabled": args.model == "bartpho" and not args.keep_dropout,
         "optimizer": "adamw_8bit",
         "learning_rate": args.learning_rate,
@@ -301,27 +318,60 @@ def _tokenized_dataset(Dataset, rows, tokenizer):
             max_length=MAX_SOURCE_LENGTH,
             truncation=True,
         )
-        encoded["labels"] = tokenizer(
+        labels = tokenizer(
             text_target=batch["target"],
             max_length=MAX_TARGET_LENGTH,
             truncation=True,
         )["input_ids"]
+        encoded["labels"] = [
+            _ensure_eos_token(ids, tokenizer.eos_token_id, MAX_TARGET_LENGTH)
+            for ids in labels
+        ]
         return encoded
 
     return dataset.map(tokenize, batched=True, remove_columns=["source", "target"])
 
 
+def _ensure_eos_token(
+    ids: list[int], eos_token_id: int | None, max_length: int
+) -> list[int]:
+    """Terminate target labels even when a tokenizer only inserts BOS."""
+
+    if eos_token_id is None:
+        raise ValueError("a seq2seq target tokenizer must define eos_token_id")
+    output = list(ids)
+    if output and output[-1] == eos_token_id:
+        return output
+    if len(output) >= max_length:
+        output[-1] = eos_token_id
+    else:
+        output.append(eos_token_id)
+    return output
+
+
+def _configure_greedy_generation(config) -> None:
+    """Remove inherited sampling settings from structured generation."""
+
+    config.do_sample = False
+    config.top_p = None
+    config.top_k = None
+
+
 def _predict(trainer, dataset, tokenizer, np) -> list[str]:
     compute_metrics = trainer.compute_metrics
+    use_cache = trainer.model.config.use_cache
     trainer.compute_metrics = None
+    trainer.model.config.use_cache = True
     try:
         prediction = trainer.predict(
             dataset,
             max_length=MAX_TARGET_LENGTH,
             num_beams=1,
+            do_sample=False,
         )
     finally:
         trainer.compute_metrics = compute_metrics
+        trainer.model.config.use_cache = use_cache
     prediction_ids = (
         prediction.predictions[0]
         if isinstance(prediction.predictions, tuple)
