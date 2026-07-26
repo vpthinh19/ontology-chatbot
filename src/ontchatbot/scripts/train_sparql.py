@@ -146,7 +146,7 @@ def train(args: argparse.Namespace) -> dict:
         num_train_epochs=args.epochs,
         max_steps=effective_max_steps,
         per_device_train_batch_size=spec["batch_size"],
-        per_device_eval_batch_size=1 if args.smoke_test else spec["batch_size"],
+        per_device_eval_batch_size=1,
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
         lr_scheduler_type="constant",
@@ -311,11 +311,16 @@ def _tokenized_dataset(Dataset, rows, tokenizer):
 
 
 def _predict(trainer, dataset, tokenizer, np) -> list[str]:
-    prediction = trainer.predict(
-        dataset,
-        max_length=MAX_TARGET_LENGTH,
-        num_beams=1,
-    )
+    compute_metrics = trainer.compute_metrics
+    trainer.compute_metrics = None
+    try:
+        prediction = trainer.predict(
+            dataset,
+            max_length=MAX_TARGET_LENGTH,
+            num_beams=1,
+        )
+    finally:
+        trainer.compute_metrics = compute_metrics
     prediction_ids = (
         prediction.predictions[0]
         if isinstance(prediction.predictions, tuple)

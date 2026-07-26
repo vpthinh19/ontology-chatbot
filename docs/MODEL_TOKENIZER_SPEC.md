@@ -124,5 +124,7 @@ thể chạy CPU và không yêu cầu CUDA; CUDA chỉ cần nếu chọn infer
 - `torch.compile=False` vì lợi ích không bù rủi ro với độ dài động trên máy
   hiện tại.
 - Đánh giá generation ở `batch_size=1` cho báo cáo cuối.
+- Chọn checkpoint bằng validation generation cùng `batch_size=1`; không dùng
+  metric sinh theo batch lớn rồi báo cáo theo batch 1.
 - Không ép cùng learning rate/dropout nếu validation cho thấy optimum khác;
   tính công bằng nằm ở dữ liệu, target, split, budget đánh giá và cách chấm.
