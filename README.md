@@ -62,7 +62,8 @@ SPARQL trực tiếp. Vì vậy một số code và dữ liệu cũ vẫn còn �
 - [x] Tạo và kiểm định ontology v11 từ `ontology_v10.ttl`.
 - [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
 - [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
-- [ ] Xây lại validation/benchmark rồi train hai model chính thức.
+- [x] Xây dataset và benchmark SPARQL v1 độc lập.
+- [ ] Train và chấm hai model chính thức với nhiều seed.
 
 Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến
 trúc SPARQL.

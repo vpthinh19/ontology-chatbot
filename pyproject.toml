@@ -31,6 +31,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
+benchmark_sparql = "ontchatbot.scripts.benchmark_sparql:main"
 migrate_ontology_v11 = "ontchatbot.scripts.migrate_ontology_v11:main"
 migrate_dataset_sparql_v1 = "ontchatbot.scripts.migrate_dataset_sparql_v1:main"
 prepare_vit5_tokenizer = "ontchatbot.scripts.prepare_vit5_tokenizer:main"

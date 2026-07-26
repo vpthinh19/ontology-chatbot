@@ -181,7 +181,7 @@ gán lại target:
 - không nhồi paraphrase để che một điểm yếu schema;
 - ưu tiên độ đúng target và độ đa dạng tình huống hơn tổng số dòng.
 
-## 11. Trạng thái release SPARQL v1
+## 11. Trạng thái release dataset SPARQL v1
 
 Bản chuyển đổi hiện tại có:
 
@@ -197,3 +197,34 @@ Toàn bộ 948 target parse và thực thi có kết quả trên ontology v11. C
 duy nhất round-trip chính xác trên BARTpho và ViT5, không có `<unk>`; độ dài
 target tối đa lần lượt là 91 và 123 token. Đây là dataset train/validation,
 không phải benchmark cuối.
+
+## 12. Benchmark SPARQL v1 đã đóng băng
+
+Benchmark cuối nằm riêng tại `resources/benchmarks/sparql_v1.jsonl` và có 164
+câu không trùng chính xác với dataset:
+
+| Query shape | Số câu |
+|---|---:|
+| direct | 78 |
+| graph_hop | 54 |
+| multi_column | 16 |
+| aggregate | 8 |
+| aggregate_filter | 8 |
+
+Bốn register có đúng 41 câu mỗi loại. 148 câu hỏi độc lập được giữ lại từ bộ
+benchmark cũ sau khi bỏ target QueryPlan và gán lại SPARQL v11; 36 câu hội
+thoại ngoài core bị loại. 16 câu `COUNT`/`FILTER` mới được biên soạn riêng,
+không lấy từ train/validation.
+
+Toàn bộ reference parse, thực thi có kết quả và self-check đạt 100%. Cả 80
+target duy nhất round-trip đúng trên hai tokenizer, không có `<unk>`. Manifest
+khóa số liệu và checksum tại `resources/benchmarks/sparql_v1_manifest.json`.
+
+Benchmark chỉ được mở để chấm checkpoint đã chọn bằng validation. Lệnh không
+có `--predictions` chỉ self-check evaluator bằng reference, không phải kết quả
+model:
+
+```bash
+uv run benchmark_sparql
+uv run benchmark_sparql --predictions artifacts/predictions.jsonl --output artifacts/benchmark.json
+```

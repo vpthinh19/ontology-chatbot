@@ -18,4 +18,7 @@ ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 DATASET_DIR = RESOURCES / "datasets"
 DATASET_PATH = DATASET_DIR / "sparql_v1.jsonl"
 
+BENCHMARK_DIR = RESOURCES / "benchmarks"
+BENCHMARK_PATH = BENCHMARK_DIR / "sparql_v1.jsonl"
+
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"

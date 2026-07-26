@@ -49,7 +49,7 @@ model học được tập audit nhỏ.
 
 ## Giai đoạn 4 — Chuyển dataset
 
-Trạng thái: **đã có release train/validation SPARQL v1; còn benchmark độc lập**.
+Trạng thái: **hoàn thành với dataset và benchmark SPARQL v1 tách biệt**.
 
 1. Kiểm kê khoảng 1.000 câu hỏi cũ theo semantic family.
 2. Lập mapping target cũ → nhu cầu thông tin mới để hỗ trợ review.
@@ -63,7 +63,7 @@ lượng 1.000 làm release gate.
 
 ## Giai đoạn 5 — Benchmark và train chính thức
 
-Trạng thái: **chưa thực hiện**.
+Trạng thái: **benchmark đã đóng băng; còn train chính thức nhiều seed**.
 
 1. Xây benchmark SPARQL độc lập, phủ direct data, graph hop, multi-column,
    multi-branch, filter và aggregate.
