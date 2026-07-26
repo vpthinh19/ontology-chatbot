@@ -64,10 +64,24 @@ nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/a
 - [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
 - [x] Xây dataset và benchmark SPARQL v1 độc lập.
 - [x] Train và chấm hai model chính thức với ba seed mỗi model.
+- [x] Convert checkpoint được chọn bằng validation và thay runtime/API cũ.
 
 Kết quả, chi phí và giới hạn được ghi tại
 [`docs/SPARQL_EXPERIMENT_V1.md`](docs/SPARQL_EXPERIMENT_V1.md). ViT5 đạt trung
 bình 78,05% answer exact, BARTpho đạt 75,00% trên benchmark SPARQL v1.
+
+## Chạy bản triển khai
+
+Runtime mặc định dùng artifact CTranslate2 ViT5 seed 42 trên CPU/int8:
+
+```bash
+uv sync --extra inference --dev
+uv run --extra inference serve_sparql \
+  --model-dir artifacts/sparql_deploy_v1/vit5_seed42
+```
+
+Quy trình convert, chấm lại quantization và Docker được ghi tại
+[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md). Model binary không nằm trong Git.
 
 Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến
 trúc SPARQL.

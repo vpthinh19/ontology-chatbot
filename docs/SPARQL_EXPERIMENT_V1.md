@@ -90,6 +90,9 @@ Trên máy thử nghiệm, ViT5 train nhanh hơn và dùng ít VRAM hơn, nhưng
 sinh query nhanh hơn khoảng 1,82 lần. Đây là số đo Transformers/PyTorch batch
 size 1, chưa phải kết quả CTranslate2.
 
+Artifact triển khai được chọn bằng validation và được chấm riêng sau convert;
+xem `DEPLOYMENT.md`. Không dùng bảng benchmark trên để chọn seed phát hành.
+
 ## Kết luận và giới hạn
 
 ViT5 là model ưu tiên cho chất lượng tổng thể; BARTpho là đối chứng mạnh và có

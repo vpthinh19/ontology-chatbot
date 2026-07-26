@@ -78,6 +78,19 @@ Báo cáo giao thức, kết quả và giới hạn nằm tại
 `docs/SPARQL_EXPERIMENT_V1.md`. ViT5 đạt trung bình 78,05% answer exact và
 BARTpho đạt 75,00% trên benchmark v1; cả hai đều phù hợp VRAM 6 GB.
 
+## Giai đoạn 6 — Artifact và runtime triển khai
+
+Trạng thái: **hoàn thành và đã smoke test đầu-cuối**.
+
+1. Chọn model/seed bằng validation, không chọn bằng benchmark.
+2. Convert checkpoint sang CTranslate2 và ghi manifest checksum.
+3. Chấm lại artifact quantized trên benchmark đóng băng.
+4. Nối runtime tối giản model → SPARQL → RDFLib → text.
+5. Thay API, Docker và web UI còn phụ thuộc kiến trúc cây cũ.
+
+ViT5 seed 42 là artifact mặc định. Hướng dẫn và acceptance metric nằm tại
+`docs/DEPLOYMENT.md`.
+
 ## Thứ tự dọn code cũ
 
 Trạng thái: **hoàn thành sau khi release SPARQL v1 được khóa**.
