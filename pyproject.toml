@@ -36,6 +36,7 @@ evaluate_sparql_model = "ontchatbot.scripts.evaluate_sparql_model:main"
 migrate_ontology_v11 = "ontchatbot.scripts.migrate_ontology_v11:main"
 migrate_dataset_sparql_v1 = "ontchatbot.scripts.migrate_dataset_sparql_v1:main"
 prepare_vit5_tokenizer = "ontchatbot.scripts.prepare_vit5_tokenizer:main"
+summarize_sparql_experiments = "ontchatbot.scripts.summarize_sparql_experiments:main"
 train_sparql = "ontchatbot.scripts.train_sparql:main"
 validate_sparql_dataset = "ontchatbot.scripts.validate_sparql_dataset:main"
 
