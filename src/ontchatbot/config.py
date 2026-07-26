@@ -15,4 +15,7 @@ ONTOLOGY_DIR = RESOURCES / "ontology"
 ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology_v11.ttl"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
+DATASET_DIR = RESOURCES / "datasets"
+DATASET_PATH = DATASET_DIR / "sparql_v1.jsonl"
+
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
