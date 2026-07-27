@@ -15,7 +15,7 @@ from .benchmark import (
 from ..settings import ARTIFACTS_DIR, DATASET_DIR
 from .dataset import load_release
 from .evaluation import evaluate_predictions
-from .reporting import build_dataset_report
+from .reporting import build_dataset_report, sha256_file
 from ..runtime.text import normalize_model_input
 from ..tools.tokenizer import (
     BARTPHO_MODEL_ID,
@@ -268,6 +268,7 @@ def train(args: argparse.Namespace) -> dict:
         "train_records": len(train_rows),
         "validation_records": len(validation_rows),
         "dataset_records": dataset_report["dataset"]["records"],
+        "dataset_manifest_sha256": sha256_file(args.dataset_dir / "manifest.json"),
         "batch_size": spec["batch_size"],
         "gradient_accumulation": spec["gradient_accumulation"],
         "dynamic_padding_multiple": 8,

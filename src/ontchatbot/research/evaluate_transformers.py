@@ -10,6 +10,8 @@ from pathlib import Path
 from .benchmark import evaluate_benchmark, load_benchmark, validate_benchmark
 from .dataset import load_release, validate_release
 from .evaluation import evaluate_predictions
+from .reporting import sha256_file
+from ..settings import DATASET_DIR
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import load_ontology
 from .training import (
@@ -143,6 +145,7 @@ def _artifact_evaluation(model: str, suite: str) -> dict[str, str]:
         "load_method": "from_pretrained",
         "model": model,
         "suite": suite,
+        "dataset_manifest_sha256": sha256_file(DATASET_DIR / "manifest.json"),
     }
 
 

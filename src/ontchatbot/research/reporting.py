@@ -133,6 +133,12 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
     """Read independently reloaded model artifacts and their training logs."""
 
     names = ("bartpho", "vit5", "t5gemma2")
+    release = load_release()
+    expected_records = {
+        "validation": len(release["val"]),
+        "benchmark": len(release["test"]),
+    }
+    dataset_manifest_sha256 = sha256_file(DATASET_DIR / "manifest.json")
     required_files = ("metrics.json", "validation_metrics.json", "benchmark_metrics.json")
     if not all(
         (models_dir / name / filename).is_file()
@@ -151,8 +157,22 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
         )
         test = json.loads((directory / "benchmark_metrics.json").read_text(encoding="utf-8"))
         if not (
-            _verified_artifact_evaluation(directory, name, validation, "validation")
-            and _verified_artifact_evaluation(directory, name, test, "benchmark")
+            _verified_artifact_evaluation(
+                directory,
+                name,
+                validation,
+                "validation",
+                expected_records["validation"],
+                dataset_manifest_sha256,
+            )
+            and _verified_artifact_evaluation(
+                directory,
+                name,
+                test,
+                "benchmark",
+                expected_records["benchmark"],
+                dataset_manifest_sha256,
+            )
         ):
             return None
         training = training_report["training"]
@@ -209,12 +229,15 @@ def _verified_artifact_evaluation(
     model: str,
     report: Mapping[str, Any],
     suite: str,
+    expected_records: int,
+    dataset_manifest_sha256: str,
 ) -> bool:
     expected = {
         "backend": "transformers",
         "load_method": "from_pretrained",
         "model": model,
         "suite": suite,
+        "dataset_manifest_sha256": dataset_manifest_sha256,
     }
     inference = report.get("inference", {})
     overall = report.get("overall", {})
@@ -222,6 +245,7 @@ def _verified_artifact_evaluation(
         (directory / "model" / "config.json").is_file()
         and report.get("artifact_evaluation") == expected
         and inference.get("records") == overall.get("count")
+        and overall.get("count") == expected_records
     )
 
 
@@ -250,7 +274,7 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
     )
     _write_metric_chart(
         figures / "model-comparison.svg",
-        "Chất lượng artifact trên validation và compositional test",
+        "Chất lượng artifact trên validation và in-domain test",
         {
             name: {
                 "validation answer exact": value["validation"]["answer_exact_rate"],

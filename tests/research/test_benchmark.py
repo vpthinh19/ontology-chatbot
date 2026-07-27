@@ -97,3 +97,17 @@ def test_benchmark_rejects_target_not_supported_by_train() -> None:
             load_ontology(),
             training_rows=release["train"],
         )
+
+
+def test_benchmark_rejects_mismatched_supported_query_and_target() -> None:
+    rows = load_benchmark()
+    release = load_release()
+    mismatched = {**rows[0], "target": rows[1]["target"]}
+    assert mismatched["query_id"] != rows[1]["query_id"]
+
+    with pytest.raises(BenchmarkError, match="query-target pairs absent from train"):
+        validate_benchmark(
+            [mismatched],
+            load_ontology(),
+            training_rows=release["train"],
+        )

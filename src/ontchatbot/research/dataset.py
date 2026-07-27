@@ -56,9 +56,33 @@ def build_in_domain_release(
 ) -> dict[str, list[dict[str, str]]]:
     """Build the deterministic in-domain train, validation, and test splits."""
 
+    if not rows:
+        raise DatasetError("cannot split an empty dataset")
+    accepted_fields = (
+        REQUIRED_FIELDS,
+        {"id", "family_id", "register", "input", "target"},
+    )
+    ids: set[str] = set()
     by_target: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
+        if set(row) not in accepted_fields:
+            raise DatasetError("splitter rows must use the family_id or query_id schema")
+        if not all(isinstance(value, str) and value for value in row.values()):
+            raise DatasetError("splitter fields must be non-empty strings")
+        if row["id"] in ids:
+            raise DatasetError(f"duplicate id: {row['id']}")
+        ids.add(row["id"])
+        if row["register"] not in ALLOWED_REGISTERS:
+            raise DatasetError(f"{row['id']}: invalid register {row['register']}")
         by_target[row["target"]].append(row)
+    undersized = sorted(
+        target for target, target_rows in by_target.items() if len(target_rows) < 4
+    )
+    if undersized:
+        raise DatasetError(
+            "each target needs at least four questions: "
+            f"{undersized[:3]}"
+        )
     targets = sorted(
         by_target,
         key=lambda target: min(row["id"] for row in by_target[target]),

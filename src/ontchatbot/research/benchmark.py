@@ -44,9 +44,14 @@ def validate_benchmark(
     }
     training_queries = {row["query_id"] for row in (training_rows or [])}
     training_targets = {row["target"] for row in (training_rows or [])}
+    training_pairs = {
+        (row["query_id"], row["target"])
+        for row in (training_rows or [])
+    }
     register_counts: Counter[str] = Counter()
     queries: set[str] = set()
     targets: set[str] = set()
+    query_target_pairs: set[tuple[str, str]] = set()
 
     for index, row in enumerate(rows, 1):
         record_id = str(row.get("id", f"line-{index}"))
@@ -84,6 +89,7 @@ def validate_benchmark(
         register_counts[register] += 1
         queries.add(row["query_id"])
         targets.add(target)
+        query_target_pairs.add((row["query_id"], target))
 
     missing_queries = sorted(queries - training_queries) if training_rows is not None else []
     if missing_queries:
@@ -91,6 +97,15 @@ def validate_benchmark(
     missing_targets = sorted(targets - training_targets) if training_rows is not None else []
     if missing_targets:
         raise BenchmarkError(f"targets absent from train: {missing_targets[:3]}")
+    missing_pairs = (
+        sorted(query_target_pairs - training_pairs)
+        if training_rows is not None
+        else []
+    )
+    if missing_pairs:
+        raise BenchmarkError(
+            f"query-target pairs absent from train: {missing_pairs[:3]}"
+        )
 
     return {
         "records": len(rows),
