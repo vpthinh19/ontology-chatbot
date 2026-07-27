@@ -117,6 +117,21 @@ SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?office . ?office rdfs
 SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?office . ?office :email ?answer . }
 ```
 
+### Phân biệt nơi nhận và nơi xử lý hồ sơ
+
+Khi hai vai trò khác nhau, ontology biểu diễn bằng hai đường nối riêng thay vì
+gán cả hai phòng vào một property:
+
+```text
+MajorChangeProcedure
+  --receivedBy--> StudentAffairsOffice
+  --handledBy----> UndergraduateEducationOffice
+```
+
+Nhờ đó, “nộp đơn chuyển ngành ở đâu?” dùng `receivedBy`, còn “đơn vị nào xử
+lý chuyển ngành?” dùng `handledBy`. Backend không phải suy đoán vai trò từ
+đoạn `content`.
+
 ### Biểu mẫu và đường dẫn
 
 ```sparql
@@ -147,8 +162,9 @@ Quy tắc mô hình hóa:
 - Xóa lớp/individual trung gian `Condition`, `Outcome` và object property
   `hasCondition`, `hasOutcome`.
 - Chuyển label của chúng thành literal lặp qua `condition` và `outcome`.
-- Giữ object property có ý nghĩa nối dữ liệu như `handledBy`, `hasDocument`,
-  `basedOnRegulation`, `supportsPaymentMethod`, `appliesTuitionRate`.
+- Giữ object property có ý nghĩa nối dữ liệu như `receivedBy`, `handledBy`,
+  `hasDocument`, `basedOnRegulation`, `supportsPaymentMethod`,
+  `appliesTuitionRate`.
 
 Việc làm phẳng Condition/Outcome không làm phẳng toàn ontology. Phòng ban,
 biểu mẫu, quy định, phương thức thanh toán và định mức học phí vẫn là node khi
@@ -167,7 +183,7 @@ list[dict[str, str | int | float | bool | None]]
 Ví dụ:
 
 ```python
-[{"answer": "Phòng Công tác Sinh viên"}]
+[{"answer": "Phòng Công tác Chính trị và Sinh viên"}]
 ```
 
 hoặc:

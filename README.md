@@ -61,7 +61,7 @@ nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/a
 - [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
 - [x] Kiểm chứng BARTpho và ViT5 có thể học SPARQL ở phép thử nhỏ.
 - [x] Xác định bản vá tokenizer ViT5 không đổi kích thước vocabulary.
-- [x] Tạo và kiểm định ontology v11 từ `ontology_v10.ttl`.
+- [x] Tạo và kiểm định ontology v11; phát hành v12 sau review ngữ nghĩa Stage B.
 - [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
 - [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
 - [x] Xây dataset và benchmark SPARQL v1 độc lập.

@@ -57,4 +57,4 @@ def test_chatbot_connects_generated_query_to_ontology() -> None:
 
     reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
 
-    assert "Phòng Công tác Sinh viên" in reply
+    assert "Phòng Công tác Chính trị và Sinh viên" in reply

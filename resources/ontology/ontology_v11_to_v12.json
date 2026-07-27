@@ -1,0 +1,24 @@
+{
+  "source": "ontology_v11.ttl",
+  "target": "ontology_v12.ttl",
+  "source_triples": 410,
+  "target_triples": 423,
+  "decisions": [
+    {
+      "issue": "graduation-conditions",
+      "resolution": "Complete the structured condition list and combine the criminal and disciplinary constraints."
+    },
+    {
+      "issue": "scholarship-conditions",
+      "resolution": "Add the disciplinary constraint to the structured condition list."
+    },
+    {
+      "issue": "scholarship-outcome",
+      "resolution": "State that eligibility enters ranking and does not guarantee an award."
+    },
+    {
+      "issue": "major-change-office-roles",
+      "resolution": "Student Affairs receives the dossier; Undergraduate Education processes it."
+    }
+  ]
+}

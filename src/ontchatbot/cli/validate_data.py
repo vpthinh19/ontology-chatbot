@@ -1,4 +1,4 @@
-"""Validate the released SPARQL dataset against ontology v11."""
+"""Validate a SPARQL dataset against the canonical ontology."""
 
 from __future__ import annotations
 

@@ -41,7 +41,7 @@ def test_object_hop_projects_label(graph) -> None:
         "?office rdfs:label ?answer . }",
     )
 
-    assert rows == [{"answer": "Phòng Công tác Sinh viên"}]
+    assert rows == [{"answer": "Phòng Công tác Chính trị và Sinh viên"}]
 
 
 def test_object_hop_projects_datatype(graph) -> None:
@@ -122,7 +122,7 @@ def test_accepts_multiline_select(graph) -> None:
         }""",
     )
 
-    assert rows == [{"answer": "Phòng Công tác Sinh viên"}]
+    assert rows == [{"answer": "Phòng Công tác Chính trị và Sinh viên"}]
 
 
 def test_result_values_never_expose_uris(graph) -> None:

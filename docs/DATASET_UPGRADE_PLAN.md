@@ -28,7 +28,8 @@ cách chắc chắn phải bị loại; family chỉ được bổ sung khi cove
 
 ## 2. Những contract không được thay đổi trong giai đoạn này
 
-- Ontology canonical là `resources/ontology/ontology_v11.ttl`.
+- Ontology canonical là `resources/ontology/ontology_v12.ttl`. V11 được giữ
+  nguyên để tái lập audit Stage A–B.
 - Model sinh trực tiếp một câu `SELECT` SPARQL canonical trên một dòng.
 - Backend không có QueryPlan, fuzzy matching, traversal riêng hoặc DTO theo
   schema ontology.
@@ -101,7 +102,8 @@ Trạng thái: **hoàn thành** tại `reports/dataset_audit_v1/`.
 
 Chỉ đọc v1, chưa sửa câu hỏi.
 
-1. Xác minh checksum v1 và ontology v11.
+1. Xác minh checksum v1 và ontology v11 dùng trong audit lịch sử; các bản sửa
+   v2 được thực thi lại trên ontology v12 canonical.
 2. Sinh bảng thống kê theo split, family, register, query shape, target, IRI,
    property, độ dài source/target và kích thước family.
 3. Liệt kê exact duplicate sau normalizer trên toàn release.
@@ -125,8 +127,8 @@ và không quyết định thay con người.
 
 Trạng thái: **hoàn thành lượt review**. Đủ 401 family đã có quyết định; 49
 family `fix`, 5 `merge`, 1 `split` phải được áp dụng và kiểm tra lại trước khi
-biên tập ngôn ngữ Stage C. Bốn mâu thuẫn ontology đang được ghi rõ trong
-`reports/dataset_review_v2/report.md`; baseline v1 chưa bị sửa.
+biên tập ngôn ngữ Stage C. Bốn mâu thuẫn được phát hiện trong báo cáo Stage B
+đã được giải quyết ở ontology v12; baseline v1 chưa bị sửa.
 
 Thứ tự review của mỗi family:
 
@@ -310,7 +312,7 @@ Dataset v2 chỉ hoàn thành khi:
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
 Áp dụng các quyết định semantic của **Giai đoạn B** vào draft v2 theo thứ tự:
-giải quyết bốn mâu thuẫn ontology, sửa target, merge/split family rồi chạy lại
+chuyển target sang ontology v12, sửa target, merge/split family rồi chạy lại
 bằng chứng thực thi. Chỉ những family đã có target đúng mới được chuyển sang
 review ngôn ngữ ở Giai đoạn C. Không tạo coverage mới hoặc train model trong
 bước chuyển tiếp này.

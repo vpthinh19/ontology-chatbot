@@ -5,7 +5,7 @@ Không mở rộng code QueryPlan trong thời gian chuyển đổi.
 
 ## Giai đoạn 1 — Ontology mới
 
-Trạng thái: **hoàn thành với ontology v11**.
+Trạng thái: **hoàn thành; ontology canonical hiện tại là v12**.
 
 1. Tạo phiên bản ontology mới từ `ontology_v10.ttl`.
 2. Giữ `content` và toàn bộ dữ liệu có giá trị.
@@ -116,6 +116,7 @@ giữ làm baseline; mọi audit, review family, bổ sung coverage, chia test m
 nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
 `docs/DATASET_UPGRADE_PLAN.md`.
 
-Lượt triển khai kế tiếp áp dụng các quyết định `fix/merge/split` từ
-`reports/dataset_review_v2/`, xác minh lại target rồi mới bắt đầu Stage C. Không
-sinh coverage hoặc train trước khi draft semantic đạt.
+Ontology v12 đã giải quyết bốn mâu thuẫn được phát hiện ở Stage B. Lượt triển
+khai kế tiếp áp dụng các quyết định `fix/merge/split` từ
+`reports/dataset_review_v2/`, chuyển target sang v12 và xác minh lại rồi mới bắt
+đầu Stage C. Không sinh coverage hoặc train trước khi draft semantic đạt.

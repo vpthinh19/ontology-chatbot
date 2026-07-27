@@ -12,7 +12,7 @@ _RESOURCES_PKG = PKG_ROOT / "resources"
 RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 ONTOLOGY_DIR = RESOURCES / "ontology"
-ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology_v11.ttl"
+ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology_v12.ttl"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 DATASETS_DIR = RESOURCES / "datasets"
