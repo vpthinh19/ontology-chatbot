@@ -184,6 +184,7 @@ def train(args: argparse.Namespace) -> dict:
         greater_is_better=True,
         logging_strategy="steps",
         logging_steps=50 if args.learning_audit else (1 if args.smoke_test else 50),
+        disable_tqdm=True,
         report_to="none",
         seed=args.seed,
         data_seed=args.seed,

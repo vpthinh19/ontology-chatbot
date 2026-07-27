@@ -1,8 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A–F đã hoàn thành; release v2 đã đóng băng và trở thành
-dataset mặc định; dataset v1 không bị sửa**. Kết quả Stage F nằm tại
-`reports/dataset_review_v2/stage_f_report.md`.
+Trạng thái: **Giai đoạn A–G đã hoàn thành; release v2 đã đóng băng, được nghiệm
+thu bằng hai model và trở thành dataset mặc định; dataset v1 không bị sửa**.
+Kết quả cuối nằm tại `reports/dataset_review_v2/stage_g_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -237,6 +237,12 @@ Sau khi đóng băng, sửa lỗi dữ liệu bằng release mới; không âm t
 
 ### Giai đoạn G — Nghiệm thu bằng model
 
+Trạng thái: **hoàn thành**. Protocol được khóa trước khi mở test. BARTpho và
+ViT5 đều đạt 100% trên learning audit nhỏ. Sáu lượt chính thức (2 model × 3
+seed) cho test answer exact trung bình lần lượt 65,95% và 61,19%; parse đều
+trên 99%. Phân tích chi tiết chỉ ra compositional holdout, `noisy`, `aggregate`
+và `multi_column` là các giới hạn chính của v2.
+
 1. Chạy tokenizer audit trên toàn bộ unique target.
 2. Chạy learning audit nhỏ, phủ đủ năm query shape và các kiểu projection.
 3. Cả BARTpho và ViT5 phải học gần hoàn toàn audit nhỏ trước khi train lớn.
@@ -340,9 +346,9 @@ Dataset v2 chỉ hoàn thành khi:
 7. test code đạt, Git diff sạch ngoài thay đổi người dùng đã biết;
 8. kết quả chính thức được báo cáo với nhiều seed và giới hạn nghiên cứu.
 
-## 10. Điểm bắt đầu của lượt triển khai kế tiếp
+## 10. Sau Stage G
 
-Bắt đầu **Giai đoạn G** bằng learning audit nhỏ trên train/validation v2 cho
-BARTpho và ViT5. Chưa chấm test v2 khi đang kiểm tra khả năng học hoặc chọn cấu
-hình. Chỉ sau khi cấu hình/checkpoint đã khóa mới train nhiều seed và mở test
-một lần cho báo cáo cuối.
+Không sửa trực tiếp v2 từ lỗi test. Nếu tiếp tục nâng chất lượng, tạo release
+v3 và một test mới; ưu tiên tăng biến thể target có thể ghép thành cấu trúc
+mới, câu `noisy` có nghĩa rõ, `aggregate` và `multi_column`. V2 tiếp tục là
+baseline đã khóa để so sánh công bằng.

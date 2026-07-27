@@ -92,9 +92,10 @@ thì bắt đầu từ `research/dataset.py` và `research/evaluation.py`.
 Dataset v1 nằm trọn trong `resources/datasets/sparql_v1/`, gồm `train.jsonl`,
 `val.jsonl`, `test.jsonl`, manifest và README của baseline lịch sử.
 
-Dataset v2 đã hoàn tất review nội dung và được Stage F đóng băng với 936 câu
-trong 234 semantic family. Đây là dataset mặc định cho các lượt train và
-benchmark tiếp theo; test v2 chưa được dùng để tuning model.
+Dataset v2 đã hoàn tất review, đóng băng và nghiệm thu với 936 câu trong 234
+semantic family. Trên test độc lập 140 câu, BARTpho đạt answer exact trung bình
+65,95% và ViT5 đạt 61,19% qua ba seed; parse đều trên 99%. Đây là dataset mặc
+định và v2 không được sửa dựa trên lỗi test—cải tiến tiếp theo phải là release mới.
 
 ## Chạy bản triển khai
 

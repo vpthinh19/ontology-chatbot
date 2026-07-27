@@ -1,0 +1,106 @@
+{
+  "stage": "G",
+  "status": "complete_test_evaluated_once",
+  "dataset": {
+    "path": "resources/datasets/sparql_v2",
+    "manifest_sha256": "a7536a3c776debe96427ebbad88885b2668df410c8b312c93f9a392f0db03a1f",
+    "train_records": 656,
+    "validation_records": 140,
+    "test_records": 140
+  },
+  "ontology": {
+    "path": "resources/ontology/ontology_v12.ttl",
+    "sha256": "08bc26b5f6a0e5f7f1c09579dfa22b0615fefb524249e6a80eee6bc00fbe11cf"
+  },
+  "models": [
+    "bartpho",
+    "vit5"
+  ],
+  "seeds": [
+    7,
+    21,
+    42
+  ],
+  "training": {
+    "epochs": 40,
+    "evaluation_every_epochs": 5,
+    "learning_rate": 3e-05,
+    "optimizer": "adamw_8bit",
+    "effective_batch_size": 8,
+    "dynamic_padding_multiple": 8,
+    "bf16": true,
+    "tf32": true,
+    "torch_compile": false,
+    "generation": "greedy",
+    "source_max_tokens": 128,
+    "target_max_tokens": 160
+  },
+  "checkpoint_selection": {
+    "split": "validation",
+    "metric": "answer_exact_rate",
+    "greater_is_better": true,
+    "test_is_forbidden_during_selection": true
+  },
+  "frozen_checkpoints": [
+    {
+      "model": "bartpho",
+      "seed": 7,
+      "best_epoch": 15,
+      "validation_answer_exact_rate": 0.6571428571428571,
+      "model_sha256": "99c1fc7f93f5691c53962139b96ab5e9ee90d6004b45f5b2812e8c40531b7935"
+    },
+    {
+      "model": "bartpho",
+      "seed": 21,
+      "best_epoch": 25,
+      "validation_answer_exact_rate": 0.6928571428571428,
+      "model_sha256": "ab301bc1111100fd7d512e4a73e529da32d2d80d1528d3d0375644eaa00f0345"
+    },
+    {
+      "model": "bartpho",
+      "seed": 42,
+      "best_epoch": 10,
+      "validation_answer_exact_rate": 0.6428571428571429,
+      "model_sha256": "05d71493a3aa94808df5f812aa8b3bf3fdaf294c27ae9be498c8c08eb9f0320e"
+    },
+    {
+      "model": "vit5",
+      "seed": 7,
+      "best_epoch": 35,
+      "validation_answer_exact_rate": 0.7071428571428572,
+      "model_sha256": "49ce2ab07c12be9958a3d58810e5996774ec4b181abf470c9809a812993a3123"
+    },
+    {
+      "model": "vit5",
+      "seed": 21,
+      "best_epoch": 40,
+      "validation_answer_exact_rate": 0.7142857142857143,
+      "model_sha256": "a49753d1d3cbac6555c6448f12a09f094099da9f8dd6f108f28468735a12297a"
+    },
+    {
+      "model": "vit5",
+      "seed": 42,
+      "best_epoch": 40,
+      "validation_answer_exact_rate": 0.6857142857142857,
+      "model_sha256": "a62a4d8e97f7ce059ebd9b57b69859f7ada4e987aa1b0ba0321aaaedd36550f1"
+    }
+  ],
+  "test_policy": {
+    "open_after_all_checkpoints_are_frozen": true,
+    "evaluate_each_model_seed_once": true,
+    "do_not_tune_after_test": true
+  },
+  "environment": {
+    "fedora": "44",
+    "kernel": "7.1.4-204.fc44.x86_64",
+    "python": "3.12.13",
+    "uv": "0.11.32",
+    "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "vram_mib": 6141,
+    "driver": "610.43.03",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1"
+  },
+  "git_base": "72b3b1c7b8b378271779259388c71b3bf568a310",
+  "stage_g_audit": "reports/dataset_review_v2/stage_g_audit.json"
+}

@@ -24,6 +24,9 @@ này là lịch sử làm việc có thể tái lập; `train.jsonl`, `val.jsonl
 - Dataset v2 là dataset mặc định của trainer, validator và benchmark. V1 vẫn
   được giữ nguyên làm baseline lịch sử.
 - Không dùng test v2 để sửa dữ liệu, chọn model/checkpoint hoặc tuning.
+- Stage G đã khóa cấu hình rồi train BARTpho/ViT5 với ba seed. Test answer exact
+  trung bình là 65,95%/61,19%, trong khi parse đều trên 99%. V2 đủ làm baseline
+  nhưng còn yếu ở target compositional mới, câu noisy, aggregate và multi-column.
 
 Sinh lại toàn bộ artifact Stage B–F bằng:
 
@@ -33,7 +36,9 @@ python -m ontchatbot.cli.apply_stage_c
 python -m ontchatbot.cli.apply_stage_d
 python -m ontchatbot.cli.apply_stage_e
 python -m ontchatbot.cli.apply_stage_f
+python -m ontchatbot.cli.apply_stage_g
 ```
 
 Lệnh Stage F cần extra huấn luyện và hai tokenizer local đã chuẩn bị. Sau khi
-đóng băng, không sửa trực tiếp ba split; lỗi dữ liệu phải tạo release mới.
+đóng băng, không sửa trực tiếp ba split; lỗi dữ liệu phải tạo release mới. Lệnh
+Stage G tổng hợp các report thí nghiệm đã sinh, không tự train lại model.
