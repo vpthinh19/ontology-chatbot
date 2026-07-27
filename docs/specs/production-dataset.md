@@ -59,10 +59,11 @@ Ba split cùng phủ một danh mục target nhưng dùng các câu hỏi khác 
 - **Test** đo chất lượng cuối bằng cách diễn đạt chưa xuất hiện trong train và
   validation.
 
-Với mỗi `query_id` phải có tối thiểu hai câu train, một câu validation và một
-câu test. Khi một query có nhiều câu hơn, phần dư được ưu tiên cho train theo
-tỷ lệ gần 60/20/20. Việc phân bổ register được xoay vòng giữa các query để mỗi
-split có phân bố formal, neutral, colloquial và noisy cân bằng trên toàn tập;
+Với mỗi `query_id` có đúng một câu validation, một câu test và toàn bộ câu còn
+lại thuộc train. Với 1.416 câu hiện có, cách chia này tạo 986 câu train, 215 câu
+validation và 215 câu test; mỗi query có ít nhất hai câu train. Việc phân bổ
+register được xoay vòng giữa các query để mỗi split có phân bố formal, neutral,
+colloquial và noisy cân bằng trên toàn tập;
 không cố định toàn bộ câu noisy vào test. Trong mỗi split, chênh lệch số câu
 giữa register nhiều nhất và ít nhất không vượt quá một.
 
