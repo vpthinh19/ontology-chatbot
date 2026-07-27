@@ -1,0 +1,55 @@
+{
+  "schema": {
+    "format": "jsonl",
+    "fields": [
+      "id",
+      "family_id",
+      "register",
+      "query_shape",
+      "input",
+      "target"
+    ],
+    "input": "Vietnamese natural-language question",
+    "target": "one-line canonical SPARQL SELECT without PREFIX declarations"
+  },
+  "files": {
+    "train": {
+      "path": "train.jsonl",
+      "records": 880,
+      "families": 220,
+      "targets": 123,
+      "sha256": "828c28674f9436fabaae470df147fc892813a55b83815567f2e7fd745e6425e6"
+    },
+    "val": {
+      "path": "val.jsonl",
+      "records": 140,
+      "families": 35,
+      "targets": 35,
+      "sha256": "aef79b7bae9758e2c4b25fb21ea020a4768a8483058ba24b8b22e83c3a8a47d0"
+    },
+    "test": {
+      "path": "test.jsonl",
+      "records": 156,
+      "families": 39,
+      "targets": 39,
+      "sha256": "6cf17d865a9281b5c5a4e2e2a9bd266f5849392dae5215bec29770e52168d079"
+    }
+  },
+  "totals": {
+    "records": 1176,
+    "families": 294,
+    "targets": 162
+  },
+  "split_contract": {
+    "train": "model fitting",
+    "val": "unseen paraphrase families whose exact targets occur in train",
+    "test": "held-out semantic targets composed only from schema terms present in train",
+    "family_leakage": false,
+    "normalized_question_leakage": false
+  },
+  "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
+  "ontology": {
+    "path": "../ontology/ontology.ttl",
+    "sha256": "0af6d4f50ae1e8919d7cc6e4eb16a27897da33cb8a3175d3c4e2f292f278a987"
+  }
+}

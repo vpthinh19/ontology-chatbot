@@ -1,4 +1,4 @@
-"""Reproducible tokenizer contract for BARTpho and ViT5."""
+"""Reproducible tokenizer contract for the supported seq2seq models."""
 
 from __future__ import annotations
 
@@ -14,6 +14,8 @@ BARTPHO_MODEL_ID = "vinai/bartpho-syllable"
 BARTPHO_REVISION = "36eee8b4d648dd99da56462edcda3c5c97f7f3de"
 VIT5_MODEL_ID = "VietAI/vit5-base"
 VIT5_REVISION = "2209a38d735ede63e88f5aa52bcdc11a05a37b85"
+T5GEMMA_MODEL_ID = "google/t5gemma-2-270m-270m"
+T5GEMMA_REVISION = "7c38f16641f455ef0685b18431faf1b17722d5a1"
 VIT5_VOCAB_SIZE = 36096
 VIT5_SENTINEL_MAPPING = {
     "<extra_id_0>": ("{", 36095),

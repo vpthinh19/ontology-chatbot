@@ -48,6 +48,16 @@ def test_equivalent_query_keeps_answer_metric_but_not_canonical_exact() -> None:
     assert report["overall"]["canonical_query_exact_rate"] == 0.0
 
 
+def test_answer_metric_ignores_variable_names() -> None:
+    target = "SELECT ?answer WHERE { :StudentAffairsOffice :email ?answer . }"
+    equivalent = "SELECT ?email WHERE { :StudentAffairsOffice :email ?email . }"
+
+    report = evaluate_predictions([_example(target)], [equivalent], load_ontology())
+
+    assert report["overall"]["answer_exact_rate"] == 1.0
+    assert report["overall"]["canonical_query_exact_rate"] == 0.0
+
+
 def test_invalid_prediction_is_counted_without_crashing() -> None:
     target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
     report = evaluate_predictions(

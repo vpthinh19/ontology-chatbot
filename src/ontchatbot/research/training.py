@@ -20,6 +20,8 @@ from ..tools.tokenizer import (
     BARTPHO_MODEL_ID,
     BARTPHO_REVISION,
     DEFAULT_VIT5_TOKENIZER_DIR,
+    T5GEMMA_MODEL_ID,
+    T5GEMMA_REVISION,
     VIT5_MODEL_ID,
     VIT5_REVISION,
     audit_target_roundtrip,
@@ -43,8 +45,8 @@ MODEL_SPECS = {
         "attention": "eager",
     },
     "t5gemma2": {
-        "model_id": "google/t5gemma-2-270m-270m",
-        "revision": "7c38f16641f455ef0685b18431faf1b17722d5a1",
+        "model_id": T5GEMMA_MODEL_ID,
+        "revision": T5GEMMA_REVISION,
         "batch_size": 8,
         "gradient_accumulation": 1,
         "eval_batch_size": 4,
@@ -109,10 +111,7 @@ def train(args: argparse.Namespace) -> dict:
 
     train_rows = release["train"]
     validation_rows = release["val"]
-    if args.learning_audit:
-        train_rows = _learning_audit_subset(train_rows, 16)
-        validation_rows = list(train_rows)
-    elif args.smoke_test:
+    if args.smoke_test:
         train_rows = _smoke_subset(train_rows, 16)
         validation_rows = _smoke_subset(validation_rows, 8)
 
@@ -137,10 +136,8 @@ def train(args: argparse.Namespace) -> dict:
         len(train_rows) / (spec["batch_size"] * spec["gradient_accumulation"])
     )
     eval_steps = max(1, round(steps_per_epoch * args.eval_every_epochs))
-    short_run = args.smoke_test or args.learning_audit
-    output_dir = Path(args.output_dir) / (
-        args.model if short_run else f"{args.model}/seed-{args.seed}"
-    )
+    short_run = args.smoke_test
+    output_dir = Path(args.output_dir) / args.model
     output_dir.mkdir(parents=True, exist_ok=True)
 
     def compute_metrics(prediction) -> dict[str, float]:
@@ -187,7 +184,7 @@ def train(args: argparse.Namespace) -> dict:
         metric_for_best_model="answer_exact_rate",
         greater_is_better=True,
         logging_strategy="steps",
-        logging_steps=50 if args.learning_audit else (1 if args.smoke_test else 50),
+        logging_steps=1 if args.smoke_test else 50,
         disable_tqdm=True,
         report_to="none",
         seed=args.seed,
@@ -245,7 +242,6 @@ def train(args: argparse.Namespace) -> dict:
         "peak_vram_reserved_bytes": torch.cuda.max_memory_reserved() if torch.cuda.is_available() else None,
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "smoke_test": args.smoke_test,
-        "learning_audit": args.learning_audit,
         "torch_version": torch.__version__,
         "transformers_version": transformers.__version__,
         "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
@@ -406,42 +402,6 @@ def _smoke_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]
     return selected
 
 
-def _learning_audit_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]]:
-    """Select distinct targets with direct, graph, multi-column and aggregate shapes."""
-
-    priorities = (
-        lambda target: "COUNT" in target and "FILTER" in target,
-        lambda target: "COUNT" in target,
-        lambda target: target.startswith("SELECT ?content ?condition ?document"),
-        lambda target: target.startswith("SELECT ?condition ?document ?office"),
-        lambda target: target.startswith("SELECT ?document ?url"),
-        lambda target: ":handledBy" in target and ":email" in target,
-        lambda target: ":handledBy" in target and "rdfs:label" in target,
-        lambda target: ":condition ?answer" in target,
-        lambda target: ":outcome ?answer" in target,
-        lambda target: ":content ?answer" in target,
-    )
-    by_target = {}
-    for row in rows:
-        by_target.setdefault(row["target"], row)
-
-    selected = []
-    seen = set()
-    for predicate in priorities:
-        for target, row in by_target.items():
-            if target not in seen and predicate(target):
-                selected.append(row)
-                seen.add(target)
-                break
-    for target, row in sorted(by_target.items(), key=lambda item: len(item[0]), reverse=True):
-        if len(selected) == limit:
-            break
-        if target not in seen:
-            selected.append(row)
-            seen.add(target)
-    return selected
-
-
 def _disable_dropout(model, torch) -> None:
     for module in model.modules():
         if isinstance(module, torch.nn.Dropout):
@@ -466,18 +426,13 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--keep-dropout", action="store_true")
     parser.add_argument("--smoke-test", action="store_true")
-    parser.add_argument("--learning-audit", action="store_true")
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
     args = parser.parse_args()
-    if args.smoke_test and args.learning_audit:
-        parser.error("--smoke-test and --learning-audit are mutually exclusive")
-    if args.learning_audit and args.max_steps < 1:
-        parser.error("--learning-audit requires a positive --max-steps")
     if args.benchmark_after_training and not args.save_model:
         parser.error("--benchmark-after-training requires --save-model")
-    if args.benchmark_after_training and (args.smoke_test or args.learning_audit):
+    if args.benchmark_after_training and args.smoke_test:
         parser.error("benchmark is only available after a full training run")
     return args
 

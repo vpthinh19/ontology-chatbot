@@ -1,115 +1,95 @@
 # NTU Ontology Chatbot
 
-Chatbot tiếng Việt tra cứu thông tin học vụ trong ontology RDF. Hướng kiến
-trúc đã chốt của project là:
+Chatbot tiếng Việt trả lời câu hỏi học vụ bằng cách sinh trực tiếp truy vấn
+SPARQL và thực thi truy vấn trên ontology RDF.
 
-```text
-câu hỏi tiếng Việt
-  → chuẩn hoá nhẹ
-  → BARTpho hoặc ViT5
-  → SPARQL SELECT
-  → RDFLib thực thi trên ontology
-  → label/literal trả cho người dùng
+```mermaid
+flowchart LR
+    Q["Câu hỏi tiếng Việt"] --> N["Chuẩn hoá nhẹ"]
+    N --> M["Model seq2seq"]
+    M --> S["SPARQL SELECT"]
+    S --> V["Kiểm tra an toàn"]
+    V --> O["Ontology RDF"]
+    O --> A["Câu trả lời"]
 ```
 
-Model sinh trực tiếp SPARQL và được phép biết schema cùng canonical IRI của
-ontology. Backend không có QueryPlan, cây vàng, fuzzy matching, thuật toán
-traversal riêng hay lớp DTO kết quả theo kiến trúc cũ.
+Model chịu trách nhiệm hiểu câu hỏi và tạo query. RDFLib chịu trách nhiệm truy
+vấn dữ liệu. Backend không có cây traversal, QueryPlan, fuzzy matching hay DTO
+gắn với schema để sửa đoán kết quả của model.
 
-## Nguồn sự thật
+## Dữ liệu nghiên cứu
 
-Đọc tài liệu theo thứ tự sau:
+Dataset có 1.176 câu hỏi thuộc 294 họ ngữ nghĩa. Mỗi họ gồm bốn cách diễn đạt:
+trang trọng, trung tính, khẩu ngữ và câu nhiễu/viết tắt.
 
-1. [`docs/PROJECT_SPEC.md`](docs/PROJECT_SPEC.md): quyết định đã chốt, phạm vi
-   và các bất biến của kiến trúc.
-2. [`docs/CONCEPT.md`](docs/CONCEPT.md): hình dạng khái niệm và luồng dữ liệu.
-3. [`docs/DATASET_BENCHMARK_SPEC.md`](docs/DATASET_BENCHMARK_SPEC.md): cách tái
-   sử dụng dữ liệu cũ, gán target SPARQL và đánh giá ba model.
-4. [`docs/MODEL_TOKENIZER_SPEC.md`](docs/MODEL_TOKENIZER_SPEC.md): contract
-   tokenizer có thể tái lập cho BARTpho, ViT5 và T5Gemma2.
-5. [`docs/DATASET_UPGRADE_PLAN.md`](docs/DATASET_UPGRADE_PLAN.md): checklist
-   nâng cấp chất lượng dataset v2, cổng review và nghiệm thu.
-6. [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md): thứ tự thi
-   công và điều kiện hoàn thành từng giai đoạn.
+| Tập | Câu hỏi | Họ ngữ nghĩa | Target SPARQL |
+|---|---:|---:|---:|
+| Train | 880 | 220 | 123 |
+| Validation | 140 | 35 | 35 |
+| Test | 156 | 39 | 39 |
 
-Nếu code, artifact hoặc tài liệu lịch sử mâu thuẫn với
-`docs/PROJECT_SPEC.md`, đặc tả project được ưu tiên. Các quyết định mới phải
-được cập nhật vào file đó trước khi triển khai rộng.
+Test chỉ dùng các thành phần ontology đã có trong train nhưng ghép chúng thành
+39 target chưa từng xuất hiện trong train. Mọi target đều được parse và chạy
+trực tiếp trên ontology trước khi dùng để huấn luyện hoặc đánh giá.
 
-## Các quyết định chính
+![Phân bố split](reports/figures/dataset-splits.svg)
 
-- Ontology canonical dùng Turtle, RDFLib và OWL-RL khi thực sự cần suy luận.
-- `content` được giữ để trả lời câu hỏi yêu cầu hướng dẫn tổng quát.
-- `Condition` và `Outcome` sẽ được làm phẳng thành datatype property lặp
-  `condition` và `outcome`.
-- Object property chỉ là đường nối. Kết quả cuối là `rdfs:label`, datatype
-  literal hoặc giá trị tổng hợp SPARQL.
-- Output model là một câu `SELECT` SPARQL canonical trên một dòng; backend tự
-  thêm prefix cố định.
-- Hai model nghiên cứu là `vinai/bartpho-syllable` và `VietAI/vit5-base`.
-- Dynamic padding, BF16/TF32 và `torch.compile=False` trên RTX 4050 6 GB.
-- Không dùng cơ sở dữ liệu phẳng làm baseline chính.
-- Khoảng 1.000 câu hỏi cũ được tái sử dụng sau review; target QueryPlan cũ phải
-  được gán lại thành SPARQL theo ontology mới.
+Chi tiết dữ liệu nằm tại [docs/DATASET.md](docs/DATASET.md), số liệu máy đọc tại
+[reports/dataset.json](reports/dataset.json).
 
-## Trạng thái triển khai
+## Mô hình
 
-Phần ontology, runtime SPARQL, tokenizer, dataset và benchmark đã chuyển xong
-sang kiến trúc mới. Code cây/traversal và baseline phẳng đã được loại khỏi cây
-nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/archive/`.
+Ba encoder-decoder được fine-tune và so sánh trên cùng dữ liệu, cách giải mã
+greedy và tiêu chí đánh giá:
 
-- [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
-- [x] Kiểm chứng BARTpho, ViT5 và T5Gemma2 có thể học SPARQL.
-- [x] Xác định bản vá tokenizer ViT5 không đổi kích thước vocabulary.
-- [x] Tạo và kiểm định ontology v11; phát hành v12 sau review ngữ nghĩa Stage B.
-- [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
-- [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
-- [x] Xây dataset và benchmark SPARQL v1 độc lập.
-- [x] Train và chấm ba model chính thức với seed 42.
-- [x] Convert checkpoint được chọn bằng validation và thay runtime/API cũ.
+- `vinai/bartpho-syllable`
+- `VietAI/vit5-base`
+- `google/t5gemma-2-270m-270m`
 
-Kết quả, chi phí và giới hạn được ghi tại
-[`docs/SPARQL_EXPERIMENT_V1.md`](docs/SPARQL_EXPERIMENT_V1.md). ViT5 đạt trung
-bình 78,05% answer exact, BARTpho đạt 75,00% trên benchmark SPARQL v1.
+Checkpoint được chọn bằng độ chính xác câu trả lời trên validation. Test chỉ
+được dùng một lần cho báo cáo cuối. Các metric phân biệt rõ query có parse
+được, chạy được, trả đúng dữ liệu hay trùng hoàn toàn chuỗi target.
 
-## Bản đồ source code
-
-Code được chia theo vai trò thay vì đặt phẳng trong một thư mục:
+## Cấu trúc project
 
 ```text
+resources/
+├── ontology/ontology.ttl       # nguồn dữ liệu RDF duy nhất
+└── dataset/                    # train.jsonl, val.jsonl, test.jsonl, manifest
 src/ontchatbot/
-├── settings.py          # đường dẫn và hằng số dùng chung
-├── runtime/             # pipeline chạy thật: model → SPARQL → câu trả lời/API
-├── research/            # dataset, train, evaluation và báo cáo thí nghiệm
-├── tools/               # chuẩn bị tokenizer, convert model, migrate ontology
-└── cli/                 # các entry point của lệnh trong pyproject.toml
+├── runtime/                    # model → validator → RDFLib → renderer/API
+├── research/                   # dataset, train, evaluation và báo cáo
+├── tools/                      # tokenizer và chuyển đổi model
+├── cli/                        # entry point dòng lệnh
+└── settings.py
+docs/                           # đặc tả dành cho người đọc project
+reports/                        # số liệu và biểu đồ có thể sinh lại
+tests/                          # kiểm tra theo đúng các package ở trên
 ```
 
-`runtime` không phụ thuộc code huấn luyện hay công cụ migration. Muốn hiểu luồng
-chatbot chỉ cần đọc `runtime/pipeline.py`; muốn thay đổi dữ liệu hoặc benchmark
-thì bắt đầu từ `research/dataset.py` và `research/evaluation.py`.
+Muốn hiểu hệ thống, đọc [docs/CONCEPT.md](docs/CONCEPT.md) rồi
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Muốn đánh giá nghiên cứu, đọc
+[docs/DATASET.md](docs/DATASET.md), [docs/TRAINING.md](docs/TRAINING.md) và
+[docs/EVALUATION.md](docs/EVALUATION.md).
 
-Dataset v1 nằm trọn trong `resources/datasets/sparql_v1/`, gồm `train.jsonl`,
-`val.jsonl`, `test.jsonl`, manifest và README của baseline lịch sử.
-
-Dataset v2 đã hoàn tất review, đóng băng và nghiệm thu với 936 câu trong 234
-semantic family. Trên test độc lập 140 câu với seed 42, BARTpho đạt answer exact
-70,00%, ViT5 đạt 63,57% và T5Gemma2 đạt 77,86%; parse đều trên 99%. Đây là
-dataset mặc định và v2 không được sửa dựa trên lỗi test—cải tiến tiếp theo phải
-là release mới.
-
-## Chạy bản triển khai
-
-Runtime mặc định dùng artifact CTranslate2 T5Gemma2 seed 42 trên CPU/int8:
+## Chạy kiểm tra
 
 ```bash
-uv sync --extra inference --dev
-uv run --extra inference serve_sparql \
-  --model-dir artifacts/sparql_deploy_v2/t5gemma2_seed42
+uv sync --dev
+uv run validate_sparql_dataset
+uv run generate_reports
+uv run pytest
 ```
 
-Quy trình convert, chấm lại quantization và Docker được ghi tại
-[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md). Model binary không nằm trong Git.
+Huấn luyện cần extra `train` và GPU hỗ trợ BF16:
 
-Không dùng kết quả validation QueryPlan trước đây làm kết quả cuối cho kiến
-trúc SPARQL.
+```bash
+uv sync --extra train --dev
+uv run --extra train train_sparql \
+  --model bartpho \
+  --save-model \
+  --benchmark-after-training
+```
+
+Thay `bartpho` bằng `vit5` hoặc `t5gemma2` để chạy model còn lại. Hướng dẫn
+đầy đủ nằm tại [docs/TRAINING.md](docs/TRAINING.md).

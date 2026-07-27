@@ -15,7 +15,7 @@ from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.sparql import load_ontology
 
 
-def test_frozen_benchmark_is_balanced_and_executable() -> None:
+def test_test_set_is_held_out_balanced_and_executable() -> None:
     rows = load_benchmark()
     release = load_release()
     report = validate_benchmark(
@@ -25,50 +25,47 @@ def test_frozen_benchmark_is_balanced_and_executable() -> None:
     )
 
     assert report == {
-        "records": 140,
-        "targets": 35,
+        "records": 156,
+        "targets": 39,
         "register_counts": {
-            "colloquial": 35,
-            "formal": 35,
-            "neutral": 35,
-            "noisy": 35,
+            "colloquial": 39,
+            "formal": 39,
+            "neutral": 39,
+            "noisy": 39,
         },
         "query_shape_counts": {
-            "aggregate": 8,
-            "aggregate_filter": 4,
-            "direct": 60,
-            "graph_hop": 48,
-            "multi_column": 20,
+            "aggregate": 16,
+            "aggregate_filter": 16,
+            "direct": 16,
+            "graph_hop": 32,
+            "multi_column": 76,
         },
+        "targets_seen_in_model_selection_data": 0,
+        "schema_terms_missing_from_training": [],
     }
 
 
-def test_frozen_manifest_checksums_match() -> None:
-    manifest_path = Path("resources/datasets/sparql_v1/manifest.json")
+def test_manifest_checksums_match() -> None:
+    manifest_path = Path("resources/dataset/manifest.json")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
-    for relative_path, expected in manifest["sha256"].items():
-        payload = (manifest_path.parent / relative_path).read_bytes()
-        assert hashlib.sha256(payload).hexdigest() == expected
+    for item in manifest["files"].values():
+        payload = (manifest_path.parent / item["path"]).read_bytes()
+        assert hashlib.sha256(payload).hexdigest() == item["sha256"]
+    ontology = manifest_path.parent / manifest["ontology"]["path"]
+    assert hashlib.sha256(ontology.read_bytes()).hexdigest() == manifest["ontology"]["sha256"]
 
 
 def test_reference_predictions_score_perfectly() -> None:
     rows = load_benchmark()
-    report = evaluate_benchmark(
-        rows,
-        reference_predictions(rows),
-        load_ontology(),
-    )
+    report = evaluate_benchmark(rows, reference_predictions(rows), load_ontology())
 
     assert report["overall"]["answer_exact_rate"] == 1.0
     assert report["overall"]["canonical_query_exact_rate"] == 1.0
-    assert report["prediction_file"] == {
-        "missing_ids": [],
-        "unexpected_ids": [],
-    }
+    assert report["prediction_file"] == {"missing_ids": [], "unexpected_ids": []}
 
 
-def test_benchmark_rejects_exact_training_leak() -> None:
+def test_benchmark_rejects_training_question_leak() -> None:
     rows = load_benchmark()
     leaked = dict(rows[0])
     release = load_release()

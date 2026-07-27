@@ -1,4 +1,4 @@
-"""Frozen benchmark contract for direct-SPARQL generation."""
+"""Test-set contract for direct-SPARQL generation."""
 
 from __future__ import annotations
 
@@ -21,10 +21,11 @@ from ..runtime.text import normalize_model_input
 from ..runtime.sparql import execute_select, validate_select
 
 REQUIRED_FIELDS = {"id", "family_id", "register", "query_shape", "input", "target"}
+_LOCAL_TERM = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
 
 
 class BenchmarkError(ValueError):
-    """The benchmark or prediction file violates its frozen contract."""
+    """The benchmark or prediction file violates its contract."""
 
 
 def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, str]]:
@@ -46,6 +47,13 @@ def validate_benchmark(
         normalize_model_input(row["input"]).casefold()
         for row in (training_rows or [])
     }
+    training_families = {row["family_id"] for row in (training_rows or [])}
+    training_targets = {row["target"] for row in (training_rows or [])}
+    training_terms = {
+        term
+        for row in (training_rows or [])
+        for term in _LOCAL_TERM.findall(row["target"])
+    }
     register_counts: Counter[str] = Counter()
     shape_counts: Counter[str] = Counter()
     targets: set[str] = set()
@@ -61,6 +69,8 @@ def validate_benchmark(
         if record_id in ids:
             raise BenchmarkError(f"duplicate id: {record_id}")
         ids.add(record_id)
+        if row["family_id"] in training_families:
+            raise BenchmarkError(f"semantic family leaks from training data: {record_id}")
 
         normalized = normalize_model_input(row["input"]).casefold()
         if normalized in questions:
@@ -91,11 +101,23 @@ def validate_benchmark(
         shape_counts[shape] += 1
         targets.add(target)
 
+    repeated_targets = sorted(targets & training_targets)
+    if repeated_targets:
+        raise BenchmarkError(
+            f"test targets must be held out from model-selection data: {repeated_targets[:3]}"
+        )
+    test_terms = {term for target in targets for term in _LOCAL_TERM.findall(target)}
+    missing_terms = sorted(test_terms - training_terms) if training_rows is not None else []
+    if missing_terms:
+        raise BenchmarkError(f"test uses schema terms absent from training: {missing_terms}")
+
     return {
         "records": len(rows),
         "targets": len(targets),
         "register_counts": dict(sorted(register_counts.items())),
         "query_shape_counts": dict(sorted(shape_counts.items())),
+        "targets_seen_in_model_selection_data": len(repeated_targets),
+        "schema_terms_missing_from_training": missing_terms,
     }
 
 

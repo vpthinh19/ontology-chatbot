@@ -1,4 +1,4 @@
-"""Evaluate a converted CTranslate2 model on the frozen benchmark."""
+"""Evaluate a converted CTranslate2 model on the canonical test set."""
 
 from __future__ import annotations
 

@@ -1,0 +1,153 @@
+{
+  "dataset": {
+    "records": 1176,
+    "families": 294,
+    "targets": 162,
+    "splits": {
+      "train": {
+        "records": 880,
+        "families": 220,
+        "targets": 123
+      },
+      "val": {
+        "records": 140,
+        "families": 35,
+        "targets": 35
+      },
+      "test": {
+        "records": 156,
+        "families": 39,
+        "targets": 39
+      }
+    },
+    "registers": {
+      "colloquial": 294,
+      "formal": 294,
+      "neutral": 294,
+      "noisy": 294
+    },
+    "query_shapes": {
+      "aggregate": 64,
+      "aggregate_filter": 36,
+      "direct": 460,
+      "graph_hop": 388,
+      "multi_column": 228
+    },
+    "query_shapes_by_split": {
+      "train": {
+        "aggregate": 40,
+        "aggregate_filter": 20,
+        "direct": 376,
+        "graph_hop": 308,
+        "multi_column": 136
+      },
+      "val": {
+        "aggregate": 8,
+        "direct": 68,
+        "graph_hop": 48,
+        "multi_column": 16
+      },
+      "test": {
+        "aggregate": 16,
+        "aggregate_filter": 16,
+        "direct": 16,
+        "graph_hop": 32,
+        "multi_column": 76
+      }
+    },
+    "input_words": {
+      "min": 4,
+      "median": 13,
+      "p95": 20,
+      "max": 26,
+      "mean": 12.9
+    }
+  },
+  "generalization_contract": {
+    "validation_targets_seen_in_train": 35,
+    "validation_targets": 35,
+    "test_targets_seen_in_train": 0,
+    "test_targets": 39,
+    "test_schema_terms_missing_from_train": []
+  },
+  "ontology": {
+    "triples": 422,
+    "classes": 9,
+    "object_properties": 6,
+    "datatype_properties": 13,
+    "named_individuals": 32,
+    "resources_missing_vietnamese_label": []
+  },
+  "validation": {
+    "records": 1176,
+    "split_counts": {
+      "train": 880,
+      "val": 140,
+      "test": 156
+    },
+    "splits": {
+      "train": {
+        "records": 880,
+        "families": 220,
+        "targets": 123,
+        "register_counts": {
+          "colloquial": 220,
+          "formal": 220,
+          "neutral": 220,
+          "noisy": 220
+        },
+        "query_shape_counts": {
+          "aggregate": 40,
+          "aggregate_filter": 20,
+          "direct": 376,
+          "graph_hop": 308,
+          "multi_column": 136
+        },
+        "empty_result_ids": []
+      },
+      "val": {
+        "records": 140,
+        "families": 35,
+        "targets": 35,
+        "register_counts": {
+          "colloquial": 35,
+          "formal": 35,
+          "neutral": 35,
+          "noisy": 35
+        },
+        "query_shape_counts": {
+          "aggregate": 8,
+          "direct": 68,
+          "graph_hop": 48,
+          "multi_column": 16
+        },
+        "empty_result_ids": []
+      },
+      "test": {
+        "records": 156,
+        "families": 39,
+        "targets": 39,
+        "register_counts": {
+          "colloquial": 39,
+          "formal": 39,
+          "neutral": 39,
+          "noisy": 39
+        },
+        "query_shape_counts": {
+          "aggregate": 16,
+          "aggregate_filter": 16,
+          "direct": 16,
+          "graph_hop": 32,
+          "multi_column": 76
+        },
+        "empty_result_ids": []
+      }
+    }
+  },
+  "sha256": {
+    "train.jsonl": "828c28674f9436fabaae470df147fc892813a55b83815567f2e7fd745e6425e6",
+    "val.jsonl": "aef79b7bae9758e2c4b25fb21ea020a4768a8483058ba24b8b22e83c3a8a47d0",
+    "test.jsonl": "6cf17d865a9281b5c5a4e2e2a9bd266f5849392dae5215bec29770e52168d079",
+    "ontology.ttl": "0af6d4f50ae1e8919d7cc6e4eb16a27897da33cb8a3175d3c4e2f292f278a987"
+  }
+}

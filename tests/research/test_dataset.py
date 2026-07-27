@@ -11,13 +11,13 @@ from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import DATASET_DIR
 
 
-def test_released_dataset_is_executable() -> None:
+def test_canonical_dataset_is_executable() -> None:
     if not DATASET_DIR.is_dir():
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_release(load_release(), load_ontology())
 
-    assert report["records"] == 936
-    assert report["split_counts"] == {"train": 656, "val": 140, "test": 140}
+    assert report["records"] == 1176
+    assert report["split_counts"] == {"train": 880, "val": 140, "test": 156}
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
 

@@ -12,17 +12,5 @@ checkpoints/
 models/
 logs/
 /artifacts/
-docs/*
-!docs/CONCEPT.md
-!docs/DATASET_BENCHMARK_SPEC.md
-!docs/DATASET_UPGRADE_PLAN.md
-!docs/PROJECT_SPEC.md
-!docs/MODEL_TOKENIZER_SPEC.md
-!docs/IMPLEMENTATION_PLAN.md
-!docs/SPARQL_EXPERIMENT_V1.md
-!docs/DEPLOYMENT.md
-!docs/archive/
-!docs/archive/**
-!docs/figures/
 
 /dev/

@@ -159,10 +159,12 @@ def _error_category(
 
 
 def _row_key(rows: list[dict[str, object]]) -> tuple:
+    """Compare returned data while ignoring arbitrary SPARQL variable names."""
+
     return tuple(
         sorted(
             (
-                tuple(sorted((column, _value_key(value)) for column, value in row.items()))
+                tuple(sorted((_value_key(value) for value in row.values())))
                 for row in rows
             ),
             key=repr,

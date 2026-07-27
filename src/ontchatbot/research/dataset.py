@@ -1,4 +1,4 @@
-"""Loading and executable validation for dataset releases."""
+"""Loading and executable validation for the canonical dataset."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ UNSUPPORTED_TARGET_CHARACTERS = frozenset("_^<@")
 
 
 class DatasetError(ValueError):
-    """A dataset release violates its declared contract."""
+    """The dataset violates its declared contract."""
 
 
 def load_dataset(path: Path) -> list[dict[str, str]]:
@@ -49,7 +49,7 @@ def load_dataset(path: Path) -> list[dict[str, str]]:
 
 
 def load_release(directory: Path = DATASET_DIR) -> dict[str, list[dict[str, str]]]:
-    """Load the three standard files of one dataset release."""
+    """Load the three standard dataset files."""
 
     directory = Path(directory)
     return {split: load_dataset(directory / f"{split}.jsonl") for split in REQUIRED_SPLITS}
@@ -127,7 +127,7 @@ def validate_release(
     splits: dict[str, list[dict[str, Any]]],
     graph: Graph,
 ) -> dict[str, Any]:
-    """Validate all files and reject leakage between release splits."""
+    """Validate all files and reject leakage between splits."""
 
     if set(splits) != set(REQUIRED_SPLITS):
         raise DatasetError(f"release must contain exactly {list(REQUIRED_SPLITS)}")

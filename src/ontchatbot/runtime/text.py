@@ -9,8 +9,6 @@ from __future__ import annotations
 import re
 import unicodedata
 
-NORMALIZER_VERSION = 1
-
 _WHITESPACE = re.compile(r"\s+")
 _TONE_MARKS = "̣̀́̃̉"
 _TONE_MOVE = re.compile(f"([oOuU])([{_TONE_MARKS}])([aeyAEY])")

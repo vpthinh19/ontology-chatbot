@@ -1,4 +1,4 @@
-"""Validate or score predictions on the frozen direct-SPARQL benchmark."""
+"""Validate or score predictions on the canonical SPARQL test set."""
 
 from __future__ import annotations
 

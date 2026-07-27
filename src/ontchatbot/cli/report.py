@@ -1,4 +1,4 @@
-"""Summarize repeated model experiments."""
+"""Generate public dataset and ontology reports."""
 
 from ..research.reporting import main
 
