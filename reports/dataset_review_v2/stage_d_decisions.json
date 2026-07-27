@@ -1,0 +1,646 @@
+{
+  "stage": "D",
+  "review_method": "Đối chiếu từng lỗ hổng với dữ liệu ontology v12 và nhu cầu hỏi thực tế; từng câu bổ sung được viết và đọc thủ công.",
+  "candidates": [
+    {
+      "id": "complete-count-list-tuition-registers",
+      "status": "complete",
+      "reason": "Family đếm kèm liệt kê nhóm học phí là cấu trúc khó và mới chỉ có register neutral; bổ sung đúng ba register còn thiếu."
+    },
+    {
+      "id": "major-change-receiving-office-label",
+      "status": "add",
+      "reason": "Ontology phân biệt nơi nhận và nơi xử lý hồ sơ chuyển ngành, nhưng draft chỉ hỏi số điện thoại nơi nhận chứ chưa hỏi tên nơi nộp."
+    },
+    {
+      "id": "missing-procedure-handling-office-labels",
+      "status": "add",
+      "reason": "Bảy quy trình có handledBy nhưng chưa có target đơn mục đích trả tên phòng phụ trách; đây là nhu cầu sinh viên phổ biến và giúp phủ đều quan hệ graph."
+    },
+    {
+      "id": "major-change-two-office-roles",
+      "status": "add",
+      "reason": "Một câu hỏi tự nhiên có thể đồng thời hỏi nơi nộp và nơi xử lý; target hai nhánh kiểm tra model không đánh đồng receivedBy với handledBy."
+    },
+    {
+      "id": "grade-improvement-outcome",
+      "status": "add",
+      "reason": "Ontology có kết quả ghi nhận điểm học cải thiện nhưng draft chưa có target chỉ lấy giá trị outcome này."
+    },
+    {
+      "id": "tuition-extension-form-label",
+      "status": "add",
+      "reason": "Draft có URL tải đơn gia hạn học phí nhưng thiếu nhu cầu hỏi tên biểu mẫu trước khi tải."
+    },
+    {
+      "id": "k65-aggregate-filter",
+      "status": "add",
+      "reason": "K63, K66 và K67 đều có truy vấn đếm nhóm học phí theo khóa; K65 có dữ liệu tương ứng nhưng đang là lỗ hổng duy nhất của cùng phép lọc có ý nghĩa."
+    },
+    {
+      "id": "count-and-list-procedures",
+      "status": "add",
+      "reason": "Cấu trúc subquery đếm kèm liệt kê mới chỉ có một target học phí; danh sách quy trình là trường hợp thứ hai tự nhiên, không phải đổi entity máy móc."
+    },
+    {
+      "id": "count-forms",
+      "status": "add",
+      "reason": "Người dùng có thể hỏi tổng số biểu mẫu được cung cấp; target bổ sung một aggregate trên class khác với các aggregate hiện có."
+    },
+    {
+      "id": "functional-office-contact-cards",
+      "status": "add",
+      "reason": "Ba phòng chức năng thường được sinh viên liên hệ có đủ email, địa điểm, điện thoại và website; một câu hỏi liên hệ tổng quát nên lấy bốn literal trong một target."
+    },
+    {
+      "id": "uncovered-direct-individual-iris",
+      "status": "not_gap",
+      "reason": "Biểu mẫu, phương thức thanh toán, quy định và Phòng Tài chính không cần xuất hiện như anchor IRI trực tiếp khi các graph path hiện có đã trả label hoặc literal của chúng."
+    },
+    {
+      "id": "all-tuition-band-program-lists",
+      "status": "defer",
+      "reason": "Nhân programName cho mọi nhóm học phí sẽ tạo dãy câu gần cùng khuôn; hai target đại diện hiện tại đủ dạy cấu trúc, chỉ mở rộng khi có nhu cầu đánh giá cụ thể."
+    },
+    {
+      "id": "all-regulation-links-by-procedure",
+      "status": "defer",
+      "reason": "Không liệt kê toàn bộ tích Descartes quy trình và văn bản; draft đã có cả target lấy label lẫn URL qua basedOnRegulation."
+    },
+    {
+      "id": "university-office-contact-card",
+      "status": "defer",
+      "reason": "Văn phòng Trường đã có nhu cầu email trực tiếp; ưu tiên coverage ba phòng chức năng gắn với quy trình sinh viên trước."
+    }
+  ],
+  "additions": [
+    {
+      "id": "v2-cov-0001",
+      "family_id": "cap-066-f04",
+      "register": "formal",
+      "query_shape": "aggregate",
+      "input": "Xin cho biết tổng số nhóm học phí hiện có và liệt kê tên của từng nhóm.",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :TuitionRate . } } ?item a :TuitionRate . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0002",
+      "family_id": "cap-066-f04",
+      "register": "colloquial",
+      "query_shape": "aggregate",
+      "input": "trường có mấy nhóm tiền học, kể tên hết cho tui với",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :TuitionRate . } } ?item a :TuitionRate . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0003",
+      "family_id": "cap-066-f04",
+      "register": "noisy",
+      "query_shape": "aggregate",
+      "input": "co bn nhom hp liet ke het giup tui",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :TuitionRate . } } ?item a :TuitionRate . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0004",
+      "family_id": "cov-major-change-receiving-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Sinh viên phải nộp hồ sơ đề nghị chuyển ngành tại đơn vị nào?",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :receivedBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0005",
+      "family_id": "cov-major-change-receiving-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Hồ sơ xin chuyển ngành được nộp ở phòng nào?",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :receivedBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0006",
+      "family_id": "cov-major-change-receiving-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "tui viết đơn đổi ngành rồi đem nộp phòng nào vậy",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :receivedBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0007",
+      "family_id": "cov-major-change-receiving-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "don chuyen nganh nop o phong nao",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :receivedBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0008",
+      "family_id": "cov-course-registration-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Đơn vị nào chịu trách nhiệm xử lý các vấn đề về đăng ký học phần?",
+      "target": "SELECT ?answer WHERE { :CourseRegistrationProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0009",
+      "family_id": "cov-course-registration-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi cần liên hệ phòng nào khi gặp vướng mắc lúc đăng ký môn?",
+      "target": "SELECT ?answer WHERE { :CourseRegistrationProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0010",
+      "family_id": "cov-course-registration-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "đăng ký môn bị trục trặc thì tui hỏi phòng nào",
+      "target": "SELECT ?answer WHERE { :CourseRegistrationProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0011",
+      "family_id": "cov-course-registration-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "dkhp loi thi lien he phong nao",
+      "target": "SELECT ?answer WHERE { :CourseRegistrationProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0012",
+      "family_id": "cov-course-retake-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Phòng ban nào phụ trách hướng dẫn thủ tục đăng ký học lại?",
+      "target": "SELECT ?answer WHERE { :CourseRetakeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0013",
+      "family_id": "cov-course-retake-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi muốn hỏi về việc học lại thì liên hệ đơn vị nào?",
+      "target": "SELECT ?answer WHERE { :CourseRetakeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0014",
+      "family_id": "cov-course-retake-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "tui rớt môn rồi muốn hỏi đăng ký học lại ở phòng nào",
+      "target": "SELECT ?answer WHERE { :CourseRetakeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0015",
+      "family_id": "cov-course-retake-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "rot mon hoi hoc lai o phong nao",
+      "target": "SELECT ?answer WHERE { :CourseRetakeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0016",
+      "family_id": "cov-course-withdrawal-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Đơn vị nào chịu trách nhiệm giải quyết yêu cầu rút học phần?",
+      "target": "SELECT ?answer WHERE { :CourseWithdrawalProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0017",
+      "family_id": "cov-course-withdrawal-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Muốn hỏi về việc rút môn thì tôi liên hệ phòng nào?",
+      "target": "SELECT ?answer WHERE { :CourseWithdrawalProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0018",
+      "family_id": "cov-course-withdrawal-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "tui muốn bỏ bớt môn thì qua phòng nào hỏi",
+      "target": "SELECT ?answer WHERE { :CourseWithdrawalProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0019",
+      "family_id": "cov-course-withdrawal-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "rut mon thi hoi phong nao",
+      "target": "SELECT ?answer WHERE { :CourseWithdrawalProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0020",
+      "family_id": "cov-grade-improvement-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Đơn vị nào phụ trách thủ tục đăng ký học cải thiện điểm?",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0021",
+      "family_id": "cov-grade-improvement-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi cần liên hệ phòng nào để hỏi về học cải thiện?",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0022",
+      "family_id": "cov-grade-improvement-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "muốn học lại kéo điểm thì tui hỏi bên nào",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0023",
+      "family_id": "cov-grade-improvement-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "hoc cai thien lien he phong nao",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0024",
+      "family_id": "cov-graduation-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Phòng ban nào chịu trách nhiệm thực hiện công tác xét tốt nghiệp?",
+      "target": "SELECT ?answer WHERE { :GraduationReviewProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0025",
+      "family_id": "cov-graduation-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi có thắc mắc về xét tốt nghiệp thì hỏi phòng nào?",
+      "target": "SELECT ?answer WHERE { :GraduationReviewProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0026",
+      "family_id": "cov-graduation-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "sắp ra trường rồi tui cần hỏi xét tốt nghiệp ở phòng nào",
+      "target": "SELECT ?answer WHERE { :GraduationReviewProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0027",
+      "family_id": "cov-graduation-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "xet tn do phong nao phu trach",
+      "target": "SELECT ?answer WHERE { :GraduationReviewProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0028",
+      "family_id": "cov-major-change-handling-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Đơn vị nào chịu trách nhiệm xử lý hồ sơ đề nghị chuyển ngành?",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0029",
+      "family_id": "cov-major-change-handling-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Phòng nào trực tiếp giải quyết hồ sơ xin đổi ngành?",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0030",
+      "family_id": "cov-major-change-handling-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "đơn đổi ngành của tui sẽ do phòng nào xử lý vậy",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0031",
+      "family_id": "cov-major-change-handling-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "ho so chuyen nganh phong nao xu ly",
+      "target": "SELECT ?answer WHERE { :MajorChangeProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0032",
+      "family_id": "cov-tuition-office",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Đơn vị nào chịu trách nhiệm quản lý và xử lý công tác thu học phí?",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0033",
+      "family_id": "cov-tuition-office",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi cần hỏi về học phí thì liên hệ phòng nào?",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0034",
+      "family_id": "cov-tuition-office",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "tiền học có vấn đề thì tui hỏi bên nào",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0035",
+      "family_id": "cov-tuition-office",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "thac mac hp lien he phong nao",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :handledBy ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0036",
+      "family_id": "cov-major-change-office-roles",
+      "register": "formal",
+      "query_shape": "multi_column",
+      "input": "Xin cho biết đơn vị tiếp nhận và đơn vị trực tiếp xử lý hồ sơ chuyển ngành.",
+      "target": "SELECT ?receivingOffice ?handlingOffice WHERE { :MajorChangeProcedure :receivedBy ?receivingNode . ?receivingNode rdfs:label ?receivingOffice . :MajorChangeProcedure :handledBy ?handlingNode . ?handlingNode rdfs:label ?handlingOffice . }"
+    },
+    {
+      "id": "v2-cov-0037",
+      "family_id": "cov-major-change-office-roles",
+      "register": "neutral",
+      "query_shape": "multi_column",
+      "input": "Hồ sơ đổi ngành nộp ở phòng nào và sau đó do phòng nào giải quyết?",
+      "target": "SELECT ?receivingOffice ?handlingOffice WHERE { :MajorChangeProcedure :receivedBy ?receivingNode . ?receivingNode rdfs:label ?receivingOffice . :MajorChangeProcedure :handledBy ?handlingNode . ?handlingNode rdfs:label ?handlingOffice . }"
+    },
+    {
+      "id": "v2-cov-0038",
+      "family_id": "cov-major-change-office-roles",
+      "register": "colloquial",
+      "query_shape": "multi_column",
+      "input": "tui đem đơn chuyển ngành tới đâu, rồi bên nào xử lý nó",
+      "target": "SELECT ?receivingOffice ?handlingOffice WHERE { :MajorChangeProcedure :receivedBy ?receivingNode . ?receivingNode rdfs:label ?receivingOffice . :MajorChangeProcedure :handledBy ?handlingNode . ?handlingNode rdfs:label ?handlingOffice . }"
+    },
+    {
+      "id": "v2-cov-0039",
+      "family_id": "cov-major-change-office-roles",
+      "register": "noisy",
+      "query_shape": "multi_column",
+      "input": "don doi nganh nop dau phong nao xu ly",
+      "target": "SELECT ?receivingOffice ?handlingOffice WHERE { :MajorChangeProcedure :receivedBy ?receivingNode . ?receivingNode rdfs:label ?receivingOffice . :MajorChangeProcedure :handledBy ?handlingNode . ?handlingNode rdfs:label ?handlingOffice . }"
+    },
+    {
+      "id": "v2-cov-0040",
+      "family_id": "cov-grade-improvement-outcome",
+      "register": "formal",
+      "query_shape": "direct",
+      "input": "Kết quả học cải thiện được dùng để ghi nhận điểm tích lũy như thế nào?",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :outcome ?answer . }"
+    },
+    {
+      "id": "v2-cov-0041",
+      "family_id": "cov-grade-improvement-outcome",
+      "register": "neutral",
+      "query_shape": "direct",
+      "input": "Học cải thiện xong thì điểm nào được tính vào CPA?",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :outcome ?answer . }"
+    },
+    {
+      "id": "v2-cov-0042",
+      "family_id": "cov-grade-improvement-outcome",
+      "register": "colloquial",
+      "query_shape": "direct",
+      "input": "tui học lại để kéo điểm thì trường lấy điểm lần nào",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :outcome ?answer . }"
+    },
+    {
+      "id": "v2-cov-0043",
+      "family_id": "cov-grade-improvement-outcome",
+      "register": "noisy",
+      "query_shape": "direct",
+      "input": "hoc cai thien xong cpa tinh diem nao",
+      "target": "SELECT ?answer WHERE { :GradeImprovementProcedure :outcome ?answer . }"
+    },
+    {
+      "id": "v2-cov-0044",
+      "family_id": "cov-tuition-extension-form",
+      "register": "formal",
+      "query_shape": "graph_hop",
+      "input": "Sinh viên muốn xin lùi hạn nộp học phí phải sử dụng biểu mẫu nào?",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :hasDocument ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0045",
+      "family_id": "cov-tuition-extension-form",
+      "register": "neutral",
+      "query_shape": "graph_hop",
+      "input": "Tôi chưa thể đóng học phí đúng hạn thì cần điền đơn gì?",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :hasDocument ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0046",
+      "family_id": "cov-tuition-extension-form",
+      "register": "colloquial",
+      "query_shape": "graph_hop",
+      "input": "chưa có tiền đóng học đúng hạn thì tui viết đơn nào",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :hasDocument ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0047",
+      "family_id": "cov-tuition-extension-form",
+      "register": "noisy",
+      "query_shape": "graph_hop",
+      "input": "xin gia han nop hp dung don gi",
+      "target": "SELECT ?answer WHERE { :TuitionPaymentProcedure :hasDocument ?node . ?node rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0048",
+      "family_id": "cov-count-tuition-bands-k65",
+      "register": "formal",
+      "query_shape": "aggregate_filter",
+      "input": "Khóa tuyển sinh K65 được chia thành tổng cộng bao nhiêu nhóm học phí?",
+      "target": "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K65\" ) }"
+    },
+    {
+      "id": "v2-cov-0049",
+      "family_id": "cov-count-tuition-bands-k65",
+      "register": "neutral",
+      "query_shape": "aggregate_filter",
+      "input": "Sinh viên K65 có mấy nhóm mức học phí khác nhau?",
+      "target": "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K65\" ) }"
+    },
+    {
+      "id": "v2-cov-0050",
+      "family_id": "cov-count-tuition-bands-k65",
+      "register": "colloquial",
+      "query_shape": "aggregate_filter",
+      "input": "khóa 65 có mấy nhóm giá tiền học vậy",
+      "target": "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K65\" ) }"
+    },
+    {
+      "id": "v2-cov-0051",
+      "family_id": "cov-count-tuition-bands-k65",
+      "register": "noisy",
+      "query_shape": "aggregate_filter",
+      "input": "k65 co bn nhom hp",
+      "target": "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K65\" ) }"
+    },
+    {
+      "id": "v2-cov-0052",
+      "family_id": "cov-count-list-procedures",
+      "register": "formal",
+      "query_shape": "aggregate",
+      "input": "Xin cho biết có bao nhiêu quy trình học vụ và liệt kê tên của từng quy trình.",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AcademicProcedure . } } ?item a :AcademicProcedure . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0053",
+      "family_id": "cov-count-list-procedures",
+      "register": "neutral",
+      "query_shape": "aggregate",
+      "input": "Trường có tất cả bao nhiêu thủ tục học vụ, gồm những thủ tục nào?",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AcademicProcedure . } } ?item a :AcademicProcedure . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0054",
+      "family_id": "cov-count-list-procedures",
+      "register": "colloquial",
+      "query_shape": "aggregate",
+      "input": "có mấy quy trình cho sinh viên, kể hết tên cho tui coi",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AcademicProcedure . } } ?item a :AcademicProcedure . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0055",
+      "family_id": "cov-count-list-procedures",
+      "register": "noisy",
+      "query_shape": "aggregate",
+      "input": "co bn quy trinh hoc vu liet ke het",
+      "target": "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AcademicProcedure . } } ?item a :AcademicProcedure . ?item rdfs:label ?answer . }"
+    },
+    {
+      "id": "v2-cov-0056",
+      "family_id": "cov-count-forms",
+      "register": "formal",
+      "query_shape": "aggregate",
+      "input": "Nhà trường hiện cung cấp tổng cộng bao nhiêu biểu mẫu học vụ?",
+      "target": "SELECT (COUNT(DISTINCT ?item) AS ?answer) WHERE { ?item a :FormDocument . }"
+    },
+    {
+      "id": "v2-cov-0057",
+      "family_id": "cov-count-forms",
+      "register": "neutral",
+      "query_shape": "aggregate",
+      "input": "Hiện có tất cả bao nhiêu loại đơn và biểu mẫu cho sinh viên?",
+      "target": "SELECT (COUNT(DISTINCT ?item) AS ?answer) WHERE { ?item a :FormDocument . }"
+    },
+    {
+      "id": "v2-cov-0058",
+      "family_id": "cov-count-forms",
+      "register": "colloquial",
+      "query_shape": "aggregate",
+      "input": "trường có sẵn mấy mẫu đơn học vụ vậy",
+      "target": "SELECT (COUNT(DISTINCT ?item) AS ?answer) WHERE { ?item a :FormDocument . }"
+    },
+    {
+      "id": "v2-cov-0059",
+      "family_id": "cov-count-forms",
+      "register": "noisy",
+      "query_shape": "aggregate",
+      "input": "co bn bieu mau hoc vu",
+      "target": "SELECT (COUNT(DISTINCT ?item) AS ?answer) WHERE { ?item a :FormDocument . }"
+    },
+    {
+      "id": "v2-cov-0060",
+      "family_id": "cov-student-affairs-contact",
+      "register": "formal",
+      "query_shape": "multi_column",
+      "input": "Xin cung cấp email, địa điểm, số điện thoại và website của Phòng Công tác Chính trị và Sinh viên.",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :StudentAffairsOffice :email ?email . :StudentAffairsOffice :location ?location . :StudentAffairsOffice :phoneNumber ?phone . :StudentAffairsOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0061",
+      "family_id": "cov-student-affairs-contact",
+      "register": "neutral",
+      "query_shape": "multi_column",
+      "input": "Cho tôi đầy đủ thông tin liên hệ của Phòng Công tác Sinh viên.",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :StudentAffairsOffice :email ?email . :StudentAffairsOffice :location ?location . :StudentAffairsOffice :phoneNumber ?phone . :StudentAffairsOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0062",
+      "family_id": "cov-student-affairs-contact",
+      "register": "colloquial",
+      "query_shape": "multi_column",
+      "input": "tui muốn liên hệ phòng công tác sinh viên, cho xin mọi thông tin với",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :StudentAffairsOffice :email ?email . :StudentAffairsOffice :location ?location . :StudentAffairsOffice :phoneNumber ?phone . :StudentAffairsOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0063",
+      "family_id": "cov-student-affairs-contact",
+      "register": "noisy",
+      "query_shape": "multi_column",
+      "input": "cho xin tat ca lien he phong ctsv",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :StudentAffairsOffice :email ?email . :StudentAffairsOffice :location ?location . :StudentAffairsOffice :phoneNumber ?phone . :StudentAffairsOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0064",
+      "family_id": "cov-undergraduate-office-contact",
+      "register": "formal",
+      "query_shape": "multi_column",
+      "input": "Xin cung cấp email, địa điểm, số điện thoại và website của Phòng Đào tạo Đại học.",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :UndergraduateEducationOffice :email ?email . :UndergraduateEducationOffice :location ?location . :UndergraduateEducationOffice :phoneNumber ?phone . :UndergraduateEducationOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0065",
+      "family_id": "cov-undergraduate-office-contact",
+      "register": "neutral",
+      "query_shape": "multi_column",
+      "input": "Thông tin liên hệ đầy đủ của Phòng Đào tạo Đại học là gì?",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :UndergraduateEducationOffice :email ?email . :UndergraduateEducationOffice :location ?location . :UndergraduateEducationOffice :phoneNumber ?phone . :UndergraduateEducationOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0066",
+      "family_id": "cov-undergraduate-office-contact",
+      "register": "colloquial",
+      "query_shape": "multi_column",
+      "input": "tui cần liên hệ phòng đào tạo, cho xin đủ cách liên lạc",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :UndergraduateEducationOffice :email ?email . :UndergraduateEducationOffice :location ?location . :UndergraduateEducationOffice :phoneNumber ?phone . :UndergraduateEducationOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0067",
+      "family_id": "cov-undergraduate-office-contact",
+      "register": "noisy",
+      "query_shape": "multi_column",
+      "input": "tat ca thong tin lien he phong dtdh",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :UndergraduateEducationOffice :email ?email . :UndergraduateEducationOffice :location ?location . :UndergraduateEducationOffice :phoneNumber ?phone . :UndergraduateEducationOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0068",
+      "family_id": "cov-finance-office-contact",
+      "register": "formal",
+      "query_shape": "multi_column",
+      "input": "Xin cung cấp email, địa điểm, số điện thoại và website của Phòng Tài chính.",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :PlanningAndFinanceOffice :email ?email . :PlanningAndFinanceOffice :location ?location . :PlanningAndFinanceOffice :phoneNumber ?phone . :PlanningAndFinanceOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0069",
+      "family_id": "cov-finance-office-contact",
+      "register": "neutral",
+      "query_shape": "multi_column",
+      "input": "Cho tôi thông tin liên hệ đầy đủ của Phòng Tài chính.",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :PlanningAndFinanceOffice :email ?email . :PlanningAndFinanceOffice :location ?location . :PlanningAndFinanceOffice :phoneNumber ?phone . :PlanningAndFinanceOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0070",
+      "family_id": "cov-finance-office-contact",
+      "register": "colloquial",
+      "query_shape": "multi_column",
+      "input": "tui muốn liên lạc phòng tài chính, cho xin hết thông tin với",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :PlanningAndFinanceOffice :email ?email . :PlanningAndFinanceOffice :location ?location . :PlanningAndFinanceOffice :phoneNumber ?phone . :PlanningAndFinanceOffice :websiteUrl ?website . }"
+    },
+    {
+      "id": "v2-cov-0071",
+      "family_id": "cov-finance-office-contact",
+      "register": "noisy",
+      "query_shape": "multi_column",
+      "input": "cho xin tat ca lien he phong tai chinh",
+      "target": "SELECT ?email ?location ?phone ?website WHERE { :PlanningAndFinanceOffice :email ?email . :PlanningAndFinanceOffice :location ?location . :PlanningAndFinanceOffice :phoneNumber ?phone . :PlanningAndFinanceOffice :websiteUrl ?website . }"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A–C đã hoàn thành; language draft v2 sẵn sàng cho Stage
-D; dataset v1 không bị sửa**. Kết quả Stage C nằm tại
-`reports/dataset_review_v2/stage_c_report.md`.
+Trạng thái: **Giai đoạn A–D đã hoàn thành; coverage draft v2 sẵn sàng cho Stage
+E; dataset v1 không bị sửa**. Kết quả Stage D nằm tại
+`reports/dataset_review_v2/stage_d_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -168,6 +168,12 @@ Công cụ có thể đề xuất hoặc phát hiện lỗi, nhưng từng câu 
 
 ### Giai đoạn D — Bổ sung coverage có mục tiêu
 
+Trạng thái: **hoàn thành**. Đã thêm 71 record có review, tạo 17 family mới và
+hoàn thiện family đơn lẻ của Stage C. `coverage_draft.jsonl` hiện có 936 record,
+234 family, 102 target và đúng 234 câu cho mỗi register. Ma trận cùng các quyết
+định thêm/hoãn nằm tại `reports/dataset_review_v2/stage_d_coverage.json` và
+`stage_d_decisions.json`.
+
 Chỉ bổ sung sau khi báo cáo A–C chỉ ra lỗ hổng cụ thể.
 
 Ưu tiên theo thứ tự:
@@ -275,6 +281,8 @@ Trong Stage B–D, dữ liệu làm việc chưa được chia split:
 ```text
 resources/datasets/sparql_v2/
 ├── draft.jsonl
+├── language_draft.jsonl
+├── coverage_draft.jsonl
 └── README.md
 ```
 
@@ -324,7 +332,7 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Bắt đầu **Giai đoạn D** trên
-`resources/datasets/sparql_v2/language_draft.jsonl`. Chỉ bổ sung nhu cầu hoặc
-query shape khi ma trận coverage chứng minh đang thiếu; không khôi phục số
-lượng bằng paraphrase máy móc và chưa train model.
+Bắt đầu **Giai đoạn E** trên
+`resources/datasets/sparql_v2/coverage_draft.jsonl`. Khóa danh sách 234 family,
+chọn seed chia split và stratify gần đúng ở cấp family; không được tách các câu
+trong cùng family hoặc dùng test để điều chỉnh dữ liệu.

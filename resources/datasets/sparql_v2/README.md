@@ -1,7 +1,8 @@
 # Dataset SPARQL v2 — working draft
 
 `draft.jsonl` là đầu vào đã hoàn tất semantic review Stage B.
-`language_draft.jsonl` là đầu ra đã hoàn tất review ngôn ngữ Stage C. Cả hai
+`language_draft.jsonl` là đầu ra đã hoàn tất review ngôn ngữ Stage C.
+`coverage_draft.jsonl` là đầu ra đã hoàn tất bổ sung coverage Stage D. Cả ba
 đều là artifact làm việc, chưa phải release train/val/test cuối cùng.
 
 - Nguồn chỉ gồm train và validation của v1.
@@ -10,6 +11,8 @@
 - Các quyết định `fix`, `merge` và `split` của Stage B đã được áp dụng.
 - Stage C đã đọc toàn bộ 948 input, giữ 865 record chất lượng hơn trong
   `language_draft.jsonl`.
+- Stage D đã bổ sung có review thành 936 record, 234 family và 102 target trong
+  `coverage_draft.jsonl`; mọi family có đủ bốn register.
 - Stage E mới chia family thành `train.jsonl`, `val.jsonl` và `test.jsonl` chính
   thức; không dùng split v1 làm split v2.
 
@@ -18,4 +21,5 @@ Sinh lại các artifact Stage B bằng:
 ```bash
 python -m ontchatbot.cli.apply_stage_b
 python -m ontchatbot.cli.apply_stage_c
+python -m ontchatbot.cli.apply_stage_d
 ```

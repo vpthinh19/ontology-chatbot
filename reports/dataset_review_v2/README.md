@@ -1,7 +1,7 @@
-# Dataset semantic review v2 — Stage B
+# Dataset review v2 — Stage B đến D
 
-Trạng thái hiện tại: **đã hoàn tất trên ontology v12**. Đọc
-`completion_report.md` để xem kết quả cuối. `report.md`,
+Trạng thái hiện tại: **Stage B–D đã hoàn tất trên ontology v12**. Đọc
+`stage_d_report.md` để xem kết quả mới nhất. `report.md`,
 `family_decisions.jsonl` và `target_evidence.jsonl` là bằng chứng của lượt
 review ban đầu trên v11, được giữ nguyên để tái lập lịch sử.
 
@@ -26,6 +26,14 @@ lại trên v12 trong `target_evidence_v12.jsonl`.
 - `completion_manifest.json`: checksum và số liệu draft đã áp dụng quyết định.
 - `target_evidence_v12.jsonl`: kết quả thật của target sau sửa trên v12.
 - `completion_report.md`: báo cáo ngắn xác nhận Stage B hoàn tất.
+- `stage_c_decisions.json`, `stage_c_audit.json` và `stage_c_report.md`: quyết
+  định cùng kết quả review ngôn ngữ của 948 input.
+- `stage_d_decisions.json`: các lỗ hổng được `add`, `complete`, `defer` hoặc
+  xác nhận `not_gap`, luôn kèm lý do review.
+- `stage_d_coverage.json`: ma trận coverage trước và sau Stage D.
+- `stage_d_audit.json`, `target_evidence_stage_d.jsonl` và
+  `stage_d_report.md`: cổng chất lượng, kết quả thực thi 102 target và báo cáo
+  hoàn tất coverage draft.
 
 `keep` chỉ xác nhận target và nghĩa family hiện khớp. `fix`, `split` và `merge`
 là yêu cầu cho draft v2, không phải thay đổi đã được áp dụng vào baseline.
