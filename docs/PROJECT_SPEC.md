@@ -19,12 +19,13 @@ tốt hơn một cơ sở dữ liệu phẳng.
 
 ### Model
 
-- Chỉ benchmark `vinai/bartpho-syllable` và `VietAI/vit5-base`.
-- Không đưa T5Gemma, mBART hoặc model multilingual vào benchmark chính.
+- Benchmark `vinai/bartpho-syllable`, `VietAI/vit5-base` và
+  `google/t5gemma-2-270m-270m`.
+- mBART không thuộc benchmark chính.
 - Dynamic padding; không pad cố định toàn dataset.
 - BF16 và TF32 trên RTX 4050 Laptop 6 GB.
 - `torch.compile=False`.
-- Cấu hình riêng của mỗi model được chọn bằng validation, nhưng hai model phải
+- Cấu hình riêng của mỗi model được chọn bằng validation, nhưng ba model phải
   dùng cùng dataset, split, target semantics và giao thức benchmark.
 
 ### Môi trường thực thi
@@ -93,7 +94,7 @@ tốt hơn một cơ sở dữ liệu phẳng.
 - Fuzzy matching trong runtime để tìm canonical entity.
 - Baseline cơ sở dữ liệu phẳng hoặc RAG thu nhỏ chỉ để tạo phép đối chứng.
 - `EntityResult`, `LiteralResult` và tầng DTO theo loại ontology.
-- T5Gemma/mBART trong benchmark chính.
+- mBART trong benchmark chính.
 - Kết luận cũ rằng ViT5 phải bị loại do tokenizer không đọc `{` và `}`.
 
 Lịch sử của các khái niệm này chỉ được giữ trong Git và `docs/archive/`, không
@@ -123,10 +124,10 @@ Project chỉ được coi đã chuyển sang kiến trúc mới khi:
 
 1. ontology mới parse được và các query mẫu trả đúng dữ liệu;
 2. runtime không import hoặc gọi QueryPlan/traversal cũ;
-3. tokenizer của cả hai model round-trip toàn bộ target không `<unk>`;
+3. tokenizer của cả ba model round-trip toàn bộ target không `<unk>`;
 4. mọi target dataset parse, chỉ đọc và thực thi được;
 5. train/validation/test không rò semantic family;
-6. cả hai model vượt learning audit nhỏ trước khi train đầy đủ;
+6. cả ba model có bằng chứng tokenizer và pipeline học được trước khi mở test;
 7. benchmark cuối báo cáo ít nhất parse rate, execution rate, answer exact,
    canonical query exact và kết quả theo register/query shape.
 

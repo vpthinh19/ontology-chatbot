@@ -6,13 +6,13 @@
 |---|---|
 | `vinai/bartpho-syllable` | BART pretrained chuyên tiếng Việt |
 | `VietAI/vit5-base` | T5 pretrained tiếng Việt, dùng tokenizer đã sửa có kiểm chứng |
+| `google/t5gemma-2-270m-270m` | T5 thế hệ mới, pretrained đa ngôn ngữ |
 
-T5Gemma và mBART không thuộc benchmark chính. Artifact cũ của chúng chỉ là
-lịch sử thử nghiệm.
+mBART không thuộc benchmark chính.
 
 ## 2. Contract target chung
 
-Hai model nhận cùng input đã chuẩn hóa và cùng chuỗi target SPARQL canonical:
+Ba model nhận cùng input đã chuẩn hóa và cùng chuỗi target SPARQL canonical:
 
 ```sparql
 SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }
@@ -114,6 +114,11 @@ uv run --extra train train_sparql --model vit5 --learning-audit --max-steps 500 
 Kết luận cũ “loại ViT5” dựa trên cách thêm bốn token mới và resize embedding
 đã bị thay thế bởi bản sửa sentinel này.
 
+T5Gemma2 không lặp lại learning audit 500 bước ở Stage G v2 để tránh một lượt
+train dư thừa. Tokenizer của nó đã round-trip đúng toàn bộ 102 target v2,
+không `<unk>`; lượt train chính thức đạt 74,29% answer exact trên validation,
+đủ chứng minh pipeline học được.
+
 Tokenizer đã sửa cũng cho phép CTranslate2 convert checkpoint. CTranslate2 có
 thể chạy CPU và không yêu cầu CUDA; CUDA chỉ cần nếu chọn inference GPU.
 
@@ -130,6 +135,12 @@ thể chạy CPU và không yêu cầu CUDA; CUDA chỉ cần nếu chọn infer
   tính công bằng nằm ở dữ liệu, target, split, budget đánh giá và cách chấm.
 
 ## 7. Thí nghiệm chính thức
+
+Stage G của dataset v2 so sánh ba model bằng cùng seed 42. Test answer exact là
+70,00% với BARTpho, 63,57% với ViT5 và 77,86% với T5Gemma2. Báo cáo tại
+`reports/dataset_review_v2/stage_g_report.md`.
+
+Thí nghiệm dưới đây là baseline lịch sử của dataset v1:
 
 Hai model đã được train 60 epoch với seed 7, 21 và 42. Trên benchmark độc lập,
 ViT5 đạt trung bình 78,05% answer exact, BARTpho đạt 75,00%; parse/execute lần

@@ -24,9 +24,9 @@ traversal riêng hay lớp DTO kết quả theo kiến trúc cũ.
    và các bất biến của kiến trúc.
 2. [`docs/CONCEPT.md`](docs/CONCEPT.md): hình dạng khái niệm và luồng dữ liệu.
 3. [`docs/DATASET_BENCHMARK_SPEC.md`](docs/DATASET_BENCHMARK_SPEC.md): cách tái
-   sử dụng dữ liệu cũ, gán target SPARQL và đánh giá hai model.
+   sử dụng dữ liệu cũ, gán target SPARQL và đánh giá ba model.
 4. [`docs/MODEL_TOKENIZER_SPEC.md`](docs/MODEL_TOKENIZER_SPEC.md): contract
-   tokenizer có thể tái lập cho BARTpho và ViT5.
+   tokenizer có thể tái lập cho BARTpho, ViT5 và T5Gemma2.
 5. [`docs/DATASET_UPGRADE_PLAN.md`](docs/DATASET_UPGRADE_PLAN.md): checklist
    nâng cấp chất lượng dataset v2, cổng review và nghiệm thu.
 6. [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md): thứ tự thi
@@ -59,13 +59,13 @@ sang kiến trúc mới. Code cây/traversal và baseline phẳng đã được 
 nguồn hiện tại; lịch sử vẫn truy xuất được qua Git và `docs/archive/`.
 
 - [x] Chốt model, kiến trúc đích và nguyên tắc ontology.
-- [x] Kiểm chứng BARTpho và ViT5 có thể học SPARQL ở phép thử nhỏ.
+- [x] Kiểm chứng BARTpho, ViT5 và T5Gemma2 có thể học SPARQL.
 - [x] Xác định bản vá tokenizer ViT5 không đổi kích thước vocabulary.
 - [x] Tạo và kiểm định ontology v11; phát hành v12 sau review ngữ nghĩa Stage B.
 - [x] Thay runtime QueryPlan bằng executor SPARQL tối giản.
 - [x] Chuyển dataset cũ sang target SPARQL và bổ sung aggregate/filter có mục tiêu.
 - [x] Xây dataset và benchmark SPARQL v1 độc lập.
-- [x] Train và chấm hai model chính thức với ba seed mỗi model.
+- [x] Train và chấm ba model chính thức với seed 42.
 - [x] Convert checkpoint được chọn bằng validation và thay runtime/API cũ.
 
 Kết quả, chi phí và giới hạn được ghi tại
@@ -93,9 +93,10 @@ Dataset v1 nằm trọn trong `resources/datasets/sparql_v1/`, gồm `train.json
 `val.jsonl`, `test.jsonl`, manifest và README của baseline lịch sử.
 
 Dataset v2 đã hoàn tất review, đóng băng và nghiệm thu với 936 câu trong 234
-semantic family. Trên test độc lập 140 câu, BARTpho đạt answer exact trung bình
-65,95% và ViT5 đạt 61,19% qua ba seed; parse đều trên 99%. Đây là dataset mặc
-định và v2 không được sửa dựa trên lỗi test—cải tiến tiếp theo phải là release mới.
+semantic family. Trên test độc lập 140 câu với seed 42, BARTpho đạt answer exact
+70,00%, ViT5 đạt 63,57% và T5Gemma2 đạt 77,86%; parse đều trên 99%. Đây là
+dataset mặc định và v2 không được sửa dựa trên lỗi test—cải tiến tiếp theo phải
+là release mới.
 
 ## Chạy bản triển khai
 

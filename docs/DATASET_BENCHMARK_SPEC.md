@@ -181,9 +181,9 @@ Các metric bắt buộc:
 cần báo cáo vì hai query tình cờ trả cùng kết quả trên ontology nhỏ chưa chắc
 có cùng ý nghĩa.
 
-So sánh BARTpho và ViT5 trên cùng split, normalizer, target, decoding policy và
-generation budget. Báo cáo seed, optimizer step, thời gian, VRAM cực đại và
-trung bình/độ lệch của nhiều seed ở thí nghiệm cuối.
+So sánh BARTpho, ViT5 và T5Gemma2 trên cùng split, normalizer, target, decoding
+policy và generation budget. Benchmark v2 dùng một seed cố định là 42; báo cáo
+seed, optimizer step, thời gian và VRAM cực đại. Không mặc định chạy nhiều seed.
 
 ## 10. Không đặt mục tiêu số lượng máy móc
 

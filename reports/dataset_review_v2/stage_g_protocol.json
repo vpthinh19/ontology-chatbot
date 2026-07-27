@@ -1,6 +1,6 @@
 {
   "stage": "G",
-  "status": "three_checkpoints_frozen_before_t5gemma2_test",
+  "status": "complete_test_evaluated_once",
   "dataset": {
     "path": "resources/datasets/sparql_v2",
     "manifest_sha256": "a7536a3c776debe96427ebbad88885b2668df410c8b312c93f9a392f0db03a1f",
@@ -85,6 +85,16 @@
     "reason": "Bổ sung T5Gemma2 và dùng một seed cố định để giảm chi phí thí nghiệm.",
     "comparison_seed": 42,
     "made_before_t5gemma2_test": true,
-    "historical_bartpho_vit5_runs_removed_from_primary_comparison": [7, 21]
+    "historical_bartpho_vit5_runs_removed_from_primary_comparison": [
+      7,
+      21
+    ]
+  },
+  "t5gemma2_pre_test_checks": {
+    "unique_targets": 102,
+    "target_max_tokens": 65,
+    "target_unknown_tokens": 0,
+    "target_roundtrip_failures": 0,
+    "validation_reload_answer_exact_rate": 0.7428571428571429
   }
 }

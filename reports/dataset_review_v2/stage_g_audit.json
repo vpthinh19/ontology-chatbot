@@ -5,19 +5,13 @@
   "dataset_manifest_sha256": "a7536a3c776debe96427ebbad88885b2668df410c8b312c93f9a392f0db03a1f",
   "ontology_sha256": "08bc26b5f6a0e5f7f1c09579dfa22b0615fefb524249e6a80eee6bc00fbe11cf",
   "source_report_sha256": {
-    "artifacts/sparql_official_v2/bartpho/seed-21/benchmark_metrics.json": "f9d391dce5530a8d945c9f49e2c6ee5e54545be039f70fa83ab88352cdb3e49b",
-    "artifacts/sparql_official_v2/bartpho/seed-21/metrics.json": "11ef0fa4dd25be194f0fbb22dab821a7a470e62adeaa9261a0d1a3721ecf5cd5",
     "artifacts/sparql_official_v2/bartpho/seed-42/benchmark_metrics.json": "0f1a0e28aff5832ab47be885f766b921150a7c47eb7a7f44180fb35df3bd6ccf",
     "artifacts/sparql_official_v2/bartpho/seed-42/metrics.json": "239935d631ea05e7b234f8a2bd4dd149253603ffaf352f2f66b84a109f360824",
-    "artifacts/sparql_official_v2/bartpho/seed-7/benchmark_metrics.json": "699a826f548de49b34d34e6de46434fa9120e29d50606686ef767f99b3328e92",
-    "artifacts/sparql_official_v2/bartpho/seed-7/metrics.json": "a0d4ee6a6d986f04408a558bd094729120347951645cd67b0c6f1adb0d24439b",
-    "artifacts/sparql_official_v2/summary.json": "eeb662b2422998f963524d6c53049e0f2d906b10793a7f1b718a0f59f10ef54c",
-    "artifacts/sparql_official_v2/vit5/seed-21/benchmark_metrics.json": "094e92eb92b8faa0ac4f1ca48cbaa9ce24dd15ac91d1363278b299fc5e70a0da",
-    "artifacts/sparql_official_v2/vit5/seed-21/metrics.json": "e51359d115995127b9436413d291ff00136fb2cc517b095df62478009b8d6bc6",
+    "artifacts/sparql_official_v2/summary_seed42.json": "2ba76132772e6c6ac0904203151c747908bf4d9677d83eee82cb7f29e3da80a1",
+    "artifacts/sparql_official_v2/t5gemma2/seed-42/benchmark_metrics.json": "b5a4501c9aaa80a893b1d7c2208aa619e7e391f78c43161ccb0fb49a0d3aec7a",
+    "artifacts/sparql_official_v2/t5gemma2/seed-42/metrics.json": "f183d2b4930f722ca6e6411af2fe03502eabbf2c596f472481e715a3638743a2",
     "artifacts/sparql_official_v2/vit5/seed-42/benchmark_metrics.json": "7461d13bd579f7750fef8f6a9acbaec93ae8fe328d892813b5d9ebe79de7634a",
     "artifacts/sparql_official_v2/vit5/seed-42/metrics.json": "5cccd8e5557427ce1d0d8e14f0b75c1434936cea3ba8edab6d082edf05a62f1c",
-    "artifacts/sparql_official_v2/vit5/seed-7/benchmark_metrics.json": "fb61277644e13642e6269d9c4de46a69fe6d058d9eb5bd495af1cd953cb67789",
-    "artifacts/sparql_official_v2/vit5/seed-7/metrics.json": "105e7e49f3b0c02f6240e3f87cc74368df9fc8bdfebb6c6d9469656569e4b932",
     "artifacts/sparql_stage_g_v2/diagnostic/bartpho/seed-42/metrics.json": "d0d75f11204b2c5c2edc064fa64ecabf152bfe4c1351c7b3925785e3dad0dfc4",
     "artifacts/sparql_stage_g_v2/diagnostic/vit5/seed-42/metrics.json": "82ff2fc7ef1548ee4783c54514ddd07d573355f83d69e93f77a97acd14e839aa",
     "artifacts/sparql_stage_g_v2/learning_audit/bartpho/metrics.json": "f2b67884111ec0ccec491869ea2ef5f4f0aabd34a8bb2c3c4ba2279c9deaf754",
@@ -26,38 +20,20 @@
   "checkpoint_integrity": [
     {
       "model": "bartpho",
-      "seed": 7,
-      "model_sha256": "99c1fc7f93f5691c53962139b96ab5e9ee90d6004b45f5b2812e8c40531b7935",
-      "passed": true
-    },
-    {
-      "model": "bartpho",
-      "seed": 21,
-      "model_sha256": "ab301bc1111100fd7d512e4a73e529da32d2d80d1528d3d0375644eaa00f0345",
-      "passed": true
-    },
-    {
-      "model": "bartpho",
       "seed": 42,
       "model_sha256": "05d71493a3aa94808df5f812aa8b3bf3fdaf294c27ae9be498c8c08eb9f0320e",
       "passed": true
     },
     {
       "model": "vit5",
-      "seed": 7,
-      "model_sha256": "49ce2ab07c12be9958a3d58810e5996774ec4b181abf470c9809a812993a3123",
-      "passed": true
-    },
-    {
-      "model": "vit5",
-      "seed": 21,
-      "model_sha256": "a49753d1d3cbac6555c6448f12a09f094099da9f8dd6f108f28468735a12297a",
-      "passed": true
-    },
-    {
-      "model": "vit5",
       "seed": 42,
       "model_sha256": "a62a4d8e97f7ce059ebd9b57b69859f7ada4e987aa1b0ba0321aaaedd36550f1",
+      "passed": true
+    },
+    {
+      "model": "t5gemma2",
+      "seed": 42,
+      "model_sha256": "2f239b66133145fb81c260ec67c39e2217ca7e7c5c22a698f2690398685ae40c",
       "passed": true
     }
   ],
@@ -228,261 +204,9 @@
   "official": {
     "root": "artifacts/sparql_official_v2",
     "seeds": [
-      7,
-      21,
       42
     ],
     "runs": [
-      {
-        "model": "bartpho",
-        "seed": 7,
-        "validation": {
-          "count": 140,
-          "parse_rate": 0.9785714285714285,
-          "execution_rate": 0.9785714285714285,
-          "answer_exact_rate": 0.6571428571428571,
-          "canonical_query_exact_rate": 0.6571428571428571
-        },
-        "benchmark": {
-          "count": 140,
-          "parse_rate": 0.9928571428571429,
-          "execution_rate": 0.9928571428571429,
-          "answer_exact_rate": 0.6571428571428571,
-          "canonical_query_exact_rate": 0.6571428571428571
-        },
-        "benchmark_by_register": {
-          "colloquial": {
-            "count": 35,
-            "parse_rate": 0.9714285714285714,
-            "execution_rate": 0.9714285714285714,
-            "answer_exact_rate": 0.7428571428571429,
-            "canonical_query_exact_rate": 0.7428571428571429
-          },
-          "formal": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.8,
-            "canonical_query_exact_rate": 0.8
-          },
-          "neutral": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7714285714285715,
-            "canonical_query_exact_rate": 0.7714285714285715
-          },
-          "noisy": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.3142857142857143,
-            "canonical_query_exact_rate": 0.3142857142857143
-          }
-        },
-        "benchmark_by_query_shape": {
-          "aggregate": {
-            "count": 8,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.25,
-            "canonical_query_exact_rate": 0.25
-          },
-          "aggregate_filter": {
-            "count": 4,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 1.0,
-            "canonical_query_exact_rate": 1.0
-          },
-          "direct": {
-            "count": 60,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7,
-            "canonical_query_exact_rate": 0.7
-          },
-          "graph_hop": {
-            "count": 48,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.75,
-            "canonical_query_exact_rate": 0.75
-          },
-          "multi_column": {
-            "count": 20,
-            "parse_rate": 0.95,
-            "execution_rate": 0.95,
-            "answer_exact_rate": 0.4,
-            "canonical_query_exact_rate": 0.4
-          }
-        },
-        "training": {
-          "model": "bartpho",
-          "model_id": "vinai/bartpho-syllable",
-          "revision": "36eee8b4d648dd99da56462edcda3c5c97f7f3de",
-          "seed": 7,
-          "epochs": 40.0,
-          "max_steps": -1,
-          "train_records": 656,
-          "validation_records": 140,
-          "dataset_records": 936,
-          "batch_size": 4,
-          "gradient_accumulation": 2,
-          "dynamic_padding_multiple": 8,
-          "bf16": true,
-          "tf32": true,
-          "torch_compile": false,
-          "gradient_checkpointing": false,
-          "generation_do_sample": false,
-          "dropout_disabled": true,
-          "optimizer": "adamw_8bit",
-          "learning_rate": 3e-05,
-          "evaluation_every_epochs": 5.0,
-          "train_runtime_seconds": 801.51,
-          "train_loss": 0.092413,
-          "peak_vram_bytes": 3189801472,
-          "peak_vram_reserved_bytes": 3317694464,
-          "best_checkpoint": "artifacts/sparql_official_v2/bartpho/seed-7/checkpoint-1230",
-          "smoke_test": false,
-          "learning_audit": false,
-          "torch_version": "2.13.0+cu130",
-          "transformers_version": "5.14.1",
-          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
-        },
-        "inference": {
-          "records": 140,
-          "batch_size": 1,
-          "seconds": 21.352,
-          "records_per_second": 6.557,
-          "peak_vram_bytes": 806258688
-        }
-      },
-      {
-        "model": "bartpho",
-        "seed": 21,
-        "validation": {
-          "count": 140,
-          "parse_rate": 0.9785714285714285,
-          "execution_rate": 0.9785714285714285,
-          "answer_exact_rate": 0.6928571428571428,
-          "canonical_query_exact_rate": 0.6928571428571428
-        },
-        "benchmark": {
-          "count": 140,
-          "parse_rate": 0.9928571428571429,
-          "execution_rate": 0.9928571428571429,
-          "answer_exact_rate": 0.6214285714285714,
-          "canonical_query_exact_rate": 0.6214285714285714
-        },
-        "benchmark_by_register": {
-          "colloquial": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.6571428571428571,
-            "canonical_query_exact_rate": 0.6571428571428571
-          },
-          "formal": {
-            "count": 35,
-            "parse_rate": 0.9714285714285714,
-            "execution_rate": 0.9714285714285714,
-            "answer_exact_rate": 0.7428571428571429,
-            "canonical_query_exact_rate": 0.7428571428571429
-          },
-          "neutral": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7142857142857143,
-            "canonical_query_exact_rate": 0.7142857142857143
-          },
-          "noisy": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.37142857142857144,
-            "canonical_query_exact_rate": 0.37142857142857144
-          }
-        },
-        "benchmark_by_query_shape": {
-          "aggregate": {
-            "count": 8,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.25,
-            "canonical_query_exact_rate": 0.25
-          },
-          "aggregate_filter": {
-            "count": 4,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 1.0,
-            "canonical_query_exact_rate": 1.0
-          },
-          "direct": {
-            "count": 60,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7,
-            "canonical_query_exact_rate": 0.7
-          },
-          "graph_hop": {
-            "count": 48,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.6875,
-            "canonical_query_exact_rate": 0.6875
-          },
-          "multi_column": {
-            "count": 20,
-            "parse_rate": 0.95,
-            "execution_rate": 0.95,
-            "answer_exact_rate": 0.3,
-            "canonical_query_exact_rate": 0.3
-          }
-        },
-        "training": {
-          "model": "bartpho",
-          "model_id": "vinai/bartpho-syllable",
-          "revision": "36eee8b4d648dd99da56462edcda3c5c97f7f3de",
-          "seed": 21,
-          "epochs": 40.0,
-          "max_steps": -1,
-          "train_records": 656,
-          "validation_records": 140,
-          "dataset_records": 936,
-          "batch_size": 4,
-          "gradient_accumulation": 2,
-          "dynamic_padding_multiple": 8,
-          "bf16": true,
-          "tf32": true,
-          "torch_compile": false,
-          "gradient_checkpointing": false,
-          "generation_do_sample": false,
-          "dropout_disabled": true,
-          "optimizer": "adamw_8bit",
-          "learning_rate": 3e-05,
-          "evaluation_every_epochs": 5.0,
-          "train_runtime_seconds": 811.521,
-          "train_loss": 0.09268,
-          "peak_vram_bytes": 3190851072,
-          "peak_vram_reserved_bytes": 3275751424,
-          "best_checkpoint": "artifacts/sparql_official_v2/bartpho/seed-21/checkpoint-2050",
-          "smoke_test": false,
-          "learning_audit": false,
-          "torch_version": "2.13.0+cu130",
-          "transformers_version": "5.14.1",
-          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
-        },
-        "inference": {
-          "records": 140,
-          "batch_size": 1,
-          "seconds": 20.807,
-          "records_per_second": 6.729,
-          "peak_vram_bytes": 807175680
-        }
-      },
       {
         "model": "bartpho",
         "seed": 42,
@@ -610,256 +334,6 @@
       },
       {
         "model": "vit5",
-        "seed": 7,
-        "validation": {
-          "count": 140,
-          "parse_rate": 0.9857142857142858,
-          "execution_rate": 0.9857142857142858,
-          "answer_exact_rate": 0.7071428571428572,
-          "canonical_query_exact_rate": 0.7071428571428572
-        },
-        "benchmark": {
-          "count": 140,
-          "parse_rate": 1.0,
-          "execution_rate": 0.9928571428571429,
-          "answer_exact_rate": 0.5428571428571428,
-          "canonical_query_exact_rate": 0.5428571428571428
-        },
-        "benchmark_by_register": {
-          "colloquial": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.6285714285714286,
-            "canonical_query_exact_rate": 0.6285714285714286
-          },
-          "formal": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 0.9714285714285714,
-            "answer_exact_rate": 0.6285714285714286,
-            "canonical_query_exact_rate": 0.6285714285714286
-          },
-          "neutral": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.6,
-            "canonical_query_exact_rate": 0.6
-          },
-          "noisy": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.3142857142857143,
-            "canonical_query_exact_rate": 0.3142857142857143
-          }
-        },
-        "benchmark_by_query_shape": {
-          "aggregate": {
-            "count": 8,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.125,
-            "canonical_query_exact_rate": 0.125
-          },
-          "aggregate_filter": {
-            "count": 4,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 1.0,
-            "canonical_query_exact_rate": 1.0
-          },
-          "direct": {
-            "count": 60,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.65,
-            "canonical_query_exact_rate": 0.65
-          },
-          "graph_hop": {
-            "count": 48,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.5625,
-            "canonical_query_exact_rate": 0.5625
-          },
-          "multi_column": {
-            "count": 20,
-            "parse_rate": 1.0,
-            "execution_rate": 0.95,
-            "answer_exact_rate": 0.25,
-            "canonical_query_exact_rate": 0.25
-          }
-        },
-        "training": {
-          "model": "vit5",
-          "model_id": "VietAI/vit5-base",
-          "revision": "2209a38d735ede63e88f5aa52bcdc11a05a37b85",
-          "seed": 7,
-          "epochs": 40.0,
-          "max_steps": -1,
-          "train_records": 656,
-          "validation_records": 140,
-          "dataset_records": 936,
-          "batch_size": 8,
-          "gradient_accumulation": 1,
-          "dynamic_padding_multiple": 8,
-          "bf16": true,
-          "tf32": true,
-          "torch_compile": false,
-          "gradient_checkpointing": false,
-          "generation_do_sample": false,
-          "dropout_disabled": false,
-          "optimizer": "adamw_8bit",
-          "learning_rate": 3e-05,
-          "evaluation_every_epochs": 5.0,
-          "train_runtime_seconds": 760.788,
-          "train_loss": 0.20628,
-          "peak_vram_bytes": 2522497024,
-          "peak_vram_reserved_bytes": 2944401408,
-          "best_checkpoint": "artifacts/sparql_official_v2/vit5/seed-7/checkpoint-2870",
-          "smoke_test": false,
-          "learning_audit": false,
-          "torch_version": "2.13.0+cu130",
-          "transformers_version": "5.14.1",
-          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
-        },
-        "inference": {
-          "records": 140,
-          "batch_size": 1,
-          "seconds": 40.226,
-          "records_per_second": 3.48,
-          "peak_vram_bytes": 482757120
-        }
-      },
-      {
-        "model": "vit5",
-        "seed": 21,
-        "validation": {
-          "count": 140,
-          "parse_rate": 0.9857142857142858,
-          "execution_rate": 0.9857142857142858,
-          "answer_exact_rate": 0.7142857142857143,
-          "canonical_query_exact_rate": 0.7142857142857143
-        },
-        "benchmark": {
-          "count": 140,
-          "parse_rate": 0.9857142857142858,
-          "execution_rate": 0.9857142857142858,
-          "answer_exact_rate": 0.6571428571428571,
-          "canonical_query_exact_rate": 0.65
-        },
-        "benchmark_by_register": {
-          "colloquial": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7428571428571429,
-            "canonical_query_exact_rate": 0.7428571428571429
-          },
-          "formal": {
-            "count": 35,
-            "parse_rate": 0.9714285714285714,
-            "execution_rate": 0.9714285714285714,
-            "answer_exact_rate": 0.7428571428571429,
-            "canonical_query_exact_rate": 0.7428571428571429
-          },
-          "neutral": {
-            "count": 35,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.8,
-            "canonical_query_exact_rate": 0.8
-          },
-          "noisy": {
-            "count": 35,
-            "parse_rate": 0.9714285714285714,
-            "execution_rate": 0.9714285714285714,
-            "answer_exact_rate": 0.34285714285714286,
-            "canonical_query_exact_rate": 0.3142857142857143
-          }
-        },
-        "benchmark_by_query_shape": {
-          "aggregate": {
-            "count": 8,
-            "parse_rate": 0.875,
-            "execution_rate": 0.875,
-            "answer_exact_rate": 0.25,
-            "canonical_query_exact_rate": 0.25
-          },
-          "aggregate_filter": {
-            "count": 4,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 1.0,
-            "canonical_query_exact_rate": 1.0
-          },
-          "direct": {
-            "count": 60,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.7166666666666667,
-            "canonical_query_exact_rate": 0.7166666666666667
-          },
-          "graph_hop": {
-            "count": 48,
-            "parse_rate": 0.9791666666666666,
-            "execution_rate": 0.9791666666666666,
-            "answer_exact_rate": 0.7291666666666666,
-            "canonical_query_exact_rate": 0.7083333333333334
-          },
-          "multi_column": {
-            "count": 20,
-            "parse_rate": 1.0,
-            "execution_rate": 1.0,
-            "answer_exact_rate": 0.4,
-            "canonical_query_exact_rate": 0.4
-          }
-        },
-        "training": {
-          "model": "vit5",
-          "model_id": "VietAI/vit5-base",
-          "revision": "2209a38d735ede63e88f5aa52bcdc11a05a37b85",
-          "seed": 21,
-          "epochs": 40.0,
-          "max_steps": -1,
-          "train_records": 656,
-          "validation_records": 140,
-          "dataset_records": 936,
-          "batch_size": 8,
-          "gradient_accumulation": 1,
-          "dynamic_padding_multiple": 8,
-          "bf16": true,
-          "tf32": true,
-          "torch_compile": false,
-          "gradient_checkpointing": false,
-          "generation_do_sample": false,
-          "dropout_disabled": false,
-          "optimizer": "adamw_8bit",
-          "learning_rate": 3e-05,
-          "evaluation_every_epochs": 5.0,
-          "train_runtime_seconds": 769.813,
-          "train_loss": 0.214651,
-          "peak_vram_bytes": 2513321984,
-          "peak_vram_reserved_bytes": 2761949184,
-          "best_checkpoint": "artifacts/sparql_official_v2/vit5/seed-21/checkpoint-3280",
-          "smoke_test": false,
-          "learning_audit": false,
-          "torch_version": "2.13.0+cu130",
-          "transformers_version": "5.14.1",
-          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
-        },
-        "inference": {
-          "records": 140,
-          "batch_size": 1,
-          "seconds": 41.931,
-          "records_per_second": 3.339,
-          "peak_vram_bytes": 482867200
-        }
-      },
-      {
-        "model": "vit5",
         "seed": 42,
         "validation": {
           "count": 140,
@@ -982,76 +456,201 @@
           "records_per_second": 3.122,
           "peak_vram_bytes": 483751936
         }
+      },
+      {
+        "model": "t5gemma2",
+        "seed": 42,
+        "validation": {
+          "count": 140,
+          "parse_rate": 1.0,
+          "execution_rate": 1.0,
+          "answer_exact_rate": 0.7428571428571429,
+          "canonical_query_exact_rate": 0.7285714285714285
+        },
+        "benchmark": {
+          "count": 140,
+          "parse_rate": 1.0,
+          "execution_rate": 1.0,
+          "answer_exact_rate": 0.7785714285714286,
+          "canonical_query_exact_rate": 0.7785714285714286
+        },
+        "benchmark_by_register": {
+          "colloquial": {
+            "count": 35,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.7428571428571429,
+            "canonical_query_exact_rate": 0.7428571428571429
+          },
+          "formal": {
+            "count": 35,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.8285714285714286,
+            "canonical_query_exact_rate": 0.8285714285714286
+          },
+          "neutral": {
+            "count": 35,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.8571428571428571,
+            "canonical_query_exact_rate": 0.8571428571428571
+          },
+          "noisy": {
+            "count": 35,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.6857142857142857,
+            "canonical_query_exact_rate": 0.6857142857142857
+          }
+        },
+        "benchmark_by_query_shape": {
+          "aggregate": {
+            "count": 8,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.75,
+            "canonical_query_exact_rate": 0.75
+          },
+          "aggregate_filter": {
+            "count": 4,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 1.0,
+            "canonical_query_exact_rate": 1.0
+          },
+          "direct": {
+            "count": 60,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.7,
+            "canonical_query_exact_rate": 0.7
+          },
+          "graph_hop": {
+            "count": 48,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.8958333333333334,
+            "canonical_query_exact_rate": 0.8958333333333334
+          },
+          "multi_column": {
+            "count": 20,
+            "parse_rate": 1.0,
+            "execution_rate": 1.0,
+            "answer_exact_rate": 0.7,
+            "canonical_query_exact_rate": 0.7
+          }
+        },
+        "training": {
+          "model": "t5gemma2",
+          "model_id": "google/t5gemma-2-270m-270m",
+          "revision": "7c38f16641f455ef0685b18431faf1b17722d5a1",
+          "seed": 42,
+          "epochs": 40.0,
+          "max_steps": -1,
+          "train_records": 656,
+          "validation_records": 140,
+          "dataset_records": 936,
+          "batch_size": 8,
+          "gradient_accumulation": 1,
+          "dynamic_padding_multiple": 8,
+          "bf16": true,
+          "tf32": true,
+          "torch_compile": false,
+          "gradient_checkpointing": true,
+          "generation_do_sample": false,
+          "dropout_disabled": false,
+          "optimizer": "adamw_8bit",
+          "learning_rate": 3e-05,
+          "evaluation_every_epochs": 5.0,
+          "train_runtime_seconds": 1139.833,
+          "train_loss": 0.04184,
+          "peak_vram_bytes": 5192165376,
+          "peak_vram_reserved_bytes": 5888802816,
+          "best_checkpoint": "artifacts/sparql_official_v2/t5gemma2/seed-42/checkpoint-2870",
+          "smoke_test": false,
+          "learning_audit": false,
+          "torch_version": "2.13.0+cu130",
+          "transformers_version": "5.14.1",
+          "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU"
+        },
+        "inference": {
+          "records": 140,
+          "batch_size": 1,
+          "seconds": 64.994,
+          "records_per_second": 2.154,
+          "peak_vram_bytes": 1598205952
+        }
       }
     ],
     "models": {
       "bartpho": {
-        "run_count": 3,
+        "run_count": 1,
         "validation": {
           "count": 140,
           "parse_rate": {
-            "mean": 0.9761904761904762,
-            "sample_std": 0.004123930494211598,
+            "mean": 0.9714285714285714,
+            "sample_std": 0.0,
             "min": 0.9714285714285714,
-            "max": 0.9785714285714285
+            "max": 0.9714285714285714
           },
           "execution_rate": {
-            "mean": 0.9761904761904762,
-            "sample_std": 0.004123930494211598,
+            "mean": 0.9714285714285714,
+            "sample_std": 0.0,
             "min": 0.9714285714285714,
-            "max": 0.9785714285714285
+            "max": 0.9714285714285714
           },
           "answer_exact_rate": {
-            "mean": 0.6642857142857143,
-            "sample_std": 0.025753937681885608,
+            "mean": 0.6428571428571429,
+            "sample_std": 0.0,
             "min": 0.6428571428571429,
-            "max": 0.6928571428571428
+            "max": 0.6428571428571429
           },
           "canonical_query_exact_rate": {
-            "mean": 0.6642857142857143,
-            "sample_std": 0.025753937681885608,
+            "mean": 0.6428571428571429,
+            "sample_std": 0.0,
             "min": 0.6428571428571429,
-            "max": 0.6928571428571428
+            "max": 0.6428571428571429
           }
         },
         "benchmark": {
           "count": 140,
           "parse_rate": {
-            "mean": 0.9952380952380953,
-            "sample_std": 0.004123930494211598,
-            "min": 0.9928571428571429,
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
             "max": 1.0
           },
           "execution_rate": {
-            "mean": 0.9952380952380953,
-            "sample_std": 0.004123930494211598,
-            "min": 0.9928571428571429,
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
             "max": 1.0
           },
           "answer_exact_rate": {
-            "mean": 0.6595238095238095,
-            "sample_std": 0.03933978962347213,
-            "min": 0.6214285714285714,
+            "mean": 0.7,
+            "sample_std": 0.0,
+            "min": 0.7,
             "max": 0.7
           },
           "canonical_query_exact_rate": {
-            "mean": 0.6595238095238095,
-            "sample_std": 0.03933978962347213,
-            "min": 0.6214285714285714,
+            "mean": 0.7,
+            "sample_std": 0.0,
+            "min": 0.7,
             "max": 0.7
           }
         },
         "training": {
           "seconds": {
-            "mean": 807.975,
-            "sample_std": 5.607624363311074,
-            "min": 801.51,
-            "max": 811.521
+            "mean": 810.894,
+            "sample_std": 0.0,
+            "min": 810.894,
+            "max": 810.894
           },
           "peak_vram_bytes": {
-            "mean": 3191897258.6666665,
-            "sample_std": 2771175.267018189,
-            "min": 3189801472.0,
+            "mean": 3195039232.0,
+            "sample_std": 0.0,
+            "min": 3195039232.0,
             "max": 3195039232.0
           }
         },
@@ -1059,54 +658,54 @@
           "colloquial": {
             "count": 35,
             "parse_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.7238095238095239,
-              "sample_std": 0.059476171413318096,
-              "min": 0.6571428571428571,
+              "mean": 0.7714285714285715,
+              "sample_std": 0.0,
+              "min": 0.7714285714285715,
               "max": 0.7714285714285715
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7238095238095239,
-              "sample_std": 0.059476171413318096,
-              "min": 0.6571428571428571,
+              "mean": 0.7714285714285715,
+              "sample_std": 0.0,
+              "min": 0.7714285714285715,
               "max": 0.7714285714285715
             }
           },
           "formal": {
             "count": 35,
             "parse_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.7999999999999999,
-              "sample_std": 0.057142857142857106,
-              "min": 0.7428571428571429,
+              "mean": 0.8571428571428571,
+              "sample_std": 0.0,
+              "min": 0.8571428571428571,
               "max": 0.8571428571428571
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7999999999999999,
-              "sample_std": 0.057142857142857106,
-              "min": 0.7428571428571429,
+              "mean": 0.8571428571428571,
+              "sample_std": 0.0,
+              "min": 0.8571428571428571,
               "max": 0.8571428571428571
             }
           },
@@ -1125,15 +724,15 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.7619047619047619,
-              "sample_std": 0.04364357804719849,
-              "min": 0.7142857142857143,
+              "mean": 0.8,
+              "sample_std": 0.0,
+              "min": 0.8,
               "max": 0.8
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7619047619047619,
-              "sample_std": 0.04364357804719849,
-              "min": 0.7142857142857143,
+              "mean": 0.8,
+              "sample_std": 0.0,
+              "min": 0.8,
               "max": 0.8
             }
           },
@@ -1152,15 +751,15 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.3523809523809524,
-              "sample_std": 0.03299144395369291,
-              "min": 0.3142857142857143,
+              "mean": 0.37142857142857144,
+              "sample_std": 0.0,
+              "min": 0.37142857142857144,
               "max": 0.37142857142857144
             },
             "canonical_query_exact_rate": {
-              "mean": 0.3523809523809524,
-              "sample_std": 0.03299144395369291,
-              "min": 0.3142857142857143,
+              "mean": 0.37142857142857144,
+              "sample_std": 0.0,
+              "min": 0.37142857142857144,
               "max": 0.37142857142857144
             }
           }
@@ -1208,16 +807,16 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.9166666666666666,
-              "sample_std": 0.14433756729740643,
+              "mean": 0.75,
+              "sample_std": 0.0,
               "min": 0.75,
-              "max": 1.0
+              "max": 0.75
             },
             "canonical_query_exact_rate": {
-              "mean": 0.9166666666666666,
-              "sample_std": 0.14433756729740643,
+              "mean": 0.75,
+              "sample_std": 0.0,
               "min": 0.75,
-              "max": 1.0
+              "max": 0.75
             }
           },
           "direct": {
@@ -1235,15 +834,15 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.7222222222222222,
-              "sample_std": 0.038490017945975105,
-              "min": 0.7,
+              "mean": 0.7666666666666667,
+              "sample_std": 0.0,
+              "min": 0.7666666666666667,
               "max": 0.7666666666666667
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7222222222222222,
-              "sample_std": 0.038490017945975105,
-              "min": 0.7,
+              "mean": 0.7666666666666667,
+              "sample_std": 0.0,
+              "min": 0.7666666666666667,
               "max": 0.7666666666666667
             }
           },
@@ -1262,136 +861,136 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.7430555555555555,
-              "sample_std": 0.052429405800491304,
-              "min": 0.6875,
+              "mean": 0.7916666666666666,
+              "sample_std": 0.0,
+              "min": 0.7916666666666666,
               "max": 0.7916666666666666
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7430555555555555,
-              "sample_std": 0.052429405800491304,
-              "min": 0.6875,
+              "mean": 0.7916666666666666,
+              "sample_std": 0.0,
+              "min": 0.7916666666666666,
               "max": 0.7916666666666666
             }
           },
           "multi_column": {
             "count": 20,
             "parse_rate": {
-              "mean": 0.9666666666666667,
-              "sample_std": 0.028867513459481315,
-              "min": 0.95,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9666666666666667,
-              "sample_std": 0.028867513459481315,
-              "min": 0.95,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.3833333333333333,
-              "sample_std": 0.07637626158259735,
-              "min": 0.3,
+              "mean": 0.45,
+              "sample_std": 0.0,
+              "min": 0.45,
               "max": 0.45
             },
             "canonical_query_exact_rate": {
-              "mean": 0.3833333333333333,
-              "sample_std": 0.07637626158259735,
-              "min": 0.3,
+              "mean": 0.45,
+              "sample_std": 0.0,
+              "min": 0.45,
               "max": 0.45
             }
           }
         },
         "inference": {
           "seconds": {
-            "mean": 21.195333333333334,
-            "sample_std": 0.33839079971732955,
-            "min": 20.807,
+            "mean": 21.427,
+            "sample_std": 0.0,
+            "min": 21.427,
             "max": 21.427
           },
           "records_per_second": {
-            "mean": 6.6066666666666665,
-            "sample_std": 0.10656609842409236,
+            "mean": 6.534,
+            "sample_std": 0.0,
             "min": 6.534,
-            "max": 6.729
+            "max": 6.534
           },
           "peak_vram_bytes": {
-            "mean": 806460586.6666666,
-            "sample_std": 638549.25920976,
+            "mean": 805947392.0,
+            "sample_std": 0.0,
             "min": 805947392.0,
-            "max": 807175680.0
+            "max": 805947392.0
           },
-          "measured_runs": 3
+          "measured_runs": 1
         }
       },
       "vit5": {
-        "run_count": 3,
+        "run_count": 1,
         "validation": {
           "count": 140,
           "parse_rate": {
-            "mean": 0.9833333333333334,
-            "sample_std": 0.004123930494211662,
+            "mean": 0.9785714285714285,
+            "sample_std": 0.0,
             "min": 0.9785714285714285,
-            "max": 0.9857142857142858
+            "max": 0.9785714285714285
           },
           "execution_rate": {
-            "mean": 0.9833333333333334,
-            "sample_std": 0.004123930494211662,
+            "mean": 0.9785714285714285,
+            "sample_std": 0.0,
             "min": 0.9785714285714285,
-            "max": 0.9857142857142858
+            "max": 0.9785714285714285
           },
           "answer_exact_rate": {
-            "mean": 0.7023809523809524,
-            "sample_std": 0.01486904285332953,
+            "mean": 0.6857142857142857,
+            "sample_std": 0.0,
             "min": 0.6857142857142857,
-            "max": 0.7142857142857143
+            "max": 0.6857142857142857
           },
           "canonical_query_exact_rate": {
-            "mean": 0.7023809523809524,
-            "sample_std": 0.01486904285332953,
+            "mean": 0.6857142857142857,
+            "sample_std": 0.0,
             "min": 0.6857142857142857,
-            "max": 0.7142857142857143
+            "max": 0.6857142857142857
           }
         },
         "benchmark": {
           "count": 140,
           "parse_rate": {
             "mean": 0.9928571428571429,
-            "sample_std": 0.0071428571428571175,
-            "min": 0.9857142857142858,
-            "max": 1.0
+            "sample_std": 0.0,
+            "min": 0.9928571428571429,
+            "max": 0.9928571428571429
           },
           "execution_rate": {
-            "mean": 0.9904761904761905,
-            "sample_std": 0.004123930494211598,
-            "min": 0.9857142857142858,
+            "mean": 0.9928571428571429,
+            "sample_std": 0.0,
+            "min": 0.9928571428571429,
             "max": 0.9928571428571429
           },
           "answer_exact_rate": {
-            "mean": 0.6119047619047618,
-            "sample_std": 0.0607492896293956,
-            "min": 0.5428571428571428,
-            "max": 0.6571428571428571
+            "mean": 0.6357142857142857,
+            "sample_std": 0.0,
+            "min": 0.6357142857142857,
+            "max": 0.6357142857142857
           },
           "canonical_query_exact_rate": {
-            "mean": 0.6071428571428571,
-            "sample_std": 0.05669467095138411,
-            "min": 0.5428571428571428,
-            "max": 0.65
+            "mean": 0.6285714285714286,
+            "sample_std": 0.0,
+            "min": 0.6285714285714286,
+            "max": 0.6285714285714286
           }
         },
         "training": {
           "seconds": {
-            "mean": 775.9816666666667,
-            "sample_std": 19.042705173722936,
-            "min": 760.788,
+            "mean": 797.344,
+            "sample_std": 0.0,
+            "min": 797.344,
             "max": 797.344
           },
           "peak_vram_bytes": {
-            "mean": 2517988693.3333335,
-            "sample_std": 4589569.980067994,
-            "min": 2513321984.0,
-            "max": 2522497024.0
+            "mean": 2518147072.0,
+            "sample_std": 0.0,
+            "min": 2518147072.0,
+            "max": 2518147072.0
           }
         },
         "by_register": {
@@ -1410,25 +1009,25 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.6666666666666666,
-              "sample_std": 0.06598288790738582,
+              "mean": 0.6285714285714286,
+              "sample_std": 0.0,
               "min": 0.6285714285714286,
-              "max": 0.7428571428571429
+              "max": 0.6285714285714286
             },
             "canonical_query_exact_rate": {
-              "mean": 0.6666666666666666,
-              "sample_std": 0.06598288790738582,
+              "mean": 0.6285714285714286,
+              "sample_std": 0.0,
               "min": 0.6285714285714286,
-              "max": 0.7428571428571429
+              "max": 0.6285714285714286
             }
           },
           "formal": {
             "count": 35,
             "parse_rate": {
-              "mean": 0.980952380952381,
-              "sample_std": 0.016495721976846456,
+              "mean": 0.9714285714285714,
+              "sample_std": 0.0,
               "min": 0.9714285714285714,
-              "max": 1.0
+              "max": 0.9714285714285714
             },
             "execution_rate": {
               "mean": 0.9714285714285714,
@@ -1437,15 +1036,15 @@
               "max": 0.9714285714285714
             },
             "answer_exact_rate": {
-              "mean": 0.7333333333333334,
-              "sample_std": 0.1003395595509785,
-              "min": 0.6285714285714286,
+              "mean": 0.8285714285714286,
+              "sample_std": 0.0,
+              "min": 0.8285714285714286,
               "max": 0.8285714285714286
             },
             "canonical_query_exact_rate": {
-              "mean": 0.7333333333333334,
-              "sample_std": 0.1003395595509785,
-              "min": 0.6285714285714286,
+              "mean": 0.8285714285714286,
+              "sample_std": 0.0,
+              "min": 0.8285714285714286,
               "max": 0.8285714285714286
             }
           },
@@ -1464,42 +1063,42 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.6761904761904761,
-              "sample_std": 0.1081696827771481,
-              "min": 0.6,
-              "max": 0.8
+              "mean": 0.6285714285714286,
+              "sample_std": 0.0,
+              "min": 0.6285714285714286,
+              "max": 0.6285714285714286
             },
             "canonical_query_exact_rate": {
-              "mean": 0.6761904761904761,
-              "sample_std": 0.1081696827771481,
-              "min": 0.6,
-              "max": 0.8
+              "mean": 0.6285714285714286,
+              "sample_std": 0.0,
+              "min": 0.6285714285714286,
+              "max": 0.6285714285714286
             }
           },
           "noisy": {
             "count": 35,
             "parse_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9904761904761905,
-              "sample_std": 0.016495721976846456,
-              "min": 0.9714285714285714,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.37142857142857144,
-              "sample_std": 0.07559289460184544,
-              "min": 0.3142857142857143,
+              "mean": 0.45714285714285713,
+              "sample_std": 0.0,
+              "min": 0.45714285714285713,
               "max": 0.45714285714285713
             },
             "canonical_query_exact_rate": {
-              "mean": 0.3523809523809524,
-              "sample_std": 0.0659828879073858,
-              "min": 0.3142857142857143,
+              "mean": 0.42857142857142855,
+              "sample_std": 0.0,
+              "min": 0.42857142857142855,
               "max": 0.42857142857142855
             }
           }
@@ -1508,27 +1107,27 @@
           "aggregate": {
             "count": 8,
             "parse_rate": {
-              "mean": 0.9583333333333334,
-              "sample_std": 0.07216878364870322,
-              "min": 0.875,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9583333333333334,
-              "sample_std": 0.07216878364870322,
-              "min": 0.875,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.25,
-              "sample_std": 0.125,
-              "min": 0.125,
+              "mean": 0.375,
+              "sample_std": 0.0,
+              "min": 0.375,
               "max": 0.375
             },
             "canonical_query_exact_rate": {
-              "mean": 0.25,
-              "sample_std": 0.125,
-              "min": 0.125,
+              "mean": 0.375,
+              "sample_std": 0.0,
+              "min": 0.375,
               "max": 0.375
             }
           },
@@ -1574,93 +1173,432 @@
               "max": 1.0
             },
             "answer_exact_rate": {
-              "mean": 0.6944444444444445,
-              "sample_std": 0.03849001794597504,
-              "min": 0.65,
+              "mean": 0.7166666666666667,
+              "sample_std": 0.0,
+              "min": 0.7166666666666667,
               "max": 0.7166666666666667
             },
             "canonical_query_exact_rate": {
-              "mean": 0.6944444444444445,
-              "sample_std": 0.03849001794597504,
-              "min": 0.65,
+              "mean": 0.7166666666666667,
+              "sample_std": 0.0,
+              "min": 0.7166666666666667,
               "max": 0.7166666666666667
             }
           },
           "graph_hop": {
             "count": 48,
             "parse_rate": {
-              "mean": 0.9930555555555555,
-              "sample_std": 0.012028130608117225,
-              "min": 0.9791666666666666,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "execution_rate": {
-              "mean": 0.9930555555555555,
-              "sample_std": 0.012028130608117225,
-              "min": 0.9791666666666666,
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
               "max": 1.0
             },
             "answer_exact_rate": {
               "mean": 0.6458333333333334,
-              "sample_std": 0.08333333333333331,
-              "min": 0.5625,
-              "max": 0.7291666666666666
+              "sample_std": 0.0,
+              "min": 0.6458333333333334,
+              "max": 0.6458333333333334
             },
             "canonical_query_exact_rate": {
-              "mean": 0.6319444444444445,
-              "sample_std": 0.07316426217258848,
-              "min": 0.5625,
-              "max": 0.7083333333333334
+              "mean": 0.625,
+              "sample_std": 0.0,
+              "min": 0.625,
+              "max": 0.625
             }
           },
           "multi_column": {
             "count": 20,
             "parse_rate": {
-              "mean": 0.9833333333333334,
-              "sample_std": 0.028867513459481315,
+              "mean": 0.95,
+              "sample_std": 0.0,
               "min": 0.95,
-              "max": 1.0
+              "max": 0.95
             },
             "execution_rate": {
-              "mean": 0.9666666666666667,
-              "sample_std": 0.028867513459481315,
+              "mean": 0.95,
+              "sample_std": 0.0,
               "min": 0.95,
-              "max": 1.0
+              "max": 0.95
             },
             "answer_exact_rate": {
-              "mean": 0.35000000000000003,
-              "sample_std": 0.08660254037844388,
-              "min": 0.25,
+              "mean": 0.4,
+              "sample_std": 0.0,
+              "min": 0.4,
               "max": 0.4
             },
             "canonical_query_exact_rate": {
-              "mean": 0.35000000000000003,
-              "sample_std": 0.08660254037844388,
-              "min": 0.25,
+              "mean": 0.4,
+              "sample_std": 0.0,
+              "min": 0.4,
               "max": 0.4
             }
           }
         },
         "inference": {
           "seconds": {
-            "mean": 42.334666666666664,
-            "sample_std": 2.336797024418967,
-            "min": 40.226,
+            "mean": 44.847,
+            "sample_std": 0.0,
+            "min": 44.847,
             "max": 44.847
           },
           "records_per_second": {
-            "mean": 3.3136666666666663,
-            "sample_std": 0.18033949465753016,
+            "mean": 3.122,
+            "sample_std": 0.0,
             "min": 3.122,
-            "max": 3.48
+            "max": 3.122
           },
           "peak_vram_bytes": {
-            "mean": 483125418.6666667,
-            "sample_std": 545364.445417313,
-            "min": 482757120.0,
+            "mean": 483751936.0,
+            "sample_std": 0.0,
+            "min": 483751936.0,
             "max": 483751936.0
           },
-          "measured_runs": 3
+          "measured_runs": 1
+        }
+      },
+      "t5gemma2": {
+        "run_count": 1,
+        "validation": {
+          "count": 140,
+          "parse_rate": {
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "execution_rate": {
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "answer_exact_rate": {
+            "mean": 0.7428571428571429,
+            "sample_std": 0.0,
+            "min": 0.7428571428571429,
+            "max": 0.7428571428571429
+          },
+          "canonical_query_exact_rate": {
+            "mean": 0.7285714285714285,
+            "sample_std": 0.0,
+            "min": 0.7285714285714285,
+            "max": 0.7285714285714285
+          }
+        },
+        "benchmark": {
+          "count": 140,
+          "parse_rate": {
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "execution_rate": {
+            "mean": 1.0,
+            "sample_std": 0.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "answer_exact_rate": {
+            "mean": 0.7785714285714286,
+            "sample_std": 0.0,
+            "min": 0.7785714285714286,
+            "max": 0.7785714285714286
+          },
+          "canonical_query_exact_rate": {
+            "mean": 0.7785714285714286,
+            "sample_std": 0.0,
+            "min": 0.7785714285714286,
+            "max": 0.7785714285714286
+          }
+        },
+        "training": {
+          "seconds": {
+            "mean": 1139.833,
+            "sample_std": 0.0,
+            "min": 1139.833,
+            "max": 1139.833
+          },
+          "peak_vram_bytes": {
+            "mean": 5192165376.0,
+            "sample_std": 0.0,
+            "min": 5192165376.0,
+            "max": 5192165376.0
+          }
+        },
+        "by_register": {
+          "colloquial": {
+            "count": 35,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.7428571428571429,
+              "sample_std": 0.0,
+              "min": 0.7428571428571429,
+              "max": 0.7428571428571429
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.7428571428571429,
+              "sample_std": 0.0,
+              "min": 0.7428571428571429,
+              "max": 0.7428571428571429
+            }
+          },
+          "formal": {
+            "count": 35,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.8285714285714286,
+              "sample_std": 0.0,
+              "min": 0.8285714285714286,
+              "max": 0.8285714285714286
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.8285714285714286,
+              "sample_std": 0.0,
+              "min": 0.8285714285714286,
+              "max": 0.8285714285714286
+            }
+          },
+          "neutral": {
+            "count": 35,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.8571428571428571,
+              "sample_std": 0.0,
+              "min": 0.8571428571428571,
+              "max": 0.8571428571428571
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.8571428571428571,
+              "sample_std": 0.0,
+              "min": 0.8571428571428571,
+              "max": 0.8571428571428571
+            }
+          },
+          "noisy": {
+            "count": 35,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.6857142857142857,
+              "sample_std": 0.0,
+              "min": 0.6857142857142857,
+              "max": 0.6857142857142857
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.6857142857142857,
+              "sample_std": 0.0,
+              "min": 0.6857142857142857,
+              "max": 0.6857142857142857
+            }
+          }
+        },
+        "by_query_shape": {
+          "aggregate": {
+            "count": 8,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.75,
+              "sample_std": 0.0,
+              "min": 0.75,
+              "max": 0.75
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.75,
+              "sample_std": 0.0,
+              "min": 0.75,
+              "max": 0.75
+            }
+          },
+          "aggregate_filter": {
+            "count": 4,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "canonical_query_exact_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            }
+          },
+          "direct": {
+            "count": 60,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.7,
+              "sample_std": 0.0,
+              "min": 0.7,
+              "max": 0.7
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.7,
+              "sample_std": 0.0,
+              "min": 0.7,
+              "max": 0.7
+            }
+          },
+          "graph_hop": {
+            "count": 48,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.8958333333333334,
+              "sample_std": 0.0,
+              "min": 0.8958333333333334,
+              "max": 0.8958333333333334
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.8958333333333334,
+              "sample_std": 0.0,
+              "min": 0.8958333333333334,
+              "max": 0.8958333333333334
+            }
+          },
+          "multi_column": {
+            "count": 20,
+            "parse_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "execution_rate": {
+              "mean": 1.0,
+              "sample_std": 0.0,
+              "min": 1.0,
+              "max": 1.0
+            },
+            "answer_exact_rate": {
+              "mean": 0.7,
+              "sample_std": 0.0,
+              "min": 0.7,
+              "max": 0.7
+            },
+            "canonical_query_exact_rate": {
+              "mean": 0.7,
+              "sample_std": 0.0,
+              "min": 0.7,
+              "max": 0.7
+            }
+          }
+        },
+        "inference": {
+          "seconds": {
+            "mean": 64.994,
+            "sample_std": 0.0,
+            "min": 64.994,
+            "max": 64.994
+          },
+          "records_per_second": {
+            "mean": 2.154,
+            "sample_std": 0.0,
+            "min": 2.154,
+            "max": 2.154
+          },
+          "peak_vram_bytes": {
+            "mean": 1598205952.0,
+            "sample_std": 0.0,
+            "min": 1598205952.0,
+            "max": 1598205952.0
+          },
+          "measured_runs": 1
         }
       }
     }
@@ -1677,47 +1615,47 @@
     ],
     "by_model": {
       "bartpho": {
-        "runs": 3,
+        "runs": 1,
         "answer_exact_rate": {
-          "mean": 0.6595238095238095,
-          "sample_std": 0.03933978962347213,
+          "mean": 0.7,
+          "sample_std": 0.0,
           "values": [
-            0.6571428571428571,
-            0.6214285714285714,
             0.7
           ]
         },
         "by_target_novelty": {
           "seen_exact_target": {
             "records": 120,
-            "mean_answer_exact_rate": 0.7055555555555556,
+            "mean_answer_exact_rate": 0.7416666666666667,
             "values": [
-              0.7166666666666667,
-              0.6583333333333333,
               0.7416666666666667
             ]
           },
           "unseen_exact_target": {
             "records": 20,
-            "mean_answer_exact_rate": 0.3833333333333333,
+            "mean_answer_exact_rate": 0.45,
             "values": [
-              0.3,
-              0.4,
               0.45
             ]
           }
         },
-        "persistent_failure_count": 34,
+        "persistent_failure_count": 42,
         "persistent_failure_ids": [
           "manual-agg-033",
           "manual-agg-036",
+          "manual-filter-040",
+          "prod-0026",
           "prod-0044",
           "prod-0064",
+          "prod-0124",
           "prod-0134",
+          "prod-0144",
           "prod-0222",
           "prod-0224",
+          "prod-0236",
           "prod-0239",
           "prod-0240",
+          "prod-0285",
           "prod-0287",
           "prod-0288",
           "prod-0296",
@@ -1728,7 +1666,9 @@
           "prod-0423",
           "prod-0424",
           "prod-0484",
+          "prod-0519",
           "prod-0600",
+          "prod-0644",
           "prod-0886",
           "prod-0888",
           "prod-0907",
@@ -1746,57 +1686,67 @@
         ]
       },
       "vit5": {
-        "runs": 3,
+        "runs": 1,
         "answer_exact_rate": {
-          "mean": 0.6119047619047618,
-          "sample_std": 0.0607492896293956,
+          "mean": 0.6357142857142857,
+          "sample_std": 0.0,
           "values": [
-            0.5428571428571428,
-            0.6571428571428571,
             0.6357142857142857
           ]
         },
         "by_target_novelty": {
           "seen_exact_target": {
             "records": 120,
-            "mean_answer_exact_rate": 0.6666666666666666,
+            "mean_answer_exact_rate": 0.6833333333333333,
             "values": [
-              0.6,
-              0.7166666666666667,
               0.6833333333333333
             ]
           },
           "unseen_exact_target": {
             "records": 20,
-            "mean_answer_exact_rate": 0.2833333333333333,
+            "mean_answer_exact_rate": 0.35,
             "values": [
-              0.2,
-              0.3,
               0.35
             ]
           }
         },
-        "persistent_failure_count": 35,
+        "persistent_failure_count": 51,
         "persistent_failure_ids": [
           "manual-agg-036",
+          "prod-0027",
           "prod-0042",
           "prod-0043",
           "prod-0044",
+          "prod-0059",
+          "prod-0062",
           "prod-0064",
           "prod-0124",
           "prod-0136",
+          "prod-0142",
+          "prod-0144",
+          "prod-0236",
+          "prod-0238",
           "prod-0239",
           "prod-0240",
+          "prod-0285",
+          "prod-0287",
           "prod-0296",
           "prod-0348",
+          "prod-0374",
           "prod-0376",
+          "prod-0421",
           "prod-0422",
+          "prod-0423",
           "prod-0424",
+          "prod-0434",
+          "prod-0436",
           "prod-0481",
           "prod-0482",
           "prod-0484",
           "prod-0599",
           "prod-0600",
+          "prod-0886",
+          "prod-0887",
           "prod-0888",
           "prod-0906",
           "prod-0907",
@@ -1814,50 +1764,89 @@
           "v2-cov-0066",
           "v2-cov-0067"
         ]
+      },
+      "t5gemma2": {
+        "runs": 1,
+        "answer_exact_rate": {
+          "mean": 0.7785714285714286,
+          "sample_std": 0.0,
+          "values": [
+            0.7785714285714286
+          ]
+        },
+        "by_target_novelty": {
+          "seen_exact_target": {
+            "records": 120,
+            "mean_answer_exact_rate": 0.8166666666666667,
+            "values": [
+              0.8166666666666667
+            ]
+          },
+          "unseen_exact_target": {
+            "records": 20,
+            "mean_answer_exact_rate": 0.55,
+            "values": [
+              0.55
+            ]
+          }
+        },
+        "persistent_failure_count": 31,
+        "persistent_failure_ids": [
+          "prod-0061",
+          "prod-0062",
+          "prod-0064",
+          "prod-0203",
+          "prod-0240",
+          "prod-0287",
+          "prod-0288",
+          "prod-0345",
+          "prod-0375",
+          "prod-0376",
+          "prod-0421",
+          "prod-0422",
+          "prod-0423",
+          "prod-0424",
+          "prod-0433",
+          "prod-0484",
+          "prod-0517",
+          "prod-0518",
+          "prod-0519",
+          "prod-0599",
+          "prod-0600",
+          "prod-0696",
+          "v2-cov-0041",
+          "v2-cov-0042",
+          "v2-cov-0043",
+          "v2-cov-0054",
+          "v2-cov-0055",
+          "v2-cov-0064",
+          "v2-cov-0065",
+          "v2-cov-0066",
+          "v2-cov-0067"
+        ]
       }
     },
-    "persistent_failures_across_all_six_runs": {
-      "count": 23,
+    "persistent_failures_across_all_official_runs": {
+      "count": 16,
       "by_register": {
         "colloquial": 5,
-        "formal": 2,
-        "neutral": 3,
-        "noisy": 13
+        "formal": 1,
+        "neutral": 2,
+        "noisy": 8
       },
       "by_query_shape": {
-        "aggregate": 5,
-        "direct": 8,
-        "graph_hop": 4,
-        "multi_column": 6
+        "aggregate": 2,
+        "direct": 7,
+        "graph_hop": 3,
+        "multi_column": 4
       },
       "records": [
-        {
-          "id": "manual-agg-036",
-          "family_id": "count-payment-methods-03",
-          "register": "noisy",
-          "query_shape": "aggregate",
-          "input": "tong may cach dong tien hoc"
-        },
-        {
-          "id": "prod-0044",
-          "family_id": "cap-011-f01",
-          "register": "noisy",
-          "query_shape": "direct",
-          "input": "truong hop nao dc bao luu kq vay"
-        },
         {
           "id": "prod-0064",
           "family_id": "cap-016-f01",
           "register": "noisy",
           "query_shape": "direct",
           "input": "du dk tot nghiep thi dc gi"
-        },
-        {
-          "id": "prod-0239",
-          "family_id": "cap-060-f01",
-          "register": "colloquial",
-          "query_shape": "graph_hop",
-          "input": "kể tên mấy phòng sinh viên hay phải liên hệ đi"
         },
         {
           "id": "prod-0240",
@@ -1867,18 +1856,11 @@
           "input": "co nhung phong ban nao"
         },
         {
-          "id": "prod-0296",
-          "family_id": "cap-074-f01",
-          "register": "noisy",
+          "id": "prod-0287",
+          "family_id": "cap-072-f01",
+          "register": "colloquial",
           "query_shape": "multi_column",
-          "input": "dkhp sao phong nao xu ly kq o dau"
-        },
-        {
-          "id": "prod-0348",
-          "family_id": "cap-001-f02",
-          "register": "noisy",
-          "query_shape": "direct",
-          "input": "nghi tam 1 ky r hoc tiep thi lam thu tuc s"
+          "input": "đóng tiền hc sao với có gì cần nhớ không"
         },
         {
           "id": "prod-0376",
@@ -1888,11 +1870,25 @@
           "input": "chot mon r ma muon bo bot 1 hp lam sao"
         },
         {
+          "id": "prod-0421",
+          "family_id": "cap-010-f03",
+          "register": "formal",
+          "query_shape": "direct",
+          "input": "Nếu không thể nộp học phí đúng hạn, sinh viên chịu hậu quả gì và có thể đề nghị gia hạn ra sao?"
+        },
+        {
           "id": "prod-0422",
           "family_id": "cap-010-f03",
           "register": "neutral",
           "query_shape": "direct",
           "input": "Đóng học phí muộn có ảnh hưởng gì, và nếu khó khăn thì tôi xin thêm thời gian thế nào?"
+        },
+        {
+          "id": "prod-0423",
+          "family_id": "cap-010-f03",
+          "register": "colloquial",
+          "query_shape": "direct",
+          "input": "tui chưa xoay kịp tiền, đóng trễ bị sao với muốn xin gia hạn thì hỏi đâu?"
         },
         {
           "id": "prod-0424",
@@ -1916,46 +1912,11 @@
           "input": "goi hoi tien do chuyen nganh qua so nao"
         },
         {
-          "id": "prod-0888",
-          "family_id": "cap-068-f03",
-          "register": "noisy",
-          "query_shape": "multi_column",
-          "input": "nghi tam roi hoc lai lam sao can mau gi"
-        },
-        {
-          "id": "prod-0907",
-          "family_id": "cap-071-f02",
-          "register": "colloquial",
-          "query_shape": "multi_column",
-          "input": "trường xếp người nhận học bổng kiểu gì với tui phải đủ mấy tiêu chí nào?"
-        },
-        {
-          "id": "v2-cov-0040",
-          "family_id": "cov-grade-improvement-outcome",
-          "register": "formal",
-          "query_shape": "direct",
-          "input": "Kết quả học cải thiện được dùng để ghi nhận điểm tích lũy như thế nào?"
-        },
-        {
           "id": "v2-cov-0042",
           "family_id": "cov-grade-improvement-outcome",
           "register": "colloquial",
           "query_shape": "direct",
           "input": "tui học lại để kéo điểm thì trường lấy điểm lần nào"
-        },
-        {
-          "id": "v2-cov-0052",
-          "family_id": "cov-count-list-procedures",
-          "register": "formal",
-          "query_shape": "aggregate",
-          "input": "Xin cho biết có bao nhiêu quy trình học vụ và liệt kê tên của từng quy trình."
-        },
-        {
-          "id": "v2-cov-0053",
-          "family_id": "cov-count-list-procedures",
-          "register": "neutral",
-          "query_shape": "aggregate",
-          "input": "Trường có tất cả bao nhiêu thủ tục học vụ, gồm những thủ tục nào?"
         },
         {
           "id": "v2-cov-0054",

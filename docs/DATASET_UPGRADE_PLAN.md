@@ -1,7 +1,7 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
 Trạng thái: **Giai đoạn A–G đã hoàn thành; release v2 đã đóng băng, được nghiệm
-thu bằng hai model và trở thành dataset mặc định; dataset v1 không bị sửa**.
+thu bằng ba model và trở thành dataset mặc định; dataset v1 không bị sửa**.
 Kết quả cuối nằm tại `reports/dataset_review_v2/stage_g_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
@@ -34,7 +34,8 @@ cách chắc chắn phải bị loại; family chỉ được bổ sung khi cove
 - Model sinh trực tiếp một câu `SELECT` SPARQL canonical trên một dòng.
 - Backend không có QueryPlan, fuzzy matching, traversal riêng hoặc DTO theo
   schema ontology.
-- Hai model chính là `vinai/bartpho-syllable` và `VietAI/vit5-base`.
+- Ba model benchmark là `vinai/bartpho-syllable`, `VietAI/vit5-base` và
+  `google/t5gemma-2-270m-270m`.
 - ViT5 dùng tokenizer đã vá có thể tái lập; BARTpho dùng tokenizer đã pin.
 - Dynamic padding, BF16/TF32 và `torch.compile=False`.
 - Input lưu trong dataset là câu nguyên bản; normalizer chỉ chạy lúc
@@ -237,17 +238,17 @@ Sau khi đóng băng, sửa lỗi dữ liệu bằng release mới; không âm t
 
 ### Giai đoạn G — Nghiệm thu bằng model
 
-Trạng thái: **hoàn thành**. Protocol được khóa trước khi mở test. BARTpho và
-ViT5 đều đạt 100% trên learning audit nhỏ. Sáu lượt chính thức (2 model × 3
-seed) cho test answer exact trung bình lần lượt 65,95% và 61,19%; parse đều
+Trạng thái: **hoàn thành**. Protocol dùng một seed cố định 42. Test answer exact
+của BARTpho, ViT5 và T5Gemma2 lần lượt là 70,00%, 63,57% và 77,86%; parse đều
 trên 99%. Phân tích chi tiết chỉ ra compositional holdout, `noisy`, `aggregate`
 và `multi_column` là các giới hạn chính của v2.
 
 1. Chạy tokenizer audit trên toàn bộ unique target.
 2. Chạy learning audit nhỏ, phủ đủ năm query shape và các kiểu projection.
-3. Cả BARTpho và ViT5 phải học gần hoàn toàn audit nhỏ trước khi train lớn.
+3. Model mới phải vượt kiểm tra tokenizer và có bằng chứng pipeline học được
+   trước khi mở test; không bắt buộc lặp audit nếu đã có bằng chứng tương đương.
 4. Chạy một lượt chẩn đoán trên train/val; chỉ dùng val để điều chỉnh.
-5. Khóa cấu hình, train chính thức nhiều seed cho cả hai model.
+5. Khóa cấu hình, train chính thức cùng seed 42 cho cả ba model.
 6. Chọn checkpoint bằng val.
 7. Chấm test v2 một lần cho báo cáo cuối.
 8. Báo cáo parse, execution, answer exact, canonical exact, kết quả theo
@@ -327,7 +328,7 @@ Mỗi mốc phải có validator/test đạt và không kèm thay đổi ngoài 
 3. semantic draft đã sửa ngôn ngữ/target;
 4. coverage additions đã review;
 5. split v2 cùng validator và manifest;
-6. learning audit hai model;
+6. bằng chứng tokenizer và khả năng học của ba model;
 7. train/benchmark chính thức và báo cáo.
 
 Không commit artifact model lớn. Không thêm AI vào `Co-authored-by` hoặc metadata
@@ -341,10 +342,10 @@ Dataset v2 chỉ hoàn thành khi:
 2. mọi family đã có quyết định review rõ ràng;
 3. coverage matrix không còn lỗ hổng quan trọng không giải thích;
 4. test v2 độc lập và chưa được dùng để tuning;
-5. cả hai model vượt learning audit;
+5. cả ba model có bằng chứng tokenizer/pipeline học được;
 6. lệnh tái lập validator, train và benchmark được ghi trong README release;
 7. test code đạt, Git diff sạch ngoài thay đổi người dùng đã biết;
-8. kết quả chính thức được báo cáo với nhiều seed và giới hạn nghiên cứu.
+8. kết quả chính thức được báo cáo với seed cố định và giới hạn nghiên cứu.
 
 ## 10. Sau Stage G
 

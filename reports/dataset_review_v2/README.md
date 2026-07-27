@@ -40,9 +40,9 @@ lại trên v12 trong `target_evidence_v12.jsonl`.
 - `stage_e_manifest.json`: ảnh chụp manifest candidate trước khi đóng băng.
 - `stage_f_audit.json` và `stage_f_report.md`: bằng chứng release gate cấu
   trúc/tokenizer và checksum manifest v2 đã đóng băng.
-- `stage_g_protocol.json`: cấu hình, môi trường và sáu checkpoint được khóa
+- `stage_g_protocol.json`: cấu hình, môi trường và ba checkpoint seed 42 được khóa
   trước khi test được mở.
-- `stage_g_audit.json` và `stage_g_report.md`: kết quả 2 model × 3 seed, phân
+- `stage_g_audit.json` và `stage_g_report.md`: kết quả 3 model × 1 seed, phân
   tích target mới, nhóm lỗi bền vững và kết luận chất lượng v2.
 
 `keep` chỉ xác nhận target và nghĩa family hiện khớp. `fix`, `split` và `merge`

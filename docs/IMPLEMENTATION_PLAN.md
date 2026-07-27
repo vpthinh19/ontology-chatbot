@@ -40,8 +40,8 @@ Trạng thái: **hoàn thành và có test tái lập**.
 1. Viết script chuẩn bị tokenizer ViT5 theo
    `MODEL_TOKENIZER_SPEC.md`.
 2. Thêm manifest và test tái lập.
-3. Thống nhất canonical spacing cho target của cả hai model.
-4. Thu gọn trainer còn BARTpho và ViT5; dynamic padding, không compile.
+3. Thống nhất canonical spacing cho target của mọi model.
+4. Thu gọn trainer còn BARTpho, ViT5 và T5Gemma2; dynamic padding, không compile.
 5. Chạy smoke train và learning audit trên các query shape đại diện.
 
 Hoàn thành khi cả hai tokenizer round-trip toàn target không `<unk>` và cả hai
@@ -113,7 +113,7 @@ trở thành dataset mặc định; baseline v1 không bị sửa**.
 
 Không mở lại các giai đoạn chuyển đổi kiến trúc đã hoàn thành. Dataset v1 được
 giữ làm baseline; mọi audit, review family, bổ sung coverage, chia test mới và
-nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
+nghiệm thu ba model cho v2 tuân theo checklist duy nhất tại
 `docs/DATASET_UPGRADE_PLAN.md`.
 
 Ontology v12 đã giải quyết bốn mâu thuẫn được phát hiện ở Stage B. Các quyết
@@ -122,5 +122,6 @@ không còn meta-language/duplicate. Stage D bổ sung có review thành 936 câ
 234 family và 102 target, đồng thời hoàn chỉnh bốn register. Stage E đã chia
 164/35/35 family thành train/validation/test mà không rò family. Stage F đã
 khóa checksum và xác minh toàn bộ target với ontology cùng tokenizer thật của
-BARTpho/ViT5. Stage G đã train 2 model × 3 seed và chỉ mở test sau khi khóa
-checkpoint; báo cáo chính thức nằm tại `reports/dataset_review_v2/stage_g_report.md`.
+BARTpho/ViT5/T5Gemma2. Stage G dùng cùng seed 42 và chỉ mở test sau khi khóa
+checkpoint của từng model; báo cáo chính thức nằm tại
+`reports/dataset_review_v2/stage_g_report.md`.

@@ -32,7 +32,9 @@ def test_stage_g_is_locked_and_complete() -> None:
         "evaluate_each_model_seed_once": True,
         "do_not_tune_after_test": True,
     }
-    assert len(protocol["frozen_checkpoints"]) == 6
+    assert protocol["models"] == ["bartpho", "vit5", "t5gemma2"]
+    assert protocol["seeds"] == [42]
+    assert len(protocol["frozen_checkpoints"]) == 3
     assert audit["status"] == "complete_test_evaluated_once"
     assert audit["dataset_manifest_sha256"] == _sha256(MANIFEST_PATH)
     assert audit["ontology_sha256"] == _sha256(ONTOLOGY_PATH)
@@ -46,14 +48,17 @@ def test_stage_g_official_result_and_conclusion_are_preserved() -> None:
     assert audit["learning_audit"]["vit5"]["answer_exact_rate"] == 1.0
     assert audit["official"]["models"]["bartpho"]["benchmark"][
         "answer_exact_rate"
-    ]["mean"] == pytest.approx(0.6595238095)
+    ]["mean"] == pytest.approx(0.7)
     assert audit["official"]["models"]["vit5"]["benchmark"][
         "answer_exact_rate"
-    ]["mean"] == pytest.approx(0.6119047619)
+    ]["mean"] == pytest.approx(0.6357142857)
+    assert audit["official"]["models"]["t5gemma2"]["benchmark"][
+        "answer_exact_rate"
+    ]["mean"] == pytest.approx(0.7785714286)
     assert audit["generalization"]["unseen_exact_target_records"] == 20
-    assert audit["generalization"]["persistent_failures_across_all_six_runs"][
+    assert audit["generalization"]["persistent_failures_across_all_official_runs"][
         "count"
-    ] == 23
+    ] == 16
     assert audit["conclusion"]["semantic_generalization_is_solved"] is False
 
 
@@ -97,4 +102,4 @@ def test_target_novelty_is_computed_from_train_not_metadata() -> None:
     assert result["by_model"]["bartpho"]["by_target_novelty"][
         "unseen_exact_target"
     ]["mean_answer_exact_rate"] == 0.0
-    assert result["persistent_failures_across_all_six_runs"]["count"] == 1
+    assert result["persistent_failures_across_all_official_runs"]["count"] == 1

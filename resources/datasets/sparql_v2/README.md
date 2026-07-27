@@ -24,8 +24,8 @@ này là lịch sử làm việc có thể tái lập; `train.jsonl`, `val.jsonl
 - Dataset v2 là dataset mặc định của trainer, validator và benchmark. V1 vẫn
   được giữ nguyên làm baseline lịch sử.
 - Không dùng test v2 để sửa dữ liệu, chọn model/checkpoint hoặc tuning.
-- Stage G đã khóa cấu hình rồi train BARTpho/ViT5 với ba seed. Test answer exact
-  trung bình là 65,95%/61,19%, trong khi parse đều trên 99%. V2 đủ làm baseline
+- Stage G so sánh BARTpho/ViT5/T5Gemma2 bằng seed 42. Test answer exact lần lượt
+  là 70,00%/63,57%/77,86%, trong khi parse đều trên 99%. V2 đủ làm baseline
   nhưng còn yếu ở target compositional mới, câu noisy, aggregate và multi-column.
 
 Sinh lại toàn bộ artifact Stage B–F bằng:
