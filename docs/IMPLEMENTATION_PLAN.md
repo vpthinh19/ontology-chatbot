@@ -108,7 +108,7 @@ liên quan của người dùng.
 
 ## Giai đoạn 7 — Nâng cấp chất lượng dataset v2
 
-Trạng thái: **đã hoàn thành Stage A–D; coverage draft v2 sẵn sàng cho Stage E;
+Trạng thái: **đã hoàn thành Stage A–E; split candidate v2 sẵn sàng cho Stage F;
 baseline v1 không bị sửa**.
 
 Không mở lại các giai đoạn chuyển đổi kiến trúc đã hoàn thành. Dataset v1 được
@@ -119,5 +119,6 @@ nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
 Ontology v12 đã giải quyết bốn mâu thuẫn được phát hiện ở Stage B. Các quyết
 định semantic đã được áp dụng; Stage C đã đọc đủ 948 input và giữ lại 865 câu
 không còn meta-language/duplicate. Stage D bổ sung có review thành 936 câu,
-234 family và 102 target, đồng thời hoàn chỉnh bốn register. Lượt tiếp theo là
-Stage E chia split ở cấp family; chưa train.
+234 family và 102 target, đồng thời hoàn chỉnh bốn register. Stage E đã chia
+164/35/35 family thành train/validation/test mà không rò family. Lượt tiếp theo
+là Stage F đóng băng release; chưa train v2.

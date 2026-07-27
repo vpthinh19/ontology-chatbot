@@ -1,0 +1,128 @@
+{
+  "stage": "E",
+  "status": "family_split_complete",
+  "source": "resources/datasets/sparql_v2/coverage_draft.jsonl",
+  "source_sha256": "6133fd9cd6c6515f6b347c7823b72e5d5da665bd389aac05974c3934718ece77",
+  "algorithm": "family_target_stratified_v1",
+  "seed": 42,
+  "records_preserved": true,
+  "family_query_shape_counts": {
+    "train": {
+      "aggregate": 8,
+      "aggregate_filter": 2,
+      "direct": 79,
+      "graph_hop": 55,
+      "multi_column": 20
+    },
+    "val": {
+      "aggregate": 1,
+      "aggregate_filter": 1,
+      "direct": 17,
+      "graph_hop": 12,
+      "multi_column": 4
+    },
+    "test": {
+      "aggregate": 2,
+      "aggregate_filter": 1,
+      "direct": 15,
+      "graph_hop": 12,
+      "multi_column": 5
+    }
+  },
+  "family_query_shape_quotas": {
+    "direct": {
+      "train": 79,
+      "val": 17,
+      "test": 15
+    },
+    "graph_hop": {
+      "train": 55,
+      "val": 12,
+      "test": 12
+    },
+    "multi_column": {
+      "train": 20,
+      "val": 4,
+      "test": 5
+    },
+    "aggregate": {
+      "train": 8,
+      "val": 1,
+      "test": 2
+    },
+    "aggregate_filter": {
+      "train": 2,
+      "val": 1,
+      "test": 1
+    }
+  },
+  "shape_quotas_satisfied": true,
+  "target_counts": {
+    "train": 92,
+    "val": 35,
+    "test": 35
+  },
+  "targets_missing_from_train": {
+    "val": [
+      "SELECT (COUNT(DISTINCT ?item) AS ?answer) WHERE { ?item a :FormDocument . }",
+      "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K66\" ) }",
+      "SELECT ?answer WHERE { :TuitionPaymentProcedure :hasDocument ?node . ?node rdfs:label ?answer . }",
+      "SELECT ?email ?location ?phone ?website WHERE { :StudentAffairsOffice :email ?email . :StudentAffairsOffice :location ?location . :StudentAffairsOffice :phoneNumber ?phone . :StudentAffairsOffice :websiteUrl ?website . }",
+      "SELECT DISTINCT ?answer WHERE { ?item :condition ?answer . }"
+    ],
+    "test": [
+      "SELECT (COUNT(DISTINCT ?rate) AS ?answer) WHERE { ?rate a :TuitionRate . ?rate :cohortCode ?cohort . FILTER ( STR ( ?cohort ) = \"K63\" ) }",
+      "SELECT ?answer WHERE { :GradeImprovementProcedure :outcome ?answer . }",
+      "SELECT ?answer WHERE { :MajorChangeProcedure :handledBy ?node . ?node rdfs:label ?answer . }",
+      "SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AcademicProcedure . } } ?item a :AcademicProcedure . ?item rdfs:label ?answer . }",
+      "SELECT ?email ?location ?phone ?website WHERE { :UndergraduateEducationOffice :email ?email . :UndergraduateEducationOffice :location ?location . :UndergraduateEducationOffice :phoneNumber ?phone . :UndergraduateEducationOffice :websiteUrl ?website . }"
+    ]
+  },
+  "missing_target_query_shapes": {
+    "val": [
+      "aggregate",
+      "aggregate_filter",
+      "direct",
+      "graph_hop",
+      "multi_column"
+    ],
+    "test": [
+      "aggregate",
+      "aggregate_filter",
+      "direct",
+      "graph_hop",
+      "multi_column"
+    ]
+  },
+  "compositional_holdout_families": {
+    "val": [
+      "cap-061-f03",
+      "count-tuition-bands-k66",
+      "cov-count-forms",
+      "cov-student-affairs-contact",
+      "cov-tuition-extension-form"
+    ],
+    "test": [
+      "count-tuition-bands-k63",
+      "cov-count-list-procedures",
+      "cov-grade-improvement-outcome",
+      "cov-major-change-handling-office",
+      "cov-undergraduate-office-contact"
+    ]
+  },
+  "ontology_terms_missing_from_train": {
+    "val": [],
+    "test": []
+  },
+  "val_test_target_overlap": [],
+  "normalized_exact_cross_split_pairs": 0,
+  "lexical_near_duplicate_threshold": 0.84,
+  "lexical_near_duplicate_cross_split_pairs": [],
+  "test_policy": "Reference test is frozen at Stage E and must not guide data, model, or hyperparameter changes.",
+  "manifest_sha256": "86bfd8c2d7bb714dac0f0516cab16e66efc6ff1b25b0d2935eeca501ec91f92b",
+  "split_sha256": {
+    "train": "477b6a71aa6947bcd1cefeb818f90f862110b94c8e88c9ccac9b119d0198f0fe",
+    "val": "b0182bc6f274d8dd07b26e431a3056f8b61908e89ffe68f87b69b1440893796f",
+    "test": "93308e3cc81eaf3e992eaa6b36522b469836de5cfd111dec43c656f72f385cbf"
+  }
+}

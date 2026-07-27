@@ -1,8 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A–D đã hoàn thành; coverage draft v2 sẵn sàng cho Stage
-E; dataset v1 không bị sửa**. Kết quả Stage D nằm tại
-`reports/dataset_review_v2/stage_d_report.md`.
+Trạng thái: **Giai đoạn A–E đã hoàn thành; split candidate v2 sẵn sàng cho
+Stage F; dataset v1 không bị sửa**. Kết quả Stage E nằm tại
+`reports/dataset_review_v2/stage_e_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -189,6 +189,12 @@ Không cân bằng bằng cách nhân paraphrase máy móc. Aggregate/filter ít
 
 ### Giai đoạn E — Chia train/val/test ở cấp family
 
+Trạng thái: **hoàn thành**. 234 family được chia thành 164 train, 35 validation
+và 35 test bằng thuật toán deterministic seed 42. Mỗi split đủ năm query shape,
+không rò family/câu chuẩn hóa và không thiếu ontology term trong train.
+Validation/test mỗi tập khóa năm compositional holdout, đúng một target cho mỗi
+query shape; các target còn lại đều đã có family độc lập trong train.
+
 1. Chốt toàn bộ family trước khi chia.
 2. Dùng một seed cố định và ghi seed vào manifest.
 3. Stratify gần đúng theo target/query shape/register khi dữ liệu cho phép;
@@ -332,7 +338,7 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Bắt đầu **Giai đoạn E** trên
-`resources/datasets/sparql_v2/coverage_draft.jsonl`. Khóa danh sách 234 family,
-chọn seed chia split và stratify gần đúng ở cấp family; không được tách các câu
-trong cùng family hoặc dùng test để điều chỉnh dữ liệu.
+Bắt đầu **Giai đoạn F** trên ba split và `manifest.json` trong
+`resources/datasets/sparql_v2/`. Chạy toàn bộ cổng cú pháp, execution, ontology,
+leakage, tokenizer và budget; chỉ đổi manifest từ `stage_e_candidate` sang
+`frozen` khi mọi cổng đạt. Không dùng kết quả model trên test trong Stage F.

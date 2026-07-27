@@ -121,7 +121,7 @@ manifest cũ không còn hợp lệ.
 Một release có cấu trúc cố định:
 
 ```text
-resources/datasets/sparql_v1/
+resources/datasets/sparql_v2/
 ├── train.jsonl
 ├── val.jsonl
 ├── test.jsonl

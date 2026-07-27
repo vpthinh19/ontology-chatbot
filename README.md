@@ -92,6 +92,10 @@ thì bắt đầu từ `research/dataset.py` và `research/evaluation.py`.
 Dataset v1 nằm trọn trong `resources/datasets/sparql_v1/`, gồm `train.jsonl`,
 `val.jsonl`, `test.jsonl`, manifest và README của release.
 
+Dataset v2 đã hoàn tất review nội dung và Stage E đã tạo release candidate gồm
+936 câu trong 234 semantic family. Ba split mới chưa được runtime/trainer dùng
+mặc định cho đến khi vượt cổng đóng băng Stage F.
+
 ## Chạy bản triển khai
 
 Runtime mặc định dùng artifact CTranslate2 ViT5 seed 42 trên CPU/int8:
