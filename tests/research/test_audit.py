@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+from pathlib import Path
 
 from ontchatbot.research.audit import (
     audit_release,
@@ -10,6 +11,8 @@ from ontchatbot.research.audit import (
 from ontchatbot.research.audit_report import render_markdown, write_audit_outputs
 from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.sparql import load_ontology
+
+V1_DATASET_DIR = Path("resources/datasets/sparql_v1")
 
 
 class _RoundTripTokenizer:
@@ -28,7 +31,7 @@ class _RoundTripTokenizer:
 
 
 def test_v1_audit_is_read_only_and_exposes_learning_contract() -> None:
-    release = load_release()
+    release = load_release(V1_DATASET_DIR)
     original = copy.deepcopy(release)
     validation_case = {
         "training": {"model": "vit5", "seed": 7},
@@ -59,7 +62,7 @@ def test_v1_audit_is_read_only_and_exposes_learning_contract() -> None:
 
 def test_audit_collects_tokenizer_evidence() -> None:
     report, _ = audit_release(
-        load_release(),
+        load_release(V1_DATASET_DIR),
         load_ontology(),
         tokenizers={"roundtrip": _RoundTripTokenizer()},
     )
@@ -70,7 +73,7 @@ def test_audit_collects_tokenizer_evidence() -> None:
 
 
 def test_audit_outputs_are_reproducible_files(tmp_path) -> None:
-    report, worksheet = audit_release(load_release(), load_ontology())
+    report, worksheet = audit_release(load_release(V1_DATASET_DIR), load_ontology())
 
     write_audit_outputs(tmp_path, report, worksheet)
 

@@ -16,7 +16,7 @@ ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology_v12.ttl"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 DATASETS_DIR = RESOURCES / "datasets"
-DATASET_DIR = DATASETS_DIR / "sparql_v1"
+DATASET_DIR = DATASETS_DIR / "sparql_v2"
 TRAIN_DATASET_PATH = DATASET_DIR / "train.jsonl"
 VAL_DATASET_PATH = DATASET_DIR / "val.jsonl"
 TEST_DATASET_PATH = DATASET_DIR / "test.jsonl"

@@ -36,7 +36,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=PROJECT_ROOT / "reports/dataset_audit_v1",
+        default=PROJECT_ROOT / "reports/dataset_audit_v2",
     )
     parser.add_argument("--near-duplicate-threshold", type=float, default=0.84)
     parser.add_argument("--validation-metrics-root", type=Path)

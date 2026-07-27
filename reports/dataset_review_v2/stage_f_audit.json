@@ -1,0 +1,214 @@
+{
+  "stage": "F",
+  "status": "release_frozen",
+  "dataset": "sparql_v2",
+  "candidate_manifest": "reports/dataset_review_v2/stage_e_manifest.json",
+  "candidate_manifest_sha256": "86bfd8c2d7bb714dac0f0516cab16e66efc6ff1b25b0d2935eeca501ec91f92b",
+  "frozen_manifest": "resources/datasets/sparql_v2/manifest.json",
+  "frozen_manifest_sha256": "a7536a3c776debe96427ebbad88885b2668df410c8b312c93f9a392f0db03a1f",
+  "gate_checks": {
+    "candidate_manifest": true,
+    "structural_contract": true,
+    "tokenizer_contract": true
+  },
+  "candidate_checksum_mismatches": [],
+  "structural": {
+    "passed": true,
+    "checks": {
+      "release_validator": true,
+      "input_nfc": true,
+      "input_whitespace": true,
+      "input_control_characters": true,
+      "canonical_target_whitespace": true,
+      "ontology_terms_exist": true,
+      "target_evidence_unchanged": true,
+      "result_cells_are_bound_literals_or_aggregates": true,
+      "normalized_cross_split_leakage": true,
+      "near_duplicate_cross_split_leakage": true,
+      "four_registers_per_family": true,
+      "one_query_shape_per_target": true
+    },
+    "validation": {
+      "records": 936,
+      "split_counts": {
+        "train": 656,
+        "val": 140,
+        "test": 140
+      },
+      "splits": {
+        "train": {
+          "records": 656,
+          "families": 164,
+          "targets": 92,
+          "register_counts": {
+            "colloquial": 164,
+            "formal": 164,
+            "neutral": 164,
+            "noisy": 164
+          },
+          "query_shape_counts": {
+            "aggregate": 32,
+            "aggregate_filter": 8,
+            "direct": 316,
+            "graph_hop": 220,
+            "multi_column": 80
+          },
+          "empty_result_ids": []
+        },
+        "val": {
+          "records": 140,
+          "families": 35,
+          "targets": 35,
+          "register_counts": {
+            "colloquial": 35,
+            "formal": 35,
+            "neutral": 35,
+            "noisy": 35
+          },
+          "query_shape_counts": {
+            "aggregate": 4,
+            "aggregate_filter": 4,
+            "direct": 68,
+            "graph_hop": 48,
+            "multi_column": 16
+          },
+          "empty_result_ids": []
+        },
+        "test": {
+          "records": 140,
+          "families": 35,
+          "targets": 35,
+          "register_counts": {
+            "colloquial": 35,
+            "formal": 35,
+            "neutral": 35,
+            "noisy": 35
+          },
+          "query_shape_counts": {
+            "aggregate": 8,
+            "aggregate_filter": 4,
+            "direct": 60,
+            "graph_hop": 48,
+            "multi_column": 20
+          },
+          "empty_result_ids": []
+        }
+      }
+    },
+    "unique_targets": 102,
+    "known_target_terms": 49,
+    "unknown_ontology_terms": [],
+    "input_unicode_issue_ids": [],
+    "input_whitespace_issue_ids": [],
+    "input_control_issue_ids": [],
+    "target_format_issue_ids": [],
+    "target_evidence_mismatches": [],
+    "none_result_targets": [],
+    "result_row_count_summary": {
+      "min": 1,
+      "max": 18
+    },
+    "normalized_exact_cross_split_pairs": 0,
+    "near_duplicate_threshold": 0.84,
+    "near_duplicate_cross_split_pairs": [],
+    "invalid_family_registers": {},
+    "inconsistent_target_shapes": {}
+  },
+  "tokenizers": {
+    "passed": true,
+    "limits": {
+      "source": 128,
+      "target": 160
+    },
+    "models": {
+      "bartpho": {
+        "model_id": "vinai/bartpho-syllable",
+        "revision": "36eee8b4d648dd99da56462edcda3c5c97f7f3de"
+      },
+      "vit5": {
+        "model_id": "VietAI/vit5-base",
+        "revision": "2209a38d735ede63e88f5aa52bcdc11a05a37b85"
+      }
+    },
+    "checks": {
+      "bartpho": {
+        "source_without_unknown": true,
+        "source_within_budget": true,
+        "target_without_unknown": true,
+        "target_within_budget": true,
+        "target_roundtrip_exact": true
+      },
+      "vit5": {
+        "source_without_unknown": true,
+        "source_within_budget": true,
+        "target_without_unknown": true,
+        "target_within_budget": true,
+        "target_roundtrip_exact": true
+      }
+    },
+    "reports": {
+      "bartpho": {
+        "name": "bartpho",
+        "vocab_size": 40030,
+        "source_tokens": {
+          "count": 936,
+          "min": 7,
+          "p50": 17,
+          "p95": 25,
+          "max": 32,
+          "mean": 17.017094
+        },
+        "target_tokens": {
+          "count": 102,
+          "min": 23,
+          "p50": 40,
+          "p95": 81,
+          "max": 93,
+          "mean": 42.205882
+        },
+        "source_over_budget_records": 0,
+        "source_unknown_records": [],
+        "target_over_budget_targets": 0,
+        "target_unknown_tokens": 0,
+        "target_roundtrip_failures": 0
+      },
+      "vit5": {
+        "name": "vit5",
+        "vocab_size": 36096,
+        "source_tokens": {
+          "count": 936,
+          "min": 6,
+          "p50": 16,
+          "p95": 23,
+          "max": 30,
+          "mean": 15.933761
+        },
+        "target_tokens": {
+          "count": 102,
+          "min": 29,
+          "p50": 47,
+          "p95": 100,
+          "max": 124,
+          "mean": 50.794118
+        },
+        "source_over_budget_records": 0,
+        "source_unknown_records": [],
+        "target_over_budget_targets": 0,
+        "target_unknown_tokens": 0,
+        "target_roundtrip_failures": 0
+      }
+    },
+    "vit5_prepared_artifact": {
+      "manifest_sha256": "889f87fe44885529dcab5cf836c21d000c8b72dc81e2653c17f6f0283dd74bcf",
+      "source_model": "VietAI/vit5-base",
+      "source_revision": "2209a38d735ede63e88f5aa52bcdc11a05a37b85",
+      "output_checksum_mismatches": [],
+      "passed": true
+    }
+  },
+  "distribution_review": {
+    "status": "explained",
+    "evidence": "reports/dataset_review_v2/stage_d_report.md and stage_e_report.md",
+    "note": "Every split contains all five query shapes; sparse aggregate shapes are intentional and reviewed."
+  }
+}

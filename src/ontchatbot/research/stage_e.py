@@ -20,6 +20,7 @@ SOURCE_PATH = DATASET_DIR / "coverage_draft.jsonl"
 MANIFEST_PATH = DATASET_DIR / "manifest.json"
 REVIEW_DIR = PROJECT_ROOT / "reports/dataset_review_v2"
 AUDIT_PATH = REVIEW_DIR / "stage_e_audit.json"
+CANDIDATE_MANIFEST_PATH = REVIEW_DIR / "stage_e_manifest.json"
 ONTOLOGY_PATH = PROJECT_ROOT / "resources/ontology/ontology_v12.ttl"
 
 SPLIT_SEED = 42
@@ -343,8 +344,10 @@ def write_stage_e_artifacts() -> dict[str, Any]:
     if audit["status"] != "family_split_complete":
         raise ValueError("Stage E split did not pass its review contract")
     manifest = build_manifest(release, validation, audit)
-    MANIFEST_PATH.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    audit["manifest_sha256"] = _sha256(MANIFEST_PATH)
+    rendered_manifest = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
+    MANIFEST_PATH.write_text(rendered_manifest, encoding="utf-8")
+    CANDIDATE_MANIFEST_PATH.write_text(rendered_manifest, encoding="utf-8")
+    audit["manifest_sha256"] = _sha256(CANDIDATE_MANIFEST_PATH)
     audit["split_sha256"] = {
         split: _sha256(DATASET_DIR / f"{split}.jsonl") for split in REQUIRED_SPLITS
     }

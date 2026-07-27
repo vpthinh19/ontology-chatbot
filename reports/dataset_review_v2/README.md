@@ -1,7 +1,7 @@
-# Dataset review v2 — Stage B đến E
+# Dataset review v2 — Stage B đến F
 
-Trạng thái hiện tại: **Stage B–E đã hoàn tất trên ontology v12**. Đọc
-`stage_e_report.md` để xem kết quả mới nhất. `report.md`,
+Trạng thái hiện tại: **Stage B–F đã hoàn tất trên ontology v12; release v2 đã
+đóng băng**. Đọc `stage_f_report.md` để xem kết quả mới nhất. `report.md`,
 `family_decisions.jsonl` và `target_evidence.jsonl` là bằng chứng của lượt
 review ban đầu trên v11, được giữ nguyên để tái lập lịch sử.
 
@@ -36,6 +36,9 @@ lại trên v12 trong `target_evidence_v12.jsonl`.
   hoàn tất coverage draft.
 - `stage_e_audit.json` và `stage_e_report.md`: bằng chứng chia đủ 234 family,
   compositional holdout, kiểm tra leakage và chính sách khóa test v2.
+- `stage_e_manifest.json`: ảnh chụp manifest candidate trước khi đóng băng.
+- `stage_f_audit.json` và `stage_f_report.md`: bằng chứng release gate cấu
+  trúc/tokenizer và checksum manifest v2 đã đóng băng.
 
 `keep` chỉ xác nhận target và nghĩa family hiện khớp. `fix`, `split` và `merge`
 là yêu cầu cho draft v2, không phải thay đổi đã được áp dụng vào baseline.

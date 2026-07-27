@@ -6,10 +6,10 @@ from pathlib import Path
 from ontchatbot.research.dataset import REQUIRED_SPLITS, load_dataset, validate_release
 from ontchatbot.research.stage_e import (
     AUDIT_PATH,
+    CANDIDATE_MANIFEST_PATH,
     COMPOSITIONAL_HOLDOUT_FAMILIES,
     DATASET_DIR,
     FAMILY_QUOTAS,
-    MANIFEST_PATH,
     ONTOLOGY_PATH,
     SOURCE_PATH,
     SPLIT_ALGORITHM,
@@ -129,7 +129,7 @@ def test_stage_e_does_not_reuse_legacy_test_records() -> None:
 
 
 def test_stage_e_manifest_and_audit_lock_the_candidate() -> None:
-    manifest = _read_json(MANIFEST_PATH)
+    manifest = _read_json(CANDIDATE_MANIFEST_PATH)
     audit = _read_json(AUDIT_PATH)
 
     assert manifest["status"] == "stage_e_candidate"
@@ -156,5 +156,5 @@ def test_stage_e_manifest_and_audit_lock_the_candidate() -> None:
     assert manifest["sha256"]["../../ontology/ontology_v12.ttl"] == _sha256(
         ONTOLOGY_PATH
     )
-    assert audit["manifest_sha256"] == _sha256(MANIFEST_PATH)
+    assert audit["manifest_sha256"] == _sha256(CANDIDATE_MANIFEST_PATH)
     assert audit["source_sha256"] == _sha256(SOURCE_PATH)

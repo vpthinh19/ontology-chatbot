@@ -25,20 +25,20 @@ def test_frozen_benchmark_is_balanced_and_executable() -> None:
     )
 
     assert report == {
-        "records": 164,
-        "targets": 80,
+        "records": 140,
+        "targets": 35,
         "register_counts": {
-            "colloquial": 41,
-            "formal": 41,
-            "neutral": 41,
-            "noisy": 41,
+            "colloquial": 35,
+            "formal": 35,
+            "neutral": 35,
+            "noisy": 35,
         },
         "query_shape_counts": {
             "aggregate": 8,
-            "aggregate_filter": 8,
-            "direct": 78,
-            "graph_hop": 54,
-            "multi_column": 16,
+            "aggregate_filter": 4,
+            "direct": 60,
+            "graph_hop": 48,
+            "multi_column": 20,
         },
     }
 

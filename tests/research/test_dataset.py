@@ -16,8 +16,8 @@ def test_released_dataset_is_executable() -> None:
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_release(load_release(), load_ontology())
 
-    assert report["records"] == 1112
-    assert report["split_counts"] == {"train": 636, "val": 312, "test": 164}
+    assert report["records"] == 936
+    assert report["split_counts"] == {"train": 656, "val": 140, "test": 140}
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
 

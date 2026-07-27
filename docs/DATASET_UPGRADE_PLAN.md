@@ -1,8 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A–E đã hoàn thành; split candidate v2 sẵn sàng cho
-Stage F; dataset v1 không bị sửa**. Kết quả Stage E nằm tại
-`reports/dataset_review_v2/stage_e_report.md`.
+Trạng thái: **Giai đoạn A–F đã hoàn thành; release v2 đã đóng băng và trở thành
+dataset mặc định; dataset v1 không bị sửa**. Kết quả Stage F nằm tại
+`reports/dataset_review_v2/stage_f_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -211,6 +211,10 @@ xác.
 
 ### Giai đoạn F — Cổng kiểm định release
 
+Trạng thái: **hoàn thành**. Toàn bộ cổng cấu trúc và tokenizer đều đạt;
+`manifest.json` đã chuyển từ `stage_e_candidate` sang `frozen`. Audit khóa tại
+`reports/dataset_review_v2/stage_f_audit.json`.
+
 Một release chỉ được đóng băng khi đạt tất cả:
 
 - ba file `train.jsonl`, `val.jsonl`, `test.jsonl` có cùng schema;
@@ -338,7 +342,7 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Bắt đầu **Giai đoạn F** trên ba split và `manifest.json` trong
-`resources/datasets/sparql_v2/`. Chạy toàn bộ cổng cú pháp, execution, ontology,
-leakage, tokenizer và budget; chỉ đổi manifest từ `stage_e_candidate` sang
-`frozen` khi mọi cổng đạt. Không dùng kết quả model trên test trong Stage F.
+Bắt đầu **Giai đoạn G** bằng learning audit nhỏ trên train/validation v2 cho
+BARTpho và ViT5. Chưa chấm test v2 khi đang kiểm tra khả năng học hoặc chọn cấu
+hình. Chỉ sau khi cấu hình/checkpoint đã khóa mới train nhiều seed và mở test
+một lần cho báo cáo cuối.

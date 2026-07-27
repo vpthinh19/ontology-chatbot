@@ -1,7 +1,7 @@
 {
   "dataset": "sparql_v2",
   "format_version": 2,
-  "status": "frozen",
+  "status": "stage_e_candidate",
   "schema_fields": [
     "family_id",
     "id",
@@ -148,30 +148,5 @@
     "test.jsonl": "93308e3cc81eaf3e992eaa6b36522b469836de5cfd111dec43c656f72f385cbf",
     "coverage_draft.jsonl": "6133fd9cd6c6515f6b347c7823b72e5d5da665bd389aac05974c3934718ece77",
     "../../ontology/ontology_v12.ttl": "08bc26b5f6a0e5f7f1c09579dfa22b0615fefb524249e6a80eee6bc00fbe11cf"
-  },
-  "release_gate": {
-    "stage": "F",
-    "status": "passed",
-    "candidate_manifest_sha256": "86bfd8c2d7bb714dac0f0516cab16e66efc6ff1b25b0d2935eeca501ec91f92b",
-    "audit": "reports/dataset_review_v2/stage_f_audit.json",
-    "checks": {
-      "candidate_manifest": true,
-      "structural_contract": true,
-      "tokenizer_contract": true
-    },
-    "token_limits": {
-      "source": 128,
-      "target": 160
-    },
-    "models": {
-      "bartpho": {
-        "model_id": "vinai/bartpho-syllable",
-        "revision": "36eee8b4d648dd99da56462edcda3c5c97f7f3de"
-      },
-      "vit5": {
-        "model_id": "VietAI/vit5-base",
-        "revision": "2209a38d735ede63e88f5aa52bcdc11a05a37b85"
-      }
-    }
   }
 }

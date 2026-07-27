@@ -19,7 +19,7 @@ def render_markdown(report: Mapping[str, Any]) -> str:
     ontology = report["ontology_coverage"]
     review = report["review"]
     lines = [
-        "# Audit dataset SPARQL v1",
+        "# Audit dataset SPARQL",
         "",
         "Trạng thái: **read-only; chưa sửa nội dung dataset**.",
         "",
