@@ -1,6 +1,6 @@
 {
   "stage": "G",
-  "status": "amended_before_t5gemma2_test",
+  "status": "three_checkpoints_frozen_before_t5gemma2_test",
   "dataset": {
     "path": "resources/datasets/sparql_v2",
     "manifest_sha256": "a7536a3c776debe96427ebbad88885b2668df410c8b312c93f9a392f0db03a1f",
@@ -54,6 +54,13 @@
       "best_epoch": 40,
       "validation_answer_exact_rate": 0.6857142857142857,
       "model_sha256": "a62a4d8e97f7ce059ebd9b57b69859f7ada4e987aa1b0ba0321aaaedd36550f1"
+    },
+    {
+      "model": "t5gemma2",
+      "seed": 42,
+      "best_epoch": 35,
+      "validation_answer_exact_rate": 0.7428571428571429,
+      "model_sha256": "2f239b66133145fb81c260ec67c39e2217ca7e7c5c22a698f2690398685ae40c"
     }
   ],
   "test_policy": {
