@@ -172,3 +172,23 @@ def test_model_report_rejects_missing_dataset_provenance(tmp_path) -> None:
             path.write_text(json.dumps(metrics), encoding="utf-8")
 
     assert build_model_report(tmp_path) is None
+
+
+def test_model_report_rejects_missing_training_dataset_provenance(tmp_path) -> None:
+    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
+    path = tmp_path / "bartpho" / "metrics.json"
+    metrics = json.loads(path.read_text(encoding="utf-8"))
+    del metrics["training"]["dataset_manifest_sha256"]
+    path.write_text(json.dumps(metrics), encoding="utf-8")
+
+    assert build_model_report(tmp_path) is None
+
+
+def test_model_report_rejects_mismatched_training_dataset_provenance(tmp_path) -> None:
+    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
+    path = tmp_path / "bartpho" / "metrics.json"
+    metrics = json.loads(path.read_text(encoding="utf-8"))
+    metrics["training"]["dataset_manifest_sha256"] = "stale-manifest"
+    path.write_text(json.dumps(metrics), encoding="utf-8")
+
+    assert build_model_report(tmp_path) is None

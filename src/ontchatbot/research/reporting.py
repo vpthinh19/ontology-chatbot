@@ -129,16 +129,20 @@ def write_public_reports(
     )
 
 
-def build_model_report(models_dir: Path) -> dict[str, Any] | None:
+def build_model_report(
+    models_dir: Path,
+    *,
+    dataset_dir: Path = DATASET_DIR,
+) -> dict[str, Any] | None:
     """Read independently reloaded model artifacts and their training logs."""
 
     names = ("bartpho", "vit5", "t5gemma2")
-    release = load_release()
+    release = load_release(dataset_dir)
     expected_records = {
         "validation": len(release["val"]),
         "benchmark": len(release["test"]),
     }
-    dataset_manifest_sha256 = sha256_file(DATASET_DIR / "manifest.json")
+    dataset_manifest_sha256 = sha256_file(dataset_dir / "manifest.json")
     required_files = ("metrics.json", "validation_metrics.json", "benchmark_metrics.json")
     if not all(
         (models_dir / name / filename).is_file()
@@ -176,6 +180,8 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
         ):
             return None
         training = training_report["training"]
+        if training.get("dataset_manifest_sha256") != dataset_manifest_sha256:
+            return None
         loss_curve = [
             {"epoch": item["epoch"], "value": item["loss"]}
             for item in training_report["training_log"]
@@ -603,7 +609,10 @@ def main() -> None:
     )
     write_manifest(report, args.dataset_dir / "manifest.json")
     write_public_reports(report, output_dir=args.output_dir)
-    model_report = build_model_report(PROJECT_ROOT / "artifacts/models")
+    model_report = build_model_report(
+        PROJECT_ROOT / "artifacts/models",
+        dataset_dir=args.dataset_dir,
+    )
     if model_report is not None:
         write_model_reports(model_report, output_dir=args.output_dir)
     print(
