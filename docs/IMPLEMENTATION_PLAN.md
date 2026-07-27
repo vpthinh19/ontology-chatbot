@@ -108,8 +108,8 @@ liên quan của người dùng.
 
 ## Giai đoạn 7 — Nâng cấp chất lượng dataset v2
 
-Trạng thái: **đã hoàn thành Stage A và B; semantic draft v2 sẵn sàng cho Stage
-C; baseline v1 không bị sửa**.
+Trạng thái: **đã hoàn thành Stage A–C; language draft v2 sẵn sàng cho Stage D;
+baseline v1 không bị sửa**.
 
 Không mở lại các giai đoạn chuyển đổi kiến trúc đã hoàn thành. Dataset v1 được
 giữ làm baseline; mọi audit, review family, bổ sung coverage, chia test mới và
@@ -117,5 +117,6 @@ nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
 `docs/DATASET_UPGRADE_PLAN.md`.
 
 Ontology v12 đã giải quyết bốn mâu thuẫn được phát hiện ở Stage B. Các quyết
-định `fix/merge/split` đã được áp dụng và 87 target được xác minh lại. Lượt
-triển khai kế tiếp bắt đầu Stage C trên draft v2; chưa sinh coverage hoặc train.
+định semantic đã được áp dụng; Stage C đã đọc đủ 948 input và giữ lại 865 câu
+không còn meta-language/duplicate. Lượt tiếp theo là Stage D bổ sung coverage
+có mục tiêu; chưa chia split hoặc train.

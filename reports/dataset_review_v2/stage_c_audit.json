@@ -1,0 +1,41 @@
+{
+  "stage": "C",
+  "status": "language_review_complete",
+  "source": "resources/datasets/sparql_v2/draft.jsonl",
+  "source_sha256": "ba3c10c694348ea9a95a078608fdd72313b8265e238f5219acee13c75c0c92fc",
+  "decisions": "reports/dataset_review_v2/stage_c_decisions.json",
+  "decisions_sha256": "2e0181f7169a7d19e9e31ae3c00acef4816bb83e5a907a10da1f6af797fe237d",
+  "records_before": 948,
+  "records_after": 865,
+  "records_rewritten": 87,
+  "records_dropped": 83,
+  "families_after": 217,
+  "targets_after": 85,
+  "register_counts": {
+    "colloquial": 216,
+    "formal": 216,
+    "neutral": 217,
+    "noisy": 216
+  },
+  "query_shape_counts": {
+    "aggregate": 33,
+    "aggregate_filter": 12,
+    "direct": 440,
+    "graph_hop": 280,
+    "multi_column": 100
+  },
+  "family_size_counts": {
+    "1": 1,
+    "4": 216
+  },
+  "meta_language_ids": [],
+  "unnatural_filler_ids": [],
+  "normalized_duplicate_groups": [],
+  "lexical_near_duplicate_threshold": 0.84,
+  "lexical_near_duplicate_pairs": [],
+  "families_with_multiple_targets": [],
+  "empty_result_ids": [],
+  "target": "resources/datasets/sparql_v2/language_draft.jsonl",
+  "target_sha256": "700924edf4db96ac151ba445e1a0d649dc00a4c5c7704d1be9d9467a64972d03",
+  "target_evidence": "reports/dataset_review_v2/target_evidence_stage_c.jsonl"
+}

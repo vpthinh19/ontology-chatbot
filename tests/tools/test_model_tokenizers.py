@@ -126,3 +126,50 @@ def test_v2_targets_roundtrip_both_model_tokenizers() -> None:
     assert len(bartpho_report) == len(vit5_report) == 87
     assert max(row["tokens"] for row in bartpho_report) == 91
     assert max(row["tokens"] for row in vit5_report) == 123
+
+
+def test_stage_c_sources_and_targets_fit_both_tokenizers() -> None:
+    pytest.importorskip("transformers")
+    project_root = Path(__file__).resolve().parents[2]
+    bartpho_source = (
+        Path.home()
+        / ".cache/huggingface/hub/models--vinai--bartpho-syllable/snapshots"
+        / BARTPHO_REVISION
+    )
+    vit5_source = project_root / "artifacts/tokenizers/vit5"
+    draft_path = project_root / "resources/datasets/sparql_v2/language_draft.jsonl"
+    if not bartpho_source.is_dir() or not (vit5_source / "tokenizer.json").is_file():
+        pytest.skip("both prepared model tokenizers are required")
+
+    from transformers import AutoTokenizer
+
+    from ontchatbot.research.audit_learning import tokenizer_report
+
+    rows = [
+        json.loads(line)
+        for line in draft_path.read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    release = {"train": rows, "val": [], "test": []}
+    bartpho = AutoTokenizer.from_pretrained(
+        bartpho_source,
+        local_files_only=True,
+        trust_remote_code=True,
+    )
+    vit5 = AutoTokenizer.from_pretrained(vit5_source, local_files_only=True)
+
+    bartpho_report = tokenizer_report("bartpho", bartpho, release)
+    vit5_report = tokenizer_report("vit5", vit5, release)
+
+    assert bartpho_report["source_unknown_records"] == []
+    assert vit5_report["source_unknown_records"] == []
+    assert bartpho_report["source_over_budget_records"] == 0
+    assert vit5_report["source_over_budget_records"] == 0
+    assert bartpho_report["target_unknown_tokens"] == 0
+    assert vit5_report["target_unknown_tokens"] == 0
+    assert bartpho_report["target_roundtrip_failures"] == 0
+    assert vit5_report["target_roundtrip_failures"] == 0
+    assert bartpho_report["source_tokens"]["max"] == 32
+    assert vit5_report["source_tokens"]["max"] == 30
+    assert bartpho_report["target_tokens"]["max"] == 93
+    assert vit5_report["target_tokens"]["max"] == 124

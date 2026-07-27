@@ -1,8 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A và B đã hoàn thành; semantic draft v2 đã sẵn sàng cho
-Stage C; dataset v1 không bị sửa**. Kết quả Stage B nằm tại
-`reports/dataset_review_v2/completion_report.md`.
+Trạng thái: **Giai đoạn A–C đã hoàn thành; language draft v2 sẵn sàng cho Stage
+D; dataset v1 không bị sửa**. Kết quả Stage C nằm tại
+`reports/dataset_review_v2/stage_c_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -146,6 +146,10 @@ Target phải tuân theo toàn bộ quy tắc ở `DATASET_BENCHMARK_SPEC.md`. K
 target sai bằng heuristic runtime.
 
 ### Giai đoạn C — Review ngôn ngữ thủ công
+
+Trạng thái: **hoàn thành**. Đã đọc đủ 948 input, viết lại 87, loại 83 và giữ
+865 record thuộc 217 family. Review chéo không còn meta-language, filler,
+exact/near duplicate, target rỗng hoặc `<unk>` trên hai tokenizer.
 
 Với từng record đã có target đúng:
 
@@ -320,6 +324,7 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Bắt đầu **Giai đoạn C** trên `resources/datasets/sparql_v2/draft.jsonl`. Target
-đã được khóa bằng bằng chứng thực thi Stage B; lượt kế tiếp tập trung vào câu
-tiếng Việt, register và tính tự nhiên, chưa bổ sung coverage hoặc train model.
+Bắt đầu **Giai đoạn D** trên
+`resources/datasets/sparql_v2/language_draft.jsonl`. Chỉ bổ sung nhu cầu hoặc
+query shape khi ma trận coverage chứng minh đang thiếu; không khôi phục số
+lượng bằng paraphrase máy móc và chưa train model.
