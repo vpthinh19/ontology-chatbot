@@ -1,11 +1,11 @@
 {
   "dataset": {
-    "records": 1416,
+    "records": 1580,
     "queries": 215,
     "targets": 215,
     "splits": {
       "train": {
-        "records": 986,
+        "records": 1150,
         "queries": 215,
         "targets": 215
       },
@@ -21,37 +21,37 @@
       }
     },
     "registers": {
-      "colloquial": 354,
-      "formal": 354,
-      "neutral": 354,
-      "noisy": 354
+      "colloquial": 395,
+      "formal": 395,
+      "neutral": 395,
+      "noisy": 395
     },
     "query_features": {
-      "aggregate": 112,
-      "filter": 80,
-      "graph_hop": 616,
-      "group": 32,
-      "limit": 36,
-      "multi_branch": 912,
-      "multi_column": 472,
-      "order": 96,
-      "single_branch": 504,
-      "single_column": 944,
-      "values": 32
+      "aggregate": 124,
+      "filter": 96,
+      "graph_hop": 688,
+      "group": 40,
+      "limit": 40,
+      "multi_branch": 1036,
+      "multi_column": 564,
+      "order": 108,
+      "single_branch": 544,
+      "single_column": 1016,
+      "values": 36
     },
     "query_features_by_split": {
       "train": {
-        "aggregate": 70,
-        "filter": 46,
-        "graph_hop": 420,
-        "group": 20,
-        "limit": 22,
-        "multi_branch": 586,
-        "multi_column": 278,
-        "order": 62,
-        "single_branch": 400,
-        "single_column": 708,
-        "values": 20
+        "aggregate": 82,
+        "filter": 62,
+        "graph_hop": 492,
+        "group": 28,
+        "limit": 26,
+        "multi_branch": 710,
+        "multi_column": 370,
+        "order": 74,
+        "single_branch": 440,
+        "single_column": 780,
+        "values": 24
       },
       "val": {
         "aggregate": 21,
@@ -84,8 +84,8 @@
       "min": 4,
       "median": 13,
       "p95": 20,
-      "max": 26,
-      "mean": 12.81
+      "max": 27,
+      "mean": 12.95
     }
   },
   "in_domain_contract": {
@@ -108,22 +108,22 @@
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 1416,
+    "records": 1580,
     "split_counts": {
-      "train": 986,
+      "train": 1150,
       "val": 215,
       "test": 215
     },
     "splits": {
       "train": {
-        "records": 986,
+        "records": 1150,
         "queries": 215,
         "targets": 215,
         "register_counts": {
-          "colloquial": 247,
-          "formal": 247,
-          "neutral": 246,
-          "noisy": 246
+          "colloquial": 288,
+          "formal": 288,
+          "neutral": 287,
+          "noisy": 287
         },
         "empty_result_ids": []
       },
@@ -154,7 +154,7 @@
     }
   },
   "sha256": {
-    "train.jsonl": "9eb00674a77dc248c564fcb84c4d7b6a4ff7d9b0943fd4eae04004fe5017ea81",
+    "train.jsonl": "8df1e2ff25be789bf9c3834e84b6809731081b089df8c44b136eb7cd6dd54b5c",
     "val.jsonl": "9052a9118a38f4ccef8c2ed9dadc2111812c84a14a780b8f9e2d1dcc50f1d871",
     "test.jsonl": "c0c85d07d0c66a6ae0db98e747a2de30768369a905eeeb63532b518906c23893",
     "ontology.ttl": "0af6d4f50ae1e8919d7cc6e4eb16a27897da33cb8a3175d3c4e2f292f278a987"

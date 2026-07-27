@@ -20,7 +20,7 @@ Ba tập có vai trò tách biệt:
 
 | Tập | Câu | Query | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 986 | 215 | Dạy toàn bộ query được hỗ trợ |
+| `train.jsonl` | 1.150 | 215 | Dạy toàn bộ query được hỗ trợ |
 | `val.jsonl` | 215 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
 | `test.jsonl` | 215 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 

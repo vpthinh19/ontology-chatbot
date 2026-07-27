@@ -34,7 +34,7 @@ def test_in_domain_split_preserves_content_and_covers_every_query() -> None:
     release = build_in_domain_release(source)
 
     assert {name: len(rows) for name, rows in release.items()} == {
-        "train": 986,
+        "train": 1150,
         "val": 215,
         "test": 215,
     }

@@ -22,7 +22,7 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 1416
+    assert report["dataset"]["records"] == 1580
     assert report["dataset"]["queries"] == 215
     assert report["in_domain_contract"] == {
         "train_queries": 215,

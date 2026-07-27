@@ -21,7 +21,7 @@ lấy từ ontology khi backend thực thi truy vấn.
 - Validation và test không chứa target nằm ngoài danh mục train.
 - Việc tự ghép một target SPARQL chưa từng xuất hiện trong train không thuộc
   yêu cầu chất lượng của hệ thống.
-- Refactor đầu tiên chỉ tái sử dụng 215 target và 1.416 câu hỏi hiện có; không
+- Dataset sử dụng 215 target và 1.580 câu hỏi; việc mở rộng cách diễn đạt không
   tạo thêm target SPARQL.
 
 ## Bản ghi dữ liệu
@@ -60,7 +60,7 @@ Ba split cùng phủ một danh mục target nhưng dùng các câu hỏi khác 
   validation.
 
 Với mỗi `query_id` có đúng một câu validation, một câu test và toàn bộ câu còn
-lại thuộc train. Với 1.416 câu hiện có, cách chia này tạo 986 câu train, 215 câu
+lại thuộc train. Với 1.580 câu hiện có, cách chia này tạo 1.150 câu train, 215 câu
 validation và 215 câu test; mỗi query có ít nhất hai câu train. Việc phân bổ
 register được xoay vòng giữa các query để mỗi split có phân bố formal, neutral,
 colloquial và noisy cân bằng trên toàn tập;

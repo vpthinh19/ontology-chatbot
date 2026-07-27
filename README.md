@@ -19,13 +19,13 @@ gắn với schema để sửa đoán kết quả của model.
 
 ## Dữ liệu nghiên cứu
 
-Dataset có 1.416 câu hỏi ánh xạ tới danh mục 215 truy vấn SPARQL canonical.
+Dataset có 1.580 câu hỏi ánh xạ tới danh mục 215 truy vấn SPARQL canonical.
 Mỗi truy vấn có nhiều cách hỏi thuộc bốn phong cách: trang trọng, trung tính,
 khẩu ngữ và câu nhiễu/viết tắt.
 
 | Tập | Câu hỏi | Truy vấn được hỗ trợ | Vai trò |
 |---|---:|---:|---:|
-| Train | 986 | 215 | Học toàn bộ danh mục truy vấn |
+| Train | 1.150 | 215 | Học toàn bộ danh mục truy vấn |
 | Validation | 215 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
 | Test | 215 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 

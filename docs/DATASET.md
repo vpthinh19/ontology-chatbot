@@ -33,7 +33,7 @@ register nhiều nhất và ít nhất chênh nhau không quá một.
 
 | Tập | Câu hỏi | Query | Vai trò |
 |---|---:|---:|---|
-| Train | 986 | 215 | Cập nhật trọng số và dạy toàn bộ danh mục query |
+| Train | 1.150 | 215 | Cập nhật trọng số và dạy toàn bộ danh mục query |
 | Validation | 215 | 215 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
 | Test | 215 | 215 | Đánh giá cuối bằng cách diễn đạt chưa thấy |
 

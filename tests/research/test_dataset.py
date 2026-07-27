@@ -61,8 +61,8 @@ def test_canonical_dataset_is_executable() -> None:
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_release(load_release(), load_ontology())
 
-    assert report["records"] == 1416
-    assert report["split_counts"] == {"train": 986, "val": 215, "test": 215}
+    assert report["records"] == 1580
+    assert report["split_counts"] == {"train": 1150, "val": 215, "test": 215}
     assert all(split["queries"] == 215 for split in report["splits"].values())
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
