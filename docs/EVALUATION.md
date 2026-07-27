@@ -37,10 +37,12 @@ tag, số cột và việc ghép các giá trị trong cùng một dòng phải 
 - Validation sinh query bằng greedy decoding. Answer exact được dùng chọn
   checkpoint; nếu bằng điểm, giữ checkpoint xuất hiện sớm hơn.
 - Validation result F1 là metric chẩn đoán, không thay tiêu chí chọn checkpoint.
-- Test chỉ chạy với checkpoint đã chọn và là số dùng so sánh ba model.
+- Test chỉ chạy với checkpoint đã chọn và là số dùng so sánh ba model. Mọi
+  query test đã được dạy trong train; câu chữ của test thì chưa xuất hiện ở
+  train hoặc validation.
 
 Vì validation và test có mục tiêu khác nhau, không gộp hai con số thành một tỷ
-lệ chung. Điểm test phải luôn đi kèm số câu (168), phân bố register và đặc
+lệ chung. Điểm test phải luôn đi kèm số câu (215), phân bố register và đặc
 trưng SPARQL.
 
 ## Biểu đồ công khai

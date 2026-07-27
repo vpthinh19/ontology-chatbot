@@ -4,11 +4,11 @@ Bộ dữ liệu ánh xạ câu hỏi tiếng Việt sang một truy vấn `SELE
 một dòng. Mỗi bản ghi JSON Lines có đúng năm trường:
 
 ```json
-{"id":"question-0001","family_id":"family-0001","register":"formal","input":"...","target":"SELECT ..."}
+{"id":"question-0001","query_id":"query-0001","register":"formal","input":"...","target":"SELECT ..."}
 ```
 
 - `id`: định danh câu hỏi.
-- `family_id`: nhóm bốn câu hỏi có cùng ý nghĩa và cùng target.
+- `query_id`: định danh một query canonical, ánh xạ một-một với target.
 - `register`: `formal`, `neutral`, `colloquial` hoặc `noisy`.
 - `input`: câu hỏi tiếng Việt tự nhiên.
 - `target`: SPARQL canonical không chứa phần khai báo `PREFIX`.
@@ -18,19 +18,18 @@ target khi tạo báo cáo; chúng không được nhập tay vào JSONL.
 
 Ba tập có vai trò tách biệt:
 
-| Tập | Câu | Họ ngữ nghĩa | Mục đích |
+| Tập | Câu | Query | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 1.084 | 271 | Cập nhật trọng số model |
-| `val.jsonl` | 164 | 41 | Chọn checkpoint trên các cách diễn đạt chưa thấy |
-| `test.jsonl` | 168 | 42 | Đánh giá cuối trên các target ngữ nghĩa chưa thấy |
+| `train.jsonl` | 986 | 215 | Dạy toàn bộ query được hỗ trợ |
+| `val.jsonl` | 215 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
+| `test.jsonl` | 215 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 
-Validation chỉ chứa các họ câu hỏi chưa có trong train nhưng target chính xác
-đã có trong train. Test không trùng target với train; tuy nhiên mọi class,
-property và individual cần để tạo truy vấn test đều đã xuất hiện trong train.
-Thiết kế này tách khả năng hiểu cách diễn đạt khỏi khả năng ghép một truy vấn
-mới bằng các thành phần schema đã học.
+Mỗi query có đúng một câu validation, một câu test và ít nhất hai câu train.
+Validation và test giữ lại cách diễn đạt, không giữ lại logic query. Thiết kế
+này đánh giá chatbot trong danh mục chức năng đã công bố; nó không tuyên bố khả
+năng zero-shot với query hoặc ontology chưa biết.
 
-Mỗi họ có đủ bốn register. Không có `family_id`, câu hỏi đã chuẩn hóa hoặc câu
+Register được cân bằng trong từng split. Không có câu hỏi đã chuẩn hóa hoặc câu
 gần trùng nằm ở hai tập khác nhau. Mọi target đều parse được, chạy được trên
 [`ontology.ttl`](../ontology/ontology.ttl) và trả ít nhất một dòng dữ liệu.
 

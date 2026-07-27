@@ -19,18 +19,24 @@ gắn với schema để sửa đoán kết quả của model.
 
 ## Dữ liệu nghiên cứu
 
-Dataset hiện có 1.416 câu hỏi thuộc 354 họ ngữ nghĩa. Mỗi họ gồm bốn cách diễn đạt:
-trang trọng, trung tính, khẩu ngữ và câu nhiễu/viết tắt.
+Dataset có 1.416 câu hỏi ánh xạ tới danh mục 215 truy vấn SPARQL canonical.
+Mỗi truy vấn có nhiều cách hỏi thuộc bốn phong cách: trang trọng, trung tính,
+khẩu ngữ và câu nhiễu/viết tắt.
 
-| Tập | Câu hỏi | Họ ngữ nghĩa | Target SPARQL |
+| Tập | Câu hỏi | Truy vấn được hỗ trợ | Vai trò |
 |---|---:|---:|---:|
-| Train | 1.084 | 271 | 173 |
-| Validation | 164 | 41 | 41 |
-| Test | 168 | 42 | 42 |
+| Train | 986 | 215 | Học toàn bộ danh mục truy vấn |
+| Validation | 215 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
+| Test | 215 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 
-Test chỉ dùng các thành phần ontology đã có trong train nhưng ghép chúng thành
-42 target chưa từng xuất hiện trong train. Mọi target đều được parse và chạy
-trực tiếp trên ontology trước khi dùng để huấn luyện hoặc đánh giá.
+Mỗi truy vấn có đúng một câu validation, một câu test và ít nhất hai câu train.
+Validation và test giữ lại cách diễn đạt, không giữ lại logic truy vấn. Mọi
+target đều được parse, kiểm tra an toàn, chạy trực tiếp trên ontology và trả về
+ít nhất một dòng trước khi được dùng.
+
+Model học ánh xạ câu hỏi sang SPARQL, không chứa sẵn câu trả lời học vụ. Label,
+nội dung hướng dẫn, email, học phí và các literal khác vẫn được lấy từ ontology
+khi backend thực thi query.
 
 ![Phân bố split](reports/figures/dataset-splits.svg)
 
@@ -50,30 +56,15 @@ Checkpoint được chọn bằng độ chính xác câu trả lời trên valid
 được dùng một lần cho báo cáo cuối. Các metric phân biệt rõ query có parse
 được, chạy được, trả đúng dữ liệu hay trùng hoàn toàn chuỗi target.
 
-## Kết quả thực nghiệm
-
-Mỗi model được chạy đúng một lần với seed 42. Bảng dưới là kết quả của artifact
-đã lưu, được nạp lại độc lập rồi đánh giá trên 168 câu test có target ngữ nghĩa
-chưa xuất hiện trong train/validation.
-
-| Model | Parse | Thực thi | Result F1 | Answer exact | Query exact |
-|---|---:|---:|---:|---:|---:|
-| BARTpho | 61,31% | 61,31% | 2,38% | 2,38% | 1,19% |
-| ViT5 | 99,40% | 99,40% | 11,71% | 8,93% | 5,95% |
-| T5Gemma2 | **100,00%** | **100,00%** | **58,15%** | **52,38%** | **47,02%** |
+## Đánh giá thực nghiệm
 
 Answer exact là tiêu chí chính: toàn bộ dữ liệu trả về phải trùng reference,
-không phụ thuộc tên biến hay thứ tự dòng. Result F1 ghi nhận câu trả lời đúng
-một phần. Kết quả cho thấy T5Gemma2 tổng quát hóa tốt nhất trong ba model,
-nhưng 52,38% answer exact cũng cho thấy bài toán compositional test vẫn còn
-nhiều dư địa cải thiện.
+không phụ thuộc tên biến hay thứ tự dòng. Parse rate, execution rate, Result
+precision/recall/F1 và query exact được dùng để chẩn đoán lỗi.
 
-![So sánh model](reports/figures/model-comparison.svg)
-
-![Đường validation](reports/figures/validation-curve.svg)
-
-Số liệu đầy đủ theo phong cách câu hỏi, đặc trưng SPARQL và nhóm lỗi nằm tại
-[reports/models.json](reports/models.json). Định nghĩa metric nằm tại
+Bảng so sánh chỉ được công bố khi cả ba model được fine-tune và đánh giá trên
+cùng ba split nêu trên. Hiện tại báo cáo chỉ chứa số liệu dataset và ontology.
+Định nghĩa metric và giao thức nghiệm thu nằm tại
 [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ## Môi trường thực nghiệm
