@@ -50,6 +50,40 @@ Checkpoint được chọn bằng độ chính xác câu trả lời trên valid
 được dùng một lần cho báo cáo cuối. Các metric phân biệt rõ query có parse
 được, chạy được, trả đúng dữ liệu hay trùng hoàn toàn chuỗi target.
 
+## Kết quả thực nghiệm
+
+Mỗi model được chạy đúng một lần với seed 42. Bảng dưới là kết quả của artifact
+đã lưu, được nạp lại độc lập rồi đánh giá trên 168 câu test có target ngữ nghĩa
+chưa xuất hiện trong train/validation.
+
+| Model | Parse | Thực thi | Result F1 | Answer exact | Query exact |
+|---|---:|---:|---:|---:|---:|
+| BARTpho | 61,31% | 61,31% | 2,38% | 2,38% | 1,19% |
+| ViT5 | 99,40% | 99,40% | 11,71% | 8,93% | 5,95% |
+| T5Gemma2 | **100,00%** | **100,00%** | **58,15%** | **52,38%** | **47,02%** |
+
+Answer exact là tiêu chí chính: toàn bộ dữ liệu trả về phải trùng reference,
+không phụ thuộc tên biến hay thứ tự dòng. Result F1 ghi nhận câu trả lời đúng
+một phần. Kết quả cho thấy T5Gemma2 tổng quát hóa tốt nhất trong ba model,
+nhưng 52,38% answer exact cũng cho thấy bài toán compositional test vẫn còn
+nhiều dư địa cải thiện.
+
+![So sánh model](reports/figures/model-comparison.svg)
+
+![Đường validation](reports/figures/validation-curve.svg)
+
+Số liệu đầy đủ theo phong cách câu hỏi, đặc trưng SPARQL và nhóm lỗi nằm tại
+[reports/models.json](reports/models.json). Định nghĩa metric nằm tại
+[docs/EVALUATION.md](docs/EVALUATION.md).
+
+## Môi trường thực nghiệm
+
+Benchmark được chạy trên Fedora Linux 44, Python 3.12.13, PyTorch 2.13.0
+(CUDA 13.0), Transformers 5.14.1 và RDFLib 7.6.0. Phần cứng là NVIDIA GeForce
+RTX 4050 Laptop GPU 6 GB; fine-tuning dùng BF16, TF32 và dynamic padding, không
+dùng `torch.compile`. Cấu hình tái lập đầy đủ và câu lệnh chạy nằm tại
+[docs/TRAINING.md](docs/TRAINING.md).
+
 ## Cấu trúc project
 
 ```text

@@ -7,6 +7,7 @@ from ontchatbot.research.training import (
     _configure_greedy_generation,
     _effective_max_steps,
     _ensure_eos_token,
+    _generation_cache_config,
     _optimization_arguments,
     _parse_args,
     _precision_policy,
@@ -39,6 +40,15 @@ def test_structured_generation_disables_inherited_sampling_settings() -> None:
     assert config.do_sample is False
     assert config.top_p is None
     assert config.top_k is None
+
+
+def test_generation_cache_supports_flat_and_nested_model_configs() -> None:
+    flat = SimpleNamespace(use_cache=False)
+    nested_decoder = SimpleNamespace(use_cache=True)
+    nested = SimpleNamespace(decoder=nested_decoder)
+
+    assert _generation_cache_config(flat) is flat
+    assert _generation_cache_config(nested) is nested_decoder
 
 
 def test_full_training_rejects_dataset_with_coverage_gaps() -> None:

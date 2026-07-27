@@ -32,8 +32,8 @@ tag, số cột và việc ghép các giá trị trong cùng một dòng phải 
 
 ## Train, validation và test
 
-- Train loss được vẽ theo bước; validation loss theo mốc đánh giá để nhận biết
-  hội tụ hoặc overfit.
+- Train loss được vẽ theo bước; validation answer exact được vẽ theo mốc đánh
+  giá để quan sát khả năng tổng quát hóa và dấu hiệu overfit.
 - Validation sinh query bằng greedy decoding. Answer exact được dùng chọn
   checkpoint; nếu bằng điểm, giữ checkpoint xuất hiện sớm hơn.
 - Validation result F1 là metric chẩn đoán, không thay tiêu chí chọn checkpoint.
@@ -48,12 +48,11 @@ trưng SPARQL.
 `generate_reports` sinh biểu đồ dataset. Sau huấn luyện hợp lệ, báo cáo model
 bổ sung:
 
-- đường train loss/validation loss và validation answer exact/result F1;
-- cột so sánh test answer exact và result precision/recall/F1;
-- parse rate và execution rate;
-- breakdown theo phong cách câu hỏi và đặc trưng SPARQL;
-- phân bố nhóm lỗi;
-- thời gian train, VRAM đỉnh và tốc độ inference.
+- đường train loss và validation answer exact;
+- cột so sánh validation answer exact, test answer exact và test result F1;
+- test answer exact theo phong cách câu hỏi và đặc trưng SPARQL;
+- số liệu parse, execution, precision/recall/F1, nhóm lỗi, thời gian train,
+  VRAM và tốc độ inference trong JSON nguồn.
 
 Các JSON gốc được giữ cạnh SVG để người đọc kiểm tra con số mà không cần mở
 code trainer.

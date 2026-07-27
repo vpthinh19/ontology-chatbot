@@ -27,6 +27,9 @@ def test_perfect_prediction_scores_every_metric() -> None:
         "parse_rate": 1.0,
         "execution_rate": 1.0,
         "answer_exact_rate": 1.0,
+        "result_precision": 1.0,
+        "result_recall": 1.0,
+        "result_f1": 1.0,
         "canonical_query_exact_rate": 1.0,
     }
 
@@ -68,9 +71,57 @@ def test_invalid_prediction_is_counted_without_crashing() -> None:
     assert report["overall"]["parse_rate"] == 0.0
     assert report["overall"]["execution_rate"] == 0.0
     assert report["overall"]["answer_exact_rate"] == 0.0
+    assert report["overall"]["result_precision"] == 0.0
+    assert report["overall"]["result_recall"] == 0.0
+    assert report["overall"]["result_f1"] == 0.0
     assert report["by_register"]["noisy"]["count"] == 1
     assert report["error_counts"] == {"parse_error": 1}
     assert report["cases"][0]["error"]
+
+
+def test_partial_result_reports_macro_precision_recall_and_f1() -> None:
+    target = (
+        "SELECT ?answer WHERE { ?node a :PaymentMethod . "
+        "?node rdfs:label ?answer . }"
+    )
+    prediction = target + " LIMIT 1"
+
+    report = evaluate_predictions([_example(target)], [prediction], load_ontology())
+
+    assert report["overall"]["answer_exact_rate"] == 0.0
+    assert report["overall"]["result_precision"] == 1.0
+    assert 0.0 < report["overall"]["result_recall"] < 1.0
+    assert 0.0 < report["overall"]["result_f1"] < 1.0
+
+
+def test_result_overlap_preserves_duplicate_rows() -> None:
+    target = 'SELECT ?answer WHERE { VALUES ?answer { "A" "A" } }'
+    prediction = 'SELECT ?answer WHERE { VALUES ?answer { "A" } }'
+
+    report = evaluate_predictions([_example(target)], [prediction], load_ontology())
+
+    assert report["overall"]["result_precision"] == 1.0
+    assert report["overall"]["result_recall"] == 0.5
+
+
+def test_result_metrics_are_macro_averaged_per_query() -> None:
+    exact = 'SELECT ?answer WHERE { VALUES ?answer { "A" } }'
+    partial = 'SELECT ?answer WHERE { VALUES ?answer { "A" "B" "C" } }'
+    examples = [
+        {**_example(exact), "id": "case-1"},
+        {**_example(partial), "id": "case-2"},
+    ]
+    predictions = [exact, 'SELECT ?answer WHERE { VALUES ?answer { "A" } }']
+
+    report = evaluate_predictions(
+        examples,
+        predictions,
+        load_ontology(),
+        include_cases=True,
+    )
+
+    case_f1 = [case["result_f1"] for case in report["cases"]]
+    assert report["overall"]["result_f1"] == sum(case_f1) / 2
 
 
 def test_reports_overlapping_query_features_and_missing_branch() -> None:

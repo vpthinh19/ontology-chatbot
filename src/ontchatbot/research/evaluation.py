@@ -57,6 +57,9 @@ def evaluate_predictions(
         parse_ok = False
         execution_ok = False
         answer_exact = False
+        result_precision = 0.0
+        result_recall = 0.0
+        result_f1 = 0.0
         error = None
         predicted_rows = None
         try:
@@ -66,6 +69,10 @@ def evaluate_predictions(
             execution_ok = True
             reference_rows = execute_select(graph, target)
             answer_exact = _row_key(predicted_rows) == _row_key(reference_rows)
+            result_precision, result_recall, result_f1 = _result_scores(
+                predicted_rows,
+                reference_rows,
+            )
         except SparqlError as exc:
             error = str(exc)
 
@@ -90,6 +97,15 @@ def evaluate_predictions(
             for group_name, group_values in groups.items():
                 for group_value in group_values:
                     grouped[group_name][group_value][name] += int(value)
+        for name, value in (
+            ("result_precision", result_precision),
+            ("result_recall", result_recall),
+            ("result_f1", result_f1),
+        ):
+            totals[name] += value
+            for group_name, group_values in groups.items():
+                for group_value in group_values:
+                    grouped[group_name][group_value][name] += value
 
         if include_cases:
             cases.append(
@@ -103,6 +119,9 @@ def evaluate_predictions(
                     "parse": parse_ok,
                     "execution": execution_ok,
                     "answer_exact": answer_exact,
+                    "result_precision": result_precision,
+                    "result_recall": result_recall,
+                    "result_f1": result_f1,
                     "canonical_exact": canonical_exact,
                     "error": error,
                     "error_category": error_category,
@@ -182,6 +201,29 @@ def _row_key(rows: list[dict[str, object]]) -> tuple:
     )
 
 
+def _result_scores(
+    predicted_rows: list[dict[str, object]],
+    reference_rows: list[dict[str, object]],
+) -> tuple[float, float, float]:
+    """Score overlap between result-row multisets for one query."""
+
+    predicted = Counter(_row_values(row) for row in predicted_rows)
+    reference = Counter(_row_values(row) for row in reference_rows)
+    overlap = sum((predicted & reference).values())
+    precision = overlap / sum(predicted.values()) if predicted else 0.0
+    recall = overlap / sum(reference.values()) if reference else 0.0
+    f1 = (
+        2 * precision * recall / (precision + recall)
+        if precision + recall
+        else 0.0
+    )
+    return precision, recall, f1
+
+
+def _row_values(row: dict[str, object]) -> tuple[tuple[str, str], ...]:
+    return tuple(sorted(_value_key(value) for value in row.values()))
+
+
 def _value_key(value: object) -> tuple[str, str]:
     if value is None:
         return ("none", "")
@@ -195,6 +237,9 @@ def _rates(counts: Counter[str]) -> dict[str, int | float]:
         "parse_rate": counts["parse"] / total if total else 0.0,
         "execution_rate": counts["execution"] / total if total else 0.0,
         "answer_exact_rate": counts["answer_exact"] / total if total else 0.0,
+        "result_precision": counts["result_precision"] / total if total else 0.0,
+        "result_recall": counts["result_recall"] / total if total else 0.0,
+        "result_f1": counts["result_f1"] / total if total else 0.0,
         "canonical_query_exact_rate": counts["canonical_exact"] / total if total else 0.0,
     }
 

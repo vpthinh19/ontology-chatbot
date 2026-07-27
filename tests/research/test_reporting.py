@@ -1,5 +1,11 @@
+import json
+
 from ontchatbot.research.dataset import load_release
-from ontchatbot.research.reporting import build_dataset_report, write_public_reports
+from ontchatbot.research.reporting import (
+    build_dataset_report,
+    build_model_report,
+    write_public_reports,
+)
 from ontchatbot.runtime.sparql import load_ontology
 
 
@@ -37,3 +43,91 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     assert (tmp_path / "figures/dataset-splits.svg").is_file()
     assert (tmp_path / "figures/registers.svg").is_file()
     assert (tmp_path / "figures/query-features.svg").is_file()
+
+
+def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:
+    for name in ("bartpho", "vit5", "t5gemma2"):
+        directory = tmp_path / name
+        (directory / "model").mkdir(parents=True)
+        (directory / "model" / "config.json").write_text("{}", encoding="utf-8")
+        (directory / "metrics.json").write_text(
+            json.dumps(
+                {
+                    "overall": {"count": 2, "answer_exact_rate": 0.0},
+                    "training": {
+                        "model_id": name,
+                        "train_records": 10,
+                        "train_runtime_seconds": 12.5,
+                        "peak_vram_bytes": 100,
+                    },
+                    "training_log": [
+                        {"epoch": 1.0, "loss": 1.0},
+                        {"epoch": 1.0, "eval_answer_exact_rate": 0.25},
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        (directory / "validation_metrics.json").write_text(
+            json.dumps(
+                {
+                    "overall": {"count": 2, "answer_exact_rate": 0.5},
+                    "inference": {"records": 2, "seconds": 1.0},
+                    "artifact_evaluation": {
+                        "backend": "transformers",
+                        "load_method": "from_pretrained",
+                        "model": name,
+                        "suite": "validation",
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+        (directory / "benchmark_metrics.json").write_text(
+            json.dumps(
+                {
+                    "overall": {"count": 2, "answer_exact_rate": 0.4},
+                    "by_register": {},
+                    "by_query_feature": {},
+                    "error_counts": {},
+                    "inference": {"records": 2, "seconds": 1.0},
+                    "artifact_evaluation": {
+                        "backend": "transformers",
+                        "load_method": "from_pretrained",
+                        "model": name,
+                        "suite": "benchmark",
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+
+    report = build_model_report(tmp_path)
+
+    assert report is not None
+    assert report["models"]["bartpho"]["validation"]["answer_exact_rate"] == 0.5
+    assert report["models"]["bartpho"]["inference"]["records"] == 2
+    assert report["models"]["bartpho"]["training"][
+        "artifact_roundtrip_verified"
+    ] is True
+
+
+def test_model_report_rejects_missing_artifact_evaluation_provenance(tmp_path) -> None:
+    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
+    path = tmp_path / "vit5" / "benchmark_metrics.json"
+    metrics = json.loads(path.read_text(encoding="utf-8"))
+    del metrics["artifact_evaluation"]
+    path.write_text(json.dumps(metrics), encoding="utf-8")
+
+    assert build_model_report(tmp_path) is None
+
+
+def test_model_report_rejects_different_benchmark_sizes(tmp_path) -> None:
+    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
+    path = tmp_path / "t5gemma2" / "benchmark_metrics.json"
+    metrics = json.loads(path.read_text(encoding="utf-8"))
+    metrics["overall"]["count"] = 3
+    metrics["inference"]["records"] = 3
+    path.write_text(json.dumps(metrics), encoding="utf-8")
+
+    assert build_model_report(tmp_path) is None

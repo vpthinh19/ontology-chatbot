@@ -139,7 +139,8 @@ def train(args: argparse.Namespace) -> dict:
         attn_implementation=spec["attention"],
         dtype=model_dtype,
     )
-    model.config.use_cache = False
+    cache_config = _generation_cache_config(model.config)
+    cache_config.use_cache = False
     _configure_greedy_generation(model.generation_config)
     if spec.get("gradient_checkpointing", False):
         model.gradient_checkpointing_enable(
@@ -412,12 +413,28 @@ def _configure_greedy_generation(config) -> None:
     config.top_k = None
 
 
+def _generation_cache_config(config):
+    """Return the config object that owns ``use_cache``.
+
+    Conventional seq2seq models expose it on the top-level config, whereas
+    T5Gemma2 keeps it on its decoder config.
+    """
+
+    if hasattr(config, "use_cache"):
+        return config
+    decoder = getattr(config, "decoder", None)
+    if decoder is None or not hasattr(decoder, "use_cache"):
+        raise AttributeError("seq2seq model config does not expose use_cache")
+    return decoder
+
+
 def _generate_rows(model, tokenizer, rows, torch, *, batch_size: int) -> list[str]:
     """Generate from a normally reloaded checkpoint, independent of Trainer state."""
 
     model.eval()
-    use_cache = model.config.use_cache
-    model.config.use_cache = True
+    cache_config = _generation_cache_config(model.config)
+    use_cache = cache_config.use_cache
+    cache_config.use_cache = True
     predictions = []
     try:
         with torch.inference_mode():
@@ -442,7 +459,7 @@ def _generate_rows(model, tokenizer, rows, torch, *, batch_size: int) -> list[st
                     for text in tokenizer.batch_decode(output, skip_special_tokens=True)
                 )
     finally:
-        model.config.use_cache = use_cache
+        cache_config.use_cache = use_cache
     return predictions
 
 

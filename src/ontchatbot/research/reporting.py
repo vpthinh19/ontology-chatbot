@@ -138,22 +138,37 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
     """Read independently reloaded model artifacts and their training logs."""
 
     names = ("bartpho", "vit5", "t5gemma2")
-    if not all((models_dir / name / "metrics.json").is_file() for name in names):
+    required_files = ("metrics.json", "validation_metrics.json", "benchmark_metrics.json")
+    if not all(
+        (models_dir / name / filename).is_file()
+        for name in names
+        for filename in required_files
+    ):
         return None
     models = {}
     for name in names:
         directory = models_dir / name
-        validation = json.loads((directory / "metrics.json").read_text(encoding="utf-8"))
+        training_report = json.loads(
+            (directory / "metrics.json").read_text(encoding="utf-8")
+        )
+        validation = json.loads(
+            (directory / "validation_metrics.json").read_text(encoding="utf-8")
+        )
         test = json.loads((directory / "benchmark_metrics.json").read_text(encoding="utf-8"))
-        training = validation["training"]
+        if not (
+            _verified_artifact_evaluation(directory, name, validation, "validation")
+            and _verified_artifact_evaluation(directory, name, test, "benchmark")
+        ):
+            return None
+        training = training_report["training"]
         loss_curve = [
             {"epoch": item["epoch"], "value": item["loss"]}
-            for item in validation["training_log"]
+            for item in training_report["training_log"]
             if "loss" in item and "epoch" in item
         ]
         validation_curve = [
             {"epoch": item["epoch"], "value": item["eval_answer_exact_rate"]}
-            for item in validation["training_log"]
+            for item in training_report["training_log"]
             if "eval_answer_exact_rate" in item and "epoch" in item
         ]
         models[name] = {
@@ -167,14 +182,20 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
                 "records": training["train_records"],
                 "runtime_seconds": training["train_runtime_seconds"],
                 "peak_vram_bytes": training["peak_vram_bytes"],
-                "epochs_completed": max(point["epoch"] for point in loss_curve),
-                "artifact_roundtrip_verified": validation.get(
-                    "artifact_roundtrip_verified", False
+                "epochs_completed": training.get(
+                    "epochs_completed",
+                    max(
+                        point["epoch"]
+                        for point in loss_curve + validation_curve
+                    ),
                 ),
+                "artifact_roundtrip_verified": True,
             },
-            "inference": validation.get("artifact_inference"),
+            "inference": validation.get("inference"),
             "curves": {"train_loss": loss_curve, "validation_answer_exact": validation_curve},
         }
+    if len({model["test"]["count"] for model in models.values()}) != 1:
+        return None
     return {
         "protocol": {
             "seed_runs_per_model": 1,
@@ -186,6 +207,27 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
         },
         "models": models,
     }
+
+
+def _verified_artifact_evaluation(
+    directory: Path,
+    model: str,
+    report: Mapping[str, Any],
+    suite: str,
+) -> bool:
+    expected = {
+        "backend": "transformers",
+        "load_method": "from_pretrained",
+        "model": model,
+        "suite": suite,
+    }
+    inference = report.get("inference", {})
+    overall = report.get("overall", {})
+    return (
+        (directory / "model" / "config.json").is_file()
+        and report.get("artifact_evaluation") == expected
+        and inference.get("records") == overall.get("count")
+    )
 
 
 def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
@@ -213,11 +255,12 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
     )
     _write_metric_chart(
         figures / "model-comparison.svg",
-        "Độ chính xác artifact trên validation và compositional test",
+        "Chất lượng artifact trên validation và compositional test",
         {
             name: {
-                "validation": value["validation"]["answer_exact_rate"],
-                "test": value["test"]["answer_exact_rate"],
+                "validation answer exact": value["validation"]["answer_exact_rate"],
+                "test answer exact": value["test"]["answer_exact_rate"],
+                "test result F1": value["test"]["result_f1"],
             }
             for name, value in models.items()
         },

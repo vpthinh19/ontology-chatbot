@@ -54,6 +54,7 @@ def evaluate(args: argparse.Namespace) -> dict:
         predictions, inference = _generate(model, tokenizer, rows, torch, args.batch_size)
         report = evaluate_predictions(rows, predictions, graph, include_cases=True)
         report["inference"] = inference
+        report["artifact_evaluation"] = _artifact_evaluation(args.model, "validation")
         _write_report(output_dir / "validation_metrics.json", report)
         _write_predictions(output_dir / "validation_predictions.jsonl", rows, predictions)
         reports["validation"] = report["overall"]
@@ -77,6 +78,7 @@ def evaluate(args: argparse.Namespace) -> dict:
         )
         report["benchmark"] = benchmark_validation
         report["inference"] = inference
+        report["artifact_evaluation"] = _artifact_evaluation(args.model, "benchmark")
         _write_report(output_dir / "benchmark_metrics.json", report)
         _write_predictions(output_dir / "benchmark_predictions.jsonl", rows, predictions)
         reports["benchmark"] = report["overall"]
@@ -131,6 +133,17 @@ def _write_report(path: Path, report: dict) -> None:
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+
+
+def _artifact_evaluation(model: str, suite: str) -> dict[str, str]:
+    """Mark metrics produced after loading a saved Transformers artifact."""
+
+    return {
+        "backend": "transformers",
+        "load_method": "from_pretrained",
+        "model": model,
+        "suite": suite,
+    }
 
 
 def _write_predictions(path: Path, rows, predictions) -> None:
