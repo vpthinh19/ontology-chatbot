@@ -8,7 +8,7 @@ def _example(
 ) -> dict[str, str]:
     return {
         "id": "case-1",
-        "family_id": "family-1",
+        "query_id": "query-0001",
         "register": register,
         "input": "phòng nào xử lý bảo lưu",
         "target": target,

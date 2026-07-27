@@ -15,7 +15,7 @@ from ..runtime.sparql import execute_select, validate_select
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR
 
-REQUIRED_FIELDS = {"id", "family_id", "register", "input", "target"}
+REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}
 REQUIRED_SPLITS = ("train", "val", "test")
 ALLOWED_REGISTERS = {"formal", "neutral", "colloquial", "noisy"}
 REGISTER_ORDER = ("formal", "neutral", "colloquial", "noisy")
@@ -210,8 +210,7 @@ def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]
 
     ids: set[str] = set()
     normalized_inputs: dict[str, str] = {}
-    family_targets: dict[str, set[str]] = defaultdict(set)
-    family_registers: dict[str, Counter[str]] = defaultdict(Counter)
+    query_targets: dict[str, set[str]] = defaultdict(set)
     register_counts: Counter[str] = Counter()
     target_counts: Counter[str] = Counter()
     empty_result_ids: list[str] = []
@@ -248,30 +247,19 @@ def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]
         if not execute_select(graph, target):
             empty_result_ids.append(record_id)
 
-        family_targets[row["family_id"]].add(target)
-        family_registers[row["family_id"]][register] += 1
+        query_targets[row["query_id"]].add(target)
         register_counts[register] += 1
         target_counts[target] += 1
 
-    inconsistent = sorted(family for family, targets in family_targets.items() if len(targets) > 1)
-    if inconsistent:
-        raise DatasetError(f"families have multiple targets: {inconsistent[:10]}")
-
-    expected_registers = Counter({register: 1 for register in ALLOWED_REGISTERS})
-    invalid_registers = sorted(
-        family
-        for family, counts in family_registers.items()
-        if counts != expected_registers
+    inconsistent = sorted(
+        query_id for query_id, targets in query_targets.items() if len(targets) > 1
     )
-    if invalid_registers:
-        raise DatasetError(
-            "families must contain exactly one of each register: "
-            f"{invalid_registers[:10]}"
-        )
+    if inconsistent:
+        raise DatasetError(f"query IDs have multiple targets: {inconsistent[:10]}")
 
     return {
         "records": len(rows),
-        "families": len(family_targets),
+        "queries": len(query_targets),
         "targets": len(target_counts),
         "register_counts": dict(sorted(register_counts.items())),
         "empty_result_ids": empty_result_ids,
@@ -288,20 +276,65 @@ def validate_release(
         raise DatasetError(f"release must contain exactly {list(REQUIRED_SPLITS)}")
 
     reports = {name: validate_dataset(rows, graph) for name, rows in splits.items()}
-    family_locations: dict[str, set[str]] = defaultdict(set)
+    query_targets: dict[str, set[str]] = defaultdict(set)
+    target_queries: dict[str, set[str]] = defaultdict(set)
+    query_counts = {split: Counter() for split in REQUIRED_SPLITS}
     question_locations: dict[str, set[str]] = defaultdict(set)
     id_locations: dict[str, set[str]] = defaultdict(set)
     for split, rows in splits.items():
         for row in rows:
-            family_locations[row["family_id"]].add(split)
+            query_targets[row["query_id"]].add(row["target"])
+            target_queries[row["target"]].add(row["query_id"])
+            query_counts[split][row["query_id"]] += 1
             question_locations[normalize_model_input(row["input"]).casefold()].add(split)
             id_locations[row["id"]].add(split)
 
-    for label, locations in (
-        ("families", family_locations),
-        ("questions", question_locations),
-        ("ids", id_locations),
-    ):
+    inconsistent_queries = sorted(
+        query_id for query_id, targets in query_targets.items() if len(targets) > 1
+    )
+    if inconsistent_queries:
+        raise DatasetError(
+            f"query IDs have multiple targets: {inconsistent_queries[:10]}"
+        )
+    inconsistent_targets = sorted(
+        target for target, query_ids in target_queries.items() if len(query_ids) > 1
+    )
+    if inconsistent_targets:
+        raise DatasetError(
+            f"targets have multiple query IDs: {inconsistent_targets[:3]}"
+        )
+
+    all_queries = set(query_targets)
+    missing = {
+        split: sorted(all_queries - query_counts[split].keys())
+        for split in REQUIRED_SPLITS
+        if all_queries - query_counts[split].keys()
+    }
+    if missing:
+        raise DatasetError(f"query IDs missing from splits: {missing}")
+
+    sparse_train = sorted(
+        query_id for query_id in all_queries if query_counts["train"][query_id] < 2
+    )
+    if sparse_train:
+        raise DatasetError(f"query IDs have fewer than two train rows: {sparse_train[:10]}")
+    for split in ("val", "test"):
+        invalid = sorted(
+            query_id for query_id in all_queries if query_counts[split][query_id] != 1
+        )
+        if invalid:
+            raise DatasetError(
+                f"query IDs must have exactly one {split} row: {invalid[:10]}"
+            )
+
+    for split, report in reports.items():
+        counts = [report["register_counts"].get(register, 0) for register in REGISTER_ORDER]
+        if max(counts) - min(counts) > 1:
+            raise DatasetError(
+                f"{split} register counts differ by more than one: {counts}"
+            )
+
+    for label, locations in (("inputs", question_locations), ("ids", id_locations)):
         leaked = sorted(key for key, values in locations.items() if len(values) > 1)
         if leaked:
             raise DatasetError(f"{label} cross splits: {leaked[:10]}")

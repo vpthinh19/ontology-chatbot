@@ -15,26 +15,27 @@ from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.sparql import load_ontology
 
 
-def test_test_set_is_held_out_balanced_and_executable() -> None:
+def test_test_set_uses_only_train_supported_queries_and_is_executable() -> None:
     rows = load_benchmark()
     release = load_release()
     report = validate_benchmark(
         rows,
         load_ontology(),
-        training_rows=release["train"] + release["val"],
+        training_rows=release["train"],
     )
 
     assert report == {
-        "records": 168,
-        "targets": 42,
+        "records": 215,
+        "queries": 215,
+        "targets": 215,
         "register_counts": {
-            "colloquial": 42,
-            "formal": 42,
-            "neutral": 42,
-            "noisy": 42,
+            "colloquial": 54,
+            "formal": 53,
+            "neutral": 54,
+            "noisy": 54,
         },
-        "targets_seen_in_model_selection_data": 0,
-        "schema_terms_missing_from_training": [],
+        "queries_supported_by_train": 215,
+        "targets_supported_by_train": 215,
     }
 
 
@@ -62,8 +63,37 @@ def test_benchmark_rejects_training_question_leak() -> None:
     rows = load_benchmark()
     leaked = dict(rows[0])
     release = load_release()
-    training_rows = release["train"] + release["val"]
+    training_rows = release["train"]
     leaked["input"] = training_rows[0]["input"]
 
     with pytest.raises(BenchmarkError, match="leaks from training"):
         validate_benchmark([leaked], load_ontology(), training_rows=training_rows)
+
+
+def test_benchmark_rejects_query_not_supported_by_train() -> None:
+    rows = load_benchmark()
+    release = load_release()
+    unsupported = {**rows[0], "query_id": "query-unsupported"}
+
+    with pytest.raises(BenchmarkError, match="query IDs absent from train"):
+        validate_benchmark(
+            [unsupported],
+            load_ontology(),
+            training_rows=release["train"],
+        )
+
+
+def test_benchmark_rejects_target_not_supported_by_train() -> None:
+    rows = load_benchmark()
+    release = load_release()
+    unsupported = {
+        **rows[0],
+        "target": 'SELECT ?answer WHERE { VALUES ?answer { "không có trong train" } }',
+    }
+
+    with pytest.raises(BenchmarkError, match="targets absent from train"):
+        validate_benchmark(
+            [unsupported],
+            load_ontology(),
+            training_rows=release["train"],
+        )

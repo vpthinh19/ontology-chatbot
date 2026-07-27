@@ -6,7 +6,6 @@ import argparse
 import hashlib
 import json
 import math
-import re
 from collections import Counter
 from html import escape
 from pathlib import Path
@@ -17,7 +16,7 @@ from rdflib import OWL, RDF, RDFS, Graph, URIRef
 from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
-from .dataset import REQUIRED_SPLITS, load_release, validate_release
+from .dataset import REGISTER_ORDER, REQUIRED_SPLITS, load_release, validate_release
 from .query_features import extract_query_features, query_feature_tags
 
 
@@ -41,10 +40,9 @@ def build_dataset_report(
     validation = validate_release(dict(release), graph)
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
-    train_targets = {row["target"] for row in release["train"]}
-    test_targets = {row["target"] for row in release["test"]}
-    train_terms = _local_target_terms(release["train"])
-    test_terms = _local_target_terms(release["test"])
+    train_queries = {row["query_id"] for row in release["train"]}
+    validation_queries = {row["query_id"] for row in release["val"]}
+    test_queries = {row["query_id"] for row in release["test"]}
     object_properties = frozenset(
         str(subject).rsplit("#", 1)[-1]
         for subject in graph.subjects(RDF.type, OWL.ObjectProperty)
@@ -58,12 +56,12 @@ def build_dataset_report(
     report = {
         "dataset": {
             "records": len(all_rows),
-            "families": len({row["family_id"] for row in all_rows}),
+            "queries": len({row["query_id"] for row in all_rows}),
             "targets": len({row["target"] for row in all_rows}),
             "splits": {
                 split: {
                     "records": len(release[split]),
-                    "families": len({row["family_id"] for row in release[split]}),
+                    "queries": len({row["query_id"] for row in release[split]}),
                     "targets": len({row["target"] for row in release[split]}),
                 }
                 for split in REQUIRED_SPLITS
@@ -73,19 +71,16 @@ def build_dataset_report(
             "query_features_by_split": query_features_by_split,
             "input_words": _number_summary(word_lengths),
         },
-        "generalization_contract": {
-            "validation_targets_seen_in_train": len(
-                {row["target"] for row in release["val"]} & train_targets
+        "in_domain_contract": {
+            "train_queries": len(train_queries),
+            "validation_queries_supported_by_train": len(
+                validation_queries & train_queries
             ),
-            "validation_targets": len({row["target"] for row in release["val"]}),
-            "test_targets_seen_in_train": len(test_targets & train_targets),
-            "test_targets": len(test_targets),
-            "test_schema_terms_missing_from_train": sorted(test_terms - train_terms),
+            "validation_queries": len(validation_queries),
+            "test_queries_supported_by_train": len(test_queries & train_queries),
+            "test_queries": len(test_queries),
         },
-        "training_readiness": _build_training_readiness(
-            release,
-            object_properties,
-        ),
+        "training_readiness": _build_training_readiness(release, validation),
         "ontology": _ontology_summary(graph),
         "validation": validation,
         "sha256": {
@@ -294,7 +289,7 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
     manifest = {
         "schema": {
             "format": "jsonl",
-            "fields": ["id", "family_id", "register", "input", "target"],
+            "fields": ["id", "query_id", "register", "input", "target"],
             "input": "Vietnamese natural-language question",
             "target": "one-line canonical SPARQL SELECT without PREFIX declarations",
         },
@@ -308,14 +303,14 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
         },
         "totals": {
             "records": dataset["records"],
-            "families": dataset["families"],
+            "queries": dataset["queries"],
             "targets": dataset["targets"],
         },
         "split_contract": {
-            "train": "model fitting",
-            "val": "unseen paraphrase families whose exact targets occur in train",
-            "test": "held-out semantic targets composed only from schema terms present in train",
-            "family_leakage": False,
+            "train": "model fitting over every supported canonical query",
+            "val": "unseen wording for queries supported by train",
+            "test": "unseen wording for queries supported by train",
+            "query_catalogue_shared": True,
             "normalized_question_leakage": False,
             "near_duplicate_question_leakage": False,
         },
@@ -353,11 +348,6 @@ def _ontology_summary(graph: Graph) -> dict[str, Any]:
     }
 
 
-def _local_target_terms(rows: Iterable[Mapping[str, str]]) -> set[str]:
-    pattern = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
-    return {match for row in rows for match in pattern.findall(row["target"])}
-
-
 def _query_feature_counts(
     rows: Iterable[Mapping[str, str]],
     object_properties: frozenset[str],
@@ -374,84 +364,51 @@ def _query_feature_counts(
 
 def _build_training_readiness(
     release: Mapping[str, list[dict[str, str]]],
-    object_properties: frozenset[str],
+    validation: Mapping[str, Any],
 ) -> dict[str, Any]:
-    capability_names = (
-        "graph_hop",
-        "multi_branch",
-        "multi_column",
-        "aggregate",
-        "filter",
-        "group",
-        "order",
-        "limit",
-        "values",
-    )
-    target_support: dict[str, set[str]] = {
-        name: set() for name in capability_names
-    }
-    validation_support: dict[str, set[str]] = {
-        name: set() for name in capability_names
-    }
-    for split, support in (("train", target_support), ("val", validation_support)):
-        for row in release[split]:
-            features = extract_query_features(
-                row["target"],
-                object_properties=object_properties,
-            )
-            tags = set(query_feature_tags(features))
-            key = row["target"] if split == "train" else row["family_id"]
-            for name in capability_names:
-                if name in tags:
-                    support[name].add(key)
-
     gaps: list[dict[str, Any]] = []
-    sparse_features = {
-        name: len(targets)
-        for name, targets in target_support.items()
-        if targets and len(targets) < 5
+    query_sets = {
+        split: {row["query_id"] for row in release[split]}
+        for split in REQUIRED_SPLITS
     }
-    if sparse_features:
-        gaps.append(
-            {
-                "code": "insufficient_train_feature_targets",
-                "minimum": 5,
-                "features": dict(sorted(sparse_features.items())),
-            }
-        )
+    expected_queries = set().union(*query_sets.values())
+    missing = {
+        split: sorted(expected_queries - query_sets[split])
+        for split in REQUIRED_SPLITS
+        if expected_queries - query_sets[split]
+    }
+    if missing:
+        gaps.append({"code": "queries_missing_from_split", "splits": missing})
 
-    missing_validation = {
-        name: len(validation_support[name])
-        for name, targets in target_support.items()
-        if targets and len(validation_support[name]) < 2
+    minimum_records = {
+        "train": len(expected_queries) * 2,
+        "val": len(expected_queries),
+        "test": len(expected_queries),
     }
-    if missing_validation:
-        gaps.append(
-            {
-                "code": "missing_validation_features",
-                "minimum_families": 2,
-                "features": dict(sorted(missing_validation.items())),
-            }
-        )
+    short_splits = {
+        split: {"records": len(release[split]), "minimum": minimum}
+        for split, minimum in minimum_records.items()
+        if len(release[split]) < minimum
+    }
+    if short_splits:
+        gaps.append({"code": "insufficient_split_records", "splits": short_splits})
 
-    term_families: dict[str, set[str]] = {}
-    pattern = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
-    for row in release["train"]:
-        for term in set(pattern.findall(row["target"])):
-            term_families.setdefault(term, set()).add(row["family_id"])
-    sparse_terms = {
-        term: len(term_families.get(term, set()))
-        for term in _local_target_terms(release["test"])
-        if len(term_families.get(term, set())) < 2
+    imbalanced = {}
+    for split in REQUIRED_SPLITS:
+        counts = Counter(row["register"] for row in release[split])
+        values = [counts.get(register, 0) for register in REGISTER_ORDER]
+        if values and max(values) - min(values) > 1:
+            imbalanced[split] = dict(sorted(counts.items()))
+    if imbalanced:
+        gaps.append({"code": "register_imbalance", "splits": imbalanced})
+
+    empty_results = {
+        split: report["empty_result_ids"]
+        for split, report in validation["splits"].items()
+        if report["empty_result_ids"]
     }
-    if sparse_terms:
-        gaps.append(
-            {
-                "code": "under_supported_test_terms",
-                "minimum_train_families": 2,
-                "terms": dict(sorted(sparse_terms.items())),
-            }
-        )
+    if empty_results:
+        gaps.append({"code": "empty_query_results", "splits": empty_results})
 
     return {"ready": not gaps, "gaps": gaps}
 

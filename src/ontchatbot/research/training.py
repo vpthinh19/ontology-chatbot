@@ -307,7 +307,7 @@ def train(args: argparse.Namespace) -> dict:
         benchmark_validation = validate_benchmark(
             benchmark_rows,
             graph,
-            training_rows=rows,
+            training_rows=release["train"],
         )
         benchmark_decoded = _generate_rows(
             inference_model,

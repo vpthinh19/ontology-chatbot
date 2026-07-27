@@ -33,7 +33,7 @@ def main() -> None:
     validation = validate_benchmark(
         rows,
         graph,
-        training_rows=release["train"] + release["val"],
+        training_rows=release["train"],
     )
     predictions = (
         load_predictions(args.predictions)

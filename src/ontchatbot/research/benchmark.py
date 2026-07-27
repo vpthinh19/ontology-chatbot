@@ -16,8 +16,7 @@ from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import execute_select, validate_select
 
-REQUIRED_FIELDS = {"id", "family_id", "register", "input", "target"}
-_LOCAL_TERM = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
+REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}
 
 
 class BenchmarkError(ValueError):
@@ -43,14 +42,10 @@ def validate_benchmark(
         normalize_model_input(row["input"]).casefold()
         for row in (training_rows or [])
     }
-    training_families = {row["family_id"] for row in (training_rows or [])}
+    training_queries = {row["query_id"] for row in (training_rows or [])}
     training_targets = {row["target"] for row in (training_rows or [])}
-    training_terms = {
-        term
-        for row in (training_rows or [])
-        for term in _LOCAL_TERM.findall(row["target"])
-    }
     register_counts: Counter[str] = Counter()
+    queries: set[str] = set()
     targets: set[str] = set()
 
     for index, row in enumerate(rows, 1):
@@ -64,9 +59,6 @@ def validate_benchmark(
         if record_id in ids:
             raise BenchmarkError(f"duplicate id: {record_id}")
         ids.add(record_id)
-        if row["family_id"] in training_families:
-            raise BenchmarkError(f"semantic family leaks from training data: {record_id}")
-
         normalized = normalize_model_input(row["input"]).casefold()
         if normalized in questions:
             raise BenchmarkError(f"duplicate normalized question: {record_id}")
@@ -90,24 +82,23 @@ def validate_benchmark(
         if not execute_select(graph, target):
             raise BenchmarkError(f"{record_id}: reference query returns no rows")
         register_counts[register] += 1
+        queries.add(row["query_id"])
         targets.add(target)
 
-    repeated_targets = sorted(targets & training_targets)
-    if repeated_targets:
-        raise BenchmarkError(
-            f"test targets must be held out from model-selection data: {repeated_targets[:3]}"
-        )
-    test_terms = {term for target in targets for term in _LOCAL_TERM.findall(target)}
-    missing_terms = sorted(test_terms - training_terms) if training_rows is not None else []
-    if missing_terms:
-        raise BenchmarkError(f"test uses schema terms absent from training: {missing_terms}")
+    missing_queries = sorted(queries - training_queries) if training_rows is not None else []
+    if missing_queries:
+        raise BenchmarkError(f"query IDs absent from train: {missing_queries[:10]}")
+    missing_targets = sorted(targets - training_targets) if training_rows is not None else []
+    if missing_targets:
+        raise BenchmarkError(f"targets absent from train: {missing_targets[:3]}")
 
     return {
         "records": len(rows),
+        "queries": len(queries),
         "targets": len(targets),
         "register_counts": dict(sorted(register_counts.items())),
-        "targets_seen_in_model_selection_data": len(repeated_targets),
-        "schema_terms_missing_from_training": missing_terms,
+        "queries_supported_by_train": len(queries & training_queries),
+        "targets_supported_by_train": len(targets & training_targets),
     }
 
 

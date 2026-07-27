@@ -30,7 +30,7 @@ def evaluate(args: argparse.Namespace) -> dict:
     graph = load_ontology()
     release = load_release()
     validate_release(release, graph)
-    training_rows = release["train"] + release["val"]
+    training_rows = release["train"]
     tokenizer = AutoTokenizer.from_pretrained(
         args.model_dir,
         local_files_only=True,

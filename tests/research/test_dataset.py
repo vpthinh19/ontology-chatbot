@@ -1,15 +1,59 @@
 from __future__ import annotations
 
+from copy import deepcopy
+
 import pytest
 
-from ontchatbot.research.dataset import (
-    DatasetError,
-    load_release,
-    validate_dataset,
-    validate_release,
-)
+from ontchatbot.research.dataset import DatasetError, load_release, validate_release
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import DATASET_DIR
+
+
+TARGETS = (
+    "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }",
+    "SELECT ?answer WHERE { :CourseRegistrationProcedure :content ?answer . }",
+)
+QUESTIONS = (
+    (
+        "Tôi cần hướng dẫn nghỉ học tạm thời",
+        "thủ tục bảo lưu kết quả học tập",
+        "xin phép tạm dừng chương trình đang học",
+        "sắp đi nghĩa vụ quân sự thì làm sao giữ kết quả",
+    ),
+    (
+        "Tôi cần hướng dẫn đăng ký học phần",
+        "cách chọn môn cho học kỳ mới",
+        "quy trình ghi danh môn học thực hiện thế nào",
+        "muốn thêm lớp vào thời khóa biểu phải làm sao",
+    ),
+)
+REGISTERS = ("formal", "neutral", "colloquial", "noisy")
+
+
+def _valid_release(query_count: int = 1) -> dict[str, list[dict[str, str]]]:
+    release: dict[str, list[dict[str, str]]] = {
+        "train": [],
+        "val": [],
+        "test": [],
+    }
+    for index in range(query_count):
+        query_id = f"query-{index + 1:04d}"
+        target = TARGETS[index]
+        questions = QUESTIONS[index]
+        rows = [
+            {
+                "id": f"question-{index + 1:04d}-{offset}",
+                "query_id": query_id,
+                "register": REGISTERS[(index * 2 + offset) % len(REGISTERS)],
+                "input": question,
+                "target": target,
+            }
+            for offset, question in enumerate(questions)
+        ]
+        release["train"].extend(rows[:2])
+        release["val"].append(rows[2])
+        release["test"].append(rows[3])
+    return release
 
 
 def test_canonical_dataset_is_executable() -> None:
@@ -18,121 +62,101 @@ def test_canonical_dataset_is_executable() -> None:
     report = validate_release(load_release(), load_ontology())
 
     assert report["records"] == 1416
-    assert report["split_counts"] == {"train": 1084, "val": 164, "test": 168}
+    assert report["split_counts"] == {"train": 986, "val": 215, "test": 215}
+    assert all(split["queries"] == 215 for split in report["splits"].values())
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
 
-def test_validator_rejects_family_leakage() -> None:
-    target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
+def test_validator_accepts_the_in_domain_query_contract() -> None:
+    release = _valid_release()
 
-    def family(prefix: str, family_id: str, question: str) -> list[dict[str, str]]:
-        return [
+    report = validate_release(release, load_ontology())
+
+    assert report["records"] == 4
+    assert all(
+        set(row) == {"id", "query_id", "register", "input", "target"}
+        for rows in release.values()
+        for row in rows
+    )
+    assert report["splits"]["train"]["queries"] == 1
+
+
+def test_validator_rejects_one_query_id_with_two_targets() -> None:
+    release = _valid_release(query_count=2)
+    for rows in release.values():
+        for row in rows:
+            row["query_id"] = "query-0001"
+
+    with pytest.raises(DatasetError, match="query IDs have multiple targets"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_one_target_with_two_query_ids() -> None:
+    release = _valid_release(query_count=2)
+    for rows in release.values():
+        for row in rows:
+            row["target"] = TARGETS[0]
+
+    with pytest.raises(DatasetError, match="targets have multiple query IDs"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_query_id_missing_from_a_split() -> None:
+    release = _valid_release(query_count=2)
+    release["val"] = [row for row in release["val"] if row["query_id"] != "query-0002"]
+
+    with pytest.raises(DatasetError, match="query IDs missing from splits"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_fewer_than_two_train_rows_per_query() -> None:
+    release = _valid_release()
+    release["train"].pop()
+
+    with pytest.raises(DatasetError, match="fewer than two train rows"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_register_imbalance() -> None:
+    release = _valid_release()
+    for offset in (5, 6):
+        release["train"].append(
             {
-                "id": f"{prefix}-{index}",
-                "family_id": family_id,
-                "register": register,
-                "input": f"{question} {register}",
-                "target": target,
+                **release["train"][0],
+                "id": f"question-extra-{offset}",
+                "input": f"câu hỏi bổ sung hoàn toàn khác số {offset}",
             }
-            for index, register in enumerate(
-                ("formal", "neutral", "colloquial", "noisy"),
-                1,
-            )
-        ]
+        )
 
-    release = {
-        "train": family("a", "same", "bảo lưu như thế nào"),
-        "val": family("b", "same", "bảo lưu sao"),
-        "test": family("c", "independent", "xin hướng dẫn bảo lưu"),
-    }
+    with pytest.raises(DatasetError, match="register counts differ by more than one"):
+        validate_release(release, load_ontology())
 
-    with pytest.raises(DatasetError, match="families cross splits"):
+
+@pytest.mark.parametrize("field", ["id", "input"])
+def test_validator_rejects_exact_cross_split_leakage(field: str) -> None:
+    release = _valid_release()
+    release["test"][0][field] = release["train"][0][field]
+
+    with pytest.raises(DatasetError, match=f"{field}s? cross splits"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_near_duplicate_questions_across_splits() -> None:
+    release = _valid_release()
+    release["train"][0]["input"] = (
+        "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K66"
+    )
+    release["test"][0]["input"] = (
+        "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K65"
+    )
+
+    with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
         validate_release(release, load_ontology())
 
 
 def test_validator_rejects_removed_query_shape_field() -> None:
-    row = {
-        "id": "question-1",
-        "family_id": "family-1",
-        "register": "formal",
-        "query_shape": "direct",
-        "input": "bảo lưu như thế nào",
-        "target": "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }",
-    }
+    release = deepcopy(_valid_release())
+    release["train"][0]["query_shape"] = "direct"
 
     with pytest.raises(DatasetError, match="fields must be exactly"):
-        validate_release(
-            {
-                "train": [row],
-                "val": [
-                    {
-                        **row,
-                        "id": "question-2",
-                        "family_id": "family-2",
-                        "input": "bảo lưu ra sao",
-                    }
-                ],
-                "test": [
-                    {
-                        **row,
-                        "id": "question-3",
-                        "family_id": "family-3",
-                        "input": "xin hướng dẫn bảo lưu",
-                    }
-                ],
-            },
-            load_ontology(),
-        )
-
-
-def test_validator_rejects_family_missing_a_register() -> None:
-    target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
-    rows = [
-        {
-            "id": f"question-{index}",
-            "family_id": "family-1",
-            "register": register,
-            "input": f"hỏi về bảo lưu {register}",
-            "target": target,
-        }
-        for index, register in enumerate(("formal", "neutral", "colloquial"), 1)
-    ]
-
-    with pytest.raises(DatasetError, match="exactly one of each register"):
-        validate_dataset(rows, load_ontology())
-
-
-def test_validator_rejects_near_duplicate_questions_across_splits() -> None:
-    target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
-
-    def family(prefix: str, family_id: str, question: str) -> list[dict[str, str]]:
-        return [
-            {
-                "id": f"{prefix}-{index}",
-                "family_id": family_id,
-                "register": register,
-                "input": f"{question} cách {index}",
-                "target": target,
-            }
-            for index, register in enumerate(
-                ("formal", "neutral", "colloquial", "noisy"),
-                1,
-            )
-        ]
-
-    release = {
-        "train": family(
-            "train",
-            "family-train",
-            "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K66",
-        ),
-        "val": family("val", "family-val", "Hướng dẫn bảo lưu kết quả học tập"),
-        "test": family(
-            "test",
-            "family-test",
-            "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K65",
-        ),
-    }
-
-    with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
         validate_release(release, load_ontology())

@@ -20,7 +20,7 @@ def evaluate(args: argparse.Namespace) -> dict:
     validation = validate_benchmark(
         rows,
         graph,
-        training_rows=release["train"] + release["val"],
+        training_rows=release["train"],
     )
     generator = CTranslate2Generator.load(
         args.model_dir,
