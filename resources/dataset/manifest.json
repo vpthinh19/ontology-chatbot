@@ -14,37 +14,38 @@
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 1040,
-      "families": 260,
-      "targets": 163,
-      "sha256": "2ab57fa0b8e10afd48dd3b6bd6d37ce8c5b82881f9ec2c5bec3840e9fb1b29fe"
+      "records": 1084,
+      "families": 271,
+      "targets": 173,
+      "sha256": "fc86854b71f0b7ee4eae81f15a3372294a46af684d2393d7725e731af7ff5d9b"
     },
     "val": {
       "path": "val.jsonl",
-      "records": 140,
-      "families": 35,
-      "targets": 35,
-      "sha256": "8278ccd0a9fc62500911668c6e5b4dff9f1d5ce65e263cb75b7a84f5e6f3de33"
+      "records": 164,
+      "families": 41,
+      "targets": 41,
+      "sha256": "d92336c78d170d27f707eacd7dd1953b05306fafb1960ad3ca9ff90db0fda32d"
     },
     "test": {
       "path": "test.jsonl",
-      "records": 156,
-      "families": 39,
-      "targets": 39,
-      "sha256": "04b49191e5687729024780618a5d24411a14436b25c6d153e9c92c869f82da2c"
+      "records": 168,
+      "families": 42,
+      "targets": 42,
+      "sha256": "5c25df0bd503d2a8aa646e780bcbfab6111ca66077d979ef9d4971201aebc7b9"
     }
   },
   "totals": {
-    "records": 1336,
-    "families": 334,
-    "targets": 202
+    "records": 1416,
+    "families": 354,
+    "targets": 215
   },
   "split_contract": {
     "train": "model fitting",
     "val": "unseen paraphrase families whose exact targets occur in train",
     "test": "held-out semantic targets composed only from schema terms present in train",
     "family_leakage": false,
-    "normalized_question_leakage": false
+    "normalized_question_leakage": false,
+    "near_duplicate_question_leakage": false
   },
   "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
   "ontology": {

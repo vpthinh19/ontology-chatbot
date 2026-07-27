@@ -24,10 +24,11 @@ def extract_query_features(
         "triple_patterns": query.count(" .") + query.count(" ; "),
         "graph_hop": bool(local_names & set(object_properties)),
         "aggregate": bool(_AGGREGATE.search(query)),
-        "filter": bool(re.search(r"\bFILTER\s*\(", query, re.IGNORECASE)),
+        "filter": bool(re.search(r"\bFILTER\b", query, re.IGNORECASE)),
         "group": bool(re.search(r"\bGROUP\s+BY\b", query, re.IGNORECASE)),
         "order": bool(re.search(r"\bORDER\s+BY\b", query, re.IGNORECASE)),
         "limit": bool(re.search(r"\bLIMIT\s+\d+\b", query, re.IGNORECASE)),
+        "values": bool(re.search(r"\bVALUES\b", query, re.IGNORECASE)),
     }
 
 
@@ -40,7 +41,15 @@ def query_feature_tags(features: dict[str, int | bool]) -> tuple[str, ...]:
     ]
     tags.extend(
         name
-        for name in ("graph_hop", "aggregate", "filter", "group", "order", "limit")
+        for name in (
+            "graph_hop",
+            "aggregate",
+            "filter",
+            "group",
+            "order",
+            "limit",
+            "values",
+        )
         if features[name]
     )
     return tuple(tags)

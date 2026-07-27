@@ -274,6 +274,7 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             "test": "held-out semantic targets composed only from schema terms present in train",
             "family_leakage": False,
             "normalized_question_leakage": False,
+            "near_duplicate_question_leakage": False,
         },
         "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
         "ontology": {
@@ -341,6 +342,7 @@ def _build_training_readiness(
         "group",
         "order",
         "limit",
+        "values",
     )
     target_support: dict[str, set[str]] = {
         name: set() for name in capability_names
@@ -443,8 +445,8 @@ def _write_bar_chart(path: Path, title: str, values: Mapping[str, int], *, color
 def _write_grouped_bar_chart(path: Path, title: str, groups: Mapping[str, Mapping[str, int]]) -> None:
     colors = {"train": "#2563eb", "val": "#f59e0b", "test": "#10b981"}
     categories = sorted({name for values in groups.values() for name in values})
-    width, height = 980, 420
-    margin_left, margin_top, chart_width, chart_height = 80, 85, 850, 250
+    width, height = max(980, len(categories) * 100 + 140), 420
+    margin_left, margin_top, chart_width, chart_height = 80, 85, width - 130, 250
     maximum = max(value for values in groups.values() for value in values.values())
     cluster_width = chart_width / len(categories)
     bar_width = cluster_width / (len(groups) + 1)
@@ -477,8 +479,8 @@ def _write_metric_chart(
 ) -> None:
     colors = {"bartpho": "#2563eb", "vit5": "#f59e0b", "t5gemma2": "#10b981"}
     categories = sorted({name for values in groups.values() for name in values})
-    width, height = 1060, 430
-    margin_left, margin_top, chart_width, chart_height = 75, 90, 935, 250
+    width, height = max(1060, len(categories) * 100 + 140), 430
+    margin_left, margin_top, chart_width, chart_height = 75, 90, width - 125, 250
     cluster_width = chart_width / len(categories)
     bar_width = cluster_width / (len(groups) + 1)
     parts = _svg_header(width, height, title)

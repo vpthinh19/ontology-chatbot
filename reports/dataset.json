@@ -1,124 +1,103 @@
 {
   "dataset": {
-    "records": 1336,
-    "families": 334,
-    "targets": 202,
+    "records": 1416,
+    "families": 354,
+    "targets": 215,
     "splits": {
       "train": {
-        "records": 1040,
-        "families": 260,
-        "targets": 163
+        "records": 1084,
+        "families": 271,
+        "targets": 173
       },
       "val": {
-        "records": 140,
-        "families": 35,
-        "targets": 35
+        "records": 164,
+        "families": 41,
+        "targets": 41
       },
       "test": {
-        "records": 156,
-        "families": 39,
-        "targets": 39
+        "records": 168,
+        "families": 42,
+        "targets": 42
       }
     },
     "registers": {
-      "colloquial": 334,
-      "formal": 334,
-      "neutral": 334,
-      "noisy": 334
+      "colloquial": 354,
+      "formal": 354,
+      "neutral": 354,
+      "noisy": 354
     },
     "query_features": {
-      "aggregate": 92,
-      "filter": 52,
+      "aggregate": 112,
+      "filter": 80,
       "graph_hop": 616,
-      "group": 12,
-      "limit": 16,
-      "multi_branch": 836,
-      "multi_column": 432,
-      "order": 16,
-      "single_branch": 500,
-      "single_column": 904
+      "group": 32,
+      "limit": 36,
+      "multi_branch": 912,
+      "multi_column": 472,
+      "order": 96,
+      "single_branch": 504,
+      "single_column": 944,
+      "values": 32
     },
     "query_features_by_split": {
       "train": {
-        "aggregate": 68,
-        "filter": 40,
+        "aggregate": 76,
+        "filter": 56,
         "graph_hop": 472,
-        "group": 12,
-        "limit": 12,
-        "multi_branch": 632,
-        "multi_column": 308,
-        "order": 12,
-        "single_branch": 408,
-        "single_column": 732
+        "group": 20,
+        "limit": 20,
+        "multi_branch": 672,
+        "multi_column": 328,
+        "order": 56,
+        "single_branch": 412,
+        "single_column": 756,
+        "values": 20
       },
       "val": {
-        "aggregate": 8,
+        "aggregate": 16,
+        "filter": 8,
         "graph_hop": 56,
-        "multi_branch": 64,
-        "multi_column": 16,
+        "group": 8,
+        "limit": 8,
+        "multi_branch": 88,
+        "multi_column": 28,
+        "order": 24,
         "single_branch": 76,
-        "single_column": 124
+        "single_column": 136,
+        "values": 8
       },
       "test": {
-        "aggregate": 16,
-        "filter": 12,
+        "aggregate": 20,
+        "filter": 16,
         "graph_hop": 88,
-        "limit": 4,
-        "multi_branch": 140,
-        "multi_column": 108,
-        "order": 4,
+        "group": 4,
+        "limit": 8,
+        "multi_branch": 152,
+        "multi_column": 116,
+        "order": 16,
         "single_branch": 16,
-        "single_column": 48
+        "single_column": 52,
+        "values": 4
       }
     },
     "input_words": {
       "min": 4,
-      "median": 12,
+      "median": 13,
       "p95": 20,
       "max": 26,
-      "mean": 12.66
+      "mean": 12.81
     }
   },
   "generalization_contract": {
-    "validation_targets_seen_in_train": 35,
-    "validation_targets": 35,
+    "validation_targets_seen_in_train": 41,
+    "validation_targets": 41,
     "test_targets_seen_in_train": 0,
-    "test_targets": 39,
+    "test_targets": 42,
     "test_schema_terms_missing_from_train": []
   },
   "training_readiness": {
-    "ready": false,
-    "gaps": [
-      {
-        "code": "insufficient_train_feature_targets",
-        "minimum": 5,
-        "features": {
-          "group": 3,
-          "limit": 3,
-          "order": 3
-        }
-      },
-      {
-        "code": "missing_validation_features",
-        "minimum_families": 2,
-        "features": {
-          "filter": 0,
-          "group": 0,
-          "limit": 0,
-          "order": 0
-        }
-      },
-      {
-        "code": "under_supported_test_terms",
-        "minimum_train_families": 2,
-        "terms": {
-          "BankCounterPayment": 1,
-          "OnlinePayment": 1,
-          "PaymentMethod": 1,
-          "PlanningAndFinanceOffice": 1
-        }
-      }
-    ]
+    "ready": true,
+    "gaps": []
   },
   "ontology": {
     "triples": 422,
@@ -129,55 +108,55 @@
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 1336,
+    "records": 1416,
     "split_counts": {
-      "train": 1040,
-      "val": 140,
-      "test": 156
+      "train": 1084,
+      "val": 164,
+      "test": 168
     },
     "splits": {
       "train": {
-        "records": 1040,
-        "families": 260,
-        "targets": 163,
+        "records": 1084,
+        "families": 271,
+        "targets": 173,
         "register_counts": {
-          "colloquial": 260,
-          "formal": 260,
-          "neutral": 260,
-          "noisy": 260
+          "colloquial": 271,
+          "formal": 271,
+          "neutral": 271,
+          "noisy": 271
         },
         "empty_result_ids": []
       },
       "val": {
-        "records": 140,
-        "families": 35,
-        "targets": 35,
+        "records": 164,
+        "families": 41,
+        "targets": 41,
         "register_counts": {
-          "colloquial": 35,
-          "formal": 35,
-          "neutral": 35,
-          "noisy": 35
+          "colloquial": 41,
+          "formal": 41,
+          "neutral": 41,
+          "noisy": 41
         },
         "empty_result_ids": []
       },
       "test": {
-        "records": 156,
-        "families": 39,
-        "targets": 39,
+        "records": 168,
+        "families": 42,
+        "targets": 42,
         "register_counts": {
-          "colloquial": 39,
-          "formal": 39,
-          "neutral": 39,
-          "noisy": 39
+          "colloquial": 42,
+          "formal": 42,
+          "neutral": 42,
+          "noisy": 42
         },
         "empty_result_ids": []
       }
     }
   },
   "sha256": {
-    "train.jsonl": "2ab57fa0b8e10afd48dd3b6bd6d37ce8c5b82881f9ec2c5bec3840e9fb1b29fe",
-    "val.jsonl": "8278ccd0a9fc62500911668c6e5b4dff9f1d5ce65e263cb75b7a84f5e6f3de33",
-    "test.jsonl": "04b49191e5687729024780618a5d24411a14436b25c6d153e9c92c869f82da2c",
+    "train.jsonl": "fc86854b71f0b7ee4eae81f15a3372294a46af684d2393d7725e731af7ff5d9b",
+    "val.jsonl": "d92336c78d170d27f707eacd7dd1953b05306fafb1960ad3ca9ff90db0fda32d",
+    "test.jsonl": "5c25df0bd503d2a8aa646e780bcbfab6111ca66077d979ef9d4971201aebc7b9",
     "ontology.ttl": "0af6d4f50ae1e8919d7cc6e4eb16a27897da33cb8a3175d3c4e2f292f278a987"
   }
 }

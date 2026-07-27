@@ -25,13 +25,13 @@ def test_test_set_is_held_out_balanced_and_executable() -> None:
     )
 
     assert report == {
-        "records": 156,
-        "targets": 39,
+        "records": 168,
+        "targets": 42,
         "register_counts": {
-            "colloquial": 39,
-            "formal": 39,
-            "neutral": 39,
-            "noisy": 39,
+            "colloquial": 42,
+            "formal": 42,
+            "neutral": 42,
+            "noisy": 42,
         },
         "targets_seen_in_model_selection_data": 0,
         "schema_terms_missing_from_training": [],

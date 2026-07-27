@@ -17,8 +17,8 @@ def test_canonical_dataset_is_executable() -> None:
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_release(load_release(), load_ontology())
 
-    assert report["records"] == 1336
-    assert report["split_counts"] == {"train": 1040, "val": 140, "test": 156}
+    assert report["records"] == 1416
+    assert report["split_counts"] == {"train": 1084, "val": 164, "test": 168}
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
 
@@ -100,3 +100,39 @@ def test_validator_rejects_family_missing_a_register() -> None:
 
     with pytest.raises(DatasetError, match="exactly one of each register"):
         validate_dataset(rows, load_ontology())
+
+
+def test_validator_rejects_near_duplicate_questions_across_splits() -> None:
+    target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
+
+    def family(prefix: str, family_id: str, question: str) -> list[dict[str, str]]:
+        return [
+            {
+                "id": f"{prefix}-{index}",
+                "family_id": family_id,
+                "register": register,
+                "input": f"{question} cách {index}",
+                "target": target,
+            }
+            for index, register in enumerate(
+                ("formal", "neutral", "colloquial", "noisy"),
+                1,
+            )
+        ]
+
+    release = {
+        "train": family(
+            "train",
+            "family-train",
+            "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K66",
+        ),
+        "val": family("val", "family-val", "Hướng dẫn bảo lưu kết quả học tập"),
+        "test": family(
+            "test",
+            "family-test",
+            "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K65",
+        ),
+    }
+
+    with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
+        validate_release(release, load_ontology())

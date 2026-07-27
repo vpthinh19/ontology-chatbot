@@ -18,6 +18,7 @@ REQUIRED_FIELDS = {"id", "family_id", "register", "input", "target"}
 REQUIRED_SPLITS = ("train", "val", "test")
 ALLOWED_REGISTERS = {"formal", "neutral", "colloquial", "noisy"}
 UNSUPPORTED_TARGET_CHARACTERS = frozenset("_^<@")
+NEAR_DUPLICATE_THRESHOLD = 0.84
 
 
 class DatasetError(ValueError):
@@ -152,8 +153,45 @@ def validate_release(
         if leaked:
             raise DatasetError(f"{label} cross splits: {leaked[:10]}")
 
+    near_duplicates = _cross_split_near_duplicates(splits)
+    if near_duplicates:
+        score, left_id, right_id = near_duplicates[0]
+        raise DatasetError(
+            "near-duplicate questions cross splits: "
+            f"{left_id} <> {right_id} ({score:.3f})"
+        )
+
     return {
         "records": sum(report["records"] for report in reports.values()),
         "split_counts": {name: reports[name]["records"] for name in REQUIRED_SPLITS},
         "splits": reports,
     }
+
+
+def _cross_split_near_duplicates(
+    splits: dict[str, list[dict[str, Any]]],
+) -> list[tuple[float, str, str]]:
+    indexed = {
+        split: [
+            (row["id"], _character_trigrams(row["input"]))
+            for row in splits[split]
+        ]
+        for split in REQUIRED_SPLITS
+    }
+    matches: list[tuple[float, str, str]] = []
+    for left_index, left_split in enumerate(REQUIRED_SPLITS):
+        for right_split in REQUIRED_SPLITS[left_index + 1 :]:
+            for left_id, left_grams in indexed[left_split]:
+                for right_id, right_grams in indexed[right_split]:
+                    score = len(left_grams & right_grams) / len(
+                        left_grams | right_grams
+                    )
+                    if score >= NEAR_DUPLICATE_THRESHOLD:
+                        matches.append((score, left_id, right_id))
+    return sorted(matches, key=lambda item: (-item[0], item[1], item[2]))
+
+
+def _character_trigrams(text: str) -> frozenset[str]:
+    normalized = normalize_model_input(text).casefold()
+    padded = f"  {normalized}  "
+    return frozenset(padded[index : index + 3] for index in range(len(padded) - 2))

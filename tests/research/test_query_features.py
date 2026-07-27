@@ -18,6 +18,7 @@ def test_extracts_single_column_direct_query() -> None:
         "group": False,
         "order": False,
         "limit": False,
+        "values": False,
     }
 
 
@@ -77,3 +78,26 @@ def test_detects_semicolon_filter_order_and_limit() -> None:
     assert features["filter"] is True
     assert features["order"] is True
     assert features["limit"] is True
+
+
+def test_detects_values_as_multi_entity_binding() -> None:
+    query = (
+        "SELECT ?method WHERE { VALUES ?node { "
+        ":BankCounterPayment :OnlinePayment } "
+        "?node rdfs:label ?method . } ORDER BY ?method"
+    )
+
+    features = extract_query_features(query, object_properties=OBJECT_PROPERTIES)
+
+    assert features["values"] is True
+
+
+def test_detects_filter_not_exists() -> None:
+    query = (
+        "SELECT ?rate WHERE { ?node :tuitionPerCredit ?rate . "
+        "FILTER NOT EXISTS { ?other :tuitionPerCredit ?rate . } }"
+    )
+
+    features = extract_query_features(query, object_properties=OBJECT_PROPERTIES)
+
+    assert features["filter"] is True

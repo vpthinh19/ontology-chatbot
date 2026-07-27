@@ -19,17 +19,17 @@ gắn với schema để sửa đoán kết quả của model.
 
 ## Dữ liệu nghiên cứu
 
-Dataset hiện có 1.336 câu hỏi thuộc 334 họ ngữ nghĩa. Mỗi họ gồm bốn cách diễn đạt:
+Dataset hiện có 1.416 câu hỏi thuộc 354 họ ngữ nghĩa. Mỗi họ gồm bốn cách diễn đạt:
 trang trọng, trung tính, khẩu ngữ và câu nhiễu/viết tắt.
 
 | Tập | Câu hỏi | Họ ngữ nghĩa | Target SPARQL |
 |---|---:|---:|---:|
-| Train | 1.040 | 260 | 163 |
-| Validation | 140 | 35 | 35 |
-| Test | 156 | 39 | 39 |
+| Train | 1.084 | 271 | 173 |
+| Validation | 164 | 41 | 41 |
+| Test | 168 | 42 | 42 |
 
 Test chỉ dùng các thành phần ontology đã có trong train nhưng ghép chúng thành
-39 target chưa từng xuất hiện trong train. Mọi target đều được parse và chạy
+42 target chưa từng xuất hiện trong train. Mọi target đều được parse và chạy
 trực tiếp trên ontology trước khi dùng để huấn luyện hoặc đánh giá.
 
 ![Phân bố split](reports/figures/dataset-splits.svg)

@@ -40,8 +40,8 @@ tag, số cột và việc ghép các giá trị trong cùng một dòng phải 
 - Test chỉ chạy với checkpoint đã chọn và là số dùng so sánh ba model.
 
 Vì validation và test có mục tiêu khác nhau, không gộp hai con số thành một tỷ
-lệ chung. Điểm test phải luôn đi kèm số câu (156), phân bố register và query
-shape.
+lệ chung. Điểm test phải luôn đi kèm số câu (168), phân bố register và đặc
+trưng SPARQL.
 
 ## Biểu đồ công khai
 

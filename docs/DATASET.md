@@ -33,9 +33,9 @@ theo ý nghĩa; không tạo hàng loạt bằng cách thay từ trong một tem
 
 | Tập | Câu hỏi | Family | Target | Vai trò |
 |---|---:|---:|---:|---|
-| Train | 1.040 | 260 | 163 | Cập nhật trọng số model |
-| Validation | 140 | 35 | 35 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
-| Test | 156 | 39 | 39 | Đo khả năng ghép truy vấn mới |
+| Train | 1.084 | 271 | 173 | Cập nhật trọng số model |
+| Validation | 164 | 41 | 41 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
+| Test | 168 | 42 | 42 | Đo khả năng ghép truy vấn mới |
 
 Target validation đã có trong train nhưng family thì chưa. Target test chưa có
 trong train/validation, song các thành phần schema tạo nên nó phải được học từ
@@ -48,7 +48,8 @@ train. Test chỉ được dùng sau khi checkpoint đã được chọn.
 Dataset không lưu nhãn hình dạng truy vấn do một query có thể đồng thời nhiều
 cột, đi qua graph, lọc, gom nhóm và sắp xếp. Báo cáo tự suy ra các đặc trưng
 độc lập từ target: số cột, số triple pattern, object-property hop, aggregate,
-`FILTER`, `GROUP BY`, `ORDER BY` và `LIMIT`.
+`FILTER`, `GROUP BY`, `ORDER BY`, `LIMIT` và `VALUES` cho truy vấn nhiều thực
+thể độc lập.
 
 ![Đặc trưng SPARQL](../reports/figures/query-features.svg)
 
@@ -63,7 +64,7 @@ không nằm trong JSONL.
 Trước khi huấn luyện, dataset phải qua các kiểm tra sau:
 
 1. Mỗi bản ghi có đúng năm trường và mỗi family có đủ bốn register.
-2. ID, family và câu đã chuẩn hóa không rò rỉ giữa split.
+2. ID, family, câu trùng hoặc câu gần trùng không rò rỉ giữa split.
 3. Mỗi family chỉ ánh xạ tới một target.
 4. Target parse được, chạy có kết quả và chỉ dùng contract SPARQL an toàn.
 5. Validation phủ các năng lực cần dùng để chọn checkpoint.

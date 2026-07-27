@@ -20,9 +20,9 @@ Ba tập có vai trò tách biệt:
 
 | Tập | Câu | Họ ngữ nghĩa | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 1.040 | 260 | Cập nhật trọng số model |
-| `val.jsonl` | 140 | 35 | Chọn checkpoint trên các cách diễn đạt chưa thấy |
-| `test.jsonl` | 156 | 39 | Đánh giá cuối trên các target ngữ nghĩa chưa thấy |
+| `train.jsonl` | 1.084 | 271 | Cập nhật trọng số model |
+| `val.jsonl` | 164 | 41 | Chọn checkpoint trên các cách diễn đạt chưa thấy |
+| `test.jsonl` | 168 | 42 | Đánh giá cuối trên các target ngữ nghĩa chưa thấy |
 
 Validation chỉ chứa các họ câu hỏi chưa có trong train nhưng target chính xác
 đã có trong train. Test không trùng target với train; tuy nhiên mọi class,
