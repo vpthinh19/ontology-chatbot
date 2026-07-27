@@ -1,6 +1,7 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **đã duyệt phương hướng; chưa chỉnh sửa nội dung dataset**.
+Trạng thái: **Giai đoạn A và B đã hoàn thành; chưa chỉnh sửa nội dung dataset
+v1**. Quyết định Stage B nằm tại `reports/dataset_review_v2/`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -96,6 +97,8 @@ sách khi xuất hiện cấu trúc SPARQL thật sự không thuộc năm nhóm
 
 ### Giai đoạn A — Khóa baseline và sinh báo cáo kiểm kê
 
+Trạng thái: **hoàn thành** tại `reports/dataset_audit_v1/`.
+
 Chỉ đọc v1, chưa sửa câu hỏi.
 
 1. Xác minh checksum v1 và ontology v11.
@@ -119,6 +122,11 @@ Script ở giai đoạn này chỉ đo và phát hiện ứng viên, không sinh
 và không quyết định thay con người.
 
 ### Giai đoạn B — Review target và ý nghĩa family
+
+Trạng thái: **hoàn thành lượt review**. Đủ 401 family đã có quyết định; 49
+family `fix`, 5 `merge`, 1 `split` phải được áp dụng và kiểm tra lại trước khi
+biên tập ngôn ngữ Stage C. Bốn mâu thuẫn ontology đang được ghi rõ trong
+`reports/dataset_review_v2/report.md`; baseline v1 chưa bị sửa.
 
 Thứ tự review của mỗi family:
 
@@ -301,6 +309,8 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Chỉ thực hiện **Giai đoạn A**: xây audit read-only cho v1, sinh báo cáo và trình
-người dùng duyệt. Không sửa record, không tạo câu mới và không train model trước
-khi báo cáo baseline được chấp thuận.
+Áp dụng các quyết định semantic của **Giai đoạn B** vào draft v2 theo thứ tự:
+giải quyết bốn mâu thuẫn ontology, sửa target, merge/split family rồi chạy lại
+bằng chứng thực thi. Chỉ những family đã có target đúng mới được chuyển sang
+review ngôn ngữ ở Giai đoạn C. Không tạo coverage mới hoặc train model trong
+bước chuyển tiếp này.

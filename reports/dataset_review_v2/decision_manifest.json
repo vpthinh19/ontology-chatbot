@@ -1,0 +1,123 @@
+{
+  "review_version": 1,
+  "stage": "B",
+  "source_worksheet": "reports/dataset_audit_v1/family_review.jsonl",
+  "source_worksheet_sha256": "afe6488bd6abe846ef6f16f671cbf7c38e5ede075247c1a4b200a409250795fb",
+  "ontology": "resources/ontology/ontology_v11.ttl",
+  "ontology_sha256": "33ce302216931d5325fdd510d4d447e201f5b0d3b49dbf04aa3c4eb0fd2fad95",
+  "expected_family_count": 401,
+  "default_decision": {
+    "review_status": "reviewed",
+    "reviewer_decision": "keep",
+    "reviewer_notes": "Target đã được chạy trên ontology v11; projection, phạm vi và ràng buộc khớp với mọi input trong family."
+  },
+  "groups": [
+    {
+      "id": "graduation-condition-ontology-conflict",
+      "selector": {
+        "target_contains": ":GraduationReviewProcedure :condition"
+      },
+      "expected_matches": 16,
+      "decision": "fix",
+      "reason": "Danh sách :condition có 5 literal nhưng :content còn nêu không bị kỷ luật, GDQP-AN và GDTC; phải chốt nguồn canonical trước khi khẳng định đây là toàn bộ điều kiện hoặc đếm tổng."
+    },
+    {
+      "id": "scholarship-condition-ontology-conflict",
+      "selector": {
+        "target_contains": ":ScholarshipReviewProcedure :condition"
+      },
+      "expected_matches": 10,
+      "decision": "fix",
+      "reason": ":content yêu cầu không bị kỷ luật từ mức khiển trách nhưng tiêu chí này không có trong :condition; cần đồng bộ ontology trước khi dùng target liệt kê toàn bộ điều kiện."
+    },
+    {
+      "id": "scholarship-outcome-ontology-conflict",
+      "selector": {
+        "target_contains": ":ScholarshipReviewProcedure :outcome"
+      },
+      "expected_matches": 5,
+      "decision": "fix",
+      "reason": ":outcome ngụ ý đủ điều kiện là nhận học bổng, trong khi :content còn yêu cầu xếp hạng trong chỉ tiêu; cần sửa phát biểu kết quả để không bảo đảm sai."
+    },
+    {
+      "id": "major-handler-ontology-conflict",
+      "selector": {
+        "target_contains": ":MajorChangeProcedure :handledBy ?node . ?node :phoneNumber"
+      },
+      "expected_matches": 5,
+      "decision": "fix",
+      "reason": ":handledBy trỏ Phòng Đào tạo Đại học nhưng :content nói hồ sơ chuyển ngành đi qua Phòng Công tác Chính trị và Sinh viên; chưa thể xác nhận số điện thoại đúng trước khi sửa ontology."
+    },
+    {
+      "id": "family-specific-semantic-fixes",
+      "selector": {
+        "family_ids": [
+          "cap-011-f03",
+          "cap-012-f03",
+          "cap-057-f03",
+          "cap-061-f03",
+          "test-spqv1-121",
+          "cap-063-f03",
+          "test-spqv1-125",
+          "cap-074-f01",
+          "cap-074-f04",
+          "test-spqv1-147",
+          "test-spqv1-148",
+          "test-spqv1-030",
+          "test-spqv1-132"
+        ]
+      },
+      "expected_matches": 13,
+      "decision": "fix",
+      "family_reasons": {
+        "cap-011-f03": "Input loại trừ lý do sức khỏe nhưng target trả cả điều kiện sức khỏe.",
+        "cap-012-f03": "Input chỉ hỏi đơn xin học trở lại nhưng target trả cả đơn nghỉ tạm thời.",
+        "cap-057-f03": "Input hỏi các ngành ngoài Ô tô nhưng target vẫn trả Ô tô.",
+        "cap-061-f03": "Input mô tả Condition như một class/cá thể, trong khi ontology v11 dùng :condition làm datatype property trả literal.",
+        "test-spqv1-121": "Input mô tả điều kiện như cá thể ontology, nhưng target trả literal của datatype property.",
+        "cap-063-f03": "Input mô tả Outcome như một class/cá thể, trong khi ontology v11 dùng :outcome làm datatype property trả literal.",
+        "test-spqv1-125": "Input nói các kết quả được mô hình hóa nhưng dùng ngữ nghĩa cá thể không còn tồn tại trong ontology mới.",
+        "cap-074-f01": "Input yêu cầu cách đăng ký học phần, nhưng :content chỉ chứa giới hạn tín chỉ chứ không có thao tác đăng ký.",
+        "cap-074-f04": "Input yêu cầu cách chọn/đăng ký học phần, nhưng target chỉ trả giới hạn tín chỉ, đơn vị và kết quả.",
+        "test-spqv1-147": "Input hỏi cách đăng ký, trong khi projection không có dữ liệu thao tác đăng ký.",
+        "test-spqv1-148": "Input hỏi cách đăng ký, trong khi projection không có dữ liệu thao tác đăng ký.",
+        "test-spqv1-030": "Input hỏi biểu mẫu ở đâu nhưng target chỉ trả nhãn, không trả documentUrl.",
+        "test-spqv1-132": "Input yêu cầu cả số lượng và danh sách nhóm học phí nhưng target chỉ trả danh sách nhãn."
+      }
+    },
+    {
+      "id": "near-duplicate-family-merges",
+      "selector": {
+        "family_ids": [
+          "cap-036-f02",
+          "cap-049-f02",
+          "cap-052-f02",
+          "cap-058-f02",
+          "cap-046-f03"
+        ]
+      },
+      "expected_matches": 5,
+      "decision": "merge",
+      "merge_into": {
+        "cap-036-f02": "cap-036-f01",
+        "cap-049-f02": "cap-049-f01",
+        "cap-052-f02": "cap-052-f01",
+        "cap-058-f02": "cap-058-f01",
+        "cap-046-f03": "cap-046-f01"
+      },
+      "reason": "Các family có cùng target và chứa paraphrase gần trùng; giữ tách riêng không tạo thêm tình huống ngữ nghĩa."
+    },
+    {
+      "id": "mixed-count-and-list-family",
+      "selector": {
+        "family_ids": [
+          "cap-066-f01"
+        ]
+      },
+      "expected_matches": 1,
+      "decision": "split",
+      "reason": "Record prod-0262 yêu cầu đồng thời số lượng và danh sách, trong khi ba record còn lại chỉ yêu cầu danh sách; cần tách nhu cầu count+list khỏi family hiện tại."
+    }
+  ],
+  "legacy_test_policy": "Family thuộc test v1 chỉ được kiểm tra tính đúng của reference; không được sao chép hoặc paraphrase sang train/val v2 và không được dùng điểm model để ra quyết định."
+}

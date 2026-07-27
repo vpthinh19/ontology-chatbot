@@ -108,12 +108,14 @@ liên quan của người dùng.
 
 ## Giai đoạn 7 — Nâng cấp chất lượng dataset v2
 
-Trạng thái: **đã duyệt phương hướng; chưa chỉnh sửa nội dung**.
+Trạng thái: **đã hoàn thành audit Stage A và semantic review Stage B; chưa sửa
+baseline v1**.
 
 Không mở lại các giai đoạn chuyển đổi kiến trúc đã hoàn thành. Dataset v1 được
 giữ làm baseline; mọi audit, review family, bổ sung coverage, chia test mới và
 nghiệm thu hai model cho v2 tuân theo checklist duy nhất tại
 `docs/DATASET_UPGRADE_PLAN.md`.
 
-Lượt triển khai kế tiếp chỉ bắt đầu bằng audit read-only v1. Không sửa dataset,
-sinh câu hoặc train trước khi báo cáo audit được duyệt.
+Lượt triển khai kế tiếp áp dụng các quyết định `fix/merge/split` từ
+`reports/dataset_review_v2/`, xác minh lại target rồi mới bắt đầu Stage C. Không
+sinh coverage hoặc train trước khi draft semantic đạt.
