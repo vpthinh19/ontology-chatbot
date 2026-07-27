@@ -5,9 +5,14 @@ import pytest
 from ontchatbot.research.training import (
     MODEL_SPECS,
     _configure_greedy_generation,
+    _effective_max_steps,
     _ensure_eos_token,
+    _optimization_arguments,
+    _parse_args,
+    _precision_policy,
     _require_training_ready,
 )
+from ontchatbot.settings import ARTIFACTS_DIR
 
 
 def test_target_labels_always_end_with_eos() -> None:
@@ -47,3 +52,87 @@ def test_smoke_training_can_check_pipeline_before_curation_finishes() -> None:
     readiness = {"ready": False, "gaps": [{"code": "missing_validation_features"}]}
 
     _require_training_ready(readiness, smoke_test=True)
+
+
+def test_cli_defaults_match_canonical_training_protocol() -> None:
+    args = _parse_args(["--model", "bartpho"])
+
+    assert args.epochs == 20.0
+    assert args.eval_every_epochs == 2.0
+    assert args.learning_rate == 3e-5
+    assert args.seed == 42
+    assert args.output_dir == ARTIFACTS_DIR / "models"
+    assert not hasattr(args, "keep_dropout")
+
+
+@pytest.mark.parametrize(
+    ("cuda_available", "bf16_supported", "capability", "expected"),
+    [
+        (
+            True,
+            True,
+            (8, 9),
+            {"dtype": "bfloat16", "bf16": True, "fp16": False, "tf32": True},
+        ),
+        (
+            True,
+            False,
+            (7, 5),
+            {"dtype": "float16", "bf16": False, "fp16": True, "tf32": False},
+        ),
+        (
+            False,
+            False,
+            None,
+            {"dtype": "float32", "bf16": False, "fp16": False, "tf32": False},
+        ),
+    ],
+)
+def test_precision_policy_follows_the_runtime_environment(
+    cuda_available: bool,
+    bf16_supported: bool,
+    capability: tuple[int, int] | None,
+    expected: dict[str, str | bool],
+) -> None:
+    assert _precision_policy(
+        cuda_available=cuda_available,
+        bf16_supported=bf16_supported,
+        compute_capability=capability,
+    ) == expected
+
+
+def test_optimizer_arguments_use_cosine_warmup_without_compile() -> None:
+    precision = {
+        "dtype": "bfloat16",
+        "bf16": True,
+        "fp16": False,
+        "tf32": True,
+    }
+
+    assert _optimization_arguments(precision) == {
+        "lr_scheduler_type": "cosine",
+        "warmup_steps": 0.1,
+        "weight_decay": 0.005,
+        "optim": "adamw_8bit",
+        "bf16": True,
+        "fp16": False,
+        "tf32": True,
+        "torch_compile": False,
+    }
+
+
+def test_smoke_run_covers_its_complete_training_subset() -> None:
+    assert _effective_max_steps(
+        smoke_test=True,
+        requested_steps=-1,
+        train_records=16,
+        batch_size=4,
+        gradient_accumulation=2,
+    ) == 2
+    assert _effective_max_steps(
+        smoke_test=False,
+        requested_steps=-1,
+        train_records=1084,
+        batch_size=4,
+        gradient_accumulation=2,
+    ) == -1

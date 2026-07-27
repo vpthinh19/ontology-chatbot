@@ -30,6 +30,12 @@ Không tắt hoặc ép dropout riêng cho model nào. Batch vi mô có thể kh
 6 GB VRAM nhưng tích lũy gradient phải giữ effective batch bằng 8. Attention
 backend và gradient checkpointing chỉ được khác khi kiến trúc/bộ nhớ yêu cầu.
 
+| Model | Microbatch | Gradient accumulation | Effective batch | Attention | Gradient checkpointing |
+|---|---:|---:|---:|---|---|
+| BARTpho | 4 | 2 | 8 | SDPA | Không |
+| ViT5 | 8 | 1 | 8 | Eager | Không |
+| T5Gemma2 | 4 | 2 | 8 | SDPA | Có |
+
 Seed và các chi tiết tương thích tokenizer được ghi trong metric artifact để
 tái lập, nhưng không phải tiêu chí xếp hạng model.
 

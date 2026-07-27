@@ -48,8 +48,8 @@ MODEL_SPECS = {
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
-        "batch_size": 8,
-        "gradient_accumulation": 1,
+        "batch_size": 4,
+        "gradient_accumulation": 2,
         "attention": "sdpa",
         "gradient_checkpointing": True,
     },
@@ -124,11 +124,20 @@ def train(args: argparse.Namespace) -> dict:
         train_rows = _smoke_subset(train_rows, 16)
         validation_rows = _smoke_subset(validation_rows, 8)
 
+    cuda_available = torch.cuda.is_available()
+    precision = _precision_policy(
+        cuda_available=cuda_available,
+        bf16_supported=torch.cuda.is_bf16_supported() if cuda_available else False,
+        compute_capability=(
+            torch.cuda.get_device_capability() if cuda_available else None
+        ),
+    )
+    model_dtype = getattr(torch, str(precision["dtype"]))
     model = AutoModelForSeq2SeqLM.from_pretrained(
         snapshot,
         local_files_only=True,
         attn_implementation=spec["attention"],
-        dtype=torch.bfloat16,
+        dtype=model_dtype,
     )
     model.config.use_cache = False
     _configure_greedy_generation(model.generation_config)
@@ -136,9 +145,6 @@ def train(args: argparse.Namespace) -> dict:
         model.gradient_checkpointing_enable(
             gradient_checkpointing_kwargs={"use_reentrant": False}
         )
-    if args.model == "bartpho" and not args.keep_dropout:
-        _disable_dropout(model, torch)
-
     train_dataset = _tokenized_dataset(Dataset, train_rows, tokenizer)
     validation_dataset = _tokenized_dataset(Dataset, validation_rows, tokenizer)
     steps_per_epoch = math.ceil(
@@ -165,7 +171,13 @@ def train(args: argparse.Namespace) -> dict:
         }
 
     keep_checkpoints = args.save_model and not short_run
-    effective_max_steps = 1 if args.smoke_test else args.max_steps
+    effective_max_steps = _effective_max_steps(
+        smoke_test=args.smoke_test,
+        requested_steps=args.max_steps,
+        train_records=len(train_rows),
+        batch_size=spec["batch_size"],
+        gradient_accumulation=spec["gradient_accumulation"],
+    )
     training_args = Seq2SeqTrainingArguments(
         output_dir=str(output_dir),
         num_train_epochs=args.epochs,
@@ -174,13 +186,7 @@ def train(args: argparse.Namespace) -> dict:
         per_device_eval_batch_size=spec.get("eval_batch_size", 1),
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
-        lr_scheduler_type="constant",
-        warmup_steps=0,
-        weight_decay=0.005,
-        optim="adamw_8bit",
-        bf16=True,
-        tf32=True,
-        torch_compile=False,
+        **_optimization_arguments(precision),
         gradient_checkpointing=spec.get("gradient_checkpointing", False),
         gradient_checkpointing_kwargs={"use_reentrant": False},
         eval_strategy="no" if short_run else "steps",
@@ -239,7 +245,7 @@ def train(args: argparse.Namespace) -> dict:
             trainer.state.best_model_checkpoint,
             local_files_only=True,
             attn_implementation=spec["attention"],
-            dtype=torch.bfloat16,
+            dtype=model_dtype,
             trust_remote_code=True,
         ).to(training_args.device)
         _configure_greedy_generation(inference_model.generation_config)
@@ -264,14 +270,19 @@ def train(args: argparse.Namespace) -> dict:
         "batch_size": spec["batch_size"],
         "gradient_accumulation": spec["gradient_accumulation"],
         "dynamic_padding_multiple": 8,
-        "bf16": True,
-        "tf32": True,
+        "dtype": precision["dtype"],
+        "bf16": precision["bf16"],
+        "fp16": precision["fp16"],
+        "tf32": precision["tf32"],
         "torch_compile": False,
         "gradient_checkpointing": spec.get("gradient_checkpointing", False),
         "generation_do_sample": False,
-        "dropout_disabled": args.model == "bartpho" and not args.keep_dropout,
+        "dropout_policy": "checkpoint_default",
         "optimizer": "adamw_8bit",
         "learning_rate": args.learning_rate,
+        "lr_scheduler_type": "cosine",
+        "warmup_steps": 0.1,
+        "weight_decay": 0.005,
         "evaluation_every_epochs": args.eval_every_epochs,
         "early_stopping_patience": 3 if keep_checkpoints else None,
         "train_runtime_seconds": round(train_result.metrics.get("train_runtime", 0.0), 3),
@@ -448,6 +459,19 @@ def _smoke_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]
     return selected
 
 
+def _effective_max_steps(
+    *,
+    smoke_test: bool,
+    requested_steps: int,
+    train_records: int,
+    batch_size: int,
+    gradient_accumulation: int,
+) -> int:
+    if not smoke_test:
+        return requested_steps
+    return math.ceil(train_records / (batch_size * gradient_accumulation))
+
+
 def _require_training_ready(
     readiness: dict,
     *,
@@ -461,34 +485,53 @@ def _require_training_ready(
     )
 
 
-def _disable_dropout(model, torch) -> None:
-    for module in model.modules():
-        if isinstance(module, torch.nn.Dropout):
-            module.p = 0.0
-        for attribute in ("dropout", "attention_dropout", "activation_dropout"):
-            if isinstance(getattr(module, attribute, None), float):
-                setattr(module, attribute, 0.0)
-    for attribute in ("dropout", "attention_dropout", "activation_dropout"):
-        if hasattr(model.config, attribute):
-            setattr(model.config, attribute, 0.0)
+def _precision_policy(
+    *,
+    cuda_available: bool,
+    bf16_supported: bool,
+    compute_capability: tuple[int, int] | None,
+) -> dict[str, str | bool]:
+    bf16 = cuda_available and bf16_supported
+    return {
+        "dtype": "bfloat16" if bf16 else "float16" if cuda_available else "float32",
+        "bf16": bf16,
+        "fp16": cuda_available and not bf16,
+        "tf32": cuda_available
+        and compute_capability is not None
+        and compute_capability[0] >= 8,
+    }
 
 
-def _parse_args() -> argparse.Namespace:
+def _optimization_arguments(
+    precision: dict[str, str | bool],
+) -> dict[str, object]:
+    return {
+        "lr_scheduler_type": "cosine",
+        "warmup_steps": 0.1,
+        "weight_decay": 0.005,
+        "optim": "adamw_8bit",
+        "bf16": precision["bf16"],
+        "fp16": precision["fp16"],
+        "tf32": precision["tf32"],
+        "torch_compile": False,
+    }
+
+
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
-    parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "sparql_training")
-    parser.add_argument("--epochs", type=float, default=60.0)
+    parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "models")
+    parser.add_argument("--epochs", type=float, default=20.0)
     parser.add_argument("--max-steps", type=int, default=-1)
     parser.add_argument("--learning-rate", type=float, default=3e-5)
-    parser.add_argument("--eval-every-epochs", type=float, default=5.0)
+    parser.add_argument("--eval-every-epochs", type=float, default=2.0)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--keep-dropout", action="store_true")
     parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.benchmark_after_training and not args.save_model:
         parser.error("--benchmark-after-training requires --save-model")
     if args.benchmark_after_training and args.smoke_test:
