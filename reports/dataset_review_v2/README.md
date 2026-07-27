@@ -1,12 +1,19 @@
 # Dataset semantic review v2 — Stage B
 
+Trạng thái hiện tại: **đã hoàn tất trên ontology v12**. Đọc
+`completion_report.md` để xem kết quả cuối. `report.md`,
+`family_decisions.jsonl` và `target_evidence.jsonl` là bằng chứng của lượt
+review ban đầu trên v11, được giữ nguyên để tái lập lịch sử.
+
 Thư mục này ghi kết quả review **target SPARQL và ý nghĩa semantic family** của
-dataset v1. Stage B không sửa `sparql_v1`, không viết lại câu tiếng Việt, không
-bổ sung coverage và không train model.
+dataset v1. Baseline `sparql_v1` không bị sửa. Lượt review ban đầu không viết
+lại câu tiếng Việt; bước hoàn tất chỉ áp dụng các sửa đổi đã duyệt vào draft
+v2, không bổ sung coverage và không train model.
 
 Nguồn review được khóa bằng checksum trong `decision_manifest.json`. Mọi target
-được thực thi lại trên `ontology_v11.ttl`; kết quả nằm trong
-`target_evidence.jsonl`.
+của lượt review ban đầu được thực thi trên `ontology_v11.ttl`; kết quả lịch sử
+nằm trong `target_evidence.jsonl`. Target của draft v2 sau sửa được thực thi
+lại trên v12 trong `target_evidence_v12.jsonl`.
 
 ## File
 
@@ -16,6 +23,9 @@ Nguồn review được khóa bằng checksum trong `decision_manifest.json`. M�
   các stage biên tập tiếp theo.
 - `target_evidence.jsonl`: 80 target cùng bảng kết quả thực tế trên ontology.
 - `report.md`: tóm tắt phát hiện và các điểm phải xử lý trước khi đóng băng v2.
+- `completion_manifest.json`: checksum và số liệu draft đã áp dụng quyết định.
+- `target_evidence_v12.jsonl`: kết quả thật của target sau sửa trên v12.
+- `completion_report.md`: báo cáo ngắn xác nhận Stage B hoàn tất.
 
 `keep` chỉ xác nhận target và nghĩa family hiện khớp. `fix`, `split` và `merge`
 là yêu cầu cho draft v2, không phải thay đổi đã được áp dụng vào baseline.

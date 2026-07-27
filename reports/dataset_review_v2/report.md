@@ -1,5 +1,8 @@
 # Báo cáo Stage B — Review target và semantic family
 
+> Đây là báo cáo phát hiện ban đầu trên ontology v11. Các vấn đề đã được xử lý
+> trong v12 và draft v2; xem `completion_report.md` để đọc trạng thái cuối.
+
 Trạng thái: **đã review đủ worksheet; chưa sửa dataset v1**.
 
 ## Phạm vi và phương pháp

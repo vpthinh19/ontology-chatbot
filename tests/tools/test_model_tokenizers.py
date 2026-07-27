@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 
 import pytest
@@ -90,3 +91,38 @@ def test_bartpho_roundtrips_the_common_sparql_targets() -> None:
     )
     report = audit_target_roundtrip(tokenizer, TOKENIZER_TARGET_PROBES)
     assert len(report) == len(TOKENIZER_TARGET_PROBES)
+
+
+def test_v2_targets_roundtrip_both_model_tokenizers() -> None:
+    pytest.importorskip("transformers")
+    project_root = Path(__file__).resolve().parents[2]
+    bartpho_source = (
+        Path.home()
+        / ".cache/huggingface/hub/models--vinai--bartpho-syllable/snapshots"
+        / BARTPHO_REVISION
+    )
+    vit5_source = project_root / "artifacts/tokenizers/vit5"
+    evidence = project_root / "reports/dataset_review_v2/target_evidence_v12.jsonl"
+    if not bartpho_source.is_dir() or not (vit5_source / "tokenizer.json").is_file():
+        pytest.skip("both prepared model tokenizers are required")
+
+    from transformers import AutoTokenizer
+
+    targets = [
+        json.loads(line)["target"]
+        for line in evidence.read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    bartpho = AutoTokenizer.from_pretrained(
+        bartpho_source,
+        local_files_only=True,
+        trust_remote_code=True,
+    )
+    vit5 = AutoTokenizer.from_pretrained(vit5_source, local_files_only=True)
+
+    bartpho_report = audit_target_roundtrip(bartpho, targets)
+    vit5_report = audit_target_roundtrip(vit5, targets)
+
+    assert len(bartpho_report) == len(vit5_report) == 87
+    assert max(row["tokens"] for row in bartpho_report) == 91
+    assert max(row["tokens"] for row in vit5_report) == 123

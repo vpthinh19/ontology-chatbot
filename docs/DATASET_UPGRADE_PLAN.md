@@ -1,7 +1,8 @@
 # Kế hoạch nâng cấp dataset SPARQL v2
 
-Trạng thái: **Giai đoạn A và B đã hoàn thành; chưa chỉnh sửa nội dung dataset
-v1**. Quyết định Stage B nằm tại `reports/dataset_review_v2/`.
+Trạng thái: **Giai đoạn A và B đã hoàn thành; semantic draft v2 đã sẵn sàng cho
+Stage C; dataset v1 không bị sửa**. Kết quả Stage B nằm tại
+`reports/dataset_review_v2/completion_report.md`.
 
 Tài liệu này là checklist thi công cho đợt nâng cấp chất lượng dữ liệu tiếp
 theo. Nó cụ thể hóa contract tại `DATASET_BENCHMARK_SPEC.md`; không thay đổi
@@ -125,10 +126,10 @@ và không quyết định thay con người.
 
 ### Giai đoạn B — Review target và ý nghĩa family
 
-Trạng thái: **hoàn thành lượt review**. Đủ 401 family đã có quyết định; 49
-family `fix`, 5 `merge`, 1 `split` phải được áp dụng và kiểm tra lại trước khi
-biên tập ngôn ngữ Stage C. Bốn mâu thuẫn được phát hiện trong báo cáo Stage B
-đã được giải quyết ở ontology v12; baseline v1 chưa bị sửa.
+Trạng thái: **hoàn thành**. Đủ 401 family đã được review; 28 `fix`, 5 `merge`
+và 1 `split` thuộc phạm vi train/val v2 đã được áp dụng vào semantic draft.
+164 family test v1 chỉ là audit-only. Bốn mâu thuẫn ontology đã được giải quyết
+ở v12; toàn bộ 87 target trong draft đã được thực thi lại và có kết quả.
 
 Thứ tự review của mỗi family:
 
@@ -265,7 +266,15 @@ CUDA; chỉ dùng CUDA inference khi phép đo cụ thể yêu cầu.
 
 ## 7. Cấu trúc artifact dự kiến
 
-Khi bắt đầu thi công, dữ liệu release có dạng:
+Trong Stage B–D, dữ liệu làm việc chưa được chia split:
+
+```text
+resources/datasets/sparql_v2/
+├── draft.jsonl
+└── README.md
+```
+
+Sau Stage E, release chính thức mới có dạng:
 
 ```text
 resources/datasets/sparql_v2/
@@ -287,7 +296,7 @@ Mỗi mốc phải có validator/test đạt và không kèm thay đổi ngoài 
 
 1. công cụ audit cùng báo cáo baseline v1;
 2. rubric review và quyết định theo family;
-3. train/val draft đã sửa ngôn ngữ/target;
+3. semantic draft đã sửa ngôn ngữ/target;
 4. coverage additions đã review;
 5. split v2 cùng validator và manifest;
 6. learning audit hai model;
@@ -311,8 +320,6 @@ Dataset v2 chỉ hoàn thành khi:
 
 ## 10. Điểm bắt đầu của lượt triển khai kế tiếp
 
-Áp dụng các quyết định semantic của **Giai đoạn B** vào draft v2 theo thứ tự:
-chuyển target sang ontology v12, sửa target, merge/split family rồi chạy lại
-bằng chứng thực thi. Chỉ những family đã có target đúng mới được chuyển sang
-review ngôn ngữ ở Giai đoạn C. Không tạo coverage mới hoặc train model trong
-bước chuyển tiếp này.
+Bắt đầu **Giai đoạn C** trên `resources/datasets/sparql_v2/draft.jsonl`. Target
+đã được khóa bằng bằng chứng thực thi Stage B; lượt kế tiếp tập trung vào câu
+tiếng Việt, register và tính tự nhiên, chưa bổ sung coverage hoặc train model.

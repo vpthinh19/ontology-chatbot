@@ -1,0 +1,72 @@
+{
+  "stage": "B",
+  "status": "complete",
+  "source_release": "resources/datasets/sparql_v1",
+  "source_files": {
+    "train.jsonl": "86c4d8384d7976d73ea30f3bff90449dcf403940e69172a0b3732b925ce18cac",
+    "val.jsonl": "9db8afd47440871ed372dd980306f108eb81b88e8bc44991777671cf90236017"
+  },
+  "legacy_test_policy": "sparql_v1/test.jsonl is audit-only and is not copied into the v2 draft",
+  "ontology": "resources/ontology/ontology_v12.ttl",
+  "ontology_sha256": "08bc26b5f6a0e5f7f1c09579dfa22b0615fefb524249e6a80eee6bc00fbe11cf",
+  "draft": "resources/datasets/sparql_v2/draft.jsonl",
+  "draft_sha256": "ba3c10c694348ea9a95a078608fdd72313b8265e238f5219acee13c75c0c92fc",
+  "records": 948,
+  "families": 233,
+  "targets": 87,
+  "merged_families": {
+    "cap-036-f02": "cap-036-f01",
+    "cap-049-f02": "cap-049-f01",
+    "cap-052-f02": "cap-052-f01",
+    "cap-058-f02": "cap-058-f01",
+    "cap-046-f03": "cap-046-f01"
+  },
+  "split_records": {
+    "prod-0262": "cap-066-f04"
+  },
+  "target_rewrite_families": [
+    "cap-011-f03",
+    "cap-012-f03",
+    "cap-032-f02",
+    "cap-057-f03",
+    "cap-061-f03",
+    "cap-063-f03"
+  ],
+  "input_rewrite_records": [
+    "prod-0594",
+    "prod-0829",
+    "prod-0830",
+    "prod-0831",
+    "prod-0832",
+    "prod-0845",
+    "prod-0846",
+    "prod-0847",
+    "prod-0848"
+  ],
+  "resolved_without_row_change": [
+    "cap-014-f01",
+    "cap-014-f02",
+    "cap-014-f03",
+    "cap-020-f01",
+    "cap-020-f02",
+    "cap-020-f03",
+    "cap-021-f01",
+    "cap-021-f02",
+    "cap-021-f03",
+    "cap-032-f01",
+    "cap-032-f03",
+    "cap-069-f01",
+    "cap-069-f02",
+    "cap-069-f03",
+    "cap-071-f01",
+    "cap-071-f02",
+    "cap-071-f03",
+    "cap-074-f01",
+    "cap-074-f04",
+    "count-graduation-conditions-01",
+    "count-graduation-conditions-02",
+    "count-graduation-conditions-03"
+  ],
+  "target_evidence": "reports/dataset_review_v2/target_evidence_v12.jsonl",
+  "target_evidence_count": 87
+}
