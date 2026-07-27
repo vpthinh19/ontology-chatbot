@@ -14,9 +14,11 @@ flowchart TB
     R --> UI
 
     D["train / val / test"] --> TR["research/training.py"]
-    TR --> HF["Transformers checkpoint"]
+    TR --> HF["Checkpoint Hugging Face tốt nhất"]
+    HF --> BM["Benchmark Transformers"]
     HF --> CV["tools/conversion.py"]
     CV --> CT2
+    CT2 --> PA["Kiểm tra parity + hiệu năng"]
 ```
 
 Runtime chỉ phụ thuộc model đã chuyển đổi, tokenizer, RDFLib và ontology. Nó
@@ -35,6 +37,22 @@ không import trainer, dataset curation hay code báo cáo.
 `runtime/pipeline.py` là điểm đọc ngắn nhất để hiểu luồng chạy thật.
 `research/training.py` là điểm bắt đầu cho huấn luyện; `research/evaluation.py`
 định nghĩa metric dùng chung cho validation và test.
+
+## Vòng đời model
+
+Ba model dùng cùng interface cấp cao của Transformers:
+
+```text
+AutoTokenizer → AutoModelForSeq2SeqLM → Seq2SeqTrainer
+              → checkpoint → from_pretrained() → generate()
+```
+
+Checkpoint Hugging Face được mở lại bằng `from_pretrained()` trong một tiến
+trình đánh giá độc lập và là nguồn điểm chất lượng chính. Chính checkpoint đó
+được chuyển sang CTranslate2. CTranslate2 chỉ dùng để kiểm tra parity, tốc độ
+và tài nguyên triển khai; sai khác sau conversion không được quy thành năng lực
+của pretrained model. Không có model lai hoặc trạng thái model đặc biệt trong
+RAM.
 
 ## An toàn truy vấn
 

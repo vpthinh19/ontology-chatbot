@@ -22,6 +22,11 @@ Chỉ dùng artifact nếu answer exact không giảm so với checkpoint Transf
 Tokenizer, compatibility manifest và model binary phải nằm cùng thư mục để
 runtime nạp đúng token ID đã dùng lúc train.
 
+Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 phải đặt rõ
+`beam_size=1`. Đây là cùng một greedy decoding deterministic. Beam search chỉ
+có thể được nghiên cứu như thí nghiệm phụ áp dụng đồng thời cho cả ba model,
+không thuộc benchmark chính.
+
 Khởi động API:
 
 ```bash

@@ -79,3 +79,32 @@ Project tập trung vào semantic parsing trên một ontology có schema ổn �
 RAG, cơ sở dữ liệu phẳng, hội thoại ngoài miền, router nhiều model và heuristic
 fuzzy không thuộc pipeline cốt lõi. Chỉ thêm một tầng mới khi benchmark chứng
 minh pipeline hiện tại không thể giải quyết nhu cầu đó.
+
+Việc nhận biết câu hỏi ngoài ontology chưa thuộc contract hiện tại. Trước khi
+hoàn thiện dataset phải chọn một trong hai hướng: giới hạn rõ hệ thống ở câu
+hỏi trong miền, hoặc bổ sung một output từ chối và tập dữ liệu âm. Không được
+tự thêm `NO_QUERY` nếu chưa thay đổi contract đầu ra và benchmark tương ứng.
+
+## Contract tài liệu
+
+`README.md` là tài liệu tiếng Việt đọc độc lập, có cấu trúc gần một báo cáo
+nghiên cứu: bài toán, phương pháp, ontology, dataset, kiến trúc, thực nghiệm,
+kết quả, hạn chế, tái lập và triển khai. Các file trong `docs/` là phụ lục kỹ
+thuật, không phải nhật ký phát triển.
+
+Thứ tự nội dung README đã chốt: tóm tắt; bài toán và đóng góp; tổng quan hệ
+thống; ontology; dataset; model/tokenizer; fine-tuning; đánh giá; kết quả và
+thảo luận; kiến trúc phần mềm; luồng dữ liệu runtime; cài đặt/tái lập; triển
+khai; hạn chế, kết luận và tài liệu tham khảo. Phần kết quả chỉ được thêm khi có
+benchmark mới hợp lệ, không để placeholder hoặc dùng lại điểm cũ.
+
+- Sơ đồ kiến trúc, luồng dữ liệu và fine-tuning dùng Mermaid.
+- Biểu đồ dataset và benchmark dùng SVG sinh từ JSON nguồn.
+- Không ghi stage, phiên bản dataset/model hoặc kết quả benchmark đã hết hiệu
+  lực.
+- README chỉ công bố kết quả model sau khi cả ba model chạy cùng giao thức trên
+  dataset đã qua toàn bộ cổng chất lượng.
+
+`manifest.json` và `reports/dataset.json` là nguồn số liệu dataset;
+`reports/models.json` chỉ được sinh từ đủ ba artifact hợp lệ. README và biểu đồ
+không được giữ bản sao số liệu nhập tay trái với các nguồn này.

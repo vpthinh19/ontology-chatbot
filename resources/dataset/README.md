@@ -18,7 +18,7 @@ Ba tập có vai trò tách biệt:
 
 | Tập | Câu | Họ ngữ nghĩa | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 880 | 220 | Cập nhật trọng số model |
+| `train.jsonl` | 1.040 | 260 | Cập nhật trọng số model |
 | `val.jsonl` | 140 | 35 | Chọn checkpoint trên các cách diễn đạt chưa thấy |
 | `test.jsonl` | 156 | 39 | Đánh giá cuối trên các target ngữ nghĩa chưa thấy |
 
