@@ -49,7 +49,6 @@ MODEL_SPECS = {
         "revision": T5GEMMA_REVISION,
         "batch_size": 8,
         "gradient_accumulation": 1,
-        "eval_batch_size": 4,
         "attention": "sdpa",
         "gradient_checkpointing": True,
     },
@@ -69,6 +68,7 @@ def train(args: argparse.Namespace) -> dict:
             AutoModelForSeq2SeqLM,
             AutoTokenizer,
             DataCollatorForSeq2Seq,
+            EarlyStoppingCallback,
             Seq2SeqTrainer,
             Seq2SeqTrainingArguments,
         )
@@ -207,12 +207,40 @@ def train(args: argparse.Namespace) -> dict:
         data_collator=collator,
         processing_class=tokenizer,
         compute_metrics=compute_metrics,
+        callbacks=(
+            [EarlyStoppingCallback(early_stopping_patience=3)]
+            if keep_checkpoints
+            else None
+        ),
     )
 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     train_result = trainer.train()
-    decoded = _predict(trainer, validation_dataset, tokenizer, np)
+    inference_model = trainer.model
+    if trainer.state.best_model_checkpoint:
+        # Reload through from_pretrained instead of Trainer's raw state_dict path.
+        # Some architectures (notably T5Gemma2) remap checkpoint keys while loading.
+        trainer.model = None
+        trainer.model_wrapped = None
+        del inference_model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        inference_model = AutoModelForSeq2SeqLM.from_pretrained(
+            trainer.state.best_model_checkpoint,
+            local_files_only=True,
+            attn_implementation=spec["attention"],
+            dtype=torch.bfloat16,
+            trust_remote_code=True,
+        ).to(training_args.device)
+        _configure_greedy_generation(inference_model.generation_config)
+    decoded = _generate_rows(
+        inference_model,
+        tokenizer,
+        validation_rows,
+        torch,
+        batch_size=spec.get("eval_batch_size", 1),
+    )
     report = evaluate_predictions(validation_rows, decoded, graph, include_cases=True)
     report["training"] = {
         "model": args.model,
@@ -236,6 +264,7 @@ def train(args: argparse.Namespace) -> dict:
         "optimizer": "adamw_8bit",
         "learning_rate": args.learning_rate,
         "evaluation_every_epochs": args.eval_every_epochs,
+        "early_stopping_patience": 3 if keep_checkpoints else None,
         "train_runtime_seconds": round(train_result.metrics.get("train_runtime", 0.0), 3),
         "train_loss": round(train_result.metrics.get("train_loss", 0.0), 6),
         "peak_vram_bytes": torch.cuda.max_memory_allocated() if torch.cuda.is_available() else None,
@@ -250,7 +279,7 @@ def train(args: argparse.Namespace) -> dict:
     metrics_path = output_dir / "metrics.json"
     metrics_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if args.save_model:
-        trainer.save_model(str(output_dir / "model"))
+        inference_model.save_pretrained(output_dir / "model")
         tokenizer.save_pretrained(output_dir / "model")
     if args.benchmark_after_training:
         benchmark_rows = load_benchmark()
@@ -259,8 +288,13 @@ def train(args: argparse.Namespace) -> dict:
             graph,
             training_rows=rows,
         )
-        benchmark_dataset = _tokenized_dataset(Dataset, benchmark_rows, tokenizer)
-        benchmark_decoded = _predict(trainer, benchmark_dataset, tokenizer, np)
+        benchmark_decoded = _generate_rows(
+            inference_model,
+            tokenizer,
+            benchmark_rows,
+            torch,
+            batch_size=spec.get("eval_batch_size", 1),
+        )
         benchmark_predictions = dict(
             zip(
                 (row["id"] for row in benchmark_rows),
@@ -358,35 +392,38 @@ def _configure_greedy_generation(config) -> None:
     config.top_k = None
 
 
-def _predict(trainer, dataset, tokenizer, np) -> list[str]:
-    compute_metrics = trainer.compute_metrics
-    use_cache = trainer.model.config.use_cache
-    trainer.compute_metrics = None
-    trainer.model.config.use_cache = True
+def _generate_rows(model, tokenizer, rows, torch, *, batch_size: int) -> list[str]:
+    """Generate from a normally reloaded checkpoint, independent of Trainer state."""
+
+    model.eval()
+    use_cache = model.config.use_cache
+    model.config.use_cache = True
+    predictions = []
     try:
-        prediction = trainer.predict(
-            dataset,
-            max_length=MAX_TARGET_LENGTH,
-            num_beams=1,
-            do_sample=False,
-        )
+        with torch.inference_mode():
+            for offset in range(0, len(rows), batch_size):
+                batch = rows[offset : offset + batch_size]
+                encoded = tokenizer(
+                    [normalize_model_input(row["input"]) for row in batch],
+                    max_length=MAX_SOURCE_LENGTH,
+                    truncation=True,
+                    padding=True,
+                    pad_to_multiple_of=8,
+                    return_tensors="pt",
+                ).to(model.device)
+                output = model.generate(
+                    **encoded,
+                    max_length=MAX_TARGET_LENGTH,
+                    num_beams=1,
+                    do_sample=False,
+                )
+                predictions.extend(
+                    text.strip()
+                    for text in tokenizer.batch_decode(output, skip_special_tokens=True)
+                )
     finally:
-        trainer.compute_metrics = compute_metrics
-        trainer.model.config.use_cache = use_cache
-    prediction_ids = (
-        prediction.predictions[0]
-        if isinstance(prediction.predictions, tuple)
-        else prediction.predictions
-    )
-    prediction_ids = np.asarray(prediction_ids).copy()
-    prediction_ids[prediction_ids < 0] = tokenizer.pad_token_id
-    return [
-        text.strip()
-        for text in tokenizer.batch_decode(
-            prediction_ids,
-            skip_special_tokens=True,
-        )
-    ]
+        model.config.use_cache = use_cache
+    return predictions
 
 
 def _smoke_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]]:

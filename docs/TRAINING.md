@@ -15,6 +15,7 @@ Thiết lập chung:
 - AdamW 8-bit;
 - seed cố định để lần chạy có thể tái lập;
 - chọn checkpoint theo `eval_answer_exact_rate`;
+- dừng sớm sau ba mốc validation liên tiếp không cải thiện;
 - test không tham gia chọn checkpoint.
 
 Seed và các chi tiết tương thích tokenizer được ghi trong metric artifact để

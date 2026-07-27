@@ -121,6 +121,118 @@ def write_public_reports(
     )
 
 
+def build_model_report(models_dir: Path) -> dict[str, Any] | None:
+    """Read independently reloaded model artifacts and their training logs."""
+
+    names = ("bartpho", "vit5", "t5gemma2")
+    if not all((models_dir / name / "metrics.json").is_file() for name in names):
+        return None
+    models = {}
+    for name in names:
+        directory = models_dir / name
+        validation = json.loads((directory / "metrics.json").read_text(encoding="utf-8"))
+        test = json.loads((directory / "benchmark_metrics.json").read_text(encoding="utf-8"))
+        training = validation["training"]
+        loss_curve = [
+            {"epoch": item["epoch"], "value": item["loss"]}
+            for item in validation["training_log"]
+            if "loss" in item and "epoch" in item
+        ]
+        validation_curve = [
+            {"epoch": item["epoch"], "value": item["eval_answer_exact_rate"]}
+            for item in validation["training_log"]
+            if "eval_answer_exact_rate" in item and "epoch" in item
+        ]
+        models[name] = {
+            "model_id": training["model_id"],
+            "validation": validation["overall"],
+            "test": test["overall"],
+            "test_by_register": test["by_register"],
+            "test_by_query_shape": test["by_query_shape"],
+            "test_errors": test["error_counts"],
+            "training": {
+                "records": training["train_records"],
+                "runtime_seconds": training["train_runtime_seconds"],
+                "peak_vram_bytes": training["peak_vram_bytes"],
+                "epochs_completed": max(point["epoch"] for point in loss_curve),
+                "artifact_roundtrip_verified": validation.get(
+                    "artifact_roundtrip_verified", False
+                ),
+            },
+            "inference": validation.get("artifact_inference"),
+            "curves": {"train_loss": loss_curve, "validation_answer_exact": validation_curve},
+        }
+    return {
+        "protocol": {
+            "seed_runs_per_model": 1,
+            "accuracy_batch_size": 1,
+            "decoding": "greedy",
+            "checkpoint_selection": "validation answer exact",
+            "primary_metric": "execution answer exact",
+            "test_records": next(iter(models.values()))["test"]["count"],
+        },
+        "models": models,
+    }
+
+
+def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
+    figures = output_dir / "figures"
+    figures.mkdir(parents=True, exist_ok=True)
+    (output_dir / "models.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    models = report["models"]
+    _write_line_chart(
+        figures / "training-loss.svg",
+        "Train loss theo epoch (thang log)",
+        {name: value["curves"]["train_loss"] for name, value in models.items()},
+        log_scale=True,
+    )
+    _write_line_chart(
+        figures / "validation-curve.svg",
+        "Validation answer exact theo epoch",
+        {
+            name: value["curves"]["validation_answer_exact"]
+            for name, value in models.items()
+        },
+        percent=True,
+    )
+    _write_metric_chart(
+        figures / "model-comparison.svg",
+        "Độ chính xác artifact trên validation và compositional test",
+        {
+            name: {
+                "validation": value["validation"]["answer_exact_rate"],
+                "test": value["test"]["answer_exact_rate"],
+            }
+            for name, value in models.items()
+        },
+    )
+    _write_metric_chart(
+        figures / "test-by-register.svg",
+        "Test answer exact theo phong cách câu hỏi",
+        {
+            name: {
+                register: metrics["answer_exact_rate"]
+                for register, metrics in value["test_by_register"].items()
+            }
+            for name, value in models.items()
+        },
+    )
+    _write_metric_chart(
+        figures / "test-by-query-shape.svg",
+        "Test answer exact theo hình dạng truy vấn",
+        {
+            name: {
+                shape: metrics["answer_exact_rate"]
+                for shape, metrics in value["test_by_query_shape"].items()
+            }
+            for name, value in models.items()
+        },
+    )
+
+
 def write_manifest(report: Mapping[str, Any], path: Path) -> None:
     dataset = report["dataset"]
     manifest = {
@@ -248,6 +360,85 @@ def _write_grouped_bar_chart(path: Path, title: str, groups: Mapping[str, Mappin
     path.write_text("".join(parts), encoding="utf-8")
 
 
+def _write_metric_chart(
+    path: Path,
+    title: str,
+    groups: Mapping[str, Mapping[str, float]],
+) -> None:
+    colors = {"bartpho": "#2563eb", "vit5": "#f59e0b", "t5gemma2": "#10b981"}
+    categories = sorted({name for values in groups.values() for name in values})
+    width, height = 1060, 430
+    margin_left, margin_top, chart_width, chart_height = 75, 90, 935, 250
+    cluster_width = chart_width / len(categories)
+    bar_width = cluster_width / (len(groups) + 1)
+    parts = _svg_header(width, height, title)
+    for group_index, (group, values) in enumerate(groups.items()):
+        for category_index, category in enumerate(categories):
+            value = values.get(category, 0.0)
+            x = margin_left + category_index * cluster_width + (group_index + 0.5) * bar_width
+            bar_height = chart_height * value
+            y = margin_top + chart_height - bar_height
+            parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_width - 4:.1f}" height="{bar_height:.1f}" rx="3" fill="{colors[group]}"/>')
+            parts.append(f'<text x="{x + (bar_width - 4) / 2:.1f}" y="{y - 6:.1f}" text-anchor="middle" class="small">{value * 100:.1f}%</text>')
+        legend_x = margin_left + group_index * 145
+        parts.append(f'<rect x="{legend_x}" y="56" width="14" height="14" rx="2" fill="{colors[group]}"/>')
+        parts.append(f'<text x="{legend_x + 21}" y="68" class="label">{escape(group)}</text>')
+    for index, category in enumerate(categories):
+        x = margin_left + (index + 0.5) * cluster_width
+        parts.append(f'<text x="{x:.1f}" y="{margin_top + chart_height + 28}" text-anchor="middle" class="label">{escape(category.replace("_", " "))}</text>')
+    parts.append(f'<line x1="{margin_left}" y1="{margin_top + chart_height}" x2="{margin_left + chart_width}" y2="{margin_top + chart_height}" class="axis"/>')
+    parts.append("</svg>\n")
+    path.write_text("".join(parts), encoding="utf-8")
+
+
+def _write_line_chart(
+    path: Path,
+    title: str,
+    series: Mapping[str, Sequence[Mapping[str, float]]],
+    *,
+    percent: bool = False,
+    log_scale: bool = False,
+) -> None:
+    colors = {"bartpho": "#2563eb", "vit5": "#f59e0b", "t5gemma2": "#10b981"}
+    width, height = 920, 430
+    left, top, chart_width, chart_height = 78, 82, 790, 270
+    transformed = {
+        name: [
+            (float(point["epoch"]), math.log10(max(float(point["value"]), 1e-6)) if log_scale else float(point["value"]))
+            for point in points
+        ]
+        for name, points in series.items()
+    }
+    xs = [x for points in transformed.values() for x, _ in points]
+    ys = [y for points in transformed.values() for _, y in points]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    if min_y == max_y:
+        max_y += 1
+    parts = _svg_header(width, height, title)
+    for index in range(6):
+        y = top + chart_height * index / 5
+        value = max_y - (max_y - min_y) * index / 5
+        label_value = 10**value if log_scale else value
+        label = f"{label_value * 100:.0f}%" if percent else f"{label_value:.3g}"
+        parts.append(f'<line x1="{left}" y1="{y:.1f}" x2="{left + chart_width}" y2="{y:.1f}" stroke="#e2e8f0"/>')
+        parts.append(f'<text x="{left - 10}" y="{y + 4:.1f}" text-anchor="end" class="small">{label}</text>')
+    for series_index, (name, points) in enumerate(transformed.items()):
+        coordinates = []
+        for x_value, y_value in points:
+            x = left + chart_width * (x_value - min_x) / max(1e-9, max_x - min_x)
+            y = top + chart_height * (max_y - y_value) / (max_y - min_y)
+            coordinates.append(f"{x:.1f},{y:.1f}")
+        parts.append(f'<polyline points="{" ".join(coordinates)}" fill="none" stroke="{colors[name]}" stroke-width="2.5"/>')
+        legend_x = left + series_index * 145
+        parts.append(f'<line x1="{legend_x}" y1="57" x2="{legend_x + 18}" y2="57" stroke="{colors[name]}" stroke-width="3"/>')
+        parts.append(f'<text x="{legend_x + 25}" y="61" class="label">{escape(name)}</text>')
+    parts.append(f'<line x1="{left}" y1="{top + chart_height}" x2="{left + chart_width}" y2="{top + chart_height}" class="axis"/>')
+    parts.append(f'<text x="{left + chart_width / 2}" y="{top + chart_height + 40}" text-anchor="middle" class="label">epoch</text>')
+    parts.append("</svg>\n")
+    path.write_text("".join(parts), encoding="utf-8")
+
+
 def _svg_header(width: int, height: int, title: str) -> list[str]:
     return [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{escape(title)}">',
@@ -276,7 +467,16 @@ def main() -> None:
     )
     write_manifest(report, args.dataset_dir / "manifest.json")
     write_public_reports(report, output_dir=args.output_dir)
-    print(json.dumps(report["dataset"], ensure_ascii=False, indent=2))
+    model_report = build_model_report(PROJECT_ROOT / "artifacts/models")
+    if model_report is not None:
+        write_model_reports(model_report, output_dir=args.output_dir)
+    print(
+        json.dumps(
+            {"dataset": report["dataset"], "models": model_report},
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
