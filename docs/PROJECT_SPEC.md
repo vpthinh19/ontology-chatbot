@@ -66,6 +66,8 @@ tốt hơn một cơ sở dữ liệu phẳng.
 - Kết quả là list các mapping Python đơn giản.
 - Không QueryPlan, custom traversal, fuzzy match, gold tree, schema-specific
   result DTO hoặc formatter viết riêng cho từng route.
+- Artifact runtime mặc định là T5Gemma2 seed 42 đã convert CTranslate2
+  `int8_float16`; CPU chạy `int8`.
 
 ### Dataset và benchmark
 

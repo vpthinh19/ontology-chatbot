@@ -41,9 +41,15 @@ def convert_model(
         raise ValueError("checkpoint does not contain tokenizer_config.json")
 
     source_config = json.loads((model_dir / "config.json").read_text(encoding="utf-8"))
+    tokenizer_config = json.loads(
+        (model_dir / "tokenizer_config.json").read_text(encoding="utf-8")
+    )
     needs_mbart_compat = (
         source_config.get("model_type") == "mbart"
         and "normalize_before" not in source_config
+    )
+    uses_gemma_legacy_regex = str(tokenizer_config.get("tokenizer_class", "")).startswith(
+        "GemmaTokenizer"
     )
 
     class CompatibleTransformersConverter(TransformersConverter):
@@ -71,9 +77,10 @@ def convert_model(
         "ctranslate2_version": ctranslate2.__version__,
         "quantization": quantization,
         "source": str(model_dir),
-        "compatibility": (
-            {"mbart_normalize_before": True} if needs_mbart_compat else {}
-        ),
+        "compatibility": {
+            **({"mbart_normalize_before": True} if needs_mbart_compat else {}),
+            **({"gemma_legacy_regex": True} if uses_gemma_legacy_regex else {}),
+        },
         "files": {
             path.name: _sha256(path)
             for path in sorted(output_dir.iterdir())

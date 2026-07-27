@@ -88,7 +88,8 @@ Trạng thái: **hoàn thành và đã smoke test đầu-cuối**.
 4. Nối runtime tối giản model → SPARQL → RDFLib → text.
 5. Thay API, Docker và web UI còn phụ thuộc kiến trúc cây cũ.
 
-ViT5 seed 42 là artifact mặc định. Hướng dẫn và acceptance metric nằm tại
+T5Gemma2 seed 42 của dataset v2 là artifact mặc định. Bản CTranslate2 CPU/int8
+giữ nguyên 77,86% answer exact; hướng dẫn và acceptance metric nằm tại
 `docs/DEPLOYMENT.md`.
 
 ## Thứ tự dọn code cũ

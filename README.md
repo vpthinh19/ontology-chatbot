@@ -100,12 +100,12 @@ là release mới.
 
 ## Chạy bản triển khai
 
-Runtime mặc định dùng artifact CTranslate2 ViT5 seed 42 trên CPU/int8:
+Runtime mặc định dùng artifact CTranslate2 T5Gemma2 seed 42 trên CPU/int8:
 
 ```bash
 uv sync --extra inference --dev
 uv run --extra inference serve_sparql \
-  --model-dir artifacts/sparql_deploy_v1/vit5_seed42
+  --model-dir artifacts/sparql_deploy_v2/t5gemma2_seed42
 ```
 
 Quy trình convert, chấm lại quantization và Docker được ghi tại

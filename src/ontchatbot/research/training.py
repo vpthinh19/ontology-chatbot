@@ -89,11 +89,15 @@ def train(args: argparse.Namespace) -> dict:
             local_files_only=True,
         )
     else:
+        tokenizer_kwargs = (
+            {"fix_mistral_regex": False} if args.model == "t5gemma2" else {}
+        )
         tokenizer = AutoTokenizer.from_pretrained(
             snapshot,
             revision=spec["revision"],
             local_files_only=True,
             trust_remote_code=True,
+            **tokenizer_kwargs,
         )
 
     release = load_release(args.dataset_dir)

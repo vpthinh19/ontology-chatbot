@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Protocol
 
@@ -39,10 +40,12 @@ class CTranslate2Generator:
         model_dir = Path(model_dir)
         if not (model_dir / "model.bin").is_file():
             raise FileNotFoundError(f"CTranslate2 model not found: {model_dir}")
+        tokenizer_kwargs = _tokenizer_compatibility_kwargs(model_dir)
         tokenizer = AutoTokenizer.from_pretrained(
             model_dir,
             local_files_only=True,
             trust_remote_code=True,
+            **tokenizer_kwargs,
         )
         translator = ctranslate2.Translator(
             str(model_dir),
@@ -72,3 +75,15 @@ class CTranslate2Generator:
         if not query:
             raise ValueError("model generated an empty query")
         return query
+
+
+def _tokenizer_compatibility_kwargs(model_dir: Path) -> dict[str, bool]:
+    manifest_path = Path(model_dir) / "manifest.json"
+    if not manifest_path.is_file():
+        return {}
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("compatibility", {}).get("gemma_legacy_regex") is True:
+        # The checkpoint was trained before Transformers changed this regex.
+        # Changing it only at inference would change token IDs.
+        return {"fix_mistral_regex": False}
+    return {}

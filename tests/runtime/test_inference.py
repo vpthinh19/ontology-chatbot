@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from ontchatbot.runtime.model import CTranslate2Generator
+from ontchatbot.runtime.model import CTranslate2Generator, _tokenizer_compatibility_kwargs
 from ontchatbot.runtime.pipeline import OntologyChatbot
 
 
@@ -58,3 +58,13 @@ def test_chatbot_connects_generated_query_to_ontology() -> None:
     reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
 
     assert "Phòng Công tác Chính trị và Sinh viên" in reply
+
+
+def test_gemma_artifact_preserves_training_tokenizer_regex(tmp_path) -> None:
+    (tmp_path / "manifest.json").write_text(
+        '{"compatibility":{"gemma_legacy_regex":true}}', encoding="utf-8"
+    )
+
+    assert _tokenizer_compatibility_kwargs(tmp_path) == {
+        "fix_mistral_regex": False
+    }

@@ -35,6 +35,7 @@ def evaluate(args: argparse.Namespace) -> dict:
         args.model_dir,
         local_files_only=True,
         trust_remote_code=args.model == "bartpho",
+        **({"fix_mistral_regex": False} if args.model == "t5gemma2" else {}),
     )
     model = AutoModelForSeq2SeqLM.from_pretrained(
         args.model_dir,
