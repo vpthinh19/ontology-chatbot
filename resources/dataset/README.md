@@ -1,18 +1,20 @@
 # Dataset
 
 Bộ dữ liệu ánh xạ câu hỏi tiếng Việt sang một truy vấn `SELECT` SPARQL trên
-một dòng. Mỗi bản ghi JSON Lines có đúng sáu trường:
+một dòng. Mỗi bản ghi JSON Lines có đúng năm trường:
 
 ```json
-{"id":"question-0001","family_id":"family-0001","register":"formal","query_shape":"direct","input":"...","target":"SELECT ..."}
+{"id":"question-0001","family_id":"family-0001","register":"formal","input":"...","target":"SELECT ..."}
 ```
 
 - `id`: định danh câu hỏi.
 - `family_id`: nhóm bốn câu hỏi có cùng ý nghĩa và cùng target.
 - `register`: `formal`, `neutral`, `colloquial` hoặc `noisy`.
-- `query_shape`: hình dạng truy vấn dùng để phân tích kết quả.
 - `input`: câu hỏi tiếng Việt tự nhiên.
 - `target`: SPARQL canonical không chứa phần khai báo `PREFIX`.
+
+Đặc trưng như số cột, graph hop, aggregate, lọc và sắp xếp được suy ra từ
+target khi tạo báo cáo; chúng không được nhập tay vào JSONL.
 
 Ba tập có vai trò tách biệt:
 

@@ -5,7 +5,6 @@
       "id",
       "family_id",
       "register",
-      "query_shape",
       "input",
       "target"
     ],
@@ -15,30 +14,30 @@
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 880,
-      "families": 220,
-      "targets": 123,
-      "sha256": "828c28674f9436fabaae470df147fc892813a55b83815567f2e7fd745e6425e6"
+      "records": 1040,
+      "families": 260,
+      "targets": 163,
+      "sha256": "2ab57fa0b8e10afd48dd3b6bd6d37ce8c5b82881f9ec2c5bec3840e9fb1b29fe"
     },
     "val": {
       "path": "val.jsonl",
       "records": 140,
       "families": 35,
       "targets": 35,
-      "sha256": "aef79b7bae9758e2c4b25fb21ea020a4768a8483058ba24b8b22e83c3a8a47d0"
+      "sha256": "8278ccd0a9fc62500911668c6e5b4dff9f1d5ce65e263cb75b7a84f5e6f3de33"
     },
     "test": {
       "path": "test.jsonl",
       "records": 156,
       "families": 39,
       "targets": 39,
-      "sha256": "6cf17d865a9281b5c5a4e2e2a9bd266f5849392dae5215bec29770e52168d079"
+      "sha256": "04b49191e5687729024780618a5d24411a14436b25c6d153e9c92c869f82da2c"
     }
   },
   "totals": {
-    "records": 1176,
-    "families": 294,
-    "targets": 162
+    "records": 1336,
+    "families": 334,
+    "targets": 202
   },
   "split_contract": {
     "train": "model fitting",

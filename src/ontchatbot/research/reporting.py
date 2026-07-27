@@ -18,6 +18,7 @@ from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
 from .dataset import REQUIRED_SPLITS, load_release, validate_release
+from .query_features import extract_query_features, query_feature_tags
 
 
 def sha256_file(path: Path) -> str:
@@ -44,6 +45,15 @@ def build_dataset_report(
     test_targets = {row["target"] for row in release["test"]}
     train_terms = _local_target_terms(release["train"])
     test_terms = _local_target_terms(release["test"])
+    object_properties = frozenset(
+        str(subject).rsplit("#", 1)[-1]
+        for subject in graph.subjects(RDF.type, OWL.ObjectProperty)
+        if isinstance(subject, URIRef)
+    )
+    query_features_by_split = {
+        split: _query_feature_counts(release[split], object_properties)
+        for split in REQUIRED_SPLITS
+    }
 
     report = {
         "dataset": {
@@ -59,15 +69,8 @@ def build_dataset_report(
                 for split in REQUIRED_SPLITS
             },
             "registers": dict(sorted(Counter(row["register"] for row in all_rows).items())),
-            "query_shapes": dict(
-                sorted(Counter(row["query_shape"] for row in all_rows).items())
-            ),
-            "query_shapes_by_split": {
-                split: dict(
-                    sorted(Counter(row["query_shape"] for row in release[split]).items())
-                )
-                for split in REQUIRED_SPLITS
-            },
+            "query_features": _query_feature_counts(all_rows, object_properties),
+            "query_features_by_split": query_features_by_split,
             "input_words": _number_summary(word_lengths),
         },
         "generalization_contract": {
@@ -79,6 +82,10 @@ def build_dataset_report(
             "test_targets": len(test_targets),
             "test_schema_terms_missing_from_train": sorted(test_terms - train_terms),
         },
+        "training_readiness": _build_training_readiness(
+            release,
+            object_properties,
+        ),
         "ontology": _ontology_summary(graph),
         "validation": validation,
         "sha256": {
@@ -114,10 +121,16 @@ def write_public_reports(
         split_values,
         color="#2563eb",
     )
+    _write_bar_chart(
+        figures / "registers.svg",
+        "Phong cách câu hỏi",
+        report["dataset"]["registers"],
+        color="#7c3aed",
+    )
     _write_grouped_bar_chart(
-        figures / "query-shapes.svg",
-        "Dạng truy vấn theo train / validation / test",
-        report["dataset"]["query_shapes_by_split"],
+        figures / "query-features.svg",
+        "Đặc trưng SPARQL theo train / validation / test",
+        report["dataset"]["query_features_by_split"],
     )
 
 
@@ -148,7 +161,7 @@ def build_model_report(models_dir: Path) -> dict[str, Any] | None:
             "validation": validation["overall"],
             "test": test["overall"],
             "test_by_register": test["by_register"],
-            "test_by_query_shape": test["by_query_shape"],
+            "test_by_query_feature": test["by_query_feature"],
             "test_errors": test["error_counts"],
             "training": {
                 "records": training["train_records"],
@@ -221,12 +234,12 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
         },
     )
     _write_metric_chart(
-        figures / "test-by-query-shape.svg",
-        "Test answer exact theo hình dạng truy vấn",
+        figures / "test-by-query-feature.svg",
+        "Test answer exact theo đặc trưng SPARQL",
         {
             name: {
-                shape: metrics["answer_exact_rate"]
-                for shape, metrics in value["test_by_query_shape"].items()
+                feature: metrics["answer_exact_rate"]
+                for feature, metrics in value["test_by_query_feature"].items()
             }
             for name, value in models.items()
         },
@@ -238,7 +251,7 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
     manifest = {
         "schema": {
             "format": "jsonl",
-            "fields": ["id", "family_id", "register", "query_shape", "input", "target"],
+            "fields": ["id", "family_id", "register", "input", "target"],
             "input": "Vietnamese natural-language question",
             "target": "one-line canonical SPARQL SELECT without PREFIX declarations",
         },
@@ -299,6 +312,103 @@ def _ontology_summary(graph: Graph) -> dict[str, Any]:
 def _local_target_terms(rows: Iterable[Mapping[str, str]]) -> set[str]:
     pattern = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
     return {match for row in rows for match in pattern.findall(row["target"])}
+
+
+def _query_feature_counts(
+    rows: Iterable[Mapping[str, str]],
+    object_properties: frozenset[str],
+) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for row in rows:
+        features = extract_query_features(
+            row["target"],
+            object_properties=object_properties,
+        )
+        counts.update(query_feature_tags(features))
+    return dict(sorted(counts.items()))
+
+
+def _build_training_readiness(
+    release: Mapping[str, list[dict[str, str]]],
+    object_properties: frozenset[str],
+) -> dict[str, Any]:
+    capability_names = (
+        "graph_hop",
+        "multi_branch",
+        "multi_column",
+        "aggregate",
+        "filter",
+        "group",
+        "order",
+        "limit",
+    )
+    target_support: dict[str, set[str]] = {
+        name: set() for name in capability_names
+    }
+    validation_support: dict[str, set[str]] = {
+        name: set() for name in capability_names
+    }
+    for split, support in (("train", target_support), ("val", validation_support)):
+        for row in release[split]:
+            features = extract_query_features(
+                row["target"],
+                object_properties=object_properties,
+            )
+            tags = set(query_feature_tags(features))
+            key = row["target"] if split == "train" else row["family_id"]
+            for name in capability_names:
+                if name in tags:
+                    support[name].add(key)
+
+    gaps: list[dict[str, Any]] = []
+    sparse_features = {
+        name: len(targets)
+        for name, targets in target_support.items()
+        if targets and len(targets) < 5
+    }
+    if sparse_features:
+        gaps.append(
+            {
+                "code": "insufficient_train_feature_targets",
+                "minimum": 5,
+                "features": dict(sorted(sparse_features.items())),
+            }
+        )
+
+    missing_validation = {
+        name: len(validation_support[name])
+        for name, targets in target_support.items()
+        if targets and len(validation_support[name]) < 2
+    }
+    if missing_validation:
+        gaps.append(
+            {
+                "code": "missing_validation_features",
+                "minimum_families": 2,
+                "features": dict(sorted(missing_validation.items())),
+            }
+        )
+
+    term_families: dict[str, set[str]] = {}
+    pattern = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
+    for row in release["train"]:
+        for term in set(pattern.findall(row["target"])):
+            term_families.setdefault(term, set()).add(row["family_id"])
+    sparse_terms = {
+        term: len(term_families.get(term, set()))
+        for term in _local_target_terms(release["test"])
+        if len(term_families.get(term, set())) < 2
+    }
+    if sparse_terms:
+        gaps.append(
+            {
+                "code": "under_supported_test_terms",
+                "minimum_train_families": 2,
+                "terms": dict(sorted(sparse_terms.items())),
+            }
+        )
+
+    return {"ready": not gaps, "gaps": gaps}
 
 
 def _number_summary(values: Sequence[int]) -> dict[str, int | float]:

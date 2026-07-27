@@ -13,8 +13,9 @@ from .benchmark import (
     validate_benchmark,
 )
 from ..settings import ARTIFACTS_DIR, DATASET_DIR
-from .dataset import load_release, validate_release
+from .dataset import load_release
 from .evaluation import evaluate_predictions
+from .reporting import build_dataset_report
 from ..runtime.text import normalize_model_input
 from ..tools.tokenizer import (
     BARTPHO_MODEL_ID,
@@ -104,7 +105,15 @@ def train(args: argparse.Namespace) -> dict:
 
     release = load_release(args.dataset_dir)
     graph = load_ontology()
-    dataset_report = validate_release(release, graph)
+    dataset_report = build_dataset_report(
+        release,
+        graph,
+        dataset_dir=args.dataset_dir,
+    )
+    _require_training_ready(
+        dataset_report["training_readiness"],
+        smoke_test=args.smoke_test,
+    )
     rows = release["train"] + release["val"]
     targets = tuple(dict.fromkeys(row["target"] for row in rows))
     audit_target_roundtrip(tokenizer, targets)
@@ -251,7 +260,7 @@ def train(args: argparse.Namespace) -> dict:
         "max_steps": effective_max_steps,
         "train_records": len(train_rows),
         "validation_records": len(validation_rows),
-        "dataset_records": dataset_report["records"],
+        "dataset_records": dataset_report["dataset"]["records"],
         "batch_size": spec["batch_size"],
         "gradient_accumulation": spec["gradient_accumulation"],
         "dynamic_padding_multiple": 8,
@@ -437,6 +446,19 @@ def _smoke_subset(rows: list[dict[str, str]], limit: int) -> list[dict[str, str]
         if len(selected) == limit:
             break
     return selected
+
+
+def _require_training_ready(
+    readiness: dict,
+    *,
+    smoke_test: bool,
+) -> None:
+    if readiness.get("ready") or smoke_test:
+        return
+    codes = [gap.get("code", "unknown") for gap in readiness.get("gaps", [])]
+    raise RuntimeError(
+        "dataset is not ready for full training: " + ", ".join(codes)
+    )
 
 
 def _disable_dropout(model, torch) -> None:

@@ -80,10 +80,8 @@ RAG, cơ sở dữ liệu phẳng, hội thoại ngoài miền, router nhiều m
 fuzzy không thuộc pipeline cốt lõi. Chỉ thêm một tầng mới khi benchmark chứng
 minh pipeline hiện tại không thể giải quyết nhu cầu đó.
 
-Việc nhận biết câu hỏi ngoài ontology chưa thuộc contract hiện tại. Trước khi
-hoàn thiện dataset phải chọn một trong hai hướng: giới hạn rõ hệ thống ở câu
-hỏi trong miền, hoặc bổ sung một output từ chối và tập dữ liệu âm. Không được
-tự thêm `NO_QUERY` nếu chưa thay đổi contract đầu ra và benchmark tương ứng.
+Hệ thống chỉ nhận câu hỏi thuộc miền dữ liệu của ontology. Nhận biết câu hỏi
+ngoài miền và output từ chối không thuộc contract nghiên cứu hiện tại.
 
 ## Contract tài liệu
 

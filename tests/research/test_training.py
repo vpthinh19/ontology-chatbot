@@ -1,9 +1,12 @@
 from types import SimpleNamespace
 
+import pytest
+
 from ontchatbot.research.training import (
     MODEL_SPECS,
     _configure_greedy_generation,
     _ensure_eos_token,
+    _require_training_ready,
 )
 
 
@@ -31,3 +34,16 @@ def test_structured_generation_disables_inherited_sampling_settings() -> None:
     assert config.do_sample is False
     assert config.top_p is None
     assert config.top_k is None
+
+
+def test_full_training_rejects_dataset_with_coverage_gaps() -> None:
+    readiness = {"ready": False, "gaps": [{"code": "missing_validation_features"}]}
+
+    with pytest.raises(RuntimeError, match="dataset is not ready for full training"):
+        _require_training_ready(readiness, smoke_test=False)
+
+
+def test_smoke_training_can_check_pipeline_before_curation_finishes() -> None:
+    readiness = {"ready": False, "gaps": [{"code": "missing_validation_features"}]}
+
+    _require_training_ready(readiness, smoke_test=True)

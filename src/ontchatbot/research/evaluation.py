@@ -6,9 +6,10 @@ import re
 from collections import Counter, defaultdict
 from typing import Any, Iterable
 
-from rdflib import Graph
+from rdflib import OWL, RDF, Graph, URIRef
 
 from ..runtime.sparql import SparqlError, execute_select, validate_select
+from .query_features import extract_query_features, query_feature_tags
 
 _PREFIXED_NAME = re.compile(r":[A-Za-z][A-Za-z0-9]*")
 _STRING_LITERAL = re.compile(r'"(?:[^"\\]|\\.)*"')
@@ -28,19 +29,30 @@ def evaluate_predictions(
     totals: Counter[str] = Counter()
     grouped: dict[str, dict[str, Counter[str]]] = {
         "register": defaultdict(Counter),
-        "query_shape": defaultdict(Counter),
+        "query_feature": defaultdict(Counter),
     }
+    object_properties = frozenset(
+        str(subject).rsplit("#", 1)[-1]
+        for subject in graph.subjects(RDF.type, OWL.ObjectProperty)
+        if isinstance(subject, URIRef)
+    )
     error_counts: Counter[str] = Counter()
     cases = []
     for example, prediction in zip(examples, predictions, strict=True):
         target = example["target"]
         register = example["register"]
+        query_features = extract_query_features(
+            target,
+            object_properties=object_properties,
+        )
         totals["count"] += 1
-        groups = {"register": register}
-        if example.get("query_shape"):
-            groups["query_shape"] = example["query_shape"]
-        for group_name, value in groups.items():
-            grouped[group_name][value]["count"] += 1
+        groups = {
+            "register": (register,),
+            "query_feature": query_feature_tags(query_features),
+        }
+        for group_name, values in groups.items():
+            for value in values:
+                grouped[group_name][value]["count"] += 1
 
         parse_ok = False
         execution_ok = False
@@ -75,15 +87,16 @@ def evaluate_predictions(
             ("canonical_exact", canonical_exact),
         ):
             totals[name] += int(value)
-            for group_name, group_value in groups.items():
-                grouped[group_name][group_value][name] += int(value)
+            for group_name, group_values in groups.items():
+                for group_value in group_values:
+                    grouped[group_name][group_value][name] += int(value)
 
         if include_cases:
             cases.append(
                 {
                     "id": example["id"],
                     "register": register,
-                    "query_shape": example.get("query_shape"),
+                    "query_features": query_features,
                     "input": example["input"],
                     "target": target,
                     "prediction": prediction,
@@ -100,15 +113,12 @@ def evaluate_predictions(
     report = {
         "overall": _rates(totals),
         "by_register": _group_rates(grouped["register"]),
+        "by_query_feature": _group_rates(grouped["query_feature"]),
         "error_counts": dict(sorted(error_counts.items())),
     }
-    if grouped["query_shape"]:
-        report["by_query_shape"] = _group_rates(grouped["query_shape"])
     if include_cases:
         report["cases"] = cases
     return report
-
-
 def _error_category(
     target: str,
     prediction: str,

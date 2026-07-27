@@ -19,7 +19,8 @@ Answer exact là metric chính. Nó bỏ qua thứ tự dòng và tên biến SP
 nhưng vẫn so kiểu dữ liệu, giá trị, số cột và cách các giá trị được nhóm trong
 từng dòng. Một query khác chuỗi nhưng trả đúng dữ liệu vẫn được tính đúng.
 
-Metric được báo cáo tổng thể, theo register và theo query shape. Lỗi được chia
+Metric được báo cáo tổng thể, theo register và theo các đặc trưng SPARQL suy ra
+tự động. Lỗi được chia
 thành parse, execution, sai IRI, sai property, thiếu/thừa nhánh, sai literal và
 sai ngữ nghĩa còn lại.
 
@@ -50,7 +51,7 @@ bổ sung:
 - đường train loss/validation loss và validation answer exact/result F1;
 - cột so sánh test answer exact và result precision/recall/F1;
 - parse rate và execution rate;
-- breakdown theo phong cách câu hỏi và hình dạng query;
+- breakdown theo phong cách câu hỏi và đặc trưng SPARQL;
 - phân bố nhóm lỗi;
 - thời gian train, VRAM đỉnh và tốc độ inference.
 

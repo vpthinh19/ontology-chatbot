@@ -33,13 +33,6 @@ def test_test_set_is_held_out_balanced_and_executable() -> None:
             "neutral": 39,
             "noisy": 39,
         },
-        "query_shape_counts": {
-            "aggregate": 16,
-            "aggregate_filter": 16,
-            "direct": 16,
-            "graph_hop": 32,
-            "multi_column": 76,
-        },
         "targets_seen_in_model_selection_data": 0,
         "schema_terms_missing_from_training": [],
     }

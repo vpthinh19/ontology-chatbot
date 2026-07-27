@@ -11,16 +11,12 @@ from typing import Any, Mapping
 from rdflib import Graph
 
 from ..settings import TEST_DATASET_PATH
-from .dataset import (
-    ALLOWED_QUERY_SHAPES,
-    ALLOWED_REGISTERS,
-    UNSUPPORTED_TARGET_CHARACTERS,
-)
+from .dataset import ALLOWED_REGISTERS, UNSUPPORTED_TARGET_CHARACTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import execute_select, validate_select
 
-REQUIRED_FIELDS = {"id", "family_id", "register", "query_shape", "input", "target"}
+REQUIRED_FIELDS = {"id", "family_id", "register", "input", "target"}
 _LOCAL_TERM = re.compile(r"(?<![A-Za-z0-9]):([A-Za-z][A-Za-z0-9]*)")
 
 
@@ -55,7 +51,6 @@ def validate_benchmark(
         for term in _LOCAL_TERM.findall(row["target"])
     }
     register_counts: Counter[str] = Counter()
-    shape_counts: Counter[str] = Counter()
     targets: set[str] = set()
 
     for index, row in enumerate(rows, 1):
@@ -80,11 +75,8 @@ def validate_benchmark(
         questions.add(normalized)
 
         register = row["register"]
-        shape = row["query_shape"]
         if register not in ALLOWED_REGISTERS:
             raise BenchmarkError(f"{record_id}: invalid register {register}")
-        if shape not in ALLOWED_QUERY_SHAPES:
-            raise BenchmarkError(f"{record_id}: invalid query shape {shape}")
 
         target = row["target"]
         if "\n" in target or "\r" in target or re.search(r"\s{2,}", target):
@@ -98,7 +90,6 @@ def validate_benchmark(
         if not execute_select(graph, target):
             raise BenchmarkError(f"{record_id}: reference query returns no rows")
         register_counts[register] += 1
-        shape_counts[shape] += 1
         targets.add(target)
 
     repeated_targets = sorted(targets & training_targets)
@@ -115,7 +106,6 @@ def validate_benchmark(
         "records": len(rows),
         "targets": len(targets),
         "register_counts": dict(sorted(register_counts.items())),
-        "query_shape_counts": dict(sorted(shape_counts.items())),
         "targets_seen_in_model_selection_data": len(repeated_targets),
         "schema_terms_missing_from_training": missing_terms,
     }

@@ -14,16 +14,9 @@ from ..runtime.sparql import execute_select, validate_select
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR
 
-REQUIRED_FIELDS = {"id", "family_id", "register", "query_shape", "input", "target"}
+REQUIRED_FIELDS = {"id", "family_id", "register", "input", "target"}
 REQUIRED_SPLITS = ("train", "val", "test")
 ALLOWED_REGISTERS = {"formal", "neutral", "colloquial", "noisy"}
-ALLOWED_QUERY_SHAPES = {
-    "direct",
-    "graph_hop",
-    "multi_column",
-    "aggregate",
-    "aggregate_filter",
-}
 UNSUPPORTED_TARGET_CHARACTERS = frozenset("_^<@")
 
 
@@ -64,8 +57,8 @@ def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]
     ids: set[str] = set()
     normalized_inputs: dict[str, str] = {}
     family_targets: dict[str, set[str]] = defaultdict(set)
+    family_registers: dict[str, Counter[str]] = defaultdict(Counter)
     register_counts: Counter[str] = Counter()
-    shape_counts: Counter[str] = Counter()
     target_counts: Counter[str] = Counter()
     empty_result_ids: list[str] = []
 
@@ -82,11 +75,8 @@ def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]
         ids.add(record_id)
 
         register = row["register"]
-        shape = row["query_shape"]
         if register not in ALLOWED_REGISTERS:
             raise DatasetError(f"{record_id}: invalid register {register}")
-        if shape not in ALLOWED_QUERY_SHAPES:
-            raise DatasetError(f"{record_id}: invalid query shape {shape}")
 
         normalized = normalize_model_input(row["input"]).casefold()
         duplicate = normalized_inputs.get(normalized)
@@ -105,20 +95,31 @@ def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]
             empty_result_ids.append(record_id)
 
         family_targets[row["family_id"]].add(target)
+        family_registers[row["family_id"]][register] += 1
         register_counts[register] += 1
-        shape_counts[shape] += 1
         target_counts[target] += 1
 
     inconsistent = sorted(family for family, targets in family_targets.items() if len(targets) > 1)
     if inconsistent:
         raise DatasetError(f"families have multiple targets: {inconsistent[:10]}")
 
+    expected_registers = Counter({register: 1 for register in ALLOWED_REGISTERS})
+    invalid_registers = sorted(
+        family
+        for family, counts in family_registers.items()
+        if counts != expected_registers
+    )
+    if invalid_registers:
+        raise DatasetError(
+            "families must contain exactly one of each register: "
+            f"{invalid_registers[:10]}"
+        )
+
     return {
         "records": len(rows),
         "families": len(family_targets),
         "targets": len(target_counts),
         "register_counts": dict(sorted(register_counts.items())),
-        "query_shape_counts": dict(sorted(shape_counts.items())),
         "empty_result_ids": empty_result_ids,
     }
 

@@ -1,99 +1,76 @@
 # Dataset
 
-Mỗi ví dụ là một cặp câu hỏi tiếng Việt và SPARQL. JSON Lines được dùng vì dễ
-đọc tuần tự, dễ diff và tương thích trực tiếp với thư viện huấn luyện.
+Dataset ánh xạ câu hỏi tiếng Việt tự nhiên sang một truy vấn SPARQL `SELECT`.
+Mỗi dòng JSON Lines có năm trường:
 
 ```json
 {
   "id": "question-0001",
   "family_id": "family-0001",
   "register": "formal",
-  "query_shape": "direct",
-  "input": "...",
-  "target": "SELECT ?answer WHERE { ... }"
+  "input": "Tôi cần thực hiện thủ tục bảo lưu như thế nào?",
+  "target": "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
 }
 ```
 
-`family_id` gom bốn câu cùng nghĩa. Nó ngăn một cách diễn đạt của cùng câu hỏi
-lọt vào train trong khi cách khác lọt vào validation hoặc test.
+`family_id` gom bốn câu có cùng ý nghĩa và cùng target. Cả family luôn nằm
+trong một split, vì vậy model không được nhìn một cách diễn đạt ở train rồi gặp
+lại cùng ý nghĩa ở validation hoặc test.
 
-## Bốn phong cách ngôn ngữ
+## Phong cách câu hỏi
 
-| Register | Mục tiêu |
+| Register | Cách diễn đạt |
 |---|---|
-| `formal` | Câu đầy đủ, văn phong hành chính |
+| `formal` | Câu đầy đủ, gần văn phong hành chính |
 | `neutral` | Cách hỏi phổ thông |
 | `colloquial` | Ngôn ngữ nói thường ngày |
 | `noisy` | Viết tắt, bỏ dấu hoặc câu rút gọn |
 
-Mỗi register hiện có đúng 334 câu. Các câu được viết và đọc lại theo ý nghĩa, không
-sinh hàng loạt bằng một template thay từ.
+Mỗi family có đúng một câu thuộc từng register. Câu hỏi được viết và đọc lại
+theo ý nghĩa; không tạo hàng loạt bằng cách thay từ trong một template.
 
-## Chia tập
+## Train, validation và test
 
-- Train: 1.040 câu / 260 họ, dùng cập nhật trọng số.
-- Validation: 140 câu / 35 họ, dùng chọn checkpoint. Họ câu chưa thấy nhưng
-  target đã có trong train, nên đo khả năng hiểu paraphrase.
-- Test: 156 câu / 39 họ. Target chưa xuất hiện trong train hoặc validation,
-  nhưng từng IRI/property cấu thành đã có trong train, nên đo khả năng ghép
-  truy vấn mới.
+| Tập | Câu hỏi | Family | Target | Vai trò |
+|---|---:|---:|---:|---|
+| Train | 1.040 | 260 | 163 | Cập nhật trọng số model |
+| Validation | 140 | 35 | 35 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
+| Test | 156 | 39 | 39 | Đo khả năng ghép truy vấn mới |
 
-Test có truy vấn trực tiếp, đi qua graph, nhiều cột, đếm và lọc/sắp xếp. Không
-có rò rỉ family, câu trùng hoặc câu gần trùng giữa các tập.
+Target validation đã có trong train nhưng family thì chưa. Target test chưa có
+trong train/validation, song các thành phần schema tạo nên nó phải được học từ
+train. Test chỉ được dùng sau khi checkpoint đã được chọn.
 
-![Hình dạng truy vấn](../reports/figures/query-shapes.svg)
+![Phân bố dataset](../reports/figures/dataset-splits.svg)
 
-## Các cổng chất lượng
+## Hình dạng SPARQL
 
-Một dataset hợp lệ phải thỏa tất cả điều kiện sau:
+Dataset không lưu nhãn hình dạng truy vấn do một query có thể đồng thời nhiều
+cột, đi qua graph, lọc, gom nhóm và sắp xếp. Báo cáo tự suy ra các đặc trưng
+độc lập từ target: số cột, số triple pattern, object-property hop, aggregate,
+`FILTER`, `GROUP BY`, `ORDER BY` và `LIMIT`.
 
-1. Đúng sáu field và tập giá trị register/query shape.
-2. ID, family và câu đã chuẩn hóa không rò rỉ giữa split.
-3. Mỗi family chỉ có một target.
-4. Target là một dòng, parse được, không có ký tự tokenizer không bảo toàn.
-5. Target chạy trên ontology và trả ít nhất một dòng.
-6. Target test chưa thấy nhưng không dùng schema term chưa học.
-7. BARTpho, ViT5 và T5Gemma2 encode/decode toàn bộ target không có `<unk>`.
-
-Manifest và thống kê đầy đủ nằm trong `resources/dataset/manifest.json` và
-`reports/dataset.json`.
+![Đặc trưng SPARQL](../reports/figures/query-features.svg)
 
 ## Khoảng trắng và padding
 
-Target dùng một khoảng trắng canonical quanh các thành phần SPARQL để cả ba
-tokenizer encode/decode chính xác. Đây là dữ liệu thật trong JSONL. Dynamic
-padding là token `<pad>` chỉ được collator thêm tạm theo batch và không được ghi
-vào dataset.
+Target là một dòng và dùng khoảng trắng canonical để cả ba tokenizer bảo toàn
+đúng SPARQL. Dynamic padding là token `<pad>` được thêm tạm khi tạo batch; nó
+không nằm trong JSONL.
 
-## Audit trước benchmark
+## Kiểm soát chất lượng
 
-Dataset hiện đã tăng từ 1.176 lên 1.336 câu bằng 40 family train mới, tập trung
-vào nhiều cột, nhiều nhánh, lọc, sắp xếp và tổng hợp. Toàn bộ target parse được,
-chạy có kết quả; các register cân bằng; class/property của ontology đều được
-phủ; không có schema term hoàn toàn mới trong test.
+Trước khi huấn luyện, dataset phải qua các kiểm tra sau:
 
-Việc bổ sung này chưa đủ để chạy benchmark chính thức. Các vấn đề phải xử lý:
+1. Mỗi bản ghi có đúng năm trường và mỗi family có đủ bốn register.
+2. ID, family và câu đã chuẩn hóa không rò rỉ giữa split.
+3. Mỗi family chỉ ánh xạ tới một target.
+4. Target parse được, chạy có kết quả và chỉ dùng contract SPARQL an toàn.
+5. Validation phủ các năng lực cần dùng để chọn checkpoint.
+6. Thành phần schema trong test được hỗ trợ đủ ở train nhưng target test chưa
+   xuất hiện trong dữ liệu chọn model.
+7. BARTpho, ViT5 và T5Gemma2 round-trip toàn bộ source/target không `<unk>` và
+   không bị cắt.
 
-1. Validation chưa có `aggregate_filter`, `FILTER`, `GROUP BY`, `ORDER BY` hoặc
-   `LIMIT`, nên chưa đo được năng lực mới để chọn checkpoint.
-2. Cả 40 target mới chỉ có một family. Hiện 97/163 target train, 44/52 target
-   nhiều cột và 12/12 target `aggregate_filter` chỉ có một family.
-3. `BankCounterPayment`, `OnlinePayment`, `PaymentMethod` và
-   `PlanningAndFinanceOffice` chỉ có một family train nhưng xuất hiện trong
-   test.
-4. Test có 19/39 family nhiều cột nhưng chỉ có 4 family direct, 4 aggregate và
-   4 aggregate/filter; điểm tổng bị chi phối bởi một query shape.
-5. Dataset chưa phủ câu hỏi lấy cùng thuộc tính từ hai hoặc nhiều thực thể độc
-   lập; chưa có `UNION` hay `VALUES` để biểu diễn trường hợp này.
-6. `family-0311`, `family-0325`, `family-0327` có câu hỏi rộng hơn dữ liệu query
-   thực trả; `family-0334` bị gán sai query shape. Các truy vấn top/bottom cần
-   thứ tự phụ để kết quả xác định khi đồng hạng.
-7. Validator chưa bắt đủ bốn register/family, near-duplicate theo ngưỡng,
-   query-shape sai cấu trúc, mức hỗ trợ schema term và độ phủ validation.
-8. 39 target test hiện tạo 35 bảng kết quả khác nhau. Đây không phải lỗi ở góc
-   độ câu trả lời hiển thị, nhưng answer exact phải luôn đi cùng query string
-   exact và phân tích lỗi để tránh hiểu nhầm là model đã sinh đúng quan hệ.
-
-Chỉ được train benchmark sau khi sửa nội dung, bổ sung coverage có mục tiêu,
-đọc lại thủ công các family mới và xuất báo cáo coverage có thể tái lập. Chất
-lượng và độ phủ quan trọng hơn tăng số mẫu bằng template.
+Số liệu máy đọc, trạng thái sẵn sàng huấn luyện và checksum nằm trong
+`reports/dataset.json` cùng `resources/dataset/manifest.json`.
