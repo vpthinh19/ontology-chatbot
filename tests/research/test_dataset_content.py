@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 
 from rdflib import RDF, Namespace
 
@@ -37,6 +39,23 @@ SECONDARY_FAMILIES = {
     "language-certificate-level",
     "certificate-criterion",
     "computer-certificate-grade",
+}
+REJECTION_CLASSES = {
+    "greeting-social",
+    "unrelated",
+    "near-domain-missing",
+    "ambiguous",
+    "nonsensical-noisy",
+    "mixed",
+}
+USER_QUERY_EXPECTATIONS = {
+    "chào bạn nha": "no-information",
+    "đăng ký hc phần như nào nhỉ": "procedure-instruction",
+    "đăng ký học phần sao": "procedure-instruction",
+    "vì sao lại đăng ký học phần": "no-information",
+    "đk hc phần như thế nào": "procedure-instruction",
+    "hc phí k65 cntt": "tuition-program-cohort-rate",
+    "học phí k67 như thế nào": "no-information",
 }
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
@@ -145,3 +164,47 @@ def test_secondary_query_families_cover_finite_ontology_values() -> None:
     for query_id in SECONDARY_FAMILIES:
         for details in report["slot_coverage"][query_id].values():
             assert details["missing_train"] == []
+
+
+def test_rejection_examples_cover_review_classes_and_stay_balanced() -> None:
+    splits = load_release()
+    checklist_path = Path("resources/cases/rejection_checklist.json")
+    checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
+    rows_by_id = {
+        row["id"]: (split, row)
+        for split, rows in splits.items()
+        for row in rows
+    }
+
+    assert set(checklist) == REJECTION_CLASSES
+    released_ids = [row_id for ids in checklist.values() for row_id in ids]
+    assert len(released_ids) == len(set(released_ids))
+    for rejection_class, row_ids in checklist.items():
+        assert {rows_by_id[row_id][0] for row_id in row_ids} == {"train", "val", "test"}, (
+            rejection_class,
+            row_ids,
+        )
+        for row_id in row_ids:
+            row = rows_by_id[row_id][1]
+            assert row["query_id"] == "no-information"
+            assert row["target"] == "không có thông tin"
+
+    marker_registers = {
+        row["register"]
+        for rows in splits.values()
+        for row in rows
+        if row["query_id"] == "no-information"
+    }
+    assert marker_registers == {"formal", "neutral", "colloquial", "noisy"}
+    for rows in splits.values():
+        marker_count = sum(row["query_id"] == "no-information" for row in rows)
+        assert 0.20 <= marker_count / len(rows) <= 0.35
+
+
+def test_every_real_user_query_has_an_explicit_released_decision() -> None:
+    queries = Path("resources/cases/user_queries.txt").read_text(encoding="utf-8").splitlines()
+    rows = [row for split in load_release().values() for row in split]
+    actual = {row["input"]: row["query_id"] for row in rows if row["input"] in queries}
+
+    assert queries == list(USER_QUERY_EXPECTATIONS)
+    assert actual == USER_QUERY_EXPECTATIONS

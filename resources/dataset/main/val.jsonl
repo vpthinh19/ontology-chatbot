@@ -44,3 +44,15 @@
 {"id":"question-000326","query_id":"certificate-criterion","register":"colloquial","input":"ielts bao nhiêu thì đạt từng bậc vậy","target":"SELECT ?levelLabel ?criterion WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :IELTSCertificate ; :appliesToLearnerCategory :StandardProgramNonLanguageMajorStudent ; :mapsToCompetencyLevel ?level ; :criterionText ?criterion . ?level rdfs:label ?levelLabel . } ORDER BY ?levelLabel"}
 {"id":"question-000327","query_id":"computer-certificate-grade","register":"formal","input":"ICDL đạt 1621 điểm được quy đổi thành điểm bao nhiêu?","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :ICDLCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (?minimum <= 1621 && 1621 <= ?maximum) }"}
 {"id":"question-000328","query_id":"computer-certificate-grade","register":"colloquial","input":"mos 1599 thì được mấy điểm","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :MOSCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (?minimum <= 1599 && 1599 <= ?maximum) }"}
+{"id":"question-000433","query_id":"no-information","register":"formal","input":"Kính chào bạn, chúc bạn làm việc hiệu quả.","target":"không có thông tin"}
+{"id":"question-000434","query_id":"no-information","register":"colloquial","input":"cảm ơn nhiều nha","target":"không có thông tin"}
+{"id":"question-000435","query_id":"no-information","register":"neutral","input":"Hôm nay giá vàng tăng hay giảm?","target":"không có thông tin"}
+{"id":"question-000436","query_id":"no-information","register":"noisy","input":"mo radio cho tui","target":"không có thông tin"}
+{"id":"question-000437","query_id":"no-information","register":"formal","input":"Nhà trường có hỗ trợ tư vấn tâm lý cho sinh viên không?","target":"không có thông tin"}
+{"id":"question-000438","query_id":"no-information","register":"colloquial","input":"muốn mượn phòng học nhóm thì đăng ký sao","target":"không có thông tin"}
+{"id":"question-000439","query_id":"no-information","register":"neutral","input":"Tôi cần tải biểu mẫu phù hợp.","target":"không có thông tin"}
+{"id":"question-000440","query_id":"no-information","register":"noisy","input":"gpa nay loai gi","target":"không có thông tin"}
+{"id":"question-000441","query_id":"no-information","register":"noisy","input":"tc bang hoc bang sao ???","target":"không có thông tin"}
+{"id":"question-000442","query_id":"no-information","register":"noisy","input":"qwer sv hoc 999 zzz","target":"không có thông tin"}
+{"id":"question-000443","query_id":"no-information","register":"formal","input":"Xin hướng dẫn xin thôi học và đặt báo thức lúc sáu giờ.","target":"không có thông tin"}
+{"id":"question-000444","query_id":"no-information","register":"colloquial","input":"đóng học phí sao rồi quán cơm nào ngon","target":"không có thông tin"}

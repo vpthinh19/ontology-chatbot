@@ -44,3 +44,15 @@
 {"id":"question-000354","query_id":"certificate-criterion","register":"noisy","input":"hsk cap nao ra bac nao","target":"SELECT ?levelLabel ?criterion WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :HSKCertificate ; :appliesToLearnerCategory :StandardProgramNonLanguageMajorStudent ; :mapsToCompetencyLevel ?level ; :criterionText ?criterion . ?level rdfs:label ?levelLabel . } ORDER BY ?levelLabel"}
 {"id":"question-000355","query_id":"computer-certificate-grade","register":"neutral","input":"Tổng điểm IC3 2670 được quy đổi thành điểm nào?","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :IC3Certificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (?minimum <= 2670 && 2670 <= ?maximum) }"}
 {"id":"question-000356","query_id":"computer-certificate-grade","register":"noisy","input":"icdl 1445 doi dc may diem","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :ICDLCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (?minimum <= 1445 && 1445 <= ?maximum) }"}
+{"id":"question-000445","query_id":"no-information","register":"neutral","input":"Chào buổi chiều.","target":"không có thông tin"}
+{"id":"question-000446","query_id":"no-information","register":"noisy","input":"bye hen gap lai","target":"không có thông tin"}
+{"id":"question-000447","query_id":"no-information","register":"formal","input":"Vui lòng giải thích cách trồng cây cà chua.","target":"không có thông tin"}
+{"id":"question-000448","query_id":"no-information","register":"colloquial","input":"phim gì đang hay vậy","target":"không có thông tin"}
+{"id":"question-000449","query_id":"no-information","register":"neutral","input":"Quy định trang phục khi đến trường là gì?","target":"không có thông tin"}
+{"id":"question-000450","query_id":"no-information","register":"noisy","input":"ktx het bao nhieu tien thang","target":"không có thông tin"}
+{"id":"question-000451","query_id":"no-information","register":"formal","input":"Xin cho biết mức điểm quy đổi của chứng chỉ.","target":"không có thông tin"}
+{"id":"question-000452","query_id":"no-information","register":"colloquial","input":"nộp đơn đó phòng nào","target":"không có thông tin"}
+{"id":"question-000453","query_id":"no-information","register":"noisy","input":"hoc hoc diem phi kkk","target":"không có thông tin"}
+{"id":"question-000454","query_id":"no-information","register":"noisy","input":"??? 65 don sv abc ???","target":"không có thông tin"}
+{"id":"question-000455","query_id":"no-information","register":"neutral","input":"Điểm 8.5 xếp học lực gì và giờ ở Tokyo là mấy giờ?","target":"không có thông tin"}
+{"id":"question-000456","query_id":"no-information","register":"noisy","input":"tai don bao luu voi mo youtube","target":"không có thông tin"}
