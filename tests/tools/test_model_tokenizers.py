@@ -88,7 +88,7 @@ def test_all_dataset_text_roundtrips_supported_tokenizers() -> None:
 
     for tokenizer in tokenizers.values():
         report = audit_target_roundtrip(tokenizer, targets)
-        assert len(report) == 215
+        assert len(report) == len(targets)
         assert max(row["tokens"] for row in report) <= 160
         for row in rows:
             ids = tokenizer(

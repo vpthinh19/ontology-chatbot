@@ -105,7 +105,7 @@
       "median": 11,
       "p95": 16,
       "max": 24,
-      "mean": 10.66
+      "mean": 10.67
     }
   },
   "in_domain_contract": {
@@ -717,7 +717,6 @@
             ":AptisGeneralCertificate",
             ":CambridgeEnglishScaleCertificate",
             ":IELTSCertificate",
-            ":JPTCertificate",
             ":KLPTCertificate",
             ":LinguaskillCertificate",
             ":TCFCertificate",
@@ -728,7 +727,6 @@
             ":AptisGeneralCertificate",
             ":CambridgeEnglishScaleCertificate",
             ":IELTSCertificate",
-            ":JPTCertificate",
             ":KLPTCertificate",
             ":LinguaskillCertificate",
             ":TCFCertificate",
@@ -743,12 +741,12 @@
             "100",
             "153",
             "200",
-            "300",
             "350",
             "400",
             "5.5",
             "600",
-            "70"
+            "70",
+            "8.5"
           ],
           "missing_train": []
         }
@@ -971,7 +969,6 @@
               ":AptisGeneralCertificate",
               ":CambridgeEnglishScaleCertificate",
               ":IELTSCertificate",
-              ":JPTCertificate",
               ":KLPTCertificate",
               ":LinguaskillCertificate",
               ":TCFCertificate",
@@ -982,12 +979,12 @@
               "100",
               "153",
               "200",
-              "300",
               "350",
               "400",
               "5.5",
               "600",
-              "70"
+              "70",
+              "8.5"
             ]
           },
           "payment-fee": {
@@ -1564,10 +1561,10 @@
     }
   },
   "sha256": {
-    "train.jsonl": "9237e58554a172de2e3e51b0c56be814817be7d697831c1ef1e512acb433e54c",
-    "val.jsonl": "7be97492bab0f9a3166aaea738fe4d26ba4b9f327307e2c7eb88f0661dfe1181",
-    "test.jsonl": "d95dcadd6846f779760989e96186d911a4547f2e821f314dc56aa1ea468d4b3a",
-    "catalogue.jsonl": "c8e32e84a939289a2ff7f8b8e3f1880cc655ab23907ba8718fb443b7c11e74e2",
+    "train.jsonl": "420ea4925b9f1363726beb35ab53826a85642c6ac27c8bb9a5edf0c0fdd2f1b9",
+    "val.jsonl": "43ae6afd5d1dfa5f35309b0a844a408169fc99f29405aea3d9b289cfb338c256",
+    "test.jsonl": "1c9ea02998801e4aaac40a18dc10c051fc8905386737974d00628fda639f04d2",
+    "catalogue.jsonl": "ea43e7f67ba89c035713707c3e396a30b0e1067a5d91087a1664c0df6e38abd6",
     "ontology.ttl": "f949de3fae9ed360f006b3a224595086f4236cfda85ab00ad9e94426143960d2"
   }
 }
