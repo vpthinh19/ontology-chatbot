@@ -4,10 +4,12 @@ from __future__ import annotations
 
 from .sparql import Primitive, QueryRows
 
+NO_INFORMATION_REPLY = "Không có thông tin."
+
 
 def render_rows(rows: QueryRows) -> str:
     if not rows:
-        return "Không tìm thấy thông tin phù hợp."
+        return NO_INFORMATION_REPLY
 
     columns = tuple(rows[0])
     if any(tuple(row) != columns for row in rows):

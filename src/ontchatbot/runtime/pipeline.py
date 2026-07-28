@@ -10,17 +10,12 @@ from rdflib import Graph
 
 from .gate import DomainGate
 from .model import QueryGenerator
-from .render import render_rows
+from .render import NO_INFORMATION_REPLY, render_rows
 from .sparql import execute_select, load_ontology
 from .text import normalize_model_input
 
 
 logger = logging.getLogger(__name__)
-
-
-OUT_OF_SCOPE_REPLY = (
-    "Xin lỗi, tôi chỉ có thể trả lời các câu hỏi thuộc phạm vi học vụ hiện có."
-)
 
 
 class OutOfScopeError(ValueError):
@@ -69,7 +64,7 @@ class OntologyChatbot:
                     request_id,
                     (time.perf_counter() - request_started) * 1000,
                 )
-                raise OutOfScopeError(OUT_OF_SCOPE_REPLY)
+                raise OutOfScopeError(NO_INFORMATION_REPLY)
 
             stage = "generator"
             stage_started = time.perf_counter()

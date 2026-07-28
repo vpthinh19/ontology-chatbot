@@ -16,6 +16,10 @@ class QueryGenerator(Protocol):
     def generate(self, text: str) -> str: ...
 
 
+class QueryGenerationError(ValueError):
+    """The model did not produce a usable query string."""
+
+
 class CTranslate2Generator:
     """Generate one SPARQL query with a converted local checkpoint."""
 
@@ -73,7 +77,7 @@ class CTranslate2Generator:
         target_ids = self._tokenizer.convert_tokens_to_ids(result.hypotheses[0])
         query = self._tokenizer.decode(target_ids, skip_special_tokens=True).strip()
         if not query:
-            raise ValueError("model generated an empty query")
+            raise QueryGenerationError("model generated an empty query")
         return query
 
 

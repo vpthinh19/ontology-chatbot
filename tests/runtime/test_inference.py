@@ -37,6 +37,11 @@ class _Translator:
         return [SimpleNamespace(hypotheses=[["t3", "t4"]])]
 
 
+class _EmptyTokenizer(_Tokenizer):
+    def decode(self, ids, **kwargs):
+        return " "
+
+
 def test_ctranslate_generator_normalizes_and_greedily_decodes() -> None:
     tokenizer = _Tokenizer()
     translator = _Translator()
@@ -50,6 +55,16 @@ def test_ctranslate_generator_normalizes_and_greedily_decodes() -> None:
         {"beam_size": 1, "max_decoding_length": 160},
     )
     assert query.startswith("SELECT ?answer")
+
+
+def test_ctranslate_generator_uses_specific_error_for_empty_output() -> None:
+    generator = CTranslate2Generator(_Translator(), _EmptyTokenizer())
+
+    with pytest.raises(ValueError) as error:
+        generator.generate("học phí")
+
+    assert type(error.value).__name__ == "QueryGenerationError"
+    assert str(error.value) == "model generated an empty query"
 
 
 def test_chatbot_connects_generated_query_to_ontology() -> None:

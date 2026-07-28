@@ -4,7 +4,7 @@ from ontchatbot.runtime.render import render_rows
 
 
 def test_renders_empty_result() -> None:
-    assert render_rows([]) == "Không tìm thấy thông tin phù hợp."
+    assert render_rows([]) == "Không có thông tin."
 
 
 def test_renders_single_value_without_decoration() -> None:

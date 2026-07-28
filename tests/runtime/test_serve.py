@@ -9,7 +9,10 @@ pytest.importorskip("fastapi")
 httpx = pytest.importorskip("httpx")
 
 from ontchatbot.runtime.api import create_app
-from ontchatbot.runtime.pipeline import OUT_OF_SCOPE_REPLY, OutOfScopeError
+from ontchatbot.runtime.model import QueryGenerationError
+from ontchatbot.runtime.pipeline import OutOfScopeError
+from ontchatbot.runtime.render import NO_INFORMATION_REPLY
+from ontchatbot.runtime.sparql import SparqlError
 
 
 def test_http_api_health_and_chat(tmp_path) -> None:
@@ -40,9 +43,19 @@ def test_http_api_rejects_empty_message(tmp_path) -> None:
     assert response.status_code == 400
 
 
-def test_http_api_returns_stable_reply_for_out_of_scope_message(tmp_path) -> None:
+@pytest.mark.parametrize(
+    "error",
+    [
+        OutOfScopeError("gate rejected"),
+        QueryGenerationError("model generated an empty query"),
+        SparqlError("invalid SPARQL"),
+    ],
+)
+def test_http_api_returns_no_information_for_expected_query_failures(
+    tmp_path, error
+) -> None:
     def reject(_: str) -> str:
-        raise OutOfScopeError(OUT_OF_SCOPE_REPLY)
+        raise error
 
     chatbot = SimpleNamespace(answer=reject)
 
@@ -53,4 +66,22 @@ def test_http_api_returns_stable_reply_for_out_of_scope_message(tmp_path) -> Non
 
     response = asyncio.run(exercise_api())
     assert response.status_code == 200
-    assert response.json() == {"reply": OUT_OF_SCOPE_REPLY}
+    assert response.json() == {"reply": NO_INFORMATION_REPLY}
+
+
+def test_http_api_does_not_hide_unexpected_system_errors(tmp_path) -> None:
+    def fail(_: str) -> str:
+        raise RuntimeError("boom")
+
+    chatbot = SimpleNamespace(answer=fail)
+
+    async def exercise_api():
+        transport = httpx.ASGITransport(
+            app=create_app(chatbot, webui_dir=tmp_path),
+            raise_app_exceptions=False,
+        )
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.post("/chat", json={"message": "học phí"})
+
+    response = asyncio.run(exercise_api())
+    assert response.status_code == 500
