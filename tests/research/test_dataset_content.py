@@ -22,6 +22,22 @@ PROCEDURE_FAMILIES = {
     "procedure-form-download",
     "procedure-overview",
 }
+SECONDARY_FAMILIES = {
+    "tuition-program-cohort-rate",
+    "payment-method-list",
+    "payment-bank-list",
+    "payment-fee",
+    "payment-warning",
+    "form-list",
+    "form-download",
+    "academic-performance-band",
+    "study-year-band",
+    "graduation-classification-band",
+    "class-size-rule",
+    "language-certificate-level",
+    "certificate-criterion",
+    "computer-certificate-grade",
+}
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
     ACADEMIC.Article,
@@ -80,3 +96,52 @@ def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> N
         for local_name in LOCAL_NAME.findall(target):
             resource = ACADEMIC[local_name]
             assert not any((resource, RDF.type, source_type) in graph for source_type in SOURCE_TYPES)
+
+
+def test_secondary_query_families_cover_finite_ontology_values() -> None:
+    graph = load_ontology()
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    report = validate_release(load_release(), graph, catalogue)
+
+    assert SECONDARY_FAMILIES <= set(catalogue)
+
+    expected_programs = {
+        f":{str(program).rsplit('#', 1)[-1]}"
+        for rate in graph.subjects(RDF.type, ACADEMIC.TuitionRate)
+        for program in graph.objects(rate, ACADEMIC.appliesToProgram)
+    }
+    expected_language_certificates = {
+        f":{str(node).rsplit('#', 1)[-1]}"
+        for node in graph.subjects(RDF.type, ACADEMIC.LanguageCertificate)
+    }
+    expected_computer_certificates = {
+        f":{str(node).rsplit('#', 1)[-1]}"
+        for node in graph.subjects(RDF.type, ACADEMIC.ComputerCertificate)
+    }
+    # Class-size rows are represented directly as rules; the ontology does not
+    # attach synthetic CourseCategory nodes to these official table rows.
+    expected_class_size_rules = {
+        f":{str(node).rsplit('#', 1)[-1]}"
+        for node in graph.subjects(RDF.type, ACADEMIC.ClassSizeRule)
+    }
+
+    assert len(expected_programs) == 29
+    assert len(expected_language_certificates) == 15
+    assert len(expected_computer_certificates) == 3
+    assert len(expected_class_size_rules) == 14
+    assert expected_programs <= set(
+        catalogue["tuition-program-cohort-rate"].slots["program"].values
+    )
+    assert expected_language_certificates <= set(
+        catalogue["certificate-criterion"].slots["certificate"].values
+    )
+    assert expected_computer_certificates <= set(
+        catalogue["computer-certificate-grade"].slots["certificate"].values
+    )
+    assert expected_class_size_rules <= set(
+        catalogue["class-size-rule"].slots["rule"].values
+    )
+
+    for query_id in SECONDARY_FAMILIES:
+        for details in report["slot_coverage"][query_id].values():
+            assert details["missing_train"] == []
