@@ -40,6 +40,7 @@ generate_reports = "ontchatbot.cli.report:main"
 prepare_vit5_tokenizer = "ontchatbot.cli.prepare_tokenizer:main"
 serve_sparql = "ontchatbot.cli.serve:main"
 train_sparql = "ontchatbot.cli.train:main"
+validate_gate_dataset = "ontchatbot.cli.validate_gate_data:main"
 validate_sparql_dataset = "ontchatbot.cli.validate_data:main"
 
 [dependency-groups]
