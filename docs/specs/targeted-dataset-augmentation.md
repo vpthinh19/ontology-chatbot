@@ -1,68 +1,94 @@
-# Bổ sung có mục tiêu cho dataset
+# Mở rộng độ phủ dataset
 
 ## Mục tiêu
 
-Bổ sung dữ liệu huấn luyện cho 41 truy vấn mà T5Gemma2 chưa trả lời chính xác
-trên tập test, tập trung vào nhận diện đúng property và đúng số nhánh kết quả.
-Đây là mở rộng cách diễn đạt trong miền đã hỗ trợ, không mở rộng danh mục truy
-vấn hoặc ontology.
+Dataset phải dạy đầy đủ các cách diễn đạt trong miền ontology và đo chất lượng
+ổn định hơn trên câu hỏi chưa xuất hiện trong train. Ngưỡng nghiệm thu của
+chatbot là Answer Exact lớn hơn 90% trên test đã khóa.
 
-## Phạm vi dữ liệu
+Danh mục chức năng vẫn gồm 215 `query_id` ánh xạ một-một tới 215 SPARQL
+canonical. Việc mở rộng chỉ bổ sung câu hỏi tiếng Việt, không tạo query mới,
+không sửa ontology và không thay đổi pipeline model.
 
-- Giữ nguyên từng byte của `val.jsonl` và `test.jsonl` để kết quả huấn luyện sau
-  có thể so sánh trực tiếp với mốc Answer Exact 80,93%.
-- Chỉ thêm bản ghi vào `train.jsonl`.
-- Giữ nguyên 215 ánh xạ `query_id` sang SPARQL canonical.
-- Không tạo target SPARQL mới, không sửa ontology và không thay đổi normalizer.
-- Không sao chép hoặc diễn đạt lại gần sát câu validation và test.
+## Mở rộng validation và test
 
-## Nội dung bổ sung
+Mỗi query có hai câu validation và hai câu test độc lập thay vì một câu:
 
-Mỗi một trong 41 `query_id` thất bại được bổ sung bốn câu hỏi độc lập, mỗi câu
-thuộc một register:
+- validation tăng từ 215 lên 430 câu;
+- test tăng từ 215 lên 430 câu;
+- câu bổ sung của một query dùng register khác câu đã có;
+- mỗi split vẫn cân bằng `formal`, `neutral`, `colloquial` và `noisy`, chênh
+  lệch giữa register nhiều nhất và ít nhất không quá một;
+- câu validation và test không được sao chép hoặc diễn đạt gần sát câu train
+  hay câu ở split khác;
+- test được khóa sau khi biên soạn và không được dùng để lựa chọn dữ liệu,
+  checkpoint hoặc tham số.
 
-- `formal`: câu hành chính đầy đủ;
-- `neutral`: câu hỏi phổ thông, rõ nghĩa;
-- `colloquial`: lời nói tự nhiên thường ngày;
-- `noisy`: có thể viết tắt, không dấu hoặc rút gọn nhưng vẫn phải đủ thông tin
-  để xác định duy nhất target.
+Validation được phép dùng để chẩn đoán lỗi và chọn checkpoint. Test chỉ được
+thực thi một lần sau khi model và dataset train đã được chốt.
 
-Tổng cộng thêm 164 bản ghi. Train tăng từ 986 lên 1.150 câu và toàn dataset
-tăng từ 1.416 lên 1.580 câu. Mỗi register của train tăng đúng 41 câu nên phân bố
-toàn tập vẫn cân bằng.
+## Mở rộng train
+
+Độ phủ train được xét theo ma trận `query_id × register`. Trạng thái hiện tại
+còn thiếu 219 ô trên 110 query, gồm 44 `colloquial`, 65 `formal`, 58 `neutral`
+và 52 `noisy`.
+
+Quá trình bổ sung gồm hai lớp:
+
+1. Thêm đúng một câu độc lập cho từng ô còn thiếu, đưa train từ 1.150 lên
+   1.369 câu và bảo đảm mỗi query có ít nhất một câu ở cả bốn register.
+2. Chạy checkpoint T5Gemma2 hiện tại trên validation mở rộng. Với mỗi kiểu lỗi
+   validation khác nhau của một query, thêm một câu train độc lập làm rõ đúng
+   property, IRI, literal, phép toán hoặc số nhánh bị nhầm. Không sao chép câu
+   validation và không dùng prediction trên test.
+
+Số câu train cuối của lớp thứ hai được suy ra từ lỗi validation thật, không đặt
+chỉ tiêu số lượng tùy ý.
 
 ## Nguyên tắc biên soạn
 
-1. Câu hỏi phải tự nhiên trong tiếng Việt và không mô tả trực tiếp cú pháp
-   SPARQL.
-2. Mỗi ý người dùng yêu cầu phải tương ứng với một nhánh kết quả của target.
-3. Không thêm tín hiệu khiến model hợp lý khi trả về một property ngoài target.
-4. Các cặp dễ nhầm như `content`/`condition`/`outcome`,
-   `handledBy`/`receivedBy` và label/property literal phải dùng từ ngữ phân biệt
-   rõ vai trò.
-5. Query có `FILTER`, `COUNT`, `GROUP BY`, `ORDER BY`, `LIMIT` hoặc `VALUES`
-   phải thể hiện đầy đủ phép toán, giá trị và phạm vi trong câu hỏi.
-6. Viết tắt đa nghĩa như `dk` và `hp` chỉ được dùng khi phần còn lại của câu đủ
-   ngữ cảnh để giải nghĩa; không mở rộng whitelist normalizer cho chúng.
-7. Câu `noisy` không được trở thành chuỗi từ khóa vô nghĩa hoặc câu đố thiếu dữ
-   kiện.
+- Câu hỏi phải tự nhiên và đủ nghĩa trong register đã gán.
+- `noisy` có thể không dấu, viết tắt hoặc rút gọn nhưng không được biến thành
+  chuỗi từ khóa mơ hồ.
+- Mỗi ý được hỏi phải tương ứng chính xác với một nhánh kết quả trong target;
+  không gợi ý thêm property ngoài target.
+- Các cặp `content`/`condition`/`outcome`, `handledBy`/`receivedBy`, label/literal
+  và document/document URL phải được phân biệt bằng ngữ nghĩa rõ ràng.
+- Query có `FILTER`, `COUNT`, `AVG`, `GROUP BY`, `ORDER BY`, `LIMIT` hoặc
+  `VALUES` phải thể hiện đủ toán tử, phạm vi, giá trị và trường cần trả về.
+- Viết tắt đa nghĩa như `dk` và `hp` chỉ được dùng khi phần còn lại của câu đủ
+  ngữ cảnh để giải nghĩa.
+- Target của câu mới phải trùng byte với target canonical đã có của `query_id`.
 
 ## Kiểm định
 
-Dataset sau bổ sung chỉ được chấp nhận khi:
+Dataset chỉ được chấp nhận khi:
 
-- `val.jsonl` và `test.jsonl` giữ nguyên SHA-256;
-- schema, ID và ánh xạ `query_id`/target hợp lệ;
-- không có input trùng hoặc gần trùng giữa các split;
-- toàn bộ SPARQL parse được, an toàn, thực thi được và trả kết quả;
-- mọi input và target đi qua tokenizer của các model benchmark mà không bị
-  `<unk>` hoặc cắt;
-- manifest và báo cáo phân bố được sinh lại từ dữ liệu thực;
-- các kiểm thử dataset hiện có đều vượt qua.
+1. mọi bản ghi đúng schema, ID duy nhất và ánh xạ query-target một-một;
+2. train có đủ bốn register cho từng query;
+3. validation và test có đúng hai câu cho từng query;
+4. register cân bằng riêng trong từng split;
+5. không có input trùng hoặc gần trùng giữa các split;
+6. mọi target parse được, an toàn, thực thi được và trả kết quả;
+7. source và target vượt audit tokenizer BARTpho, ViT5 và T5Gemma2 mà không có
+   `<unk>` hoặc bị cắt;
+8. manifest, tài liệu và biểu đồ được sinh lại từ file vật lý;
+9. test mới chưa được model thực thi trong quá trình bổ sung train.
+
+## Trình tự nghiệm thu model
+
+Sau khi dataset vượt toàn bộ cổng chất lượng:
+
+1. fine-tune T5Gemma2 đúng một lần với giao thức đã chốt;
+2. chọn checkpoint bằng validation 430 câu;
+3. benchmark một lần trên test 430 câu;
+4. nếu Answer Exact lớn hơn 90%, khóa dataset và huấn luyện BARTpho, ViT5;
+5. nếu chưa đạt, dừng để đánh giá giới hạn model, không tiếp tục điều chỉnh theo
+   lỗi test.
 
 ## Ngoài phạm vi
 
-- Fine-tune hoặc benchmark lại model trong lượt bổ sung dữ liệu này.
-- Dò hyperparameter, chạy nhiều seed hoặc thay đổi giao thức huấn luyện.
-- Điều chỉnh câu validation/test theo prediction của model.
-- Thêm fuzzy matching, sửa SPARQL hậu kỳ hoặc logic chữa lỗi ở backend.
+- Tạo SPARQL hoặc chức năng ontology mới.
+- Sửa ontology, normalizer, backend hoặc tham số huấn luyện.
+- Sinh dữ liệu hàng loạt bằng template hoặc script thay cho biên soạn nội dung.
+- Chạy nhiều seed, dò hyperparameter hoặc tối ưu dataset theo prediction test.
