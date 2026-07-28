@@ -20,7 +20,6 @@ TRAIN_DATASET_PATH = DATASET_DIR / "train.jsonl"
 VAL_DATASET_PATH = DATASET_DIR / "val.jsonl"
 TEST_DATASET_PATH = DATASET_DIR / "test.jsonl"
 DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
-
-GATE_DIR = RESOURCES / "dataset" / "gate"
+QUERY_CATALOGUE_PATH = DATASET_DIR / "catalogue.jsonl"
 
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
