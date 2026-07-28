@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+import pytest
+
+from ontchatbot.runtime.gate import GateDecision
 from ontchatbot.runtime.model import CTranslate2Generator, _tokenizer_compatibility_kwargs
-from ontchatbot.runtime.pipeline import OntologyChatbot
+from ontchatbot.runtime.pipeline import OntologyChatbot, OutOfScopeError
 
 
 class _Tokenizer:
@@ -54,10 +57,22 @@ def test_chatbot_connects_generated_query_to_ontology() -> None:
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)
+    gate = SimpleNamespace(decide=lambda _: GateDecision(True, 0.99))
 
-    reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
+    reply = OntologyChatbot(generator, gate).answer("phòng nào xử lý bảo lưu")
 
     assert "Phòng Công tác Chính trị và Sinh viên" in reply
+
+
+def test_chatbot_does_not_generate_query_when_gate_rejects() -> None:
+    calls = []
+    generator = SimpleNamespace(generate=lambda question: calls.append(question))
+    gate = SimpleNamespace(decide=lambda _: GateDecision(False, 0.02))
+
+    with pytest.raises(OutOfScopeError):
+        OntologyChatbot(generator, gate).answer("thời tiết hôm nay")
+
+    assert calls == []
 
 
 def test_gemma_artifact_preserves_training_tokenizer_regex(tmp_path) -> None:

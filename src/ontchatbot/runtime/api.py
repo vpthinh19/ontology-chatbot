@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from ..settings import PROJECT_ROOT
-from .pipeline import OntologyChatbot
+from .pipeline import OntologyChatbot, OutOfScopeError
 from .sparql import SparqlError
 
 
@@ -29,6 +29,8 @@ def create_app(chatbot: OntologyChatbot, webui_dir: Path | None = None):
             raise HTTPException(status_code=400, detail="message must be non-empty text")
         try:
             return {"reply": chatbot.answer(message)}
+        except OutOfScopeError as exc:
+            return {"reply": str(exc)}
         except (SparqlError, ValueError) as exc:
             raise HTTPException(
                 status_code=422,
