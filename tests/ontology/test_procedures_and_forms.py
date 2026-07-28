@@ -114,6 +114,114 @@ def test_old_catalogue_numbers_are_not_joined_to_new_forms(ontology_graph, acade
     assert (old_course_preservation, academic.catalogueEntryForForm, academic.Decision1052Form14) not in ontology_graph
 
 
+def test_procedures_link_exact_source_provisions_by_semantic_role(
+    ontology_graph, academic
+) -> None:
+    expected = {
+        academic.eligibilityProvision: {
+            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointA},
+            academic.CourseExemptionAndBonusProcedure: {academic.Decision1052Article21Clause05},
+            academic.CourseRegistrationProcedure: {
+                academic.Decision1052Article09Clause03,
+                academic.Decision1052Article09Clause04,
+                academic.Decision1052Article09Clause05,
+            },
+            academic.CourseRetakeProcedure: {
+                academic.Decision1052Article11Clause01,
+                academic.Decision1052Article11Clause02,
+                academic.Decision1052Article11Clause03,
+            },
+            academic.CreditRecognitionProcedure: {
+                academic.Decision1052Article21Clause03,
+                academic.Decision1052Article21Clause04,
+                academic.Decision1052Article21Clause07,
+            },
+            academic.DismissalTransferRequestProcedure: {academic.Decision1052Article20Clause03},
+            academic.EarlyGraduationReviewProcedure: {
+                academic.Decision1052Article22Clause01,
+                academic.Decision1052Article22Clause02,
+            },
+            academic.ExamPostponementProcedure: {academic.Decision1052Article17Clause04},
+            academic.ExtraClassOpeningRequestProcedure: {academic.Decision1052Article10Clause02},
+            academic.GradeImprovementProcedure: {academic.Decision1052Article11Clause03},
+            academic.GraduationProjectRegistrationProcedure: {
+                academic.Decision1052Article14Clause01,
+                academic.Decision1052Article14Clause02,
+            },
+            academic.GraduationReviewProcedure: {academic.Decision1052Article22Clause01},
+            academic.MajorChangeProcedure: {academic.Decision1052Article25Clause01},
+            academic.SecondProgramRegistrationProcedure: {academic.Decision1052Article28Clause01},
+            academic.StudentExchangeProcedure: {academic.Decision1052Article27Clause03},
+            academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
+            academic.StudyWithdrawalProcedure: {academic.Decision1052Article24Clause02},
+            academic.TemporaryAcademicLeaveProcedure: {academic.Decision1052Article24Clause01},
+            academic.UniversityTransferProcedure: {academic.Decision1052Article26Clause01},
+        },
+        academic.deadlineProvision: {
+            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointA},
+            academic.EarlyGraduationReviewProcedure: {
+                academic.Decision1052Article22Clause05,
+                academic.Decision1052Article22Clause06,
+            },
+            academic.ExamPostponementProcedure: {academic.Decision1052Article17Clause04},
+            academic.ExtraClassOpeningRequestProcedure: {academic.Decision1052Article10Clause02},
+            academic.GraduationReviewProcedure: {
+                academic.Decision1052Article22Clause05,
+                academic.Decision1052Article22Clause06,
+            },
+            academic.MajorChangeProcedure: {academic.Decision1052Article25Clause02},
+            academic.SecondProgramRegistrationProcedure: {
+                academic.Decision1052Article28Clause03PointA,
+                academic.Decision1052Article28Clause05,
+            },
+            academic.StudentExchangeProcedure: {academic.Decision1052Article27Clause04PointA},
+            academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
+        },
+        academic.resultProvision: {
+            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointB},
+            academic.CourseExemptionAndBonusProcedure: {academic.Decision1052Article21Clause05},
+            academic.CourseRetakeProcedure: {academic.Decision1052Article11Clause04},
+            academic.CreditRecognitionProcedure: {
+                academic.Decision1052Article21Clause01,
+                academic.Decision1052Article21Clause04,
+            },
+            academic.DismissalTransferRequestProcedure: {academic.Decision1052Article20Clause03},
+            academic.EarlyGraduationReviewProcedure: {
+                academic.Decision1052Article22Clause04,
+                academic.Decision1052Article22Clause05,
+            },
+            academic.ExamPostponementProcedure: {academic.Decision1052Article17Clause04},
+            academic.ExtraClassOpeningRequestProcedure: {academic.Decision1052Article10Clause02},
+            academic.GradeImprovementProcedure: {academic.Decision1052Article11Clause04},
+            academic.GraduationProjectRegistrationProcedure: {academic.Decision1052Article14Clause04},
+            academic.GraduationReviewProcedure: {
+                academic.Decision1052Article22Clause04,
+                academic.Decision1052Article22Clause05,
+            },
+            academic.MajorChangeProcedure: {academic.Decision1052Article25Clause03},
+            academic.SecondProgramRegistrationProcedure: {
+                academic.Decision1052Article28Clause02,
+                academic.Decision1052Article28Clause03PointB,
+                academic.Decision1052Article28Clause03PointC,
+                academic.Decision1052Article28Clause03PointD,
+            },
+            academic.StudentExchangeProcedure: {
+                academic.Decision1052Article27Clause01,
+                academic.Decision1052Article27Clause02,
+            },
+            academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
+            academic.StudyWithdrawalProcedure: {academic.Decision1052Article24Clause02},
+            academic.TemporaryAcademicLeaveProcedure: {academic.Decision1052Article24Clause01},
+            academic.UniversityTransferProcedure: {academic.Decision1052Article26Clause02PointB},
+        },
+    }
+
+    for predicate, procedures in expected.items():
+        for procedure, provisions in procedures.items():
+            assert set(ontology_graph.objects(procedure, predicate)) == provisions
+            assert all(ontology_graph.value(provision, academic.officialText) for provision in provisions)
+
+
 def test_only_sourced_academic_actors_exist(ontology_graph, academic) -> None:
     expected = {
         "Student",

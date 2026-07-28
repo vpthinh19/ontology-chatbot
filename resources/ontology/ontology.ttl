@@ -72,8 +72,11 @@
 :ClassAbsenceRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin phép nghỉ học"@vi ;
+    :deadlineProvision :Decision1052Article17Clause01PointA ;
+    :eligibilityProvision :Decision1052Article17Clause01PointA ;
     :instructionProvision :Decision1052Article17 ;
     :requiresForm :Decision1052Form03 ;
+    :resultProvision :Decision1052Article17Clause01PointB ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article17 ;
     :submittedTo :FacultyOrInstitute .
@@ -393,8 +396,10 @@
 :CourseExemptionAndBonusProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình miễn học, miễn thi và cộng điểm thưởng"@vi ;
+    :eligibilityProvision :Decision1052Article21Clause05 ;
     :instructionProvision :Decision1052Article21 ;
     :requiresForm :Decision1052Form07 ;
+    :resultProvision :Decision1052Article21Clause05 ;
     :reviewedBy :ProfessionalCouncil ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article21 ;
@@ -403,6 +408,9 @@
 :CourseRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đăng ký học phần"@vi ;
+    :eligibilityProvision :Decision1052Article09Clause03,
+        :Decision1052Article09Clause04,
+        :Decision1052Article09Clause05 ;
     :instructionProvision :Decision1052Article09 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article09 ;
@@ -411,7 +419,11 @@
 :CourseRetakeProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đăng ký học lại"@vi ;
+    :eligibilityProvision :Decision1052Article11Clause01,
+        :Decision1052Article11Clause02,
+        :Decision1052Article11Clause03 ;
     :instructionProvision :Decision1052Article11 ;
+    :resultProvision :Decision1052Article11Clause04 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article11 ;
     skos:altLabel "học lại"@vi .
@@ -419,8 +431,13 @@
 :CreditRecognitionProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
+    :eligibilityProvision :Decision1052Article21Clause03,
+        :Decision1052Article21Clause04,
+        :Decision1052Article21Clause07 ;
     :instructionProvision :Decision1052Article21 ;
     :requiresForm :Decision1052Form06 ;
+    :resultProvision :Decision1052Article21Clause01,
+        :Decision1052Article21Clause04 ;
     :reviewedBy :ProfessionalCouncil ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article21 ;
@@ -467,8 +484,10 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin chuyển chương trình sau khi bị buộc thôi học"@vi ;
     :decidedBy :UniversityPresident ;
+    :eligibilityProvision :Decision1052Article20Clause03 ;
     :instructionProvision :Decision1052Article20 ;
     :requiresForm :Decision1052Form05 ;
+    :resultProvision :Decision1052Article20Clause03 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article20 ;
     :submittedTo :StudentAffairsOffice .
@@ -494,8 +513,14 @@
 :EarlyGraduationReviewProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đề nghị xét tốt nghiệp sớm"@vi ;
+    :deadlineProvision :Decision1052Article22Clause05,
+        :Decision1052Article22Clause06 ;
+    :eligibilityProvision :Decision1052Article22Clause01,
+        :Decision1052Article22Clause02 ;
     :instructionProvision :Decision1052Article22 ;
     :requiresForm :Decision1052Form08 ;
+    :resultProvision :Decision1052Article22Clause04,
+        :Decision1052Article22Clause05 ;
     :reviewedBy :GraduationCouncil ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 ;
@@ -1096,8 +1121,11 @@
 :ExamPostponementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin hoãn thi"@vi ;
+    :deadlineProvision :Decision1052Article17Clause04 ;
+    :eligibilityProvision :Decision1052Article17Clause04 ;
     :instructionProvision :Decision1052Article17 ;
     :requiresForm :Decision1052Form04 ;
+    :resultProvision :Decision1052Article17Clause04 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article17 ;
     :submittedTo :AcademicManagementUnit .
@@ -1130,8 +1158,11 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình đề nghị mở thêm lớp học phần"@vi ;
     :decidedBy :UniversityPresident ;
+    :deadlineProvision :Decision1052Article10Clause02 ;
+    :eligibilityProvision :Decision1052Article10Clause02 ;
     :instructionProvision :Decision1052Article10 ;
     :requiresForm :Decision1052Form01 ;
+    :resultProvision :Decision1052Article10Clause02 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article10 ;
     :submittedTo :AcademicManagementUnit .
@@ -1252,7 +1283,9 @@
 :GradeImprovementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đăng ký học cải thiện"@vi ;
+    :eligibilityProvision :Decision1052Article11Clause03 ;
     :instructionProvision :Decision1052Article11 ;
+    :resultProvision :Decision1052Article11Clause04 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article11 ;
     skos:altLabel "học cải thiện"@vi .
@@ -1260,8 +1293,11 @@
 :GraduationProjectRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp"@vi ;
+    :eligibilityProvision :Decision1052Article14Clause01,
+        :Decision1052Article14Clause02 ;
     :instructionProvision :Decision1052Article14 ;
     :requiresForm :Decision1052Form02 ;
+    :resultProvision :Decision1052Article14Clause04 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article14 ;
     skos:altLabel "ĐATN"@vi .
@@ -1270,8 +1306,13 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xét và công nhận tốt nghiệp"@vi ;
     :decidedBy :UniversityPresident ;
+    :deadlineProvision :Decision1052Article22Clause05,
+        :Decision1052Article22Clause06 ;
+    :eligibilityProvision :Decision1052Article22Clause01 ;
     :instructionProvision :Decision1052Article22 ;
     :reviewedBy :GraduationCouncil ;
+    :resultProvision :Decision1052Article22Clause04,
+        :Decision1052Article22Clause05 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 .
 
@@ -1410,8 +1451,11 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình chuyển ngành"@vi ;
     :decidedBy :UniversityPresident ;
+    :deadlineProvision :Decision1052Article25Clause02 ;
+    :eligibilityProvision :Decision1052Article25Clause01 ;
     :instructionProvision :Decision1052Article25 ;
     :requiresForm :Decision1052Form12 ;
+    :resultProvision :Decision1052Article25Clause03 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article25 ;
     :submittedTo :StudentAffairsOffice .
@@ -1559,8 +1603,15 @@
 :SecondProgramRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình học cùng lúc hai chương trình"@vi ;
+    :deadlineProvision :Decision1052Article28Clause03PointA,
+        :Decision1052Article28Clause05 ;
+    :eligibilityProvision :Decision1052Article28Clause01 ;
     :instructionProvision :Decision1052Article28 ;
     :requiresForm :Decision1052Form15 ;
+    :resultProvision :Decision1052Article28Clause02,
+        :Decision1052Article28Clause03PointB,
+        :Decision1052Article28Clause03PointC,
+        :Decision1052Article28Clause03PointD ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article28 ;
     :submittedTo :AcademicManagementUnit ;
@@ -3560,8 +3611,12 @@
 :StudentExchangeProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình tham gia chương trình trao đổi sinh viên"@vi ;
+    :deadlineProvision :Decision1052Article27Clause04PointA ;
+    :eligibilityProvision :Decision1052Article27Clause03 ;
     :instructionProvision :Decision1052Article27 ;
     :requiresForm :Decision1052Form14 ;
+    :resultProvision :Decision1052Article27Clause01,
+        :Decision1052Article27Clause02 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article27 ;
     :submittedTo :AcademicManagementUnit .
@@ -3570,8 +3625,11 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin học trở lại"@vi ;
     :decidedBy :UniversityPresident ;
+    :deadlineProvision :Decision1052Article24Clause03 ;
+    :eligibilityProvision :Decision1052Article24Clause03 ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form11 ;
+    :resultProvision :Decision1052Article24Clause03 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
     :submittedTo :StudentAffairsOffice .
@@ -3580,8 +3638,10 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin thôi học"@vi ;
     :decidedBy :UniversityPresident ;
+    :eligibilityProvision :Decision1052Article24Clause02 ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form10 ;
+    :resultProvision :Decision1052Article24Clause02 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
     :submittedTo :StudentAffairsOffice .
@@ -3590,8 +3650,10 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin nghỉ học tạm thời"@vi ;
     :decidedBy :UniversityPresident ;
+    :eligibilityProvision :Decision1052Article24Clause01 ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form09 ;
+    :resultProvision :Decision1052Article24Clause01 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
     :submittedTo :StudentAffairsOffice ;
@@ -3662,8 +3724,10 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình chuyển trường"@vi ;
     :decidedBy :UniversityPresident ;
+    :eligibilityProvision :Decision1052Article26Clause01 ;
     :instructionProvision :Decision1052Article26 ;
     :requiresForm :Decision1052Form13 ;
+    :resultProvision :Decision1052Article26Clause02PointB ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article26 ;
     :submittedTo :StudentAffairsOffice .
