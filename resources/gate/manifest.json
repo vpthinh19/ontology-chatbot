@@ -1,0 +1,54 @@
+{
+  "records": 4526,
+  "splits": {
+    "train": {
+      "records": 2806,
+      "in_scope": 1403,
+      "out_of_scope": 1403
+    },
+    "val": {
+      "records": 860,
+      "in_scope": 430,
+      "out_of_scope": 430
+    },
+    "test": {
+      "records": 860,
+      "in_scope": 430,
+      "out_of_scope": 430
+    }
+  },
+  "negative_categories": {
+    "train": {
+      "clear_ood": 912,
+      "near_domain": 220,
+      "boundary_mixed": 271
+    },
+    "val": {
+      "clear_ood": 258,
+      "near_domain": 60,
+      "boundary_mixed": 112
+    },
+    "test": {
+      "clear_ood": 258,
+      "near_domain": 150,
+      "boundary_mixed": 22
+    }
+  },
+  "sha256": {
+    "train.jsonl": "1013453dbcd9ed6c85ff3c73a56368a808693a7f9a59fb50835783cf4daa6f78",
+    "val.jsonl": "db0f362c5437b09e7ef9980330ed7d781421fd4f1dd075610fb138c99f405bca",
+    "test.jsonl": "437171c65a81ca27df18b9717825c308d0759723aabf05e4e809f767bebc71a5"
+  },
+  "sources": [
+    {
+      "name": "MASSIVE 1.1",
+      "license": "CC BY 4.0",
+      "url": "https://github.com/alexa/massive"
+    },
+    {
+      "name": "PTIT Student Q&A Dataset 2025",
+      "license": "CC BY 4.0",
+      "url": "https://huggingface.co/datasets/HeyDunaX/ptit-student-qa"
+    }
+  ]
+}
