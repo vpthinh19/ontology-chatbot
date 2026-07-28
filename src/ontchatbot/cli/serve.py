@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 
 from ..runtime.api import create_app
-from ..runtime.gate import CTranslate2DomainGate
 from ..runtime.model import CTranslate2Generator
 from ..runtime.pipeline import OntologyChatbot
 
@@ -20,12 +19,6 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=Path,
         default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
         required="ONTCHATBOT_MODEL_DIR" not in os.environ,
-    )
-    parser.add_argument(
-        "--gate-model-dir",
-        type=Path,
-        default=os.environ.get("ONTCHATBOT_GATE_MODEL_DIR"),
-        required="ONTCHATBOT_GATE_MODEL_DIR" not in os.environ,
     )
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument("--compute-type", default="int8")
@@ -52,12 +45,7 @@ def _load_chatbot(args: argparse.Namespace) -> OntologyChatbot:
         device=args.device,
         compute_type=args.compute_type,
     )
-    gate = CTranslate2DomainGate.load(
-        args.gate_model_dir,
-        device=args.device,
-        compute_type=args.compute_type,
-    )
-    return OntologyChatbot(generator, gate)
+    return OntologyChatbot(generator)
 
 
 def main() -> None:

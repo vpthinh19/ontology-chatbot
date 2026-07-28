@@ -5,9 +5,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.runtime.gate import GateDecision
 from ontchatbot.runtime.model import CTranslate2Generator, _tokenizer_compatibility_kwargs
-from ontchatbot.runtime.pipeline import OntologyChatbot, OutOfScopeError
+from ontchatbot.runtime.pipeline import OntologyChatbot
+from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 
 
 class _Tokenizer:
@@ -73,50 +73,32 @@ def test_chatbot_connects_generated_query_to_ontology() -> None:
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)
-    gate = SimpleNamespace(
-        threshold=0.75,
-        decide=lambda _: GateDecision(True, 0.99),
-    )
 
-    reply = OntologyChatbot(generator, gate).answer("phòng nào xử lý bảo lưu")
+    reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
 
     assert "Phòng Công tác Chính trị và Sinh viên" in reply
 
 
-def test_chatbot_does_not_generate_query_when_gate_rejects() -> None:
-    calls = []
-    generator = SimpleNamespace(generate=lambda question: calls.append(question))
-    gate = SimpleNamespace(
-        threshold=0.75,
-        decide=lambda _: GateDecision(False, 0.02),
-    )
+def test_chatbot_returns_no_information_for_model_marker() -> None:
+    generator = SimpleNamespace(generate=lambda _: " không có thông tin ")
 
-    with pytest.raises(OutOfScopeError):
-        OntologyChatbot(generator, gate).answer("thời tiết hôm nay")
+    reply = OntologyChatbot(generator).answer("thời tiết hôm nay")
 
-    assert calls == []
+    assert reply == NO_INFORMATION_REPLY
 
 
-def test_chatbot_logs_rejected_gate_decision(caplog) -> None:
-    calls = []
-    generator = SimpleNamespace(generate=lambda question: calls.append(question))
-    gate = SimpleNamespace(
-        threshold=0.75,
-        decide=lambda _: GateDecision(False, 0.2),
-    )
+def test_chatbot_logs_model_marker_decision(caplog) -> None:
+    generator = SimpleNamespace(generate=lambda _: "không có thông tin")
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
-        with pytest.raises(OutOfScopeError):
-            OntologyChatbot(generator, gate).answer("hc phí k65 cntt")
+        reply = OntologyChatbot(generator).answer("hc phí k65 cntt")
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
     assert "input='hc phí k65 cntt'" in trace
     assert "normalized='học phí khoá 65 công nghệ thông tin'" in trace
-    assert "probability=0.200000" in trace
-    assert "threshold=0.750000" in trace
-    assert "accepted=false" in trace
-    assert "generator" not in trace
-    assert calls == []
+    assert "model output='không có thông tin'" in trace
+    assert f"reply={reply!r}" in trace
+    assert "ontology rows=" not in trace
 
 
 def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
@@ -125,16 +107,12 @@ def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)
-    gate = SimpleNamespace(
-        threshold=0.75,
-        decide=lambda _: GateDecision(True, 0.99),
-    )
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
-        reply = OntologyChatbot(generator, gate).answer("phòng nào xử lý bảo lưu")
+        reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert f"sparql={query!r}" in trace
+    assert f"model output={query!r}" in trace
     assert "ontology rows=1" in trace
     assert f"reply={reply!r}" in trace
     assert "total_ms=" in trace
@@ -144,14 +122,9 @@ def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
     def fail(_: str) -> str:
         raise RuntimeError("boom")
 
-    gate = SimpleNamespace(
-        threshold=0.75,
-        decide=lambda _: GateDecision(True, 0.99),
-    )
-
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
         with pytest.raises(RuntimeError, match="boom"):
-            OntologyChatbot(SimpleNamespace(generate=fail), gate).answer("bảo lưu")
+            OntologyChatbot(SimpleNamespace(generate=fail)).answer("bảo lưu")
 
     error = next(record for record in caplog.records if record.levelno == logging.ERROR)
     assert "stage=generator" in error.getMessage()

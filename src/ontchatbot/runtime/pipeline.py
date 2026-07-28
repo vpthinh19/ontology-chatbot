@@ -8,7 +8,6 @@ import uuid
 
 from rdflib import Graph
 
-from .gate import DomainGate
 from .model import QueryGenerator
 from .render import NO_INFORMATION_REPLY, render_rows
 from .sparql import execute_select, load_ontology
@@ -18,21 +17,15 @@ from .text import normalize_model_input
 logger = logging.getLogger(__name__)
 
 
-class OutOfScopeError(ValueError):
-    """Raised when the domain gate rejects a question."""
-
-
 class OntologyChatbot:
     """Connect a query generator to the canonical RDF graph."""
 
     def __init__(
         self,
         generator: QueryGenerator,
-        gate: DomainGate,
         graph: Graph | None = None,
     ) -> None:
         self.generator = generator
-        self.gate = gate
         self.graph = graph if graph is not None else load_ontology()
 
     def answer(self, question: str) -> str:
@@ -45,40 +38,28 @@ class OntologyChatbot:
             question,
             normalized,
         )
-        stage = "gate"
+        stage = "generator"
         try:
             stage_started = time.perf_counter()
-            decision = self.gate.decide(question)
+            output = self.generator.generate(question).strip()
             logger.info(
-                "request=%s gate probability=%.6f threshold=%.6f "
-                "accepted=%s duration_ms=%.1f",
+                "request=%s model output=%r duration_ms=%.1f",
                 request_id,
-                decision.probability,
-                self.gate.threshold,
-                str(decision.accepted).lower(),
+                output,
                 (time.perf_counter() - stage_started) * 1000,
             )
-            if not decision.accepted:
+            if output == "không có thông tin":
                 logger.info(
-                    "request=%s rejected total_ms=%.1f",
+                    "request=%s reply=%r total_ms=%.1f",
                     request_id,
+                    NO_INFORMATION_REPLY,
                     (time.perf_counter() - request_started) * 1000,
                 )
-                raise OutOfScopeError(NO_INFORMATION_REPLY)
-
-            stage = "generator"
-            stage_started = time.perf_counter()
-            query = self.generator.generate(question)
-            logger.info(
-                "request=%s generator sparql=%r duration_ms=%.1f",
-                request_id,
-                query,
-                (time.perf_counter() - stage_started) * 1000,
-            )
+                return NO_INFORMATION_REPLY
 
             stage = "ontology"
             stage_started = time.perf_counter()
-            rows = execute_select(self.graph, query)
+            rows = execute_select(self.graph, output)
             logger.info(
                 "request=%s ontology rows=%d duration_ms=%.1f",
                 request_id,
@@ -95,8 +76,6 @@ class OntologyChatbot:
                 (time.perf_counter() - request_started) * 1000,
             )
             return reply
-        except OutOfScopeError:
-            raise
         except Exception:
             logger.exception("request=%s stage=%s failed", request_id, stage)
             raise

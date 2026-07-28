@@ -7,13 +7,11 @@ from types import SimpleNamespace
 from ontchatbot.cli.serve import _configure_logging, _load_chatbot, _parse_args
 
 
-def test_serve_requires_and_loads_both_ctranslate2_artifacts(monkeypatch) -> None:
+def test_serve_requires_and_loads_one_ctranslate2_artifact(monkeypatch) -> None:
     args = _parse_args(
         [
             "--model-dir",
             "generator",
-            "--gate-model-dir",
-            "gate",
             "--device",
             "cuda",
             "--compute-type",
@@ -22,41 +20,25 @@ def test_serve_requires_and_loads_both_ctranslate2_artifacts(monkeypatch) -> Non
     )
     loaded = []
     generator = SimpleNamespace()
-    gate = SimpleNamespace()
     monkeypatch.setattr(
         "ontchatbot.cli.serve.CTranslate2Generator.load",
         lambda path, **kwargs: loaded.append(("generator", path, kwargs)) or generator,
-    )
-    monkeypatch.setattr(
-        "ontchatbot.cli.serve.CTranslate2DomainGate.load",
-        lambda path, **kwargs: loaded.append(("gate", path, kwargs)) or gate,
     )
 
     chatbot = _load_chatbot(args)
 
     assert chatbot.generator is generator
-    assert chatbot.gate is gate
     assert loaded == [
         (
             "generator",
             Path("generator"),
             {"device": "cuda", "compute_type": "int8_float16"},
         ),
-        (
-            "gate",
-            Path("gate"),
-            {"device": "cuda", "compute_type": "int8_float16"},
-        ),
     ]
 
 
 def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:
-    required = [
-        "--model-dir",
-        "generator",
-        "--gate-model-dir",
-        "gate",
-    ]
+    required = ["--model-dir", "generator"]
 
     assert _parse_args(required).log_level == "info"
     assert _parse_args([*required, "--log-level", "debug"]).log_level == "debug"

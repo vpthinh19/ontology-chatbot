@@ -10,7 +10,6 @@ httpx = pytest.importorskip("httpx")
 
 from ontchatbot.runtime.api import create_app
 from ontchatbot.runtime.model import QueryGenerationError
-from ontchatbot.runtime.pipeline import OutOfScopeError
 from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 from ontchatbot.runtime.sparql import SparqlError
 
@@ -46,7 +45,6 @@ def test_http_api_rejects_empty_message(tmp_path) -> None:
 @pytest.mark.parametrize(
     "error",
     [
-        OutOfScopeError("gate rejected"),
         QueryGenerationError("model generated an empty query"),
         SparqlError("invalid SPARQL"),
     ],

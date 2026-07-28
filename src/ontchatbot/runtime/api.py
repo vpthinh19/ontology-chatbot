@@ -6,7 +6,7 @@ from pathlib import Path
 
 from ..settings import PROJECT_ROOT
 from .model import QueryGenerationError
-from .pipeline import OntologyChatbot, OutOfScopeError
+from .pipeline import OntologyChatbot
 from .render import NO_INFORMATION_REPLY
 from .sparql import SparqlError
 
@@ -31,7 +31,7 @@ def create_app(chatbot: OntologyChatbot, webui_dir: Path | None = None):
             raise HTTPException(status_code=400, detail="message must be non-empty text")
         try:
             return {"reply": chatbot.answer(message)}
-        except (OutOfScopeError, QueryGenerationError, SparqlError):
+        except (QueryGenerationError, SparqlError):
             return {"reply": NO_INFORMATION_REPLY}
 
     static_dir = webui_dir or PROJECT_ROOT / "webui"
