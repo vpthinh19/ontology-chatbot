@@ -25,14 +25,14 @@ def test_test_set_uses_only_train_supported_queries_and_is_executable() -> None:
     )
 
     assert report == {
-        "records": 215,
+        "records": 430,
         "queries": 215,
         "targets": 215,
         "register_counts": {
-            "colloquial": 54,
-            "formal": 53,
-            "neutral": 54,
-            "noisy": 54,
+            "colloquial": 108,
+            "formal": 108,
+            "neutral": 107,
+            "noisy": 107,
         },
         "queries_supported_by_train": 215,
         "targets_supported_by_train": 215,

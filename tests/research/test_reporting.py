@@ -22,7 +22,7 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 1580
+    assert report["dataset"]["records"] == 2263
     assert report["dataset"]["queries"] == 215
     assert report["in_domain_contract"] == {
         "train_queries": 215,
@@ -124,7 +124,7 @@ def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> 
 
     assert report is not None
     assert report["models"]["bartpho"]["validation"]["answer_exact_rate"] == 0.5
-    assert report["models"]["bartpho"]["inference"]["records"] == 215
+    assert report["models"]["bartpho"]["inference"]["records"] == 430
     assert report["models"]["bartpho"]["training"][
         "artifact_roundtrip_verified"
     ] is True

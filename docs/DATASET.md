@@ -26,19 +26,20 @@ nhau của cùng chức năng mà chatbot công bố hỗ trợ.
 | `colloquial` | Ngôn ngữ nói thường ngày |
 | `noisy` | Viết tắt, bỏ dấu hoặc câu rút gọn |
 
-Toàn dataset có cùng số câu ở bốn register. Trong từng split, số câu giữa
-register nhiều nhất và ít nhất chênh nhau không quá một.
+Trong từng split, số câu giữa register nhiều nhất và ít nhất chênh nhau không
+quá một.
 
 ## Train, validation và test
 
 | Tập | Câu hỏi | Query | Vai trò |
 |---|---:|---:|---|
-| Train | 1.150 | 215 | Cập nhật trọng số và dạy toàn bộ danh mục query |
-| Validation | 215 | 215 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
-| Test | 215 | 215 | Đánh giá cuối bằng cách diễn đạt chưa thấy |
+| Train | 1.403 | 215 | Cập nhật trọng số và dạy toàn bộ danh mục query |
+| Validation | 430 | 215 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
+| Test | 430 | 215 | Đánh giá cuối bằng cách diễn đạt chưa thấy |
 
-Mỗi query có đúng một câu validation, một câu test và toàn bộ câu còn lại ở
-train; mỗi query có ít nhất hai câu train. Vì vậy validation và test đo khả
+Mỗi query có đúng hai câu validation, hai câu test và toàn bộ câu còn lại ở
+train; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Vì vậy
+validation và test đo khả
 năng hiểu cách nói mới trong miền chức năng đã dạy, không đo zero-shot trên
 query hoặc ontology chưa biết. Test chỉ được dùng sau khi checkpoint được chọn.
 

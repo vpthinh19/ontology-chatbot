@@ -19,12 +19,16 @@ QUESTIONS = (
         "thủ tục bảo lưu kết quả học tập",
         "xin phép tạm dừng chương trình đang học",
         "sắp đi nghĩa vụ quân sự thì làm sao giữ kết quả",
+        "hướng dẫn bảo lưu kết quả học tập gồm những gì",
+        "tui muốn nghỉ học tạm thời thì làm sao",
     ),
     (
         "Tôi cần hướng dẫn đăng ký học phần",
         "cách chọn môn cho học kỳ mới",
         "quy trình ghi danh môn học thực hiện thế nào",
         "muốn thêm lớp vào thời khóa biểu phải làm sao",
+        "hướng dẫn thực hiện đăng ký học phần",
+        "dk mon hoc ky moi sao vay",
     ),
 )
 REGISTERS = ("formal", "neutral", "colloquial", "noisy")
@@ -51,8 +55,8 @@ def _valid_release(query_count: int = 1) -> dict[str, list[dict[str, str]]]:
             for offset, question in enumerate(questions)
         ]
         release["train"].extend(rows[:2])
-        release["val"].append(rows[2])
-        release["test"].append(rows[3])
+        release["val"].extend(rows[2:4])
+        release["test"].extend(rows[4:6])
     return release
 
 
@@ -61,8 +65,8 @@ def test_canonical_dataset_is_executable() -> None:
         pytest.skip("SPARQL dataset has not been generated")
     report = validate_release(load_release(), load_ontology())
 
-    assert report["records"] == 1580
-    assert report["split_counts"] == {"train": 1150, "val": 215, "test": 215}
+    assert report["records"] == 2263
+    assert report["split_counts"] == {"train": 1403, "val": 430, "test": 430}
     assert all(split["queries"] == 215 for split in report["splits"].values())
     assert all(not split["empty_result_ids"] for split in report["splits"].values())
 
@@ -72,7 +76,7 @@ def test_validator_accepts_the_in_domain_query_contract() -> None:
 
     report = validate_release(release, load_ontology())
 
-    assert report["records"] == 4
+    assert report["records"] == 6
     assert all(
         set(row) == {"id", "query_id", "register", "input", "target"}
         for rows in release.values()

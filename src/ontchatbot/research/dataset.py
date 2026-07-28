@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import re
 from collections import Counter, defaultdict
-from itertools import combinations
 from pathlib import Path
 from typing import Any
 
@@ -49,181 +48,6 @@ def load_release(directory: Path = DATASET_DIR) -> dict[str, list[dict[str, str]
 
     directory = Path(directory)
     return {split: load_dataset(directory / f"{split}.jsonl") for split in REQUIRED_SPLITS}
-
-
-def build_in_domain_release(
-    rows: list[dict[str, str]],
-) -> dict[str, list[dict[str, str]]]:
-    """Build the deterministic in-domain train, validation, and test splits."""
-
-    if not rows:
-        raise DatasetError("cannot split an empty dataset")
-    accepted_fields = (
-        REQUIRED_FIELDS,
-        {"id", "family_id", "register", "input", "target"},
-    )
-    ids: set[str] = set()
-    by_target: dict[str, list[dict[str, str]]] = defaultdict(list)
-    for row in rows:
-        if set(row) not in accepted_fields:
-            raise DatasetError("splitter rows must use the family_id or query_id schema")
-        if not all(isinstance(value, str) and value for value in row.values()):
-            raise DatasetError("splitter fields must be non-empty strings")
-        if row["id"] in ids:
-            raise DatasetError(f"duplicate id: {row['id']}")
-        ids.add(row["id"])
-        if row["register"] not in ALLOWED_REGISTERS:
-            raise DatasetError(f"{row['id']}: invalid register {row['register']}")
-        by_target[row["target"]].append(row)
-    undersized = sorted(
-        target for target, target_rows in by_target.items() if len(target_rows) < 4
-    )
-    if undersized:
-        raise DatasetError(
-            "each target needs at least four questions: "
-            f"{undersized[:3]}"
-        )
-    targets = sorted(
-        by_target,
-        key=lambda target: min(row["id"] for row in by_target[target]),
-    )
-    release = {split: [] for split in REQUIRED_SPLITS}
-    register_counts = {split: Counter() for split in REQUIRED_SPLITS}
-
-    for target_index, target in enumerate(targets):
-        query_id = f"query-{target_index + 1:04d}"
-        pools = {
-            register: sorted(
-                (
-                    {
-                        "id": row["id"],
-                        "query_id": query_id,
-                        "register": row["register"],
-                        "input": row["input"],
-                        "target": row["target"],
-                    }
-                    for row in by_target[target]
-                    if row["register"] == register
-                ),
-                key=lambda row: row["id"],
-            )
-            for register in REGISTER_ORDER
-        }
-        for split, offset in (("val", 0), ("test", 1)):
-            available = [register for register in REGISTER_ORDER if pools[register]]
-            register = min(
-                available,
-                key=lambda value: (
-                    register_counts[split][value],
-                    (REGISTER_ORDER.index(value) - target_index - offset) % 4,
-                ),
-            )
-            release[split].append(pools[register].pop(0))
-            register_counts[split][register] += 1
-        for register in REGISTER_ORDER:
-            release["train"].extend(pools[register])
-            register_counts["train"][register] += len(pools[register])
-
-    _repair_in_domain_release(release, register_counts)
-    for split in REQUIRED_SPLITS:
-        release[split].sort(key=lambda row: row["id"])
-    return release
-
-
-def _repair_in_domain_release(
-    release: dict[str, list[dict[str, str]]],
-    register_counts: dict[str, Counter[str]],
-) -> None:
-    """Remove cross-split near duplicates without weakening register balance."""
-
-    rows_by_id = {
-        row["id"]: row
-        for split in REQUIRED_SPLITS
-        for row in release[split]
-    }
-    split_by_id = {
-        row["id"]: split
-        for split in REQUIRED_SPLITS
-        for row in release[split]
-    }
-    ids_by_target: dict[str, list[str]] = defaultdict(list)
-    for row in rows_by_id.values():
-        ids_by_target[row["target"]].append(row["id"])
-
-    near_pairs = _near_duplicate_id_pairs(rows_by_id.values())
-    candidates = [
-        (target, left_id, right_id)
-        for target in sorted(ids_by_target)
-        for left_id, right_id in combinations(sorted(ids_by_target[target]), 2)
-    ]
-
-    def objective() -> tuple[int, int, int]:
-        cross_split_count = sum(
-            split_by_id[left_id] != split_by_id[right_id]
-            for left_id, right_id in near_pairs
-        )
-        ranges = [
-            max(register_counts[split][register] for register in REGISTER_ORDER)
-            - min(register_counts[split][register] for register in REGISTER_ORDER)
-            for split in REQUIRED_SPLITS
-        ]
-        return cross_split_count, max(ranges), sum(ranges)
-
-    def swap(left_id: str, right_id: str) -> None:
-        left_split = split_by_id[left_id]
-        right_split = split_by_id[right_id]
-        left_register = rows_by_id[left_id]["register"]
-        right_register = rows_by_id[right_id]["register"]
-        split_by_id[left_id], split_by_id[right_id] = right_split, left_split
-        register_counts[left_split][left_register] -= 1
-        register_counts[left_split][right_register] += 1
-        register_counts[right_split][right_register] -= 1
-        register_counts[right_split][left_register] += 1
-
-    while True:
-        current = objective()
-        best = current
-        best_pair: tuple[str, str] | None = None
-        for _, left_id, right_id in candidates:
-            if split_by_id[left_id] == split_by_id[right_id]:
-                continue
-            swap(left_id, right_id)
-            candidate = objective()
-            swap(left_id, right_id)
-            if candidate < best:
-                best = candidate
-                best_pair = left_id, right_id
-        if best_pair is None:
-            break
-        swap(*best_pair)
-
-    cross_split_count, maximum_range, _ = objective()
-    if cross_split_count or maximum_range > 1:
-        raise DatasetError(
-            "cannot build balanced splits without cross-split near duplicates"
-        )
-
-    allocated_rows = list(rows_by_id.values())
-    for split in REQUIRED_SPLITS:
-        release[split] = [
-            row for row in allocated_rows if split_by_id[row["id"]] == split
-        ]
-
-
-def _near_duplicate_id_pairs(
-    rows: Any,
-) -> list[tuple[str, str]]:
-    indexed = sorted(
-        ((row["id"], _character_trigrams(row["input"])) for row in rows),
-        key=lambda item: item[0],
-    )
-    pairs: list[tuple[str, str]] = []
-    for index, (left_id, left_grams) in enumerate(indexed):
-        for right_id, right_grams in indexed[index + 1 :]:
-            score = len(left_grams & right_grams) / len(left_grams | right_grams)
-            if score >= NEAR_DUPLICATE_THRESHOLD:
-                pairs.append((left_id, right_id))
-    return pairs
 
 
 def validate_dataset(rows: list[dict[str, Any]], graph: Graph) -> dict[str, Any]:
@@ -344,11 +168,11 @@ def validate_release(
         raise DatasetError(f"query IDs have fewer than two train rows: {sparse_train[:10]}")
     for split in ("val", "test"):
         invalid = sorted(
-            query_id for query_id in all_queries if query_counts[split][query_id] != 1
+            query_id for query_id in all_queries if query_counts[split][query_id] != 2
         )
         if invalid:
             raise DatasetError(
-                f"query IDs must have exactly one {split} row: {invalid[:10]}"
+                f"query IDs must have exactly two {split} rows: {invalid[:10]}"
             )
 
     for split, report in reports.items():

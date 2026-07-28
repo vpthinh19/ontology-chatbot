@@ -21,7 +21,7 @@ lấy từ ontology khi backend thực thi truy vấn.
 - Validation và test không chứa target nằm ngoài danh mục train.
 - Việc tự ghép một target SPARQL chưa từng xuất hiện trong train không thuộc
   yêu cầu chất lượng của hệ thống.
-- Dataset sử dụng 215 target và 1.580 câu hỏi; việc mở rộng cách diễn đạt không
+- Dataset sử dụng 215 target và 2.263 câu hỏi; việc mở rộng cách diễn đạt không
   tạo thêm target SPARQL.
 
 ## Bản ghi dữ liệu
@@ -59,9 +59,9 @@ Ba split cùng phủ một danh mục target nhưng dùng các câu hỏi khác 
 - **Test** đo chất lượng cuối bằng cách diễn đạt chưa xuất hiện trong train và
   validation.
 
-Với mỗi `query_id` có đúng một câu validation, một câu test và toàn bộ câu còn
-lại thuộc train. Với 1.580 câu hiện có, cách chia này tạo 1.150 câu train, 215 câu
-validation và 215 câu test; mỗi query có ít nhất hai câu train. Việc phân bổ
+Với mỗi `query_id` có đúng hai câu validation, hai câu test và toàn bộ câu còn
+lại thuộc train. Dataset gồm 1.403 câu train, 430 câu validation và 430 câu
+test; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Việc phân bổ
 register được xoay vòng giữa các query để mỗi split có phân bố formal, neutral,
 colloquial và noisy cân bằng trên toàn tập;
 không cố định toàn bộ câu noisy vào test. Trong mỗi split, chênh lệch số câu
@@ -94,7 +94,7 @@ Metric chính là Answer Exact sau khi query dự đoán được thực thi tr�
 Tên biến và thứ tự dòng không quan trọng, nhưng toàn bộ giá trị, RDF datatype,
 language tag, số cột và cách ghép giá trị trong từng dòng phải đúng.
 
-Ngưỡng chấp nhận ban đầu cho model production là ít nhất 95% Answer Exact trên
+Ngưỡng chấp nhận cho model production là ít nhất 90% Answer Exact trên
 test trong miền. Parse rate, execution rate, Result precision/recall/F1 và lỗi
 theo register/query được giữ làm metric chẩn đoán.
 

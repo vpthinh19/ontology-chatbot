@@ -42,7 +42,7 @@ tag, số cột và việc ghép các giá trị trong cùng một dòng phải 
   train hoặc validation.
 
 Vì validation và test có mục tiêu khác nhau, không gộp hai con số thành một tỷ
-lệ chung. Điểm test phải luôn đi kèm số câu (215), phân bố register và đặc
+lệ chung. Điểm test phải luôn đi kèm số câu (430), phân bố register và đặc
 trưng SPARQL.
 
 ## Biểu đồ công khai

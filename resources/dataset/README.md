@@ -20,11 +20,11 @@ Ba tập có vai trò tách biệt:
 
 | Tập | Câu | Query | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 1.150 | 215 | Dạy toàn bộ query được hỗ trợ |
-| `val.jsonl` | 215 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
-| `test.jsonl` | 215 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
+| `train.jsonl` | 1.403 | 215 | Dạy toàn bộ query được hỗ trợ |
+| `val.jsonl` | 430 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
+| `test.jsonl` | 430 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 
-Mỗi query có đúng một câu validation, một câu test và ít nhất hai câu train.
+Mỗi query có đúng hai câu validation, hai câu test và ít nhất bốn câu train.
 Validation và test giữ lại cách diễn đạt, không giữ lại logic query. Thiết kế
 này đánh giá chatbot trong danh mục chức năng đã công bố; nó không tuyên bố khả
 năng zero-shot với query hoặc ontology chưa biết.
