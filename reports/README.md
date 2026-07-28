@@ -7,8 +7,15 @@ Thư mục này chứa số liệu và hình ảnh dành cho người đọc pro
 - `figures/dataset-splits.svg`: số câu train/validation/test.
 - `figures/registers.svg`: phân bố phong cách câu hỏi.
 - `figures/query-features.svg`: các đặc trưng SPARQL suy ra theo split.
+- `models.json`: metric validation, test, tài nguyên huấn luyện, tốc độ suy
+  luận và đường học của ba model.
+- `figures/training-loss.svg`: train loss theo epoch.
+- `figures/validation-curve.svg`: validation Answer Exact theo epoch.
+- `figures/model-comparison.svg`: validation/test Answer Exact và test Result
+  F1 của ba model.
+- `figures/test-by-register.svg`: test Answer Exact theo phong cách câu hỏi.
+- `figures/test-by-query-feature.svg`: test Answer Exact theo đặc trưng SPARQL.
 
-Sinh lại bằng `uv run generate_reports`. Thư mục chỉ công bố số liệu dataset và
-ontology cho tới khi cả ba model có checkpoint hợp lệ trên cùng cách chia dữ
-liệu. Khi đó metric phải được lấy từ checkpoint đã lưu và nạp lại độc lập,
-không lấy từ model còn nằm trong RAM của Trainer.
+Sinh lại bằng `uv run generate_reports`. Metric model chỉ được tổng hợp khi cả
+ba checkpoint hợp lệ trên cùng cách chia dữ liệu và đã được nạp lại độc lập;
+không lấy kết quả từ model còn nằm trong RAM của Trainer.

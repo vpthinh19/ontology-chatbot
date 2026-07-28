@@ -63,9 +63,23 @@ Answer exact là tiêu chí chính: toàn bộ dữ liệu trả về phải tr�
 không phụ thuộc tên biến hay thứ tự dòng. Parse rate, execution rate, Result
 precision/recall/F1 và query exact được dùng để chẩn đoán lỗi.
 
-Bảng so sánh chỉ được công bố khi cả ba model được fine-tune và đánh giá trên
-cùng ba split nêu trên. Hiện tại báo cáo chỉ chứa số liệu dataset và ontology.
-Định nghĩa metric và giao thức nghiệm thu nằm tại
+| Model | Validation Answer Exact | Test Answer Exact | Test Result F1 | Test parse / execution |
+|---|---:|---:|---:|---:|
+| BARTpho | 4,65% | 4,19% | 5,19% | 57,91% |
+| ViT5 | 29,30% | 29,53% | 31,96% | 99,77% |
+| T5Gemma2 | **93,95%** | **91,86%** | **92,38%** | **100%** |
+
+T5Gemma2 là model duy nhất vượt ngưỡng nghiệm thu 90% Answer Exact trên test.
+Chênh lệch nhỏ giữa validation và test cho thấy kết quả ổn định trên hai tập
+cách diễn đạt held-out. BARTpho và ViT5 học được một phần cú pháp SPARQL nhưng
+không đạt chất lượng trả lời cần thiết cho hệ thống.
+
+![So sánh model](reports/figures/model-comparison.svg)
+
+![Answer Exact theo phong cách câu hỏi](reports/figures/test-by-register.svg)
+
+Đường học, kết quả theo đặc trưng SPARQL và số liệu máy đọc đầy đủ nằm trong
+[reports](reports/README.md). Định nghĩa metric và giao thức nghiệm thu nằm tại
 [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ## Môi trường thực nghiệm
