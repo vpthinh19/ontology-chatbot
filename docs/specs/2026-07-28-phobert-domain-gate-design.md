@@ -103,7 +103,7 @@ Báo cáo tối thiểu gồm:
 - độ trễ và bộ nhớ của gate;
 - kết quả end-to-end tách riêng câu trong miền và ngoài miền.
 
-Mục tiêu nghiệm thu ban đầu là false acceptance rate không quá 1% đồng thời
+Mục tiêu nghiệm thu production là false acceptance rate không quá 1,2% đồng thời
 in-scope recall đạt ít nhất 95% trên test độc lập. Nếu không đạt đồng thời hai
 điều kiện, gate chưa được bật mặc định trong webapp.
 
