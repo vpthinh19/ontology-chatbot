@@ -1,111 +1,79 @@
-# Concept: tiếng Việt → SPARQL → ontology
+# Concept: tiếng Việt → quyết định miền/SPARQL → ontology
 
-## Bài toán
+## Trách nhiệm của model
 
-Hệ thống dịch một câu hỏi tiếng Việt sang SPARQL có giám sát. Model được phép
-học schema và canonical IRI của ontology; ontology mới là nơi lưu dữ liệu trả
-lời. Vì vậy thay nội dung literal mà giữ nguyên schema không đòi hỏi train lại
-model, còn đổi IRI hoặc quan hệ có thể đòi hỏi cập nhật dataset.
-
-Ontology là đồ thị, không phải cây. Ví dụ email của đơn vị xử lý bảo lưu nằm
-sau một đường nối:
+Model seq2seq nhận văn bản tiếng Việt đã chuẩn hoá và sinh đúng một trong hai
+output:
 
 ```text
-AcademicLeaveProcedure
-  --handledBy--> StudentAffairsOffice
-  --email------> "ctsv@ntu.edu.vn"
+không có thông tin
 ```
 
-Model sinh đường đi đó bằng SPARQL:
+hoặc một dòng SPARQL:
 
 ```sparql
-SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . ?node :email ?answer . }
+SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }
 ```
+
+Model được phép học schema và canonical IRI của ontology. Nó không học literal
+câu trả lời; backend lấy literal từ graph khi thực thi query.
 
 ## Luồng dữ liệu
 
 ```mermaid
 flowchart LR
     Q["Văn bản tự nhiên"] --> N["NFC + khoảng trắng + viết tắt chắc nghĩa"]
-    N --> D{"PhoBERT domain gate"}
-    D -- "ngoài phạm vi" --> X["Thông báo từ chối"]
-    D -- "trong phạm vi" --> M["BARTpho / ViT5 / T5Gemma2"]
-    M --> S["Một dòng SPARQL SELECT"]
-    S --> V["Parser + danh sách thao tác cấm"]
-    V --> G["RDFLib query"]
-    G --> R["list[dict]"]
+    N --> M["BARTpho / ViT5 / T5Gemma2"]
+    M --> D{"Output model"}
+    D -- "không có thông tin" --> X["Không có thông tin."]
+    D -- "SELECT ..." --> V["Parser + danh sách thao tác cấm"]
+    V -- "query lỗi" --> X
+    V -- "query hợp lệ" --> G["RDFLib query"]
+    G -- "không có dòng" --> X
+    G -- "có kết quả" --> R["list[dict]"]
     R --> T["Văn bản trả lời"]
 ```
 
-Không có tầng tự sửa query. Query sai là lỗi model/dataset; query đúng nhưng dữ
-liệu sai là lỗi ontology. Ranh giới này giúp hệ thống dễ giải thích và dễ kiểm
-thử.
+Không có tầng tự sửa query, model phân loại riêng hoặc dò entity trong backend.
+Query sai là lỗi model/dataset; query đúng nhưng dữ liệu sai là lỗi ontology.
+Log giữ output nguyên văn và nguyên nhân kỹ thuật dù giao diện chỉ hiển thị
+`Không có thông tin.`.
 
-## Contract đầu ra
+## Ranh giới miền
 
-Model chỉ sinh phần `SELECT`, không sinh `PREFIX`. Backend gắn các prefix cố
-định cho namespace project, RDF, RDFS, SKOS và XSD. Target nằm trên một dòng,
-có khoảng trắng nhất quán và phải nêu rõ cột kết quả; `SELECT *` không hợp lệ.
+Một câu thuộc miền khi ontology và danh mục SPARQL trả lời được toàn bộ yêu cầu.
+Marker từ chối áp dụng cho câu ngoài học vụ, câu thiếu dữ liệu, câu mơ hồ, trò
+chuyện chung, văn bản vô nghĩa và câu hỗn hợp có bất kỳ phần nào không được hỗ
+trợ. Backend không trả lời một phần câu hỗn hợp.
 
-Kết quả cuối chỉ là:
+## Contract SPARQL
 
-- `rdfs:label` nếu người dùng hỏi tên một thực thể;
-- literal của datatype property như `content`, `condition`, `email` hay mức
-  học phí;
+Model chỉ sinh phần `SELECT`, không sinh `PREFIX`. Backend gắn prefix cố định
+cho namespace project, RDF, RDFS, SKOS và XSD. Target nằm trên một dòng, dùng
+khoảng trắng canonical, nêu rõ cột kết quả và không dùng `SELECT *`.
+
+Kết quả được project phải là:
+
+- `rdfs:label` khi người dùng hỏi tên thực thể;
+- literal của datatype property;
 - giá trị tổng hợp như `COUNT`.
 
-Object property như `handledBy`, `hasDocument` hay `basedOnRegulation` chỉ tạo
-đường đi giữa các node, không được trả thẳng về giao diện.
+Object property chỉ tạo đường đi giữa node, không được trả thẳng về giao diện.
 
-Ví dụ hướng dẫn tổng quát:
+## Nguồn dữ liệu và thứ tự xây dựng
 
-```sparql
-SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }
+Ontology là đồ thị, không phải cây. Công văn chính thức là nguồn sự thật duy
+nhất. Thứ tự xây dựng là:
+
+```text
+tài liệu chính thức → ontology → SPARQL catalogue → dataset hợp nhất → model
 ```
 
-Ví dụ tên đơn vị xử lý:
-
-```sparql
-SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . ?node rdfs:label ?answer . }
-```
-
-Ví dụ nhiều kết quả và phép tổng hợp:
-
-```sparql
-SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE { ?node a :AdministrativeOffice . } } ?item a :AdministrativeOffice . ?item rdfs:label ?answer . }
-```
-
-## Phạm vi
-
-Project tập trung vào semantic parsing trên một ontology có schema ổn định.
-Pipeline gồm chuẩn hóa văn bản, phân loại phạm vi, sinh SPARQL, kiểm tra an
-toàn, truy vấn graph và định dạng câu trả lời.
-
-Domain gate chỉ trả lời một câu hỏi: toàn bộ yêu cầu của người dùng có nằm
-trong phần dữ liệu mà ontology hiện tại hỗ trợ hay không. Gate không biết IRI,
-không sinh SPARQL và không truy vấn graph. Câu ngoài phạm vi dừng trước model
-sinh SPARQL; câu trong phạm vi đi tiếp qua pipeline ontology bình thường.
+Không tạo dataset trước rồi sửa ontology để khớp target đã viết.
 
 ## Contract tài liệu
 
-`README.md` là tài liệu tiếng Việt đọc độc lập, có cấu trúc gần một báo cáo
-nghiên cứu: bài toán, phương pháp, ontology, dataset, kiến trúc, thực nghiệm,
-kết quả, hạn chế, tái lập và triển khai. Các file trong `docs/` là phụ lục kỹ
-thuật, không phải nhật ký phát triển.
-
-Thứ tự nội dung README đã chốt: tóm tắt; bài toán và đóng góp; tổng quan hệ
-thống; ontology; dataset; model/tokenizer; fine-tuning; đánh giá; kết quả và
-thảo luận; kiến trúc phần mềm; luồng dữ liệu runtime; cài đặt/tái lập; triển
-khai; hạn chế, kết luận và tài liệu tham khảo. Phần kết quả chỉ được thêm khi có
-benchmark mới hợp lệ, không để placeholder hoặc dùng lại điểm cũ.
-
-- Sơ đồ kiến trúc, luồng dữ liệu và fine-tuning dùng Mermaid.
-- Biểu đồ dataset và benchmark dùng SVG sinh từ JSON nguồn.
-- Không ghi stage, phiên bản dataset/model hoặc kết quả benchmark đã hết hiệu
-  lực.
-- README chỉ công bố kết quả model sau khi cả ba model chạy cùng giao thức trên
-  dataset đã qua toàn bộ cổng chất lượng.
-
-`manifest.json` và `reports/dataset.json` là nguồn số liệu dataset;
-`reports/models.json` chỉ được sinh từ đủ ba artifact hợp lệ. README và biểu đồ
-không được giữ bản sao số liệu nhập tay trái với các nguồn này.
+`README.md` là tài liệu tiếng Việt đọc độc lập. Các phụ lục trong `docs/` giải
+thích ontology, dataset, kiến trúc, fine-tuning, đánh giá và triển khai. Số liệu
+dataset, benchmark và biểu đồ chỉ được sinh từ artifact mới đã qua kiểm tra;
+không sao chép số liệu cũ hoặc điền tay.

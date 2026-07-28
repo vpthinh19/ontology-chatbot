@@ -1,7 +1,30 @@
-# Dataset
+# Dataset hợp nhất
 
-Dataset ánh xạ câu hỏi tiếng Việt tự nhiên sang một truy vấn SPARQL `SELECT`.
-Mỗi dòng JSON Lines có năm trường:
+## Mục tiêu
+
+Dataset dạy một model seq2seq thực hiện trọn luồng quyết định:
+
+- câu được ontology hỗ trợ → sinh SPARQL `SELECT`;
+- câu không được hỗ trợ → sinh `không có thông tin`.
+
+Dataset chỉ được tạo sau khi ontology và danh mục SPARQL đã được xác nhận từ
+tài liệu chính thức.
+
+## Tổ chức file
+
+```text
+resources/dataset/main/
+├── train.jsonl
+├── val.jsonl
+├── test.jsonl
+└── manifest.json
+```
+
+Không có dataset phân loại riêng. Ba split chứa cả câu trong và ngoài miền.
+
+## Schema
+
+Mỗi dòng JSON Lines có đúng năm trường:
 
 ```json
 {
@@ -13,11 +36,20 @@ Mỗi dòng JSON Lines có năm trường:
 }
 ```
 
-`query_id` định danh một truy vấn canonical và ánh xạ một-một tới `target`.
-Nhiều câu hỏi được phép dùng chung `query_id`; đây là các cách diễn đạt khác
-nhau của cùng chức năng mà chatbot công bố hỗ trợ.
+Câu ngoài miền dùng:
 
-## Phong cách câu hỏi
+```json
+{
+  "id": "question-0002",
+  "query_id": "no-information",
+  "register": "neutral",
+  "input": "Ngày mai thời tiết thế nào?",
+  "target": "không có thông tin"
+}
+```
+
+`query_id` ánh xạ một-một tới target canonical. Mọi câu từ chối dùng
+`no-information`. `register` có bốn giá trị:
 
 | Register | Cách diễn đạt |
 |---|---|
@@ -26,79 +58,54 @@ nhau của cùng chức năng mà chatbot công bố hỗ trợ.
 | `colloquial` | Ngôn ngữ nói thường ngày |
 | `noisy` | Viết tắt, bỏ dấu hoặc câu rút gọn |
 
-Trong từng split, số câu giữa register nhiều nhất và ít nhất chênh nhau không
-quá một.
+## Ranh giới nhãn
+
+Một câu chỉ mang target SPARQL khi query catalogue trả lời được trọn vẹn. Target
+`không có thông tin` áp dụng cho:
+
+- câu ngoài học vụ;
+- câu gần học vụ nhưng ontology thiếu dữ liệu;
+- câu mơ hồ hoặc thiếu thực thể bắt buộc;
+- chào hỏi, trò chuyện chung và văn bản vô nghĩa;
+- câu hỗn hợp có ít nhất một yêu cầu không được hỗ trợ.
+
+Không tạo target trả lời một phần câu hỗn hợp.
+
+## Câu hỏi thực tế
+
+`resources/cases/user_queries.txt` lưu nguyên văn các câu đã được người dùng thử
+trên giao diện. Khi ontology mới hoàn tất, từng câu phải được đối chiếu dữ liệu
+thật, gán SPARQL hoặc marker rồi đưa vào đúng split. File nguồn tiếp tục được
+giữ làm ca hồi quy, không tự động được loader xem là dữ liệu train.
 
 ## Train, validation và test
 
-| Tập | Câu hỏi | Query | Vai trò |
-|---|---:|---:|---|
-| Train | 1.403 | 215 | Cập nhật trọng số và dạy toàn bộ danh mục query |
-| Validation | 430 | 215 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
-| Test | 430 | 215 | Đánh giá cuối bằng cách diễn đạt chưa thấy |
+Mỗi SPARQL canonical phải xuất hiện trong train. Validation và test đo cách
+diễn đạt chưa thấy cho những chức năng đã được dạy, không tuyên bố zero-shot
+trên schema mới. Cả ba split phải có đầy đủ bốn register và các nhóm ngoài miền
+quan trọng.
 
-Mỗi query có đúng hai câu validation, hai câu test và toàn bộ câu còn lại ở
-train; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Hai câu của
-mỗi tập held-out thuộc hai register khác nhau. Vì vậy
-validation và test đo khả
-năng hiểu cách nói mới trong miền chức năng đã dạy, không đo zero-shot trên
-query hoặc ontology chưa biết. Test chỉ được dùng sau khi checkpoint được chọn.
+Các quy tắc leakage:
 
-![Phân bố dataset](../reports/figures/dataset-splits.svg)
-
-## Hình dạng SPARQL
-
-Dataset không lưu nhãn hình dạng truy vấn do một query có thể đồng thời nhiều
-cột, đi qua graph, lọc, gom nhóm và sắp xếp. Báo cáo tự suy ra các đặc trưng
-độc lập từ target: số cột, số triple pattern, object-property hop, aggregate,
-`FILTER`, `GROUP BY`, `ORDER BY`, `LIMIT` và `VALUES` cho truy vấn nhiều thực
-thể độc lập.
-
-![Đặc trưng SPARQL](../reports/figures/query-features.svg)
-
-## Khoảng trắng và padding
-
-Target là một dòng và dùng khoảng trắng canonical để cả ba tokenizer bảo toàn
-đúng SPARQL. Dynamic padding là token `<pad>` được thêm tạm khi tạo batch; nó
-không nằm trong JSONL.
+1. ID là duy nhất toàn bộ release.
+2. Câu trùng sau `normalize_model_input` không được nằm ở hai split.
+3. Câu gần trùng cùng `query_id` không được nằm ở hai split.
+4. Câu có khung giống nhau nhưng query khác chỉ được báo cáo để rà soát, không
+   tự động xem là leakage.
+5. Test không được dùng để bổ sung dữ liệu hoặc chọn checkpoint.
 
 ## Kiểm soát chất lượng
 
-Trước khi huấn luyện, dataset phải qua các kiểm tra sau:
+Dataset chỉ sẵn sàng huấn luyện khi:
 
-1. Mỗi bản ghi có đúng năm trường; ID là duy nhất.
-2. Câu trùng hoặc gần trùng không rò rỉ giữa split.
-3. `query_id` và target ánh xạ một-một.
-4. Target parse được, chạy có kết quả và chỉ dùng contract SPARQL an toàn.
-5. Toàn bộ 215 query xuất hiện trong cả train, validation và test.
-6. Register cân bằng riêng trong từng split.
-7. BARTpho, ViT5 và T5Gemma2 round-trip toàn bộ source/target không `<unk>` và
-   không bị cắt.
+1. mọi bản ghi đúng schema và nhãn;
+2. target trong miền parse, vượt contract an toàn, chạy có kết quả;
+3. target ngoài miền trùng chính xác `không có thông tin`;
+4. không có leakage theo quy tắc split;
+5. register và nhóm trong/ngoài miền được báo cáo rõ;
+6. toàn bộ source/target round-trip qua tokenizer của cả ba model, không `<unk>`
+   ở token cấu trúc và không bị cắt;
+7. manifest/checksum được sinh từ file thật sau lần kiểm tra cuối.
 
-Số liệu máy đọc, trạng thái sẵn sàng huấn luyện và checksum nằm trong
-`reports/dataset.json` cùng `resources/dataset/main/manifest.json`.
-
-## Dataset gate
-
-`resources/dataset/gate/` dành cho bộ phân loại phạm vi đứng trước model sinh
-SPARQL. Mỗi dòng JSON Lines có đúng hai trường:
-
-```json
-{"input":"đóng tiền học sao","label":"in_scope"}
-```
-
-`in_scope` nghĩa là ontology và contract SPARQL hiện tại có thể trả lời trọn
-vẹn câu hỏi; `out_of_scope` bao gồm cả câu ngoài chủ đề và câu gần học vụ nhưng
-đòi dữ liệu ontology không có. Dataset có 4.526 câu, cân bằng theo nhãn trong
-từng split:
-
-| Tập | Tổng | `in_scope` | `out_of_scope` |
-|---|---:|---:|---:|
-| Train | 2.806 | 1.403 | 1.403 |
-| Validation | 860 | 430 | 430 |
-| Test | 860 | 430 | 430 |
-
-Toàn bộ câu hỏi của `dataset/main` xuất hiện ở phía `in_scope` của split tương
-ứng. Validation dùng chọn ngưỡng; test chỉ dùng để báo cáo recall trong miền và
-tỷ lệ nhận nhầm câu ngoài miền. Manifest cùng checksum nằm tại
-`resources/dataset/gate/manifest.json`.
+Số câu, số query, phân bố và biểu đồ chỉ được công bố từ manifest của dataset
+mới, không kế thừa báo cáo hiện tại.

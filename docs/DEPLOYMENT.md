@@ -1,87 +1,50 @@
 # Triển khai
 
-Checkpoint Transformers được chọn bằng validation, sau đó chuyển sang
-CTranslate2 để runtime gọn và không phụ thuộc PyTorch.
+## Artifact
 
-## Chuyển đổi model sinh SPARQL
+Runtime đích chỉ nạp một checkpoint seq2seq đã chuyển sang CTranslate2 cùng
+tokenizer và compatibility manifest. Không có artifact phân loại, classifier
+head hoặc ngưỡng quyết định riêng.
 
-```bash
-uv run --extra train convert_sparql_model \
-  --model-dir artifacts/models/t5gemma2/model \
-  --output-dir artifacts/deployment/t5gemma2 \
-  --quantization int8
-```
+Checkpoint Transformers được chọn bằng validation, benchmark độc lập bằng
+`from_pretrained()`, rồi mới chuyển đổi. Artifact CTranslate2 phải được chấm lại
+đúng test set để kiểm tra parity của output, Answer Exact và marker exact.
 
-Sau chuyển đổi, phải chấm lại đúng test set:
+Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 dùng
+`beam_size=1`. Beam search không thuộc benchmark hoặc production chính.
 
-```bash
-uv run --extra inference evaluate_ct2_model \
-  --model-dir artifacts/deployment/t5gemma2 \
-  --output artifacts/deployment/t5gemma2/metrics.json
-```
-
-Chỉ dùng artifact nếu answer exact không giảm so với checkpoint Transformers.
-Tokenizer, compatibility manifest và model binary phải nằm cùng thư mục để
-runtime nạp đúng token ID đã dùng lúc train.
-
-Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 phải đặt rõ
-`beam_size=1`. Đây là cùng một greedy decoding deterministic. Beam search chỉ
-có thể được nghiên cứu như thí nghiệm phụ áp dụng đồng thời cho cả ba model,
-không thuộc benchmark chính.
-
-## Chuyển đổi domain gate
-
-```bash
-uv run --extra train convert_domain_gate \
-  --source-dir artifacts/models/phobert-gate \
-  --output-dir artifacts/deployment/phobert-gate \
-  --quantization int8
-```
-
-Artifact gate chứa encoder CT2, tokenizer, `classifier.npz`, threshold và
-checksum trong `manifest.json`. PyTorch chỉ cần ở bước conversion; webapp chạy
-encoder bằng CTranslate2 và classification head bằng NumPy.
-
-Đối chiếu artifact với prediction PyTorch đã lưu:
-
-```bash
-uv run --extra inference evaluate_domain_gate \
-  --model-dir artifacts/deployment/phobert-gate \
-  --dataset-dir resources/dataset/gate \
-  --baseline-predictions artifacts/models/phobert-gate/test_predictions.jsonl \
-  --output artifacts/deployment/phobert-gate/evaluation.json
-```
-
-Artifact chỉ được dùng khi ma trận nhầm lẫn không đổi, false acceptance rate
-không quá 1,2% và recall trong miền đạt ít nhất 95%.
-
-## Khởi động webapp
-
-Khởi động API:
-
-```bash
-uv sync --extra inference
-uv run --extra inference serve_sparql \
-  --model-dir artifacts/deployment/t5gemma2 \
-  --gate-model-dir artifacts/deployment/phobert-gate \
-  --log-level info
-```
-
-API chuẩn hoá câu hỏi, kiểm tra phạm vi, sinh và xác minh `SELECT`, thực thi
-trên ontology rồi trả văn bản trả lời. Câu ngoài phạm vi nhận thông báo ổn định
-và không đi vào model sinh SPARQL. Ontology được mount như dữ liệu độc lập; cập nhật
-literal không cần convert hay train lại model nếu schema/IRI không đổi.
-
-Mỗi lượt chat được trace trong terminal bằng cùng một request ID. Log cho biết
-câu sau chuẩn hoá, probability/threshold của gate, SPARQL nguyên văn, số dòng
-ontology, reply và latency:
+## Runtime
 
 ```text
-INFO ontchatbot.runtime.pipeline request=2a41 input='hc phí k65 cntt' normalized='học phí khoá 65 công nghệ thông tin'
-INFO ontchatbot.runtime.pipeline request=2a41 gate probability=0.560115 threshold=0.752740 accepted=false duration_ms=27.4
+input
+→ normalize_model_input
+→ CTranslate2 seq2seq
+→ marker: Không có thông tin.
+→ SELECT: validate → RDFLib → render
+→ query lỗi/kết quả rỗng: Không có thông tin.
 ```
 
-Request được gate chấp nhận có thêm các dòng `generator sparql=...`,
-`ontology rows=...` và `reply=...`. Exception ghi `stage=gate|generator|ontology|renderer`
-kèm traceback. Có thể dùng `--log-level warning` để tắt trace chi tiết khi
-không chẩn đoán.
+API trả HTTP 200 cho các phản hồi nghiệp vụ trên. Lỗi nạp model, ontology hoặc
+lỗi lập trình vẫn là lỗi hệ thống.
+
+Mỗi request được trace bằng một request ID. Log cấp INFO gồm input gốc, input
+chuẩn hoá, output model nguyên văn, thời gian sinh, trạng thái xác minh, số dòng,
+reply và tổng latency. Exception ghi stage cùng traceback.
+
+## CLI
+
+CLI triển khai phải chỉ nhận một `--model-dir`, device, compute type, log level,
+host và port. Câu lệnh khởi động chỉ được công bố sau khi runtime hiện tại được
+refactor và test end-to-end với artifact mới; lệnh yêu cầu model thứ hai không
+thuộc contract này.
+
+## Kiểm tra production
+
+Trước khi dùng artifact:
+
+1. kiểm tra checksum tokenizer/model/ontology;
+2. chạy parity trên toàn test;
+3. chạy ca thực tế trong `resources/cases/user_queries.txt`;
+4. kiểm tra câu trong miền, ngoài miền, mơ hồ và hỗn hợp;
+5. đo latency, memory và request đồng thời;
+6. xác nhận log đủ để truy nguyên output model và SPARQL.

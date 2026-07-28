@@ -1,50 +1,60 @@
 # Ontology
 
-Nguồn dữ liệu canonical là
-[`resources/ontology/ontology.ttl`](../resources/ontology/ontology.ttl), dùng
-namespace `http://www.ntu.edu.vn/ontology/academic#`.
+## Nguồn sự thật
+
+Ontology được xây từ công văn và tài liệu học vụ chính thức. Chỉ những thông tin
+có căn cứ trong nguồn này mới được đưa vào graph. Dữ liệu cũ không được sao
+chép sang ontology mới nếu chưa đối chiếu lại nguồn.
+
+Thứ tự xây dựng bắt buộc:
+
+```text
+tài liệu chính thức → ontology → query catalogue → dataset
+```
+
+SPARQL và câu hỏi huấn luyện phải đi theo graph đã xác nhận, không dùng dataset
+để quyết định ngược lại hình dạng ontology.
+
+## Định dạng và namespace
+
+Nguồn canonical dùng Turtle tại `resources/ontology/ontology.ttl` và được đọc
+bằng RDFLib. Namespace project phải ổn định sau khi dataset bắt đầu được tạo;
+đổi IRI hoặc quan hệ sau thời điểm đó đòi hỏi kiểm tra lại toàn bộ target.
 
 ## Quy ước đặt tên
 
 - Class và individual dùng IRI tiếng Anh dạng `PascalCase`.
 - Property dùng IRI tiếng Anh dạng `camelCase`.
 - `rdfs:label@vi` là tên tiếng Việt chính, đầy đủ và ổn định.
-- `skos:altLabel@vi` chỉ chứa tên gọi thay thế thực sự hữu ích, không chứa câu
-  hỏi mẫu.
-
-Alias là metadata phục vụ mô tả và tìm kiếm trong công cụ ontology. Runtime
-truy vấn bằng canonical IRI do model sinh từ target SPARQL.
+- `skos:altLabel@vi` chỉ chứa tên gọi thay thế thực sự hữu ích.
+- Alias không chứa câu hỏi mẫu và không thay thế canonical IRI trong SPARQL.
 
 ## Hình dạng graph
 
-Ontology hiện có 9 class, 6 object property, 13 datatype property và 32 named
-individual. Tất cả tài nguyên được đặt tên đều có `rdfs:label@vi`.
+Ontology là đồ thị. Object property nối các node có danh tính hoặc dữ liệu độc
+lập, chẳng hạn quy trình, đơn vị xử lý, biểu mẫu và văn bản. Datatype property
+giữ literal được trả lời trực tiếp, chẳng hạn nội dung, email, URL, địa điểm,
+số điện thoại hoặc giá trị số.
 
-Object property giữ vai trò nối node:
+Khi người dùng hỏi tên một node, query project `rdfs:label`. Khi hỏi một thuộc
+tính, query project datatype property tương ứng. Object property chỉ là đường
+đi và không được trả thẳng về giao diện.
 
-- `handledBy`, `receivedBy`: đơn vị xử lý và đơn vị nhận hồ sơ;
-- `hasDocument`: biểu mẫu của quy trình;
-- `basedOnRegulation`: văn bản làm căn cứ;
-- `supportsPaymentMethod`: phương thức thanh toán;
-- `appliesTuitionRate`: định mức học phí áp dụng.
-
-Thông tin trả lời trực tiếp nằm ở datatype property. `content` là hướng dẫn
-tổng quát; `condition` và `outcome` là các literal lặp khi người dùng hỏi một
-khía cạnh cụ thể. Email, URL, địa điểm, số điện thoại và học phí cũng là
-datatype property.
-
-Condition và Outcome không phải node riêng vì chúng không có dữ liệu hoặc quan
-hệ độc lập. Ngược lại phòng ban, biểu mẫu, văn bản, phương thức thanh toán và
-định mức học phí vẫn là node vì được nối, tái sử dụng hoặc mang nhiều thuộc
-tính.
+Một khái niệm chỉ nên trở thành node nếu nó có danh tính, quan hệ hoặc thuộc
+tính riêng. Văn bản không có cấu trúc độc lập nên giữ dưới dạng literal để graph
+không phình thành các node chỉ có label.
 
 ## Kiểm tra tính toàn vẹn
 
-```bash
-uv run validate_sparql_dataset
-uv run generate_reports
-```
+Ontology mới phải vượt các kiểm tra sau trước khi tạo dataset:
 
-Hai lệnh lần lượt chạy toàn bộ target trên graph và kiểm tra thống kê ontology,
-bao gồm tài nguyên thiếu label tiếng Việt. SHA-256 của ontology được lưu cùng
-manifest dataset để kết quả có thể tái lập.
+1. Turtle parse được và namespace đúng contract.
+2. Mọi class, property và named individual có `rdfs:label@vi`.
+3. IRI duy nhất, tiếng Anh và đúng quy ước chữ hoa/thường.
+4. Domain/range và kiểu literal nhất quán.
+5. Không có node mồ côi hoặc node chỉ làm bản sao của một literal.
+6. Mỗi dữ kiện trả lời được truy ngược về tài liệu chính thức.
+7. Các query catalogue chạy được và chỉ project label/literal.
+
+Số lượng class, property, individual và triple chỉ được công bố sau khi graph
+mới hoàn tất; không kế thừa thống kê của ontology cũ.

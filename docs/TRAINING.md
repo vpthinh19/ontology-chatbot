@@ -2,99 +2,72 @@
 
 ## So sánh công bằng
 
-BARTpho, ViT5 và T5Gemma2 dùng cùng train/validation/test, normalizer, độ dài
-tối đa, dynamic padding, greedy decoding và metric. Mỗi model chỉ khác những
-thiết lập bắt buộc để chạy ổn định trong 6 GB VRAM, như batch vi mô, attention
-backend và gradient checkpointing.
+BARTpho, ViT5 và T5Gemma2 dùng cùng train/validation/test, normalizer, target
+marker, độ dài tối đa, dynamic padding, greedy decoding và metric. Không có
+model phân loại hoặc quá trình huấn luyện thứ tư.
 
 Thiết lập chung đã chốt:
 
 - seed `42`, đúng một lần chạy cho mỗi model;
 - effective batch size `8`;
 - learning rate `3e-5`, AdamW 8-bit, weight decay `0.005`;
-- cosine scheduler với `warmup_steps=0.1` (10% tổng optimizer step);
+- cosine scheduler với `warmup_steps=0.1`;
 - tối đa 20 epoch, validation mỗi 2 epoch;
 - dừng sớm sau ba mốc validation liên tiếp không cải thiện;
 - dynamic padding đến bội số 8;
 - không dùng `torch.compile`;
 - greedy decoding (`num_beams=1`, `do_sample=False`);
-- chọn checkpoint theo `eval_answer_exact_rate`;
 - test không tham gia chọn checkpoint.
 
-Mixed precision được chọn từ môi trường thay vì bật cứng: CUDA có BF16 dùng
-BF16; CUDA không có BF16 dùng FP16; CPU dùng FP32. TF32 chỉ bật trên GPU CUDA
-có compute capability từ 8 trở lên. Trên RTX 4050, giao thức dùng BF16 và TF32.
+Mixed precision được chọn theo môi trường: CUDA có BF16 dùng BF16; CUDA không
+có BF16 dùng FP16; CPU dùng FP32. TF32 chỉ bật trên GPU CUDA có compute
+capability từ 8 trở lên.
 
-Giữ nguyên dropout của checkpoint: BARTpho `0.1`, ViT5 `0.1`, T5Gemma2 `0.0`.
-Không tắt hoặc ép dropout riêng cho model nào. Batch vi mô có thể khác để vừa
-6 GB VRAM nhưng tích lũy gradient phải giữ effective batch bằng 8. Attention
-backend và gradient checkpointing chỉ được khác khi kiến trúc/bộ nhớ yêu cầu.
+Giữ nguyên dropout của checkpoint. Batch vi mô, attention backend và gradient
+checkpointing được phép khác để từng kiến trúc chạy ổn định trong 6 GB VRAM,
+nhưng gradient accumulation phải giữ effective batch bằng 8.
 
-| Model | Microbatch | Gradient accumulation | Effective batch | Attention | Gradient checkpointing |
-|---|---:|---:|---:|---|---|
-| BARTpho | 4 | 2 | 8 | SDPA | Không |
-| ViT5 | 8 | 1 | 8 | Eager | Không |
-| T5Gemma2 | 4 | 2 | 8 | SDPA | Có |
+| Model | Microbatch | Gradient accumulation | Attention | Gradient checkpointing |
+|---|---:|---:|---|---|
+| BARTpho | 4 | 2 | SDPA | Không |
+| ViT5 | 8 | 1 | Eager | Không |
+| T5Gemma2 | 4 | 2 | SDPA | Có |
 
-Seed và các chi tiết tương thích tokenizer được ghi trong metric artifact để
-tái lập, nhưng không phải tiêu chí xếp hạng model.
+Dataset hợp nhất có thêm câu ngoài miền nên số optimizer step tăng theo số bản
+ghi thật. Không giảm dữ liệu hoặc đổi epoch riêng cho một model để rút ngắn
+benchmark.
 
 ## Tokenizer
 
-BARTpho cần khoảng trắng canonical trong SPARQL và không chấp nhận một số tên
-biến tùy ý. Dataset chỉ dùng tên biến round-trip chính xác.
+Hai target output là một dòng SPARQL hoặc `không có thông tin`. Cả ba tokenizer
+phải round-trip marker và toàn bộ target trước khi trainer chạy.
 
-Tokenizer đóng gói của ViT5 có bốn ký hiệu cấu trúc bị chiếm bởi sentinel. Công
-cụ `prepare_vit5_tokenizer` đổi tên đúng bốn entry đó sang `{`, `}`, `|`, `=`
-nhưng giữ nguyên ID, kích thước vocabulary và tokenization tiếng Việt. Manifest
-checksum khiến thao tác này tái tạo được.
+BARTpho cần khoảng trắng canonical trong SPARQL. ViT5 dùng tokenizer đã chuẩn
+bị lại bốn ký hiệu cấu trúc nhưng giữ nguyên ID/vocabulary. T5Gemma2 dùng regex
+tokenizer tương thích checkpoint gốc. BARTpho và T5Gemma2 không sửa vocabulary.
 
-T5Gemma2 dùng regex tokenizer tương thích với checkpoint gốc. Cả ba tokenizer
-đều phải qua kiểm tra toàn bộ target trước khi trainer chạy.
+## Chọn checkpoint
 
-BARTpho và T5Gemma2 không sửa vocabulary. ViT5 là model duy nhất được chuẩn bị
-lại tokenizer; thao tác đổi bốn entry phải tái tạo được từ checkpoint gốc và
-không làm thay đổi tokenization tiếng Việt.
+Validation phải báo cáo riêng:
 
-## Lệnh chạy
+- In-domain Answer Exact;
+- exact marker ngoài miền;
+- false acceptance;
+- từ chối câu hỗn hợp;
+- System Answer Exact.
 
-```bash
-uv sync --extra train --dev
+Tiêu chí chọn checkpoint được cố định trước lần train đầu và áp dụng giống nhau
+cho ba model. Test chỉ chạy sau khi checkpoint được chọn. Không dò
+hyperparameter, không chạy nhiều seed và không tự train lại vì điểm test thấp.
 
-uv run --extra train train_sparql \
-  --model bartpho \
-  --epochs 20 \
-  --save-model \
-  --benchmark-after-training \
-  --local-files-only
-```
+## Trình tự chạy
 
-Chạy tương tự với `--model vit5` và `--model t5gemma2`. Artifact được đặt dưới
-`artifacts/models/<model>/`; không gắn số phiên bản dataset/model vào tên.
+1. Xác minh ontology và query catalogue.
+2. Audit dataset hợp nhất và tokenizer.
+3. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới.
+4. Khi pipeline hợp lệ, fine-tune BARTpho và ViT5 cùng giao thức.
+5. Mở lại từng checkpoint bằng `from_pretrained()` để benchmark.
+6. Chuyển cùng checkpoint sang CTranslate2 và kiểm tra parity triển khai.
 
-Trainer ghi `training_log` gồm train loss theo bước và metric validation tại
-mỗi lần đánh giá. Train loss cho biết model có học được tín hiệu hay không;
-validation answer exact mới là tiêu chí chọn checkpoint. Test metric chỉ mô tả
-khả năng tổng quát hóa cuối cùng.
-
-Lệnh trên chỉ được dùng sau khi dataset qua audit trong `docs/DATASET.md`. Không
-dò hyperparameter, không chạy nhiều seed và không tự khởi động lại một model
-nếu chưa có phê duyệt.
-
-## Domain gate
-
-PhoBERT gate là bài toán binary classification độc lập với benchmark ba model
-sinh SPARQL. Nó dùng `resources/dataset/gate`, không word-segment, cùng hàm
-chuẩn hoá đầu vào của runtime và nhãn `out_of_scope=0`, `in_scope=1`.
-
-```bash
-uv run --extra train train_domain_gate \
-  --save-model \
-  --local-files-only \
-  --output-dir artifacts/models/phobert-gate
-```
-
-Trainer dùng seed 42, tối đa 5 epoch, learning rate `2e-5`, cosine scheduler,
-dynamic padding và dropout mặc định của PhoBERT. Ngưỡng được chọn trên
-validation để hạn chế nhận nhầm ngoài miền rồi lưu cùng checkpoint; test không
-tham gia chọn ngưỡng.
+Câu lệnh chính thức chỉ được ghi sau khi CLI được refactor sang dataset và
+runtime một model; tài liệu không công bố lệnh cũ yêu cầu artifact thứ hai.

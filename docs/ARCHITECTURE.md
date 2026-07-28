@@ -6,22 +6,17 @@
 flowchart TB
     UI["Web / API client"] --> API["runtime/api.py"]
     API --> P["OntologyChatbot"]
-    P --> DG{"DomainGate"}
-    DG -- "ngoài phạm vi" --> UI
-    DG -- "chấp nhận" --> G["QueryGenerator"]
-    DG --> PE["PhoBERT encoder<br/>CTranslate2 INT8"]
-    PE --> NH["Classifier NumPy"]
+    P --> G["QueryGenerator"]
     G --> CT2["Seq2seq CTranslate2"]
-    P --> Q["SPARQL validator + executor"]
+    P --> D{"marker hoặc SELECT"}
+    D -- "marker" --> R["Không có thông tin."]
+    D -- "SELECT" --> Q["SPARQL validator + executor"]
     Q --> RDF["ontology.ttl"]
-    P --> R["Generic renderer"]
+    RDF --> F["Generic renderer"]
+    F --> UI
     R --> UI
 
-    D["dataset/main"] --> TR["research/training.py"]
-    GD["dataset/gate"] --> GT["research/gate_training.py"]
-    GT --> PG["Checkpoint PhoBERT gate"]
-    PG --> GC["tools/gate_conversion.py"]
-    GC --> PE
+    DS["dataset/main"] --> TR["research/training.py"]
     TR --> HF["Checkpoint Hugging Face tốt nhất"]
     HF --> BM["Benchmark Transformers"]
     HF --> CV["tools/conversion.py"]
@@ -29,64 +24,54 @@ flowchart TB
     CT2 --> PA["Kiểm tra parity + hiệu năng"]
 ```
 
-Runtime chỉ phụ thuộc hai model đã chuyển đổi, tokenizer, NumPy, RDFLib và ontology. Nó
-không import trainer, dataset curation hay code báo cáo.
+Runtime chỉ phụ thuộc một model đã chuyển đổi, tokenizer, RDFLib và ontology.
+Nó không import trainer, dataset curation hoặc code báo cáo.
 
 ## Trách nhiệm
 
 | Thành phần | Nhận | Trả | Không làm |
 |---|---|---|---|
-| Normalizer | Câu hỏi | Văn bản sạch nhẹ | Dò entity, sinh IRI |
-| Domain gate | Văn bản | Nhận/từ chối + xác suất | Sinh SPARQL, truy vấn ontology |
-| Model | Văn bản | SPARQL | Đọc literal trong ontology |
+| Normalizer | Câu hỏi | Văn bản sạch nhẹ | Dò entity, intent hoặc IRI |
+| Model | Văn bản | Marker hoặc SPARQL | Đọc literal trong ontology |
 | Validator | SPARQL | SPARQL an toàn | Sửa query |
 | RDFLib | SPARQL + graph | Các literal | Suy đoán ý người dùng |
 | Renderer | `list[dict]` | Văn bản | Chứa logic riêng cho ontology |
 
-`runtime/pipeline.py` là điểm đọc ngắn nhất để hiểu luồng chạy thật.
-`research/training.py` là điểm bắt đầu cho huấn luyện; `research/evaluation.py`
-định nghĩa metric dùng chung cho validation và test.
+Model là nơi duy nhất quyết định trong/ngoài miền. Backend chỉ nhận diện marker
+chính xác hoặc kiểm tra `SELECT`; không có threshold hay classifier thứ hai.
 
-Gate luôn chạy trước generator. Khi gate từ chối, pipeline dừng ngay và API
-trả thông báo phạm vi với HTTP 200; model sinh SPARQL và RDFLib không được gọi.
-Ngưỡng quyết định nằm trong manifest của artifact gate, không được hard-code
-trong webapp.
+## Xử lý lỗi
+
+Marker, query không hợp lệ và kết quả rỗng cùng trả `Không có thông tin.`. Lỗi
+nạp artifact, nạp ontology và lỗi lập trình không bị che thành phản hồi nghiệp
+vụ. Mỗi request được log với input chuẩn hoá, output model, trạng thái query,
+số dòng kết quả và latency.
 
 ## Vòng đời model
 
-Ba model dùng cùng interface cấp cao của Transformers:
+Ba model dùng cùng interface cấp cao:
 
 ```text
 AutoTokenizer → AutoModelForSeq2SeqLM → Seq2SeqTrainer
               → checkpoint → from_pretrained() → generate()
 ```
 
-Checkpoint Hugging Face được mở lại bằng `from_pretrained()` trong một tiến
-trình đánh giá độc lập và là nguồn điểm chất lượng chính. Chính checkpoint đó
-được chuyển sang CTranslate2. CTranslate2 chỉ dùng để kiểm tra parity, tốc độ
-và tài nguyên triển khai; sai khác sau conversion không được quy thành năng lực
-của pretrained model. Không có model lai hoặc trạng thái model đặc biệt trong
-RAM.
-
-PhoBERT là encoder chứ không phải model sinh chuỗi. CTranslate2 chuyển encoder
-nhưng không mang theo classification head của Transformers, vì vậy bước
-conversion xuất đúng bốn tensor đã fine-tune sang `classifier.npz`. Runtime
-thực hiện công thức gốc `CLS → Linear → tanh → Linear → softmax` bằng NumPy.
-Đây là cùng một gate, không phải ghép hai model học độc lập.
+Checkpoint Hugging Face được mở lại trong một tiến trình đánh giá độc lập rồi
+chuyển sang CTranslate2. CTranslate2 chỉ phục vụ triển khai và đo parity; không
+được dùng để thay đổi kết luận về năng lực checkpoint gốc.
 
 ## An toàn truy vấn
 
-Backend chỉ chấp nhận `SELECT`, cấm `SELECT *`, truy vấn liên kết ngoài và mọi
-thao tác thay đổi graph. Kết quả tối đa 100 dòng. URI hoặc blank node lọt ra
-kết quả bị xem là vi phạm contract: target phải project label hoặc literal.
+Backend chỉ chấp nhận `SELECT`, cấm `SELECT *`, truy vấn liên kết ngoài và thao
+tác thay đổi graph. URI hoặc blank node lọt ra kết quả là vi phạm contract:
+query phải project label hoặc literal.
 
 ## Dạng dữ liệu nội bộ
 
-Không có hierarchy DTO. Sau RDFLib, dữ liệu chỉ còn:
+Sau RDFLib, dữ liệu chỉ còn:
 
 ```python
 list[dict[str, str | int | float | bool | None]]
 ```
 
-Nhờ vậy query một cột, nhiều cột, danh sách và kết quả tổng hợp cùng đi qua một
-renderer.
+Không có hierarchy DTO hoặc cấu trúc traversal riêng.

@@ -1,157 +1,121 @@
 # NTU Ontology Chatbot
 
-Chatbot tiếng Việt trả lời câu hỏi học vụ bằng cách sinh trực tiếp truy vấn
-SPARQL và thực thi truy vấn trên ontology RDF.
+Chatbot tiếng Việt trả lời câu hỏi học vụ bằng cách chuyển câu hỏi thành SPARQL
+và truy vấn ontology RDF. Tài liệu này mô tả kiến trúc đã chốt cho lần xây lại
+từ nguồn công văn chính thức. Ontology, dataset, artifact và kết quả thực nghiệm
+cũ không được xem là kết quả của kiến trúc này.
+
+## Bài toán và phương pháp
+
+Hệ thống dùng một model encoder-decoder cho hai nhiệm vụ gắn liền nhau:
+
+1. từ chối câu hỏi mà ontology không thể trả lời trọn vẹn;
+2. sinh một truy vấn SPARQL `SELECT` cho câu hỏi được hỗ trợ.
+
+Model không chứa câu trả lời học vụ. Nội dung hướng dẫn, nhãn thực thể, email,
+địa điểm, mức học phí và các literal khác nằm trong ontology và chỉ được lấy ra
+khi backend thực thi SPARQL.
 
 ```mermaid
 flowchart LR
     Q["Câu hỏi tiếng Việt"] --> N["Chuẩn hoá nhẹ"]
-    N --> G{"PhoBERT gate<br/>thuộc miền ontology?"}
-    G -- "Không" --> X["Thông báo ngoài phạm vi"]
-    G -- "Có" --> M["Model seq2seq"]
-    M --> S["SPARQL SELECT"]
-    S --> V["Kiểm tra an toàn"]
-    V --> O["Ontology RDF"]
-    O --> A["Câu trả lời"]
+    N --> M["Model seq2seq"]
+    M --> D{"Output"}
+    D -- "không có thông tin" --> X["Không có thông tin."]
+    D -- "SELECT ..." --> V["Xác minh SPARQL"]
+    V -- "không hợp lệ" --> X
+    V -- "hợp lệ" --> O["RDFLib + ontology"]
+    O -- "không có kết quả" --> X
+    O -- "literal" --> R["Định dạng câu trả lời"]
 ```
 
-Model chịu trách nhiệm hiểu câu hỏi và tạo query. Backend kiểm tra query, thực
-thi bằng RDFLib và định dạng dữ liệu trả về; query không hợp lệ được báo là lỗi
-thay vì được tự động sửa đoán.
+Không có model phân loại thứ hai, fuzzy matching, tự sửa query hoặc logic dò IRI
+trong backend.
 
-Gate đứng trước model sinh SPARQL và chỉ cho qua câu hỏi mà ontology hiện tại
-có khả năng trả lời trọn vẹn. Gate được triển khai bằng encoder PhoBERT INT8
-trên CTranslate2 và classifier NumPy, nên runtime không cần PyTorch.
+## Ranh giới trong và ngoài miền
 
-## Dữ liệu nghiên cứu
+Output model chỉ có hai dạng:
 
-Dataset có 2.263 câu hỏi ánh xạ tới danh mục 215 truy vấn SPARQL canonical.
-Mỗi truy vấn có nhiều cách hỏi thuộc bốn phong cách: trang trọng, trung tính,
-khẩu ngữ và câu nhiễu/viết tắt.
+```text
+SELECT ?answer WHERE { ... }
+```
 
-| Tập | Câu hỏi | Truy vấn được hỗ trợ | Vai trò |
-|---|---:|---:|---:|
-| Train | 1.403 | 215 | Học toàn bộ danh mục truy vấn |
-| Validation | 430 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
-| Test | 430 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
+```text
+không có thông tin
+```
 
-Mỗi truy vấn có đúng hai câu validation, hai câu test và ít nhất bốn câu train.
-Hai câu của mỗi tập held-out dùng hai phong cách khác nhau. Validation và test
-giữ lại cách diễn đạt, không giữ lại logic truy vấn. Mọi
-target đều được parse, kiểm tra an toàn, chạy trực tiếp trên ontology và trả về
-ít nhất một dòng trước khi được dùng.
+Câu ngoài học vụ, câu gần học vụ nhưng ontology thiếu dữ liệu, câu mơ hồ và câu
+trộn nhiều yêu cầu mà có ít nhất một phần không được hỗ trợ đều dùng marker từ
+chối. Hệ thống không trả lời một phần câu hỗn hợp.
 
-Model học ánh xạ câu hỏi sang SPARQL, không chứa sẵn câu trả lời học vụ. Label,
-nội dung hướng dẫn, email, học phí và các literal khác vẫn được lấy từ ontology
-khi backend thực thi query.
+## Ontology
 
-![Phân bố split](reports/figures/dataset-splits.svg)
+Nguồn công văn chính thức quyết định dữ liệu và phạm vi trả lời. Ontology dùng
+IRI tiếng Anh ổn định, `rdfs:label@vi` cho tên tiếng Việt chính và
+`skos:altLabel@vi` cho tên gọi thay thế hữu ích. Object property tạo đường đi
+trên graph; label và datatype property là dữ liệu được trả về.
 
-Chi tiết dữ liệu nằm tại [docs/DATASET.md](docs/DATASET.md), số liệu máy đọc tại
-[reports/dataset.json](reports/dataset.json).
+Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
-Dataset gate tách riêng gồm 4.526 câu cân bằng tuyệt đối giữa `in_scope` và
-`out_of_scope`: 2.806 train, 860 validation và 860 test. Mỗi dòng chỉ chứa câu
-hỏi cùng nhãn phạm vi; các câu `in_scope` bao phủ toàn bộ 2.263 câu của dataset
-SPARQL.
+## Dataset
 
-## Mô hình
+Dataset duy nhất nằm tại `resources/dataset/main/` và gồm ba split
+`train.jsonl`, `val.jsonl`, `test.jsonl`. Câu trong miền ánh xạ tới SPARQL;
+câu ngoài miền ánh xạ tới `không có thông tin`. Các câu đã được người dùng thử
+trên giao diện được giữ tại `resources/cases/user_queries.txt` và phải được gán
+lại target theo ontology mới.
 
-Ba encoder-decoder được fine-tune và so sánh trên cùng dữ liệu, cách giải mã
-greedy và tiêu chí đánh giá:
+Không công bố số lượng hoặc biểu đồ từ dữ liệu cũ. Thống kê chỉ có giá trị sau
+khi dataset mới vượt kiểm tra schema, leakage, khả năng thực thi SPARQL và
+tokenizer.
 
-- `vinai/bartpho-syllable`
-- `VietAI/vit5-base`
-- `google/t5gemma-2-270m-270m`
+Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 
-Checkpoint được chọn bằng độ chính xác câu trả lời trên validation. Test chỉ
-được dùng một lần cho báo cáo cuối. Các metric phân biệt rõ query có parse
-được, chạy được, trả đúng dữ liệu hay trùng hoàn toàn chuỗi target.
+## Mô hình và đánh giá
 
-## Đánh giá thực nghiệm
+Ba model được fine-tune và benchmark công bằng trên cùng dataset:
 
-Answer exact là tiêu chí chính: toàn bộ dữ liệu trả về phải trùng reference,
-không phụ thuộc tên biến hay thứ tự dòng. Parse rate, execution rate, Result
-precision/recall/F1 và query exact được dùng để chẩn đoán lỗi.
+- `vinai/bartpho-syllable`;
+- `VietAI/vit5-base`;
+- `google/t5gemma-2-270m-270m`.
 
-| Model | Validation Answer Exact | Test Answer Exact | Test Result F1 | Test parse / execution |
-|---|---:|---:|---:|---:|
-| BARTpho | 4,65% | 4,19% | 5,19% | 57,91% |
-| ViT5 | 29,30% | 29,53% | 31,96% | 99,77% |
-| T5Gemma2 | **93,95%** | **91,86%** | **92,38%** | **100%** |
+Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
+miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
+hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn
+bộ test. Điểm model cũ không đại diện cho dataset/ontology mới nên không xuất
+hiện trong tài liệu này.
 
-T5Gemma2 là model duy nhất vượt ngưỡng nghiệm thu 90% Answer Exact trên test.
-Chênh lệch nhỏ giữa validation và test cho thấy kết quả ổn định trên hai tập
-cách diễn đạt held-out. BARTpho và ViT5 học được một phần cú pháp SPARQL nhưng
-không đạt chất lượng trả lời cần thiết cho hệ thống.
+Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
+tại [docs/EVALUATION.md](docs/EVALUATION.md).
 
-![So sánh model](reports/figures/model-comparison.svg)
-
-![Answer Exact theo phong cách câu hỏi](reports/figures/test-by-register.svg)
-
-Gate PhoBERT đạt recall trong miền **95,58%** và false acceptance rate
-**1,16%** trên 860 câu test. Sau khi chuyển sang CTranslate2 INT8, ma trận
-nhầm lẫn vẫn giữ nguyên: 411 câu đúng miền được nhận, 19 câu đúng miền bị từ
-chối, 5 câu ngoài miền bị nhận nhầm và 425 câu ngoài miền được chặn.
-
-Đường học, kết quả theo đặc trưng SPARQL và số liệu máy đọc đầy đủ nằm trong
-[reports](reports/README.md). Định nghĩa metric và giao thức nghiệm thu nằm tại
-[docs/EVALUATION.md](docs/EVALUATION.md).
-
-## Môi trường thực nghiệm
-
-Benchmark được chạy trên Fedora Linux 44, Python 3.12.13, PyTorch 2.13.0
-(CUDA 13.0), Transformers 5.14.1 và RDFLib 7.6.0. Phần cứng là NVIDIA GeForce
-RTX 4050 Laptop GPU 6 GB; fine-tuning dùng BF16, TF32 và dynamic padding, không
-dùng `torch.compile`. Cấu hình tái lập đầy đủ và câu lệnh chạy nằm tại
-[docs/TRAINING.md](docs/TRAINING.md).
-
-## Cấu trúc project
+## Kiến trúc phần mềm
 
 ```text
 resources/
-├── ontology/ontology.ttl       # nguồn dữ liệu RDF duy nhất
-└── dataset/
-    ├── main/                   # câu hỏi → SPARQL
-    └── gate/                   # câu hỏi → in_scope / out_of_scope
+├── ontology/ontology.ttl
+├── cases/user_queries.txt
+└── dataset/main/
 src/ontchatbot/
-├── runtime/                    # model → validator → RDFLib → renderer/API
-├── research/                   # dataset, train, evaluation và báo cáo
-├── tools/                      # tokenizer và chuyển đổi model
-├── cli/                        # entry point dòng lệnh
+├── runtime/      # inference, SPARQL, RDFLib, renderer và API
+├── research/     # dataset, fine-tuning, benchmark và báo cáo
+├── tools/        # tokenizer và chuyển đổi artifact
+├── cli/          # entry point dòng lệnh
 └── settings.py
-docs/                           # đặc tả dành cho người đọc project
-reports/                        # số liệu và biểu đồ có thể sinh lại
-tests/                          # kiểm tra theo đúng các package ở trên
+docs/             # concept và đặc tả kỹ thuật
+reports/          # JSON nguồn và biểu đồ được sinh lại
+tests/            # kiểm tra theo package
 ```
 
-Muốn hiểu hệ thống, đọc [docs/CONCEPT.md](docs/CONCEPT.md) rồi
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Muốn đánh giá nghiên cứu, đọc
-[docs/DATASET.md](docs/DATASET.md), [docs/TRAINING.md](docs/TRAINING.md) và
-[docs/EVALUATION.md](docs/EVALUATION.md).
-
-## Chạy kiểm tra
-
-```bash
-uv sync --dev
-uv run validate_gate_dataset
-uv run validate_sparql_dataset
-uv run generate_reports
-uv run pytest
-```
-
-Huấn luyện cần extra `train` và GPU hỗ trợ BF16:
-
-```bash
-uv sync --extra train --dev
-uv run --extra train train_sparql \
-  --model bartpho \
-  --save-model \
-  --benchmark-after-training
-```
-
-Thay `bartpho` bằng `vit5` hoặc `t5gemma2` để chạy model còn lại. Hướng dẫn
-đầy đủ nằm tại [docs/TRAINING.md](docs/TRAINING.md).
-
-Lệnh chuyển đổi và khởi động webapp với cả hai artifact production nằm tại
+Runtime production chỉ cần một artifact seq2seq đã chuyển đổi, tokenizer,
+RDFLib và ontology. Thiết kế module chi tiết nằm tại
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md); contract triển khai nằm tại
 [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+## Tái lập nghiên cứu
+
+Trình tự duy nhất là: xây ontology từ tài liệu chính thức, lập danh mục SPARQL
+có kết quả, xây dataset hợp nhất, kiểm tra tokenizer, fine-tune ba model cùng
+giao thức, benchmark checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
+
+Không giữ số liệu giả, không tái sử dụng benchmark hết hiệu lực và không dùng
+test để chọn checkpoint.
