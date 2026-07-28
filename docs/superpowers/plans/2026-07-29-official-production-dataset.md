@@ -1,6 +1,6 @@
 # Official Production Dataset Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Replace the stale ontology-coupled dataset and PhoBERT gate with one validated dataset that trains a seq2seq model to emit executable SPARQL or `không có thông tin`.
 
@@ -75,7 +75,7 @@
 - Consumes: `QueryGenerator.generate(text: str) -> str`, `NO_INFORMATION_REPLY`.
 - Produces: `OntologyChatbot(generator: QueryGenerator, graph: Graph | None = None)` whose `answer()` handles both model outputs.
 
-- [ ] **Step 1: Rewrite runtime tests for the one-model contract**
+- [x] **Step 1: Rewrite runtime tests for the one-model contract**
 
 Add tests equivalent to:
 
@@ -93,13 +93,13 @@ def test_select_output_executes_without_gate(graph):
 Update CLI tests so `serve_sparql --model-dir model` is sufficient and
 `--gate-model-dir` is rejected.
 
-- [ ] **Step 2: Run the focused tests and confirm the old API fails**
+- [x] **Step 2: Run the focused tests and confirm the old API fails**
 
 Run: `uv run pytest tests/runtime/test_inference.py tests/runtime/test_serve.py tests/runtime/test_serve_cli.py -q`
 
 Expected: FAIL because `OntologyChatbot` still requires `gate` and the CLI still requires `--gate-model-dir`.
 
-- [ ] **Step 3: Implement marker dispatch and remove gate loading**
+- [x] **Step 3: Implement marker dispatch and remove gate loading**
 
 Use a module constant for the model marker and branch before SPARQL validation:
 
@@ -115,7 +115,7 @@ return render_rows(rows)
 
 Keep trace logging for raw input, normalized input, exact model output, ontology row count, reply, failure stage, and timings. Remove `OutOfScopeError`, `DomainGate`, gate probability, threshold, gate environment variables, gate CLI entry points, and all gate-only modules/tests/resources listed above.
 
-- [ ] **Step 4: Run runtime and import verification**
+- [x] **Step 4: Run runtime and import verification**
 
 Run: `uv run pytest tests/runtime -q`
 
@@ -123,7 +123,7 @@ Run: `rg -n "DomainGate|PhoBERT|GATE_DIR|gate-model-dir|domain_gate" src pyproje
 
 Expected: runtime tests PASS; `rg` returns no active-code match.
 
-- [ ] **Step 5: Commit the one-model runtime**
+- [x] **Step 5: Commit the one-model runtime**
 
 ```bash
 git add pyproject.toml src/ontchatbot tests/runtime tests/research tests/tools
@@ -141,7 +141,7 @@ git commit -m "Remove the separate domain gate"
 - Consumes: raw arbitrary Unicode text.
 - Produces: `normalize_model_input(text: str) -> str`, deterministic and idempotent.
 
-- [ ] **Step 1: Add regression tests from real user wording**
+- [x] **Step 1: Add regression tests from real user wording**
 
 Cover at least these exact expectations:
 
@@ -163,17 +163,17 @@ def test_real_input_normalization(source, expected):
 
 Also assert idempotence for every case and verify `k65`/`khoa65` become `khoá 65` without interpreting arbitrary letter-number IDs.
 
-- [ ] **Step 2: Run normalization tests before editing**
+- [x] **Step 2: Run normalization tests before editing**
 
 Run: `uv run pytest tests/runtime/test_model_text.py -q`
 
 Expected: at least the new compact-token case fails.
 
-- [ ] **Step 3: Implement only confirmed normalization rules**
+- [x] **Step 3: Implement only confirmed normalization rules**
 
 Retain the explicit user decision `hp → học phần`. Port only useful behavior from `test_preprocess.py`: repeated-character cleanup for known chat tokens and safe cohort/credit forms. Do not port URL removal, alias matching, intent detection, word segmentation, or fuzzy normalization. Keep whole-token matching and document every retained one-character mapping in the test table.
 
-- [ ] **Step 4: Verify normalizer parity across code paths**
+- [x] **Step 4: Verify normalizer parity across code paths**
 
 Run: `rg -n "normalize_model_input" src/ontchatbot/research src/ontchatbot/runtime`
 
@@ -181,7 +181,7 @@ Run: `uv run pytest tests/runtime/test_model_text.py tests/runtime/test_inferenc
 
 Expected: all tests PASS; trainer, Transformers evaluator, CTranslate2 evaluator, runtime model, pipeline, benchmark, and reporting import the same function.
 
-- [ ] **Step 5: Commit preprocessing**
+- [x] **Step 5: Commit preprocessing**
 
 ```bash
 git add src/ontchatbot/runtime/text.py tests/runtime/test_model_text.py
@@ -199,7 +199,7 @@ git commit -m "Harden Vietnamese input normalization"
 - Produces: `SlotSpec`, `QuerySpec`, `load_catalogue(path: Path) -> dict[str, QuerySpec]`, `match_target(spec: QuerySpec, target: str) -> dict[str, str] | None`.
 - Catalogue path: `QUERY_CATALOGUE_PATH = DATASET_DIR / "catalogue.jsonl"`.
 
-- [ ] **Step 1: Write tests for static, IRI-slot, numeric-slot, and repeated-slot templates**
+- [x] **Step 1: Write tests for static, IRI-slot, numeric-slot, and repeated-slot templates**
 
 Use catalogue records shaped as:
 
@@ -211,13 +211,13 @@ Use catalogue records shaped as:
 
 Tests must reject duplicate `query_id`, unknown domain, missing slot declaration, unused slot, invalid local IRI, finite slot values absent from the template, and a repeated `${score}` that is instantiated with two different numbers.
 
-- [ ] **Step 2: Run catalogue tests and confirm the module is absent**
+- [x] **Step 2: Run catalogue tests and confirm the module is absent**
 
 Run: `uv run pytest tests/research/test_catalogue.py -q`
 
 Expected: FAIL with `ModuleNotFoundError: ontchatbot.research.catalogue`.
 
-- [ ] **Step 3: Implement strict loading and target matching**
+- [x] **Step 3: Implement strict loading and target matching**
 
 Use immutable dataclasses:
 
@@ -238,13 +238,13 @@ class QuerySpec:
 
 Compile `${name}` placeholders with full-string matching. IRI slots accept only declared prefixed names such as `:CourseRetakeProcedure`; number slots accept canonical signed integers/decimals and repeated occurrences use a regex backreference. Marker templates are matched literally.
 
-- [ ] **Step 4: Run unit tests**
+- [x] **Step 4: Run unit tests**
 
 Run: `uv run pytest tests/research/test_catalogue.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit catalogue infrastructure**
+- [x] **Step 5: Commit catalogue infrastructure**
 
 ```bash
 git add src/ontchatbot/research/catalogue.py src/ontchatbot/settings.py tests/research/test_catalogue.py
@@ -265,7 +265,7 @@ git commit -m "Add the query catalogue contract"
 - Consumes: `dict[str, QuerySpec]` from `load_catalogue`.
 - Produces: catalogue-aware `validate_dataset`, `validate_release`, and `validate_benchmark`; evaluation reports with separate `in_domain` and `out_of_domain` sections.
 
-- [ ] **Step 1: Replace stale one-target-per-query tests**
+- [x] **Step 1: Replace stale one-target-per-query tests**
 
 Add fixture rows where two different numeric targets both use `query_id="performance-band"`, and marker rows use `query_id="no-information"`. Assert:
 
@@ -276,13 +276,13 @@ assert report["slot_coverage"]["procedure-instruction"]["procedure"]["missing_tr
 
 Benchmark tests must allow a held-out numeric target absent verbatim from train when its query family and finite IRI values are supported by train. They must still reject an unknown `query_id`, a target that does not match its template, an unseen finite IRI, and a marker with different spelling.
 
-- [ ] **Step 2: Run focused research tests and confirm old assumptions fail**
+- [x] **Step 2: Run focused research tests and confirm old assumptions fail**
 
 Run: `uv run pytest tests/research/test_dataset.py tests/research/test_benchmark.py tests/research/test_evaluation.py -q`
 
 Expected: FAIL because the old validator always calls `validate_select`, enforces one target per query ID, and requires verbatim benchmark targets in train.
 
-- [ ] **Step 3: Implement catalogue-aware validation**
+- [x] **Step 3: Implement catalogue-aware validation**
 
 Change signatures to accept the catalogue explicitly or load the canonical path:
 
@@ -293,17 +293,17 @@ def validate_benchmark(rows, graph, *, catalogue, training_rows=None) -> dict[st
 
 For each row: resolve `query_id`, match `target_template`, and only parse/execute targets whose domain is not `out-of-domain`. Require every query family in all three splits, all four registers in train per family, two distinct registers in each held-out split, and every finite slot value in train. Restrict near-duplicate rejection to rows sharing a `query_id`; continue rejecting exact normalized duplicates globally.
 
-- [ ] **Step 4: Implement marker-aware evaluation**
+- [x] **Step 4: Implement marker-aware evaluation**
 
 For marker references, `answer_exact` is exact marker equality and false acceptance means a predicted `SELECT` that validates, executes, and returns rows. For SPARQL references, retain parse rate, execution rate, Result F1, canonical exact, and execution Answer Exact. Return separate `in_domain`, `out_of_domain`, `overall`, `by_register`, and `by_query_id` reports.
 
-- [ ] **Step 5: Run focused tests**
+- [x] **Step 5: Run focused tests**
 
 Run: `uv run pytest tests/research/test_catalogue.py tests/research/test_dataset.py tests/research/test_benchmark.py tests/research/test_evaluation.py -q`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit contract updates**
+- [x] **Step 6: Commit contract updates**
 
 ```bash
 git add src/ontchatbot/research/dataset.py src/ontchatbot/research/benchmark.py src/ontchatbot/research/evaluation.py tests/research/test_dataset.py tests/research/test_benchmark.py tests/research/test_evaluation.py
@@ -323,7 +323,7 @@ git commit -m "Validate dynamic SPARQL and rejection targets"
 - Consumes: the 20 `AcademicProcedure` individuals and their populated edges in `ontology.ttl`.
 - Produces: executable procedure query families and independently worded split rows.
 
-- [ ] **Step 1: Add release coverage tests before replacing data**
+- [x] **Step 1: Add release coverage tests before replacing data**
 
 Assert the catalogue contains these procedure families:
 
@@ -343,13 +343,13 @@ PROCEDURE_FAMILIES = {
 
 Assert all 20 procedure IRIs appear in at least one finite catalogue slot and in train, every reference SPARQL executes, every projected value is a literal, and no target directly selects a `Chapter`, `Article`, `Clause`, or `Point` individual.
 
-- [ ] **Step 2: Run the new content tests against stale data**
+- [x] **Step 2: Run the new content tests against stale data**
 
 Run: `uv run pytest tests/research/test_dataset_content.py -q`
 
 Expected: FAIL because `catalogue.jsonl` does not exist and old targets reference removed properties.
 
-- [ ] **Step 3: Author catalogue entries from populated ontology edges**
+- [x] **Step 3: Author catalogue entries from populated ontology edges**
 
 Use only procedures for which each edge exists. Templates must follow these canonical shapes:
 
@@ -366,7 +366,7 @@ SELECT ?answer WHERE { ${procedure} :requiresForm ?form . ?entry :catalogueEntry
 
 The overview family may use `OPTIONAL` for populated user-facing fields, but must project only `?instruction`, `?eligibility`, `?deadline`, `?result`, `?office`, `?form`, or `?url`. Do not expose source component labels as answers.
 
-- [ ] **Step 4: Curate raw Vietnamese questions across splits**
+- [x] **Step 4: Curate raw Vietnamese questions across splits**
 
 For every family, train contains all four registers and every finite procedure IRI. Validation/test each contain at least two registers and never repeat a normalized train sentence. Include real patterns such as:
 
@@ -377,7 +377,7 @@ For every family, train contains all four registers and every finite procedure I
 
 Write each question for its intended split; do not derive validation/test by synonym substitution from a train sentence.
 
-- [ ] **Step 5: Validate the procedure-only release**
+- [x] **Step 5: Validate the procedure-only release**
 
 Run: `uv run validate_sparql_dataset`
 
@@ -385,7 +385,7 @@ Run: `uv run pytest tests/research/test_dataset_content.py tests/ontology/test_s
 
 Expected: all targets execute and all 20 procedures are covered; no old `content`, `condition`, `outcome`, `handledBy`, or `receivedBy` target remains.
 
-- [ ] **Step 6: Commit the procedure core**
+- [x] **Step 6: Commit the procedure core**
 
 ```bash
 git add resources/dataset/main/catalogue.jsonl resources/dataset/main/train.jsonl resources/dataset/main/val.jsonl resources/dataset/main/test.jsonl tests/research/test_dataset_content.py
@@ -405,7 +405,7 @@ git commit -m "Build the official procedure dataset"
 - Consumes: official tuition, payment, form, academic-rule, and certificate individuals.
 - Produces: secondary-domain query families with finite IRI coverage and numeric examples.
 
-- [ ] **Step 1: Add failing coverage assertions**
+- [x] **Step 1: Add failing coverage assertions**
 
 Require these families:
 
@@ -430,13 +430,13 @@ SECONDARY_FAMILIES = {
 
 Tests compare finite slot coverage with ontology individuals: all programs referenced by a `TuitionRate`, all 15 language certificates, all 3 computer certificates, and every course category used by a `ClassSizeRule` must occur in train.
 
-- [ ] **Step 2: Run content tests and confirm missing families**
+- [x] **Step 2: Run content tests and confirm missing families**
 
 Run: `uv run pytest tests/research/test_dataset_content.py -q`
 
 Expected: FAIL listing the absent secondary families.
 
-- [ ] **Step 3: Add canonical secondary templates**
+- [x] **Step 3: Add canonical secondary templates**
 
 Use ontology-tested shapes, including numeric copying:
 
@@ -448,11 +448,11 @@ SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificat
 
 Tuition templates must constrain only combinations represented by `TuitionRate`; form-download templates must traverse `catalogueEntryForForm`; payment answers use labels or literal policy text.
 
-- [ ] **Step 4: Curate secondary questions and boundary values**
+- [x] **Step 4: Curate secondary questions and boundary values**
 
 Cover minimum, maximum, inclusive-boundary, cohort, program alias, certificate abbreviation, and numeric decimal wording. Every finite slot value appears in train. Validation/test use independent wording and numeric values that still produce non-empty results.
 
-- [ ] **Step 5: Validate secondary coverage**
+- [x] **Step 5: Validate secondary coverage**
 
 Run: `uv run validate_sparql_dataset`
 
@@ -460,7 +460,7 @@ Run: `uv run pytest tests/research/test_dataset_content.py tests/ontology -q`
 
 Expected: PASS with no empty query result and complete finite-slot coverage.
 
-- [ ] **Step 6: Commit secondary domains**
+- [x] **Step 6: Commit secondary domains**
 
 ```bash
 git add resources/dataset/main tests/research/test_dataset_content.py
@@ -486,27 +486,27 @@ git commit -m "Cover official secondary ontology domains"
 - Consumes: audited `out_of_scope` questions from the removed gate release and real inputs in `resources/cases/user_queries.txt`/`test.html`.
 - Produces: `query_id="no-information"`, `target="không có thông tin"` examples in all splits.
 
-- [ ] **Step 1: Add rejection-content tests**
+- [x] **Step 1: Add rejection-content tests**
 
 Require all six classes in `rejection_checklist.json`: `greeting-social`, `unrelated`, `near-domain-missing`, `ambiguous`, `nonsensical-noisy`, and `mixed`. Every listed ID must exist in exactly one split and have the marker target; every class must occur in all three splits. Require marker rows in all four registers and between 20% and 35% of each split.
 
 Hard-code regression expectations for the seven current `user_queries.txt` lines after manually assigning each one to SPARQL or marker; a real user query must not be silently omitted.
 
-- [ ] **Step 2: Run tests before importing negatives**
+- [x] **Step 2: Run tests before importing negatives**
 
 Run: `uv run pytest tests/research/test_dataset_content.py -q`
 
 Expected: FAIL because the procedure/secondary release has no marker examples.
 
-- [ ] **Step 3: Audit and migrate useful gate negatives**
+- [x] **Step 3: Audit and migrate useful gate negatives**
 
 Read every old `out_of_scope` row while `resources/dataset/gate` is still present. Keep natural, distinct Vietnamese questions; discard machine-like duplicates, malformed fragments with no interpretable intent, and questions now answered by the official ontology. Convert retained rows to the five-field main schema and marker target. Record released row IDs under their review class in `rejection_checklist.json`; do not copy the old binary label or provenance metadata. Delete `resources/dataset/gate` only after all retained rows have been validated in the main release.
 
-- [ ] **Step 4: Label real user inputs**
+- [x] **Step 4: Label real user inputs**
 
 For each line in `resources/cases/user_queries.txt` and each unique chat input extracted from `test.html`, execute the intended query against the new ontology. Assign SPARQL only when it answers the complete request; otherwise assign the marker. Place paraphrase families in one split only to prevent leakage.
 
-- [ ] **Step 5: Validate rejection balance and leakage**
+- [x] **Step 5: Validate rejection balance and leakage**
 
 Run: `uv run validate_sparql_dataset`
 
@@ -514,7 +514,7 @@ Run: `uv run pytest tests/research/test_dataset.py tests/research/test_dataset_c
 
 Expected: PASS; marker spelling is exact; every split stays within the declared 20–35% rejection range.
 
-- [ ] **Step 6: Commit unified in/out-domain data**
+- [x] **Step 6: Commit unified in/out-domain data**
 
 ```bash
 git add resources/dataset/main resources/dataset/gate resources/cases/user_queries.txt resources/cases/rejection_checklist.json tests/research/test_dataset_content.py
@@ -540,7 +540,7 @@ git commit -m "Add production rejection and user cases"
 - Consumes: validated catalogue/release and canonical ontology.
 - Produces: reproducible counts, distributions, SHA-256 checksums, and reader-facing documentation with no stale gate/model-version narrative.
 
-- [ ] **Step 1: Write report tests for the new contract**
+- [x] **Step 1: Write report tests for the new contract**
 
 Assert the public report includes:
 
@@ -554,17 +554,17 @@ assert report["sha256"]["catalogue.jsonl"]
 
 Remove assumptions that every query ID maps to one target or that only three split files contribute to the release checksum.
 
-- [ ] **Step 2: Run reporting tests and observe stale assumptions**
+- [x] **Step 2: Run reporting tests and observe stale assumptions**
 
 Run: `uv run pytest tests/research/test_reporting.py -q`
 
 Expected: FAIL until reporting loads the catalogue and marker-aware validation.
 
-- [ ] **Step 3: Generate the manifest and public dataset report**
+- [x] **Step 3: Generate the manifest and public dataset report**
 
 Record exact row counts per split, query-family/domain/register counts, in/out-domain counts, tokenizer round-trip status, ontology SHA-256, and SHA-256 for catalogue/train/val/test. Do not report old benchmark accuracy as if it applied to this dataset.
 
-- [ ] **Step 4: Rewrite reader-facing documentation**
+- [x] **Step 4: Rewrite reader-facing documentation**
 
 Explain in Vietnamese:
 
@@ -575,7 +575,7 @@ câu hỏi → preprocessing → model → marker hoặc SPARQL → RDFLib → c
 
 State that procedures are central, source document nodes are provenance, raw questions are stored before preprocessing, and a single model handles rejection. Remove gate CLI commands, threshold, PhoBERT, stale `215 query`/`2.263 sample` figures, and old ontology properties.
 
-- [ ] **Step 5: Verify generated and written material**
+- [x] **Step 5: Verify generated and written material**
 
 Run: `uv run generate_reports`
 
@@ -585,7 +585,7 @@ Run: `rg -n "PhoBERT|domain gate|dataset/gate|gate-model-dir|:content|:condition
 
 Expected: reporting tests PASS; the final `rg` returns no stale active-contract match.
 
-- [ ] **Step 6: Commit synchronized documentation and reports**
+- [x] **Step 6: Commit synchronized documentation and reports**
 
 ```bash
 git add src/ontchatbot/research/reporting.py resources/dataset/main README.md docs tests/research/test_reporting.py
@@ -601,25 +601,25 @@ git commit -m "Document the official production dataset"
 - Consumes: complete one-model code, catalogue, dataset, ontology, and docs.
 - Produces: evidence that the project is ready for a separate fine-tuning phase.
 
-- [ ] **Step 1: Validate the release from its public CLI**
+- [x] **Step 1: Validate the release from its public CLI**
 
 Run: `uv run validate_sparql_dataset`
 
 Expected: exit 0, zero empty SPARQL results, zero missing finite slot values, zero leakage errors.
 
-- [ ] **Step 2: Verify tokenizer round trips**
+- [x] **Step 2: Verify tokenizer round trips**
 
 Run: `uv run pytest tests/tools/test_model_tokenizers.py -q`
 
 Expected: all configured model tokenizers round-trip every unique target and marker without `<unk>` corruption.
 
-- [ ] **Step 3: Run the complete test suite**
+- [x] **Step 3: Run the complete test suite**
 
 Run: `uv run pytest -q`
 
 Expected: all tests PASS; no expected-failure exemption for stale dataset or gate behavior.
 
-- [ ] **Step 4: Check repository hygiene**
+- [x] **Step 4: Check repository hygiene**
 
 Run: `git diff --check`
 
@@ -627,7 +627,7 @@ Run: `git status --short`
 
 Expected: no task-owned uncommitted file; unrelated user-owned files remain untouched and are reported separately.
 
-- [ ] **Step 5: Route any defect back to its owning task**
+- [x] **Step 5: Route any defect back to its owning task**
 
 If Steps 1–4 expose a defect, return to the task that owns the affected file,
 add a regression test there, repeat that task's focused verification, and use
