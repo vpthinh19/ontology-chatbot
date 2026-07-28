@@ -17,7 +17,7 @@ def _example(
 
 def test_perfect_prediction_scores_every_metric() -> None:
     target = (
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . "
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     report = evaluate_predictions([_example(target)], [target], load_ontology())
@@ -36,11 +36,11 @@ def test_perfect_prediction_scores_every_metric() -> None:
 
 def test_equivalent_query_keeps_answer_metric_but_not_canonical_exact() -> None:
     target = (
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . "
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     equivalent = (
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?office . "
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?office . "
         "?office rdfs:label ?answer . }"
     )
     report = evaluate_predictions([_example(target)], [equivalent], load_ontology())
@@ -50,8 +50,8 @@ def test_equivalent_query_keeps_answer_metric_but_not_canonical_exact() -> None:
 
 
 def test_answer_metric_ignores_variable_names() -> None:
-    target = "SELECT ?answer WHERE { :StudentAffairsOffice :email ?answer . }"
-    equivalent = "SELECT ?email WHERE { :StudentAffairsOffice :email ?email . }"
+    target = "SELECT ?answer WHERE { :StudentAffairsOffice rdfs:label ?answer . }"
+    equivalent = "SELECT ?label WHERE { :StudentAffairsOffice rdfs:label ?label . }"
 
     report = evaluate_predictions([_example(target)], [equivalent], load_ontology())
 
@@ -60,7 +60,7 @@ def test_answer_metric_ignores_variable_names() -> None:
 
 
 def test_invalid_prediction_is_counted_without_crashing() -> None:
-    target = "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
+    target = "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }"
     report = evaluate_predictions(
         [_example(target, register="noisy")],
         ["SELECT ?answer WHERE {"],
@@ -126,13 +126,16 @@ def test_result_metrics_are_macro_averaged_per_query() -> None:
 
 def test_reports_overlapping_query_features_and_missing_branch() -> None:
     target = (
-        "SELECT ?content ?condition WHERE { "
-        ":AcademicLeaveProcedure :content ?content . "
-        ":AcademicLeaveProcedure :condition ?condition . }"
+        "SELECT ?content ?document WHERE { "
+        ":TemporaryAcademicLeaveProcedure :instructionProvision ?part . "
+        "?part :officialText ?content . "
+        ":TemporaryAcademicLeaveProcedure :requiresForm ?form . "
+        "?form rdfs:label ?document . }"
     )
     prediction = (
-        "SELECT ?content ?condition WHERE { "
-        ":AcademicLeaveProcedure :content ?content . }"
+        "SELECT ?content ?document WHERE { "
+        ":TemporaryAcademicLeaveProcedure :instructionProvision ?part . "
+        "?part :officialText ?content . }"
     )
     report = evaluate_predictions(
         [_example(target)],

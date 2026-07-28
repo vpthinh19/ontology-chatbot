@@ -25,7 +25,7 @@ class _Tokenizer:
         return [int(token[1:]) for token in tokens]
 
     def decode(self, ids, **kwargs):
-        return " SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . } "
+        return " SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . } "
 
 
 class _Translator:
@@ -69,7 +69,7 @@ def test_ctranslate_generator_uses_specific_error_for_empty_output() -> None:
 
 def test_chatbot_connects_generated_query_to_ontology() -> None:
     query = (
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . "
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)
@@ -121,7 +121,7 @@ def test_chatbot_logs_rejected_gate_decision(caplog) -> None:
 
 def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
     query = (
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . "
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)

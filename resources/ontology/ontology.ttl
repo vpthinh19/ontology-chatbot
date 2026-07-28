@@ -5,12 +5,6 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-:AcademicManagementUnit a :AcademicActor,
-        :OrganizationalUnit,
-        owl:NamedIndividual ;
-    rdfs:label "Đơn vị quản lý đào tạo"@vi ;
-    :sourceDocument :Decision1052 .
-
 :AcademicOntology a owl:Ontology ;
     rdfs:label "Ontology học vụ Trường Đại học Nha Trang"@vi .
 
@@ -81,7 +75,8 @@
     :instructionProvision :Decision1052Article17 ;
     :requiresForm :Decision1052Form03 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article17 .
+    :sourceProvision :Decision1052Article17 ;
+    :submittedTo :FacultyOrInstitute .
 
 :Cohort63Accredited620Rate a :TuitionRate,
         owl:NamedIndividual ;
@@ -400,8 +395,10 @@
     rdfs:label "Quy trình miễn học, miễn thi và cộng điểm thưởng"@vi ;
     :instructionProvision :Decision1052Article21 ;
     :requiresForm :Decision1052Form07 ;
+    :reviewedBy :ProfessionalCouncil ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article21 .
+    :sourceProvision :Decision1052Article21 ;
+    :submittedTo :AcademicManagementUnit .
 
 :CourseRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -424,8 +421,10 @@
     rdfs:label "Quy trình công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
     :instructionProvision :Decision1052Article21 ;
     :requiresForm :Decision1052Form06 ;
+    :reviewedBy :ProfessionalCouncil ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article21 .
+    :sourceProvision :Decision1052Article21 ;
+    :submittedTo :AcademicManagementUnit .
 
 :DefenseEducationPracticeClassSizeRule a :ClassSizeRule,
         owl:NamedIndividual ;
@@ -467,10 +466,12 @@
 :DismissalTransferRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin chuyển chương trình sau khi bị buộc thôi học"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article20 ;
     :requiresForm :Decision1052Form05 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article20 .
+    :sourceProvision :Decision1052Article20 ;
+    :submittedTo :StudentAffairsOffice .
 
 :DoctoralBachelorEntryFourYearRule a :DoctoralTuitionDurationRule,
         owl:NamedIndividual ;
@@ -495,8 +496,10 @@
     rdfs:label "Quy trình đề nghị xét tốt nghiệp sớm"@vi ;
     :instructionProvision :Decision1052Article22 ;
     :requiresForm :Decision1052Form08 ;
+    :reviewedBy :GraduationCouncil ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article22 .
+    :sourceProvision :Decision1052Article22 ;
+    :submittedTo :AcademicManagementUnit .
 
 :EconomicsTourismLawClassSizeRule a :ClassSizeRule,
         owl:NamedIndividual ;
@@ -1096,7 +1099,8 @@
     :instructionProvision :Decision1052Article17 ;
     :requiresForm :Decision1052Form04 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article17 .
+    :sourceProvision :Decision1052Article17 ;
+    :submittedTo :AcademicManagementUnit .
 
 :ExcellentAcademicPerformanceBand a :AcademicPerformanceBand,
         owl:NamedIndividual ;
@@ -1125,16 +1129,12 @@
 :ExtraClassOpeningRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đề nghị mở thêm lớp học phần"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article10 ;
     :requiresForm :Decision1052Form01 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article10 .
-
-:FacultyOrInstitute a :AcademicActor,
-        :OrganizationalUnit,
-        owl:NamedIndividual ;
-    rdfs:label "Khoa hoặc viện đào tạo"@vi ;
-    :sourceDocument :Decision1052 .
+    :sourceProvision :Decision1052Article10 ;
+    :submittedTo :AcademicManagementUnit .
 
 :FairAcademicPerformanceBand a :AcademicPerformanceBand,
         owl:NamedIndividual ;
@@ -1257,12 +1257,6 @@
     :sourceProvision :Decision1052Article11 ;
     skos:altLabel "học cải thiện"@vi .
 
-:GraduationCouncil a :AcademicActor,
-        :DecisionAuthority,
-        owl:NamedIndividual ;
-    rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
-    :sourceDocument :Decision1052 .
-
 :GraduationProjectRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp"@vi ;
@@ -1275,7 +1269,9 @@
 :GraduationReviewProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xét và công nhận tốt nghiệp"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article22 ;
+    :reviewedBy :GraduationCouncil ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 .
 
@@ -1413,10 +1409,12 @@
 :MajorChangeProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình chuyển ngành"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article25 ;
     :requiresForm :Decision1052Form12 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article25 .
+    :sourceProvision :Decision1052Article25 ;
+    :submittedTo :StudentAffairsOffice .
 
 :ManufacturingEngineering a :AcademicProgram,
         owl:NamedIndividual ;
@@ -1549,12 +1547,6 @@
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
 
-:ProfessionalCouncil a :AcademicActor,
-        :DecisionAuthority,
-        owl:NamedIndividual ;
-    rdfs:label "Hội đồng chuyên môn"@vi ;
-    :sourceDocument :Decision1052 .
-
 :QRCodeFreeFee a :PaymentFeeRule,
         owl:NamedIndividual ;
     rdfs:label "Miễn phí thanh toán QR"@vi ;
@@ -1571,6 +1563,7 @@
     :requiresForm :Decision1052Form15 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article28 ;
+    :submittedTo :AcademicManagementUnit ;
     skos:altLabel "học chương trình thứ hai"@vi .
 
 :SecondStudyYearBand a :StudyYearBand,
@@ -3564,43 +3557,44 @@
     rdfs:label "Sinh viên"@vi ;
     :sourceDocument :Decision1052 .
 
-:StudentAffairsOffice a :AcademicActor,
-        :OrganizationalUnit,
-        owl:NamedIndividual ;
-    rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
-    :sourceDocument :Decision1052 .
-
 :StudentExchangeProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình tham gia chương trình trao đổi sinh viên"@vi ;
     :instructionProvision :Decision1052Article27 ;
     :requiresForm :Decision1052Form14 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article27 .
+    :sourceProvision :Decision1052Article27 ;
+    :submittedTo :AcademicManagementUnit .
 
 :StudyResumptionProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin học trở lại"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form11 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article24 .
+    :sourceProvision :Decision1052Article24 ;
+    :submittedTo :StudentAffairsOffice .
 
 :StudyWithdrawalProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin thôi học"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form10 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article24 .
+    :sourceProvision :Decision1052Article24 ;
+    :submittedTo :StudentAffairsOffice .
 
 :TemporaryAcademicLeaveProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin nghỉ học tạm thời"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form09 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
+    :submittedTo :StudentAffairsOffice ;
     skos:altLabel "bảo lưu"@vi .
 
 :ThirdStudyYearBand a :StudyYearBand,
@@ -3664,19 +3658,15 @@
     rdfs:label "Trường Đại học Nha Trang"@vi ;
     :sourceDocument :Decision1052 .
 
-:UniversityPresident a :AcademicActor,
-        :DecisionAuthority,
-        owl:NamedIndividual ;
-    rdfs:label "Hiệu trưởng"@vi ;
-    :sourceDocument :Decision1052 .
-
 :UniversityTransferProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình chuyển trường"@vi ;
+    :decidedBy :UniversityPresident ;
     :instructionProvision :Decision1052Article26 ;
     :requiresForm :Decision1052Form13 ;
     :sourceDocument :Decision1052 ;
-    :sourceProvision :Decision1052Article26 .
+    :sourceProvision :Decision1052Article26 ;
+    :submittedTo :StudentAffairsOffice .
 
 :VNPAYOtherBankFee a :PaymentFeeRule,
         owl:NamedIndividual ;
@@ -6616,6 +6606,12 @@ Các ngành còn lại |
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
 
+:FacultyOrInstitute a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Khoa hoặc viện đào tạo"@vi ;
+    :sourceDocument :Decision1052 .
+
 :FisheriesManagement a :AcademicProgram,
         owl:NamedIndividual ;
     rdfs:label "Quản lý thủy sản"@vi ;
@@ -7099,6 +7095,15 @@ Các ngành còn lại |
     :partOf :ClassSizeTable ;
     :sourceDocument :Decision1052 .
 
+:ClassSizeTableRow15 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 15 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 15"@vi ;
+    :officialText "| 12 | Thực hành các học phần khác | 20 | 25 |"@vi ;
+    :orderIndex "15"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
 :Decision a owl:Class ;
     rdfs:label "Quyết định"@vi ;
     rdfs:subClassOf :OfficialDocument .
@@ -7218,6 +7223,12 @@ Các ngành còn lại |
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
 
+:GraduationCouncil a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
+    :sourceDocument :Decision1052 .
+
 :LienVietPostBank a :Bank,
         owl:NamedIndividual ;
     rdfs:label "Ngân hàng Liên Việt PostBank"@vi ;
@@ -7239,6 +7250,12 @@ Các ngành còn lại |
     :supportsBank :Agribank,
         :LienVietPostBank,
         :VietinBank .
+
+:ProfessionalCouncil a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hội đồng chuyên môn"@vi ;
+    :sourceDocument :Decision1052 .
 
 :QRCodePayment a :PaymentMethod,
         owl:NamedIndividual ;
@@ -8327,6 +8344,18 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :partOf :StandardOtherLanguageCertificateTable ;
     :sourceDocument :Decision1052 .
 
+:StudentAffairsOffice a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
+    :sourceDocument :Decision1052 .
+
+:AcademicManagementUnit a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn vị quản lý đào tạo"@vi ;
+    :sourceDocument :Decision1052 .
+
 :Decision1052Article26 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 26: Chuyển trường và hình thức đào tạo"@vi ;
@@ -8646,6 +8675,12 @@ d) Việc xét khen thưởng hàng năm, cấp học bổng, cấp tài trợ (
 
 :PaymentMethod a owl:Class ;
     rdfs:label "Phương thức thanh toán"@vi .
+
+:UniversityPresident a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hiệu trưởng"@vi ;
+    :sourceDocument :Decision1052 .
 
 :AccreditedFoundationAndMajorCourse a :CourseCategory,
         owl:NamedIndividual ;
@@ -9372,45 +9407,6 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
 
-:ClassSizeTable a :DocumentTable,
-        owl:NamedIndividual ;
-    rdfs:label "Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :hasPart :ClassSizeTableRow01,
-        :ClassSizeTableRow02,
-        :ClassSizeTableRow03,
-        :ClassSizeTableRow04,
-        :ClassSizeTableRow05,
-        :ClassSizeTableRow06,
-        :ClassSizeTableRow07,
-        :ClassSizeTableRow08,
-        :ClassSizeTableRow09,
-        :ClassSizeTableRow10,
-        :ClassSizeTableRow11,
-        :ClassSizeTableRow12,
-        :ClassSizeTableRow13,
-        :ClassSizeTableRow14 ;
-    :identifier "Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :officialText """| TT | Học phần | Số lượng sinh viên | |
-| :---: | :--- | :---: | :---: |
-| | | Tối thiểu | Tối đa |
-| 1 | Giáo dục tổng quát | 50 | 100 |
-| 2 | Lý luận chính trị | 80 | * |
-| 3 | - Ngoại ngữ B1.1, B1.2;
-- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |
-| 4 | - Tiếng anh chuyên ngành | 50 | 60 |
-| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |
-| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |
-| 7 | Giáo dục thể chất | 60 | 80 (LT) |
-| | | 45 | 60 (TH) |
-| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |
-| | | 45 | 70 (TH) |
-| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |
-| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |
-| 11 | Thực hành tại các phòng máy tính | 25 | 30 |"""@vi ;
-    :orderIndex "1"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Appendix01 ;
-    :sourceDocument :Decision1052 .
-
 :FinanceAndBanking a :AcademicProgram,
         owl:NamedIndividual ;
     rdfs:label "Tài chính - Ngân hàng"@vi ;
@@ -9448,6 +9444,47 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :requiredLevelCode "C2" ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Appendix02 .
+
+:ClassSizeTable a :DocumentTable,
+        owl:NamedIndividual ;
+    rdfs:label "Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :hasPart :ClassSizeTableRow01,
+        :ClassSizeTableRow02,
+        :ClassSizeTableRow03,
+        :ClassSizeTableRow04,
+        :ClassSizeTableRow05,
+        :ClassSizeTableRow06,
+        :ClassSizeTableRow07,
+        :ClassSizeTableRow08,
+        :ClassSizeTableRow09,
+        :ClassSizeTableRow10,
+        :ClassSizeTableRow11,
+        :ClassSizeTableRow12,
+        :ClassSizeTableRow13,
+        :ClassSizeTableRow14,
+        :ClassSizeTableRow15 ;
+    :identifier "Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :officialText """| TT | Học phần | Số lượng sinh viên | |
+| :---: | :--- | :---: | :---: |
+| | | Tối thiểu | Tối đa |
+| 1 | Giáo dục tổng quát | 50 | 100 |
+| 2 | Lý luận chính trị | 80 | * |
+| 3 | - Ngoại ngữ B1.1, B1.2;
+- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |
+| 4 | - Tiếng anh chuyên ngành | 50 | 60 |
+| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |
+| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |
+| 7 | Giáo dục thể chất | 60 | 80 (LT) |
+| | | 45 | 60 (TH) |
+| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |
+| | | 45 | 70 (TH) |
+| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |
+| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |
+| 11 | Thực hành tại các phòng máy tính | 25 | 30 |
+| 12 | Thực hành các học phần khác | 20 | 25 |"""@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Appendix01 ;
+    :sourceDocument :Decision1052 .
 
 :HotelManagement a :AcademicProgram,
         owl:NamedIndividual ;

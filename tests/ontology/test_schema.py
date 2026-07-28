@@ -1,4 +1,5 @@
-from rdflib import OWL, RDF, RDFS
+from rdflib import Graph, Literal, OWL, RDF, RDFS
+from owlrl import DeductiveClosure, OWLRL_Semantics
 
 from ontchatbot.settings import ONTOLOGY_NS
 
@@ -64,3 +65,47 @@ def test_every_named_project_resource_has_vietnamese_label(ontology_graph) -> No
     for resource in resources:
         labels = list(ontology_graph.objects(resource, RDFS.label))
         assert any(label.language == "vi" for label in labels), resource
+
+
+def test_owl_rl_expansion_and_typed_literals_are_valid(ontology_graph) -> None:
+    expanded = Graph()
+    for triple in ontology_graph:
+        expanded.add(triple)
+    DeductiveClosure(OWLRL_Semantics).expand(expanded)
+    assert len(expanded) >= len(ontology_graph)
+
+    object_properties = set(ontology_graph.subjects(RDF.type, OWL.ObjectProperty))
+    datatype_properties = set(ontology_graph.subjects(RDF.type, OWL.DatatypeProperty))
+    assert object_properties.isdisjoint(datatype_properties)
+    for literal in {node for node in ontology_graph.all_nodes() if isinstance(node, Literal)}:
+        if literal.datatype is not None:
+            assert literal.toPython() is not literal, literal
+
+
+def test_semantic_resources_have_direct_source_paths(ontology_graph, academic) -> None:
+    semantic_classes = {
+        academic.AcademicProcedure,
+        academic.TuitionRate,
+        academic.DoctoralTuitionDurationRule,
+        academic.PaymentFeeRule,
+        academic.AcademicPerformanceBand,
+        academic.StudyYearBand,
+        academic.GraduationClassificationBand,
+        academic.ClassSizeRule,
+        academic.CertificateConversionRule,
+    }
+    for class_ in semantic_classes:
+        for resource in ontology_graph.subjects(RDF.type, class_):
+            assert ontology_graph.value(resource, academic.sourceDocument) is not None
+            provision = ontology_graph.value(resource, academic.sourceProvision)
+            assert provision is not None
+            assert (provision, RDF.type, academic.DocumentPart) in ontology_graph or any(
+                (provision, RDF.type, subtype) in ontology_graph
+                for subtype in {
+                    academic.Article,
+                    academic.Clause,
+                    academic.Point,
+                    academic.Appendix,
+                    academic.DocumentTableRow,
+                }
+            )

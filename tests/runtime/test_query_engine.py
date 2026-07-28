@@ -1,64 +1,79 @@
 from __future__ import annotations
 
 import pytest
-from rdflib import URIRef
+from rdflib import Graph, URIRef
 
-from ontchatbot.runtime.sparql import SparqlError, execute_select, load_ontology, validate_select
+from ontchatbot.runtime.sparql import SparqlError, execute_select, validate_select
+from ontchatbot.settings import ONTOLOGY_NS
 
 
 @pytest.fixture(scope="module")
 def graph():
-    return load_ontology()
+    return Graph().parse(
+        data=f"""
+            @prefix : <{ONTOLOGY_NS}> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+            :ExampleRecord a :ExampleType ;
+                :text "Nội dung mẫu"@vi ;
+                :tag "Nhãn một"@vi, "Nhãn hai"@vi ;
+                :related :ExampleNode ;
+                :hasDocument :DocumentA, :DocumentB ;
+                :supportsMethod :MethodA, :MethodB .
+            :ExampleNode rdfs:label "Nút liên quan"@vi ; :email "node@example.com" .
+            :DocumentA rdfs:label "Tài liệu A"@vi ; :url "https://example.com/a"^^xsd:anyURI .
+            :DocumentB rdfs:label "Tài liệu B"@vi ; :url "https://example.com/b"^^xsd:anyURI .
+            :MeasuredItem :category "A" ; :amount "600000"^^xsd:nonNegativeInteger .
+        """,
+        format="turtle",
+    )
 
 
 def test_direct_datatype_query(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }",
+        "SELECT ?answer WHERE { :ExampleRecord :text ?answer . }",
     )
 
     assert len(rows) == 1
-    assert "bảo lưu kết quả" in rows[0]["answer"]
+    assert rows == [{"answer": "Nội dung mẫu"}]
 
 
 def test_repeated_condition_literals(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :condition ?answer . }",
+        "SELECT ?answer WHERE { :ExampleRecord :tag ?answer . } ORDER BY ?answer",
     )
 
-    assert len(rows) == 4
-    assert {row["answer"] for row in rows} >= {
-        "Được điều động vào lực lượng vũ trang",
-        "Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường",
-    }
+    assert rows == [{"answer": "Nhãn hai"}, {"answer": "Nhãn một"}]
 
 
 def test_object_hop_projects_label(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?office . "
-        "?office rdfs:label ?answer . }",
+        "SELECT ?answer WHERE { :ExampleRecord :related ?node . "
+        "?node rdfs:label ?answer . }",
     )
 
-    assert rows == [{"answer": "Phòng Công tác Chính trị và Sinh viên"}]
+    assert rows == [{"answer": "Nút liên quan"}]
 
 
 def test_object_hop_projects_datatype(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?office . "
-        "?office :email ?answer . }",
+        "SELECT ?answer WHERE { :ExampleRecord :related ?node . "
+        "?node :email ?answer . }",
     )
 
-    assert rows == [{"answer": "ctsv@ntu.edu.vn"}]
+    assert rows == [{"answer": "node@example.com"}]
 
 
 def test_multiple_columns_preserve_pairing(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?document ?url WHERE { :AcademicLeaveProcedure :hasDocument ?node . "
-        "?node rdfs:label ?document ; :documentUrl ?url . }",
+        "SELECT ?document ?url WHERE { :ExampleRecord :hasDocument ?node . "
+        "?node rdfs:label ?document ; :url ?url . }",
     )
 
     assert len(rows) == 2
@@ -69,10 +84,8 @@ def test_multiple_columns_preserve_pairing(graph) -> None:
 def test_filter_and_typed_number(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { ?rate a :TuitionRate ; :cohortCode ?cohort ; "
-        ":programName ?program ; :tuitionPerCredit ?answer . "
-        'FILTER ( STR ( ?cohort ) = "K63" ) '
-        'FILTER ( STR ( ?program ) = "Công nghệ sinh học" ) }',
+        "SELECT ?answer WHERE { ?item :category ?category ; :amount ?answer . "
+        'FILTER ( STR ( ?category ) = "A" ) }',
     )
 
     assert rows == [{"answer": 600000}]
@@ -82,7 +95,7 @@ def test_aggregate(graph) -> None:
     rows = execute_select(
         graph,
         "SELECT (COUNT(DISTINCT ?method) AS ?answer) WHERE { "
-        ":TuitionPaymentProcedure :supportsPaymentMethod ?method . }",
+        ":ExampleRecord :supportsMethod ?method . }",
     )
 
     assert rows == [{"answer": 2}]
@@ -109,7 +122,7 @@ def test_rejects_graph_nodes_in_projection(graph) -> None:
     with pytest.raises(SparqlError, match="graph node"):
         execute_select(
             graph,
-            "SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?answer . }",
+            "SELECT ?answer WHERE { :ExampleRecord :related ?answer . }",
         )
 
 
@@ -117,18 +130,18 @@ def test_accepts_multiline_select(graph) -> None:
     rows = execute_select(
         graph,
         """SELECT ?answer WHERE {
-            :AcademicLeaveProcedure :handledBy ?office .
-            ?office rdfs:label ?answer .
+            :ExampleRecord :related ?node .
+            ?node rdfs:label ?answer .
         }""",
     )
 
-    assert rows == [{"answer": "Phòng Công tác Chính trị và Sinh viên"}]
+    assert rows == [{"answer": "Nút liên quan"}]
 
 
 def test_result_values_never_expose_uris(graph) -> None:
     rows = execute_select(
         graph,
-        "SELECT ?answer WHERE { ?procedure a :AcademicProcedure ; rdfs:label ?answer . }",
+        "SELECT ?answer WHERE { ?node rdfs:label ?answer . }",
     )
 
     assert rows
