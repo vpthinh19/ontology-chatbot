@@ -31,7 +31,7 @@
       "records": 430,
       "queries": 215,
       "targets": 215,
-      "sha256": "c24cfdc92a40bef77c707de935d4d2f14afc6c0cd0b9524f049a5da3be0d2899"
+      "sha256": "90ea4ee4efe8dfbbdeeedc0c49c5fbecdc1588a600a67ece6ed3369ea29355d5"
     }
   },
   "totals": {
@@ -43,6 +43,11 @@
     "train": "model fitting over every supported canonical query",
     "val": "unseen wording for queries supported by train",
     "test": "unseen wording for queries supported by train",
+    "train_min_rows_per_query": 4,
+    "train_registers_per_query": 4,
+    "val_rows_per_query": 2,
+    "test_rows_per_query": 2,
+    "held_out_registers_per_query": 2,
     "query_catalogue_shared": true,
     "normalized_question_leakage": false,
     "near_duplicate_question_leakage": false

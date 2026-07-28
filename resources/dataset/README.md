@@ -24,10 +24,11 @@ Ba tập có vai trò tách biệt:
 | `val.jsonl` | 430 | 215 | Chọn checkpoint trên cách diễn đạt chưa thấy |
 | `test.jsonl` | 430 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 
-Mỗi query có đúng hai câu validation, hai câu test và ít nhất bốn câu train.
-Validation và test giữ lại cách diễn đạt, không giữ lại logic query. Thiết kế
-này đánh giá chatbot trong danh mục chức năng đã công bố; nó không tuyên bố khả
-năng zero-shot với query hoặc ontology chưa biết.
+Mỗi query có đúng hai câu validation, hai câu test và ít nhất bốn câu train;
+hai câu trong mỗi tập held-out thuộc hai register khác nhau. Validation và test
+giữ lại cách diễn đạt, không giữ lại logic query. Thiết kế này đánh giá chatbot
+trong danh mục chức năng đã công bố; nó không tuyên bố khả năng zero-shot với
+query hoặc ontology chưa biết.
 
 Register được cân bằng trong từng split. Không có câu hỏi đã chuẩn hóa hoặc câu
 gần trùng nằm ở hai tập khác nhau. Mọi target đều parse được, chạy được trên

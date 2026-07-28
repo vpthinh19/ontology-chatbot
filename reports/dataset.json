@@ -22,8 +22,8 @@
     },
     "registers": {
       "colloquial": 565,
-      "formal": 567,
-      "neutral": 566,
+      "formal": 566,
+      "neutral": 567,
       "noisy": 565
     },
     "query_features": {
@@ -145,8 +145,8 @@
         "targets": 215,
         "register_counts": {
           "colloquial": 108,
-          "formal": 108,
-          "neutral": 107,
+          "formal": 107,
+          "neutral": 108,
           "noisy": 107
         },
         "empty_result_ids": []
@@ -156,7 +156,7 @@
   "sha256": {
     "train.jsonl": "16e7fa4f850747a0d471225b62503a6d2aa5b3b11440851c119ff1c06fdbef42",
     "val.jsonl": "84db962dc5095ccf0f0a622b5979d15dcaa31066c9a5a997e26d31447655667b",
-    "test.jsonl": "c24cfdc92a40bef77c707de935d4d2f14afc6c0cd0b9524f049a5da3be0d2899",
+    "test.jsonl": "90ea4ee4efe8dfbbdeeedc0c49c5fbecdc1588a600a67ece6ed3369ea29355d5",
     "ontology.ttl": "0af6d4f50ae1e8919d7cc6e4eb16a27897da33cb8a3175d3c4e2f292f278a987"
   }
 }

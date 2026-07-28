@@ -12,8 +12,8 @@ namespace `http://www.ntu.edu.vn/ontology/academic#`.
 - `skos:altLabel@vi` chỉ chứa tên gọi thay thế thực sự hữu ích, không chứa câu
   hỏi mẫu.
 
-Alias hỗ trợ mô tả và khả năng tìm kiếm bằng công cụ ontology; runtime hiện
-không fuzzy-match alias. Model học canonical IRI từ target SPARQL.
+Alias là metadata phục vụ mô tả và tìm kiếm trong công cụ ontology. Runtime
+truy vấn bằng canonical IRI do model sinh từ target SPARQL.
 
 ## Hình dạng graph
 

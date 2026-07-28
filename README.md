@@ -13,9 +13,9 @@ flowchart LR
     O --> A["Câu trả lời"]
 ```
 
-Model chịu trách nhiệm hiểu câu hỏi và tạo query. RDFLib chịu trách nhiệm truy
-vấn dữ liệu. Backend không có cây traversal, QueryPlan, fuzzy matching hay DTO
-gắn với schema để sửa đoán kết quả của model.
+Model chịu trách nhiệm hiểu câu hỏi và tạo query. Backend kiểm tra query, thực
+thi bằng RDFLib và định dạng dữ liệu trả về; query không hợp lệ được báo là lỗi
+thay vì được tự động sửa đoán.
 
 ## Dữ liệu nghiên cứu
 
@@ -30,7 +30,8 @@ khẩu ngữ và câu nhiễu/viết tắt.
 | Test | 430 | 215 | Đánh giá cuối trên cách diễn đạt chưa thấy |
 
 Mỗi truy vấn có đúng hai câu validation, hai câu test và ít nhất bốn câu train.
-Validation và test giữ lại cách diễn đạt, không giữ lại logic truy vấn. Mọi
+Hai câu của mỗi tập held-out dùng hai phong cách khác nhau. Validation và test
+giữ lại cách diễn đạt, không giữ lại logic truy vấn. Mọi
 target đều được parse, kiểm tra an toàn, chạy trực tiếp trên ontology và trả về
 ít nhất một dòng trước khi được dùng.
 

@@ -16,7 +16,15 @@ from rdflib import OWL, RDF, RDFS, Graph, URIRef
 from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
-from .dataset import REGISTER_ORDER, REQUIRED_SPLITS, load_release, validate_release
+from .dataset import (
+    HELD_OUT_REGISTERS_PER_QUERY,
+    HELD_OUT_ROWS_PER_QUERY,
+    REGISTER_ORDER,
+    REQUIRED_SPLITS,
+    TRAIN_MIN_ROWS_PER_QUERY,
+    load_release,
+    validate_release,
+)
 from .query_features import extract_query_features, query_feature_tags
 
 
@@ -340,6 +348,11 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             "train": "model fitting over every supported canonical query",
             "val": "unseen wording for queries supported by train",
             "test": "unseen wording for queries supported by train",
+            "train_min_rows_per_query": TRAIN_MIN_ROWS_PER_QUERY,
+            "train_registers_per_query": len(REGISTER_ORDER),
+            "val_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
+            "test_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
+            "held_out_registers_per_query": HELD_OUT_REGISTERS_PER_QUERY,
             "query_catalogue_shared": True,
             "normalized_question_leakage": False,
             "near_duplicate_question_leakage": False,
@@ -411,9 +424,9 @@ def _build_training_readiness(
         gaps.append({"code": "queries_missing_from_split", "splits": missing})
 
     minimum_records = {
-        "train": len(expected_queries) * 2,
-        "val": len(expected_queries),
-        "test": len(expected_queries),
+        "train": len(expected_queries) * TRAIN_MIN_ROWS_PER_QUERY,
+        "val": len(expected_queries) * HELD_OUT_ROWS_PER_QUERY,
+        "test": len(expected_queries) * HELD_OUT_ROWS_PER_QUERY,
     }
     short_splits = {
         split: {"records": len(release[split]), "minimum": minimum}

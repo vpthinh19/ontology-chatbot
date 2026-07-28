@@ -30,8 +30,8 @@ def test_test_set_uses_only_train_supported_queries_and_is_executable() -> None:
         "targets": 215,
         "register_counts": {
             "colloquial": 108,
-            "formal": 108,
-            "neutral": 107,
+            "formal": 107,
+            "neutral": 108,
             "noisy": 107,
         },
         "queries_supported_by_train": 215,

@@ -58,6 +58,12 @@ MAX_SOURCE_LENGTH = 128
 MAX_TARGET_LENGTH = 160
 
 
+def _prepare_output_directory(path: Path) -> None:
+    if path.exists() and (not path.is_dir() or any(path.iterdir())):
+        raise RuntimeError(f"model output directory is not empty: {path}")
+    path.mkdir(parents=True, exist_ok=True)
+
+
 def train(args: argparse.Namespace) -> dict:
     try:
         import numpy as np
@@ -77,6 +83,8 @@ def train(args: argparse.Namespace) -> dict:
         raise RuntimeError("install the train extra to fine-tune models") from exc
 
     spec = MODEL_SPECS[args.model]
+    output_dir = Path(args.output_dir) / args.model
+    _prepare_output_directory(output_dir)
     snapshot = Path(
         snapshot_download(
             spec["model_id"],
@@ -153,9 +161,6 @@ def train(args: argparse.Namespace) -> dict:
     )
     eval_steps = max(1, round(steps_per_epoch * args.eval_every_epochs))
     short_run = args.smoke_test
-    output_dir = Path(args.output_dir) / args.model
-    output_dir.mkdir(parents=True, exist_ok=True)
-
     def compute_metrics(prediction) -> dict[str, float]:
         prediction_ids = prediction.predictions
         if isinstance(prediction_ids, tuple):

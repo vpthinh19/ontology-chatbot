@@ -21,6 +21,8 @@ QUESTIONS = (
         "sắp đi nghĩa vụ quân sự thì làm sao giữ kết quả",
         "hướng dẫn bảo lưu kết quả học tập gồm những gì",
         "tui muốn nghỉ học tạm thời thì làm sao",
+        "quy trình xin tạm nghỉ học được thực hiện ra sao",
+        "bao luu ket qua hoc tap lam sao",
     ),
     (
         "Tôi cần hướng dẫn đăng ký học phần",
@@ -29,6 +31,8 @@ QUESTIONS = (
         "muốn thêm lớp vào thời khóa biểu phải làm sao",
         "hướng dẫn thực hiện đăng ký học phần",
         "dk mon hoc ky moi sao vay",
+        "quy trình đăng ký môn học gồm những bước nào",
+        "muon chon mon cho ky toi lam sao",
     ),
 )
 REGISTERS = ("formal", "neutral", "colloquial", "noisy")
@@ -54,9 +58,9 @@ def _valid_release(query_count: int = 1) -> dict[str, list[dict[str, str]]]:
             }
             for offset, question in enumerate(questions)
         ]
-        release["train"].extend(rows[:2])
-        release["val"].extend(rows[2:4])
-        release["test"].extend(rows[4:6])
+        release["train"].extend(rows[:4])
+        release["val"].extend(rows[4:6])
+        release["test"].extend(rows[6:8])
     return release
 
 
@@ -76,7 +80,7 @@ def test_validator_accepts_the_in_domain_query_contract() -> None:
 
     report = validate_release(release, load_ontology())
 
-    assert report["records"] == 6
+    assert report["records"] == 8
     assert all(
         set(row) == {"id", "query_id", "register", "input", "target"}
         for rows in release.values()
@@ -113,11 +117,28 @@ def test_validator_rejects_query_id_missing_from_a_split() -> None:
         validate_release(release, load_ontology())
 
 
-def test_validator_rejects_fewer_than_two_train_rows_per_query() -> None:
+def test_validator_rejects_fewer_than_four_train_rows_per_query() -> None:
     release = _valid_release()
     release["train"].pop()
 
-    with pytest.raises(DatasetError, match="fewer than two train rows"):
+    with pytest.raises(DatasetError, match="fewer than four train rows"):
+        validate_release(release, load_ontology())
+
+
+def test_validator_rejects_missing_train_register_for_a_query() -> None:
+    release = _valid_release()
+    release["train"][3]["register"] = release["train"][0]["register"]
+
+    with pytest.raises(DatasetError, match="missing train registers"):
+        validate_release(release, load_ontology())
+
+
+@pytest.mark.parametrize("split", ["val", "test"])
+def test_validator_rejects_repeated_register_in_held_out_query(split: str) -> None:
+    release = _valid_release()
+    release[split][1]["register"] = release[split][0]["register"]
+
+    with pytest.raises(DatasetError, match=f"two distinct {split} registers"):
         validate_release(release, load_ontology())
 
 

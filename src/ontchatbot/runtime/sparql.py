@@ -35,7 +35,7 @@ class SparqlError(ValueError):
 
 
 def load_ontology(path: Path = ONTOLOGY_PATH) -> Graph:
-    """Load the canonical Turtle ontology without custom traversal state."""
+    """Load the canonical Turtle ontology."""
 
     return Graph().parse(Path(path), format="turtle")
 

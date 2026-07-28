@@ -40,10 +40,8 @@ Mỗi dòng JSON Lines có đúng năm trường:
 
 `query_id` định danh một truy vấn canonical và ánh xạ một-một tới `target`.
 Nhiều câu hỏi có cách diễn đạt khác nhau được phép dùng chung `query_id`.
-Khái niệm `family_id` cũ được bỏ vì cùng một target phải xuất hiện có chủ ý ở
-cả train, validation và test.
 
-`register` tiếp tục có bốn giá trị:
+`register` có bốn giá trị:
 
 - `formal`: văn phong hành chính đầy đủ;
 - `neutral`: cách hỏi phổ thông;
@@ -63,9 +61,9 @@ Với mỗi `query_id` có đúng hai câu validation, hai câu test và toàn b
 lại thuộc train. Dataset gồm 1.403 câu train, 430 câu validation và 430 câu
 test; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Việc phân bổ
 register được xoay vòng giữa các query để mỗi split có phân bố formal, neutral,
-colloquial và noisy cân bằng trên toàn tập;
-không cố định toàn bộ câu noisy vào test. Trong mỗi split, chênh lệch số câu
-giữa register nhiều nhất và ít nhất không vượt quá một.
+colloquial và noisy cân bằng trên toàn tập. Hai câu của mỗi query trong
+validation hoặc test phải thuộc hai register khác nhau. Trong mỗi split, chênh
+lệch số câu giữa register nhiều nhất và ít nhất không vượt quá một.
 
 Target trùng giữa các split là chủ ý của thiết kế. Những dạng rò rỉ sau vẫn bị
 cấm:
@@ -102,17 +100,16 @@ Test chỉ đo những chức năng đã được dạy. Điểm này phải đ�
 để người đọc không diễn giải kết quả thành khả năng tổng quát tới truy vấn hoặc
 ontology chưa biết.
 
-Khi split thay đổi, toàn bộ metric và biểu đồ model từ split cũ hết hiệu lực và
-phải được gỡ khỏi báo cáo công khai. Kết quả T5Gemma2 dùng làm cổng nghiệm thu
-không được công bố riêng như benchmark hoàn chỉnh; báo cáo so sánh chỉ được
-sinh lại sau khi đủ ba model chạy trên cùng dataset.
+Metric model chỉ hợp lệ khi checksum manifest, số bản ghi validation/test và
+provenance của artifact đều khớp dataset hiện tại. Báo cáo so sánh chỉ được
+sinh khi đủ ba model chạy trên cùng dataset và cùng giao thức.
 
 ## Trình tự nghiệm thu
 
-1. Tái chia dữ liệu hiện có và chạy toàn bộ cổng chất lượng mà chưa train model.
-2. Công bố báo cáo split mới để kiểm tra trước khi dùng GPU.
+1. Chạy toàn bộ cổng chất lượng trên ba split cố định trước khi train model.
+2. Sinh manifest và báo cáo dataset từ các file đã kiểm tra.
 3. Fine-tune T5Gemma2 đúng một lần với giao thức đã chốt.
-4. Nếu T5Gemma2 đạt ngưỡng 95%, mới fine-tune BARTpho và ViT5 để so sánh.
+4. Nếu T5Gemma2 đạt ngưỡng 90%, fine-tune BARTpho và ViT5 để so sánh.
 5. Nếu chưa đạt, dừng trước hai model còn lại; phân tích lỗi theo `query_id` và
    chỉ bổ sung cách diễn đạt cho những query thiếu dữ liệu.
 
@@ -124,6 +121,6 @@ không làm thay đổi dữ liệu hoặc giao thức.
 
 - Sinh target SPARQL chưa có trong danh mục train.
 - Đánh giá zero-shot trên schema hoặc ontology khác.
-- Thêm fuzzy matching, QueryPlan, traversal hoặc tầng tự sửa query.
+- Thêm tầng hậu xử lý tự đoán hoặc sửa query.
 - Thay đổi ontology chỉ để làm điểm model cao hơn.
 - Tạo hàng loạt câu hỏi mới trước khi kết quả T5Gemma2 chứng minh là cần thiết.

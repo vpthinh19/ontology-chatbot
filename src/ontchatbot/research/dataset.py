@@ -18,6 +18,9 @@ REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}
 REQUIRED_SPLITS = ("train", "val", "test")
 ALLOWED_REGISTERS = {"formal", "neutral", "colloquial", "noisy"}
 REGISTER_ORDER = ("formal", "neutral", "colloquial", "noisy")
+TRAIN_MIN_ROWS_PER_QUERY = 4
+HELD_OUT_ROWS_PER_QUERY = 2
+HELD_OUT_REGISTERS_PER_QUERY = 2
 UNSUPPORTED_TARGET_CHARACTERS = frozenset("_^<@")
 NEAR_DUPLICATE_THRESHOLD = 0.84
 
@@ -127,6 +130,9 @@ def validate_release(
     query_targets: dict[str, set[str]] = defaultdict(set)
     target_queries: dict[str, set[str]] = defaultdict(set)
     query_counts = {split: Counter() for split in REQUIRED_SPLITS}
+    query_registers = {
+        split: defaultdict(set) for split in REQUIRED_SPLITS
+    }
     question_locations: dict[str, set[str]] = defaultdict(set)
     id_locations: dict[str, set[str]] = defaultdict(set)
     for split, rows in splits.items():
@@ -134,6 +140,7 @@ def validate_release(
             query_targets[row["query_id"]].add(row["target"])
             target_queries[row["target"]].add(row["query_id"])
             query_counts[split][row["query_id"]] += 1
+            query_registers[split][row["query_id"]].add(row["register"])
             question_locations[normalize_model_input(row["input"]).casefold()].add(split)
             id_locations[row["id"]].add(split)
 
@@ -162,17 +169,45 @@ def validate_release(
         raise DatasetError(f"query IDs missing from splits: {missing}")
 
     sparse_train = sorted(
-        query_id for query_id in all_queries if query_counts["train"][query_id] < 2
+        query_id
+        for query_id in all_queries
+        if query_counts["train"][query_id] < TRAIN_MIN_ROWS_PER_QUERY
     )
     if sparse_train:
-        raise DatasetError(f"query IDs have fewer than two train rows: {sparse_train[:10]}")
+        raise DatasetError(f"query IDs have fewer than four train rows: {sparse_train[:10]}")
+    missing_train_registers = {
+        query_id: [
+            register
+            for register in REGISTER_ORDER
+            if register not in query_registers["train"][query_id]
+        ]
+        for query_id in sorted(all_queries)
+        if len(query_registers["train"][query_id]) != len(REGISTER_ORDER)
+    }
+    if missing_train_registers:
+        raise DatasetError(
+            "query IDs have missing train registers: "
+            f"{list(missing_train_registers.items())[:10]}"
+        )
     for split in ("val", "test"):
         invalid = sorted(
-            query_id for query_id in all_queries if query_counts[split][query_id] != 2
+            query_id
+            for query_id in all_queries
+            if query_counts[split][query_id] != HELD_OUT_ROWS_PER_QUERY
         )
         if invalid:
             raise DatasetError(
                 f"query IDs must have exactly two {split} rows: {invalid[:10]}"
+            )
+        repeated_registers = sorted(
+            query_id
+            for query_id in all_queries
+            if len(query_registers[split][query_id]) != HELD_OUT_REGISTERS_PER_QUERY
+        )
+        if repeated_registers:
+            raise DatasetError(
+                f"query IDs must use two distinct {split} registers: "
+                f"{repeated_registers[:10]}"
             )
 
     for split, report in reports.items():

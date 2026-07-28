@@ -38,7 +38,8 @@ quá một.
 | Test | 430 | 215 | Đánh giá cuối bằng cách diễn đạt chưa thấy |
 
 Mỗi query có đúng hai câu validation, hai câu test và toàn bộ câu còn lại ở
-train; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Vì vậy
+train; mỗi query có ít nhất bốn câu train và đủ cả bốn register. Hai câu của
+mỗi tập held-out thuộc hai register khác nhau. Vì vậy
 validation và test đo khả
 năng hiểu cách nói mới trong miền chức năng đã dạy, không đo zero-shot trên
 query hoặc ontology chưa biết. Test chỉ được dùng sau khi checkpoint được chọn.

@@ -2,6 +2,7 @@ from types import SimpleNamespace
 
 import pytest
 
+import ontchatbot.research.training as training
 from ontchatbot.research.training import (
     MODEL_SPECS,
     _configure_greedy_generation,
@@ -62,6 +63,15 @@ def test_smoke_training_can_check_pipeline_before_curation_finishes() -> None:
     readiness = {"ready": False, "gaps": [{"code": "missing_validation_features"}]}
 
     _require_training_ready(readiness, smoke_test=True)
+
+
+def test_training_rejects_nonempty_model_output_directory(tmp_path) -> None:
+    output_dir = tmp_path / "t5gemma2"
+    output_dir.mkdir()
+    (output_dir / "metrics.json").write_text("{}", encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match="output directory is not empty"):
+        training._prepare_output_directory(output_dir)
 
 
 def test_cli_defaults_match_canonical_training_protocol() -> None:

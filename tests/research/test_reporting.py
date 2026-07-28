@@ -2,9 +2,11 @@ import json
 
 from ontchatbot.research.dataset import load_release
 from ontchatbot.research.reporting import (
+    _build_training_readiness,
     build_dataset_report,
     build_model_report,
     sha256_file,
+    write_manifest,
     write_public_reports,
 )
 from ontchatbot.runtime.sparql import load_ontology
@@ -44,6 +46,52 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     assert (tmp_path / "figures/dataset-splits.svg").is_file()
     assert (tmp_path / "figures/registers.svg").is_file()
     assert (tmp_path / "figures/query-features.svg").is_file()
+
+
+def test_training_readiness_uses_the_four_two_two_split_contract() -> None:
+    release = {
+        "train": [
+            {"query_id": "query-0001", "register": "formal"},
+            {"query_id": "query-0001", "register": "neutral"},
+        ],
+        "val": [{"query_id": "query-0001", "register": "colloquial"}],
+        "test": [{"query_id": "query-0001", "register": "noisy"}],
+    }
+    validation = {
+        "splits": {
+            split: {"empty_result_ids": []} for split in ("train", "val", "test")
+        }
+    }
+
+    report = _build_training_readiness(release, validation)
+
+    assert report == {
+        "ready": False,
+        "gaps": [
+            {
+                "code": "insufficient_split_records",
+                "splits": {
+                    "train": {"records": 2, "minimum": 4},
+                    "val": {"records": 1, "minimum": 2},
+                    "test": {"records": 1, "minimum": 2},
+                },
+            }
+        ],
+    }
+
+
+def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
+    report = build_dataset_report(load_release(), load_ontology())
+    path = tmp_path / "manifest.json"
+
+    write_manifest(report, path)
+
+    contract = json.loads(path.read_text(encoding="utf-8"))["split_contract"]
+    assert contract["train_min_rows_per_query"] == 4
+    assert contract["train_registers_per_query"] == 4
+    assert contract["val_rows_per_query"] == 2
+    assert contract["test_rows_per_query"] == 2
+    assert contract["held_out_registers_per_query"] == 2
 
 
 def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:

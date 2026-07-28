@@ -76,9 +76,9 @@ SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE {
 ## Phạm vi
 
 Project tập trung vào semantic parsing trên một ontology có schema ổn định.
-RAG, cơ sở dữ liệu phẳng, hội thoại ngoài miền, router nhiều model và heuristic
-fuzzy không thuộc pipeline cốt lõi. Chỉ thêm một tầng mới khi benchmark chứng
-minh pipeline hiện tại không thể giải quyết nhu cầu đó.
+Pipeline chỉ gồm chuẩn hóa văn bản, sinh SPARQL, kiểm tra an toàn, truy vấn graph
+và định dạng câu trả lời. Một thành phần mới chỉ được bổ sung khi benchmark
+chứng minh pipeline này không đáp ứng yêu cầu nghiên cứu.
 
 Hệ thống chỉ nhận câu hỏi thuộc miền dữ liệu của ontology. Nhận biết câu hỏi
 ngoài miền và output từ chối không thuộc contract nghiên cứu hiện tại.
