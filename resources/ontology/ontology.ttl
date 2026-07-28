@@ -32,6 +32,42 @@
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
 
+:AverageAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực trung bình"@vi ;
+    :criterionText "5,00 ÷ 6,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 6.99 ;
+    :minimumInclusive true ;
+    :minimumValue 5.00 ;
+    :resultLabel "Trung bình"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
+
+:AverageGraduationBand a :GraduationClassificationBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại tốt nghiệp trung bình"@vi ;
+    :criterionText "5,50 ÷ 6,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 6.99 ;
+    :minimumInclusive true ;
+    :minimumValue 5.50 ;
+    :resultLabel "Trung bình"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article23 .
+
+:CNCPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Thực hành tại phòng máy CNC và công nghệ cao"@vi ;
+    :criterionText "Thực hành tại phòng máy CNC và công nghệ cao: tối thiểu 10, tối đa 15"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 15.0 ;
+    :minimumInclusive true ;
+    :minimumValue 10.0 ;
+    :resultLabel "Thực hành tại phòng máy CNC và công nghệ cao"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow12 .
+
 :ChemicalEngineering a :AcademicProgram,
         owl:NamedIndividual ;
     rdfs:label "Kỹ thuật hóa học"@vi ;
@@ -189,6 +225,18 @@
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix01 .
 
+:ComputerLabPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Thực hành tại các phòng máy tính"@vi ;
+    :criterionText "Thực hành tại các phòng máy tính: tối thiểu 25, tối đa 30"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 30.0 ;
+    :minimumInclusive true ;
+    :minimumValue 25.0 ;
+    :resultLabel "Thực hành tại các phòng máy tính"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow14 .
+
 :ComputerScience a :AcademicProgram,
         owl:NamedIndividual ;
     rdfs:label "Khoa học máy tính"@vi ;
@@ -234,6 +282,28 @@
     :requiresForm :Decision1052Form06 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article21 .
+
+:DefenseEducationPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Giáo dục Quốc phòng - An ninh thực hành"@vi ;
+    :criterionText "Giáo dục Quốc phòng – An ninh: tối thiểu 45, tối đa 70 (TH)"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 70.0 ;
+    :minimumInclusive true ;
+    :minimumValue 45.0 ;
+    :resultLabel "Giáo dục Quốc phòng - An ninh thực hành"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow11 .
+
+:DefenseEducationTheoryClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Giáo dục Quốc phòng - An ninh lý thuyết"@vi ;
+    :criterionText "Giáo dục Quốc phòng – An ninh: tối thiểu 70, tối đa *"@vi ;
+    :minimumInclusive true ;
+    :minimumValue 70.0 ;
+    :resultLabel "Giáo dục Quốc phòng - An ninh lý thuyết"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow10 .
 
 :Department a :AcademicActor,
         :OrganizationalUnit,
@@ -284,6 +354,30 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 .
 
+:EconomicsTourismLawClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Khối cơ sở và ngành của Du lịch, Kinh tế, Kế toán - Tài chính và Luật"@vi ;
+    :criterionText "Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật: tối thiểu 50, tối đa 80"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 80.0 ;
+    :minimumInclusive true ;
+    :minimumValue 50.0 ;
+    :resultLabel "Khối cơ sở và ngành của Du lịch, Kinh tế, Kế toán - Tài chính và Luật"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow06 .
+
+:EngineeringTechnologyClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Khối kỹ thuật, công nghệ"@vi ;
+    :criterionText "Khối kỹ thuật, công nghệ: tối thiểu 30, tối đa 70"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 70.0 ;
+    :minimumInclusive true ;
+    :minimumValue 30.0 ;
+    :resultLabel "Khối kỹ thuật, công nghệ"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow07 .
+
 :EnglishLanguageUndergraduateRate a :TuitionRate,
         owl:NamedIndividual ;
     rdfs:label "Học phí đại học ngành Ngôn ngữ Anh"@vi ;
@@ -311,6 +405,30 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article17 .
 
+:ExcellentAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực xuất sắc"@vi ;
+    :criterionText "9,00 ÷ 10"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 10.0 ;
+    :minimumInclusive true ;
+    :minimumValue 9.00 ;
+    :resultLabel "Xuất sắc"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
+
+:ExcellentGraduationBand a :GraduationClassificationBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại tốt nghiệp xuất sắc"@vi ;
+    :criterionText "9,00 ÷ 10"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 10.0 ;
+    :minimumInclusive true ;
+    :minimumValue 9.00 ;
+    :resultLabel "Xuất sắc"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article23 .
+
 :ExtraClassOpeningRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đề nghị mở thêm lớp học phần"@vi ;
@@ -324,6 +442,40 @@
         owl:NamedIndividual ;
     rdfs:label "Khoa hoặc viện đào tạo"@vi ;
     :sourceDocument :Decision1052 .
+
+:FairAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực khá"@vi ;
+    :criterionText "7,00 ÷ 7,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 7.99 ;
+    :minimumInclusive true ;
+    :minimumValue 7.00 ;
+    :resultLabel "Khá"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
+
+:FairGraduationBand a :GraduationClassificationBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại tốt nghiệp khá"@vi ;
+    :criterionText "7,00 ÷ 7,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 7.99 ;
+    :minimumInclusive true ;
+    :minimumValue 7.00 ;
+    :resultLabel "Khá"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article23 .
+
+:FirstStudyYearBand a :StudyYearBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp trình độ sinh viên năm thứ nhất"@vi ;
+    :criterionText "Dưới 35"@vi ;
+    :maximumInclusive false ;
+    :maximumValue 35.0 ;
+    :resultLabel "Sinh viên năm thứ nhất"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article19 .
 
 :FisheriesExploitation a :AcademicProgram,
         owl:NamedIndividual ;
@@ -345,6 +497,64 @@
     :belongsToDisciplineGroup :DisciplineGroupV ;
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
+
+:ForeignLanguageClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Ngoại ngữ B1.1, B1.2 và chuyên ngữ ngành Ngôn ngữ Anh"@vi ;
+    :criterionText "Ngoại ngữ B1.1, B1.2; HP chuyên ngữ ngành Ngôn ngữ Anh: tối thiểu 40, tối đa 50"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 50.0 ;
+    :minimumInclusive true ;
+    :minimumValue 40.0 ;
+    :resultLabel "Ngoại ngữ B1.1, B1.2 và chuyên ngữ ngành Ngôn ngữ Anh"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow04 .
+
+:FourthStudyYearBand a :StudyYearBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp trình độ sinh viên năm thứ tư"@vi ;
+    :criterionText "Trên 105"@vi ;
+    :minimumInclusive false ;
+    :minimumValue 105.0 ;
+    :resultLabel "Sinh viên năm thứ tư"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article19 .
+
+:GeneralEducationClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Giáo dục tổng quát"@vi ;
+    :criterionText "Giáo dục tổng quát: tối thiểu 50, tối đa 100"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 100.0 ;
+    :minimumInclusive true ;
+    :minimumValue 50.0 ;
+    :resultLabel "Giáo dục tổng quát"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow02 .
+
+:GoodAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực giỏi"@vi ;
+    :criterionText "8,00 ÷ 8,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 8.99 ;
+    :minimumInclusive true ;
+    :minimumValue 8.00 ;
+    :resultLabel "Giỏi"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
+
+:GoodGraduationBand a :GraduationClassificationBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại tốt nghiệp giỏi"@vi ;
+    :criterionText "8,00 ÷ 8,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 8.99 ;
+    :minimumInclusive true ;
+    :minimumValue 8.00 ;
+    :resultLabel "Giỏi"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article23 .
 
 :GradeImprovementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -538,6 +748,18 @@
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix01 .
 
+:MechanicalWorkshopPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Thực hành tại Xưởng Cơ khí và phòng thí nghiệm Nhiệt lạnh"@vi ;
+    :criterionText "Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh: tối thiểu 15, tối đa 20"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 20.0 ;
+    :minimumInclusive true ;
+    :minimumValue 15.0 ;
+    :resultLabel "Thực hành tại Xưởng Cơ khí và phòng thí nghiệm Nhiệt lạnh"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow13 .
+
 :NhaTrangCounterFreeFee a :PaymentFeeRule,
         owl:NamedIndividual ;
     rdfs:label "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi ;
@@ -559,6 +781,18 @@
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix01 .
 
+:OtherPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Thực hành các học phần khác"@vi ;
+    :criterionText "Thực hành các học phần khác: tối thiểu 20, tối đa 25"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 25.0 ;
+    :minimumInclusive true ;
+    :minimumValue 20.0 ;
+    :resultLabel "Thực hành các học phần khác"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow15 .
+
 :OutsideNhaTrangCounterFee a :PaymentFeeRule,
         owl:NamedIndividual ;
     rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi ;
@@ -568,6 +802,52 @@
     :feePolicyText "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi ;
     :sourceDocument :TuitionPaymentGuidance ;
     :sourceProvision :TuitionPaymentGuidanceProvision03 .
+
+:PhysicalEducationPracticeClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Giáo dục thể chất thực hành"@vi ;
+    :criterionText "Giáo dục thể chất: tối thiểu 45, tối đa 60 (TH)"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 60.0 ;
+    :minimumInclusive true ;
+    :minimumValue 45.0 ;
+    :resultLabel "Giáo dục thể chất thực hành"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow09 .
+
+:PhysicalEducationTheoryClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Giáo dục thể chất lý thuyết"@vi ;
+    :criterionText "Giáo dục thể chất: tối thiểu 60, tối đa 80 (LT)"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 80.0 ;
+    :minimumInclusive true ;
+    :minimumValue 60.0 ;
+    :resultLabel "Giáo dục thể chất lý thuyết"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow08 .
+
+:PoliticalTheoryClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Lý luận chính trị"@vi ;
+    :criterionText "Lý luận chính trị: tối thiểu 80, tối đa *"@vi ;
+    :minimumInclusive true ;
+    :minimumValue 80.0 ;
+    :resultLabel "Lý luận chính trị"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow03 .
+
+:PoorAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực kém"@vi ;
+    :criterionText "0,00 ÷ 3,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 3.99 ;
+    :minimumInclusive true ;
+    :minimumValue 0.00 ;
+    :resultLabel "Kém"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
 
 :PowerMechanicalEngineering a :AcademicProgram,
         owl:NamedIndividual ;
@@ -599,6 +879,30 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article28 ;
     skos:altLabel "học chương trình thứ hai"@vi .
+
+:SecondStudyYearBand a :StudyYearBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp trình độ sinh viên năm thứ hai"@vi ;
+    :criterionText "Từ 35 đến dưới 70"@vi ;
+    :maximumInclusive false ;
+    :maximumValue 70.0 ;
+    :minimumInclusive true ;
+    :minimumValue 35.0 ;
+    :resultLabel "Sinh viên năm thứ hai"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article19 .
+
+:SpecializedEnglishClassSizeRule a :ClassSizeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Quy mô lớp Tiếng Anh chuyên ngành"@vi ;
+    :criterionText "Tiếng anh chuyên ngành: tối thiểu 50, tối đa 60"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 60.0 ;
+    :minimumInclusive true ;
+    :minimumValue 50.0 ;
+    :resultLabel "Tiếng Anh chuyên ngành"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :ClassSizeTableRow05 .
 
 :StandardGeneralEducationRate a :TuitionRate,
         owl:NamedIndividual ;
@@ -654,6 +958,18 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
     skos:altLabel "bảo lưu"@vi .
+
+:ThirdStudyYearBand a :StudyYearBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp trình độ sinh viên năm thứ ba"@vi ;
+    :criterionText "Từ 70 đến dưới 105"@vi ;
+    :maximumInclusive false ;
+    :maximumValue 105.0 ;
+    :minimumInclusive true ;
+    :minimumValue 70.0 ;
+    :resultLabel "Sinh viên năm thứ ba"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article19 .
 
 :TransportationInfrastructureEngineering a :AcademicProgram,
         owl:NamedIndividual ;
@@ -735,6 +1051,18 @@
     :feePolicyText "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi ;
     :sourceDocument :TuitionPaymentGuidance ;
     :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:WeakAcademicPerformanceBand a :AcademicPerformanceBand,
+        owl:NamedIndividual ;
+    rdfs:label "Xếp loại học lực yếu"@vi ;
+    :criterionText "4,00 ÷ 4,99"@vi ;
+    :maximumInclusive true ;
+    :maximumValue 4.99 ;
+    :minimumInclusive true ;
+    :minimumValue 4.00 ;
+    :resultLabel "Yếu"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article18 .
 
 :amount a owl:DatatypeProperty ;
     rdfs:label "số tiền"@vi ;
@@ -893,10 +1221,26 @@
     rdfs:domain :FormCatalogueEntry ;
     rdfs:range rdf:langString .
 
+:maximumInclusive a owl:DatatypeProperty ;
+    rdfs:label "bao gồm giá trị tối đa"@vi ;
+    rdfs:range xsd:boolean .
+
+:maximumValue a owl:DatatypeProperty ;
+    rdfs:label "giá trị tối đa"@vi ;
+    rdfs:range xsd:decimal .
+
 :minimumCohortNumber a owl:DatatypeProperty ;
     rdfs:label "khóa bắt đầu tối thiểu"@vi ;
     rdfs:domain :TuitionRate ;
     rdfs:range xsd:nonNegativeInteger .
+
+:minimumInclusive a owl:DatatypeProperty ;
+    rdfs:label "bao gồm giá trị tối thiểu"@vi ;
+    rdfs:range xsd:boolean .
+
+:minimumValue a owl:DatatypeProperty ;
+    rdfs:label "giá trị tối thiểu"@vi ;
+    rdfs:range xsd:decimal .
 
 :officialText a owl:DatatypeProperty ;
     rdfs:label "nội dung chính thức"@vi ;
@@ -922,6 +1266,10 @@
     rdfs:label "yêu cầu biểu mẫu"@vi ;
     rdfs:domain :AcademicProcedure ;
     rdfs:range :FormDocument .
+
+:resultLabel a owl:DatatypeProperty ;
+    rdfs:label "nhãn kết quả"@vi ;
+    rdfs:range rdf:langString .
 
 :resultProvision a owl:ObjectProperty ;
     rdfs:label "có điều khoản về kết quả"@vi ;
@@ -1030,124 +1378,6 @@
     :identifier "Dòng 1"@vi ;
     :officialText "| | | Tối thiểu | Tối đa |"@vi ;
     :orderIndex "1"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow02 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 2 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 2"@vi ;
-    :officialText "| 1 | Giáo dục tổng quát | 50 | 100 |"@vi ;
-    :orderIndex "2"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow03 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 3 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 3"@vi ;
-    :officialText "| 2 | Lý luận chính trị | 80 | * |"@vi ;
-    :orderIndex "3"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow04 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 4 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 4"@vi ;
-    :officialText """| 3 | - Ngoại ngữ B1.1, B1.2;
-- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |"""@vi ;
-    :orderIndex "4"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow05 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 5 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 5"@vi ;
-    :officialText "| 4 | - Tiếng anh chuyên ngành | 50 | 60 |"@vi ;
-    :orderIndex "5"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow06 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 6 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 6"@vi ;
-    :officialText "| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |"@vi ;
-    :orderIndex "6"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow07 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 7 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 7"@vi ;
-    :officialText "| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |"@vi ;
-    :orderIndex "7"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow08 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 8 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 8"@vi ;
-    :officialText "| 7 | Giáo dục thể chất | 60 | 80 (LT) |"@vi ;
-    :orderIndex "8"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow09 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 9 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 9"@vi ;
-    :officialText "| | | 45 | 60 (TH) |"@vi ;
-    :orderIndex "9"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow10 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 10 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 10"@vi ;
-    :officialText "| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |"@vi ;
-    :orderIndex "10"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow11 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 11 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 11"@vi ;
-    :officialText "| | | 45 | 70 (TH) |"@vi ;
-    :orderIndex "11"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow12 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 12 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 12"@vi ;
-    :officialText "| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |"@vi ;
-    :orderIndex "12"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow13 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 13 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 13"@vi ;
-    :officialText "| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |"@vi ;
-    :orderIndex "13"^^xsd:nonNegativeInteger ;
-    :partOf :ClassSizeTable ;
-    :sourceDocument :Decision1052 .
-
-:ClassSizeTableRow14 a :DocumentTableRow,
-        owl:NamedIndividual ;
-    rdfs:label "Dòng 14 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
-    :identifier "Dòng 14"@vi ;
-    :officialText "| 11 | Thực hành tại các phòng máy tính | 25 | 30 |"@vi ;
-    :orderIndex "14"^^xsd:nonNegativeInteger ;
     :partOf :ClassSizeTable ;
     :sourceDocument :Decision1052 .
 
@@ -4330,6 +4560,124 @@ Các ngành còn lại |
     rdfs:label "Ngân hàng Agribank"@vi ;
     :sourceDocument :TuitionPaymentGuidance .
 
+:ClassSizeTableRow02 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 2 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 2"@vi ;
+    :officialText "| 1 | Giáo dục tổng quát | 50 | 100 |"@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow03 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 3 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 3"@vi ;
+    :officialText "| 2 | Lý luận chính trị | 80 | * |"@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow04 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 4 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 4"@vi ;
+    :officialText """| 3 | - Ngoại ngữ B1.1, B1.2;
+- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |"""@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow05 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 5 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 5"@vi ;
+    :officialText "| 4 | - Tiếng anh chuyên ngành | 50 | 60 |"@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow06 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 6 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 6"@vi ;
+    :officialText "| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |"@vi ;
+    :orderIndex "6"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow07 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 7 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 7"@vi ;
+    :officialText "| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |"@vi ;
+    :orderIndex "7"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow08 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 8 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 8"@vi ;
+    :officialText "| 7 | Giáo dục thể chất | 60 | 80 (LT) |"@vi ;
+    :orderIndex "8"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow09 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 9 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 9"@vi ;
+    :officialText "| | | 45 | 60 (TH) |"@vi ;
+    :orderIndex "9"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow10 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 10 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 10"@vi ;
+    :officialText "| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |"@vi ;
+    :orderIndex "10"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow11 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 11 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 11"@vi ;
+    :officialText "| | | 45 | 70 (TH) |"@vi ;
+    :orderIndex "11"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow12 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 12 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 12"@vi ;
+    :officialText "| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |"@vi ;
+    :orderIndex "12"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow13 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 13 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 13"@vi ;
+    :officialText "| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |"@vi ;
+    :orderIndex "13"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
+:ClassSizeTableRow14 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 14 - Bảng điều kiện và số lượng sinh viên tổ chức lớp học phần"@vi ;
+    :identifier "Dòng 14"@vi ;
+    :officialText "| 11 | Thực hành tại các phòng máy tính | 25 | 30 |"@vi ;
+    :orderIndex "14"^^xsd:nonNegativeInteger ;
+    :partOf :ClassSizeTable ;
+    :sourceDocument :Decision1052 .
+
 :Decision a owl:Class ;
     rdfs:label "Quyết định"@vi ;
     rdfs:subClassOf :OfficialDocument .
@@ -5017,63 +5365,6 @@ P: từ 5 điểm trở lên.
     :partOf :Decision1052Article16 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article18 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 18: Đánh giá kết quả học tập theo học kỳ và năm học"@vi ;
-    :hasPart :Decision1052Article18Clause01,
-        :Decision1052Article18Clause02,
-        :Decision1052Article18Clause03 ;
-    :identifier "Điều 18"@vi ;
-    :officialText """### Điều 18. Đánh giá kết quả học tập theo học kỳ và năm học
-1. Điểm trung bình chung theo học kỳ hoặc theo năm học được tính theo công thức sau và được làm tròn đến 2 chữ số thập phân.
-$$A =
-rac{\\sum_{i=1}^{n} a_i 	imes n_i}{\\sum_{i=1}^{n} n_i}$$
-Trong đó:
-$A$ : điểm trung bình chung học kỳ/năm học
-$a_i$ : điểm của học phần thứ $i$
-$n_i$ : số tín chỉ của học phần thứ $i$
-$n$ : tổng số tín chỉ các học phần
-2. Sinh viên được xếp loại học lực theo điểm trung bình chung học kỳ, điểm trung bình chung năm học hoặc điểm trung bình chung tích lũy như sau:
-| Điểm trung bình chung | Mức xếp loại |
-| :---: | :---: |
-| 9,00 ÷ 10 | Xuất sắc |
-| 8,00 ÷ 8,99 | Giỏi |
-| 7,00 ÷ 7,99 | Khá |
-| 5,00 ÷ 6,99 | Trung bình |
-| 4,00 ÷ 4,99 | Yếu |
-| 0,00 ÷ 3,99 | Kém |
-3. Điểm trung bình chung học kỳ dùng để xét học bổng, khen thưởng sau mỗi học kỳ chính (không xét kết quả của học kỳ hè). Điểm trung bình chung năm học (xét cả kết quả của học kỳ hè) và điểm trung bình chung tích lũy để xét thôi học, xếp hạng học lực SV, xếp trình độ năm học và xếp hạng tốt nghiệp."""@vi ;
-    :orderIndex "18"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Đánh giá kết quả học tập theo học kỳ và năm học"@vi .
-
-:Decision1052Article19 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 19: Xếp loại trình độ năm học và xử lý kết quả học tập"@vi ;
-    :hasPart :Decision1052Article19Clause01,
-        :Decision1052Article19Clause02,
-        :Decision1052Article19Clause03 ;
-    :identifier "Điều 19"@vi ;
-    :officialText """### Điều 19. Xếp loại trình độ năm học và xử lý kết quả học tập
-1. Sinh viên được xếp hạng trình độ năm học căn cứ vào tổng số tín chỉ tích lũy được từ đầu khóa học và số tín chỉ trung bình một năm học theo kế hoạch học tập chuẩn. Sau mỗi học kỳ, căn cứ vào khối lượng tín chỉ tích lũy tính từ đầu khóa học, SV được xếp năm đào tạo như sau:
-| TT | Số tín chỉ đã tích lũy | Xếp trình độ năm học |
-| :---: | :--- | :--- |
-| 1 | Dưới 35 | SV năm thứ nhất |
-| 2 | Từ 35 đến dưới 70 | SV năm thứ hai |
-| 3 | Từ 70 đến dưới 105 | SV năm thứ ba |
-| 4 | Trên 105 | SV năm thứ tư |
-2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học.
-3. Việc xếp loại học lực và năm đào tạo để làm căn cứ:
-a) Xét học cùng lúc hai chương trình.
-b) Xét buộc thôi học.
-c) Xét chuyển trường, chuyển ngành.
-d) Việc xét khen thưởng hàng năm, cấp học bổng, cấp tài trợ (không xét kết quả của học kỳ phụ)."""@vi ;
-    :orderIndex "19"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Xếp loại trình độ năm học và xử lý kết quả học tập"@vi .
-
 :Decision1052Article20Clause01 a :Clause,
         owl:NamedIndividual ;
     rdfs:label "Khoản 1 Điều 20"@vi ;
@@ -5151,10 +5442,16 @@ c) Công nhận kết quả học tập, chuyển đổi theo cả chương trì
     rdfs:label "Học phần cơ sở và chuyên ngành"@vi ;
     :sourceDocument :Decision729 .
 
+:GraduationClassificationBand a owl:Class ;
+    rdfs:label "Mức xếp loại tốt nghiệp"@vi .
+
 :MasterLevel a :EducationLevel,
         owl:NamedIndividual ;
     rdfs:label "Trình độ thạc sĩ"@vi ;
     :sourceDocument :Decision729 .
+
+:StudyYearBand a owl:Class ;
+    rdfs:label "Mức xếp trình độ năm học"@vi .
 
 :TuitionPaymentGuidanceProvision02 a :Article,
         owl:NamedIndividual ;
@@ -5295,34 +5592,6 @@ d) Có chứng chỉ tin học quốc tế còn hiệu lực, đáp ứng các m
     :partOf :Decision1052Article21 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article23 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 23: Bằng tốt nghiệp và phân loại tốt nghiệp"@vi ;
-    :hasPart :Decision1052Article23Clause01,
-        :Decision1052Article23Clause02,
-        :Decision1052Article23Clause03,
-        :Decision1052Article23Clause04 ;
-    :identifier "Điều 23"@vi ;
-    :officialText """### Điều 23. Bằng tốt nghiệp và phân loại tốt nghiệp
-1. Bằng tốt nghiệp đại học được cấp theo ngành đào tạo.
-2. Hạng tốt nghiệp được xác định theo điểm trung bình chung tích lũy của toàn khoá học theo các mức như sau:
-| TT. | Điểm trung bình chung tích lũy của toàn khoá | Xếp loại |
-| :---: | :---: | :---: |
-| 1 | 9,00 ÷ 10 | Xuất sắc |
-| 2 | 8,00 ÷ 8,99 | Giỏi |
-| 3 | 7,00 ÷ 7,99 | Khá |
-| 4 | 5,50 ÷ 6,99 | Trung bình |
-3. Hạng tốt nghiệp của SV có điểm trung bình chung tích lũy loại xuất sắc và giỏi sẽ bị giảm đi một mức nếu thuộc một trong các trường hợp sau:
-a) Khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình.
-b) Sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học.
-4. Trường tổ chức lễ tốt nghiệp một lần trong năm học đối với hệ chính quy và nhiều lần trong năm học đối với hệ vừa làm vừa học. Trong khi chờ nhận bằng, SV có quyết định tốt nghiệp được cấp Giấy chứng nhận tốt nghiệp tạm thời (nếu có nhu cầu).
-## Chương IV
-## NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN"""@vi ;
-    :orderIndex "23"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Bằng tốt nghiệp và phân loại tốt nghiệp"@vi .
-
 :Decision1052Article24Clause01 a :Clause,
         owl:NamedIndividual ;
     rdfs:label "Khoản 1 Điều 24"@vi ;
@@ -5423,6 +5692,9 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
 :sourceProvision a owl:ObjectProperty ;
     rdfs:label "có điều khoản nguồn"@vi ;
     rdfs:range :DocumentPart .
+
+:AcademicPerformanceBand a owl:Class ;
+    rdfs:label "Mức xếp loại kết quả học tập"@vi .
 
 :Decision1052Article08Clause01 a :Clause,
         owl:NamedIndividual ;
@@ -5816,6 +6088,32 @@ h) Thu nhận thông tin phản hồi từ SV để liên tục hoàn thiện n�
     :partOf :Decision1052Article12 ;
     :sourceDocument :Decision1052 .
 
+:Decision1052Article19 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 19: Xếp loại trình độ năm học và xử lý kết quả học tập"@vi ;
+    :hasPart :Decision1052Article19Clause01,
+        :Decision1052Article19Clause02,
+        :Decision1052Article19Clause03 ;
+    :identifier "Điều 19"@vi ;
+    :officialText """### Điều 19. Xếp loại trình độ năm học và xử lý kết quả học tập
+1. Sinh viên được xếp hạng trình độ năm học căn cứ vào tổng số tín chỉ tích lũy được từ đầu khóa học và số tín chỉ trung bình một năm học theo kế hoạch học tập chuẩn. Sau mỗi học kỳ, căn cứ vào khối lượng tín chỉ tích lũy tính từ đầu khóa học, SV được xếp năm đào tạo như sau:
+| TT | Số tín chỉ đã tích lũy | Xếp trình độ năm học |
+| :---: | :--- | :--- |
+| 1 | Dưới 35 | SV năm thứ nhất |
+| 2 | Từ 35 đến dưới 70 | SV năm thứ hai |
+| 3 | Từ 70 đến dưới 105 | SV năm thứ ba |
+| 4 | Trên 105 | SV năm thứ tư |
+2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học.
+3. Việc xếp loại học lực và năm đào tạo để làm căn cứ:
+a) Xét học cùng lúc hai chương trình.
+b) Xét buộc thôi học.
+c) Xét chuyển trường, chuyển ngành.
+d) Việc xét khen thưởng hàng năm, cấp học bổng, cấp tài trợ (không xét kết quả của học kỳ phụ)."""@vi ;
+    :orderIndex "19"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Xếp loại trình độ năm học và xử lý kết quả học tập"@vi .
+
 :PaymentMethod a owl:Class ;
     rdfs:label "Phương thức thanh toán"@vi .
 
@@ -5893,6 +6191,34 @@ i) Học phần thay thế: học phần được sử dụng thay thế cho m�
     :partOf :Decision1052Chapter02 ;
     :sourceDocument :Decision1052 ;
     :title "Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp"@vi .
+
+:Decision1052Article23 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 23: Bằng tốt nghiệp và phân loại tốt nghiệp"@vi ;
+    :hasPart :Decision1052Article23Clause01,
+        :Decision1052Article23Clause02,
+        :Decision1052Article23Clause03,
+        :Decision1052Article23Clause04 ;
+    :identifier "Điều 23"@vi ;
+    :officialText """### Điều 23. Bằng tốt nghiệp và phân loại tốt nghiệp
+1. Bằng tốt nghiệp đại học được cấp theo ngành đào tạo.
+2. Hạng tốt nghiệp được xác định theo điểm trung bình chung tích lũy của toàn khoá học theo các mức như sau:
+| TT. | Điểm trung bình chung tích lũy của toàn khoá | Xếp loại |
+| :---: | :---: | :---: |
+| 1 | 9,00 ÷ 10 | Xuất sắc |
+| 2 | 8,00 ÷ 8,99 | Giỏi |
+| 3 | 7,00 ÷ 7,99 | Khá |
+| 4 | 5,50 ÷ 6,99 | Trung bình |
+3. Hạng tốt nghiệp của SV có điểm trung bình chung tích lũy loại xuất sắc và giỏi sẽ bị giảm đi một mức nếu thuộc một trong các trường hợp sau:
+a) Khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình.
+b) Sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học.
+4. Trường tổ chức lễ tốt nghiệp một lần trong năm học đối với hệ chính quy và nhiều lần trong năm học đối với hệ vừa làm vừa học. Trong khi chờ nhận bằng, SV có quyết định tốt nghiệp được cấp Giấy chứng nhận tốt nghiệp tạm thời (nếu có nhu cầu).
+## Chương IV
+## NHỮNG QUY ĐỊNH KHÁC ĐỐI VỚI SINH VIÊN"""@vi ;
+    :orderIndex "23"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Bằng tốt nghiệp và phân loại tốt nghiệp"@vi .
 
 :Decision1052Article25 a :Article,
         owl:NamedIndividual ;
@@ -6000,6 +6326,37 @@ b) Sinh viên đăng ký học theo mẫu (Mẫu số 14 - Phụ lục 4 kèm th
 
 :PaymentFeeRule a owl:Class ;
     rdfs:label "Quy tắc phí thanh toán"@vi .
+
+:Decision1052Article18 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 18: Đánh giá kết quả học tập theo học kỳ và năm học"@vi ;
+    :hasPart :Decision1052Article18Clause01,
+        :Decision1052Article18Clause02,
+        :Decision1052Article18Clause03 ;
+    :identifier "Điều 18"@vi ;
+    :officialText """### Điều 18. Đánh giá kết quả học tập theo học kỳ và năm học
+1. Điểm trung bình chung theo học kỳ hoặc theo năm học được tính theo công thức sau và được làm tròn đến 2 chữ số thập phân.
+$$A =
+rac{\\sum_{i=1}^{n} a_i 	imes n_i}{\\sum_{i=1}^{n} n_i}$$
+Trong đó:
+$A$ : điểm trung bình chung học kỳ/năm học
+$a_i$ : điểm của học phần thứ $i$
+$n_i$ : số tín chỉ của học phần thứ $i$
+$n$ : tổng số tín chỉ các học phần
+2. Sinh viên được xếp loại học lực theo điểm trung bình chung học kỳ, điểm trung bình chung năm học hoặc điểm trung bình chung tích lũy như sau:
+| Điểm trung bình chung | Mức xếp loại |
+| :---: | :---: |
+| 9,00 ÷ 10 | Xuất sắc |
+| 8,00 ÷ 8,99 | Giỏi |
+| 7,00 ÷ 7,99 | Khá |
+| 5,00 ÷ 6,99 | Trung bình |
+| 4,00 ÷ 4,99 | Yếu |
+| 0,00 ÷ 3,99 | Kém |
+3. Điểm trung bình chung học kỳ dùng để xét học bổng, khen thưởng sau mỗi học kỳ chính (không xét kết quả của học kỳ hè). Điểm trung bình chung năm học (xét cả kết quả của học kỳ hè) và điểm trung bình chung tích lũy để xét thôi học, xếp hạng học lực SV, xếp trình độ năm học và xếp hạng tốt nghiệp."""@vi ;
+    :orderIndex "18"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Đánh giá kết quả học tập theo học kỳ và năm học"@vi .
 
 :Decision1052Article28 a :Article,
         owl:NamedIndividual ;
@@ -6152,6 +6509,9 @@ d) Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở T
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Appendix02 ;
     :sourceDocument :Decision1052 .
+
+:ClassSizeRule a owl:Class ;
+    rdfs:label "Quy tắc quy mô lớp học phần"@vi .
 
 :Decision1052Article21 a :Article,
         owl:NamedIndividual ;
