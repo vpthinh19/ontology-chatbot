@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from ontchatbot.runtime.text import normalize_model_input
 
 
@@ -89,3 +91,28 @@ def test_normalization_is_idempotent() -> None:
     once = normalize_model_input(source)
 
     assert normalize_model_input(once) == once
+
+
+@pytest.mark.parametrize(
+    ("source", "expected"),
+    [
+        ("đóng tiền hp sao", "đóng tiền học phần sao"),
+        (
+            "tui rớt môn rồi, hc lại sao giờ",
+            "tui rớt môn rồi, học lại sao giờ",
+        ),
+        (
+            "làm sao bảo lưu, tui sắp đi nvqs",
+            "làm sao bảo lưu, tui sắp đi nghĩa vụ quân sự",
+        ),
+        ("sv đkhp 3tc", "sinh viên đăng ký học phần 3 tín chỉ"),
+        ("hpk65", "hpk65"),
+        ("timestamp svx hcmc", "timestamp svx hcmc"),
+        ("koooo, hp sao", "không, học phần sao"),
+    ],
+)
+def test_real_input_normalization(source: str, expected: str) -> None:
+    normalized = normalize_model_input(source)
+
+    assert normalized == expected
+    assert normalize_model_input(normalized) == normalized

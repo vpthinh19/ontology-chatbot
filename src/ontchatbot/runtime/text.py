@@ -18,6 +18,8 @@ _CREDITS = re.compile(
     r"(?<!\w)(\d+)\s*(?:tc|tin)(?!\w)",
     re.IGNORECASE,
 )
+_WORD = re.compile(r"(?<!\w)[^\W\d_]+(?!\w)", re.UNICODE)
+_REPEATED_CHARACTER = re.compile(r"(.)\1+")
 _ABBREVIATIONS = {
     "bgio": "bao giờ",
     "bik": "biết",
@@ -119,8 +121,19 @@ def normalize_model_input(text: str) -> str:
     normalized = unicodedata.normalize("NFC", normalized)
     normalized = _COHORT.sub(r"khoá \1", normalized)
     normalized = _CREDITS.sub(r"\1 tín chỉ", normalized)
+    normalized = _WORD.sub(_expand_emphatic_abbreviation, normalized)
     normalized = _ABBREVIATION.sub(
         lambda match: _ABBREVIATIONS[match.group(1).casefold()],
         normalized,
     )
     return _WHITESPACE.sub(" ", normalized).strip()
+
+
+def _expand_emphatic_abbreviation(match: re.Match) -> str:
+    """Bung teencode kéo dài chỉ khi dạng rút gọn nằm trong whitelist."""
+
+    token = match.group(0)
+    collapsed = _REPEATED_CHARACTER.sub(r"\1", token.casefold())
+    if collapsed != token.casefold() and collapsed in _ABBREVIATIONS:
+        return _ABBREVIATIONS[collapsed]
+    return token
