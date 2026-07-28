@@ -63,10 +63,25 @@ Khởi động API:
 uv sync --extra inference
 uv run --extra inference serve_sparql \
   --model-dir artifacts/deployment/t5gemma2 \
-  --gate-model-dir artifacts/deployment/phobert-gate
+  --gate-model-dir artifacts/deployment/phobert-gate \
+  --log-level info
 ```
 
 API chuẩn hoá câu hỏi, kiểm tra phạm vi, sinh và xác minh `SELECT`, thực thi
 trên ontology rồi trả văn bản trả lời. Câu ngoài phạm vi nhận thông báo ổn định
 và không đi vào model sinh SPARQL. Ontology được mount như dữ liệu độc lập; cập nhật
 literal không cần convert hay train lại model nếu schema/IRI không đổi.
+
+Mỗi lượt chat được trace trong terminal bằng cùng một request ID. Log cho biết
+câu sau chuẩn hoá, probability/threshold của gate, SPARQL nguyên văn, số dòng
+ontology, reply và latency:
+
+```text
+INFO ontchatbot.runtime.pipeline request=2a41 input='hc phí k65 cntt' normalized='học phí khoá 65 công nghệ thông tin'
+INFO ontchatbot.runtime.pipeline request=2a41 gate probability=0.560115 threshold=0.752740 accepted=false duration_ms=27.4
+```
+
+Request được gate chấp nhận có thêm các dòng `generator sparql=...`,
+`ontology rows=...` và `reply=...`. Exception ghi `stage=gate|generator|ontology|renderer`
+kèm traceback. Có thể dùng `--log-level warning` để tắt trace chi tiết khi
+không chẩn đoán.

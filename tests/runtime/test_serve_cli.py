@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 from types import SimpleNamespace
 
-from ontchatbot.cli.serve import _load_chatbot, _parse_args
+from ontchatbot.cli.serve import _configure_logging, _load_chatbot, _parse_args
 
 
 def test_serve_requires_and_loads_both_ctranslate2_artifacts(monkeypatch) -> None:
@@ -46,4 +47,30 @@ def test_serve_requires_and_loads_both_ctranslate2_artifacts(monkeypatch) -> Non
             Path("gate"),
             {"device": "cuda", "compute_type": "int8_float16"},
         ),
+    ]
+
+
+def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:
+    required = [
+        "--model-dir",
+        "generator",
+        "--gate-model-dir",
+        "gate",
+    ]
+
+    assert _parse_args(required).log_level == "info"
+    assert _parse_args([*required, "--log-level", "debug"]).log_level == "debug"
+
+
+def test_configure_logging_uses_requested_level_and_trace_fields(monkeypatch) -> None:
+    calls = []
+    monkeypatch.setattr(logging, "basicConfig", lambda **kwargs: calls.append(kwargs))
+
+    _configure_logging("warning")
+
+    assert calls == [
+        {
+            "level": logging.WARNING,
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+        }
     ]
