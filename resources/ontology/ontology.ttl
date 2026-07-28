@@ -14,6 +14,31 @@
 :AcademicOntology a owl:Ontology ;
     rdfs:label "Ontology học vụ Trường Đại học Nha Trang"@vi .
 
+:AccreditedGeneralEducationRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí giáo dục tổng quát chương trình đạt kiểm định"@vi ;
+    :amount "345000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedGeneralEducationCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Auditing a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kiểm toán"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:ChemicalEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật hóa học"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :ClassAbsenceRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin phép nghỉ học"@vi ;
@@ -21,6 +46,162 @@
     :requiresForm :Decision1052Form03 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article17 .
+
+:Cohort63Accredited620Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 63"@vi ;
+    :amount "620000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :Aquaculture,
+        :NavalArchitecture,
+        :SeafoodProcessingTechnology ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 63 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "63"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort63BiotechnologyAccreditedRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 63"@vi ;
+    :amount "600000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :Biotechnology ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 63 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "63"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort65Accredited550Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 65"@vi ;
+    :amount "550000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :Accounting,
+        :BusinessAdministration,
+        :HotelManagement ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 65 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "65"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort65InformationTechnologyAccreditedRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 65"@vi ;
+    :amount "620000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :InformationTechnology ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 65 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "65"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort66Accredited550Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 66"@vi ;
+    :amount "550000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :CommercialBusiness,
+        :FinanceAndBanking,
+        :TourismAndTravelServiceManagement ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 66 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "66"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort66Accredited620Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 66"@vi ;
+    :amount "620000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :AutomotiveEngineering,
+        :CivilEngineering,
+        :FisheriesManagement,
+        :FoodTechnology,
+        :MechanicalEngineering ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 66 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "66"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort66EnglishLanguageAccreditedRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 66"@vi ;
+    :amount "510000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :EnglishLanguage ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 66 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "66"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort67Accredited550Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 67"@vi ;
+    :amount "550000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :DevelopmentEconomics,
+        :Law,
+        :ManagementInformationSystems,
+        :MaritimeScience,
+        :Marketing ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 67 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "67"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:Cohort67Accredited620Rate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí chương trình đạt kiểm định từ khóa 67"@vi ;
+    :amount "620000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :AccreditedFoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :ElectricalEngineering,
+        :MechatronicsEngineering,
+        :ThermalEngineering ;
+    :billingUnit :PerCredit ;
+    :criterionText "Áp dụng từ khóa 67 trở về sau"@vi ;
+    :currencyCode "VND" ;
+    :minimumCohortNumber "67"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:ComputerScience a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Khoa học máy tính"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:ControlAndAutomationEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật điều khiển và tự động hóa"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :CourseExemptionAndBonusProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -60,6 +241,15 @@
     rdfs:label "Bộ môn"@vi ;
     :sourceDocument :Decision1052 .
 
+:DirectBankingFreeFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Miễn phí Mobile Banking hoặc Internet Banking"@vi ;
+    :appliesToPaymentMethod :MobileOrInternetBankingPayment ;
+    :feeAmount "0"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Miễn phí Mobile Banking hoặc Internet Banking"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision02 .
+
 :DismissalTransferRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin chuyển chương trình sau khi bị buộc thôi học"@vi ;
@@ -68,6 +258,24 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article20 .
 
+:DoctoralBachelorEntryFourYearRule a :DoctoralTuitionDurationRule,
+        owl:NamedIndividual ;
+    rdfs:label "Thu học phí 4 năm đối với nghiên cứu sinh đầu vào đại học"@vi ;
+    :appliesToEntryQualification :BachelorQualification ;
+    :criterionText "Thu học phí 4 năm đối với nghiên cứu sinh đầu vào đại học"@vi ;
+    :durationInYears "4"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:DoctoralMasterEntryThreeYearRule a :DoctoralTuitionDurationRule,
+        owl:NamedIndividual ;
+    rdfs:label "Thu học phí 3 năm đối với nghiên cứu sinh đầu vào thạc sĩ"@vi ;
+    :appliesToEntryQualification :MasterQualification ;
+    :criterionText "Thu học phí 3 năm đối với nghiên cứu sinh đầu vào thạc sĩ"@vi ;
+    :durationInYears "3"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
 :EarlyGraduationReviewProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đề nghị xét tốt nghiệp sớm"@vi ;
@@ -75,6 +283,25 @@
     :requiresForm :Decision1052Form08 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 .
+
+:EnglishLanguageUndergraduateRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí đại học ngành Ngôn ngữ Anh"@vi ;
+    :amount "460000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :FoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :EnglishLanguage ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:EnvironmentalEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật môi trường"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :ExamPostponementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -97,6 +324,27 @@
         owl:NamedIndividual ;
     rdfs:label "Khoa hoặc viện đào tạo"@vi ;
     :sourceDocument :Decision1052 .
+
+:FisheriesExploitation a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Khai thác thủy sản"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:FisheriesScience a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Khoa học thủy sản"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:FoodQualityAndSafetyAssurance a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :GradeImprovementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -128,6 +376,137 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article22 .
 
+:GroupIIIDoctoralRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí tiến sĩ khối ngành III"@vi ;
+    :amount "39500000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupIII ;
+    :appliesToEducationLevel :DoctoralLevel ;
+    :billingUnit :PerAcademicYear ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupIIIMasterRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí thạc sĩ khối ngành III"@vi ;
+    :amount "785000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupIII ;
+    :appliesToEducationLevel :MasterLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupIIIUndergraduateRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí đại học khối ngành III"@vi ;
+    :amount "500000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :FoundationAndMajorCourse ;
+    :appliesToDisciplineGroup :DisciplineGroupIII ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupIVDoctoralRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí tiến sĩ khối ngành IV"@vi ;
+    :amount "42600000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupIV ;
+    :appliesToEducationLevel :DoctoralLevel ;
+    :billingUnit :PerAcademicYear ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupIVMasterRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí thạc sĩ khối ngành IV"@vi ;
+    :amount "850000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupIV ;
+    :appliesToEducationLevel :MasterLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVDoctoralRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí tiến sĩ khối ngành V"@vi ;
+    :amount "46000000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupV ;
+    :appliesToEducationLevel :DoctoralLevel ;
+    :billingUnit :PerAcademicYear ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVIIDoctoralRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí tiến sĩ khối ngành VII"@vi ;
+    :amount "39500000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupVII ;
+    :appliesToEducationLevel :DoctoralLevel ;
+    :billingUnit :PerAcademicYear ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVIIMasterRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí thạc sĩ khối ngành VII"@vi ;
+    :amount "785000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupVII ;
+    :appliesToEducationLevel :MasterLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVIIOtherUndergraduateRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí đại học các ngành còn lại thuộc khối VII"@vi ;
+    :amount "505000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :FoundationAndMajorCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :appliesToProgram :DevelopmentEconomics,
+        :EconomicManagement,
+        :Economics,
+        :FrenchVietnameseBilingualTourismAndTravelServiceManagement,
+        :HotelManagement,
+        :MarineResourceEconomicsAndManagement,
+        :MaritimeScience,
+        :TourismAndTravelServiceManagement ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVMasterRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí thạc sĩ khối ngành V"@vi ;
+    :amount "915000"^^xsd:nonNegativeInteger ;
+    :appliesToDisciplineGroup :DisciplineGroupV ;
+    :appliesToEducationLevel :MasterLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:GroupVUndergraduateRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí đại học khối ngành V"@vi ;
+    :amount "570000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :FoundationAndMajorCourse ;
+    :appliesToDisciplineGroup :DisciplineGroupV ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
 :MajorChangeProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình chuyển ngành"@vi ;
@@ -136,11 +515,81 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article25 .
 
+:ManufacturingEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Công nghệ chế tạo máy"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:MarineEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật biển"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:MarineResourceDoctoralFourYearRule a :DoctoralTuitionDurationRule,
+        owl:NamedIndividual ;
+    rdfs:label "Thu học phí 4 năm đối với tiến sĩ ngành Kinh tế và quản lý tài nguyên biển"@vi ;
+    :appliesToProgram :MarineResourceEconomicsAndManagement ;
+    :criterionText "Thu học phí 4 năm đối với tiến sĩ ngành Kinh tế và quản lý tài nguyên biển"@vi ;
+    :durationInYears "4"^^xsd:nonNegativeInteger ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:NhaTrangCounterFreeFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi ;
+    :appliesToPaymentMethod :CashAtBankCounterPayment ;
+    :feeAmount "0"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision03 .
+
+:NoherdDoctoralRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí tiến sĩ Kinh tế và quản lý tài nguyên biển thuộc dự án Noherd"@vi ;
+    :amount "24500000"^^xsd:nonNegativeInteger ;
+    :appliesToEducationLevel :DoctoralLevel ;
+    :appliesToProgram :MarineResourceEconomicsAndManagement ;
+    :billingUnit :PerAcademicYear ;
+    :criterionText "Ngành Tiến sĩ Kinh tế và quản lý tài nguyên biển thuộc dự án Noherd"@vi ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
+
+:OutsideNhaTrangCounterFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi ;
+    :appliesToPaymentMethod :CashAtBankCounterPayment ;
+    :feeAmount "3300"^^xsd:nonNegativeInteger,
+        "5500"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision03 .
+
+:PowerMechanicalEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật cơ khí động lực"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :ProfessionalCouncil a :AcademicActor,
         :DecisionAuthority,
         owl:NamedIndividual ;
     rdfs:label "Hội đồng chuyên môn"@vi ;
     :sourceDocument :Decision1052 .
+
+:QRCodeFreeFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Miễn phí thanh toán QR"@vi ;
+    :appliesToPaymentMethod :QRCodePayment ;
+    :feeAmount "0"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Miễn phí thanh toán QR"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
 
 :SecondProgramRegistrationProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
@@ -150,6 +599,17 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article28 ;
     skos:altLabel "học chương trình thứ hai"@vi .
+
+:StandardGeneralEducationRate a :TuitionRate,
+        owl:NamedIndividual ;
+    rdfs:label "Học phí học phần giáo dục tổng quát"@vi ;
+    :amount "345000"^^xsd:nonNegativeInteger ;
+    :appliesToCourseCategory :GeneralEducationCourse ;
+    :appliesToEducationLevel :UndergraduateLevel ;
+    :billingUnit :PerCredit ;
+    :currencyCode "VND" ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix01 .
 
 :Student a :AcademicActor,
         owl:NamedIndividual ;
@@ -195,12 +655,24 @@
     :sourceProvision :Decision1052Article24 ;
     skos:altLabel "bảo lưu"@vi .
 
+:TransportationInfrastructureEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật xây dựng công trình giao thông"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :TuitionPaymentProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình đóng học phí"@vi ;
     :instructionProvision :TuitionPaymentGuidanceProvision01 ;
+    :paymentWarningText "Gửi MÃ SINH VIÊN cho ngân hàng để tra cứu số tiền và đóng học phí, không gửi tài khoản của trường cho ngân hàng"@vi ;
     :sourceDocument :TuitionPaymentGuidance ;
-    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+    :sourceProvision :TuitionPaymentGuidanceProvision01 ;
+    :supportsPaymentMethod :CashAtBankCounterPayment,
+        :MobileOrInternetBankingPayment,
+        :QRCodePayment,
+        :VNPAYPayment .
 
 :UndergraduateFormCatalogue a :FormCatalogue,
         owl:NamedIndividual ;
@@ -246,10 +718,81 @@
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article26 .
 
+:VNPAYOtherBankFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Phí VNPAY đối với ngân hàng khác"@vi ;
+    :appliesToPaymentMethod :VNPAYPayment ;
+    :feeAmount "5500"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Phí VNPAY đối với ngân hàng khác"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:VNPAYVietcombankFreeFee a :PaymentFeeRule,
+        owl:NamedIndividual ;
+    rdfs:label "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi ;
+    :appliesToPaymentMethod :VNPAYPayment ;
+    :feeAmount "0"^^xsd:nonNegativeInteger ;
+    :feePolicyText "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:amount a owl:DatatypeProperty ;
+    rdfs:label "số tiền"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range xsd:nonNegativeInteger .
+
+:appliesToCourseCategory a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho loại học phần"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range :CourseCategory .
+
+:appliesToDisciplineGroup a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho khối ngành"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range :DisciplineGroup .
+
+:appliesToEducationLevel a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho trình độ"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range :EducationLevel .
+
+:appliesToEntryQualification a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho trình độ đầu vào"@vi ;
+    rdfs:domain :DoctoralTuitionDurationRule ;
+    rdfs:range :EntryQualification .
+
+:appliesToPaymentMethod a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho phương thức thanh toán"@vi ;
+    rdfs:domain :PaymentFeeRule ;
+    rdfs:range :PaymentMethod .
+
+:appliesToProgram a owl:ObjectProperty ;
+    rdfs:label "áp dụng cho chương trình"@vi ;
+    rdfs:range :AcademicProgram .
+
+:belongsToDisciplineGroup a owl:ObjectProperty ;
+    rdfs:label "thuộc khối ngành"@vi ;
+    rdfs:domain :AcademicProgram ;
+    rdfs:range :DisciplineGroup .
+
+:billingUnit a owl:ObjectProperty ;
+    rdfs:label "có đơn vị thu"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range :BillingUnit .
+
 :catalogueEntryForForm a owl:ObjectProperty ;
     rdfs:label "là mục tải cho biểu mẫu"@vi ;
     rdfs:domain :FormCatalogueEntry ;
     rdfs:range :FormDocument .
+
+:criterionText a owl:DatatypeProperty ;
+    rdfs:label "tiêu chí nguyên văn"@vi ;
+    rdfs:range rdf:langString .
+
+:currencyCode a owl:DatatypeProperty ;
+    rdfs:label "mã tiền tệ"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range xsd:string .
 
 :deadlineProvision a owl:ObjectProperty ;
     rdfs:label "có điều khoản về thời hạn"@vi ;
@@ -277,6 +820,11 @@
     rdfs:domain :FormCatalogueEntry ;
     rdfs:range xsd:anyURI .
 
+:durationInYears a owl:DatatypeProperty ;
+    rdfs:label "thời gian tính bằng năm"@vi ;
+    rdfs:domain :DoctoralTuitionDurationRule ;
+    rdfs:range xsd:nonNegativeInteger .
+
 :effectiveFromAcademicYear a owl:DatatypeProperty ;
     rdfs:label "có hiệu lực từ năm học"@vi ;
     rdfs:domain :OfficialDocument ;
@@ -292,6 +840,16 @@
     rdfs:domain :AcademicProcedure ;
     rdfs:range :DocumentPart ;
     rdfs:subPropertyOf :sourceProvision .
+
+:feeAmount a owl:DatatypeProperty ;
+    rdfs:label "mức phí"@vi ;
+    rdfs:domain :PaymentFeeRule ;
+    rdfs:range xsd:nonNegativeInteger .
+
+:feePolicyText a owl:DatatypeProperty ;
+    rdfs:label "chính sách phí"@vi ;
+    rdfs:domain :PaymentFeeRule ;
+    rdfs:range rdf:langString .
 
 :formNumber a owl:DatatypeProperty ;
     rdfs:label "số biểu mẫu"@vi ;
@@ -335,6 +893,11 @@
     rdfs:domain :FormCatalogueEntry ;
     rdfs:range rdf:langString .
 
+:minimumCohortNumber a owl:DatatypeProperty ;
+    rdfs:label "khóa bắt đầu tối thiểu"@vi ;
+    rdfs:domain :TuitionRate ;
+    rdfs:range xsd:nonNegativeInteger .
+
 :officialText a owl:DatatypeProperty ;
     rdfs:label "nội dung chính thức"@vi ;
     rdfs:domain :DocumentPart ;
@@ -344,6 +907,16 @@
     rdfs:label "chỉ số thứ tự"@vi ;
     rdfs:domain :DocumentPart ;
     rdfs:range xsd:nonNegativeInteger .
+
+:paymentInstructionProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản hướng dẫn thanh toán"@vi ;
+    rdfs:domain :PaymentMethod ;
+    rdfs:range :DocumentPart ;
+    rdfs:subPropertyOf :sourceProvision .
+
+:paymentWarningText a owl:DatatypeProperty ;
+    rdfs:label "cảnh báo thanh toán"@vi ;
+    rdfs:range rdf:langString .
 
 :requiresForm a owl:ObjectProperty ;
     rdfs:label "yêu cầu biểu mẫu"@vi ;
@@ -370,6 +943,16 @@
     rdfs:domain :AcademicProcedure ;
     rdfs:range :AcademicActor .
 
+:supportsBank a owl:ObjectProperty ;
+    rdfs:label "hỗ trợ ngân hàng"@vi ;
+    rdfs:domain :PaymentMethod ;
+    rdfs:range :Bank .
+
+:supportsPaymentMethod a owl:ObjectProperty ;
+    rdfs:label "hỗ trợ phương thức thanh toán"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :PaymentMethod .
+
 :title a owl:DatatypeProperty ;
     rdfs:label "tiêu đề"@vi ;
     rdfs:domain :DocumentComponent ;
@@ -385,9 +968,61 @@
     rdfs:domain :FormCatalogue ;
     rdfs:range xsd:anyURI .
 
+:Accounting a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kế toán"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:AccreditedGeneralEducationCourse a :CourseCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Học phần giáo dục tổng quát của chương trình đạt kiểm định"@vi ;
+    :sourceDocument :Decision729 .
+
+:Aquaculture a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Nuôi trồng thuỷ sản"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :AttachedRegulation a owl:Class ;
     rdfs:label "Quy chế đính kèm"@vi ;
     rdfs:subClassOf :DocumentPart .
+
+:AutomotiveEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật ô tô"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:BachelorQualification a :EntryQualification,
+        owl:NamedIndividual ;
+    rdfs:label "Trình độ đầu vào đại học"@vi ;
+    :sourceDocument :Decision729 .
+
+:Biotechnology a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Công nghệ sinh học"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:BusinessAdministration a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản trị kinh doanh"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:CivilEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật xây dựng"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :ClassSizeTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
@@ -516,6 +1151,13 @@
     :partOf :ClassSizeTable ;
     :sourceDocument :Decision1052 .
 
+:CommercialBusiness a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kinh doanh thương mại"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :ComputerCertificateTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
     rdfs:label "Dòng 1 - Bảng quy đổi chứng chỉ tin học quốc tế"@vi ;
@@ -533,10 +1175,6 @@
     :orderIndex "2"^^xsd:nonNegativeInteger ;
     :partOf :ComputerCertificateTable ;
     :sourceDocument :Decision1052 .
-
-:Decision a owl:Class ;
-    rdfs:label "Quyết định"@vi ;
-    rdfs:subClassOf :OfficialDocument .
 
 :Decision1052Article01Clause01 a :Clause,
         owl:NamedIndividual ;
@@ -2341,6 +2979,757 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article27 .
 
+:Decision729EnactmentArticle01 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 1 của Quyết định 729/QĐ-ĐHNT"@vi ;
+    :identifier "Điều 1"@vi ;
+    :officialText "Điều 1. Ban hành kèm theo Quyết định này mức học phí chương trình đào tạo trình độ đại học, sau đại học hình thức chính quy Học kỳ I năm học 2025-2026 của Trường Đại học Nha Trang (Phụ lục kèm theo)."@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729 ;
+    :sourceDocument :Decision729 .
+
+:Decision729EnactmentArticle02 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 2 của Quyết định 729/QĐ-ĐHNT"@vi ;
+    :identifier "Điều 2"@vi ;
+    :officialText "Điều 2. Quyết định này có hiệu lực từ Học kỳ I năm học 2025-2026 đến khi có quy định mới. Bãi bỏ các quy định trước đây có nội dung trái với Quyết định này."@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729 ;
+    :sourceDocument :Decision729 .
+
+:Decision729EnactmentArticle03 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 3 của Quyết định 729/QĐ-ĐHNT"@vi ;
+    :identifier "Điều 3"@vi ;
+    :officialText "Điều 3. Các ông/bà Trưởng phòng Kế hoạch - Tài chính, Đào tạo Đại học, Đào tạo Sau đại học, Công tác Chính trị và Sinh viên, các tổ chức, cá nhân có liên quan và người học chịu trách nhiệm thi hành quyết định này./."@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729 ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow01 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 1 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 1"@vi ;
+    :officialText "| I | Khối ngành III: Kinh doanh và quản lý, pháp luật |"@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow02 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 2 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 2"@vi ;
+    :officialText "| 1 | Kinh doanh thương mại |"@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow03 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 3 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 3"@vi ;
+    :officialText "| 2 | Marketing |"@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow04 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 4 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 4"@vi ;
+    :officialText "| 3 | Quản trị kinh doanh |"@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow05 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 5 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 5"@vi ;
+    :officialText "| 4 | Kế toán |"@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow06 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 6 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 6"@vi ;
+    :officialText "| 5 | Kiểm toán |"@vi ;
+    :orderIndex "6"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow07 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 7 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 7"@vi ;
+    :officialText "| 6 | Tài chính - Ngân hàng |"@vi ;
+    :orderIndex "7"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow08 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 8 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 8"@vi ;
+    :officialText "| 7 | Hệ thống thông tin quản lý |"@vi ;
+    :orderIndex "8"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow09 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 9 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 9"@vi ;
+    :officialText "| 8 | Luật |"@vi ;
+    :orderIndex "9"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow10 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 10 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 10"@vi ;
+    :officialText "| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên |"@vi ;
+    :orderIndex "10"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow11 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 11 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 11"@vi ;
+    :officialText "| 1 | Công nghệ sinh học |"@vi ;
+    :orderIndex "11"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow12 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 12 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 12"@vi ;
+    :officialText "| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản |"@vi ;
+    :orderIndex "12"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow13 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 13 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 13"@vi ;
+    :officialText "| 1 | Công nghệ thông tin |"@vi ;
+    :orderIndex "13"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow14 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 14 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 14"@vi ;
+    :officialText "| 2 | Kỹ thuật cơ khí |"@vi ;
+    :orderIndex "14"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow15 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 15 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 15"@vi ;
+    :officialText "| 3 | Công nghệ chế tạo máy |"@vi ;
+    :orderIndex "15"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow16 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 16 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 16"@vi ;
+    :officialText "| 4 | Kỹ thuật cơ điện tử |"@vi ;
+    :orderIndex "16"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow17 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 17 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 17"@vi ;
+    :officialText "| 5 | Kỹ thuật nhiệt |"@vi ;
+    :orderIndex "17"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow18 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 18 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 18"@vi ;
+    :officialText "| 6 | Kỹ thuật hóa học |"@vi ;
+    :orderIndex "18"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow19 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 19 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 19"@vi ;
+    :officialText "| 7 | Kỹ thuật ô tô |"@vi ;
+    :orderIndex "19"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow20 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 20 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 20"@vi ;
+    :officialText "| 8 | Kỹ thuật cơ khí động lực |"@vi ;
+    :orderIndex "20"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow21 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 21 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 21"@vi ;
+    :officialText "| 9 | Kỹ thuật tàu thuỷ |"@vi ;
+    :orderIndex "21"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow22 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 22 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 22"@vi ;
+    :officialText "| 10 | Kỹ thuật biển |"@vi ;
+    :orderIndex "22"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow23 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 23 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 23"@vi ;
+    :officialText "| 11 | Kỹ thuật điện |"@vi ;
+    :orderIndex "23"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow24 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 24 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 24"@vi ;
+    :officialText "| 12 | Kỹ thuật điều khiển và tự động hóa |"@vi ;
+    :orderIndex "24"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow25 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 25 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 25"@vi ;
+    :officialText "| 13 | Kỹ thuật môi trường |"@vi ;
+    :orderIndex "25"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow26 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 26 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 26"@vi ;
+    :officialText "| 14 | Công nghệ thực phẩm |"@vi ;
+    :orderIndex "26"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow27 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 27 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 27"@vi ;
+    :officialText "| 15 | Đảm bảo chất lượng và an toàn thực phẩm |"@vi ;
+    :orderIndex "27"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow28 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 28 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 28"@vi ;
+    :officialText "| 16 | Công nghệ chế biến thủy sản |"@vi ;
+    :orderIndex "28"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow29 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 29 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 29"@vi ;
+    :officialText "| 17 | Kỹ thuật xây dựng |"@vi ;
+    :orderIndex "29"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow30 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 30 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 30"@vi ;
+    :officialText "| 18 | Kỹ thuật xây dựng công trình giao thông |"@vi ;
+    :orderIndex "30"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow31 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 31 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 31"@vi ;
+    :officialText "| 19 | Nuôi trồng thuỷ sản |"@vi ;
+    :orderIndex "31"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow32 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 32 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 32"@vi ;
+    :officialText "| 20 | Khai thác thủy sản |"@vi ;
+    :orderIndex "32"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow33 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 33 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 33"@vi ;
+    :officialText "| 21 | Quản lý thủy sản |"@vi ;
+    :orderIndex "33"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow34 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 34 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 34"@vi ;
+    :officialText "| 22 | Khoa học thủy sản |"@vi ;
+    :orderIndex "34"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow35 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 35 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 35"@vi ;
+    :officialText "| 23 | Khoa học máy tính |"@vi ;
+    :orderIndex "35"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow36 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 36 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 36"@vi ;
+    :officialText "| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường |"@vi ;
+    :orderIndex "36"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow37 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 37 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 37"@vi ;
+    :officialText "| 1 | Quản trị khách sạn |"@vi ;
+    :orderIndex "37"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow38 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 38 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 38"@vi ;
+    :officialText "| 2 | Quản trị dịch vụ du lịch và lữ hành |"@vi ;
+    :orderIndex "38"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow39 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 39 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 39"@vi ;
+    :officialText "| 3 | Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt) |"@vi ;
+    :orderIndex "39"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow40 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 40 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 40"@vi ;
+    :officialText "| 4 | Ngôn ngữ Anh |"@vi ;
+    :orderIndex "40"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow41 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 41 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 41"@vi ;
+    :officialText "| 5 | Khoa học hàng hải |"@vi ;
+    :orderIndex "41"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow42 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 42 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 42"@vi ;
+    :officialText "| 6 | Kinh tế |"@vi ;
+    :orderIndex "42"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow43 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 43 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 43"@vi ;
+    :officialText "| 7 | Kinh tế phát triển |"@vi ;
+    :orderIndex "43"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow44 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 44 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 44"@vi ;
+    :officialText "| 8 | Quản lý kinh tế |"@vi ;
+    :orderIndex "44"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729ProgramTableRow45 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 45 - Danh mục các ngành đào tạo"@vi ;
+    :identifier "Dòng 45"@vi ;
+    :officialText "| 9 | Kinh tế và quản lý tài nguyên biển |"@vi ;
+    :orderIndex "45"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729ProgramTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow01 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 1 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 1"@vi ;
+    :officialText "| I | Khối ngành III: Kinh doanh và quản lý, pháp luật | |"@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow02 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 2 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 2"@vi ;
+    :officialText """| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+500.000 đ/TC |"""@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow03 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 3 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 3"@vi ;
+    :officialText "| 2 | Thạc sĩ | 785.000 đ/TC |"@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow04 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 4 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 4"@vi ;
+    :officialText """| 3 | Tiến sĩ
+Ngành Tiến sĩ Kinh tế và quản lý tài nguyên biển (thuộc dự án Noherd) | 39.500.000 đ/năm
+24.500.000 đ/năm |"""@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow05 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 5 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 5"@vi ;
+    :officialText "| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên | |"@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow06 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 6 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 6"@vi ;
+    :officialText "| 1 | Thạc sĩ | 850.000 đ/TC |"@vi ;
+    :orderIndex "6"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow07 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 7 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 7"@vi ;
+    :officialText "| 2 | Tiến sĩ | 42.600.000 đ/năm |"@vi ;
+    :orderIndex "7"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow08 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 8 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 8"@vi ;
+    :officialText "| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản | |"@vi ;
+    :orderIndex "8"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow09 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 9 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 9"@vi ;
+    :officialText """| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+570.000 đ/TC |"""@vi ;
+    :orderIndex "9"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow10 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 10 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 10"@vi ;
+    :officialText "| 2 | Thạc sĩ | 915.000 đ/TC |"@vi ;
+    :orderIndex "10"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow11 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 11 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 11"@vi ;
+    :officialText "| 3 | Tiến sĩ | 46.000.000 đ/năm |"@vi ;
+    :orderIndex "11"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow12 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 12 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 12"@vi ;
+    :officialText "| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường | |"@vi ;
+    :orderIndex "12"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow13 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 13 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 13"@vi ;
+    :officialText """| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành
+Ngành Ngôn ngữ Anh
+Các ngành còn lại |
+345.000 đ/TC
+
+460.000 đ/TC
+505.000 đ/TC |"""@vi ;
+    :orderIndex "13"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow14 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 14 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 14"@vi ;
+    :officialText "| 2 | Thạc sĩ | 785.000 đ/TC |"@vi ;
+    :orderIndex "14"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow15 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 15 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 15"@vi ;
+    :officialText "| 3 | Tiến sĩ | 39.500.000 đ/năm |"@vi ;
+    :orderIndex "15"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow16 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 16 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 16"@vi ;
+    :officialText "| V | Các chương trình đào tạo đạt kiểm định chất lượng Đại học hình thức chính quy | |"@vi ;
+    :orderIndex "16"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow17 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 17 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 17"@vi ;
+    :officialText "| V.1 | Học phần giáo dục tổng quát | 345.000 đ/TC |"@vi ;
+    :orderIndex "17"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow18 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 18 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 18"@vi ;
+    :officialText "| V.2 | Học phần cơ sở và chuyên ngành | |"@vi ;
+    :orderIndex "18"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow19 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 19 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 19"@vi ;
+    :officialText """| V.2.1
+(Áp dụng từ | 1. Công nghệ chế biến thủy sản
+2. Kỹ thuật tàu thủy | 620.000 đ/TC |"""@vi ;
+    :orderIndex "19"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow20 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 20 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 20"@vi ;
+    :officialText "| TT | Trình độ và hình thức đào tạo | Mức học phí |"@vi ;
+    :orderIndex "20"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow21 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 21 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 21"@vi ;
+    :officialText "| khóa 63 trở về sau ) | 3. Nuôi trồng thủy sản | |"@vi ;
+    :orderIndex "21"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow22 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 22 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 22"@vi ;
+    :officialText "| | 4. Công nghệ sinh học | 600.000 đ/TC |"@vi ;
+    :orderIndex "22"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow23 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 23 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 23"@vi ;
+    :officialText """| V.2.2
+(Áp dụng từ khóa 65 trở về sau ) | 1. Quản trị kinh doanh
+2. Kế toán (không bao gồm CTĐT Kiểm toán)
+3. Quản trị khách sạn | 550.000 đ/TC |"""@vi ;
+    :orderIndex "23"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow24 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 24 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 24"@vi ;
+    :officialText "| | 4. Công nghệ thông tin | 620.000 đ/TC |"@vi ;
+    :orderIndex "24"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow25 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 25 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 25"@vi ;
+    :officialText """| V.2.3
+(Áp dụng từ khóa 66 trở về sau ) | 1. Kỹ thuật cơ khí
+2. Kỹ thuật ô tô
+3. Kỹ thuật xây dựng
+4. Công nghệ thực phẩm
+5. Quản lý thủy sản | 620.000 đ/TC |"""@vi ;
+    :orderIndex "25"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow26 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 26 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 26"@vi ;
+    :officialText """| | 6. Kinh doanh thương mại
+7. Tài chính - Ngân hàng
+8. Quản trị dịch vụ du lịch và lữ hành | 550.000 đ/TC |"""@vi ;
+    :orderIndex "26"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow27 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 27 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 27"@vi ;
+    :officialText "| | 9. Ngôn ngữ Anh | 510.000 đ/TC |"@vi ;
+    :orderIndex "27"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow28 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 28 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 28"@vi ;
+    :officialText """| V.2.4
+(Áp dụng từ khóa 67 trở về sau ) | 1. Kỹ thuật nhiệt
+2. Kỹ thuật cơ điện tử
+3. Kỹ thuật điện | 620.000 đ/TC |"""@vi ;
+    :orderIndex "28"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTableRow29 a :DocumentTableRow,
+        owl:NamedIndividual ;
+    rdfs:label "Dòng 29 - Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :identifier "Dòng 29"@vi ;
+    :officialText """| | 4. Marketing
+5. Hệ thống thông tin quản lý
+6. Luật
+7. Kinh tế phát triển
+8. Khoa học hàng hải | 550.000 đ/TC |"""@vi ;
+    :orderIndex "29"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729TuitionTable ;
+    :sourceDocument :Decision729 .
+
+:EconomicManagement a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản lý kinh tế"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:Economics a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kinh tế"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:ElectricalEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật điện"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :EnglishMajorOtherLanguageCertificateTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
     rdfs:label "Dòng 1 - Bảng chứng chỉ ngoại ngữ khác - ngành Ngôn ngữ Anh"@vi ;
@@ -2385,6 +3774,27 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :EnglishMajorOtherLanguageCertificateTable ;
     :sourceDocument :Decision1052 .
+
+:FinanceAndBanking a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Tài chính - Ngân hàng"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:FisheriesManagement a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản lý thủy sản"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:FoodTechnology a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Công nghệ thực phẩm"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :FormCatalogueEntry001 a :FormCatalogueEntry,
         owl:NamedIndividual ;
@@ -2524,9 +3934,28 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/%C4%90%C6%A0N%20XIN%20C%E1%BA%A4P%20B%E1%BA%A2N%20SAO%20B%E1%BA%B0NG.docx"^^xsd:anyURI ;
     :listedTitle "Đơn xin cấp bản sao bằng"@vi .
 
+:FrenchVietnameseBilingualTourismAndTravelServiceManagement a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt)"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:GeneralEducationCourse a :CourseCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Học phần giáo dục tổng quát"@vi ;
+    :sourceDocument :Decision729 .
+
 :GuidanceDocument a owl:Class ;
     rdfs:label "Tài liệu hướng dẫn"@vi ;
     rdfs:subClassOf :OfficialDocument .
+
+:InformationTechnology a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Công nghệ thông tin"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :LanguageCertificateAbbreviationTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
@@ -2635,6 +4064,60 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :orderIndex "12"^^xsd:nonNegativeInteger ;
     :partOf :LanguageCertificateAbbreviationTable ;
     :sourceDocument :Decision1052 .
+
+:Law a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Luật"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:ManagementInformationSystems a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Hệ thống thông tin quản lý"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:Marketing a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Marketing"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupIII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:MasterQualification a :EntryQualification,
+        owl:NamedIndividual ;
+    rdfs:label "Trình độ đầu vào thạc sĩ"@vi ;
+    :sourceDocument :Decision729 .
+
+:MechanicalEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật cơ khí"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:MechatronicsEngineering a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật cơ điện tử"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:NavalArchitecture a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kỹ thuật tàu thuỷ"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:SeafoodProcessingTechnology a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Công nghệ chế biến thủy sản"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :SpecialProgramEnglishCertificateTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
@@ -2830,28 +4313,26 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :partOf :StandardOtherLanguageCertificateTable ;
     :sourceDocument :Decision1052 .
 
-:TuitionPaymentGuidanceProvision02 a :Article,
+:ThermalEngineering a :AcademicProgram,
         owl:NamedIndividual ;
-    rdfs:label "Mục 2 hướng dẫn đóng học phí"@vi ;
-    :identifier "Mục 2"@vi ;
-    :officialText "2) Nếu sinh viên có tài khoản của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank, sử dụng Mobile Banking hoặc Internet Banking để đóng học phí. (miễn phí)"@vi ;
-    :orderIndex "2"^^xsd:nonNegativeInteger ;
-    :partOf :TuitionPaymentGuidance ;
-    :sourceDocument :TuitionPaymentGuidance .
-
-:TuitionPaymentGuidanceProvision03 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Mục 3 hướng dẫn đóng học phí"@vi ;
-    :identifier "Mục 3"@vi ;
-    :officialText "3) Đến quầy giao dịch của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank để nộp tiền mặt (tại Nha Trang miễn phí, các huyện trong tỉnh Khánh Hòa và ngoại tỉnh mức lệ phí 3.300đ/lần đóng hoặc 5.500đ/lần đóng). Gửi MÃ SINH VIÊN cho ngân hàng để tra cứu số tiền và đóng học phí, không gửi tài khoản của trường cho ngân hàng"@vi ;
-    :orderIndex "3"^^xsd:nonNegativeInteger ;
-    :partOf :TuitionPaymentGuidance ;
-    :sourceDocument :TuitionPaymentGuidance .
+    rdfs:label "Kỹ thuật nhiệt"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupV ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :partOf a owl:ObjectProperty ;
     rdfs:label "là thành phần của"@vi ;
     rdfs:domain :DocumentPart ;
     rdfs:range :DocumentComponent .
+
+:Agribank a :Bank,
+        owl:NamedIndividual ;
+    rdfs:label "Ngân hàng Agribank"@vi ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:Decision a owl:Class ;
+    rdfs:label "Quyết định"@vi ;
+    rdfs:subClassOf :OfficialDocument .
 
 :Decision1052Appendix01 a :Appendix,
         owl:NamedIndividual ;
@@ -2977,9 +4458,80 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article28 .
 
-:Appendix a owl:Class ;
-    rdfs:label "Phụ lục"@vi ;
-    rdfs:subClassOf :DocumentPart .
+:DevelopmentEconomics a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Kinh tế phát triển"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:EnglishLanguage a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Ngôn ngữ Anh"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:HotelManagement a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản trị khách sạn"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:LienVietPostBank a :Bank,
+        owl:NamedIndividual ;
+    rdfs:label "Ngân hàng Liên Việt PostBank"@vi ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:MaritimeScience a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Khoa học hàng hải"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:MobileOrInternetBankingPayment a :PaymentMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi ;
+    :paymentInstructionProvision :TuitionPaymentGuidanceProvision02 ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision02 ;
+    :supportsBank :Agribank,
+        :LienVietPostBank,
+        :VietinBank .
+
+:QRCodePayment a :PaymentMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Thanh toán bằng mã QR"@vi ;
+    :paymentInstructionProvision :TuitionPaymentGuidanceProvision01 ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:TourismAndTravelServiceManagement a :AcademicProgram,
+        owl:NamedIndividual ;
+    rdfs:label "Quản trị dịch vụ du lịch và lữ hành"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:VietinBank a :Bank,
+        owl:NamedIndividual ;
+    rdfs:label "Ngân hàng VietinBank"@vi ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:BillingUnit a owl:Class ;
+    rdfs:label "Đơn vị thu học phí"@vi .
+
+:CashAtBankCounterPayment a :PaymentMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Nộp tiền mặt tại quầy ngân hàng"@vi ;
+    :paymentInstructionProvision :TuitionPaymentGuidanceProvision03 ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision03 ;
+    :supportsBank :Agribank,
+        :LienVietPostBank,
+        :VietinBank .
 
 :ComputerCertificateTable a :DocumentTable,
         owl:NamedIndividual ;
@@ -3264,17 +4816,34 @@ b) Học lực tính theo điểm trung bình tích lũy xếp loại khá trở
     :sourceDocument :Decision1052 ;
     :title "Nghỉ ốm"@vi .
 
+:DisciplineGroupIV a :DisciplineGroup,
+        owl:NamedIndividual ;
+    rdfs:label "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên"@vi ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:EntryQualification a owl:Class ;
+    rdfs:label "Trình độ đầu vào"@vi .
+
 :FormCatalogue a owl:Class ;
     rdfs:label "Danh mục biểu mẫu"@vi .
 
-:TuitionPaymentGuidanceProvision01 a :Article,
+:MarineResourceEconomicsAndManagement a :AcademicProgram,
         owl:NamedIndividual ;
-    rdfs:label "Mục 1 hướng dẫn đóng học phí"@vi ;
-    :identifier "Mục 1"@vi ;
-    :officialText "1) Truy cập website sinhvien.ntu.edu.vn -> học phí -> đóng học phí qua cổng thanh toán VnPay (miễn phí tài khoản Vietcombank, các ngân hàng khác phí 5.500 đồng/lần đóng). Hoặc thanh toán sử dụng app ngân hàng quét mã QR Code (miễn phí)"@vi ;
-    :orderIndex "1"^^xsd:nonNegativeInteger ;
-    :partOf :TuitionPaymentGuidance ;
-    :sourceDocument :TuitionPaymentGuidance .
+    rdfs:label "Kinh tế và quản lý tài nguyên biển"@vi ;
+    :belongsToDisciplineGroup :DisciplineGroupVII ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:VNPAYPayment a :PaymentMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Thanh toán qua cổng VNPAY"@vi ;
+    :paymentInstructionProvision :TuitionPaymentGuidanceProvision01 ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:Bank a owl:Class ;
+    rdfs:label "Ngân hàng"@vi .
 
 :Decision1052Article03 a :Article,
         owl:NamedIndividual ;
@@ -3574,13 +5143,38 @@ c) Công nhận kết quả học tập, chuyển đổi theo cả chương trì
     rdfs:label "Chủ thể có thẩm quyền quyết định"@vi ;
     rdfs:subClassOf :AcademicActor .
 
-:sourceProvision a owl:ObjectProperty ;
-    rdfs:label "có điều khoản nguồn"@vi ;
-    rdfs:range :DocumentPart .
+:EducationLevel a owl:Class ;
+    rdfs:label "Trình độ đào tạo"@vi .
+
+:FoundationAndMajorCourse a :CourseCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Học phần cơ sở và chuyên ngành"@vi ;
+    :sourceDocument :Decision729 .
+
+:MasterLevel a :EducationLevel,
+        owl:NamedIndividual ;
+    rdfs:label "Trình độ thạc sĩ"@vi ;
+    :sourceDocument :Decision729 .
+
+:TuitionPaymentGuidanceProvision02 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 2 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 2"@vi ;
+    :officialText "2) Nếu sinh viên có tài khoản của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank, sử dụng Mobile Banking hoặc Internet Banking để đóng học phí. (miễn phí)"@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:Appendix a owl:Class ;
+    rdfs:label "Phụ lục"@vi ;
+    rdfs:subClassOf :DocumentPart .
 
 :Chapter a owl:Class ;
     rdfs:label "Chương"@vi ;
     rdfs:subClassOf :DocumentPart .
+
+:CourseCategory a owl:Class ;
+    rdfs:label "Loại học phần"@vi .
 
 :Decision1052Article02 a :Article,
         owl:NamedIndividual ;
@@ -3797,12 +5391,38 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
     :partOf :Decision1052Article28 ;
     :sourceDocument :Decision1052 .
 
+:DoctoralLevel a :EducationLevel,
+        owl:NamedIndividual ;
+    rdfs:label "Trình độ tiến sĩ"@vi ;
+    :sourceDocument :Decision729 .
+
+:DoctoralTuitionDurationRule a owl:Class ;
+    rdfs:label "Quy tắc thời gian thu học phí tiến sĩ"@vi .
+
 :DocumentComponent a owl:Class ;
     rdfs:label "Thành phần tài liệu"@vi .
 
 :OrganizationalUnit a owl:Class ;
     rdfs:label "Đơn vị tổ chức"@vi ;
     rdfs:subClassOf :AcademicActor .
+
+:PerAcademicYear a :BillingUnit,
+        owl:NamedIndividual ;
+    rdfs:label "đồng trên năm"@vi ;
+    :sourceDocument :Decision729 .
+
+:TuitionPaymentGuidanceProvision03 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 3 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 3"@vi ;
+    :officialText "3) Đến quầy giao dịch của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank để nộp tiền mặt (tại Nha Trang miễn phí, các huyện trong tỉnh Khánh Hòa và ngoại tỉnh mức lệ phí 3.300đ/lần đóng hoặc 5.500đ/lần đóng). Gửi MÃ SINH VIÊN cho ngân hàng để tra cứu số tiền và đóng học phí, không gửi tài khoản của trường cho ngân hàng"@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:sourceProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản nguồn"@vi ;
+    rdfs:range :DocumentPart .
 
 :Decision1052Article08Clause01 a :Clause,
         owl:NamedIndividual ;
@@ -3907,6 +5527,9 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article22 ;
     :sourceDocument :Decision1052 .
+
+:DisciplineGroup a owl:Class ;
+    rdfs:label "Khối ngành"@vi .
 
 :EnglishMajorOtherLanguageCertificateTable a :DocumentTable,
         owl:NamedIndividual ;
@@ -4143,14 +5766,6 @@ b) Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc
     :partOf :Decision1052Appendix02 ;
     :sourceDocument :Decision1052 .
 
-:TuitionPaymentGuidance a :GuidanceDocument,
-        owl:NamedIndividual ;
-    rdfs:label "Hướng dẫn đóng học phí qua ngân hàng"@vi ;
-    :hasPart :TuitionPaymentGuidanceProvision01,
-        :TuitionPaymentGuidanceProvision02,
-        :TuitionPaymentGuidanceProvision03 ;
-    :title "Hướng dẫn đóng học phí qua ngân hàng"@vi .
-
 :Decision1052Article09 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 9: Đăng ký khối lượng học tập"@vi ;
@@ -4201,9 +5816,13 @@ h) Thu nhận thông tin phản hồi từ SV để liên tục hoàn thiện n�
     :partOf :Decision1052Article12 ;
     :sourceDocument :Decision1052 .
 
-:DocumentTable a owl:Class ;
-    rdfs:label "Bảng trong tài liệu"@vi ;
-    rdfs:subClassOf :DocumentPart .
+:PaymentMethod a owl:Class ;
+    rdfs:label "Phương thức thanh toán"@vi .
+
+:AccreditedFoundationAndMajorCourse a :CourseCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Học phần cơ sở và chuyên ngành của chương trình đạt kiểm định"@vi ;
+    :sourceDocument :Decision729 .
 
 :Decision1052Article06Clause02 a :Clause,
         owl:NamedIndividual ;
@@ -4379,6 +5998,9 @@ b) Sinh viên đăng ký học theo mẫu (Mẫu số 14 - Phụ lục 4 kèm th
     rdfs:label "Tài liệu chính thức"@vi ;
     rdfs:subClassOf :DocumentComponent .
 
+:PaymentFeeRule a owl:Class ;
+    rdfs:label "Quy tắc phí thanh toán"@vi .
+
 :Decision1052Article28 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 28: Học cùng lúc hai chương trình"@vi ;
@@ -4426,6 +6048,19 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
     :partOf :Decision1052Regulation ;
     :sourceDocument :Decision1052 .
 
+:DocumentTable a owl:Class ;
+    rdfs:label "Bảng trong tài liệu"@vi ;
+    rdfs:subClassOf :DocumentPart .
+
+:TuitionPaymentGuidanceProvision01 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 1 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 1"@vi ;
+    :officialText "1) Truy cập website sinhvien.ntu.edu.vn -> học phí -> đóng học phí qua cổng thanh toán VnPay (miễn phí tài khoản Vietcombank, các ngân hàng khác phí 5.500 đồng/lần đóng). Hoặc thanh toán sử dụng app ngân hàng quét mã QR Code (miễn phí)"@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
+
 :Decision1052Article17 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 17: Đánh giá giữa kỳ và cuối kỳ"@vi ;
@@ -4448,6 +6083,18 @@ SV phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do ch�
     :partOf :Decision1052Chapter03 ;
     :sourceDocument :Decision1052 ;
     :title "Đánh giá giữa kỳ và cuối kỳ"@vi .
+
+:DisciplineGroupIII a :DisciplineGroup,
+        owl:NamedIndividual ;
+    rdfs:label "Khối ngành III: Kinh doanh và quản lý, pháp luật"@vi ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
+:DisciplineGroupVII a :DisciplineGroup,
+        owl:NamedIndividual ;
+    rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
 
 :AcademicActor a owl:Class ;
     rdfs:label "Chủ thể học vụ"@vi .
@@ -4608,26 +6255,402 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :partOf :Decision1052Appendix01 ;
     :sourceDocument :Decision1052 .
 
-:DocumentPart a owl:Class ;
-    rdfs:label "Thành phần nội dung tài liệu"@vi ;
-    rdfs:subClassOf :DocumentComponent .
+:UndergraduateLevel a :EducationLevel,
+        owl:NamedIndividual ;
+    rdfs:label "Trình độ đại học"@vi ;
+    :sourceDocument :Decision729 .
 
 :FormDocument a owl:Class ;
     rdfs:label "Biểu mẫu"@vi .
 
+:DocumentPart a owl:Class ;
+    rdfs:label "Thành phần nội dung tài liệu"@vi ;
+    rdfs:subClassOf :DocumentComponent .
+
+:PerCredit a :BillingUnit,
+        owl:NamedIndividual ;
+    rdfs:label "đồng trên tín chỉ"@vi ;
+    :sourceDocument :Decision729 .
+
+:TuitionPaymentGuidance a :GuidanceDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Hướng dẫn đóng học phí qua ngân hàng"@vi ;
+    :hasPart :TuitionPaymentGuidanceProvision01,
+        :TuitionPaymentGuidanceProvision02,
+        :TuitionPaymentGuidanceProvision03 ;
+    :title "Hướng dẫn đóng học phí qua ngân hàng"@vi .
+
 :FormCatalogueEntry a owl:Class ;
     rdfs:label "Mục tải biểu mẫu"@vi .
 
+:DisciplineGroupV a :DisciplineGroup,
+        owl:NamedIndividual ;
+    rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi ;
+    :sourceDocument :Decision729 ;
+    :sourceProvision :Decision729Appendix02 .
+
 :AcademicProcedure a owl:Class ;
     rdfs:label "Quy trình học vụ"@vi .
+
+:Decision729Appendix01 a :Appendix,
+        owl:NamedIndividual ;
+    rdfs:label "Phụ lục 1 của Quyết định 729/QĐ-ĐHNT"@vi ;
+    :hasPart :Decision729TuitionTable ;
+    :identifier "Phụ lục 1"@vi ;
+    :officialText """### Phụ lục I
+### MỨC HỌC PHÍ CHƯƠNG TRÌNH ĐÀO TẠO TRÌNH ĐỘ ĐẠI HỌC, SAU ĐẠI HỌC HÌNH THỨC CHÍNH QUY HỌC KỲ I NĂM HỌC 2025-2026 CỦA TRƯỜNG ĐẠI HỌC NHA TRANG
+(Kèm theo Quyết định số 729 /QĐ-ĐHNT ngày 28 tháng 5 năm 2025 của Hiệu trưởng Trường Đại học Nha Trang)
+| TT | Trình độ và hình thức đào tạo | Mức học phí |
+| :---: | :--- | :---: |
+| I | Khối ngành III: Kinh doanh và quản lý, pháp luật | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+500.000 đ/TC |
+| 2 | Thạc sĩ | 785.000 đ/TC |
+| 3 | Tiến sĩ
+Ngành Tiến sĩ Kinh tế và quản lý tài nguyên biển (thuộc dự án Noherd) | 39.500.000 đ/năm
+24.500.000 đ/năm |
+| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên | |
+| 1 | Thạc sĩ | 850.000 đ/TC |
+| 2 | Tiến sĩ | 42.600.000 đ/năm |
+| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+570.000 đ/TC |
+| 2 | Thạc sĩ | 915.000 đ/TC |
+| 3 | Tiến sĩ | 46.000.000 đ/năm |
+| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành
+Ngành Ngôn ngữ Anh
+Các ngành còn lại |
+345.000 đ/TC
+
+460.000 đ/TC
+505.000 đ/TC |
+| 2 | Thạc sĩ | 785.000 đ/TC |
+| 3 | Tiến sĩ | 39.500.000 đ/năm |
+| V | Các chương trình đào tạo đạt kiểm định chất lượng Đại học hình thức chính quy | |
+| V.1 | Học phần giáo dục tổng quát | 345.000 đ/TC |
+| V.2 | Học phần cơ sở và chuyên ngành | |
+| V.2.1
+(Áp dụng từ | 1. Công nghệ chế biến thủy sản
+2. Kỹ thuật tàu thủy | 620.000 đ/TC |
+| TT | Trình độ và hình thức đào tạo | Mức học phí |
+| khóa 63 trở về sau ) | 3. Nuôi trồng thủy sản | |
+| | 4. Công nghệ sinh học | 600.000 đ/TC |
+| V.2.2
+(Áp dụng từ khóa 65 trở về sau ) | 1. Quản trị kinh doanh
+2. Kế toán (không bao gồm CTĐT Kiểm toán)
+3. Quản trị khách sạn | 550.000 đ/TC |
+| | 4. Công nghệ thông tin | 620.000 đ/TC |
+| V.2.3
+(Áp dụng từ khóa 66 trở về sau ) | 1. Kỹ thuật cơ khí
+2. Kỹ thuật ô tô
+3. Kỹ thuật xây dựng
+4. Công nghệ thực phẩm
+5. Quản lý thủy sản | 620.000 đ/TC |
+| | 6. Kinh doanh thương mại
+7. Tài chính - Ngân hàng
+8. Quản trị dịch vụ du lịch và lữ hành | 550.000 đ/TC |
+| | 9. Ngôn ngữ Anh | 510.000 đ/TC |
+| V.2.4
+(Áp dụng từ khóa 67 trở về sau ) | 1. Kỹ thuật nhiệt
+2. Kỹ thuật cơ điện tử
+3. Kỹ thuật điện | 620.000 đ/TC |
+| | 4. Marketing
+5. Hệ thống thông tin quản lý
+6. Luật
+7. Kinh tế phát triển
+8. Khoa học hàng hải | 550.000 đ/TC |
+Ghi chú:
+- TC là Tín chỉ; đ/TC là đồng/Tín chỉ
+- Học phí trình độ Tiến sĩ thu theo số năm thiết kế chương trình đào tạo:
+- Thu 3 năm đối với NCS có trình độ đầu vào là Thạc sĩ
+- Thu 4 năm đối với NCS có trình độ đầu vào là Đại học
+- Thu 4 năm đối với Tiến sĩ ngành Kinh tế và quản lý tài nguyên biển"""@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729 ;
+    :sourceDocument :Decision729 .
+
+:Decision729TuitionTable a :DocumentTable,
+        owl:NamedIndividual ;
+    rdfs:label "Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :hasPart :Decision729TuitionTableRow01,
+        :Decision729TuitionTableRow02,
+        :Decision729TuitionTableRow03,
+        :Decision729TuitionTableRow04,
+        :Decision729TuitionTableRow05,
+        :Decision729TuitionTableRow06,
+        :Decision729TuitionTableRow07,
+        :Decision729TuitionTableRow08,
+        :Decision729TuitionTableRow09,
+        :Decision729TuitionTableRow10,
+        :Decision729TuitionTableRow11,
+        :Decision729TuitionTableRow12,
+        :Decision729TuitionTableRow13,
+        :Decision729TuitionTableRow14,
+        :Decision729TuitionTableRow15,
+        :Decision729TuitionTableRow16,
+        :Decision729TuitionTableRow17,
+        :Decision729TuitionTableRow18,
+        :Decision729TuitionTableRow19,
+        :Decision729TuitionTableRow20,
+        :Decision729TuitionTableRow21,
+        :Decision729TuitionTableRow22,
+        :Decision729TuitionTableRow23,
+        :Decision729TuitionTableRow24,
+        :Decision729TuitionTableRow25,
+        :Decision729TuitionTableRow26,
+        :Decision729TuitionTableRow27,
+        :Decision729TuitionTableRow28,
+        :Decision729TuitionTableRow29 ;
+    :identifier "Bảng mức học phí Học kỳ I năm học 2025-2026"@vi ;
+    :officialText """| TT | Trình độ và hình thức đào tạo | Mức học phí |
+| :---: | :--- | :---: |
+| I | Khối ngành III: Kinh doanh và quản lý, pháp luật | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+500.000 đ/TC |
+| 2 | Thạc sĩ | 785.000 đ/TC |
+| 3 | Tiến sĩ
+Ngành Tiến sĩ Kinh tế và quản lý tài nguyên biển (thuộc dự án Noherd) | 39.500.000 đ/năm
+24.500.000 đ/năm |
+| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên | |
+| 1 | Thạc sĩ | 850.000 đ/TC |
+| 2 | Tiến sĩ | 42.600.000 đ/năm |
+| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành |
+345.000 đ/TC
+570.000 đ/TC |
+| 2 | Thạc sĩ | 915.000 đ/TC |
+| 3 | Tiến sĩ | 46.000.000 đ/năm |
+| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường | |
+| 1 | Đại học
+\\ Học phần giáo dục tổng quát
+\\ Học phần cơ sở và chuyên ngành
+Ngành Ngôn ngữ Anh
+Các ngành còn lại |
+345.000 đ/TC
+
+460.000 đ/TC
+505.000 đ/TC |
+| 2 | Thạc sĩ | 785.000 đ/TC |
+| 3 | Tiến sĩ | 39.500.000 đ/năm |
+| V | Các chương trình đào tạo đạt kiểm định chất lượng Đại học hình thức chính quy | |
+| V.1 | Học phần giáo dục tổng quát | 345.000 đ/TC |
+| V.2 | Học phần cơ sở và chuyên ngành | |
+| V.2.1
+(Áp dụng từ | 1. Công nghệ chế biến thủy sản
+2. Kỹ thuật tàu thủy | 620.000 đ/TC |
+| TT | Trình độ và hình thức đào tạo | Mức học phí |
+| khóa 63 trở về sau ) | 3. Nuôi trồng thủy sản | |
+| | 4. Công nghệ sinh học | 600.000 đ/TC |
+| V.2.2
+(Áp dụng từ khóa 65 trở về sau ) | 1. Quản trị kinh doanh
+2. Kế toán (không bao gồm CTĐT Kiểm toán)
+3. Quản trị khách sạn | 550.000 đ/TC |
+| | 4. Công nghệ thông tin | 620.000 đ/TC |
+| V.2.3
+(Áp dụng từ khóa 66 trở về sau ) | 1. Kỹ thuật cơ khí
+2. Kỹ thuật ô tô
+3. Kỹ thuật xây dựng
+4. Công nghệ thực phẩm
+5. Quản lý thủy sản | 620.000 đ/TC |
+| | 6. Kinh doanh thương mại
+7. Tài chính - Ngân hàng
+8. Quản trị dịch vụ du lịch và lữ hành | 550.000 đ/TC |
+| | 9. Ngôn ngữ Anh | 510.000 đ/TC |
+| V.2.4
+(Áp dụng từ khóa 67 trở về sau ) | 1. Kỹ thuật nhiệt
+2. Kỹ thuật cơ điện tử
+3. Kỹ thuật điện | 620.000 đ/TC |
+| | 4. Marketing
+5. Hệ thống thông tin quản lý
+6. Luật
+7. Kinh tế phát triển
+8. Khoa học hàng hải | 550.000 đ/TC |"""@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729Appendix01 ;
+    :sourceDocument :Decision729 .
+
+:TuitionRate a owl:Class ;
+    rdfs:label "Mức học phí"@vi .
 
 :Article a owl:Class ;
     rdfs:label "Điều"@vi ;
     rdfs:subClassOf :DocumentPart .
 
-:DocumentTableRow a owl:Class ;
-    rdfs:label "Dòng bảng trong tài liệu"@vi ;
-    rdfs:subClassOf :DocumentPart .
+:AcademicProgram a owl:Class ;
+    rdfs:label "Ngành hoặc chương trình đào tạo"@vi .
+
+:Decision729ProgramTable a :DocumentTable,
+        owl:NamedIndividual ;
+    rdfs:label "Danh mục các ngành đào tạo"@vi ;
+    :hasPart :Decision729ProgramTableRow01,
+        :Decision729ProgramTableRow02,
+        :Decision729ProgramTableRow03,
+        :Decision729ProgramTableRow04,
+        :Decision729ProgramTableRow05,
+        :Decision729ProgramTableRow06,
+        :Decision729ProgramTableRow07,
+        :Decision729ProgramTableRow08,
+        :Decision729ProgramTableRow09,
+        :Decision729ProgramTableRow10,
+        :Decision729ProgramTableRow11,
+        :Decision729ProgramTableRow12,
+        :Decision729ProgramTableRow13,
+        :Decision729ProgramTableRow14,
+        :Decision729ProgramTableRow15,
+        :Decision729ProgramTableRow16,
+        :Decision729ProgramTableRow17,
+        :Decision729ProgramTableRow18,
+        :Decision729ProgramTableRow19,
+        :Decision729ProgramTableRow20,
+        :Decision729ProgramTableRow21,
+        :Decision729ProgramTableRow22,
+        :Decision729ProgramTableRow23,
+        :Decision729ProgramTableRow24,
+        :Decision729ProgramTableRow25,
+        :Decision729ProgramTableRow26,
+        :Decision729ProgramTableRow27,
+        :Decision729ProgramTableRow28,
+        :Decision729ProgramTableRow29,
+        :Decision729ProgramTableRow30,
+        :Decision729ProgramTableRow31,
+        :Decision729ProgramTableRow32,
+        :Decision729ProgramTableRow33,
+        :Decision729ProgramTableRow34,
+        :Decision729ProgramTableRow35,
+        :Decision729ProgramTableRow36,
+        :Decision729ProgramTableRow37,
+        :Decision729ProgramTableRow38,
+        :Decision729ProgramTableRow39,
+        :Decision729ProgramTableRow40,
+        :Decision729ProgramTableRow41,
+        :Decision729ProgramTableRow42,
+        :Decision729ProgramTableRow43,
+        :Decision729ProgramTableRow44,
+        :Decision729ProgramTableRow45 ;
+    :identifier "Danh mục các ngành đào tạo"@vi ;
+    :officialText """| TT | Tên ngành đào tạo |
+| :---: | :--- |
+| I | Khối ngành III: Kinh doanh và quản lý, pháp luật |
+| 1 | Kinh doanh thương mại |
+| 2 | Marketing |
+| 3 | Quản trị kinh doanh |
+| 4 | Kế toán |
+| 5 | Kiểm toán |
+| 6 | Tài chính - Ngân hàng |
+| 7 | Hệ thống thông tin quản lý |
+| 8 | Luật |
+| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên |
+| 1 | Công nghệ sinh học |
+| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản |
+| 1 | Công nghệ thông tin |
+| 2 | Kỹ thuật cơ khí |
+| 3 | Công nghệ chế tạo máy |
+| 4 | Kỹ thuật cơ điện tử |
+| 5 | Kỹ thuật nhiệt |
+| 6 | Kỹ thuật hóa học |
+| 7 | Kỹ thuật ô tô |
+| 8 | Kỹ thuật cơ khí động lực |
+| 9 | Kỹ thuật tàu thuỷ |
+| 10 | Kỹ thuật biển |
+| 11 | Kỹ thuật điện |
+| 12 | Kỹ thuật điều khiển và tự động hóa |
+| 13 | Kỹ thuật môi trường |
+| 14 | Công nghệ thực phẩm |
+| 15 | Đảm bảo chất lượng và an toàn thực phẩm |
+| 16 | Công nghệ chế biến thủy sản |
+| 17 | Kỹ thuật xây dựng |
+| 18 | Kỹ thuật xây dựng công trình giao thông |
+| 19 | Nuôi trồng thuỷ sản |
+| 20 | Khai thác thủy sản |
+| 21 | Quản lý thủy sản |
+| 22 | Khoa học thủy sản |
+| 23 | Khoa học máy tính |
+| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường |
+| 1 | Quản trị khách sạn |
+| 2 | Quản trị dịch vụ du lịch và lữ hành |
+| 3 | Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt) |
+| 4 | Ngôn ngữ Anh |
+| 5 | Khoa học hàng hải |
+| 6 | Kinh tế |
+| 7 | Kinh tế phát triển |
+| 8 | Quản lý kinh tế |
+| 9 | Kinh tế và quản lý tài nguyên biển |"""@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729Appendix02 ;
+    :sourceDocument :Decision729 .
+
+:Decision729Appendix02 a :Appendix,
+        owl:NamedIndividual ;
+    rdfs:label "Phụ lục 2 của Quyết định 729/QĐ-ĐHNT"@vi ;
+    :hasPart :Decision729ProgramTable ;
+    :identifier "Phụ lục 2"@vi ;
+    :officialText """### Phụ lục II
+### DANH MỤC CÁC NGÀNH ĐÀO TẠO CỦA TRƯỜNG ĐẠI HỌC NHA TRANG
+(Kèm theo Quyết định số 729/QĐ-ĐHNT ngày 28 tháng 5 năm 2025 của Hiệu trưởng Trường Đại học Nha Trang)
+| TT | Tên ngành đào tạo |
+| :---: | :--- |
+| I | Khối ngành III: Kinh doanh và quản lý, pháp luật |
+| 1 | Kinh doanh thương mại |
+| 2 | Marketing |
+| 3 | Quản trị kinh doanh |
+| 4 | Kế toán |
+| 5 | Kiểm toán |
+| 6 | Tài chính - Ngân hàng |
+| 7 | Hệ thống thông tin quản lý |
+| 8 | Luật |
+| II | Khối ngành IV: Khoa học sự sống, khoa học tự nhiên |
+| 1 | Công nghệ sinh học |
+| III | Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản |
+| 1 | Công nghệ thông tin |
+| 2 | Kỹ thuật cơ khí |
+| 3 | Công nghệ chế tạo máy |
+| 4 | Kỹ thuật cơ điện tử |
+| 5 | Kỹ thuật nhiệt |
+| 6 | Kỹ thuật hóa học |
+| 7 | Kỹ thuật ô tô |
+| 8 | Kỹ thuật cơ khí động lực |
+| 9 | Kỹ thuật tàu thuỷ |
+| 10 | Kỹ thuật biển |
+| 11 | Kỹ thuật điện |
+| 12 | Kỹ thuật điều khiển và tự động hóa |
+| 13 | Kỹ thuật môi trường |
+| 14 | Công nghệ thực phẩm |
+| 15 | Đảm bảo chất lượng và an toàn thực phẩm |
+| 16 | Công nghệ chế biến thủy sản |
+| 17 | Kỹ thuật xây dựng |
+| 18 | Kỹ thuật xây dựng công trình giao thông |
+| 19 | Nuôi trồng thuỷ sản |
+| 20 | Khai thác thủy sản |
+| 21 | Quản lý thủy sản |
+| 22 | Khoa học thủy sản |
+| 23 | Khoa học máy tính |
+| IV | Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường |
+| 1 | Quản trị khách sạn |
+| 2 | Quản trị dịch vụ du lịch và lữ hành |
+| 3 | Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt) |
+| 4 | Ngôn ngữ Anh |
+| 5 | Khoa học hàng hải |
+| 6 | Kinh tế |
+| 7 | Kinh tế phát triển |
+| 8 | Quản lý kinh tế |
+| 9 | Kinh tế và quản lý tài nguyên biển |"""@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision729 ;
+    :sourceDocument :Decision729 .
 
 :Point a owl:Class ;
     rdfs:label "Điểm"@vi ;
@@ -4636,6 +6659,25 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
 :Clause a owl:Class ;
     rdfs:label "Khoản"@vi ;
     rdfs:subClassOf :DocumentPart .
+
+:DocumentTableRow a owl:Class ;
+    rdfs:label "Dòng bảng trong tài liệu"@vi ;
+    rdfs:subClassOf :DocumentPart .
+
+:Decision729 a :Decision,
+        owl:NamedIndividual ;
+    rdfs:label "Quyết định số 729/QĐ-ĐHNT"@vi ;
+    :documentNumber "729/QĐ-ĐHNT" ;
+    :effectiveFromAcademicYear "2025-2026" ;
+    :effectiveFromSemester "Học kỳ I" ;
+    :hasPart :Decision729Appendix01,
+        :Decision729Appendix02,
+        :Decision729EnactmentArticle01,
+        :Decision729EnactmentArticle02,
+        :Decision729EnactmentArticle03 ;
+    :issueDate "2025-05-28"^^xsd:date ;
+    :title "Ban hành mức học phí chương trình đào tạo trình độ đại học, sau đại học hình thức chính quy Học kỳ I năm học 2025-2026"@vi ;
+    :validUntilSuperseded true .
 
 :Decision1052 a :Decision,
         owl:NamedIndividual ;

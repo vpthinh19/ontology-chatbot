@@ -47,7 +47,11 @@ def test_decision_1052_clauses_points_and_tables_are_traceable(
 ) -> None:
     clauses = set(ontology_graph.subjects(RDF.type, academic.Clause))
     points = set(ontology_graph.subjects(RDF.type, academic.Point))
-    rows = set(ontology_graph.subjects(RDF.type, academic.DocumentTableRow))
+    rows = {
+        row
+        for row in ontology_graph.subjects(RDF.type, academic.DocumentTableRow)
+        if (row, academic.sourceDocument, academic.Decision1052) in ontology_graph
+    }
     assert clauses
     assert points
     assert rows
@@ -72,3 +76,22 @@ def test_decision_1052_does_not_invent_missing_appendix_4(ontology_graph, academ
     assert not list(
         ontology_graph.triples((academic.Decision1052Appendix04, None, None))
     )
+
+
+def test_decision_729_metadata_and_structure(ontology_graph, academic) -> None:
+    decision = academic.Decision729
+    assert (decision, RDF.type, OWL.NamedIndividual) in ontology_graph
+    assert (decision, RDF.type, academic.Decision) in ontology_graph
+    assert str(ontology_graph.value(decision, academic.documentNumber)) == "729/QĐ-ĐHNT"
+    assert str(ontology_graph.value(decision, academic.issueDate)) == "2025-05-28"
+    assert str(ontology_graph.value(decision, academic.effectiveFromAcademicYear)) == "2025-2026"
+    assert str(ontology_graph.value(decision, academic.effectiveFromSemester)) == "Học kỳ I"
+    assert ontology_graph.value(decision, academic.validUntilSuperseded).toPython() is True
+    for index in range(1, 4):
+        article = academic[f"Decision729EnactmentArticle{index:02d}"]
+        assert (article, RDF.type, academic.Article) in ontology_graph
+        assert (article, academic.partOf, decision) in ontology_graph
+    for index in range(1, 3):
+        appendix = academic[f"Decision729Appendix{index:02d}"]
+        assert (appendix, RDF.type, academic.Appendix) in ontology_graph
+        assert (appendix, academic.partOf, decision) in ontology_graph
