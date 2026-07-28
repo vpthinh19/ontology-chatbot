@@ -37,8 +37,9 @@ không để compatibility alias hoặc bản sao ở vị trí cũ.
 
 ## Artifact conversion
 
-Script `convert_domain_gate` nhận checkpoint
-`artifacts/models/phobert-gate/model` và tạo
+Script `convert_domain_gate` nhận training artifact
+`artifacts/models/phobert-gate/` (checkpoint nằm trong `model/`, threshold nằm
+trong `manifest.json`) và tạo
 `artifacts/deployment/phobert-gate/`.
 
 Artifact gồm:
