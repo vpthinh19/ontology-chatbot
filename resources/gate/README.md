@@ -25,6 +25,11 @@ không hỗ trợ, và câu trộn trong đó ontology chỉ trả lời đượ
 dấu, không dấu, viết tắt và ngôn ngữ nói đều được giữ lại. Dataset không qua
 word segmentation.
 
+Mọi nhóm negative đã biết đều có mặt trong train, validation và test; hai tập
+held-out dùng cách diễn đạt khác thay vì giữ lại toàn bộ chủ đề. Negative từng
+được phân tích trong một test trước không được tái sử dụng ở validation hoặc
+test hiện tại.
+
 Các câu ngoài miền đa dụng được tuyển chọn từ MASSIVE 1.1; câu đại học gần
 miền được tuyển chọn từ PTIT Student Q&A 2025. Cả hai nguồn phát hành theo
 CC BY 4.0:

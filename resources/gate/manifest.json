@@ -19,25 +19,25 @@
   },
   "negative_categories": {
     "train": {
-      "clear_ood": 912,
-      "near_domain": 220,
-      "boundary_mixed": 271
+      "clear_ood": 703,
+      "near_domain": 300,
+      "boundary_mixed": 400
     },
     "val": {
-      "clear_ood": 258,
-      "near_domain": 60,
-      "boundary_mixed": 112
+      "clear_ood": 210,
+      "near_domain": 100,
+      "boundary_mixed": 120
     },
     "test": {
-      "clear_ood": 258,
-      "near_domain": 150,
-      "boundary_mixed": 22
+      "clear_ood": 210,
+      "near_domain": 100,
+      "boundary_mixed": 120
     }
   },
   "sha256": {
-    "train.jsonl": "1013453dbcd9ed6c85ff3c73a56368a808693a7f9a59fb50835783cf4daa6f78",
-    "val.jsonl": "db0f362c5437b09e7ef9980330ed7d781421fd4f1dd075610fb138c99f405bca",
-    "test.jsonl": "437171c65a81ca27df18b9717825c308d0759723aabf05e4e809f767bebc71a5"
+    "train.jsonl": "7510d7fb35f1ce3f2390983709a10c095d7a16b1dcad80d36a11051ba73ea681",
+    "val.jsonl": "0a1fce27c97810ce542e8fcf673f78fe8044efead525dcfe25c8370cf252e2e3",
+    "test.jsonl": "628c6c2ac2dabfca14ccb84a23345610f91bea3b81f89cbaab8093a149817c89"
   },
   "sources": [
     {

@@ -62,11 +62,18 @@ Negative phải phủ ba nhóm:
 3. Biên khó: câu mơ hồ, noisy, viết tắt, không dấu, văn bản vô nghĩa và câu
    trộn yêu cầu được hỗ trợ với yêu cầu không được hỗ trợ.
 
-Các họ ý nghĩa và paraphrase của negative không được xuất hiện ở nhiều split.
+Mọi nhóm ngoài phạm vi đã biết phải xuất hiện trong cả train, validation và
+test; hai tập held-out giữ lại cách diễn đạt chứ không giữ lại toàn bộ chủ đề.
+Đây là phép đo production trong miền chức năng cố định, tương tự dataset sinh
+SPARQL. Một challenge set riêng có thể đo chủ đề OOD chưa từng thấy nhưng không
+được dùng làm tiêu chí bật production.
+
 Validation dùng để chọn checkpoint và threshold; test chỉ dùng một lần cho báo
-cáo cuối. Kiểm tra tự động phải phát hiện schema sai, nhãn sai, trùng lặp, gần
-trùng xuyên split và mất cân bằng. Việc một negative có vô tình được ontology
-hỗ trợ hay không phải được đối chiếu thủ công với danh mục 215 query canonical.
+cáo cuối. Negative đã xuất hiện trong một lần phân tích test không được tái sử
+dụng trong test kế tiếp. Kiểm tra tự động phải phát hiện schema sai, nhãn sai,
+trùng lặp, gần trùng xuyên split kể cả khi chỉ khác dấu câu, và mất cân bằng.
+Việc một negative có vô tình được ontology hỗ trợ hay không phải được đối chiếu
+thủ công với danh mục 215 query canonical.
 
 ## Huấn luyện
 

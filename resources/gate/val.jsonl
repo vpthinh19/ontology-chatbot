@@ -1,860 +1,860 @@
-{"input":"Hãy liệt kê các phòng ban và địa điểm làm việc tương ứng.","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không và thứ hai là Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không?","label":"out_of_scope"}
-{"input":"Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không?","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Điểm rèn luyện có được làm tròn không cũng như Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao?","label":"out_of_scope"}
-{"input":"Hãy đếm tổng số văn bản quy định và liệt kê tên đầy đủ của từng văn bản.","label":"in_scope"}
-{"input":"tôi cần bắt đầu một danh sách gọi là việc cần làm","label":"out_of_scope"}
-{"input":"này siri tin tức thế giới bây giờ là gì","label":"out_of_scope"}
-{"input":"hủy sự kiện kế tiếp","label":"out_of_scope"}
-{"input":"tui cần số điện thoại bên phòng nhận đơn chuyển ngành để gọi hỏi","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào và thứ hai là Nguồn kinh phí để khen thưởng cho sinh viên có thành tích đặc biệt xuất sắc được lấy từ đâu?","label":"out_of_scope"}
-{"input":"cach dang ky hoc lai voi link quy dinh","label":"in_scope"}
-{"input":"Sau khi hồ sơ chuyển ngành được tiếp nhận, phòng nào chịu trách nhiệm xử lý?","label":"in_scope"}
-{"input":"nhắc tôi gọi cho bà chủ nhật này","label":"out_of_scope"}
-{"input":"gửi cho tôi lời nhắc để đón con chó của tôi từ người chải lông lúc một giờ chiều","label":"out_of_scope"}
-{"input":"Đăng ký học phần ra sao, làm xong thì kết quả hiện thế nào?","label":"in_scope"}
-{"input":"lịch trình của tôi có gì từ chín đến mười một giờ sáng ngày mai","label":"out_of_scope"}
-{"input":"Xét tốt nghiệp thực hiện thế nào, kết quả gì và phòng nào xử lý?","label":"in_scope"}
-{"input":"bài hát nào có trong danh sách bài hát yêu thích của tôi","label":"out_of_scope"}
-{"input":"Hồ sơ xin nghỉ học tạm thời và xin tiếp tục học gồm những biểu mẫu nào?","label":"in_scope"}
-{"input":"em muốn biết thông tin về trường có công cụ kiểm tra đạo văn cho sv ko cũng như kết quả rèn luyện có ảnh hưởng đến việc xét học bổng khuyến khích học tập ko?","label":"out_of_scope"}
-{"input":"tạo sự kiện lặp lại sinh nhật của minh trên lịch","label":"out_of_scope"}
-{"input":"tong so nhom dinh muc hoc phi cua khoa k63","label":"in_scope"}
-{"input":"Làm thế nào để xây dựng mối quan hệ tốt với giảng viên?","label":"out_of_scope"}
-{"input":"xet hb theo qd nao","label":"in_scope"}
-{"input":"kể tên những sự kiện sắp tới ở hà nội","label":"out_of_scope"}
-{"input":"Tên biểu mẫu dành cho sinh viên đề nghị xét tốt nghiệp trước thời hạn là gì?","label":"in_scope"}
-{"input":"xoá công việc sắp tới","label":"out_of_scope"}
-{"input":"Sinh viên Tài chính K66 đóng một tín chỉ bao nhiêu?","label":"in_scope"}
-{"input":"Những tên chương trình nào dùng chung mức học phí với ngành Ô tô thuộc K66?","label":"in_scope"}
-{"input":"Em có thể khiếu nại về hành vi của một giảng viên không?","label":"out_of_scope"}
-{"input":"bạn có thể xoá tất cả các sự kiện trong lịch của tôi không","label":"out_of_scope"}
-{"input":"cho tôi xem tin tức mới nhất về liên hợp quốc","label":"out_of_scope"}
-{"input":"Người đứng đầu Phòng Công tác sinh viên tên gì vậy?","label":"in_scope"}
-{"input":"xóa tất cả sự kiện","label":"out_of_scope"}
-{"input":"cho em hoi hai van de: thu nhat la neu em muon khieu nai ve viec thu tien quy lop, em nen bao cho ai va thu hai la em muon biet ve cac co hoi lam tro giang (ta) cho giang vien.","label":"out_of_scope"}
-{"input":"danh sach ten moi quy trinh hoc vu","label":"in_scope"}
-{"input":"Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao và Sinh viên thuộc diện con của bệnh binh cần nộp hồ sơ gì để miễn giảm học phí?","label":"out_of_scope"}
-{"input":"bỏ trứng ra khỏi danh sách","label":"out_of_scope"}
-{"input":"Liệt kê ba đơn giá tín chỉ phân biệt cao nhất.","label":"in_scope"}
-{"input":"co bn qd liet ke het","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không và thứ hai là Khoa Cơ bản 2 có chức năng gì?","label":"out_of_scope"}
-{"input":"Cho biết tên người phụ trách Phòng Công tác Sinh viên.","label":"in_scope"}
-{"input":"Rút học phần xong kết quả thế nào, bên phòng nào xử lý?","label":"in_scope"}
-{"input":"doi nganh xong kq gi nop o dau ai giai quyet","label":"in_scope"}
-{"input":"Hãy liệt kê các ngành thuộc định mức học phí nhóm ba của khóa K66.","label":"in_scope"}
-{"input":"Rút môn xong được ghi nhận thế nào và phòng nào xử lý?","label":"in_scope"}
-{"input":"bảo lưu xong thì điểm với kết quả cũ của tui sao","label":"in_scope"}
-{"input":"tin tức về vương quốc anh","label":"out_of_scope"}
-{"input":"liệt kê các mục trong danh sách mua sắm của tôi olly","label":"out_of_scope"}
-{"input":"xoa lich cua toi","label":"out_of_scope"}
-{"input":"công ty tàu hỏa nào gần tôi","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Trường có công cụ kiểm tra đạo văn cho sinh viên không cũng như Nếu em nợ học phí của kỳ trước, em có được xét học bổng khuyến khích cho kỳ này không?","label":"out_of_scope"}
-{"input":"nhom hp nao 1 tc thap nhat","label":"in_scope"}
-{"input":"tôi muốn hủy chuyến đi đến cần thơ tuần tới","label":"out_of_scope"}
-{"input":"Em có được phép yêu cầu giảng viên cung cấp slide bài giảng không?","label":"out_of_scope"}
-{"input":"don gia moi tc ky thuat oto khoa 66","label":"in_scope"}
-{"input":"Xin liệt kê các phương thức nộp học phí và cảnh báo về chuyển khoản, trễ hạn hoặc gia hạn thanh toán.","label":"in_scope"}
-{"input":"Cho biết tên và hướng dẫn của cả thủ tục chuyển ngành lẫn bảo lưu kết quả học tập.","label":"in_scope"}
-{"input":"Xin liệt kê tên ngành thuộc khóa K65 kèm đơn giá học phí một tín chỉ của từng ngành.","label":"in_scope"}
-{"input":"thêm một cuộc hẹn với lê hoàng vào lịch của tôi và","label":"out_of_scope"}
-{"input":"Nếu tài khoản email sinh viên của em bị hack, em phải làm gì?","label":"out_of_scope"}
-{"input":"Xin cung cấp tên từng đơn vị hành chính cùng họ tên người đứng đầu đơn vị.","label":"in_scope"}
-{"input":"Hãy liệt kê các nhóm học phí và mức thu mỗi tín chỉ tương ứng.","label":"in_scope"}
-{"input":"cho tôi một nhắc nhở trước hai mươi bốn giờ về cuộc họp thứ sáu với edg","label":"out_of_scope"}
-{"input":"Nếu em muốn khiếu nại về việc phân công giảng viên không hợp lý, em nên làm gì?","label":"out_of_scope"}
-{"input":"moi phong co mail gi web nao","label":"in_scope"}
-{"input":"tim kiem cac cua hang dia phuong","label":"out_of_scope"}
-{"input":"tui muốn liên hệ phòng công tác sinh viên, cho xin mọi thông tin với","label":"in_scope"}
-{"input":"vui long cho toi biet tin tuc moi nhat ve tinh hinh bau cu o bang cua chung ta","label":"out_of_scope"}
-{"input":"hãy đặt một sự kiện vào thứ hai","label":"out_of_scope"}
-{"input":"Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không?","label":"out_of_scope"}
-{"input":"Em muốn biết về quy định trang phục của giảng viên và Sự khác biệt giữa chuyên ngành Marketing và Truyền thông đa phương tiện là gì?","label":"out_of_scope"}
-{"input":"cho tui mail với web của từng phòng","label":"in_scope"}
-{"input":"cho tôi xem những tin tức mới nhất từ báo tuổi trẻ","label":"out_of_scope"}
-{"input":"dk mon xong kq sao loi hoi dau theo van ban nao","label":"in_scope"}
-{"input":"có những tiệm tạp hóa nào trong danh sách tôi đã lập","label":"out_of_scope"}
-{"input":"tôi muốn biết siêu thị nào gần đây có giá bánh mỳ ko chứa gluten rẻ nhất","label":"out_of_scope"}
-{"input":"tui muốn ra ngân hàng đóng tiền học thì hỏi phòng nào","label":"in_scope"}
-{"input":"vui long loai bo phan con lai","label":"out_of_scope"}
-{"input":"Mức học phí trên một tín chỉ dành cho sinh viên K63 ngành Công nghệ sinh học là bao nhiêu?","label":"in_scope"}
-{"input":"Xin cho biết tên quy định làm căn cứ xét học bổng khuyến khích học tập.","label":"in_scope"}
-{"input":"Xin nêu cách thực hiện học cải thiện và nguyên tắc xác định kết quả điểm sau đó.","label":"in_scope"}
-{"input":"Hãy cung cấp tên từng thủ tục học vụ, đơn vị xử lý và địa chỉ website của đơn vị đó.","label":"in_scope"}
-{"input":"hoc cai thien sao lay diem nao","label":"in_scope"}
-{"input":"Chỉ tui các bước chọn và đăng ký học phần trong kỳ với.","label":"in_scope"}
-{"input":"Hệ thống có mấy phòng ban, gồm những phòng nào?","label":"in_scope"}
-{"input":"Đơn xin đóng học phí trễ tải ở đâu?","label":"in_scope"}
-{"input":"để dành buổi chiều nay cho cuộc hẹn của tôi","label":"out_of_scope"}
-{"input":"Đăng ký môn thế nào và xong rồi được ghi nhận ra sao?","label":"in_scope"}
-{"input":"Xin cung cấp đường dẫn trực tiếp đến biểu mẫu đăng ký xét tốt nghiệp sớm.","label":"in_scope"}
-{"input":"ds nganh k63 kem hp tc","label":"in_scope"}
-{"input":"có gì trong tuần này","label":"out_of_scope"}
-{"input":"co cach nao de xoa lich khong","label":"out_of_scope"}
-{"input":"2 nhom hp thap nhat gia 1 tc","label":"in_scope"}
-{"input":"tai don xet tn som o dau","label":"in_scope"}
-{"input":"cho tui xem hết mấy kết quả của các quy trình học vụ với","label":"in_scope"}
-{"input":"em co duoc phep chon de tai do an ngoai danh sach goi y cua giang vien khong?","label":"out_of_scope"}
-{"input":"K65 tính tiền một tín chỉ theo hai giá cao nào vậy, bỏ giá lặp nha","label":"in_scope"}
-{"input":"Liệt kê không trùng các điều kiện xuất hiện trong mọi thủ tục học vụ.","label":"in_scope"}
-{"input":"tìm kiếm nhà","label":"out_of_scope"}
-{"input":"Nếu tài khoản email sinh viên của em bị hack, em phải làm gì","label":"out_of_scope"}
-{"input":"truong cho phep thanh toan hoc phi theo nhung cach nao","label":"in_scope"}
-{"input":"email phong cong tac sv la gi","label":"in_scope"}
-{"input":"Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không, đồng thời cho em hỏi Bị cảnh báo học tập có bị đuổi học không?","label":"out_of_scope"}
-{"input":"Đổi ngành cần mẫu đơn nào, nộp cho chỗ nào rồi phòng nào xử lý?","label":"in_scope"}
-{"input":"Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không","label":"out_of_scope"}
-{"input":"hay len lich cuoc hop voi nam luc muoi gio sang ngay mot thang tu","label":"out_of_scope"}
-{"input":"link qd hoc lai","label":"in_scope"}
-{"input":"lịch của tôi thứ ba sau lớp học bơi là gì","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Nếu em muốn học văn bằng 2 tại trường sau khi tốt nghiệp thì quy trình thế nào cũng như Em có thể khiếu nại về hành vi của một giảng viên không?","label":"out_of_scope"}
-{"input":"thêm cuộc hẹn ăn trưa với hoa vào ngày hai tháng một lúc mười hai giờ ba mươi phút","label":"out_of_scope"}
-{"input":"cho tôi biết những gì đang xảy ra trong tuần này","label":"out_of_scope"}
-{"input":"Hãy đếm số ngành hoặc chương trình trong các nhóm học phí, phân theo từng khóa.","label":"in_scope"}
-{"input":"Em có thể liên hệ với giảng viên ngoài giờ học không, đồng thời cho em hỏi Khi nào sinh viên phải bắt đầu đăng ký môn học cho học kỳ mới?","label":"out_of_scope"}
-{"input":"Rút môn xong được ghi nhận thế nào và xem quy định ở đâu?","label":"in_scope"}
-{"input":"moi thu tuc co dieu kien thi co may dieu kien","label":"in_scope"}
-{"input":"rot mon muc nao hoc lai kieu gi hoi phong nao","label":"in_scope"}
-{"input":"Điểm rèn luyện có được ghi vào bảng điểm tốt nghiệp không, đồng thời cho em hỏi Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không?","label":"out_of_scope"}
-{"input":"cach chuyen nganh dieu kien can co va ten don","label":"in_scope"}
-{"input":"Nếu em muốn thành lập một nhóm học tập (study group) thì có được hỗ trợ gì không và Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào?","label":"out_of_scope"}
-{"input":"Em có được phép chọn đề tài đồ án ngoài danh sách gợi ý của giảng viên không","label":"out_of_scope"}
-{"input":"Làm thế nào để nhận tiền hỗ trợ chi phí học tập (150.000đ/tháng), đồng thời cho em hỏi Nếu tài khoản email sinh viên của em bị hack, em phải làm gì?","label":"out_of_scope"}
-{"input":"liệt kê tất cả danh sách trên thiết bị này","label":"out_of_scope"}
-{"input":"thông báo cho tôi về các tin tức","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận và thứ hai là Học phí học lại môn Giáo dục thể chất có giống các môn khác không?","label":"out_of_scope"}
-{"input":"dem nhom hp k66 giup","label":"in_scope"}
-{"input":"có gì trong danh sách tạp hóa của tôi","label":"out_of_scope"}
-{"input":"cach lam thu tuc xin chuyen sang nganh khac","label":"in_scope"}
-{"input":"nhắc tôi lấy đồ giặt là vào thứ hai tới","label":"out_of_scope"}
-{"input":"vui lòng xóa cuộc hẹn đã lên lịch tiếp theo của tôi","label":"out_of_scope"}
-{"input":"Điều kiện phải học lại là gì và phòng nào xử lý?","label":"in_scope"}
-{"input":"Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận?","label":"out_of_scope"}
-{"input":"đi đến trang web báo washington","label":"out_of_scope"}
-{"input":"Địa chỉ trang web của phòng chịu trách nhiệm về học phí là gì?","label":"in_scope"}
-{"input":"muon tam nghi hoc thi lam sao ket qua dc giu k ai xu ly","label":"in_scope"}
-{"input":"Những ngành nào đang đóng đúng 550.000 đồng cho mỗi tín chỉ?","label":"in_scope"}
-{"input":"vui lòng báo tôi khi nào là tiệc sinh nhật của ngọc","label":"out_of_scope"}
-{"input":"đọc xem có gì trong danh sách của tôi","label":"out_of_scope"}
-{"input":"Tôi cần thực hiện thủ tục xin bảo lưu kết quả học tập như thế nào?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Trường có công cụ kiểm tra đạo văn cho sinh viên không và thứ hai là Học phí được tính theo tín chỉ hay theo học kỳ?","label":"out_of_scope"}
-{"input":"tui muốn bỏ bớt môn thì qua phòng nào hỏi","label":"in_scope"}
-{"input":"Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không và Học viện có tổ chức các buổi đào tạo về an toàn thông tin cho sinh viên không?","label":"out_of_scope"}
-{"input":"mún rut hp da dk thi lam s","label":"in_scope"}
-{"input":"đi nghĩa vụ quân sự thì có được bảo lưu không, còn lý do nào nữa","label":"in_scope"}
-{"input":"xoa cac su kien da len lich cua toi neu co the","label":"out_of_scope"}
-{"input":"Học viện có các kênh nào để sinh viên phản ánh, góp ý và Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không?","label":"out_of_scope"}
-{"input":"Hãy hướng dẫn rút học phần, nêu kết quả và đơn vị phụ trách.","label":"in_scope"}
-{"input":"Hãy liệt kê các ngành khóa K67 và mức học phí mỗi tín chỉ.","label":"in_scope"}
-{"input":"thông tin về các sự kiện sắp tới","label":"out_of_scope"}
-{"input":"Học phí đóng sao, có lưu ý gì và trường nhận những hình thức nào?","label":"in_scope"}
-{"input":"cho giày vào danh sách của tôi","label":"out_of_scope"}
-{"input":"Xin cho biết tổng số nhóm học phí được quy định cho khóa tuyển sinh K67.","label":"in_scope"}
-{"input":"xoa danh sach nhac cu","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Ngành Công nghệ Đa phương tiện có học môn 'Kỹ thuật nhiếp ảnh' không cũng như Trường có công cụ kiểm tra đạo văn cho sinh viên không?","label":"out_of_scope"}
-{"input":"những tiêu đề tin tức nào mới nhất từ nguồn tin tức này","label":"out_of_scope"}
-{"input":"Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không và Em có được phép sử dụng điện thoại trong giờ học không?","label":"out_of_scope"}
-{"input":"cho tui tên với số gọi của phòng tài chính và phòng công tác sinh viên","label":"in_scope"}
-{"input":"xóa toàn bộ các sự kiện khỏi lịch của tôi","label":"out_of_scope"}
-{"input":"cần đủ gì để tốt nghiệp rồi trường ghi nhận sao","label":"in_scope"}
-{"input":"xóa các sự kiện khỏi danh sách của tôi","label":"out_of_scope"}
-{"input":"tuần sắp tới của tôi như thế nào","label":"out_of_scope"}
-{"input":"bao luu can dk gi lien he dau","label":"in_scope"}
-{"input":"Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận","label":"out_of_scope"}
-{"input":"Tên phương thức thanh toán học phí trực tiếp tại quầy ngân hàng là gì?","label":"in_scope"}
-{"input":"Trưởng Phòng Tài chính là ai?","label":"in_scope"}
-{"input":"mcdonald ở đâu","label":"out_of_scope"}
-{"input":"cac cach nop hoc phi","label":"in_scope"}
-{"input":"Hãy cho biết tên các định mức học phí được áp dụng trong quy trình thu học phí.","label":"in_scope"}
-{"input":"Em có được phép yêu cầu giảng viên cung cấp slide bài giảng không","label":"out_of_scope"}
-{"input":"muốn kéo điểm thì làm sao có gì hỏi phòng nào","label":"in_scope"}
-{"input":"xoá buổi hẹn với bác sĩ ngày hai mươi tháng hai","label":"out_of_scope"}
-{"input":"Nêu hướng dẫn rút học phần, đơn vị phụ trách và văn bản áp dụng.","label":"in_scope"}
-{"input":"cuối tuần này có sự kiện nào ở hội an","label":"out_of_scope"}
-{"input":"ket qua hoc tap duoc giu sao sau khi bao luu","label":"in_scope"}
-{"input":"Xin cho biết điều kiện, đơn cần nộp và đơn vị giải quyết việc bảo lưu kết quả học tập.","label":"in_scope"}
-{"input":"Liệt kê ba đơn giá tín chỉ phân biệt thấp nhất.","label":"in_scope"}
-{"input":"Nhóm học phí K66 của ngành Ô tô còn gồm những ngành nào khác Ô tô?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Trang web về đào tạo của Học viện Công nghệ Bưu chính Viễn thông là gì cũng như Trường có công cụ kiểm tra đạo văn cho sinh viên không?","label":"out_of_scope"}
-{"input":"lịch sự kiện gửi lời mời tới lê hiếu","label":"out_of_scope"}
-{"input":"tạo nhắc nhở giặt đồ lúc tám giờ tối","label":"out_of_scope"}
-{"input":"Cho tôi cách rút học phần, kết quả sau khi rút và đơn vị giải quyết.","label":"in_scope"}
-{"input":"Đếm giúp tui tất cả loại biểu mẫu học vụ của trường.","label":"in_scope"}
-{"input":"Em có thể chọn giảng viên ngoài khoa để hướng dẫn khóa luận tốt nghiệp không?","label":"out_of_scope"}
-{"input":"Kết quả của việc đăng ký học phần hợp lệ được thể hiện như thế nào?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận và thứ hai là So với ngành CNTT, ngành An toàn thông tin có tập trung nhiều hơn vào lập trình không?","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Quy định về việc sử dụng mạng wifi của trường là gì cũng như Em có được phép ghi âm bài giảng của thầy cô không?","label":"out_of_scope"}
-{"input":"Học cải thiện xong thì điểm nào được tính vào CPA?","label":"in_scope"}
-{"input":"cuộc đua đông nam bộ","label":"out_of_scope"}
-{"input":"Cho mình danh sách từng phòng với email và điện thoại nha.","label":"in_scope"}
-{"input":"cuộc hẹn đầu tiên hôm nay của tôi là gì","label":"out_of_scope"}
-{"input":"Đường dẫn tải mẫu đơn đề nghị chuyển ngành nằm ở đâu?","label":"in_scope"}
-{"input":"cho tôi biết những bộ phim chiếu ở rạp phim galaxy tối nay","label":"out_of_scope"}
-{"input":"Nhóm có Luật với Marketing là của khóa bao nhiêu?","label":"in_scope"}
-{"input":"gửi cho tôi một lời nhắc và giờ trước cuộc hẹn tiếp theo của tôi","label":"out_of_scope"}
-{"input":"Các nhóm mức học phí theo khóa và chương trình gồm những nhóm nào?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không cũng như Nếu em bị ốm và nghi ngờ mắc bệnh truyền nhiễm, em phải làm gì?","label":"out_of_scope"}
-{"input":"Đơn vị nào chịu trách nhiệm quản lý và xử lý công tác thu học phí?","label":"in_scope"}
-{"input":"olly đề xuất một hài kịch lãng mạn trong khu phố","label":"out_of_scope"}
-{"input":"Trình bày tên và nội dung của quy trình đăng ký học lại cùng quy trình học cải thiện.","label":"in_scope"}
-{"input":"Em có thể dùng tài khoản email sinh viên để đăng ký các dịch vụ cá nhân không?","label":"out_of_scope"}
-{"input":"Em muốn biết về quy định trang phục của giảng viên","label":"out_of_scope"}
-{"input":"Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không?","label":"out_of_scope"}
-{"input":"ba chàng ngốc","label":"out_of_scope"}
-{"input":"luu cuoc hen vao danh sach","label":"out_of_scope"}
-{"input":"xoa tat ca thong tin trong su kien","label":"out_of_scope"}
-{"input":"xóa tất cả tin nhắn đã đọc từ danh sách tin nhắn","label":"out_of_scope"}
-{"input":"Em có thể dùng tài khoản email sinh viên để đăng ký các dịch vụ cá nhân không","label":"out_of_scope"}
-{"input":"tinh trung binh tien moi tin chi theo tung khoa","label":"in_scope"}
-{"input":"diem duoi bn thi hoc lai","label":"in_scope"}
-{"input":"đừng quên nhắc tôi về sinh nhật của anh trai tôi vào ngày hai mươi tháng tư","label":"out_of_scope"}
-{"input":"duong dan van ban phap ly ve thanh toan hoc phi","label":"in_scope"}
-{"input":"Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào?","label":"out_of_scope"}
-{"input":"Thông tin liên hệ đầy đủ của Phòng Đào tạo Đại học là gì?","label":"in_scope"}
-{"input":"Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không, đồng thời cho em hỏi Không tham gia sinh hoạt chi đoàn có bị trừ điểm rèn luyện không?","label":"out_of_scope"}
-{"input":"tin tức mới nhất về donald trump là gì","label":"out_of_scope"}
-{"input":"Hướng dẫn bảo lưu kết quả học tập và văn bản căn cứ là gì?","label":"in_scope"}
-{"input":"Liệt kê tên các nhóm học phí có mã khóa, mã khóa tương ứng và mức thu mỗi tín chỉ.","label":"in_scope"}
-{"input":"Em có được quyền yêu cầu đổi giảng viên không và Nếu em gặp vấn đề về tâm lý (stress, lo âu) thì có thể tìm kiếm sự giúp đỡ ở đâu?","label":"out_of_scope"}
-{"input":"làm một lịch ghi chú triển lãm hai nghìn mười bảy vào ngày hai mươi lăm tháng ba","label":"out_of_scope"}
-{"input":"ten va dien thoai phong ke hoach tai chinh voi cong tac sv","label":"in_scope"}
-{"input":"Cho tui tên mẫu đơn xin đổi ngành với đường dẫn tải nó.","label":"in_scope"}
-{"input":"cac ket qua khac nhau cua moi thu tuc hoc vu","label":"in_scope"}
-{"input":"Xin liệt kê tên ngành thuộc khóa K66 và mức thu cho mỗi tín chỉ tương ứng.","label":"in_scope"}
-{"input":"co so ha dong cua truong co dia chi o dau, dong thoi cho em hoi em co duoc phep su dung cac bai giang, slide cua truong de day lai cho nguoi khac va thu phi khong?","label":"out_of_scope"}
-{"input":"có bất cứ thứ gì còn lại trong danh sách","label":"out_of_scope"}
-{"input":"co bo phim nao hay dang chieu o rap phim gan day khong","label":"out_of_scope"}
-{"input":"Đường dẫn văn bản quy định yêu cầu hoàn thành đầy đủ học phần để xét tốt nghiệp là gì?","label":"in_scope"}
-{"input":"cho tôi biết về tin tức thể thao mới nhất","label":"out_of_scope"}
-{"input":"nhac toi ve cuoc hen voi bac si thu y cua rom vao hai muoi lam","label":"out_of_scope"}
-{"input":"Chuyện học lại môn thì phòng nào đứng ra xử lý?","label":"in_scope"}
-{"input":"Tại sao học phí hệ Chất lượng cao lại cao hơn hệ đại trà và Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không?","label":"out_of_scope"}
-{"input":"vui long xoa tat ca cac muc da danh dau tren lich","label":"out_of_scope"}
-{"input":"Nếu em có sáng kiến cải tiến trong học tập hoặc hoạt động sinh viên thì có được khen thưởng không và Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
-{"input":"đạt hết tiêu chí học bổng thì tui được sao","label":"in_scope"}
-{"input":"alexa triển lãm nghệ thuật ở đà nẵng","label":"out_of_scope"}
-{"input":"em co duoc phep su dung cac cong cu ai nhu chatgpt de lam bai tap lon khong va email cua truong phong cong tac sinh vien la gi?","label":"out_of_scope"}
-{"input":"cho tôi biết trong hai giờ nữa rằng tôi phải đi học đàn lúc bốn giờ chiều tại học viện âm nhạc","label":"out_of_scope"}
-{"input":"Website chính thức của đơn vị phụ trách công tác học phí là gì?","label":"in_scope"}
-{"input":"Ngành Ngôn ngữ Anh K66 có đơn giá mỗi tín chỉ là bao nhiêu?","label":"in_scope"}
-{"input":"xóa sự kiện tiếp theo hôm nay","label":"out_of_scope"}
-{"input":"Em muốn biết về các cơ hội làm trợ giảng (TA) cho giảng viên","label":"out_of_scope"}
-{"input":"nhắc tôi đi ngủ trước một giờ sáng hằng ngày","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Học viện có hỗ trợ sinh viên tham gia các khóa học trực tuyến như Coursera, edX không và thứ hai là Em có được phép ghi âm bài giảng của thầy cô không?","label":"out_of_scope"}
-{"input":"Xét ra trường cần điều kiện gì, dùng mẫu đơn nào và phòng nào lo vậy?","label":"in_scope"}
-{"input":"đóng tiền hc sao, online hay ra ngân hàng vậy","label":"in_scope"}
-{"input":"tôi muốn đến sinh nhật thủy vào thứ bảy lúc mười giờ tối","label":"out_of_scope"}
-{"input":"tôi không muốn trứng","label":"out_of_scope"}
-{"input":"xin đổi ngành xong được gì mang đơn cho ai ai duyệt","label":"in_scope"}
-{"input":"Trường có công cụ kiểm tra đạo văn cho sinh viên không?","label":"out_of_scope"}
-{"input":"xóa","label":"out_of_scope"}
-{"input":"Địa chỉ email dùng để liên hệ Văn phòng Trường là gì?","label":"in_scope"}
-{"input":"toi can them buoi luyen tap bong chay vao thu bay luc hai gio chieu","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào cũng như Học viện có hỗ trợ chi phí phúng viếng khi sinh viên không may qua đời không?","label":"out_of_scope"}
-{"input":"Đóng học phí thế nào, cần lưu ý gì và có các cách nào?","label":"in_scope"}
-{"input":"Điều kiện xét học bổng là gì, kết quả ra sao và đơn vị nào phụ trách?","label":"in_scope"}
-{"input":"vui lòng tìm cửa hàng nổi tiếng trong khu vực","label":"out_of_scope"}
-{"input":"olly công viên gần đây tôi có thể chạy ở đâu","label":"out_of_scope"}
-{"input":"Hãy liệt kê tên và email của tất cả phòng ban hành chính.","label":"in_scope"}
-{"input":"Em muốn biết về các cơ hội làm trợ giảng (TA) cho giảng viên.","label":"out_of_scope"}
-{"input":"Vui lòng trình bày cách đăng ký học phần và cung cấp đường dẫn quy định liên quan.","label":"in_scope"}
-{"input":"tôi sẽ làm gì vào tuần tới","label":"out_of_scope"}
-{"input":"Tôi có thể tải những loại biểu mẫu nào của trường?","label":"in_scope"}
-{"input":"sự kiện sẽ bao gồm cả mai và lê","label":"out_of_scope"}
-{"input":"hd dkhp kem link qd","label":"in_scope"}
-{"input":"nhac toi ve su kien trong lich cua toi","label":"out_of_scope"}
-{"input":"tôi muốn cài một cuộc hẹn hò vào tuần này","label":"out_of_scope"}
-{"input":"Nghĩa vụ đóng học phí của sinh viên đối với các học phần đã đăng ký là gì?","label":"in_scope"}
-{"input":"Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không và Em nên lập kế hoạch cho 4 năm đại học như thế nào?","label":"out_of_scope"}
-{"input":"Cho biết tên nhóm học phí, khóa áp dụng và giá mỗi tín chỉ của các nhóm có mã khóa.","label":"in_scope"}
-{"input":"Mỗi khóa có bao nhiêu nhóm định mức học phí?","label":"in_scope"}
-{"input":"vui lòng xóa sự kiện lịch này","label":"out_of_scope"}
-{"input":"su khac biet giua 'do an 1', 'do an 2' la gi va ty le dao van bao nhieu % thi duoc chap nhan?","label":"out_of_scope"}
-{"input":"Đơn vị xử lý công tác xét học bổng làm việc tại địa điểm nào?","label":"in_scope"}
-{"input":"tuỳ chỉnh tab để hiển thị khoảng thời gian ưu tiên của bạn","label":"out_of_scope"}
-{"input":"thế còn những tin tức mới nhất","label":"out_of_scope"}
-{"input":"Hãy trình bày hướng dẫn học cải thiện, đơn vị phụ trách và căn cứ quy định.","label":"in_scope"}
-{"input":"Đếm số thủ tục do từng phòng xử lý.","label":"in_scope"}
-{"input":"cho tui xin link mẫu đơn bảo lưu với","label":"in_scope"}
-{"input":"Địa chỉ email chính thức của Văn phòng Trường là gì?","label":"in_scope"}
-{"input":"bạn có thể phát tin tức ở kênh v. t. v một được không","label":"out_of_scope"}
-{"input":"lấy trung bình mấy nhóm tiền học theo từng khóa giúp tui","label":"in_scope"}
-{"input":"Quy định về việc sử dụng mạng wifi của trường là gì","label":"out_of_scope"}
-{"input":"Nhà trường hỗ trợ thanh toán học phí trực tuyến tại đường dẫn nào?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Nếu tài khoản email sinh viên của em bị hack, em phải làm gì cũng như Tôi có phải đóng học phí cho các môn Giáo dục thể chất không?","label":"out_of_scope"}
-{"input":"muon hoc cai thien diem lam gi lien he phong nao","label":"in_scope"}
-{"input":"Hãy xác định tên nhóm có mức học phí tín chỉ nhỏ nhất và mức giá tương ứng.","label":"in_scope"}
-{"input":"Vui lòng xác định hai nhóm có đơn giá tín chỉ thấp nhất.","label":"in_scope"}
-{"input":"xet hb sao kq gi","label":"in_scope"}
-{"input":"nhắc tôi nếu có điều gì khác xảy ra","label":"out_of_scope"}
-{"input":"Trường có công cụ kiểm tra đạo văn cho sinh viên không","label":"out_of_scope"}
-{"input":"xoa lich hop","label":"out_of_scope"}
-{"input":"tra cuu cac bai bao ve nguyen phu trong","label":"out_of_scope"}
-{"input":"ds nganh khoa kem hp 1 tc","label":"in_scope"}
-{"input":"Luật và Marketing chung định mức học phí của mã khóa nào?","label":"in_scope"}
-{"input":"Bảo lưu kết quả học tập dựa trên quy định nào?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu tôi bị cảnh cáo học vụ thì sao và thứ hai là Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
-{"input":"Hãy liệt kê các biểu mẫu học vụ và đường dẫn tải tương ứng.","label":"in_scope"}
-{"input":"Có tất cả bao nhiêu quy trình học vụ dành cho sinh viên?","label":"in_scope"}
-{"input":"Hãy cung cấp danh mục các văn bản quy định học vụ của Trường.","label":"in_scope"}
-{"input":"Bảo lưu cần những đơn nào và tải ở đâu?","label":"in_scope"}
-{"input":"Muốn quay lại trường sau đợt bảo lưu thì mẫu đơn cần dùng gọi là gì?","label":"in_scope"}
-{"input":"Xin trình bày các bước thực hiện khi sinh viên muốn rút một học phần đã đăng ký.","label":"in_scope"}
-{"input":"sự kiện được lên lịch vào ngày một tháng một có địa chỉ nào","label":"out_of_scope"}
-{"input":"Cho tôi danh sách phòng ban kèm trang web.","label":"in_scope"}
-{"input":"tiến hành cuộc họp vào thứ năm","label":"out_of_scope"}
-{"input":"dong hp tai quay nh sao","label":"in_scope"}
-{"input":"phong phu trach hb nam o dau","label":"in_scope"}
-{"input":"Việc xét tốt nghiệp được thực hiện căn cứ theo văn bản nào?","label":"in_scope"}
-{"input":"báo cáo buổi biểu diễn cùng với thời gian bắt đầu","label":"out_of_scope"}
-{"input":"Điều kiện chuyển ngành, nơi nhận hồ sơ và phòng giải quyết lần lượt là gì?","label":"in_scope"}
-{"input":"Đếm giùm tui tổng số hình thức trả học phí khác nhau.","label":"in_scope"}
-{"input":"Mỗi mức giá tín chỉ hiện có bao nhiêu ngành áp dụng vậy?","label":"in_scope"}
-{"input":"tìm các bài báo mới về trump nhưng không phải từ kênh mười bốn","label":"out_of_scope"}
-{"input":"bỏ các sự kiện khỏi lịch","label":"out_of_scope"}
-{"input":"URL tải mẫu đơn đề nghị gia hạn hạn đóng học phí là gì?","label":"in_scope"}
-{"input":"Sinh viên ngành Điện K67 thanh toán bao nhiêu cho một tín chỉ?","label":"in_scope"}
-{"input":"đăng ký xong coi ở đâu có lỗi hỏi ai với dựa quy định nào","label":"in_scope"}
-{"input":"huong dan dang ky hoc lai mon bi rot","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Mã tổ hợp Toán, Văn, Anh là gì cũng như Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
-{"input":"dieu kien de xet tot nghiep la j","label":"in_scope"}
-{"input":"vui long huy hoi nghi phu huynh giao vien duoc len lich vao ngay bay thang ba","label":"out_of_scope"}
-{"input":"ten cac nhom co gia tin chi cao nhat kem muc gia","label":"in_scope"}
-{"input":"Xin xác định tổng số định mức học phí dành cho khóa tuyển sinh K65.","label":"in_scope"}
-{"input":"Tên phòng phụ trách tiếp nhận và xử lý học cải thiện là gì?","label":"in_scope"}
-{"input":"sau khi xet hoc bong thi ket qua cuoi la gi","label":"in_scope"}
-{"input":"Học kéo điểm xong thì kết quả nào được trường lấy để tính?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Em có được phép yêu cầu giảng viên cung cấp slide bài giảng không cũng như Em muốn biết về các quy định về việc thi lại môn Giáo dục thể chất.","label":"out_of_scope"}
-{"input":"cho tôi biết nối có bất kỳ tin tức gì mới về vấn đề này","label":"out_of_scope"}
-{"input":"len lich cho hai gio trong vao thu bay","label":"out_of_scope"}
-{"input":"xóa tất cả dữ liệu từ lịch","label":"out_of_scope"}
-{"input":"Làm thế nào để tránh lỗi đạo văn?","label":"out_of_scope"}
-{"input":"thời gian hẹn khám bác sĩ mắt của tôi là ngày hai mươi ba","label":"out_of_scope"}
-{"input":"Sinh viên cần đáp ứng điều kiện gì để bảo lưu và kết quả được ghi nhận như thế nào?","label":"in_scope"}
-{"input":"nhắc tôi tám giờ tối đi giặt đồ","label":"out_of_scope"}
-{"input":"nhắc tôi ba mươi phút trước cuộc họp lúc ba giờ chiều ngày mai","label":"out_of_scope"}
-{"input":"bạn có gợi ý các bộ phim hành động nào không","label":"out_of_scope"}
-{"input":"luat k67 1tc bn tien","label":"in_scope"}
-{"input":"chỉ tôi nhà hát gần nhất","label":"out_of_scope"}
-{"input":"Một tín chỉ Nuôi trồng thủy sản khóa K63 thu bao nhiêu vậy?","label":"in_scope"}
-{"input":"em co the khieu nai ve hanh vi cua mot giang vien khong va thoi han de phong giao vu tap hop ho so xet hoc bong khuyen khich hoc tap la bao lau?","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Em muốn biết về quy định trang phục khi thi học kỳ cũng như Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào?","label":"out_of_scope"}
-{"input":"Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao","label":"out_of_scope"}
-{"input":"Hết thời gian nghỉ bảo lưu, tôi cần mẫu giấy nào để xin trở lại học?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Hành vi tung tin đồn thất thiệt, gây mất đoàn kết trong lớp bị xử lý như thế nào cũng như Em có được phép ghi âm bài giảng của thầy cô không?","label":"out_of_scope"}
-{"input":"rut mon sao kq the nao","label":"in_scope"}
-{"input":"tìm cửa hàng tạp hóa trong thị trấn kem ngâm cá trích","label":"out_of_scope"}
-{"input":"Nếu em muốn xin giấy xác nhận để làm visa đi du học, trường có hỗ trợ không và Em có thể khiếu nại về hành vi của một giảng viên không?","label":"out_of_scope"}
-{"input":"hiện cho tôi những sự kiện gần đây","label":"out_of_scope"}
-{"input":"k65 co bn nhom hp","label":"in_scope"}
-{"input":"Hãy đếm số điều kiện riêng biệt phải đáp ứng trong xét tốt nghiệp.","label":"in_scope"}
-{"input":"năm nhất có xin đổi ngành được không vậy","label":"in_scope"}
-{"input":"Xin cho biết đơn giá mỗi tín chỉ của chương trình Luật dành cho khóa K67.","label":"in_scope"}
-{"input":"em muon xin thu gioi thieu tu giang vien de nop ho so hoc bong, em nen lam gi va lam the nao de duoc xep loai tot nghiep loai gioi?","label":"out_of_scope"}
-{"input":"em muon biet thong tin ve em co duoc phep su dung cac cong cu ai nhu chatgpt de lam bai tap lon khong cung nhu diem hoc cai thien se duoc tinh nhu the nao?","label":"out_of_scope"}
-{"input":"sắp ra trường rồi tui cần hỏi xét tốt nghiệp ở phòng nào","label":"in_scope"}
-{"input":"olly hủy cuộc họp kinh doanh vào thứ tư","label":"out_of_scope"}
-{"input":"ten cach nop hoc phi tai quay ngan hang va phong phu trach","label":"in_scope"}
-{"input":"ten van ban quy dinh thu tuc doi nganh","label":"in_scope"}
-{"input":"huỷ cuộc họp lúc tám giờ ngày mai của tôi","label":"out_of_scope"}
-{"input":"cài đặt một nhắc nhở lúc ba giờ đúng","label":"out_of_scope"}
-{"input":"tôi có việc gì vào năm giờ chiều thứ bảy không","label":"out_of_scope"}
-{"input":"olly phim nào đang chiếu ở rạp galaxy tân bình","label":"out_of_scope"}
-{"input":"Vui lòng mô tả quy trình xét học bổng và kết quả của việc xét duyệt.","label":"in_scope"}
-{"input":"nhắc nhở các sự kiện bắt buộc phải được đặt lại","label":"out_of_scope"}
-{"input":"Sổ tay sinh viên này có áp dụng cho hệ Vừa làm vừa học không, đồng thời cho em hỏi Em có thể chọn giảng viên ngoài khoa để hướng dẫn khóa luận tốt nghiệp không?","label":"out_of_scope"}
-{"input":"cho tui mail phòng công tác sinh viên","label":"in_scope"}
-{"input":"cho em hoi hai van de: thu nhat la hoc vien co quy dinh ve viec su dung mang xa hoi trong gio hoc khong va thu hai la truong co cong cu kiem tra dao van cho sinh vien khong?","label":"out_of_scope"}
-{"input":"Hãy liệt kê các văn bản quy định và đường dẫn xem tài liệu.","label":"in_scope"}
-{"input":"sự kiện","label":"out_of_scope"}
-{"input":"đặt một sự kiện sinh nhật cho đức","label":"out_of_scope"}
-{"input":"kq cai thien diem qd nao","label":"in_scope"}
-{"input":"k65 nhóm đóng 620k là ngành nào vậy","label":"in_scope"}
-{"input":"nhắc tôi sinh nhật của con tôi","label":"out_of_scope"}
-{"input":"có mấy quy trình cho sinh viên, kể hết tên cho tui coi","label":"in_scope"}
-{"input":"Hãy đếm tổng số đơn vị hành chính khác nhau có trong dữ liệu của Trường.","label":"in_scope"}
-{"input":"Kể tên các mẫu đơn của bảo lưu rồi cho tui link tải từng mẫu.","label":"in_scope"}
-{"input":"buổi triển lãm hay buổi biểu diễn nào được lên lịch ở nhà hát lớn","label":"out_of_scope"}
-{"input":"hoc lai nang diem theo qd so nao","label":"in_scope"}
-{"input":"Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không","label":"out_of_scope"}
-{"input":"Tôi muốn hỏi về việc học lại thì liên hệ đơn vị nào?","label":"in_scope"}
-{"input":"Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không","label":"out_of_scope"}
-{"input":"Làm thế nào để tham gia đội tuyển Robocon, đồng thời cho em hỏi Làm thế nào để xây dựng mối quan hệ tốt với giảng viên?","label":"out_of_scope"}
-{"input":"bạn có thể xóa sự kiện này không","label":"out_of_scope"}
-{"input":"trường có mấy nhóm tiền học, kể tên hết cho tui với","label":"in_scope"}
-{"input":"Hướng dẫn đăng ký học cải thiện điểm được thực hiện ra sao?","label":"in_scope"}
-{"input":"thêm lịch luyện tập vào ngày mùng bốn tháng hai tại công viên gia định lúc hai giờ chiều","label":"out_of_scope"}
-{"input":"olly co su kien nao sap to chuc khong toi muon di xem","label":"out_of_scope"}
-{"input":"ds thu tuc kem phong xu ly","label":"in_scope"}
-{"input":"Hãy liệt kê tên từng quy trình học vụ và tên đơn vị chịu trách nhiệm xử lý.","label":"in_scope"}
-{"input":"huong dan dkhp va ten phong giai quyet","label":"in_scope"}
-{"input":"bạn có thể cho tôi biết khi nào chúng tôi phải trả phí bảo hiểm ô tô không","label":"out_of_scope"}
-{"input":"Quy định về việc sử dụng mạng wifi của trường là gì và Em tham gia hiến máu nhân đạo 1 lần trong kỳ thì được cộng mấy điểm rèn luyện?","label":"out_of_scope"}
-{"input":"nhắc tôi cuộc họp ba giờ chiều mai đặt trước bốn tiếng","label":"out_of_scope"}
-{"input":"Không xét lý do phải điều trị dài ngày do ốm, thai sản hoặc tai nạn, sinh viên còn được bảo lưu trong những trường hợp nào?","label":"in_scope"}
-{"input":"Cho tui đường dẫn tải giấy xin gia hạn thời gian đóng tiền học.","label":"in_scope"}
-{"input":"tôi đã hoàn thành nó một lần","label":"out_of_scope"}
-{"input":"Mỗi mức học phí tín chỉ đang được dùng cho bao nhiêu ngành?","label":"in_scope"}
-{"input":"Tôi đóng học phí online ở website nào?","label":"in_scope"}
-{"input":"tin tức về người nổi tiếng","label":"out_of_scope"}
-{"input":"các nhà hàng ngon nhất ở đâu","label":"out_of_scope"}
-{"input":"mở cho tôi tin tức thể thao của hôm nay","label":"out_of_scope"}
-{"input":"Cho biết tổng số biểu mẫu học vụ và liệt kê tên của chúng.","label":"in_scope"}
-{"input":"Hai nhóm học phí K63 tên gì và mỗi tín chỉ bao nhiêu tiền?","label":"in_scope"}
-{"input":"chỉ tui học lại sao rồi gửi link quy định với","label":"in_scope"}
-{"input":"những tin tức mới nhất từ c. n. n.","label":"out_of_scope"}
-{"input":"Đơn đề nghị xét tốt nghiệp tải ở đâu?","label":"in_scope"}
-{"input":"Xét tốt nghiệp đạt hết yêu cầu rồi thì tui nhận kết quả gì?","label":"in_scope"}
-{"input":"Mã ngành của nhóm ngành Báo chí là gì, đồng thời cho em hỏi Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không?","label":"out_of_scope"}
-{"input":"những sự kiện gì đã được lên lịch vào thứ ba tới giữa mười một giờ sáng và ba giờ chiều","label":"out_of_scope"}
-{"input":"em co duoc phep ghi am bai giang cua thay co khong?","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Vai trò của Phòng Khảo thí và Đảm bảo chất lượng giáo dục là gì cũng như Em có được quyền yêu cầu đổi giảng viên không?","label":"out_of_scope"}
-{"input":"dem tong nhom hoc phi va liet ke ten tung nhom","label":"in_scope"}
-{"input":"Rút học phần rồi được ghi nhận sao, link quy định ở đâu vậy?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Em có được phép nhận đồ tiếp tế từ gia đình khi học quân sự không cũng như Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận?","label":"out_of_scope"}
-{"input":"dem nganh trong nhom hp tung khoa","label":"in_scope"}
-{"input":"đặt lịch trình các sự kiện thêm nhiều thông tin","label":"out_of_scope"}
-{"input":"Liệt kê tên mỗi phòng ban hành chính và địa chỉ email tương ứng.","label":"in_scope"}
-{"input":"Nếu em bị tai nạn trên đường đi học, bảo hiểm y tế có chi trả không và Em có thể liên hệ với giảng viên ngoài giờ học không?","label":"out_of_scope"}
-{"input":"cach dkhp phong xu ly va ket qua dang ky","label":"in_scope"}
-{"input":"Hãy nêu điều kiện và hướng dẫn đăng ký học lại.","label":"in_scope"}
-{"input":"don gia chinh xac tc cntt khoa65","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không và thứ hai là Nếu em có chứng chỉ TOEIC 500, em có được miễn học và thi Course 2 không?","label":"out_of_scope"}
-{"input":"tin tức mới nhất từ kênh v. t. v. ba","label":"out_of_scope"}
-{"input":"đổi ngành thì xem quy định nào của trường","label":"in_scope"}
-{"input":"dkhp theo qd nao","label":"in_scope"}
-{"input":"Hãy nêu điều kiện, kết quả và đơn vị phụ trách xét học bổng.","label":"in_scope"}
-{"input":"dk tot nghiep qd nao","label":"in_scope"}
-{"input":"tạo một ghi chú trong lịch vào mười giờ sáng thứ bảy","label":"out_of_scope"}
-{"input":"Cung cấp tên và nội dung hướng dẫn của quy trình chuyển ngành và bảo lưu kết quả học tập.","label":"in_scope"}
-{"input":"mở lịch thiết lập sự kiện","label":"out_of_scope"}
-{"input":"Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
-{"input":"thông báo cho tôi các cuộc họp trong khoảng thời gian vài ngày","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào và thứ hai là Giấy xác nhận sinh viên để mua vé tàu có thời hạn bao lâu?","label":"out_of_scope"}
-{"input":"Đạt danh hiệu 'Sinh viên 5 tốt' có được cộng điểm rèn luyện không và Em có được phép yêu cầu giảng viên cung cấp slide bài giảng không?","label":"out_of_scope"}
-{"input":"Quy định nào là căn cứ pháp lý cho việc thu và nộp học phí?","label":"in_scope"}
-{"input":"đặt lịch cuộc họp lúc hai giờ chiều ngày mai với nam vào lịch của tôi","label":"out_of_scope"}
-{"input":"có sự kiện nào trong lịch của tôi tuần này không","label":"out_of_scope"}
-{"input":"Tôi có thể tải biểu mẫu đề nghị chuyển ngành từ đường dẫn nào?","label":"in_scope"}
-{"input":"ke nhung tin tuc moi nhat ve trump","label":"out_of_scope"}
-{"input":"Quy định về việc sử dụng mạng wifi của trường là gì?","label":"out_of_scope"}
-{"input":"Thủ tục đăng ký học cải thiện và nguyên tắc ghi nhận điểm ra sao?","label":"in_scope"}
-{"input":"Ai đang phụ trách phòng xử lý việc đăng ký học phần?","label":"in_scope"}
-{"input":"Vui lòng cung cấp liên kết đến quy định về việc học lại.","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Em có được phép sử dụng các bài giảng, slide của trường để dạy lại cho người khác và thu phí không cũng như Nếu tôi đăng ký ít môn hơn mức tối thiểu thì sao?","label":"out_of_scope"}
-{"input":"Cho biết tên các nhóm học phí và đơn giá tín chỉ của từng nhóm.","label":"in_scope"}
-{"input":"Vui lòng nêu tên và đường dẫn của biểu mẫu xin gia hạn học phí.","label":"in_scope"}
-{"input":"nhung gi duoc thiet lap vao cuoi tuan ba tuan ke tu bay gio","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Làm thế nào để tham gia đội tuyển thể thao của trường và thứ hai là Nếu em làm khóa luận tốt nghiệp về một đề tài liên quan đến blockchain, em có thể nhờ giảng viên ngành CNTT hướng dẫn không, dù em học ngành ATTT?","label":"out_of_scope"}
-{"input":"Một tín chỉ Giáo dục tổng quát đóng bao nhiêu tiền?","label":"in_scope"}
-{"input":"Em có thể sử dụng wifi của trường cho mục đích cá nhân (chơi game, xem phim) không","label":"out_of_scope"}
-{"input":"ten don vi truc tiep phu trach xet hoc bong","label":"in_scope"}
-{"input":"là buổi đi chơi tối thứ sáu của con gái tôi phải ko","label":"out_of_scope"}
-{"input":"ngành quản trị kinh doanh có yêu cầu cao về kỹ năng mềm ko, đồng thời cho em hỏi em có được phép ghi âm bài giảng của thầy cô ko?","label":"out_of_scope"}
-{"input":"vui lòng nhắc tôi lấy cà phê ra khỏi lò trong mười phút nữa","label":"out_of_scope"}
-{"input":"Hồ sơ xin chuyển ngành được nộp ở phòng nào?","label":"in_scope"}
-{"input":"Em muốn xin thư giới thiệu từ giảng viên để nộp hồ sơ học bổng, em nên làm gì và Em có được phép nhận đồ tiếp tế từ gia đình khi học quân sự không?","label":"out_of_scope"}
-{"input":"Em có thể khiếu nại về hành vi của một giảng viên không","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào và thứ hai là Em có thể nộp đơn xin học bổng của nhiều công ty cùng lúc không?","label":"out_of_scope"}
-{"input":"Hãy nêu điều kiện chuyển ngành, nơi nhận hồ sơ và đơn vị xử lý.","label":"in_scope"}
-{"input":"hỏi vụ học bổng thì kiếm phòng nào","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em đã có chứng chỉ IC3, vậy em có được miễn học phần Tin học cơ sở không và thứ hai là Trường có công cụ kiểm tra đạo văn cho sinh viên không?","label":"out_of_scope"}
-{"input":"Hãy liệt kê các quy trình học vụ và văn bản làm căn cứ cho từng quy trình.","label":"in_scope"}
-{"input":"dat loi nhac cuoc hop van phong trong ba ngay toi","label":"out_of_scope"}
-{"input":"don dep lich cua toi sach se","label":"out_of_scope"}
-{"input":"Hãy cho biết kết quả học cải thiện được ghi nhận ra sao và căn cứ theo văn bản nào.","label":"in_scope"}
-{"input":"Xin cung cấp địa chỉ thư điện tử của đơn vị tiếp nhận yêu cầu bảo lưu.","label":"in_scope"}
-{"input":"thông báo cho tôi nếu có bất kỳ chủ đề nào liên quan đến chính trị xuất hiện","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em muốn khiếu nại về việc phân công giảng viên không hợp lý, em nên làm gì và thứ hai là Nếu bị xếp loại rèn luyện kém 2 năm liên tiếp thì sao?","label":"out_of_scope"}
-{"input":"em muốn biết thông tin về em muốn xin thư giới thiệu từ giảng viên để nộp hồ sơ học bổng, em nên làm gì cũng như em muốn biết về quy định bảo vệ môi trường trong trường.","label":"out_of_scope"}
-{"input":"Có bao nhiêu biểu mẫu học vụ và tên của từng biểu mẫu là gì?","label":"in_scope"}
-{"input":"Mình tìm link quy định rút học phần ở đâu?","label":"in_scope"}
-{"input":"em muốn biết thông tin về em sử dụng code từ trên mạng (github) cho đồ án môn học mà ko ghi nguồn, có bị xem là đạo văn ko cũng như học viện có hỗ trợ chi phí phúng viếng khi sv ko may qua đời ko?","label":"out_of_scope"}
-{"input":"tìm phim được đề cử giải oscar","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Học viện có chương trình liên kết đào tạo ngành Đa phương tiện với trường nào của Úc cũng như Em có được quyền yêu cầu đổi giảng viên không?","label":"out_of_scope"}
-{"input":"nhắc tôi toàn bộ các sự kiện trong lịch","label":"out_of_scope"}
-{"input":"có đúng là sinh nhật của hoa là vào tháng ba ngày một không","label":"out_of_scope"}
-{"input":"Xin liệt kê tên toàn bộ phòng ban hành chính hiện có của Trường.","label":"in_scope"}
-{"input":"Em có được quyền yêu cầu đổi giảng viên không","label":"out_of_scope"}
-{"input":"them mot cuoc hop vao lich cua toi luc chin gio sang voi minh","label":"out_of_scope"}
-{"input":"gợi ý phim cho tôi","label":"out_of_scope"}
-{"input":"chỉ cho tôi biết các cuộc họp quan trọng với sếp của tôi trong tuần","label":"out_of_scope"}
-{"input":"Sinh viên Công nghệ sinh học K63 phải trả mức nào cho một tín chỉ?","label":"in_scope"}
-{"input":"cho em hoi hai van de: thu nhat la neu em lam khoa luan tot nghiep ve mot de tai lien quan den blockchain, em co the nho giang vien nganh cntt huong dan khong, du em hoc nganh attt va thu hai la lam the nao de tham gia doi tuyen the thao cua truong?","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Cơ sở phía Nam có đào tạo chương trình chất lượng cao, đặc thù nào và thứ hai là Em có thể dùng tài khoản email sinh viên để đăng ký các dịch vụ cá nhân không?","label":"out_of_scope"}
-{"input":"nơi nào bán pizza ngon nhất ở đường số sáu","label":"out_of_scope"}
-{"input":"bạn có thể tổ chức một sự kiện cho đêm ngày thứ sáu với mai và cả nam ko","label":"out_of_scope"}
-{"input":"tong so quy trinh hoc vu kem ten tung quy trinh","label":"in_scope"}
-{"input":"tìm kiếm sự kiện địa phượng tại khu vực có mã bưu chính mười hai ngàn một trăm hai mươi mốt","label":"out_of_scope"}
-{"input":"gửi tui link file quyết định quy định chuyện đóng tiền học nha","label":"in_scope"}
-{"input":"Cho tôi hướng dẫn đầy đủ để xin nghỉ học tạm thời và giữ lại kết quả đã học.","label":"in_scope"}
-{"input":"tạo lời nhắc về cuộc họp ngày mai lúc chín giờ sáng","label":"out_of_scope"}
-{"input":"liet ke thu tuc hoc vu va hd cach lam tung thu tuc","label":"in_scope"}
-{"input":"tôi cần thêm sữa","label":"out_of_scope"}
-{"input":"so dien thoai don vi tiep nhan ho so doi nganh","label":"in_scope"}
-{"input":"Tên phòng trực tiếp phụ trách xử lý công tác học phí là gì?","label":"in_scope"}
-{"input":"Bảo lưu được áp dụng với điều kiện nào và kết quả học tập được xử lý ra sao?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Trường có công cụ kiểm tra đạo văn cho sinh viên không cũng như Em muốn biết về quy định nghỉ Lễ, Tết của trường.","label":"out_of_scope"}
-{"input":"Mình xin đường dẫn tới quy định xét học bổng nhé.","label":"in_scope"}
-{"input":"giá ngỗng sống hiện tại là bao nhiêu","label":"out_of_scope"}
-{"input":"học ngành này không hợp, tui chuyển ngành kiểu gì","label":"in_scope"}
-{"input":"Em có được phép sử dụng các bài giảng, slide của trường để dạy lại cho người khác và thu phí không","label":"out_of_scope"}
-{"input":"khi nào đến lời nhắc kế tiếp của tôi","label":"out_of_scope"}
-{"input":"ds nganh k66 kem hp 1 tc","label":"in_scope"}
-{"input":"các sự kiện ở gần tôi","label":"out_of_scope"}
-{"input":"xin gia han nop hp dung don gi","label":"in_scope"}
-{"input":"Quy định xét học bổng có thể xem ở đâu?","label":"in_scope"}
-{"input":"kể mấy nhóm đóng hơn năm trăm ngàn một tín chỉ","label":"in_scope"}
-{"input":"don sach lich cua toi","label":"out_of_scope"}
-{"input":"url van ban lam can cu cho thu tuc bao luu","label":"in_scope"}
-{"input":"trường có những thủ tục học vụ nào cho sinh viên vậy, kể tui nghe với","label":"in_scope"}
-{"input":"xet hb ra sao dk gom gi","label":"in_scope"}
-{"input":"vui long them lich cat toc vao ngay hai muoi bay thang ba luc ba gio chieu","label":"out_of_scope"}
-{"input":"em sử dụng code từ trên mạng (github) cho đồ án môn học mà ko ghi nguồn, có bị xem là đạo văn ko, đồng thời cho em hỏi trường có tổ chức các khóa học về phòng chống thiên tai, hỏa hoạn ko?","label":"out_of_scope"}
-{"input":"Em có thể liên hệ với giảng viên ngoài giờ học không, đồng thời cho em hỏi Nguyên nhân nào dẫn đến bị cảnh báo học vụ mức 1?","label":"out_of_scope"}
-{"input":"k66 lay 2 gia tin chi cao nhat khac nhau","label":"in_scope"}
-{"input":"Tên văn bản quy định làm căn cứ cho thủ tục thanh toán học phí là gì?","label":"in_scope"}
-{"input":"Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao?","label":"out_of_scope"}
-{"input":"Đơn xin đổi ngành của tui phải mang đến đơn vị nào nộp?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao cũng như Em muốn biết tại sao trong sổ tay lại có phần 'Phương pháp POWER trong học tập'?","label":"out_of_scope"}
-{"input":"Nêu cách xét, điều kiện và đơn vị phụ trách học bổng.","label":"in_scope"}
-{"input":"Cho danh sách phòng ban kèm email và số gọi.","label":"in_scope"}
-{"input":"co bn phong ban","label":"in_scope"}
-{"input":"don xet tn ten gi link dau","label":"in_scope"}
-{"input":"gia 1 tc nganh ke toan khoa k65","label":"in_scope"}
-{"input":"Học phí cho một tín chỉ Công nghệ thông tin khóa K65 được quy định bao nhiêu?","label":"in_scope"}
-{"input":"tin tuc xung quanh thanh pho","label":"out_of_scope"}
-{"input":"Sinh viên có được phép kinh doanh, buôn bán trong khuôn viên trường không và Em có thể dùng tài khoản email sinh viên để đăng ký các dịch vụ cá nhân không?","label":"out_of_scope"}
-{"input":"Hãy cung cấp hướng dẫn bảo lưu và tên văn bản làm căn cứ.","label":"in_scope"}
-{"input":"mấy nhóm đóng một tín chỉ mắc nhất với giá bao nhiêu","label":"in_scope"}
-{"input":"đặt cuộc họp cho ngày mai","label":"out_of_scope"}
-{"input":"dia chi website phong dao tao dai hoc","label":"in_scope"}
-{"input":"olly xóa tất cả các sự kiện trong hai ngày tới","label":"out_of_scope"}
-{"input":"Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không?","label":"out_of_scope"}
-{"input":"K66 có hai giá tín chỉ cao nhất nào, giá giống nhau đừng kể lại","label":"in_scope"}
-{"input":"Vui lòng trình bày thủ tục rút học phần và kết quả sau khi hoàn tất.","label":"in_scope"}
-{"input":"toi co bat ky loi nhac nao hom nay khong","label":"out_of_scope"}
-{"input":"Hai hình thức đóng online và đóng tại quầy ngân hàng được gọi thế nào?","label":"in_scope"}
-{"input":"Em có được phép sử dụng các bài giảng, slide của trường để dạy lại cho người khác và thu phí không?","label":"out_of_scope"}
-{"input":"khóa 63 bị chia thành mấy nhóm tiền học vậy?","label":"in_scope"}
-{"input":"xoa moi thu trong lich cua toi tu day den cuoi nam","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em muốn khiếu nại về việc phân công giảng viên không hợp lý, em nên làm gì và thứ hai là Em muốn xin xác nhận sinh viên để làm thẻ ATM thì có được không?","label":"out_of_scope"}
-{"input":"sinh nhật mẹ","label":"out_of_scope"}
-{"input":"rớt môn mức nào thì học lại sao với liên hệ ai","label":"in_scope"}
-{"input":"Cho tôi tên nơi nhận hồ sơ chuyển ngành và tên nơi trực tiếp giải quyết hồ sơ.","label":"in_scope"}
-{"input":"Mức học phí mỗi tín chỉ của sinh viên K66 ngành Ngôn ngữ Anh là bao nhiêu?","label":"in_scope"}
-{"input":"lên lịch cuộc họp với minh vào chín giờ sáng thứ ba","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Em muốn biết về quy định về việc sử dụng các phòng thực hành sau khi đã học xong môn đó cũng như Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào?","label":"out_of_scope"}
-{"input":"tạo một danh sách mua sắm mới","label":"out_of_scope"}
-{"input":"tôi có hẹn ăn tối với chị của tôi thứ bảy này","label":"out_of_scope"}
-{"input":"xóa đậu","label":"out_of_scope"}
-{"input":"Vụ xin bảo lưu thì phòng nào trực tiếp đứng ra xử lý vậy?","label":"in_scope"}
-{"input":"đánh dấu tiệc tối nghỉ hưu của bố vào ngày bốn tháng tư","label":"out_of_scope"}
-{"input":"em muon biet thong tin ve em co duoc phep su dung cac bai giang, slide cua truong de day lai cho nguoi khac va thu phi khong cung nhu muc diem toi thieu de dat mot mon hoc la bao nhieu?","label":"out_of_scope"}
-{"input":"Cho tui URL để thanh toán học phí trực tuyến.","label":"in_scope"}
-{"input":"olly tôi đang tìm kiếm một quán bar bạn biết quán nào ổn không","label":"out_of_scope"}
-{"input":"mở danh sách","label":"out_of_scope"}
-{"input":"có gì trong danh sách nhạc rap của tôi","label":"out_of_scope"}
-{"input":"ten van ban quy dinh viec dang ky hoc lai","label":"in_scope"}
-{"input":"Cho biết ba mức thu mỗi tín chỉ cao nhất, không lặp lại các mức bằng nhau.","label":"in_scope"}
-{"input":"Việc thanh toán học phí cho các môn đã đăng ký được quy định như thế nào?","label":"in_scope"}
-{"input":"Có những cách đóng học phí nào và các lưu ý khi thanh toán là gì?","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Nếu em không hoàn thành khóa luận đúng hạn thì sao cũng như Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không?","label":"out_of_scope"}
-{"input":"tui tính đổi ngành, chỉ cách làm với coi đủ điều kiện chưa và lấy đơn nào","label":"in_scope"}
-{"input":"Tôi xem quy định đăng ký học phần ở đâu?","label":"in_scope"}
-{"input":"tôi có bất cứ điều gì được lên lịch vào ngày mai từ trưa đến ba giờ chiều không","label":"out_of_scope"}
-{"input":"tôi cần bạn thêm sự kiện này vào lịch của tôi","label":"out_of_scope"}
-{"input":"them ca phe vao danh sach tap hoa","label":"out_of_scope"}
-{"input":"Hãy trình bày nội dung quy trình xét học bổng và các điều kiện phải đáp ứng.","label":"in_scope"}
-{"input":"Có lưu ý nào lúc nộp tiền học mà tui phải nhớ kỹ không?","label":"in_scope"}
-{"input":"Em có được quyền yêu cầu đổi giảng viên không và Hành vi thi hộ bị xử lý như thế nào?","label":"out_of_scope"}
-{"input":"Đơn vị nào phụ trách thủ tục đăng ký học cải thiện điểm?","label":"in_scope"}
-{"input":"don vi phu trach thu tuc rut hoc phan","label":"in_scope"}
-{"input":"Cho biết tên mỗi thủ tục học vụ cùng tên quy định làm căn cứ cho thủ tục.","label":"in_scope"}
-{"input":"Em muốn xin thư giới thiệu từ giảng viên để nộp hồ sơ học bổng, em nên làm gì","label":"out_of_scope"}
-{"input":"cho xin tat ca lien he phong tai chinh","label":"in_scope"}
-{"input":"Cho tôi nội dung hướng dẫn bảo lưu cùng tên toàn bộ biểu mẫu liên quan.","label":"in_scope"}
-{"input":"email dia diem dien thoai va web phong cong tac sinh vien","label":"in_scope"}
-{"input":"Em có được quyền yêu cầu đổi giảng viên không?","label":"out_of_scope"}
-{"input":"Chuyển ngành dùng đơn gì, nộp ở đâu và phòng nào giải quyết?","label":"in_scope"}
-{"input":"Hệ thống ghi nhận kết quả gì khi đăng ký học phần hợp lệ?","label":"in_scope"}
-{"input":"nhớ nhắc tôi về cuộc họp đó","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Học viện có học bổng cho sinh viên tốt nghiệp loại Khá trở lên và học tiếp sau đại học không cũng như Em có được quyền yêu cầu đổi giảng viên không?","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Em có được phép sử dụng các phòng máy tính của trường để làm đồ án không cũng như Sinh viên sau khi nhập học có phải kiểm tra tiếng Anh đầu vào không?","label":"out_of_scope"}
-{"input":"nhắc tôi cuộc họp ba giờ chiều mai","label":"out_of_scope"}
-{"input":"Tới lúc chuẩn bị ra trường thì quy trình xét tốt nghiệp làm từng bước sao vậy?","label":"in_scope"}
-{"input":"Có thể đóng học phí bằng cách nào và phòng nào phụ trách?","label":"in_scope"}
-{"input":"giới thiệu sự kiện thử rượu cuối tuần này ở sài gòn","label":"out_of_scope"}
-{"input":"xóa tất cả lịch","label":"out_of_scope"}
-{"input":"olly những tiêu đề gần đây nhất trên báo nhân dân là gì","label":"out_of_scope"}
-{"input":"Liệt kê tên tất cả nhóm định mức tiền học cho tui xem.","label":"in_scope"}
-{"input":"nhung gi dien ra cuoi tuan nay tai ma buu chinh","label":"out_of_scope"}
-{"input":"url tai mau don de nghi bao luu hoc tap","label":"in_scope"}
-{"input":"ban co the xoa danh sach mua sam cua toi","label":"out_of_scope"}
-{"input":"Hãy nêu tên biểu mẫu xin tạm nghỉ học và biểu mẫu xin trở lại học tập.","label":"in_scope"}
-{"input":"vpt nam o dau","label":"in_scope"}
-{"input":"Xin nêu tên văn bản pháp lý điều chỉnh quy trình đăng ký học phần.","label":"in_scope"}
-{"input":"rớt môn học lại thì theo quy định nào thế","label":"in_scope"}
-{"input":"xóa tất cả các sự kiện hôm nay và đánh dấu tôi bận","label":"out_of_scope"}
-{"input":"url cac bieu mau bao luu va xin hoc tro lai","label":"in_scope"}
-{"input":"hiện các nơi gần đây","label":"out_of_scope"}
-{"input":"tìm nhà hàng nhà gần nhà tôi","label":"out_of_scope"}
-{"input":"ghi chú lên lịch tôi có một sự kiện vào thứ sáu tuần sau","label":"out_of_scope"}
-{"input":"Tại sao điểm thi cuối kỳ lại chiếm trọng số cao như vậy (tối thiểu 50%), đồng thời cho em hỏi Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không?","label":"out_of_scope"}
-{"input":"làm trống lịch của tôi","label":"out_of_scope"}
-{"input":"bạn có thể nói cho tôi biết sự kiện được lên lịch tiếp theo là gì không","label":"out_of_scope"}
-{"input":"cho toi biet nhung cua hang nao xung quanh toi","label":"out_of_scope"}
-{"input":"Hãy liệt kê toàn bộ điều kiện đang áp dụng cho các quy trình học vụ.","label":"in_scope"}
-{"input":"Tôi xem quy định rút môn ở đâu?","label":"in_scope"}
-{"input":"có gì trong danh sách của tôi hôm nay","label":"out_of_scope"}
-{"input":"ten don bao luu va don hoc lai","label":"in_scope"}
-{"input":"Kết quả giải quyết nguyện vọng chuyển ngành của sinh viên là gì?","label":"in_scope"}
-{"input":"Xin cho biết URL tải trực tiếp biểu mẫu đề nghị chuyển ngành.","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không và thứ hai là Học viện có học bổng cho sinh viên tốt nghiệp loại Khá trở lên và học tiếp sau đại học không?","label":"out_of_scope"}
-{"input":"Ai là trưởng bên phụ trách chuyện đăng ký học phần vậy?","label":"in_scope"}
-{"input":"Cho biết tên ngành và mức thu tín chỉ tương ứng của khóa K67.","label":"in_scope"}
-{"input":"tìm phần còn lại và xoá đi","label":"out_of_scope"}
-{"input":"ten cach nop hoc phi online va dia chi web","label":"in_scope"}
-{"input":"Xin cung cấp tên và URL của biểu mẫu đề nghị xét tốt nghiệp.","label":"in_scope"}
-{"input":"lập danh sách","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Đối tượng nào được xét hỗ trợ học tập (loại III trong Phụ lục I) và thứ hai là Em muốn biết về quy định trang phục của giảng viên.","label":"out_of_scope"}
-{"input":"lịch của tôi hôm nay có những gì","label":"out_of_scope"}
 {"input":"ngoai bi benh con ly do nao dc bao luu","label":"in_scope"}
-{"input":"tôi muốn thêm thứ gì đó vào lịch của mình","label":"out_of_scope"}
-{"input":"Nếu em làm khóa luận tốt nghiệp về một đề tài liên quan đến blockchain, em có thể nhờ giảng viên ngành CNTT hướng dẫn không, dù em học ngành ATTT?","label":"out_of_scope"}
-{"input":"Tôi cần tìm đơn vị phụ trách để được hướng dẫn hồ sơ bảo lưu.","label":"in_scope"}
-{"input":"Hiện có tất cả bao nhiêu loại đơn và biểu mẫu cho sinh viên?","label":"in_scope"}
-{"input":"Xin cung cấp đường dẫn tải đơn gia hạn thời gian nộp học phí.","label":"in_scope"}
-{"input":"Mỗi học kỳ sinh viên được đăng ký bao nhiêu tín chỉ?","label":"in_scope"}
-{"input":"k65 cho 2 muc tin chi cao nhat ko trung nhau","label":"in_scope"}
-{"input":"Hãy cung cấp tên tất cả hình thức thanh toán học phí được nhà trường công nhận.","label":"in_scope"}
-{"input":"tin tức mới nhất về bắc triều tiên","label":"out_of_scope"}
-{"input":"Danh sách tên các văn bản pháp lý về học vụ gồm những gì?","label":"in_scope"}
-{"input":"Em có được phép sử dụng các phòng máy tính của trường để làm đồ án không?","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em bị điểm F ở một môn tự chọn thì có bắt buộc học lại đúng môn đó không và thứ hai là Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
-{"input":"Điều kiện nào dẫn đến học lại và thủ tục đăng ký học lại ra sao?","label":"in_scope"}
-{"input":"Một tín Giáo dục tổng quát được tính giá bao nhiêu vậy?","label":"in_scope"}
-{"input":"Nêu tên và nội dung hướng dẫn của thủ tục học lại và học cải thiện.","label":"in_scope"}
-{"input":"Em có được phép sử dụng các phòng máy tính của trường để làm đồ án không, đồng thời cho em hỏi Trong thời gian học quân sự, em có phải tuân thủ quy định của Học viện không?","label":"out_of_scope"}
-{"input":"Xin trình bày đầy đủ cách xin tạm dừng học và tên các biểu mẫu dùng khi nghỉ cũng như khi trở lại.","label":"in_scope"}
-{"input":"cho em hoi hai van de: thu nhat la em co the su dung wifi cua truong cho muc dich ca nhan (choi game, xem phim) khong va thu hai la su khac biet giua chuyen nganh marketing va truyen thong da phuong tien la gi?","label":"out_of_scope"}
-{"input":"do la ngay nao","label":"out_of_scope"}
-{"input":"thêm lại trứng vào danh sách","label":"out_of_scope"}
-{"input":"đặt lịch tiệc tân gia vào tuần sau","label":"out_of_scope"}
-{"input":"tong so cach thanh toan hoc phi va ten tung cach","label":"in_scope"}
-{"input":"Phòng ban nào trực tiếp giải quyết các vấn đề đăng ký học phần?","label":"in_scope"}
-{"input":"Liệt kê ngành đóng đúng 550 nghìn một tín chỉ.","label":"in_scope"}
-{"input":"Tên văn bản nào đang làm căn cứ cho chuyện xin bảo lưu vậy?","label":"in_scope"}
-{"input":"chỉ tui cách đăng ký môn, ai lo vụ này với đăng ký xong coi chỗ nào","label":"in_scope"}
-{"input":"Thống kê giúp mỗi phòng đang phụ trách bao nhiêu thủ tục học vụ.","label":"in_scope"}
-{"input":"Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không và Chào bạn, cho mình hỏi trang web chính thức của Học viện Công nghệ Bưu chính Viễn thông cơ sở TPHCM là gì?","label":"out_of_scope"}
-{"input":"có thể cho tôi xem danh sách cuộc hẹn của tôi không","label":"out_of_scope"}
-{"input":"ds thu tuc phong xu ly kem web","label":"in_scope"}
-{"input":"đặt lời nhắc nhở về điều hạnh phúc hai ngày một lần","label":"out_of_scope"}
-{"input":"giới thiệu một bộ phim được phát hành vào thứ sáu tuần trước","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Học phí dự kiến chương trình Cử nhân Công nghệ thông tin (định hướng ứng dụng) năm học 2025-2026 là bao nhiêu cũng như Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận?","label":"out_of_scope"}
-{"input":"cho tôi xem các danh sách","label":"out_of_scope"}
-{"input":"Thống kê số lượng nhóm định mức học phí của mỗi khóa.","label":"in_scope"}
-{"input":"gửi tui link tải cả giấy xin nghỉ bảo lưu lẫn giấy quay lại học nha","label":"in_scope"}
-{"input":"link qd can cu dk hoc du mon tn","label":"in_scope"}
-{"input":"Xin cho biết đơn vị tiếp nhận và đơn vị trực tiếp xử lý hồ sơ chuyển ngành.","label":"in_scope"}
-{"input":"tiệm sách gần nhất ở đâu","label":"out_of_scope"}
-{"input":"đăng ký môn sao với có vấn đề thì hỏi phòng nào","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không và thứ hai là Em là cộng tác viên tích cực cho một sự kiện của trường, em có được cộng điểm rèn luyện không?","label":"out_of_scope"}
-{"input":"Hãy cung cấp danh sách ngành thuộc khóa K63 kèm mức học phí trên một tín chỉ.","label":"in_scope"}
-{"input":"nhắc tôi đi đến cửa hàng mỗi thứ sáu","label":"out_of_scope"}
-{"input":"Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào","label":"out_of_scope"}
-{"input":"Cho tui tên từng phòng với địa chỉ website tương ứng.","label":"in_scope"}
-{"input":"Những mẫu đơn nào được sử dụng trong thủ tục bảo lưu và trở lại học?","label":"in_scope"}
-{"input":"xóa sự kiện khỏi lịch","label":"out_of_scope"}
-{"input":"Quy định về việc sử dụng mạng wifi của trường là gì, đồng thời cho em hỏi Học viện có ứng dụng di động nào cho sinh viên không?","label":"out_of_scope"}
-{"input":"xóa lịch của tôi","label":"out_of_scope"}
-{"input":"Học Tài chính K66 thì một tín chỉ tốn mấy tiền?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về các quy định về việc thi lại môn Giáo dục thể chất và thứ hai là Em muốn biết về quy định trang phục của giảng viên.","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Khi nào thì bị cảnh cáo học tập mức 1 và thứ hai là Em có thể chọn giảng viên ngoài khoa để hướng dẫn khóa luận tốt nghiệp không?","label":"out_of_scope"}
-{"input":"Trường có quy định về việc sử dụng các thiết bị bay không người lái (flycam) không, đồng thời cho em hỏi Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không?","label":"out_of_scope"}
-{"input":"kể mấy ngành có giá tín chỉ trên sáu trăm ngàn","label":"in_scope"}
-{"input":"tôi cần tim một món quà cửa hàng nào trong bán kính một ki lô mét","label":"out_of_scope"}
-{"input":"muon xet tot nghiep som lam kieu gi nop don nao hoi ai","label":"in_scope"}
-{"input":"cho tôi cập nhật về tin tức thế giới","label":"out_of_scope"}
-{"input":"Xin nêu các điều kiện được bảo lưu và tên đơn vị giải quyết thủ tục này.","label":"in_scope"}
-{"input":"nhắc tôi về cuộc họp ngày mười sáu tháng ba","label":"out_of_scope"}
-{"input":"cho tôi xem một vài tin tức từ b. b. c.","label":"out_of_scope"}
-{"input":"Em có thể liên hệ với giảng viên ngoài giờ học không?","label":"out_of_scope"}
-{"input":"Chỉ cách học kéo điểm, cách lấy kết quả với tên phòng xử lý giúp tui.","label":"in_scope"}
-{"input":"tôi cần biết các sự kiện đã được lên lịch cho cuối tuần","label":"out_of_scope"}
-{"input":"mấy thủ tục có ghi điều kiện thì mỗi cái có bao nhiêu điều kiện vậy","label":"in_scope"}
-{"input":"có gì hay sẽ diễn ra cuối tuần này trong vùng","label":"out_of_scope"}
-{"input":"muon chuyen nganh can dap ung dieu kien nao","label":"in_scope"}
-{"input":"Em muốn biết thông tin về Em có được phép ghi âm bài giảng của thầy cô không cũng như Em muốn học về An toàn cho AI thì nên học môn nào?","label":"out_of_scope"}
-{"input":"Đơn vị nào chịu trách nhiệm xử lý các vấn đề về đăng ký học phần?","label":"in_scope"}
-{"input":"Hãy mô tả quy trình xét, xếp hạng và cấp học bổng khuyến khích học tập.","label":"in_scope"}
-{"input":"Email của phòng trực tiếp giải quyết thủ tục nghỉ học tạm thời là gì?","label":"in_scope"}
-{"input":"cua hang xe dap tot nhat o dia phuong","label":"out_of_scope"}
-{"input":"Em muốn biết về quy định về việc sử dụng các phòng học đa phương tiện (có máy chiếu, âm thanh), đồng thời cho em hỏi Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào?","label":"out_of_scope"}
-{"input":"olly bố già có phải là môt bộ phim hay","label":"out_of_scope"}
-{"input":"Em muốn biết về quy định trang phục của giảng viên.","label":"out_of_scope"}
-{"input":"Học cải thiện thực hiện thế nào, lấy điểm nào và phòng nào xử lý?","label":"in_scope"}
-{"input":"tui rớt môn rồi, hc lại sao giờ","label":"in_scope"}
-{"input":"gửi tui link quyết định về bảo lưu nha","label":"in_scope"}
-{"input":"gần đây có lễ hội sự kiện nào không","label":"out_of_scope"}
-{"input":"cho tôi biết các sự kiện âm nhạc gần đây","label":"out_of_scope"}
-{"input":"nhom 3 hp k66 co nganh nao","label":"in_scope"}
-{"input":"cac dieu kien duoc nghi tam va bao luu ket qua","label":"in_scope"}
-{"input":"những tiêu đề từ báo thanh niên","label":"out_of_scope"}
-{"input":"cung cấp cho tôi thông tin về buổi hòa nhạc vào tối thứ ba","label":"out_of_scope"}
-{"input":"Liệt kê tên các phòng ban cùng địa chỉ làm việc của từng phòng.","label":"in_scope"}
-{"input":"vui lòng cho tôi biết tin tức hiện tại trên kênh mười bốn là gì","label":"out_of_scope"}
-{"input":"đóng tiền học có bao nhiêu cách kể hết tui coi","label":"in_scope"}
-{"input":"người trợ tá tốt","label":"out_of_scope"}
-{"input":"Sinh viên ngành Điện khóa K67 phải đóng học phí mỗi tín chỉ bao nhiêu?","label":"in_scope"}
-{"input":"Số điện thoại của Phòng Đào tạo Đại học là bao nhiêu?","label":"in_scope"}
-{"input":"Quy trình xét tốt nghiệp cho sinh viên được thực hiện như thế nào?","label":"in_scope"}
-{"input":"web nop hp online la j","label":"in_scope"}
-{"input":"Nếu em làm khóa luận tốt nghiệp về một đề tài liên quan đến blockchain, em có thể nhờ giảng viên ngành CNTT hướng dẫn không, dù em học ngành ATTT","label":"out_of_scope"}
-{"input":"tin tức thịnh hành về công nghệ","label":"out_of_scope"}
-{"input":"Nếu em muốn khiếu nại về việc phân công giảng viên không hợp lý, em nên làm gì","label":"out_of_scope"}
-{"input":"Rút học phần được chấp nhận rồi thì kết quả trên hệ thống ra sao?","label":"in_scope"}
+{"input":"olly làm giảm các đèn xuống làm ơn","label":"out_of_scope"}
+{"input":"trời sẽ đẹp vào ngày mai phải không","label":"out_of_scope"}
+{"input":"Cho biết tổng số biểu mẫu học vụ và liệt kê tên của chúng.","label":"in_scope"}
+{"input":"vui lòng xóa một danh sách","label":"out_of_scope"}
 {"input":"Kể tên hết các mẫu giấy học vụ sinh viên có thể dùng đi.","label":"in_scope"}
-{"input":"các nhà hàng mở cửa gần đây","label":"out_of_scope"}
-{"input":"ds phong ban kem truong phong","label":"in_scope"}
-{"input":"neu em dang mot bai viet len confession cua truong co noi dung chi trich mot giang vien, em co bi ky luat khong","label":"out_of_scope"}
-{"input":"Em muốn biết thông tin về Làm thế nào để em không bỏ lỡ các thông tin về hoạt động ngoại khóa cũng như Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không?","label":"out_of_scope"}
-{"input":"Hãy đếm các định mức học phí khác nhau áp dụng riêng cho khóa K66.","label":"in_scope"}
-{"input":"Cách học cải thiện thế nào, đơn vị nào phụ trách và áp dụng quy định nào?","label":"in_scope"}
-{"input":"Có tổng cộng mấy định mức học phí dành cho sinh viên K67?","label":"in_scope"}
-{"input":"dieu kien xet tot nghiep va ket qua nhan duoc","label":"in_scope"}
-{"input":"xin vui lòng thêm một cuộc hẹn bốn giờ chiều cho mỗi thứ ba","label":"out_of_scope"}
-{"input":"đóng tiền học online kiểu gì gửi link luôn nha","label":"in_scope"}
-{"input":"Đếm xem trường có bao nhiêu thủ tục học vụ tất cả.","label":"in_scope"}
-{"input":"tôi đã lên kế hoạch gì hôm nay","label":"out_of_scope"}
-{"input":"Số để gọi tới Phòng Đào tạo đại học là bao nhiêu?","label":"in_scope"}
-{"input":"Khi đóng học phí có điều gì cần chú ý?","label":"in_scope"}
-{"input":"Tui muốn gọi bên trực tiếp xử lý chuyển ngành, số điện thoại là gì?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về thư viện của trường.","label":"out_of_scope"}
+{"input":"Hãy mô tả quy trình xét, xếp hạng và cấp học bổng khuyến khích học tập.","label":"in_scope"}
+{"input":"Đơn xin đổi ngành của tui phải mang đến đơn vị nào nộp?","label":"in_scope"}
+{"input":"muon chuyen nganh can dap ung dieu kien nao","label":"in_scope"}
+{"input":"Có thể đóng học phí bằng cách nào và phòng nào phụ trách?","label":"in_scope"}
+{"input":"Học phí dự kiến chương trình Thiết kế và phát triển Game năm học 2025-2026 là bao nhiêu và Đạt giải nhất nghiên cứu khoa học cấp trường thì được cộng mấy điểm rèn luyện?","label":"out_of_scope"}
+{"input":"Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không, đồng thời cho em hỏi Nếu em muốn mượn máy chiếu để tổ chức sự kiện CLB, em nên liên hệ ai?","label":"out_of_scope"}
+{"input":"Đường dẫn tải mẫu đơn đề nghị chuyển ngành nằm ở đâu?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào cũng như Điều kiện để học cải thiện điểm là gì?","label":"out_of_scope"}
+{"input":"Xin cung cấp đường dẫn tải đơn gia hạn thời gian nộp học phí.","label":"in_scope"}
+{"input":"Quy trình xét tốt nghiệp cho sinh viên được thực hiện như thế nào?","label":"in_scope"}
+{"input":"Đếm giùm tui tổng số hình thức trả học phí khác nhau.","label":"in_scope"}
+{"input":"Thống kê số lượng nhóm định mức học phí của mỗi khóa.","label":"in_scope"}
 {"input":"Muốn được xét học bổng cần đáp ứng các điều kiện nào?","label":"in_scope"}
-{"input":"tui học Ô tô khóa 66, tiền mỗi tín tính sao?","label":"in_scope"}
-{"input":"Môn 'Internet và ứng dụng trong kinh doanh' của ngành Marketing học mấy tín chỉ, đồng thời cho em hỏi Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào?","label":"out_of_scope"}
-{"input":"ra truong can du may dk","label":"in_scope"}
-{"input":"Đủ hết yêu cầu tốt nghiệp thì sinh viên được gì?","label":"in_scope"}
-{"input":"Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không","label":"out_of_scope"}
-{"input":"em muốn biết thông tin về em có thể sử dụng wifi của trường cho mục đích cá nhân (chơi game, xem phim) ko cũng như thời điểm nào thì sv bắt đầu chọn chuyên ngành?","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có được quyền yêu cầu đổi giảng viên không và thứ hai là Sự khác biệt chính giữa Marketing và Quản trị kinh doanh là gì?","label":"out_of_scope"}
-{"input":"xóa danh sách phát","label":"out_of_scope"}
-{"input":"du chuan hb thi xep thu tu trao sao","label":"in_scope"}
-{"input":"Tên các mẫu đơn bảo lưu và tên phòng phụ trách thủ tục là gì?","label":"in_scope"}
-{"input":"Hãy liệt kê tên và số điện thoại của tất cả phòng ban.","label":"in_scope"}
-{"input":"Đường dẫn tải giấy xin xét tốt nghiệp sớm nằm đâu vậy?","label":"in_scope"}
-{"input":"Xin liệt kê toàn bộ tiêu chuẩn sinh viên phải hoàn thành để được xét công nhận tốt nghiệp.","label":"in_scope"}
-{"input":"Cho biết cách thực hiện chuyển ngành và kết quả sau khi giải quyết.","label":"in_scope"}
-{"input":"co nhung nhom hp nao vay","label":"in_scope"}
-{"input":"Rút môn thành công thì kết quả nhận được là gì?","label":"in_scope"}
-{"input":"Điểm cỡ nào thì phải học lại, chuyện này căn cứ văn bản gì?","label":"in_scope"}
-{"input":"tui học kế toán k65, một tín tính giá sao","label":"in_scope"}
-{"input":"Xin cho biết tên biểu mẫu dành cho đề nghị gia hạn thời gian thanh toán học phí.","label":"in_scope"}
-{"input":"Xin cho biết địa chỉ của Văn phòng Trường.","label":"in_scope"}
-{"input":"Mức phí tín chỉ của Nuôi trồng thủy sản khóa 63 là gì?","label":"in_scope"}
-{"input":"2 muc hp k66 thap nhat ko trung","label":"in_scope"}
-{"input":"lịch trình trong ngày của tôi thế nào","label":"out_of_scope"}
-{"input":"co phai bua tiec sinh nhat cua mai linh toi nay khong","label":"out_of_scope"}
-{"input":"tui muốn nghỉ một thời gian thì làm sao điểm được giữ không ai lo vụ này","label":"in_scope"}
-{"input":"xóa sự kiện tiếp theo","label":"out_of_scope"}
-{"input":"Hai nhóm học phí của K63 tên gì, mỗi tín chỉ từng nhóm giá sao?","label":"in_scope"}
-{"input":"co nhung phong ban nao","label":"in_scope"}
-{"input":"em co nen su dung cung mot mat khau cho email sinh vien va cac tai khoan mang xa hoi khac khong?","label":"out_of_scope"}
-{"input":"Học bổng được xét ra sao, cần đáp ứng gì và đơn vị nào phụ trách?","label":"in_scope"}
-{"input":"Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không","label":"out_of_scope"}
-{"input":"Xin cho biết tên biểu mẫu cần nộp trong hồ sơ đề nghị chuyển ngành.","label":"in_scope"}
-{"input":"lời nhắc nhở mới lúc ba giờ chiều","label":"out_of_scope"}
-{"input":"Hai cách đóng học phí online và tại quầy ngân hàng được mô tả thế nào?","label":"in_scope"}
-{"input":"Liệt kê tên mỗi phòng ban và số điện thoại liên hệ của phòng đó.","label":"in_scope"}
-{"input":"Em có thể sử dụng wifi của trường cho mục đích cá nhân (chơi game, xem phim) không?","label":"out_of_scope"}
-{"input":"chúng ta có gì trên trang chính của kênh mười bốn","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về quy định trang phục của giảng viên và thứ hai là Hồ sơ xin bảo lưu để nhập ngũ cần những gì?","label":"out_of_scope"}
-{"input":"Sinh viên có được phép sử dụng mạng xã hội để bình luận tiêu cực về trường không và Nếu em muốn quay phim lại bài giảng của thầy cô, em có được phép không?","label":"out_of_scope"}
-{"input":"Người đứng đầu Phòng Kế hoạch và Tài chính tên gì?","label":"in_scope"}
-{"input":"sự kiện tiếp theo bị hủy","label":"out_of_scope"}
-{"input":"tôi cần xem danh sách của tôi","label":"out_of_scope"}
-{"input":"thay đổi kế hoạch cuộc họp","label":"out_of_scope"}
-{"input":"Cho tôi tên từng văn bản quy định cùng URL xem nội dung của văn bản đó.","label":"in_scope"}
-{"input":"gia han hp don gi link dau","label":"in_scope"}
-{"input":"Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào","label":"out_of_scope"}
-{"input":"Đếm tổng số phòng ban rồi kể tên từng phòng cho tui.","label":"in_scope"}
-{"input":"Cho biết cách rút học phần, đơn vị phụ trách và văn bản làm căn cứ.","label":"in_scope"}
-{"input":"cho tôi tin tức mới về canada","label":"out_of_scope"}
-{"input":"Bao nhiêu điểm thì phải học lại và theo quyết định nào?","label":"in_scope"}
-{"input":"Xin cung cấp email, địa chỉ làm việc, điện thoại và website của Phòng Kế hoạch và Tài chính.","label":"in_scope"}
-{"input":"thêm một thông báo mới cho hệ thống định vị trên xe của tôi","label":"out_of_scope"}
-{"input":"Em có được quyền yêu cầu đổi giảng viên không, đồng thời cho em hỏi Em có được phép chọn đề tài đồ án ngoài danh sách gợi ý của giảng viên không?","label":"out_of_scope"}
-{"input":"các tiêu đề trên kênh mười bốn là gì","label":"out_of_scope"}
-{"input":"Cho tui URL của văn bản đang quy định đăng ký học phần.","label":"in_scope"}
-{"input":"Nếu tài khoản email sinh viên của em bị hack, em phải làm gì và Quy trình xử lý kỷ luật một sinh viên vi phạm diễn ra như thế nào?","label":"out_of_scope"}
-{"input":"link don chuyen nganh","label":"in_scope"}
-{"input":"Sau khi yêu cầu chuyển ngành được giải quyết, kết quả được ghi nhận thế nào?","label":"in_scope"}
-{"input":"Sinh viên xin xét tốt nghiệp sớm phải sử dụng biểu mẫu nào?","label":"in_scope"}
-{"input":"mua quan ao","label":"out_of_scope"}
-{"input":"gửi lời nhắc về cuộc họp tối nay của tôi","label":"out_of_scope"}
-{"input":"Xin nêu điều kiện được xét tốt nghiệp và tên văn bản quy định các điều kiện đó.","label":"in_scope"}
-{"input":"Muốn hỏi về chuyển ngành thì gọi phòng phụ trách số nào?","label":"in_scope"}
-{"input":"muốn bỏ bớt môn thì xem quyết định nào","label":"in_scope"}
-{"input":"Hãy xác định hai mức học phí tín chỉ thấp nhất và không trùng nhau của khóa K66.","label":"in_scope"}
-{"input":"em co the chon giang vien ngoai khoa de huong dan khoa luan tot nghiep khong","label":"out_of_scope"}
-{"input":"ten quy dinh ap dung cho rut hoc phan","label":"in_scope"}
-{"input":"em co duoc phep su dung cac phong may tinh cua truong de lam do an khong","label":"out_of_scope"}
-{"input":"Hãy hướng dẫn chuyển ngành và nêu kết quả của thủ tục.","label":"in_scope"}
-{"input":"Tên văn bản đang điều chỉnh quy trình xét công nhận tốt nghiệp là gì?","label":"in_scope"}
-{"input":"Tui phải đạt các tiêu chí nào mới được đưa vào danh sách xét học bổng?","label":"in_scope"}
-{"input":"Phòng phụ trách học phí có email gì và hiện có các nhóm phí nào?","label":"in_scope"}
-{"input":"cho tôi biết khi có tin tức mới về donald trump","label":"out_of_scope"}
-{"input":"Em có thể tự chọn giảng viên khi đăng ký môn học không","label":"out_of_scope"}
-{"input":"Liệt kê tên từng mẫu đơn học vụ cùng URL tải tương ứng.","label":"in_scope"}
-{"input":"cho tui web phòng đào tạo với","label":"in_scope"}
-{"input":"Sự khác biệt giữa ngành 'Công nghệ Đa phương tiện' và 'Truyền thông Đa phương tiện' là gì và Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không?","label":"out_of_scope"}
-{"input":"ds nganh k65 kem hp 1 tc","label":"in_scope"}
-{"input":"Chuyển ngành dùng đơn nào và tải ở đâu?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Thời gian tối đa để hoàn thành cả 2 chương trình song ngành là bao lâu và thứ hai là Em có thể sử dụng wifi của trường cho mục đích cá nhân (chơi game, xem phim) không?","label":"out_of_scope"}
-{"input":"Làm thế nào để xây dựng mối quan hệ tốt với giảng viên","label":"out_of_scope"}
-{"input":"tất cả sự kiện sắp tới là những gì","label":"out_of_scope"}
-{"input":"hoc phi duoc tinh theo tin chi hay theo hoc ky, dong thoi cho em hoi neu em dang mot bai viet len confession cua truong co noi dung chi trich mot giang vien, em co bi ky luat khong?","label":"out_of_scope"}
-{"input":"tôi có sự kiện nào được lên lịch hôm nay không","label":"out_of_scope"}
-{"input":"Cho biết ba mức thu mỗi tín chỉ thấp nhất, không lặp lại các mức bằng nhau.","label":"in_scope"}
-{"input":"Xét ra trường làm sao, kết quả nhận được gì và phòng nào lo vậy?","label":"in_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em là cộng tác viên tích cực cho một sự kiện của trường, em có được cộng điểm rèn luyện không và thứ hai là Em có được phép sử dụng các công cụ AI như ChatGPT để làm bài tập lớn không?","label":"out_of_scope"}
-{"input":"bạn có thể gợi ý một số điều vui ở hà nội không","label":"out_of_scope"}
-{"input":"nhắc tôi ngày mai lúc bốn giờ về sự kiện","label":"out_of_scope"}
-{"input":"Em có thể tự chọn giảng viên khi đăng ký môn học không?","label":"out_of_scope"}
-{"input":"Cho em hỏi hai vấn đề: thứ nhất là Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận và thứ hai là Sổ tay sinh viên này có được cập nhật hàng năm không?","label":"out_of_scope"}
-{"input":"Em có được phép sử dụng các bài giảng, slide của trường để dạy lại cho người khác và thu phí không và Nếu em muốn xin xác nhận đã hoàn thành chương trình học nhưng còn nợ bằng tốt nghiệp (để xin việc), có được không?","label":"out_of_scope"}
+{"input":"bat o cam t. v. khi toi ve den nha","label":"out_of_scope"}
+{"input":"bạn có thể khởi động robot hút bụi không","label":"out_of_scope"}
+{"input":"Có những cách đóng học phí nào và các lưu ý khi thanh toán là gì?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Học bổng 'Đồng hành cùng sinh viên' là gì và thứ hai là Quy định về việc sao chép tài liệu tại thư viện là gì?","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Em thuộc diện hộ cận nghèo, vậy em được giảm bao nhiêu % học phí cũng như Điểm trung bình chung học tập lớp 10, 11, 12 để xét tuyển HSNL được tính như thế nào?","label":"out_of_scope"}
 {"input":"liet ke nganh co hoc phi moi tin chi hon 600000","label":"in_scope"}
-{"input":"olly thêm cuộc hẹn ăn tối ngày mai vào lịch","label":"out_of_scope"}
-{"input":"Điều kiện về điểm số khiến một học phần bắt buộc phải đăng ký học lại là gì?","label":"in_scope"}
-{"input":"nhom k65 gia 620k moi tc gom cac nganh nao","label":"in_scope"}
-{"input":"nhắc tôi xem trận bóng rổ của con trai vào mỗi thứ sáu","label":"out_of_scope"}
-{"input":"tôi đã lên kế hoach gì vào thứ hai tới từ trưa tới ba giờ","label":"out_of_scope"}
-{"input":"Cho tui đủ email, địa chỉ, số gọi với website Phòng Đào tạo đại học.","label":"in_scope"}
-{"input":"tui muốn tốt nghiệp sớm thì làm sao, viết đơn nào rồi hỏi phòng nào","label":"in_scope"}
-{"input":"cho tôi biết những tin tức về biến động của thị trường cổ phiếu","label":"out_of_scope"}
-{"input":"Xét tốt nghiệp cần đạt gì, nếu xét sớm dùng đơn nào và hỏi phòng nào?","label":"in_scope"}
-{"input":"nhom nao gia tin chi cao hon 500000","label":"in_scope"}
-{"input":"thêm tiệc sinh nhật của hoa tại novotel lúc mười hai giờ rưỡi trưa vào ngày mười bảy tháng năm","label":"out_of_scope"}
-{"input":"Xin nêu tên văn bản pháp lý điều chỉnh việc học lại nhằm cải thiện điểm.","label":"in_scope"}
-{"input":"ho so chuyen nganh phong nao xu ly","label":"in_scope"}
-{"input":"các quán rượu gần ga tàu điện ngầm","label":"out_of_scope"}
-{"input":"xoá sự kiện tiếp theo của tôi","label":"out_of_scope"}
-{"input":"Có bao nhiêu cách đóng học phí được hỗ trợ?","label":"in_scope"}
-{"input":"ten phong truc tiep xu ly xet tot nghiep","label":"in_scope"}
-{"input":"Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không, đồng thời cho em hỏi Tổng số tín chỉ của chương trình chuẩn ngành Công nghệ thông tin khóa 2025 là bao nhiêu?","label":"out_of_scope"}
-{"input":"Vui lòng thống kê ngành đào tạo, khóa tuyển sinh và đơn giá học phí tín chỉ.","label":"in_scope"}
-{"input":"Bảo lưu cần những biểu mẫu nào và đơn vị nào phụ trách xử lý?","label":"in_scope"}
-{"input":"kể từng thủ tục rồi nói cách làm mỗi cái","label":"in_scope"}
-{"input":"Trường hợp nào phải học lại và phòng nào phụ trách chuyện này?","label":"in_scope"}
-{"input":"tìm cho tôi câu chuyện tin tức mới nhất về kì thi tốt nghiệp cua mỹ","label":"out_of_scope"}
-{"input":"Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không","label":"out_of_scope"}
-{"input":"dk bao luu don gi phong nao","label":"in_scope"}
+{"input":"Cho tôi tên nơi nhận hồ sơ chuyển ngành và tên nơi trực tiếp giải quyết hồ sơ.","label":"in_scope"}
+{"input":"tôi nên nấu món gì tối nay","label":"out_of_scope"}
+{"input":"cài một cuộc gọi báo thức lúc mười giờ sáng","label":"out_of_scope"}
+{"input":"Kể tên các mẫu đơn của bảo lưu rồi cho tui link tải từng mẫu.","label":"in_scope"}
+{"input":"Nêu cách xét, điều kiện và đơn vị phụ trách học bổng.","label":"in_scope"}
+{"input":"Địa chỉ trang web của phòng chịu trách nhiệm về học phí là gì?","label":"in_scope"}
+{"input":"ds nganh k63 kem hp tc","label":"in_scope"}
+{"input":"Em muốn biết về quy định về việc sử dụng các phòng họp nhóm trong thư viện, đồng thời cho em hỏi Quy trình xin cấp giấy giới thiệu thực tập như thế nào?","label":"out_of_scope"}
+{"input":"Tôi muốn hỏi về việc học lại thì liên hệ đơn vị nào?","label":"in_scope"}
+{"input":"em co the su dung wifi cua truong cho muc dich ca nhan (choi game, xem phim) khong, dong thoi cho em hoi dieu kien de duoc di thuc tap cuoi khoa la gi?","label":"out_of_scope"}
+{"input":"Xin cung cấp địa chỉ thư điện tử của đơn vị tiếp nhận yêu cầu bảo lưu.","label":"in_scope"}
+{"input":"Vui lòng nêu tên và đường dẫn của biểu mẫu xin gia hạn học phí.","label":"in_scope"}
+{"input":"Đủ hết yêu cầu tốt nghiệp thì sinh viên được gì?","label":"in_scope"}
+{"input":"Khi nào tôi phải nộp hồ sơ xin miễn giảm học phí và Kinh phí giải thưởng cho các cuộc thi có đội từ trường khác tham gia được lấy từ đâu?","label":"out_of_scope"}
+{"input":"xóa cái đó khỏi danh sách","label":"out_of_scope"}
+{"input":"Danh sách tên các văn bản pháp lý về học vụ gồm những gì?","label":"in_scope"}
+{"input":"liệt kê các tiêu đề và người gửi của tất cả các email gửi đến tôi trong tuần trước","label":"out_of_scope"}
+{"input":"đặt cho tôi một vé tàu thống nhất đế hà nội vào thứ năm tuần tới càng muộn càng tốt","label":"out_of_scope"}
+{"input":"Đơn vị nào chịu trách nhiệm quản lý và xử lý công tác thu học phí?","label":"in_scope"}
+{"input":"cac cach nop hoc phi","label":"in_scope"}
+{"input":"đường phố canal đông đúc hơn đúng ko","label":"out_of_scope"}
+{"input":"tinh trung binh tien moi tin chi theo tung khoa","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn tìm một công việc làm thêm liên quan đến ngành học, trường có hỗ trợ không và thứ hai là Trường có tổ chức các lớp học võ thuật không?","label":"out_of_scope"}
+{"input":"Nếu em muốn mượn máy chiếu để tổ chức sự kiện CLB, em nên liên hệ ai và Nếu em có một bài báo khoa học được đăng, em có được miễn khóa luận tốt nghiệp không?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là CLB Truyền thông (CMC) có hoạt động gì và thứ hai là Sinh viên đạt giải Nhất cuộc thi chuyên môn học thuật cấp Quốc tế sẽ nhận được học bổng tài năng như thế nào?","label":"out_of_scope"}
+{"input":"Cho biết tên ngành và mức thu tín chỉ tương ứng của khóa K67.","label":"in_scope"}
+{"input":"ds phong ban kem truong phong","label":"in_scope"}
+{"input":"Em muốn biết về các hoạt động của Ban cán sự Đoàn - Hội cấp Khoa, đồng thời cho em hỏi Trong một tuần, một học phần lý thuyết thường có mấy buổi học?","label":"out_of_scope"}
+{"input":"Học phí cho một tín chỉ Công nghệ thông tin khóa K65 được quy định bao nhiêu?","label":"in_scope"}
+{"input":"cho tôi biết giờ","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có thể tự chọn giảng viên khi đăng ký môn học không và thứ hai là Em muốn làm thêm, nhà trường có hỗ trợ giới thiệu việc làm không?","label":"out_of_scope"}
+{"input":"khi xac dinh cac tu hay dua ra tu dong nghia va su dung trong mot cau de lam cho no ro rang hon","label":"out_of_scope"}
+{"input":"Hãy cung cấp tên tất cả hình thức thanh toán học phí được nhà trường công nhận.","label":"in_scope"}
+{"input":"web nop hp online la j","label":"in_scope"}
+{"input":"tai don xet tn som o dau","label":"in_scope"}
+{"input":"doi nganh xong kq gi nop o dau ai giai quyet","label":"in_scope"}
+{"input":"Mức phí tín chỉ của Nuôi trồng thủy sản khóa 63 là gì?","label":"in_scope"}
+{"input":"Xin nêu cách thực hiện học cải thiện và nguyên tắc xác định kết quả điểm sau đó.","label":"in_scope"}
+{"input":"vui lòng tăng âm lượng","label":"out_of_scope"}
+{"input":"Hãy hướng dẫn rút học phần, nêu kết quả và đơn vị phụ trách.","label":"in_scope"}
+{"input":"đặt một bữa ăn ở một nhà hàng ngon","label":"out_of_scope"}
+{"input":"mua một vé tàu hỏa","label":"out_of_scope"}
+{"input":"Nếu em không tham gia khám sức khỏe đầu khóa thì có bị sao không và Em có được phép dán poster của CLB lên bảng tin của trường không?","label":"out_of_scope"}
+{"input":"Học cải thiện thực hiện thế nào, lấy điểm nào và phòng nào xử lý?","label":"in_scope"}
 {"input":"Trường cho đóng học phí kiểu nào, cần hỗ trợ thì tìm phòng nào vậy?","label":"in_scope"}
-{"input":"cho tôi xem danh sách đã có sẵn với các con số","label":"out_of_scope"}
-{"input":"Em có thể dùng thẻ sinh viên để đi xe buýt miễn phí không, đồng thời cho em hỏi Em muốn biết về quy định trang phục của giảng viên.","label":"out_of_scope"}
+{"input":"Hãy liệt kê các văn bản quy định và đường dẫn xem tài liệu.","label":"in_scope"}
+{"input":"Em có được phép mang điện thoại thông minh vào khu quân sự không và Em chưa biết gì về guitar, có tham gia CLB PGC được không?","label":"out_of_scope"}
+{"input":"Mình tìm link quy định rút học phần ở đâu?","label":"in_scope"}
+{"input":"Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận và Nếu em không hoàn thành khóa luận đúng hạn thì sao?","label":"out_of_scope"}
+{"input":"hoc cai thien sao lay diem nao","label":"in_scope"}
+{"input":"Đơn vị nào phụ trách thủ tục đăng ký học cải thiện điểm?","label":"in_scope"}
+{"input":"k66 lay 2 gia tin chi cao nhat khac nhau","label":"in_scope"}
+{"input":"Em muốn biết về các hoạt động của câu lạc bộ Bóng rổ, đồng thời cho em hỏi Học viện có những loại học bổng nào khác ngoài học bổng đầu vào và học bổng khuyến khích học tập?","label":"out_of_scope"}
+{"input":"ten cach nop hoc phi online va dia chi web","label":"in_scope"}
+{"input":"chênh lệch giờ giữa múi giờ phía đông và múi giờ thái bình dương","label":"out_of_scope"}
+{"input":"bạn có thể giới thiệu một nhà hàng trong vùng không","label":"out_of_scope"}
+{"input":"Những mẫu đơn nào được sử dụng trong thủ tục bảo lưu và trở lại học?","label":"in_scope"}
+{"input":"Tôi có thể tải biểu mẫu đề nghị chuyển ngành từ đường dẫn nào?","label":"in_scope"}
+{"input":"Tốt nghiệp ngành Quản trị kinh doanh có thể làm ở những vị trí nào và Em muốn biết về các hoạt động của câu lạc bộ Cờ.","label":"out_of_scope"}
+{"input":"Em muốn biết về các hoạt động của Ban cán sự Đoàn - Hội cấp Khoa và Quy trình chuyển điểm tiếng Anh diễn ra trong bao lâu?","label":"out_of_scope"}
+{"input":"giờ trung tâm hiện tại là mấy giờ","label":"out_of_scope"}
+{"input":"dat mang di","label":"out_of_scope"}
+{"input":"huong dan dkhp va ten phong giai quyet","label":"in_scope"}
+{"input":"tìm cho tôi địa chỉ của cửa hàng này","label":"out_of_scope"}
+{"input":"dự báp cho khu vực của tôi hôm nay như thế nào","label":"out_of_scope"}
+{"input":"Em muốn tham gia hoạt động tình nguyện thì liên hệ CLB nào và Quyết định về quy định học bổng và hỗ trợ người học được ban hành ngày tháng năm nào?","label":"out_of_scope"}
+{"input":"viết khiếu nại cho thế giới di động về chiếc máy tính bảng tôi đã mua hôm nay","label":"out_of_scope"}
+{"input":"Hãy đếm số điều kiện riêng biệt phải đáp ứng trong xét tốt nghiệp.","label":"in_scope"}
+{"input":"hãy chắc chắc là sẽ nhắc tôi về điều này","label":"out_of_scope"}
+{"input":"mở một vài truyện cười hay","label":"out_of_scope"}
+{"input":"ma xet tuyen cua nganh cong nghe da phuong tien la gi va neu em muon chuyen nganh hoc thi co duoc khong?","label":"out_of_scope"}
+{"input":"Học ngành Kế toán có cơ hội thực tập tại các công ty kiểm toán lớn (Big4) không, đồng thời cho em hỏi Sử dụng bằng tốt nghiệp THPT giả để nhập học sẽ bị xử lý ra sao?","label":"out_of_scope"}
+{"input":"tìm và bỏ vào danh sách tất cả bài hát của mỹ tâm và phát tất cả không xáo trộn","label":"out_of_scope"}
+{"input":"Một tín chỉ Giáo dục tổng quát đóng bao nhiêu tiền?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Em có thể dùng chứng chỉ VNU-EPT để quy đổi điểm tiếng Anh không cũng như Việc tham gia hoạt động Đoàn - Hội có bắt buộc không?","label":"out_of_scope"}
+{"input":"Tui phải đạt các tiêu chí nào mới được đưa vào danh sách xét học bổng?","label":"in_scope"}
+{"input":"Em có thể thực tập không lương không và Làm sao để liên hệ với văn phòng Đoàn TNCS Hồ Chí Minh của Học viện?","label":"out_of_scope"}
+{"input":"đóng tiền học online kiểu gì gửi link luôn nha","label":"in_scope"}
+{"input":"bao luu can dk gi lien he dau","label":"in_scope"}
+{"input":"Cho tôi danh sách phòng ban kèm trang web.","label":"in_scope"}
+{"input":"Ngành Ngôn ngữ Anh K66 có đơn giá mỗi tín chỉ là bao nhiêu?","label":"in_scope"}
+{"input":"Hãy trình bày nội dung quy trình xét học bổng và các điều kiện phải đáp ứng.","label":"in_scope"}
+{"input":"vặn các đèn phòng tắt","label":"out_of_scope"}
+{"input":"dừng âm thanh","label":"out_of_scope"}
+{"input":"Nhà trường hỗ trợ thanh toán học phí trực tuyến tại đường dẫn nào?","label":"in_scope"}
+{"input":"vui lòng tắt tiếng loa","label":"out_of_scope"}
+{"input":"Cho biết cách rút học phần, đơn vị phụ trách và văn bản làm căn cứ.","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Em có thể chụp ảnh 'sống ảo' trong phòng truyền thống không cũng như Em muốn biết về các hoạt động của CLB Bóng chuyền.","label":"out_of_scope"}
+{"input":"em hoc nganh kinh te, co can hoc ve co so du lieu khong va muc khen thuong cho ca nhan sinh vien co thanh tich dong gop trong hoat dong nghien cuu khoa hoc, phong trao la bao nhieu?","label":"out_of_scope"}
+{"input":"Số điện thoại của Phòng Đào tạo Đại học là bao nhiêu?","label":"in_scope"}
+{"input":"Xin trình bày các bước thực hiện khi sinh viên muốn rút một học phần đã đăng ký.","label":"in_scope"}
+{"input":"dieu kien de xet tot nghiep la j","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Làm thế nào để xem điểm thi kết thúc học phần và thứ hai là Em có được phép sử dụng máy tính của thư viện để chơi game không?","label":"out_of_scope"}
+{"input":"Xin nêu điều kiện được xét tốt nghiệp và tên văn bản quy định các điều kiện đó.","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Cơ sở để xác định một vùng là 'có điều kiện kinh tế - xã hội khó khăn' là gì và thứ hai là Em muốn biết về quy định về việc sử dụng các phòng họp nhóm trong thư viện.","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em ra trường mà chưa trả hết nợ vay vốn sinh viên thì sao và thứ hai là Mã xét tuyển của ngành Logistics và quản trị chuỗi cung ứng là gì?","label":"out_of_scope"}
+{"input":"Địa chỉ email chính thức của Văn phòng Trường là gì?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Làm thế nào để có một CV (sơ yếu lý lịch) ấn tượng khi ra trường và thứ hai là Mức khen thưởng cho tập thể sinh viên đạt giải khuyến khích các cuộc thi chuyên môn cấp Học viện là bao nhiêu?","label":"out_of_scope"}
+{"input":"Sự khác biệt giữa môn 'Cơ sở dữ liệu' và 'Hệ quản trị cơ sở dữ liệu' và Làm hỏng dụng cụ trong phòng thí nghiệm có phải đền không?","label":"out_of_scope"}
+{"input":"Em có được phép sử dụng điện thoại trong giờ học không và Sinh viên đạt giải Nhì cuộc thi chuyên môn học thuật cấp Quốc gia sẽ nhận được học bổng tài năng như thế nào?","label":"out_of_scope"}
+{"input":"Làm thế nào để được xếp loại tốt nghiệp loại Giỏi và Mức khen thưởng cho tập thể sinh viên đạt giải Ba trong các cuộc thi khác (không phải chuyên môn) cấp Học viện là bao nhiêu?","label":"out_of_scope"}
+{"input":"K66 có hai giá tín chỉ cao nhất nào, giá giống nhau đừng kể lại","label":"in_scope"}
+{"input":"link don chuyen nganh","label":"in_scope"}
+{"input":"tui cần số điện thoại bên phòng nhận đơn chuyển ngành để gọi hỏi","label":"in_scope"}
+{"input":"thời tiết hiện tại thế nào","label":"out_of_scope"}
+{"input":"tìm cho tôi một số nhân vật nổi tiếng cung ma kết","label":"out_of_scope"}
+{"input":"Tui muốn gọi bên trực tiếp xử lý chuyển ngành, số điện thoại là gì?","label":"in_scope"}
+{"input":"hãy gọi một chiếc taxi","label":"out_of_scope"}
+{"input":"Nếu tôi bị điểm F một môn bắt buộc thì phải làm sao và Trường có tổ chức hoạt động nào cho cựu sinh viên không?","label":"out_of_scope"}
+{"input":"cho em hoi hai van de: thu nhat la neu em co bang toeic 400 thi co phai hoc course 1 tieng anh khong va thu hai la dia chi cong thong tin tuyen sinh va cong thong tin dien tu co giong nhau khong?","label":"out_of_scope"}
+{"input":"bạn có thể cho tôi biết điều gì đã xảy ra với mạng xã hội của tôi không","label":"out_of_scope"}
+{"input":"Em có được phép yêu cầu giảng viên cung cấp slide bài giảng không và Trường có quy định về đạo đức nghiên cứu không?","label":"out_of_scope"}
+{"input":"thành phần cần thiết ở tiệm tạp hóa","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu tài khoản email sinh viên của em bị hack, em phải làm gì và thứ hai là Nếu bằng tốt nghiệp của em bị xếp loại Giỏi nhưng trong quá trình học em bị cảnh cáo thì hạng tốt nghiệp có bị hạ không?","label":"out_of_scope"}
+{"input":"ds nganh k66 kem hp 1 tc","label":"in_scope"}
+{"input":"Em có được phép dán poster của CLB lên bảng tin của trường không","label":"out_of_scope"}
+{"input":"cho em hỏi hai vấn đề: thứ nhất là trong trường hợp nào thì em được nhận điểm p và thứ hai là clb truyền thông (cmc) có hoạt động gì?","label":"out_of_scope"}
+{"input":"Các nhóm mức học phí theo khóa và chương trình gồm những nhóm nào?","label":"in_scope"}
+{"input":"nhắc tôi chương trình buổi tối","label":"out_of_scope"}
+{"input":"kq cai thien diem qd nao","label":"in_scope"}
+{"input":"tôi đến phan thiết bằng cách nào","label":"out_of_scope"}
+{"input":"Bảo lưu kết quả học tập dựa trên quy định nào?","label":"in_scope"}
+{"input":"Cho biết tên người phụ trách Phòng Công tác Sinh viên.","label":"in_scope"}
+{"input":"sau khi xet hoc bong thi ket qua cuoi la gi","label":"in_scope"}
+{"input":"trường có những thủ tục học vụ nào cho sinh viên vậy, kể tui nghe với","label":"in_scope"}
+{"input":"co nhung tieu de nao o kenh muoi bon","label":"out_of_scope"}
+{"input":"đọc danh sách","label":"out_of_scope"}
+{"input":"Những ngành nào đang đóng đúng 550.000 đồng cho mỗi tín chỉ?","label":"in_scope"}
+{"input":"tin tức mới nhất trên sprint là gfi","label":"out_of_scope"}
+{"input":"Một tín Giáo dục tổng quát được tính giá bao nhiêu vậy?","label":"in_scope"}
+{"input":"tắt tiếng âm thanh từ loa","label":"out_of_scope"}
+{"input":"neu ban co the noi ve ba dieu chung se la gi","label":"out_of_scope"}
+{"input":"Liệt kê ngành đóng đúng 550 nghìn một tín chỉ.","label":"in_scope"}
+{"input":"ngày kỷ niệm năm nay rơi vào ngày nào","label":"out_of_scope"}
+{"input":"Cho biết ba mức thu mỗi tín chỉ cao nhất, không lặp lại các mức bằng nhau.","label":"in_scope"}
+{"input":"Nếu em có bằng TOEIC 400 thì có phải học Course 1 tiếng Anh không và Em có được phép mang laptop vào thư viện không?","label":"out_of_scope"}
+{"input":"nhom hp nao 1 tc thap nhat","label":"in_scope"}
+{"input":"mấy thủ tục có ghi điều kiện thì mỗi cái có bao nhiêu điều kiện vậy","label":"in_scope"}
+{"input":"tôi nên làm điều khi đến thăm công viên nước đầm sen","label":"out_of_scope"}
+{"input":"nếu em bị đình chỉ học tập, em có phải tiếp tục trả lãi cho khoản vay sv ko và em muốn biết về quy định về việc gửi xe đạp điện tại trường.","label":"out_of_scope"}
+{"input":"động vật lớn nhất","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Tín chỉ của các môn học ngoài chương trình có được tính vào điểm trung bình tích lũy không cũng như Sinh viên đạt giải Ba cuộc thi chuyên môn học thuật cấp Quốc tế sẽ nhận được học bổng tài năng như thế nào?","label":"out_of_scope"}
+{"input":"Xin liệt kê các phương thức nộp học phí và cảnh báo về chuyển khoản, trễ hạn hoặc gia hạn thanh toán.","label":"in_scope"}
+{"input":"Tôi có thể tải những loại biểu mẫu nào của trường?","label":"in_scope"}
+{"input":"cho tui mail phòng công tác sinh viên","label":"in_scope"}
+{"input":"Vui lòng trình bày cách đăng ký học phần và cung cấp đường dẫn quy định liên quan.","label":"in_scope"}
+{"input":"thay đổi độ mờ của màu","label":"out_of_scope"}
+{"input":"Xin nêu các điều kiện được bảo lưu và tên đơn vị giải quyết thủ tục này.","label":"in_scope"}
+{"input":"xoa muc nay khoi danh sach","label":"out_of_scope"}
+{"input":"Đường dẫn văn bản quy định yêu cầu hoàn thành đầy đủ học phần để xét tốt nghiệp là gì?","label":"in_scope"}
+{"input":"Hãy liệt kê các quy trình học vụ và văn bản làm căn cứ cho từng quy trình.","label":"in_scope"}
+{"input":"Cho biết tên các nhóm học phí và đơn giá tín chỉ của từng nhóm.","label":"in_scope"}
+{"input":"Tiêu chí để được ở KTX là gì?","label":"out_of_scope"}
+{"input":"co nhung nhom hp nao vay","label":"in_scope"}
+{"input":"Em có được phép sử dụng các phòng chức năng (phòng họp, hội trường) cho hoạt động CLB không và Hạn chót để đóng học phí mỗi kỳ là khi nào?","label":"out_of_scope"}
+{"input":"Xin nêu tên văn bản pháp lý điều chỉnh quy trình đăng ký học phần.","label":"in_scope"}
+{"input":"có thể cung cấp âm nhạc mà tôi yêu thích ko","label":"out_of_scope"}
+{"input":"cập nhật cho tôi về kết quả bầu cử","label":"out_of_scope"}
+{"input":"nhom 3 hp k66 co nganh nao","label":"in_scope"}
+{"input":"đóng tiền hc sao, online hay ra ngân hàng vậy","label":"in_scope"}
+{"input":"Tên phương thức thanh toán học phí trực tiếp tại quầy ngân hàng là gì?","label":"in_scope"}
+{"input":"cho em hỏi hai vấn đề: thứ nhất là chương trình liên kết quốc tế ngành truyền thông đa phương tiện với dh công nghệ queensland (úc) có chỉ tiêu bao nhiêu và thứ hai là ngành kỹ thuật điều khiển và tự động hóa học môn 'robot công nghiệp' khi nào?","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Mức khen thưởng cho sinh viên đạt giải Nhì trong các cuộc thi Olympic cấp Quốc tế là bao nhiêu cũng như Trong thời gian học quân sự, em có phải tuân thủ quy định của Học viện không?","label":"out_of_scope"}
+{"input":"Đếm xem trường có bao nhiêu thủ tục học vụ tất cả.","label":"in_scope"}
+{"input":"tui muốn liên hệ phòng công tác sinh viên, cho xin mọi thông tin với","label":"in_scope"}
+{"input":"ds thu tuc kem phong xu ly","label":"in_scope"}
+{"input":"ten phong truc tiep xu ly xet tot nghiep","label":"in_scope"}
+{"input":"Khi đóng học phí có điều gì cần chú ý?","label":"in_scope"}
+{"input":"Rút môn xong được ghi nhận thế nào và phòng nào xử lý?","label":"in_scope"}
+{"input":"Chuyện học lại môn thì phòng nào đứng ra xử lý?","label":"in_scope"}
+{"input":"Xét tốt nghiệp đạt hết yêu cầu rồi thì tui nhận kết quả gì?","label":"in_scope"}
+{"input":"Tại sao em phải học môn Phương pháp luận nghiên cứu khoa học và Nếu bằng tốt nghiệp của em bị xếp loại Giỏi nhưng trong quá trình học em bị cảnh cáo thì hạng tốt nghiệp có bị hạ không?","label":"out_of_scope"}
+{"input":"Hai nhóm học phí K63 tên gì và mỗi tín chỉ bao nhiêu tiền?","label":"in_scope"}
+{"input":"Trường có công cụ kiểm tra đạo văn cho sinh viên không và Mức khen thưởng cho tập thể lớp đạt danh hiệu 'Tập thể tiên tiến' là bao nhiêu?","label":"out_of_scope"}
+{"input":"cach dang ky hoc lai voi link quy dinh","label":"in_scope"}
+{"input":"Những tên chương trình nào dùng chung mức học phí với ngành Ô tô thuộc K66?","label":"in_scope"}
+{"input":"điều cuối cùng mẹ tôi nói là gì","label":"out_of_scope"}
+{"input":"Thủ tục đăng ký học cải thiện và nguyên tắc ghi nhận điểm ra sao?","label":"in_scope"}
+{"input":"Quyền lợi của sinh viên khi tham gia hoạt động tình nguyện là gì?","label":"out_of_scope"}
+{"input":"neu em co bang toeic 400 thi co phai hoc course 1 tieng anh khong va neu tai khoan email sinh vien cua em bi hack, em phai lam gi?","label":"out_of_scope"}
+{"input":"Kết quả giải quyết nguyện vọng chuyển ngành của sinh viên là gì?","label":"in_scope"}
+{"input":"nhac toi mot tieng truoc cuoc hop","label":"out_of_scope"}
+{"input":"tui muốn tốt nghiệp sớm thì làm sao, viết đơn nào rồi hỏi phòng nào","label":"in_scope"}
+{"input":"Tên văn bản đang điều chỉnh quy trình xét công nhận tốt nghiệp là gì?","label":"in_scope"}
+{"input":"Xin cho biết URL tải trực tiếp biểu mẫu đề nghị chuyển ngành.","label":"in_scope"}
+{"input":"Liệt kê tên mỗi phòng ban và số điện thoại liên hệ của phòng đó.","label":"in_scope"}
+{"input":"tắt báo thức sáu giờ sáng thứ tư","label":"out_of_scope"}
+{"input":"cho tôi một danh sách phát","label":"out_of_scope"}
+{"input":"Cho biết cách thực hiện chuyển ngành và kết quả sau khi giải quyết.","label":"in_scope"}
+{"input":"Nếu em bị buộc thôi học, em có được chuyển sang hệ đào tạo khác không và Trường có hỗ trợ cựu sinh viên không?","label":"out_of_scope"}
+{"input":"Quy định nào là căn cứ pháp lý cho việc thu và nộp học phí?","label":"in_scope"}
+{"input":"Hiện có tất cả bao nhiêu loại đơn và biểu mẫu cho sinh viên?","label":"in_scope"}
+{"input":"Học kéo điểm xong thì kết quả nào được trường lấy để tính?","label":"in_scope"}
+{"input":"thật tuyệt nếu ăn tối tại nhà hàng mới mở ở trung tâm thành phố","label":"out_of_scope"}
+{"input":"Ai đang phụ trách phòng xử lý việc đăng ký học phần?","label":"in_scope"}
+{"input":"tăng âm lượng","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Điểm xét tuyển tài năng có thang điểm bao nhiêu và thứ hai là Em muốn biết về cơ hội việc làm của ngành Kỹ thuật Điện tử Viễn thông.","label":"out_of_scope"}
+{"input":"Cho tui tên từng phòng với địa chỉ website tương ứng.","label":"in_scope"}
+{"input":"Em muốn biết về quy định về việc sử dụng điện trong Ký túc xá, đồng thời cho em hỏi Học viện hỗ trợ sinh viên vượt khó trong học tập như thế nào?","label":"out_of_scope"}
+{"input":"Xét ra trường làm sao, kết quả nhận được gì và phòng nào lo vậy?","label":"in_scope"}
+{"input":"hãy xoá tất cả các sự kiện của tôi từ giờ đến hết ngày","label":"out_of_scope"}
+{"input":"có mấy quy trình cho sinh viên, kể hết tên cho tui coi","label":"in_scope"}
+{"input":"Hãy cho biết kết quả học cải thiện được ghi nhận ra sao và căn cứ theo văn bản nào.","label":"in_scope"}
+{"input":"burger king gần nhất","label":"out_of_scope"}
+{"input":"Em muốn biết về quy định về việc gửi xe vào cuối tuần và ngày lễ và Mã ngành của nhóm ngành Kỹ thuật Điện tử Viễn thông là gì?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Điều kiện để một sinh viên được xét khen thưởng danh hiệu 'Sinh viên Xuất sắc' là gì và thứ hai là Nếu em muốn tổ chức một cuộc thi học thuật cấp Khoa, em cần những bước nào?","label":"out_of_scope"}
+{"input":"có phải hôm nay sẽ nóng không","label":"out_of_scope"}
+{"input":"Điểm cỡ nào thì phải học lại, chuyện này căn cứ văn bản gì?","label":"in_scope"}
+{"input":"Trường hợp nào phải học lại và phòng nào phụ trách chuyện này?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có thể thực tập tại công ty do mình tự tìm không và thứ hai là Em vừa nhận học bổng KKHT loại Giỏi và vừa được nhận học bổng của doanh nghiệp X. Em có được nhận cả hai không?","label":"out_of_scope"}
+{"input":"Sinh viên xin xét tốt nghiệp sớm phải sử dụng biểu mẫu nào?","label":"in_scope"}
+{"input":"lấy trung bình mấy nhóm tiền học theo từng khóa giúp tui","label":"in_scope"}
+{"input":"Việc thanh toán học phí cho các môn đã đăng ký được quy định như thế nào?","label":"in_scope"}
+{"input":"Em muốn biết về các hoạt động của Hội Sinh viên trường và Em muốn tìm hiểu sâu về an ninh mạng thì nên tham gia CLB nào?","label":"out_of_scope"}
+{"input":"toi yeu nhac hip hop","label":"out_of_scope"}
+{"input":"Hãy đếm các định mức học phí khác nhau áp dụng riêng cho khóa K66.","label":"in_scope"}
+{"input":"alexa thêm nhung a còng hotmail.com như một liên hệ mới của nguyễn hồng nhung","label":"out_of_scope"}
+{"input":"tôi cần biết gì về buổi biểu diễn","label":"out_of_scope"}
+{"input":"rut mon sao kq the nao","label":"in_scope"}
+{"input":"Trưởng Phòng Tài chính là ai?","label":"in_scope"}
+{"input":"đạt hết tiêu chí học bổng thì tui được sao","label":"in_scope"}
+{"input":"Người đứng đầu Phòng Công tác sinh viên tên gì vậy?","label":"in_scope"}
+{"input":"Học ngành Kỹ thuật điều khiển và Tự động hóa ra trường có thể làm về robot không và Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào?","label":"out_of_scope"}
+{"input":"Hãy liệt kê các ngành khóa K67 và mức học phí mỗi tín chỉ.","label":"in_scope"}
+{"input":"cai nhac nho ngay mai cho muc nay","label":"out_of_scope"}
+{"input":"Điều kiện về điểm số khiến một học phần bắt buộc phải đăng ký học lại là gì?","label":"in_scope"}
+{"input":"Xin liệt kê toàn bộ tiêu chuẩn sinh viên phải hoàn thành để được xét công nhận tốt nghiệp.","label":"in_scope"}
+{"input":"bữa ăn tối của tôi có gì","label":"out_of_scope"}
+{"input":"quyền lợi của sv khi tham gia nghiên cứu khoa học là gì và thang điểm 10 và thang điểm 4 được sử dụng khi nào?","label":"out_of_scope"}
+{"input":"thuc tap co so cua nganh cntt clc dien ra khi nao, dong thoi cho em hoi neu may tinh phong thi bi loi trong luc em dang lam bai, em phai lam sao?","label":"out_of_scope"}
+{"input":"Hãy liệt kê các phòng ban và địa điểm làm việc tương ứng.","label":"in_scope"}
+{"input":"Vui lòng thống kê ngành đào tạo, khóa tuyển sinh và đơn giá học phí tín chỉ.","label":"in_scope"}
+{"input":"Khi xét tuyển bằng điểm thi ĐGNL của Trường Đại học Sư phạm Hà Nội, em cần lưu ý gì về môn thi?","label":"out_of_scope"}
+{"input":"Sau khi hồ sơ chuyển ngành được tiếp nhận, phòng nào chịu trách nhiệm xử lý?","label":"in_scope"}
+{"input":"Hãy đếm tổng số đơn vị hành chính khác nhau có trong dữ liệu của Trường.","label":"in_scope"}
+{"input":"Hệ thống có mấy phòng ban, gồm những phòng nào?","label":"in_scope"}
+{"input":"luat k67 1tc bn tien","label":"in_scope"}
+{"input":"ban co the tat den ban cua toi duoc khong","label":"out_of_scope"}
+{"input":"vui lòng chỉ cho tôi tỷ giá hối đoái giữa đồng đô la và đồng yên","label":"out_of_scope"}
+{"input":"nói tôi biết những danh sách tôi đang có","label":"out_of_scope"}
+{"input":"mười hai chia cho bốn bằng bao nhiêu","label":"out_of_scope"}
+{"input":"chung ta da het son vi vay hay bo viec son nha tam khoi danh sach","label":"out_of_scope"}
+{"input":"nhom nao gia tin chi cao hon 500000","label":"in_scope"}
+{"input":"Đơn vị xử lý công tác xét học bổng làm việc tại địa điểm nào?","label":"in_scope"}
+{"input":"cho tui web phòng đào tạo với","label":"in_scope"}
+{"input":"Điều kiện chuyển ngành, nơi nhận hồ sơ và phòng giải quyết lần lượt là gì?","label":"in_scope"}
+{"input":"Xin cung cấp đường dẫn trực tiếp đến biểu mẫu đăng ký xét tốt nghiệp sớm.","label":"in_scope"}
+{"input":"cho xin tat ca lien he phong tai chinh","label":"in_scope"}
+{"input":"gửi tui link file quyết định quy định chuyện đóng tiền học nha","label":"in_scope"}
+{"input":"Em có được phép mang theo người yêu vào thư viện học cùng không và Nếu em tốt nghiệp rồi, em có được vào thư viện nữa không?","label":"out_of_scope"}
+{"input":"tweet cho tôi lời phàn nàn về việc tắc nghẽn hệ thống thoát nước","label":"out_of_scope"}
+{"input":"kể mấy ngành có giá tín chỉ trên sáu trăm ngàn","label":"in_scope"}
+{"input":"url cac bieu mau bao luu va xin hoc tro lai","label":"in_scope"}
+{"input":"Hãy xác định tên nhóm có mức học phí tín chỉ nhỏ nhất và mức giá tương ứng.","label":"in_scope"}
+{"input":"Điều kiện để được đi thực tập cuối khóa là gì và Học viện có hỗ trợ sinh viên tham gia các đội tuyển thi Vòng chung kết Quốc gia không?","label":"out_of_scope"}
+{"input":"kể mấy nhóm đóng hơn năm trăm ngàn một tín chỉ","label":"in_scope"}
+{"input":"hd dkhp kem link qd","label":"in_scope"}
+{"input":"điện thoại","label":"out_of_scope"}
+{"input":"xep loai hoc tap trung binh co du dieu kien tot nghiep khong, dong thoi cho em hoi em muon biet ve quy dinh ve viec to chuc cac hoat dong tinh nguyen nhan danh truong.","label":"out_of_scope"}
+{"input":"Em muốn biết về quy định trang phục của giảng viên và Khoa nào chịu trách nhiệm đề xuất và trình chính sách, đối tượng, mức học bổng cho người học chương trình Sau Đại học?","label":"out_of_scope"}
+{"input":"Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không và Đơn vị nào chịu trách nhiệm tập hợp hồ sơ khen thưởng cho sinh viên?","label":"out_of_scope"}
+{"input":"Tôi cần thực hiện thủ tục xin bảo lưu kết quả học tập như thế nào?","label":"in_scope"}
+{"input":"ai đang dẫn đầu giải đua công thức một ngay bây giờ","label":"out_of_scope"}
+{"input":"các bộ phim hay đoạt giải cánh diều vàng","label":"out_of_scope"}
+{"input":"phát sách nói bạch tuyết và bảy chú lùn","label":"out_of_scope"}
+{"input":"Nêu hướng dẫn rút học phần, đơn vị phụ trách và văn bản áp dụng.","label":"in_scope"}
+{"input":"bat am thanh","label":"out_of_scope"}
+{"input":"olly làm cho phòng khách màu xanh dương","label":"out_of_scope"}
+{"input":"url van ban lam can cu cho thu tuc bao luu","label":"in_scope"}
+{"input":"ho so chuyen nganh phong nao xu ly","label":"in_scope"}
+{"input":"lưu các bài hát thể loại này cho tôi","label":"out_of_scope"}
+{"input":"Xin cung cấp tên và URL của biểu mẫu đề nghị xét tốt nghiệp.","label":"in_scope"}
+{"input":"có bộ phim nào mới hôm nay không","label":"out_of_scope"}
+{"input":"Cho tôi tên từng văn bản quy định cùng URL xem nội dung của văn bản đó.","label":"in_scope"}
+{"input":"Thông tin liên hệ đầy đủ của Phòng Đào tạo Đại học là gì?","label":"in_scope"}
+{"input":"olly định nghĩa từ snafu","label":"out_of_scope"}
+{"input":"noi cho toi biet bay gio may gio","label":"out_of_scope"}
+{"input":"đăng ký môn sao với có vấn đề thì hỏi phòng nào","label":"in_scope"}
+{"input":"đăng trạng thái thế này trên facebook","label":"out_of_scope"}
+{"input":"địa chỉ mới","label":"out_of_scope"}
+{"input":"Học viện có chính sách ưu tiên tuyển thẳng không và Em muốn biết về cơ hội việc làm của ngành Kỹ thuật Điện tử Viễn thông.","label":"out_of_scope"}
+{"input":"ngay hom nay la ngay gi","label":"out_of_scope"}
+{"input":"Mình xin đường dẫn tới quy định xét học bổng nhé.","label":"in_scope"}
+{"input":"Xin cho biết đơn vị tiếp nhận và đơn vị trực tiếp xử lý hồ sơ chuyển ngành.","label":"in_scope"}
+{"input":"học ngành này không hợp, tui chuyển ngành kiểu gì","label":"in_scope"}
+{"input":"Tới lúc chuẩn bị ra trường thì quy trình xét tốt nghiệp làm từng bước sao vậy?","label":"in_scope"}
+{"input":"Liệt kê tên tất cả nhóm định mức tiền học cho tui xem.","label":"in_scope"}
+{"input":"k65 cho 2 muc tin chi cao nhat ko trung nhau","label":"in_scope"}
+{"input":"ten don bao luu va don hoc lai","label":"in_scope"}
+{"input":"Em cần chuẩn bị gì để ứng tuyển vào Big4 và Tại sao em phải học môn Phương pháp luận nghiên cứu khoa học?","label":"out_of_scope"}
+{"input":"Hồ sơ xin nghỉ học tạm thời và xin tiếp tục học gồm những biểu mẫu nào?","label":"in_scope"}
+{"input":"Vui lòng xác định hai nhóm có đơn giá tín chỉ thấp nhất.","label":"in_scope"}
+{"input":"Việc chọn chuyên ngành dựa trên tiêu chí nào và Em muốn biết về quy định về việc sử dụng các phòng họp nhóm trong thư viện.","label":"out_of_scope"}
+{"input":"tôi có thể xem dự báo mười ngày cho khu vực của tôi hay không","label":"out_of_scope"}
+{"input":"muốn bỏ bớt môn thì xem quyết định nào","label":"in_scope"}
+{"input":"ten quy dinh ap dung cho rut hoc phan","label":"in_scope"}
+{"input":"Hồ sơ xin chuyển ngành được nộp ở phòng nào?","label":"in_scope"}
+{"input":"nhắc tôi cuộc họp trong một giờ","label":"out_of_scope"}
+{"input":"Nếu em muốn chuyển từ chuyên ngành này sang chuyên ngành khác, điểm GPA của em có bị tính lại không, đồng thời cho em hỏi Nếu em muốn khiếu nại về chất lượng wifi của KTX, em nên báo cho ai?","label":"out_of_scope"}
+{"input":"ho so xin bao luu de nhap ngu can nhung gi va em co the lien he voi giang vien ngoai gio hoc khong?","label":"out_of_scope"}
+{"input":"Em là học sinh hệ chuyên Tin của trường THPT trọng điểm quốc gia, em có đủ điều kiện xét tuyển HSNL không và Chào bạn, cho mình hỏi trang web chính thức của Học viện Công nghệ Bưu chính Viễn thông cơ sở TPHCM là gì?","label":"out_of_scope"}
+{"input":"Rút học phần xong kết quả thế nào, bên phòng nào xử lý?","label":"in_scope"}
+{"input":"kiểm tra các email mới","label":"out_of_scope"}
+{"input":"Bảo lưu cần những đơn nào và tải ở đâu?","label":"in_scope"}
+{"input":"làm ơn làm cho tối một tách cà phê","label":"out_of_scope"}
+{"input":"Đi muộn giờ thi 10 phút có được vào thi không và Em có thể chọn giảng viên ngoài khoa để hướng dẫn khóa luận tốt nghiệp không?","label":"out_of_scope"}
+{"input":"cho điện lực hà nội biết rằng điện lại bị mất","label":"out_of_scope"}
+{"input":"Cho danh sách phòng ban kèm email và số gọi.","label":"in_scope"}
+{"input":"làm chậm âm lượng của loa","label":"out_of_scope"}
+{"input":"Có bao nhiêu cách đóng học phí được hỗ trợ?","label":"in_scope"}
+{"input":"neu giang vien cho de thi ngoai chuong trinh hoc thi phai lam sao, dong thoi cho em hoi thoi gian hoc cua chuong trinh dai hoc chinh quy la bao lau?","label":"out_of_scope"}
+{"input":"toi co nhan duoc email nao trong vong mot gio truoc khong","label":"out_of_scope"}
+{"input":"Xin nêu tên văn bản pháp lý điều chỉnh việc học lại nhằm cải thiện điểm.","label":"in_scope"}
+{"input":"Có tổng cộng mấy định mức học phí dành cho sinh viên K67?","label":"in_scope"}
+{"input":"Xin liệt kê tên ngành thuộc khóa K66 và mức thu cho mỗi tín chỉ tương ứng.","label":"in_scope"}
+{"input":"cập nhật cho tôi cuộc bầu cử ba mươi phút một lần","label":"out_of_scope"}
+{"input":"Học viện Công nghệ Bưu chính Viễn thông có những mã tuyển sinh nào và Sinh viên có quyền được biết barem điểm của bài thi cuối kỳ không?","label":"out_of_scope"}
+{"input":"tôi có thể nấu gì với bông cải xanh và gà","label":"out_of_scope"}
+{"input":"ten van ban quy dinh viec dang ky hoc lai","label":"in_scope"}
+{"input":"Nếu không thực hiện tốt trách nhiệm sau khi nhận học bổng thì sẽ bị xử lý ra sao và Nếu em muốn khiếu nại về chất lượng cơ sở vật chất (ví dụ: máy lạnh hỏng) thì báo cho ai?","label":"out_of_scope"}
+{"input":"bạn làm ơn giữ im lặng một lúc","label":"out_of_scope"}
+{"input":"link qd can cu dk hoc du mon tn","label":"in_scope"}
+{"input":"Mức học phí mỗi tín chỉ của sinh viên K66 ngành Ngôn ngữ Anh là bao nhiêu?","label":"in_scope"}
+{"input":"Đường dẫn tải giấy xin xét tốt nghiệp sớm nằm đâu vậy?","label":"in_scope"}
+{"input":"đi ngủ","label":"out_of_scope"}
+{"input":"hôm nay là tuần mấy","label":"out_of_scope"}
+{"input":"co bn qd liet ke het","label":"in_scope"}
+{"input":"công thức crockpot cho chicken alfredo","label":"out_of_scope"}
+{"input":"Em có được phép mang vật nuôi đến trường không và Học viện có hỗ trợ sinh viên nghiên cứu khoa học không?","label":"out_of_scope"}
+{"input":"chỉ tui cách đăng ký môn, ai lo vụ này với đăng ký xong coi chỗ nào","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Cơ sở phía Nam có đào tạo chương trình chất lượng cao, đặc thù nào và thứ hai là Chương trình liên kết quốc tế ngành Công nghệ thông tin với Đại học La Trobe, Australia có chỉ tiêu bao nhiêu?","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Học viện có thư viện điện tử không cũng như Sự khác biệt giữa 'buộc thôi học' và 'đình chỉ học tập' là gì?","label":"out_of_scope"}
+{"input":"Đơn xin đóng học phí trễ tải ở đâu?","label":"in_scope"}
+{"input":"đặt hai cái pizza cỡ lớn và cánh gà cay ở dominoes","label":"out_of_scope"}
+{"input":"ra truong can du may dk","label":"in_scope"}
+{"input":"hoc phi hoc chuong trinh tien tien co giong chuong trinh chat luong cao khong va em co duoc phep su dung cac cong cu ai nhu chatgpt de lam bai tap lon khong?","label":"out_of_scope"}
+{"input":"dieu kien hoc ba di kem voi chung chi tieng anh quoc te de xet tuyen ket hop la gi","label":"out_of_scope"}
+{"input":"em muon tim hieu sau ve an ninh mang thi nen tham gia clb nao, dong thoi cho em hoi muc khen thuong cho tap the lop dat danh hieu 'tap the tien tien' la bao nhieu?","label":"out_of_scope"}
+{"input":"phát đài b. b. c. số bốn","label":"out_of_scope"}
+{"input":"Học Tài chính K66 thì một tín chỉ tốn mấy tiền?","label":"in_scope"}
+{"input":"tên bài hát là gì","label":"out_of_scope"}
+{"input":"Xin cung cấp tên từng đơn vị hành chính cùng họ tên người đứng đầu đơn vị.","label":"in_scope"}
+{"input":"dk bao luu don gi phong nao","label":"in_scope"}
+{"input":"email dia diem dien thoai va web phong cong tac sinh vien","label":"in_scope"}
+{"input":"xet hb ra sao dk gom gi","label":"in_scope"}
+{"input":"hôm nay là một ngày mệt mỏi","label":"out_of_scope"}
+{"input":"công thức","label":"out_of_scope"}
+{"input":"Rút môn thành công thì kết quả nhận được là gì?","label":"in_scope"}
+{"input":"Đơn vị nào chịu trách nhiệm xử lý các vấn đề về đăng ký học phần?","label":"in_scope"}
+{"input":"tat tieng cai dat","label":"out_of_scope"}
+{"input":"Hãy cho biết tên các định mức học phí được áp dụng trong quy trình thu học phí.","label":"in_scope"}
+{"input":"hỏi cố vấn của tôi","label":"out_of_scope"}
+{"input":"Trường có tổ chức hoạt động nào cho cựu sinh viên không và Điều kiện để tham gia chương trình trao đổi sinh viên là gì?","label":"out_of_scope"}
+{"input":"Kết quả của việc đăng ký học phần hợp lệ được thể hiện như thế nào?","label":"in_scope"}
+{"input":"Kinh phí giải thưởng cho các cuộc thi có đội từ trường khác tham gia được lấy từ đâu và Sinh viên có thể đăng ký học vượt không?","label":"out_of_scope"}
+{"input":"Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không và Em là sinh viên K25 ngành Marketing, môn 'Quản trị marketing' học vào khi nào?","label":"out_of_scope"}
+{"input":"Đăng ký học phần ra sao, làm xong thì kết quả hiện thế nào?","label":"in_scope"}
+{"input":"Hãy liệt kê các nhóm học phí và mức thu mỗi tín chỉ tương ứng.","label":"in_scope"}
+{"input":"bỏ mục thứ ba","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Trường có dịch vụ tư vấn tâm lý cho sinh viên không và thứ hai là Tổ Quản lý Ký túc xá có số điện thoại không?","label":"out_of_scope"}
+{"input":"Học cải thiện xong thì điểm nào được tính vào CPA?","label":"in_scope"}
+{"input":"Xét ra trường cần điều kiện gì, dùng mẫu đơn nào và phòng nào lo vậy?","label":"in_scope"}
+{"input":"khóa 63 bị chia thành mấy nhóm tiền học vậy?","label":"in_scope"}
+{"input":"vui lòng tìm các sự kiện ở vị trí của tôi","label":"out_of_scope"}
+{"input":"Hãy liệt kê tên từng quy trình học vụ và tên đơn vị chịu trách nhiệm xử lý.","label":"in_scope"}
+{"input":"ngày hai mươi hai tháng năm là thứ mấy","label":"out_of_scope"}
+{"input":"cho em hỏi hai vấn đề: thứ nhất là em có được phép mang laptop vào thư viện ko và thứ hai là tại sao một số môn học lại có cả phần thực hành và lý thuyết?","label":"out_of_scope"}
+{"input":"Hãy cung cấp danh mục các văn bản quy định học vụ của Trường.","label":"in_scope"}
+{"input":"Xin cho biết tên quy định làm căn cứ xét học bổng khuyến khích học tập.","label":"in_scope"}
+{"input":"Tổng chỉ tiêu của toàn Học viện năm 2025 là bao nhiêu cho cả hai cơ sở và Văn bản thông tin tuyển sinh năm 2025 được ký bởi ai?","label":"out_of_scope"}
+{"input":"gọi một taxi đến đón tôi ngay","label":"out_of_scope"}
+{"input":"Nhóm có Luật với Marketing là của khóa bao nhiêu?","label":"in_scope"}
+{"input":"Mỗi khóa có bao nhiêu nhóm định mức học phí?","label":"in_scope"}
+{"input":"bảo lưu xong thì điểm với kết quả cũ của tui sao","label":"in_scope"}
+{"input":"dk mon xong kq sao loi hoi dau theo van ban nao","label":"in_scope"}
+{"input":"Em muốn đăng ký ở KTX cho năm học sau thì phải làm khi nào?","label":"out_of_scope"}
+{"input":"Em có được phép chọn đề tài đồ án ngoài danh sách gợi ý của giảng viên không và Sinh viên có được phép tham gia các hoạt động chính trị bên ngoài không?","label":"out_of_scope"}
+{"input":"rớt môn mức nào thì học lại sao với liên hệ ai","label":"in_scope"}
+{"input":"Em có được phép về nhà vào cuối tuần trong thời gian học quân sự không và Quy trình xin cấp giấy giới thiệu thực tập như thế nào?","label":"out_of_scope"}
+{"input":"Mức học phí trên một tín chỉ dành cho sinh viên K63 ngành Công nghệ sinh học là bao nhiêu?","label":"in_scope"}
+{"input":"Học phí đóng sao, có lưu ý gì và trường nhận những hình thức nào?","label":"in_scope"}
+{"input":"cac dieu kien duoc nghi tam va bao luu ket qua","label":"in_scope"}
+{"input":"Tôi xem quy định đăng ký học phần ở đâu?","label":"in_scope"}
+{"input":"dem tong nhom hoc phi va liet ke ten tung nhom","label":"in_scope"}
+{"input":"bạn có thể kiểm tra giao thông trên đường về nhà của chúng tôi không","label":"out_of_scope"}
+{"input":"Trường có quy định về khoảng cách tối thiểu giữa 2 kỳ thi không và Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không?","label":"out_of_scope"}
+{"input":"olly du bao ve luong tuyet roi o buffalo","label":"out_of_scope"}
+{"input":"chỉ tui học lại sao rồi gửi link quy định với","label":"in_scope"}
+{"input":"Học viện có tổ chức các hoạt động tình nguyện quốc tế không và Hành vi tung tin đồn thất thiệt, gây mất đoàn kết trong lớp bị xử lý như thế nào?","label":"out_of_scope"}
+{"input":"Một lớp sinh viên như thế nào thì được xét danh hiệu 'Lớp sinh viên Tiên tiến' và Nếu em muốn rút hồ sơ để xét tuyển trường khác sau khi đã nhập học thì có được không?","label":"out_of_scope"}
+{"input":"vpt nam o dau","label":"in_scope"}
+{"input":"Học phí học lại được tính như thế nào và Em có thể mượn sách ở thư viện trong bao lâu?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về quy định về việc sử dụng các sân thể thao của trường và thứ hai là Tôi có thể tìm đọc các quy định về công tác sinh viên ở đâu?","label":"out_of_scope"}
+{"input":"Vui lòng trình bày thủ tục rút học phần và kết quả sau khi hoàn tất.","label":"in_scope"}
+{"input":"đóng tiền học có bao nhiêu cách kể hết tui coi","label":"in_scope"}
+{"input":"danh sach ten moi quy trinh hoc vu","label":"in_scope"}
+{"input":"dinh nghia cua nuoc sot la gi","label":"out_of_scope"}
+{"input":"toi co duoc phep di dep le den giang duong khong va em co duoc phep ghi am bai giang cua thay co khong?","label":"out_of_scope"}
+{"input":"Hãy trình bày hướng dẫn học cải thiện, đơn vị phụ trách và căn cứ quy định.","label":"in_scope"}
+{"input":"đặt báo thức lúc ba giờ chiều","label":"out_of_scope"}
+{"input":"alexa vui lòng lưu bài hát hiện tại vào mục yêu thích","label":"out_of_scope"}
+{"input":"Chỉ cách học kéo điểm, cách lấy kết quả với tên phòng xử lý giúp tui.","label":"in_scope"}
+{"input":"2 nhom hp thap nhat gia 1 tc","label":"in_scope"}
+{"input":"Bảo lưu được áp dụng với điều kiện nào và kết quả học tập được xử lý ra sao?","label":"in_scope"}
 {"input":"Cho tui email bên phụ trách học phí với tên các nhóm mức thu đang dùng.","label":"in_scope"}
-{"input":"cho tôi biết danh sách","label":"out_of_scope"}
-{"input":"olly tạo một sự kiện trên lịch","label":"out_of_scope"}
-{"input":"Em có thể liên hệ với giảng viên ngoài giờ học không, đồng thời cho em hỏi Em có thể dùng tài khoản email sinh viên để đăng ký các dịch vụ cá nhân không?","label":"out_of_scope"}
+{"input":"dk tot nghiep qd nao","label":"in_scope"}
+{"input":"CLB E-Club là câu lạc bộ về lĩnh vực gì và Mức khen thưởng cho tập thể sinh viên tham gia các phong trào HSSV (Câu lạc bộ, đội sinh viên) là bao nhiêu?","label":"out_of_scope"}
+{"input":"Xin cho biết tổng số nhóm học phí được quy định cho khóa tuyển sinh K67.","label":"in_scope"}
+{"input":"nhiệt độ ngày mai ngoài đó sẽ như thế nào","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em muốn xin xác nhận sinh viên để được giảm giá vé tàu hỏa, thủ tục thế nào và thứ hai là Mức khen thưởng cho sinh viên đạt giải Nhì trong các cuộc thi Olympic cấp Quốc tế là bao nhiêu?","label":"out_of_scope"}
+{"input":"Em có được phép mang theo người yêu vào thư viện học cùng không, đồng thời cho em hỏi Nếu em muốn rút hồ sơ gốc sau khi tốt nghiệp, em cần làm gì?","label":"out_of_scope"}
+{"input":"Đổi ngành cần mẫu đơn nào, nộp cho chỗ nào rồi phòng nào xử lý?","label":"in_scope"}
 {"input":"chuyen nganh lay don nao","label":"in_scope"}
+{"input":"Có lưu ý nào lúc nộp tiền học mà tui phải nhớ kỹ không?","label":"in_scope"}
+{"input":"Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không và Ngành An toàn thông tin khóa 2025 học kỳ 1 gồm những môn gì?","label":"out_of_scope"}
+{"input":"dkhp theo qd nao","label":"in_scope"}
+{"input":"Đăng ký môn thế nào và xong rồi được ghi nhận ra sao?","label":"in_scope"}
+{"input":"học viện có hỗ trợ sv trong các cuộc thi olympic tin học ko, đồng thời cho em hỏi em có thể nhận cùng lúc học bổng kkht và học bổng hỗ trợ chi phí học tập của nhà nước ko?","label":"out_of_scope"}
+{"input":"Hãy nêu điều kiện, kết quả và đơn vị phụ trách xét học bổng.","label":"in_scope"}
+{"input":"hey olly đặt hai phần cánh gà và khoai tây chiên ở cửa hàng đồ ăn trung","label":"out_of_scope"}
+{"input":"Em có thể xin giấy xác nhận sinh viên để giảm thuế thu nhập cá nhân cho bố mẹ không và Sinh viên đạt giải Ba các cuộc thi văn hóa, văn nghệ, thể dục thể thao toàn quốc có được khen thưởng không?","label":"out_of_scope"}
+{"input":"Chuyển ngành dùng đơn gì, nộp ở đâu và phòng nào giải quyết?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Đạt giải nhất nghiên cứu khoa học cấp trường thì được cộng mấy điểm rèn luyện cũng như Học phí được tính theo tín chỉ hay theo học kỳ?","label":"out_of_scope"}
+{"input":"phát bài hát dân gian ấn độ","label":"out_of_scope"}
+{"input":"có tin tức gì trên báo mới vậy","label":"out_of_scope"}
+{"input":"Hãy liệt kê toàn bộ điều kiện đang áp dụng cho các quy trình học vụ.","label":"in_scope"}
+{"input":"điều gì đã xảy ra giữa ngày thứ hai và ngày thứ mười lăm","label":"out_of_scope"}
+{"input":"gia 1 tc nganh ke toan khoa k65","label":"in_scope"}
+{"input":"Tên văn bản nào đang làm căn cứ cho chuyện xin bảo lưu vậy?","label":"in_scope"}
+{"input":"chỉnh âm lượng nhỏ đi","label":"out_of_scope"}
+{"input":"Mã xét tuyển của ngành Công nghệ thông tin là gì và Trong trường hợp nào thì em được miễn học phần Giáo dục thể chất?","label":"out_of_scope"}
+{"input":"URL tải mẫu đơn đề nghị gia hạn hạn đóng học phí là gì?","label":"in_scope"}
+{"input":"Rút học phần rồi được ghi nhận sao, link quy định ở đâu vậy?","label":"in_scope"}
+{"input":"hoc lai nang diem theo qd so nao","label":"in_scope"}
+{"input":"nhiệt độ cao nhất trong tuần tới là bao nhiêu","label":"out_of_scope"}
+{"input":"nghia cua mot tu cu the","label":"out_of_scope"}
+{"input":"em co duoc phep ghi am bai giang cua thay co khong va neu em muon khieu nai ve viec thu tien quy lop, em nen bao cho ai?","label":"out_of_scope"}
+{"input":"ten va dien thoai phong ke hoach tai chinh voi cong tac sv","label":"in_scope"}
+{"input":"Vui lòng mô tả quy trình xét học bổng và kết quả của việc xét duyệt.","label":"in_scope"}
+{"input":"Sinh viên cần đáp ứng điều kiện gì để bảo lưu và kết quả được ghi nhận như thế nào?","label":"in_scope"}
+{"input":"đi nghĩa vụ quân sự thì có được bảo lưu không, còn lý do nào nữa","label":"in_scope"}
+{"input":"trường có mấy nhóm tiền học, kể tên hết cho tui với","label":"in_scope"}
+{"input":"lấy công thức làm bánh hotdog","label":"out_of_scope"}
+{"input":"Liệt kê tên các phòng ban cùng địa chỉ làm việc của từng phòng.","label":"in_scope"}
+{"input":"cach chuyen nganh dieu kien can co va ten don","label":"in_scope"}
+{"input":"Trong trường hợp nào thì em được nhận điểm P và Em có được phép mang người ngoài vào ở trong Ký túc xá không?","label":"out_of_scope"}
+{"input":"muon hoc cai thien diem lam gi lien he phong nao","label":"in_scope"}
+{"input":"cho em hoi hai van de: thu nhat la em muon biet su khac biet giua thuc tap co so va thuc tap tot nghiep va thu hai la tai sao diem thi cuoi ky lai chiem trong so cao nhu vay (toi thieu 50%)?","label":"out_of_scope"}
+{"input":"giao thông thế nào","label":"out_of_scope"}
+{"input":"Cho tui tên mẫu đơn xin đổi ngành với đường dẫn tải nó.","label":"in_scope"}
+{"input":"Cách học cải thiện thế nào, đơn vị nào phụ trách và áp dụng quy định nào?","label":"in_scope"}
+{"input":"liệt kê những thứ có sẵn","label":"out_of_scope"}
+{"input":"Có tất cả bao nhiêu quy trình học vụ dành cho sinh viên?","label":"in_scope"}
+{"input":"học bổng tài trợ từ doanh nghiệp có khó xin ko, đồng thời cho em hỏi em muốn biết về chương trình đào tạo liên kết quốc tế của trường.","label":"out_of_scope"}
+{"input":"kể cho tôi nghe điều kỳ lạ nhất đang xảy ra trên thế giới hôm nay","label":"out_of_scope"}
+{"input":"link qd hoc lai","label":"in_scope"}
+{"input":"Sinh viên Công nghệ sinh học K63 phải trả mức nào cho một tín chỉ?","label":"in_scope"}
+{"input":"Sinh viên Tài chính K66 đóng một tín chỉ bao nhiêu?","label":"in_scope"}
+{"input":"Nếu em muốn khiếu nại về chất lượng wifi của KTX, em nên báo cho ai, đồng thời cho em hỏi Nếu em làm mất biên bản bị kỷ luật thì có ảnh hưởng gì không?","label":"out_of_scope"}
+{"input":"Em muốn biết về các hoạt động của câu lạc bộ Guitar (PGC) và Học viện có hỗ trợ tài chính cho sinh viên thuộc diện chính sách không?","label":"out_of_scope"}
+{"input":"k65 nhóm đóng 620k là ngành nào vậy","label":"in_scope"}
+{"input":"ten cac nhom co gia tin chi cao nhat kem muc gia","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Em muốn đăng ký ở KTX cho năm học sau thì phải làm khi nào cũng như Quy trình đăng ký sử dụng hội trường A gồm những bước nào?","label":"out_of_scope"}
+{"input":"lam on phat lai bai hat hien tai dang phat","label":"out_of_scope"}
+{"input":"phát tiếp sách nói đã phát gần đây","label":"out_of_scope"}
+{"input":"tui muốn ra ngân hàng đóng tiền học thì hỏi phòng nào","label":"in_scope"}
+{"input":"này tôi đã nhận được bất kỳ thư điện tử mới nào không","label":"out_of_scope"}
+{"input":"Mã xét tuyển của ngành Công nghệ vi mạch bán dẫn là gì và Em có được phép mang vật nuôi đến trường không?","label":"out_of_scope"}
+{"input":"moi thu tuc co dieu kien thi co may dieu kien","label":"in_scope"}
+{"input":"Em có được phép sử dụng máy tính của thư viện để chơi game không và Nếu em muốn chuyển từ cơ sở Hà Nội vào cơ sở TPHCM học thì có được không?","label":"out_of_scope"}
+{"input":"Rút học phần được chấp nhận rồi thì kết quả trên hệ thống ra sao?","label":"in_scope"}
+{"input":"cho em hoi hai van de: thu nhat la dang ky ky tuc xa nhu the nao va thu hai la em co the tu chon giang vien khi dang ky mon hoc khong?","label":"out_of_scope"}
+{"input":"mở đèn lên","label":"out_of_scope"}
+{"input":"Sau khi yêu cầu chuyển ngành được giải quyết, kết quả được ghi nhận thế nào?","label":"in_scope"}
+{"input":"em muon biet thong tin ve viec phan bo quy hoc bong khuyen khich hoc tap duoc thuc hien nhu the nao cung nhu hoc vien co nhung cau lac bo nao ve van hoa nghe thuat?","label":"out_of_scope"}
+{"input":"kiểm tra tiêu đề nhạc đang phát hiện tại","label":"out_of_scope"}
+{"input":"Điều kiện phải học lại là gì và phòng nào xử lý?","label":"in_scope"}
+{"input":"ngày sinh của tôi rơi vào thứ mấy","label":"out_of_scope"}
+{"input":"Tôi đóng học phí online ở website nào?","label":"in_scope"}
+{"input":"sắp ra trường rồi tui cần hỏi xét tốt nghiệp ở phòng nào","label":"in_scope"}
+{"input":"Sau khi xuất ngũ, em cần làm gì để đi học lại và Tại sao em phải học môn Phương pháp luận nghiên cứu khoa học?","label":"out_of_scope"}
+{"input":"gia han hp don gi link dau","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về các hoạt động của câu lạc bộ Bóng rổ và thứ hai là Học viện có hỗ trợ kinh phí cho các hoạt động khác như hội thảo, hội nghị không?","label":"out_of_scope"}
+{"input":"Cho tôi hướng dẫn đầy đủ để xin nghỉ học tạm thời và giữ lại kết quả đã học.","label":"in_scope"}
+{"input":"tweet dịch vụ chăm sóc khách hàng rằng tôi rất thất vọng với tương tác gần đây của mình","label":"out_of_scope"}
+{"input":"Hãy đếm tổng số văn bản quy định và liệt kê tên đầy đủ của từng văn bản.","label":"in_scope"}
+{"input":"gửi tui link quyết định về bảo lưu nha","label":"in_scope"}
+{"input":"Cho biết tên mỗi thủ tục học vụ cùng tên quy định làm căn cứ cho thủ tục.","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Sự khác nhau giữa điểm trung bình học kỳ và điểm trung bình tích lũy là gì cũng như Học viện có các hoạt động nào để kết nối sinh viên với cựu sinh viên không?","label":"out_of_scope"}
+{"input":"sáng hay chiều","label":"out_of_scope"}
+{"input":"Đếm số thủ tục do từng phòng xử lý.","label":"in_scope"}
+{"input":"hôm nay ngày mấy","label":"out_of_scope"}
+{"input":"làm ơn phát âm nhạc phổ biến trên pandora","label":"out_of_scope"}
+{"input":"Em muốn tìm hiểu về CLB Tiếng Anh thì tìm ở đâu và Em học ngành kỹ thuật, tại sao lại phải học môn 'Pháp luật đại cương'?","label":"out_of_scope"}
+{"input":"đặt một đơn gồm bơ gơ phó mát thịt xông khói với thịt xông khói và phó mát mỹ gấp đôi","label":"out_of_scope"}
+{"input":"so dien thoai don vi tiep nhan ho so doi nganh","label":"in_scope"}
+{"input":"Học viện có bao nhiêu chỉ tiêu cho các chương trình chất lượng cao năm 2025?","label":"out_of_scope"}
+{"input":"học viện có hỗ trợ kinh phí cho các câu lạc bộ, đội nhóm ko?","label":"out_of_scope"}
+{"input":"cài báo thức buổi sáng ngày mai lúc tám giờ","label":"out_of_scope"}
+{"input":"ten don vi truc tiep phu trach xet hoc bong","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Tổng tín chỉ của ngành Kế toán khóa 2025 là bao nhiêu cũng như Em muốn biết về các cơ hội làm trợ giảng (TA) cho giảng viên.","label":"out_of_scope"}
+{"input":"olly tôi muốn nghe kênh phát nhạc r. and b.","label":"out_of_scope"}
+{"input":"Tên các mẫu đơn bảo lưu và tên phòng phụ trách thủ tục là gì?","label":"in_scope"}
+{"input":"Thủ tục xin cấp lại thẻ sinh viên bị mất như thế nào và Nếu em không hài lòng với giảng viên hướng dẫn khóa luận, em có thể xin đổi không?","label":"out_of_scope"}
+{"input":"Quy định xét học bổng có thể xem ở đâu?","label":"in_scope"}
+{"input":"vui lòng đăng dòng trạng thái trên twitter nói rằng","label":"out_of_scope"}
+{"input":"Đếm giúp tui tất cả loại biểu mẫu học vụ của trường.","label":"in_scope"}
+{"input":"chỉ tôi cách làm bánh mì tỏi","label":"out_of_scope"}
+{"input":"hey olly đặt một cái pizza với nhiều phó mát","label":"out_of_scope"}
+{"input":"muốn kéo điểm thì làm sao có gì hỏi phòng nào","label":"in_scope"}
+{"input":"Hãy liệt kê các biểu mẫu học vụ và đường dẫn tải tương ứng.","label":"in_scope"}
+{"input":"chơi solitaire","label":"out_of_scope"}
+{"input":"xet hb sao kq gi","label":"in_scope"}
+{"input":"Tôi cần tìm đơn vị phụ trách để được hướng dẫn hồ sơ bảo lưu.","label":"in_scope"}
+{"input":"Mức khen thưởng cho sinh viên đạt giải Nhì trong các cuộc thi Olympic cấp Quốc tế là bao nhiêu và Sinh viên có được sử dụng rượu bia trong trường không?","label":"out_of_scope"}
+{"input":"chơi một vài radio","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Hành vi thi hộ bị xử lý như thế nào cũng như Sinh viên đạt giải Nhì cuộc thi chuyên môn học thuật cấp Quốc tế sẽ nhận được học bổng tài năng như thế nào?","label":"out_of_scope"}
+{"input":"clb truyen thong (cmc) co hoat dong gi va neu em co mot thanh tich the thao cap thanh pho, em co duoc uu tien gi khong?","label":"out_of_scope"}
+{"input":"Hãy cung cấp danh sách ngành thuộc khóa K63 kèm mức học phí trên một tín chỉ.","label":"in_scope"}
+{"input":"thương mại quốc tế và thị trường kinh doanh","label":"out_of_scope"}
+{"input":"Hãy cung cấp hướng dẫn bảo lưu và tên văn bản làm căn cứ.","label":"in_scope"}
+{"input":"ds thu tuc phong xu ly kem web","label":"in_scope"}
+{"input":"Em là sinh viên Lào, em có được miễn thi tiếng Anh đầu ra không và Em có thể chọn giảng viên ngoài khoa để hướng dẫn khóa luận tốt nghiệp không?","label":"out_of_scope"}
+{"input":"Chuyển ngành dùng đơn nào và tải ở đâu?","label":"in_scope"}
+{"input":"kiểm tra tất cả các email từ trần văn huy","label":"out_of_scope"}
+{"input":"Tên biểu mẫu dành cho sinh viên đề nghị xét tốt nghiệp trước thời hạn là gì?","label":"in_scope"}
+{"input":"Sinh viên có công trình nghiên cứu khoa học đạt giải Ba cấp Tỉnh/Thành phố có được khen thưởng không và Em có được phép nấu ăn trong phòng Ký túc xá không?","label":"out_of_scope"}
+{"input":"Liệt kê ba đơn giá tín chỉ phân biệt thấp nhất.","label":"in_scope"}
+{"input":"mấy nhóm đóng một tín chỉ mắc nhất với giá bao nhiêu","label":"in_scope"}
+{"input":"Xét tốt nghiệp thực hiện thế nào, kết quả gì và phòng nào xử lý?","label":"in_scope"}
+{"input":"Hãy nêu tên biểu mẫu xin tạm nghỉ học và biểu mẫu xin trở lại học tập.","label":"in_scope"}
+{"input":"em su dung code tu tren mang (github) cho do an mon hoc ma khong ghi nguon, co bi xem la dao van khong va sinh vien co duoc phep su dung mang xa hoi de binh luan tieu cuc ve truong khong?","label":"out_of_scope"}
+{"input":"vui long cài báo thức lúc mười giờ tối","label":"out_of_scope"}
+{"input":"Vụ xin bảo lưu thì phòng nào trực tiếp đứng ra xử lý vậy?","label":"in_scope"}
+{"input":"tìm cho tôi truyện cười hay nhất về con gà","label":"out_of_scope"}
+{"input":"co bn phong ban","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Mức khen thưởng cho tập thể đạt giải trong Vòng Chung kết các cuộc thi cấp Quốc gia, Quốc tế là bao nhiêu và thứ hai là Em muốn biết về quy định phòng chống dịch bệnh của trường (ví dụ: Covid-19).","label":"out_of_scope"}
+{"input":"ten van ban quy dinh thu tuc doi nganh","label":"in_scope"}
+{"input":"Hai cách đóng học phí online và tại quầy ngân hàng được mô tả thế nào?","label":"in_scope"}
+{"input":"Hãy cung cấp tên từng thủ tục học vụ, đơn vị xử lý và địa chỉ website của đơn vị đó.","label":"in_scope"}
+{"input":"Em có được phép dán poster của CLB lên bảng tin của trường không và Học viện có hỗ trợ sinh viên khi gặp khó khăn đột xuất như ốm đau, bệnh tật hiểm nghèo không?","label":"out_of_scope"}
+{"input":"Nếu điểm trung bình của ngành chính bị giảm sút khi đang học song ngành thì sao và Thực tập cơ sở của ngành CNTT CLC diễn ra khi nào?","label":"out_of_scope"}
+{"input":"Làm thế nào để tham gia Ban chấp hành Đoàn - Hội Khoa, đồng thời cho em hỏi Đối tượng nào được dự tuyển vào Học viện năm 2025?","label":"out_of_scope"}
+{"input":"tôi muốn nghe nhạc pop","label":"out_of_scope"}
+{"input":"tham gia clb có được tính điểm rèn luyện ko và học viện công bố quy tắc quy đổi điểm giữa các phương thức xét tuyển khi nào?","label":"out_of_scope"}
+{"input":"Cho biết tên nhóm học phí, khóa áp dụng và giá mỗi tín chỉ của các nhóm có mã khóa.","label":"in_scope"}
+{"input":"Điểm tham gia hoạt động ngoại khóa chiếm bao nhiêu trong điểm rèn luyện và Em có bằng tốt nghiệp trung cấp nghề thuộc cùng nhóm ngành dự tuyển, em có đủ điều kiện xét tuyển không?","label":"out_of_scope"}
+{"input":"tui muốn bỏ bớt môn thì qua phòng nào hỏi","label":"in_scope"}
+{"input":"đặt bánh quy tổng hợp mang đi","label":"out_of_scope"}
+{"input":"Trình bày tên và nội dung của quy trình đăng ký học lại cùng quy trình học cải thiện.","label":"in_scope"}
+{"input":"Điều kiện nào dẫn đến học lại và thủ tục đăng ký học lại ra sao?","label":"in_scope"}
+{"input":"Hết thời gian nghỉ bảo lưu, tôi cần mẫu giấy nào để xin trở lại học?","label":"in_scope"}
+{"input":"neu toi bi tai nan trong thoi gian hoc, nha truong co ho tro gi khong va thu tuc xet tuyen thang va uu tien xet tuyen duoc thuc hien nhu the nao?","label":"out_of_scope"}
+{"input":"Mỗi học kỳ sinh viên được đăng ký bao nhiêu tín chỉ?","label":"in_scope"}
+{"input":"vui lòng đặt báo thức trong hai giờ kể từ bây giờ","label":"out_of_scope"}
+{"input":"Nếu em muốn tổ chức một giải đấu thể thao cho lớp, em có được sử dụng sân của trường không và Em có thể tự chọn giảng viên khi đăng ký môn học không?","label":"out_of_scope"}
+{"input":"Tên văn bản quy định làm căn cứ cho thủ tục thanh toán học phí là gì?","label":"in_scope"}
+{"input":"xóa các báo thức sớm","label":"out_of_scope"}
+{"input":"Tên phòng trực tiếp phụ trách xử lý công tác học phí là gì?","label":"in_scope"}
+{"input":"Đạt giải nhất nghiên cứu khoa học cấp trường thì được cộng mấy điểm rèn luyện và Nếu em gặp vấn đề về tâm lý (stress, lo âu) thì có thể tìm kiếm sự giúp đỡ ở đâu?","label":"out_of_scope"}
+{"input":"Sinh viên ngành Điện khóa K67 phải đóng học phí mỗi tín chỉ bao nhiêu?","label":"in_scope"}
+{"input":"Liệt kê tên từng mẫu đơn học vụ cùng URL tải tương ứng.","label":"in_scope"}
+{"input":"bạn cài đặt chuông báo cho tôi lúc nào vậy","label":"out_of_scope"}
+{"input":"em co nen su dung cung mot mat khau cho email sinh vien va cac tai khoan mang xa hoi khac khong va em muon biet thong tin ve lanh dao khoa cong nghe thong tin 2.","label":"out_of_scope"}
+{"input":"Hãy xác định hai mức học phí tín chỉ thấp nhất và không trùng nhau của khóa K66.","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn học về An toàn cho AI thì nên học môn nào và thứ hai là Em có thể tự chọn giảng viên khi đăng ký môn học không?","label":"out_of_scope"}
+{"input":"co nhung phong ban nao","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Nếu em muốn xin tài trợ cho một dự án nghiên cứu khoa học, em nên liên hệ ai và thứ hai là Tổng chỉ tiêu các chương trình chất lượng cao, đặc thù tại cơ sở phía Bắc năm 2025 là bao nhiêu?","label":"out_of_scope"}
+{"input":"Xin trình bày đầy đủ cách xin tạm dừng học và tên các biểu mẫu dùng khi nghỉ cũng như khi trở lại.","label":"in_scope"}
+{"input":"theo dõi tin tức về sao kê từ thiện trong tương lai","label":"out_of_scope"}
+{"input":"em có thể xin nghỉ học 1-2 ngày vì việc gia đình được ko và mức khen thưởng cho sv đạt giải nhì trong vòng chung kết các cuộc thi cấp quốc gia là bao nhiêu?","label":"out_of_scope"}
+{"input":"ma xet tuyen cua nganh cong nghe vi mach ban dan la gi, dong thoi cho em hoi truong co to chuc giai bong da cho sinh vien khong?","label":"out_of_scope"}
+{"input":"ten cach nop hoc phi tai quay ngan hang va phong phu trach","label":"in_scope"}
+{"input":"tôi muốn dễ dàng kiểm tra tình trạng kho và cho tôi biết khi nào tôi sắp hết thứ gì đó","label":"out_of_scope"}
+{"input":"ket qua hoc tap duoc giu sao sau khi bao luu","label":"in_scope"}
+{"input":"Làm thế nào để chuẩn bị tốt cho một kỳ thi vấn đáp và Em muốn biết thông tin về thư viện của trường.","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Việc phân bổ quỹ học bổng khuyến khích học tập được thực hiện như thế nào cũng như Mức khen thưởng cho cá nhân sinh viên đạt giải Nhì trong các cuộc thi cấp Học viện là bao nhiêu?","label":"out_of_scope"}
+{"input":"Liệt kê tên các nhóm học phí có mã khóa, mã khóa tương ứng và mức thu mỗi tín chỉ.","label":"in_scope"}
+{"input":"bài hát này là bài gì vậy","label":"out_of_scope"}
+{"input":"tui học kế toán k65, một tín tính giá sao","label":"in_scope"}
+{"input":"Xin liệt kê tên toàn bộ phòng ban hành chính hiện có của Trường.","label":"in_scope"}
+{"input":"tôi nên nướng bánh pizza trong bao nhiêu thời gian để làm cho nó giòn hoàn hảo","label":"out_of_scope"}
+{"input":"em co duoc phep tu choi tham gia mot hoat dong do lop to chuc khong va neu em lam khoa luan tot nghiep ve mot de tai lien quan den blockchain, em co the nho giang vien nganh cntt huong dan khong, du em hoc nganh attt?","label":"out_of_scope"}
+{"input":"năm nhất có xin đổi ngành được không vậy","label":"in_scope"}
+{"input":"moi phong co mail gi web nao","label":"in_scope"}
+{"input":"đổi ngành thì xem quy định nào của trường","label":"in_scope"}
+{"input":"Tổng chỉ tiêu của toàn Học viện năm 2025 là bao nhiêu cho cả hai cơ sở và Học viện có chấp nhận chứng chỉ TOEFL iBT Home Edition không?","label":"out_of_scope"}
+{"input":"có gì hot ở khu vực xung quanh","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về quy định về việc tổ chức các hoạt động tình nguyện nhân danh trường và thứ hai là Nếu em muốn thay đổi thông tin cá nhân (số điện thoại, địa chỉ liên lạc), em cần báo cho ai?","label":"out_of_scope"}
+{"input":"thêm tạp hóa vào danh sách","label":"out_of_scope"}
+{"input":"Hai nhóm học phí của K63 tên gì, mỗi tín chỉ từng nhóm giá sao?","label":"in_scope"}
+{"input":"cho toi biet cong thuc lam banh quy","label":"out_of_scope"}
+{"input":"phuc long co chap nhan don hang mang ve khong","label":"out_of_scope"}
+{"input":"có bất kỳ email nào liên quan đến việc thăng chức của tôi không","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Mang tài liệu vào phòng thi bị xử lý ra sao cũng như Mã xét tuyển của ngành Công nghệ thông tin là gì?","label":"out_of_scope"}
+{"input":"Nêu tên và nội dung hướng dẫn của thủ tục học lại và học cải thiện.","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Nếu em có xung đột với bạn cùng phòng trong Ký túc xá, em nên giải quyết thế nào cũng như Em muốn biết về quy định bảo vệ quyền sở hữu trí tuệ cho các sản phẩm của sinh viên.","label":"out_of_scope"}
+{"input":"Cho biết ba mức thu mỗi tín chỉ thấp nhất, không lặp lại các mức bằng nhau.","label":"in_scope"}
+{"input":"trả lời lại email này","label":"out_of_scope"}
+{"input":"don xet tn ten gi link dau","label":"in_scope"}
+{"input":"Xin xác định tổng số định mức học phí dành cho khóa tuyển sinh K65.","label":"in_scope"}
+{"input":"mo ung dung agoda va den muc dat ve","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Em muốn biết về các hoạt động của câu lạc bộ Bóng rổ cũng như Em muốn biết về quy định về việc tham gia các hoạt động nghiên cứu thị trường của các công ty tại trường.","label":"out_of_scope"}
+{"input":"cho tui xem hết mấy kết quả của các quy trình học vụ với","label":"in_scope"}
+{"input":"những tin nhắn mới mà tôi có là gì","label":"out_of_scope"}
+{"input":"em co the nhan cung luc hoc bong kkht va hoc bong ho tro chi phi hoc tap cua nha nuoc khong va dieu kien hoc ba di kem voi chung chi tieng anh quoc te de xet tuyen ket hop la gi?","label":"out_of_scope"}
+{"input":"hom nay la ngay may","label":"out_of_scope"}
+{"input":"nếu bây giờ là tám giờ tối ở bắc kinh thì là mấy giờ ở hà nội","label":"out_of_scope"}
+{"input":"tôi có bao nhiêu email chưa đọc","label":"out_of_scope"}
+{"input":"Cho tui URL để thanh toán học phí trực tuyến.","label":"in_scope"}
+{"input":"Người đứng đầu Phòng Kế hoạch và Tài chính tên gì?","label":"in_scope"}
+{"input":"Việc tham gia Ban chủ nhiệm các CLB của Học viện có được cộng điểm thưởng không và Em có được phép về nhà vào cuối tuần trong thời gian học quân sự không?","label":"out_of_scope"}
+{"input":"Liệt kê tên mỗi phòng ban hành chính và địa chỉ email tương ứng.","label":"in_scope"}
+{"input":"xet hb theo qd nao","label":"in_scope"}
+{"input":"nhom k65 gia 620k moi tc gom cac nganh nao","label":"in_scope"}
+{"input":"Sinh viên ngành Điện K67 thanh toán bao nhiêu cho một tín chỉ?","label":"in_scope"}
+{"input":"Đơn đề nghị xét tốt nghiệp tải ở đâu?","label":"in_scope"}
+{"input":"Nếu em tốt nghiệp rồi, em có được vào thư viện nữa không","label":"out_of_scope"}
+{"input":"Học viện có các hệ đào tạo nào khác ngoài hệ đại học chính quy không và Em có được phép kinh doanh nhỏ (bán đồ ăn vặt online) trong KTX không?","label":"out_of_scope"}
+{"input":"dia chi website phong dao tao dai hoc","label":"in_scope"}
+{"input":"Nếu em thi lại môn Giáo dục thể chất thì đóng học phí thế nào, đồng thời cho em hỏi Em muốn biết sự khác biệt giữa thực tập cơ sở và thực tập tốt nghiệp.","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết về các hoạt động của câu lạc bộ Bóng rổ và thứ hai là Nếu em có một ý tưởng nghiên cứu mới, em có thể đề xuất để làm trong phòng lab không?","label":"out_of_scope"}
+{"input":"tham gia buổi tiệc trước cuộc họp","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Em muốn tham gia CLB Cờ thì cần điều kiện gì cũng như Học viện có hỗ trợ sinh viên trong các cuộc thi Olympic Tin học không?","label":"out_of_scope"}
+{"input":"Em có được phép sử dụng các phòng máy tính của trường để làm đồ án không và Em có thể tốt nghiệp với bằng Kỹ sư thay vì Cử nhân ngành CNTT không?","label":"out_of_scope"}
+{"input":"cho tôi biết thế giới bắt đầu như thế nào","label":"out_of_scope"}
+{"input":"bạn có thể phát sách muôn kiếp nhân sinh ko","label":"out_of_scope"}
+{"input":"đạo đức giả nghĩa là gì","label":"out_of_scope"}
+{"input":"Xin cho biết đơn giá mỗi tín chỉ của chương trình Luật dành cho khóa K67.","label":"in_scope"}
+{"input":"trời sẽ mưa phải ko","label":"out_of_scope"}
+{"input":"su khac biet giua mon 'ky thuat vi xu ly' va 'kien truc may tinh' la gi va em co duoc quyen yeu cau doi giang vien khong?","label":"out_of_scope"}
+{"input":"Cho tui đủ email, địa chỉ, số gọi với website Phòng Đào tạo đại học.","label":"in_scope"}
+{"input":"Cho tui đường dẫn tải giấy xin gia hạn thời gian đóng tiền học.","label":"in_scope"}
+{"input":"url tai mau don de nghi bao luu hoc tap","label":"in_scope"}
+{"input":"Mức khen thưởng cho sinh viên đạt giải Nhì trong Vòng Chung kết các cuộc thi cấp Quốc gia là bao nhiêu và Ngoài mức khen thưởng theo quy định, sinh viên có GPA cao nhất ngành có được nhận thêm hình thức khuyến khích nào không?","label":"out_of_scope"}
+{"input":"tra cứu thời tiết tuần tới cho tôi","label":"out_of_scope"}
+{"input":"cho tôi biết giá cổ phiếu của vingroup","label":"out_of_scope"}
+{"input":"olly gửi một tweet cho bún bò huế cô hằng nói với họ rằng họ có dịch vụ khách hàng tồi tệ nhất","label":"out_of_scope"}
+{"input":"huong dan dang ky hoc lai mon bi rot","label":"in_scope"}
+{"input":"đăng ký xong coi ở đâu có lỗi hỏi ai với dựa quy định nào","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Học phí dự kiến chương trình Cử nhân Công nghệ thông tin (định hướng ứng dụng) năm học 2025-2026 là bao nhiêu và thứ hai là Tại sao em phải học môn Phương pháp luận nghiên cứu khoa học?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Mã xét tuyển của ngành Kế toán là gì và thứ hai là Em có thể thực tập tại công ty do mình tự tìm không?","label":"out_of_scope"}
+{"input":"Nếu em tốt nghiệp loại Khá, em có cơ hội nhận học bổng đi du học không và Em có thể thực tập tại công ty do mình tự tìm không?","label":"out_of_scope"}
+{"input":"rot mon muc nao hoc lai kieu gi hoi phong nao","label":"in_scope"}
+{"input":"thay đổi màu đèn thành màu xanh dương","label":"out_of_scope"}
+{"input":"Luật và Marketing chung định mức học phí của mã khóa nào?","label":"in_scope"}
+{"input":"phong phu trach hb nam o dau","label":"in_scope"}
+{"input":"Liệt kê ba đơn giá tín chỉ phân biệt cao nhất.","label":"in_scope"}
+{"input":"Sinh viên đạt giải Ba các cuộc thi văn hóa, văn nghệ, thể dục thể thao toàn quốc có được khen thưởng không và Nếu một môn học bị gỡ khỏi chương trình đào tạo thì sao?","label":"out_of_scope"}
+{"input":"dem nhom hp k66 giup","label":"in_scope"}
+{"input":"Bao nhiêu điểm thì phải học lại và theo quyết định nào?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận cũng như Mức khen thưởng cho tập thể đạt giải trong Vòng Chung kết các cuộc thi cấp Quốc gia, Quốc tế là bao nhiêu?","label":"out_of_scope"}
+{"input":"Xin cho biết tên biểu mẫu dành cho đề nghị gia hạn thời gian thanh toán học phí.","label":"in_scope"}
+{"input":"làm cháo hàu như thế nào","label":"out_of_scope"}
+{"input":"Cho mình danh sách từng phòng với email và điện thoại nha.","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em là sinh viên K25 ngành CNTT, cho em hỏi môn Triết học Mác Lênin có bao nhiêu tín chỉ và thứ hai là Em có được phép mang người ngoài vào ở trong Ký túc xá không?","label":"out_of_scope"}
+{"input":"cho tôi biết về các hoạt động trong khu vực của tôi vào cuối tuần này","label":"out_of_scope"}
+{"input":"don gia chinh xac tc cntt khoa65","label":"in_scope"}
+{"input":"cảnh báo tôi trong ba tiếng","label":"out_of_scope"}
+{"input":"một feet bằng bao nhiêu inches","label":"out_of_scope"}
+{"input":"bao nhiêu số liên hệ tôi có trong danh bạ của tôi","label":"out_of_scope"}
+{"input":"Nếu giảng viên cho đề thi ngoài chương trình học thì phải làm sao và Mức điểm thưởng vào điểm TBC học tập cho sinh viên đạt giải Ba các cuộc thi cấp Trung ương là bao nhiêu?","label":"out_of_scope"}
+{"input":"cac ket qua khac nhau cua moi thu tuc hoc vu","label":"in_scope"}
+{"input":"Điểm rèn luyện thấp có ảnh hưởng đến cơ hội du học không và Em muốn biết về quy định trang phục của giảng viên.","label":"out_of_scope"}
+{"input":"Hãy hướng dẫn chuyển ngành và nêu kết quả của thủ tục.","label":"in_scope"}
+{"input":"xin đổi ngành xong được gì mang đơn cho ai ai duyệt","label":"in_scope"}
+{"input":"Mức khen thưởng cho tập thể sinh viên đạt giải Nhì trong các cuộc thi cấp Học viện là bao nhiêu và Sinh viên bị bỏ rơi chưa có người nhận làm con nuôi cần nộp hồ sơ gì để xin miễn giảm học phí?","label":"out_of_scope"}
+{"input":"mún rut hp da dk thi lam s","label":"in_scope"}
+{"input":"can bao nhieu thoi gian de nau nui","label":"out_of_scope"}
+{"input":"2 muc hp k66 thap nhat ko trung","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn biết môn 'Cấu trúc dữ liệu và giải thuật' của ngành CNTT CLC có tên tiếng Anh là gì và thứ hai là Mật khẩu mặc định để đăng nhập vào email sinh viên là gì và tôi có cần đổi không?","label":"out_of_scope"}
+{"input":"Hai hình thức đóng online và đóng tại quầy ngân hàng được gọi thế nào?","label":"in_scope"}
+{"input":"xóa tất cả dữ liệu khỏi lịch của tôi","label":"out_of_scope"}
+{"input":"Tên phòng phụ trách tiếp nhận và xử lý học cải thiện là gì?","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Mức khen thưởng cho tập thể sinh viên đạt giải Nhì trong các cuộc thi khác (không phải chuyên môn) cấp Học viện là bao nhiêu cũng như Ai là người chịu trách nhiệm thi hành Quyết định về quy định học bổng và hỗ trợ người học?","label":"out_of_scope"}
+{"input":"cách tôi có thể nấu nui","label":"out_of_scope"}
+{"input":"ds nganh khoa kem hp 1 tc","label":"in_scope"}
+{"input":"nghệ sĩ của bài hát đang phát là ai","label":"out_of_scope"}
+{"input":"Sinh viên đạt giải Ba cuộc thi chuyên môn học thuật cấp Quốc tế sẽ nhận được học bổng tài năng như thế nào và Mức học bổng cho học viên cao học có GPA tốt nghiệp đại học từ 3.6 trở lên là bao nhiêu?","label":"out_of_scope"}
+{"input":"Địa chỉ email dùng để liên hệ Văn phòng Trường là gì?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Trưởng phòng Giáo vụ là ai và thứ hai là Sinh viên có kết quả xét tuyển cao vào Học viện có được xét cấp học bổng đầu vào không?","label":"out_of_scope"}
+{"input":"Cho tôi cách rút học phần, kết quả sau khi rút và đơn vị giải quyết.","label":"in_scope"}
+{"input":"du chuan hb thi xep thu tu trao sao","label":"in_scope"}
+{"input":"em co the dung tai khoan email sinh vien de dang ky cac dich vu ca nhan khong va sinh vien la con cua nguoi hoat dong khang chien bi nhiem chat doc hoa hoc can ho so gi de mien giam hoc phi?","label":"out_of_scope"}
+{"input":"Liệt kê không trùng các điều kiện xuất hiện trong mọi thủ tục học vụ.","label":"in_scope"}
+{"input":"tui muốn nghỉ một thời gian thì làm sao điểm được giữ không ai lo vụ này","label":"in_scope"}
+{"input":"Sinh viên là con của liệt sỹ cần nộp những giấy tờ gì để xin miễn giảm học phí và Em có thể liên hệ với giảng viên ngoài giờ học không?","label":"out_of_scope"}
+{"input":"Hãy đếm số ngành hoặc chương trình trong các nhóm học phí, phân theo từng khóa.","label":"in_scope"}
+{"input":"muon xet tot nghiep som lam kieu gi nop don nao hoi ai","label":"in_scope"}
+{"input":"cach dkhp phong xu ly va ket qua dang ky","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Trong tuần thi, thư viện có mở cửa muộn hơn không và thứ hai là Học bổng và hỗ trợ có được chuyển thẳng vào tài khoản ngân hàng của sinh viên không?","label":"out_of_scope"}
+{"input":"Học bổng khuyến khích học tập được trả bằng tiền mặt hay chuyển khoản, đồng thời cho em hỏi Mức khen thưởng cho sinh viên đạt giải Nhì trong các cuộc thi Olympic cấp Quốc tế là bao nhiêu?","label":"out_of_scope"}
+{"input":"ai là tổng thống ba lan","label":"out_of_scope"}
+{"input":"Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào và Em muốn biết sự khác nhau giữa 'khiển trách', 'cảnh cáo' và 'đình chỉ học tập'.","label":"out_of_scope"}
+{"input":"Bảo lưu cần những biểu mẫu nào và đơn vị nào phụ trách xử lý?","label":"in_scope"}
+{"input":"Hãy liệt kê các ngành thuộc định mức học phí nhóm ba của khóa K66.","label":"in_scope"}
+{"input":"Mã xét tuyển của ngành Thiết kế và phát triển Game là gì và Nếu lớp học phần có ít sinh viên đăng ký quá thì có bị hủy không?","label":"out_of_scope"}
+{"input":"nhắc tôi nhớ gặp an vào lúc sáu giờ chiều hôm nay","label":"out_of_scope"}
+{"input":"khi nào taco bell tới","label":"out_of_scope"}
+{"input":"Môn 'Phân tích và thiết kế hệ thống thông tin' có quan trọng không và Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào?","label":"out_of_scope"}
+{"input":"tong so cach thanh toan hoc phi va ten tung cach","label":"in_scope"}
+{"input":"dem nganh trong nhom hp tung khoa","label":"in_scope"}
+{"input":"phát cả một trời thương nhớ hồ ngọc hà","label":"out_of_scope"}
+{"input":"quy dinh ve viec su dung mang wifi cua truong la gi va chuyen nganh 'xu ly tin hieu va truyen thong' hoc nhung gi?","label":"out_of_scope"}
+{"input":"Quy định về việc sử dụng mạng wifi của trường là gì và Em có thể khiếu nại về kết quả phúc khảo không?","label":"out_of_scope"}
+{"input":"cần đủ gì để tốt nghiệp rồi trường ghi nhận sao","label":"in_scope"}
+{"input":"sự kiện hội chợ sách nào sẽ diễn ra tuần sau ở hà nội","label":"out_of_scope"}
+{"input":"dong hp tai quay nh sao","label":"in_scope"}
+{"input":"Hướng dẫn đăng ký học cải thiện điểm được thực hiện ra sao?","label":"in_scope"}
+{"input":"Hãy nêu điều kiện và hướng dẫn đăng ký học lại.","label":"in_scope"}
+{"input":"Không xét lý do phải điều trị dài ngày do ốm, thai sản hoặc tai nạn, sinh viên còn được bảo lưu trong những trường hợp nào?","label":"in_scope"}
+{"input":"xáo trộn các bài hát trong album này","label":"out_of_scope"}
+{"input":"Hướng dẫn bảo lưu kết quả học tập và văn bản căn cứ là gì?","label":"in_scope"}
+{"input":"Chương trình liên kết quốc tế với Đại học Canberra (Úc) thuộc ngành nào và Em có được phép ở lại KTX trong dịp hè không?","label":"out_of_scope"}
+{"input":"duong dan van ban phap ly ve thanh toan hoc phi","label":"in_scope"}
+{"input":"Nếu em có ý tưởng đóng góp cho trường, em nên gửi về đâu và Em muốn thành lập một câu lạc bộ mới thì quy trình như thế nào?","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Em bị cận thị nặng, có được miễn học Giáo dục quốc phòng không cũng như Thực tập cơ sở của ngành CNTT CLC diễn ra khi nào?","label":"out_of_scope"}
+{"input":"Đếm tổng số phòng ban rồi kể tên từng phòng cho tui.","label":"in_scope"}
+{"input":"đưa tôi đến website của kênh mười bốn","label":"out_of_scope"}
+{"input":"tui tính đổi ngành, chỉ cách làm với coi đủ điều kiện chưa và lấy đơn nào","label":"in_scope"}
+{"input":"cho tui tên với số gọi của phòng tài chính và phòng công tác sinh viên","label":"in_scope"}
+{"input":"don gia moi tc ky thuat oto khoa 66","label":"in_scope"}
+{"input":"tôi cần một chiếc taxi lúc tám giờ sáng mai để đưa tôi đi làm","label":"out_of_scope"}
+{"input":"Một tín chỉ Nuôi trồng thủy sản khóa K63 thu bao nhiêu vậy?","label":"in_scope"}
+{"input":"này olly danh sách của tôi là gì","label":"out_of_scope"}
+{"input":"Hành vi vô lễ với giảng viên bị xử lý kỷ luật như thế nào và Thời gian xét cấp học bổng đầu vào (HBĐV) diễn ra khi nào?","label":"out_of_scope"}
+{"input":"Cho biết tên và hướng dẫn của cả thủ tục chuyển ngành lẫn bảo lưu kết quả học tập.","label":"in_scope"}
+{"input":"Học bổng được xét ra sao, cần đáp ứng gì và đơn vị nào phụ trách?","label":"in_scope"}
+{"input":"Tại sao sinh viên phải khám sức khỏe đầu khóa và Nếu em đăng một bài viết lên confession của trường có nội dung chỉ trích một giảng viên, em có bị kỷ luật không?","label":"out_of_scope"}
+{"input":"Mức điểm thưởng vào điểm TBC học tập cho sinh viên đạt giải Nhất các cuộc thi cấp Trung ương là bao nhiêu, đồng thời cho em hỏi Tổ Quản lý Ký túc xá có số điện thoại không?","label":"out_of_scope"}
+{"input":"Xin cho biết điều kiện, đơn cần nộp và đơn vị giải quyết việc bảo lưu kết quả học tập.","label":"in_scope"}
+{"input":"cho xem những tin tức hiện tại từ b. b. c.","label":"out_of_scope"}
+{"input":"Em muốn biết thông tin về Mức khen thưởng cho cá nhân sinh viên đạt giải ba các cuộc thi cấp Học viện là bao nhiêu cũng như Tổ chức một buổi picnic cho lớp ở sân trường có cần xin phép không?","label":"out_of_scope"}
+{"input":"cập nhật về hươu cao cổ bé tư","label":"out_of_scope"}
+{"input":"buổi sáng ngày mai của tôi có gì","label":"out_of_scope"}
+{"input":"Cho tôi nội dung hướng dẫn bảo lưu cùng tên toàn bộ biểu mẫu liên quan.","label":"in_scope"}
+{"input":"dieu kien xet tot nghiep va ket qua nhan duoc","label":"in_scope"}
+{"input":"em muốn biết thông tin về thí sinh tham gia kỳ thi chọn đội tuyển quốc gia dự thi olympic quốc tế môn tin học có được xét tuyển theo diện hồ sơ năng lực ko cũng như học viện có ứng dụng di động nào cho sv ko?","label":"out_of_scope"}
+{"input":"email phong cong tac sv la gi","label":"in_scope"}
+{"input":"liet ke thu tuc hoc vu va hd cach lam tung thu tuc","label":"in_scope"}
+{"input":"Em bị mất chứng chỉ Giáo dục quốc phòng thì có được xét tốt nghiệp không, đồng thời cho em hỏi Khen thưởng cho các đội tự quản, BCH, Ban chủ nhiệm CLB được áp dụng cho bao nhiêu % thành viên?","label":"out_of_scope"}
+{"input":"lam on tat cac den phong ngu","label":"out_of_scope"}
+{"input":"tui học Ô tô khóa 66, tiền mỗi tín tính sao?","label":"in_scope"}
+{"input":"diem duoi bn thi hoc lai","label":"in_scope"}
+{"input":"Xin liệt kê tên ngành thuộc khóa K65 kèm đơn giá học phí một tín chỉ của từng ngành.","label":"in_scope"}
+{"input":"Website chính thức của đơn vị phụ trách công tác học phí là gì?","label":"in_scope"}
+{"input":"Đóng học phí thế nào, cần lưu ý gì và có các cách nào?","label":"in_scope"}
+{"input":"truong cho phep thanh toan hoc phi theo nhung cach nao","label":"in_scope"}
+{"input":"Học viện có hỗ trợ sinh viên trong các cuộc thi Olympic Tin học không và Nguồn kinh phí để khen thưởng cho sinh viên có thành tích đặc biệt xuất sắc được lấy từ đâu?","label":"out_of_scope"}
+{"input":"Xin cung cấp email, địa chỉ làm việc, điện thoại và website của Phòng Kế hoạch và Tài chính.","label":"in_scope"}
+{"input":"cuộc bỏ phiếu cuối cùng trước công chúng của tổng thống trump là gì","label":"out_of_scope"}
+{"input":"hội đồng thành phố hà nội đang làm gì với người vô gia cư","label":"out_of_scope"}
+{"input":"tong so quy trinh hoc vu kem ten tung quy trinh","label":"in_scope"}
+{"input":"ngoài trời như thế nào","label":"out_of_scope"}
+{"input":"Xét tốt nghiệp cần đạt gì, nếu xét sớm dùng đơn nào và hỏi phòng nào?","label":"in_scope"}
+{"input":"hay dat mot chiec taxi","label":"out_of_scope"}
+{"input":"em muon biet thong tin ve thu vien cua truong va em co the bao ve khoa luan tot nghiep tre han khong?","label":"out_of_scope"}
+{"input":"Có bao nhiêu biểu mẫu học vụ và tên của từng biểu mẫu là gì?","label":"in_scope"}
+{"input":"Xin cho biết tên biểu mẫu cần nộp trong hồ sơ đề nghị chuyển ngành.","label":"in_scope"}
+{"input":"cach lam thu tuc xin chuyen sang nganh khac","label":"in_scope"}
+{"input":"bạn nói nhỏ giọng lại đi","label":"out_of_scope"}
+{"input":"tong so nhom dinh muc hoc phi cua khoa k63","label":"in_scope"}
+{"input":"Xin cho biết địa chỉ của Văn phòng Trường.","label":"in_scope"}
+{"input":"Số để gọi tới Phòng Đào tạo đại học là bao nhiêu?","label":"in_scope"}
+{"input":"Hãy liệt kê tên và email của tất cả phòng ban hành chính.","label":"in_scope"}
+{"input":"Cho tui URL của văn bản đang quy định đăng ký học phần.","label":"in_scope"}
+{"input":"Vui lòng cung cấp liên kết đến quy định về việc học lại.","label":"in_scope"}
+{"input":"có chương trình xiếc chó đang diễn tra gần thành phố hồ chí minh không","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em có thể nộp hồ sơ vay vốn sinh viên online được không và thứ hai là Điểm xét tuyển tài năng có thang điểm bao nhiêu?","label":"out_of_scope"}
+{"input":"cho chúng tôi xem màu đỏ","label":"out_of_scope"}
+{"input":"Học bổng tài trợ từ doanh nghiệp có khó xin không và Em muốn tìm một công việc làm thêm liên quan đến ngành học, trường có hỗ trợ không?","label":"out_of_scope"}
+{"input":"cho tui xin link mẫu đơn bảo lưu với","label":"in_scope"}
+{"input":"Nhóm học phí K66 của ngành Ô tô còn gồm những ngành nào khác Ô tô?","label":"in_scope"}
+{"input":"Ai là trưởng bên phụ trách chuyện đăng ký học phần vậy?","label":"in_scope"}
+{"input":"Hệ thống ghi nhận kết quả gì khi đăng ký học phần hợp lệ?","label":"in_scope"}
+{"input":"Mã tổ hợp Toán, Lí, Tin là gì và Em muốn biết về quy định sử dụng phòng thí nghiệm.","label":"out_of_scope"}
+{"input":"tìm chính xác vị trí của những chỗ này","label":"out_of_scope"}
+{"input":"Em có nên sử dụng cùng một mật khẩu cho email sinh viên và các tài khoản mạng xã hội khác không và Học viện có dự kiến mở chương trình liên kết đào tạo ngành Truyền thông Đa phương tiện với trường nào?","label":"out_of_scope"}
+{"input":"Em có thể tốt nghiệp sớm hơn thời gian thiết kế không và Làm sao để gửi bài hát yêu cầu lên chương trình phát thanh của CLB 37 độ Sinh viên?","label":"out_of_scope"}
+{"input":"hỏi vụ học bổng thì kiếm phòng nào","label":"in_scope"}
+{"input":"Mã tổ hợp Toán, Lí, Tin là gì và Em có được phép tự ý sửa chữa hệ thống điện trong phòng KTX không?","label":"out_of_scope"}
+{"input":"Muốn hỏi về chuyển ngành thì gọi phòng phụ trách số nào?","label":"in_scope"}
+{"input":"Chỉ tui các bước chọn và đăng ký học phần trong kỳ với.","label":"in_scope"}
+{"input":"Em muốn biết về các hoạt động của câu lạc bộ Cờ và Chương trình liên kết quốc tế ngành Công nghệ thông tin với Đại học La Trobe, Australia có chỉ tiêu bao nhiêu?","label":"out_of_scope"}
+{"input":"Mỗi mức học phí tín chỉ đang được dùng cho bao nhiêu ngành?","label":"in_scope"}
+{"input":"Điểm đồ án của nhóm được chia đều cho các thành viên phải không và Nếu em có mâu thuẫn với giảng viên, em nên giải quyết như thế nào?","label":"out_of_scope"}
+{"input":"Mỗi mức giá tín chỉ hiện có bao nhiêu ngành áp dụng vậy?","label":"in_scope"}
+{"input":"cho tui mail với web của từng phòng","label":"in_scope"}
+{"input":"chỉ tôi cách nấu theo công thức","label":"out_of_scope"}
+{"input":"dang mot bai moi tren facebook thoi gian de an mung","label":"out_of_scope"}
+{"input":"don vi phu trach thu tuc rut hoc phan","label":"in_scope"}
+{"input":"Điều kiện xét học bổng là gì, kết quả ra sao và đơn vị nào phụ trách?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Học viện có hỗ trợ chi phí cho sinh viên tham gia các cuộc thi học thuật không và thứ hai là Em muốn biết về các quy định về việc thực tập của sinh viên năm cuối.","label":"out_of_scope"}
+{"input":"Mã xét tuyển của ngành Kế toán là gì và Tổng tín chỉ của ngành Kế toán khóa 2025 là bao nhiêu?","label":"out_of_scope"}
+{"input":"Em muốn làm thêm, nhà trường có hỗ trợ giới thiệu việc làm không, đồng thời cho em hỏi Em có được phép sử dụng các phòng chức năng (phòng họp, hội trường) cho hoạt động CLB không?","label":"out_of_scope"}
+{"input":"Tổ Quản lý Ký túc xá có số điện thoại không và Tôi có được sử dụng tài liệu giấy trong kỳ thi không?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em muốn xin giấy xác nhận sinh viên bằng tiếng Anh thì có được không và thứ hai là Tỷ lệ đạo văn bao nhiêu % thì được chấp nhận?","label":"out_of_scope"}
+{"input":"Em có được phép tự ý di chuyển bàn ghế trong phòng học không và Mức khen thưởng cho tập thể sinh viên đạt giải Nhì trong các cuộc thi khác (không phải chuyên môn) cấp Học viện là bao nhiêu?","label":"out_of_scope"}
+{"input":"Sinh viên tham gia các cuộc thi như Thiết kế đồ họa cấp Quốc gia có được xét học bổng sinh viên tài năng không và Trong học kỳ phụ (học kỳ hè) tôi có thể đăng ký tối đa bao nhiêu tín chỉ?","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em vừa nhận học bổng KKHT loại Giỏi và vừa được nhận học bổng của doanh nghiệp X. Em có được nhận cả hai không và thứ hai là Khi em đi học lại sau khi bị đình chỉ, kết quả học tập trước đó có được bảo lưu không?","label":"out_of_scope"}
+{"input":"k65 co bn nhom hp","label":"in_scope"}
+{"input":"Rút môn xong được ghi nhận thế nào và xem quy định ở đâu?","label":"in_scope"}
+{"input":"Nghĩa vụ đóng học phí của sinh viên đối với các học phần đã đăng ký là gì?","label":"in_scope"}
+{"input":"Tổng chỉ tiêu các chương trình chất lượng cao, đặc thù tại cơ sở phía Bắc năm 2025 là bao nhiêu và Em muốn biết về quy định về việc mặc áo đồng phục thể dục.","label":"out_of_scope"}
+{"input":"Email của phòng trực tiếp giải quyết thủ tục nghỉ học tạm thời là gì?","label":"in_scope"}
+{"input":"Hãy liệt kê tên và số điện thoại của tất cả phòng ban.","label":"in_scope"}
+{"input":"Muốn quay lại trường sau đợt bảo lưu thì mẫu đơn cần dùng gọi là gì?","label":"in_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Em bị mất giấy báo trúng tuyển thì có ảnh hưởng gì không và thứ hai là Sinh viên có công trình nghiên cứu khoa học đạt giải Ba cấp Tỉnh/Thành phố có được khen thưởng không?","label":"out_of_scope"}
+{"input":"Tại sao nhà trường lại có quy định về 'cảnh báo học vụ' và Em sử dụng code từ trên mạng (GitHub) cho đồ án môn học mà không ghi nguồn, có bị xem là đạo văn không?","label":"out_of_scope"}
+{"input":"xin gia han nop hp dung don gi","label":"in_scope"}
+{"input":"sinh vien tham gia cac cuoc thi nhu thiet ke do hoa cap quoc gia co duoc xet hoc bong sinh vien tai nang khong va hoc vien co cac chuong trinh trao doi sinh vien trong nuoc khong?","label":"out_of_scope"}
+{"input":"K65 tính tiền một tín chỉ theo hai giá cao nào vậy, bỏ giá lặp nha","label":"in_scope"}
+{"input":"muon tam nghi hoc thi lam sao ket qua dc giu k ai xu ly","label":"in_scope"}
+{"input":"gạch bỏ bánh mì khỏi danh sách mua sắm","label":"out_of_scope"}
+{"input":"kể từng thủ tục rồi nói cách làm mỗi cái","label":"in_scope"}
+{"input":"tạo một danh sách công việc","label":"out_of_scope"}
+{"input":"Cung cấp tên và nội dung hướng dẫn của quy trình chuyển ngành và bảo lưu kết quả học tập.","label":"in_scope"}
+{"input":"Em muốn biết thông tin về Văn bản thông tin tuyển sinh năm 2025 được ký bởi ai cũng như Em có được phép mang đồ ăn nhẹ vào phòng tự học của thư viện không?","label":"out_of_scope"}
+{"input":"Phòng ban nào trực tiếp giải quyết các vấn đề đăng ký học phần?","label":"in_scope"}
+{"input":"Nếu em có IELTS 6.5 và học hệ Chất lượng cao, em được quy đổi điểm như thế nào và Mã xét tuyển của ngành Thiết kế và phát triển Game là gì?","label":"out_of_scope"}
+{"input":"Thống kê giúp mỗi phòng đang phụ trách bao nhiêu thủ tục học vụ.","label":"in_scope"}
+{"input":"bạn có thể chỉ cách công thức nấu mì ý","label":"out_of_scope"}
+{"input":"tui rớt môn rồi, hc lại sao giờ","label":"in_scope"}
+{"input":"bỏ báo thức đặt cho ngày mai","label":"out_of_scope"}
+{"input":"Hãy nêu điều kiện chuyển ngành, nơi nhận hồ sơ và đơn vị xử lý.","label":"in_scope"}
+{"input":"Tôi xem quy định rút môn ở đâu?","label":"in_scope"}
+{"input":"Làm thế nào để tham gia Ban chấp hành Đoàn - Hội Khoa","label":"out_of_scope"}
+{"input":"Cho em hỏi hai vấn đề: thứ nhất là Làm sao để gửi bài hát yêu cầu lên chương trình phát thanh của CLB 37 độ Sinh viên và thứ hai là Khen thưởng cho các đội tự quản, BCH, Ban chủ nhiệm CLB được áp dụng cho bao nhiêu % thành viên?","label":"out_of_scope"}
+{"input":"bai hat dang phat la bai gi","label":"out_of_scope"}
+{"input":"Việc xét tốt nghiệp được thực hiện căn cứ theo văn bản nào?","label":"in_scope"}
+{"input":"Phòng phụ trách học phí có email gì và hiện có các nhóm phí nào?","label":"in_scope"}
+{"input":"gửi tui link tải cả giấy xin nghỉ bảo lưu lẫn giấy quay lại học nha","label":"in_scope"}
+{"input":"ds nganh k65 kem hp 1 tc","label":"in_scope"}
+{"input":"rớt môn học lại thì theo quy định nào thế","label":"in_scope"}

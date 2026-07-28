@@ -105,10 +105,10 @@ audits recorded in the manifest pass.
 - [ ] **Step 2: Build and review the negative inventory**
 
 Create a review table grouped into `clear_ood`, `near_domain`, and `boundary`.
-Assign every semantic family to exactly one split before writing paraphrases.
-Manually compare all `near_domain` and mixed-request families against the 215
-canonical query targets; any partially answerable mixed request is
-`out_of_scope`.
+Distribute every supported negative category across all splits while keeping
+exact and punctuation-only variants in one split. Manually compare all
+`near_domain` and mixed-request families against the 215 canonical query
+targets; any partially answerable mixed request is `out_of_scope`.
 
 - [ ] **Step 3: Write balanced JSONL splits**
 

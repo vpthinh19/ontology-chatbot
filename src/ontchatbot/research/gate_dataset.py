@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from ..runtime.text import normalize_model_input
@@ -10,6 +11,11 @@ from ..runtime.text import normalize_model_input
 GATE_LABELS = ("in_scope", "out_of_scope")
 GATE_SPLITS = ("train", "val", "test")
 _FIELDS = frozenset(("input", "label"))
+_NON_WORD = re.compile(r"[\W_]+", re.UNICODE)
+
+
+def _duplicate_key(text: str) -> str:
+    return _NON_WORD.sub("", normalize_model_input(text).casefold())
 
 
 def load_gate_release(path: Path) -> dict[str, list[dict[str, str]]]:
@@ -57,7 +63,7 @@ def validate_gate_release(
             if not isinstance(text, str) or not text.strip():
                 errors.append({"code": "empty_input", **location})
             else:
-                normalized = normalize_model_input(text).casefold()
+                normalized = _duplicate_key(text)
                 previous = seen_inputs.get(normalized)
                 if previous is not None:
                     errors.append(

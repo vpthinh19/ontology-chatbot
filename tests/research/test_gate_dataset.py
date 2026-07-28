@@ -87,6 +87,16 @@ def test_gate_contract_rejects_normalized_duplicate_across_splits() -> None:
     assert "duplicate_input" in {error["code"] for error in report["errors"]}
 
 
+def test_gate_contract_rejects_duplicate_that_only_differs_by_punctuation() -> None:
+    release = _valid_release()
+    release["test"][0]["input"] = "Điều kiện tốt nghiệp?"
+
+    report = validate_gate_release(release)
+
+    assert report["valid"] is False
+    assert "duplicate_input" in {error["code"] for error in report["errors"]}
+
+
 def test_gate_contract_rejects_imbalanced_split() -> None:
     release = _valid_release()
     release["train"].append(
