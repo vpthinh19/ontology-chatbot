@@ -76,4 +76,4 @@ Trước khi huấn luyện, dataset phải qua các kiểm tra sau:
    không bị cắt.
 
 Số liệu máy đọc, trạng thái sẵn sàng huấn luyện và checksum nằm trong
-`reports/dataset.json` cùng `resources/dataset/manifest.json`.
+`reports/dataset.json` cùng `resources/dataset/main/manifest.json`.

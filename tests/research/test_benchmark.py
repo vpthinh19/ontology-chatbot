@@ -40,7 +40,7 @@ def test_test_set_uses_only_train_supported_queries_and_is_executable() -> None:
 
 
 def test_manifest_checksums_match() -> None:
-    manifest_path = Path("resources/dataset/manifest.json")
+    manifest_path = Path("resources/dataset/main/manifest.json")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 
     for item in manifest["files"].values():

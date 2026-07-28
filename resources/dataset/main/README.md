@@ -32,7 +32,7 @@ query hoặc ontology chưa biết.
 
 Register được cân bằng trong từng split. Không có câu hỏi đã chuẩn hóa hoặc câu
 gần trùng nằm ở hai tập khác nhau. Mọi target đều parse được, chạy được trên
-[`ontology.ttl`](../ontology/ontology.ttl) và trả ít nhất một dòng dữ liệu.
+[`ontology.ttl`](../../ontology/ontology.ttl) và trả ít nhất một dòng dữ liệu.
 
 `manifest.json` chứa kích thước, contract chia tập và SHA-256 để kiểm tra tính
 toàn vẹn. Có thể xác minh lại bằng:

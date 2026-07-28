@@ -8,11 +8,17 @@ from ontchatbot.research.gate_dataset import (
     validate_gate_release,
 )
 from ontchatbot.runtime.text import normalize_model_input
-from ontchatbot.settings import DATASET_DIR, GATE_DIR
+from ontchatbot.settings import DATASET_DIR, GATE_DIR, RESOURCES
 
 
 def _normalized(text: str) -> str:
     return normalize_model_input(text).casefold()
+
+
+def test_dataset_releases_use_named_subdirectories() -> None:
+    assert DATASET_DIR == RESOURCES / "dataset" / "main"
+    assert GATE_DIR == RESOURCES / "dataset" / "gate"
+    assert not (RESOURCES / "gate").exists()
 
 
 def test_gate_release_is_balanced_and_contains_every_supported_question() -> None:

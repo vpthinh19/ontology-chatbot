@@ -41,7 +41,7 @@ từ khóa.
 
 ## Dataset
 
-Dataset gate nằm riêng tại `resources/gate/` với ba file `train.jsonl`,
+Dataset gate nằm tại `resources/dataset/gate/` với ba file `train.jsonl`,
 `val.jsonl` và `test.jsonl`. Mỗi dòng chỉ có hai trường:
 
 ```json

@@ -15,12 +15,12 @@ ONTOLOGY_DIR = RESOURCES / "ontology"
 ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology.ttl"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
-DATASET_DIR = RESOURCES / "dataset"
+DATASET_DIR = RESOURCES / "dataset" / "main"
 TRAIN_DATASET_PATH = DATASET_DIR / "train.jsonl"
 VAL_DATASET_PATH = DATASET_DIR / "val.jsonl"
 TEST_DATASET_PATH = DATASET_DIR / "test.jsonl"
 DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
 
-GATE_DIR = RESOURCES / "gate"
+GATE_DIR = RESOURCES / "dataset" / "gate"
 
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"

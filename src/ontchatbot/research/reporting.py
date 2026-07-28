@@ -359,7 +359,7 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
         },
         "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
         "ontology": {
-            "path": "../ontology/ontology.ttl",
+            "path": "../../ontology/ontology.ttl",
             "sha256": report["sha256"]["ontology.ttl"],
         },
     }

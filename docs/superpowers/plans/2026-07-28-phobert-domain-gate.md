@@ -13,7 +13,7 @@
 - `in_scope` chỉ áp dụng khi ontology và contract SPARQL hiện tại trả lời đầy đủ toàn bộ câu hỏi.
 - Không word-segment; train và inference dùng chung `normalize_model_input`.
 - Không cosine similarity, fuzzy matching, luật từ khóa hoặc router theo intent.
-- Dataset mỗi dòng có đúng `input` và `label`; ba split nằm ở `resources/gate/`.
+- Dataset mỗi dòng có đúng `input` và `label`; ba split nằm ở `resources/dataset/gate/`.
 - Một seed `42`, dropout mặc định, learning rate `2e-5`, cosine scheduler, `warmup_steps=0.1`, dynamic padding, tối đa 5 epoch.
 - Không sửa ontology, dataset SPARQL hoặc benchmark ba model sinh SPARQL.
 - Không tích hợp production nếu gate không đạt false acceptance rate ≤ 1% và in-scope recall ≥ 95% trên test.
@@ -84,11 +84,11 @@ git commit -m "Add domain gate dataset contract"
 ### Task 2: Curated gate dataset
 
 **Files:**
-- Create: `resources/gate/train.jsonl`
-- Create: `resources/gate/val.jsonl`
-- Create: `resources/gate/test.jsonl`
-- Create: `resources/gate/README.md`
-- Create: `resources/gate/manifest.json`
+- Create: `resources/dataset/gate/train.jsonl`
+- Create: `resources/dataset/gate/val.jsonl`
+- Create: `resources/dataset/gate/test.jsonl`
+- Create: `resources/dataset/gate/README.md`
+- Create: `resources/dataset/gate/manifest.json`
 - Test: `tests/research/test_gate_release.py`
 
 **Interfaces:**
@@ -132,7 +132,7 @@ normalized duplicates.
 - [ ] **Step 5: Commit the dataset**
 
 ```bash
-git add resources/gate tests/research/test_gate_release.py
+git add resources/dataset/gate tests/research/test_gate_release.py
 git commit -m "Add ontology domain gate dataset"
 ```
 
