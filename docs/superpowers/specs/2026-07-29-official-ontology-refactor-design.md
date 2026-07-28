@@ -200,8 +200,13 @@ Quyết định 1052; mỗi form có số và label lấy từ đúng điều kh
 
 Tạo một `FormCatalogueEntry` cho từng liên kết trong `bieumau_url.html`. Mỗi
 entry giữ `listedTitle`, số niêm yết nếu có và `downloadUrl` tuyệt đối được
-resolve từ URL gốc của trang. Các mục bổ sung như phiếu điều chỉnh điểm vẫn là
-catalogue entry nhưng không tự động trở thành biểu mẫu của Quyết định 1052.
+resolve trên origin `https://pdtdaihoc.ntu.edu.vn`. Chuỗi điều hướng `../` trong
+HTML được chuẩn hóa về đường dẫn gốc `/uploads/...`; không nối nó phía sau
+`/van-ban-phap-quy`. Ví dụ một href trỏ tới
+`../../uploads/38/files/Van-Ban-Truong/...` phải trở thành
+`https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/...`. Các mục bổ
+sung như phiếu điều chỉnh điểm vẫn là catalogue entry nhưng không tự động trở
+thành biểu mẫu của Quyết định 1052.
 
 Danh mục HTML có ngày đăng 21/08/2020 và đánh số theo phiên bản cũ. Ví dụ, đơn
 xin nghỉ học tạm thời là Mẫu 8 trên trang nhưng là Mẫu 9 trong Quyết định 1052.
@@ -393,4 +398,7 @@ Ontology mới chỉ được chấp nhận khi:
    chuyển ngành, tốt nghiệp, biểu mẫu, học phí theo ngành/khóa, phương thức
    thanh toán, xếp loại điểm, quy mô lớp, ngoại ngữ và tin học.
 9. Query chỉ project label hoặc literal; object property chỉ tạo đường đi.
-10. Không thay đổi code/dataset/model trong commit refactor ontology.
+10. Mọi URL tải biểu mẫu dùng origin `https://pdtdaihoc.ntu.edu.vn`, có đường
+    dẫn gốc `/uploads/...` (giữ nguyên hoa/thường của href nếu có) và không còn
+    đoạn `../`.
+11. Không thay đổi code/dataset/model trong commit refactor ontology.
