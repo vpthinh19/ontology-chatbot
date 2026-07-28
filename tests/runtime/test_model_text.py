@@ -28,9 +28,35 @@ def test_expand_entity_and_compact_numeric_abbreviations() -> None:
 
 
 def test_preserve_ambiguous_abbreviations_and_token_boundaries() -> None:
-    source = "dk hp sao, timestamp svx hcmc"
+    source = "timestamp svx hcmc"
 
     assert normalize_model_input(source) == source
+
+
+def test_expand_additional_academic_abbreviations() -> None:
+    source = "đk hp, ĐKHP, dkmh, CTDT, cvht, GDTC, gdqp, GPA, KQHT, MH, BL, PDT"
+
+    assert normalize_model_input(source) == (
+        "đăng ký học phần, đăng ký học phần, đăng ký môn học, "
+        "chương trình đào tạo, cố vấn học tập, giáo dục thể chất, "
+        "giáo dục quốc phòng, điểm trung bình, kết quả học tập, "
+        "môn học, bảo lưu, phòng đào tạo"
+    )
+
+
+def test_expand_conservative_chat_spellings() -> None:
+    source = "khong bik đc hp lam thnao, bjo hoc, trc do vs ai, cx rui"
+
+    assert normalize_model_input(source) == (
+        "không biết được học phần làm thế nào, bao giờ học, "
+        "trước do với ai, cũng rồi"
+    )
+
+
+def test_preserve_excluded_ambiguous_tokens() -> None:
+    source = "bn hk bg m h v g ng nh ck"
+
+    assert normalize_model_input(source) == "bao nhiêu hk bg m h v g ng nh ck"
 
 
 def test_expand_domain_labels_and_common_acronyms() -> None:
