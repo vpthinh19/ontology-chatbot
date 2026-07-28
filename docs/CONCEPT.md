@@ -12,7 +12,7 @@ không có thông tin
 hoặc một dòng SPARQL:
 
 ```sparql
-SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }
+SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }
 ```
 
 Model được phép học schema và canonical IRI của ontology. Nó không học literal

@@ -14,6 +14,7 @@ tài liệu chính thức.
 
 ```text
 resources/dataset/main/
+├── catalogue.jsonl
 ├── train.jsonl
 ├── val.jsonl
 ├── test.jsonl
@@ -28,11 +29,11 @@ Mỗi dòng JSON Lines có đúng năm trường:
 
 ```json
 {
-  "id": "question-0001",
-  "query_id": "query-0001",
+  "id": "question-000001",
+  "query_id": "procedure-instruction",
   "register": "formal",
   "input": "Tôi cần thực hiện thủ tục bảo lưu như thế nào?",
-  "target": "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }"
+  "target": "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }"
 }
 ```
 
@@ -48,8 +49,9 @@ Câu ngoài miền dùng:
 }
 ```
 
-`query_id` ánh xạ một-một tới target canonical. Mọi câu từ chối dùng
-`no-information`. `register` có bốn giá trị:
+`query_id` chọn một template trong catalogue. Các slot IRI hoặc số được thế vào
+template, vì vậy một họ truy vấn có thể có nhiều target canonical. Mọi câu từ
+chối dùng `no-information`. `register` có bốn giá trị:
 
 | Register | Cách diễn đạt |
 |---|---|
@@ -73,10 +75,10 @@ Không tạo target trả lời một phần câu hỗn hợp.
 
 ## Câu hỏi thực tế
 
-`resources/cases/user_queries.txt` lưu nguyên văn các câu đã được người dùng thử
-trên giao diện. Khi ontology mới hoàn tất, từng câu phải được đối chiếu dữ liệu
-thật, gán SPARQL hoặc marker rồi đưa vào đúng split. File nguồn tiếp tục được
-giữ làm ca hồi quy, không tự động được loader xem là dữ liệu train.
+`resources/cases/user_queries.txt` lưu nguyên văn bảy câu đã được người dùng thử
+trên giao diện. Mỗi câu đã được đối chiếu với ontology, có quyết định SPARQL
+hoặc marker trong release và được test hồi quy. File nguồn không được loader tự
+động xem là dữ liệu train.
 
 ## Train, validation và test
 
@@ -85,7 +87,8 @@ diễn đạt chưa thấy cho những chức năng đã được dạy, không 
 trên schema mới. Cả ba split phải có đầy đủ bốn register và các nhóm ngoài miền
 quan trọng.
 
-Các quy tắc leakage:
+Release hiện có 456 câu: 340 train, 58 validation và 58 test; gồm 24 họ truy
+vấn, trong đó 96 câu mang marker từ chối. Các quy tắc leakage:
 
 1. ID là duy nhất toàn bộ release.
 2. Câu trùng sau `normalize_model_input` không được nằm ở hai split.
@@ -107,5 +110,5 @@ Dataset chỉ sẵn sàng huấn luyện khi:
    ở token cấu trúc và không bị cắt;
 7. manifest/checksum được sinh từ file thật sau lần kiểm tra cuối.
 
-Số câu, số query, phân bố và biểu đồ chỉ được công bố từ manifest của dataset
-mới, không kế thừa báo cáo hiện tại.
+Số câu, phân bố, checksum và biểu đồ được sinh từ `manifest.json` và
+`reports/dataset.json`, không điền tay từ log huấn luyện.

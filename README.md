@@ -59,15 +59,16 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset duy nhất nằm tại `resources/dataset/main/` và gồm ba split
-`train.jsonl`, `val.jsonl`, `test.jsonl`. Câu trong miền ánh xạ tới SPARQL;
-câu ngoài miền ánh xạ tới `không có thông tin`. Các câu đã được người dùng thử
-trên giao diện được giữ tại `resources/cases/user_queries.txt` và phải được gán
-lại target theo ontology mới.
+Dataset duy nhất nằm tại `resources/dataset/main/`, gồm catalogue và ba split.
+Release hiện có 456 câu thuộc 24 họ truy vấn: 340 train, 58 validation và 58
+test. Trong đó 96 câu (21,1%) dạy marker từ chối; 360 câu còn lại phủ quy trình,
+học phí/thanh toán, biểu mẫu, quy tắc định lượng và quy đổi chứng chỉ. Toàn bộ
+target SPARQL đã thực thi có kết quả trên ontology, mọi IRI hữu hạn đã có trong
+train và không có leakage câu đã chuẩn hóa giữa các split.
 
-Không công bố số lượng hoặc biểu đồ từ dữ liệu cũ. Thống kê chỉ có giá trị sau
-khi dataset mới vượt kiểm tra schema, leakage, khả năng thực thi SPARQL và
-tokenizer.
+Phân bố cùng checksum được sinh trong `resources/dataset/main/manifest.json`
+và `reports/dataset.json`. Các câu người dùng thực tế được giữ tại
+`resources/cases/user_queries.txt` và đã có quyết định hồi quy trong release.
 
 Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 

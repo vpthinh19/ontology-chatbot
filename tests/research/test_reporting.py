@@ -24,14 +24,16 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 2263
-    assert report["dataset"]["queries"] == 215
+    assert report["dataset"]["records"] == 456
+    assert report["dataset"]["query_families"] == 24
+    assert report["dataset"]["domains"]["procedure"] > 0
+    assert report["dataset"]["domains"]["out-of-domain"] > 0
     assert report["in_domain_contract"] == {
-        "train_queries": 215,
-        "validation_queries_supported_by_train": 215,
-        "validation_queries": 215,
-        "test_queries_supported_by_train": 215,
-        "test_queries": 215,
+        "train_queries": 24,
+        "validation_queries_supported_by_train": 24,
+        "validation_queries": 24,
+        "test_queries_supported_by_train": 24,
+        "test_queries": 24,
     }
     assert report["ontology"]["resources_missing_vietnamese_label"] == []
     assert set(report["dataset"]["query_features_by_split"]) == {
@@ -39,7 +41,9 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
         "val",
         "test",
     }
-    assert report["training_readiness"] == {"ready": True, "gaps": []}
+    assert report["training_readiness"]["ready"] is True
+    assert report["training_readiness"]["finite_slots_missing_from_train"] == []
+    assert report["sha256"]["catalogue.jsonl"]
 
     write_public_reports(report, output_dir=tmp_path)
     assert (tmp_path / "dataset.json").is_file()
@@ -48,7 +52,7 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     assert (tmp_path / "figures/query-features.svg").is_file()
 
 
-def test_training_readiness_uses_the_four_two_two_split_contract() -> None:
+def test_training_readiness_reports_missing_finite_slot_values() -> None:
     release = {
         "train": [
             {"query_id": "query-0001", "register": "formal"},
@@ -58,26 +62,23 @@ def test_training_readiness_uses_the_four_two_two_split_contract() -> None:
         "test": [{"query_id": "query-0001", "register": "noisy"}],
     }
     validation = {
-        "splits": {
-            split: {"empty_result_ids": []} for split in ("train", "val", "test")
+        "slot_coverage": {
+            "query-0001": {
+                "entity": {
+                    "declared": [":One", ":Two"],
+                    "seen_train": [":One"],
+                    "missing_train": [":Two"],
+                }
+            }
         }
     }
 
     report = _build_training_readiness(release, validation)
 
-    assert report == {
-        "ready": False,
-        "gaps": [
-            {
-                "code": "insufficient_split_records",
-                "splits": {
-                    "train": {"records": 2, "minimum": 4},
-                    "val": {"records": 1, "minimum": 2},
-                    "test": {"records": 1, "minimum": 2},
-                },
-            }
-        ],
-    }
+    assert report["ready"] is False
+    assert report["finite_slots_missing_from_train"] == [
+        {"query_id": "query-0001", "slot": "entity", "values": [":Two"]}
+    ]
 
 
 def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
@@ -89,9 +90,10 @@ def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
     contract = json.loads(path.read_text(encoding="utf-8"))["split_contract"]
     assert contract["train_min_rows_per_query"] == 4
     assert contract["train_registers_per_query"] == 4
-    assert contract["val_rows_per_query"] == 2
-    assert contract["test_rows_per_query"] == 2
-    assert contract["held_out_registers_per_query"] == 2
+    assert contract["val_min_rows_per_query"] == 2
+    assert contract["test_min_rows_per_query"] == 2
+    assert contract["held_out_min_registers_per_query"] == 2
+    assert contract["catalogue_path"] == "catalogue.jsonl"
 
 
 def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:
@@ -172,7 +174,7 @@ def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> 
 
     assert report is not None
     assert report["models"]["bartpho"]["validation"]["answer_exact_rate"] == 0.5
-    assert report["models"]["bartpho"]["inference"]["records"] == 430
+    assert report["models"]["bartpho"]["inference"]["records"] == len(release["val"])
     assert report["models"]["bartpho"]["training"][
         "artifact_roundtrip_verified"
     ] is True

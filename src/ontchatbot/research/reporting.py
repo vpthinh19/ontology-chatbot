@@ -16,6 +16,7 @@ from rdflib import OWL, RDF, RDFS, Graph, URIRef
 from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
+from .catalogue import load_catalogue
 from .dataset import (
     HELD_OUT_REGISTERS_PER_QUERY,
     HELD_OUT_ROWS_PER_QUERY,
@@ -45,7 +46,9 @@ def build_dataset_report(
 ) -> dict[str, Any]:
     """Summarize the data contract without exposing curation history."""
 
-    validation = validate_release(dict(release), graph)
+    catalogue_path = Path(dataset_dir) / "catalogue.jsonl"
+    catalogue = load_catalogue(catalogue_path)
+    validation = validate_release(dict(release), graph, catalogue)
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
     train_queries = {row["query_id"] for row in release["train"]}
@@ -56,26 +59,36 @@ def build_dataset_report(
         for subject in graph.subjects(RDF.type, OWL.ObjectProperty)
         if isinstance(subject, URIRef)
     )
+    in_domain_rows = [row for row in all_rows if catalogue[row["query_id"]].domain != "out-of-domain"]
     query_features_by_split = {
-        split: _query_feature_counts(release[split], object_properties)
+        split: _query_feature_counts(
+            [
+                row
+                for row in release[split]
+                if catalogue[row["query_id"]].domain != "out-of-domain"
+            ],
+            object_properties,
+        )
         for split in REQUIRED_SPLITS
     }
 
     report = {
         "dataset": {
             "records": len(all_rows),
-            "queries": len({row["query_id"] for row in all_rows}),
+            "query_families": len(catalogue),
             "targets": len({row["target"] for row in all_rows}),
+            "domains": validation["domains"],
             "splits": {
                 split: {
                     "records": len(release[split]),
-                    "queries": len({row["query_id"] for row in release[split]}),
+                    "query_families": len({row["query_id"] for row in release[split]}),
                     "targets": len({row["target"] for row in release[split]}),
+                    "domains": validation["splits"][split]["domains"],
                 }
                 for split in REQUIRED_SPLITS
             },
             "registers": dict(sorted(Counter(row["register"] for row in all_rows).items())),
-            "query_features": _query_feature_counts(all_rows, object_properties),
+            "query_features": _query_feature_counts(in_domain_rows, object_properties),
             "query_features_by_split": query_features_by_split,
             "input_words": _number_summary(word_lengths),
         },
@@ -96,6 +109,7 @@ def build_dataset_report(
                 f"{split}.jsonl": sha256_file(Path(dataset_dir) / f"{split}.jsonl")
                 for split in REQUIRED_SPLITS
             },
+            "catalogue.jsonl": sha256_file(catalogue_path),
             "ontology.ttl": sha256_file(ontology_path),
         },
     }
@@ -329,7 +343,7 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             "format": "jsonl",
             "fields": ["id", "query_id", "register", "input", "target"],
             "input": "Vietnamese natural-language question",
-            "target": "one-line canonical SPARQL SELECT without PREFIX declarations",
+            "target": "one-line canonical SPARQL SELECT or the exact rejection marker",
         },
         "files": {
             split: {
@@ -339,10 +353,16 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             }
             for split in REQUIRED_SPLITS
         },
+        "catalogue": {
+            "path": "catalogue.jsonl",
+            "query_families": dataset["query_families"],
+            "sha256": report["sha256"]["catalogue.jsonl"],
+        },
         "totals": {
             "records": dataset["records"],
-            "queries": dataset["queries"],
+            "query_families": dataset["query_families"],
             "targets": dataset["targets"],
+            "domains": dataset["domains"],
         },
         "split_contract": {
             "train": "model fitting over every supported canonical query",
@@ -350,9 +370,10 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             "test": "unseen wording for queries supported by train",
             "train_min_rows_per_query": TRAIN_MIN_ROWS_PER_QUERY,
             "train_registers_per_query": len(REGISTER_ORDER),
-            "val_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
-            "test_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
-            "held_out_registers_per_query": HELD_OUT_REGISTERS_PER_QUERY,
+            "val_min_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
+            "test_min_rows_per_query": HELD_OUT_ROWS_PER_QUERY,
+            "held_out_min_registers_per_query": HELD_OUT_REGISTERS_PER_QUERY,
+            "catalogue_path": "catalogue.jsonl",
             "query_catalogue_shared": True,
             "normalized_question_leakage": False,
             "near_duplicate_question_leakage": False,
@@ -423,37 +444,24 @@ def _build_training_readiness(
     if missing:
         gaps.append({"code": "queries_missing_from_split", "splits": missing})
 
-    minimum_records = {
-        "train": len(expected_queries) * TRAIN_MIN_ROWS_PER_QUERY,
-        "val": len(expected_queries) * HELD_OUT_ROWS_PER_QUERY,
-        "test": len(expected_queries) * HELD_OUT_ROWS_PER_QUERY,
-    }
-    short_splits = {
-        split: {"records": len(release[split]), "minimum": minimum}
-        for split, minimum in minimum_records.items()
-        if len(release[split]) < minimum
-    }
-    if short_splits:
-        gaps.append({"code": "insufficient_split_records", "splits": short_splits})
+    missing_slots = [
+        {
+            "query_id": query_id,
+            "slot": slot,
+            "values": details["missing_train"],
+        }
+        for query_id, slots in validation.get("slot_coverage", {}).items()
+        for slot, details in slots.items()
+        if details["missing_train"]
+    ]
+    if missing_slots:
+        gaps.append({"code": "finite_slots_missing_from_train", "slots": missing_slots})
 
-    imbalanced = {}
-    for split in REQUIRED_SPLITS:
-        counts = Counter(row["register"] for row in release[split])
-        values = [counts.get(register, 0) for register in REGISTER_ORDER]
-        if values and max(values) - min(values) > 1:
-            imbalanced[split] = dict(sorted(counts.items()))
-    if imbalanced:
-        gaps.append({"code": "register_imbalance", "splits": imbalanced})
-
-    empty_results = {
-        split: report["empty_result_ids"]
-        for split, report in validation["splits"].items()
-        if report["empty_result_ids"]
+    return {
+        "ready": not gaps,
+        "finite_slots_missing_from_train": missing_slots,
+        "gaps": gaps,
     }
-    if empty_results:
-        gaps.append({"code": "empty_query_results", "splits": empty_results})
-
-    return {"ready": not gaps, "gaps": gaps}
 
 
 def _number_summary(values: Sequence[int]) -> dict[str, int | float]:
