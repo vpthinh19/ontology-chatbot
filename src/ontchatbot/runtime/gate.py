@@ -22,6 +22,9 @@ class GateDecision:
 
 
 class DomainGate(Protocol):
+    @property
+    def threshold(self) -> float: ...
+
     def decide(self, text: str) -> GateDecision: ...
 
 
