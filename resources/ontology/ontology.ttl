@@ -2,14 +2,265 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:AcademicManagementUnit a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn vị quản lý đào tạo"@vi ;
+    :sourceDocument :Decision1052 .
 
 :AcademicOntology a owl:Ontology ;
     rdfs:label "Ontology học vụ Trường Đại học Nha Trang"@vi .
 
-:GuidanceDocument a owl:Class ;
-    rdfs:label "Tài liệu hướng dẫn"@vi ;
-    rdfs:subClassOf :OfficialDocument .
+:ClassAbsenceRequestProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin phép nghỉ học"@vi ;
+    :instructionProvision :Decision1052Article17 ;
+    :requiresForm :Decision1052Form03 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article17 .
+
+:CourseExemptionAndBonusProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình miễn học, miễn thi và cộng điểm thưởng"@vi ;
+    :instructionProvision :Decision1052Article21 ;
+    :requiresForm :Decision1052Form07 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article21 .
+
+:CourseRegistrationProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đăng ký học phần"@vi ;
+    :instructionProvision :Decision1052Article09 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article09 ;
+    skos:altLabel "ĐKHP"@vi .
+
+:CourseRetakeProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đăng ký học lại"@vi ;
+    :instructionProvision :Decision1052Article11 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article11 ;
+    skos:altLabel "học lại"@vi .
+
+:CreditRecognitionProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
+    :instructionProvision :Decision1052Article21 ;
+    :requiresForm :Decision1052Form06 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article21 .
+
+:Department a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Bộ môn"@vi ;
+    :sourceDocument :Decision1052 .
+
+:DismissalTransferRequestProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin chuyển chương trình sau khi bị buộc thôi học"@vi ;
+    :instructionProvision :Decision1052Article20 ;
+    :requiresForm :Decision1052Form05 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article20 .
+
+:EarlyGraduationReviewProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đề nghị xét tốt nghiệp sớm"@vi ;
+    :instructionProvision :Decision1052Article22 ;
+    :requiresForm :Decision1052Form08 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article22 .
+
+:ExamPostponementProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin hoãn thi"@vi ;
+    :instructionProvision :Decision1052Article17 ;
+    :requiresForm :Decision1052Form04 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article17 .
+
+:ExtraClassOpeningRequestProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đề nghị mở thêm lớp học phần"@vi ;
+    :instructionProvision :Decision1052Article10 ;
+    :requiresForm :Decision1052Form01 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article10 .
+
+:FacultyOrInstitute a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Khoa hoặc viện đào tạo"@vi ;
+    :sourceDocument :Decision1052 .
+
+:GradeImprovementProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đăng ký học cải thiện"@vi ;
+    :instructionProvision :Decision1052Article11 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article11 ;
+    skos:altLabel "học cải thiện"@vi .
+
+:GraduationCouncil a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
+    :sourceDocument :Decision1052 .
+
+:GraduationProjectRegistrationProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp"@vi ;
+    :instructionProvision :Decision1052Article14 ;
+    :requiresForm :Decision1052Form02 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article14 ;
+    skos:altLabel "ĐATN"@vi .
+
+:GraduationReviewProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xét và công nhận tốt nghiệp"@vi ;
+    :instructionProvision :Decision1052Article22 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article22 .
+
+:MajorChangeProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình chuyển ngành"@vi ;
+    :instructionProvision :Decision1052Article25 ;
+    :requiresForm :Decision1052Form12 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article25 .
+
+:ProfessionalCouncil a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hội đồng chuyên môn"@vi ;
+    :sourceDocument :Decision1052 .
+
+:SecondProgramRegistrationProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình học cùng lúc hai chương trình"@vi ;
+    :instructionProvision :Decision1052Article28 ;
+    :requiresForm :Decision1052Form15 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article28 ;
+    skos:altLabel "học chương trình thứ hai"@vi .
+
+:Student a :AcademicActor,
+        owl:NamedIndividual ;
+    rdfs:label "Sinh viên"@vi ;
+    :sourceDocument :Decision1052 .
+
+:StudentAffairsOffice a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
+    :sourceDocument :Decision1052 .
+
+:StudentExchangeProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình tham gia chương trình trao đổi sinh viên"@vi ;
+    :instructionProvision :Decision1052Article27 ;
+    :requiresForm :Decision1052Form14 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article27 .
+
+:StudyResumptionProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin học trở lại"@vi ;
+    :instructionProvision :Decision1052Article24 ;
+    :requiresForm :Decision1052Form11 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 .
+
+:StudyWithdrawalProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin thôi học"@vi ;
+    :instructionProvision :Decision1052Article24 ;
+    :requiresForm :Decision1052Form10 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 .
+
+:TemporaryAcademicLeaveProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin nghỉ học tạm thời"@vi ;
+    :instructionProvision :Decision1052Article24 ;
+    :requiresForm :Decision1052Form09 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 ;
+    skos:altLabel "bảo lưu"@vi .
+
+:TuitionPaymentProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình đóng học phí"@vi ;
+    :instructionProvision :TuitionPaymentGuidanceProvision01 ;
+    :sourceDocument :TuitionPaymentGuidance ;
+    :sourceProvision :TuitionPaymentGuidanceProvision01 .
+
+:UndergraduateFormCatalogue a :FormCatalogue,
+        owl:NamedIndividual ;
+    rdfs:label "Danh mục biểu mẫu đào tạo đại học"@vi ;
+    :hasCatalogueEntry :FormCatalogueEntry001,
+        :FormCatalogueEntry002,
+        :FormCatalogueEntry003,
+        :FormCatalogueEntry004,
+        :FormCatalogueEntry005,
+        :FormCatalogueEntry006,
+        :FormCatalogueEntry007,
+        :FormCatalogueEntry008,
+        :FormCatalogueEntry009,
+        :FormCatalogueEntry010,
+        :FormCatalogueEntry011,
+        :FormCatalogueEntry012,
+        :FormCatalogueEntry013,
+        :FormCatalogueEntry014,
+        :FormCatalogueEntry015,
+        :FormCatalogueEntry016,
+        :FormCatalogueEntry017,
+        :FormCatalogueEntry018,
+        :FormCatalogueEntry019 ;
+    :webPageUrl "https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy"^^xsd:anyURI .
+
+:University a :AcademicActor,
+        :OrganizationalUnit,
+        owl:NamedIndividual ;
+    rdfs:label "Trường Đại học Nha Trang"@vi ;
+    :sourceDocument :Decision1052 .
+
+:UniversityPresident a :AcademicActor,
+        :DecisionAuthority,
+        owl:NamedIndividual ;
+    rdfs:label "Hiệu trưởng"@vi ;
+    :sourceDocument :Decision1052 .
+
+:UniversityTransferProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình chuyển trường"@vi ;
+    :instructionProvision :Decision1052Article26 ;
+    :requiresForm :Decision1052Form13 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article26 .
+
+:catalogueEntryForForm a owl:ObjectProperty ;
+    rdfs:label "là mục tải cho biểu mẫu"@vi ;
+    rdfs:domain :FormCatalogueEntry ;
+    rdfs:range :FormDocument .
+
+:deadlineProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản về thời hạn"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :DocumentPart ;
+    rdfs:subPropertyOf :sourceProvision .
+
+:decidedBy a owl:ObjectProperty ;
+    rdfs:label "được quyết định bởi"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :DecisionAuthority .
 
 :documentNumber a owl:DatatypeProperty ;
     rdfs:label "số văn bản"@vi ;
@@ -19,6 +270,11 @@
 :documentUrl a owl:DatatypeProperty ;
     rdfs:label "URL tài liệu"@vi ;
     rdfs:domain :OfficialDocument ;
+    rdfs:range xsd:anyURI .
+
+:downloadUrl a owl:DatatypeProperty ;
+    rdfs:label "URL tải xuống"@vi ;
+    rdfs:domain :FormCatalogueEntry ;
     rdfs:range xsd:anyURI .
 
 :effectiveFromAcademicYear a owl:DatatypeProperty ;
@@ -31,6 +287,22 @@
     rdfs:domain :OfficialDocument ;
     rdfs:range xsd:string .
 
+:eligibilityProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản về điều kiện"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :DocumentPart ;
+    rdfs:subPropertyOf :sourceProvision .
+
+:formNumber a owl:DatatypeProperty ;
+    rdfs:label "số biểu mẫu"@vi ;
+    rdfs:domain :FormDocument ;
+    rdfs:range xsd:string .
+
+:hasCatalogueEntry a owl:ObjectProperty ;
+    rdfs:label "có mục danh mục"@vi ;
+    rdfs:domain :FormCatalogue ;
+    rdfs:range :FormCatalogueEntry .
+
 :hasPart a owl:ObjectProperty ;
     rdfs:label "có thành phần"@vi ;
     rdfs:domain :DocumentComponent ;
@@ -42,10 +314,26 @@
     rdfs:domain :DocumentPart ;
     rdfs:range rdf:langString .
 
+:instructionProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản hướng dẫn"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :DocumentPart ;
+    rdfs:subPropertyOf :sourceProvision .
+
 :issueDate a owl:DatatypeProperty ;
     rdfs:label "ngày ban hành"@vi ;
     rdfs:domain :OfficialDocument ;
     rdfs:range xsd:date .
+
+:listedFormNumber a owl:DatatypeProperty ;
+    rdfs:label "số biểu mẫu niêm yết"@vi ;
+    rdfs:domain :FormCatalogueEntry ;
+    rdfs:range xsd:string .
+
+:listedTitle a owl:DatatypeProperty ;
+    rdfs:label "tên niêm yết"@vi ;
+    rdfs:domain :FormCatalogueEntry ;
+    rdfs:range rdf:langString .
 
 :officialText a owl:DatatypeProperty ;
     rdfs:label "nội dung chính thức"@vi ;
@@ -57,13 +345,30 @@
     rdfs:domain :DocumentPart ;
     rdfs:range xsd:nonNegativeInteger .
 
+:requiresForm a owl:ObjectProperty ;
+    rdfs:label "yêu cầu biểu mẫu"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :FormDocument .
+
+:resultProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản về kết quả"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :DocumentPart ;
+    rdfs:subPropertyOf :sourceProvision .
+
+:reviewedBy a owl:ObjectProperty ;
+    rdfs:label "được xem xét bởi"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :AcademicActor .
+
 :sourceDocument a owl:ObjectProperty ;
     rdfs:label "có tài liệu nguồn"@vi ;
     rdfs:range :OfficialDocument .
 
-:sourceProvision a owl:ObjectProperty ;
-    rdfs:label "có điều khoản nguồn"@vi ;
-    rdfs:range :DocumentPart .
+:submittedTo a owl:ObjectProperty ;
+    rdfs:label "nộp cho"@vi ;
+    rdfs:domain :AcademicProcedure ;
+    rdfs:range :AcademicActor .
 
 :title a owl:DatatypeProperty ;
     rdfs:label "tiêu đề"@vi ;
@@ -74,6 +379,11 @@
     rdfs:label "có hiệu lực đến khi được thay thế"@vi ;
     rdfs:domain :OfficialDocument ;
     rdfs:range xsd:boolean .
+
+:webPageUrl a owl:DatatypeProperty ;
+    rdfs:label "URL trang web"@vi ;
+    rdfs:domain :FormCatalogue ;
+    rdfs:range xsd:anyURI .
 
 :AttachedRegulation a owl:Class ;
     rdfs:label "Quy chế đính kèm"@vi ;
@@ -1989,6 +2299,48 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :partOf :Decision1052 ;
     :sourceDocument :Decision1052 .
 
+:Decision1052Form02 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp"@vi ;
+    :formNumber "02" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article14 .
+
+:Decision1052Form05 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin chuyển chương trình đào tạo sau khi bị buộc thôi học"@vi ;
+    :formNumber "05" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article20 .
+
+:Decision1052Form06 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Mẫu đề nghị miễn học và quy đổi điểm học phần"@vi ;
+    :formNumber "06" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article21 .
+
+:Decision1052Form08 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn đề nghị xét tốt nghiệp sớm"@vi ;
+    :formNumber "08" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article22 .
+
+:Decision1052Form10 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin thôi học"@vi ;
+    :formNumber "10" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 .
+
+:Decision1052Form14 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn đăng ký tham gia chương trình trao đổi sinh viên"@vi ;
+    :formNumber "14" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article27 .
+
 :EnglishMajorOtherLanguageCertificateTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
     rdfs:label "Dòng 1 - Bảng chứng chỉ ngoại ngữ khác - ngành Ngôn ngữ Anh"@vi ;
@@ -2033,6 +2385,148 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :EnglishMajorOtherLanguageCertificateTable ;
     :sourceDocument :Decision1052 .
+
+:FormCatalogueEntry001 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin mở lớp học phần"@vi ;
+    :catalogueEntryForForm :Decision1052Form01 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2001%20-%20%C4%90%C6%A1n%20xin%20m%E1%BB%9F%20l%E1%BB%9Bp%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx"^^xsd:anyURI ;
+    :listedFormNumber "1" ;
+    :listedTitle "Đơn xin mở lớp học phần"@vi .
+
+:FormCatalogueEntry002 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Phiếu đăng ký/điều chỉnh học phần"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2002%20-%20Phi%E1%BA%BFu%20%C4%91%C4%83ng%20k%C3%BD%2C%20%C4%91i%E1%BB%81u%20ch%E1%BB%89nh%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx"^^xsd:anyURI ;
+    :listedFormNumber "2" ;
+    :listedTitle "Phiếu đăng ký/điều chỉnh học phần"@vi .
+
+:FormCatalogueEntry003 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin phép nghỉ học"@vi ;
+    :catalogueEntryForForm :Decision1052Form03 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2003%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc.docx"^^xsd:anyURI ;
+    :listedFormNumber "3" ;
+    :listedTitle "Đơn xin phép nghỉ học"@vi .
+
+:FormCatalogueEntry004 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin hoãn thi"@vi ;
+    :catalogueEntryForForm :Decision1052Form04 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2004%20-%20%C4%90%C6%A1n%20xin%20ho%C3%A3n%20thi.docx"^^xsd:anyURI ;
+    :listedFormNumber "4" ;
+    :listedTitle "Đơn xin hoãn thi"@vi .
+
+:FormCatalogueEntry005 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin chuyển Chương trình đào tạo"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx"^^xsd:anyURI ;
+    :listedFormNumber "5A" ;
+    :listedTitle "Đơn xin chuyển Chương trình đào tạo"@vi .
+
+:FormCatalogueEntry006 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Mẫu số 5 – Đơn xin chuyển Chương trình đào tạo"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf"^^xsd:anyURI ;
+    :listedFormNumber "5" ;
+    :listedTitle "Mẫu số 5 – Đơn xin chuyển Chương trình đào tạo"@vi .
+
+:FormCatalogueEntry007 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
+    :catalogueEntryForForm :Decision1052Form07 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx"^^xsd:anyURI ;
+    :listedFormNumber "6" ;
+    :listedTitle "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi .
+
+:FormCatalogueEntry008 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin xét tốt nghiệp"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2007%20-%20%C4%90%C6%A1n%20%C4%91%E1%BB%81%20ngh%E1%BB%8B%20x%C3%A9t%20t%E1%BB%91t%20nghi%E1%BB%87p.docx"^^xsd:anyURI ;
+    :listedFormNumber "7" ;
+    :listedTitle "Đơn xin xét tốt nghiệp"@vi .
+
+:FormCatalogueEntry009 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin nghỉ học tạm thời"@vi ;
+    :catalogueEntryForForm :Decision1052Form09 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx"^^xsd:anyURI ;
+    :listedFormNumber "8" ;
+    :listedTitle "Đơn xin nghỉ học tạm thời"@vi .
+
+:FormCatalogueEntry010 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin học trở lại"@vi ;
+    :catalogueEntryForForm :Decision1052Form11 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx"^^xsd:anyURI ;
+    :listedFormNumber "9" ;
+    :listedTitle "Đơn xin học trở lại"@vi .
+
+:FormCatalogueEntry011 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin chuyển ngành"@vi ;
+    :catalogueEntryForForm :Decision1052Form12 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx"^^xsd:anyURI ;
+    :listedFormNumber "10" ;
+    :listedTitle "Đơn xin chuyển ngành"@vi .
+
+:FormCatalogueEntry012 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: – Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010B%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh%20(CT%20Minh%20Ph%C3%BA%20-%20NTU).docx"^^xsd:anyURI ;
+    :listedFormNumber "10B" ;
+    :listedTitle "– Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi .
+
+:FormCatalogueEntry013 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin chuyển trường"@vi ;
+    :catalogueEntryForForm :Decision1052Form13 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx"^^xsd:anyURI ;
+    :listedFormNumber "11" ;
+    :listedTitle "Đơn xin chuyển trường"@vi .
+
+:FormCatalogueEntry014 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Mẫu số 13 – Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
+    :catalogueEntryForForm :Decision1052Form15 ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/Uploads/38/M%E1%BA%ABu%20s%E1%BB%91%2013%20-%C4%90%C6%A1n%20%C4%91%C4%83ng%20k%C3%BD%20h%E1%BB%8Dc%20c%C3%B9ng%20l%C3%BAc%20hai%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o%20(m%E1%BA%ABu%202).docx"^^xsd:anyURI ;
+    :listedFormNumber "13" ;
+    :listedTitle "Mẫu số 13 – Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi .
+
+:FormCatalogueEntry015 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin bảo lưu học phần"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2014%20-%20%C4%90%C6%A1n%20xin%20b%E1%BA%A3o%20l%C6%B0u%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx"^^xsd:anyURI ;
+    :listedFormNumber "14" ;
+    :listedTitle "Đơn xin bảo lưu học phần"@vi .
+
+:FormCatalogueEntry016 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin chuyển học phần thay thế trong CTĐT"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20HP%20thay%20th%E1%BA%BF.doc"^^xsd:anyURI ;
+    :listedTitle "Đơn xin chuyển học phần thay thế trong CTĐT"@vi .
+
+:FormCatalogueEntry017 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Phiếu báo điểm bổ sung"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20b%C3%A1o%20%C4%91i%E1%BB%83m%20b%E1%BB%95%20sung.doc"^^xsd:anyURI ;
+    :listedTitle "Phiếu báo điểm bổ sung"@vi .
+
+:FormCatalogueEntry018 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Phiếu điều chỉnh điểm"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20%C4%90i%E1%BB%81u%20ch%E1%BB%89nh%20%C4%90I%E1%BB%82M.DOC"^^xsd:anyURI ;
+    :listedTitle "Phiếu điều chỉnh điểm"@vi .
+
+:FormCatalogueEntry019 a :FormCatalogueEntry,
+        owl:NamedIndividual ;
+    rdfs:label "Mục tải: Đơn xin cấp bản sao bằng"@vi ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/%C4%90%C6%A0N%20XIN%20C%E1%BA%A4P%20B%E1%BA%A2N%20SAO%20B%E1%BA%B0NG.docx"^^xsd:anyURI ;
+    :listedTitle "Đơn xin cấp bản sao bằng"@vi .
+
+:GuidanceDocument a owl:Class ;
+    rdfs:label "Tài liệu hướng dẫn"@vi ;
+    rdfs:subClassOf :OfficialDocument .
 
 :LanguageCertificateAbbreviationTableRow01 a :DocumentTableRow,
         owl:NamedIndividual ;
@@ -2336,6 +2830,24 @@ Sinh viên có gian lận trong học tập, kiểm tra và thi học phần s�
     :partOf :StandardOtherLanguageCertificateTable ;
     :sourceDocument :Decision1052 .
 
+:TuitionPaymentGuidanceProvision02 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 2 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 2"@vi ;
+    :officialText "2) Nếu sinh viên có tài khoản của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank, sử dụng Mobile Banking hoặc Internet Banking để đóng học phí. (miễn phí)"@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
+
+:TuitionPaymentGuidanceProvision03 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 3 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 3"@vi ;
+    :officialText "3) Đến quầy giao dịch của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank để nộp tiền mặt (tại Nha Trang miễn phí, các huyện trong tỉnh Khánh Hòa và ngoại tỉnh mức lệ phí 3.300đ/lần đóng hoặc 5.500đ/lần đóng). Gửi MÃ SINH VIÊN cho ngân hàng để tra cứu số tiền và đóng học phí, không gửi tài khoản của trường cho ngân hàng"@vi ;
+    :orderIndex "3"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
+
 :partOf a owl:ObjectProperty ;
     rdfs:label "là thành phần của"@vi ;
     rdfs:domain :DocumentPart ;
@@ -2401,6 +2913,69 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Regulation ;
     :sourceDocument :Decision1052 .
+
+:Decision1052Form01 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin mở lớp học phần"@vi ;
+    :formNumber "01" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article10 .
+
+:Decision1052Form03 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin phép nghỉ học"@vi ;
+    :formNumber "03" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article17 .
+
+:Decision1052Form04 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin hoãn thi"@vi ;
+    :formNumber "04" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article17 .
+
+:Decision1052Form07 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
+    :formNumber "07" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article21 .
+
+:Decision1052Form09 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin nghỉ học tạm thời"@vi ;
+    :formNumber "09" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 .
+
+:Decision1052Form11 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin học trở lại"@vi ;
+    :formNumber "11" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article24 .
+
+:Decision1052Form12 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn xin chuyển ngành"@vi ;
+    :formNumber "12" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article25 .
+
+:Decision1052Form13 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Mẫu hồ sơ xin chuyển trường"@vi ;
+    :formNumber "13" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article26 .
+
+:Decision1052Form15 a :FormDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
+    :formNumber "15" ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article28 .
 
 :Appendix a owl:Class ;
     rdfs:label "Phụ lục"@vi ;
@@ -2581,22 +3156,6 @@ b) Riêng học kỳ đầu của khóa học, Nhà trường ấn định kế 
     :partOf :Decision1052Article09 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article10 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 10: Xóa lớp học phần và mở thêm lớp học phần"@vi ;
-    :hasPart :Decision1052Article10Clause01,
-        :Decision1052Article10Clause02 ;
-    :identifier "Điều 10"@vi ;
-    :officialText """#### Điều 10. Xóa lớp học phần và mở thêm lớp học phần
-1. Xóa lớp học phần:
-Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.
-2. Mở thêm lớp học phần:
-Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp thuận, Nhà trường sẽ mở thêm lớp học phần theo đề nghị."""@vi ;
-    :orderIndex "10"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter02 ;
-    :sourceDocument :Decision1052 ;
-    :title "Xóa lớp học phần và mở thêm lớp học phần"@vi .
-
 :Decision1052Article13Clause03 a :Clause,
         owl:NamedIndividual ;
     rdfs:label "Khoản 3 Điều 13"@vi ;
@@ -2625,26 +3184,6 @@ SV phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do ch�
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article17 ;
     :sourceDocument :Decision1052 .
-
-:Decision1052Article20 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 20: Cảnh báo kết quả học tập và buộc thôi học"@vi ;
-    :hasPart :Decision1052Article20Clause01,
-        :Decision1052Article20Clause03 ;
-    :identifier "Điều 20"@vi ;
-    :officialText """### Điều 20. Cảnh báo kết quả học tập và buộc thôi học
-1. Sau mỗi học kỳ chính, SV sẽ nhận được thông tin cảnh báo kết quả học tập nhằm giúp SV lập phương án học tập cải thiện để có thể tốt nghiệp trong thời hạn tối đa được phép học. Việc cảnh báo được áp dụng trong các trường hợp sau:
-a) Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký học trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24.
-b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo.
-c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo.
-2. Sau mỗi học kỳ chính, SV bị buộc thôi học nếu thuộc một trong những trường hợp sau đây:
-a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.
-b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này.
-3. Những SV thuộc diện bị buộc thôi học quy định tại khoản 2 của Điều này được quyền viết đơn (Mẫu số 05 – Phụ lục 4 kèm theo) gửi Hiệu trưởng (thông qua Phòng Công tác Chính trị và Sinh viên) để được xem xét chuyển qua CTĐT theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường. Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển CTĐT, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."""@vi ;
-    :orderIndex "20"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Cảnh báo kết quả học tập và buộc thôi học"@vi .
 
 :Decision1052Article23Clause03 a :Clause,
         owl:NamedIndividual ;
@@ -2724,6 +3263,18 @@ b) Học lực tính theo điểm trung bình tích lũy xếp loại khá trở
     :partOf :Decision1052Chapter04 ;
     :sourceDocument :Decision1052 ;
     :title "Nghỉ ốm"@vi .
+
+:FormCatalogue a owl:Class ;
+    rdfs:label "Danh mục biểu mẫu"@vi .
+
+:TuitionPaymentGuidanceProvision01 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Mục 1 hướng dẫn đóng học phí"@vi ;
+    :identifier "Mục 1"@vi ;
+    :officialText "1) Truy cập website sinhvien.ntu.edu.vn -> học phí -> đóng học phí qua cổng thanh toán VnPay (miễn phí tài khoản Vietcombank, các ngân hàng khác phí 5.500 đồng/lần đóng). Hoặc thanh toán sử dụng app ngân hàng quét mã QR Code (miễn phí)"@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :TuitionPaymentGuidance ;
+    :sourceDocument :TuitionPaymentGuidance .
 
 :Decision1052Article03 a :Article,
         owl:NamedIndividual ;
@@ -2987,48 +3538,6 @@ c) Công nhận kết quả học tập, chuyển đổi theo cả chương trì
     :partOf :Decision1052Article21 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article24 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 24: Nghỉ học tạm thời và xin thôi học"@vi ;
-    :hasPart :Decision1052Article24Clause01,
-        :Decision1052Article24Clause02,
-        :Decision1052Article24Clause03 ;
-    :identifier "Điều 24"@vi ;
-    :officialText """### Điều 24. Nghỉ học tạm thời và xin thôi học
-1. Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả đã học trong các trường hợp sau:
-a) Được điều động vào lực lượng vũ trang.
-b) Được cơ quan có thẩm quyền điều động, đại diện quốc gia tham dự các kỳ thi, giải đấu quốc tế.
-c) Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế.
-d) Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường và không thuộc các trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật quy định tại Điều 20 của Quy chế này. Thời gian nghỉ học tạm thời vì nhu cầu cá nhân được tính vào thời gian học chính thức quy định tại khoản 4 Điều 2 của Quy chế này.
-2. Sinh viên được xin thôi học vì lý do cá nhân, trừ trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật. Những SV này muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác.
-3. Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo), xin thôi học (Mẫu đơn 10 – Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên. Khi muốn trở lại học tiếp, cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới để được xem xét giải quyết."""@vi ;
-    :orderIndex "24"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter04 ;
-    :sourceDocument :Decision1052 ;
-    :title "Nghỉ học tạm thời và xin thôi học"@vi .
-
-:Decision1052Article26 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 26: Chuyển trường và hình thức đào tạo"@vi ;
-    :hasPart :Decision1052Article26Clause01,
-        :Decision1052Article26Clause02,
-        :Decision1052Article26Clause03 ;
-    :identifier "Điều 26"@vi ;
-    :officialText """### Điều 26. Chuyển trường và hình thức đào tạo
-1. Sinh viên được xét chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác và ngược lại (gọi tắt là chuyển trường) khi có đủ các điều kiện sau:
-a) Không đang là SV trình độ năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định tại khoản 4 Điều 2 của Quy chế này.
-b) Sinh viên đạt điều kiện trúng tuyển của chương trình, ngành đào tạo cùng khóa tuyển sinh tại Trường xin chuyển đến.
-c) Nơi chuyển đến có đủ các điều kiện bảo đảm chất lượng, chưa vượt quá năng lực đào tạo đối với chương trình, ngành đào tạo đó theo quy định hiện hành của Bộ Giáo dục và Đào tạo.
-d) Được sự đồng ý của Hiệu trưởng cơ sở đào tạo xin chuyển đi và cơ sở đào tạo xin chuyển đến.
-2. Thủ tục chuyển Trường:
-a) Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang (Mẫu số 13 - Phụ lục 4 kèm theo).
-b) Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý chuyển đi và Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận hoặc không tiếp nhận SV; công nhận và bảo lưu các học phần mà SV chuyển đến được chuyển đổi tín chỉ và số học phần phải học bổ sung, trên cơ sở so sánh chương trình ở Trường SV xin chuyển đi và Trường xin chuyển đến.
-3. Sinh viên được xem xét chuyển từ hình thức chính quy sang hình thức vừa làm vừa học hoặc đào tạo từ xa của Trường nếu còn đủ thời gian học tập theo quy định đối với hình thức chuyển đến."""@vi ;
-    :orderIndex "26"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter04 ;
-    :sourceDocument :Decision1052 ;
-    :title "Chuyển trường và hình thức đào tạo"@vi .
-
 :Decision1052Article29 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 29: Học liên thông"@vi ;
@@ -3060,6 +3569,14 @@ b) Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc
     :partOf :Decision1052Chapter05 ;
     :sourceDocument :Decision1052 ;
     :title "Điều khoản thi hành"@vi .
+
+:DecisionAuthority a owl:Class ;
+    rdfs:label "Chủ thể có thẩm quyền quyết định"@vi ;
+    rdfs:subClassOf :AcademicActor .
+
+:sourceProvision a owl:ObjectProperty ;
+    rdfs:label "có điều khoản nguồn"@vi ;
+    rdfs:range :DocumentPart .
 
 :Chapter a owl:Class ;
     rdfs:label "Chương"@vi ;
@@ -3121,24 +3638,6 @@ d) Xác nhận đăng ký học phần theo thời gian quy định từ tài kh
     :partOf :Decision1052Article09 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article11 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 11: Đăng ký học lại và học cải thiện"@vi ;
-    :hasPart :Decision1052Article11Clause01,
-        :Decision1052Article11Clause02,
-        :Decision1052Article11Clause03,
-        :Decision1052Article11Clause04 ;
-    :identifier "Điều 11"@vi ;
-    :officialText """#### Điều 11. Đăng ký học lại và học cải thiện
-1. Sinh viên có học phần bắt buộc bị điểm dưới 5,0 phải đăng ký học lại học phần đó ở các học kỳ tiếp theo cho đến khi đạt điểm bằng hoặc lớn hơn 5,0.
-2. Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác.
-3. Ngoài các trường hợp quy định tại khoản 1 và khoản 2 của Điều này, SV được quyền đăng ký học lại hoặc học đổi sang học phần khác đối với nhóm học phần tự chọn để cải thiện điểm trung bình chung tích lũy.
-4. Kết quả học tập tích lũy được ghi nhận cho lần học cùng học phần có điểm cao hơn."""@vi ;
-    :orderIndex "11"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter02 ;
-    :sourceDocument :Decision1052 ;
-    :title "Đăng ký học lại và học cải thiện"@vi .
-
 :Decision1052Article12 a :Article,
         owl:NamedIndividual ;
     rdfs:label "Điều 12: Tổ chức dạy học học phần"@vi ;
@@ -3167,29 +3666,6 @@ c) Thực hiện đầy đủ các quy định khác của Nhà trường và c�
     :partOf :Decision1052Chapter02 ;
     :sourceDocument :Decision1052 ;
     :title "Tổ chức dạy học học phần"@vi .
-
-:Decision1052Article17 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 17: Đánh giá giữa kỳ và cuối kỳ"@vi ;
-    :hasPart :Decision1052Article17Clause01,
-        :Decision1052Article17Clause02,
-        :Decision1052Article17Clause03,
-        :Decision1052Article17Clause04 ;
-    :identifier "Điều 17"@vi ;
-    :officialText """#### Điều 17. Đánh giá giữa kỳ và cuối kỳ
-1. Sinh viên được đánh giá giữa kỳ (thi giữa kỳ) và đánh giá cuối kỳ (thi cuối kỳ) khi đáp ứng các điều kiện sau:
-a) Đối với học phần lý thuyết:
-- SV phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần.
-- SV nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo Mẫu kèm minh chứng liên quan (Mẫu số 03 – Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa/viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học.
-b) Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường:
-SV phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa/viện đào tạo xem xét xử lý.
-2. SV bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 (không) ở kỳ thi đó.
-3. Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do GV giảng dạy học phần tổ chức.
-4. Sinh viên đủ điều kiện dự thi nhưng không thể dự thi cuối kỳ do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được phép hoãn thi và được dự thi cuối kỳ học phần đó trong thời hạn 2 học kỳ chính tiếp theo để hoàn thành điểm, quá thời hạn trên điểm đánh giá cuối kỳ sẽ là điểm 0 (không). Sinh viên làm đơn xin hoãn thi theo mẫu (Mẫu số 04 – Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo để được giải quyết."""@vi ;
-    :orderIndex "17"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Đánh giá giữa kỳ và cuối kỳ"@vi .
 
 :Decision1052Article19Clause03 a :Clause,
         owl:NamedIndividual ;
@@ -3324,6 +3800,10 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
 :DocumentComponent a owl:Class ;
     rdfs:label "Thành phần tài liệu"@vi .
 
+:OrganizationalUnit a owl:Class ;
+    rdfs:label "Đơn vị tổ chức"@vi ;
+    rdfs:subClassOf :AcademicActor .
+
 :Decision1052Article08Clause01 a :Clause,
         owl:NamedIndividual ;
     rdfs:label "Khoản 1 Điều 8"@vi ;
@@ -3372,54 +3852,41 @@ e) Đối với các lớp học phần thực hành, học phần lý thuyết 
     :partOf :Decision1052Article08 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article09 a :Article,
+:Decision1052Article10 a :Article,
         owl:NamedIndividual ;
-    rdfs:label "Điều 9: Đăng ký khối lượng học tập"@vi ;
-    :hasPart :Decision1052Article09Clause01,
-        :Decision1052Article09Clause02,
-        :Decision1052Article09Clause03,
-        :Decision1052Article09Clause04,
-        :Decision1052Article09Clause05 ;
-    :identifier "Điều 9"@vi ;
-    :officialText """#### Điều 9. Đăng ký khối lượng học tập
-1. Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi SV trước khi bắt đầu một học kỳ mới.
-a) Trước khi bắt đầu mỗi học kỳ, Nhà trường thông báo kế hoạch đăng ký học phần trên Hệ thống quản lý đào tạo đến SV.
-b) Riêng học kỳ đầu của khóa học, Nhà trường ấn định kế hoạch học tập cho các lớp.
-2. Để chuẩn bị đăng ký học tập cho một học kỳ, mỗi SV cần:
-a) Tìm hiểu các thông tin chi tiết về chương trình đào tạo, kế hoạch giảng dạy trong học kỳ, kiểm tra lại kết quả quá trình học tập và các thông tin liên quan khác để lập kế hoạch học tập phù hợp cho bản thân.
-b) Đăng ký lớp của các học phần dự định sẽ học trong học kỳ, gồm: những học phần mới, một số học phần chưa đạt (để học lại) và một số học phần đã đạt (để cải thiện điểm nếu có) căn cứ danh sách học phần được mở và điều kiện đăng ký của mỗi học phần.
-c) Xin ý kiến tư vấn của Cố vấn học tập và đăng ký học các lớp học phần tổ chức trong học kỳ tùy theo khả năng và tiến độ học tập của SV.
-d) Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo.
-3. Khối lượng học tập của mỗi SV xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp (không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh).
-4. Khối lượng học tập của SV xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 12 tín chỉ và tối đa 18 tín chỉ .
-5. Việc đăng ký các học phần trong từng học kỳ phải đảm bảo điều kiện tiên quyết của từng học phần và tuần tự logic học phần của chương trình đào tạo."""@vi ;
-    :orderIndex "9"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điều 10: Xóa lớp học phần và mở thêm lớp học phần"@vi ;
+    :hasPart :Decision1052Article10Clause01,
+        :Decision1052Article10Clause02 ;
+    :identifier "Điều 10"@vi ;
+    :officialText """#### Điều 10. Xóa lớp học phần và mở thêm lớp học phần
+1. Xóa lớp học phần:
+Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.
+2. Mở thêm lớp học phần:
+Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp thuận, Nhà trường sẽ mở thêm lớp học phần theo đề nghị."""@vi ;
+    :orderIndex "10"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Chapter02 ;
     :sourceDocument :Decision1052 ;
-    :title "Đăng ký khối lượng học tập"@vi .
+    :title "Xóa lớp học phần và mở thêm lớp học phần"@vi .
 
-:Decision1052Article14 a :Article,
+:Decision1052Article20 a :Article,
         owl:NamedIndividual ;
-    rdfs:label "Điều 14: Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp"@vi ;
-    :hasPart :Decision1052Article14Clause01,
-        :Decision1052Article14Clause02,
-        :Decision1052Article14Clause03,
-        :Decision1052Article14Clause04,
-        :Decision1052Article14Clause05 ;
-    :identifier "Điều 14"@vi ;
-    :officialText """#### Điều 14. Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp
-1. Sinh viên được xếp hạng năm thứ 4 phải thực hiện đồ án/khóa luận tốt nghiệp (ĐATN) hoặc các chuyên đề tốt nghiệp (CĐTN) để hoàn thành khóa học.
-2. SV đủ điều kiện thực hiện ĐATN theo quy định của trường phải làm đơn đăng ký thực hiện ĐATN (Mẫu số 02 – Phụ lục 4 kèm theo).
-3. SV không đủ điều kiện thực hiện ĐATN phải làm các CĐTN. Ở một số ngành đào tạo, SV không đủ điều kiện thực hiện ĐATN được phép học các học phần tốt nghiệp (HPTN) hoặc thực hiện CĐTN kết hợp học một số HPTN theo quy định của CTĐT.
-4. Sinh viên không đạt ĐATN hoặc CĐTN phải đăng ký làm lại hoặc đăng ký học các HPTN nếu CTĐT cho phép.
-5. Nhà trường có quy định chi tiết về thực hiện và đánh giá ĐATN và CĐTN.
----
-## Chương III
-### ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP"""@vi ;
-    :orderIndex "14"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter02 ;
+    rdfs:label "Điều 20: Cảnh báo kết quả học tập và buộc thôi học"@vi ;
+    :hasPart :Decision1052Article20Clause01,
+        :Decision1052Article20Clause03 ;
+    :identifier "Điều 20"@vi ;
+    :officialText """### Điều 20. Cảnh báo kết quả học tập và buộc thôi học
+1. Sau mỗi học kỳ chính, SV sẽ nhận được thông tin cảnh báo kết quả học tập nhằm giúp SV lập phương án học tập cải thiện để có thể tốt nghiệp trong thời hạn tối đa được phép học. Việc cảnh báo được áp dụng trong các trường hợp sau:
+a) Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký học trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24.
+b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo.
+c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo.
+2. Sau mỗi học kỳ chính, SV bị buộc thôi học nếu thuộc một trong những trường hợp sau đây:
+a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.
+b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này.
+3. Những SV thuộc diện bị buộc thôi học quy định tại khoản 2 của Điều này được quyền viết đơn (Mẫu số 05 – Phụ lục 4 kèm theo) gửi Hiệu trưởng (thông qua Phòng Công tác Chính trị và Sinh viên) để được xem xét chuyển qua CTĐT theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường. Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển CTĐT, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."""@vi ;
+    :orderIndex "20"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
     :sourceDocument :Decision1052 ;
-    :title "Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp"@vi .
+    :title "Cảnh báo kết quả học tập và buộc thôi học"@vi .
 
 :Decision1052Article22Clause01 a :Clause,
         owl:NamedIndividual ;
@@ -3440,55 +3907,6 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article22 ;
     :sourceDocument :Decision1052 .
-
-:Decision1052Article25 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 25: Chuyển ngành"@vi ;
-    :hasPart :Decision1052Article25Clause01,
-        :Decision1052Article25Clause02,
-        :Decision1052Article25Clause03,
-        :Decision1052Article25Clause04,
-        :Decision1052Article25Clause05 ;
-    :identifier "Điều 25"@vi ;
-    :officialText """### Điều 25. Chuyển ngành
-1. Sinh viên được xét chuyển ngành đào tạo khi đáp ứng các điều kiện sau đây:
-a) Không đang là SV trình độ năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định tại khoản 4 Điều 2 của Quy chế này.
-b) Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo của Trường trong cùng khóa tuyển sinh.
-c) Được sự đồng ý của Trưởng Khoa/viện của ngành đang học và ngành xin chuyển đến.
-d) Nhà trường có đủ các điều kiện bảo đảm chất lượng, chưa vượt quá năng lực đào tạo đối với ngành đào tạo xin chuyển đến theo quy định hiện hành của Bộ Giáo dục và Đào tạo.
-2. Sinh viên có nguyện vọng và thỏa mãn các điều kiện tại khoản 1 của Điều này có thể được xem xét chuyển ngành trong cùng bậc học. Ít nhất 02 tuần trước khi bắt
-đầu học kỳ mới, SV làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định.
-3. Khi được chấp thuận chuyển sang ngành mới, SV được bảo lưu điểm các học phần đã học có nội dung và khối lượng kiến thức tương đương. Sinh viên chuyển ngành không được gia hạn thời gian học tập tối đa theo quy định.
-4. Sinh viên được xem xét chuyển từ hình thức chính quy sang hình thức vừa làm vừa học hoặc đào tạo từ xa của Trường nếu còn đủ thời gian học tập theo quy định đối với hình thức chuyển đến.
-5. Các trường hợp khác do Hiệu trưởng quyết định."""@vi ;
-    :orderIndex "25"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter04 ;
-    :sourceDocument :Decision1052 ;
-    :title "Chuyển ngành"@vi .
-
-:Decision1052Article27 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 27: Trao đổi sinh viên và công nhận tín chỉ"@vi ;
-    :hasPart :Decision1052Article27Clause01,
-        :Decision1052Article27Clause02,
-        :Decision1052Article27Clause03,
-        :Decision1052Article27Clause04,
-        :Decision1052Article27Clause05 ;
-    :identifier "Điều 27"@vi ;
-    :officialText """### Điều 27. Trao đổi sinh viên và công nhận tín chỉ
-1. Trao đổi SV là việc Nhà trường hợp tác với các trường khác để tiếp nhận SV của nhau đến học tập ở trường đối tác nhằm công nhận kết quả học tập và tín chỉ lẫn nhau (sau đây gọi là chương trình trao đổi SV).
-2. Sinh viên của Trường Đại học Nha Trang tham gia chương trình trao đổi SV có thể đăng ký học một số học phần tại Trường khác (và ngược lại) với số lượng tín chỉ tích lũy tại Trường khác (nếu có) không vượt quá 25% tổng khối lượng của chương trình đào tạo.
-3. Điều kiện đăng ký chương trình trao đổi SV, cụ thể như sau:
-a) Sinh viên đã kết thúc 1 năm học tại Trường và có điểm trung bình chung tích lũy đạt từ 6,00 trở lên.
-b) Trường hợp khác sẽ do Hiệu trưởng xem xét quyết định.
-4. Thủ tục đăng ký tham gia chương trình trao đổi SV, cụ thể như sau:
-a) Đầu mỗi học kỳ, Nhà trường thông báo về việc đăng ký tham gia chương trình trao đổi SV.
-b) Sinh viên đăng ký học theo mẫu (Mẫu số 14 - Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo.
-5. Sinh viên tham gia chương trình trao đổi sinh viên theo hướng dẫn chi tiết của Nhà trường và các trường khác."""@vi ;
-    :orderIndex "27"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter04 ;
-    :sourceDocument :Decision1052 ;
-    :title "Trao đổi sinh viên và công nhận tín chỉ"@vi .
 
 :EnglishMajorOtherLanguageCertificateTable a :DocumentTable,
         owl:NamedIndividual ;
@@ -3666,34 +4084,27 @@ Ghi chú: Việc quy đổi đối với mức điểm thấp hơn hoặc hình 
     :partOf :Decision1052Regulation ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article28 a :Article,
+:Decision1052Article26 a :Article,
         owl:NamedIndividual ;
-    rdfs:label "Điều 28: Học cùng lúc hai chương trình"@vi ;
-    :hasPart :Decision1052Article28Clause01,
-        :Decision1052Article28Clause02,
-        :Decision1052Article28Clause03,
-        :Decision1052Article28Clause04,
-        :Decision1052Article28Clause05,
-        :Decision1052Article28Clause06 ;
-    :identifier "Điều 28"@vi ;
-    :officialText """### Điều 28. Học cùng lúc hai chương trình
-Sinh viên đều có quyền đăng ký học một CTĐT khác để lấy thêm văn bằng thứ hai trong quá trình học tập bằng hình thức tích lũy tín chỉ theo CTĐT thứ hai.
-1. Điều kiện để học cùng lúc hai chương trình:
-a) Sinh viên được đăng ký học chương trình thứ hai khi đã được xếp từ trình độ năm thứ hai trở lên của chương trình thứ nhất.
-b) Học lực tính theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai trong năm tuyển sinh; hoặc học lực tính theo điểm trung bình tích lũy xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh.
-2. Trong quá trình SV học cùng lúc hai chương trình, nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo. Sinh viên sẽ không được phép đăng ký học phần của chương trình thứ 2 cho đến khi nào kết quả học tập chương trình thứ nhất được cải thiện mới được học tiếp chương trình thứ hai.
-3. Thủ tục đăng ký học thêm chương trình thứ hai:
-a) Sinh viên đăng ký học chương trình thứ hai vào đầu mỗi học kỳ chính theo thông báo hàng năm của Trường (Mẫu số 15 - Phụ lục 4 kèm theo).
-b) Khi có Quyết định chấp thuận học cùng lúc hai chương trình, được Nhà trường cung cấp một mã số SV riêng, SV tự nghiên cứu CTĐT của ngành thứ hai và bổ sung các học phần cần phải học vào kế hoạch học tập để đăng ký học phần (Đơn vị quản lý đào tạo hỗ trợ đăng ký học phần khi cần thiết) bằng mã số SV của chương trình thứ 2.
-c) Sinh viên học chương trình thứ hai được bảo lưu các học phần có nội dung và khối lượng kiến thức tương đương đã được học và tích lũy ở chương trình thứ nhất.
-d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyển về khoa quản lý chương trình thứ hai để quản lý.
-4. Sinh viên học hai chương trình chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất. Nhà trường cử GV theo dõi và hỗ trợ đối với SV học cùng lúc hai chương trình.
-5. Thời gian học tối đa được phép học đối với SV học cùng lúc hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất được quy định tại khoản 4 Điều 2 của Quy chế này. Sinh viên chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp ở chương trình thứ nhất và đăng kí muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai.
-6. Nhà trường có quy định chi tiết về các học phần được bảo lưu và khối lượng kiến thức cần phải tích lũy đối với số ngành đào tạo thứ hai cho những SV học cùng lúc hai chương trình."""@vi ;
-    :orderIndex "28"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điều 26: Chuyển trường và hình thức đào tạo"@vi ;
+    :hasPart :Decision1052Article26Clause01,
+        :Decision1052Article26Clause02,
+        :Decision1052Article26Clause03 ;
+    :identifier "Điều 26"@vi ;
+    :officialText """### Điều 26. Chuyển trường và hình thức đào tạo
+1. Sinh viên được xét chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác và ngược lại (gọi tắt là chuyển trường) khi có đủ các điều kiện sau:
+a) Không đang là SV trình độ năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định tại khoản 4 Điều 2 của Quy chế này.
+b) Sinh viên đạt điều kiện trúng tuyển của chương trình, ngành đào tạo cùng khóa tuyển sinh tại Trường xin chuyển đến.
+c) Nơi chuyển đến có đủ các điều kiện bảo đảm chất lượng, chưa vượt quá năng lực đào tạo đối với chương trình, ngành đào tạo đó theo quy định hiện hành của Bộ Giáo dục và Đào tạo.
+d) Được sự đồng ý của Hiệu trưởng cơ sở đào tạo xin chuyển đi và cơ sở đào tạo xin chuyển đến.
+2. Thủ tục chuyển Trường:
+a) Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang (Mẫu số 13 - Phụ lục 4 kèm theo).
+b) Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý chuyển đi và Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận hoặc không tiếp nhận SV; công nhận và bảo lưu các học phần mà SV chuyển đến được chuyển đổi tín chỉ và số học phần phải học bổ sung, trên cơ sở so sánh chương trình ở Trường SV xin chuyển đi và Trường xin chuyển đến.
+3. Sinh viên được xem xét chuyển từ hình thức chính quy sang hình thức vừa làm vừa học hoặc đào tạo từ xa của Trường nếu còn đủ thời gian học tập theo quy định đối với hình thức chuyển đến."""@vi ;
+    :orderIndex "26"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Chapter04 ;
     :sourceDocument :Decision1052 ;
-    :title "Học cùng lúc hai chương trình"@vi .
+    :title "Chuyển trường và hình thức đào tạo"@vi .
 
 :Decision1052Chapter01 a :Chapter,
         owl:NamedIndividual ;
@@ -3732,6 +4143,40 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
     :partOf :Decision1052Appendix02 ;
     :sourceDocument :Decision1052 .
 
+:TuitionPaymentGuidance a :GuidanceDocument,
+        owl:NamedIndividual ;
+    rdfs:label "Hướng dẫn đóng học phí qua ngân hàng"@vi ;
+    :hasPart :TuitionPaymentGuidanceProvision01,
+        :TuitionPaymentGuidanceProvision02,
+        :TuitionPaymentGuidanceProvision03 ;
+    :title "Hướng dẫn đóng học phí qua ngân hàng"@vi .
+
+:Decision1052Article09 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 9: Đăng ký khối lượng học tập"@vi ;
+    :hasPart :Decision1052Article09Clause01,
+        :Decision1052Article09Clause02,
+        :Decision1052Article09Clause03,
+        :Decision1052Article09Clause04,
+        :Decision1052Article09Clause05 ;
+    :identifier "Điều 9"@vi ;
+    :officialText """#### Điều 9. Đăng ký khối lượng học tập
+1. Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi SV trước khi bắt đầu một học kỳ mới.
+a) Trước khi bắt đầu mỗi học kỳ, Nhà trường thông báo kế hoạch đăng ký học phần trên Hệ thống quản lý đào tạo đến SV.
+b) Riêng học kỳ đầu của khóa học, Nhà trường ấn định kế hoạch học tập cho các lớp.
+2. Để chuẩn bị đăng ký học tập cho một học kỳ, mỗi SV cần:
+a) Tìm hiểu các thông tin chi tiết về chương trình đào tạo, kế hoạch giảng dạy trong học kỳ, kiểm tra lại kết quả quá trình học tập và các thông tin liên quan khác để lập kế hoạch học tập phù hợp cho bản thân.
+b) Đăng ký lớp của các học phần dự định sẽ học trong học kỳ, gồm: những học phần mới, một số học phần chưa đạt (để học lại) và một số học phần đã đạt (để cải thiện điểm nếu có) căn cứ danh sách học phần được mở và điều kiện đăng ký của mỗi học phần.
+c) Xin ý kiến tư vấn của Cố vấn học tập và đăng ký học các lớp học phần tổ chức trong học kỳ tùy theo khả năng và tiến độ học tập của SV.
+d) Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo.
+3. Khối lượng học tập của mỗi SV xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp (không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh).
+4. Khối lượng học tập của SV xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 12 tín chỉ và tối đa 18 tín chỉ .
+5. Việc đăng ký các học phần trong từng học kỳ phải đảm bảo điều kiện tiên quyết của từng học phần và tuần tự logic học phần của chương trình đào tạo."""@vi ;
+    :orderIndex "9"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter02 ;
+    :sourceDocument :Decision1052 ;
+    :title "Đăng ký khối lượng học tập"@vi .
+
 :Decision1052Article12Clause02 a :Clause,
         owl:NamedIndividual ;
     rdfs:label "Khoản 2 Điều 12"@vi ;
@@ -3755,37 +4200,6 @@ h) Thu nhận thông tin phản hồi từ SV để liên tục hoàn thiện n�
     :orderIndex "2"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article12 ;
     :sourceDocument :Decision1052 .
-
-:Decision1052Article21 a :Article,
-        owl:NamedIndividual ;
-    rdfs:label "Điều 21: Công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
-    :hasPart :Decision1052Article21Clause01,
-        :Decision1052Article21Clause02,
-        :Decision1052Article21Clause03,
-        :Decision1052Article21Clause04,
-        :Decision1052Article21Clause05,
-        :Decision1052Article21Clause06,
-        :Decision1052Article21Clause07 ;
-    :identifier "Điều 21"@vi ;
-    :officialText """### Điều 21. Công nhận kết quả học tập và chuyển đổi tín chỉ
-1. Kết quả học tập của SV đã tích lũy từ một trình độ đào tạo khác, một ngành đào tạo hoặc CTĐT khác, một khóa học khác, hoặc một cuộc thi và hoạt động học thuật, hoặc từ một trường khác được Hiệu trưởng Trường Đại học Nha Trang xem xét công nhận bảo lưu và chuyển đổi sang tín chỉ của những học phần trong CTĐT theo học.
-2. Sinh viên có nguyện vọng miễn học và quy đổi điểm học phần phải nộp bản sao có công chứng văn bằng, chứng chỉ và bảng điểm cho Đơn vị quản lý đào tạo (Mẫu số 06 – Phụ lục 4 kèm theo).
-3. Hội đồng chuyên môn của Nhà trường (Hội đồng Khoa/viện hoặc Hội đồng được Hiệu trưởng thành lập nếu thấy cần thiết) hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình theo các cấp độ, cụ thể sau:
-a) Công nhận kết quả học tập, chuyển đổi theo từng học phần.
-b) Công nhận kết quả học tập, chuyển đổi theo từng nhóm học phần.
-c) Công nhận kết quả học tập, chuyển đổi theo cả chương trình đào tạo.
-4. Nhà trường công khai quy định việc công nhận kết quả học tập và chuyển đổi tín chỉ. Khối lượng tối đa được công nhận kết quả học tập (điểm R – được quy định chi tiết tại Điều 16), chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của CTĐT.
-5. Sinh viên được xem xét miễn học, miễn thi kết thúc học phần liên quan và cho điểm thưởng trong các trường hợp sau đây:
-a) Đạt giải thưởng nhất, nhì, ba trong các kỳ thi Olympic SV cấp tỉnh và tương đương trở lên.
-b) Đạt giải thưởng nhất, nhì, ba trong đợt xét Giải thưởng khoa học và công nghệ dành cho SV.
-c) Có chứng chỉ ngoại ngữ quốc tế còn hiệu lực, đáp ứng các mức yêu cầu tương ứng đối với sinh viên không chuyên ngữ, sinh viên chuyên ngữ, sinh viên học chương trình đào tạo chuẩn và sinh viên học chương trình đào tạo đặc biệt, theo quy định chi tiết tại Phụ lục 2.
-d) Có chứng chỉ tin học quốc tế còn hiệu lực, đáp ứng các mức yêu cầu tương đương đối với sinh viên theo học các chương trình đào tạo, theo quy định chi tiết tại Phụ lục 3.
-6. Sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 – Phụ lục 4 kèm theo) kèm theo minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết.
-7. Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi và điểm thưởng, chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."""@vi ;
-    :orderIndex "21"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
-    :sourceDocument :Decision1052 ;
-    :title "Công nhận kết quả học tập và chuyển đổi tín chỉ"@vi .
 
 :DocumentTable a owl:Class ;
     rdfs:label "Bảng trong tài liệu"@vi ;
@@ -3820,37 +4234,95 @@ i) Học phần thay thế: học phần được sử dụng thay thế cho m�
     :partOf :Decision1052Article06 ;
     :sourceDocument :Decision1052 .
 
-:Decision1052Article22 a :Article,
+:Decision1052Article11 a :Article,
         owl:NamedIndividual ;
-    rdfs:label "Điều 22: Điều kiện xét tốt nghiệp và công nhận tốt nghiệp"@vi ;
-    :hasPart :Decision1052Article22Clause01,
-        :Decision1052Article22Clause02,
-        :Decision1052Article22Clause03,
-        :Decision1052Article22Clause04,
-        :Decision1052Article22Clause05,
-        :Decision1052Article22Clause06,
-        :Decision1052Article22Clause07,
-        :Decision1052Article22Clause08 ;
-    :identifier "Điều 22"@vi ;
-    :officialText """### Điều 22. Điều kiện xét tốt nghiệp và công nhận tốt nghiệp
-1. Sinh viên được xét và công nhận tốt nghiệp khi có đủ các điều kiện sau:
-a) Cho đến thời điểm xét tốt nghiệp không bị truy cứu trách nhiệm hình sự hoặc không đang trong thời gian bị kỷ luật ở mức đình chỉ học tập.
-b) Tích lũy đủ số học phần, khối lượng học tập của CTĐT được quy định tại Điều 2 của Quy chế này, đạt chuẩn đầu ra và các nội dung bắt buộc khác theo yêu cầu của chương trình đào tạo.
-c) Điểm trung bình chung tích lũy theo CTĐT của toàn khóa học phải đạt từ 5,50 trở lên.
-d) Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo.
-đ) Hoàn thành các học phần Giáo dục quốc phòng – An ninh và Giáo dục thể chất và các học phần điều kiện khác (nếu có).
-e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mượn sách thư viện, thủ tục quyết toán đề tài Nghiên cứu khoa học, học phí và các thủ tục khác.
-2. Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, SV viết đơn theo mẫu (Mẫu số 08 – Phụ lục 4 kèm theo) gửi đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp.
-3. Sau mỗi quý, Hội đồng xét tốt nghiệp căn cứ các điều kiện công nhận tốt nghiệp quy định tại khoản 1 Điều này để lập danh sách những SV đủ điều kiện tốt nghiệp. Hội đồng xét tốt nghiệp Trường do Hiệu trưởng hoặc Phó Hiệu trưởng được Hiệu trưởng uỷ quyền làm chủ tịch, Trưởng đơn vị quản lý đào tạo làm thư ký và các thành viên là các Trưởng Khoa/viện, Trưởng Phòng Công tác Chính trị và Sinh viên.
-4. Căn cứ đề nghị của Hội đồng xét tốt nghiệp, các đơn vị liên quan có trách nhiệm thẩm định theo quy trình xét và công nhận SV tốt nghiệp, trình Hiệu trưởng ký quyết định công nhận tốt nghiệp và cấp bằng cho SV đủ điều kiện tốt nghiệp.
-5. Những SV đủ điều kiện tốt nghiệp được Hiệu trưởng ra quyết định công nhận tốt nghiệp và cấp bằng tốt nghiệp trong thời hạn 03 tháng tính từ thời điểm SV đáp ứng đầy đủ điều kiện tốt nghiệp và hoàn thành nghĩa vụ với Trường.
-6. Sinh viên đã hết thời gian học tập tối đa theo quy định nhưng chưa đủ điều kiện tốt nghiệp do chưa hoàn thành các học phần Giáo dục quốc phòng – An ninh hoặc Giáo dục thể chất hoặc chưa đạt chuẩn đầu ra về ngoại ngữ, công nghệ thông tin, trong thời hạn 03 năm tính từ khi thôi học được hoàn thiện các điều kiện còn thiếu và đề nghị xét công nhận tốt nghiệp.
-7. Sinh viên hết thời gian học chính quy được chuyển qua hình thức vừa làm vừa học, đào tạo từ xa tương ứng (nếu có) của Trường nếu còn trong thời gian học tập theo quy định đối với hình thức đào tạo chuyển đến.
-8. Sinh viên không tốt nghiệp được cấp chứng nhận (bảng điểm) về các học phần đã tích luỹ trong CTĐT của Trường (nếu có nhu cầu)."""@vi ;
-    :orderIndex "22"^^xsd:nonNegativeInteger ;
-    :partOf :Decision1052Chapter03 ;
+    rdfs:label "Điều 11: Đăng ký học lại và học cải thiện"@vi ;
+    :hasPart :Decision1052Article11Clause01,
+        :Decision1052Article11Clause02,
+        :Decision1052Article11Clause03,
+        :Decision1052Article11Clause04 ;
+    :identifier "Điều 11"@vi ;
+    :officialText """#### Điều 11. Đăng ký học lại và học cải thiện
+1. Sinh viên có học phần bắt buộc bị điểm dưới 5,0 phải đăng ký học lại học phần đó ở các học kỳ tiếp theo cho đến khi đạt điểm bằng hoặc lớn hơn 5,0.
+2. Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác.
+3. Ngoài các trường hợp quy định tại khoản 1 và khoản 2 của Điều này, SV được quyền đăng ký học lại hoặc học đổi sang học phần khác đối với nhóm học phần tự chọn để cải thiện điểm trung bình chung tích lũy.
+4. Kết quả học tập tích lũy được ghi nhận cho lần học cùng học phần có điểm cao hơn."""@vi ;
+    :orderIndex "11"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter02 ;
     :sourceDocument :Decision1052 ;
-    :title "Điều kiện xét tốt nghiệp và công nhận tốt nghiệp"@vi .
+    :title "Đăng ký học lại và học cải thiện"@vi .
+
+:Decision1052Article14 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 14: Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp"@vi ;
+    :hasPart :Decision1052Article14Clause01,
+        :Decision1052Article14Clause02,
+        :Decision1052Article14Clause03,
+        :Decision1052Article14Clause04,
+        :Decision1052Article14Clause05 ;
+    :identifier "Điều 14"@vi ;
+    :officialText """#### Điều 14. Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp
+1. Sinh viên được xếp hạng năm thứ 4 phải thực hiện đồ án/khóa luận tốt nghiệp (ĐATN) hoặc các chuyên đề tốt nghiệp (CĐTN) để hoàn thành khóa học.
+2. SV đủ điều kiện thực hiện ĐATN theo quy định của trường phải làm đơn đăng ký thực hiện ĐATN (Mẫu số 02 – Phụ lục 4 kèm theo).
+3. SV không đủ điều kiện thực hiện ĐATN phải làm các CĐTN. Ở một số ngành đào tạo, SV không đủ điều kiện thực hiện ĐATN được phép học các học phần tốt nghiệp (HPTN) hoặc thực hiện CĐTN kết hợp học một số HPTN theo quy định của CTĐT.
+4. Sinh viên không đạt ĐATN hoặc CĐTN phải đăng ký làm lại hoặc đăng ký học các HPTN nếu CTĐT cho phép.
+5. Nhà trường có quy định chi tiết về thực hiện và đánh giá ĐATN và CĐTN.
+---
+## Chương III
+### ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP"""@vi ;
+    :orderIndex "14"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter02 ;
+    :sourceDocument :Decision1052 ;
+    :title "Thực hiện đồ án/khóa luận và chuyên đề tốt nghiệp"@vi .
+
+:Decision1052Article25 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 25: Chuyển ngành"@vi ;
+    :hasPart :Decision1052Article25Clause01,
+        :Decision1052Article25Clause02,
+        :Decision1052Article25Clause03,
+        :Decision1052Article25Clause04,
+        :Decision1052Article25Clause05 ;
+    :identifier "Điều 25"@vi ;
+    :officialText """### Điều 25. Chuyển ngành
+1. Sinh viên được xét chuyển ngành đào tạo khi đáp ứng các điều kiện sau đây:
+a) Không đang là SV trình độ năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định tại khoản 4 Điều 2 của Quy chế này.
+b) Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo của Trường trong cùng khóa tuyển sinh.
+c) Được sự đồng ý của Trưởng Khoa/viện của ngành đang học và ngành xin chuyển đến.
+d) Nhà trường có đủ các điều kiện bảo đảm chất lượng, chưa vượt quá năng lực đào tạo đối với ngành đào tạo xin chuyển đến theo quy định hiện hành của Bộ Giáo dục và Đào tạo.
+2. Sinh viên có nguyện vọng và thỏa mãn các điều kiện tại khoản 1 của Điều này có thể được xem xét chuyển ngành trong cùng bậc học. Ít nhất 02 tuần trước khi bắt
+đầu học kỳ mới, SV làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định.
+3. Khi được chấp thuận chuyển sang ngành mới, SV được bảo lưu điểm các học phần đã học có nội dung và khối lượng kiến thức tương đương. Sinh viên chuyển ngành không được gia hạn thời gian học tập tối đa theo quy định.
+4. Sinh viên được xem xét chuyển từ hình thức chính quy sang hình thức vừa làm vừa học hoặc đào tạo từ xa của Trường nếu còn đủ thời gian học tập theo quy định đối với hình thức chuyển đến.
+5. Các trường hợp khác do Hiệu trưởng quyết định."""@vi ;
+    :orderIndex "25"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter04 ;
+    :sourceDocument :Decision1052 ;
+    :title "Chuyển ngành"@vi .
+
+:Decision1052Article27 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 27: Trao đổi sinh viên và công nhận tín chỉ"@vi ;
+    :hasPart :Decision1052Article27Clause01,
+        :Decision1052Article27Clause02,
+        :Decision1052Article27Clause03,
+        :Decision1052Article27Clause04,
+        :Decision1052Article27Clause05 ;
+    :identifier "Điều 27"@vi ;
+    :officialText """### Điều 27. Trao đổi sinh viên và công nhận tín chỉ
+1. Trao đổi SV là việc Nhà trường hợp tác với các trường khác để tiếp nhận SV của nhau đến học tập ở trường đối tác nhằm công nhận kết quả học tập và tín chỉ lẫn nhau (sau đây gọi là chương trình trao đổi SV).
+2. Sinh viên của Trường Đại học Nha Trang tham gia chương trình trao đổi SV có thể đăng ký học một số học phần tại Trường khác (và ngược lại) với số lượng tín chỉ tích lũy tại Trường khác (nếu có) không vượt quá 25% tổng khối lượng của chương trình đào tạo.
+3. Điều kiện đăng ký chương trình trao đổi SV, cụ thể như sau:
+a) Sinh viên đã kết thúc 1 năm học tại Trường và có điểm trung bình chung tích lũy đạt từ 6,00 trở lên.
+b) Trường hợp khác sẽ do Hiệu trưởng xem xét quyết định.
+4. Thủ tục đăng ký tham gia chương trình trao đổi SV, cụ thể như sau:
+a) Đầu mỗi học kỳ, Nhà trường thông báo về việc đăng ký tham gia chương trình trao đổi SV.
+b) Sinh viên đăng ký học theo mẫu (Mẫu số 14 - Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo.
+5. Sinh viên tham gia chương trình trao đổi sinh viên theo hướng dẫn chi tiết của Nhà trường và các trường khác."""@vi ;
+    :orderIndex "27"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter04 ;
+    :sourceDocument :Decision1052 ;
+    :title "Trao đổi sinh viên và công nhận tín chỉ"@vi .
 
 :Decision1052Chapter02 a :Chapter,
         owl:NamedIndividual ;
@@ -3907,6 +4379,35 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     rdfs:label "Tài liệu chính thức"@vi ;
     rdfs:subClassOf :DocumentComponent .
 
+:Decision1052Article28 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 28: Học cùng lúc hai chương trình"@vi ;
+    :hasPart :Decision1052Article28Clause01,
+        :Decision1052Article28Clause02,
+        :Decision1052Article28Clause03,
+        :Decision1052Article28Clause04,
+        :Decision1052Article28Clause05,
+        :Decision1052Article28Clause06 ;
+    :identifier "Điều 28"@vi ;
+    :officialText """### Điều 28. Học cùng lúc hai chương trình
+Sinh viên đều có quyền đăng ký học một CTĐT khác để lấy thêm văn bằng thứ hai trong quá trình học tập bằng hình thức tích lũy tín chỉ theo CTĐT thứ hai.
+1. Điều kiện để học cùng lúc hai chương trình:
+a) Sinh viên được đăng ký học chương trình thứ hai khi đã được xếp từ trình độ năm thứ hai trở lên của chương trình thứ nhất.
+b) Học lực tính theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai trong năm tuyển sinh; hoặc học lực tính theo điểm trung bình tích lũy xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh.
+2. Trong quá trình SV học cùng lúc hai chương trình, nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo. Sinh viên sẽ không được phép đăng ký học phần của chương trình thứ 2 cho đến khi nào kết quả học tập chương trình thứ nhất được cải thiện mới được học tiếp chương trình thứ hai.
+3. Thủ tục đăng ký học thêm chương trình thứ hai:
+a) Sinh viên đăng ký học chương trình thứ hai vào đầu mỗi học kỳ chính theo thông báo hàng năm của Trường (Mẫu số 15 - Phụ lục 4 kèm theo).
+b) Khi có Quyết định chấp thuận học cùng lúc hai chương trình, được Nhà trường cung cấp một mã số SV riêng, SV tự nghiên cứu CTĐT của ngành thứ hai và bổ sung các học phần cần phải học vào kế hoạch học tập để đăng ký học phần (Đơn vị quản lý đào tạo hỗ trợ đăng ký học phần khi cần thiết) bằng mã số SV của chương trình thứ 2.
+c) Sinh viên học chương trình thứ hai được bảo lưu các học phần có nội dung và khối lượng kiến thức tương đương đã được học và tích lũy ở chương trình thứ nhất.
+d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyển về khoa quản lý chương trình thứ hai để quản lý.
+4. Sinh viên học hai chương trình chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất. Nhà trường cử GV theo dõi và hỗ trợ đối với SV học cùng lúc hai chương trình.
+5. Thời gian học tối đa được phép học đối với SV học cùng lúc hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất được quy định tại khoản 4 Điều 2 của Quy chế này. Sinh viên chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp ở chương trình thứ nhất và đăng kí muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai.
+6. Nhà trường có quy định chi tiết về các học phần được bảo lưu và khối lượng kiến thức cần phải tích lũy đối với số ngành đào tạo thứ hai cho những SV học cùng lúc hai chương trình."""@vi ;
+    :orderIndex "28"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter04 ;
+    :sourceDocument :Decision1052 ;
+    :title "Học cùng lúc hai chương trình"@vi .
+
 :Decision1052Chapter03 a :Chapter,
         owl:NamedIndividual ;
     rdfs:label "Chương 3: ĐÁNH GIÁ KẾT QUẢ HỌC TẬP VÀ CẤP BẰNG TỐT NGHIỆP"@vi ;
@@ -3924,6 +4425,52 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :orderIndex "3"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Regulation ;
     :sourceDocument :Decision1052 .
+
+:Decision1052Article17 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 17: Đánh giá giữa kỳ và cuối kỳ"@vi ;
+    :hasPart :Decision1052Article17Clause01,
+        :Decision1052Article17Clause02,
+        :Decision1052Article17Clause03,
+        :Decision1052Article17Clause04 ;
+    :identifier "Điều 17"@vi ;
+    :officialText """#### Điều 17. Đánh giá giữa kỳ và cuối kỳ
+1. Sinh viên được đánh giá giữa kỳ (thi giữa kỳ) và đánh giá cuối kỳ (thi cuối kỳ) khi đáp ứng các điều kiện sau:
+a) Đối với học phần lý thuyết:
+- SV phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần.
+- SV nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo Mẫu kèm minh chứng liên quan (Mẫu số 03 – Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa/viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học.
+b) Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường:
+SV phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa/viện đào tạo xem xét xử lý.
+2. SV bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 (không) ở kỳ thi đó.
+3. Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do GV giảng dạy học phần tổ chức.
+4. Sinh viên đủ điều kiện dự thi nhưng không thể dự thi cuối kỳ do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được phép hoãn thi và được dự thi cuối kỳ học phần đó trong thời hạn 2 học kỳ chính tiếp theo để hoàn thành điểm, quá thời hạn trên điểm đánh giá cuối kỳ sẽ là điểm 0 (không). Sinh viên làm đơn xin hoãn thi theo mẫu (Mẫu số 04 – Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo để được giải quyết."""@vi ;
+    :orderIndex "17"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Đánh giá giữa kỳ và cuối kỳ"@vi .
+
+:AcademicActor a owl:Class ;
+    rdfs:label "Chủ thể học vụ"@vi .
+
+:Decision1052Article24 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 24: Nghỉ học tạm thời và xin thôi học"@vi ;
+    :hasPart :Decision1052Article24Clause01,
+        :Decision1052Article24Clause02,
+        :Decision1052Article24Clause03 ;
+    :identifier "Điều 24"@vi ;
+    :officialText """### Điều 24. Nghỉ học tạm thời và xin thôi học
+1. Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả đã học trong các trường hợp sau:
+a) Được điều động vào lực lượng vũ trang.
+b) Được cơ quan có thẩm quyền điều động, đại diện quốc gia tham dự các kỳ thi, giải đấu quốc tế.
+c) Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế.
+d) Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường và không thuộc các trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật quy định tại Điều 20 của Quy chế này. Thời gian nghỉ học tạm thời vì nhu cầu cá nhân được tính vào thời gian học chính thức quy định tại khoản 4 Điều 2 của Quy chế này.
+2. Sinh viên được xin thôi học vì lý do cá nhân, trừ trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật. Những SV này muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác.
+3. Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo), xin thôi học (Mẫu đơn 10 – Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên. Khi muốn trở lại học tiếp, cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới để được xem xét giải quyết."""@vi ;
+    :orderIndex "24"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter04 ;
+    :sourceDocument :Decision1052 ;
+    :title "Nghỉ học tạm thời và xin thôi học"@vi .
 
 :LanguageCertificateAbbreviationTable a :DocumentTable,
         owl:NamedIndividual ;
@@ -3959,9 +4506,68 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :partOf :Decision1052Appendix02 ;
     :sourceDocument :Decision1052 .
 
-:DocumentPart a owl:Class ;
-    rdfs:label "Thành phần nội dung tài liệu"@vi ;
-    rdfs:subClassOf :DocumentComponent .
+:Decision1052Article21 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 21: Công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
+    :hasPart :Decision1052Article21Clause01,
+        :Decision1052Article21Clause02,
+        :Decision1052Article21Clause03,
+        :Decision1052Article21Clause04,
+        :Decision1052Article21Clause05,
+        :Decision1052Article21Clause06,
+        :Decision1052Article21Clause07 ;
+    :identifier "Điều 21"@vi ;
+    :officialText """### Điều 21. Công nhận kết quả học tập và chuyển đổi tín chỉ
+1. Kết quả học tập của SV đã tích lũy từ một trình độ đào tạo khác, một ngành đào tạo hoặc CTĐT khác, một khóa học khác, hoặc một cuộc thi và hoạt động học thuật, hoặc từ một trường khác được Hiệu trưởng Trường Đại học Nha Trang xem xét công nhận bảo lưu và chuyển đổi sang tín chỉ của những học phần trong CTĐT theo học.
+2. Sinh viên có nguyện vọng miễn học và quy đổi điểm học phần phải nộp bản sao có công chứng văn bằng, chứng chỉ và bảng điểm cho Đơn vị quản lý đào tạo (Mẫu số 06 – Phụ lục 4 kèm theo).
+3. Hội đồng chuyên môn của Nhà trường (Hội đồng Khoa/viện hoặc Hội đồng được Hiệu trưởng thành lập nếu thấy cần thiết) hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình theo các cấp độ, cụ thể sau:
+a) Công nhận kết quả học tập, chuyển đổi theo từng học phần.
+b) Công nhận kết quả học tập, chuyển đổi theo từng nhóm học phần.
+c) Công nhận kết quả học tập, chuyển đổi theo cả chương trình đào tạo.
+4. Nhà trường công khai quy định việc công nhận kết quả học tập và chuyển đổi tín chỉ. Khối lượng tối đa được công nhận kết quả học tập (điểm R – được quy định chi tiết tại Điều 16), chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của CTĐT.
+5. Sinh viên được xem xét miễn học, miễn thi kết thúc học phần liên quan và cho điểm thưởng trong các trường hợp sau đây:
+a) Đạt giải thưởng nhất, nhì, ba trong các kỳ thi Olympic SV cấp tỉnh và tương đương trở lên.
+b) Đạt giải thưởng nhất, nhì, ba trong đợt xét Giải thưởng khoa học và công nghệ dành cho SV.
+c) Có chứng chỉ ngoại ngữ quốc tế còn hiệu lực, đáp ứng các mức yêu cầu tương ứng đối với sinh viên không chuyên ngữ, sinh viên chuyên ngữ, sinh viên học chương trình đào tạo chuẩn và sinh viên học chương trình đào tạo đặc biệt, theo quy định chi tiết tại Phụ lục 2.
+d) Có chứng chỉ tin học quốc tế còn hiệu lực, đáp ứng các mức yêu cầu tương đương đối với sinh viên theo học các chương trình đào tạo, theo quy định chi tiết tại Phụ lục 3.
+6. Sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 – Phụ lục 4 kèm theo) kèm theo minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết.
+7. Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi và điểm thưởng, chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."""@vi ;
+    :orderIndex "21"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Công nhận kết quả học tập và chuyển đổi tín chỉ"@vi .
+
+:Decision1052Article22 a :Article,
+        owl:NamedIndividual ;
+    rdfs:label "Điều 22: Điều kiện xét tốt nghiệp và công nhận tốt nghiệp"@vi ;
+    :hasPart :Decision1052Article22Clause01,
+        :Decision1052Article22Clause02,
+        :Decision1052Article22Clause03,
+        :Decision1052Article22Clause04,
+        :Decision1052Article22Clause05,
+        :Decision1052Article22Clause06,
+        :Decision1052Article22Clause07,
+        :Decision1052Article22Clause08 ;
+    :identifier "Điều 22"@vi ;
+    :officialText """### Điều 22. Điều kiện xét tốt nghiệp và công nhận tốt nghiệp
+1. Sinh viên được xét và công nhận tốt nghiệp khi có đủ các điều kiện sau:
+a) Cho đến thời điểm xét tốt nghiệp không bị truy cứu trách nhiệm hình sự hoặc không đang trong thời gian bị kỷ luật ở mức đình chỉ học tập.
+b) Tích lũy đủ số học phần, khối lượng học tập của CTĐT được quy định tại Điều 2 của Quy chế này, đạt chuẩn đầu ra và các nội dung bắt buộc khác theo yêu cầu của chương trình đào tạo.
+c) Điểm trung bình chung tích lũy theo CTĐT của toàn khóa học phải đạt từ 5,50 trở lên.
+d) Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo.
+đ) Hoàn thành các học phần Giáo dục quốc phòng – An ninh và Giáo dục thể chất và các học phần điều kiện khác (nếu có).
+e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mượn sách thư viện, thủ tục quyết toán đề tài Nghiên cứu khoa học, học phí và các thủ tục khác.
+2. Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, SV viết đơn theo mẫu (Mẫu số 08 – Phụ lục 4 kèm theo) gửi đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp.
+3. Sau mỗi quý, Hội đồng xét tốt nghiệp căn cứ các điều kiện công nhận tốt nghiệp quy định tại khoản 1 Điều này để lập danh sách những SV đủ điều kiện tốt nghiệp. Hội đồng xét tốt nghiệp Trường do Hiệu trưởng hoặc Phó Hiệu trưởng được Hiệu trưởng uỷ quyền làm chủ tịch, Trưởng đơn vị quản lý đào tạo làm thư ký và các thành viên là các Trưởng Khoa/viện, Trưởng Phòng Công tác Chính trị và Sinh viên.
+4. Căn cứ đề nghị của Hội đồng xét tốt nghiệp, các đơn vị liên quan có trách nhiệm thẩm định theo quy trình xét và công nhận SV tốt nghiệp, trình Hiệu trưởng ký quyết định công nhận tốt nghiệp và cấp bằng cho SV đủ điều kiện tốt nghiệp.
+5. Những SV đủ điều kiện tốt nghiệp được Hiệu trưởng ra quyết định công nhận tốt nghiệp và cấp bằng tốt nghiệp trong thời hạn 03 tháng tính từ thời điểm SV đáp ứng đầy đủ điều kiện tốt nghiệp và hoàn thành nghĩa vụ với Trường.
+6. Sinh viên đã hết thời gian học tập tối đa theo quy định nhưng chưa đủ điều kiện tốt nghiệp do chưa hoàn thành các học phần Giáo dục quốc phòng – An ninh hoặc Giáo dục thể chất hoặc chưa đạt chuẩn đầu ra về ngoại ngữ, công nghệ thông tin, trong thời hạn 03 năm tính từ khi thôi học được hoàn thiện các điều kiện còn thiếu và đề nghị xét công nhận tốt nghiệp.
+7. Sinh viên hết thời gian học chính quy được chuyển qua hình thức vừa làm vừa học, đào tạo từ xa tương ứng (nếu có) của Trường nếu còn trong thời gian học tập theo quy định đối với hình thức đào tạo chuyển đến.
+8. Sinh viên không tốt nghiệp được cấp chứng nhận (bảng điểm) về các học phần đã tích luỹ trong CTĐT của Trường (nếu có nhu cầu)."""@vi ;
+    :orderIndex "22"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Chapter03 ;
+    :sourceDocument :Decision1052 ;
+    :title "Điều kiện xét tốt nghiệp và công nhận tốt nghiệp"@vi .
 
 :ClassSizeTable a :DocumentTable,
         owl:NamedIndividual ;
@@ -4001,6 +4607,19 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Appendix01 ;
     :sourceDocument :Decision1052 .
+
+:DocumentPart a owl:Class ;
+    rdfs:label "Thành phần nội dung tài liệu"@vi ;
+    rdfs:subClassOf :DocumentComponent .
+
+:FormDocument a owl:Class ;
+    rdfs:label "Biểu mẫu"@vi .
+
+:FormCatalogueEntry a owl:Class ;
+    rdfs:label "Mục tải biểu mẫu"@vi .
+
+:AcademicProcedure a owl:Class ;
+    rdfs:label "Quy trình học vụ"@vi .
 
 :Article a owl:Class ;
     rdfs:label "Điều"@vi ;
