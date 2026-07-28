@@ -27,7 +27,9 @@ SELECT ?answer WHERE { :AcademicLeaveProcedure :handledBy ?node . ?node :email ?
 ```mermaid
 flowchart LR
     Q["Văn bản tự nhiên"] --> N["NFC + khoảng trắng + viết tắt chắc nghĩa"]
-    N --> M["BARTpho / ViT5 / T5Gemma2"]
+    N --> D{"PhoBERT domain gate"}
+    D -- "ngoài phạm vi" --> X["Thông báo từ chối"]
+    D -- "trong phạm vi" --> M["BARTpho / ViT5 / T5Gemma2"]
     M --> S["Một dòng SPARQL SELECT"]
     S --> V["Parser + danh sách thao tác cấm"]
     V --> G["RDFLib query"]
@@ -76,12 +78,13 @@ SELECT ?count ?answer WHERE { { SELECT (COUNT(DISTINCT ?node) AS ?count) WHERE {
 ## Phạm vi
 
 Project tập trung vào semantic parsing trên một ontology có schema ổn định.
-Pipeline chỉ gồm chuẩn hóa văn bản, sinh SPARQL, kiểm tra an toàn, truy vấn graph
-và định dạng câu trả lời. Một thành phần mới chỉ được bổ sung khi benchmark
-chứng minh pipeline này không đáp ứng yêu cầu nghiên cứu.
+Pipeline gồm chuẩn hóa văn bản, phân loại phạm vi, sinh SPARQL, kiểm tra an
+toàn, truy vấn graph và định dạng câu trả lời.
 
-Hệ thống chỉ nhận câu hỏi thuộc miền dữ liệu của ontology. Nhận biết câu hỏi
-ngoài miền và output từ chối không thuộc contract nghiên cứu hiện tại.
+Domain gate chỉ trả lời một câu hỏi: toàn bộ yêu cầu của người dùng có nằm
+trong phần dữ liệu mà ontology hiện tại hỗ trợ hay không. Gate không biết IRI,
+không sinh SPARQL và không truy vấn graph. Câu ngoài phạm vi dừng trước model
+sinh SPARQL; câu trong phạm vi đi tiếp qua pipeline ontology bình thường.
 
 ## Contract tài liệu
 

@@ -63,3 +63,24 @@ code trainer.
 `from_pretrained()`, cùng backend Transformers cho cả ba model. CTranslate2
 chỉ đo parity và hiệu năng triển khai. BLEU, ROUGE và token F1 không dùng vì
 độ giống chuỗi không chứng minh query trả đúng dữ liệu.
+
+## Đánh giá domain gate
+
+Gate xem `in_scope` là lớp dương và được báo cáo độc lập với benchmark sinh
+SPARQL:
+
+| Metric | Cách tính | Ý nghĩa |
+|---|---|---|
+| In-scope recall | `TP / (TP + FN)` | Tỷ lệ câu ontology trả lời được được cho qua |
+| False acceptance rate | `FP / (FP + TN)` | Tỷ lệ câu ngoài phạm vi lọt vào generator |
+| Macro F1 | Trung bình F1 của hai lớp | Chất lượng cân bằng tổng thể |
+| ROC-AUC | Xếp hạng xác suất hai lớp | Khả năng tách lớp không phụ thuộc một ngưỡng |
+
+Ngưỡng được chọn trên validation rồi cố định trong manifest. Trên 860 câu test,
+gate đạt recall 95,58%, false acceptance rate 1,16% và ma trận
+`TP=411, FN=19, FP=5, TN=425`. Đây là trade-off bảo thủ: ưu tiên không đưa câu
+ontology không thể trả lời vào model sinh SPARQL.
+
+Sau conversion, evaluator chạy lại toàn bộ test bằng CT2+NumPy và so từng xác
+suất, quyết định cùng ma trận với prediction PyTorch. Artifact production phải
+giữ nguyên ma trận và đạt cả hai ngưỡng FAR ≤ 1,2%, recall ≥ 95%.

@@ -80,3 +80,21 @@ khả năng tổng quát hóa cuối cùng.
 Lệnh trên chỉ được dùng sau khi dataset qua audit trong `docs/DATASET.md`. Không
 dò hyperparameter, không chạy nhiều seed và không tự khởi động lại một model
 nếu chưa có phê duyệt.
+
+## Domain gate
+
+PhoBERT gate là bài toán binary classification độc lập với benchmark ba model
+sinh SPARQL. Nó dùng `resources/dataset/gate`, không word-segment, cùng hàm
+chuẩn hoá đầu vào của runtime và nhãn `out_of_scope=0`, `in_scope=1`.
+
+```bash
+uv run --extra train train_domain_gate \
+  --save-model \
+  --local-files-only \
+  --output-dir artifacts/models/phobert-gate
+```
+
+Trainer dùng seed 42, tối đa 5 epoch, learning rate `2e-5`, cosine scheduler,
+dynamic padding và dropout mặc định của PhoBERT. Ngưỡng được chọn trên
+validation để hạn chế nhận nhầm ngoài miền rồi lưu cùng checkpoint; test không
+tham gia chọn ngưỡng.

@@ -77,3 +77,28 @@ Trước khi huấn luyện, dataset phải qua các kiểm tra sau:
 
 Số liệu máy đọc, trạng thái sẵn sàng huấn luyện và checksum nằm trong
 `reports/dataset.json` cùng `resources/dataset/main/manifest.json`.
+
+## Dataset gate
+
+`resources/dataset/gate/` dành cho bộ phân loại phạm vi đứng trước model sinh
+SPARQL. Mỗi dòng JSON Lines có đúng hai trường:
+
+```json
+{"input":"đóng tiền học sao","label":"in_scope"}
+```
+
+`in_scope` nghĩa là ontology và contract SPARQL hiện tại có thể trả lời trọn
+vẹn câu hỏi; `out_of_scope` bao gồm cả câu ngoài chủ đề và câu gần học vụ nhưng
+đòi dữ liệu ontology không có. Dataset có 4.526 câu, cân bằng theo nhãn trong
+từng split:
+
+| Tập | Tổng | `in_scope` | `out_of_scope` |
+|---|---:|---:|---:|
+| Train | 2.806 | 1.403 | 1.403 |
+| Validation | 860 | 430 | 430 |
+| Test | 860 | 430 | 430 |
+
+Toàn bộ câu hỏi của `dataset/main` xuất hiện ở phía `in_scope` của split tương
+ứng. Validation dùng chọn ngưỡng; test chỉ dùng để báo cáo recall trong miền và
+tỷ lệ nhận nhầm câu ngoài miền. Manifest cùng checksum nằm tại
+`resources/dataset/gate/manifest.json`.
