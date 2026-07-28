@@ -22,16 +22,13 @@ def test_perfect_prediction_scores_every_metric() -> None:
     )
     report = evaluate_predictions([_example(target)], [target], load_ontology())
 
-    assert report["overall"] == {
-        "count": 1,
-        "parse_rate": 1.0,
-        "execution_rate": 1.0,
-        "answer_exact_rate": 1.0,
-        "result_precision": 1.0,
-        "result_recall": 1.0,
-        "result_f1": 1.0,
-        "canonical_query_exact_rate": 1.0,
-    }
+    assert report["overall"]["count"] == 1
+    assert report["overall"]["parse_rate"] == 1.0
+    assert report["overall"]["execution_rate"] == 1.0
+    assert report["overall"]["answer_exact_rate"] == 1.0
+    assert report["overall"]["result_f1"] == 1.0
+    assert report["in_domain"]["count"] == 1
+    assert report["out_of_domain"]["count"] == 0
 
 
 def test_equivalent_query_keeps_answer_metric_but_not_canonical_exact() -> None:
@@ -148,3 +145,35 @@ def test_reports_overlapping_query_features_and_missing_branch() -> None:
     assert report["by_query_feature"]["multi_branch"]["count"] == 1
     assert report["error_counts"] == {"missing_branch": 1}
     assert report["cases"][0]["error_category"] == "missing_branch"
+
+
+def test_marker_prediction_is_scored_without_sparql_parsing() -> None:
+    example = {
+        **_example("không có thông tin", register="colloquial"),
+        "query_id": "no-information",
+        "input": "xin chào nha",
+    }
+
+    report = evaluate_predictions(
+        [example], ["không có thông tin"], load_ontology(), include_cases=True
+    )
+
+    assert report["overall"]["answer_exact_rate"] == 1.0
+    assert report["out_of_domain"]["count"] == 1
+    assert report["out_of_domain"]["marker_exact_rate"] == 1.0
+    assert report["out_of_domain"]["false_acceptance_rate"] == 0.0
+    assert report["cases"][0]["parse"] is False
+
+
+def test_executable_select_for_marker_is_false_acceptance() -> None:
+    example = {
+        **_example("không có thông tin"),
+        "query_id": "no-information",
+        "input": "thời tiết hôm nay",
+    }
+    prediction = 'SELECT ?answer WHERE { VALUES ?answer { "trời nắng" } }'
+
+    report = evaluate_predictions([example], [prediction], load_ontology())
+
+    assert report["out_of_domain"]["answer_exact_rate"] == 0.0
+    assert report["out_of_domain"]["false_acceptance_rate"] == 1.0

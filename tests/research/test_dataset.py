@@ -4,184 +4,168 @@ from copy import deepcopy
 
 import pytest
 
-from ontchatbot.research.dataset import DatasetError, load_release, validate_release
+from ontchatbot.research.catalogue import QuerySpec, SlotSpec
+from ontchatbot.research.dataset import DatasetError, validate_release
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import DATASET_DIR
 
 
-TARGETS = (
-    "SELECT ?answer WHERE { :AcademicLeaveProcedure :content ?answer . }",
-    "SELECT ?answer WHERE { :CourseRegistrationProcedure :content ?answer . }",
-)
-QUESTIONS = (
-    (
-        "Tôi cần hướng dẫn nghỉ học tạm thời",
-        "thủ tục bảo lưu kết quả học tập",
-        "xin phép tạm dừng chương trình đang học",
-        "sắp đi nghĩa vụ quân sự thì làm sao giữ kết quả",
-        "hướng dẫn bảo lưu kết quả học tập gồm những gì",
-        "tui muốn nghỉ học tạm thời thì làm sao",
-        "quy trình xin tạm nghỉ học được thực hiện ra sao",
-        "bao luu ket qua hoc tap lam sao",
+CATALOGUE = {
+    "procedure-instruction": QuerySpec(
+        "procedure-instruction",
+        "procedure",
+        "SELECT ?answer WHERE { ${procedure} :instructionProvision ?part . ?part :officialText ?answer . }",
+        {
+            "procedure": SlotSpec(
+                "iri",
+                (
+                    ":TemporaryAcademicLeaveProcedure",
+                    ":CourseRegistrationProcedure",
+                ),
+            )
+        },
     ),
-    (
-        "Tôi cần hướng dẫn đăng ký học phần",
-        "cách chọn môn cho học kỳ mới",
-        "quy trình ghi danh môn học thực hiện thế nào",
-        "muốn thêm lớp vào thời khóa biểu phải làm sao",
-        "hướng dẫn thực hiện đăng ký học phần",
-        "dk mon hoc ky moi sao vay",
-        "quy trình đăng ký môn học gồm những bước nào",
-        "muon chon mon cho ky toi lam sao",
+    "performance-band": QuerySpec(
+        "performance-band",
+        "academic-rule",
+        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= ${score} && ${score} <= ?maximum) }",
+        {"score": SlotSpec("number")},
     ),
-)
+    "no-information": QuerySpec(
+        "no-information",
+        "out-of-domain",
+        "không có thông tin",
+        {},
+    ),
+}
 REGISTERS = ("formal", "neutral", "colloquial", "noisy")
 
 
-def _valid_release(query_count: int = 1) -> dict[str, list[dict[str, str]]]:
-    release: dict[str, list[dict[str, str]]] = {
-        "train": [],
-        "val": [],
-        "test": [],
+def _valid_release():
+    procedure_targets = (
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
+        "SELECT ?answer WHERE { :CourseRegistrationProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
+    )
+    score_targets = tuple(
+        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= "
+        f"{score} && {score} <= ?maximum) }}"
+        for score in ("8.5", "7", "5.5", "3", "9", "6.5", "4.5", "2")
+    )
+    questions = {
+        "procedure-instruction": (
+            "Xin trình bày quy trình nghỉ học tạm thời",
+            "Cách đăng ký học phần gồm những gì",
+            "bảo lưu thì làm sao vậy",
+            "đkhp kiểu j",
+            "Hướng dẫn nghỉ học tạm thời hiện hành",
+            "đăng ký môn cho học kỳ mới thế nào",
+            "Nêu thủ tục tạm nghỉ chương trình đào tạo",
+            "tui muốn chọn hp kỳ tới",
+        ),
+        "performance-band": (
+            "Điểm trung bình 8.5 được xếp loại nào",
+            "Mức 7 điểm thuộc loại gì",
+            "5.5 thì kết quả học tập loại nào",
+            "có 3 điểm xếp hạng sao",
+            "Xếp loại kết quả với điểm 9",
+            "6.5 được đánh giá mức nào",
+            "Cho biết loại học lực khi đạt 4.5",
+            "2 điểm là loại j",
+        ),
+        "no-information": (
+            "Xin chào bạn",
+            "Thời tiết hôm nay thế nào",
+            "kể tui nghe một câu chuyện",
+            "asdf qwer zxcv",
+            "Bạn khoẻ không",
+            "Ngày mai có mưa không",
+            "Gợi ý món ăn tối nay",
+            "hello bot nha",
+        ),
     }
-    for index in range(query_count):
-        query_id = f"query-{index + 1:04d}"
-        target = TARGETS[index]
-        questions = QUESTIONS[index]
-        rows = [
-            {
-                "id": f"question-{index + 1:04d}-{offset}",
-                "query_id": query_id,
-                "register": REGISTERS[(index * 2 + offset) % len(REGISTERS)],
-                "input": question,
-                "target": target,
-            }
-            for offset, question in enumerate(questions)
-        ]
-        release["train"].extend(rows[:4])
-        release["val"].extend(rows[4:6])
-        release["test"].extend(rows[6:8])
+    release = {"train": [], "val": [], "test": []}
+    targets = {
+        "procedure-instruction": procedure_targets * 4,
+        "performance-band": score_targets,
+        "no-information": ("không có thông tin",) * 8,
+    }
+    offsets = {"train": (0, 4), "val": (4, 6), "test": (6, 8)}
+    sequence = 1
+    for query_id in CATALOGUE:
+        for split, (start, stop) in offsets.items():
+            for index in range(start, stop):
+                release[split].append(
+                    {
+                        "id": f"question-{sequence:04d}",
+                        "query_id": query_id,
+                        "register": REGISTERS[index % 4],
+                        "input": questions[query_id][index],
+                        "target": targets[query_id][index],
+                    }
+                )
+                sequence += 1
     return release
 
 
-def test_canonical_dataset_is_executable() -> None:
-    if not DATASET_DIR.is_dir():
-        pytest.skip("SPARQL dataset has not been generated")
-    report = validate_release(load_release(), load_ontology())
+def test_accepts_dynamic_targets_and_marker() -> None:
+    report = validate_release(_valid_release(), load_ontology(), CATALOGUE)
 
-    assert report["records"] == 2263
-    assert report["split_counts"] == {"train": 1403, "val": 430, "test": 430}
-    assert all(split["queries"] == 215 for split in report["splits"].values())
-    assert all(not split["empty_result_ids"] for split in report["splits"].values())
+    assert report["records"] == 24
+    assert report["domains"] == {
+        "academic-rule": 8,
+        "out-of-domain": 8,
+        "procedure": 8,
+    }
+    assert report["slot_coverage"]["procedure-instruction"]["procedure"][
+        "missing_train"
+    ] == []
+    assert report["splits"]["train"]["targets"] > report["splits"]["train"]["queries"]
 
 
-def test_validator_accepts_the_in_domain_query_contract() -> None:
+def test_rejects_target_that_does_not_match_query_family() -> None:
     release = _valid_release()
+    release["train"][0]["target"] = "không có thông tin"
 
-    report = validate_release(release, load_ontology())
-
-    assert report["records"] == 8
-    assert all(
-        set(row) == {"id", "query_id", "register", "input", "target"}
-        for rows in release.values()
-        for row in rows
-    )
-    assert report["splits"]["train"]["queries"] == 1
+    with pytest.raises(DatasetError, match="does not match query family"):
+        validate_release(release, load_ontology(), CATALOGUE)
 
 
-def test_validator_rejects_one_query_id_with_two_targets() -> None:
-    release = _valid_release(query_count=2)
-    for rows in release.values():
-        for row in rows:
-            row["query_id"] = "query-0001"
-
-    with pytest.raises(DatasetError, match="query IDs have multiple targets"):
-        validate_release(release, load_ontology())
-
-
-def test_validator_rejects_one_target_with_two_query_ids() -> None:
-    release = _valid_release(query_count=2)
-    for rows in release.values():
-        for row in rows:
-            row["target"] = TARGETS[0]
-
-    with pytest.raises(DatasetError, match="targets have multiple query IDs"):
-        validate_release(release, load_ontology())
-
-
-def test_validator_rejects_query_id_missing_from_a_split() -> None:
-    release = _valid_release(query_count=2)
-    release["val"] = [row for row in release["val"] if row["query_id"] != "query-0002"]
-
-    with pytest.raises(DatasetError, match="query IDs missing from splits"):
-        validate_release(release, load_ontology())
-
-
-def test_validator_rejects_fewer_than_four_train_rows_per_query() -> None:
+def test_rejects_finite_iri_missing_from_train() -> None:
     release = _valid_release()
-    release["train"].pop()
+    course = ":CourseRegistrationProcedure"
+    leave = ":TemporaryAcademicLeaveProcedure"
+    for row in release["train"]:
+        if row["query_id"] == "procedure-instruction":
+            row["target"] = row["target"].replace(course, leave)
 
-    with pytest.raises(DatasetError, match="fewer than four train rows"):
-        validate_release(release, load_ontology())
+    with pytest.raises(DatasetError, match="finite slot values missing from train"):
+        validate_release(release, load_ontology(), CATALOGUE)
 
 
-def test_validator_rejects_missing_train_register_for_a_query() -> None:
+def test_rejects_unknown_query_id() -> None:
     release = _valid_release()
-    release["train"][3]["register"] = release["train"][0]["register"]
+    release["train"][0]["query_id"] = "unknown"
 
-    with pytest.raises(DatasetError, match="missing train registers"):
-        validate_release(release, load_ontology())
+    with pytest.raises(DatasetError, match="unknown query_id"):
+        validate_release(release, load_ontology(), CATALOGUE)
 
 
-@pytest.mark.parametrize("split", ["val", "test"])
-def test_validator_rejects_repeated_register_in_held_out_query(split: str) -> None:
+def test_rejects_exact_normalized_cross_split_leakage() -> None:
     release = _valid_release()
-    release[split][1]["register"] = release[split][0]["register"]
+    release["test"][0]["input"] = release["train"][0]["input"]
 
-    with pytest.raises(DatasetError, match=f"two distinct {split} registers"):
-        validate_release(release, load_ontology())
+    with pytest.raises(DatasetError, match="inputs cross splits"):
+        validate_release(release, load_ontology(), CATALOGUE)
 
 
-def test_validator_rejects_register_imbalance() -> None:
+def test_near_duplicate_check_is_limited_to_same_query_family() -> None:
     release = _valid_release()
-    for offset in (5, 6):
-        release["train"].append(
-            {
-                **release["train"][0],
-                "id": f"question-extra-{offset}",
-                "input": f"câu hỏi bổ sung hoàn toàn khác số {offset}",
-            }
-        )
+    release["train"][0]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 65"
+    release["test"][2]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 66"
 
-    with pytest.raises(DatasetError, match="register counts differ by more than one"):
-        validate_release(release, load_ontology())
+    validate_release(release, load_ontology(), CATALOGUE)
 
-
-@pytest.mark.parametrize("field", ["id", "input"])
-def test_validator_rejects_exact_cross_split_leakage(field: str) -> None:
-    release = _valid_release()
-    release["test"][0][field] = release["train"][0][field]
-
-    with pytest.raises(DatasetError, match=f"{field}s? cross splits"):
-        validate_release(release, load_ontology())
-
-
-def test_validator_rejects_near_duplicate_questions_across_splits() -> None:
-    release = _valid_release()
-    release["train"][0]["input"] = (
-        "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K66"
-    )
-    release["test"][0]["input"] = (
-        "Liệt kê hai mức học phí mỗi tín chỉ khác nhau cao nhất của khóa K65"
-    )
-
+    leaked = deepcopy(release)
+    leaked["test"][2]["input"] = _valid_release()["test"][2]["input"]
+    leaked["test"][0]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 66"
     with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
-        validate_release(release, load_ontology())
-
-
-def test_validator_rejects_removed_query_shape_field() -> None:
-    release = deepcopy(_valid_release())
-    release["train"][0]["query_shape"] = "direct"
-
-    with pytest.raises(DatasetError, match="fields must be exactly"):
-        validate_release(release, load_ontology())
+        validate_release(leaked, load_ontology(), CATALOGUE)

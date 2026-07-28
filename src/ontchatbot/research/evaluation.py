@@ -27,9 +27,12 @@ def evaluate_predictions(
         raise ValueError("examples and predictions must have the same length")
 
     totals: Counter[str] = Counter()
+    in_domain: Counter[str] = Counter()
+    out_of_domain: Counter[str] = Counter()
     grouped: dict[str, dict[str, Counter[str]]] = {
         "register": defaultdict(Counter),
         "query_feature": defaultdict(Counter),
+        "query_id": defaultdict(Counter),
     }
     object_properties = frozenset(
         str(subject).rsplit("#", 1)[-1]
@@ -41,18 +44,35 @@ def evaluate_predictions(
     for example, prediction in zip(examples, predictions, strict=True):
         target = example["target"]
         register = example["register"]
-        query_features = extract_query_features(
-            target,
-            object_properties=object_properties,
+        query_id = example["query_id"]
+        marker_reference = target == "không có thông tin"
+        query_features = (
+            {}
+            if marker_reference
+            else extract_query_features(target, object_properties=object_properties)
         )
         totals["count"] += 1
+        scope_counts = out_of_domain if marker_reference else in_domain
+        scope_counts["count"] += 1
+        if marker_reference:
+            totals["marker_count"] += 1
+            scope_counts["marker_count"] += 1
+        else:
+            totals["sparql_count"] += 1
+            scope_counts["sparql_count"] += 1
         groups = {
             "register": (register,),
-            "query_feature": query_feature_tags(query_features),
+            "query_feature": (
+                () if marker_reference else query_feature_tags(query_features)
+            ),
+            "query_id": (query_id,),
         }
         for group_name, values in groups.items():
             for value in values:
                 grouped[group_name][value]["count"] += 1
+                grouped[group_name][value][
+                    "marker_count" if marker_reference else "sparql_count"
+                ] += 1
 
         parse_ok = False
         execution_ok = False
@@ -62,38 +82,60 @@ def evaluate_predictions(
         result_f1 = 0.0
         error = None
         predicted_rows = None
-        try:
-            validate_select(prediction)
-            parse_ok = True
-            predicted_rows = execute_select(graph, prediction)
-            execution_ok = True
-            reference_rows = execute_select(graph, target)
-            answer_exact = _row_key(predicted_rows) == _row_key(reference_rows)
-            result_precision, result_recall, result_f1 = _result_scores(
-                predicted_rows,
-                reference_rows,
-            )
-        except SparqlError as exc:
-            error = str(exc)
-
         canonical_exact = prediction.strip() == target
-        error_category = _error_category(
-            target,
-            prediction,
-            parse_ok=parse_ok,
-            execution_ok=execution_ok,
-            answer_exact=answer_exact,
-            graph=graph,
-        )
+        marker_exact = marker_reference and canonical_exact
+        false_acceptance = False
+        if marker_reference:
+            answer_exact = marker_exact
+            if not marker_exact:
+                try:
+                    validate_select(prediction)
+                    parse_ok = True
+                    predicted_rows = execute_select(graph, prediction)
+                    execution_ok = True
+                    false_acceptance = bool(predicted_rows)
+                except SparqlError as exc:
+                    error = str(exc)
+            error_category = (
+                None
+                if marker_exact
+                else "false_acceptance" if false_acceptance else "rejection_mismatch"
+            )
+        else:
+            try:
+                validate_select(prediction)
+                parse_ok = True
+                predicted_rows = execute_select(graph, prediction)
+                execution_ok = True
+                reference_rows = execute_select(graph, target)
+                answer_exact = _row_key(predicted_rows) == _row_key(reference_rows)
+                result_precision, result_recall, result_f1 = _result_scores(
+                    predicted_rows,
+                    reference_rows,
+                )
+            except SparqlError as exc:
+                error = str(exc)
+            error_category = _error_category(
+                target,
+                prediction,
+                parse_ok=parse_ok,
+                execution_ok=execution_ok,
+                answer_exact=answer_exact,
+                graph=graph,
+            )
         if error_category is not None:
             error_counts[error_category] += 1
-        for name, value in (
-            ("parse", parse_ok),
-            ("execution", execution_ok),
+        boolean_metrics = [
             ("answer_exact", answer_exact),
             ("canonical_exact", canonical_exact),
-        ):
+            ("marker_exact", marker_exact),
+            ("false_acceptance", false_acceptance),
+        ]
+        if not marker_reference:
+            boolean_metrics[:0] = [("parse", parse_ok), ("execution", execution_ok)]
+        for name, value in boolean_metrics:
             totals[name] += int(value)
+            scope_counts[name] += int(value)
             for group_name, group_values in groups.items():
                 for group_value in group_values:
                     grouped[group_name][group_value][name] += int(value)
@@ -103,6 +145,7 @@ def evaluate_predictions(
             ("result_f1", result_f1),
         ):
             totals[name] += value
+            scope_counts[name] += value
             for group_name, group_values in groups.items():
                 for group_value in group_values:
                     grouped[group_name][group_value][name] += value
@@ -111,6 +154,7 @@ def evaluate_predictions(
             cases.append(
                 {
                     "id": example["id"],
+                    "query_id": query_id,
                     "register": register,
                     "query_features": query_features,
                     "input": example["input"],
@@ -123,6 +167,8 @@ def evaluate_predictions(
                     "result_recall": result_recall,
                     "result_f1": result_f1,
                     "canonical_exact": canonical_exact,
+                    "marker_exact": marker_exact,
+                    "false_acceptance": false_acceptance,
                     "error": error,
                     "error_category": error_category,
                     "predicted_rows": predicted_rows,
@@ -131,8 +177,11 @@ def evaluate_predictions(
 
     report = {
         "overall": _rates(totals),
+        "in_domain": _rates(in_domain),
+        "out_of_domain": _rates(out_of_domain),
         "by_register": _group_rates(grouped["register"]),
         "by_query_feature": _group_rates(grouped["query_feature"]),
+        "by_query_id": _group_rates(grouped["query_id"]),
         "error_counts": dict(sorted(error_counts.items())),
     }
     if include_cases:
@@ -232,15 +281,25 @@ def _value_key(value: object) -> tuple[str, str]:
 
 def _rates(counts: Counter[str]) -> dict[str, int | float]:
     total = counts["count"]
+    sparql_total = counts["sparql_count"]
+    marker_total = counts["marker_count"]
     return {
         "count": total,
-        "parse_rate": counts["parse"] / total if total else 0.0,
-        "execution_rate": counts["execution"] / total if total else 0.0,
+        "parse_rate": counts["parse"] / sparql_total if sparql_total else 0.0,
+        "execution_rate": counts["execution"] / sparql_total if sparql_total else 0.0,
         "answer_exact_rate": counts["answer_exact"] / total if total else 0.0,
-        "result_precision": counts["result_precision"] / total if total else 0.0,
-        "result_recall": counts["result_recall"] / total if total else 0.0,
-        "result_f1": counts["result_f1"] / total if total else 0.0,
+        "result_precision": (
+            counts["result_precision"] / sparql_total if sparql_total else 0.0
+        ),
+        "result_recall": counts["result_recall"] / sparql_total if sparql_total else 0.0,
+        "result_f1": counts["result_f1"] / sparql_total if sparql_total else 0.0,
         "canonical_query_exact_rate": counts["canonical_exact"] / total if total else 0.0,
+        "marker_exact_rate": (
+            counts["marker_exact"] / marker_total if marker_total else 0.0
+        ),
+        "false_acceptance_rate": (
+            counts["false_acceptance"] / marker_total if marker_total else 0.0
+        ),
     }
 
 

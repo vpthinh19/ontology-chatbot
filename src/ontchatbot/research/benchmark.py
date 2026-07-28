@@ -10,7 +10,8 @@ from typing import Any, Mapping
 
 from rdflib import Graph
 
-from ..settings import TEST_DATASET_PATH
+from ..settings import QUERY_CATALOGUE_PATH, TEST_DATASET_PATH
+from .catalogue import QuerySpec, load_catalogue, match_target
 from .dataset import ALLOWED_REGISTERS, UNSUPPORTED_TARGET_CHARACTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
@@ -31,8 +32,10 @@ def validate_benchmark(
     rows: list[dict[str, Any]],
     graph: Graph,
     *,
+    catalogue: Mapping[str, QuerySpec] | None = None,
     training_rows: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
     if not rows:
         raise BenchmarkError("benchmark is empty")
 
@@ -43,15 +46,22 @@ def validate_benchmark(
         for row in (training_rows or [])
     }
     training_queries = {row["query_id"] for row in (training_rows or [])}
-    training_targets = {row["target"] for row in (training_rows or [])}
-    training_pairs = {
-        (row["query_id"], row["target"])
-        for row in (training_rows or [])
-    }
+    training_slots: dict[str, dict[str, set[str]]] = {}
+    for row in training_rows or []:
+        spec = catalogue.get(row["query_id"])
+        if spec is None:
+            continue
+        matched = match_target(spec, row["target"])
+        if matched is None:
+            continue
+        query_slots = training_slots.setdefault(row["query_id"], {})
+        for name, value in matched.items():
+            query_slots.setdefault(name, set()).add(value)
     register_counts: Counter[str] = Counter()
+    domain_counts: Counter[str] = Counter()
     queries: set[str] = set()
     targets: set[str] = set()
-    query_target_pairs: set[tuple[str, str]] = set()
+    benchmark_slots: dict[str, dict[str, set[str]]] = {}
 
     for index, row in enumerate(rows, 1):
         record_id = str(row.get("id", f"line-{index}"))
@@ -83,37 +93,50 @@ def validate_benchmark(
             raise BenchmarkError(
                 f"{record_id}: tokenizer-unsafe target characters: {unsupported}"
             )
-        validate_select(target)
-        if not execute_select(graph, target):
-            raise BenchmarkError(f"{record_id}: reference query returns no rows")
+        query_id = row["query_id"]
+        spec = catalogue.get(query_id)
+        if spec is None:
+            raise BenchmarkError(f"{record_id}: unknown query_id {query_id}")
+        matched = match_target(spec, target)
+        if matched is None:
+            raise BenchmarkError(
+                f"{record_id}: target does not match query family {query_id}"
+            )
+        query_slots = benchmark_slots.setdefault(query_id, {})
+        for name, value in matched.items():
+            query_slots.setdefault(name, set()).add(value)
+        if spec.domain != "out-of-domain":
+            validate_select(target)
+            if not execute_select(graph, target):
+                raise BenchmarkError(f"{record_id}: reference query returns no rows")
         register_counts[register] += 1
-        queries.add(row["query_id"])
+        domain_counts[spec.domain] += 1
+        queries.add(query_id)
         targets.add(target)
-        query_target_pairs.add((row["query_id"], target))
 
     missing_queries = sorted(queries - training_queries) if training_rows is not None else []
     if missing_queries:
         raise BenchmarkError(f"query IDs absent from train: {missing_queries[:10]}")
-    missing_targets = sorted(targets - training_targets) if training_rows is not None else []
-    if missing_targets:
-        raise BenchmarkError(f"targets absent from train: {missing_targets[:3]}")
-    missing_pairs = (
-        sorted(query_target_pairs - training_pairs)
-        if training_rows is not None
-        else []
-    )
-    if missing_pairs:
-        raise BenchmarkError(
-            f"query-target pairs absent from train: {missing_pairs[:3]}"
-        )
+    missing_finite = []
+    if training_rows is not None:
+        for query_id, slots in benchmark_slots.items():
+            spec = catalogue[query_id]
+            for name, values in slots.items():
+                if not spec.slots[name].values:
+                    continue
+                unseen = sorted(values - training_slots.get(query_id, {}).get(name, set()))
+                if unseen:
+                    missing_finite.append((query_id, name, unseen))
+    if missing_finite:
+        raise BenchmarkError(f"finite slot values absent from train: {missing_finite[:10]}")
 
     return {
         "records": len(rows),
         "queries": len(queries),
         "targets": len(targets),
         "register_counts": dict(sorted(register_counts.items())),
+        "domains": dict(sorted(domain_counts.items())),
         "queries_supported_by_train": len(queries & training_queries),
-        "targets_supported_by_train": len(targets & training_targets),
     }
 
 

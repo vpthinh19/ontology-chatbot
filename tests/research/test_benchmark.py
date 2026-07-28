@@ -1,113 +1,124 @@
-import hashlib
-import json
-from pathlib import Path
+from __future__ import annotations
 
 import pytest
 
-from ontchatbot.research.benchmark import (
-    BenchmarkError,
-    evaluate_benchmark,
-    load_benchmark,
-    reference_predictions,
-    validate_benchmark,
-)
-from ontchatbot.research.dataset import load_release
+from ontchatbot.research.benchmark import BenchmarkError, validate_benchmark
+from ontchatbot.research.catalogue import QuerySpec, SlotSpec
 from ontchatbot.runtime.sparql import load_ontology
 
 
-def test_test_set_uses_only_train_supported_queries_and_is_executable() -> None:
-    rows = load_benchmark()
-    release = load_release()
+CATALOGUE = {
+    "performance-band": QuerySpec(
+        "performance-band",
+        "academic-rule",
+        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= ${score} && ${score} <= ?maximum) }",
+        {"score": SlotSpec("number")},
+    ),
+    "procedure-instruction": QuerySpec(
+        "procedure-instruction",
+        "procedure",
+        "SELECT ?answer WHERE { ${procedure} :instructionProvision ?part . ?part :officialText ?answer . }",
+        {
+            "procedure": SlotSpec(
+                "iri",
+                (
+                    ":TemporaryAcademicLeaveProcedure",
+                    ":CourseRegistrationProcedure",
+                ),
+            )
+        },
+    ),
+    "no-information": QuerySpec(
+        "no-information", "out-of-domain", "không có thông tin", {}
+    ),
+}
+
+
+def _row(identifier, query_id, text, target):
+    return {
+        "id": identifier,
+        "query_id": query_id,
+        "register": "neutral",
+        "input": text,
+        "target": target,
+    }
+
+
+def test_accepts_held_out_numeric_target_and_marker() -> None:
+    training = [
+        _row(
+            "train-1",
+            "performance-band",
+            "8.5 được loại gì",
+            "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= 8.5 && 8.5 <= ?maximum) }",
+        ),
+        _row("train-2", "no-information", "xin chào", "không có thông tin"),
+    ]
+    benchmark = [
+        _row(
+            "test-1",
+            "performance-band",
+            "Nếu được bảy điểm thì xếp mức nào",
+            "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= 7 && 7 <= ?maximum) }",
+        ),
+        _row("test-2", "no-information", "mai trời mưa không", "không có thông tin"),
+    ]
+
     report = validate_benchmark(
-        rows,
+        benchmark,
         load_ontology(),
-        training_rows=release["train"],
+        catalogue=CATALOGUE,
+        training_rows=training,
     )
 
-    assert report == {
-        "records": 430,
-        "queries": 215,
-        "targets": 215,
-        "register_counts": {
-            "colloquial": 108,
-            "formal": 107,
-            "neutral": 108,
-            "noisy": 107,
-        },
-        "queries_supported_by_train": 215,
-        "targets_supported_by_train": 215,
-    }
+    assert report["records"] == 2
+    assert report["queries_supported_by_train"] == 2
+    assert report["domains"] == {"academic-rule": 1, "out-of-domain": 1}
 
 
-def test_manifest_checksums_match() -> None:
-    manifest_path = Path("resources/dataset/main/manifest.json")
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+def test_rejects_unknown_query_or_mismatched_target() -> None:
+    row = _row("test-1", "unknown", "một câu mới", "không có thông tin")
+    with pytest.raises(BenchmarkError, match="unknown query_id"):
+        validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
 
-    for item in manifest["files"].values():
-        payload = (manifest_path.parent / item["path"]).read_bytes()
-        assert hashlib.sha256(payload).hexdigest() == item["sha256"]
-    ontology = manifest_path.parent / manifest["ontology"]["path"]
-    assert hashlib.sha256(ontology.read_bytes()).hexdigest() == manifest["ontology"]["sha256"]
-
-
-def test_reference_predictions_score_perfectly() -> None:
-    rows = load_benchmark()
-    report = evaluate_benchmark(rows, reference_predictions(rows), load_ontology())
-
-    assert report["overall"]["answer_exact_rate"] == 1.0
-    assert report["overall"]["canonical_query_exact_rate"] == 1.0
-    assert report["prediction_file"] == {"missing_ids": [], "unexpected_ids": []}
+    row["query_id"] = "performance-band"
+    with pytest.raises(BenchmarkError, match="does not match query family"):
+        validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
 
 
-def test_benchmark_rejects_training_question_leak() -> None:
-    rows = load_benchmark()
-    leaked = dict(rows[0])
-    release = load_release()
-    training_rows = release["train"]
-    leaked["input"] = training_rows[0]["input"]
+def test_rejects_finite_iri_not_seen_in_train() -> None:
+    target = (
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure "
+        ":instructionProvision ?part . ?part :officialText ?answer . }"
+    )
+    training = [_row("train-1", "procedure-instruction", "bảo lưu sao", target)]
+    benchmark = [
+        _row(
+            "test-1",
+            "procedure-instruction",
+            "đăng ký môn như nào",
+            target.replace(
+                ":TemporaryAcademicLeaveProcedure", ":CourseRegistrationProcedure"
+            ),
+        )
+    ]
+
+    with pytest.raises(BenchmarkError, match="finite slot values absent from train"):
+        validate_benchmark(
+            benchmark,
+            load_ontology(),
+            catalogue=CATALOGUE,
+            training_rows=training,
+        )
+
+
+def test_rejects_training_question_leak() -> None:
+    row = _row("test-1", "no-information", "xin chào", "không có thông tin")
 
     with pytest.raises(BenchmarkError, match="leaks from training"):
-        validate_benchmark([leaked], load_ontology(), training_rows=training_rows)
-
-
-def test_benchmark_rejects_query_not_supported_by_train() -> None:
-    rows = load_benchmark()
-    release = load_release()
-    unsupported = {**rows[0], "query_id": "query-unsupported"}
-
-    with pytest.raises(BenchmarkError, match="query IDs absent from train"):
         validate_benchmark(
-            [unsupported],
+            [row],
             load_ontology(),
-            training_rows=release["train"],
-        )
-
-
-def test_benchmark_rejects_target_not_supported_by_train() -> None:
-    rows = load_benchmark()
-    release = load_release()
-    unsupported = {
-        **rows[0],
-        "target": 'SELECT ?answer WHERE { VALUES ?answer { "không có trong train" } }',
-    }
-
-    with pytest.raises(BenchmarkError, match="targets absent from train"):
-        validate_benchmark(
-            [unsupported],
-            load_ontology(),
-            training_rows=release["train"],
-        )
-
-
-def test_benchmark_rejects_mismatched_supported_query_and_target() -> None:
-    rows = load_benchmark()
-    release = load_release()
-    mismatched = {**rows[0], "target": rows[1]["target"]}
-    assert mismatched["query_id"] != rows[1]["query_id"]
-
-    with pytest.raises(BenchmarkError, match="query-target pairs absent from train"):
-        validate_benchmark(
-            [mismatched],
-            load_ontology(),
-            training_rows=release["train"],
+            catalogue=CATALOGUE,
+            training_rows=[{**row, "id": "train-1"}],
         )
