@@ -2,16 +2,22 @@
 
 ## Mục tiêu và nguồn dữ liệu
 
-Xây lại ontology Turtle từ bốn nguồn trong `NTUdocs/`:
+Xây lại ontology Turtle từ các nguồn được cung cấp:
 
-- `Qd1052.md`: Quy chế đào tạo đại học, gồm 32 điều và Phụ lục 1–3;
-- `Qd729.md`: mức học phí và danh mục ngành đào tạo;
-- `huong_dan_dong_hoc_phi.md`: hướng dẫn các phương thức thanh toán;
-- `bieumau_url.txt`: URL trang danh mục chứa liên kết tải biểu mẫu.
+- `NTUdocs/Qd1052.md`: Quy chế đào tạo đại học, gồm 32 điều và Phụ lục 1–3;
+- `NTUdocs/Qd729.md`: mức học phí và danh mục ngành đào tạo;
+- `NTUdocs/huong_dan_dong_hoc_phi.md`: hướng dẫn các phương thức thanh toán;
+- `NTUdocs/bieumau_url.txt`: URL gốc của trang danh mục biểu mẫu;
+- `bieumau_url.html`: ảnh chụp HTML do người dùng cào từ trang danh mục, chứa
+  tên biểu mẫu và 19 liên kết tải xuống.
 
 Ontology hiện tại không được dùng làm nguồn sự thật. Chỉ giữ một individual,
 property hoặc literal cũ khi đối chiếu được với các nguồn trên. Không thêm dữ
 kiện suy đoán về phòng ban, quy trình, thời hạn, kết quả hoặc URL.
+
+Khi nguồn xung đột, Quyết định 1052 quyết định số và ý nghĩa pháp lý của biểu
+mẫu; HTML chỉ là nguồn cho mục niêm yết và URL tải. Không ghép hai nguồn chỉ vì
+trùng số biểu mẫu.
 
 ## Nguyên tắc mô hình lai
 
@@ -109,6 +115,7 @@ thức thanh toán.
   - `DecisionAuthority`
 - `FormDocument`
 - `FormCatalogue`
+- `FormCatalogueEntry`
 
 ### Object properties
 
@@ -123,7 +130,8 @@ ngữ nghĩa của `sourceProvision`:
 Các đường nối còn lại:
 
 - `requiresForm`
-- `listedInCatalogue`
+- `hasCatalogueEntry`
+- `catalogueEntryForForm`
 - `submittedTo`
 - `reviewedBy`
 - `decidedBy`
@@ -132,6 +140,9 @@ Các đường nối còn lại:
 
 - `formNumber`
 - `webPageUrl`
+- `listedFormNumber`
+- `listedTitle`
+- `downloadUrl`
 
 ### Các quy trình cần tạo
 
@@ -184,10 +195,21 @@ Tạo `UndergraduateFormCatalogue` với:
 https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy
 ```
 
-Tạo `Decision1052Form01` đến `Decision1052Form15`. Mỗi form có số, label lấy từ
-ngữ cảnh điều khoản và `listedInCatalogue UndergraduateFormCatalogue`. Không
-dùng URL tải trực tiếp cũ; chỉ thêm `downloadUrl` khi nguồn cung cấp URL chính
-thức cho từng file.
+Tạo `Decision1052Form01` đến `Decision1052Form15`. Đây là 15 biểu mẫu chuẩn của
+Quyết định 1052; mỗi form có số và label lấy từ đúng điều khoản viện dẫn.
+
+Tạo một `FormCatalogueEntry` cho từng liên kết trong `bieumau_url.html`. Mỗi
+entry giữ `listedTitle`, số niêm yết nếu có và `downloadUrl` tuyệt đối được
+resolve từ URL gốc của trang. Các mục bổ sung như phiếu điều chỉnh điểm vẫn là
+catalogue entry nhưng không tự động trở thành biểu mẫu của Quyết định 1052.
+
+Danh mục HTML có ngày đăng 21/08/2020 và đánh số theo phiên bản cũ. Ví dụ, đơn
+xin nghỉ học tạm thời là Mẫu 8 trên trang nhưng là Mẫu 9 trong Quyết định 1052.
+Vì vậy `catalogueEntryForForm` chỉ được thêm sau khi đối chiếu ý nghĩa/tên gọi;
+không join theo `formNumber`. Nếu tên gọi chưa đủ chắc chắn hoặc trang không có
+liên kết, form chuẩn vẫn tồn tại nhưng không nối tới catalogue entry tải xuống.
+Trường hợp một form có nhiều bản tải thì giữ nhiều catalogue entry, không ghi
+đè URL.
 
 ## Schema học phí
 
@@ -365,7 +387,8 @@ Ontology mới chỉ được chấp nhận khi:
 5. Mọi semantic procedure/rule có đường truy nguồn tới document/provision.
 6. Có đủ 32 điều, Phụ lục 1–3 của 1052, hai phụ lục của 729 và ba provision
    hướng dẫn thanh toán.
-7. Có đủ 15 form, 41 chương trình và toàn bộ rate/rule trong các bảng nguồn.
+7. Có đủ 15 form chuẩn, 19 catalogue entry có URL, 41 chương trình và toàn bộ
+   rate/rule trong các bảng nguồn.
 8. SPARQL smoke test trả đúng cho tối thiểu: đăng ký học phần, học lại, bảo lưu,
    chuyển ngành, tốt nghiệp, biểu mẫu, học phí theo ngành/khóa, phương thức
    thanh toán, xếp loại điểm, quy mô lớp, ngoại ngữ và tin học.
