@@ -126,13 +126,15 @@ Expected: không có kết quả.
 - Delete: `docs/specs/2026-07-28-phobert-domain-gate-design.md`
 - Delete: `docs/superpowers/plans/2026-07-28-ct2-domain-gate-runtime.md`
 - Delete: `docs/superpowers/plans/2026-07-28-phobert-domain-gate.md`
+- Delete: `docs/superpowers/plans/2026-07-28-input-normalization-and-fallback.md`
+- Delete: `docs/superpowers/plans/2026-07-28-runtime-trace-logging.md`
 - Modify: `docs/superpowers/specs/2026-07-28-runtime-trace-logging-design.md`
 - Modify: `docs/superpowers/specs/2026-07-28-input-normalization-and-fallback-design.md`
 
 **Interfaces:**
 - Produces: không còn đặc tả hiện hành nào yêu cầu gate riêng.
 
-- [ ] **Step 1: Xoá bốn tài liệu chỉ phục vụ PhoBERT gate**
+- [ ] **Step 1: Xoá đặc tả gate và các implementation plan đã hoàn tất**
 
 Không xoá code/artifact trong task tài liệu này.
 
