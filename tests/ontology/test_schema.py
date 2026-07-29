@@ -84,6 +84,7 @@ def test_owl_rl_expansion_and_typed_literals_are_valid(ontology_graph) -> None:
 
 def test_semantic_resources_have_direct_source_paths(ontology_graph, academic) -> None:
     semantic_classes = {
+        academic.AcademicPolicy,
         academic.AcademicProcedure,
         academic.TuitionRate,
         academic.DoctoralTuitionDurationRule,
@@ -109,3 +110,7 @@ def test_semantic_resources_have_direct_source_paths(ontology_graph, academic) -
                     academic.DocumentTableRow,
                 }
             )
+
+
+def test_unused_document_url_property_is_absent(ontology_graph, academic) -> None:
+    assert not list(ontology_graph.triples((academic.documentUrl, None, None)))

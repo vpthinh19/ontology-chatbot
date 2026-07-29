@@ -3,6 +3,7 @@ from rdflib.namespace import XSD
 
 
 PROCEDURES = {
+    "ArticulationStudyProcedure",
     "CourseRegistrationProcedure",
     "ExtraClassOpeningRequestProcedure",
     "CourseRetakeProcedure",
@@ -22,6 +23,7 @@ PROCEDURES = {
     "UniversityTransferProcedure",
     "StudentExchangeProcedure",
     "SecondProgramRegistrationProcedure",
+    "SickLeaveProcedure",
     "TuitionPaymentProcedure",
 }
 
@@ -66,6 +68,29 @@ def test_semantic_procedure_schema_and_provenance(ontology_graph, academic) -> N
             for role in PROVISION_ROLES
         )
         assert ontology_graph.value(procedure, academic.officialText) is None
+
+
+def test_policy_index_points_to_exact_article_20_clauses(
+    ontology_graph, academic
+) -> None:
+    expected = {
+        academic.AcademicWarningPolicy: academic.Decision1052Article20Clause01,
+        academic.AcademicDismissalPolicy: academic.Decision1052Article20Clause02,
+    }
+    assert set(ontology_graph.subjects(RDF.type, academic.AcademicPolicy)) == set(
+        expected
+    )
+    for policy, provision in expected.items():
+        assert (policy, RDF.type, OWL.NamedIndividual) in ontology_graph
+        assert (
+            policy,
+            academic.sourceDocument,
+            academic.Decision1052,
+        ) in ontology_graph
+        assert set(ontology_graph.objects(policy, academic.sourceProvision)) == {
+            provision
+        }
+        assert ontology_graph.value(policy, academic.officialText) is None
 
 
 def test_forms_follow_decision_1052_numbering(ontology_graph, academic) -> None:
@@ -119,7 +144,13 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
 ) -> None:
     expected = {
         academic.eligibilityProvision: {
-            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointA},
+            academic.ArticulationStudyProcedure: {
+                academic.Decision1052Article29Clause01
+            },
+            academic.ClassAbsenceRequestProcedure: {
+                academic.Decision1052Article17Clause01PointA,
+                academic.Decision1052Article30Clause01,
+            },
             academic.CourseExemptionAndBonusProcedure: {academic.Decision1052Article21Clause05},
             academic.CourseRegistrationProcedure: {
                 academic.Decision1052Article09Clause03,
@@ -141,7 +172,10 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
                 academic.Decision1052Article22Clause01,
                 academic.Decision1052Article22Clause02,
             },
-            academic.ExamPostponementProcedure: {academic.Decision1052Article17Clause04},
+            academic.ExamPostponementProcedure: {
+                academic.Decision1052Article17Clause04,
+                academic.Decision1052Article30Clause02,
+            },
             academic.ExtraClassOpeningRequestProcedure: {academic.Decision1052Article10Clause02},
             academic.GradeImprovementProcedure: {academic.Decision1052Article11Clause03},
             academic.GraduationProjectRegistrationProcedure: {
@@ -151,19 +185,35 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
             academic.GraduationReviewProcedure: {academic.Decision1052Article22Clause01},
             academic.MajorChangeProcedure: {academic.Decision1052Article25Clause01},
             academic.SecondProgramRegistrationProcedure: {academic.Decision1052Article28Clause01},
+            academic.SickLeaveProcedure: {
+                academic.Decision1052Article30Clause01,
+                academic.Decision1052Article30Clause02,
+            },
             academic.StudentExchangeProcedure: {academic.Decision1052Article27Clause03},
             academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
             academic.StudyWithdrawalProcedure: {academic.Decision1052Article24Clause02},
-            academic.TemporaryAcademicLeaveProcedure: {academic.Decision1052Article24Clause01},
+            academic.TemporaryAcademicLeaveProcedure: {
+                academic.Decision1052Article24Clause01,
+                academic.Decision1052Article30Clause01,
+            },
             academic.UniversityTransferProcedure: {academic.Decision1052Article26Clause01},
         },
         academic.deadlineProvision: {
-            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointA},
+            academic.ArticulationStudyProcedure: {
+                academic.Decision1052Article29Clause02
+            },
+            academic.ClassAbsenceRequestProcedure: {
+                academic.Decision1052Article17Clause01PointA,
+                academic.Decision1052Article30Clause01,
+            },
             academic.EarlyGraduationReviewProcedure: {
                 academic.Decision1052Article22Clause05,
                 academic.Decision1052Article22Clause06,
             },
-            academic.ExamPostponementProcedure: {academic.Decision1052Article17Clause04},
+            academic.ExamPostponementProcedure: {
+                academic.Decision1052Article17Clause04,
+                academic.Decision1052Article30Clause02,
+            },
             academic.ExtraClassOpeningRequestProcedure: {academic.Decision1052Article10Clause02},
             academic.GraduationReviewProcedure: {
                 academic.Decision1052Article22Clause05,
@@ -174,11 +224,14 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
                 academic.Decision1052Article28Clause03PointA,
                 academic.Decision1052Article28Clause05,
             },
+            academic.SickLeaveProcedure: {
+                academic.Decision1052Article30Clause01,
+                academic.Decision1052Article30Clause02,
+            },
             academic.StudentExchangeProcedure: {academic.Decision1052Article27Clause04PointA},
             academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
         },
         academic.resultProvision: {
-            academic.ClassAbsenceRequestProcedure: {academic.Decision1052Article17Clause01PointB},
             academic.CourseExemptionAndBonusProcedure: {academic.Decision1052Article21Clause05},
             academic.CourseRetakeProcedure: {academic.Decision1052Article11Clause04},
             academic.CreditRecognitionProcedure: {
@@ -220,6 +273,41 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
         for procedure, provisions in procedures.items():
             assert set(ontology_graph.objects(procedure, predicate)) == provisions
             assert all(ontology_graph.value(provision, academic.officialText) for provision in provisions)
+
+    assert not list(
+        ontology_graph.objects(
+            academic.ClassAbsenceRequestProcedure,
+            academic.resultProvision,
+        )
+    )
+
+
+def test_articles_20_29_and_30_have_precise_instruction_paths(
+    ontology_graph, academic
+) -> None:
+    expected = {
+        academic.ArticulationStudyProcedure: {academic.Decision1052Article29},
+        academic.SickLeaveProcedure: {academic.Decision1052Article30},
+        academic.TemporaryAcademicLeaveProcedure: {
+            academic.Decision1052Article24,
+            academic.Decision1052Article30Clause01,
+        },
+        academic.ExamPostponementProcedure: {
+            academic.Decision1052Article17,
+            academic.Decision1052Article30Clause02,
+        },
+        academic.ClassAbsenceRequestProcedure: {
+            academic.Decision1052Article17,
+            academic.Decision1052Article30Clause01,
+        },
+        academic.DismissalTransferRequestProcedure: {
+            academic.Decision1052Article20Clause03,
+        },
+    }
+    for procedure, provisions in expected.items():
+        assert set(
+            ontology_graph.objects(procedure, academic.instructionProvision)
+        ) == provisions
 
 
 def test_only_sourced_academic_actors_exist(ontology_graph, academic) -> None:

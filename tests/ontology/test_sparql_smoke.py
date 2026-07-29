@@ -31,6 +31,21 @@ from ontchatbot.runtime.sparql import execute_select
             "answer",
             "Điều kiện xét tốt nghiệp",
         ),
+        (
+            "SELECT ?answer WHERE { :AcademicDismissalPolicy :sourceProvision ?part . ?part :officialText ?answer . }",
+            "answer",
+            "Vượt quá 02 lần cảnh báo",
+        ),
+        (
+            "SELECT ?answer WHERE { :ArticulationStudyProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
+            "answer",
+            "Học liên thông",
+        ),
+        (
+            "SELECT ?answer WHERE { :SickLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
+            "answer",
+            "xin nghỉ ốm",
+        ),
     ],
 )
 def test_procedure_queries_return_official_text(

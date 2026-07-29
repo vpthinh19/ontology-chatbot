@@ -8,6 +8,18 @@
 :AcademicOntology a owl:Ontology ;
     rdfs:label "Ontology học vụ Trường Đại học Nha Trang"@vi .
 
+:AcademicDismissalPolicy a :AcademicPolicy,
+        owl:NamedIndividual ;
+    rdfs:label "Chính sách buộc thôi học"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article20Clause02 .
+
+:AcademicWarningPolicy a :AcademicPolicy,
+        owl:NamedIndividual ;
+    rdfs:label "Chính sách cảnh báo kết quả học tập"@vi ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article20Clause01 .
+
 :AccreditedGeneralEducationRate a :TuitionRate,
         owl:NamedIndividual ;
     rdfs:label "Học phí giáo dục tổng quát chương trình đạt kiểm định"@vi ;
@@ -25,6 +37,15 @@
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     :sourceDocument :Decision729 ;
     :sourceProvision :Decision729Appendix02 .
+
+:ArticulationStudyProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình học liên thông"@vi ;
+    :deadlineProvision :Decision1052Article29Clause02 ;
+    :eligibilityProvision :Decision1052Article29Clause01 ;
+    :instructionProvision :Decision1052Article29 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article29 .
 
 :AverageAcademicPerformanceBand a :AcademicPerformanceBand,
         owl:NamedIndividual ;
@@ -72,11 +93,13 @@
 :ClassAbsenceRequestProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin phép nghỉ học"@vi ;
-    :deadlineProvision :Decision1052Article17Clause01PointA ;
-    :eligibilityProvision :Decision1052Article17Clause01PointA ;
-    :instructionProvision :Decision1052Article17 ;
+    :deadlineProvision :Decision1052Article17Clause01PointA,
+        :Decision1052Article30Clause01 ;
+    :eligibilityProvision :Decision1052Article17Clause01PointA,
+        :Decision1052Article30Clause01 ;
+    :instructionProvision :Decision1052Article17,
+        :Decision1052Article30Clause01 ;
     :requiresForm :Decision1052Form03 ;
-    :resultProvision :Decision1052Article17Clause01PointB ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article17 ;
     :submittedTo :FacultyOrInstitute .
@@ -485,7 +508,7 @@
     rdfs:label "Quy trình xin chuyển chương trình sau khi bị buộc thôi học"@vi ;
     :decidedBy :UniversityPresident ;
     :eligibilityProvision :Decision1052Article20Clause03 ;
-    :instructionProvision :Decision1052Article20 ;
+    :instructionProvision :Decision1052Article20Clause03 ;
     :requiresForm :Decision1052Form05 ;
     :resultProvision :Decision1052Article20Clause03 ;
     :sourceDocument :Decision1052 ;
@@ -1121,9 +1144,12 @@
 :ExamPostponementProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin hoãn thi"@vi ;
-    :deadlineProvision :Decision1052Article17Clause04 ;
-    :eligibilityProvision :Decision1052Article17Clause04 ;
-    :instructionProvision :Decision1052Article17 ;
+    :deadlineProvision :Decision1052Article17Clause04,
+        :Decision1052Article30Clause02 ;
+    :eligibilityProvision :Decision1052Article17Clause04,
+        :Decision1052Article30Clause02 ;
+    :instructionProvision :Decision1052Article17,
+        :Decision1052Article30Clause02 ;
     :requiresForm :Decision1052Form04 ;
     :resultProvision :Decision1052Article17Clause04 ;
     :sourceDocument :Decision1052 ;
@@ -3621,6 +3647,17 @@
     :sourceProvision :Decision1052Article27 ;
     :submittedTo :AcademicManagementUnit .
 
+:SickLeaveProcedure a :AcademicProcedure,
+        owl:NamedIndividual ;
+    rdfs:label "Quy trình xin nghỉ ốm"@vi ;
+    :deadlineProvision :Decision1052Article30Clause01,
+        :Decision1052Article30Clause02 ;
+    :eligibilityProvision :Decision1052Article30Clause01,
+        :Decision1052Article30Clause02 ;
+    :instructionProvision :Decision1052Article30 ;
+    :sourceDocument :Decision1052 ;
+    :sourceProvision :Decision1052Article30 .
+
 :StudyResumptionProcedure a :AcademicProcedure,
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin học trở lại"@vi ;
@@ -3650,8 +3687,10 @@
         owl:NamedIndividual ;
     rdfs:label "Quy trình xin nghỉ học tạm thời"@vi ;
     :decidedBy :UniversityPresident ;
-    :eligibilityProvision :Decision1052Article24Clause01 ;
-    :instructionProvision :Decision1052Article24 ;
+    :eligibilityProvision :Decision1052Article24Clause01,
+        :Decision1052Article30Clause01 ;
+    :instructionProvision :Decision1052Article24,
+        :Decision1052Article30Clause01 ;
     :requiresForm :Decision1052Form09 ;
     :resultProvision :Decision1052Article24Clause01 ;
     :sourceDocument :Decision1052 ;
@@ -3849,11 +3888,6 @@
     rdfs:label "số văn bản"@vi ;
     rdfs:domain :OfficialDocument ;
     rdfs:range xsd:string .
-
-:documentUrl a owl:DatatypeProperty ;
-    rdfs:label "URL tài liệu"@vi ;
-    rdfs:domain :OfficialDocument ;
-    rdfs:range xsd:anyURI .
 
 :downloadUrl a owl:DatatypeProperty ;
     rdfs:label "URL tải xuống"@vi ;
@@ -9708,6 +9742,9 @@ e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mư
 
 :AcademicProcedure a owl:Class ;
     rdfs:label "Quy trình học vụ"@vi .
+
+:AcademicPolicy a owl:Class ;
+    rdfs:label "Chính sách học vụ"@vi .
 
 :Decision729Appendix01 a :Appendix,
         owl:NamedIndividual ;
