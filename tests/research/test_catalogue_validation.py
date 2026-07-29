@@ -187,3 +187,44 @@ def test_tuition_programs_by_rate_returns_programs_for_every_declared_amount(amo
     target = spec.target_template.replace("${amount}", amount)
 
     assert execute_select(load_ontology(), target), amount
+
+
+@pytest.mark.parametrize(
+    ("certificate", "score", "expected"),
+    [
+        (":TCFCertificate", "100", []),
+        (":TCFCertificate", "200", [{"answer": "Bậc 1 - A1"}]),
+        (":KLPTCertificate", "300", [{"answer": "Bậc 2 - A2"}]),
+        (":KLPTCertificate", "400", [{"answer": "Bậc 4 - B2"}]),
+        (":KLPTCertificate", "450", [{"answer": "Bậc 5 - C1"}]),
+    ],
+)
+def test_language_certificate_level_respects_exclusive_minimums(
+    certificate: str,
+    score: str,
+    expected: list[dict[str, str]],
+) -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    target = catalogue["language-certificate-level"].target_template
+    target = target.replace("${certificate}", certificate).replace("${score}", score)
+
+    assert execute_select(load_ontology(), target) == expected
+
+
+@pytest.mark.parametrize(
+    ("credits", "expected"),
+    [
+        ("35", [{"answer": "Sinh viên năm thứ hai"}]),
+        ("70", [{"answer": "Sinh viên năm thứ ba"}]),
+        ("105", []),
+        ("105.1", [{"answer": "Sinh viên năm thứ tư"}]),
+    ],
+)
+def test_study_year_band_respects_inclusive_boundaries(
+    credits: str,
+    expected: list[dict[str, str]],
+) -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    target = catalogue["study-year-band"].target_template.replace("${credits}", credits)
+
+    assert execute_select(load_ontology(), target) == expected

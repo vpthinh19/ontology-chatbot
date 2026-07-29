@@ -27,7 +27,6 @@
     {"query_id": "study-year-band", "split": "train", "slots": {"credits": "69.99"}},
     {"query_id": "study-year-band", "split": "train", "slots": {"credits": "70.00"}},
     {"query_id": "study-year-band", "split": "train", "slots": {"credits": "104.99"}},
-    {"query_id": "study-year-band", "split": "train", "slots": {"credits": "105.00"}},
     {"query_id": "study-year-band", "split": "train", "slots": {"credits": "106.00"}},
 
     {"query_id": "graduation-classification-band", "split": "train", "slots": {"score": "5.50"}},
@@ -54,7 +53,6 @@
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":LinguaskillCertificate", "score": "153.0"}},
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":LinguaskillCertificate", "score": "170.0"}},
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":LinguaskillCertificate", "score": "190.0"}},
-    {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":TCFCertificate", "score": "100.0"}},
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":TCFCertificate", "score": "200.0"}},
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":TCFCertificate", "score": "300.0"}},
     {"query_id": "language-certificate-level", "split": "train", "slots": {"certificate": ":TCFCertificate", "score": "400.0"}},
