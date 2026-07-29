@@ -143,15 +143,15 @@ git commit -m "Compact model-facing detail queries"
 - Consumes: current tracked 953-row official release after Task 1.
 - Produces: a byte-equivalent four-shard staging workspace and a physical count ledger.
 
-- [ ] **Step 1: Bootstrap from the tracked release**
+- [x] **Step 1: Bootstrap from the tracked release**
 
 Run `bootstrap_staging(load_release(), load_catalogue(QUERY_CATALOGUE_PATH), Path("artifacts/dataset-expansion"))` from a short `uv run python -c` command.
 
-- [ ] **Step 2: Verify exact equality after assembly**
+- [x] **Step 2: Verify exact equality after assembly**
 
 Run `assemble_staging(Path("artifacts/dataset-expansion"))`, compare all five fields in split order with the tracked release after ignoring mechanically reassigned IDs, and verify the rejection checklist maps the same 209 OOD inputs to the same seven classes.
 
-- [ ] **Step 3: Write the starting ledger**
+- [x] **Step 3: Write the starting ledger**
 
 `artifacts/dataset-expansion/progress.md` must record the Current and Target Matrix above, current Git hash, zero additions, and the rule that only checked-off rows may enter assembly.
 
