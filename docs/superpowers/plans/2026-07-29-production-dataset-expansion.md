@@ -261,15 +261,15 @@ Replace tracked data mechanically and commit with message `Expand out of domain 
 - Consumes: OOD after O1.
 - Produces: remaining 195 rows split 151/22/22 and final OOD count 600.
 
-- [ ] **Step 1: Fill exact OOD class totals**
+- [x] **Step 1: Fill exact OOD class totals**
 
 Reach exactly 50 greeting-social, 60 unrelated, 100 near-domain-missing, 100 ambiguous, 60 noisy-out-of-domain, 80 mixed and 150 hard-negative rows.
 
-- [ ] **Step 2: Validate all six domain targets**
+- [x] **Step 2: Validate all six domain targets**
 
 Assemble staging and assert the complete Current and Target Matrix now equals 2.000 rows and 1.400/300/300 splits. Require all 51 families, numeric cases, finite slots, registers, seven rejection classes and all real-user inputs.
 
-- [ ] **Step 3: Commit the completed expanded release**
+- [x] **Step 3: Commit the completed expanded release**
 
 ```bash
 git add resources/dataset/main/train.jsonl resources/dataset/main/val.jsonl resources/dataset/main/test.jsonl resources/cases/rejection_checklist.json
