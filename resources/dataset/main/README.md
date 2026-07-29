@@ -1,6 +1,6 @@
 # Candidate pool cho dataset hợp nhất
 
-Bộ 456 câu hiện tại là nguồn ứng viên để smoke pipeline và biên soạn dataset
+Bộ 455 câu hiện tại là nguồn ứng viên để smoke pipeline và biên soạn dataset
 chính thức. Nó dạy thử một model seq2seq sinh truy vấn `SELECT` SPARQL trên một
 dòng hoặc marker chính xác `không có thông tin`. Mỗi bản ghi JSON Lines có đúng
 năm trường:
@@ -22,7 +22,7 @@ Ba tập candidate có vai trò tách biệt:
 
 | Tập | Câu | Họ truy vấn | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 340 | 24 | Smoke toàn bộ IRI/dạng query đã có trong catalogue candidate |
+| `train.jsonl` | 339 | 24 | Smoke toàn bộ IRI/dạng query đã có trong catalogue candidate |
 | `val.jsonl` | 58 | 24 | Pilot trên cách diễn đạt candidate chưa thấy |
 | `test.jsonl` | 58 | 24 | Candidate held-out, chưa phải benchmark chính thức |
 

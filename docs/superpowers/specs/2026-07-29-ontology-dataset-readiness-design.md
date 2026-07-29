@@ -6,7 +6,7 @@ Khóa lại trạng thái đúng của dự án trước khi tiếp tục huấn
 
 - ontology hiện tại là graph được dựng từ nguồn chính thức nhưng chưa được coi
   là canonical cho đến khi lớp chỉ mục ngữ nghĩa được rà xong;
-- 456 câu hiện tại là nguồn ứng viên phục vụ smoke và curation, không phải
+- 455 câu hiện tại là nguồn ứng viên phục vụ smoke và curation, không phải
   dataset production chính thức;
 - catalogue và dataset chính thức phải được suy ra từ toàn bộ dữ liệu quan
   trọng mà ontology có thể trả lời, với các quy trình học vụ là trọng tâm;
@@ -117,7 +117,7 @@ lọc và fallback, đặc biệt là học phí theo khối ngành.
 
 ### Candidate pool
 
-Giữ nguyên 456 câu hiện tại làm nguồn ứng viên. Mỗi câu phải được rà lại sau
+Giữ nguyên 455 câu hiện tại làm nguồn ứng viên. Mỗi câu phải được rà lại sau
 khi ontology và catalogue được khóa:
 
 - giữ nếu câu tự nhiên, target đúng và thuộc một ô coverage cần thiết;
@@ -201,11 +201,11 @@ Tài liệu công khai phải phân biệt rõ:
 
 - **đã kiểm chứng:** lớp nguồn ontology và contract runtime;
 - **đang nghiệm thu:** semantic index và inventory khả năng trả lời;
-- **candidate:** catalogue và 456 câu hiện tại;
+- **candidate:** catalogue và 455 câu hiện tại;
 - **chưa thực hiện:** full fine-tuning, benchmark chính thức và lựa chọn model
   production trên dataset mới.
 
-Các con số 456/340/58/58 chỉ được mô tả là snapshot của candidate pool. Không
+Các con số 455/339/58/58 chỉ được mô tả là snapshot của candidate pool. Không
 được gọi chúng là release production hoặc bằng chứng model sẵn sàng triển khai.
 
 Kế hoạch `2026-07-29-official-production-dataset.md` là bản triển khai đã tạo
@@ -217,9 +217,8 @@ dataset chính thức. Đặc tả này thay thế các tuyên bố trái ngư�
 1. Sửa tài liệu công khai và đánh dấu đúng trạng thái hiện tại.
 2. Audit/chỉnh semantic index của ontology rồi khóa inventory khả năng trả lời.
 3. Mở rộng và kiểm thử catalogue theo inventory.
-4. Rà 456 câu ứng viên, sau đó biên soạn dataset chính thức.
+4. Rà 455 câu ứng viên, sau đó biên soạn dataset chính thức.
 5. Chạy audit leakage, coverage, tokenizer và ontology execution.
 6. Chỉ khi các cổng trên qua mới fine-tune một model nghiệm thu.
 7. Sau khi dataset ổn định mới fine-tune/benchmark ba kiến trúc theo giao thức
    nghiên cứu đã chốt.
-

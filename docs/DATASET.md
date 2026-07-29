@@ -10,7 +10,7 @@ Dataset chính thức sẽ dạy một model seq2seq thực hiện trọn luồn
 Dataset chỉ được khóa sau khi ontology, inventory khả năng trả lời và danh mục
 SPARQL đã được xác nhận từ tài liệu chính thức.
 
-456 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.
+455 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.
 Mỗi câu sẽ được giữ, sửa hoặc loại sau audit; không bản ghi nào tự động mang
 trạng thái official chỉ vì đã vượt validator hiện tại.
 
@@ -101,7 +101,7 @@ cả validation/test. Phân bố held-out phải cân bằng theo miền/registe
 tách gần như toàn bộ formal/colloquial sang validation và neutral/noisy sang
 test.
 
-Snapshot candidate hiện có 456 câu: 340 train, 58 validation và 58 test; gồm 24
+Snapshot candidate hiện có 455 câu: 339 train, 58 validation và 58 test; gồm 24
 họ truy vấn, trong đó 96 câu mang marker từ chối. Đây không phải kích thước mục
 tiêu. Dataset chỉ dừng tăng khi ma trận coverage không còn vùng trắng quan
 trọng. Các quy tắc leakage:

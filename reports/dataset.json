@@ -1,27 +1,27 @@
 {
   "dataset": {
-    "records": 456,
+    "records": 455,
     "query_families": 24,
-    "targets": 253,
+    "targets": 252,
     "domains": {
       "academic-rule": 54,
       "certificate": 42,
       "form": 31,
       "out-of-domain": 96,
-      "procedure": 167,
+      "procedure": 166,
       "tuition": 66
     },
     "splits": {
       "train": {
-        "records": 340,
+        "records": 339,
         "query_families": 24,
-        "targets": 233,
+        "targets": 232,
         "domains": {
           "academic-rule": 38,
           "certificate": 30,
           "form": 23,
           "out-of-domain": 72,
-          "procedure": 131,
+          "procedure": 130,
           "tuition": 46
         }
       },
@@ -55,29 +55,29 @@
     "registers": {
       "colloquial": 112,
       "formal": 115,
-      "neutral": 130,
+      "neutral": 129,
       "noisy": 99
     },
     "query_features": {
       "filter": 93,
-      "graph_hop": 267,
+      "graph_hop": 266,
       "limit": 47,
-      "multi_branch": 329,
+      "multi_branch": 328,
       "multi_column": 37,
       "order": 66,
       "single_branch": 31,
-      "single_column": 323
+      "single_column": 322
     },
     "query_features_by_split": {
       "train": {
         "filter": 69,
-        "graph_hop": 203,
+        "graph_hop": 202,
         "limit": 39,
-        "multi_branch": 245,
+        "multi_branch": 244,
         "multi_column": 29,
         "order": 54,
         "single_branch": 23,
-        "single_column": 239
+        "single_column": 238
       },
       "val": {
         "filter": 12,
@@ -105,7 +105,7 @@
       "median": 11,
       "p95": 16,
       "max": 24,
-      "mean": 10.67
+      "mean": 10.66
     }
   },
   "in_domain_contract": {
@@ -121,17 +121,17 @@
     "gaps": []
   },
   "ontology": {
-    "triples": 8271,
-    "classes": 42,
+    "triples": 8347,
+    "classes": 43,
     "object_properties": 29,
-    "datatype_properties": 34,
-    "named_individuals": 847,
+    "datatype_properties": 33,
+    "named_individuals": 858,
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 456,
+    "records": 455,
     "split_counts": {
-      "train": 340,
+      "train": 339,
       "val": 58,
       "test": 58
     },
@@ -140,7 +140,7 @@
       "certificate": 42,
       "form": 31,
       "out-of-domain": 96,
-      "procedure": 167,
+      "procedure": 166,
       "tuition": 66
     },
     "slot_coverage": {
@@ -270,7 +270,6 @@
       "procedure-result": {
         "procedure": {
           "declared": [
-            ":ClassAbsenceRequestProcedure",
             ":CourseExemptionAndBonusProcedure",
             ":CourseRetakeProcedure",
             ":CreditRecognitionProcedure",
@@ -290,7 +289,6 @@
             ":UniversityTransferProcedure"
           ],
           "seen_train": [
-            ":ClassAbsenceRequestProcedure",
             ":CourseExemptionAndBonusProcedure",
             ":CourseRetakeProcedure",
             ":CreditRecognitionProcedure",
@@ -821,9 +819,9 @@
     },
     "splits": {
       "train": {
-        "records": 340,
+        "records": 339,
         "queries": 24,
-        "targets": 233,
+        "targets": 232,
         "query_counts": {
           "academic-performance-band": 8,
           "certificate-criterion": 15,
@@ -844,7 +842,7 @@
           "procedure-instruction": 23,
           "procedure-overview": 20,
           "procedure-required-form": 15,
-          "procedure-result": 18,
+          "procedure-result": 17,
           "procedure-review-office": 4,
           "procedure-submission-office": 14,
           "study-year-band": 8,
@@ -853,7 +851,7 @@
         "register_counts": {
           "colloquial": 84,
           "formal": 87,
-          "neutral": 102,
+          "neutral": 101,
           "noisy": 67
         },
         "domains": {
@@ -861,7 +859,7 @@
           "certificate": 30,
           "form": 23,
           "out-of-domain": 72,
-          "procedure": 131,
+          "procedure": 130,
           "tuition": 46
         },
         "slot_values": {
@@ -1113,7 +1111,6 @@
           },
           "procedure-result": {
             "procedure": [
-              ":ClassAbsenceRequestProcedure",
               ":CourseExemptionAndBonusProcedure",
               ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
@@ -1561,10 +1558,10 @@
     }
   },
   "sha256": {
-    "train.jsonl": "420ea4925b9f1363726beb35ab53826a85642c6ac27c8bb9a5edf0c0fdd2f1b9",
+    "train.jsonl": "464b26837b526541df7478cb7dc715171b74431eb903faa4576069ccb97f5b25",
     "val.jsonl": "43ae6afd5d1dfa5f35309b0a844a408169fc99f29405aea3d9b289cfb338c256",
     "test.jsonl": "1c9ea02998801e4aaac40a18dc10c051fc8905386737974d00628fda639f04d2",
-    "catalogue.jsonl": "ea43e7f67ba89c035713707c3e396a30b0e1067a5d91087a1664c0df6e38abd6",
-    "ontology.ttl": "f949de3fae9ed360f006b3a224595086f4236cfda85ab00ad9e94426143960d2"
+    "catalogue.jsonl": "db962f686b1ac70b31eec6edd1a856220a3a2de3b75bd0417b48984330f547b7",
+    "ontology.ttl": "5b7be0c4cb43925c91e28a2aa7fc9a6fa37fb521f2c0319e3876da7e35ded582"
   }
 }

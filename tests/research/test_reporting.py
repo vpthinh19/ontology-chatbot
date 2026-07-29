@@ -24,7 +24,7 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 456
+    assert report["dataset"]["records"] == 455
     assert report["dataset"]["query_families"] == 24
     assert report["dataset"]["domains"]["procedure"] > 0
     assert report["dataset"]["domains"]["out-of-domain"] > 0

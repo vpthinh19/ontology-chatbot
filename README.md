@@ -9,7 +9,7 @@ tự động biến ontology, dataset hoặc model thành artifact production.
 
 - **Đã kiểm chứng:** lớp nguồn ontology và contract runtime marker/SPARQL.
 - **Đang nghiệm thu:** semantic index và inventory khả năng trả lời của graph.
-- **Candidate:** catalogue cùng 456 câu hiện tại dùng cho smoke và curation.
+- **Candidate:** catalogue cùng 455 câu hiện tại dùng cho smoke và curation.
 - **Chưa thực hiện:** full fine-tuning, benchmark chính thức và chọn model
   production trên dataset mới.
 
@@ -81,7 +81,7 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 ## Dataset
 
 Candidate pool hợp nhất nằm tại `resources/dataset/main/`, gồm catalogue và ba
-split. Snapshot hiện tại có 456 câu thuộc 24 họ truy vấn: 340 train, 58
+split. Snapshot hiện tại có 455 câu thuộc 24 họ truy vấn: 339 train, 58
 validation và 58 test. Trong đó 96 câu dạy marker từ chối. Các con số này chỉ
 mô tả dữ liệu đang có để smoke pipeline; từng câu sẽ được giữ, sửa hoặc loại sau
 khi ontology và catalogue được nghiệm thu.

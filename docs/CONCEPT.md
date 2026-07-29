@@ -4,7 +4,7 @@
 
 Kiến trúc một model và hai dạng output đã được chốt. Lớp nguồn ontology đã được
 đối chiếu với tài liệu chính thức, nhưng semantic index và inventory khả năng
-trả lời vẫn đang được nghiệm thu. Catalogue cùng 456 câu hiện tại là candidate
+trả lời vẫn đang được nghiệm thu. Catalogue cùng 455 câu hiện tại là candidate
 pool, không quyết định ngược lại phạm vi ontology và chưa cho phép full
 fine-tuning hoặc benchmark chính thức.
 

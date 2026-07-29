@@ -14,18 +14,18 @@
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 340,
+      "records": 339,
       "query_families": 24,
-      "targets": 233,
+      "targets": 232,
       "domains": {
         "academic-rule": 38,
         "certificate": 30,
         "form": 23,
         "out-of-domain": 72,
-        "procedure": 131,
+        "procedure": 130,
         "tuition": 46
       },
-      "sha256": "420ea4925b9f1363726beb35ab53826a85642c6ac27c8bb9a5edf0c0fdd2f1b9"
+      "sha256": "464b26837b526541df7478cb7dc715171b74431eb903faa4576069ccb97f5b25"
     },
     "val": {
       "path": "val.jsonl",
@@ -61,18 +61,18 @@
   "catalogue": {
     "path": "catalogue.jsonl",
     "query_families": 24,
-    "sha256": "ea43e7f67ba89c035713707c3e396a30b0e1067a5d91087a1664c0df6e38abd6"
+    "sha256": "db962f686b1ac70b31eec6edd1a856220a3a2de3b75bd0417b48984330f547b7"
   },
   "totals": {
-    "records": 456,
+    "records": 455,
     "query_families": 24,
-    "targets": 253,
+    "targets": 252,
     "domains": {
       "academic-rule": 54,
       "certificate": 42,
       "form": 31,
       "out-of-domain": 96,
-      "procedure": 167,
+      "procedure": 166,
       "tuition": 66
     }
   },
@@ -93,6 +93,6 @@
   "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
   "ontology": {
     "path": "../../ontology/ontology.ttl",
-    "sha256": "f949de3fae9ed360f006b3a224595086f4236cfda85ab00ad9e94426143960d2"
+    "sha256": "5b7be0c4cb43925c91e28a2aa7fc9a6fa37fb521f2c0319e3876da7e35ded582"
   }
 }
