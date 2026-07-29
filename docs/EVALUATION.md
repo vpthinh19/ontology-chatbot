@@ -1,10 +1,8 @@
 # Đánh giá
 
-Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa.
-T5Gemma2 đã được nghiệm thu trên release 2.150 câu: test đạt 84,67% Answer
-Exact, 83,33% In-domain Answer Exact, 94,44% Safe Rejection và 86,67% System
-Answer Exact. Chưa có benchmark so sánh đủ ba model; kết quả từ dữ liệu cũ
-không được dùng để xếp hạng hoặc chọn model cuối cùng.
+Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Chưa
+có kết quả model hợp lệ cho dataset 2.888 câu hiện tại; mọi chỉ số chỉ được công
+bố sau khi T5Gemma2 hoàn tất một lần fine-tune và test theo giao thức dưới đây.
 
 ## Hai nhóm test
 
@@ -60,10 +58,19 @@ trước huấn luyện. Test chỉ chạy một lần với checkpoint đã ch�
 thuộc catalogue đã xuất hiện trong train; cách diễn đạt thì chưa xuất hiện ở
 train/validation.
 
+Ngưỡng nghiệm thu được khóa trước khi chạy test:
+
+- System Answer Exact toàn test đạt ít nhất 90%;
+- Answer Exact riêng 185 câu `procedure-*` đạt ít nhất 95%;
+- mỗi phong cách trong nhóm quy trình đạt ít nhất 90%;
+- các câu người dùng cốt lõi đúng 100%;
+- không từ chối nhầm câu hỏi hướng dẫn đăng ký học phần;
+- Safe Rejection ngoài miền đạt ít nhất 94%.
+
 Biểu đồ công khai phải lấy dữ liệu từ JSON máy đọc và gồm:
 
 - train/validation loss;
-- In-domain Answer Exact của ba model;
+- In-domain Answer Exact của model;
 - marker exact, false acceptance và mixed-query rejection;
 - System Answer Exact theo nhóm;
 - lỗi theo register và đặc trưng SPARQL;

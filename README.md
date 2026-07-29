@@ -7,13 +7,13 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
 ## Trạng thái hiện tại
 
 - **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
-  query catalogue và dataset hợp nhất 2.150 câu.
-- **Dataset:** 1.550 câu train, 300 câu validation và 300 câu test; đủ 51 họ
+  query catalogue và dataset hợp nhất 2.888 câu.
+- **Dataset:** 2.079 câu train, 402 câu validation và 407 câu test; đủ 51 họ
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
-- **Đã nghiệm thu T5Gemma2:** một lần fine-tune chính thức trên release đã khóa;
-  test đạt 84,67% Answer Exact và 86,67% System Answer Exact.
-- **Chưa thực hiện:** benchmark so sánh BARTpho/ViT5 và chọn model production;
-  kết quả T5Gemma2 hiện chưa đạt mục tiêu System Answer Exact trên 90%.
+- **Quy trình học vụ:** 142 target canonical đều có mặt trong ba split; train có
+  962 câu quy trình, mỗi target có ít nhất sáu câu và đủ bốn phong cách.
+- **Chưa thực hiện:** fine-tune và nghiệm thu T5Gemma2 trên dataset đang được
+  khóa. Các chỉ số từ dataset trước không đại diện cho trạng thái hiện tại.
 
 Chiều kiểm soát độ phủ bắt buộc là:
 
@@ -85,11 +85,11 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset hợp nhất nằm tại `resources/dataset/main/` và có 2.150 câu: 1.550 train,
-300 validation, 300 test. Trong đó 1.551 câu thuộc năm miền trả lời được
-(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 599 câu ngoài miền
+Dataset hợp nhất nằm tại `resources/dataset/main/` và có 2.888 câu: 2.079 train,
+402 validation, 407 test. Trong đó 2.281 câu thuộc năm miền trả lời được
+(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 607 câu ngoài miền
 dùng marker `không có thông tin`. Bốn phong cách `formal`, `neutral`,
-`colloquial`, `noisy` lần lượt có 557, 554, 530 và 509 câu.
+`colloquial`, `noisy` lần lượt có 748, 727, 719 và 694 câu.
 
 Train dạy toàn bộ schema và giá trị slot hữu hạn. Validation dùng cách diễn đạt
 chưa thấy để chọn checkpoint; test được đóng băng và chỉ dùng cho đánh giá cuối.
@@ -101,7 +101,8 @@ gần trùng cùng họ không được đi xuyên split.
 ![Phân bố phong cách câu hỏi](reports/figures/registers.svg)
 
 Phân bố cùng checksum được sinh trong `resources/dataset/main/manifest.json`
-và `reports/dataset.json`. Các câu người dùng thực tế được giữ tại
+và `reports/dataset.json`; contract riêng cho 142 target quy trình nằm trong
+`reports/procedure-dataset.json`. Các câu người dùng thực tế được giữ tại
 `resources/cases/user_queries.txt`; cả bảy câu đều xuất hiện đúng một lần trong
 test để giữ vai trò hồi quy người dùng.
 
@@ -109,21 +110,15 @@ Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 
 ## Mô hình và đánh giá
 
-Sau khi dataset chính thức được khóa, ba model sẽ được fine-tune và benchmark
-công bằng trên cùng dữ liệu:
-
-- `vinai/bartpho-syllable`;
-- `VietAI/vit5-base`;
-- `google/t5gemma-2-270m-270m`.
+Model sinh truy vấn được nghiệm thu trên dataset đã khóa là
+`google/t5gemma-2-270m-270m`. BARTpho và ViT5 không thuộc vòng nghiệm thu hiện
+tại.
 
 Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
 miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
 hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn
-bộ test. T5Gemma2 đã được dùng làm nghiệm thu đầu tiên: checkpoint tốt nhất ở
-epoch 12, dừng sớm tại epoch 18, validation đạt 85,33% Answer Exact và test đạt
-84,67%. Đây chưa phải benchmark xếp hạng model vì BARTpho và ViT5 chưa được
-chạy trên release này; tài liệu không dùng kết quả cũ để lấp hai vị trí còn
-thiếu.
+bộ test. Chỉ công bố số liệu sau khi checkpoint được chọn bằng validation và
+chạy đúng một lần trên test đã khóa.
 
 Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
 tại [docs/EVALUATION.md](docs/EVALUATION.md).
@@ -155,7 +150,7 @@ RDFLib và ontology. Thiết kế module chi tiết nằm tại
 
 Trình tự tái lập là: xây ontology từ tài liệu chính thức, audit semantic index,
 lập inventory khả năng trả lời, lập catalogue SPARQL có kết quả, xác minh
-dataset hợp nhất, kiểm tra tokenizer, fine-tune ba model cùng giao thức,
+dataset hợp nhất, kiểm tra tokenizer, fine-tune model theo giao thức đã khóa,
 benchmark checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
 
 Không giữ số liệu giả, không tái sử dụng benchmark hết hiệu lực và không dùng

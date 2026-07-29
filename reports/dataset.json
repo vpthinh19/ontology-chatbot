@@ -1,6 +1,6 @@
 {
   "dataset": {
-    "records": 2150,
+    "records": 2888,
     "query_families": 51,
     "catalogue_families": 51,
     "targets": 482,
@@ -8,109 +8,109 @@
       "academic-rule": 228,
       "certificate": 260,
       "form": 124,
-      "out-of-domain": 599,
-      "procedure": 644,
+      "out-of-domain": 607,
+      "procedure": 1374,
       "tuition": 295
     },
     "splits": {
       "train": {
-        "records": 1550,
+        "records": 2079,
         "query_families": 51,
         "targets": 450,
         "domains": {
           "academic-rule": 168,
           "certificate": 191,
           "form": 88,
-          "out-of-domain": 420,
-          "procedure": 464,
+          "out-of-domain": 428,
+          "procedure": 985,
           "tuition": 219
         }
       },
       "val": {
-        "records": 300,
+        "records": 402,
         "query_families": 51,
-        "targets": 134,
+        "targets": 217,
         "domains": {
           "academic-rule": 30,
           "certificate": 35,
           "form": 18,
           "out-of-domain": 89,
-          "procedure": 90,
+          "procedure": 192,
           "tuition": 38
         }
       },
       "test": {
-        "records": 300,
+        "records": 407,
         "query_families": 51,
-        "targets": 133,
+        "targets": 217,
         "domains": {
           "academic-rule": 30,
           "certificate": 34,
           "form": 18,
           "out-of-domain": 90,
-          "procedure": 90,
+          "procedure": 197,
           "tuition": 38
         }
       }
     },
     "registers": {
-      "colloquial": 530,
-      "formal": 557,
-      "neutral": 554,
-      "noisy": 509
+      "colloquial": 719,
+      "formal": 748,
+      "neutral": 727,
+      "noisy": 694
     },
     "query_features": {
       "filter": 291,
-      "graph_hop": 1311,
+      "graph_hop": 2041,
       "limit": 137,
-      "multi_branch": 1390,
+      "multi_branch": 2120,
       "multi_column": 530,
       "order": 492,
       "single_branch": 161,
-      "single_column": 1021,
+      "single_column": 1751,
       "values": 16
     },
     "query_features_by_split": {
       "train": {
         "filter": 235,
-        "graph_hop": 948,
+        "graph_hop": 1469,
         "limit": 115,
-        "multi_branch": 1010,
+        "multi_branch": 1531,
         "multi_column": 352,
         "order": 345,
         "single_branch": 120,
-        "single_column": 778,
+        "single_column": 1299,
         "values": 12
       },
       "val": {
         "filter": 27,
-        "graph_hop": 182,
+        "graph_hop": 284,
         "limit": 10,
-        "multi_branch": 191,
+        "multi_branch": 293,
         "multi_column": 90,
         "order": 73,
         "single_branch": 20,
-        "single_column": 121,
+        "single_column": 223,
         "values": 2
       },
       "test": {
         "filter": 29,
-        "graph_hop": 181,
+        "graph_hop": 288,
         "limit": 12,
-        "multi_branch": 189,
+        "multi_branch": 296,
         "multi_column": 88,
         "order": 74,
         "single_branch": 21,
-        "single_column": 122,
+        "single_column": 229,
         "values": 2
       }
     },
     "input_words": {
       "min": 3,
-      "median": 12,
+      "median": 13,
       "p95": 20,
       "max": 36,
-      "mean": 12.36
+      "mean": 12.63
     }
   },
   "in_domain_contract": {
@@ -142,18 +142,18 @@
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 2150,
+    "records": 2888,
     "split_counts": {
-      "train": 1550,
-      "val": 300,
-      "test": 300
+      "train": 2079,
+      "val": 402,
+      "test": 407
     },
     "domains": {
       "academic-rule": 228,
       "certificate": 260,
       "form": 124,
-      "out-of-domain": 599,
-      "procedure": 644,
+      "out-of-domain": 607,
+      "procedure": 1374,
       "tuition": 295
     },
     "catalogue_coverage_required": true,
@@ -1101,7 +1101,7 @@
     },
     "splits": {
       "train": {
-        "records": 1550,
+        "records": 2079,
         "queries": 51,
         "targets": 450,
         "query_counts": {
@@ -1129,7 +1129,7 @@
           "guidance-document-details": 14,
           "language-certificate-level": 48,
           "learner-category-details": 16,
-          "no-information": 420,
+          "no-information": 428,
           "official-document-metadata": 6,
           "payment-bank-list": 9,
           "payment-fee": 16,
@@ -1138,18 +1138,18 @@
           "payment-method-list": 16,
           "payment-warning": 16,
           "policy-details": 9,
-          "procedure-deadline": 37,
-          "procedure-decision-authority": 24,
-          "procedure-eligibility": 57,
-          "procedure-form-download": 30,
-          "procedure-instruction": 58,
+          "procedure-deadline": 70,
+          "procedure-decision-authority": 48,
+          "procedure-eligibility": 130,
+          "procedure-form-download": 56,
+          "procedure-instruction": 134,
           "procedure-list": 9,
-          "procedure-overview": 42,
-          "procedure-required-form": 40,
-          "procedure-result": 40,
-          "procedure-review-office": 23,
-          "procedure-source": 42,
-          "procedure-submission-office": 39,
+          "procedure-overview": 88,
+          "procedure-required-form": 92,
+          "procedure-result": 94,
+          "procedure-review-office": 25,
+          "procedure-source": 132,
+          "procedure-submission-office": 84,
           "reference-entity-list": 12,
           "study-year-band": 23,
           "study-year-details": 8,
@@ -1158,17 +1158,17 @@
           "tuition-rate-details": 16
         },
         "register_counts": {
-          "colloquial": 383,
-          "formal": 405,
-          "neutral": 407,
-          "noisy": 355
+          "colloquial": 520,
+          "formal": 537,
+          "neutral": 531,
+          "noisy": 491
         },
         "domains": {
           "academic-rule": 168,
           "certificate": 191,
           "form": 88,
-          "out-of-domain": 420,
-          "procedure": 464,
+          "out-of-domain": 428,
+          "procedure": 985,
           "tuition": 219
         },
         "slot_values": {
@@ -1691,9 +1691,9 @@
         }
       },
       "val": {
-        "records": 300,
+        "records": 402,
         "queries": 51,
-        "targets": 134,
+        "targets": 217,
         "query_counts": {
           "academic-actor-list": 6,
           "academic-performance-band": 3,
@@ -1728,18 +1728,18 @@
           "payment-method-list": 3,
           "payment-warning": 3,
           "policy-details": 6,
-          "procedure-deadline": 8,
-          "procedure-decision-authority": 6,
-          "procedure-eligibility": 7,
-          "procedure-form-download": 6,
-          "procedure-instruction": 7,
+          "procedure-deadline": 12,
+          "procedure-decision-authority": 9,
+          "procedure-eligibility": 22,
+          "procedure-form-download": 9,
+          "procedure-instruction": 23,
           "procedure-list": 6,
-          "procedure-overview": 7,
-          "procedure-required-form": 6,
-          "procedure-result": 6,
-          "procedure-review-office": 6,
-          "procedure-source": 7,
-          "procedure-submission-office": 6,
+          "procedure-overview": 23,
+          "procedure-required-form": 15,
+          "procedure-result": 16,
+          "procedure-review-office": 7,
+          "procedure-source": 22,
+          "procedure-submission-office": 16,
           "reference-entity-list": 2,
           "study-year-band": 3,
           "study-year-details": 3,
@@ -1748,17 +1748,17 @@
           "tuition-rate-details": 3
         },
         "register_counts": {
-          "colloquial": 89,
-          "formal": 93,
-          "neutral": 59,
-          "noisy": 59
+          "colloquial": 115,
+          "formal": 121,
+          "neutral": 82,
+          "noisy": 84
         },
         "domains": {
           "academic-rule": 30,
           "certificate": 35,
           "form": 18,
           "out-of-domain": 89,
-          "procedure": 90,
+          "procedure": 192,
           "tuition": 38
         },
         "slot_values": {
@@ -1849,9 +1849,13 @@
           },
           "procedure-deadline": {
             "procedure": [
+              ":ArticulationStudyProcedure",
               ":ClassAbsenceRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
               ":ExtraClassOpeningRequestProcedure",
               ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
               ":SickLeaveProcedure",
               ":StudentExchangeProcedure",
@@ -1860,9 +1864,12 @@
           },
           "procedure-decision-authority": {
             "procedure": [
+              ":DismissalTransferRequestProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
               ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
               ":TemporaryAcademicLeaveProcedure",
               ":UniversityTransferProcedure"
             ]
@@ -1870,49 +1877,107 @@
           "procedure-eligibility": {
             "procedure": [
               ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
               ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
               ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
               ":GraduationReviewProcedure",
-              ":MajorChangeProcedure"
+              ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-form-download": {
             "procedure": [
               ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":ExamPostponementProcedure",
               ":ExtraClassOpeningRequestProcedure",
               ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
               ":StudyResumptionProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-instruction": {
             "procedure": [
               ":ArticulationStudyProcedure",
               ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
               ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
               ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
               ":TemporaryAcademicLeaveProcedure",
-              ":TuitionPaymentProcedure"
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-overview": {
             "procedure": [
               ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
               ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
               ":SickLeaveProcedure",
-              ":TuitionPaymentProcedure"
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-required-form": {
             "procedure": [
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
               ":EarlyGraduationReviewProcedure",
               ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GraduationProjectRegistrationProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
               ":StudyWithdrawalProcedure",
               ":TemporaryAcademicLeaveProcedure",
               ":UniversityTransferProcedure"
@@ -1922,35 +1987,71 @@
             "procedure": [
               ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
               ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
-              ":SecondProgramRegistrationProcedure"
+              ":SecondProgramRegistrationProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-review-office": {
             "procedure": [
               ":CourseExemptionAndBonusProcedure",
               ":CreditRecognitionProcedure",
+              ":EarlyGraduationReviewProcedure",
               ":GraduationReviewProcedure"
             ]
           },
           "procedure-source": {
             "procedure": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
               ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
               ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
               ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
               ":StudentExchangeProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-submission-office": {
             "procedure": [
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CreditRecognitionProcedure",
               ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
               ":StudentExchangeProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "study-year-band": {
@@ -1983,9 +2084,9 @@
         }
       },
       "test": {
-        "records": 300,
+        "records": 407,
         "queries": 51,
-        "targets": 133,
+        "targets": 217,
         "query_counts": {
           "academic-actor-list": 6,
           "academic-performance-band": 3,
@@ -2020,18 +2121,18 @@
           "payment-method-list": 3,
           "payment-warning": 3,
           "policy-details": 6,
-          "procedure-deadline": 7,
-          "procedure-decision-authority": 6,
-          "procedure-eligibility": 6,
-          "procedure-form-download": 7,
-          "procedure-instruction": 9,
+          "procedure-deadline": 14,
+          "procedure-decision-authority": 9,
+          "procedure-eligibility": 21,
+          "procedure-form-download": 9,
+          "procedure-instruction": 25,
           "procedure-list": 6,
-          "procedure-overview": 6,
-          "procedure-required-form": 6,
-          "procedure-result": 7,
-          "procedure-review-office": 6,
-          "procedure-source": 6,
-          "procedure-submission-office": 6,
+          "procedure-overview": 24,
+          "procedure-required-form": 16,
+          "procedure-result": 16,
+          "procedure-review-office": 7,
+          "procedure-source": 23,
+          "procedure-submission-office": 15,
           "reference-entity-list": 2,
           "study-year-band": 3,
           "study-year-details": 3,
@@ -2040,17 +2141,17 @@
           "tuition-rate-details": 3
         },
         "register_counts": {
-          "colloquial": 58,
-          "formal": 59,
-          "neutral": 88,
-          "noisy": 95
+          "colloquial": 84,
+          "formal": 90,
+          "neutral": 114,
+          "noisy": 119
         },
         "domains": {
           "academic-rule": 30,
           "certificate": 34,
           "form": 18,
           "out-of-domain": 90,
-          "procedure": 90,
+          "procedure": 197,
           "tuition": 38
         },
         "slot_values": {
@@ -2143,36 +2244,63 @@
           "procedure-deadline": {
             "procedure": [
               ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
               ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GraduationReviewProcedure",
-              ":MajorChangeProcedure"
+              ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure"
             ]
           },
           "procedure-decision-authority": {
             "procedure": [
               ":DismissalTransferRequestProcedure",
               ":ExtraClassOpeningRequestProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
               ":StudyResumptionProcedure",
               ":StudyWithdrawalProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-eligibility": {
             "procedure": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
               ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
               ":SickLeaveProcedure",
-              ":StudentExchangeProcedure"
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-form-download": {
             "procedure": [
+              ":ClassAbsenceRequestProcedure",
               ":CourseExemptionAndBonusProcedure",
               ":ExamPostponementProcedure",
               ":ExtraClassOpeningRequestProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
               ":StudyResumptionProcedure",
               ":TemporaryAcademicLeaveProcedure",
               ":UniversityTransferProcedure"
@@ -2180,64 +2308,143 @@
           },
           "procedure-instruction": {
             "procedure": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
               ":CourseExemptionAndBonusProcedure",
               ":CourseRegistrationProcedure",
               ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
               ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
               ":UniversityTransferProcedure"
             ]
           },
           "procedure-overview": {
             "procedure": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
               ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
               ":StudentExchangeProcedure",
-              ":TuitionPaymentProcedure"
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-required-form": {
             "procedure": [
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
               ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
               ":GraduationProjectRegistrationProcedure",
+              ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
               ":StudyWithdrawalProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-result": {
             "procedure": [
               ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
               ":ExtraClassOpeningRequestProcedure",
               ":GradeImprovementProcedure",
               ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
-              ":TemporaryAcademicLeaveProcedure"
+              ":StudentExchangeProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-review-office": {
             "procedure": [
               ":CourseExemptionAndBonusProcedure",
+              ":CreditRecognitionProcedure",
               ":EarlyGraduationReviewProcedure",
               ":GraduationReviewProcedure"
             ]
           },
           "procedure-source": {
             "procedure": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
               ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
               ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
               ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
-              ":TuitionPaymentProcedure"
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
             ]
           },
           "procedure-submission-office": {
             "procedure": [
               ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
               ":EarlyGraduationReviewProcedure",
               ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":MajorChangeProcedure",
+              ":SecondProgramRegistrationProcedure",
               ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
               ":UniversityTransferProcedure"
             ]
           },
@@ -2274,9 +2481,9 @@
     }
   },
   "sha256": {
-    "train.jsonl": "9635a710fd276508f39698676c6b2d3c74ec87deb9ee3b4216c22e99432839a5",
-    "val.jsonl": "8652cc87785f84d0d46f2a2232c497fe2d7fa029e2152b76dfc9677349db5f92",
-    "test.jsonl": "8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9",
+    "train.jsonl": "02ff23a162902e2499c874f27ad01a45808f102b2a6a0151e80dc4f98325d128",
+    "val.jsonl": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669",
+    "test.jsonl": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305",
     "catalogue.jsonl": "6ca48b0e5cb2b812b747586cdd73a4cdfbf7979d51d9418267daaaad118837ad",
     "coverage.json": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881",
     "ontology.ttl": "518ec968e9a9412037002d438ea076421c61d70453fe4cc58f0788f89a3c13c2"

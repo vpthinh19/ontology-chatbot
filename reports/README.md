@@ -1,8 +1,9 @@
 # Báo cáo tái tạo được
 
-Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 2.150 câu:
+Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 2.888 câu:
 
 - `dataset.json`: kích thước, phân bố, coverage, thống kê ontology và checksum;
+- `procedure-dataset.json`: độ phủ 142 target quy trình theo split và checksum;
 - `figures/dataset-splits.svg`: số câu train/validation/test;
 - `figures/registers.svg`: phân bố bốn phong cách câu hỏi;
 - `figures/query-features.svg`: đặc trưng SPARQL theo từng split.
@@ -10,6 +11,6 @@ Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp t
 Sinh lại bằng `uv run generate_reports`. `training_readiness.ready` phải là
 `true`, coverage phải hoàn chỉnh và cả 51 họ truy vấn phải có trong ba split.
 
-Chưa có báo cáo benchmark model chính thức trên release này. Báo cáo model chỉ
-được tạo sau khi từng checkpoint đã được nạp lại độc lập và đánh giá trên cùng
-validation/test cùng checksum dataset.
+Chưa có báo cáo benchmark model chính thức trên dataset này. Báo cáo model chỉ
+được tạo sau khi checkpoint T5Gemma2 đã được nạp lại độc lập và đánh giá trên
+cùng validation/test cùng checksum dataset.

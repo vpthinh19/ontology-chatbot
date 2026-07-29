@@ -14,48 +14,48 @@
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 1550,
+      "records": 2079,
       "query_families": 51,
       "targets": 450,
       "domains": {
         "academic-rule": 168,
         "certificate": 191,
         "form": 88,
-        "out-of-domain": 420,
-        "procedure": 464,
+        "out-of-domain": 428,
+        "procedure": 985,
         "tuition": 219
       },
-      "sha256": "9635a710fd276508f39698676c6b2d3c74ec87deb9ee3b4216c22e99432839a5"
+      "sha256": "02ff23a162902e2499c874f27ad01a45808f102b2a6a0151e80dc4f98325d128"
     },
     "val": {
       "path": "val.jsonl",
-      "records": 300,
+      "records": 402,
       "query_families": 51,
-      "targets": 134,
+      "targets": 217,
       "domains": {
         "academic-rule": 30,
         "certificate": 35,
         "form": 18,
         "out-of-domain": 89,
-        "procedure": 90,
+        "procedure": 192,
         "tuition": 38
       },
-      "sha256": "8652cc87785f84d0d46f2a2232c497fe2d7fa029e2152b76dfc9677349db5f92"
+      "sha256": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669"
     },
     "test": {
       "path": "test.jsonl",
-      "records": 300,
+      "records": 407,
       "query_families": 51,
-      "targets": 133,
+      "targets": 217,
       "domains": {
         "academic-rule": 30,
         "certificate": 34,
         "form": 18,
         "out-of-domain": 90,
-        "procedure": 90,
+        "procedure": 197,
         "tuition": 38
       },
-      "sha256": "8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9"
+      "sha256": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
     }
   },
   "catalogue": {
@@ -68,15 +68,15 @@
     "sha256": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881"
   },
   "totals": {
-    "records": 2150,
+    "records": 2888,
     "query_families": 51,
     "targets": 482,
     "domains": {
       "academic-rule": 228,
       "certificate": 260,
       "form": 124,
-      "out-of-domain": 599,
-      "procedure": 644,
+      "out-of-domain": 607,
+      "procedure": 1374,
       "tuition": 295
     }
   },

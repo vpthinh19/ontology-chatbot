@@ -1,0 +1,78 @@
+{
+  "scope": "academic-procedure",
+  "procedure_target_count": 142,
+  "instruction_target_count": 22,
+  "splits": {
+    "train": {
+      "records": 2079,
+      "procedure_records": 962,
+      "no_information_records": 428,
+      "procedure_to_no_information_ratio": 2.247664,
+      "procedure_targets": 142,
+      "samples_per_target_histogram": {
+        "6": 110,
+        "7": 1,
+        "8": 8,
+        "9": 1,
+        "10": 21,
+        "12": 1
+      },
+      "registers_per_target_histogram": {
+        "4": 142
+      },
+      "sha256": "02ff23a162902e2499c874f27ad01a45808f102b2a6a0151e80dc4f98325d128"
+    },
+    "val": {
+      "records": 402,
+      "procedure_records": 180,
+      "no_information_records": 89,
+      "procedure_to_no_information_ratio": 2.022472,
+      "procedure_targets": 142,
+      "samples_per_target_histogram": {
+        "1": 111,
+        "2": 28,
+        "3": 1,
+        "4": 1,
+        "6": 1
+      },
+      "registers_per_target_histogram": {
+        "1": 117,
+        "2": 23,
+        "4": 2
+      },
+      "sha256": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669"
+    },
+    "test": {
+      "records": 407,
+      "procedure_records": 185,
+      "no_information_records": 90,
+      "procedure_to_no_information_ratio": 2.055556,
+      "procedure_targets": 142,
+      "samples_per_target_histogram": {
+        "1": 109,
+        "2": 28,
+        "3": 3,
+        "5": 1,
+        "6": 1
+      },
+      "registers_per_target_histogram": {
+        "1": 112,
+        "2": 25,
+        "3": 3,
+        "4": 2
+      },
+      "sha256": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
+    }
+  },
+  "contracts": {
+    "every_train_target_has_at_least_six_samples": true,
+    "every_train_target_has_all_four_registers": true,
+    "every_instruction_target_has_at_least_six_direct_questions": true,
+    "every_instruction_target_has_at_least_four_overview_questions": true,
+    "course_registration_instruction_samples": 12,
+    "every_target_is_present_in_val": true,
+    "every_target_is_present_in_test": true,
+    "every_instruction_target_has_both_question_types_in_val": true,
+    "every_instruction_target_has_both_question_types_in_test": true
+  }
+}

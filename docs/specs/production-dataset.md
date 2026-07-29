@@ -43,14 +43,14 @@ không chỉ dùng negative ngoài chủ đề dễ phân biệt.
 3. Marker trùng chính xác `không có thông tin`.
 4. Không leakage giữa split.
 5. Phân bố register, in/out-domain và negative group được báo cáo.
-6. Source/target round-trip qua cả ba tokenizer.
+6. Source/target round-trip qua tokenizer T5Gemma2.
 7. Mọi câu trong `resources/cases/user_queries.txt` được gán nhãn và có ca hồi
    quy tương ứng.
 
 ## Nghiệm thu model
 
-Fine-tune T5Gemma2 trước để xác nhận dataset và contract có thể học. Chỉ sau khi
-pipeline hợp lệ mới chạy BARTpho và ViT5 cùng giao thức. Benchmark phải công bố
+Chỉ fine-tune T5Gemma2 đúng một lần sau khi toàn bộ cổng dữ liệu tĩnh đã qua.
+Benchmark phải công bố
 In-domain Answer Exact, marker exact, false acceptance, mixed-query rejection
 và System Answer Exact; không chỉ dùng một accuracy tổng hợp.
 
