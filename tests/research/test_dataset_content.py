@@ -273,6 +273,42 @@ def test_candidate_procedure_iris_exist_in_ontology() -> None:
     assert seen <= existing
 
 
+def test_procedure_result_slots_exclude_non_result_procedures() -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    result_procedures = set(
+        catalogue["procedure-result"].slots["procedure"].values
+    )
+
+    assert result_procedures.isdisjoint(
+        {
+            ":CourseExemptionAndBonusProcedure",
+            ":StudyResumptionProcedure",
+        }
+    )
+
+
+@pytest.mark.parametrize(
+    ("record_id", "query_id", "provision_role"),
+    [
+        ("question-000050", "procedure-eligibility", ":eligibilityProvision"),
+        ("question-000063", "procedure-instruction", ":instructionProvision"),
+    ],
+)
+def test_known_candidate_rows_use_semantically_supported_provision_roles(
+    record_id: str,
+    query_id: str,
+    provision_role: str,
+) -> None:
+    rows = {
+        row["id"]: row
+        for split in load_release().values()
+        for row in split
+    }
+
+    assert rows[record_id]["query_id"] == query_id
+    assert provision_role in rows[record_id]["target"]
+
+
 def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> None:
     graph = load_ontology()
     rows = [row for split in load_release().values() for row in split]

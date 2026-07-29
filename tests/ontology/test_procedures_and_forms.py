@@ -232,7 +232,6 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
             academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
         },
         academic.resultProvision: {
-            academic.CourseExemptionAndBonusProcedure: {academic.Decision1052Article21Clause05},
             academic.CourseRetakeProcedure: {academic.Decision1052Article11Clause04},
             academic.CreditRecognitionProcedure: {
                 academic.Decision1052Article21Clause01,
@@ -262,7 +261,6 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
                 academic.Decision1052Article27Clause01,
                 academic.Decision1052Article27Clause02,
             },
-            academic.StudyResumptionProcedure: {academic.Decision1052Article24Clause03},
             academic.StudyWithdrawalProcedure: {academic.Decision1052Article24Clause02},
             academic.TemporaryAcademicLeaveProcedure: {academic.Decision1052Article24Clause01},
             academic.UniversityTransferProcedure: {academic.Decision1052Article26Clause02PointB},
@@ -274,12 +272,17 @@ def test_procedures_link_exact_source_provisions_by_semantic_role(
             assert set(ontology_graph.objects(procedure, predicate)) == provisions
             assert all(ontology_graph.value(provision, academic.officialText) for provision in provisions)
 
-    assert not list(
-        ontology_graph.objects(
-            academic.ClassAbsenceRequestProcedure,
-            academic.resultProvision,
+    for procedure in (
+        academic.ClassAbsenceRequestProcedure,
+        academic.CourseExemptionAndBonusProcedure,
+        academic.StudyResumptionProcedure,
+    ):
+        assert not list(
+            ontology_graph.objects(
+                procedure,
+                academic.resultProvision,
+            )
         )
-    )
 
 
 def test_articles_20_29_and_30_have_precise_instruction_paths(

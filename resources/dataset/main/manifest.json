@@ -16,7 +16,7 @@
       "path": "train.jsonl",
       "records": 339,
       "query_families": 24,
-      "targets": 232,
+      "targets": 230,
       "domains": {
         "academic-rule": 38,
         "certificate": 30,
@@ -25,7 +25,7 @@
         "procedure": 130,
         "tuition": 46
       },
-      "sha256": "464b26837b526541df7478cb7dc715171b74431eb903faa4576069ccb97f5b25"
+      "sha256": "6032bb74f57d0187a5ec87bfd5dc826548f64ccb5af68cccc7638bd537e399fd"
     },
     "val": {
       "path": "val.jsonl",
@@ -40,7 +40,7 @@
         "procedure": 18,
         "tuition": 10
       },
-      "sha256": "43ae6afd5d1dfa5f35309b0a844a408169fc99f29405aea3d9b289cfb338c256"
+      "sha256": "f245c79c36728d23387495e02ae9f83010172a97064c7f90cbff78c66a50af38"
     },
     "test": {
       "path": "test.jsonl",
@@ -55,18 +55,22 @@
         "procedure": 18,
         "tuition": 10
       },
-      "sha256": "1c9ea02998801e4aaac40a18dc10c051fc8905386737974d00628fda639f04d2"
+      "sha256": "7b2d40ebd0cdc558e6bbb736c5444eac374e65ce7bdd84c2a350964dfd97da86"
     }
   },
   "catalogue": {
     "path": "catalogue.jsonl",
     "query_families": 24,
-    "sha256": "6969a1a2e260e71158b669b987a53c95a6853d7c9ea000dd5212157e4861c047"
+    "sha256": "9819fa65750a9d1ad3383a35b1b9b690b0c43e986caf7fc85f9dba0a4d95e52e"
+  },
+  "coverage": {
+    "path": "coverage.json",
+    "sha256": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881"
   },
   "totals": {
     "records": 455,
     "query_families": 24,
-    "targets": 252,
+    "targets": 250,
     "domains": {
       "academic-rule": 54,
       "certificate": 42,
@@ -93,6 +97,6 @@
   "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
   "ontology": {
     "path": "../../ontology/ontology.ttl",
-    "sha256": "5b7be0c4cb43925c91e28a2aa7fc9a6fa37fb521f2c0319e3876da7e35ded582"
+    "sha256": "518ec968e9a9412037002d438ea076421c61d70453fe4cc58f0788f89a3c13c2"
   }
 }

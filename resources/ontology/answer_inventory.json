@@ -4493,17 +4493,15 @@
       "status": "supported"
     },
     {
-      "id": "CourseExemptionAndBonusProcedure-resultProvision-officialText",
+      "id": "CourseExemptionAndBonusProcedure-resultProvision",
       "anchor": "CourseExemptionAndBonusProcedure",
       "answer_kind": "literal",
-      "path": [
-        "resultProvision",
-        "officialText"
-      ],
+      "path": [],
       "provenance": [
         "Decision1052Article21Clause05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Khoản 5 chỉ quy định điều kiện được xem xét, không mô tả kết quả giải quyết."
     },
     {
       "id": "CourseExemptionAndBonusProcedure-reviewedBy-rdfs-label",
@@ -38886,17 +38884,15 @@
       "status": "supported"
     },
     {
-      "id": "StudyResumptionProcedure-resultProvision-officialText",
+      "id": "StudyResumptionProcedure-resultProvision",
       "anchor": "StudyResumptionProcedure",
       "answer_kind": "literal",
-      "path": [
-        "resultProvision",
-        "officialText"
-      ],
+      "path": [],
       "provenance": [
         "Decision1052Article24Clause03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Khoản 3 chỉ quy định thủ tục và thời hạn nộp đơn, không mô tả kết quả giải quyết."
     },
     {
       "id": "StudyResumptionProcedure-sourceDocument-rdfs-label",

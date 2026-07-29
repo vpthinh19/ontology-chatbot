@@ -30,16 +30,16 @@ node con trên toàn bộ 32 điều.
 Semantic index có 22 quy trình và 2 chính sách. Điều 20 được tách thành chính
 sách cảnh báo, chính sách buộc thôi học và quy trình xin chuyển chương trình;
 Điều 29 có quy trình học liên thông; Điều 30 có quy trình nghỉ ốm cùng liên kết
-đến nghỉ học ngắn ngày, nghỉ học tạm thời và hoãn thi. Liên kết kết quả không
-có căn cứ của quy trình xin phép nghỉ học và property `documentUrl` rỗng đã
-được loại bỏ.
+đến nghỉ học ngắn ngày, nghỉ học tạm thời và hoãn thi. Ba liên kết kết quả
+không có căn cứ của các quy trình xin phép nghỉ học, miễn học/miễn thi/cộng
+điểm thưởng và xin học trở lại cùng property `documentUrl` rỗng đã được loại bỏ.
 
 Inventory máy đọc được nằm tại
 `resources/ontology/answer_inventory.json`. File này được sinh xác định từ
 graph, chỉ lưu anchor, đường tới literal/label và provenance; nó không sao chép
 câu trả lời. Các quyết định không hỗ trợ được ghi bằng trạng thái `excluded` và
-lý do. Inventory hiện có 2.955 mục `supported`; 259 label của bản ghi kỹ thuật
-nội bộ cùng ba quyết định nghiệp vụ không hỗ trợ được đánh dấu `excluded`.
+lý do. Inventory hiện có 2.953 mục `supported`; 259 label của bản ghi kỹ thuật
+nội bộ cùng năm quyết định nghiệp vụ không hỗ trợ được đánh dấu `excluded`.
 
 Query catalogue canonical nằm tại `resources/dataset/main/catalogue.jsonl`, có
 51 họ truy vấn và phủ toàn bộ các mục `supported`. Model chỉ sinh IRI của thực

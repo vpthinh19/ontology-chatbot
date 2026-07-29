@@ -8,7 +8,7 @@ Dataset chính thức sẽ dạy một model seq2seq thực hiện trọn luồn
 - câu không được hỗ trợ → sinh `không có thông tin`.
 
 Ontology, inventory và query catalogue đã được xác nhận. Catalogue có 51 họ và
-phủ đủ 2.955 khả năng trả lời `supported`; dataset chỉ được khóa sau khi mọi
+phủ đủ 2.953 khả năng trả lời `supported`; dataset chỉ được khóa sau khi mọi
 target câu hỏi được biên soạn và kiểm tra lại trên graph canonical.
 
 455 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.

@@ -56,6 +56,6 @@ def test_docs_separate_canonical_ontology_and_catalogue_from_candidate_dataset()
     assert "2 chính sách" in ontology
     assert "ontology canonical" in readme
     assert "51 họ truy vấn" in readme
-    assert "2.955" in ontology
+    assert "2.953" in ontology
     assert "candidate pool" in dataset
     assert "không được full fine-tune" in _read("docs/TRAINING.md")

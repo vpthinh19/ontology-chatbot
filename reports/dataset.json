@@ -3,7 +3,7 @@
     "records": 455,
     "query_families": 24,
     "catalogue_families": 51,
-    "targets": 252,
+    "targets": 250,
     "domains": {
       "academic-rule": 54,
       "certificate": 42,
@@ -16,7 +16,7 @@
       "train": {
         "records": 339,
         "query_families": 24,
-        "targets": 232,
+        "targets": 230,
         "domains": {
           "academic-rule": 38,
           "certificate": 30,
@@ -106,7 +106,7 @@
       "median": 11,
       "p95": 16,
       "max": 24,
-      "mean": 10.66
+      "mean": 10.68
     }
   },
   "in_domain_contract": {
@@ -115,6 +115,1194 @@
     "validation_queries": 24,
     "test_queries_supported_by_train": 24,
     "test_queries": 24
+  },
+  "coverage": {
+    "complete": false,
+    "missing_query_ids": {
+      "train": [
+        "academic-actor-list",
+        "academic-performance-details",
+        "academic-program-details",
+        "certificate-conversion-details",
+        "certificate-details",
+        "class-size-details",
+        "competency-level-details",
+        "course-exemption-details",
+        "discipline-group-details",
+        "doctoral-tuition-details",
+        "form-catalogue-details",
+        "form-document-details",
+        "form-entry-details",
+        "graduation-classification-details",
+        "guidance-document-details",
+        "learner-category-details",
+        "official-document-metadata",
+        "payment-fee-details",
+        "payment-method-details",
+        "policy-details",
+        "procedure-decision-authority",
+        "procedure-list",
+        "procedure-source",
+        "reference-entity-list",
+        "study-year-details",
+        "tuition-programs-by-rate",
+        "tuition-rate-details"
+      ],
+      "val": [
+        "academic-actor-list",
+        "academic-performance-details",
+        "academic-program-details",
+        "certificate-conversion-details",
+        "certificate-details",
+        "class-size-details",
+        "competency-level-details",
+        "course-exemption-details",
+        "discipline-group-details",
+        "doctoral-tuition-details",
+        "form-catalogue-details",
+        "form-document-details",
+        "form-entry-details",
+        "graduation-classification-details",
+        "guidance-document-details",
+        "learner-category-details",
+        "official-document-metadata",
+        "payment-fee-details",
+        "payment-method-details",
+        "policy-details",
+        "procedure-decision-authority",
+        "procedure-list",
+        "procedure-source",
+        "reference-entity-list",
+        "study-year-details",
+        "tuition-programs-by-rate",
+        "tuition-rate-details"
+      ],
+      "test": [
+        "academic-actor-list",
+        "academic-performance-details",
+        "academic-program-details",
+        "certificate-conversion-details",
+        "certificate-details",
+        "class-size-details",
+        "competency-level-details",
+        "course-exemption-details",
+        "discipline-group-details",
+        "doctoral-tuition-details",
+        "form-catalogue-details",
+        "form-document-details",
+        "form-entry-details",
+        "graduation-classification-details",
+        "guidance-document-details",
+        "learner-category-details",
+        "official-document-metadata",
+        "payment-fee-details",
+        "payment-method-details",
+        "policy-details",
+        "procedure-decision-authority",
+        "procedure-list",
+        "procedure-source",
+        "reference-entity-list",
+        "study-year-details",
+        "tuition-programs-by-rate",
+        "tuition-rate-details"
+      ]
+    },
+    "missing_train_registers": {
+      "academic-actor-list": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "academic-performance-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "academic-program-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "certificate-conversion-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "certificate-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "class-size-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "competency-level-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "course-exemption-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "discipline-group-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "doctoral-tuition-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "form-catalogue-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "form-document-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "form-entry-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "graduation-classification-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "guidance-document-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "learner-category-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "official-document-metadata": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "payment-fee-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "payment-method-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "policy-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "procedure-decision-authority": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "procedure-list": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "procedure-source": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "reference-entity-list": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "study-year-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "tuition-programs-by-rate": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ],
+      "tuition-rate-details": [
+        "colloquial",
+        "formal",
+        "neutral",
+        "noisy"
+      ]
+    },
+    "missing_priority_registers": {
+      "train": {
+        "academic-actor-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "policy-details": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-decision-authority": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-source": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ]
+      },
+      "val": {
+        "academic-actor-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "policy-details": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-deadline": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-decision-authority": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-eligibility": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-form-download": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-instruction": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-overview": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-required-form": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-result": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-review-office": [
+          "neutral",
+          "noisy"
+        ],
+        "procedure-source": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-submission-office": [
+          "neutral",
+          "noisy"
+        ]
+      },
+      "test": {
+        "academic-actor-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "policy-details": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-deadline": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-decision-authority": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-eligibility": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-form-download": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-instruction": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-list": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-overview": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-required-form": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-result": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-review-office": [
+          "colloquial",
+          "formal"
+        ],
+        "procedure-source": [
+          "colloquial",
+          "formal",
+          "neutral",
+          "noisy"
+        ],
+        "procedure-submission-office": [
+          "colloquial",
+          "formal"
+        ]
+      }
+    },
+    "missing_numeric_cases": [
+      {
+        "query_id": "tuition-program-cohort-rate",
+        "split": "train",
+        "slots": {
+          "cohort": "64",
+          "program": ":Aquaculture"
+        }
+      },
+      {
+        "query_id": "tuition-program-cohort-rate",
+        "split": "train",
+        "slots": {
+          "cohort": "68",
+          "program": ":DevelopmentEconomics"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "0.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "3.99"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "4.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "4.99"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "5.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "6.99"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "7.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "8.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "8.99"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "9.00"
+        }
+      },
+      {
+        "query_id": "academic-performance-band",
+        "split": "train",
+        "slots": {
+          "score": "10.00"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "0.00"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "34.99"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "35.00"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "69.99"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "70.00"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "104.99"
+        }
+      },
+      {
+        "query_id": "study-year-band",
+        "split": "train",
+        "slots": {
+          "credits": "106.00"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "5.50"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "6.99"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "7.00"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "8.00"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "8.99"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "9.00"
+        }
+      },
+      {
+        "query_id": "graduation-classification-band",
+        "split": "train",
+        "slots": {
+          "score": "10.00"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":AptisGeneralCertificate",
+          "score": "100.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":CambridgeEnglishScaleCertificate",
+          "score": "100.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":CambridgeEnglishScaleCertificate",
+          "score": "200.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":IELTSCertificate",
+          "score": "6.5"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":KLPTCertificate",
+          "score": "250.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":KLPTCertificate",
+          "score": "300.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":KLPTCertificate",
+          "score": "350.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":KLPTCertificate",
+          "score": "400.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":KLPTCertificate",
+          "score": "450.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":LinguaskillCertificate",
+          "score": "140.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":LinguaskillCertificate",
+          "score": "153.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":LinguaskillCertificate",
+          "score": "170.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":LinguaskillCertificate",
+          "score": "190.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TCFCertificate",
+          "score": "200.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TCFCertificate",
+          "score": "300.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TCFCertificate",
+          "score": "400.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEFLIBTCertificate",
+          "score": "30.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEFLIBTCertificate",
+          "score": "70.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEFLIBTCertificate",
+          "score": "80.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEFLIBTCertificate",
+          "score": "110.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEICCertificate",
+          "score": "600.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEICCertificate",
+          "score": "700.0"
+        }
+      },
+      {
+        "query_id": "language-certificate-level",
+        "split": "train",
+        "slots": {
+          "certificate": ":TOEICCertificate",
+          "score": "850.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "1990.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "2329.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "2330.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "2669.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "2670.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":IC3Certificate",
+          "score": "3000.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1350.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1445.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1446.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1620.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1621.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":ICDLCertificate",
+          "score": "1800.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "1400.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "1599.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "1600.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "1799.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "1800.0"
+        }
+      },
+      {
+        "query_id": "computer-certificate-grade",
+        "split": "train",
+        "slots": {
+          "certificate": ":MOSCertificate",
+          "score": "2000.0"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "460000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "505000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "510000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "550000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "600000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "620000"
+        }
+      },
+      {
+        "query_id": "tuition-programs-by-rate",
+        "split": "train",
+        "slots": {
+          "amount": "24500000"
+        }
+      }
+    ],
+    "missing_rejection_coverage": {
+      "greeting-social": [
+        {
+          "split": "val",
+          "register": "neutral"
+        },
+        {
+          "split": "val",
+          "register": "noisy"
+        },
+        {
+          "split": "test",
+          "register": "formal"
+        },
+        {
+          "split": "test",
+          "register": "colloquial"
+        }
+      ],
+      "unrelated": [
+        {
+          "split": "val",
+          "register": "formal"
+        },
+        {
+          "split": "val",
+          "register": "colloquial"
+        },
+        {
+          "split": "test",
+          "register": "neutral"
+        },
+        {
+          "split": "test",
+          "register": "noisy"
+        }
+      ],
+      "near-domain-missing": [
+        {
+          "split": "val",
+          "register": "neutral"
+        },
+        {
+          "split": "val",
+          "register": "noisy"
+        },
+        {
+          "split": "test",
+          "register": "formal"
+        },
+        {
+          "split": "test",
+          "register": "colloquial"
+        }
+      ],
+      "ambiguous": [
+        {
+          "split": "val",
+          "register": "formal"
+        },
+        {
+          "split": "val",
+          "register": "colloquial"
+        },
+        {
+          "split": "test",
+          "register": "neutral"
+        },
+        {
+          "split": "test",
+          "register": "noisy"
+        }
+      ],
+      "noisy-out-of-domain": [
+        {
+          "split": "train",
+          "register": "formal"
+        },
+        {
+          "split": "train",
+          "register": "neutral"
+        },
+        {
+          "split": "train",
+          "register": "colloquial"
+        },
+        {
+          "split": "train",
+          "register": "noisy"
+        },
+        {
+          "split": "val",
+          "register": "formal"
+        },
+        {
+          "split": "val",
+          "register": "neutral"
+        },
+        {
+          "split": "val",
+          "register": "colloquial"
+        },
+        {
+          "split": "val",
+          "register": "noisy"
+        },
+        {
+          "split": "test",
+          "register": "formal"
+        },
+        {
+          "split": "test",
+          "register": "neutral"
+        },
+        {
+          "split": "test",
+          "register": "colloquial"
+        },
+        {
+          "split": "test",
+          "register": "noisy"
+        }
+      ],
+      "mixed": [
+        {
+          "split": "val",
+          "register": "neutral"
+        },
+        {
+          "split": "val",
+          "register": "noisy"
+        },
+        {
+          "split": "test",
+          "register": "formal"
+        },
+        {
+          "split": "test",
+          "register": "colloquial"
+        }
+      ],
+      "hard-negative": [
+        {
+          "split": "train",
+          "register": "formal"
+        },
+        {
+          "split": "train",
+          "register": "neutral"
+        },
+        {
+          "split": "train",
+          "register": "colloquial"
+        },
+        {
+          "split": "train",
+          "register": "noisy"
+        },
+        {
+          "split": "val",
+          "register": "formal"
+        },
+        {
+          "split": "val",
+          "register": "neutral"
+        },
+        {
+          "split": "val",
+          "register": "colloquial"
+        },
+        {
+          "split": "val",
+          "register": "noisy"
+        },
+        {
+          "split": "test",
+          "register": "formal"
+        },
+        {
+          "split": "test",
+          "register": "neutral"
+        },
+        {
+          "split": "test",
+          "register": "colloquial"
+        },
+        {
+          "split": "test",
+          "register": "noisy"
+        }
+      ]
+    }
   },
   "training_readiness": {
     "ready": false,
@@ -192,11 +1380,19 @@
             ]
           }
         ]
+      },
+      {
+        "code": "coverage_incomplete",
+        "missing_query_ids": 81,
+        "missing_train_registers": 108,
+        "missing_priority_registers": 96,
+        "missing_numeric_cases": 75,
+        "missing_rejection_coverage": 44
       }
     ]
   },
   "ontology": {
-    "triples": 8347,
+    "triples": 8345,
     "classes": 43,
     "object_properties": 29,
     "datatype_properties": 33,
@@ -725,7 +1921,6 @@
       "procedure-result": {
         "procedure": {
           "declared": [
-            ":CourseExemptionAndBonusProcedure",
             ":CourseRetakeProcedure",
             ":CreditRecognitionProcedure",
             ":DismissalTransferRequestProcedure",
@@ -738,13 +1933,11 @@
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
             ":StudyWithdrawalProcedure",
             ":TemporaryAcademicLeaveProcedure",
             ":UniversityTransferProcedure"
           ],
           "seen_train": [
-            ":CourseExemptionAndBonusProcedure",
             ":CourseRetakeProcedure",
             ":CreditRecognitionProcedure",
             ":DismissalTransferRequestProcedure",
@@ -757,7 +1950,6 @@
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
             ":StudyWithdrawalProcedure",
             ":TemporaryAcademicLeaveProcedure",
             ":UniversityTransferProcedure"
@@ -917,7 +2109,7 @@
       "train": {
         "records": 339,
         "queries": 24,
-        "targets": 232,
+        "targets": 230,
         "query_counts": {
           "academic-performance-band": 8,
           "certificate-criterion": 15,
@@ -933,12 +2125,12 @@
           "payment-method-list": 4,
           "payment-warning": 4,
           "procedure-deadline": 9,
-          "procedure-eligibility": 19,
+          "procedure-eligibility": 20,
           "procedure-form-download": 9,
-          "procedure-instruction": 23,
+          "procedure-instruction": 24,
           "procedure-overview": 20,
           "procedure-required-form": 15,
-          "procedure-result": 17,
+          "procedure-result": 15,
           "procedure-review-office": 4,
           "procedure-submission-office": 14,
           "study-year-band": 8,
@@ -1207,7 +2399,6 @@
           },
           "procedure-result": {
             "procedure": [
-              ":CourseExemptionAndBonusProcedure",
               ":CourseRetakeProcedure",
               ":CreditRecognitionProcedure",
               ":DismissalTransferRequestProcedure",
@@ -1220,7 +2411,6 @@
               ":MajorChangeProcedure",
               ":SecondProgramRegistrationProcedure",
               ":StudentExchangeProcedure",
-              ":StudyResumptionProcedure",
               ":StudyWithdrawalProcedure",
               ":TemporaryAcademicLeaveProcedure",
               ":UniversityTransferProcedure"
@@ -1654,10 +2844,11 @@
     }
   },
   "sha256": {
-    "train.jsonl": "464b26837b526541df7478cb7dc715171b74431eb903faa4576069ccb97f5b25",
-    "val.jsonl": "43ae6afd5d1dfa5f35309b0a844a408169fc99f29405aea3d9b289cfb338c256",
-    "test.jsonl": "1c9ea02998801e4aaac40a18dc10c051fc8905386737974d00628fda639f04d2",
-    "catalogue.jsonl": "6969a1a2e260e71158b669b987a53c95a6853d7c9ea000dd5212157e4861c047",
-    "ontology.ttl": "5b7be0c4cb43925c91e28a2aa7fc9a6fa37fb521f2c0319e3876da7e35ded582"
+    "train.jsonl": "6032bb74f57d0187a5ec87bfd5dc826548f64ccb5af68cccc7638bd537e399fd",
+    "val.jsonl": "f245c79c36728d23387495e02ae9f83010172a97064c7f90cbff78c66a50af38",
+    "test.jsonl": "7b2d40ebd0cdc558e6bbb736c5444eac374e65ce7bdd84c2a350964dfd97da86",
+    "catalogue.jsonl": "9819fa65750a9d1ad3383a35b1b9b690b0c43e986caf7fc85f9dba0a4d95e52e",
+    "coverage.json": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881",
+    "ontology.ttl": "518ec968e9a9412037002d438ea076421c61d70453fe4cc58f0788f89a3c13c2"
   }
 }

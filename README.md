@@ -20,7 +20,7 @@ Chiều kiểm soát độ phủ bắt buộc là:
 ontology → inventory → catalogue → dataset
 ```
 
-Catalogue gồm 51 họ truy vấn và phủ bằng máy toàn bộ 2.955 khả năng trả lời
+Catalogue gồm 51 họ truy vấn và phủ bằng máy toàn bộ 2.953 khả năng trả lời
 `supported` trong inventory. Candidate mới dùng 24 họ nên chưa được phép full
 fine-tune hoặc xem là dataset production.
 

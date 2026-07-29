@@ -422,7 +422,6 @@
     :eligibilityProvision :Decision1052Article21Clause05 ;
     :instructionProvision :Decision1052Article21 ;
     :requiresForm :Decision1052Form07 ;
-    :resultProvision :Decision1052Article21Clause05 ;
     :reviewedBy :ProfessionalCouncil ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article21 ;
@@ -3666,7 +3665,6 @@
     :eligibilityProvision :Decision1052Article24Clause03 ;
     :instructionProvision :Decision1052Article24 ;
     :requiresForm :Decision1052Form11 ;
-    :resultProvision :Decision1052Article24Clause03 ;
     :sourceDocument :Decision1052 ;
     :sourceProvision :Decision1052Article24 ;
     :submittedTo :StudentAffairsOffice .

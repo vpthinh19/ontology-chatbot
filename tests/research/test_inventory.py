@@ -69,6 +69,12 @@ def test_known_semantic_decisions_are_in_inventory(answer_inventory) -> None:
     assert entries[
         "ClassAbsenceRequestProcedure-resultProvision"
     ]["status"] == "excluded"
+    assert entries[
+        "CourseExemptionAndBonusProcedure-resultProvision"
+    ]["status"] == "excluded"
+    assert entries[
+        "StudyResumptionProcedure-resultProvision"
+    ]["status"] == "excluded"
 
 
 def test_opaque_record_labels_are_not_supported(answer_inventory) -> None:
