@@ -167,19 +167,19 @@ Run `assemble_staging(Path("artifacts/dataset-expansion"))`, compare all five fi
 - Consumes: 293 accepted procedure rows across 14 families.
 - Produces: exactly 600 procedure rows, split 420/90/90.
 
-- [ ] **Step 1: Author batch P1**
+- [x] **Step 1: Author batch P1**
 
 Add exactly 154 meaningful procedure rows: 121 train, 17 validation, 16 test. Prioritize instruction, eligibility, deadline, result, submission/review/decision roles, required form/download and real-life indirect wording. Do not create a result row where ontology has no `resultProvision`.
 
-- [ ] **Step 2: Validate and persist P1**
+- [x] **Step 2: Validate and persist P1**
 
 Run split-level `validate_dataset`, subset `validate_release(..., require_complete_catalogue=False)`, and the cross-split near-duplicate check. Assemble all staging, run full release coverage, mechanically replace tracked splits/checklist, then commit only those four tracked data files with message `Expand procedure questions`.
 
-- [ ] **Step 3: Author batch P2**
+- [x] **Step 3: Author batch P2**
 
 Add exactly 153 procedure rows: 121 train, 17 validation, 15 test. Fill family/register gaps left by P1; no wording may be a token-swapped copy of P1.
 
-- [ ] **Step 4: Validate and persist P2**
+- [x] **Step 4: Validate and persist P2**
 
 Repeat the P1 data-only gates. Expected final procedure counts: 420/90/90. Commit the same four tracked files with message `Complete procedure coverage expansion`.
 
