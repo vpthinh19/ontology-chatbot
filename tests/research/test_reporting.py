@@ -24,17 +24,17 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 455
-    assert report["dataset"]["query_families"] == 24
+    assert report["dataset"]["records"] == 2000
+    assert report["dataset"]["query_families"] == 51
     assert report["dataset"]["catalogue_families"] == 51
     assert report["dataset"]["domains"]["procedure"] > 0
     assert report["dataset"]["domains"]["out-of-domain"] > 0
     assert report["in_domain_contract"] == {
-        "train_queries": 24,
-        "validation_queries_supported_by_train": 24,
-        "validation_queries": 24,
-        "test_queries_supported_by_train": 24,
-        "test_queries": 24,
+        "train_queries": 51,
+        "validation_queries_supported_by_train": 51,
+        "validation_queries": 51,
+        "test_queries_supported_by_train": 51,
+        "test_queries": 51,
     }
     assert report["ontology"]["resources_missing_vietnamese_label"] == []
     assert set(report["dataset"]["query_features_by_split"]) == {
@@ -42,13 +42,12 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
         "val",
         "test",
     }
-    assert report["training_readiness"]["ready"] is False
+    assert report["training_readiness"]["ready"] is True
     gap_codes = {
         gap["code"] for gap in report["training_readiness"]["gaps"]
     }
-    assert "catalogue_not_fully_covered" in gap_codes
-    assert report["coverage"]["complete"] is False
-    assert "coverage_incomplete" in gap_codes
+    assert gap_codes == set()
+    assert report["coverage"]["complete"] is True
     assert report["sha256"]["catalogue.jsonl"]
     assert report["sha256"]["coverage.json"]
 

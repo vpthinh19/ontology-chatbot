@@ -314,7 +314,13 @@ git commit -m "Freeze the production dataset test split"
 - Replace: `reports/figures/registers.svg`
 - Replace: `reports/figures/query-features.svg`
 - Modify: `README.md`
+- Modify: `docs/CONCEPT.md`
 - Modify: `docs/DATASET.md`
+- Modify: `docs/EVALUATION.md`
+- Modify: `docs/TRAINING.md`
+- Modify: `reports/README.md`
+- Modify: `resources/dataset/main/README.md`
+- Modify: `src/ontchatbot/research/reporting.py`
 - Modify: `tests/research/test_documentation_status.py`
 - Modify: `tests/research/test_reporting.py`
 
@@ -322,11 +328,11 @@ git commit -m "Freeze the production dataset test split"
 - Consumes: frozen final release.
 - Produces: public Vietnamese documentation and the only full-suite result for this plan.
 
-- [ ] **Step 1: Update reporting tests before prose**
+- [x] **Step 1: Update reporting tests before prose**
 
 Replace every 455/953 candidate assertion with generated final counts, all 51 families, six domains, four registers, seven OOD classes, complete coverage and the frozen-test rule.
 
-- [ ] **Step 2: Generate canonical artifacts**
+- [x] **Step 2: Generate canonical artifacts**
 
 Run:
 
@@ -336,11 +342,11 @@ uv run generate_reports
 
 Require manifest/report checksums to match the tracked release and `coverage.json`; training readiness and coverage must be complete.
 
-- [ ] **Step 3: Rewrite public dataset sections in Vietnamese**
+- [x] **Step 3: Rewrite public dataset sections in Vietnamese**
 
 Describe input/target shapes, split purposes, domain/register/OOD distributions, source authority, quality gates and generated visualizations. Do not expose staging paths, agents, keep/revise/drop decisions or development versions.
 
-- [ ] **Step 4: Run the only full verification pass**
+- [x] **Step 4: Run the only full verification pass**
 
 ```bash
 uv run pytest -q
@@ -351,7 +357,7 @@ git status --short --branch
 
 Expected: all tests pass; validator reports exactly the final matrix with complete coverage; only pre-existing user-owned dirt remains unstaged.
 
-- [ ] **Step 5: Commit public state**
+- [x] **Step 5: Commit public state**
 
 ```bash
 git add README.md docs/DATASET.md resources/dataset/main/manifest.json reports/dataset.json reports/figures/dataset-splits.svg reports/figures/registers.svg reports/figures/query-features.svg tests/research/test_documentation_status.py tests/research/test_reporting.py

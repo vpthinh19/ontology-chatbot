@@ -53,7 +53,7 @@ def build_dataset_report(
         dict(release),
         graph,
         catalogue,
-        require_complete_catalogue=False,
+        require_complete_catalogue=True,
     )
     coverage = assess_coverage(
         release,

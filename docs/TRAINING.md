@@ -1,16 +1,11 @@
 # Huấn luyện
 
-## Gate trước huấn luyện chính thức
+## Trạng thái
 
-Với candidate pool hiện tại chỉ cho phép smoke/pilot có giới hạn;
-không được full fine-tune, chọn checkpoint chính thức hoặc benchmark test cho
-đến khi cổng dataset trong đặc tả readiness được nghiệm thu. Cổng ontology và
-catalogue đã hoàn tất.
-Pilot một epoch trên toàn bộ candidate chỉ xác nhận pipeline, VRAM và tín hiệu
-học ban đầu; nó không biến candidate thành dataset production.
-
-Các cấu hình bên dưới là giao thức đã chốt cho lần huấn luyện chính thức trong
-tương lai, không phải mô tả một benchmark đã hoàn thành.
+Ontology, catalogue và dataset 2.000 câu đã vượt các cổng readiness. Dataset đã
+được khóa bằng checksum nên có thể dùng cho fine-tuning theo giao thức dưới đây.
+Hiện chưa có benchmark chính thức trên release này; mọi kết quả thử nghiệm từ
+dataset trước đó đều hết hiệu lực.
 
 ## So sánh công bằng
 
@@ -72,11 +67,11 @@ Tiêu chí chọn checkpoint được cố định trước lần train đầu v
 cho ba model. Test chỉ chạy sau khi checkpoint được chọn. Không dò
 hyperparameter, không chạy nhiều seed và không tự train lại vì điểm test thấp.
 
-## Trình tự chạy sau khi các cổng readiness hoàn tất
+## Trình tự chạy
 
 1. Khóa ontology semantic index và inventory khả năng trả lời.
 2. Xác minh catalogue phủ inventory.
-3. Audit dataset hợp nhất và tokenizer.
+3. Xác minh checksum dataset hợp nhất và tokenizer.
 4. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới.
 5. Khi pipeline hợp lệ, fine-tune BARTpho và ViT5 cùng giao thức.
 6. Mở lại từng checkpoint bằng `from_pretrained()` để benchmark.

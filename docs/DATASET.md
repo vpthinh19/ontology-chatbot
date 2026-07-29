@@ -1,140 +1,110 @@
-# Candidate pool và dataset hợp nhất đích
+# Dataset hợp nhất
 
 ## Mục tiêu
 
-Dataset chính thức sẽ dạy một model seq2seq thực hiện trọn luồng quyết định:
+Dataset dạy một model seq2seq thực hiện trọn quyết định của chatbot:
 
-- câu được ontology hỗ trợ → sinh SPARQL `SELECT`;
-- câu không được hỗ trợ → sinh `không có thông tin`.
+- câu được ontology hỗ trợ → sinh một dòng SPARQL `SELECT`;
+- câu không được hỗ trợ → sinh chính xác `không có thông tin`.
 
-Ontology, inventory và query catalogue đã được xác nhận. Catalogue có 51 họ và
-phủ đủ 2.953 khả năng trả lời `supported`; dataset chỉ được khóa sau khi mọi
-target câu hỏi được biên soạn và kiểm tra lại trên graph canonical.
+Nguồn sự thật đi theo một chiều: công văn chính thức → ontology → inventory →
+catalogue SPARQL → dataset. Câu hỏi không được dùng để thêm ngược dữ kiện vào
+ontology.
 
-455 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.
-Mỗi câu sẽ được giữ, sửa hoặc loại sau audit; không bản ghi nào tự động mang
-trạng thái official chỉ vì đã vượt validator hiện tại.
+## Quy mô và phân bố
 
-## Tổ chức file
+Release có 2.000 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
 
-```text
-resources/dataset/main/
-├── catalogue.jsonl
-├── train.jsonl
-├── val.jsonl
-├── test.jsonl
-└── manifest.json
-```
+| Split | Số câu | Vai trò |
+|---|---:|---|
+| Train | 1.400 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
+| Validation | 300 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
+| Test | 300 | Đánh giá cuối; không dùng để sửa dữ liệu hay chọn checkpoint |
 
-Không có dataset phân loại riêng. Ba split chứa cả câu trong và ngoài miền.
+| Miền | Số câu |
+|---|---:|
+| Quy trình học vụ | 600 |
+| Học phí | 250 |
+| Quy tắc học vụ | 200 |
+| Chứng chỉ | 230 |
+| Biểu mẫu | 120 |
+| Ngoài miền | 600 |
 
-## Schema
+Bốn phong cách diễn đạt được phân bố gần cân bằng: 521 `formal`, 514 `neutral`,
+485 `colloquial` và 480 `noisy`.
+
+![Số câu theo split](../reports/figures/dataset-splits.svg)
+
+![Phong cách câu hỏi](../reports/figures/registers.svg)
+
+## Hình dạng một bản ghi
 
 Mỗi dòng JSON Lines có đúng năm trường:
 
 ```json
-{
-  "id": "question-000001",
-  "query_id": "procedure-instruction",
-  "register": "formal",
-  "input": "Tôi cần thực hiện thủ tục bảo lưu như thế nào?",
-  "target": "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }"
-}
+{"id":"question-000001","query_id":"procedure-instruction","register":"formal","input":"Tôi cần thực hiện thủ tục bảo lưu như thế nào?","target":"SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }"}
 ```
 
-Câu ngoài miền dùng:
+- `id`: định danh duy nhất của câu hỏi;
+- `query_id`: họ logic trong `catalogue.jsonl`;
+- `register`: một trong bốn phong cách diễn đạt;
+- `input`: câu tiếng Việt tự nhiên, được lưu ở dạng raw;
+- `target`: một dòng SPARQL canonical hoặc marker từ chối.
+
+Ví dụ ngoài miền:
 
 ```json
-{
-  "id": "question-0002",
-  "query_id": "no-information",
-  "register": "neutral",
-  "input": "Ngày mai thời tiết thế nào?",
-  "target": "không có thông tin"
-}
+{"id":"question-001999","query_id":"no-information","register":"neutral","input":"Ngày mai thời tiết thế nào?","target":"không có thông tin"}
 ```
 
-`query_id` chọn một template trong catalogue. Các slot IRI hoặc số được thế vào
-template, vì vậy một họ truy vấn có thể có nhiều target canonical. Mọi câu từ
-chối dùng `no-information`. `register` có bốn giá trị:
+`query_id` ánh xạ tới template truy vấn, không nhất thiết ánh xạ một-một tới
+chuỗi target vì một họ có thể thay các IRI hoặc ngưỡng số khác nhau.
 
-| Register | Cách diễn đạt |
-|---|---|
-| `formal` | Câu đầy đủ, gần văn phong hành chính |
-| `neutral` | Cách hỏi phổ thông |
-| `colloquial` | Ngôn ngữ nói thường ngày |
-| `noisy` | Viết tắt, bỏ dấu hoặc câu rút gọn |
+## Ranh giới trả lời
 
-## Ranh giới nhãn
+Một câu chỉ nhận target SPARQL khi ontology trả lời được toàn bộ yêu cầu. Marker
+từ chối bao phủ bảy nhóm: chào hỏi/trò chuyện, chủ đề không liên quan, gần miền
+nhưng thiếu dữ liệu, câu mơ hồ, câu hỗn hợp, hard negative dùng từ học vụ sai
+quan hệ và câu ngoài miền noisy. Backend không trả lời một phần câu hỗn hợp.
 
-Một câu chỉ mang target SPARQL khi query catalogue trả lời được trọn vẹn. Target
-`không có thông tin` áp dụng cho:
+600 câu từ chối được chia thành: 100 mơ hồ, 50 chào hỏi/trò chuyện, 150 hard
+negative, 80 câu hỗn hợp, 100 câu gần miền nhưng thiếu dữ liệu, 60 câu ngoài
+miền noisy và 60 câu không liên quan.
 
-- câu ngoài học vụ;
-- câu gần học vụ nhưng ontology thiếu dữ liệu;
-- câu mơ hồ hoặc thiếu thực thể bắt buộc;
-- chào hỏi, trò chuyện chung và văn bản vô nghĩa;
-- câu hỗn hợp có ít nhất một yêu cầu không được hỗ trợ.
+## Chia tập và chống rò rỉ
 
-Không tạo target trả lời một phần câu hỗn hợp.
+Mọi họ truy vấn xuất hiện trong cả ba split. Train phủ đủ bốn register cho mỗi
+họ và toàn bộ giá trị slot hữu hạn. Validation/test giữ lại cách diễn đạt, không
+giấu schema chưa từng được dạy. Các ràng buộc tự động gồm:
 
-## Câu hỏi thực tế
+1. ID duy nhất trên toàn release;
+2. không trùng input sau chuẩn hóa giữa các split;
+3. không có câu gần trùng cùng `query_id` đi xuyên split;
+4. mọi target trong miền parse, qua contract an toàn, chạy trên ontology và trả
+   ít nhất một dòng;
+5. mọi target ngoài miền trùng chính xác marker;
+6. bảy câu test tay trong `resources/cases/user_queries.txt` xuất hiện đúng một
+   lần trong test;
+7. test được khóa bằng SHA-256
+   `b9123d819f27965b4ed796bb87a4871b8a32b68d71bcfcbc8704cc5e9b59b559`.
 
-`resources/cases/user_queries.txt` và `test.html` lưu câu đã được người dùng thử
-trên giao diện. Đây là nguồn cách diễn đạt và ca hồi quy, không phải nguồn dữ
-kiện ontology. Mỗi input có ý nghĩa phải được đối chiếu lại với ontology và
-catalogue canonical trước khi đưa vào split; file nguồn không được loader tự
-động xem là dữ liệu train.
+## Tiền xử lý và tokenizer
 
-## Train, validation và test
+Dataset giữ nguyên câu đầu vào. Trainer, benchmark và runtime cùng dùng một
+normalizer: Unicode NFC, thu gọn khoảng trắng và chỉ mở rộng các viết tắt tiếng
+Việt chắc nghĩa, trong đó `hp` là `học phần`. Target dùng khoảng trắng canonical
+để an toàn với tokenizer BARTpho; toàn bộ source/target phải qua kiểm tra
+round-trip trước huấn luyện.
 
-Mỗi SPARQL canonical phải xuất hiện trong train. Validation và test đo cách
-diễn đạt chưa thấy cho những chức năng đã được dạy, không tuyên bố zero-shot
-trên schema mới. Dataset đích được biên soạn theo ma trận:
+## Tái tạo số liệu
 
-```text
-query family × entity/slot × cách diễn đạt × register × split
+`manifest.json`, `reports/dataset.json` và các SVG được sinh trực tiếp từ dữ
+liệu, không điền tay. Chạy:
+
+```bash
+uv run validate_sparql_dataset
+uv run generate_reports
 ```
 
-Mọi family xuất hiện trong ba split; train phủ đủ bốn register cho từng family.
-Các family quy trình trọng tâm phải có formal, neutral, colloquial và noisy ở
-cả validation/test. Phân bố held-out phải cân bằng theo miền/register thay vì
-tách gần như toàn bộ formal/colloquial sang validation và neutral/noisy sang
-test.
-
-Snapshot candidate hiện có 455 câu: 339 train, 58 validation và 58 test; gồm 24
-trong số 51 họ catalogue, trong đó 96 câu mang marker từ chối. Đây không phải
-kích thước mục tiêu. Dataset chỉ dừng tăng khi ma trận coverage không còn vùng
-trắng quan trọng. Các quy tắc leakage:
-
-1. ID là duy nhất toàn bộ dataset.
-2. Câu trùng sau `normalize_model_input` không được nằm ở hai split.
-3. Câu gần trùng cùng `query_id` không được nằm ở hai split.
-4. Câu có khung giống nhau nhưng query khác chỉ được báo cáo để rà soát, không
-   tự động xem là leakage.
-5. Test không được dùng để bổ sung dữ liệu hoặc chọn checkpoint.
-
-## Kiểm soát chất lượng
-
-Candidate hiện tại chỉ đủ cho smoke/pilot có giới hạn. Dataset chính thức chỉ
-sẵn sàng full fine-tuning khi:
-
-1. mọi mục `supported` trong ontology inventory có catalogue và coverage
-   (cổng này đã hoàn tất);
-2. mọi bản ghi đúng schema, nhãn và target;
-3. target trong miền parse, vượt contract an toàn, chạy có kết quả;
-4. target ngoài miền trùng chính xác `không có thông tin`;
-5. không có leakage theo quy tắc split;
-6. register và nhóm trong/ngoài miền được báo cáo rõ;
-7. toàn bộ source/target round-trip qua tokenizer của cả ba model, không `<unk>`
-   ở token cấu trúc và không bị cắt;
-8. manifest/checksum được sinh từ file thật sau lần kiểm tra cuối.
-
-Tập ngoài miền phải lớn theo độ phủ hành vi: chào hỏi, chủ đề khác, gần miền
-nhưng thiếu dữ liệu, mơ hồ, noisy, mixed và hard negative dùng từ học vụ nhưng
-hỏi quan hệ không tồn tại. Không phình dataset bằng câu vô nghĩa hoặc hoán đổi
-từ hàng loạt. Dataset lưu input raw; trainer, benchmark và runtime dùng chung
-`normalize_model_input`, bao gồm quyết định `hp → học phần`.
-
-Số câu, phân bố, checksum và biểu đồ được sinh từ `manifest.json` và
-`reports/dataset.json`, không điền tay từ log huấn luyện.
+Manifest lưu schema, số câu theo split/miền, contract chia tập và SHA-256 của
+dataset, catalogue, coverage và ontology.

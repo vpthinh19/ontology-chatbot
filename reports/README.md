@@ -1,17 +1,15 @@
-# Reports
+# Báo cáo tái tạo được
 
-Thư mục này chứa số liệu và hình ảnh dành cho người đọc project:
+Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 2.000 câu:
 
-- `dataset.json`: snapshot candidate pool, gồm kích thước, phân bố, contract
-  trong miền, thống kê ontology và checksum.
-- `figures/dataset-splits.svg`: số câu train/validation/test.
-- `figures/registers.svg`: phân bố phong cách câu hỏi.
-- `figures/query-features.svg`: các đặc trưng SPARQL suy ra theo split.
+- `dataset.json`: kích thước, phân bố, coverage, thống kê ontology và checksum;
+- `figures/dataset-splits.svg`: số câu train/validation/test;
+- `figures/registers.svg`: phân bố bốn phong cách câu hỏi;
+- `figures/query-features.svg`: đặc trưng SPARQL theo từng split.
 
-Sinh lại bằng `uv run generate_reports`. Trường `training_readiness.ready` hiện
-là `false`: catalogue đã phủ ontology nhưng candidate mới dùng 24/51 họ truy
-vấn. Trạng thái này không cho phép full fine-tuning.
+Sinh lại bằng `uv run generate_reports`. `training_readiness.ready` phải là
+`true`, coverage phải hoàn chỉnh và cả 51 họ truy vấn phải có trong ba split.
 
-Báo cáo model chính thức hiện chưa có. Sau khi dataset được nghiệm thu, metric
-chỉ được tổng hợp khi các checkpoint hợp lệ trên cùng cách chia dữ liệu và đã
-được nạp lại độc lập; không lấy kết quả từ model còn nằm trong RAM của Trainer.
+Chưa có báo cáo benchmark model chính thức trên release này. Báo cáo model chỉ
+được tạo sau khi từng checkpoint đã được nạp lại độc lập và đánh giá trên cùng
+validation/test cùng checksum dataset.

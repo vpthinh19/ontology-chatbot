@@ -4,9 +4,9 @@
 
 Kiến trúc một model và hai dạng output đã được chốt. Ontology canonical,
 semantic index và inventory khả năng trả lời đã được đối chiếu và kiểm thử.
-Catalogue cùng 455 câu hiện tại vẫn là candidate pool, không quyết định ngược
-lại phạm vi ontology và chưa cho phép full fine-tuning hoặc benchmark chính
-thức.
+Catalogue 51 họ và dataset 2.000 câu đã vượt các cổng coverage, thực thi và
+leakage. Dataset không quyết định ngược lại phạm vi ontology; hiện chưa có
+benchmark chính thức trên release đã khóa.
 
 ## Trách nhiệm của model
 
@@ -80,8 +80,8 @@ tài liệu chính thức → ontology → inventory khả năng trả lời
 
 Không tạo dataset trước rồi sửa ontology để khớp target đã viết.
 Mọi mục được đánh dấu `supported` trong inventory phải có query catalogue; mọi
-template catalogue phải có dữ liệu huấn luyện và đánh giá. Candidate hiện tại
-chỉ là nguồn câu ứng viên cho quá trình đó.
+template catalogue phải có dữ liệu huấn luyện và đánh giá. Release hiện tại đáp
+ứng đầy đủ chuỗi ràng buộc này.
 
 ## Contract tài liệu
 
