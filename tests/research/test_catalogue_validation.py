@@ -228,3 +228,49 @@ def test_study_year_band_respects_inclusive_boundaries(
     target = catalogue["study-year-band"].target_template.replace("${credits}", credits)
 
     assert execute_select(load_ontology(), target) == expected
+
+
+def test_study_year_details_include_all_four_bands() -> None:
+    graph = load_ontology()
+    target = load_catalogue(QUERY_CATALOGUE_PATH)["study-year-details"].target_template
+    source = execute_select(
+        graph,
+        "SELECT ?document ?answer WHERE { "
+        ":Decision1052 rdfs:label ?document . "
+        ":Decision1052Article19 :officialText ?answer . "
+        "}",
+    )[0]
+
+    rows = execute_select(graph, target)
+
+    assert len(rows) == 4
+    assert {row["result"]: row for row in rows} == {
+        "Sinh viên năm thứ nhất": {
+            "criterion": "Dưới 35",
+            "result": "Sinh viên năm thứ nhất",
+            "minimum": None,
+            "maximum": "35.0",
+            **source,
+        },
+        "Sinh viên năm thứ hai": {
+            "criterion": "Từ 35 đến dưới 70",
+            "result": "Sinh viên năm thứ hai",
+            "minimum": "35.0",
+            "maximum": "70.0",
+            **source,
+        },
+        "Sinh viên năm thứ ba": {
+            "criterion": "Từ 70 đến dưới 105",
+            "result": "Sinh viên năm thứ ba",
+            "minimum": "70.0",
+            "maximum": "105.0",
+            **source,
+        },
+        "Sinh viên năm thứ tư": {
+            "criterion": "Trên 105",
+            "result": "Sinh viên năm thứ tư",
+            "minimum": "105.0",
+            "maximum": None,
+            **source,
+        },
+    }
