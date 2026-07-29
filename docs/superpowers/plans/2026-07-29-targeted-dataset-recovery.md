@@ -45,9 +45,9 @@
 - Modify: `resources/dataset/main/train.jsonl`
 - Modify: `tests/research/test_dataset_content.py`
 
-- [ ] Add 100–120 rows raising weak aggregate/detail families toward 16 train examples.
-- [ ] Add 20–30 property-contrast and noisy entity-grounding rows.
-- [ ] Audit every new input/target pair for naturalness, semantics and duplication.
+- [x] Add 100–120 rows raising weak aggregate/detail families toward 16 train examples.
+- [x] Add 20–30 property-contrast and noisy entity-grounding rows.
+- [x] Audit every new input/target pair for naturalness, semantics and duplication.
 
 ### Task 4: Lock the recovered dataset
 
@@ -57,9 +57,9 @@
 - Modify: generated dataset figures
 - Modify: public dataset documentation
 
-- [ ] Run dataset validation, leakage checks and tokenizer audit.
-- [ ] Generate reports and update generated counts/checksums.
-- [ ] Run the full test suite and commit the locked dataset.
+- [x] Run dataset validation, leakage checks and tokenizer audit.
+- [x] Generate reports and update generated counts/checksums.
+- [x] Run the full test suite and commit the locked dataset.
 
 ### Task 5: Run the single T5Gemma2 acceptance experiment
 

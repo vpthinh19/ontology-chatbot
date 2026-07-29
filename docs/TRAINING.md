@@ -2,7 +2,7 @@
 
 ## Trạng thái
 
-Ontology, catalogue và dataset 2.000 câu đã vượt các cổng readiness. Dataset đã
+Ontology, catalogue và dataset 2.150 câu đã vượt các cổng readiness. Dataset đã
 được khóa bằng checksum nên có thể dùng cho fine-tuning theo giao thức dưới đây.
 Hiện chưa có benchmark chính thức trên release này; mọi kết quả thử nghiệm từ
 dataset trước đó đều hết hiệu lực.

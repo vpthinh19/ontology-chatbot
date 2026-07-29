@@ -295,7 +295,7 @@ def test_tuition_rate_detail_rows_use_compact_official_table_target() -> None:
 
     assert catalogue["tuition-rate-details"].target_template == expected_template
     assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 12,
+        "train": 16,
         "val": 3,
         "test": 3,
     }
@@ -519,9 +519,50 @@ def test_final_release_matrix_and_frozen_test_checksum() -> None:
     release = load_release()
 
     assert {split: len(rows) for split, rows in release.items()} == {
-        "train": 1_400,
+        "train": 1_550,
         "val": 300,
         "test": 300,
     }
     payload = Path("resources/dataset/main/test.jsonl").read_bytes()
     assert hashlib.sha256(payload).hexdigest() == FROZEN_TEST_SHA256
+
+
+def test_recovered_training_set_strengthens_measured_weak_families() -> None:
+    counts = Counter(row["query_id"] for row in load_release()["train"])
+    recovered_families = {
+        "academic-actor-list",
+        "academic-performance-details",
+        "academic-program-details",
+        "certificate-details",
+        "class-size-details",
+        "competency-level-details",
+        "course-exemption-details",
+        "guidance-document-details",
+        "learner-category-details",
+        "payment-fee",
+        "payment-fee-details",
+        "payment-method-details",
+        "payment-method-list",
+        "payment-warning",
+        "reference-entity-list",
+        "tuition-rate-details",
+    }
+
+    assert {query_id: counts[query_id] for query_id in recovered_families} == {
+        "academic-actor-list": 14,
+        "academic-performance-details": 14,
+        "academic-program-details": 14,
+        "certificate-details": 14,
+        "class-size-details": 14,
+        "competency-level-details": 14,
+        "course-exemption-details": 14,
+        "guidance-document-details": 14,
+        "learner-category-details": 16,
+        "payment-fee": 16,
+        "payment-fee-details": 14,
+        "payment-method-details": 14,
+        "payment-method-list": 16,
+        "payment-warning": 16,
+        "reference-entity-list": 12,
+        "tuition-rate-details": 16,
+    }

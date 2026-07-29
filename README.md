@@ -7,8 +7,8 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
 ## Trạng thái hiện tại
 
 - **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
-  query catalogue và dataset hợp nhất 2.000 câu.
-- **Dataset:** 1.400 câu train, 300 câu validation và 300 câu test; đủ 51 họ
+  query catalogue và dataset hợp nhất 2.150 câu.
+- **Dataset:** 1.550 câu train, 300 câu validation và 300 câu test; đủ 51 họ
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
 - **Chưa thực hiện:** fine-tuning, benchmark chính thức và chọn model
   production trên release đã khóa.
@@ -83,11 +83,11 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset hợp nhất nằm tại `resources/dataset/main/` và có 2.000 câu: 1.400 train,
-300 validation, 300 test. Trong đó 1.400 câu thuộc năm miền trả lời được
-(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 600 câu ngoài miền
+Dataset hợp nhất nằm tại `resources/dataset/main/` và có 2.150 câu: 1.550 train,
+300 validation, 300 test. Trong đó 1.551 câu thuộc năm miền trả lời được
+(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 599 câu ngoài miền
 dùng marker `không có thông tin`. Bốn phong cách `formal`, `neutral`,
-`colloquial`, `noisy` lần lượt có 521, 514, 485 và 480 câu.
+`colloquial`, `noisy` lần lượt có 557, 554, 530 và 509 câu.
 
 Train dạy toàn bộ schema và giá trị slot hữu hạn. Validation dùng cách diễn đạt
 chưa thấy để chọn checkpoint; test được đóng băng và chỉ dùng cho đánh giá cuối.

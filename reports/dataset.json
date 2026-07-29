@@ -1,29 +1,29 @@
 {
   "dataset": {
-    "records": 2000,
+    "records": 2150,
     "query_families": 51,
     "catalogue_families": 51,
     "targets": 482,
     "domains": {
-      "academic-rule": 200,
-      "certificate": 230,
-      "form": 120,
-      "out-of-domain": 600,
-      "procedure": 600,
-      "tuition": 250
+      "academic-rule": 228,
+      "certificate": 260,
+      "form": 124,
+      "out-of-domain": 599,
+      "procedure": 644,
+      "tuition": 295
     },
     "splits": {
       "train": {
-        "records": 1400,
+        "records": 1550,
         "query_families": 51,
         "targets": 450,
         "domains": {
-          "academic-rule": 140,
-          "certificate": 161,
-          "form": 84,
+          "academic-rule": 168,
+          "certificate": 191,
+          "form": 88,
           "out-of-domain": 420,
-          "procedure": 420,
-          "tuition": 175
+          "procedure": 464,
+          "tuition": 219
         }
       },
       "val": {
@@ -42,45 +42,45 @@
       "test": {
         "records": 300,
         "query_families": 51,
-        "targets": 132,
+        "targets": 133,
         "domains": {
           "academic-rule": 30,
           "certificate": 34,
           "form": 18,
-          "out-of-domain": 91,
+          "out-of-domain": 90,
           "procedure": 90,
-          "tuition": 37
+          "tuition": 38
         }
       }
     },
     "registers": {
-      "colloquial": 485,
-      "formal": 521,
-      "neutral": 514,
-      "noisy": 480
+      "colloquial": 530,
+      "formal": 557,
+      "neutral": 554,
+      "noisy": 509
     },
     "query_features": {
-      "filter": 287,
-      "graph_hop": 1180,
-      "limit": 133,
-      "multi_branch": 1252,
-      "multi_column": 445,
-      "order": 430,
-      "single_branch": 148,
-      "single_column": 955,
-      "values": 9
+      "filter": 291,
+      "graph_hop": 1311,
+      "limit": 137,
+      "multi_branch": 1390,
+      "multi_column": 530,
+      "order": 492,
+      "single_branch": 161,
+      "single_column": 1021,
+      "values": 16
     },
     "query_features_by_split": {
       "train": {
-        "filter": 232,
-        "graph_hop": 818,
-        "limit": 112,
-        "multi_branch": 873,
-        "multi_column": 267,
-        "order": 284,
-        "single_branch": 107,
-        "single_column": 713,
-        "values": 5
+        "filter": 235,
+        "graph_hop": 948,
+        "limit": 115,
+        "multi_branch": 1010,
+        "multi_column": 352,
+        "order": 345,
+        "single_branch": 120,
+        "single_column": 778,
+        "values": 12
       },
       "val": {
         "filter": 27,
@@ -94,23 +94,23 @@
         "values": 2
       },
       "test": {
-        "filter": 28,
-        "graph_hop": 180,
-        "limit": 11,
-        "multi_branch": 188,
+        "filter": 29,
+        "graph_hop": 181,
+        "limit": 12,
+        "multi_branch": 189,
         "multi_column": 88,
-        "order": 73,
+        "order": 74,
         "single_branch": 21,
-        "single_column": 121,
+        "single_column": 122,
         "values": 2
       }
     },
     "input_words": {
       "min": 3,
       "median": 12,
-      "p95": 21,
+      "p95": 20,
       "max": 36,
-      "mean": 12.25
+      "mean": 12.36
     }
   },
   "in_domain_contract": {
@@ -142,19 +142,19 @@
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 2000,
+    "records": 2150,
     "split_counts": {
-      "train": 1400,
+      "train": 1550,
       "val": 300,
       "test": 300
     },
     "domains": {
-      "academic-rule": 200,
-      "certificate": 230,
-      "form": 120,
-      "out-of-domain": 600,
-      "procedure": 600,
-      "tuition": 250
+      "academic-rule": 228,
+      "certificate": 260,
+      "form": 124,
+      "out-of-domain": 599,
+      "procedure": 644,
+      "tuition": 295
     },
     "catalogue_coverage_required": true,
     "slot_coverage": {
@@ -1101,75 +1101,75 @@
     },
     "splits": {
       "train": {
-        "records": 1400,
+        "records": 1550,
         "queries": 51,
         "targets": 450,
         "query_counts": {
-          "academic-actor-list": 8,
+          "academic-actor-list": 14,
           "academic-performance-band": 26,
-          "academic-performance-details": 8,
-          "academic-program-details": 5,
+          "academic-performance-details": 14,
+          "academic-program-details": 14,
           "certificate-conversion-details": 27,
           "certificate-criterion": 25,
-          "certificate-details": 7,
-          "class-size-details": 8,
+          "certificate-details": 14,
+          "class-size-details": 14,
           "class-size-rule": 22,
-          "competency-level-details": 7,
+          "competency-level-details": 14,
           "computer-certificate-grade": 33,
-          "course-exemption-details": 7,
+          "course-exemption-details": 14,
           "discipline-group-details": 10,
           "doctoral-tuition-details": 10,
           "form-catalogue-details": 12,
           "form-document-details": 10,
-          "form-download": 38,
+          "form-download": 42,
           "form-entry-details": 12,
           "form-list": 12,
           "graduation-classification-band": 21,
           "graduation-classification-details": 8,
-          "guidance-document-details": 7,
+          "guidance-document-details": 14,
           "language-certificate-level": 48,
-          "learner-category-details": 7,
+          "learner-category-details": 16,
           "no-information": 420,
           "official-document-metadata": 6,
           "payment-bank-list": 9,
-          "payment-fee": 12,
-          "payment-fee-details": 8,
-          "payment-method-details": 10,
-          "payment-method-list": 9,
-          "payment-warning": 7,
+          "payment-fee": 16,
+          "payment-fee-details": 14,
+          "payment-method-details": 14,
+          "payment-method-list": 16,
+          "payment-warning": 16,
           "policy-details": 9,
-          "procedure-deadline": 32,
+          "procedure-deadline": 37,
           "procedure-decision-authority": 24,
-          "procedure-eligibility": 52,
-          "procedure-form-download": 27,
-          "procedure-instruction": 53,
+          "procedure-eligibility": 57,
+          "procedure-form-download": 30,
+          "procedure-instruction": 58,
           "procedure-list": 9,
           "procedure-overview": 42,
-          "procedure-required-form": 35,
-          "procedure-result": 35,
-          "procedure-review-office": 18,
+          "procedure-required-form": 40,
+          "procedure-result": 40,
+          "procedure-review-office": 23,
           "procedure-source": 42,
-          "procedure-submission-office": 34,
-          "reference-entity-list": 5,
+          "procedure-submission-office": 39,
+          "reference-entity-list": 12,
           "study-year-band": 23,
           "study-year-details": 8,
-          "tuition-program-cohort-rate": 64,
+          "tuition-program-cohort-rate": 67,
           "tuition-programs-by-rate": 17,
-          "tuition-rate-details": 12
+          "tuition-rate-details": 16
         },
         "register_counts": {
-          "colloquial": 338,
-          "formal": 369,
-          "neutral": 367,
-          "noisy": 326
+          "colloquial": 383,
+          "formal": 405,
+          "neutral": 407,
+          "noisy": 355
         },
         "domains": {
-          "academic-rule": 140,
-          "certificate": 161,
-          "form": 84,
+          "academic-rule": 168,
+          "certificate": 191,
+          "form": 88,
           "out-of-domain": 420,
-          "procedure": 420,
-          "tuition": 175
+          "procedure": 464,
+          "tuition": 219
         },
         "slot_values": {
           "academic-performance-band": {
@@ -1985,7 +1985,7 @@
       "test": {
         "records": 300,
         "queries": 51,
-        "targets": 132,
+        "targets": 133,
         "query_counts": {
           "academic-actor-list": 6,
           "academic-performance-band": 3,
@@ -2011,7 +2011,7 @@
           "guidance-document-details": 3,
           "language-certificate-level": 7,
           "learner-category-details": 3,
-          "no-information": 91,
+          "no-information": 90,
           "official-document-metadata": 2,
           "payment-bank-list": 3,
           "payment-fee": 3,
@@ -2035,7 +2035,7 @@
           "reference-entity-list": 2,
           "study-year-band": 3,
           "study-year-details": 3,
-          "tuition-program-cohort-rate": 4,
+          "tuition-program-cohort-rate": 5,
           "tuition-programs-by-rate": 3,
           "tuition-rate-details": 3
         },
@@ -2049,9 +2049,9 @@
           "academic-rule": 30,
           "certificate": 34,
           "form": 18,
-          "out-of-domain": 91,
+          "out-of-domain": 90,
           "procedure": 90,
-          "tuition": 37
+          "tuition": 38
         },
         "slot_values": {
           "academic-performance-band": {
@@ -2257,6 +2257,7 @@
             "program": [
               ":Accounting",
               ":FinanceAndBanking",
+              ":InformationTechnology",
               ":Law",
               ":ThermalEngineering"
             ]
@@ -2273,9 +2274,9 @@
     }
   },
   "sha256": {
-    "train.jsonl": "1609ee496a3107cc558fe44b1d0ee2c5f49bfccb8a6c50f786d6d42cf6213581",
+    "train.jsonl": "9635a710fd276508f39698676c6b2d3c74ec87deb9ee3b4216c22e99432839a5",
     "val.jsonl": "8652cc87785f84d0d46f2a2232c497fe2d7fa029e2152b76dfc9677349db5f92",
-    "test.jsonl": "b9123d819f27965b4ed796bb87a4871b8a32b68d71bcfcbc8704cc5e9b59b559",
+    "test.jsonl": "8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9",
     "catalogue.jsonl": "6ca48b0e5cb2b812b747586cdd73a4cdfbf7979d51d9418267daaaad118837ad",
     "coverage.json": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881",
     "ontology.ttl": "518ec968e9a9412037002d438ea076421c61d70453fe4cc58f0788f89a3c13c2"

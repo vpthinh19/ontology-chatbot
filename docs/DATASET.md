@@ -13,25 +13,25 @@ ontology.
 
 ## Quy mô và phân bố
 
-Release có 2.000 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
+Release có 2.150 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
 
 | Split | Số câu | Vai trò |
 |---|---:|---|
-| Train | 1.400 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
+| Train | 1.550 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
 | Validation | 300 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
 | Test | 300 | Đánh giá cuối; không dùng để sửa dữ liệu hay chọn checkpoint |
 
 | Miền | Số câu |
 |---|---:|
-| Quy trình học vụ | 600 |
-| Học phí | 250 |
-| Quy tắc học vụ | 200 |
-| Chứng chỉ | 230 |
-| Biểu mẫu | 120 |
-| Ngoài miền | 600 |
+| Quy trình học vụ | 644 |
+| Học phí | 295 |
+| Quy tắc học vụ | 228 |
+| Chứng chỉ | 260 |
+| Biểu mẫu | 124 |
+| Ngoài miền | 599 |
 
-Bốn phong cách diễn đạt được phân bố gần cân bằng: 521 `formal`, 514 `neutral`,
-485 `colloquial` và 480 `noisy`.
+Bốn phong cách diễn đạt được phân bố gần cân bằng: 557 `formal`, 554 `neutral`,
+530 `colloquial` và 509 `noisy`.
 
 ![Số câu theo split](../reports/figures/dataset-splits.svg)
 
@@ -67,7 +67,7 @@ từ chối bao phủ bảy nhóm: chào hỏi/trò chuyện, chủ đề không
 nhưng thiếu dữ liệu, câu mơ hồ, câu hỗn hợp, hard negative dùng từ học vụ sai
 quan hệ và câu ngoài miền noisy. Backend không trả lời một phần câu hỗn hợp.
 
-600 câu từ chối được chia thành: 100 mơ hồ, 50 chào hỏi/trò chuyện, 150 hard
+599 câu từ chối được chia thành: 99 mơ hồ, 50 chào hỏi/trò chuyện, 150 hard
 negative, 80 câu hỗn hợp, 100 câu gần miền nhưng thiếu dữ liệu, 60 câu ngoài
 miền noisy và 60 câu không liên quan.
 
@@ -86,7 +86,7 @@ giấu schema chưa từng được dạy. Các ràng buộc tự động gồm:
 6. bảy câu test tay trong `resources/cases/user_queries.txt` xuất hiện đúng một
    lần trong test;
 7. test được khóa bằng SHA-256
-   `b9123d819f27965b4ed796bb87a4871b8a32b68d71bcfcbc8704cc5e9b59b559`.
+   `8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9`.
 
 ## Tiền xử lý và tokenizer
 

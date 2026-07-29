@@ -1,7 +1,7 @@
 # Đánh giá
 
 Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Hiện
-chưa có benchmark production trên release 2.000 câu; kết quả từ dữ liệu cũ
+chưa có benchmark production trên release 2.150 câu; kết quả từ dữ liệu cũ
 không được dùng để xếp hạng hoặc chọn model cuối cùng.
 
 ## Hai nhóm test

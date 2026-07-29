@@ -4,7 +4,7 @@
 
 Kiến trúc một model và hai dạng output đã được chốt. Ontology canonical,
 semantic index và inventory khả năng trả lời đã được đối chiếu và kiểm thử.
-Catalogue 51 họ và dataset 2.000 câu đã vượt các cổng coverage, thực thi và
+Catalogue 51 họ và dataset 2.150 câu đã vượt các cổng coverage, thực thi và
 leakage. Dataset không quyết định ngược lại phạm vi ontology; hiện chưa có
 benchmark chính thức trên release đã khóa.
 

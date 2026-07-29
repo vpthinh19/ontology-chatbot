@@ -1,7 +1,7 @@
 # Dataset hợp nhất
 
-Thư mục này chứa release 2.000 câu dùng chung cho huấn luyện và đánh giá chatbot
-ontology. Dataset có 1.400 câu train, 300 câu validation, 300 câu test và đủ 51
+Thư mục này chứa release 2.150 câu dùng chung cho huấn luyện và đánh giá chatbot
+ontology. Dataset có 1.550 câu train, 300 câu validation, 300 câu test và đủ 51
 họ truy vấn của `catalogue.jsonl`.
 
 Mỗi dòng JSONL gồm `id`, `query_id`, `register`, `input`, `target`. Target là một
@@ -10,7 +10,7 @@ cả câu trong miền lẫn ngoài miền; không có dataset phân loại riê
 
 | Tập | Câu | Họ truy vấn |
 |---|---:|---:|
-| `train.jsonl` | 1.400 | 51 |
+| `train.jsonl` | 1.550 | 51 |
 | `val.jsonl` | 300 | 51 |
 | `test.jsonl` | 300 | 51 |
 
