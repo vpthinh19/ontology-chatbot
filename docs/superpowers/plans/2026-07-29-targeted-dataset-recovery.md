@@ -35,9 +35,9 @@
 - Modify: `resources/cases/rejection_checklist.json`
 - Modify: `tests/research/test_dataset_content.py`
 
-- [ ] Add a failing assertion that `question-002000` is the supported tuition query.
-- [ ] Replace its target with the canonical Information Technology cohort-65 query and remove it from `ambiguous`.
-- [ ] Update only the frozen test checksum assertion after semantic validation.
+- [x] Add a failing assertion that `question-002000` is the supported tuition query.
+- [x] Replace its target with the canonical Information Technology cohort-65 query and remove it from `ambiguous`.
+- [x] Update only the frozen test checksum assertion after semantic validation.
 
 ### Task 3: Curate targeted train additions
 

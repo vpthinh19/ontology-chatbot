@@ -297,4 +297,4 @@
 {"id":"question-001997","query_id":"no-information","register":"colloquial","input":"nộp đơn đó phòng nào","target":"không có thông tin"}
 {"id":"question-001998","query_id":"no-information","register":"neutral","input":"Điểm 8.5 xếp học lực gì và giờ ở Tokyo là mấy giờ?","target":"không có thông tin"}
 {"id":"question-001999","query_id":"no-information","register":"noisy","input":"tai don bao luu voi mo youtube","target":"không có thông tin"}
-{"id":"question-002000","query_id":"no-information","register":"noisy","input":"hc phí k65 cntt","target":"không có thông tin"}
+{"id":"question-002000","query_id":"tuition-program-cohort-rate","register":"noisy","input":"hc phí k65 cntt","target":"SELECT ?answer WHERE { ?rate :appliesToProgram :InformationTechnology ; :appliesToEducationLevel :UndergraduateLevel ; :amount ?answer . OPTIONAL { ?rate :minimumCohortNumber ?minimum . } FILTER (!BOUND(?minimum) || 65 >= ?minimum) } ORDER BY DESC(?minimum) LIMIT 1"}

@@ -65,10 +65,10 @@ USER_QUERY_EXPECTATIONS = {
     "đăng ký học phần sao": "procedure-instruction",
     "vì sao lại đăng ký học phần": "no-information",
     "đk hc phần như thế nào": "procedure-instruction",
-    "hc phí k65 cntt": "no-information",
+    "hc phí k65 cntt": "tuition-program-cohort-rate",
     "học phí k67 như thế nào": "no-information",
 }
-FROZEN_TEST_SHA256 = "b9123d819f27965b4ed796bb87a4871b8a32b68d71bcfcbc8704cc5e9b59b559"
+FROZEN_TEST_SHA256 = "8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9"
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
     ACADEMIC.Article,
@@ -492,6 +492,27 @@ def test_every_real_user_query_has_an_explicit_released_decision() -> None:
         query: ("test", query_id)
         for query, query_id in USER_QUERY_EXPECTATIONS.items()
     }
+
+
+def test_preprocessed_cntt_tuition_query_is_supported() -> None:
+    release = load_release()
+    row = next(
+        row
+        for row in release["test"]
+        if row["id"] == "question-002000"
+    )
+    checklist = json.loads(
+        Path("resources/cases/rejection_checklist.json").read_text(encoding="utf-8")
+    )
+
+    assert row["query_id"] == "tuition-program-cohort-rate"
+    assert row["target"] == (
+        "SELECT ?answer WHERE { ?rate :appliesToProgram :InformationTechnology ; "
+        ":appliesToEducationLevel :UndergraduateLevel ; :amount ?answer . OPTIONAL { "
+        "?rate :minimumCohortNumber ?minimum . } FILTER (!BOUND(?minimum) || "
+        "65 >= ?minimum) } ORDER BY DESC(?minimum) LIMIT 1"
+    )
+    assert all(row["id"] not in ids for ids in checklist.values())
 
 
 def test_final_release_matrix_and_frozen_test_checksum() -> None:
