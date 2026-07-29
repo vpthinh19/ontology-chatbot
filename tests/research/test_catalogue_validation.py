@@ -175,3 +175,15 @@ def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
             for name, value in zip(names, values, strict=True):
                 query = query.replace(f"${{{name}}}", value)
             assert execute_select(graph, query, max_rows=500), (query_id, values)
+
+
+@pytest.mark.parametrize(
+    "amount",
+    ["460000", "505000", "510000", "550000", "600000", "620000", "24500000"],
+)
+def test_tuition_programs_by_rate_returns_programs_for_every_declared_amount(amount: str) -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    spec = catalogue["tuition-programs-by-rate"]
+    target = spec.target_template.replace("${amount}", amount)
+
+    assert execute_select(load_ontology(), target), amount
