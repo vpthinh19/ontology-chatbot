@@ -13,6 +13,7 @@ from .query_features import extract_query_features, query_feature_tags
 
 _PREFIXED_NAME = re.compile(r":[A-Za-z][A-Za-z0-9]*")
 _STRING_LITERAL = re.compile(r'"(?:[^"\\]|\\.)*"')
+_NO_INFORMATION = "không có thông tin"
 
 
 def evaluate_predictions(
@@ -45,7 +46,7 @@ def evaluate_predictions(
         target = example["target"]
         register = example["register"]
         query_id = example["query_id"]
-        marker_reference = target == "không có thông tin"
+        marker_reference = target == _NO_INFORMATION
         query_features = (
             {}
             if marker_reference
@@ -85,6 +86,7 @@ def evaluate_predictions(
         canonical_exact = prediction.strip() == target
         marker_exact = marker_reference and canonical_exact
         false_acceptance = False
+        safe_rejection = False
         if marker_reference:
             answer_exact = marker_exact
             if not marker_exact:
@@ -101,6 +103,7 @@ def evaluate_predictions(
                 if marker_exact
                 else "false_acceptance" if false_acceptance else "rejection_mismatch"
             )
+            safe_rejection = not false_acceptance
         else:
             try:
                 validate_select(prediction)
@@ -123,6 +126,7 @@ def evaluate_predictions(
                 answer_exact=answer_exact,
                 graph=graph,
             )
+        system_answer_exact = safe_rejection if marker_reference else answer_exact
         if error_category is not None:
             error_counts[error_category] += 1
         boolean_metrics = [
@@ -130,6 +134,8 @@ def evaluate_predictions(
             ("canonical_exact", canonical_exact),
             ("marker_exact", marker_exact),
             ("false_acceptance", false_acceptance),
+            ("safe_rejection", safe_rejection),
+            ("system_answer_exact", system_answer_exact),
         ]
         if not marker_reference:
             boolean_metrics[:0] = [("parse", parse_ok), ("execution", execution_ok)]
@@ -169,6 +175,8 @@ def evaluate_predictions(
                     "canonical_exact": canonical_exact,
                     "marker_exact": marker_exact,
                     "false_acceptance": false_acceptance,
+                    "safe_rejection": safe_rejection,
+                    "system_answer_exact": system_answer_exact,
                     "error": error,
                     "error_category": error_category,
                     "predicted_rows": predicted_rows,
@@ -203,6 +211,8 @@ def _error_category(
     pretending to prove full SPARQL equivalence.
     """
 
+    if prediction.strip() == _NO_INFORMATION:
+        return "false_rejection"
     if not parse_ok:
         return "parse_error"
     if not execution_ok:
@@ -299,6 +309,12 @@ def _rates(counts: Counter[str]) -> dict[str, int | float]:
         ),
         "false_acceptance_rate": (
             counts["false_acceptance"] / marker_total if marker_total else 0.0
+        ),
+        "safe_rejection_rate": (
+            counts["safe_rejection"] / marker_total if marker_total else 0.0
+        ),
+        "system_answer_exact_rate": (
+            counts["system_answer_exact"] / total if total else 0.0
         ),
     }
 

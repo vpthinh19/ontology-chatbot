@@ -162,6 +162,8 @@ def test_marker_prediction_is_scored_without_sparql_parsing() -> None:
     assert report["out_of_domain"]["count"] == 1
     assert report["out_of_domain"]["marker_exact_rate"] == 1.0
     assert report["out_of_domain"]["false_acceptance_rate"] == 0.0
+    assert report["out_of_domain"]["safe_rejection_rate"] == 1.0
+    assert report["overall"]["system_answer_exact_rate"] == 1.0
     assert report["cases"][0]["parse"] is False
 
 
@@ -177,3 +179,45 @@ def test_executable_select_for_marker_is_false_acceptance() -> None:
 
     assert report["out_of_domain"]["answer_exact_rate"] == 0.0
     assert report["out_of_domain"]["false_acceptance_rate"] == 1.0
+    assert report["out_of_domain"]["safe_rejection_rate"] == 0.0
+    assert report["overall"]["system_answer_exact_rate"] == 0.0
+
+
+def test_empty_select_for_marker_is_a_safe_system_rejection() -> None:
+    example = {
+        **_example("không có thông tin"),
+        "query_id": "no-information",
+        "input": "mốc điểm không tồn tại",
+    }
+    prediction = (
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure "
+        ":minimumValue ?answer . }"
+    )
+
+    report = evaluate_predictions(
+        [example], [prediction], load_ontology(), include_cases=True
+    )
+
+    assert report["overall"]["answer_exact_rate"] == 0.0
+    assert report["overall"]["system_answer_exact_rate"] == 1.0
+    assert report["out_of_domain"]["safe_rejection_rate"] == 1.0
+    assert report["cases"][0]["safe_rejection"] is True
+    assert report["cases"][0]["system_answer_exact"] is True
+
+
+def test_marker_for_supported_query_is_a_false_rejection() -> None:
+    target = (
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure "
+        ":submittedTo ?node . ?node rdfs:label ?answer . }"
+    )
+
+    report = evaluate_predictions(
+        [_example(target)],
+        ["không có thông tin"],
+        load_ontology(),
+        include_cases=True,
+    )
+
+    assert report["overall"]["system_answer_exact_rate"] == 0.0
+    assert report["error_counts"] == {"false_rejection": 1}
+    assert report["cases"][0]["error_category"] == "false_rejection"

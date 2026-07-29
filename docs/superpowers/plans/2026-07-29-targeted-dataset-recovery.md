@@ -24,9 +24,9 @@
 - Modify: `tests/research/test_evaluation.py`
 - Modify: `src/ontchatbot/research/evaluation.py`
 
-- [ ] Add failing tests for safe empty-result rejection, false rejection and System Answer Exact.
-- [ ] Implement the minimal counters/rates and error category.
-- [ ] Run focused evaluation tests.
+- [x] Add failing tests for safe empty-result rejection, false rejection and System Answer Exact.
+- [x] Implement the minimal counters/rates and error category.
+- [x] Run focused evaluation tests.
 
 ### Task 2: Repair the proven label defect
 
