@@ -96,3 +96,25 @@ def test_business_values_inside_opaque_records_remain_supported(
     assert entries[
         "Cohort65InformationTechnologyAccreditedRate-amount"
     ]["status"] == "supported"
+
+
+@pytest.mark.parametrize(
+    "entry_id",
+    [
+        "GroupIIIMasterRate-appliesToDisciplineGroup-rdfs-label",
+        "DoctoralBachelorEntryFourYearRule-appliesToEntryQualification-rdfs-label",
+        "StandardEnglishCertificateTableRule03IELTS-appliesToLearnerCategory-rdfs-label",
+        "DirectBankingFreeFee-appliesToPaymentMethod-rdfs-label",
+        "AccreditedGeneralEducationRate-billingUnit-rdfs-label",
+        "FormCatalogueEntry001-catalogueEntryForForm-rdfs-label",
+        "UndergraduateFormCatalogue-hasCatalogueEntry-rdfs-label",
+        "TemporaryAcademicLeaveProcedure-sourceDocument-rdfs-label",
+    ],
+)
+def test_user_facing_object_relations_are_in_inventory(
+    answer_inventory,
+    entry_id,
+) -> None:
+    entries = {entry["id"]: entry for entry in answer_inventory["entries"]}
+
+    assert entries[entry_id]["status"] == "supported"

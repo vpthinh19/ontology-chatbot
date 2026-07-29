@@ -21,19 +21,27 @@ PROVISION_PROPERTIES = (
     "paymentInstructionProvision",
 )
 LABEL_PROPERTIES = (
+    "sourceDocument",
     "requiresForm",
     "submittedTo",
     "reviewedBy",
     "decidedBy",
     "supportsPaymentMethod",
     "supportsBank",
+    "appliesToPaymentMethod",
     "appliesToProgram",
+    "appliesToDisciplineGroup",
     "appliesToCourseCategory",
     "appliesToEducationLevel",
+    "appliesToEntryQualification",
+    "appliesToLearnerCategory",
     "appliesToCertificate",
     "mapsToCompetencyLevel",
     "grantsCourseExemption",
     "belongsToDisciplineGroup",
+    "billingUnit",
+    "catalogueEntryForForm",
+    "hasCatalogueEntry",
 )
 EXCLUSIONS = (
     {
