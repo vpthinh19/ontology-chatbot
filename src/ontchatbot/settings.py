@@ -13,6 +13,7 @@ RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 ONTOLOGY_DIR = RESOURCES / "ontology"
 ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology.ttl"
+ANSWER_INVENTORY_PATH = ONTOLOGY_DIR / "answer_inventory.json"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 
 DATASET_DIR = RESOURCES / "dataset" / "main"
