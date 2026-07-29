@@ -198,19 +198,23 @@ def _parse_numeric_case(raw: object, catalogue: Mapping[str, QuerySpec]) -> Nume
     if not isinstance(slots, dict) or not slots:
         raise CoverageError("numeric case slots must be a non-empty object")
 
-    numeric_slots = {
-        name for name, slot in catalogue[query_id].slots.items() if slot.kind == "number"
-    }
-    if set(slots) != numeric_slots:
-        invalid = next((name for name in slots if name not in catalogue[query_id].slots), None)
+    declared_slots = catalogue[query_id].slots
+    numeric_slots = {name for name, slot in declared_slots.items() if slot.kind == "number"}
+    if not numeric_slots:
+        raise CoverageError(f"numeric case query {query_id!r} has no number slots")
+    if set(slots) != set(declared_slots):
+        invalid = next((name for name in slots if name not in declared_slots), None)
         if invalid is not None:
-            raise CoverageError(f"unknown numeric slot {invalid!r}")
-        non_numeric = next((name for name in slots if name not in numeric_slots), None)
-        if non_numeric is not None:
-            raise CoverageError(f"non-number slot {non_numeric!r} in numeric case")
-        raise CoverageError(f"numeric case must assign every numeric slot for {query_id}")
-    if not all(isinstance(value, str) and _NUMBER.fullmatch(value) for value in slots.values()):
-        raise CoverageError("numeric case slot values must be canonical numbers")
+            raise CoverageError(f"unknown slot {invalid!r} in numeric case")
+        raise CoverageError(f"numeric case must assign every slot for {query_id}")
+    for name, value in slots.items():
+        spec = declared_slots[name]
+        if not isinstance(value, str):
+            raise CoverageError(f"numeric case slot {name!r} must be text")
+        if spec.kind == "number" and not _NUMBER.fullmatch(value):
+            raise CoverageError(f"numeric case slot {name!r} must be a canonical number")
+        if spec.kind == "iri" and value not in spec.values:
+            raise CoverageError(f"numeric case slot {name!r} has invalid IRI {value!r}")
     return NumericCase(query_id, split, tuple(sorted(slots.items())))
 
 

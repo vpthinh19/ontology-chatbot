@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from ontchatbot.research.catalogue import QuerySpec, SlotSpec
+from ontchatbot.research.catalogue import QuerySpec, SlotSpec, load_catalogue
 from ontchatbot.research.coverage import (
     CoverageError,
     NumericCase,
@@ -13,6 +13,8 @@ from ontchatbot.research.coverage import (
     load_coverage_requirements,
     require_complete_coverage,
 )
+from ontchatbot.runtime.sparql import execute_select, load_ontology
+from ontchatbot.settings import COVERAGE_REQUIREMENTS_PATH, QUERY_CATALOGUE_PATH
 
 
 VALID_REQUIREMENTS = {
@@ -51,6 +53,15 @@ def _catalogue() -> dict[str, QuerySpec]:
             "SCORE ${score}",
             {"score": SlotSpec("number")},
         ),
+        "certificate-level": QuerySpec(
+            "certificate-level",
+            "certificate",
+            "CERTIFICATE ${certificate} SCORE ${score}",
+            {
+                "certificate": SlotSpec("iri", (":IELTS", ":TOEIC")),
+                "score": SlotSpec("number"),
+            },
+        ),
         "no-information": QuerySpec(
             "no-information",
             "out-of-domain",
@@ -86,7 +97,7 @@ def test_loads_immutable_coverage_requirements(tmp_path) -> None:
     ("change", "message"),
     [
         ({"numeric_cases": [{"query_id": "unknown", "split": "train", "slots": {"score": "4.00"}}]}, "unknown query_id"),
-        ({"numeric_cases": [{"query_id": "procedure-family", "split": "train", "slots": {"procedure": "4.00"}}]}, "non-number slot"),
+        ({"numeric_cases": [{"query_id": "procedure-family", "split": "train", "slots": {"procedure": "4.00"}}]}, "has no number slots"),
         ({"numeric_cases": [{"query_id": "academic-performance-band", "split": "draft", "slots": {"score": "4.00"}}]}, "invalid split"),
         ({"numeric_cases": VALID_REQUIREMENTS["numeric_cases"] * 2}, "duplicate numeric case"),
         ({"rejection_classes": ["greeting-social", "greeting-social"]}, "duplicate rejection class"),
@@ -131,6 +142,12 @@ def _complete_splits() -> tuple[dict[str, list[dict[str, str]]], dict[str, list[
                         "query_id": "academic-performance-band",
                         "register": register,
                         "target": "SCORE 4.00",
+                    },
+                    {
+                        "id": f"certificate-{split}-{register}",
+                        "query_id": "certificate-level",
+                        "register": register,
+                        "target": "CERTIFICATE :IELTS SCORE 600",
                     },
                 ]
             )
@@ -188,3 +205,63 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
     ]
     with pytest.raises(CoverageError, match="coverage incomplete"):
         require_complete_coverage(report)
+
+
+@pytest.mark.parametrize(
+    "target",
+    ["CERTIFICATE :TOEIC SCORE 600", "CERTIFICATE SCORE 600"],
+)
+def test_numeric_case_requires_its_finite_context_slot(tmp_path, target: str) -> None:
+    requirements = load_coverage_requirements(
+        _write_requirements(
+            tmp_path,
+            {
+                **VALID_REQUIREMENTS,
+                "numeric_cases": [
+                    {
+                        "query_id": "certificate-level",
+                        "split": "train",
+                        "slots": {"certificate": ":IELTS", "score": "600"},
+                    }
+                ],
+            },
+        ),
+        _catalogue(),
+    )
+    report = assess_coverage(
+        {
+            "train": [
+                {
+                    "id": "certificate-case",
+                    "query_id": "certificate-level",
+                    "register": "formal",
+                    "target": target,
+                }
+            ],
+            "val": [],
+            "test": [],
+        },
+        _catalogue(),
+        requirements,
+        {},
+    )
+
+    assert report["missing_numeric_cases"] == [
+        {
+            "query_id": "certificate-level",
+            "split": "train",
+            "slots": {"certificate": ":IELTS", "score": "600"},
+        }
+    ]
+
+
+def test_canonical_numeric_cases_execute_on_the_ontology() -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    requirements = load_coverage_requirements(COVERAGE_REQUIREMENTS_PATH, catalogue)
+    graph = load_ontology()
+
+    for numeric_case in requirements.numeric_cases:
+        target = catalogue[numeric_case.query_id].target_template
+        for name, value in numeric_case.slots:
+            target = target.replace(f"${{{name}}}", value)
+        assert execute_select(graph, target), numeric_case
