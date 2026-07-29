@@ -286,19 +286,19 @@ git commit -m "Complete the production ontology dataset"
 - Consumes: final 2.000-row release.
 - Produces: executable assertions for final counts, frozen real-user queries and immutable test checksum.
 
-- [ ] **Step 1: Review only the 1.047 newly added rows**
+- [x] **Step 1: Review only the 1.047 newly added rows**
 
 Check input meaning against target/query family, ambiguity, natural register and split independence. Do not reread the unchanged 953-row core unless a new row conflicts with it.
 
-- [ ] **Step 2: Resolve findings in place**
+- [x] **Step 2: Resolve findings in place**
 
 Replace bad new rows one-for-one so the matrix remains exact. Re-run only the affected shard and combined leakage gates.
 
-- [ ] **Step 3: Freeze test by checksum**
+- [x] **Step 3: Freeze test by checksum**
 
 Add a test asserting the final test-file SHA-256 and that all seven `resources/cases/user_queries.txt` inputs occur exactly once in test with their accepted canonical decisions.
 
-- [ ] **Step 4: Commit acceptance tests**
+- [x] **Step 4: Commit acceptance tests**
 
 ```bash
 git add tests/research/test_dataset_content.py resources/dataset/main/train.jsonl resources/dataset/main/val.jsonl resources/dataset/main/test.jsonl resources/cases/rejection_checklist.json

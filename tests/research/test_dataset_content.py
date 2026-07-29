@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -66,6 +68,7 @@ USER_QUERY_EXPECTATIONS = {
     "hc phí k65 cntt": "no-information",
     "học phí k67 như thế nào": "no-information",
 }
+FROZEN_TEST_SHA256 = "b9123d819f27965b4ed796bb87a4871b8a32b68d71bcfcbc8704cc5e9b59b559"
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
     ACADEMIC.Article,
@@ -266,9 +269,9 @@ def test_certificate_conversion_detail_rows_use_compact_parent_table_targets() -
 
     assert spec.target_template == expected_template
     assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 18,
-        "val": 2,
-        "test": 2,
+        "train": 27,
+        "val": 6,
+        "test": 5,
     }
     assert {row["target"] for split_rows in rows.values() for row in split_rows} == (
         expected_targets
@@ -292,9 +295,9 @@ def test_tuition_rate_detail_rows_use_compact_official_table_target() -> None:
 
     assert catalogue["tuition-rate-details"].target_template == expected_template
     assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 4,
-        "val": 2,
-        "test": 2,
+        "train": 12,
+        "val": 3,
+        "test": 3,
     }
     assert {
         row["target"] for split_rows in rows.values() for row in split_rows
@@ -471,15 +474,33 @@ def test_rejection_checklist_exactly_partitions_all_seven_classes() -> None:
 def test_every_real_user_query_has_an_explicit_released_decision() -> None:
     queries = Path("resources/cases/user_queries.txt").read_text(encoding="utf-8").splitlines()
     release = load_release()
-    actual = {
-        row["input"]: (split, row["query_id"])
+    matches = [
+        (split, row)
         for split, rows in release.items()
         for row in rows
         if row["input"] in queries
+    ]
+    occurrences = Counter(row["input"] for _, row in matches)
+    actual = {
+        row["input"]: (split, row["query_id"])
+        for split, row in matches
     }
 
     assert queries == list(USER_QUERY_EXPECTATIONS)
+    assert occurrences == Counter({query: 1 for query in queries})
     assert actual == {
         query: ("test", query_id)
         for query, query_id in USER_QUERY_EXPECTATIONS.items()
     }
+
+
+def test_final_release_matrix_and_frozen_test_checksum() -> None:
+    release = load_release()
+
+    assert {split: len(rows) for split, rows in release.items()} == {
+        "train": 1_400,
+        "val": 300,
+        "test": 300,
+    }
+    payload = Path("resources/dataset/main/test.jsonl").read_bytes()
+    assert hashlib.sha256(payload).hexdigest() == FROZEN_TEST_SHA256
