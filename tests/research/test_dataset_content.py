@@ -33,6 +33,9 @@ PROCEDURE_FAMILIES = {
     "procedure-required-form",
     "procedure-form-download",
     "procedure-overview",
+    "procedure-list",
+    "procedure-source",
+    "procedure-decision-authority",
 }
 SECONDARY_FAMILIES = {
     "tuition-program-cohort-rate",
@@ -68,7 +71,7 @@ USER_QUERY_EXPECTATIONS = {
     "hc phí k65 cntt": "tuition-program-cohort-rate",
     "học phí k67 như thế nào": "no-information",
 }
-FROZEN_TEST_SHA256 = "8bc15fbfbd2e8da63f9dd64b8d55218996caf5bf8673fcd34bc0e7dad98582f9"
+FROZEN_TEST_SHA256 = "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
     ACADEMIC.Article,
@@ -515,13 +518,67 @@ def test_preprocessed_cntt_tuition_query_is_supported() -> None:
     assert all(row["id"] not in ids for ids in checklist.values())
 
 
+def test_procedure_first_target_coverage() -> None:
+    release = load_release()
+    procedure = {
+        split: [row for row in rows if row["query_id"].startswith("procedure-")]
+        for split, rows in release.items()
+    }
+    train_counts = Counter(row["target"] for row in procedure["train"])
+    instruction_targets = {
+        row["target"]
+        for row in procedure["train"]
+        if row["query_id"] == "procedure-instruction"
+    }
+    required_registers = {"formal", "neutral", "colloquial", "noisy"}
+
+    assert len(train_counts) == 142
+    assert min(train_counts.values()) >= 6
+    assert all(train_counts[target] >= 10 for target in instruction_targets)
+    for target in train_counts:
+        assert {
+            row["register"]
+            for row in procedure["train"]
+            if row["target"] == target
+        } == required_registers
+    for target in instruction_targets:
+        rows = [row for row in procedure["train"] if row["target"] == target]
+        assert sum(row["query_id"] == "procedure-instruction" for row in rows) >= 6
+        assert sum(row["query_id"] == "procedure-overview" for row in rows) >= 4
+
+    course_target = (
+        "SELECT ?answer WHERE { :CourseRegistrationProcedure "
+        ":instructionProvision ?part . ?part :officialText ?answer . }"
+    )
+    assert train_counts[course_target] >= 12
+    assert len(procedure["train"]) >= 2 * sum(
+        row["query_id"] == "no-information" for row in release["train"]
+    )
+    for split in ("val", "test"):
+        counts = Counter(row["target"] for row in procedure[split])
+        assert set(train_counts) <= set(counts)
+        assert all(counts[target] >= 2 for target in instruction_targets)
+        for target in instruction_targets:
+            query_ids = {
+                row["query_id"]
+                for row in procedure[split]
+                if row["target"] == target
+            }
+            assert {"procedure-instruction", "procedure-overview"} <= query_ids
+        course_rows = [
+            row for row in procedure[split] if row["target"] == course_target
+        ]
+        assert len(course_rows) >= 4
+        assert {row["register"] for row in course_rows} == required_registers
+
+
 def test_final_release_matrix_and_frozen_test_checksum() -> None:
     release = load_release()
 
     assert {split: len(rows) for split, rows in release.items()} == {
-        "train": 1_550,
-        "val": 300,
-        "test": 300,
+        "train": 2_079,
+        "val": 402,
+        "test": 407,
     }
     payload = Path("resources/dataset/main/test.jsonl").read_bytes()
     assert hashlib.sha256(payload).hexdigest() == FROZEN_TEST_SHA256
