@@ -43,10 +43,14 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
         "test",
     }
     assert report["training_readiness"]["ready"] is False
-    assert "catalogue_not_fully_covered" in {
+    gap_codes = {
         gap["code"] for gap in report["training_readiness"]["gaps"]
     }
+    assert "catalogue_not_fully_covered" in gap_codes
+    assert report["coverage"]["complete"] is False
+    assert "coverage_incomplete" in gap_codes
     assert report["sha256"]["catalogue.jsonl"]
+    assert report["sha256"]["coverage.json"]
 
     write_public_reports(report, output_dir=tmp_path)
     assert (tmp_path / "dataset.json").is_file()
@@ -97,6 +101,10 @@ def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
     assert contract["test_min_rows_per_query"] == 2
     assert contract["held_out_min_registers_per_query"] == 2
     assert contract["catalogue_path"] == "catalogue.jsonl"
+    assert json.loads(path.read_text(encoding="utf-8"))["coverage"] == {
+        "path": "coverage.json",
+        "sha256": report["sha256"]["coverage.json"],
+    }
 
 
 def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:

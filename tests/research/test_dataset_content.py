@@ -2,11 +2,20 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
+import pytest
 from rdflib import RDF, Namespace
 
-from ontchatbot.research.catalogue import load_catalogue
+from ontchatbot.cli import validate_data
+from ontchatbot.research.catalogue import QuerySpec, SlotSpec, load_catalogue
+from ontchatbot.research.coverage import (
+    CoverageError,
+    assess_coverage,
+    load_coverage_requirements,
+    require_complete_coverage,
+)
 from ontchatbot.research.dataset import load_release, validate_release
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import QUERY_CATALOGUE_PATH
@@ -64,6 +73,157 @@ SOURCE_TYPES = {
     ACADEMIC.Point,
 }
 LOCAL_NAME = re.compile(r":([A-Za-z][A-Za-z0-9]*)")
+
+
+def _coverage_fixture_catalogue() -> dict[str, QuerySpec]:
+    return {
+        "procedure-family": QuerySpec(
+            "procedure-family",
+            "procedure",
+            "PROCEDURE ${procedure}",
+            {"procedure": SlotSpec("iri", (":Procedure",))},
+        ),
+        "academic-performance-band": QuerySpec(
+            "academic-performance-band",
+            "academic-rule",
+            "SCORE ${score}",
+            {"score": SlotSpec("number")},
+        ),
+        "no-information": QuerySpec(
+            "no-information",
+            "out-of-domain",
+            "không có thông tin",
+            {},
+        ),
+    }
+
+
+def _complete_coverage_fixture() -> tuple[
+    dict[str, list[dict[str, str]]], dict[str, list[str]]
+]:
+    splits = {split: [] for split in ("train", "val", "test")}
+    checklist = {"hard-negative": []}
+    for split, rows in splits.items():
+        for register in ("formal", "neutral", "colloquial", "noisy"):
+            rows.extend(
+                [
+                    {
+                        "id": f"procedure-{split}-{register}",
+                        "query_id": "procedure-family",
+                        "register": register,
+                        "target": "PROCEDURE :Procedure",
+                    },
+                    {
+                        "id": f"score-{split}-{register}",
+                        "query_id": "academic-performance-band",
+                        "register": register,
+                        "target": "SCORE 4.00",
+                    },
+                ]
+            )
+            record_id = f"hard-negative-{split}-{register}"
+            checklist["hard-negative"].append(record_id)
+            rows.append(
+                {
+                    "id": record_id,
+                    "query_id": "no-information",
+                    "register": register,
+                    "target": "không có thông tin",
+                }
+            )
+    return splits, checklist
+
+
+def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
+    catalogue = _coverage_fixture_catalogue()
+    coverage_path = tmp_path / "coverage.json"
+    coverage_path.write_text(
+        json.dumps(
+            {
+                "priority_domains": ["procedure"],
+                "numeric_cases": [
+                    {
+                        "query_id": "academic-performance-band",
+                        "split": "train",
+                        "slots": {"score": "4.00"},
+                    }
+                ],
+                "rejection_classes": ["hard-negative"],
+                "required_registers": ["formal", "neutral", "colloquial", "noisy"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    release, checklist = _complete_coverage_fixture()
+
+    report = assess_coverage(
+        release,
+        catalogue,
+        load_coverage_requirements(coverage_path, catalogue),
+        checklist,
+    )
+
+    assert report["complete"] is True
+    require_complete_coverage(report)
+
+
+def test_validation_cli_rejects_candidate_with_incomplete_coverage(monkeypatch) -> None:
+    monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
+
+    with pytest.raises(CoverageError, match="coverage incomplete"):
+        validate_data.main()
+
+
+def test_validation_cli_prints_release_and_coverage_summaries_when_complete(
+    monkeypatch, capsys
+) -> None:
+    release_summary = {"records": 24}
+    coverage_summary = {"complete": True}
+    monkeypatch.setattr(validate_data, "load_release", lambda _: {"release": []})
+    monkeypatch.setattr(validate_data, "load_ontology", lambda: object())
+    monkeypatch.setattr(
+        validate_data,
+        "validate_release",
+        lambda release, graph, catalogue=None, **kwargs: release_summary,
+    )
+    monkeypatch.setattr(
+        validate_data,
+        "load_catalogue",
+        lambda _: {"query-0001": object()},
+        raising=False,
+    )
+    monkeypatch.setattr(
+        validate_data,
+        "load_coverage_requirements",
+        lambda path, catalogue: object(),
+        raising=False,
+    )
+    monkeypatch.setattr(
+        validate_data,
+        "_load_rejection_checklist",
+        lambda _: {"hard-negative": []},
+        raising=False,
+    )
+    monkeypatch.setattr(
+        validate_data,
+        "assess_coverage",
+        lambda release, catalogue, requirements, checklist: coverage_summary,
+        raising=False,
+    )
+    monkeypatch.setattr(
+        validate_data,
+        "require_complete_coverage",
+        lambda report: None,
+        raising=False,
+    )
+    monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
+
+    validate_data.main()
+
+    assert json.loads(capsys.readouterr().out) == {
+        "release": release_summary,
+        "coverage": coverage_summary,
+    }
 
 
 def test_candidate_pool_is_executable_and_covers_procedure_families() -> None:

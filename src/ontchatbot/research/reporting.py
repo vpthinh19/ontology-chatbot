@@ -17,6 +17,7 @@ from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
 from .catalogue import load_catalogue
+from .coverage import assess_coverage, load_coverage_requirements
 from .dataset import (
     HELD_OUT_REGISTERS_PER_QUERY,
     HELD_OUT_ROWS_PER_QUERY,
@@ -53,6 +54,12 @@ def build_dataset_report(
         graph,
         catalogue,
         require_complete_catalogue=False,
+    )
+    coverage = assess_coverage(
+        release,
+        catalogue,
+        load_coverage_requirements(Path(dataset_dir) / "coverage.json", catalogue),
+        _load_rejection_checklist(dataset_dir),
     )
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
@@ -107,7 +114,8 @@ def build_dataset_report(
             "test_queries_supported_by_train": len(test_queries & train_queries),
             "test_queries": len(test_queries),
         },
-        "training_readiness": _build_training_readiness(release, validation),
+        "coverage": coverage,
+        "training_readiness": _build_training_readiness(release, validation, coverage),
         "ontology": _ontology_summary(graph),
         "validation": validation,
         "sha256": {
@@ -116,6 +124,7 @@ def build_dataset_report(
                 for split in REQUIRED_SPLITS
             },
             "catalogue.jsonl": sha256_file(catalogue_path),
+            "coverage.json": sha256_file(Path(dataset_dir) / "coverage.json"),
             "ontology.ttl": sha256_file(ontology_path),
         },
     }
@@ -364,6 +373,10 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
             "query_families": dataset["query_families"],
             "sha256": report["sha256"]["catalogue.jsonl"],
         },
+        "coverage": {
+            "path": "coverage.json",
+            "sha256": report["sha256"]["coverage.json"],
+        },
         "totals": {
             "records": dataset["records"],
             "query_families": dataset["query_families"],
@@ -435,6 +448,7 @@ def _query_feature_counts(
 def _build_training_readiness(
     release: Mapping[str, list[dict[str, str]]],
     validation: Mapping[str, Any],
+    coverage: Mapping[str, object] | None = None,
 ) -> dict[str, Any]:
     gaps: list[dict[str, Any]] = []
     if validation.get("catalogue_coverage_required") is False:
@@ -465,11 +479,41 @@ def _build_training_readiness(
     if missing_slots:
         gaps.append({"code": "finite_slots_missing_from_train", "slots": missing_slots})
 
+    if coverage is not None and coverage.get("complete") is False:
+        gaps.append(
+            {
+                "code": "coverage_incomplete",
+                **{
+                    name: _coverage_gap_count(coverage.get(name))
+                    for name in (
+                        "missing_query_ids",
+                        "missing_train_registers",
+                        "missing_priority_registers",
+                        "missing_numeric_cases",
+                        "missing_rejection_coverage",
+                    )
+                },
+            }
+        )
+
     return {
         "ready": not gaps,
         "finite_slots_missing_from_train": missing_slots,
         "gaps": gaps,
     }
+
+
+def _load_rejection_checklist(dataset_dir: Path) -> dict[str, list[str]]:
+    path = Path(dataset_dir).parent.parent / "cases" / "rejection_checklist.json"
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _coverage_gap_count(value: object) -> int:
+    if isinstance(value, Mapping):
+        return sum(_coverage_gap_count(item) for item in value.values())
+    if isinstance(value, list):
+        return len(value)
+    return 0
 
 
 def _number_summary(values: Sequence[int]) -> dict[str, int | float]:
