@@ -241,15 +241,15 @@ Run data-only validation, coverage, exact URL execution and leakage gates. Repla
 - Consumes: 209 accepted OOD rows.
 - Produces: first 196 of 391 new OOD rows, split 151/22/23.
 
-- [ ] **Step 1: Author O1 against the class ledger**
+- [x] **Step 1: Author O1 against the class ledger**
 
 Add meaningful rows toward the final class totals, prioritizing ambiguous, near-domain-missing and mixed questions. Keep class membership exact and ask for genuinely missing relations/live data in hard negatives.
 
-- [ ] **Step 2: Validate checklist and language**
+- [x] **Step 2: Validate checklist and language**
 
 Every OOD ID must occur exactly once in the checklist; every checklist ID must resolve to one OOD row. Verify exact marker, natural Vietnamese, register label and no cross-split near duplicate.
 
-- [ ] **Step 3: Assemble and commit**
+- [x] **Step 3: Assemble and commit**
 
 Replace tracked data mechanically and commit with message `Expand out of domain questions`.
 
