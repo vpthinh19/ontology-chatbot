@@ -194,15 +194,15 @@ Repeat the P1 data-only gates. Expected final procedure counts: 420/90/90. Commi
 - Consumes: 127 tuition and 132 academic-rule rows.
 - Produces: tuition 250 rows (175/38/37) and academic-rule 200 rows (140/30/30).
 
-- [ ] **Step 1: Author tuition additions**
+- [x] **Step 1: Author tuition additions**
 
 Add 123 rows split 96/14/13. Every program/cohort question must name the relevant course category when multiple rates could apply. Full-table questions use `tuition-rate-details`; specific questions use the narrower family.
 
-- [ ] **Step 2: Author academic-rule additions**
+- [x] **Step 2: Author academic-rule additions**
 
 Add 68 rows split 52/8/8. Emphasize numeric boundaries, natural scale statements, table-detail requests and hard-to-confuse wording. Invalid numeric gaps remain OOD.
 
-- [ ] **Step 3: Validate, assemble and commit**
+- [x] **Step 3: Validate, assemble and commit**
 
 Run data-only validation, coverage and leakage gates. Expected combined domain counts match the target matrix. Replace tracked data mechanically and commit with message `Expand tuition and academic rule questions`.
 
