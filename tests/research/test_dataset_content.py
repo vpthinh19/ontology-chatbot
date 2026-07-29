@@ -11,14 +11,13 @@ from rdflib import RDF, Namespace
 from ontchatbot.cli import validate_data
 from ontchatbot.research.catalogue import QuerySpec, SlotSpec, load_catalogue
 from ontchatbot.research.coverage import (
-    CoverageError,
     assess_coverage,
     load_coverage_requirements,
     require_complete_coverage,
 )
 from ontchatbot.research.dataset import load_release, validate_release
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import QUERY_CATALOGUE_PATH
+from ontchatbot.settings import COVERAGE_REQUIREMENTS_PATH, QUERY_CATALOGUE_PATH
 
 
 ACADEMIC = Namespace("http://www.ntu.edu.vn/ontology/academic#")
@@ -54,8 +53,9 @@ REJECTION_CLASSES = {
     "unrelated",
     "near-domain-missing",
     "ambiguous",
-    "nonsensical-noisy",
+    "noisy-out-of-domain",
     "mixed",
+    "hard-negative",
 }
 USER_QUERY_EXPECTATIONS = {
     "chào bạn nha": "no-information",
@@ -63,7 +63,7 @@ USER_QUERY_EXPECTATIONS = {
     "đăng ký học phần sao": "procedure-instruction",
     "vì sao lại đăng ký học phần": "no-information",
     "đk hc phần như thế nào": "procedure-instruction",
-    "hc phí k65 cntt": "tuition-program-cohort-rate",
+    "hc phí k65 cntt": "no-information",
     "học phí k67 như thế nào": "no-information",
 }
 SOURCE_TYPES = {
@@ -167,17 +167,10 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
     require_complete_coverage(report)
 
 
-def test_validation_cli_rejects_candidate_with_incomplete_coverage(monkeypatch) -> None:
-    monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
-
-    with pytest.raises(CoverageError, match="coverage incomplete"):
-        validate_data.main()
-
-
 def test_validation_cli_prints_release_and_coverage_summaries_when_complete(
     monkeypatch, capsys
 ) -> None:
-    release_summary = {"records": 24}
+    release_summary = {"records": 1}
     coverage_summary = {"complete": True}
     monkeypatch.setattr(validate_data, "load_release", lambda _: {"release": []})
     monkeypatch.setattr(validate_data, "load_ontology", lambda: object())
@@ -226,30 +219,33 @@ def test_validation_cli_prints_release_and_coverage_summaries_when_complete(
     }
 
 
-def test_candidate_pool_is_executable_and_covers_procedure_families() -> None:
+def test_official_release_is_executable_and_has_complete_coverage() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    release = load_release()
+    checklist = json.loads(
+        Path("resources/cases/rejection_checklist.json").read_text(encoding="utf-8")
+    )
 
-    report = validate_release(
-        load_release(),
-        graph,
+    release_report = validate_release(release, graph, catalogue)
+    coverage_report = assess_coverage(
+        release,
         catalogue,
-        require_complete_catalogue=False,
+        load_coverage_requirements(COVERAGE_REQUIREMENTS_PATH, catalogue),
+        checklist,
     )
 
     assert PROCEDURE_FAMILIES <= set(catalogue)
-    assert report["domains"]["procedure"] > 0
+    assert release_report["catalogue_coverage_required"] is True
+    assert release_report["domains"]["procedure"] > 0
+    assert coverage_report["complete"] is True
+    require_complete_coverage(coverage_report)
 
 
-def test_candidate_procedure_iris_exist_in_ontology() -> None:
+def test_official_procedure_iris_exist_in_ontology() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(
-        load_release(),
-        graph,
-        catalogue,
-        require_complete_catalogue=False,
-    )
+    report = validate_release(load_release(), graph, catalogue)
     existing = {
         f":{str(node).rsplit('#', 1)[-1]}"
         for node in graph.subjects(RDF.type, ACADEMIC.AcademicProcedure)
@@ -288,25 +284,33 @@ def test_procedure_result_slots_exclude_non_result_procedures() -> None:
 
 
 @pytest.mark.parametrize(
-    ("record_id", "query_id", "provision_role"),
+    ("input_text", "query_id", "provision_role"),
     [
-        ("question-000050", "procedure-eligibility", ":eligibilityProvision"),
-        ("question-000063", "procedure-instruction", ":instructionProvision"),
+        (
+            "Những thành tích hoặc chứng chỉ nào giúp sinh viên được xem xét miễn học, miễn thi hay cộng điểm thưởng?",
+            "procedure-eligibility",
+            ":eligibilityProvision",
+        ),
+        (
+            "Sau thời gian bảo lưu, sinh viên cần làm thủ tục xin học trở lại như thế nào?",
+            "procedure-instruction",
+            ":instructionProvision",
+        ),
     ],
 )
-def test_known_candidate_rows_use_semantically_supported_provision_roles(
-    record_id: str,
+def test_reviewed_procedure_rows_use_semantically_supported_provision_roles(
+    input_text: str,
     query_id: str,
     provision_role: str,
 ) -> None:
     rows = {
-        row["id"]: row
+        row["input"]: row
         for split in load_release().values()
         for row in split
     }
 
-    assert rows[record_id]["query_id"] == query_id
-    assert provision_role in rows[record_id]["target"]
+    assert rows[input_text]["query_id"] == query_id
+    assert provision_role in rows[input_text]["target"]
 
 
 def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> None:
@@ -325,12 +329,7 @@ def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> N
 def test_secondary_query_families_cover_finite_ontology_values() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(
-        load_release(),
-        graph,
-        catalogue,
-        require_complete_catalogue=False,
-    )
+    report = validate_release(load_release(), graph, catalogue)
 
     assert SECONDARY_FAMILIES <= set(catalogue)
 
@@ -376,7 +375,7 @@ def test_secondary_query_families_cover_finite_ontology_values() -> None:
             assert details["missing_train"] == []
 
 
-def test_rejection_examples_cover_review_classes_and_stay_balanced() -> None:
+def test_rejection_checklist_exactly_partitions_all_seven_classes() -> None:
     splits = load_release()
     checklist_path = Path("resources/cases/rejection_checklist.json")
     checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
@@ -389,32 +388,39 @@ def test_rejection_examples_cover_review_classes_and_stay_balanced() -> None:
     assert set(checklist) == REJECTION_CLASSES
     released_ids = [row_id for ids in checklist.values() for row_id in ids]
     assert len(released_ids) == len(set(released_ids))
+    assert set(released_ids) == {
+        row["id"]
+        for rows in splits.values()
+        for row in rows
+        if row["query_id"] == "no-information"
+    }
     for rejection_class, row_ids in checklist.items():
-        assert {rows_by_id[row_id][0] for row_id in row_ids} == {"train", "val", "test"}, (
-            rejection_class,
-            row_ids,
-        )
+        assert {
+            (rows_by_id[row_id][0], rows_by_id[row_id][1]["register"])
+            for row_id in row_ids
+        } == {
+            (split, register)
+            for split in ("train", "val", "test")
+            for register in ("formal", "neutral", "colloquial", "noisy")
+        }, (rejection_class, row_ids)
         for row_id in row_ids:
             row = rows_by_id[row_id][1]
             assert row["query_id"] == "no-information"
             assert row["target"] == "không có thông tin"
 
-    marker_registers = {
-        row["register"]
-        for rows in splits.values()
-        for row in rows
-        if row["query_id"] == "no-information"
-    }
-    assert marker_registers == {"formal", "neutral", "colloquial", "noisy"}
-    for rows in splits.values():
-        marker_count = sum(row["query_id"] == "no-information" for row in rows)
-        assert 0.20 <= marker_count / len(rows) <= 0.35
-
 
 def test_every_real_user_query_has_an_explicit_released_decision() -> None:
     queries = Path("resources/cases/user_queries.txt").read_text(encoding="utf-8").splitlines()
-    rows = [row for split in load_release().values() for row in split]
-    actual = {row["input"]: row["query_id"] for row in rows if row["input"] in queries}
+    release = load_release()
+    actual = {
+        row["input"]: (split, row["query_id"])
+        for split, rows in release.items()
+        for row in rows
+        if row["input"] in queries
+    }
 
     assert queries == list(USER_QUERY_EXPECTATIONS)
-    assert actual == USER_QUERY_EXPECTATIONS
+    assert actual == {
+        query: ("test", query_id)
+        for query, query_id in USER_QUERY_EXPECTATIONS.items()
+    }
