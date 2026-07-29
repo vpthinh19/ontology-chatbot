@@ -9,20 +9,9 @@ from rdflib import OWL, RDF, RDFS, SKOS, Graph, Literal, Namespace, URIRef
 
 from ..runtime.sparql import load_ontology
 from ..settings import ANSWER_INVENTORY_PATH, ONTOLOGY_NS
+from .answer_scope import SOURCE_CLASS_NAMES, is_opaque_record, rdf_type_names
 
 ACADEMIC = Namespace(ONTOLOGY_NS)
-SOURCE_TYPES = frozenset(
-    {
-        ACADEMIC.Article,
-        ACADEMIC.Clause,
-        ACADEMIC.Point,
-        ACADEMIC.Appendix,
-        ACADEMIC.DocumentTable,
-        ACADEMIC.DocumentTableRow,
-        ACADEMIC.Chapter,
-        ACADEMIC.AttachedRegulation,
-    }
-)
 PROVISION_PROPERTIES = (
     "sourceProvision",
     "instructionProvision",
@@ -117,6 +106,26 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
         }
         for predicate in sorted(literal_predicates, key=str):
             component = "rdfs:label" if predicate == RDFS.label else _local_name(predicate)
+            if predicate == RDFS.label and is_opaque_record(graph, anchor):
+                entries.append(
+                    {
+                        "id": f"{anchor_name}-rdfs-label",
+                        "anchor": anchor_name,
+                        "answer_kind": "label",
+                        "path": ["rdfs:label"],
+                        "provenance": _provenance(
+                            graph,
+                            anchor_name,
+                            ["rdfs:label"],
+                        ),
+                        "status": "excluded",
+                        "reason": (
+                            "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng "
+                            "điều kiện nghiệp vụ thay vì IRI của bản ghi."
+                        ),
+                    }
+                )
+                continue
             _append_supported(graph, entries, anchor_name, [component])
         for property_name in PROVISION_PROPERTIES:
             _append_supported(
@@ -157,7 +166,7 @@ def _semantic_individuals(graph: Graph) -> list[URIRef]:
         for subject in graph.subjects(RDF.type, OWL.NamedIndividual)
         if isinstance(subject, URIRef)
         and str(subject).startswith(ONTOLOGY_NS)
-        and not any((subject, RDF.type, source_type) in graph for source_type in SOURCE_TYPES)
+        and not (rdf_type_names(graph, subject) & SOURCE_CLASS_NAMES)
     }
     return sorted(individuals, key=str)
 

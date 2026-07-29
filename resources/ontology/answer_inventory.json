@@ -186,7 +186,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "AccreditedGeneralEducationRate-sourceProvision-officialText",
@@ -497,7 +498,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "AverageAcademicPerformanceBand-resultLabel",
@@ -594,7 +596,8 @@
       "provenance": [
         "Decision1052Article23"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "AverageGraduationBand-resultLabel",
@@ -1159,7 +1162,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort63Accredited620Rate-sourceProvision-officialText",
@@ -1271,7 +1275,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort63BiotechnologyAccreditedRate-sourceProvision-officialText",
@@ -1383,7 +1388,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort65Accredited550Rate-sourceProvision-officialText",
@@ -1495,7 +1501,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort65InformationTechnologyAccreditedRate-sourceProvision-officialText",
@@ -1607,7 +1614,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort66Accredited550Rate-sourceProvision-officialText",
@@ -1719,7 +1727,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort66Accredited620Rate-sourceProvision-officialText",
@@ -1831,7 +1840,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort66EnglishLanguageAccreditedRate-sourceProvision-officialText",
@@ -1943,7 +1953,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort67Accredited550Rate-sourceProvision-officialText",
@@ -2055,7 +2066,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "Cohort67Accredited620Rate-sourceProvision-officialText",
@@ -2203,7 +2215,8 @@
       "provenance": [
         "ComputerCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule01IC3-sourceProvision-officialText",
@@ -2313,7 +2326,8 @@
       "provenance": [
         "ComputerCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule01ICDL-sourceProvision-officialText",
@@ -2423,7 +2437,8 @@
       "provenance": [
         "ComputerCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule01MOS-sourceProvision-officialText",
@@ -2533,7 +2548,8 @@
       "provenance": [
         "ComputerCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule02IC3-sourceProvision-officialText",
@@ -2643,7 +2659,8 @@
       "provenance": [
         "ComputerCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule02ICDL-sourceProvision-officialText",
@@ -2753,7 +2770,8 @@
       "provenance": [
         "ComputerCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule02MOS-sourceProvision-officialText",
@@ -2863,7 +2881,8 @@
       "provenance": [
         "ComputerCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule03IC3-sourceProvision-officialText",
@@ -2973,7 +2992,8 @@
       "provenance": [
         "ComputerCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule03ICDL-sourceProvision-officialText",
@@ -3083,7 +3103,8 @@
       "provenance": [
         "ComputerCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ComputerCertificateTableRule03MOS-sourceProvision-officialText",
@@ -4789,7 +4810,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "DirectBankingFreeFee-sourceProvision-officialText",
@@ -5041,7 +5063,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "DoctoralBachelorEntryFourYearRule-sourceProvision-officialText",
@@ -5102,7 +5125,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "DoctoralMasterEntryThreeYearRule-sourceProvision-officialText",
@@ -5680,7 +5704,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishLanguageUndergraduateRate-sourceProvision-officialText",
@@ -5756,7 +5781,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01DELF-requiredLevelCode",
@@ -5844,7 +5870,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01HSK-requiredLevelCode",
@@ -5932,7 +5959,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01JLPT-requiredLevelCode",
@@ -6044,7 +6072,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01JPT-sourceProvision-officialText",
@@ -6120,7 +6149,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01KLPT-sourceProvision-officialText",
@@ -6196,7 +6226,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01TCF-sourceProvision-officialText",
@@ -6272,7 +6303,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01TOCFL-requiredLevelCode",
@@ -6360,7 +6392,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01TOPIK-requiredLevelCode",
@@ -6448,7 +6481,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule01TRKI-requiredLevelCode",
@@ -6536,7 +6570,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02DELF-requiredLevelCode",
@@ -6624,7 +6659,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02HSK-requiredLevelCode",
@@ -6712,7 +6748,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02JLPT-requiredLevelCode",
@@ -6800,7 +6837,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02JPT-sourceProvision-officialText",
@@ -6900,7 +6938,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02KLPT-sourceProvision-officialText",
@@ -6976,7 +7015,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02TCF-sourceProvision-officialText",
@@ -7052,7 +7092,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02TOCFL-requiredLevelCode",
@@ -7140,7 +7181,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02TOPIK-requiredLevelCode",
@@ -7228,7 +7270,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule02TRKI-requiredLevelCode",
@@ -7316,7 +7359,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03DELF-requiredLevelCode",
@@ -7404,7 +7448,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03HSK-requiredLevelCode",
@@ -7492,7 +7537,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03JLPT-requiredLevelCode",
@@ -7580,7 +7626,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03JPT-sourceProvision-officialText",
@@ -7680,7 +7727,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03KLPT-sourceProvision-officialText",
@@ -7756,7 +7804,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03TCF-sourceProvision-officialText",
@@ -7832,7 +7881,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03TOCFL-requiredLevelCode",
@@ -7920,7 +7970,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03TOPIK-requiredLevelCode",
@@ -8008,7 +8059,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule03TRKI-requiredLevelCode",
@@ -8096,7 +8148,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04DELF-requiredLevelCode",
@@ -8184,7 +8237,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04HSK-requiredLevelCode",
@@ -8272,7 +8326,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04JLPT-requiredLevelCode",
@@ -8360,7 +8415,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04JPT-sourceProvision-officialText",
@@ -8460,7 +8516,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04KLPT-sourceProvision-officialText",
@@ -8536,7 +8593,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04TCF-sourceProvision-officialText",
@@ -8612,7 +8670,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04TOCFL-requiredLevelCode",
@@ -8700,7 +8759,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04TOPIK-requiredLevelCode",
@@ -8788,7 +8848,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule04TRKI-requiredLevelCode",
@@ -8863,7 +8924,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05HSK-requiredLevelCode",
@@ -8938,7 +9000,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05JLPT-requiredLevelCode",
@@ -9013,7 +9076,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05JPT-sourceProvision-officialText",
@@ -9100,7 +9164,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05KLPT-sourceProvision-officialText",
@@ -9163,7 +9228,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05TOPIK-requiredLevelCode",
@@ -9238,7 +9304,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule05TRKI-requiredLevelCode",
@@ -9313,7 +9380,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule06JLPT-requiredLevelCode",
@@ -9388,7 +9456,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule06JPT-sourceProvision-officialText",
@@ -9475,7 +9544,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule06KLPT-sourceProvision-officialText",
@@ -9538,7 +9608,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule06TOPIK-requiredLevelCode",
@@ -9613,7 +9684,8 @@
       "provenance": [
         "EnglishMajorOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "EnglishMajorOtherLanguageCertificateTableRule06TRKI-requiredLevelCode",
@@ -9854,7 +9926,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ExcellentAcademicPerformanceBand-resultLabel",
@@ -9951,7 +10024,8 @@
       "provenance": [
         "Decision1052Article23"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ExcellentGraduationBand-resultLabel",
@@ -10176,7 +10250,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "FairAcademicPerformanceBand-resultLabel",
@@ -10273,7 +10348,8 @@
       "provenance": [
         "Decision1052Article23"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "FairGraduationBand-resultLabel",
@@ -10384,7 +10460,8 @@
       "provenance": [
         "Decision1052Article19"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "FirstStudyYearBand-resultLabel",
@@ -11620,7 +11697,8 @@
       "provenance": [
         "Decision1052Article19"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "FourthStudyYearBand-resultLabel",
@@ -11864,7 +11942,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GoodAcademicPerformanceBand-resultLabel",
@@ -11961,7 +12040,8 @@
       "provenance": [
         "Decision1052Article23"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GoodGraduationBand-resultLabel",
@@ -12294,7 +12374,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupIIIDoctoralRate-sourceProvision-officialText",
@@ -12356,7 +12437,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupIIIMasterRate-sourceProvision-officialText",
@@ -12431,7 +12513,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupIIIUndergraduateRate-sourceProvision-officialText",
@@ -12493,7 +12576,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupIVDoctoralRate-sourceProvision-officialText",
@@ -12555,7 +12639,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupIVMasterRate-sourceProvision-officialText",
@@ -12617,7 +12702,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVDoctoralRate-sourceProvision-officialText",
@@ -12679,7 +12765,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVIIDoctoralRate-sourceProvision-officialText",
@@ -12741,7 +12828,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVIIMasterRate-sourceProvision-officialText",
@@ -12829,7 +12917,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVIIOtherUndergraduateRate-sourceProvision-officialText",
@@ -12891,7 +12980,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVMasterRate-sourceProvision-officialText",
@@ -12966,7 +13056,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "GroupVUndergraduateRate-sourceProvision-officialText",
@@ -13669,7 +13760,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "MarineResourceDoctoralFourYearRule-sourceProvision-officialText",
@@ -14118,7 +14210,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "NhaTrangCounterFreeFee-sourceProvision-officialText",
@@ -14205,7 +14298,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "NoherdDoctoralRate-sourceProvision-officialText",
@@ -14351,7 +14445,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "OutsideNhaTrangCounterFee-sourceProvision-officialText",
@@ -14727,7 +14822,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "PoorAcademicPerformanceBand-resultLabel",
@@ -14838,7 +14934,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "QRCodeFreeFee-sourceProvision-officialText",
@@ -15106,7 +15203,8 @@
       "provenance": [
         "Decision1052Article19"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SecondStudyYearBand-resultLabel",
@@ -15295,7 +15393,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01AptisGeneral-satisfiesOutputStandard",
@@ -15407,7 +15506,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01CambridgeEnglishScale-satisfiesOutputStandard",
@@ -15519,7 +15619,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01IELTS-satisfiesOutputStandard",
@@ -15607,7 +15708,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01Linguaskill-satisfiesOutputStandard",
@@ -15719,7 +15821,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01TOEFLIBT-satisfiesOutputStandard",
@@ -15831,7 +15934,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule01TOEIC-satisfiesOutputStandard",
@@ -15943,7 +16047,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02AptisGeneral-satisfiesOutputStandard",
@@ -16055,7 +16160,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02CambridgeEnglishScale-satisfiesOutputStandard",
@@ -16167,7 +16273,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02IELTS-satisfiesOutputStandard",
@@ -16255,7 +16362,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02Linguaskill-satisfiesOutputStandard",
@@ -16367,7 +16475,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02TOEFLIBT-satisfiesOutputStandard",
@@ -16479,7 +16588,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule02TOEIC-satisfiesOutputStandard",
@@ -16591,7 +16701,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03AptisGeneral-satisfiesOutputStandard",
@@ -16703,7 +16814,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03CambridgeEnglishScale-satisfiesOutputStandard",
@@ -16815,7 +16927,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03IELTS-satisfiesOutputStandard",
@@ -16903,7 +17016,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03Linguaskill-satisfiesOutputStandard",
@@ -17015,7 +17129,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03TOEFLIBT-satisfiesOutputStandard",
@@ -17127,7 +17242,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule03TOEIC-satisfiesOutputStandard",
@@ -17239,7 +17355,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04AptisGeneral-satisfiesOutputStandard",
@@ -17351,7 +17468,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04CambridgeEnglishScale-satisfiesOutputStandard",
@@ -17463,7 +17581,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04IELTS-satisfiesOutputStandard",
@@ -17575,7 +17694,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04Linguaskill-satisfiesOutputStandard",
@@ -17687,7 +17807,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04TOEFLIBT-satisfiesOutputStandard",
@@ -17799,7 +17920,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule04TOEIC-satisfiesOutputStandard",
@@ -17911,7 +18033,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05AptisGeneral-satisfiesOutputStandard",
@@ -18023,7 +18146,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05CambridgeEnglishScale-satisfiesOutputStandard",
@@ -18135,7 +18259,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05IELTS-satisfiesOutputStandard",
@@ -18247,7 +18372,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05Linguaskill-satisfiesOutputStandard",
@@ -18359,7 +18485,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05TOEFLIBT-satisfiesOutputStandard",
@@ -18471,7 +18598,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule05TOEIC-satisfiesOutputStandard",
@@ -18583,7 +18711,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06AptisGeneral-satisfiesOutputStandard",
@@ -18695,7 +18824,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06CambridgeEnglishScale-satisfiesOutputStandard",
@@ -18807,7 +18937,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06IELTS-satisfiesOutputStandard",
@@ -18919,7 +19050,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06Linguaskill-satisfiesOutputStandard",
@@ -19031,7 +19163,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06TOEFLIBT-satisfiesOutputStandard",
@@ -19143,7 +19276,8 @@
       "provenance": [
         "SpecialProgramEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramEnglishCertificateTableRule06TOEIC-satisfiesOutputStandard",
@@ -19243,7 +19377,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01DELF-requiredLevelCode",
@@ -19330,7 +19465,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01HSK-requiredLevelCode",
@@ -19417,7 +19553,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01JLPT-requiredLevelCode",
@@ -19504,7 +19641,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01JPT-satisfiesOutputStandard",
@@ -19603,7 +19741,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01TCF-satisfiesOutputStandard",
@@ -19678,7 +19817,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01TOCFL-requiredLevelCode",
@@ -19765,7 +19905,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01TOPIK-requiredLevelCode",
@@ -19852,7 +19993,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule01TRKI-requiredLevelCode",
@@ -19939,7 +20081,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02DELF-requiredLevelCode",
@@ -20026,7 +20169,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02HSK-requiredLevelCode",
@@ -20113,7 +20257,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02JLPT-requiredLevelCode",
@@ -20200,7 +20345,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02JPT-satisfiesOutputStandard",
@@ -20299,7 +20445,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02TCF-satisfiesOutputStandard",
@@ -20374,7 +20521,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02TOCFL-requiredLevelCode",
@@ -20461,7 +20609,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02TOPIK-requiredLevelCode",
@@ -20548,7 +20697,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule02TRKI-requiredLevelCode",
@@ -20635,7 +20785,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03DELF-requiredLevelCode",
@@ -20722,7 +20873,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03HSK-requiredLevelCode",
@@ -20809,7 +20961,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03JLPT-requiredLevelCode",
@@ -20896,7 +21049,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03JPT-satisfiesOutputStandard",
@@ -20995,7 +21149,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03TCF-satisfiesOutputStandard",
@@ -21070,7 +21225,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03TOCFL-requiredLevelCode",
@@ -21157,7 +21313,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03TOPIK-requiredLevelCode",
@@ -21244,7 +21401,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule03TRKI-requiredLevelCode",
@@ -21331,7 +21489,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04DELF-requiredLevelCode",
@@ -21418,7 +21577,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04HSK-requiredLevelCode",
@@ -21505,7 +21665,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04JLPT-requiredLevelCode",
@@ -21592,7 +21753,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04JPT-satisfiesOutputStandard",
@@ -21691,7 +21853,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04TCF-satisfiesOutputStandard",
@@ -21766,7 +21929,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04TOCFL-requiredLevelCode",
@@ -21853,7 +22017,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04TOPIK-requiredLevelCode",
@@ -21940,7 +22105,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule04TRKI-requiredLevelCode",
@@ -22027,7 +22193,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05DELF-requiredLevelCode",
@@ -22114,7 +22281,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05HSK-requiredLevelCode",
@@ -22201,7 +22369,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05JLPT-requiredLevelCode",
@@ -22288,7 +22457,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05JPT-satisfiesOutputStandard",
@@ -22387,7 +22557,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05TCF-satisfiesOutputStandard",
@@ -22462,7 +22633,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05TOCFL-requiredLevelCode",
@@ -22549,7 +22721,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05TOPIK-requiredLevelCode",
@@ -22636,7 +22809,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule05TRKI-requiredLevelCode",
@@ -22723,7 +22897,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06DELF-requiredLevelCode",
@@ -22810,7 +22985,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06HSK-requiredLevelCode",
@@ -22897,7 +23073,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06JLPT-requiredLevelCode",
@@ -22984,7 +23161,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06JPT-satisfiesOutputStandard",
@@ -23083,7 +23261,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06TCF-satisfiesOutputStandard",
@@ -23158,7 +23337,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06TOCFL-requiredLevelCode",
@@ -23245,7 +23425,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06TOPIK-requiredLevelCode",
@@ -23332,7 +23513,8 @@
       "provenance": [
         "SpecialProgramOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "SpecialProgramOtherLanguageCertificateTableRule06TRKI-requiredLevelCode",
@@ -23553,7 +23735,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule02AptisGeneral-satisfiesOutputStandard",
@@ -23665,7 +23848,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule02CambridgeEnglishScale-satisfiesOutputStandard",
@@ -23777,7 +23961,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule02TOEFLIBT-satisfiesOutputStandard",
@@ -23865,7 +24050,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule02TOEIC-satisfiesOutputStandard",
@@ -23953,7 +24139,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03AptisGeneral-satisfiesOutputStandard",
@@ -24041,7 +24228,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03CambridgeEnglishScale-satisfiesOutputStandard",
@@ -24129,7 +24317,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03IELTS-satisfiesOutputStandard",
@@ -24241,7 +24430,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03Linguaskill-satisfiesOutputStandard",
@@ -24329,7 +24519,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03TOEFLIBT-satisfiesOutputStandard",
@@ -24417,7 +24608,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule03TOEIC-satisfiesOutputStandard",
@@ -24505,7 +24697,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04AptisGeneral-satisfiesOutputStandard",
@@ -24593,7 +24786,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04CambridgeEnglishScale-satisfiesOutputStandard",
@@ -24705,7 +24899,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04IELTS-satisfiesOutputStandard",
@@ -24817,7 +25012,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04Linguaskill-satisfiesOutputStandard",
@@ -24929,7 +25125,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04TOEFLIBT-satisfiesOutputStandard",
@@ -25041,7 +25238,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule04TOEIC-satisfiesOutputStandard",
@@ -25116,7 +25314,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule05CambridgeEnglishScale-sourceProvision-officialText",
@@ -25203,7 +25402,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule05IELTS-sourceProvision-officialText",
@@ -25290,7 +25490,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule05Linguaskill-sourceProvision-officialText",
@@ -25377,7 +25578,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule05TOEFLIBT-sourceProvision-officialText",
@@ -25464,7 +25666,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule05TOEIC-sourceProvision-officialText",
@@ -25551,7 +25754,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule06CambridgeEnglishScale-sourceProvision-officialText",
@@ -25638,7 +25842,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule06IELTS-sourceProvision-officialText",
@@ -25725,7 +25930,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule06Linguaskill-sourceProvision-officialText",
@@ -25812,7 +26018,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule06TOEFLIBT-sourceProvision-officialText",
@@ -25899,7 +26106,8 @@
       "provenance": [
         "StandardEnglishCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardEnglishCertificateTableRule06TOEIC-sourceProvision-officialText",
@@ -25974,7 +26182,8 @@
       "provenance": [
         "Decision729Appendix01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardGeneralEducationRate-sourceProvision-officialText",
@@ -26037,7 +26246,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01DELF-requiredLevelCode",
@@ -26112,7 +26322,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01HSK-requiredLevelCode",
@@ -26187,7 +26398,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01JLPT-requiredLevelCode",
@@ -26286,7 +26498,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01JPT-sourceProvision-officialText",
@@ -26349,7 +26562,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01KLPT-sourceProvision-officialText",
@@ -26436,7 +26650,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01TCF-sourceProvision-officialText",
@@ -26499,7 +26714,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01TOCFL-requiredLevelCode",
@@ -26574,7 +26790,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01TOPIK-requiredLevelCode",
@@ -26649,7 +26866,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule01TRKI-requiredLevelCode",
@@ -26737,7 +26955,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02DELF-requiredLevelCode",
@@ -26837,7 +27056,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02HSK-requiredLevelCode",
@@ -26937,7 +27157,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02JLPT-requiredLevelCode",
@@ -27037,7 +27258,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02JPT-satisfiesOutputStandard",
@@ -27149,7 +27371,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02KLPT-satisfiesOutputStandard",
@@ -27261,7 +27484,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02TCF-satisfiesOutputStandard",
@@ -27349,7 +27573,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02TOCFL-requiredLevelCode",
@@ -27449,7 +27674,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02TOPIK-requiredLevelCode",
@@ -27549,7 +27775,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow02"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule02TRKI-requiredLevelCode",
@@ -27636,7 +27863,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03DELF-requiredLevelCode",
@@ -27711,7 +27939,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03HSK-requiredLevelCode",
@@ -27786,7 +28015,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03JLPT-requiredLevelCode",
@@ -27861,7 +28091,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03JPT-sourceProvision-officialText",
@@ -27948,7 +28179,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03KLPT-sourceProvision-officialText",
@@ -28035,7 +28267,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03TCF-sourceProvision-officialText",
@@ -28098,7 +28331,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03TOCFL-requiredLevelCode",
@@ -28173,7 +28407,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03TOPIK-requiredLevelCode",
@@ -28248,7 +28483,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow03"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule03TRKI-requiredLevelCode",
@@ -28336,7 +28572,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04DELF-requiredLevelCode",
@@ -28436,7 +28673,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04HSK-requiredLevelCode",
@@ -28536,7 +28774,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04JLPT-requiredLevelCode",
@@ -28636,7 +28875,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04JPT-satisfiesOutputStandard",
@@ -28748,7 +28988,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04KLPT-satisfiesOutputStandard",
@@ -28860,7 +29101,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04TCF-satisfiesOutputStandard",
@@ -28948,7 +29190,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04TOCFL-requiredLevelCode",
@@ -29048,7 +29291,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04TOPIK-requiredLevelCode",
@@ -29148,7 +29392,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow04"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule04TRKI-requiredLevelCode",
@@ -29235,7 +29480,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule05JLPT-requiredLevelCode",
@@ -29310,7 +29556,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule05JPT-sourceProvision-officialText",
@@ -29397,7 +29644,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule05KLPT-sourceProvision-officialText",
@@ -29460,7 +29708,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule05TOPIK-requiredLevelCode",
@@ -29535,7 +29784,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow05"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule05TRKI-requiredLevelCode",
@@ -29610,7 +29860,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule06JLPT-requiredLevelCode",
@@ -29685,7 +29936,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule06JPT-sourceProvision-officialText",
@@ -29772,7 +30024,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule06KLPT-sourceProvision-officialText",
@@ -29835,7 +30088,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule06TOPIK-requiredLevelCode",
@@ -29910,7 +30164,8 @@
       "provenance": [
         "StandardOtherLanguageCertificateTableRow06"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "StandardOtherLanguageCertificateTableRule06TRKI-requiredLevelCode",
@@ -30744,7 +30999,8 @@
       "provenance": [
         "Decision1052Article19"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "ThirdStudyYearBand-resultLabel",
@@ -31131,7 +31387,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "VNPAYOtherBankFee-sourceProvision-officialText",
@@ -31218,7 +31475,8 @@
       "provenance": [
         "TuitionPaymentGuidanceProvision01"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "VNPAYVietcombankFreeFee-sourceProvision-officialText",
@@ -31537,7 +31795,8 @@
       "provenance": [
         "Decision1052Article18"
       ],
-      "status": "supported"
+      "status": "excluded",
+      "reason": "Nhãn của bản ghi kỹ thuật nội bộ; truy vấn bằng điều kiện nghiệp vụ thay vì IRI của bản ghi."
     },
     {
       "id": "WeakAcademicPerformanceBand-resultLabel",
