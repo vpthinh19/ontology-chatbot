@@ -134,13 +134,61 @@ def test_catalogue_detail_queries_cover_complete_official_tables(
         ontology_graph,
         catalogue["class-size-details"].target_template,
     )
-    certificate_query = catalogue[
-        "certificate-conversion-details"
-    ].target_template.replace("${certificate}", ":IELTSCertificate")
-    certificate_rules = execute_select(ontology_graph, certificate_query)
-
     assert len(tuition) == 24
     assert len(doctoral) == 3
     assert len(class_sizes) == 14
-    assert len(certificate_rules) == 10
-    assert any(row["criterion"] == "≥ 5.5" for row in certificate_rules)
+
+
+@pytest.mark.parametrize(
+    ("certificate", "expected_rows", "header", "relevant_rule"),
+    [
+        (
+            ":IELTSCertificate",
+            2,
+            "| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS |",
+            "| Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 |",
+        ),
+        (
+            ":HSKCertificate",
+            3,
+            "| Khung NLNN 6 bậc | Tiếng Trung (HSK) |",
+            "| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 |",
+        ),
+        (
+            ":IC3Certificate",
+            1,
+            "| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |",
+            "| 1 | 1990 - 2329 | 1350 - 1445 | 1400 - 1599 | 8 |",
+        ),
+    ],
+)
+def test_certificate_conversion_details_return_parent_official_tables(
+    ontology_graph,
+    certificate: str,
+    expected_rows: int,
+    header: str,
+    relevant_rule: str,
+) -> None:
+    target = load_catalogue(QUERY_CATALOGUE_PATH)[
+        "certificate-conversion-details"
+    ].target_template.replace("${certificate}", certificate)
+
+    rows = execute_select(ontology_graph, target)
+
+    assert len(rows) == expected_rows
+    assert all(set(row) == {"document", "answer"} for row in rows)
+    assert any(header in row["answer"] for row in rows)
+    assert any(relevant_rule in row["answer"] for row in rows)
+
+
+def test_certificate_conversion_details_return_tables_for_all_declared_certificates(
+    ontology_graph,
+) -> None:
+    spec = load_catalogue(QUERY_CATALOGUE_PATH)["certificate-conversion-details"]
+
+    for certificate in spec.slots["certificate"].values:
+        target = spec.target_template.replace("${certificate}", certificate)
+        rows = execute_select(ontology_graph, target)
+
+        assert rows, certificate
+        assert all("| :---" in row["answer"] for row in rows), certificate

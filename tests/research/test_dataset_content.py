@@ -242,6 +242,39 @@ def test_official_release_is_executable_and_has_complete_coverage() -> None:
     require_complete_coverage(coverage_report)
 
 
+def test_certificate_conversion_detail_rows_use_compact_parent_table_targets() -> None:
+    expected_template = (
+        "SELECT DISTINCT ?document ?answer WHERE { ?rule a :CertificateConversionRule ; "
+        ":appliesToCertificate ${certificate} ; :sourceDocument/rdfs:label ?document ; "
+        ":sourceProvision/:partOf/:officialText ?answer . }"
+    )
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    spec = catalogue["certificate-conversion-details"]
+    release = load_release()
+    rows = {
+        split: [
+            row
+            for row in split_rows
+            if row["query_id"] == "certificate-conversion-details"
+        ]
+        for split, split_rows in release.items()
+    }
+    expected_targets = {
+        expected_template.replace("${certificate}", certificate)
+        for certificate in spec.slots["certificate"].values
+    }
+
+    assert spec.target_template == expected_template
+    assert {split: len(split_rows) for split, split_rows in rows.items()} == {
+        "train": 18,
+        "val": 2,
+        "test": 2,
+    }
+    assert {row["target"] for split_rows in rows.values() for row in split_rows} == (
+        expected_targets
+    )
+
+
 def test_official_procedure_iris_exist_in_ontology() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)

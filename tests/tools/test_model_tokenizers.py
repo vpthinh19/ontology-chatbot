@@ -5,9 +5,10 @@ from pathlib import Path
 
 import pytest
 
+from ontchatbot.research.catalogue import load_catalogue
 from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.text import normalize_model_input
-from ontchatbot.settings import ARTIFACTS_DIR
+from ontchatbot.settings import ARTIFACTS_DIR, QUERY_CATALOGUE_PATH
 from ontchatbot.tools.tokenizer import (
     BARTPHO_REVISION,
     T5GEMMA_REVISION,
@@ -97,3 +98,36 @@ def test_all_dataset_text_roundtrips_supported_tokenizers() -> None:
             )["input_ids"]
             assert len(ids) <= 128
             assert tokenizer.unk_token_id not in ids
+
+
+def test_certificate_conversion_detail_targets_fit_supported_tokenizers() -> None:
+    pytest.importorskip("transformers")
+    from transformers import AutoTokenizer
+
+    bartpho = _snapshot("models--vinai--bartpho-syllable", BARTPHO_REVISION)
+    vit5 = ARTIFACTS_DIR / "tokenizers/vit5"
+    t5gemma = _snapshot(
+        "models--google--t5gemma-2-270m-270m",
+        T5GEMMA_REVISION,
+    )
+    if not all(path.is_dir() for path in (bartpho, vit5, t5gemma)):
+        pytest.skip("all three local tokenizers are required")
+
+    spec = load_catalogue(QUERY_CATALOGUE_PATH)["certificate-conversion-details"]
+    targets = [
+        spec.target_template.replace("${certificate}", certificate)
+        for certificate in spec.slots["certificate"].values
+    ]
+    tokenizers = {
+        "bartpho": AutoTokenizer.from_pretrained(bartpho, local_files_only=True),
+        "vit5": AutoTokenizer.from_pretrained(vit5, local_files_only=True),
+        "t5gemma2": AutoTokenizer.from_pretrained(
+            t5gemma,
+            local_files_only=True,
+            fix_mistral_regex=False,
+        ),
+    }
+
+    for name, tokenizer in tokenizers.items():
+        report = audit_target_roundtrip(tokenizer, targets)
+        assert max(row["tokens"] for row in report) <= 160, name
