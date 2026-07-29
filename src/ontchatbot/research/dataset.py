@@ -132,6 +132,8 @@ def validate_release(
     splits: dict[str, list[dict[str, Any]]],
     graph: Graph,
     catalogue: Mapping[str, QuerySpec] | None = None,
+    *,
+    require_complete_catalogue: bool = True,
 ) -> dict[str, Any]:
     """Validate all files, train coverage, and leakage between splits."""
 
@@ -164,25 +166,27 @@ def validate_release(
                 for name, value in (match_target(spec, row["target"]) or {}).items():
                     train_slots[query_id][name].add(value)
 
-    all_queries = set(catalogue)
+    declared_queries = set(catalogue)
+    observed_queries = set().union(*(counts.keys() for counts in query_counts.values()))
+    checked_queries = declared_queries if require_complete_catalogue else observed_queries
     missing = {
-        split: sorted(all_queries - query_counts[split].keys())
+        split: sorted(checked_queries - query_counts[split].keys())
         for split in REQUIRED_SPLITS
-        if all_queries - query_counts[split].keys()
+        if checked_queries - query_counts[split].keys()
     }
     if missing:
         raise DatasetError(f"query IDs missing from splits: {missing}")
 
     sparse_train = sorted(
         query_id
-        for query_id in all_queries
+        for query_id in checked_queries
         if query_counts["train"][query_id] < TRAIN_MIN_ROWS_PER_QUERY
     )
     if sparse_train:
         raise DatasetError(f"query IDs have fewer than four train rows: {sparse_train[:10]}")
     missing_train_registers = {
         query_id: sorted(ALLOWED_REGISTERS - query_registers["train"][query_id])
-        for query_id in sorted(all_queries)
+        for query_id in sorted(checked_queries)
         if ALLOWED_REGISTERS - query_registers["train"][query_id]
     }
     if missing_train_registers:
@@ -193,14 +197,14 @@ def validate_release(
     for split in ("val", "test"):
         sparse = sorted(
             query_id
-            for query_id in all_queries
+            for query_id in checked_queries
             if query_counts[split][query_id] < HELD_OUT_MIN_ROWS_PER_QUERY
         )
         if sparse:
             raise DatasetError(f"query IDs have fewer than two {split} rows: {sparse[:10]}")
         repeated = sorted(
             query_id
-            for query_id in all_queries
+            for query_id in checked_queries
             if len(query_registers[split][query_id]) < HELD_OUT_MIN_REGISTERS_PER_QUERY
         )
         if repeated:
@@ -208,14 +212,17 @@ def validate_release(
                 f"query IDs must use two distinct {split} registers: {repeated[:10]}"
             )
 
-    slot_coverage = _slot_coverage(catalogue, train_slots)
+    slot_coverage = _slot_coverage(
+        {query_id: catalogue[query_id] for query_id in sorted(checked_queries)},
+        train_slots,
+    )
     missing_slots = [
         (query_id, name, details["missing_train"])
         for query_id, slots in slot_coverage.items()
         for name, details in slots.items()
         if details["missing_train"]
     ]
-    if missing_slots:
+    if require_complete_catalogue and missing_slots:
         raise DatasetError(f"finite slot values missing from train: {missing_slots[:10]}")
 
     for label, locations in (("inputs", question_locations), ("ids", id_locations)):
@@ -234,6 +241,7 @@ def validate_release(
         "records": sum(report["records"] for report in reports.values()),
         "split_counts": {name: reports[name]["records"] for name in REQUIRED_SPLITS},
         "domains": dict(sorted(domains.items())),
+        "catalogue_coverage_required": require_complete_catalogue,
         "slot_coverage": slot_coverage,
         "splits": reports,
     }

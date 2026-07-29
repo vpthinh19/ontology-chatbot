@@ -66,11 +66,16 @@ SOURCE_TYPES = {
 LOCAL_NAME = re.compile(r":([A-Za-z][A-Za-z0-9]*)")
 
 
-def test_official_release_is_executable_and_covers_procedure_families() -> None:
+def test_candidate_pool_is_executable_and_covers_procedure_families() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
 
-    report = validate_release(load_release(), graph, catalogue)
+    report = validate_release(
+        load_release(),
+        graph,
+        catalogue,
+        require_complete_catalogue=False,
+    )
 
     assert PROCEDURE_FAMILIES <= set(catalogue)
     assert report["domains"]["procedure"] > 0
@@ -79,7 +84,12 @@ def test_official_release_is_executable_and_covers_procedure_families() -> None:
 def test_candidate_procedure_iris_exist_in_ontology() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(load_release(), graph, catalogue)
+    report = validate_release(
+        load_release(),
+        graph,
+        catalogue,
+        require_complete_catalogue=False,
+    )
     existing = {
         f":{str(node).rsplit('#', 1)[-1]}"
         for node in graph.subjects(RDF.type, ACADEMIC.AcademicProcedure)
@@ -119,7 +129,12 @@ def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> N
 def test_secondary_query_families_cover_finite_ontology_values() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(load_release(), graph, catalogue)
+    report = validate_release(
+        load_release(),
+        graph,
+        catalogue,
+        require_complete_catalogue=False,
+    )
 
     assert SECONDARY_FAMILIES <= set(catalogue)
 

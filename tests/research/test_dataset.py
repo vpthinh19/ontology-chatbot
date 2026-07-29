@@ -169,3 +169,44 @@ def test_near_duplicate_check_is_limited_to_same_query_family() -> None:
     leaked["test"][0]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 66"
     with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
         validate_release(leaked, load_ontology(), CATALOGUE)
+
+
+def test_candidate_mode_allows_unrepresented_catalogue_families() -> None:
+    catalogue = {
+        **CATALOGUE,
+        "procedure-list": QuerySpec(
+            "procedure-list",
+            "procedure",
+            "SELECT ?answer WHERE { ?procedure a :AcademicProcedure ; rdfs:label ?answer . }",
+            {},
+        ),
+    }
+
+    report = validate_release(
+        _valid_release(),
+        load_ontology(),
+        catalogue,
+        require_complete_catalogue=False,
+    )
+
+    assert report["catalogue_coverage_required"] is False
+
+
+def test_official_mode_rejects_unrepresented_catalogue_families() -> None:
+    catalogue = {
+        **CATALOGUE,
+        "procedure-list": QuerySpec(
+            "procedure-list",
+            "procedure",
+            "SELECT ?answer WHERE { ?procedure a :AcademicProcedure ; rdfs:label ?answer . }",
+            {},
+        ),
+    }
+
+    with pytest.raises(DatasetError, match="query IDs missing from splits"):
+        validate_release(
+            _valid_release(),
+            load_ontology(),
+            catalogue,
+            require_complete_catalogue=True,
+        )

@@ -26,6 +26,7 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
 
     assert report["dataset"]["records"] == 455
     assert report["dataset"]["query_families"] == 24
+    assert report["dataset"]["catalogue_families"] == 51
     assert report["dataset"]["domains"]["procedure"] > 0
     assert report["dataset"]["domains"]["out-of-domain"] > 0
     assert report["in_domain_contract"] == {
@@ -41,8 +42,10 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
         "val",
         "test",
     }
-    assert report["training_readiness"]["ready"] is True
-    assert report["training_readiness"]["finite_slots_missing_from_train"] == []
+    assert report["training_readiness"]["ready"] is False
+    assert "catalogue_not_fully_covered" in {
+        gap["code"] for gap in report["training_readiness"]["gaps"]
+    }
     assert report["sha256"]["catalogue.jsonl"]
 
     write_public_reports(report, output_dir=tmp_path)

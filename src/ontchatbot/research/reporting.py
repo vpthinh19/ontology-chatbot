@@ -48,7 +48,12 @@ def build_dataset_report(
 
     catalogue_path = Path(dataset_dir) / "catalogue.jsonl"
     catalogue = load_catalogue(catalogue_path)
-    validation = validate_release(dict(release), graph, catalogue)
+    validation = validate_release(
+        dict(release),
+        graph,
+        catalogue,
+        require_complete_catalogue=False,
+    )
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
     train_queries = {row["query_id"] for row in release["train"]}
@@ -75,7 +80,8 @@ def build_dataset_report(
     report = {
         "dataset": {
             "records": len(all_rows),
-            "query_families": len(catalogue),
+            "query_families": len({row["query_id"] for row in all_rows}),
+            "catalogue_families": len(catalogue),
             "targets": len({row["target"] for row in all_rows}),
             "domains": validation["domains"],
             "splits": {
@@ -431,6 +437,8 @@ def _build_training_readiness(
     validation: Mapping[str, Any],
 ) -> dict[str, Any]:
     gaps: list[dict[str, Any]] = []
+    if validation.get("catalogue_coverage_required") is False:
+        gaps.append({"code": "catalogue_not_fully_covered"})
     query_sets = {
         split: {row["query_id"] for row in release[split]}
         for split in REQUIRED_SPLITS
