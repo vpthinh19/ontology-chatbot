@@ -217,15 +217,15 @@ Run data-only validation, coverage and leakage gates. Expected combined domain c
 - Consumes: 137 certificate and 55 form rows.
 - Produces: certificate 230 rows (161/35/34) and form 120 rows (84/18/18).
 
-- [ ] **Step 1: Add certificate questions**
+- [x] **Step 1: Add certificate questions**
 
 Add 93 rows split 56/19/18. State certificate type, score and learner/program context whenever the selected family requires them. Full conversion-table requests must use the compact parent-table target; point lookup uses the score/criterion family.
 
-- [ ] **Step 2: Add form questions**
+- [x] **Step 2: Add form questions**
 
 Add 65 rows split 49/8/8. Cover form identification, catalogue listing, download and natural descriptions of use; never invent a URL or form absent from ontology.
 
-- [ ] **Step 3: Validate, assemble and commit**
+- [x] **Step 3: Validate, assemble and commit**
 
 Run data-only validation, coverage, exact URL execution and leakage gates. Replace tracked data mechanically and commit with message `Expand certificate and form questions`.
 
