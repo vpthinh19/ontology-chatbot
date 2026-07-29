@@ -1,6 +1,6 @@
 {
   "dataset": {
-    "records": 2888,
+    "records": 3558,
     "query_families": 51,
     "catalogue_families": 51,
     "targets": 482,
@@ -9,12 +9,12 @@
       "certificate": 260,
       "form": 124,
       "out-of-domain": 607,
-      "procedure": 1374,
+      "procedure": 2044,
       "tuition": 295
     },
     "splits": {
       "train": {
-        "records": 2079,
+        "records": 2749,
         "query_families": 51,
         "targets": 450,
         "domains": {
@@ -22,7 +22,7 @@
           "certificate": 191,
           "form": 88,
           "out-of-domain": 428,
-          "procedure": 985,
+          "procedure": 1655,
           "tuition": 219
         }
       },
@@ -54,32 +54,32 @@
       }
     },
     "registers": {
-      "colloquial": 719,
-      "formal": 748,
-      "neutral": 727,
-      "noisy": 694
+      "colloquial": 851,
+      "formal": 882,
+      "neutral": 929,
+      "noisy": 896
     },
     "query_features": {
       "filter": 291,
-      "graph_hop": 2041,
+      "graph_hop": 2711,
       "limit": 137,
-      "multi_branch": 2120,
-      "multi_column": 530,
-      "order": 492,
+      "multi_branch": 2790,
+      "multi_column": 539,
+      "order": 501,
       "single_branch": 161,
-      "single_column": 1751,
+      "single_column": 2412,
       "values": 16
     },
     "query_features_by_split": {
       "train": {
         "filter": 235,
-        "graph_hop": 1469,
+        "graph_hop": 2139,
         "limit": 115,
-        "multi_branch": 1531,
-        "multi_column": 352,
-        "order": 345,
+        "multi_branch": 2201,
+        "multi_column": 361,
+        "order": 354,
         "single_branch": 120,
-        "single_column": 1299,
+        "single_column": 1960,
         "values": 12
       },
       "val": {
@@ -108,9 +108,9 @@
     "input_words": {
       "min": 3,
       "median": 13,
-      "p95": 20,
+      "p95": 19,
       "max": 36,
-      "mean": 12.63
+      "mean": 12.82
     }
   },
   "in_domain_contract": {
@@ -142,9 +142,9 @@
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 2888,
+    "records": 3558,
     "split_counts": {
-      "train": 2079,
+      "train": 2749,
       "val": 402,
       "test": 407
     },
@@ -153,7 +153,7 @@
       "certificate": 260,
       "form": 124,
       "out-of-domain": 607,
-      "procedure": 1374,
+      "procedure": 2044,
       "tuition": 295
     },
     "catalogue_coverage_required": true,
@@ -1101,7 +1101,7 @@
     },
     "splits": {
       "train": {
-        "records": 2079,
+        "records": 2749,
         "queries": 51,
         "targets": 450,
         "query_counts": {
@@ -1138,18 +1138,18 @@
           "payment-method-list": 16,
           "payment-warning": 16,
           "policy-details": 9,
-          "procedure-deadline": 70,
-          "procedure-decision-authority": 48,
-          "procedure-eligibility": 130,
-          "procedure-form-download": 56,
-          "procedure-instruction": 134,
-          "procedure-list": 9,
+          "procedure-deadline": 116,
+          "procedure-decision-authority": 80,
+          "procedure-eligibility": 242,
+          "procedure-form-download": 98,
+          "procedure-instruction": 232,
+          "procedure-list": 18,
           "procedure-overview": 88,
-          "procedure-required-form": 92,
-          "procedure-result": 94,
-          "procedure-review-office": 25,
-          "procedure-source": 132,
-          "procedure-submission-office": 84,
+          "procedure-required-form": 158,
+          "procedure-result": 184,
+          "procedure-review-office": 40,
+          "procedure-source": 236,
+          "procedure-submission-office": 140,
           "reference-entity-list": 12,
           "study-year-band": 23,
           "study-year-details": 8,
@@ -1158,17 +1158,17 @@
           "tuition-rate-details": 16
         },
         "register_counts": {
-          "colloquial": 520,
-          "formal": 537,
-          "neutral": 531,
-          "noisy": 491
+          "colloquial": 652,
+          "formal": 671,
+          "neutral": 733,
+          "noisy": 693
         },
         "domains": {
           "academic-rule": 168,
           "certificate": 191,
           "form": 88,
           "out-of-domain": 428,
-          "procedure": 985,
+          "procedure": 1655,
           "tuition": 219
         },
         "slot_values": {
@@ -2481,7 +2481,7 @@
     }
   },
   "sha256": {
-    "train.jsonl": "02ff23a162902e2499c874f27ad01a45808f102b2a6a0151e80dc4f98325d128",
+    "train.jsonl": "996325d8d16fe1f7ece79108bef2982c0429613e144dbe2cc1f7868fdc601591",
     "val.jsonl": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669",
     "test.jsonl": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305",
     "catalogue.jsonl": "6ca48b0e5cb2b812b747586cdd73a4cdfbf7979d51d9418267daaaad118837ad",

@@ -13,33 +13,33 @@ ontology.
 
 ## Quy mô và phân bố
 
-Dataset có 2.888 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
+Dataset có 3.558 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
 
 | Split | Số câu | Vai trò |
 |---|---:|---|
-| Train | 2.079 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
+| Train | 2.749 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
 | Validation | 402 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
 | Test | 407 | Đánh giá cuối; không dùng để sửa dữ liệu hay chọn checkpoint |
 
 | Miền | Số câu |
 |---|---:|
-| Quy trình học vụ | 1.374 |
+| Quy trình học vụ | 2.044 |
 | Học phí | 295 |
 | Quy tắc học vụ | 228 |
 | Chứng chỉ | 260 |
 | Biểu mẫu | 124 |
 | Ngoài miền | 607 |
 
-Bốn phong cách diễn đạt được phân bố gần cân bằng: 748 `formal`, 727 `neutral`,
-719 `colloquial` và 694 `noisy`.
+Bốn phong cách diễn đạt được phân bố gần cân bằng: 882 `formal`, 929 `neutral`,
+851 `colloquial` và 896 `noisy`.
 
 ### Độ phủ quy trình học vụ
 
 Catalogue có 142 target SPARQL canonical thuộc các họ `procedure-*`. Train có
-962 câu cho các target này: mỗi target có ít nhất sáu câu và đủ `formal`,
-`neutral`, `colloquial`, `noisy`. Riêng 22 target hướng dẫn có ít nhất sáu câu
-hỏi cách thực hiện và bốn câu yêu cầu nội dung tổng quan; đăng ký học phần có
-12 câu.
+1.632 câu cho các target này: mỗi target có ít nhất mười câu và đủ `formal`,
+`neutral`, `colloquial`, `noisy`. Riêng 22 target hướng dẫn có ít nhất mười câu
+hỏi cách thực hiện và bốn câu yêu cầu nội dung tổng quan; target hướng dẫn đăng
+ký học phần có 20 câu.
 
 Validation có 180 và test có 185 câu `procedure-*`; cả hai đều phủ đủ 142
 target. Mỗi target hướng dẫn có cả câu hỏi cách thực hiện lẫn câu hỏi tổng quan,

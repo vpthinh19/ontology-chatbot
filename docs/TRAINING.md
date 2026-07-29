@@ -2,9 +2,9 @@
 
 ## Trạng thái
 
-Ontology, catalogue và dataset 2.888 câu đã vượt các cổng kiểm tra tĩnh.
-T5Gemma2 chưa được fine-tune trên dữ liệu đang khóa, vì vậy hiện chưa có
-benchmark chính thức cho trạng thái này. Chỉ số và checkpoint tạo từ dataset
+Ontology, catalogue và dataset 3.558 câu đã vượt các cổng kiểm tra tĩnh.
+T5Gemma2 chưa được fine-tune trên dữ liệu đang khóa; vì vậy
+chưa có benchmark chính thức cho trạng thái này. Chỉ số và checkpoint tạo từ dataset
 khác không được dùng để mô tả chất lượng hiện tại.
 
 ## Giao thức huấn luyện

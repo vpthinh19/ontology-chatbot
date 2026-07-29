@@ -71,6 +71,7 @@ USER_QUERY_EXPECTATIONS = {
     "hc phí k65 cntt": "tuition-program-cohort-rate",
     "học phí k67 như thế nào": "no-information",
 }
+FROZEN_VAL_SHA256 = "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669"
 FROZEN_TEST_SHA256 = "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
 SOURCE_TYPES = {
     ACADEMIC.Chapter,
@@ -533,8 +534,11 @@ def test_procedure_first_target_coverage() -> None:
     required_registers = {"formal", "neutral", "colloquial", "noisy"}
 
     assert len(train_counts) == 142
-    assert min(train_counts.values()) >= 6
-    assert all(train_counts[target] >= 10 for target in instruction_targets)
+    assert min(train_counts.values()) >= 10
+    assert all(train_counts[target] >= 14 for target in instruction_targets)
+    assert Counter(train_counts.values()) == Counter(
+        {10: 103, 14: 23, 16: 5, 18: 10, 20: 1}
+    )
     for target in train_counts:
         assert {
             row["register"]
@@ -550,7 +554,7 @@ def test_procedure_first_target_coverage() -> None:
         "SELECT ?answer WHERE { :CourseRegistrationProcedure "
         ":instructionProvision ?part . ?part :officialText ?answer . }"
     )
-    assert train_counts[course_target] >= 12
+    assert train_counts[course_target] >= 20
     assert len(procedure["train"]) >= 2 * sum(
         row["query_id"] == "no-information" for row in release["train"]
     )
@@ -572,16 +576,18 @@ def test_procedure_first_target_coverage() -> None:
         assert {row["register"] for row in course_rows} == required_registers
 
 
-def test_final_release_matrix_and_frozen_test_checksum() -> None:
+def test_final_release_matrix_and_frozen_evaluation_checksums() -> None:
     release = load_release()
 
     assert {split: len(rows) for split, rows in release.items()} == {
-        "train": 2_079,
+        "train": 2_749,
         "val": 402,
         "test": 407,
     }
-    payload = Path("resources/dataset/main/test.jsonl").read_bytes()
-    assert hashlib.sha256(payload).hexdigest() == FROZEN_TEST_SHA256
+    val_payload = Path("resources/dataset/main/val.jsonl").read_bytes()
+    test_payload = Path("resources/dataset/main/test.jsonl").read_bytes()
+    assert hashlib.sha256(val_payload).hexdigest() == FROZEN_VAL_SHA256
+    assert hashlib.sha256(test_payload).hexdigest() == FROZEN_TEST_SHA256
 
 
 def test_recovered_training_set_strengthens_measured_weak_families() -> None:

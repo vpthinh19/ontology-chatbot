@@ -1,7 +1,7 @@
 # Đánh giá
 
 Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Chưa
-có kết quả model hợp lệ cho dataset 2.888 câu hiện tại; mọi chỉ số chỉ được công
+có kết quả model hợp lệ cho dataset 3.558 câu hiện tại; mọi chỉ số chỉ được công
 bố sau khi T5Gemma2 hoàn tất một lần fine-tune và test theo giao thức dưới đây.
 
 ## Hai nhóm test
