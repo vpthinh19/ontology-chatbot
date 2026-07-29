@@ -978,121 +978,272 @@
 {"id":"question-000978","query_id":"computer-certificate-grade","register":"noisy","input":"icdl 1500 quy doi diem bn","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :ICDLCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (1500 >= ?minimum && ?maximum >= 1500) }"}
 {"id":"question-000979","query_id":"computer-certificate-grade","register":"formal","input":"Chứng chỉ MOS tổng 1400 điểm được quy đổi thành điểm bao nhiêu?","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :MOSCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (1400 >= ?minimum && ?maximum >= 1400) }"}
 {"id":"question-000980","query_id":"computer-certificate-grade","register":"neutral","input":"MOS đạt 1800 thì nhận điểm quy đổi nào?","target":"SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :MOSCertificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (1800 >= ?minimum && ?maximum >= 1800) }"}
-{"id":"question-000981","query_id":"no-information","register":"neutral","input":"Email cá nhân của từng cán bộ phụ trách học vụ là gì?","target":"không có thông tin"}
-{"id":"question-000982","query_id":"no-information","register":"colloquial","input":"GPA 8.0 thì tui đứng hạng mấy trong lớp","target":"không có thông tin"}
-{"id":"question-000983","query_id":"no-information","register":"noisy","input":"xep loai hoc luc nay co hoc bong k","target":"không có thông tin"}
-{"id":"question-000984","query_id":"no-information","register":"colloquial","input":"thời khóa biểu tuần tới của chương trình này ra sao","target":"không có thông tin"}
-{"id":"question-000985","query_id":"no-information","register":"formal","input":"Nhà trường đã xác thực chứng chỉ TOEIC của tôi hay chưa?","target":"không có thông tin"}
-{"id":"question-000986","query_id":"no-information","register":"colloquial","input":"lệ phí thi IELTS bây giờ bao nhiêu vậy","target":"không có thông tin"}
-{"id":"question-000987","query_id":"no-information","register":"neutral","input":"Trung tâm nào tổ chức thi chứng chỉ Aptis?","target":"không có thông tin"}
-{"id":"question-000988","query_id":"no-information","register":"neutral","input":"Lớp thực hành này được xếp học ở phòng nào?","target":"không có thông tin"}
-{"id":"question-000989","query_id":"no-information","register":"formal","input":"Lớp thực hành CNC hiện có bao nhiêu sinh viên đã đăng ký?","target":"không có thông tin"}
-{"id":"question-000990","query_id":"no-information","register":"colloquial","input":"tui nên học khóa nào để đạt bậc 4 ngoại ngữ","target":"không có thông tin"}
-{"id":"question-000991","query_id":"no-information","register":"noisy","input":"chung chi mos cua tui con han toi ngay nao","target":"không có thông tin"}
-{"id":"question-000992","query_id":"no-information","register":"noisy","input":"don mien hoc phan cua tui duyet chua","target":"không có thông tin"}
-{"id":"question-000993","query_id":"no-information","register":"colloquial","input":"sao ngành tui lại bị xếp vô nhóm học phí này","target":"không có thông tin"}
-{"id":"question-000994","query_id":"no-information","register":"noisy","input":"hoc phi tien si dc tra gop tung thang k","target":"không có thông tin"}
-{"id":"question-000995","query_id":"no-information","register":"noisy","input":"trang bieu mau co bn luot truy cap","target":"không có thông tin"}
-{"id":"question-000996","query_id":"no-information","register":"formal","input":"Mật khẩu chỉnh sửa tệp biểu mẫu này là gì?","target":"không có thông tin"}
-{"id":"question-000997","query_id":"no-information","register":"colloquial","input":"biểu mẫu chuyển ngành phải điền bằng bút màu gì","target":"không có thông tin"}
-{"id":"question-000998","query_id":"no-information","register":"neutral","input":"Ai là người tải biểu mẫu này gần đây nhất?","target":"không có thông tin"}
-{"id":"question-000999","query_id":"no-information","register":"neutral","input":"Tôi đã nộp những biểu mẫu nào cho nhà trường?","target":"không có thông tin"}
-{"id":"question-001000","query_id":"no-information","register":"colloquial","input":"tốt nghiệp loại giỏi thì xin việc lương bao nhiêu","target":"không có thông tin"}
-{"id":"question-001001","query_id":"no-information","register":"noisy","input":"bang tot nghiep cua tui khi nao giao","target":"không có thông tin"}
-{"id":"question-001002","query_id":"no-information","register":"formal","input":"Ai trực điện thoại giải đáp hướng dẫn đóng học phí?","target":"không có thông tin"}
-{"id":"question-001003","query_id":"no-information","register":"neutral","input":"Địa điểm thi IELTS tại Nha Trang ở đâu?","target":"không có thông tin"}
-{"id":"question-001004","query_id":"no-information","register":"formal","input":"Hệ thống xác nhận cá nhân tôi thuộc nhóm người học nào?","target":"không có thông tin"}
-{"id":"question-001005","query_id":"no-information","register":"noisy","input":"sdt nguoi ky quyet dinh nay la gi","target":"không có thông tin"}
-{"id":"question-001006","query_id":"no-information","register":"formal","input":"Số dư tài khoản ngân hàng của tôi hiện là bao nhiêu?","target":"không có thông tin"}
-{"id":"question-001007","query_id":"no-information","register":"neutral","input":"Phí thanh toán bị trừ nhầm thì được hoàn lại khi nào?","target":"không có thông tin"}
-{"id":"question-001008","query_id":"no-information","register":"formal","input":"Vui lòng cung cấp hóa đơn phí thanh toán của tài khoản tôi.","target":"không có thông tin"}
-{"id":"question-001009","query_id":"no-information","register":"noisy","input":"giao dich hoc phi cua tui thanh cong chua","target":"không có thông tin"}
-{"id":"question-001010","query_id":"no-information","register":"noisy","input":"cach dong tien nao nhanh nhat","target":"không có thông tin"}
-{"id":"question-001011","query_id":"no-information","register":"colloquial","input":"thanh toán lỗi thì gọi số nào để được hỗ trợ","target":"không có thông tin"}
-{"id":"question-001012","query_id":"no-information","register":"formal","input":"Chính sách học vụ này sẽ được sửa đổi vào năm sau hay không?","target":"không có thông tin"}
-{"id":"question-001013","query_id":"no-information","register":"colloquial","input":"trễ hạn hoãn thi thì tui bị phạt bao nhiêu tiền","target":"không có thông tin"}
-{"id":"question-001014","query_id":"no-information","register":"colloquial","input":"họ tên cụ thể của người đang được phân công ký quyết định chuyển ngành của tui là gì","target":"không có thông tin"}
-{"id":"question-001015","query_id":"no-information","register":"neutral","input":"Có nhân viên nào có thể miễn điều kiện chuyển ngành cho tôi không?","target":"không có thông tin"}
-{"id":"question-001016","query_id":"no-information","register":"noisy","input":"file mau bao luu nang bn mb","target":"không có thông tin"}
-{"id":"question-001017","query_id":"no-information","register":"formal","input":"Tôi đã nộp thủ tục bảo lưu thành công chưa?","target":"không có thông tin"}
-{"id":"question-001018","query_id":"no-information","register":"noisy","input":"thu tuc nao nhieu sv lam nhat","target":"không có thông tin"}
-{"id":"question-001019","query_id":"no-information","register":"formal","input":"Hồ sơ xin thôi học của tôi hiện đang ở bước nào?","target":"không có thông tin"}
-{"id":"question-001020","query_id":"no-information","register":"colloquial","input":"mẫu đơn chuyển ngành cần in giấy khổ nào vậy","target":"không có thông tin"}
-{"id":"question-001021","query_id":"no-information","register":"noisy","input":"ket qua xet tot nghiep cua tui co chua","target":"không có thông tin"}
-{"id":"question-001022","query_id":"no-information","register":"neutral","input":"Đơn vị xét công nhận tín chỉ có làm việc thứ Bảy không?","target":"không có thông tin"}
-{"id":"question-001023","query_id":"no-information","register":"neutral","input":"Ai là người trực tiếp soạn quy định về học lại?","target":"không có thông tin"}
-{"id":"question-001024","query_id":"no-information","register":"formal","input":"Số điện thoại của nơi nhận đơn bảo lưu là gì?","target":"không có thông tin"}
-{"id":"question-001025","query_id":"no-information","register":"formal","input":"Trong danh sách tham chiếu, mục nào phù hợp nhất với trường hợp của tôi?","target":"không có thông tin"}
-{"id":"question-001026","query_id":"no-information","register":"neutral","input":"Tích lũy đúng 105 tín chỉ thì được tính là sinh viên năm mấy?","target":"không có thông tin"}
-{"id":"question-001027","query_id":"no-information","register":"formal","input":"Tôi sẽ tốt nghiệp chính xác ngày nào nếu tích lũy 70 tín chỉ?","target":"không có thông tin"}
-{"id":"question-001028","query_id":"no-information","register":"neutral","input":"Hệ thống hiện ghi nhận tôi đã tích lũy bao nhiêu tín chỉ?","target":"không có thông tin"}
-{"id":"question-001029","query_id":"no-information","register":"neutral","input":"TCF 100 điểm quy đổi được bậc mấy cho sinh viên chương trình chuẩn?","target":"không có thông tin"}
-{"id":"question-001030","query_id":"no-information","register":"colloquial","input":"tổng hóa đơn học phí kỳ này của tui học CNTT khóa 65 là bao nhiêu","target":"không có thông tin"}
-{"id":"question-001031","query_id":"no-information","register":"neutral","input":"Năm sau ngành nào sẽ có mức học phí 620 nghìn đồng?","target":"không có thông tin"}
-{"id":"question-001032","query_id":"no-information","register":"neutral","input":"Tôi được giảm bao nhiêu học phí nhờ học bổng?","target":"không có thông tin"}
-{"id":"question-001033","query_id":"no-information","register":"formal","input":"Kính đề nghị cung cấp dự báo thoi tiet ngày mai.","target":"không có thông tin"}
-{"id":"question-001034","query_id":"no-information","register":"neutral","input":"Giá vang hom nay bao nhiêu?","target":"không có thông tin"}
-{"id":"question-001035","query_id":"no-information","register":"colloquial","input":"mo nhac giup tui voi","target":"không có thông tin"}
-{"id":"question-001036","query_id":"no-information","register":"noisy","input":"thoi tiet nt mai mua k","target":"không có thông tin"}
-{"id":"question-001037","query_id":"no-information","register":"colloquial","input":"đăng ký học phần để làm gì vậy","target":"không có thông tin"}
-{"id":"question-001038","query_id":"no-information","register":"neutral","input":"Khóa 67 phải đóng mức học phí bao nhiêu?","target":"không có thông tin"}
-{"id":"question-001039","query_id":"no-information","register":"formal","input":"Xin chào, rất hân hạnh được gặp bạn.","target":"không có thông tin"}
-{"id":"question-001040","query_id":"no-information","register":"neutral","input":"Cảm ơn bạn đã hỗ trợ.","target":"không có thông tin"}
-{"id":"question-001041","query_id":"no-information","register":"colloquial","input":"tạm biệt nhé","target":"không có thông tin"}
-{"id":"question-001042","query_id":"no-information","register":"formal","input":"Chúc bạn một buổi sáng tốt lành.","target":"không có thông tin"}
-{"id":"question-001043","query_id":"no-information","register":"colloquial","input":"bạn khỏe không","target":"không có thông tin"}
-{"id":"question-001044","query_id":"no-information","register":"neutral","input":"Bạn có thể giới thiệu về bản thân không?","target":"không có thông tin"}
-{"id":"question-001045","query_id":"no-information","register":"noisy","input":"hello ban oi","target":"không có thông tin"}
-{"id":"question-001046","query_id":"no-information","register":"neutral","input":"Rất vui được trò chuyện cùng bạn.","target":"không có thông tin"}
-{"id":"question-001047","query_id":"no-information","register":"colloquial","input":"hôm nay bạn thế nào","target":"không có thông tin"}
-{"id":"question-001048","query_id":"no-information","register":"formal","input":"Xin gửi lời chào đến hệ thống.","target":"không có thông tin"}
-{"id":"question-001049","query_id":"no-information","register":"noisy","input":"chuc ngu ngon nhaaa","target":"không có thông tin"}
-{"id":"question-001050","query_id":"no-information","register":"neutral","input":"Thời tiết Nha Trang ngày mai có mưa không?","target":"không có thông tin"}
-{"id":"question-001051","query_id":"no-information","register":"colloquial","input":"chỉ mình cách nấu mì Ý với","target":"không có thông tin"}
-{"id":"question-001052","query_id":"no-information","register":"formal","input":"Hãy cho biết tỷ giá đô la Mỹ hiện tại.","target":"không có thông tin"}
-{"id":"question-001053","query_id":"no-information","register":"noisy","input":"bat nhac son tung di","target":"không có thông tin"}
-{"id":"question-001054","query_id":"no-information","register":"neutral","input":"Đội nào đang dẫn đầu giải bóng đá quốc gia?","target":"không có thông tin"}
-{"id":"question-001055","query_id":"no-information","register":"colloquial","input":"đặt giúp tui một chuyến taxi","target":"không có thông tin"}
-{"id":"question-001056","query_id":"no-information","register":"formal","input":"Vui lòng đặt lịch họp vào chín giờ sáng mai.","target":"không có thông tin"}
-{"id":"question-001057","query_id":"no-information","register":"noisy","input":"may gio roi v","target":"không có thông tin"}
-{"id":"question-001058","query_id":"no-information","register":"neutral","input":"Quán ăn nào gần đây được đánh giá tốt?","target":"không có thông tin"}
-{"id":"question-001059","query_id":"no-information","register":"colloquial","input":"kể mình nghe một chuyện cười đi","target":"không có thông tin"}
-{"id":"question-001060","query_id":"no-information","register":"formal","input":"Tóm tắt tin tức quốc tế mới nhất.","target":"không có thông tin"}
-{"id":"question-001061","query_id":"no-information","register":"noisy","input":"tat den phong khach","target":"không có thông tin"}
-{"id":"question-001062","query_id":"no-information","register":"formal","input":"Thủ tục đăng ký ở ký túc xá cho năm học mới là gì?","target":"không có thông tin"}
-{"id":"question-001063","query_id":"no-information","register":"neutral","input":"Thư viện mở cửa đến mấy giờ vào cuối tuần?","target":"không có thông tin"}
-{"id":"question-001064","query_id":"no-information","register":"colloquial","input":"wifi trường bị lỗi thì báo ai vậy","target":"không có thông tin"}
-{"id":"question-001065","query_id":"no-information","register":"noisy","input":"mat mk email sv lam sao lay lai","target":"không có thông tin"}
-{"id":"question-001066","query_id":"no-information","register":"formal","input":"Điều kiện xét học bổng khuyến khích học tập là gì?","target":"không có thông tin"}
-{"id":"question-001067","query_id":"no-information","register":"neutral","input":"Sinh viên đăng ký tham gia câu lạc bộ ở đâu?","target":"không có thông tin"}
-{"id":"question-001068","query_id":"no-information","register":"colloquial","input":"điểm rèn luyện thấp có bị sao không","target":"không có thông tin"}
-{"id":"question-001069","query_id":"no-information","register":"noisy","input":"xin giay xac nhan sv o dau","target":"không có thông tin"}
-{"id":"question-001070","query_id":"no-information","register":"formal","input":"Quy định sử dụng bãi giữ xe của trường như thế nào?","target":"không có thông tin"}
-{"id":"question-001071","query_id":"no-information","register":"neutral","input":"Tôi có thể khiếu nại điểm giữa kỳ bằng cách nào?","target":"không có thông tin"}
-{"id":"question-001072","query_id":"no-information","register":"noisy","input":"tuyen sinh nam nay lay bn diem","target":"không có thông tin"}
-{"id":"question-001073","query_id":"no-information","register":"neutral","input":"Học phí của tôi là bao nhiêu?","target":"không có thông tin"}
-{"id":"question-001074","query_id":"no-information","register":"formal","input":"Xin hướng dẫn thực hiện thủ tục này.","target":"không có thông tin"}
-{"id":"question-001075","query_id":"no-information","register":"colloquial","input":"mẫu đơn đó tải ở đâu vậy","target":"không có thông tin"}
-{"id":"question-001076","query_id":"no-information","register":"noisy","input":"diem nay xep loai gi","target":"không có thông tin"}
-{"id":"question-001077","query_id":"no-information","register":"neutral","input":"Tôi đủ điều kiện chưa?","target":"không có thông tin"}
-{"id":"question-001078","query_id":"no-information","register":"formal","input":"Hồ sơ cần nộp cho đơn vị nào?","target":"không có thông tin"}
-{"id":"question-001079","query_id":"no-information","register":"colloquial","input":"chứng chỉ này đổi ra bậc mấy","target":"không có thông tin"}
-{"id":"question-001080","query_id":"no-information","register":"noisy","input":"k65 dong bn","target":"không có thông tin"}
-{"id":"question-001081","query_id":"no-information","register":"neutral","input":"Quy trình đó có thời hạn bao lâu?","target":"không có thông tin"}
-{"id":"question-001082","query_id":"no-information","register":"formal","input":"Vui lòng cho biết kết quả được áp dụng ra sao.","target":"không có thông tin"}
-{"id":"question-001083","query_id":"no-information","register":"colloquial","input":"muốn làm cái này thì sao giờ","target":"không có thông tin"}
-{"id":"question-001084","query_id":"no-information","register":"noisy","input":"k biet hoi j nua","target":"không có thông tin"}
-{"id":"question-001085","query_id":"no-information","register":"noisy","input":"diem 7, hoc 20 tc voi ielts thi tinh sao","target":"không có thông tin"}
-{"id":"question-001086","query_id":"no-information","register":"noisy","input":"bao luu hay tot nghiep tui khong ro","target":"không có thông tin"}
-{"id":"question-001087","query_id":"no-information","register":"formal","input":"Hãy hướng dẫn đăng ký học phần và cho biết dự báo thời tiết ngày mai.","target":"không có thông tin"}
-{"id":"question-001088","query_id":"no-information","register":"neutral","input":"Học phí ngành Công nghệ thông tin khóa 65 bao nhiêu và ký túc xá còn phòng không?","target":"không có thông tin"}
-{"id":"question-001089","query_id":"no-information","register":"colloquial","input":"tui muốn bảo lưu rồi đặt giùm vé xe về quê","target":"không có thông tin"}
-{"id":"question-001090","query_id":"no-information","register":"noisy","input":"ielts 5.5 bac may va bat nhac giup tui","target":"không có thông tin"}
-{"id":"question-001091","query_id":"no-information","register":"formal","input":"Xin cung cấp mẫu đơn chuyển ngành cùng số điện thoại của thư viện.","target":"không có thông tin"}
-{"id":"question-001092","query_id":"no-information","register":"neutral","input":"Tôi phải nộp đơn hoãn thi ở đâu và căng tin hôm nay bán món gì?","target":"không có thông tin"}
-{"id":"question-001093","query_id":"no-information","register":"colloquial","input":"học lại làm sao với wifi trường kết nối kiểu gì","target":"không có thông tin"}
-{"id":"question-001094","query_id":"no-information","register":"noisy","input":"hoc phi k65 cntt va thoi tiet nt","target":"không có thông tin"}
-{"id":"question-001095","query_id":"no-information","register":"formal","input":"Hãy nêu điều kiện xét tốt nghiệp và lịch hoạt động của câu lạc bộ bóng đá.","target":"không có thông tin"}
-{"id":"question-001096","query_id":"no-information","register":"neutral","input":"Cho tôi link đơn chuyển trường và hướng dẫn mượn sách thư viện.","target":"không có thông tin"}
-{"id":"question-001097","query_id":"no-information","register":"colloquial","input":"mos 1800 được mấy điểm rồi kể chuyện vui đi","target":"không có thông tin"}
-{"id":"question-001098","query_id":"no-information","register":"noisy","input":"bao luu nop dau va dat taxi cho tui","target":"không có thông tin"}
+{"id":"question-000981","query_id":"no-information","register":"neutral","input":"Xin chào chatbot học vụ.","target":"không có thông tin"}
+{"id":"question-000982","query_id":"no-information","register":"colloquial","input":"Chào bác, hôm nay khỏe không?","target":"không có thông tin"}
+{"id":"question-000983","query_id":"no-information","register":"formal","input":"Kính chào hệ thống tư vấn sinh viên.","target":"không có thông tin"}
+{"id":"question-000984","query_id":"no-information","register":"noisy","input":"chao bot nha","target":"không có thông tin"}
+{"id":"question-000985","query_id":"no-information","register":"neutral","input":"Cảm ơn vì đã lắng nghe tôi.","target":"không có thông tin"}
+{"id":"question-000986","query_id":"no-information","register":"colloquial","input":"Tui đi ngủ đây, bye nha.","target":"không có thông tin"}
+{"id":"question-000987","query_id":"no-information","register":"formal","input":"Chúc hệ thống một ngày làm việc hiệu quả.","target":"không có thông tin"}
+{"id":"question-000988","query_id":"no-information","register":"noisy","input":"cam on ban nhieu nhe","target":"không có thông tin"}
+{"id":"question-000989","query_id":"no-information","register":"neutral","input":"Thật vui vì hôm nay được gặp trợ lý.","target":"không có thông tin"}
+{"id":"question-000990","query_id":"no-information","register":"colloquial","input":"Ê bot ơi, còn thức không?","target":"không có thông tin"}
+{"id":"question-000991","query_id":"no-information","register":"formal","input":"Xin gửi lời chào buổi chiều đến trợ lý.","target":"không có thông tin"}
+{"id":"question-000992","query_id":"no-information","register":"noisy","input":"hen gap lai nha bot","target":"không có thông tin"}
+{"id":"question-000993","query_id":"no-information","register":"neutral","input":"Hôm nay giá vàng thế giới tăng hay giảm?","target":"không có thông tin"}
+{"id":"question-000994","query_id":"no-information","register":"colloquial","input":"Chỉ mình công thức làm bánh flan ngon với.","target":"không có thông tin"}
+{"id":"question-000995","query_id":"no-information","register":"formal","input":"Vui lòng trình bày lịch sử hình thành Liên minh châu Âu.","target":"không có thông tin"}
+{"id":"question-000996","query_id":"no-information","register":"neutral","input":"Đội tuyển nào vô địch World Cup gần nhất?","target":"không có thông tin"}
+{"id":"question-000997","query_id":"no-information","register":"colloquial","input":"Cuối tuần đi Đà Lạt nên ghé đâu chơi?","target":"không có thông tin"}
+{"id":"question-000998","query_id":"no-information","register":"formal","input":"Hãy giải thích nguyên lý hoạt động của động cơ phản lực.","target":"không có thông tin"}
+{"id":"question-000999","query_id":"no-information","register":"neutral","input":"Một đô la Mỹ đổi được bao nhiêu yên Nhật?","target":"không có thông tin"}
+{"id":"question-001000","query_id":"no-information","register":"colloquial","input":"Tối nay coi phim gì đỡ chán nhỉ?","target":"không có thông tin"}
+{"id":"question-001001","query_id":"no-information","register":"formal","input":"Xin cung cấp kết quả xổ số của ngày hôm nay.","target":"không có thông tin"}
+{"id":"question-001002","query_id":"no-information","register":"neutral","input":"Cách chăm sóc cây sen đá trong mùa mưa là gì?","target":"không có thông tin"}
+{"id":"question-001003","query_id":"no-information","register":"colloquial","input":"Laptop chơi game tầm hai mươi triệu mua con nào?","target":"không có thông tin"}
+{"id":"question-001004","query_id":"no-information","register":"formal","input":"Phân tích diễn biến thị trường chứng khoán sáng nay.","target":"không có thông tin"}
+{"id":"question-001005","query_id":"no-information","register":"neutral","input":"Từ Nha Trang đến Huế đi tàu mất bao lâu?","target":"không có thông tin"}
+{"id":"question-001006","query_id":"no-information","register":"colloquial","input":"Kể một câu chuyện cười cho tui nghe đi.","target":"không có thông tin"}
+{"id":"question-001007","query_id":"no-information","register":"formal","input":"Hướng dẫn cách khai thuế thu nhập cá nhân trực tuyến.","target":"không có thông tin"}
+{"id":"question-001008","query_id":"no-information","register":"neutral","input":"Nhiệt độ ngoài trời tại Hà Nội hiện là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001009","query_id":"no-information","register":"formal","input":"Thủ tục đăng ký ở nội trú tại ký túc xá của trường gồm những gì?","target":"không có thông tin"}
+{"id":"question-001010","query_id":"no-information","register":"neutral","input":"Thư viện trường có cho mượn giáo trình về nhà không?","target":"không có thông tin"}
+{"id":"question-001011","query_id":"no-information","register":"colloquial","input":"Wifi trong khuôn viên yếu thì em báo bộ phận nào?","target":"không có thông tin"}
+{"id":"question-001012","query_id":"no-information","register":"noisy","input":"mat the sv xin cap lai sao","target":"không có thông tin"}
+{"id":"question-001013","query_id":"no-information","register":"formal","input":"Điều kiện xét học bổng khuyến khích học tập kỳ này là gì?","target":"không có thông tin"}
+{"id":"question-001014","query_id":"no-information","register":"neutral","input":"Lịch thi học kỳ được công bố trên trang nào?","target":"không có thông tin"}
+{"id":"question-001015","query_id":"no-information","register":"colloquial","input":"Em quên mật khẩu cổng sinh viên thì lấy lại kiểu gì?","target":"không có thông tin"}
+{"id":"question-001016","query_id":"no-information","register":"noisy","input":"dk gui xe trong truong o dau","target":"không có thông tin"}
+{"id":"question-001017","query_id":"no-information","register":"formal","input":"Quy trình đăng ký đề tài nghiên cứu khoa học sinh viên ra sao?","target":"không có thông tin"}
+{"id":"question-001018","query_id":"no-information","register":"neutral","input":"Phòng y tế trường có khám bệnh vào thứ bảy không?","target":"không có thông tin"}
+{"id":"question-001019","query_id":"no-information","register":"colloquial","input":"Muốn tham gia câu lạc bộ tiếng Anh thì liên hệ ai?","target":"không có thông tin"}
+{"id":"question-001020","query_id":"no-information","register":"noisy","input":"xin giay xac nhan sv online ntn","target":"không có thông tin"}
+{"id":"question-001021","query_id":"no-information","register":"formal","input":"Hồ sơ tuyển sinh cao học năm nay cần giấy tờ nào?","target":"không có thông tin"}
+{"id":"question-001022","query_id":"no-information","register":"neutral","input":"Trường có xe đưa đón sinh viên đến cơ sở thực hành không?","target":"không có thông tin"}
+{"id":"question-001023","query_id":"no-information","register":"colloquial","input":"Em muốn mượn phòng tự học buổi tối thì đăng ký đâu?","target":"không có thông tin"}
+{"id":"question-001024","query_id":"no-information","register":"noisy","input":"lich hoc ca nay xem cho nao","target":"không có thông tin"}
+{"id":"question-001025","query_id":"no-information","register":"formal","input":"Quy định cấp tài khoản email cho sinh viên mới là gì?","target":"không có thông tin"}
+{"id":"question-001026","query_id":"no-information","register":"neutral","input":"Nhà ăn sinh viên hoạt động trong khung giờ nào?","target":"không có thông tin"}
+{"id":"question-001027","query_id":"no-information","register":"colloquial","input":"Trường mình có hỗ trợ tìm chỗ thực tập không?","target":"không có thông tin"}
+{"id":"question-001028","query_id":"no-information","register":"noisy","input":"dang ky bao hiem y te sv sao","target":"không có thông tin"}
+{"id":"question-001029","query_id":"no-information","register":"formal","input":"Thủ tục đăng ký sử dụng phòng thí nghiệm ngoài giờ như thế nào?","target":"không có thông tin"}
+{"id":"question-001030","query_id":"no-information","register":"neutral","input":"Kết quả rèn luyện được tra cứu ở hệ thống nào?","target":"không có thông tin"}
+{"id":"question-001031","query_id":"no-information","register":"colloquial","input":"Em muốn đổi ảnh thẻ sinh viên thì làm sao?","target":"không có thông tin"}
+{"id":"question-001032","query_id":"no-information","register":"noisy","input":"hoc bong doanh nghiep dk gi","target":"không có thông tin"}
+{"id":"question-001033","query_id":"no-information","register":"formal","input":"Sinh viên đăng ký tham dự lễ tốt nghiệp theo quy trình nào?","target":"không có thông tin"}
+{"id":"question-001034","query_id":"no-information","register":"neutral","input":"Trung tâm ngoại ngữ tổ chức thi TOEIC vào ngày nào?","target":"không có thông tin"}
+{"id":"question-001035","query_id":"no-information","register":"colloquial","input":"Muốn đặt sân bóng của trường thì đăng ký chỗ nào?","target":"không có thông tin"}
+{"id":"question-001036","query_id":"no-information","register":"noisy","input":"xin cap bang diem ban giay o dau","target":"không có thông tin"}
+{"id":"question-001037","query_id":"no-information","register":"formal","input":"Quy định đăng ký tài khoản phần mềm bản quyền cho sinh viên là gì?","target":"không có thông tin"}
+{"id":"question-001038","query_id":"no-information","register":"neutral","input":"Làm thế nào để phản ánh chất lượng giảng dạy của một môn?","target":"không có thông tin"}
+{"id":"question-001039","query_id":"no-information","register":"colloquial","input":"Em cần tư vấn tâm lý thì gặp phòng nào?","target":"không có thông tin"}
+{"id":"question-001040","query_id":"no-information","register":"neutral","input":"Học phí khóa của em là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001041","query_id":"no-information","register":"colloquial","input":"Cái chứng chỉ này đổi ra bậc mấy vậy?","target":"không có thông tin"}
+{"id":"question-001042","query_id":"no-information","register":"formal","input":"Xin cho biết thời hạn nộp hồ sơ của thủ tục trên.","target":"không có thông tin"}
+{"id":"question-001043","query_id":"no-information","register":"noisy","input":"don nay nop dau","target":"không có thông tin"}
+{"id":"question-001044","query_id":"no-information","register":"neutral","input":"Điểm này được xếp học lực gì?","target":"không có thông tin"}
+{"id":"question-001045","query_id":"no-information","register":"colloquial","input":"Em khóa 67 thì một tín chỉ mấy tiền?","target":"không có thông tin"}
+{"id":"question-001046","query_id":"no-information","register":"formal","input":"Điều kiện để được giải quyết yêu cầu là gì?","target":"không có thông tin"}
+{"id":"question-001047","query_id":"no-information","register":"noisy","input":"mau nao dung cho cai nay","target":"không có thông tin"}
+{"id":"question-001048","query_id":"no-information","register":"neutral","input":"Tôi phải gửi hồ sơ đến đơn vị nào?","target":"không có thông tin"}
+{"id":"question-001049","query_id":"no-information","register":"colloquial","input":"Chuyện đó cuối cùng ai quyết định vậy?","target":"không có thông tin"}
+{"id":"question-001050","query_id":"no-information","register":"formal","input":"Mức điểm quy đổi của chứng chỉ này là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001051","query_id":"no-information","register":"noisy","input":"bao nhieu tc thi nam may","target":"không có thông tin"}
+{"id":"question-001052","query_id":"no-information","register":"neutral","input":"Tôi muốn tải biểu mẫu cần thiết.","target":"không có thông tin"}
+{"id":"question-001053","query_id":"no-information","register":"colloquial","input":"Môn này lớp tối đa bao nhiêu người?","target":"không có thông tin"}
+{"id":"question-001054","query_id":"no-information","register":"formal","input":"Xin cung cấp nội dung của quy trình liên quan.","target":"không có thông tin"}
+{"id":"question-001055","query_id":"no-information","register":"noisy","input":"hp nay gia sao","target":"không có thông tin"}
+{"id":"question-001056","query_id":"no-information","register":"neutral","input":"Chứng chỉ đạt số điểm đó thì được miễn gì?","target":"không có thông tin"}
+{"id":"question-001057","query_id":"no-information","register":"colloquial","input":"Em muốn làm lại thủ tục đó thì sao?","target":"không có thông tin"}
+{"id":"question-001058","query_id":"no-information","register":"formal","input":"Vui lòng xác định kết quả xét của trường hợp này.","target":"không có thông tin"}
+{"id":"question-001059","query_id":"no-information","register":"noisy","input":"kq cuoi cung la gi","target":"không có thông tin"}
+{"id":"question-001060","query_id":"no-information","register":"neutral","input":"Ngành của tôi thuộc mức học phí nào?","target":"không có thông tin"}
+{"id":"question-001061","query_id":"no-information","register":"colloquial","input":"Bằng này có tính điểm cho em không?","target":"không có thông tin"}
+{"id":"question-001062","query_id":"no-information","register":"formal","input":"Quy định có áp dụng cho đối tượng này hay không?","target":"không có thông tin"}
+{"id":"question-001063","query_id":"no-information","register":"noisy","input":"han chot la ngay nao","target":"không có thông tin"}
+{"id":"question-001064","query_id":"no-information","register":"neutral","input":"Tôi đang học ngành đó thì đóng mức nào?","target":"không có thông tin"}
+{"id":"question-001065","query_id":"no-information","register":"colloquial","input":"Cần bao nhiêu điểm mới đủ bậc vậy?","target":"không có thông tin"}
+{"id":"question-001066","query_id":"no-information","register":"formal","input":"Cho biết cơ quan xử lý đơn đề nghị.","target":"không có thông tin"}
+{"id":"question-001067","query_id":"no-information","register":"noisy","input":"link tai don kia dau","target":"không có thông tin"}
+{"id":"question-001068","query_id":"no-information","register":"neutral","input":"Bao nhiêu tín chỉ thì được chuyển cấp?","target":"không có thông tin"}
+{"id":"question-001069","query_id":"no-information","register":"noisy","input":"thoi tiet hn mai co mua hk","target":"không có thông tin"}
+{"id":"question-001070","query_id":"no-information","register":"noisy","input":"gia vang 9999 hnay bn","target":"không có thông tin"}
+{"id":"question-001071","query_id":"no-information","register":"noisy","input":"bat bai nhac chill di bro","target":"không có thông tin"}
+{"id":"question-001072","query_id":"no-information","register":"noisy","input":"nau com ga kieu j ngon","target":"không có thông tin"}
+{"id":"question-001073","query_id":"no-information","register":"noisy","input":"btc gio gia nhiu v","target":"không có thông tin"}
+{"id":"question-001074","query_id":"no-information","register":"noisy","input":"toi nay da banh tran nao","target":"không có thông tin"}
+{"id":"question-001075","query_id":"no-information","register":"noisy","input":"dat ve xe ve hue dum dc ko","target":"không có thông tin"}
+{"id":"question-001076","query_id":"no-information","register":"noisy","input":"quan bun bo gan day ngon k","target":"không có thông tin"}
+{"id":"question-001077","query_id":"no-information","register":"noisy","input":"ke chuyen ma nghe coi","target":"không có thông tin"}
+{"id":"question-001078","query_id":"no-information","register":"noisy","input":"ty gia usd vnd hom ni","target":"không có thông tin"}
+{"id":"question-001079","query_id":"no-information","register":"noisy","input":"ship do an toi day dc hem","target":"không có thông tin"}
+{"id":"question-001080","query_id":"no-information","register":"noisy","input":"dien thoai nao chup hinh dep v","target":"không có thông tin"}
+{"id":"question-001081","query_id":"no-information","register":"noisy","input":"mai nha trang nang ko ta","target":"không có thông tin"}
+{"id":"question-001082","query_id":"no-information","register":"noisy","input":"mo phim hai cho tui coi","target":"không có thông tin"}
+{"id":"question-001083","query_id":"no-information","register":"noisy","input":"cach sua xe may bi tat","target":"không có thông tin"}
+{"id":"question-001084","query_id":"no-information","register":"noisy","input":"xs mien trung ra so gi","target":"không có thông tin"}
+{"id":"question-001085","query_id":"no-information","register":"noisy","input":"giai bai toan lop 9 dum","target":"không có thông tin"}
+{"id":"question-001086","query_id":"no-information","register":"noisy","input":"cho nao ban ao khoac re","target":"không có thông tin"}
+{"id":"question-001087","query_id":"no-information","register":"noisy","input":"dat lich cat toc giup mik","target":"không có thông tin"}
+{"id":"question-001088","query_id":"no-information","register":"formal","input":"Hướng dẫn chuyển ngành và đặt giúp tôi một vé máy bay.","target":"không có thông tin"}
+{"id":"question-001089","query_id":"no-information","register":"neutral","input":"IELTS 6.5 được quy đổi bậc nào và hôm nay trời có mưa không?","target":"không có thông tin"}
+{"id":"question-001090","query_id":"no-information","register":"colloquial","input":"Cho tui link đơn hoãn thi rồi mở nhạc luôn nha.","target":"không có thông tin"}
+{"id":"question-001091","query_id":"no-information","register":"noisy","input":"hoc lai sao va dat do an dum","target":"không có thông tin"}
+{"id":"question-001092","query_id":"no-information","register":"formal","input":"Cho biết điều kiện xét tốt nghiệp và tỷ giá đô la hiện tại.","target":"không có thông tin"}
+{"id":"question-001093","query_id":"no-information","register":"neutral","input":"Học phí ngành Kế toán khóa 68 bao nhiêu và giá vàng hôm nay thế nào?","target":"không có thông tin"}
+{"id":"question-001094","query_id":"no-information","register":"colloquial","input":"Tui muốn bảo lưu kết quả rồi nhờ đặt phòng khách sạn.","target":"không có thông tin"}
+{"id":"question-001095","query_id":"no-information","register":"noisy","input":"toeic 600 bac may voi ke chuyen vui di","target":"không có thông tin"}
+{"id":"question-001096","query_id":"no-information","register":"formal","input":"Liệt kê biểu mẫu học vụ và phân tích giá cổ phiếu hôm nay.","target":"không có thông tin"}
+{"id":"question-001097","query_id":"no-information","register":"neutral","input":"Nộp đơn chuyển trường ở đâu và chuyến tàu tối nay còn vé không?","target":"không có thông tin"}
+{"id":"question-001098","query_id":"no-information","register":"colloquial","input":"Chỉ em cách đóng học phí với nấu mì Ý luôn nhé.","target":"không có thông tin"}
+{"id":"question-001099","query_id":"no-information","register":"noisy","input":"35 tc nam may va bat spotify","target":"không có thông tin"}
+{"id":"question-001100","query_id":"no-information","register":"formal","input":"Cung cấp bảng xếp loại học lực và kết quả bóng đá tối qua.","target":"không có thông tin"}
+{"id":"question-001101","query_id":"no-information","register":"neutral","input":"Đơn xin nghỉ học tạm thời tải ở đâu và quán cà phê nào gần đây?","target":"không có thông tin"}
+{"id":"question-001102","query_id":"no-information","register":"colloquial","input":"MOS 1700 đổi mấy điểm rồi mua giúp tui cái điện thoại.","target":"không có thông tin"}
+{"id":"question-001103","query_id":"no-information","register":"noisy","input":"si so lop cnc va gia xang hnay","target":"không có thông tin"}
+{"id":"question-001104","query_id":"no-information","register":"formal","input":"Trình bày quy trình học cải thiện và dự báo thời tiết tuần tới.","target":"không có thông tin"}
+{"id":"question-001105","query_id":"no-information","register":"neutral","input":"Các ngân hàng đóng học phí gồm gì và món ăn tối nay nên chọn gì?","target":"không có thông tin"}
+{"id":"question-001106","query_id":"no-information","register":"colloquial","input":"Cho tui toàn bộ bảng học phí rồi kể chuyện ma nghe.","target":"không có thông tin"}
+{"id":"question-001107","query_id":"no-information","register":"noisy","input":"don chuyen nganh link dau voi book taxi","target":"không có thông tin"}
+{"id":"question-001108","query_id":"no-information","register":"formal","input":"Xác định loại tốt nghiệp theo điểm 8.2 và dịch đoạn văn này sang tiếng Anh.","target":"không có thông tin"}
+{"id":"question-001109","query_id":"no-information","register":"neutral","input":"Thời hạn xin hoãn thi là khi nào và giá Bitcoin hiện tại bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001110","query_id":"no-information","register":"colloquial","input":"Em muốn học chương trình hai và nhờ đặt bàn nhà hàng.","target":"không có thông tin"}
+{"id":"question-001111","query_id":"no-information","register":"formal","input":"Hồ sơ chuyển ngành của Nguyễn Văn An đã được duyệt chưa?","target":"không có thông tin"}
+{"id":"question-001112","query_id":"no-information","register":"neutral","input":"Hiện còn bao nhiêu chỗ trong lớp học phần Kinh tế vi mô?","target":"không có thông tin"}
+{"id":"question-001113","query_id":"no-information","register":"colloquial","input":"Đơn bảo lưu em nộp tuần trước đang ở bước nào rồi?","target":"không có thông tin"}
+{"id":"question-001114","query_id":"no-information","register":"noisy","input":"ai dang cam hs hoan thi cua tui","target":"không có thông tin"}
+{"id":"question-001115","query_id":"no-information","register":"formal","input":"Xin cung cấp số điện thoại cá nhân của người phụ trách xét tốt nghiệp.","target":"không có thông tin"}
+{"id":"question-001116","query_id":"no-information","register":"neutral","input":"Kỳ này ngành Công nghệ thông tin đã thu thực tế bao nhiêu tiền?","target":"không có thông tin"}
+{"id":"question-001117","query_id":"no-information","register":"colloquial","input":"Em thiếu một điều kiện chuyển ngành thì ai cho ngoại lệ?","target":"không có thông tin"}
+{"id":"question-001118","query_id":"no-information","register":"noisy","input":"don hoc lai cua tui dc ky chua","target":"không có thông tin"}
+{"id":"question-001119","query_id":"no-information","register":"formal","input":"Dự kiến quyết định học phí sẽ được sửa đổi vào ngày nào?","target":"không có thông tin"}
+{"id":"question-001120","query_id":"no-information","register":"neutral","input":"Sinh viên nào đang nợ học phí nhiều nhất lớp?","target":"không có thông tin"}
+{"id":"question-001121","query_id":"no-information","register":"colloquial","input":"Cho em email riêng của thầy cô trong hội đồng xét tốt nghiệp.","target":"không có thông tin"}
+{"id":"question-001122","query_id":"no-information","register":"noisy","input":"tre han nop don bi phat bn tien","target":"không có thông tin"}
+{"id":"question-001123","query_id":"no-information","register":"formal","input":"Tỷ lệ hồ sơ chuyển trường được chấp thuận trong năm nay là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001124","query_id":"no-information","register":"neutral","input":"Ai là người trực tiếp nhập điểm quy đổi chứng chỉ của tôi?","target":"không có thông tin"}
+{"id":"question-001125","query_id":"no-information","register":"colloquial","input":"Em có được ưu tiên mở lớp riêng vì sắp tốt nghiệp không?","target":"không có thông tin"}
+{"id":"question-001126","query_id":"no-information","register":"noisy","input":"hs cua minh bao gio co kq","target":"không có thông tin"}
+{"id":"question-001127","query_id":"no-information","register":"formal","input":"Cho biết lịch họp tiếp theo của hội đồng xét công nhận tín chỉ.","target":"không có thông tin"}
+{"id":"question-001128","query_id":"no-information","register":"neutral","input":"Mẫu đơn tôi tải hôm qua có phải phiên bản mới nhất không?","target":"không có thông tin"}
+{"id":"question-001129","query_id":"no-information","register":"colloquial","input":"Phòng đào tạo đang xử lý bao nhiêu đơn xin nghỉ học?","target":"không có thông tin"}
+{"id":"question-001130","query_id":"no-information","register":"noisy","input":"ai ky quyet dinh rieng cua em","target":"không có thông tin"}
+{"id":"question-001131","query_id":"no-information","register":"formal","input":"Nhà trường có thể cam kết thời gian trả kết quả hồ sơ của tôi không?","target":"không có thông tin"}
+{"id":"question-001132","query_id":"no-information","register":"neutral","input":"Email cá nhân của từng cán bộ phụ trách học vụ là gì?","target":"không có thông tin"}
+{"id":"question-001133","query_id":"no-information","register":"colloquial","input":"GPA 8.0 thì tui đứng hạng mấy trong lớp","target":"không có thông tin"}
+{"id":"question-001134","query_id":"no-information","register":"noisy","input":"xep loai hoc luc nay co hoc bong k","target":"không có thông tin"}
+{"id":"question-001135","query_id":"no-information","register":"colloquial","input":"thời khóa biểu tuần tới của chương trình này ra sao","target":"không có thông tin"}
+{"id":"question-001136","query_id":"no-information","register":"formal","input":"Nhà trường đã xác thực chứng chỉ TOEIC của tôi hay chưa?","target":"không có thông tin"}
+{"id":"question-001137","query_id":"no-information","register":"colloquial","input":"lệ phí thi IELTS bây giờ bao nhiêu vậy","target":"không có thông tin"}
+{"id":"question-001138","query_id":"no-information","register":"neutral","input":"Trung tâm nào tổ chức thi chứng chỉ Aptis?","target":"không có thông tin"}
+{"id":"question-001139","query_id":"no-information","register":"neutral","input":"Lớp thực hành này được xếp học ở phòng nào?","target":"không có thông tin"}
+{"id":"question-001140","query_id":"no-information","register":"formal","input":"Lớp thực hành CNC hiện có bao nhiêu sinh viên đã đăng ký?","target":"không có thông tin"}
+{"id":"question-001141","query_id":"no-information","register":"colloquial","input":"tui nên học khóa nào để đạt bậc 4 ngoại ngữ","target":"không có thông tin"}
+{"id":"question-001142","query_id":"no-information","register":"noisy","input":"chung chi mos cua tui con han toi ngay nao","target":"không có thông tin"}
+{"id":"question-001143","query_id":"no-information","register":"noisy","input":"don mien hoc phan cua tui duyet chua","target":"không có thông tin"}
+{"id":"question-001144","query_id":"no-information","register":"colloquial","input":"sao ngành tui lại bị xếp vô nhóm học phí này","target":"không có thông tin"}
+{"id":"question-001145","query_id":"no-information","register":"noisy","input":"hoc phi tien si dc tra gop tung thang k","target":"không có thông tin"}
+{"id":"question-001146","query_id":"no-information","register":"noisy","input":"trang bieu mau co bn luot truy cap","target":"không có thông tin"}
+{"id":"question-001147","query_id":"no-information","register":"formal","input":"Mật khẩu chỉnh sửa tệp biểu mẫu này là gì?","target":"không có thông tin"}
+{"id":"question-001148","query_id":"no-information","register":"colloquial","input":"biểu mẫu chuyển ngành phải điền bằng bút màu gì","target":"không có thông tin"}
+{"id":"question-001149","query_id":"no-information","register":"neutral","input":"Ai là người tải biểu mẫu này gần đây nhất?","target":"không có thông tin"}
+{"id":"question-001150","query_id":"no-information","register":"neutral","input":"Tôi đã nộp những biểu mẫu nào cho nhà trường?","target":"không có thông tin"}
+{"id":"question-001151","query_id":"no-information","register":"colloquial","input":"tốt nghiệp loại giỏi thì xin việc lương bao nhiêu","target":"không có thông tin"}
+{"id":"question-001152","query_id":"no-information","register":"noisy","input":"bang tot nghiep cua tui khi nao giao","target":"không có thông tin"}
+{"id":"question-001153","query_id":"no-information","register":"formal","input":"Ai trực điện thoại giải đáp hướng dẫn đóng học phí?","target":"không có thông tin"}
+{"id":"question-001154","query_id":"no-information","register":"neutral","input":"Địa điểm thi IELTS tại Nha Trang ở đâu?","target":"không có thông tin"}
+{"id":"question-001155","query_id":"no-information","register":"formal","input":"Hệ thống xác nhận cá nhân tôi thuộc nhóm người học nào?","target":"không có thông tin"}
+{"id":"question-001156","query_id":"no-information","register":"noisy","input":"sdt nguoi ky quyet dinh nay la gi","target":"không có thông tin"}
+{"id":"question-001157","query_id":"no-information","register":"formal","input":"Số dư tài khoản ngân hàng của tôi hiện là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001158","query_id":"no-information","register":"neutral","input":"Phí thanh toán bị trừ nhầm thì được hoàn lại khi nào?","target":"không có thông tin"}
+{"id":"question-001159","query_id":"no-information","register":"formal","input":"Vui lòng cung cấp hóa đơn phí thanh toán của tài khoản tôi.","target":"không có thông tin"}
+{"id":"question-001160","query_id":"no-information","register":"noisy","input":"giao dich hoc phi cua tui thanh cong chua","target":"không có thông tin"}
+{"id":"question-001161","query_id":"no-information","register":"noisy","input":"cach dong tien nao nhanh nhat","target":"không có thông tin"}
+{"id":"question-001162","query_id":"no-information","register":"colloquial","input":"thanh toán lỗi thì gọi số nào để được hỗ trợ","target":"không có thông tin"}
+{"id":"question-001163","query_id":"no-information","register":"formal","input":"Chính sách học vụ này sẽ được sửa đổi vào năm sau hay không?","target":"không có thông tin"}
+{"id":"question-001164","query_id":"no-information","register":"colloquial","input":"trễ hạn hoãn thi thì tui bị phạt bao nhiêu tiền","target":"không có thông tin"}
+{"id":"question-001165","query_id":"no-information","register":"colloquial","input":"họ tên cụ thể của người đang được phân công ký quyết định chuyển ngành của tui là gì","target":"không có thông tin"}
+{"id":"question-001166","query_id":"no-information","register":"neutral","input":"Có nhân viên nào có thể miễn điều kiện chuyển ngành cho tôi không?","target":"không có thông tin"}
+{"id":"question-001167","query_id":"no-information","register":"noisy","input":"file mau bao luu nang bn mb","target":"không có thông tin"}
+{"id":"question-001168","query_id":"no-information","register":"formal","input":"Tôi đã nộp thủ tục bảo lưu thành công chưa?","target":"không có thông tin"}
+{"id":"question-001169","query_id":"no-information","register":"noisy","input":"thu tuc nao nhieu sv lam nhat","target":"không có thông tin"}
+{"id":"question-001170","query_id":"no-information","register":"formal","input":"Hồ sơ xin thôi học của tôi hiện đang ở bước nào?","target":"không có thông tin"}
+{"id":"question-001171","query_id":"no-information","register":"colloquial","input":"mẫu đơn chuyển ngành cần in giấy khổ nào vậy","target":"không có thông tin"}
+{"id":"question-001172","query_id":"no-information","register":"noisy","input":"ket qua xet tot nghiep cua tui co chua","target":"không có thông tin"}
+{"id":"question-001173","query_id":"no-information","register":"neutral","input":"Đơn vị xét công nhận tín chỉ có làm việc thứ Bảy không?","target":"không có thông tin"}
+{"id":"question-001174","query_id":"no-information","register":"neutral","input":"Ai là người trực tiếp soạn quy định về học lại?","target":"không có thông tin"}
+{"id":"question-001175","query_id":"no-information","register":"formal","input":"Số điện thoại của nơi nhận đơn bảo lưu là gì?","target":"không có thông tin"}
+{"id":"question-001176","query_id":"no-information","register":"formal","input":"Trong danh sách tham chiếu, mục nào phù hợp nhất với trường hợp của tôi?","target":"không có thông tin"}
+{"id":"question-001177","query_id":"no-information","register":"neutral","input":"Tích lũy đúng 105 tín chỉ thì được tính là sinh viên năm mấy?","target":"không có thông tin"}
+{"id":"question-001178","query_id":"no-information","register":"formal","input":"Tôi sẽ tốt nghiệp chính xác ngày nào nếu tích lũy 70 tín chỉ?","target":"không có thông tin"}
+{"id":"question-001179","query_id":"no-information","register":"neutral","input":"Hệ thống hiện ghi nhận tôi đã tích lũy bao nhiêu tín chỉ?","target":"không có thông tin"}
+{"id":"question-001180","query_id":"no-information","register":"neutral","input":"TCF 100 điểm quy đổi được bậc mấy cho sinh viên chương trình chuẩn?","target":"không có thông tin"}
+{"id":"question-001181","query_id":"no-information","register":"colloquial","input":"tổng hóa đơn học phí kỳ này của tui học CNTT khóa 65 là bao nhiêu","target":"không có thông tin"}
+{"id":"question-001182","query_id":"no-information","register":"neutral","input":"Năm sau ngành nào sẽ có mức học phí 620 nghìn đồng?","target":"không có thông tin"}
+{"id":"question-001183","query_id":"no-information","register":"neutral","input":"Tôi được giảm bao nhiêu học phí nhờ học bổng?","target":"không có thông tin"}
+{"id":"question-001184","query_id":"no-information","register":"formal","input":"Kính đề nghị cung cấp dự báo thoi tiet ngày mai.","target":"không có thông tin"}
+{"id":"question-001185","query_id":"no-information","register":"neutral","input":"Giá vang hom nay bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001186","query_id":"no-information","register":"colloquial","input":"mo nhac giup tui voi","target":"không có thông tin"}
+{"id":"question-001187","query_id":"no-information","register":"noisy","input":"thoi tiet nt mai mua k","target":"không có thông tin"}
+{"id":"question-001188","query_id":"no-information","register":"colloquial","input":"đăng ký học phần để làm gì vậy","target":"không có thông tin"}
+{"id":"question-001189","query_id":"no-information","register":"neutral","input":"Khóa 67 phải đóng mức học phí bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001190","query_id":"no-information","register":"formal","input":"Xin chào, rất hân hạnh được gặp bạn.","target":"không có thông tin"}
+{"id":"question-001191","query_id":"no-information","register":"neutral","input":"Cảm ơn bạn đã hỗ trợ.","target":"không có thông tin"}
+{"id":"question-001192","query_id":"no-information","register":"colloquial","input":"tạm biệt nhé","target":"không có thông tin"}
+{"id":"question-001193","query_id":"no-information","register":"formal","input":"Chúc bạn một buổi sáng tốt lành.","target":"không có thông tin"}
+{"id":"question-001194","query_id":"no-information","register":"colloquial","input":"bạn khỏe không","target":"không có thông tin"}
+{"id":"question-001195","query_id":"no-information","register":"neutral","input":"Bạn có thể giới thiệu về bản thân không?","target":"không có thông tin"}
+{"id":"question-001196","query_id":"no-information","register":"noisy","input":"hello ban oi","target":"không có thông tin"}
+{"id":"question-001197","query_id":"no-information","register":"neutral","input":"Rất vui được trò chuyện cùng bạn.","target":"không có thông tin"}
+{"id":"question-001198","query_id":"no-information","register":"colloquial","input":"hôm nay bạn thế nào","target":"không có thông tin"}
+{"id":"question-001199","query_id":"no-information","register":"formal","input":"Xin gửi lời chào đến hệ thống.","target":"không có thông tin"}
+{"id":"question-001200","query_id":"no-information","register":"noisy","input":"chuc ngu ngon nhaaa","target":"không có thông tin"}
+{"id":"question-001201","query_id":"no-information","register":"neutral","input":"Thời tiết Nha Trang ngày mai có mưa không?","target":"không có thông tin"}
+{"id":"question-001202","query_id":"no-information","register":"colloquial","input":"chỉ mình cách nấu mì Ý với","target":"không có thông tin"}
+{"id":"question-001203","query_id":"no-information","register":"formal","input":"Hãy cho biết tỷ giá đô la Mỹ hiện tại.","target":"không có thông tin"}
+{"id":"question-001204","query_id":"no-information","register":"noisy","input":"bat nhac son tung di","target":"không có thông tin"}
+{"id":"question-001205","query_id":"no-information","register":"neutral","input":"Đội nào đang dẫn đầu giải bóng đá quốc gia?","target":"không có thông tin"}
+{"id":"question-001206","query_id":"no-information","register":"colloquial","input":"đặt giúp tui một chuyến taxi","target":"không có thông tin"}
+{"id":"question-001207","query_id":"no-information","register":"formal","input":"Vui lòng đặt lịch họp vào chín giờ sáng mai.","target":"không có thông tin"}
+{"id":"question-001208","query_id":"no-information","register":"noisy","input":"may gio roi v","target":"không có thông tin"}
+{"id":"question-001209","query_id":"no-information","register":"neutral","input":"Quán ăn nào gần đây được đánh giá tốt?","target":"không có thông tin"}
+{"id":"question-001210","query_id":"no-information","register":"colloquial","input":"kể mình nghe một chuyện cười đi","target":"không có thông tin"}
+{"id":"question-001211","query_id":"no-information","register":"formal","input":"Tóm tắt tin tức quốc tế mới nhất.","target":"không có thông tin"}
+{"id":"question-001212","query_id":"no-information","register":"noisy","input":"tat den phong khach","target":"không có thông tin"}
+{"id":"question-001213","query_id":"no-information","register":"formal","input":"Thủ tục đăng ký ở ký túc xá cho năm học mới là gì?","target":"không có thông tin"}
+{"id":"question-001214","query_id":"no-information","register":"neutral","input":"Thư viện mở cửa đến mấy giờ vào cuối tuần?","target":"không có thông tin"}
+{"id":"question-001215","query_id":"no-information","register":"colloquial","input":"wifi trường bị lỗi thì báo ai vậy","target":"không có thông tin"}
+{"id":"question-001216","query_id":"no-information","register":"noisy","input":"mat mk email sv lam sao lay lai","target":"không có thông tin"}
+{"id":"question-001217","query_id":"no-information","register":"formal","input":"Điều kiện xét học bổng khuyến khích học tập là gì?","target":"không có thông tin"}
+{"id":"question-001218","query_id":"no-information","register":"neutral","input":"Sinh viên đăng ký tham gia câu lạc bộ ở đâu?","target":"không có thông tin"}
+{"id":"question-001219","query_id":"no-information","register":"colloquial","input":"điểm rèn luyện thấp có bị sao không","target":"không có thông tin"}
+{"id":"question-001220","query_id":"no-information","register":"noisy","input":"xin giay xac nhan sv o dau","target":"không có thông tin"}
+{"id":"question-001221","query_id":"no-information","register":"formal","input":"Quy định sử dụng bãi giữ xe của trường như thế nào?","target":"không có thông tin"}
+{"id":"question-001222","query_id":"no-information","register":"neutral","input":"Tôi có thể khiếu nại điểm giữa kỳ bằng cách nào?","target":"không có thông tin"}
+{"id":"question-001223","query_id":"no-information","register":"noisy","input":"tuyen sinh nam nay lay bn diem","target":"không có thông tin"}
+{"id":"question-001224","query_id":"no-information","register":"neutral","input":"Học phí của tôi là bao nhiêu?","target":"không có thông tin"}
+{"id":"question-001225","query_id":"no-information","register":"formal","input":"Xin hướng dẫn thực hiện thủ tục này.","target":"không có thông tin"}
+{"id":"question-001226","query_id":"no-information","register":"colloquial","input":"mẫu đơn đó tải ở đâu vậy","target":"không có thông tin"}
+{"id":"question-001227","query_id":"no-information","register":"noisy","input":"diem nay xep loai gi","target":"không có thông tin"}
+{"id":"question-001228","query_id":"no-information","register":"neutral","input":"Tôi đủ điều kiện chưa?","target":"không có thông tin"}
+{"id":"question-001229","query_id":"no-information","register":"formal","input":"Hồ sơ cần nộp cho đơn vị nào?","target":"không có thông tin"}
+{"id":"question-001230","query_id":"no-information","register":"colloquial","input":"chứng chỉ này đổi ra bậc mấy","target":"không có thông tin"}
+{"id":"question-001231","query_id":"no-information","register":"noisy","input":"k65 dong bn","target":"không có thông tin"}
+{"id":"question-001232","query_id":"no-information","register":"neutral","input":"Quy trình đó có thời hạn bao lâu?","target":"không có thông tin"}
+{"id":"question-001233","query_id":"no-information","register":"formal","input":"Vui lòng cho biết kết quả được áp dụng ra sao.","target":"không có thông tin"}
+{"id":"question-001234","query_id":"no-information","register":"colloquial","input":"muốn làm cái này thì sao giờ","target":"không có thông tin"}
+{"id":"question-001235","query_id":"no-information","register":"noisy","input":"k biet hoi j nua","target":"không có thông tin"}
+{"id":"question-001236","query_id":"no-information","register":"noisy","input":"diem 7, hoc 20 tc voi ielts thi tinh sao","target":"không có thông tin"}
+{"id":"question-001237","query_id":"no-information","register":"noisy","input":"bao luu hay tot nghiep tui khong ro","target":"không có thông tin"}
+{"id":"question-001238","query_id":"no-information","register":"formal","input":"Hãy hướng dẫn đăng ký học phần và cho biết dự báo thời tiết ngày mai.","target":"không có thông tin"}
+{"id":"question-001239","query_id":"no-information","register":"neutral","input":"Học phí ngành Công nghệ thông tin khóa 65 bao nhiêu và ký túc xá còn phòng không?","target":"không có thông tin"}
+{"id":"question-001240","query_id":"no-information","register":"colloquial","input":"tui muốn bảo lưu rồi đặt giùm vé xe về quê","target":"không có thông tin"}
+{"id":"question-001241","query_id":"no-information","register":"noisy","input":"ielts 5.5 bac may va bat nhac giup tui","target":"không có thông tin"}
+{"id":"question-001242","query_id":"no-information","register":"formal","input":"Xin cung cấp mẫu đơn chuyển ngành cùng số điện thoại của thư viện.","target":"không có thông tin"}
+{"id":"question-001243","query_id":"no-information","register":"neutral","input":"Tôi phải nộp đơn hoãn thi ở đâu và căng tin hôm nay bán món gì?","target":"không có thông tin"}
+{"id":"question-001244","query_id":"no-information","register":"colloquial","input":"học lại làm sao với wifi trường kết nối kiểu gì","target":"không có thông tin"}
+{"id":"question-001245","query_id":"no-information","register":"noisy","input":"hoc phi k65 cntt va thoi tiet nt","target":"không có thông tin"}
+{"id":"question-001246","query_id":"no-information","register":"formal","input":"Hãy nêu điều kiện xét tốt nghiệp và lịch hoạt động của câu lạc bộ bóng đá.","target":"không có thông tin"}
+{"id":"question-001247","query_id":"no-information","register":"neutral","input":"Cho tôi link đơn chuyển trường và hướng dẫn mượn sách thư viện.","target":"không có thông tin"}
+{"id":"question-001248","query_id":"no-information","register":"colloquial","input":"mos 1800 được mấy điểm rồi kể chuyện vui đi","target":"không có thông tin"}
+{"id":"question-001249","query_id":"no-information","register":"noisy","input":"bao luu nop dau va dat taxi cho tui","target":"không có thông tin"}
