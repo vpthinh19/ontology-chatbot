@@ -9,11 +9,32 @@ chép sang ontology mới nếu chưa đối chiếu lại nguồn.
 Thứ tự xây dựng bắt buộc:
 
 ```text
-tài liệu chính thức → ontology → query catalogue → dataset
+tài liệu chính thức → ontology → inventory khả năng trả lời
+                    → query catalogue → dataset
 ```
 
 SPARQL và câu hỏi huấn luyện phải đi theo graph đã xác nhận, không dùng dataset
 để quyết định ngược lại hình dạng ontology.
+
+## Trạng thái nghiệm thu
+
+Lớp nguồn hiện tại đã chứa 32 điều và Phụ lục 1–3 của Quyết định 1052, học phí
+và 41 ngành của Quyết định 729, hướng dẫn thanh toán cùng danh mục biểu mẫu.
+Các literal `officialText@vi`, label và provenance đã qua kiểm tra tự động với
+nguồn `NTUdocs`.
+
+Kết quả này chưa đủ để khóa ontology canonical. Lớp semantic index phải được
+đọc lại theo vai trò và lập inventory khả năng trả lời. Các điểm đã biết cần
+chốt trước khi khóa IRI gồm:
+
+- Điều 30 về nghỉ ốm và quan hệ với nghỉ học, nghỉ tạm thời, hoãn thi;
+- Điều 29 về học liên thông;
+- Điều 20 về cảnh báo học tập và buộc thôi học;
+- `resultProvision` của `ClassAbsenceRequestProcedure`;
+- property không có dữ liệu như `documentUrl`.
+
+Không cần xây lại lớp nguồn. Mỗi khoảng trống semantic được xử lý bằng cách nối
+đúng provision, thêm chỉ mục có căn cứ hoặc ghi rõ không hỗ trợ.
 
 ## Định dạng và namespace
 
@@ -55,6 +76,8 @@ Ontology mới phải vượt các kiểm tra sau trước khi tạo dataset:
 5. Không có node mồ côi hoặc node chỉ làm bản sao của một literal.
 6. Mỗi dữ kiện trả lời được truy ngược về tài liệu chính thức.
 7. Các query catalogue chạy được và chỉ project label/literal.
+8. Mỗi khả năng trả lời quan trọng được ghi vào inventory với trạng thái
+   `supported` hoặc `excluded` kèm lý do.
 
-Số lượng class, property, individual và triple chỉ được công bố sau khi graph
-mới hoàn tất; không kế thừa thống kê của ontology cũ.
+Số lượng class, property, individual và triple chỉ mô tả hình dạng graph, không
+thay thế kiểm tra coverage từ inventory sang catalogue và dataset.

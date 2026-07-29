@@ -1,5 +1,13 @@
 # Concept: tiếng Việt → quyết định miền/SPARQL → ontology
 
+## Trạng thái contract
+
+Kiến trúc một model và hai dạng output đã được chốt. Lớp nguồn ontology đã được
+đối chiếu với tài liệu chính thức, nhưng semantic index và inventory khả năng
+trả lời vẫn đang được nghiệm thu. Catalogue cùng 456 câu hiện tại là candidate
+pool, không quyết định ngược lại phạm vi ontology và chưa cho phép full
+fine-tuning hoặc benchmark chính thức.
+
 ## Trách nhiệm của model
 
 Model seq2seq nhận văn bản tiếng Việt đã chuẩn hoá và sinh đúng một trong hai
@@ -66,10 +74,14 @@ Ontology là đồ thị, không phải cây. Công văn chính thức là ngu�
 nhất. Thứ tự xây dựng là:
 
 ```text
-tài liệu chính thức → ontology → SPARQL catalogue → dataset hợp nhất → model
+tài liệu chính thức → ontology → inventory khả năng trả lời
+                    → SPARQL catalogue → dataset hợp nhất → model
 ```
 
 Không tạo dataset trước rồi sửa ontology để khớp target đã viết.
+Mọi mục được đánh dấu `supported` trong inventory phải có query catalogue; mọi
+template catalogue phải có dữ liệu huấn luyện và đánh giá. Candidate hiện tại
+chỉ là nguồn câu ứng viên cho quá trình đó.
 
 ## Contract tài liệu
 

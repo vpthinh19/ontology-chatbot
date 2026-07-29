@@ -1,5 +1,16 @@
 # Huấn luyện
 
+## Gate trước huấn luyện chính thức
+
+Với candidate pool hiện tại chỉ cho phép smoke/pilot có giới hạn;
+không được full fine-tune, chọn checkpoint chính thức hoặc benchmark test cho đến khi ba
+cổng ontology, catalogue và dataset trong đặc tả readiness được nghiệm thu.
+Pilot một epoch trên toàn bộ candidate chỉ xác nhận pipeline, VRAM và tín hiệu
+học ban đầu; nó không biến candidate thành dataset production.
+
+Các cấu hình bên dưới là giao thức đã chốt cho lần huấn luyện chính thức trong
+tương lai, không phải mô tả một benchmark đã hoàn thành.
+
 ## So sánh công bằng
 
 BARTpho, ViT5 và T5Gemma2 dùng cùng train/validation/test, normalizer, target
@@ -60,14 +71,15 @@ Tiêu chí chọn checkpoint được cố định trước lần train đầu v
 cho ba model. Test chỉ chạy sau khi checkpoint được chọn. Không dò
 hyperparameter, không chạy nhiều seed và không tự train lại vì điểm test thấp.
 
-## Trình tự chạy
+## Trình tự chạy sau khi các cổng readiness hoàn tất
 
-1. Xác minh ontology và query catalogue.
-2. Audit dataset hợp nhất và tokenizer.
-3. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới.
-4. Khi pipeline hợp lệ, fine-tune BARTpho và ViT5 cùng giao thức.
-5. Mở lại từng checkpoint bằng `from_pretrained()` để benchmark.
-6. Chuyển cùng checkpoint sang CTranslate2 và kiểm tra parity triển khai.
+1. Khóa ontology semantic index và inventory khả năng trả lời.
+2. Xác minh catalogue phủ inventory.
+3. Audit dataset hợp nhất và tokenizer.
+4. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới.
+5. Khi pipeline hợp lệ, fine-tune BARTpho và ViT5 cùng giao thức.
+6. Mở lại từng checkpoint bằng `from_pretrained()` để benchmark.
+7. Chuyển cùng checkpoint sang CTranslate2 và kiểm tra parity triển khai.
 
 Câu lệnh chính thức chỉ được ghi sau khi CLI được refactor sang dataset và
 runtime một model; tài liệu không công bố lệnh cũ yêu cầu artifact thứ hai.

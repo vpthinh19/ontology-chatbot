@@ -163,11 +163,18 @@ coverage hoàn tất hoặc dataset sẵn sàng full fine-tuning. Ghi rõ
 `reports/dataset.json` là snapshot candidate và sẽ được thay sau khi reporting
 contract có inventory coverage.
 
-- [ ] **Step 6: Chạy regression test**
+- [ ] **Step 6: Chạy hai regression test tài liệu công khai**
 
-Run: `uv run pytest tests/research/test_documentation_status.py -q`
+Run:
 
-Expected: PASS.
+```bash
+uv run pytest \
+  tests/research/test_documentation_status.py::test_public_docs_call_current_dataset_candidate \
+  tests/research/test_documentation_status.py::test_public_docs_block_official_training_until_readiness_gates_pass \
+  -q
+```
+
+Expected: PASS. Test notice vẫn đỏ cho đến Task 3.
 
 - [ ] **Step 7: Commit tài liệu công khai**
 
@@ -246,4 +253,3 @@ Run: `git diff --check`
 Run: `git status --short`
 
 Expected: diff sạch; chỉ file thuộc plan được commit, các file người dùng trong Global Constraints vẫn giữ nguyên trạng thái trước task.
-

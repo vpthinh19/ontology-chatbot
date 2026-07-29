@@ -1,9 +1,26 @@
 # NTU Ontology Chatbot
 
 Chatbot tiếng Việt trả lời câu hỏi học vụ bằng cách chuyển câu hỏi thành SPARQL
-và truy vấn ontology RDF. Tài liệu này mô tả kiến trúc đã chốt cho lần xây lại
-từ nguồn công văn chính thức. Ontology, dataset, artifact và kết quả thực nghiệm
-cũ không được xem là kết quả của kiến trúc này.
+và truy vấn ontology RDF. Tài liệu này mô tả kiến trúc đích cùng trạng thái thật
+của lần xây lại từ nguồn công văn chính thức. Các kiểm tra kỹ thuật đã qua không
+tự động biến ontology, dataset hoặc model thành artifact production.
+
+## Trạng thái hiện tại
+
+- **Đã kiểm chứng:** lớp nguồn ontology và contract runtime marker/SPARQL.
+- **Đang nghiệm thu:** semantic index và inventory khả năng trả lời của graph.
+- **Candidate:** catalogue cùng 456 câu hiện tại dùng cho smoke và curation.
+- **Chưa thực hiện:** full fine-tuning, benchmark chính thức và chọn model
+  production trên dataset mới.
+
+Chiều kiểm soát độ phủ bắt buộc là:
+
+```text
+ontology → catalogue → dataset
+```
+
+Validator hiện tại mới chứng minh candidate tự nhất quán với catalogue đang có;
+nó chưa chứng minh catalogue đã khai thác hết dữ liệu quan trọng trong ontology.
 
 ## Bài toán và phương pháp
 
@@ -55,26 +72,37 @@ IRI tiếng Anh ổn định, `rdfs:label@vi` cho tên tiếng Việt chính và
 `skos:altLabel@vi` cho tên gọi thay thế hữu ích. Object property tạo đường đi
 trên graph; label và datatype property là dữ liệu được trả về.
 
+Lớp văn bản nguồn, học phí, biểu mẫu và các bảng quy tắc đã được đối chiếu với
+`NTUdocs`. Ontology chưa được khóa canonical cho đến khi semantic index của các
+chủ đề như nghỉ ốm, học liên thông và cảnh báo học tập được audit xong.
+
 Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset duy nhất nằm tại `resources/dataset/main/`, gồm catalogue và ba split.
-Release hiện có 456 câu thuộc 24 họ truy vấn: 340 train, 58 validation và 58
-test. Trong đó 96 câu (21,1%) dạy marker từ chối; 360 câu còn lại phủ quy trình,
-học phí/thanh toán, biểu mẫu, quy tắc định lượng và quy đổi chứng chỉ. Toàn bộ
-target SPARQL đã thực thi có kết quả trên ontology, mọi IRI hữu hạn đã có trong
-train và không có leakage câu đã chuẩn hóa giữa các split.
+Candidate pool hợp nhất nằm tại `resources/dataset/main/`, gồm catalogue và ba
+split. Snapshot hiện tại có 456 câu thuộc 24 họ truy vấn: 340 train, 58
+validation và 58 test. Trong đó 96 câu dạy marker từ chối. Các con số này chỉ
+mô tả dữ liệu đang có để smoke pipeline; từng câu sẽ được giữ, sửa hoặc loại sau
+khi ontology và catalogue được nghiệm thu.
+
+Dataset chính thức phải phủ inventory khả năng trả lời của ontology, đặc biệt
+toàn bộ khía cạnh quan trọng của các quy trình học vụ, học phí, biểu mẫu và quy
+đổi chứng chỉ. Nó cũng phải có lượng lớn câu ngoài miền được tuyển chọn, câu nói
+tự nhiên, viết tắt/noisy và các ca test tay. Việc một IRI hữu hạn đã xuất hiện
+trong catalogue candidate không phải bằng chứng phủ toàn graph.
 
 Phân bố cùng checksum được sinh trong `resources/dataset/main/manifest.json`
 và `reports/dataset.json`. Các câu người dùng thực tế được giữ tại
-`resources/cases/user_queries.txt` và đã có quyết định hồi quy trong release.
+`resources/cases/user_queries.txt`; quyết định hồi quy hiện tại cũng chỉ là ứng
+viên và phải được rà lại sau khi catalogue được khóa.
 
 Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 
 ## Mô hình và đánh giá
 
-Ba model được fine-tune và benchmark công bằng trên cùng dataset:
+Sau khi dataset chính thức được khóa, ba model sẽ được fine-tune và benchmark
+công bằng trên cùng dữ liệu:
 
 - `vinai/bartpho-syllable`;
 - `VietAI/vit5-base`;
@@ -83,8 +111,8 @@ Ba model được fine-tune và benchmark công bằng trên cùng dataset:
 Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
 miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
 hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn
-bộ test. Điểm model cũ không đại diện cho dataset/ontology mới nên không xuất
-hiện trong tài liệu này.
+bộ test. Hiện chưa có benchmark chính thức áp dụng cho dataset đích; smoke/pilot
+trên candidate không được dùng để xếp hạng model.
 
 Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
 tại [docs/EVALUATION.md](docs/EVALUATION.md).
@@ -114,9 +142,10 @@ RDFLib và ontology. Thiết kế module chi tiết nằm tại
 
 ## Tái lập nghiên cứu
 
-Trình tự duy nhất là: xây ontology từ tài liệu chính thức, lập danh mục SPARQL
-có kết quả, xây dataset hợp nhất, kiểm tra tokenizer, fine-tune ba model cùng
-giao thức, benchmark checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
+Trình tự duy nhất là: xây ontology từ tài liệu chính thức, audit semantic index,
+lập inventory khả năng trả lời, lập catalogue SPARQL có kết quả, xây dataset
+hợp nhất, kiểm tra tokenizer, fine-tune ba model cùng giao thức, benchmark
+checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
 
 Không giữ số liệu giả, không tái sử dụng benchmark hết hiệu lực và không dùng
 test để chọn checkpoint.

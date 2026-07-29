@@ -1,5 +1,8 @@
 # Triển khai
 
+Đây là contract triển khai đích. Hiện chưa có checkpoint production được chọn
+từ dataset chính thức; artifact smoke/pilot không được dùng để nghiệm thu web.
+
 ## Artifact
 
 Runtime đích chỉ nạp một checkpoint seq2seq đã chuyển sang CTranslate2 cùng

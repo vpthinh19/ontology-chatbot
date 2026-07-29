@@ -1,5 +1,9 @@
 # Đánh giá
 
+Tài liệu này định nghĩa giao thức sẽ áp dụng sau khi ontology và dataset chính
+thức được khóa. Hiện chưa có benchmark production; metric smoke/pilot trên
+candidate pool không được dùng để xếp hạng hoặc chọn model cuối cùng.
+
 ## Hai nhóm test
 
 Test được báo cáo theo hai nhóm độc lập:
