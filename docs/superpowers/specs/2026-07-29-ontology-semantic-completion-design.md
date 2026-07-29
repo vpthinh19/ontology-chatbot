@@ -1,7 +1,7 @@
 # Thiết kế hoàn thiện cấu trúc và chỉ mục ngữ nghĩa ontology
 
 **Ngày:** 2026-07-29  
-**Trạng thái:** Đã thống nhất ở mức thiết kế, chờ người dùng duyệt đặc tả  
+**Trạng thái:** Đã được người dùng duyệt
 **Phạm vi:** `resources/ontology/ontology.ttl`, kiểm thử ontology và inventory
 khả năng trả lời. Dataset hiện tại chỉ được chỉnh tối thiểu nếu một target ứng
 viên trở thành truy vấn rỗng do sửa lỗi ontology.
