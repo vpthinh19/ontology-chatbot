@@ -27,9 +27,14 @@ Có hai loại IRI:
    hạn quy trình, chính sách, chứng chỉ, ngành học và biểu mẫu. Model được phép
    sinh các IRI này trong slot đã khai báo hữu hạn.
 2. **IRI bản ghi kỹ thuật** dùng để lưu một dòng dữ liệu hoặc quy tắc, chẳng
-   hạn `CertificateConversionRule`, `TuitionRate`, các band phân loại và quy
-   tắc sĩ số. Model không sinh IRI của từng bản ghi. SPARQL tìm bản ghi phù hợp
-   từ điều kiện nghiệp vụ trong câu hỏi.
+   hạn `CertificateConversionRule`, `TuitionRate` và các band phân loại. Model
+   không sinh IRI của từng bản ghi. SPARQL tìm bản ghi phù hợp từ điều kiện
+   nghiệp vụ trong câu hỏi.
+
+Tên class không tự quyết định vai trò này. Một `ClassSizeRule` có IRI mô tả
+trực tiếp loại lớp mà người dùng nhắc tới, như lớp thực hành CNC, vẫn là semantic
+anchor hợp lệ. Ngược lại, IRI mang số dòng bảng của một conversion rule là bản
+ghi kỹ thuật dù nó có label.
 
 Ví dụ, câu hỏi về IELTS 6.0 cung cấp `:IELTSCertificate` và số `6.0`; query tìm
 `CertificateConversionRule` phù hợp. Model không phải biết IRI của rule.
