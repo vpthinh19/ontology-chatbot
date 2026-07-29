@@ -1,9 +1,23 @@
+import re
+
 from rdflib import OWL, RDF
 from rdflib.namespace import XSD
 
 
+CLAUSE_LINE = re.compile(r"(?m)^(\d+)\.\s")
+POINT_LINE = re.compile(r"(?m)^([a-zđ])\)\s")
+
+
 def _vi_texts(graph, subject, predicate):
     return [value for value in graph.objects(subject, predicate) if value.language == "vi"]
+
+
+def _identifiers(graph, parent, academic):
+    return {
+        str(graph.value(child, academic.identifier))
+        for child in graph.objects(parent, academic.hasPart)
+        if graph.value(child, academic.identifier) is not None
+    }
 
 
 def test_decision_1052_metadata_and_structure(ontology_graph, academic) -> None:
@@ -70,6 +84,61 @@ def test_decision_1052_clauses_points_and_tables_are_traceable(
         academic.partOf,
         academic.Decision1052Article25Clause01,
     ) in ontology_graph
+
+
+def test_decision_1052_numbered_children_match_parent_text(
+    ontology_graph, academic
+) -> None:
+    for index in range(1, 33):
+        article = academic[f"Decision1052Article{index:02d}"]
+        text = str(ontology_graph.value(article, academic.officialText))
+        expected = {f"Khoản {number}" for number in CLAUSE_LINE.findall(text)}
+        actual = {
+            value
+            for value in _identifiers(ontology_graph, article, academic)
+            if value.startswith("Khoản ")
+        }
+        assert actual == expected, article
+
+    for clause in ontology_graph.subjects(RDF.type, academic.Clause):
+        text = str(ontology_graph.value(clause, academic.officialText))
+        expected = {f"Điểm {letter}" for letter in POINT_LINE.findall(text)}
+        if not expected:
+            continue
+        actual = {
+            value
+            for value in _identifiers(ontology_graph, clause, academic)
+            if value.startswith("Điểm ")
+        }
+        assert actual == expected, clause
+
+
+def test_article_20_clauses_are_separated_without_duplicate_points(
+    ontology_graph, academic
+) -> None:
+    clause_1 = academic.Decision1052Article20Clause01
+    clause_2 = academic.Decision1052Article20Clause02
+    assert _identifiers(
+        ontology_graph, academic.Decision1052Article20, academic
+    ) == {"Khoản 1", "Khoản 2", "Khoản 3"}
+    assert _identifiers(ontology_graph, clause_1, academic) == {
+        "Điểm a",
+        "Điểm b",
+        "Điểm c",
+    }
+    assert _identifiers(ontology_graph, clause_2, academic) == {
+        "Điểm a",
+        "Điểm b",
+    }
+    assert "buộc thôi học" not in str(
+        ontology_graph.value(clause_1, academic.officialText)
+    ).casefold()
+    assert "buộc thôi học" in str(
+        ontology_graph.value(clause_2, academic.officialText)
+    ).casefold()
+    for point in ontology_graph.objects(clause_1, academic.hasPart):
+        assert len(list(ontology_graph.objects(point, academic.officialText))) == 1
+        assert len(list(ontology_graph.objects(point, academic.orderIndex))) == 1
 
 
 def test_decision_1052_does_not_invent_missing_appendix_4(ontology_graph, academic) -> None:

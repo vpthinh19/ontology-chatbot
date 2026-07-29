@@ -4326,14 +4326,19 @@
 
 :Decision1052Article06Clause02PointD a :Point,
         owl:NamedIndividual ;
-    rdfs:label "Điểm d Khoản 2 Điều 6"@vi,
-        "Điểm đ Khoản 2 Điều 6"@vi ;
-    :identifier "Điểm d"@vi,
-        "Điểm đ"@vi ;
-    :officialText "d) Học phần nhiệm ý: học phần SV có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả học tập của học phần này được ghi trong bảng điểm nhưng không được tính trung bình chung tích lũy và không sử dụng vào việc phân loại, xếp hạng học tập học kỳ và toàn khóa học."@vi,
-        "đ) Học phần học trước: học phần SV phải học xong (có thể đạt hoặc không đạt) trước khi học các học phần tiếp theo."@vi ;
-    :orderIndex "4"^^xsd:nonNegativeInteger,
-        "5"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điểm d Khoản 2 Điều 6"@vi ;
+    :identifier "Điểm d"@vi ;
+    :officialText "d) Học phần nhiệm ý: học phần SV có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả học tập của học phần này được ghi trong bảng điểm nhưng không được tính trung bình chung tích lũy và không sử dụng vào việc phân loại, xếp hạng học tập học kỳ và toàn khóa học."@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article06Clause02 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article06Clause02PointDD a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm đ Khoản 2 Điều 6"@vi ;
+    :identifier "Điểm đ"@vi ;
+    :officialText "đ) Học phần học trước: học phần SV phải học xong (có thể đạt hoặc không đạt) trước khi học các học phần tiếp theo."@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article06Clause02 ;
     :sourceDocument :Decision1052 .
 
@@ -4453,14 +4458,19 @@ hành chính có mã số riêng và được bố trí cố vấn học tập �
 
 :Decision1052Article08Clause01PointD a :Point,
         owl:NamedIndividual ;
-    rdfs:label "Điểm d Khoản 1 Điều 8"@vi,
-        "Điểm đ Khoản 1 Điều 8"@vi ;
-    :identifier "Điểm d"@vi,
-        "Điểm đ"@vi ;
-    :officialText "d) Đối với SV chuyển đổi ngành, chuyên ngành hoặc chương trình đào tạo, lớp SV sẽ được điều chỉnh tương ứng."@vi,
-        "đ) Đối với SV từ Trường khác đến sẽ được bố trí vào lớp SV phù hợp với khối lượng tín chỉ được Nhà trường bảo lưu."@vi ;
-    :orderIndex "4"^^xsd:nonNegativeInteger,
-        "5"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điểm d Khoản 1 Điều 8"@vi ;
+    :identifier "Điểm d"@vi ;
+    :officialText "d) Đối với SV chuyển đổi ngành, chuyên ngành hoặc chương trình đào tạo, lớp SV sẽ được điều chỉnh tương ứng."@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article08Clause01 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article08Clause01PointDD a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm đ Khoản 1 Điều 8"@vi ;
+    :identifier "Điểm đ"@vi ;
+    :officialText "đ) Đối với SV từ Trường khác đến sẽ được bố trí vào lớp SV phù hợp với khối lượng tín chỉ được Nhà trường bảo lưu."@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article08Clause01 ;
     :sourceDocument :Decision1052 .
 
@@ -4699,14 +4709,19 @@ Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng
 
 :Decision1052Article12Clause02PointD a :Point,
         owl:NamedIndividual ;
-    rdfs:label "Điểm d Khoản 2 Điều 12"@vi,
-        "Điểm đ Khoản 2 Điều 12"@vi ;
-    :identifier "Điểm d"@vi,
-        "Điểm đ"@vi ;
-    :officialText "d) Thực hiện kiểm tra, đánh giá SV theo nội dung và kế hoạch trong Đề cương chi tiết học phần, đáp ứng chuẩn đầu ra của học phần và đảm bảo tính công khai, minh bạch, tính giá trị và độ tin cậy."@vi,
-        "đ) Hướng dẫn và hỗ trợ SV học tập, nghiên cứu ngoài giờ lên lớp theo phương thức trực tiếp và trực tuyến."@vi ;
-    :orderIndex "4"^^xsd:nonNegativeInteger,
-        "5"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điểm d Khoản 2 Điều 12"@vi ;
+    :identifier "Điểm d"@vi ;
+    :officialText "d) Thực hiện kiểm tra, đánh giá SV theo nội dung và kế hoạch trong Đề cương chi tiết học phần, đáp ứng chuẩn đầu ra của học phần và đảm bảo tính công khai, minh bạch, tính giá trị và độ tin cậy."@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article12Clause02 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article12Clause02PointDD a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm đ Khoản 2 Điều 12"@vi ;
+    :identifier "Điểm đ"@vi ;
+    :officialText "đ) Hướng dẫn và hỗ trợ SV học tập, nghiên cứu ngoài giờ lên lớp theo phương thức trực tiếp và trực tuyến."@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article12Clause02 ;
     :sourceDocument :Decision1052 .
 
@@ -5112,10 +5127,8 @@ $n$ : tổng số tín chỉ các học phần"""@vi ;
         owl:NamedIndividual ;
     rdfs:label "Điểm a Khoản 1 Điều 20"@vi ;
     :identifier "Điểm a"@vi ;
-    :officialText "a) Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký học trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi,
-        "a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi ;
-    :orderIndex "1"^^xsd:nonNegativeInteger,
-        "4"^^xsd:nonNegativeInteger ;
+    :officialText "a) Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký học trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article20Clause01 ;
     :sourceDocument :Decision1052 .
 
@@ -5123,10 +5136,8 @@ $n$ : tổng số tín chỉ các học phần"""@vi ;
         owl:NamedIndividual ;
     rdfs:label "Điểm b Khoản 1 Điều 20"@vi ;
     :identifier "Điểm b"@vi ;
-    :officialText "b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này."@vi,
-        "b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo."@vi ;
-    :orderIndex "2"^^xsd:nonNegativeInteger,
-        "5"^^xsd:nonNegativeInteger ;
+    :officialText "b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo."@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article20Clause01 ;
     :sourceDocument :Decision1052 .
 
@@ -5134,10 +5145,40 @@ $n$ : tổng số tín chỉ các học phần"""@vi ;
         owl:NamedIndividual ;
     rdfs:label "Điểm c Khoản 1 Điều 20"@vi ;
     :identifier "Điểm c"@vi ;
-    :officialText """c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo.
-2. Sau mỗi học kỳ chính, SV bị buộc thôi học nếu thuộc một trong những trường hợp sau đây:"""@vi ;
+    :officialText "c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo."@vi ;
     :orderIndex "3"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article20Clause01 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article20Clause02 a :Clause,
+        owl:NamedIndividual ;
+    rdfs:label "Khoản 2 Điều 20"@vi ;
+    :hasPart :Decision1052Article20Clause02PointA,
+        :Decision1052Article20Clause02PointB ;
+    :identifier "Khoản 2"@vi ;
+    :officialText """2. Sau mỗi học kỳ chính, SV bị buộc thôi học nếu thuộc một trong những trường hợp sau đây:
+a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.
+b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này."""@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article20 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article20Clause02PointA a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm a Khoản 2 Điều 20"@vi ;
+    :identifier "Điểm a"@vi ;
+    :officialText "a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi ;
+    :orderIndex "1"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article20Clause02 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article20Clause02PointB a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm b Khoản 2 Điều 20"@vi ;
+    :identifier "Điểm b"@vi ;
+    :officialText "b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này."@vi ;
+    :orderIndex "2"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article20Clause02 ;
     :sourceDocument :Decision1052 .
 
 :Decision1052Article20Clause03 a :Clause,
@@ -5286,14 +5327,19 @@ $n$ : tổng số tín chỉ các học phần"""@vi ;
 
 :Decision1052Article22Clause01PointD a :Point,
         owl:NamedIndividual ;
-    rdfs:label "Điểm d Khoản 1 Điều 22"@vi,
-        "Điểm đ Khoản 1 Điều 22"@vi ;
-    :identifier "Điểm d"@vi,
-        "Điểm đ"@vi ;
-    :officialText "d) Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo."@vi,
-        "đ) Hoàn thành các học phần Giáo dục quốc phòng – An ninh và Giáo dục thể chất và các học phần điều kiện khác (nếu có)."@vi ;
-    :orderIndex "4"^^xsd:nonNegativeInteger,
-        "5"^^xsd:nonNegativeInteger ;
+    rdfs:label "Điểm d Khoản 1 Điều 22"@vi ;
+    :identifier "Điểm d"@vi ;
+    :officialText "d) Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo."@vi ;
+    :orderIndex "4"^^xsd:nonNegativeInteger ;
+    :partOf :Decision1052Article22Clause01 ;
+    :sourceDocument :Decision1052 .
+
+:Decision1052Article22Clause01PointDD a :Point,
+        owl:NamedIndividual ;
+    rdfs:label "Điểm đ Khoản 1 Điều 22"@vi ;
+    :identifier "Điểm đ"@vi ;
+    :officialText "đ) Hoàn thành các học phần Giáo dục quốc phòng – An ninh và Giáo dục thể chất và các học phần điều kiện khác (nếu có)."@vi ;
+    :orderIndex "5"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article22Clause01 ;
     :sourceDocument :Decision1052 .
 
@@ -7894,10 +7940,7 @@ P: từ 5 điểm trở lên.
     :officialText """1. Sau mỗi học kỳ chính, SV sẽ nhận được thông tin cảnh báo kết quả học tập nhằm giúp SV lập phương án học tập cải thiện để có thể tốt nghiệp trong thời hạn tối đa được phép học. Việc cảnh báo được áp dụng trong các trường hợp sau:
 a) Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký học trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24.
 b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo.
-c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo.
-2. Sau mỗi học kỳ chính, SV bị buộc thôi học nếu thuộc một trong những trường hợp sau đây:
-a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.
-b) Vượt quá thời gian tối đa được phép học tại Trường quy định tại khoản 4 Điều 2 của Quy chế này."""@vi ;
+c) Điểm trung bình tích lũy đạt dưới 5,20 đối với SV trình độ năm thứ nhất, dưới 5,30 đối với SV trình độ năm thứ hai, dưới 5,40 đối với SV trình độ năm thứ ba hoặc dưới 5,50 đối với SV các năm tiếp theo."""@vi ;
     :orderIndex "1"^^xsd:nonNegativeInteger ;
     :partOf :Decision1052Article20 ;
     :sourceDocument :Decision1052 .
@@ -8263,6 +8306,7 @@ d) Sau khi tốt nghiệp chương trình thứ nhất, SV sẽ được chuyể
         :Decision1052Article08Clause01PointB,
         :Decision1052Article08Clause01PointC,
         :Decision1052Article08Clause01PointD,
+        :Decision1052Article08Clause01PointDD,
         :Decision1052Article08Clause01PointE ;
     :identifier "Khoản 1"@vi ;
     :officialText """1. Lớp hành chính:
@@ -8324,6 +8368,7 @@ Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng
         owl:NamedIndividual ;
     rdfs:label "Điều 20: Cảnh báo kết quả học tập và buộc thôi học"@vi ;
     :hasPart :Decision1052Article20Clause01,
+        :Decision1052Article20Clause02,
         :Decision1052Article20Clause03 ;
     :identifier "Điều 20"@vi ;
     :officialText """### Điều 20. Cảnh báo kết quả học tập và buộc thôi học
@@ -8347,6 +8392,7 @@ b) Vượt quá thời gian tối đa được phép học tại Trường quy �
         :Decision1052Article22Clause01PointB,
         :Decision1052Article22Clause01PointC,
         :Decision1052Article22Clause01PointD,
+        :Decision1052Article22Clause01PointDD,
         :Decision1052Article22Clause01PointE ;
     :identifier "Khoản 1"@vi ;
     :officialText """1. Sinh viên được xét và công nhận tốt nghiệp khi có đủ các điều kiện sau:
@@ -8694,6 +8740,7 @@ d) Xác nhận đăng ký học phần theo thời gian quy định từ tài kh
         :Decision1052Article12Clause02PointB,
         :Decision1052Article12Clause02PointC,
         :Decision1052Article12Clause02PointD,
+        :Decision1052Article12Clause02PointDD,
         :Decision1052Article12Clause02PointE,
         :Decision1052Article12Clause02PointG,
         :Decision1052Article12Clause02PointH ;
@@ -8805,6 +8852,7 @@ d) Việc xét khen thưởng hàng năm, cấp học bổng, cấp tài trợ (
         :Decision1052Article06Clause02PointB,
         :Decision1052Article06Clause02PointC,
         :Decision1052Article06Clause02PointD,
+        :Decision1052Article06Clause02PointDD,
         :Decision1052Article06Clause02PointE,
         :Decision1052Article06Clause02PointG,
         :Decision1052Article06Clause02PointH,
