@@ -44,3 +44,16 @@ def test_superseded_designs_point_to_current_readiness_spec() -> None:
 
     for path in files:
         assert replacement in _read(path)
+
+
+def test_docs_separate_canonical_ontology_from_candidate_dataset() -> None:
+    ontology = _read("docs/ONTOLOGY.md")
+    dataset = _read("docs/DATASET.md")
+    readme = _read("README.md")
+
+    assert "answer_inventory.json" in ontology
+    assert "22 quy trình" in ontology
+    assert "2 chính sách" in ontology
+    assert "ontology canonical" in readme
+    assert "candidate pool" in dataset
+    assert "không được full fine-tune" in _read("docs/TRAINING.md")

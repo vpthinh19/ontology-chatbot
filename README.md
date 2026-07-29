@@ -7,8 +7,9 @@ tự động biến ontology, dataset hoặc model thành artifact production.
 
 ## Trạng thái hiện tại
 
-- **Đã kiểm chứng:** lớp nguồn ontology và contract runtime marker/SPARQL.
-- **Đang nghiệm thu:** semantic index và inventory khả năng trả lời của graph.
+- **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory và
+  contract runtime marker/SPARQL.
+- **Đang thực hiện:** xây query catalogue và dataset chính thức từ inventory.
 - **Candidate:** catalogue cùng 455 câu hiện tại dùng cho smoke và curation.
 - **Chưa thực hiện:** full fine-tuning, benchmark chính thức và chọn model
   production trên dataset mới.
@@ -73,8 +74,10 @@ IRI tiếng Anh ổn định, `rdfs:label@vi` cho tên tiếng Việt chính và
 trên graph; label và datatype property là dữ liệu được trả về.
 
 Lớp văn bản nguồn, học phí, biểu mẫu và các bảng quy tắc đã được đối chiếu với
-`NTUdocs`. Ontology chưa được khóa canonical cho đến khi semantic index của các
-chủ đề như nghỉ ốm, học liên thông và cảnh báo học tập được audit xong.
+`NTUdocs`. Ontology canonical hiện có 22 quy trình, 2 chính sách và inventory
+máy đọc được tại `resources/ontology/answer_inventory.json`. Các chủ đề nghỉ
+ốm, học liên thông, cảnh báo và buộc thôi học đã có đường truy vấn về đúng
+provision nguồn.
 
 Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 

@@ -1,5 +1,9 @@
 # Nghiệm thu ontology và xây dataset chính thức
 
+> **Trạng thái triển khai:** Cổng 1 đã hoàn tất với ontology canonical và
+> `resources/ontology/answer_inventory.json`. Cổng 2 và Cổng 3 chưa hoàn tất;
+> catalogue cùng 455 câu hiện tại vẫn là candidate pool.
+
 ## Mục tiêu
 
 Khóa lại trạng thái đúng của dự án trước khi tiếp tục huấn luyện:

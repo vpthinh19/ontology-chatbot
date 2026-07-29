@@ -7,8 +7,9 @@ Dataset chính thức sẽ dạy một model seq2seq thực hiện trọn luồn
 - câu được ontology hỗ trợ → sinh SPARQL `SELECT`;
 - câu không được hỗ trợ → sinh `không có thông tin`.
 
-Dataset chỉ được khóa sau khi ontology, inventory khả năng trả lời và danh mục
-SPARQL đã được xác nhận từ tài liệu chính thức.
+Ontology và inventory khả năng trả lời đã được xác nhận. Dataset chỉ được khóa
+sau khi query catalogue chính thức phủ các mục `supported` trong inventory và
+mọi target được kiểm tra lại trên graph canonical.
 
 455 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.
 Mỗi câu sẽ được giữ, sửa hoặc loại sau audit; không bản ghi nào tự động mang

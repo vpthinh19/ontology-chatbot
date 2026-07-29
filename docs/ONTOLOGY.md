@@ -18,23 +18,28 @@ SPARQL và câu hỏi huấn luyện phải đi theo graph đã xác nhận, kh�
 
 ## Trạng thái nghiệm thu
 
-Lớp nguồn hiện tại đã chứa 32 điều và Phụ lục 1–3 của Quyết định 1052, học phí
-và 41 ngành của Quyết định 729, hướng dẫn thanh toán cùng danh mục biểu mẫu.
-Các literal `officialText@vi`, label và provenance đã qua kiểm tra tự động với
-nguồn `NTUdocs`.
+Ontology canonical hiện đã vượt cổng cấu trúc, provenance và semantic index.
+Lớp nguồn chứa 32 điều cùng Phụ lục 1–3 của Quyết định 1052, học phí và 41 ngành
+của Quyết định 729, hướng dẫn thanh toán cùng danh mục biểu mẫu. Các literal
+`officialText@vi`, label và provenance đã được đối chiếu với nguồn `NTUdocs`.
 
-Kết quả này chưa đủ để khóa ontology canonical. Lớp semantic index phải được
-đọc lại theo vai trò và lập inventory khả năng trả lời. Các điểm đã biết cần
-chốt trước khi khóa IRI gồm:
+Audit cấu trúc đã tách riêng Khoản 2 Điều 20 và bốn điểm `đ)` từng bị gộp vào
+điểm `d)`. Kiểm thử hiện so sánh các khoản/điểm đánh số trong văn bản cha với
+node con trên toàn bộ 32 điều.
 
-- Điều 30 về nghỉ ốm và quan hệ với nghỉ học, nghỉ tạm thời, hoãn thi;
-- Điều 29 về học liên thông;
-- Điều 20 về cảnh báo học tập và buộc thôi học;
-- `resultProvision` của `ClassAbsenceRequestProcedure`;
-- property không có dữ liệu như `documentUrl`.
+Semantic index có 22 quy trình và 2 chính sách. Điều 20 được tách thành chính
+sách cảnh báo, chính sách buộc thôi học và quy trình xin chuyển chương trình;
+Điều 29 có quy trình học liên thông; Điều 30 có quy trình nghỉ ốm cùng liên kết
+đến nghỉ học ngắn ngày, nghỉ học tạm thời và hoãn thi. Liên kết kết quả không
+có căn cứ của quy trình xin phép nghỉ học và property `documentUrl` rỗng đã
+được loại bỏ.
 
-Không cần xây lại lớp nguồn. Mỗi khoảng trống semantic được xử lý bằng cách nối
-đúng provision, thêm chỉ mục có căn cứ hoặc ghi rõ không hỗ trợ.
+Inventory máy đọc được nằm tại
+`resources/ontology/answer_inventory.json`. File này được sinh xác định từ
+graph, chỉ lưu anchor, đường tới literal/label và provenance; nó không sao chép
+câu trả lời. Các quyết định không hỗ trợ được ghi bằng trạng thái `excluded` và
+lý do. Query catalogue chính thức là bước tiếp theo và chỉ được xây từ các mục
+`supported`.
 
 ## Định dạng và namespace
 
