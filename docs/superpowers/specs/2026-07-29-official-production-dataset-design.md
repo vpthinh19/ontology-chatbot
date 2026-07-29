@@ -1,5 +1,9 @@
 # Dataset production cho ontology chính thức
 
+> **Trạng thái:** Tài liệu này ghi lại thiết kế đã tạo candidate pool 456 câu.
+> Nó không còn là tiêu chí nghiệm thu dataset canonical. Xem
+> [đặc tả readiness](2026-07-29-ontology-dataset-readiness-design.md).
+
 ## Mục tiêu
 
 Dataset huấn luyện một model seq2seq duy nhất thực hiện hai hành vi:

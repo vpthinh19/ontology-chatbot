@@ -1,5 +1,9 @@
 # Official Production Dataset Implementation Plan
 
+> **Trạng thái:** Kế hoạch này ghi lại lần triển khai đã tạo candidate pool 456
+> câu. Các checkbox hoàn thành không cấp trạng thái production. Xem
+> [đặc tả readiness](../specs/2026-07-29-ontology-dataset-readiness-design.md).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Replace the stale ontology-coupled dataset and PhoBERT gate with one validated dataset that trains a seq2seq model to emit executable SPARQL or `không có thông tin`.

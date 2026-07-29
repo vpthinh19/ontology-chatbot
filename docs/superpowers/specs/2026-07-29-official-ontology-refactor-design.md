@@ -1,5 +1,9 @@
 # Refactor ontology từ nguồn học vụ chính thức
 
+> **Trạng thái:** Tài liệu này đã dẫn tới lớp nguồn ontology hiện tại nhưng
+> không còn là tiêu chí nghiệm thu canonical cho semantic index. Xem
+> [đặc tả readiness](2026-07-29-ontology-dataset-readiness-design.md).
+
 ## Mục tiêu và nguồn dữ liệu
 
 Xây lại ontology Turtle từ các nguồn được cung cấp:

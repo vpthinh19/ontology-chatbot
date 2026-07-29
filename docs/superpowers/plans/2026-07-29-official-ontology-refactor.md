@@ -1,5 +1,9 @@
 # Official Ontology Refactor Implementation Plan
 
+> **Trạng thái:** Kế hoạch này ghi lại lần triển khai lớp nguồn ontology. Các
+> checkbox hoàn thành không có nghĩa semantic index đã được khóa canonical. Xem
+> [đặc tả readiness](../specs/2026-07-29-ontology-dataset-readiness-design.md).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Thay ontology cũ bằng ontology Turtle mô hình lai, truy nguồn được tới QĐ 1052, QĐ 729, hướng dẫn học phí và danh mục URL biểu mẫu đã cung cấp.
