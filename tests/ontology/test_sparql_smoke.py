@@ -1,6 +1,8 @@
 import pytest
 
+from ontchatbot.research.catalogue import load_catalogue
 from ontchatbot.runtime.sparql import execute_select
+from ontchatbot.settings import QUERY_CATALOGUE_PATH
 
 
 @pytest.mark.parametrize(
@@ -112,3 +114,33 @@ def test_computer_certificate_query_converts_score(ontology_graph) -> None:
         "SELECT ?answer WHERE { ?rule a :CertificateConversionRule ; :appliesToCertificate :IC3Certificate ; :minimumScore ?minimum ; :maximumScore ?maximum ; :convertedGrade ?answer . FILTER (?minimum <= 2400 && 2400 <= ?maximum) }",
     )
     assert rows == [{"answer": "9.0"}]
+
+
+def test_catalogue_detail_queries_cover_complete_official_tables(
+    ontology_graph,
+) -> None:
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+
+    tuition = execute_select(
+        ontology_graph,
+        catalogue["tuition-rate-details"].target_template,
+        max_rows=100,
+    )
+    doctoral = execute_select(
+        ontology_graph,
+        catalogue["doctoral-tuition-details"].target_template,
+    )
+    class_sizes = execute_select(
+        ontology_graph,
+        catalogue["class-size-details"].target_template,
+    )
+    certificate_query = catalogue[
+        "certificate-conversion-details"
+    ].target_template.replace("${certificate}", ":IELTSCertificate")
+    certificate_rules = execute_select(ontology_graph, certificate_query)
+
+    assert len(tuition) == 24
+    assert len(doctoral) == 3
+    assert len(class_sizes) == 14
+    assert len(certificate_rules) == 10
+    assert any(row["criterion"] == "≥ 5.5" for row in certificate_rules)

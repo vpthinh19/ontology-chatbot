@@ -1,13 +1,23 @@
 from __future__ import annotations
 
+import json
+from itertools import product
+
 import pytest
 
-from ontchatbot.research.catalogue import CoverageSelector, QuerySpec, SlotSpec
+from ontchatbot.research.catalogue import (
+    CoverageSelector,
+    QuerySpec,
+    SlotSpec,
+    load_catalogue,
+)
 from ontchatbot.research.catalogue_validation import (
     CatalogueValidationError,
     validate_catalogue,
 )
 from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.runtime.sparql import execute_select
+from ontchatbot.settings import ANSWER_INVENTORY_PATH, QUERY_CATALOGUE_PATH
 
 
 INVENTORY = {
@@ -136,3 +146,32 @@ def test_rejects_non_rejection_spec_without_coverage() -> None:
 
     with pytest.raises(CatalogueValidationError, match="declares no coverage"):
         validate_catalogue(load_ontology(), INVENTORY, catalogue)
+
+
+def test_canonical_catalogue_covers_supported_inventory() -> None:
+    graph = load_ontology()
+    inventory = json.loads(ANSWER_INVENTORY_PATH.read_text(encoding="utf-8"))
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+
+    report = validate_catalogue(graph, inventory, catalogue)
+
+    assert report["supported_entries"] == report["covered_entries"]
+    assert report["uncovered_entries"] == []
+
+
+def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
+    graph = load_ontology()
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+
+    for query_id, spec in catalogue.items():
+        if spec.domain == "out-of-domain" or any(
+            slot.kind == "number" for slot in spec.slots.values()
+        ):
+            continue
+        names = list(spec.slots)
+        combinations = product(*(spec.slots[name].values for name in names))
+        for values in combinations:
+            query = spec.target_template
+            for name, value in zip(names, values, strict=True):
+                query = query.replace(f"${{{name}}}", value)
+            assert execute_select(graph, query, max_rows=500), (query_id, values)
