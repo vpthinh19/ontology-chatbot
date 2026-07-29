@@ -66,6 +66,6 @@
 **Files:**
 - Replace: `artifacts/models/t5gemma2/`
 
-- [ ] Preserve the current artifact as the before-state, then train T5Gemma2 once from base.
-- [ ] Reload the saved artifact independently for validation and test.
-- [ ] Compare before/after metrics and stop without tuning or another run.
+- [x] Preserve the current artifact as the before-state, then train T5Gemma2 once from base.
+- [x] Reload the saved artifact independently for validation and test.
+- [x] Compare before/after metrics and stop without tuning or another run.

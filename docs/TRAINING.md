@@ -2,10 +2,12 @@
 
 ## Trạng thái
 
-Ontology, catalogue và dataset 2.150 câu đã vượt các cổng readiness. Dataset đã
-được khóa bằng checksum nên có thể dùng cho fine-tuning theo giao thức dưới đây.
-Hiện chưa có benchmark chính thức trên release này; mọi kết quả thử nghiệm từ
-dataset trước đó đều hết hiệu lực.
+Ontology, catalogue và dataset 2.150 câu đã vượt các cổng readiness. T5Gemma2
+đã được fine-tune đúng một lần trên release này: early stopping tại epoch 18,
+checkpoint tốt nhất epoch 12, thời gian train 3.380,12 giây. Artifact reload độc
+lập đạt 85,33% Answer Exact trên validation và 84,67% trên test;
+hiện chưa có benchmark chính thức so sánh đủ ba model. Kết quả từ dataset trước
+đó đều hết hiệu lực.
 
 ## So sánh công bằng
 
@@ -72,10 +74,21 @@ hyperparameter, không chạy nhiều seed và không tự train lại vì đi�
 1. Khóa ontology semantic index và inventory khả năng trả lời.
 2. Xác minh catalogue phủ inventory.
 3. Xác minh checksum dataset hợp nhất và tokenizer.
-4. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới.
+4. Fine-tune T5Gemma2 một lần để nghiệm thu khả năng học contract mới (đã hoàn
+   tất; chưa đạt mục tiêu System Answer Exact trên 90%).
 5. Khi pipeline hợp lệ, fine-tune BARTpho và ViT5 cùng giao thức.
 6. Mở lại từng checkpoint bằng `from_pretrained()` để benchmark.
 7. Chuyển cùng checkpoint sang CTranslate2 và kiểm tra parity triển khai.
 
-Câu lệnh chính thức chỉ được ghi sau khi CLI được refactor sang dataset và
-runtime một model; tài liệu không công bố lệnh cũ yêu cầu artifact thứ hai.
+Lệnh đã dùng trên RTX 4050 6 GB:
+
+```bash
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uv run train_sparql \
+  --model t5gemma2 --save-model --local-files-only
+uv run evaluate_sparql_model --model t5gemma2 \
+  --model-dir artifacts/models/t5gemma2/model --suite both --batch-size 1 \
+  --output-dir artifacts/models/t5gemma2
+```
+
+Biến allocator chỉ tránh phân mảnh VRAM, không thay đổi hyperparameter hoặc dữ
+liệu. CLI và runtime đều dùng một model; không có artifact phân loại thứ hai.

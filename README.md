@@ -10,8 +10,10 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
   query catalogue và dataset hợp nhất 2.150 câu.
 - **Dataset:** 1.550 câu train, 300 câu validation và 300 câu test; đủ 51 họ
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
-- **Chưa thực hiện:** fine-tuning, benchmark chính thức và chọn model
-  production trên release đã khóa.
+- **Đã nghiệm thu T5Gemma2:** một lần fine-tune chính thức trên release đã khóa;
+  test đạt 84,67% Answer Exact và 86,67% System Answer Exact.
+- **Chưa thực hiện:** benchmark so sánh BARTpho/ViT5 và chọn model production;
+  kết quả T5Gemma2 hiện chưa đạt mục tiêu System Answer Exact trên 90%.
 
 Chiều kiểm soát độ phủ bắt buộc là:
 
@@ -117,8 +119,11 @@ công bằng trên cùng dữ liệu:
 Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
 miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
 hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn
-bộ test. Hiện chưa có benchmark chính thức áp dụng cho dataset đã khóa; tài liệu
-không dùng kết quả thử nghiệm cũ để xếp hạng model.
+bộ test. T5Gemma2 đã được dùng làm nghiệm thu đầu tiên: checkpoint tốt nhất ở
+epoch 12, dừng sớm tại epoch 18, validation đạt 85,33% Answer Exact và test đạt
+84,67%. Đây chưa phải benchmark xếp hạng model vì BARTpho và ViT5 chưa được
+chạy trên release này; tài liệu không dùng kết quả cũ để lấp hai vị trí còn
+thiếu.
 
 Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
 tại [docs/EVALUATION.md](docs/EVALUATION.md).

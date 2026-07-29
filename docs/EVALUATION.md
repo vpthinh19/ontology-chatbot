@@ -1,7 +1,9 @@
 # Đánh giá
 
-Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Hiện
-chưa có benchmark production trên release 2.150 câu; kết quả từ dữ liệu cũ
+Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa.
+T5Gemma2 đã được nghiệm thu trên release 2.150 câu: test đạt 84,67% Answer
+Exact, 83,33% In-domain Answer Exact, 94,44% Safe Rejection và 86,67% System
+Answer Exact. Chưa có benchmark so sánh đủ ba model; kết quả từ dữ liệu cũ
 không được dùng để xếp hạng hoặc chọn model cuối cùng.
 
 ## Hai nhóm test
