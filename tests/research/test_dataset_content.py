@@ -275,6 +275,32 @@ def test_certificate_conversion_detail_rows_use_compact_parent_table_targets() -
     )
 
 
+def test_tuition_rate_detail_rows_use_compact_official_table_target() -> None:
+    expected_template = (
+        "SELECT DISTINCT ?document ?answer WHERE { ?rate a :TuitionRate ; "
+        ":sourceDocument/rdfs:label ?document ; "
+        ":sourceProvision/:officialText ?answer . }"
+    )
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    release = load_release()
+    rows = {
+        split: [
+            row for row in split_rows if row["query_id"] == "tuition-rate-details"
+        ]
+        for split, split_rows in release.items()
+    }
+
+    assert catalogue["tuition-rate-details"].target_template == expected_template
+    assert {split: len(split_rows) for split, split_rows in rows.items()} == {
+        "train": 4,
+        "val": 2,
+        "test": 2,
+    }
+    assert {
+        row["target"] for split_rows in rows.values() for row in split_rows
+    } == {expected_template}
+
+
 def test_official_procedure_iris_exist_in_ontology() -> None:
     graph = load_ontology()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)

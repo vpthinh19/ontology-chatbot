@@ -4,7 +4,7 @@
 
 **Goal:** Nâng dataset chính thức từ 953 lên tối thiểu 2.000 câu chất lượng cao, giữ một model runtime xử lý cả SPARQL và `không có thông tin`, rồi đồng bộ báo cáo công khai trước khi fine-tuning.
 
-**Architecture:** Giữ 953 câu hiện tại làm lõi đã kiểm định. Sửa duy nhất target `tuition-rate-details`, bootstrap release vào staging mới, bổ sung thủ công theo sáu miền và lắp lại release sau từng batch để tiến độ được lưu bằng Git. Chỉ chạy validation dữ liệu nhanh theo batch; full suite chạy một lần ở cuối.
+**Architecture:** Giữ 953 câu hiện tại làm lõi đã kiểm định. Rút gọn đúng tám target đã được audit và phê duyệt, bootstrap release vào staging mới, bổ sung thủ công theo sáu miền và lắp lại release sau từng batch để tiến độ được lưu bằng Git. Chỉ chạy validation dữ liệu nhanh theo batch; full suite chạy một lần ở cuối.
 
 **Tech Stack:** Python 3.12, RDFLib, SPARQL 1.1, pytest, Hugging Face tokenizers, JSON Lines, Git, Fedora Linux.
 
@@ -69,7 +69,7 @@ Không bắt buộc mỗi family có số dòng bằng nhau. Ưu tiên family ng
 
 ---
 
-### Task 1: Compact `tuition-rate-details`
+### Task 1: Compact the audited model-facing targets
 
 **Files:**
 - Modify: `resources/dataset/main/catalogue.jsonl`
@@ -79,10 +79,17 @@ Không bắt buộc mỗi family có số dòng bằng nhau. Ưu tiên family ng
 - Modify: `tests/tools/test_model_tokenizers.py`
 
 **Interfaces:**
-- Consumes: eight official rows with `query_id == "tuition-rate-details"`.
-- Produces: one canonical query returning the complete official tuition table and document label.
+- Consumes: the official rows belonging to the eight audited query families below.
+- Produces: semantically equivalent queries whose instantiated targets fit the 160-token contract.
 
-- [ ] **Step 1: Add failing semantic and tokenizer regressions**
+The one-time audit approved on 2026-07-29 locked this batch. Besides
+`tuition-rate-details`, it contains exactly: `academic-performance-details`,
+`class-size-details`, `doctoral-tuition-details`,
+`graduation-classification-details`, `language-certificate-level`,
+`official-document-metadata`, and `payment-method-details`. Do not open another
+target family during this task.
+
+- [x] **Step 1: Add failing semantic and tokenizer regressions**
 
 Require this exact template:
 
@@ -92,7 +99,7 @@ SELECT DISTINCT ?document ?answer WHERE { ?rate a :TuitionRate ; :sourceDocument
 
 Assert execution returns one row, `document == "Quyết định số 729/QĐ-ĐHNT"`, and `answer` contains the official tuition-table header plus representative undergraduate rates.
 
-- [ ] **Step 2: Confirm RED**
+- [x] **Step 2: Confirm RED**
 
 Run:
 
@@ -102,11 +109,11 @@ uv run pytest tests/ontology/test_sparql_smoke.py tests/research/test_dataset_co
 
 Expected: failures identify the old 10-column template and the 160-token overflow.
 
-- [ ] **Step 3: Apply the minimal canonical migration**
+- [x] **Step 3: Apply the minimal canonical migration**
 
-Replace only the catalogue template and the eight instantiated targets. Preserve every row's ID, input, query ID, register, order and split.
+Replace only the catalogue templates and their instantiated targets. Preserve every row's ID, input, query ID, register, order and split.
 
-- [ ] **Step 4: Verify GREEN without opening another fix**
+- [x] **Step 4: Verify GREEN without opening another fix**
 
 Run:
 
@@ -116,13 +123,13 @@ uv run validate_sparql_dataset
 git diff --check
 ```
 
-Expected: semantic, dataset and all-target tokenizer checks pass. If a different family fails, record it and stop instead of expanding scope.
+Expected: semantic, dataset and all-target tokenizer checks pass. The one-time audit batch is closed after this gate.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add resources/dataset/main/catalogue.jsonl resources/dataset/main/train.jsonl resources/dataset/main/val.jsonl resources/dataset/main/test.jsonl tests/ontology/test_sparql_smoke.py tests/research/test_dataset_content.py tests/tools/test_model_tokenizers.py
-git commit -m "Compact tuition detail queries"
+git commit -m "Compact model-facing detail queries"
 ```
 
 ### Task 2: Bootstrap expansion staging and lock the baseline

@@ -120,23 +120,56 @@ def test_catalogue_detail_queries_cover_complete_official_tables(
     ontology_graph,
 ) -> None:
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    cases = {
+        "tuition-rate-details": (
+            1,
+            "Quyết định số 729/QĐ-ĐHNT",
+            "| TT | Trình độ và hình thức đào tạo | Mức học phí |",
+        ),
+        "doctoral-tuition-details": (
+            1,
+            "Quyết định số 729/QĐ-ĐHNT",
+            "MỨC HỌC PHÍ CHƯƠNG TRÌNH ĐÀO TẠO TRÌNH ĐỘ ĐẠI HỌC",
+        ),
+        "class-size-details": (
+            1,
+            "Quyết định số 1052/QĐ-ĐHNT",
+            "| TT | Học phần | Số lượng sinh viên |",
+        ),
+        "academic-performance-details": (
+            1,
+            "Quyết định số 1052/QĐ-ĐHNT",
+            "Điều 18. Đánh giá kết quả học tập theo học kỳ và năm học",
+        ),
+        "graduation-classification-details": (
+            1,
+            "Quyết định số 1052/QĐ-ĐHNT",
+            "Điều 23. Bằng tốt nghiệp và phân loại tốt nghiệp",
+        ),
+        "payment-method-details": (
+            3,
+            "Hướng dẫn đóng học phí qua ngân hàng",
+            "học phí",
+        ),
+    }
+
+    for query_id, (count, document, fragment) in cases.items():
+        rows = execute_select(
+            ontology_graph,
+            catalogue[query_id].target_template,
+            max_rows=100,
+        )
+        assert len(rows) == count, query_id
+        assert all(set(row) == {"document", "answer"} for row in rows), query_id
+        assert all(row["document"] == document for row in rows), query_id
+        assert any(fragment in row["answer"] for row in rows), query_id
 
     tuition = execute_select(
         ontology_graph,
         catalogue["tuition-rate-details"].target_template,
-        max_rows=100,
     )
-    doctoral = execute_select(
-        ontology_graph,
-        catalogue["doctoral-tuition-details"].target_template,
-    )
-    class_sizes = execute_select(
-        ontology_graph,
-        catalogue["class-size-details"].target_template,
-    )
-    assert len(tuition) == 24
-    assert len(doctoral) == 3
-    assert len(class_sizes) == 14
+    assert "345.000 đ/TC" in tuition[0]["answer"]
+    assert "570.000 đ/TC" in tuition[0]["answer"]
 
 
 @pytest.mark.parametrize(

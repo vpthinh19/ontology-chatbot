@@ -131,3 +131,48 @@ def test_certificate_conversion_detail_targets_fit_supported_tokenizers() -> Non
     for name, tokenizer in tokenizers.items():
         report = audit_target_roundtrip(tokenizer, targets)
         assert max(row["tokens"] for row in report) <= 160, name
+
+
+def test_compact_model_targets_fit_supported_tokenizers() -> None:
+    pytest.importorskip("transformers")
+    from transformers import AutoTokenizer
+
+    bartpho = _snapshot("models--vinai--bartpho-syllable", BARTPHO_REVISION)
+    vit5 = ARTIFACTS_DIR / "tokenizers/vit5"
+    t5gemma = _snapshot(
+        "models--google--t5gemma-2-270m-270m",
+        T5GEMMA_REVISION,
+    )
+    if not all(path.is_dir() for path in (bartpho, vit5, t5gemma)):
+        pytest.skip("all three local tokenizers are required")
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    query_ids = (
+        "tuition-rate-details",
+        "academic-performance-details",
+        "class-size-details",
+        "doctoral-tuition-details",
+        "graduation-classification-details",
+        "official-document-metadata",
+        "payment-method-details",
+    )
+    targets = [catalogue[query_id].target_template for query_id in query_ids]
+    language_target = catalogue["language-certificate-level"].target_template
+    targets.append(
+        language_target.replace("${certificate}", ":IELTSCertificate").replace(
+            "${score}", "5.5"
+        )
+    )
+    tokenizers = {
+        "bartpho": AutoTokenizer.from_pretrained(bartpho, local_files_only=True),
+        "vit5": AutoTokenizer.from_pretrained(vit5, local_files_only=True),
+        "t5gemma2": AutoTokenizer.from_pretrained(
+            t5gemma,
+            local_files_only=True,
+            fix_mistral_regex=False,
+        ),
+    }
+
+    for name, tokenizer in tokenizers.items():
+        report = audit_target_roundtrip(tokenizer, targets)
+        assert max(row["tokens"] for row in report) <= 160, name
