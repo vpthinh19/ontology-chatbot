@@ -76,6 +76,18 @@ không được gộp thành một nhóm `procedure-*` đã phủ chung.
 - Sau khi dataset qua toàn bộ cổng tĩnh, chỉ fine-tune T5Gemma2 một lần.
 - Không tự động mở vòng bổ sung hoặc fine-tuning thứ hai nếu chưa đạt mục tiêu.
 
+## Kỷ luật vận hành
+
+Trong toàn bộ đợt triển khai, chỉ thực hiện công việc trực tiếp tạo ra hoặc xác
+minh dataset quy trình. Không tự refactor package, sửa CLI, tối ưu script, đổi
+định dạng báo cáo hoặc xử lý cảnh báo không chặn cổng nghiệm thu.
+
+Nếu một script phụ trợ gặp lỗi nhưng có thể hoàn thành công việc chính bằng
+công cụ hiện có, ghi nhận lỗi và tiếp tục mà không sửa script. Nếu lỗi thực sự
+chặn audit, fine-tuning hoặc benchmark, dừng tại đó và báo cáo nguyên nhân;
+không tự mở rộng phạm vi để sửa. Mỗi lần chạy fine-tuning chỉ được bắt đầu sau
+khi mọi cổng dữ liệu đã qua, không dùng GPU để thử trong lúc biên soạn.
+
 ## Chiến lược độ phủ
 
 ### Mức nền cho toàn bộ miền quy trình
