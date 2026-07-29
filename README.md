@@ -7,21 +7,22 @@ tự động biến ontology, dataset hoặc model thành artifact production.
 
 ## Trạng thái hiện tại
 
-- **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory và
-  contract runtime marker/SPARQL.
-- **Đang thực hiện:** xây query catalogue và dataset chính thức từ inventory.
-- **Candidate:** catalogue cùng 455 câu hiện tại dùng cho smoke và curation.
+- **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
+  query catalogue và contract runtime marker/SPARQL.
+- **Đang thực hiện:** biên soạn dataset chính thức từ catalogue.
+- **Candidate:** 455 câu hiện tại dùng cho smoke và curation.
 - **Chưa thực hiện:** full fine-tuning, benchmark chính thức và chọn model
   production trên dataset mới.
 
 Chiều kiểm soát độ phủ bắt buộc là:
 
 ```text
-ontology → catalogue → dataset
+ontology → inventory → catalogue → dataset
 ```
 
-Validator hiện tại mới chứng minh candidate tự nhất quán với catalogue đang có;
-nó chưa chứng minh catalogue đã khai thác hết dữ liệu quan trọng trong ontology.
+Catalogue gồm 51 họ truy vấn và phủ bằng máy toàn bộ 2.955 khả năng trả lời
+`supported` trong inventory. Candidate mới dùng 24 họ nên chưa được phép full
+fine-tune hoặc xem là dataset production.
 
 ## Bài toán và phương pháp
 
@@ -83,22 +84,22 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Candidate pool hợp nhất nằm tại `resources/dataset/main/`, gồm catalogue và ba
-split. Snapshot hiện tại có 455 câu thuộc 24 họ truy vấn: 339 train, 58
+Catalogue canonical cùng candidate pool nằm tại `resources/dataset/main/`.
+Snapshot câu hỏi hiện tại có 455 câu thuộc 24/51 họ truy vấn: 339 train, 58
 validation và 58 test. Trong đó 96 câu dạy marker từ chối. Các con số này chỉ
 mô tả dữ liệu đang có để smoke pipeline; từng câu sẽ được giữ, sửa hoặc loại sau
-khi ontology và catalogue được nghiệm thu.
+khi catalogue đã được khóa.
 
 Dataset chính thức phải phủ inventory khả năng trả lời của ontology, đặc biệt
 toàn bộ khía cạnh quan trọng của các quy trình học vụ, học phí, biểu mẫu và quy
 đổi chứng chỉ. Nó cũng phải có lượng lớn câu ngoài miền được tuyển chọn, câu nói
 tự nhiên, viết tắt/noisy và các ca test tay. Việc một IRI hữu hạn đã xuất hiện
-trong catalogue candidate không phải bằng chứng phủ toàn graph.
+trong candidate không phải bằng chứng dataset đã phủ catalogue.
 
 Phân bố cùng checksum được sinh trong `resources/dataset/main/manifest.json`
 và `reports/dataset.json`. Các câu người dùng thực tế được giữ tại
 `resources/cases/user_queries.txt`; quyết định hồi quy hiện tại cũng chỉ là ứng
-viên và phải được rà lại sau khi catalogue được khóa.
+viên và phải được rà lại theo catalogue đã khóa.
 
 Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 

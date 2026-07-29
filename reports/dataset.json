@@ -2,6 +2,7 @@
   "dataset": {
     "records": 455,
     "query_families": 24,
+    "catalogue_families": 51,
     "targets": 252,
     "domains": {
       "academic-rule": 54,
@@ -116,9 +117,83 @@
     "test_queries": 24
   },
   "training_readiness": {
-    "ready": true,
-    "finite_slots_missing_from_train": [],
-    "gaps": []
+    "ready": false,
+    "finite_slots_missing_from_train": [
+      {
+        "query_id": "procedure-deadline",
+        "slot": "procedure",
+        "values": [
+          ":ArticulationStudyProcedure",
+          ":SickLeaveProcedure"
+        ]
+      },
+      {
+        "query_id": "procedure-eligibility",
+        "slot": "procedure",
+        "values": [
+          ":ArticulationStudyProcedure",
+          ":SickLeaveProcedure"
+        ]
+      },
+      {
+        "query_id": "procedure-instruction",
+        "slot": "procedure",
+        "values": [
+          ":ArticulationStudyProcedure",
+          ":SickLeaveProcedure"
+        ]
+      },
+      {
+        "query_id": "procedure-overview",
+        "slot": "procedure",
+        "values": [
+          ":ArticulationStudyProcedure",
+          ":SickLeaveProcedure"
+        ]
+      }
+    ],
+    "gaps": [
+      {
+        "code": "catalogue_not_fully_covered"
+      },
+      {
+        "code": "finite_slots_missing_from_train",
+        "slots": [
+          {
+            "query_id": "procedure-deadline",
+            "slot": "procedure",
+            "values": [
+              ":ArticulationStudyProcedure",
+              ":SickLeaveProcedure"
+            ]
+          },
+          {
+            "query_id": "procedure-eligibility",
+            "slot": "procedure",
+            "values": [
+              ":ArticulationStudyProcedure",
+              ":SickLeaveProcedure"
+            ]
+          },
+          {
+            "query_id": "procedure-instruction",
+            "slot": "procedure",
+            "values": [
+              ":ArticulationStudyProcedure",
+              ":SickLeaveProcedure"
+            ]
+          },
+          {
+            "query_id": "procedure-overview",
+            "slot": "procedure",
+            "values": [
+              ":ArticulationStudyProcedure",
+              ":SickLeaveProcedure"
+            ]
+          }
+        ]
+      }
+    ]
   },
   "ontology": {
     "triples": 8347,
@@ -143,59 +218,288 @@
       "procedure": 166,
       "tuition": 66
     },
+    "catalogue_coverage_required": false,
     "slot_coverage": {
-      "procedure-instruction": {
+      "academic-performance-band": {
+        "score": {
+          "declared": [],
+          "seen_train": [
+            "10",
+            "3.5",
+            "4.0",
+            "5.5",
+            "7.0",
+            "7.99",
+            "8.5",
+            "9.0"
+          ],
+          "missing_train": []
+        }
+      },
+      "certificate-criterion": {
+        "certificate": {
+          "declared": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":DELFCertificate",
+            ":HSKCertificate",
+            ":IELTSCertificate",
+            ":JLPTCertificate",
+            ":JPTCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":TCFCertificate",
+            ":TOCFLCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate",
+            ":TOPIKCertificate",
+            ":TRKICertificate"
+          ],
+          "seen_train": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":DELFCertificate",
+            ":HSKCertificate",
+            ":IELTSCertificate",
+            ":JLPTCertificate",
+            ":JPTCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":TCFCertificate",
+            ":TOCFLCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate",
+            ":TOPIKCertificate",
+            ":TRKICertificate"
+          ],
+          "missing_train": []
+        }
+      },
+      "class-size-rule": {
+        "rule": {
+          "declared": [
+            ":CNCPracticeClassSizeRule",
+            ":ComputerLabPracticeClassSizeRule",
+            ":DefenseEducationPracticeClassSizeRule",
+            ":DefenseEducationTheoryClassSizeRule",
+            ":EconomicsTourismLawClassSizeRule",
+            ":EngineeringTechnologyClassSizeRule",
+            ":ForeignLanguageClassSizeRule",
+            ":GeneralEducationClassSizeRule",
+            ":MechanicalWorkshopPracticeClassSizeRule",
+            ":OtherPracticeClassSizeRule",
+            ":PhysicalEducationPracticeClassSizeRule",
+            ":PhysicalEducationTheoryClassSizeRule",
+            ":PoliticalTheoryClassSizeRule",
+            ":SpecializedEnglishClassSizeRule"
+          ],
+          "seen_train": [
+            ":CNCPracticeClassSizeRule",
+            ":ComputerLabPracticeClassSizeRule",
+            ":DefenseEducationPracticeClassSizeRule",
+            ":DefenseEducationTheoryClassSizeRule",
+            ":EconomicsTourismLawClassSizeRule",
+            ":EngineeringTechnologyClassSizeRule",
+            ":ForeignLanguageClassSizeRule",
+            ":GeneralEducationClassSizeRule",
+            ":MechanicalWorkshopPracticeClassSizeRule",
+            ":OtherPracticeClassSizeRule",
+            ":PhysicalEducationPracticeClassSizeRule",
+            ":PhysicalEducationTheoryClassSizeRule",
+            ":PoliticalTheoryClassSizeRule",
+            ":SpecializedEnglishClassSizeRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "computer-certificate-grade": {
+        "certificate": {
+          "declared": [
+            ":IC3Certificate",
+            ":ICDLCertificate",
+            ":MOSCertificate"
+          ],
+          "seen_train": [
+            ":IC3Certificate",
+            ":ICDLCertificate",
+            ":MOSCertificate"
+          ],
+          "missing_train": []
+        },
+        "score": {
+          "declared": [],
+          "seen_train": [
+            "1350",
+            "1400",
+            "1500",
+            "1800",
+            "1990",
+            "2500"
+          ],
+          "missing_train": []
+        }
+      },
+      "form-download": {
+        "entry": {
+          "declared": [
+            ":FormCatalogueEntry001",
+            ":FormCatalogueEntry002",
+            ":FormCatalogueEntry003",
+            ":FormCatalogueEntry004",
+            ":FormCatalogueEntry005",
+            ":FormCatalogueEntry006",
+            ":FormCatalogueEntry007",
+            ":FormCatalogueEntry008",
+            ":FormCatalogueEntry009",
+            ":FormCatalogueEntry010",
+            ":FormCatalogueEntry011",
+            ":FormCatalogueEntry012",
+            ":FormCatalogueEntry013",
+            ":FormCatalogueEntry014",
+            ":FormCatalogueEntry015",
+            ":FormCatalogueEntry016",
+            ":FormCatalogueEntry017",
+            ":FormCatalogueEntry018",
+            ":FormCatalogueEntry019"
+          ],
+          "seen_train": [
+            ":FormCatalogueEntry001",
+            ":FormCatalogueEntry002",
+            ":FormCatalogueEntry003",
+            ":FormCatalogueEntry004",
+            ":FormCatalogueEntry005",
+            ":FormCatalogueEntry006",
+            ":FormCatalogueEntry007",
+            ":FormCatalogueEntry008",
+            ":FormCatalogueEntry009",
+            ":FormCatalogueEntry010",
+            ":FormCatalogueEntry011",
+            ":FormCatalogueEntry012",
+            ":FormCatalogueEntry013",
+            ":FormCatalogueEntry014",
+            ":FormCatalogueEntry015",
+            ":FormCatalogueEntry016",
+            ":FormCatalogueEntry017",
+            ":FormCatalogueEntry018",
+            ":FormCatalogueEntry019"
+          ],
+          "missing_train": []
+        }
+      },
+      "form-list": {},
+      "graduation-classification-band": {
+        "score": {
+          "declared": [],
+          "seen_train": [
+            "5.5",
+            "6.8",
+            "7.0",
+            "7.99",
+            "8.0",
+            "8.8",
+            "9.0",
+            "9.7"
+          ],
+          "missing_train": []
+        }
+      },
+      "language-certificate-level": {
+        "certificate": {
+          "declared": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":IELTSCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":TCFCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate"
+          ],
+          "seen_train": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":IELTSCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":TCFCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate"
+          ],
+          "missing_train": []
+        },
+        "score": {
+          "declared": [],
+          "seen_train": [
+            "100",
+            "153",
+            "200",
+            "350",
+            "400",
+            "5.5",
+            "600",
+            "70",
+            "8.5"
+          ],
+          "missing_train": []
+        }
+      },
+      "no-information": {},
+      "payment-bank-list": {},
+      "payment-fee": {
+        "method": {
+          "declared": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "seen_train": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "missing_train": []
+        }
+      },
+      "payment-method-list": {},
+      "payment-warning": {},
+      "procedure-deadline": {
         "procedure": {
           "declared": [
+            ":ArticulationStudyProcedure",
             ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CourseRegistrationProcedure",
-            ":CourseRetakeProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
             ":EarlyGraduationReviewProcedure",
             ":ExamPostponementProcedure",
             ":ExtraClassOpeningRequestProcedure",
-            ":GradeImprovementProcedure",
-            ":GraduationProjectRegistrationProcedure",
             ":GraduationReviewProcedure",
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":TuitionPaymentProcedure",
-            ":UniversityTransferProcedure"
+            ":StudyResumptionProcedure"
           ],
           "seen_train": [
             ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CourseRegistrationProcedure",
-            ":CourseRetakeProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
             ":EarlyGraduationReviewProcedure",
             ":ExamPostponementProcedure",
             ":ExtraClassOpeningRequestProcedure",
-            ":GradeImprovementProcedure",
-            ":GraduationProjectRegistrationProcedure",
             ":GraduationReviewProcedure",
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":TuitionPaymentProcedure",
-            ":UniversityTransferProcedure"
+            ":StudyResumptionProcedure"
           ],
-          "missing_train": []
+          "missing_train": [
+            ":ArticulationStudyProcedure",
+            ":SickLeaveProcedure"
+          ]
         }
       },
       "procedure-eligibility": {
         "procedure": {
           "declared": [
+            ":ArticulationStudyProcedure",
             ":ClassAbsenceRequestProcedure",
             ":CourseExemptionAndBonusProcedure",
             ":CourseRegistrationProcedure",
@@ -210,6 +514,7 @@
             ":GraduationReviewProcedure",
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
             ":StudentExchangeProcedure",
             ":StudyResumptionProcedure",
             ":StudyWithdrawalProcedure",
@@ -234,35 +539,185 @@
             ":StudentExchangeProcedure",
             ":StudyResumptionProcedure",
             ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "missing_train": [
+            ":ArticulationStudyProcedure",
+            ":SickLeaveProcedure"
+          ]
+        }
+      },
+      "procedure-form-download": {
+        "procedure": {
+          "declared": [
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":StudyResumptionProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "seen_train": [
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":StudyResumptionProcedure",
             ":TemporaryAcademicLeaveProcedure",
             ":UniversityTransferProcedure"
           ],
           "missing_train": []
         }
       },
-      "procedure-deadline": {
+      "procedure-instruction": {
         "procedure": {
           "declared": [
+            ":ArticulationStudyProcedure",
             ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
             ":EarlyGraduationReviewProcedure",
             ":ExamPostponementProcedure",
             ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
             ":GraduationReviewProcedure",
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure"
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
           ],
           "seen_train": [
             ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
             ":EarlyGraduationReviewProcedure",
             ":ExamPostponementProcedure",
             ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
             ":GraduationReviewProcedure",
             ":MajorChangeProcedure",
             ":SecondProgramRegistrationProcedure",
             ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure"
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "missing_train": [
+            ":ArticulationStudyProcedure",
+            ":SickLeaveProcedure"
+          ]
+        }
+      },
+      "procedure-overview": {
+        "procedure": {
+          "declared": [
+            ":ArticulationStudyProcedure",
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":GraduationReviewProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "seen_train": [
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":GraduationReviewProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "missing_train": [
+            ":ArticulationStudyProcedure",
+            ":SickLeaveProcedure"
+          ]
+        }
+      },
+      "procedure-required-form": {
+        "procedure": {
+          "declared": [
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "seen_train": [
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":MajorChangeProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":UniversityTransferProcedure"
           ],
           "missing_train": []
         }
@@ -310,6 +765,23 @@
           "missing_train": []
         }
       },
+      "procedure-review-office": {
+        "procedure": {
+          "declared": [
+            ":CourseExemptionAndBonusProcedure",
+            ":CreditRecognitionProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":GraduationReviewProcedure"
+          ],
+          "seen_train": [
+            ":CourseExemptionAndBonusProcedure",
+            ":CreditRecognitionProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":GraduationReviewProcedure"
+          ],
+          "missing_train": []
+        }
+      },
       "procedure-submission-office": {
         "procedure": {
           "declared": [
@@ -347,134 +819,18 @@
           "missing_train": []
         }
       },
-      "procedure-review-office": {
-        "procedure": {
-          "declared": [
-            ":CourseExemptionAndBonusProcedure",
-            ":CreditRecognitionProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":GraduationReviewProcedure"
-          ],
+      "study-year-band": {
+        "credits": {
+          "declared": [],
           "seen_train": [
-            ":CourseExemptionAndBonusProcedure",
-            ":CreditRecognitionProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":GraduationReviewProcedure"
-          ],
-          "missing_train": []
-        }
-      },
-      "procedure-required-form": {
-        "procedure": {
-          "declared": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":GraduationProjectRegistrationProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":UniversityTransferProcedure"
-          ],
-          "seen_train": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":GraduationProjectRegistrationProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":UniversityTransferProcedure"
-          ],
-          "missing_train": []
-        }
-      },
-      "procedure-form-download": {
-        "procedure": {
-          "declared": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudyResumptionProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":UniversityTransferProcedure"
-          ],
-          "seen_train": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudyResumptionProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":UniversityTransferProcedure"
-          ],
-          "missing_train": []
-        }
-      },
-      "procedure-overview": {
-        "procedure": {
-          "declared": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CourseRegistrationProcedure",
-            ":CourseRetakeProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":GradeImprovementProcedure",
-            ":GraduationProjectRegistrationProcedure",
-            ":GraduationReviewProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":TuitionPaymentProcedure",
-            ":UniversityTransferProcedure"
-          ],
-          "seen_train": [
-            ":ClassAbsenceRequestProcedure",
-            ":CourseExemptionAndBonusProcedure",
-            ":CourseRegistrationProcedure",
-            ":CourseRetakeProcedure",
-            ":CreditRecognitionProcedure",
-            ":DismissalTransferRequestProcedure",
-            ":EarlyGraduationReviewProcedure",
-            ":ExamPostponementProcedure",
-            ":ExtraClassOpeningRequestProcedure",
-            ":GradeImprovementProcedure",
-            ":GraduationProjectRegistrationProcedure",
-            ":GraduationReviewProcedure",
-            ":MajorChangeProcedure",
-            ":SecondProgramRegistrationProcedure",
-            ":StudentExchangeProcedure",
-            ":StudyResumptionProcedure",
-            ":StudyWithdrawalProcedure",
-            ":TemporaryAcademicLeaveProcedure",
-            ":TuitionPaymentProcedure",
-            ":UniversityTransferProcedure"
+            "104",
+            "106",
+            "120",
+            "20",
+            "34",
+            "35",
+            "69",
+            "70"
           ],
           "missing_train": []
         }
@@ -555,267 +911,7 @@
           ],
           "missing_train": []
         }
-      },
-      "payment-method-list": {},
-      "payment-bank-list": {},
-      "payment-fee": {
-        "method": {
-          "declared": [
-            ":CashAtBankCounterPayment",
-            ":MobileOrInternetBankingPayment",
-            ":QRCodePayment",
-            ":VNPAYPayment"
-          ],
-          "seen_train": [
-            ":CashAtBankCounterPayment",
-            ":MobileOrInternetBankingPayment",
-            ":QRCodePayment",
-            ":VNPAYPayment"
-          ],
-          "missing_train": []
-        }
-      },
-      "payment-warning": {},
-      "form-list": {},
-      "form-download": {
-        "entry": {
-          "declared": [
-            ":FormCatalogueEntry001",
-            ":FormCatalogueEntry002",
-            ":FormCatalogueEntry003",
-            ":FormCatalogueEntry004",
-            ":FormCatalogueEntry005",
-            ":FormCatalogueEntry006",
-            ":FormCatalogueEntry007",
-            ":FormCatalogueEntry008",
-            ":FormCatalogueEntry009",
-            ":FormCatalogueEntry010",
-            ":FormCatalogueEntry011",
-            ":FormCatalogueEntry012",
-            ":FormCatalogueEntry013",
-            ":FormCatalogueEntry014",
-            ":FormCatalogueEntry015",
-            ":FormCatalogueEntry016",
-            ":FormCatalogueEntry017",
-            ":FormCatalogueEntry018",
-            ":FormCatalogueEntry019"
-          ],
-          "seen_train": [
-            ":FormCatalogueEntry001",
-            ":FormCatalogueEntry002",
-            ":FormCatalogueEntry003",
-            ":FormCatalogueEntry004",
-            ":FormCatalogueEntry005",
-            ":FormCatalogueEntry006",
-            ":FormCatalogueEntry007",
-            ":FormCatalogueEntry008",
-            ":FormCatalogueEntry009",
-            ":FormCatalogueEntry010",
-            ":FormCatalogueEntry011",
-            ":FormCatalogueEntry012",
-            ":FormCatalogueEntry013",
-            ":FormCatalogueEntry014",
-            ":FormCatalogueEntry015",
-            ":FormCatalogueEntry016",
-            ":FormCatalogueEntry017",
-            ":FormCatalogueEntry018",
-            ":FormCatalogueEntry019"
-          ],
-          "missing_train": []
-        }
-      },
-      "academic-performance-band": {
-        "score": {
-          "declared": [],
-          "seen_train": [
-            "10",
-            "3.5",
-            "4.0",
-            "5.5",
-            "7.0",
-            "7.99",
-            "8.5",
-            "9.0"
-          ],
-          "missing_train": []
-        }
-      },
-      "study-year-band": {
-        "credits": {
-          "declared": [],
-          "seen_train": [
-            "104",
-            "106",
-            "120",
-            "20",
-            "34",
-            "35",
-            "69",
-            "70"
-          ],
-          "missing_train": []
-        }
-      },
-      "graduation-classification-band": {
-        "score": {
-          "declared": [],
-          "seen_train": [
-            "5.5",
-            "6.8",
-            "7.0",
-            "7.99",
-            "8.0",
-            "8.8",
-            "9.0",
-            "9.7"
-          ],
-          "missing_train": []
-        }
-      },
-      "class-size-rule": {
-        "rule": {
-          "declared": [
-            ":CNCPracticeClassSizeRule",
-            ":ComputerLabPracticeClassSizeRule",
-            ":DefenseEducationPracticeClassSizeRule",
-            ":DefenseEducationTheoryClassSizeRule",
-            ":EconomicsTourismLawClassSizeRule",
-            ":EngineeringTechnologyClassSizeRule",
-            ":ForeignLanguageClassSizeRule",
-            ":GeneralEducationClassSizeRule",
-            ":MechanicalWorkshopPracticeClassSizeRule",
-            ":OtherPracticeClassSizeRule",
-            ":PhysicalEducationPracticeClassSizeRule",
-            ":PhysicalEducationTheoryClassSizeRule",
-            ":PoliticalTheoryClassSizeRule",
-            ":SpecializedEnglishClassSizeRule"
-          ],
-          "seen_train": [
-            ":CNCPracticeClassSizeRule",
-            ":ComputerLabPracticeClassSizeRule",
-            ":DefenseEducationPracticeClassSizeRule",
-            ":DefenseEducationTheoryClassSizeRule",
-            ":EconomicsTourismLawClassSizeRule",
-            ":EngineeringTechnologyClassSizeRule",
-            ":ForeignLanguageClassSizeRule",
-            ":GeneralEducationClassSizeRule",
-            ":MechanicalWorkshopPracticeClassSizeRule",
-            ":OtherPracticeClassSizeRule",
-            ":PhysicalEducationPracticeClassSizeRule",
-            ":PhysicalEducationTheoryClassSizeRule",
-            ":PoliticalTheoryClassSizeRule",
-            ":SpecializedEnglishClassSizeRule"
-          ],
-          "missing_train": []
-        }
-      },
-      "language-certificate-level": {
-        "certificate": {
-          "declared": [
-            ":AptisGeneralCertificate",
-            ":CambridgeEnglishScaleCertificate",
-            ":IELTSCertificate",
-            ":KLPTCertificate",
-            ":LinguaskillCertificate",
-            ":TCFCertificate",
-            ":TOEFLIBTCertificate",
-            ":TOEICCertificate"
-          ],
-          "seen_train": [
-            ":AptisGeneralCertificate",
-            ":CambridgeEnglishScaleCertificate",
-            ":IELTSCertificate",
-            ":KLPTCertificate",
-            ":LinguaskillCertificate",
-            ":TCFCertificate",
-            ":TOEFLIBTCertificate",
-            ":TOEICCertificate"
-          ],
-          "missing_train": []
-        },
-        "score": {
-          "declared": [],
-          "seen_train": [
-            "100",
-            "153",
-            "200",
-            "350",
-            "400",
-            "5.5",
-            "600",
-            "70",
-            "8.5"
-          ],
-          "missing_train": []
-        }
-      },
-      "certificate-criterion": {
-        "certificate": {
-          "declared": [
-            ":AptisGeneralCertificate",
-            ":CambridgeEnglishScaleCertificate",
-            ":DELFCertificate",
-            ":HSKCertificate",
-            ":IELTSCertificate",
-            ":JLPTCertificate",
-            ":JPTCertificate",
-            ":KLPTCertificate",
-            ":LinguaskillCertificate",
-            ":TCFCertificate",
-            ":TOCFLCertificate",
-            ":TOEFLIBTCertificate",
-            ":TOEICCertificate",
-            ":TOPIKCertificate",
-            ":TRKICertificate"
-          ],
-          "seen_train": [
-            ":AptisGeneralCertificate",
-            ":CambridgeEnglishScaleCertificate",
-            ":DELFCertificate",
-            ":HSKCertificate",
-            ":IELTSCertificate",
-            ":JLPTCertificate",
-            ":JPTCertificate",
-            ":KLPTCertificate",
-            ":LinguaskillCertificate",
-            ":TCFCertificate",
-            ":TOCFLCertificate",
-            ":TOEFLIBTCertificate",
-            ":TOEICCertificate",
-            ":TOPIKCertificate",
-            ":TRKICertificate"
-          ],
-          "missing_train": []
-        }
-      },
-      "computer-certificate-grade": {
-        "certificate": {
-          "declared": [
-            ":IC3Certificate",
-            ":ICDLCertificate",
-            ":MOSCertificate"
-          ],
-          "seen_train": [
-            ":IC3Certificate",
-            ":ICDLCertificate",
-            ":MOSCertificate"
-          ],
-          "missing_train": []
-        },
-        "score": {
-          "declared": [],
-          "seen_train": [
-            "1350",
-            "1400",
-            "1500",
-            "1800",
-            "1990",
-            "2500"
-          ],
-          "missing_train": []
-        }
-      },
-      "no-information": {}
+      }
     },
     "splits": {
       "train": {
@@ -1561,7 +1657,7 @@
     "train.jsonl": "464b26837b526541df7478cb7dc715171b74431eb903faa4576069ccb97f5b25",
     "val.jsonl": "43ae6afd5d1dfa5f35309b0a844a408169fc99f29405aea3d9b289cfb338c256",
     "test.jsonl": "1c9ea02998801e4aaac40a18dc10c051fc8905386737974d00628fda639f04d2",
-    "catalogue.jsonl": "db962f686b1ac70b31eec6edd1a856220a3a2de3b75bd0417b48984330f547b7",
+    "catalogue.jsonl": "6969a1a2e260e71158b669b987a53c95a6853d7c9ea000dd5212157e4861c047",
     "ontology.ttl": "5b7be0c4cb43925c91e28a2aa7fc9a6fa37fb521f2c0319e3876da7e35ded582"
   }
 }

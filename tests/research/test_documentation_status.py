@@ -29,7 +29,7 @@ def test_public_docs_block_official_training_until_readiness_gates_pass() -> Non
     readme = _read("README.md")
 
     assert "không được full fine-tune" in training
-    assert "ontology → catalogue → dataset" in readme
+    assert "ontology → inventory → catalogue → dataset" in readme
     assert "semantic index" in readme
 
 
@@ -46,7 +46,7 @@ def test_superseded_designs_point_to_current_readiness_spec() -> None:
         assert replacement in _read(path)
 
 
-def test_docs_separate_canonical_ontology_from_candidate_dataset() -> None:
+def test_docs_separate_canonical_ontology_and_catalogue_from_candidate_dataset() -> None:
     ontology = _read("docs/ONTOLOGY.md")
     dataset = _read("docs/DATASET.md")
     readme = _read("README.md")
@@ -55,5 +55,7 @@ def test_docs_separate_canonical_ontology_from_candidate_dataset() -> None:
     assert "22 quy trình" in ontology
     assert "2 chính sách" in ontology
     assert "ontology canonical" in readme
+    assert "51 họ truy vấn" in readme
+    assert "2.955" in ontology
     assert "candidate pool" in dataset
     assert "không được full fine-tune" in _read("docs/TRAINING.md")

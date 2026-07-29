@@ -3,8 +3,9 @@
 ## Gate trước huấn luyện chính thức
 
 Với candidate pool hiện tại chỉ cho phép smoke/pilot có giới hạn;
-không được full fine-tune, chọn checkpoint chính thức hoặc benchmark test cho đến khi ba
-cổng ontology, catalogue và dataset trong đặc tả readiness được nghiệm thu.
+không được full fine-tune, chọn checkpoint chính thức hoặc benchmark test cho
+đến khi cổng dataset trong đặc tả readiness được nghiệm thu. Cổng ontology và
+catalogue đã hoàn tất.
 Pilot một epoch trên toàn bộ candidate chỉ xác nhận pipeline, VRAM và tín hiệu
 học ban đầu; nó không biến candidate thành dataset production.
 

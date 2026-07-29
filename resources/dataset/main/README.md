@@ -22,16 +22,16 @@ Ba tập candidate có vai trò tách biệt:
 
 | Tập | Câu | Họ truy vấn | Mục đích |
 |---|---:|---:|---|
-| `train.jsonl` | 339 | 24 | Smoke toàn bộ IRI/dạng query đã có trong catalogue candidate |
+| `train.jsonl` | 339 | 24 | Smoke các IRI/dạng query candidate hiện có |
 | `val.jsonl` | 58 | 24 | Pilot trên cách diễn đạt candidate chưa thấy |
 | `test.jsonl` | 58 | 24 | Candidate held-out, chưa phải benchmark chính thức |
 
-Catalogue hiện có 23 họ trong miền và một họ từ chối. Train chứa mọi giá trị IRI
-hữu hạn mà catalogue hiện tự khai báo; điều này không chứng minh catalogue đã
-phủ ontology. Validation/test giữ lại cách diễn đạt chứ không giấu schema. Mỗi
-họ có ít nhất bốn câu train đủ bốn register và ít nhất hai câu thuộc hai
-register khác nhau trong từng tập held-out. Họ truy vấn có slot số có thể tạo
-nhiều target khác nhau, nên `query_id` không ánh xạ một-một với chuỗi target.
+Catalogue canonical hiện có 50 họ trong miền và một họ từ chối, phủ đủ inventory
+ontology. Candidate mới có câu hỏi cho 24 họ. Validation/test giữ lại cách diễn
+đạt chứ không giấu schema. Với 24 họ đã có, mỗi họ có ít nhất bốn câu train đủ
+bốn register và ít nhất hai câu thuộc hai register khác nhau trong từng tập
+held-out. Họ truy vấn có slot số có thể tạo nhiều target khác nhau, nên
+`query_id` không ánh xạ một-một với chuỗi target.
 
 Trong candidate pool có 96 câu từ chối (21,1%); phần còn lại minh họa quy trình,
 học phí và thanh toán, biểu mẫu, quy tắc học vụ định lượng và quy đổi chứng chỉ.
@@ -41,9 +41,9 @@ target SPARQL đều parse được, chạy được trên
 [`ontology.ttl`](../../ontology/ontology.ttl) và trả ít nhất một dòng literal.
 
 `manifest.json` chứa kích thước, contract chia tập và SHA-256 của snapshot để
-kiểm tra tính toàn vẹn. `training_readiness` hiện chỉ nói candidate tự nhất quán
-với catalogue của chính nó, không cấp trạng thái production. Có thể xác minh lại
-bằng:
+kiểm tra tính toàn vẹn. `training_readiness.ready` hiện là `false` vì candidate
+chưa phủ đủ catalogue, dù từng dòng hiện có vẫn parse và chạy được. Có thể xác
+minh lại bằng:
 
 ```bash
 uv run validate_sparql_dataset

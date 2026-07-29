@@ -9,9 +9,8 @@ Thư mục này chứa số liệu và hình ảnh dành cho người đọc pro
 - `figures/query-features.svg`: các đặc trưng SPARQL suy ra theo split.
 
 Sinh lại bằng `uv run generate_reports`. Trường `training_readiness.ready` hiện
-chỉ có nghĩa candidate vượt các kiểm tra tĩnh nội bộ của catalogue hiện có; nó
-không chứng minh catalogue phủ ontology và không cho phép full fine-tuning.
-Báo cáo này sẽ được thay sau khi reporting contract nhận inventory coverage.
+là `false`: catalogue đã phủ ontology nhưng candidate mới dùng 24/51 họ truy
+vấn. Trạng thái này không cho phép full fine-tuning.
 
 Báo cáo model chính thức hiện chưa có. Sau khi dataset được nghiệm thu, metric
 chỉ được tổng hợp khi các checkpoint hợp lệ trên cùng cách chia dữ liệu và đã

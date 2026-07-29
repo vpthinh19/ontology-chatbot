@@ -1,24 +1,24 @@
 # Nghiệm thu ontology và xây dataset chính thức
 
-> **Trạng thái triển khai:** Cổng 1 đã hoàn tất với ontology canonical và
-> `resources/ontology/answer_inventory.json`. Cổng 2 và Cổng 3 chưa hoàn tất;
-> catalogue cùng 455 câu hiện tại vẫn là candidate pool.
+> **Trạng thái triển khai:** Cổng 1 và Cổng 2 đã hoàn tất với ontology,
+> inventory cùng catalogue canonical. Cổng 3 chưa hoàn tất; 455 câu hiện tại
+> vẫn là candidate pool và mới dùng 24/51 họ truy vấn.
 
 ## Mục tiêu
 
 Khóa lại trạng thái đúng của dự án trước khi tiếp tục huấn luyện:
 
-- ontology hiện tại là graph được dựng từ nguồn chính thức nhưng chưa được coi
-  là canonical cho đến khi lớp chỉ mục ngữ nghĩa được rà xong;
+- ontology hiện tại là graph canonical đã được dựng từ nguồn chính thức và đã
+  vượt audit lớp chỉ mục ngữ nghĩa;
 - 455 câu hiện tại là nguồn ứng viên phục vụ smoke và curation, không phải
   dataset production chính thức;
-- catalogue và dataset chính thức phải được suy ra từ toàn bộ dữ liệu quan
-  trọng mà ontology có thể trả lời, với các quy trình học vụ là trọng tâm;
+- catalogue canonical đã được suy ra từ inventory; dataset chính thức tiếp tục
+  phải phủ catalogue, với các quy trình học vụ là trọng tâm;
 - một model seq2seq duy nhất tiếp tục sinh SPARQL hoặc marker
   `không có thông tin`.
 
 Không full fine-tune, benchmark ba model, chuyển CTranslate2 hoặc nghiệm thu web
-trước khi hoàn tất các cổng ontology, catalogue và dataset trong đặc tả này.
+trước khi hoàn tất Cổng 3 về dataset trong đặc tả này.
 
 ## Nguồn sự thật
 
@@ -204,8 +204,8 @@ ontology.
 Tài liệu công khai phải phân biệt rõ:
 
 - **đã kiểm chứng:** lớp nguồn ontology và contract runtime;
-- **đang nghiệm thu:** semantic index và inventory khả năng trả lời;
-- **candidate:** catalogue và 455 câu hiện tại;
+- **đã kiểm chứng:** semantic index, inventory và query catalogue;
+- **candidate:** 455 câu hiện tại;
 - **chưa thực hiện:** full fine-tuning, benchmark chính thức và lựa chọn model
   production trên dataset mới.
 
@@ -220,7 +220,7 @@ dataset chính thức. Đặc tả này thay thế các tuyên bố trái ngư�
 
 1. Sửa tài liệu công khai và đánh dấu đúng trạng thái hiện tại.
 2. Audit/chỉnh semantic index của ontology rồi khóa inventory khả năng trả lời.
-3. Mở rộng và kiểm thử catalogue theo inventory.
+3. Mở rộng và kiểm thử catalogue theo inventory. **Đã hoàn tất.**
 4. Rà 455 câu ứng viên, sau đó biên soạn dataset chính thức.
 5. Chạy audit leakage, coverage, tokenizer và ontology execution.
 6. Chỉ khi các cổng trên qua mới fine-tune một model nghiệm thu.

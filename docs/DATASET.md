@@ -7,9 +7,9 @@ Dataset chính thức sẽ dạy một model seq2seq thực hiện trọn luồn
 - câu được ontology hỗ trợ → sinh SPARQL `SELECT`;
 - câu không được hỗ trợ → sinh `không có thông tin`.
 
-Ontology và inventory khả năng trả lời đã được xác nhận. Dataset chỉ được khóa
-sau khi query catalogue chính thức phủ các mục `supported` trong inventory và
-mọi target được kiểm tra lại trên graph canonical.
+Ontology, inventory và query catalogue đã được xác nhận. Catalogue có 51 họ và
+phủ đủ 2.955 khả năng trả lời `supported`; dataset chỉ được khóa sau khi mọi
+target câu hỏi được biên soạn và kiểm tra lại trên graph canonical.
 
 455 câu đang nằm trong repository là candidate pool phục vụ smoke và curation.
 Mỗi câu sẽ được giữ, sửa hoặc loại sau audit; không bản ghi nào tự động mang
@@ -103,9 +103,9 @@ tách gần như toàn bộ formal/colloquial sang validation và neutral/noisy 
 test.
 
 Snapshot candidate hiện có 455 câu: 339 train, 58 validation và 58 test; gồm 24
-họ truy vấn, trong đó 96 câu mang marker từ chối. Đây không phải kích thước mục
-tiêu. Dataset chỉ dừng tăng khi ma trận coverage không còn vùng trắng quan
-trọng. Các quy tắc leakage:
+trong số 51 họ catalogue, trong đó 96 câu mang marker từ chối. Đây không phải
+kích thước mục tiêu. Dataset chỉ dừng tăng khi ma trận coverage không còn vùng
+trắng quan trọng. Các quy tắc leakage:
 
 1. ID là duy nhất toàn bộ dataset.
 2. Câu trùng sau `normalize_model_input` không được nằm ở hai split.
@@ -119,7 +119,8 @@ trọng. Các quy tắc leakage:
 Candidate hiện tại chỉ đủ cho smoke/pilot có giới hạn. Dataset chính thức chỉ
 sẵn sàng full fine-tuning khi:
 
-1. mọi mục `supported` trong ontology inventory có catalogue và coverage;
+1. mọi mục `supported` trong ontology inventory có catalogue và coverage
+   (cổng này đã hoàn tất);
 2. mọi bản ghi đúng schema, nhãn và target;
 3. target trong miền parse, vượt contract an toàn, chạy có kết quả;
 4. target ngoài miền trùng chính xác `không có thông tin`;
