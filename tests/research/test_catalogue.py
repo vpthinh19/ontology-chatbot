@@ -23,6 +23,13 @@ PROCEDURE = {
             ],
         }
     },
+    "coverage": [
+        {
+            "anchor_classes": ["AcademicProcedure"],
+            "paths": [["instructionProvision", "officialText"]],
+            "anchors": ["CourseRegistrationProcedure", "CourseRetakeProcedure"],
+        }
+    ],
 }
 PERFORMANCE = {
     "query_id": "performance-band",
@@ -34,12 +41,19 @@ PERFORMANCE = {
         "${score} <= ?maximum) }"
     ),
     "slots": {"score": {"kind": "number"}},
+    "coverage": [
+        {
+            "anchor_classes": ["AcademicPerformanceBand"],
+            "paths": [["resultLabel"]],
+        }
+    ],
 }
 REJECTION = {
     "query_id": "no-information",
     "domain": "out-of-domain",
     "target_template": "không có thông tin",
     "slots": {},
+    "coverage": [],
 }
 
 
@@ -62,6 +76,12 @@ def test_loads_catalogue_and_matches_static_iri_and_number_targets(tmp_path) -> 
         "performance-band",
         "no-information",
     ]
+    assert catalogue["procedure-instruction"].coverage[0].anchor_classes == (
+        "AcademicProcedure",
+    )
+    assert catalogue["procedure-instruction"].coverage[0].paths == (
+        ("instructionProvision", "officialText"),
+    )
     assert match_target(
         catalogue["procedure-instruction"],
         "SELECT ?answer WHERE { :CourseRetakeProcedure :instructionProvision ?part . "
@@ -122,10 +142,59 @@ def test_rejects_duplicate_query_id(tmp_path) -> None:
             },
             "invalid IRI slot value",
         ),
+        ({"coverage": []}, "non-rejection query must declare coverage"),
+        (
+            {
+                "coverage": [
+                    {
+                        "anchor_classes": [],
+                        "paths": [["instructionProvision", "officialText"]],
+                    }
+                ]
+            },
+            "anchor_classes must be non-empty",
+        ),
+        (
+            {
+                "coverage": [
+                    {
+                        "anchor_classes": ["AcademicProcedure"],
+                        "paths": [],
+                    }
+                ]
+            },
+            "paths must be non-empty",
+        ),
+        (
+            {
+                "coverage": [
+                    {
+                        "anchor_classes": ["AcademicProcedure"],
+                        "paths": [["bad:path"]],
+                    }
+                ]
+            },
+            "invalid path component",
+        ),
     ],
 )
 def test_rejects_malformed_catalogue_records(tmp_path, change, message) -> None:
     record = {**PROCEDURE, **change}
 
     with pytest.raises(CatalogueError, match=message):
+        load_catalogue(_write_catalogue(tmp_path, [record]))
+
+
+def test_rejection_marker_cannot_claim_ontology_coverage(tmp_path) -> None:
+    record = {
+        **REJECTION,
+        "coverage": [
+            {
+                "anchor_classes": ["AcademicProcedure"],
+                "paths": [["rdfs:label"]],
+            }
+        ],
+    }
+
+    with pytest.raises(CatalogueError, match="rejection query cannot declare coverage"):
         load_catalogue(_write_catalogue(tmp_path, [record]))

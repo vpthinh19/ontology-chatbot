@@ -31,7 +31,8 @@ _DOMAINS = frozenset(
 _PLACEHOLDER = re.compile(r"\$\{([a-z][a-z0-9_]*)\}")
 _IRI = re.compile(r"^:[A-Za-z][A-Za-z0-9]*$")
 _NUMBER_PATTERN = r"-?(?:0|[1-9]\d*)(?:\.\d+)?"
-_REQUIRED_FIELDS = {"query_id", "domain", "target_template", "slots"}
+_REQUIRED_FIELDS = {"query_id", "domain", "target_template", "slots", "coverage"}
+_LOCAL_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 
 
 class CatalogueError(ValueError):
@@ -45,11 +46,19 @@ class SlotSpec:
 
 
 @dataclass(frozen=True)
+class CoverageSelector:
+    anchor_classes: tuple[str, ...]
+    paths: tuple[tuple[str, ...], ...]
+    anchors: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class QuerySpec:
     query_id: str
     domain: Domain
     target_template: str
     slots: Mapping[str, SlotSpec]
+    coverage: tuple[CoverageSelector, ...] = ()
 
 
 def load_catalogue(path: Path) -> dict[str, QuerySpec]:
@@ -108,6 +117,7 @@ def _parse_spec(payload: object) -> QuerySpec:
     domain = payload["domain"]
     template = payload["target_template"]
     raw_slots = payload["slots"]
+    raw_coverage = payload["coverage"]
     if not isinstance(query_id, str) or not query_id:
         raise CatalogueError("query_id must be non-empty text")
     if not isinstance(domain, str) or domain not in _DOMAINS:
@@ -127,7 +137,18 @@ def _parse_spec(payload: object) -> QuerySpec:
         raise CatalogueError(f"unused slots: {unused}")
 
     slots = {name: _parse_slot(name, raw) for name, raw in raw_slots.items()}
-    return QuerySpec(query_id, domain, template, slots)  # type: ignore[arg-type]
+    coverage = _parse_coverage(raw_coverage)
+    if domain == "out-of-domain" and coverage:
+        raise CatalogueError("rejection query cannot declare coverage")
+    if domain != "out-of-domain" and not coverage:
+        raise CatalogueError("non-rejection query must declare coverage")
+    return QuerySpec(  # type: ignore[arg-type]
+        query_id,
+        domain,
+        template,
+        slots,
+        coverage,
+    )
 
 
 def _parse_slot(name: str, payload: object) -> SlotSpec:
@@ -158,3 +179,60 @@ def _parse_slot(name: str, payload: object) -> SlotSpec:
     elif values:
         raise CatalogueError(f"number slot {name} cannot declare finite values")
     return SlotSpec(kind, values)
+
+
+def _parse_coverage(payload: object) -> tuple[CoverageSelector, ...]:
+    if not isinstance(payload, list):
+        raise CatalogueError("coverage must be a list")
+    return tuple(_parse_selector(raw) for raw in payload)
+
+
+def _parse_selector(payload: object) -> CoverageSelector:
+    if not isinstance(payload, dict):
+        raise CatalogueError("coverage selector must be an object")
+    if set(payload) - {"anchor_classes", "paths", "anchors"}:
+        raise CatalogueError("coverage selector has unsupported fields")
+    if "anchor_classes" not in payload or "paths" not in payload:
+        raise CatalogueError("coverage selector must declare anchor_classes and paths")
+
+    anchor_classes = _parse_local_names(
+        payload["anchor_classes"],
+        "anchor_classes",
+        non_empty=True,
+    )
+    anchors = _parse_local_names(payload.get("anchors", []), "anchors")
+    raw_paths = payload["paths"]
+    if not isinstance(raw_paths, list) or not raw_paths:
+        raise CatalogueError("coverage selector paths must be non-empty")
+
+    paths: list[tuple[str, ...]] = []
+    for raw_path in raw_paths:
+        if not isinstance(raw_path, list) or not raw_path:
+            raise CatalogueError("coverage path must be a non-empty list")
+        path: list[str] = []
+        for component in raw_path:
+            if not isinstance(component, str) or not (
+                component == "rdfs:label" or _LOCAL_NAME.fullmatch(component)
+            ):
+                raise CatalogueError(f"invalid path component {component!r}")
+            path.append(component)
+        paths.append(tuple(path))
+    if len(paths) != len(set(paths)):
+        raise CatalogueError("coverage selector has duplicate paths")
+    return CoverageSelector(anchor_classes, tuple(paths), anchors)
+
+
+def _parse_local_names(
+    payload: object,
+    field: str,
+    *,
+    non_empty: bool = False,
+) -> tuple[str, ...]:
+    if not isinstance(payload, list) or (non_empty and not payload):
+        suffix = " must be non-empty" if non_empty else " must be a list"
+        raise CatalogueError(f"coverage selector {field}{suffix}")
+    if not all(isinstance(value, str) and _LOCAL_NAME.fullmatch(value) for value in payload):
+        raise CatalogueError(f"coverage selector {field} contains an invalid local name")
+    if len(payload) != len(set(payload)):
+        raise CatalogueError(f"coverage selector {field} contains duplicates")
+    return tuple(payload)
