@@ -34,8 +34,8 @@ MODEL_SPECS = {
     "bartpho": {
         "model_id": BARTPHO_MODEL_ID,
         "revision": BARTPHO_REVISION,
-        "batch_size": 4,
-        "gradient_accumulation": 2,
+        "batch_size": 8,
+        "gradient_accumulation": 1,
         "attention": "sdpa",
     },
     "vit5": {
@@ -48,10 +48,9 @@ MODEL_SPECS = {
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
-        "batch_size": 4,
-        "gradient_accumulation": 2,
+        "batch_size": 8,
+        "gradient_accumulation": 1,
         "attention": "sdpa",
-        "gradient_checkpointing": True,
     },
 }
 MAX_SOURCE_LENGTH = 128

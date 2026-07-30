@@ -23,7 +23,7 @@
 - Không thêm generator cho dataset. Script chỉ được đếm, validate và báo cáo.
 - Không chạy GPU trước khi regression suite, dataset, manifest, reports, docs và toàn bộ static gate đều xanh.
 - Chỉ fine-tune mỗi model từ checkpoint pretrained gốc đúng một lần; không resume checkpoint cũ, tuning, seed khác hoặc train lại sau khi xem test.
-- Giữ cấu hình: PEFT LoRA rank 32/alpha 64/dropout 0, 20 epochs, seed 42, learning rate `1e-4`, cosine scheduler, `warmup_steps=0.1`, eval mỗi 2 epochs, dynamic padding, BF16/TF32 theo phần cứng, gradient checkpointing, greedy decoding, không `torch.compile`.
+- Giữ cấu hình: PEFT LoRA rank 32/alpha 64/dropout 0, physical/effective batch 8, gradient accumulation 1, 20 epochs, seed 42, learning rate `1e-4`, cosine scheduler, `warmup_steps=0.1`, eval mỗi 2 epochs, dynamic padding, BF16/TF32 theo phần cứng, không gradient checkpointing, greedy decoding, không `torch.compile`.
 - Không stage hoặc commit các file người dùng đang thay đổi: `.gitignore`, `resources/ontology/ontology_v9.properties`, `uv.lock`, `NTUdocs/`, `bieumau_url.html`, `test.html`, `test_phobert.py`, `test_preprocess.py`.
 - Không thêm `Co-authored-by` vào commit.
 

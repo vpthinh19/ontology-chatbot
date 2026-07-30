@@ -17,7 +17,7 @@ chọn sau benchmark.
 Thiết lập chung đã chốt:
 
 - seed `42`, đúng một lần chạy;
-- effective batch size `8`;
+- physical và effective batch size đều là `8`, không gradient accumulation;
 - PEFT LoRA BF16 với rank `32`, alpha `64`, dropout `0` và bias `none`;
 - learning rate `1e-4`, AdamW 8-bit, weight decay `0.005`;
 - cosine scheduler với `warmup_steps=0.1`;
@@ -32,10 +32,11 @@ Mixed precision được chọn theo môi trường: CUDA có BF16 dùng BF16; C
 có BF16 dùng FP16; CPU dùng FP32. TF32 chỉ bật trên GPU CUDA có compute
 capability từ 8 trở lên.
 
-Giữ nguyên dropout của từng checkpoint. BARTpho dùng microbatch 4, accumulation
-2 và SDPA; ViT5 dùng microbatch 8, accumulation 1 và eager attention; T5Gemma2
-dùng microbatch 4, accumulation 2, SDPA và gradient checkpointing. Cả ba đều có
-effective batch 8 và chạy trong 6 GB VRAM.
+Giữ nguyên dropout của từng checkpoint. Cả ba model dùng physical batch `8`,
+gradient accumulation `1` và không gradient checkpointing. BARTpho và
+T5Gemma2 dùng SDPA; ViT5 dùng eager attention. Smoke test PEFT trên RTX 4050
+6 GB đã xác minh cả ba cấu hình chạy được; T5Gemma2 phải được smoke lại trên
+batch dài nhất sau khi khóa dataset cuối vì có biên VRAM hẹp nhất.
 
 LoRA gắn vào các vai trò tương đương, không ép dùng chung tên module:
 

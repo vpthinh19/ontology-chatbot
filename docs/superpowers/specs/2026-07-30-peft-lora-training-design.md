@@ -18,8 +18,11 @@ pháp phải dùng API Hugging Face phổ biến, không cần training loop ri�
 - Không gắn adapter T5Gemma2 vào SigLIP vision tower dù các lớp ở đó có cùng
   tên lá.
 - Learning rate là `1e-4`; các thiết lập còn lại giữ nguyên: seed 42, effective
-  batch 8, AdamW 8-bit, cosine scheduler, warmup 10%, dynamic padding,
+  batch 8, AdamW 8-bit, cosine scheduler, warmup 10%, dynamic padding, không
   gradient checkpointing, không `torch.compile` và greedy decoding.
+- Cả ba model dùng physical batch 8 và gradient accumulation 1. Cấu hình này đã
+  qua smoke test PEFT trên RTX 4050 6 GB, gồm T5Gemma2 với các sample dài nhất
+  của dataset hiện hành.
 
 ## Vòng đời checkpoint
 

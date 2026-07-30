@@ -23,14 +23,19 @@ def test_target_labels_always_end_with_eos() -> None:
     assert _ensure_eos_token([2, 10, 11, 12], 1, 4) == [2, 10, 11, 1]
 
 
-def test_all_benchmark_models_keep_the_same_effective_batch() -> None:
+def test_all_benchmark_models_share_one_physical_batch_protocol() -> None:
     effective_batches = {
         name: spec["batch_size"] * spec["gradient_accumulation"]
         for name, spec in MODEL_SPECS.items()
     }
 
     assert effective_batches == {"bartpho": 8, "vit5": 8, "t5gemma2": 8}
-    assert MODEL_SPECS["t5gemma2"]["gradient_checkpointing"] is True
+    assert all(spec["batch_size"] == 8 for spec in MODEL_SPECS.values())
+    assert all(spec["gradient_accumulation"] == 1 for spec in MODEL_SPECS.values())
+    assert all(
+        not spec.get("gradient_checkpointing", False)
+        for spec in MODEL_SPECS.values()
+    )
 
 
 def test_structured_generation_disables_inherited_sampling_settings() -> None:
@@ -254,13 +259,13 @@ def test_smoke_run_covers_its_complete_training_subset() -> None:
         smoke_test=True,
         requested_steps=-1,
         train_records=16,
-        batch_size=4,
-        gradient_accumulation=2,
+        batch_size=8,
+        gradient_accumulation=1,
     ) == 2
     assert _effective_max_steps(
         smoke_test=False,
         requested_steps=-1,
         train_records=1084,
-        batch_size=4,
-        gradient_accumulation=2,
+        batch_size=8,
+        gradient_accumulation=1,
     ) == -1
