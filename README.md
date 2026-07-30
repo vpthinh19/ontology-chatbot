@@ -70,18 +70,7 @@ SPARQL `SELECT` hoặc chuỗi `không có thông tin`. Backend không dò thự
 fuzzy matching, không tự sửa truy vấn và không dùng thêm một model phân loại
 trong/ngoài miền.
 
-```mermaid
-flowchart LR
-    Q["Câu hỏi tiếng Việt"] --> N["Chuẩn hóa nhẹ"]
-    N --> M["Mô hình seq2seq"]
-    M --> D{"Kết quả sinh"}
-    D -- "không có thông tin" --> X["Không có thông tin."]
-    D -- "SPARQL SELECT" --> V["Kiểm tra truy vấn"]
-    V -- "không hợp lệ" --> X
-    V -- "hợp lệ" --> G["Truy vấn đồ thị ontology"]
-    G -- "không có kết quả" --> X
-    G -- "có dữ liệu" --> R["Định dạng câu trả lời"]
-```
+![Luồng xử lý câu hỏi của hệ thống](docs/figures/system-flow.png)
 
 ### 3.1. Hình dạng đầu vào và đầu ra của model
 
@@ -156,16 +145,7 @@ thị và giới hạn những gì chatbot có thể trả lời.
 
 Một phần đồ thị có hình dạng trừu tượng như sau:
 
-```mermaid
-graph LR
-    P["Quy trình đăng ký học phần"] -->|có hướng dẫn| A["Điều khoản nguồn"]
-    P -->|yêu cầu biểu mẫu| F["Biểu mẫu"]
-    P -->|nộp tại| O["Đơn vị phụ trách"]
-    P -->|được quy định bởi| D["Văn bản chính thức"]
-    A -->|có nội dung| T["Nội dung tiếng Việt"]
-    F -->|có địa chỉ tải| U["URL"]
-    O -->|có tên| L["Nhãn tiếng Việt"]
-```
+![Một phần đồ thị ontology học vụ](docs/figures/ontology-graph.png)
 
 Các mũi tên biểu diễn đường đi trong đồ thị. Dữ liệu cuối cùng trả cho người
 dùng là nhãn hoặc giá trị như nội dung, địa điểm, URL và con số; bản thân quan

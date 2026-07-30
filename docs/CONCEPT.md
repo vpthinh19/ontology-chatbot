@@ -30,19 +30,7 @@ câu trả lời; backend lấy literal từ graph khi thực thi query.
 
 ## Luồng dữ liệu
 
-```mermaid
-flowchart LR
-    Q["Văn bản tự nhiên"] --> N["NFC + khoảng trắng + viết tắt chắc nghĩa"]
-    N --> M["T5Gemma2"]
-    M --> D{"Output model"}
-    D -- "không có thông tin" --> X["Không có thông tin."]
-    D -- "SELECT ..." --> V["Parser + danh sách thao tác cấm"]
-    V -- "query lỗi" --> X
-    V -- "query hợp lệ" --> G["RDFLib query"]
-    G -- "không có dòng" --> X
-    G -- "có kết quả" --> R["list[dict]"]
-    R --> T["Văn bản trả lời"]
-```
+![Luồng dữ liệu từ câu hỏi tới câu trả lời](figures/concept-data-flow.png)
 
 Không có tầng tự sửa query, model phân loại riêng hoặc dò entity trong backend.
 Query sai là lỗi model/dataset; query đúng nhưng dữ liệu sai là lỗi ontology.

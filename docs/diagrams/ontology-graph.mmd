@@ -1,0 +1,37 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Cantarell, Arial, sans-serif"
+    primaryTextColor: "#172033"
+    lineColor: "#64748b"
+    edgeLabelBackground: "#ffffff"
+  flowchart:
+    curve: basis
+---
+flowchart LR
+    P["Quy trình<br/>đăng ký học phần"]
+    A["Điều khoản<br/>nguồn"]
+    F["Biểu mẫu"]
+    O["Đơn vị<br/>phụ trách"]
+    D["Văn bản<br/>chính thức"]
+    T["Nội dung<br/>tiếng Việt"]
+    U["URL tải"]
+    L["Nhãn<br/>tiếng Việt"]
+
+    P -->|"có hướng dẫn"| A
+    P -->|"yêu cầu biểu mẫu"| F
+    P -->|"nộp tại"| O
+    P -->|"được quy định bởi"| D
+    A -->|"có nội dung"| T
+    F -->|"có địa chỉ tải"| U
+    O -->|"có tên"| L
+
+    classDef anchor fill:#ede9fe,stroke:#7c3aed,stroke-width:2.5px,color:#4c1d95
+    classDef entity fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
+    classDef source fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+    classDef value fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    class P anchor
+    class A,F,O entity
+    class D source
+    class T,U,L value

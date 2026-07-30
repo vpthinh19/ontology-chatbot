@@ -1,0 +1,36 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Cantarell, Arial, sans-serif"
+    primaryTextColor: "#172033"
+    lineColor: "#64748b"
+    edgeLabelBackground: "#ffffff"
+    clusterBkg: "#f8fafc"
+    clusterBorder: "#cbd5e1"
+  flowchart:
+    curve: basis
+---
+flowchart TB
+    Q["Câu hỏi<br/>tiếng Việt"] --> N["Chuẩn hóa<br/>nhẹ"]
+    N --> M["Mô hình<br/>seq2seq"]
+    M --> D{"Kết quả sinh"}
+    D -- "không có thông tin" --> X["Không có<br/>thông tin."]
+    D -- "SPARQL SELECT" --> V["Kiểm tra<br/>truy vấn"]
+    V -- "không hợp lệ" --> X
+    V -- "hợp lệ" --> G["Truy vấn đồ thị<br/>ontology"]
+    G -- "không có kết quả" --> X
+    G -- "có dữ liệu" --> R["Câu trả lời<br/>tiếng Việt"]
+
+    classDef input fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
+    classDef model fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#4c1d95
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+    classDef process fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#172033
+    classDef success fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef reject fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#7f1d1d
+    class Q input
+    class M model
+    class D decision
+    class N,V,G process
+    class R success
+    class X reject

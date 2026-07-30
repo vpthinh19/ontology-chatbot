@@ -2,28 +2,7 @@
 
 ## Thành phần
 
-```mermaid
-flowchart TB
-    UI["Web / API client"] --> API["runtime/api.py"]
-    API --> P["OntologyChatbot"]
-    P --> G["QueryGenerator"]
-    G --> CT2["Seq2seq CTranslate2"]
-    P --> D{"marker hoặc SELECT"}
-    D -- "marker" --> R["Không có thông tin."]
-    D -- "SELECT" --> Q["SPARQL validator + executor"]
-    Q --> RDF["ontology.ttl"]
-    RDF --> F["Generic renderer"]
-    F --> UI
-    R --> UI
-
-    DS["dataset"] --> TR["Seq2SeqTrainer + PEFT LoRA"]
-    TR --> MG["Merge adapter vào base model"]
-    MG --> HF["Checkpoint Hugging Face độc lập"]
-    HF --> BM["Benchmark Transformers"]
-    HF --> CV["tools/conversion.py"]
-    CV --> CT2
-    CT2 --> PA["Kiểm tra parity + hiệu năng"]
-```
+![Kiến trúc huấn luyện và vận hành hệ thống](figures/system-architecture.png)
 
 Runtime chỉ phụ thuộc một model đã chuyển đổi, tokenizer, RDFLib và ontology.
 Nó không import trainer, dataset curation hoặc code báo cáo.
