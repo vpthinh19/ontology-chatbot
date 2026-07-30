@@ -345,6 +345,18 @@ Project yêu cầu Linux và Python 3.12. Thực nghiệm huấn luyện đượ
 NVIDIA RTX 4050 Laptop 6 GB với PyTorch 2.13 và Transformers 5.14. Runtime CPU
 dùng CTranslate2 4.8, RDFLib 7.6 và không cần Transformers.
 
+### Chạy trực tiếp bằng Docker
+
+Image đã chứa model CTranslate2, ontology, backend và giao diện web:
+
+```bash
+docker pull vpt19/ontchatbot:0.4.1
+docker run --rm --publish 8000:8000 vpt19/ontchatbot:0.4.1
+```
+
+Mở `http://127.0.0.1:8000` để sử dụng chatbot. Nhấn `Ctrl+C` để dừng container;
+tuỳ chọn `--rm` tự xoá container sau khi dừng nhưng không xoá image đã tải.
+
 ### Chạy chatbot bằng artifact đã công bố
 
 ```bash

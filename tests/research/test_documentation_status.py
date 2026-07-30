@@ -46,6 +46,7 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     assert "uv run train_sparql" in readme
     assert "uv run convert_sparql_model" in readme
     assert "uv run serve_sparql" in readme
+    assert "docker run --rm --publish 8000:8000 vpt19/ontchatbot:0.4.1" in readme
     assert "NTUdocs" not in readme
     assert "artifacts/" not in readme
     assert "Trạng thái hiện tại" not in readme
