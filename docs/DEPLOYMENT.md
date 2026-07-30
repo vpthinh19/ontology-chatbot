@@ -17,6 +17,10 @@ Runtime không nạp adapter hoặc phụ thuộc PEFT. Artifact CTranslate2 ph�
 chấm lại đúng test set để kiểm tra parity của output, Answer Exact và marker
 exact.
 
+Runtime đọc trực tiếp `tokenizer.json` bằng thư viện `tokenizers`. Nó không cần
+Transformers hoặc SentencePiece; hai dependency đó chỉ phục vụ huấn luyện và
+benchmark các model nguồn.
+
 Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 dùng
 `beam_size=1`. Beam search không thuộc benchmark hoặc production chính.
 

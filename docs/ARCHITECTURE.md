@@ -27,6 +27,8 @@ flowchart TB
 
 Runtime chỉ phụ thuộc một model đã chuyển đổi, tokenizer, RDFLib và ontology.
 Nó không import trainer, dataset curation hoặc code báo cáo.
+`tokenizer.json` được nạp trực tiếp bằng thư viện `tokenizers`; Transformers và
+SentencePiece chỉ thuộc môi trường huấn luyện, không nằm trong runtime CT2.
 
 ## Trách nhiệm
 

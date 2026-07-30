@@ -901,14 +901,13 @@ dependencies = [
     { name = "numpy" },
     { name = "owlrl" },
     { name = "rdflib" },
-    { name = "sentencepiece" },
 ]
 
 [package.optional-dependencies]
 inference = [
     { name = "fastapi", extra = ["standard"], marker = "extra == 'extra-10-ontchatbot-inference'" },
     { name = "huggingface-hub" },
-    { name = "transformers" },
+    { name = "tokenizers" },
 ]
 train = [
     { name = "accelerate" },
@@ -916,6 +915,7 @@ train = [
     { name = "datasets" },
     { name = "huggingface-hub" },
     { name = "peft" },
+    { name = "sentencepiece" },
     { name = "torch" },
     { name = "transformers" },
 ]
@@ -938,9 +938,9 @@ requires-dist = [
     { name = "owlrl", specifier = ">=7.6.2" },
     { name = "peft", marker = "extra == 'train'", specifier = ">=0.20.0" },
     { name = "rdflib", specifier = ">=7.6.0" },
-    { name = "sentencepiece", specifier = ">=0.2.2" },
+    { name = "sentencepiece", marker = "extra == 'train'", specifier = ">=0.2.2" },
+    { name = "tokenizers", marker = "extra == 'inference'", specifier = ">=0.22.2" },
     { name = "torch", marker = "extra == 'train'", specifier = ">=2.13.0" },
-    { name = "transformers", marker = "extra == 'inference'", specifier = ">=5.14.1" },
     { name = "transformers", marker = "extra == 'train'", specifier = ">=5.14.1" },
 ]
 provides-extras = ["inference", "train"]

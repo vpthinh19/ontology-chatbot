@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.runtime.model import CTranslate2Generator, _tokenizer_compatibility_kwargs
+from ontchatbot.runtime.model import CTranslate2Generator
 from ontchatbot.runtime.pipeline import OntologyChatbot
 from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 
@@ -14,15 +14,12 @@ class _Tokenizer:
     def __init__(self) -> None:
         self.seen = None
 
-    def __call__(self, text, **kwargs):
+    def encode(self, text, **kwargs):
         self.seen = (text, kwargs)
-        return SimpleNamespace(input_ids=[1, 2])
+        return SimpleNamespace(tokens=["t1", "t2"])
 
-    def convert_ids_to_tokens(self, ids):
-        return [f"t{token_id}" for token_id in ids]
-
-    def convert_tokens_to_ids(self, tokens):
-        return [int(token[1:]) for token in tokens]
+    def token_to_id(self, token):
+        return int(token[1:])
 
     def decode(self, ids, **kwargs):
         return " SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . } "
@@ -129,13 +126,3 @@ def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
     error = next(record for record in caplog.records if record.levelno == logging.ERROR)
     assert "stage=generator" in error.getMessage()
     assert error.exc_info is not None
-
-
-def test_gemma_artifact_preserves_training_tokenizer_regex(tmp_path) -> None:
-    (tmp_path / "manifest.json").write_text(
-        '{"compatibility":{"gemma_legacy_regex":true}}', encoding="utf-8"
-    )
-
-    assert _tokenizer_compatibility_kwargs(tmp_path) == {
-        "fix_mistral_regex": False
-    }
