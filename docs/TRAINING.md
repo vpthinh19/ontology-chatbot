@@ -3,9 +3,10 @@
 ## Trạng thái
 
 Ontology, catalogue và dataset 3.558 câu đã vượt các cổng kiểm tra tĩnh.
-Ba model chưa được fine-tune trên dữ liệu đang khóa; vì vậy
-chưa có benchmark chính thức cho trạng thái này. Chỉ số và checkpoint tạo từ dataset
-khác không được dùng để mô tả chất lượng hiện tại.
+Chưa có lần benchmark đủ ba model bằng giao thức PEFT LoRA đang khóa; vì vậy
+chưa có benchmark chính thức cho trạng thái này. Checkpoint T5Gemma2 từng được
+full fine-tune trên cùng dataset chỉ là bằng chứng chẩn đoán, không phải kết quả
+so sánh của giao thức hiện hành.
 
 ## Giao thức huấn luyện
 

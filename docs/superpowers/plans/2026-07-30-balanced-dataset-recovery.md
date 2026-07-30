@@ -4,9 +4,9 @@
 
 **Goal:** Bổ sung đúng 896 câu train để phục hồi các lỗi đã đo, khóa một regression suite gồm 308 cách hỏi quy trình, rồi fine-tune và benchmark BARTpho, ViT5, T5Gemma2 bằng cùng giao thức PEFT LoRA.
 
-**Architecture:** Giữ nguyên ontology, catalogue, preprocessing, schema SPARQL và runtime. Dữ liệu mới được chia thành năm lô độc lập có ID và quota cố định; validator hiện có kiểm tra sau từng lô. Một thay đổi nhỏ trong research CLI cho phép đánh giá checkpoint trên regression suite tùy chọn mà không tạo script tạm.
+**Architecture:** Giữ nguyên ontology, catalogue, preprocessing, schema SPARQL và runtime. Bốn khối dữ liệu ngữ nghĩa được triển khai thành năm batch độc lập vì khối ngôn ngữ quy trình được chia đôi; mỗi batch có ID và quota cố định, validator hiện có kiểm tra sau từng batch. Một thay đổi nhỏ trong research CLI cho phép đánh giá checkpoint trên regression suite tùy chọn mà không tạo script tạm.
 
-**Tech Stack:** JSON Lines, RDFLib/SPARQL, Python 3.12, pytest, Hugging Face Transformers, PyTorch, T5Gemma2, Fedora Linux, CUDA/BF16 trên RTX 4050 6 GB.
+**Tech Stack:** JSON Lines, RDFLib/SPARQL, Python 3.12, pytest, Hugging Face Transformers, PEFT, PyTorch, BARTpho, ViT5, T5Gemma2, Fedora Linux, CUDA/BF16 trên RTX 4050 6 GB.
 
 ## Global Constraints
 
@@ -16,7 +16,9 @@
 - Thêm đúng 896 câu với ID `question-005777` đến `question-006672`.
 - Register mới phải đúng: noisy 314, neutral 224, colloquial 224, formal 134.
 - Không sao chép, bỏ dấu hoặc paraphrase sát validation/test/regression suite.
-- Không dùng template rồi chỉ thay tên thực thể; mọi câu phải được review semantic thủ công.
+- Trong 896 câu train, không dùng template rồi chỉ thay tên thực thể; mọi câu
+  phải được review semantic thủ công. Ma trận template cố định chỉ được dùng cho
+  regression suite 308 câu và không đi vào train.
 - Mọi target SPARQL phải khớp catalogue, thực thi được và trả dữ liệu không rỗng.
 - Mọi OOD mới dùng `query_id=no-information`, target `không có thông tin` và phải được phân loại trong `resources/cases/rejection_checklist.json`.
 - Không thay ontology, catalogue, preprocessing, tokenizer, model, hyperparameter hoặc code runtime.
@@ -54,7 +56,7 @@
 - Create ignored: `artifacts/balanced-recovery/curation-ledger.json`
 
 **Interfaces:**
-- Consumes: 22 IRI trong slot `procedure-instruction`, checkpoint hiện tại tại `artifacts/procedure-density/t5gemma2/model`.
+- Consumes: 22 IRI trong slot `procedure-instruction`, checkpoint chẩn đoán theo giao thức cũ tại `artifacts/procedure-density/t5gemma2/model`.
 - Produces: `PROCEDURE_LANGUAGE_CASES_PATH`, CLI `evaluate_sparql_model --benchmark PATH`, suite 220 positive + 88 negative và ledger quota năm batch.
 
 - [ ] **Step 1: Viết test contract trước khi tạo suite**
@@ -229,7 +231,7 @@ git diff --check -- resources/cases/procedure_language.jsonl \
 
 Expected: tests pass; reference report has 308/308 System Answer Exact.
 
-- [ ] **Step 6: Ghi baseline checkpoint hiện tại**
+- [ ] **Step 6: Ghi baseline chẩn đoán từ checkpoint cũ**
 
 ```bash
 uv run evaluate_sparql_model \
@@ -719,6 +721,7 @@ GPU compute capability is at least 8.0
 all three pinned model revisions exist in the local Hugging Face cache
 train/val/test SHA-256 exactly match manifest.json
 regression suite has 308 rows and no normalized overlap with train
+PEFT smoke train batch dài nhất của dataset cuối chạy được với physical batch 8
 ```
 
 If any check fails, stop before training.
@@ -730,7 +733,7 @@ Run `train_sparql` once for each of `bartpho`, `vit5`, `t5gemma2`, using
 arguments in `docs/TRAINING.md`. Keep one separate log per model and stop the
 sequence if any command exits non-zero.
 
-Do not change parameters, retry, resume a failed partial run or start another seed without explicit user approval. Expected wall time is approximately two hours.
+Do not change parameters, retry, resume a failed partial run or start another seed without explicit user approval. Record actual wall time; do not promise an estimate before the final dataset smoke test.
 
 - [ ] **Step 3: Đánh giá regression suite từ saved artifact**
 
@@ -749,6 +752,10 @@ done
 ```
 
 - [ ] **Step 4: Compute the locked acceptance contract**
+
+Report every metric below for all three models. Apply all thresholds as one
+production gate to the checkpoint selected for deployment; comparison models
+may remain below a threshold without invalidating the benchmark.
 
 ```text
 220 positive regression rows: System Answer Exact = 100%

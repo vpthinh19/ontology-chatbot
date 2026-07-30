@@ -6,10 +6,12 @@ Bổ sung một vòng dữ liệu có kiểm soát để chatbot trả lời ch�
 cơ bản về 22 quy trình học vụ, phân biệt được câu hỏi gần miền nhưng ontology
 không có dữ liệu, đồng thời phục hồi phần lớn lỗi còn lại trên bộ test hiện tại.
 
-Vòng này tối ưu chất lượng production của T5Gemma2. Không thay ontology, schema
-SPARQL, preprocessing, tokenizer, kiến trúc runtime hoặc hyperparameter.
+Vòng này nâng chất lượng dữ liệu dùng chung cho BARTpho, ViT5 và T5Gemma2, sau
+đó benchmark công bằng ba model để chọn một checkpoint production. Không thay
+ontology, schema SPARQL, preprocessing, tokenizer, kiến trúc runtime hoặc
+hyperparameter.
 
-## Đường cơ sở đã đo
+## Đường cơ sở chẩn đoán
 
 Dataset hiện có 3.558 câu:
 
@@ -17,7 +19,8 @@ Dataset hiện có 3.558 câu:
 - validation: 402;
 - test: 407.
 
-Checkpoint T5Gemma2 hiện tại đạt:
+Một checkpoint T5Gemma2 full fine-tuning theo giao thức cũ trên cùng dataset
+đạt:
 
 - System Answer Exact toàn test: 367/407, tương đương 90,17%;
 - truy vấn quy trình: 174/185, tương đương 94,05%;
@@ -175,7 +178,9 @@ checkpoint pretrained gốc, mỗi model đúng một lần bằng PEFT LoRA the
 `2026-07-30-peft-lora-training-design.md`. Không resume checkpoint hiện tại,
 không đổi seed, epochs, learning rate hoặc decoding sau khi xem kết quả.
 
-Các điều kiện đạt đồng thời:
+Cả ba model phải được báo cáo bằng cùng metric. Các điều kiện dưới đây áp dụng
+đồng thời cho checkpoint được chọn để triển khai production; model so sánh
+không được chọn không bắt buộc vượt mọi ngưỡng:
 
 | Tiêu chí | Ngưỡng |
 |---|---:|
