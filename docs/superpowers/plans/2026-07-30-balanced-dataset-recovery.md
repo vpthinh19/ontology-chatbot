@@ -59,7 +59,7 @@
 - Consumes: 22 IRI trong slot `procedure-instruction`, checkpoint chẩn đoán theo giao thức cũ tại `artifacts/procedure-density/t5gemma2/model`.
 - Produces: `PROCEDURE_LANGUAGE_CASES_PATH`, CLI `evaluate_sparql_model --benchmark PATH`, suite 220 positive + 88 negative và ledger quota năm batch.
 
-- [ ] **Step 1: Viết test contract trước khi tạo suite**
+- [x] **Step 1: Viết test contract trước khi tạo suite**
 
 Add to `tests/research/test_benchmark.py`:
 
@@ -77,9 +77,10 @@ from ontchatbot.settings import PROCEDURE_LANGUAGE_CASES_PATH
 def test_procedure_language_suite_is_disjoint_and_complete() -> None:
     rows = load_benchmark(PROCEDURE_LANGUAGE_CASES_PATH)
     release = load_release()
-    training_questions = {
+    release_questions = {
         normalize_model_input(row["input"]).casefold()
-        for row in release["train"]
+        for split in ("train", "val", "test")
+        for row in release[split]
     }
     positive = [row for row in rows if row["query_id"] == "procedure-instruction"]
     negative = [row for row in rows if row["query_id"] == "no-information"]
@@ -89,7 +90,7 @@ def test_procedure_language_suite_is_disjoint_and_complete() -> None:
     assert len(positive) == 220
     assert len(negative) == 88
     assert len({row["id"] for row in rows}) == 308
-    assert not training_questions & {
+    assert not release_questions & {
         normalize_model_input(row["input"]).casefold() for row in rows
     }
     assert len(positive_targets) == 22
@@ -113,7 +114,7 @@ def test_transformers_evaluator_accepts_custom_benchmark(tmp_path: Path) -> None
     assert args.benchmark == benchmark
 ```
 
-- [ ] **Step 2: Chạy test để xác nhận thất bại đúng lý do**
+- [x] **Step 2: Chạy test để xác nhận thất bại đúng lý do**
 
 ```bash
 uv run pytest tests/research/test_benchmark.py \
@@ -122,7 +123,7 @@ uv run pytest tests/research/test_benchmark.py \
 
 Expected: FAIL vì chưa có `PROCEDURE_LANGUAGE_CASES_PATH` và `_parse_args` chưa nhận argv/`--benchmark`.
 
-- [ ] **Step 3: Thêm giao diện đánh giá tối thiểu**
+- [x] **Step 3: Thêm giao diện đánh giá tối thiểu**
 
 In `src/ontchatbot/settings.py`, add:
 
@@ -146,7 +147,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 Keep the existing model-directory and positive-batch-size checks. This is research-only plumbing; do not alter generation or model loading.
 
-- [ ] **Step 4: Tạo 308 regression cases bằng `apply_patch`**
+- [x] **Step 4: Tạo 308 regression cases bằng `apply_patch`**
 
 Use exactly these 22 IRI/anchor pairs:
 
@@ -217,7 +218,11 @@ negative colloquial: X để làm gì
 negative formal:     lợi ích của X là gì
 ```
 
-- [ ] **Step 5: Chạy test và validate suite**
+Hai pattern của `CourseRegistrationProcedure` trùng sau preprocessing với test
+đã khóa, nên suite dùng `đăng ký học phần như thế nào vậy` và `đăng ký học phần
+sao vậy`. Không thay hoặc sao chép hai câu test gốc.
+
+- [x] **Step 5: Chạy test và validate suite**
 
 ```bash
 uv run pytest tests/research/test_benchmark.py -q
@@ -231,7 +236,7 @@ git diff --check -- resources/cases/procedure_language.jsonl \
 
 Expected: tests pass; reference report has 308/308 System Answer Exact.
 
-- [ ] **Step 6: Ghi baseline chẩn đoán từ checkpoint cũ**
+- [x] **Step 6: Ghi baseline chẩn đoán từ checkpoint cũ**
 
 ```bash
 uv run evaluate_sparql_model \
@@ -245,7 +250,7 @@ uv run evaluate_sparql_model \
 
 Verify positive 211/220 and negative safe rejection 11/88. If the reconstructed suite differs, record the actual baseline in the ignored ledger; do not modify the suite to force previous numbers.
 
-- [ ] **Step 7: Tạo ignored ledger**
+- [x] **Step 7: Tạo ignored ledger**
 
 Create `artifacts/balanced-recovery/curation-ledger.json` with:
 
@@ -259,7 +264,7 @@ Create `artifacts/balanced-recovery/curation-ledger.json` with:
 }
 ```
 
-- [ ] **Step 8: Commit regression tooling only**
+- [x] **Step 8: Commit regression tooling only**
 
 ```bash
 git add resources/cases/procedure_language.jsonl src/ontchatbot/settings.py \

@@ -11,7 +11,7 @@ from .benchmark import evaluate_benchmark, load_benchmark, validate_benchmark
 from .dataset import load_release, validate_release
 from .evaluation import evaluate_predictions
 from .reporting import sha256_file
-from ..settings import DATASET_DIR
+from ..settings import DATASET_DIR, TEST_DATASET_PATH
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import load_ontology
 from .training import (
@@ -62,7 +62,7 @@ def evaluate(args: argparse.Namespace) -> dict:
         reports["validation"] = report["overall"]
 
     if args.suite in {"benchmark", "both"}:
-        rows = load_benchmark()
+        rows = load_benchmark(args.benchmark)
         benchmark_validation = validate_benchmark(
             rows,
             graph,
@@ -163,14 +163,15 @@ def _write_predictions(path: Path, rows, predictions) -> None:
     )
 
 
-def _parse_args() -> argparse.Namespace:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--suite", choices=("validation", "benchmark", "both"), default="both")
+    parser.add_argument("--benchmark", type=Path, default=TEST_DATASET_PATH)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--output-dir", type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if not args.model_dir.is_dir():
         parser.error(f"model directory does not exist: {args.model_dir}")
     if args.batch_size < 1:
