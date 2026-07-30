@@ -475,7 +475,7 @@ git commit -m "Add near-domain procedure rejections"
 - Consumes: 16 query family đã đo lỗi.
 - Produces: 180 rows `question-006493` through `question-006672`.
 
-- [ ] **Step 1: Phân bổ family quota**
+- [x] **Step 1: Phân bổ family quota**
 
 Use exactly:
 
@@ -506,11 +506,11 @@ noisy=63 neutral=45 colloquial=45 formal=27
 
 Every family must contain all four registers.
 
-- [ ] **Step 2: Biên soạn theo nguyên nhân lỗi**
+- [x] **Step 2: Biên soạn theo nguyên nhân lỗi**
 
 Use multi-column wording for targets with several return fields, explicit entity cues for class/form/payment IRIs and diverse decimals for numeric targets. For numeric questions verify the input literal equals every occurrence in target after preprocessing; include one- and two-decimal values.
 
-- [ ] **Step 3: Verify Block D and complete quota**
+- [x] **Step 3: Verify Block D and complete quota**
 
 Assert exact ID range, family counts, registers and total. Across IDs 5777–6672 assert:
 
@@ -520,7 +520,7 @@ records=896 noisy=314 neutral=224 colloquial=224 formal=134
 
 Run validator and `git diff --check`.
 
-- [ ] **Step 4: Commit Block D only**
+- [x] **Step 4: Commit Block D only**
 
 ```bash
 git add resources/dataset/main/train.jsonl
