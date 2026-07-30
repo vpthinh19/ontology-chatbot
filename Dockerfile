@@ -20,13 +20,14 @@ COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra inference --no-dev
 
-# Tải artifact CTranslate2 đã convert và kiểm định từ HF Hub.
+# Chỉ tải artifact CTranslate2 dùng khi inference. Checkpoint Transformers và
+# báo cáo benchmark cùng repository không được đưa vào runtime image.
 ARG HF_REPO=
 ARG HF_REVISION=main
 RUN test -n "${HF_REPO}" && \
     /app/.venv/bin/python -c "from huggingface_hub import snapshot_download; \
 snapshot_download(repo_id='${HF_REPO}', revision='${HF_REVISION}', \
-local_dir='/app/model')"
+local_dir='/app/hf-model', allow_patterns=['ctranslate2/*'])"
 
 
 # ---------- runtime ----------
@@ -39,7 +40,7 @@ WORKDIR /app
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
-COPY --from=builder --chown=ontchatbot:ontchatbot /app/model /app/model
+COPY --from=builder --chown=ontchatbot:ontchatbot /app/hf-model/ctranslate2 /app/model
 COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs

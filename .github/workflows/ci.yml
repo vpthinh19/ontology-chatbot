@@ -107,6 +107,30 @@ jobs:
             HF_REPO=${{ steps.model.outputs.repo }}
             HF_REVISION=${{ steps.model.outputs.revision }}
 
+      - name: Smoke test the runtime image
+        run: |
+          CONTAINER=ontchatbot-smoke-${{ github.run_id }}
+          docker run --detach --name "$CONTAINER" \
+            --publish 127.0.0.1:8000:8000 \
+            "${{ env.IMAGE }}:${{ env.VERSION }}"
+          cleanup() {
+            docker logs "$CONTAINER" || true
+            docker rm --force "$CONTAINER" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8000/healthz >/dev/null; then
+              exit 0
+            fi
+            if ! docker inspect --format '{{.State.Running}}' "$CONTAINER" | grep -qx true; then
+              echo "Container exited before becoming healthy" >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          echo "Container did not become healthy within 120 seconds" >&2
+          exit 1
+
       - name: Trivy vulnerability scan (OS only)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
