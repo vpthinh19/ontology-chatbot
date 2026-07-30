@@ -221,6 +221,42 @@ Các câu trùng sau chuẩn hóa và các câu gần trùng trong cùng nhóm t
 cú pháp, độ an toàn và khả năng trả về dữ liệu trên ontology trước khi đưa vào
 dataset. Chi tiết nằm trong [tài liệu dataset](docs/DATASET.md).
 
+### 5.3. Tài nguyên dữ liệu và đánh giá
+
+Các tài nguyên tĩnh dùng trong nghiên cứu được lưu trực tiếp trong repository:
+
+| Tài nguyên | Địa chỉ | Vai trò |
+|---|---|---|
+| Ontology | [`ontology.ttl`](resources/ontology/ontology.ttl) | Đồ thị RDF chứa dữ liệu học vụ được truy vấn khi chatbot trả lời |
+| Danh mục khả năng trả lời | [`answer_inventory.json`](resources/ontology/answer_inventory.json) | Liệt kê các đường đi từ thực thể tới nhãn hoặc literal có thể trả lời |
+| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 51 nhóm truy vấn SPARQL của dataset |
+| Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 3.645 câu dùng để cập nhật trọng số model |
+| Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 402 câu dùng để chọn checkpoint |
+| Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 407 câu dùng cho benchmark cuối cùng |
+| Quy tắc độ phủ | [`coverage.json`](resources/dataset/coverage.json) | Các yêu cầu về miền, phong cách diễn đạt và nhóm từ chối |
+| Manifest dataset | [`manifest.json`](resources/dataset/manifest.json) | Cấu trúc, thống kê và checksum của dữ liệu |
+
+Ngoài tập test chính, repository còn có các bộ kiểm tra hành vi:
+
+| Bộ kiểm tra | Địa chỉ | Nội dung |
+|---|---|---|
+| Ngôn ngữ quy trình | [`procedure_language.jsonl`](resources/cases/procedure_language.jsonl) | 308 câu hồi quy về cách hỏi quy trình và các câu gần miền cần từ chối |
+| Câu hỏi người dùng | [`user_queries.txt`](resources/cases/user_queries.txt) | Bảy câu hỏi thực tế dùng để kiểm tra nhanh end-to-end |
+| Chỉ mục câu từ chối | [`rejection_checklist.json`](resources/cases/rejection_checklist.json) | Nhóm ID câu ngoài miền theo loại mơ hồ, hỗn hợp và hard negative |
+
+Số liệu đứng sau các bảng và biểu đồ cũng được công bố ở dạng máy đọc được:
+
+| Số liệu | Địa chỉ | Biểu đồ hoặc thống kê tương ứng |
+|---|---|---|
+| Dataset và ontology | [`reports/dataset.json`](reports/dataset.json) | Kích thước tập, miền, phong cách, đặc trưng truy vấn và thống kê ontology |
+| Độ phủ quy trình | [`reports/procedure-dataset.json`](reports/procedure-dataset.json) | Số target và số câu quy trình trong từng tập |
+| Huấn luyện và benchmark | [`reports/models.json`](reports/models.json) | Loss, validation, kết quả ba model và phân rã lỗi trên test |
+| Toàn bộ hình trực quan | [`reports/figures/`](reports/figures/) | Các biểu đồ SVG được sinh từ những file JSON trên |
+
+Ý nghĩa từng file và lệnh tái tạo biểu đồ được mô tả tại
+[`reports/README.md`](reports/README.md). Các bộ hồi quy bổ sung không thay thế
+tập test 407 câu khi báo cáo kết quả so sánh model.
+
 ## 6. Thiết kế thực nghiệm
 
 Ba mô hình encoder–decoder được so sánh:
@@ -333,6 +369,65 @@ Mở `http://127.0.0.1:8000` để sử dụng giao diện web.
 uv run validate_sparql_dataset
 uv run pytest
 ```
+
+### Các lệnh CLI chính
+
+Kiểm tra dataset và sinh lại toàn bộ số liệu, biểu đồ công khai:
+
+```bash
+uv run validate_sparql_dataset
+uv run generate_reports
+```
+
+Huấn luyện và đánh giá một model Transformers cần nhóm dependency `train`:
+
+```bash
+uv sync --extra train --dev
+
+uv run train_sparql \
+  --model t5gemma2 \
+  --output-dir <output-dir> \
+  --epochs 20 \
+  --save-model \
+  --benchmark-after-training
+
+uv run evaluate_sparql_model \
+  --model t5gemma2 \
+  --model-dir <checkpoint-dir> \
+  --suite both \
+  --output-dir <evaluation-dir>
+```
+
+Chuyển checkpoint đã huấn luyện sang CTranslate2 int8:
+
+```bash
+uv run convert_sparql_model \
+  --model-dir <checkpoint-dir> \
+  --output-dir <ctranslate2-dir> \
+  --quantization int8
+```
+
+Đánh giá hoặc phục vụ model CTranslate2 cần nhóm dependency `inference`:
+
+```bash
+uv sync --extra inference --dev
+
+uv run evaluate_ct2_model \
+  --model-dir <ctranslate2-dir> \
+  --device cpu \
+  --compute-type int8 \
+  --output <metrics.json>
+
+uv run serve_sparql \
+  --model-dir <ctranslate2-dir> \
+  --device cpu \
+  --compute-type int8 \
+  --host 127.0.0.1 \
+  --port 8000
+```
+
+Các giá trị đặt trong dấu `<...>` là đường dẫn do người chạy lựa chọn. Có thể
+dùng `uv run <tên-lệnh> --help` để xem toàn bộ tham số của từng lệnh.
 
 Các tài liệu chuyên sâu:
 

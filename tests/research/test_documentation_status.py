@@ -38,6 +38,14 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     assert "SELECT ?answer WHERE { :CourseRegistrationProcedure" in readme
     assert "Phòng Công tác Chính trị và Sinh viên" in readme
     assert "## 9. Giới hạn" in readme
+    assert "resources/dataset/train.jsonl" in readme
+    assert "resources/dataset/test.jsonl" in readme
+    assert "resources/cases/procedure_language.jsonl" in readme
+    assert "reports/models.json" in readme
+    assert "uv run generate_reports" in readme
+    assert "uv run train_sparql" in readme
+    assert "uv run convert_sparql_model" in readme
+    assert "uv run serve_sparql" in readme
     assert "NTUdocs" not in readme
     assert "artifacts/" not in readme
     assert "Trạng thái hiện tại" not in readme
