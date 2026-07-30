@@ -170,8 +170,8 @@ không được trình bày như test khoa học độc lập.
 
 ## Nghiệm thu
 
-Sau khi toàn bộ static gate đạt, fine-tune T5Gemma2 từ checkpoint pretrained
-gốc đúng một lần bằng PEFT LoRA theo
+Sau khi toàn bộ static gate đạt, fine-tune BARTpho, ViT5 và T5Gemma2 từ
+checkpoint pretrained gốc, mỗi model đúng một lần bằng PEFT LoRA theo
 `2026-07-30-peft-lora-training-design.md`. Không resume checkpoint hiện tại,
 không đổi seed, epochs, learning rate hoặc decoding sau khi xem kết quả.
 
@@ -206,7 +206,6 @@ ngoài vòng phục hồi hiện tại để không làm loãng mục tiêu prod
 - thay ontology hoặc catalogue;
 - sửa preprocessing, tokenizer, schema SPARQL hoặc runtime;
 - tuning hyperparameter hoặc chạy nhiều seed;
-- fine-tune BARTpho/ViT5;
 - CTranslate2, web application hoặc UX;
 - tạo benchmark khoa học cuối cùng;
 - merge nhánh hiện tại.

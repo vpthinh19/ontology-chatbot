@@ -50,7 +50,7 @@ số dòng kết quả và latency.
 
 ## Vòng đời model
 
-Model production dùng interface cấp cao:
+Ba model candidate dùng cùng interface cấp cao:
 
 ```text
 AutoTokenizer → AutoModelForSeq2SeqLM → PEFT LoRA → Seq2SeqTrainer

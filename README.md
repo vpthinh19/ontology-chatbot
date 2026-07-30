@@ -12,8 +12,9 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
 - **Quy trình học vụ:** 142 target canonical đều có mặt trong ba split; train có
   1.632 câu quy trình, mỗi target có ít nhất mười câu và đủ bốn phong cách.
-- **Chưa thực hiện:** fine-tune và nghiệm thu T5Gemma2 trên dataset đang được
-  khóa. Các chỉ số từ dataset trước không đại diện cho trạng thái hiện tại.
+- **Chưa thực hiện:** fine-tune và benchmark BARTpho, ViT5, T5Gemma2 trên
+  dataset đang được khóa. Các chỉ số từ dataset trước không đại diện cho trạng
+  thái hiện tại.
 
 Chiều kiểm soát độ phủ bắt buộc là:
 
@@ -110,14 +111,16 @@ Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 
 ## Mô hình và đánh giá
 
-Model sinh truy vấn được nghiệm thu trên dataset đã khóa là
-`google/t5gemma-2-270m-270m`. BARTpho và ViT5 không thuộc vòng nghiệm thu hiện
-tại.
+Ba model encoder-decoder được benchmark trên cùng dataset và giao thức là
+`vinai/bartpho-syllable`, `VietAI/vit5-base` và
+`google/t5gemma-2-270m-270m`. Kết quả test quyết định checkpoint duy nhất được
+đưa vào runtime.
 
-Model được huấn luyện bằng PEFT LoRA trên text encoder và decoder. Base
-pretrained được đóng băng trong lúc train; adapter tốt nhất được merge thành một
-checkpoint Transformers độc lập trước khi benchmark và chuyển sang CTranslate2.
-Runtime vì vậy vẫn chỉ nạp một model, không phụ thuộc PEFT.
+Mỗi model được huấn luyện bằng PEFT LoRA trên attention và FFN tương ứng của
+encoder/decoder. Base pretrained được đóng băng trong lúc train; adapter tốt
+nhất được merge thành một checkpoint Transformers độc lập trước khi benchmark
+và chuyển sang CTranslate2. Runtime vì vậy vẫn chỉ nạp một model, không phụ
+thuộc PEFT.
 
 Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
 miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn

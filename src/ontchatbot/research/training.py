@@ -18,13 +18,33 @@ from .evaluation import evaluate_predictions
 from .reporting import build_dataset_report, sha256_file
 from ..runtime.text import normalize_model_input
 from ..tools.tokenizer import (
+    BARTPHO_MODEL_ID,
+    BARTPHO_REVISION,
+    DEFAULT_VIT5_TOKENIZER_DIR,
     T5GEMMA_MODEL_ID,
     T5GEMMA_REVISION,
+    VIT5_MODEL_ID,
+    VIT5_REVISION,
     audit_target_roundtrip,
+    prepare_vit5_tokenizer,
 )
 from ..runtime.sparql import load_ontology
 
 MODEL_SPECS = {
+    "bartpho": {
+        "model_id": BARTPHO_MODEL_ID,
+        "revision": BARTPHO_REVISION,
+        "batch_size": 4,
+        "gradient_accumulation": 2,
+        "attention": "sdpa",
+    },
+    "vit5": {
+        "model_id": VIT5_MODEL_ID,
+        "revision": VIT5_REVISION,
+        "batch_size": 8,
+        "gradient_accumulation": 1,
+        "attention": "eager",
+    },
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
@@ -39,31 +59,46 @@ MAX_TARGET_LENGTH = 160
 LORA_R = 32
 LORA_ALPHA = 64
 LORA_DROPOUT = 0.0
-_LORA_TARGET_PREFIXES = (
-    "model.encoder.text_model.layers.",
-    "model.decoder.layers.",
-)
-_LORA_TARGET_LEAVES = frozenset(
-    {
-        "q_proj",
-        "k_proj",
-        "v_proj",
-        "o_proj",
-        "gate_proj",
-        "up_proj",
-        "down_proj",
-    }
-)
+_LORA_TARGET_SPECS = {
+    "bartpho": {
+        "prefixes": ("model.encoder.layers.", "model.decoder.layers."),
+        "leaves": frozenset(
+            {"q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"}
+        ),
+    },
+    "vit5": {
+        "prefixes": ("encoder.block.", "decoder.block."),
+        "leaves": frozenset({"q", "k", "v", "o", "wi", "wo"}),
+    },
+    "t5gemma2": {
+        "prefixes": (
+            "model.encoder.text_model.layers.",
+            "model.decoder.layers.",
+        ),
+        "leaves": frozenset(
+            {
+                "q_proj",
+                "k_proj",
+                "v_proj",
+                "o_proj",
+                "gate_proj",
+                "up_proj",
+                "down_proj",
+            }
+        ),
+    },
+}
 
 
-def _lora_target_modules(model) -> list[str]:
-    """Return trainable T5Gemma2 text modules without touching SigLIP."""
+def _lora_target_modules(model, model_name: str) -> list[str]:
+    """Return equivalent attention/FFN modules for a supported seq2seq model."""
 
+    target_spec = _LORA_TARGET_SPECS[model_name]
     targets = [
         name
         for name, _ in model.named_modules()
-        if name.startswith(_LORA_TARGET_PREFIXES)
-        and name.rsplit(".", 1)[-1] in _LORA_TARGET_LEAVES
+        if name.startswith(target_spec["prefixes"])
+        and name.rsplit(".", 1)[-1] in target_spec["leaves"]
     ]
     if not targets:
         raise RuntimeError("model does not expose compatible text encoder/decoder modules")
@@ -73,6 +108,7 @@ def _lora_target_modules(model) -> list[str]:
 def _attach_lora_model(
     model,
     *,
+    model_name: str,
     LoraConfig,
     TaskType,
     get_peft_model,
@@ -85,7 +121,7 @@ def _attach_lora_model(
         lora_alpha=LORA_ALPHA,
         lora_dropout=LORA_DROPOUT,
         bias="none",
-        target_modules=_lora_target_modules(model),
+        target_modules=_lora_target_modules(model, model_name),
     )
     return get_peft_model(model, config)
 
@@ -130,13 +166,24 @@ def train(args: argparse.Namespace) -> dict:
             local_files_only=args.local_files_only,
         )
     )
-    tokenizer = AutoTokenizer.from_pretrained(
-        snapshot,
-        revision=spec["revision"],
-        local_files_only=True,
-        trust_remote_code=True,
-        fix_mistral_regex=False,
-    )
+    if args.model == "vit5":
+        if not (DEFAULT_VIT5_TOKENIZER_DIR / "manifest.json").is_file():
+            prepare_vit5_tokenizer(snapshot, DEFAULT_VIT5_TOKENIZER_DIR)
+        tokenizer = AutoTokenizer.from_pretrained(
+            DEFAULT_VIT5_TOKENIZER_DIR,
+            local_files_only=True,
+        )
+    else:
+        tokenizer_kwargs = (
+            {"fix_mistral_regex": False} if args.model == "t5gemma2" else {}
+        )
+        tokenizer = AutoTokenizer.from_pretrained(
+            snapshot,
+            revision=spec["revision"],
+            local_files_only=True,
+            trust_remote_code=True,
+            **tokenizer_kwargs,
+        )
 
     release = load_release(args.dataset_dir)
     graph = load_ontology()
@@ -177,6 +224,7 @@ def train(args: argparse.Namespace) -> dict:
     base_parameter_count = sum(parameter.numel() for parameter in model.parameters())
     model = _attach_lora_model(
         model,
+        model_name=args.model,
         LoraConfig=LoraConfig,
         TaskType=TaskType,
         get_peft_model=get_peft_model,
@@ -332,7 +380,9 @@ def train(args: argparse.Namespace) -> dict:
         "lora_rank": LORA_R,
         "lora_alpha": LORA_ALPHA,
         "lora_dropout": LORA_DROPOUT,
-        "lora_target_modules": len(_lora_target_modules(inference_model)),
+        "lora_target_modules": len(
+            _lora_target_modules(inference_model, args.model)
+        ),
         "trainable_parameters": trainable_parameter_count,
         "base_parameters": base_parameter_count,
         "merged_artifact": True,

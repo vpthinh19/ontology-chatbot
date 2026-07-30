@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Chuyển pipeline T5Gemma2 từ full fine-tuning sang PEFT LoRA và lưu checkpoint Transformers đã merge để benchmark/CTranslate2 dùng như cũ.
+**Goal:** Huấn luyện BARTpho, ViT5 và T5Gemma2 bằng PEFT LoRA rồi lưu checkpoint Transformers đã merge để benchmark công bằng và chuyển model được chọn sang CTranslate2.
 
 **Architecture:** `Seq2SeqTrainer` huấn luyện adapter PEFT trên base model đóng băng. Checkpoint validation chứa adapter; artifact cuối được merge thành model độc lập trước khi đánh giá và lưu.
 
@@ -73,5 +73,5 @@
 
 - [ ] Chạy `uv run pytest tests/research/test_training.py -q`.
 - [ ] Chạy toàn bộ `uv run pytest -q`.
-- [ ] Chạy smoke train T5Gemma2 local, không benchmark test.
+- [ ] Chạy smoke train ba model local, không benchmark test.
 - [ ] Xác minh không còn process GPU/artifact tạm và commit từng phần.

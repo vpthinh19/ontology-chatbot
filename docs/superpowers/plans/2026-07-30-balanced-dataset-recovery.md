@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Bổ sung đúng 896 câu train để phục hồi các lỗi đã đo, khóa một regression suite gồm 308 cách hỏi quy trình, rồi fine-tune và nghiệm thu T5Gemma2 đúng một lần.
+**Goal:** Bổ sung đúng 896 câu train để phục hồi các lỗi đã đo, khóa một regression suite gồm 308 cách hỏi quy trình, rồi fine-tune và benchmark BARTpho, ViT5, T5Gemma2 bằng cùng giao thức PEFT LoRA.
 
 **Architecture:** Giữ nguyên ontology, catalogue, preprocessing, schema SPARQL và runtime. Dữ liệu mới được chia thành năm lô độc lập có ID và quota cố định; validator hiện có kiểm tra sau từng lô. Một thay đổi nhỏ trong research CLI cho phép đánh giá checkpoint trên regression suite tùy chọn mà không tạo script tạm.
 
@@ -22,7 +22,7 @@
 - Không thay ontology, catalogue, preprocessing, tokenizer, model, hyperparameter hoặc code runtime.
 - Không thêm generator cho dataset. Script chỉ được đếm, validate và báo cáo.
 - Không chạy GPU trước khi regression suite, dataset, manifest, reports, docs và toàn bộ static gate đều xanh.
-- Chỉ fine-tune T5Gemma2 từ model pretrained gốc đúng một lần; không resume checkpoint cũ, tuning, seed khác hoặc train lại sau khi xem test.
+- Chỉ fine-tune mỗi model từ checkpoint pretrained gốc đúng một lần; không resume checkpoint cũ, tuning, seed khác hoặc train lại sau khi xem test.
 - Giữ cấu hình: PEFT LoRA rank 32/alpha 64/dropout 0, 20 epochs, seed 42, learning rate `1e-4`, cosine scheduler, `warmup_steps=0.1`, eval mỗi 2 epochs, dynamic padding, BF16/TF32 theo phần cứng, gradient checkpointing, greedy decoding, không `torch.compile`.
 - Không stage hoặc commit các file người dùng đang thay đổi: `.gitignore`, `resources/ontology/ontology_v9.properties`, `uv.lock`, `NTUdocs/`, `bieumau_url.html`, `test.html`, `test_phobert.py`, `test_preprocess.py`.
 - Không thêm `Co-authored-by` vào commit.
@@ -696,27 +696,27 @@ git commit -m "Lock balanced production dataset"
 
 ---
 
-### Task 8: Fine-tune và nghiệm thu T5Gemma2 đúng một lần
+### Task 8: Fine-tune và benchmark ba model đúng một lần
 
 **Files:**
-- Create ignored: `artifacts/balanced-recovery/t5gemma2/`
-- Create ignored: `artifacts/balanced-recovery/procedure-language/`
+- Create ignored: `artifacts/model-benchmark/{bartpho,vit5,t5gemma2}/`
+- Create ignored: `artifacts/model-benchmark/procedure-language/{bartpho,vit5,t5gemma2}/`
 - Read only: locked dataset, regression suite, manifest and local model cache.
 
 **Interfaces:**
 - Consumes: Task 7 static gate completely green.
-- Produces: one best checkpoint, validation/test/regression predictions and a pass/fail verdict.
+- Produces: three best checkpoints, comparable validation/test/regression predictions and one model-selection report.
 
 - [ ] **Step 1: Preflight không thay code**
 
 Verify:
 
 ```text
-artifacts/balanced-recovery/t5gemma2 does not exist
+three model output directories do not exist
 CUDA is available
 BF16 is supported
 GPU compute capability is at least 8.0
-google/t5gemma-2-270m-270m exists in the local Hugging Face cache
+all three pinned model revisions exist in the local Hugging Face cache
 train/val/test SHA-256 exactly match manifest.json
 regression suite has 308 rows and no normalized overlap with train
 ```
@@ -725,17 +725,10 @@ If any check fails, stop before training.
 
 - [ ] **Step 2: Chạy PEFT LoRA fine-tuning đúng một lần**
 
-```bash
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uv run train_sparql \
-  --model t5gemma2 \
-  --output-dir artifacts/balanced-recovery \
-  --epochs 20 \
-  --seed 42 \
-  --save-model \
-  --benchmark-after-training \
-  --local-files-only \
-  > artifacts/balanced-recovery/train.log 2>&1
-```
+Run `train_sparql` once for each of `bartpho`, `vit5`, `t5gemma2`, using
+`artifacts/model-benchmark` as the common output root and the exact shared
+arguments in `docs/TRAINING.md`. Keep one separate log per model and stop the
+sequence if any command exits non-zero.
 
 Do not change parameters, retry, resume a failed partial run or start another seed without explicit user approval. Expected wall time is approximately two hours.
 
@@ -744,13 +737,15 @@ Do not change parameters, retry, resume a failed partial run or start another se
 Only if Step 2 exits 0:
 
 ```bash
-uv run evaluate_sparql_model \
-  --model t5gemma2 \
-  --model-dir artifacts/balanced-recovery/t5gemma2/model \
-  --suite benchmark \
-  --benchmark resources/cases/procedure_language.jsonl \
-  --batch-size 8 \
-  --output-dir artifacts/balanced-recovery/procedure-language
+for model in bartpho vit5 t5gemma2; do
+  uv run evaluate_sparql_model \
+    --model "$model" \
+    --model-dir "artifacts/model-benchmark/$model/model" \
+    --suite benchmark \
+    --benchmark resources/cases/procedure_language.jsonl \
+    --batch-size 8 \
+    --output-dir "artifacts/model-benchmark/procedure-language/$model" || break
+done
 ```
 
 - [ ] **Step 4: Compute the locked acceptance contract**
@@ -765,16 +760,18 @@ three CourseRegistration instruction test rows = 3/3
 90 OOD test rows: safe rejection >= 94%
 ```
 
-Also report runtime, best epoch, validation Answer Exact, peak VRAM, every remaining procedure error and all regression failures.
+Report the same metrics for each model: runtime, best epoch, validation Answer
+Exact, peak VRAM, every remaining procedure error and all regression failures.
+Compare only the three locked runs; do not tune one model after seeing results.
 
 - [ ] **Step 5: Report once and stop**
 
-Do not modify dataset, docs, code or hyperparameters after reading predictions. Do not train again, benchmark another model, convert to CTranslate2, test the web app or merge the branch.
+Do not modify dataset, docs, code or hyperparameters after reading predictions.
+Do not train again, convert to CTranslate2, test the web app or merge the branch.
 
 ## Explicitly Deferred
 
 - Fresh blind scientific holdout.
-- BARTpho and ViT5 benchmark.
 - CTranslate2 conversion and deployment.
 - Web application and UX testing.
 - Ontology, catalogue, preprocessing or runtime changes.

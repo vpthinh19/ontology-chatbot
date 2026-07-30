@@ -3,14 +3,16 @@
 ## Trạng thái
 
 Ontology, catalogue và dataset 3.558 câu đã vượt các cổng kiểm tra tĩnh.
-T5Gemma2 chưa được fine-tune trên dữ liệu đang khóa; vì vậy
+Ba model chưa được fine-tune trên dữ liệu đang khóa; vì vậy
 chưa có benchmark chính thức cho trạng thái này. Chỉ số và checkpoint tạo từ dataset
 khác không được dùng để mô tả chất lượng hiện tại.
 
 ## Giao thức huấn luyện
 
-Model được nghiệm thu là T5Gemma2. Trainer, benchmark và runtime dùng cùng
-normalizer, target marker, độ dài tối đa, dynamic padding và greedy decoding.
+Ba model được benchmark là BARTpho-syllable, ViT5-base và T5Gemma2. Trainer và
+benchmark dùng cùng normalizer, target marker, độ dài tối đa, dynamic padding,
+giao thức LoRA và greedy decoding. Runtime chỉ triển khai một checkpoint được
+chọn sau benchmark.
 
 Thiết lập chung đã chốt:
 
@@ -30,14 +32,21 @@ Mixed precision được chọn theo môi trường: CUDA có BF16 dùng BF16; C
 có BF16 dùng FP16; CPU dùng FP32. TF32 chỉ bật trên GPU CUDA có compute
 capability từ 8 trở lên.
 
-Giữ nguyên dropout của checkpoint. T5Gemma2 dùng microbatch 4, gradient
-accumulation 2, SDPA và gradient checkpointing để giữ effective batch bằng 8
-trong 6 GB VRAM.
+Giữ nguyên dropout của từng checkpoint. BARTpho dùng microbatch 4, accumulation
+2 và SDPA; ViT5 dùng microbatch 8, accumulation 1 và eager attention; T5Gemma2
+dùng microbatch 4, accumulation 2, SDPA và gradient checkpointing. Cả ba đều có
+effective batch 8 và chạy trong 6 GB VRAM.
 
-LoRA chỉ gắn vào `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`,
-`up_proj` và `down_proj` thuộc text encoder/decoder. Vision tower SigLIP không
-tham gia huấn luyện. Cấu hình này cập nhật 15.187.968 tham số, khoảng 1,9% model;
-không dùng Unsloth, TRL hoặc QLoRA.
+LoRA gắn vào các vai trò tương đương, không ép dùng chung tên module:
+
+| Model | Attention | FFN |
+|---|---|---|
+| BARTpho | `q_proj`, `k_proj`, `v_proj`, `out_proj` | `fc1`, `fc2` |
+| ViT5 | `q`, `k`, `v`, `o` | `wi`, `wo` |
+| T5Gemma2 | `q_proj`, `k_proj`, `v_proj`, `o_proj` | `gate_proj`, `up_proj`, `down_proj` |
+
+T5Gemma2 loại trừ hoàn toàn vision tower SigLIP. Không dùng Unsloth, TRL hoặc
+QLoRA.
 
 Dataset hợp nhất có thêm câu ngoài miền nên số optimizer step tăng theo số bản
 ghi thật. Không giảm dữ liệu hoặc đổi epoch riêng cho một model để rút ngắn
@@ -46,8 +55,9 @@ benchmark.
 ## Tokenizer
 
 Hai target output là một dòng SPARQL hoặc `không có thông tin`. Tokenizer của
-T5Gemma2 phải round-trip marker và toàn bộ target trước khi trainer chạy; không
-sửa vocabulary.
+từng model phải round-trip marker và toàn bộ target trước khi
+trainer chạy. ViT5 dùng tokenizer repair tái tạo được đã đặc tả; hai model còn
+lại không sửa vocabulary.
 
 ## Chọn checkpoint
 
@@ -74,22 +84,26 @@ hyperparameter, không chạy nhiều seed và không tự train lại vì đi�
 1. Khóa ontology semantic index và inventory khả năng trả lời.
 2. Xác minh catalogue phủ inventory.
 3. Xác minh checksum dataset hợp nhất và tokenizer.
-4. Fine-tune T5Gemma2 đúng một lần và chọn checkpoint bằng validation.
-5. Mở lại checkpoint bằng `from_pretrained()` để benchmark test đã khóa.
-6. Chỉ chuyển checkpoint được chấp nhận sang CTranslate2 khi cần triển khai.
+4. Fine-tune mỗi model đúng một lần và chọn checkpoint riêng bằng validation.
+5. Mở lại ba checkpoint bằng `from_pretrained()` để benchmark cùng test đã khóa.
+6. Chọn một model theo kết quả đã công bố và chuyển checkpoint đó sang
+   CTranslate2 khi cần triển khai.
 
-Lệnh đã dùng trên RTX 4050 6 GB:
+Mẫu lệnh cho RTX 4050 6 GB:
 
 ```bash
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uv run train_sparql \
-  --model t5gemma2 \
-  --output-dir artifacts/procedure-recovery \
-  --epochs 20 \
-  --seed 42 \
-  --save-model \
-  --benchmark-after-training \
-  --local-files-only
+for model in bartpho vit5 t5gemma2; do
+  PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True uv run train_sparql \
+    --model "$model" \
+    --output-dir artifacts/model-benchmark \
+    --epochs 20 \
+    --seed 42 \
+    --save-model \
+    --benchmark-after-training \
+    --local-files-only || break
+done
 ```
 
 Biến allocator chỉ tránh phân mảnh VRAM, không thay đổi hyperparameter hoặc dữ
-liệu. CLI và runtime đều dùng một model; không có artifact phân loại thứ hai.
+liệu. Trainer tạo ba candidate độc lập; runtime cuối cùng chỉ dùng một model và
+không có artifact phân loại thứ hai.

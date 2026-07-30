@@ -23,13 +23,13 @@ def test_target_labels_always_end_with_eos() -> None:
     assert _ensure_eos_token([2, 10, 11, 12], 1, 4) == [2, 10, 11, 1]
 
 
-def test_training_cli_only_exposes_the_accepted_t5gemma_model() -> None:
+def test_all_benchmark_models_keep_the_same_effective_batch() -> None:
     effective_batches = {
         name: spec["batch_size"] * spec["gradient_accumulation"]
         for name, spec in MODEL_SPECS.items()
     }
 
-    assert effective_batches == {"t5gemma2": 8}
+    assert effective_batches == {"bartpho": 8, "vit5": 8, "t5gemma2": 8}
     assert MODEL_SPECS["t5gemma2"]["gradient_checkpointing"] is True
 
 
@@ -85,21 +85,62 @@ def test_cli_defaults_match_canonical_training_protocol() -> None:
     assert not hasattr(args, "keep_dropout")
 
 
-def test_lora_targets_only_t5gemma_text_encoder_and_decoder() -> None:
-    names = (
-        "model.encoder.text_model.layers.0.self_attn.q_proj",
-        "model.encoder.vision_model.encoder.layers.0.self_attn.q_proj",
-        "model.decoder.layers.0.mlp.down_proj",
-        "model.decoder.layers.0.layer_norm",
-    )
+@pytest.mark.parametrize(
+    ("model_name", "names", "expected"),
+    [
+        (
+            "bartpho",
+            (
+                "model.encoder.layers.0.self_attn.q_proj",
+                "model.decoder.layers.0.encoder_attn.out_proj",
+                "model.decoder.layers.0.fc2",
+                "lm_head",
+            ),
+            (
+                "model.encoder.layers.0.self_attn.q_proj",
+                "model.decoder.layers.0.encoder_attn.out_proj",
+                "model.decoder.layers.0.fc2",
+            ),
+        ),
+        (
+            "vit5",
+            (
+                "encoder.block.0.layer.0.SelfAttention.q",
+                "decoder.block.0.layer.1.EncDecAttention.o",
+                "decoder.block.0.layer.2.DenseReluDense.wo",
+                "lm_head",
+            ),
+            (
+                "encoder.block.0.layer.0.SelfAttention.q",
+                "decoder.block.0.layer.1.EncDecAttention.o",
+                "decoder.block.0.layer.2.DenseReluDense.wo",
+            ),
+        ),
+        (
+            "t5gemma2",
+            (
+                "model.encoder.text_model.layers.0.self_attn.q_proj",
+                "model.encoder.vision_model.encoder.layers.0.self_attn.q_proj",
+                "model.decoder.layers.0.mlp.down_proj",
+                "model.decoder.layers.0.layer_norm",
+            ),
+            (
+                "model.encoder.text_model.layers.0.self_attn.q_proj",
+                "model.decoder.layers.0.mlp.down_proj",
+            ),
+        ),
+    ],
+)
+def test_lora_targets_match_each_model_without_unrelated_modules(
+    model_name: str,
+    names: tuple[str, ...],
+    expected: tuple[str, ...],
+) -> None:
     model = SimpleNamespace(
         named_modules=lambda: ((name, object()) for name in names)
     )
 
-    assert training._lora_target_modules(model) == [
-        "model.encoder.text_model.layers.0.self_attn.q_proj",
-        "model.decoder.layers.0.mlp.down_proj",
-    ]
+    assert training._lora_target_modules(model, model_name) == list(expected)
 
 
 def test_lora_target_discovery_rejects_incompatible_model() -> None:
@@ -110,7 +151,7 @@ def test_lora_target_discovery_rejects_incompatible_model() -> None:
     )
 
     with pytest.raises(RuntimeError, match="text encoder/decoder"):
-        training._lora_target_modules(model)
+        training._lora_target_modules(model, "t5gemma2")
 
 
 def test_attach_lora_model_uses_the_locked_seq2seq_protocol() -> None:
@@ -135,6 +176,7 @@ def test_attach_lora_model_uses_the_locked_seq2seq_protocol() -> None:
 
     result = training._attach_lora_model(
         model,
+        model_name="t5gemma2",
         LoraConfig=FakeLoraConfig,
         TaskType=FakeTaskType,
         get_peft_model=fake_get_peft_model,

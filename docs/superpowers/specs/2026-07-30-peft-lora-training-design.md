@@ -2,9 +2,9 @@
 
 ## Mục tiêu
 
-Huấn luyện model production `google/t5gemma-2-270m-270m` bằng LoRA tiêu chuẩn,
-giảm VRAM nhưng vẫn giữ pipeline seq2seq, benchmark và CTranslate2 hiện tại.
-Giải pháp phải dùng API Hugging Face phổ biến, không cần training loop riêng.
+Huấn luyện BARTpho-syllable, ViT5-base và T5Gemma2 bằng LoRA tiêu chuẩn, giảm
+VRAM nhưng vẫn giữ pipeline seq2seq, benchmark và CTranslate2 hiện tại. Giải
+pháp phải dùng API Hugging Face phổ biến, không cần training loop riêng.
 
 ## Quyết định
 
@@ -13,9 +13,10 @@ Giải pháp phải dùng API Hugging Face phổ biến, không cần training l
 - Base model được nạp BF16/FP16/FP32 theo policy phần cứng hiện có và đóng băng.
 - LoRA dùng `r=32`, `lora_alpha=64`, `lora_dropout=0`, `bias="none"` và
   `TaskType.SEQ_2_SEQ_LM`.
-- Adapter chỉ gắn vào attention và MLP của text encoder/decoder T5Gemma2:
-  `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`.
-- Không gắn adapter vào SigLIP vision tower dù các lớp ở đó có cùng tên lá.
+- Adapter gắn vào attention và FFN encoder/decoder theo tên module thật của từng
+  kiến trúc; BARTpho và ViT5 gồm cả cross-attention của decoder.
+- Không gắn adapter T5Gemma2 vào SigLIP vision tower dù các lớp ở đó có cùng
+  tên lá.
 - Learning rate là `1e-4`; các thiết lập còn lại giữ nguyên: seed 42, effective
   batch 8, AdamW 8-bit, cosine scheduler, warmup 10%, dynamic padding,
   gradient checkpointing, không `torch.compile` và greedy decoding.
@@ -46,12 +47,11 @@ directory vẫn phải rỗng để tránh ghi đè artifact cũ.
 ## Kiểm thử
 
 - Unit test khóa cấu hình LoRA và learning rate.
-- Unit test target discovery chỉ chọn text encoder/decoder và từ chối danh sách
-  rỗng.
+- Unit test target discovery cho cả ba kiến trúc, loại module ngoài phạm vi và
+  từ chối danh sách rỗng.
 - Test hiện có cho precision, padding, greedy decoding và dataset gate tiếp tục
   chạy nguyên vẹn.
-- Smoke train T5Gemma2 local xác minh loss giảm, merge/reload sinh output tương
-  đương và VRAM nằm trong 6 GB.
+- Smoke train ba model local xác minh merge/reload và VRAM nằm trong 6 GB.
 
 ## Ngoài phạm vi
 
