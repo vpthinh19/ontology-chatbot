@@ -83,18 +83,69 @@ flowchart LR
     G -- "có dữ liệu" --> R["Định dạng câu trả lời"]
 ```
 
-Ví dụ xuyên suốt:
+### 3.1. Hình dạng đầu vào và đầu ra của model
+
+Đầu vào luôn là một câu tiếng Việt. Đầu ra là một chuỗi duy nhất, nhưng chuỗi
+đó không phải câu trả lời cho người dùng: nó mô tả dữ liệu backend cần lấy từ
+ontology.
+
+**Ví dụ 1 – hỏi toàn bộ hướng dẫn của một quy trình**
+
+```text
+Đầu vào model:
+đăng ký học phần như thế nào
+
+Đầu ra model:
+SELECT ?answer WHERE { :CourseRegistrationProcedure :instructionProvision ?part . ?part :officialText ?answer . }
+
+Đầu ra giao diện:
+Nội dung Điều 9 hướng dẫn đăng ký khối lượng học tập.
+```
+
+Trong truy vấn này, `CourseRegistrationProcedure` là quy trình đăng ký học
+phần, `instructionProvision` dẫn tới điều khoản hướng dẫn và `officialText` lấy
+nội dung tiếng Việt của điều khoản đó.
+
+**Ví dụ 2 – hỏi một quan hệ cụ thể**
+
+```text
+Đầu vào model:
+phòng nào nhận hồ sơ bảo lưu
+
+Đầu ra model:
+SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?office . ?office rdfs:label ?answer . }
+
+Đầu ra giao diện:
+Phòng Công tác Chính trị và Sinh viên
+```
+
+Model không sinh sẵn tên phòng. Nó yêu cầu backend đi từ quy trình bảo lưu qua
+quan hệ `submittedTo`, sau đó lấy nhãn tiếng Việt của đơn vị tìm được.
+
+**Ví dụ 3 – câu hỏi ontology không thể trả lời**
+
+```text
+Đầu vào model:
+ngày mai Nha Trang có mưa không
+
+Đầu ra model:
+không có thông tin
+
+Đầu ra giao diện:
+Không có thông tin.
+```
+
+Như vậy, hình dạng dữ liệu xuyên suốt hệ thống là:
 
 | Giai đoạn | Dữ liệu |
 |---|---|
-| Người dùng | “đăng ký học phần như thế nào?” |
-| Model | Truy vấn quy trình đăng ký học phần và phần nội dung hướng dẫn |
-| Ontology | Nội dung Điều 9 của quy chế đào tạo |
-| Giao diện | Hướng dẫn đăng ký học phần bằng tiếng Việt |
+| Đầu vào | Câu hỏi tiếng Việt tự nhiên |
+| Đầu ra model | Một dòng SPARQL `SELECT` hoặc `không có thông tin` |
+| Kết quả ontology | Một hay nhiều nhãn, đoạn nội dung, URL hoặc con số |
+| Đầu ra giao diện | Văn bản tiếng Việt được định dạng cho người dùng |
 
-Nếu câu hỏi là “thời tiết ngày mai thế nào?”, model phải sinh `không có thông
-tin`. Nếu model sinh truy vấn sai cú pháp, sử dụng thao tác không an toàn hoặc
-truy vấn không trả về dữ liệu, backend cũng từ chối thay vì đoán câu trả lời.
+Nếu model sinh truy vấn sai cú pháp, sử dụng thao tác không an toàn hoặc truy
+vấn không trả về dữ liệu, backend cũng từ chối thay vì đoán câu trả lời.
 
 ## 4. Đồ thị tri thức học vụ
 

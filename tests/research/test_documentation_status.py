@@ -34,6 +34,9 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     assert "## 1. Bài toán nghiên cứu" in readme
     assert "## 2. Các khái niệm nền tảng" in readme
     assert "## 3. Phương pháp đề xuất" in readme
+    assert "### 3.1. Hình dạng đầu vào và đầu ra của model" in readme
+    assert "SELECT ?answer WHERE { :CourseRegistrationProcedure" in readme
+    assert "Phòng Công tác Chính trị và Sinh viên" in readme
     assert "## 9. Giới hạn" in readme
     assert "NTUdocs" not in readme
     assert "artifacts/" not in readme
