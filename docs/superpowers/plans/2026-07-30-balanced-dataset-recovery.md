@@ -332,7 +332,7 @@ git commit -m "Expand basic procedure language coverage"
 - Consumes: Block A1 ending at ID 5952.
 - Produces: 176 rows `question-005953` through `question-006128`.
 
-- [ ] **Step 1: Biên soạn 16 câu cho mỗi quy trình**
+- [x] **Step 1: Biên soạn 16 câu cho mỗi quy trình**
 
 Use the final 11 IRI/anchor pairs in Task 1, beginning at `GraduationProjectRegistrationProcedure`. Four procedures use `noisy=5, neutral=4, colloquial=4, formal=3`; seven use `noisy=6, neutral=4, colloquial=4, formal=2`. Block total is exactly:
 
@@ -340,15 +340,15 @@ Use the final 11 IRI/anchor pairs in Task 1, beginning at `GraduationProjectRegi
 records=176 noisy=62 neutral=44 colloquial=44 formal=26
 ```
 
-- [ ] **Step 2: Review semantic và leakage**
+- [x] **Step 2: Review semantic và leakage**
 
 For every row verify that the procedure is unambiguous, the question asks how to perform it, abbreviations survive `normalize_model_input`, and the wording does not ask eligibility, deadline, form, office, result or source. Pay special attention to `StudyWithdrawalProcedure`, `TemporaryAcademicLeaveProcedure`, `SickLeaveProcedure` and `ClassAbsenceRequestProcedure`; their everyday wording must not collapse into one another.
 
-- [ ] **Step 3: Verify Block A2 and combined Block A**
+- [x] **Step 3: Verify Block A2 and combined Block A**
 
 Assert ID range 5953–6128, 176 rows and quota. Across 5777–6128 assert 352 rows and exactly 16 rows for each of 22 procedure instruction targets. Run validator and `git diff --check`.
 
-- [ ] **Step 4: Commit Block A2 only**
+- [x] **Step 4: Commit Block A2 only**
 
 ```bash
 git add resources/dataset/main/train.jsonl
