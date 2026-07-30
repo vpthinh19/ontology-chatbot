@@ -23,13 +23,13 @@ def test_target_labels_always_end_with_eos() -> None:
     assert _ensure_eos_token([2, 10, 11, 12], 1, 4) == [2, 10, 11, 1]
 
 
-def test_t5gemma_keeps_the_same_effective_batch_as_baselines() -> None:
+def test_training_cli_only_exposes_the_accepted_t5gemma_model() -> None:
     effective_batches = {
         name: spec["batch_size"] * spec["gradient_accumulation"]
         for name, spec in MODEL_SPECS.items()
     }
 
-    assert effective_batches == {"bartpho": 8, "vit5": 8, "t5gemma2": 8}
+    assert effective_batches == {"t5gemma2": 8}
     assert MODEL_SPECS["t5gemma2"]["gradient_checkpointing"] is True
 
 
@@ -75,14 +75,80 @@ def test_training_rejects_nonempty_model_output_directory(tmp_path) -> None:
 
 
 def test_cli_defaults_match_canonical_training_protocol() -> None:
-    args = _parse_args(["--model", "bartpho"])
+    args = _parse_args(["--model", "t5gemma2"])
 
     assert args.epochs == 20.0
     assert args.eval_every_epochs == 2.0
-    assert args.learning_rate == 3e-5
+    assert args.learning_rate == 1e-4
     assert args.seed == 42
     assert args.output_dir == ARTIFACTS_DIR / "models"
     assert not hasattr(args, "keep_dropout")
+
+
+def test_lora_targets_only_t5gemma_text_encoder_and_decoder() -> None:
+    names = (
+        "model.encoder.text_model.layers.0.self_attn.q_proj",
+        "model.encoder.vision_model.encoder.layers.0.self_attn.q_proj",
+        "model.decoder.layers.0.mlp.down_proj",
+        "model.decoder.layers.0.layer_norm",
+    )
+    model = SimpleNamespace(
+        named_modules=lambda: ((name, object()) for name in names)
+    )
+
+    assert training._lora_target_modules(model) == [
+        "model.encoder.text_model.layers.0.self_attn.q_proj",
+        "model.decoder.layers.0.mlp.down_proj",
+    ]
+
+
+def test_lora_target_discovery_rejects_incompatible_model() -> None:
+    model = SimpleNamespace(
+        named_modules=lambda: iter(
+            (("model.encoder.vision_model.layers.0.self_attn.q_proj", object()),)
+        )
+    )
+
+    with pytest.raises(RuntimeError, match="text encoder/decoder"):
+        training._lora_target_modules(model)
+
+
+def test_attach_lora_model_uses_the_locked_seq2seq_protocol() -> None:
+    target_name = "model.decoder.layers.0.self_attn.q_proj"
+    model = SimpleNamespace(
+        named_modules=lambda: iter(((target_name, object()),))
+    )
+    adapted_model = object()
+    captured = {}
+
+    class FakeTaskType:
+        SEQ_2_SEQ_LM = "seq2seq"
+
+    class FakeLoraConfig:
+        def __init__(self, **kwargs) -> None:
+            captured.update(kwargs)
+
+    def fake_get_peft_model(received_model, config):
+        assert received_model is model
+        assert isinstance(config, FakeLoraConfig)
+        return adapted_model
+
+    result = training._attach_lora_model(
+        model,
+        LoraConfig=FakeLoraConfig,
+        TaskType=FakeTaskType,
+        get_peft_model=fake_get_peft_model,
+    )
+
+    assert result is adapted_model
+    assert captured == {
+        "task_type": "seq2seq",
+        "r": 32,
+        "lora_alpha": 64,
+        "lora_dropout": 0.0,
+        "bias": "none",
+        "target_modules": [target_name],
+    }
 
 
 @pytest.mark.parametrize(

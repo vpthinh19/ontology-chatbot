@@ -18,33 +18,13 @@ from .evaluation import evaluate_predictions
 from .reporting import build_dataset_report, sha256_file
 from ..runtime.text import normalize_model_input
 from ..tools.tokenizer import (
-    BARTPHO_MODEL_ID,
-    BARTPHO_REVISION,
-    DEFAULT_VIT5_TOKENIZER_DIR,
     T5GEMMA_MODEL_ID,
     T5GEMMA_REVISION,
-    VIT5_MODEL_ID,
-    VIT5_REVISION,
     audit_target_roundtrip,
-    prepare_vit5_tokenizer,
 )
 from ..runtime.sparql import load_ontology
 
 MODEL_SPECS = {
-    "bartpho": {
-        "model_id": BARTPHO_MODEL_ID,
-        "revision": BARTPHO_REVISION,
-        "batch_size": 4,
-        "gradient_accumulation": 2,
-        "attention": "sdpa",
-    },
-    "vit5": {
-        "model_id": VIT5_MODEL_ID,
-        "revision": VIT5_REVISION,
-        "batch_size": 8,
-        "gradient_accumulation": 1,
-        "attention": "eager",
-    },
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
@@ -56,6 +36,58 @@ MODEL_SPECS = {
 }
 MAX_SOURCE_LENGTH = 128
 MAX_TARGET_LENGTH = 160
+LORA_R = 32
+LORA_ALPHA = 64
+LORA_DROPOUT = 0.0
+_LORA_TARGET_PREFIXES = (
+    "model.encoder.text_model.layers.",
+    "model.decoder.layers.",
+)
+_LORA_TARGET_LEAVES = frozenset(
+    {
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj",
+    }
+)
+
+
+def _lora_target_modules(model) -> list[str]:
+    """Return trainable T5Gemma2 text modules without touching SigLIP."""
+
+    targets = [
+        name
+        for name, _ in model.named_modules()
+        if name.startswith(_LORA_TARGET_PREFIXES)
+        and name.rsplit(".", 1)[-1] in _LORA_TARGET_LEAVES
+    ]
+    if not targets:
+        raise RuntimeError("model does not expose compatible text encoder/decoder modules")
+    return targets
+
+
+def _attach_lora_model(
+    model,
+    *,
+    LoraConfig,
+    TaskType,
+    get_peft_model,
+):
+    """Freeze the base model and attach the locked seq2seq LoRA adapter."""
+
+    config = LoraConfig(
+        task_type=TaskType.SEQ_2_SEQ_LM,
+        r=LORA_R,
+        lora_alpha=LORA_ALPHA,
+        lora_dropout=LORA_DROPOUT,
+        bias="none",
+        target_modules=_lora_target_modules(model),
+    )
+    return get_peft_model(model, config)
 
 
 def _prepare_output_directory(path: Path) -> None:
@@ -71,6 +103,12 @@ def train(args: argparse.Namespace) -> dict:
         import transformers
         from datasets import Dataset
         from huggingface_hub import snapshot_download
+        from peft import (
+            LoraConfig,
+            PeftModel,
+            TaskType,
+            get_peft_model,
+        )
         from transformers import (
             AutoModelForSeq2SeqLM,
             AutoTokenizer,
@@ -92,24 +130,13 @@ def train(args: argparse.Namespace) -> dict:
             local_files_only=args.local_files_only,
         )
     )
-    if args.model == "vit5":
-        if not (DEFAULT_VIT5_TOKENIZER_DIR / "manifest.json").is_file():
-            prepare_vit5_tokenizer(snapshot, DEFAULT_VIT5_TOKENIZER_DIR)
-        tokenizer = AutoTokenizer.from_pretrained(
-            DEFAULT_VIT5_TOKENIZER_DIR,
-            local_files_only=True,
-        )
-    else:
-        tokenizer_kwargs = (
-            {"fix_mistral_regex": False} if args.model == "t5gemma2" else {}
-        )
-        tokenizer = AutoTokenizer.from_pretrained(
-            snapshot,
-            revision=spec["revision"],
-            local_files_only=True,
-            trust_remote_code=True,
-            **tokenizer_kwargs,
-        )
+    tokenizer = AutoTokenizer.from_pretrained(
+        snapshot,
+        revision=spec["revision"],
+        local_files_only=True,
+        trust_remote_code=True,
+        fix_mistral_regex=False,
+    )
 
     release = load_release(args.dataset_dir)
     graph = load_ontology()
@@ -146,6 +173,16 @@ def train(args: argparse.Namespace) -> dict:
         local_files_only=True,
         attn_implementation=spec["attention"],
         dtype=model_dtype,
+    )
+    base_parameter_count = sum(parameter.numel() for parameter in model.parameters())
+    model = _attach_lora_model(
+        model,
+        LoraConfig=LoraConfig,
+        TaskType=TaskType,
+        get_peft_model=get_peft_model,
+    )
+    trainable_parameter_count = sum(
+        parameter.numel() for parameter in model.parameters() if parameter.requires_grad
     )
     cache_config = _generation_cache_config(model.config)
     cache_config.use_cache = False
@@ -240,21 +277,27 @@ def train(args: argparse.Namespace) -> dict:
     train_result = trainer.train()
     inference_model = trainer.model
     if trainer.state.best_model_checkpoint:
-        # Reload through from_pretrained instead of Trainer's raw state_dict path.
-        # Some architectures (notably T5Gemma2) remap checkpoint keys while loading.
+        # Rebuild the accepted adapter on a clean pretrained base. The final artifact
+        # is merged below, so runtime never needs to load PEFT separately.
         trainer.model = None
         trainer.model_wrapped = None
         del inference_model
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
-        inference_model = AutoModelForSeq2SeqLM.from_pretrained(
-            trainer.state.best_model_checkpoint,
+        inference_base = AutoModelForSeq2SeqLM.from_pretrained(
+            snapshot,
             local_files_only=True,
             attn_implementation=spec["attention"],
             dtype=model_dtype,
             trust_remote_code=True,
+        )
+        inference_model = PeftModel.from_pretrained(
+            inference_base,
+            trainer.state.best_model_checkpoint,
+            is_trainable=False,
         ).to(training_args.device)
-        _configure_greedy_generation(inference_model.generation_config)
+    inference_model = inference_model.merge_and_unload()
+    _configure_greedy_generation(inference_model.generation_config)
     decoded = _generate_rows(
         inference_model,
         tokenizer,
@@ -285,6 +328,14 @@ def train(args: argparse.Namespace) -> dict:
         "gradient_checkpointing": spec.get("gradient_checkpointing", False),
         "generation_do_sample": False,
         "dropout_policy": "checkpoint_default",
+        "fine_tuning_method": "peft_lora",
+        "lora_rank": LORA_R,
+        "lora_alpha": LORA_ALPHA,
+        "lora_dropout": LORA_DROPOUT,
+        "lora_target_modules": len(_lora_target_modules(inference_model)),
+        "trainable_parameters": trainable_parameter_count,
+        "base_parameters": base_parameter_count,
+        "merged_artifact": True,
         "optimizer": "adamw_8bit",
         "learning_rate": args.learning_rate,
         "lr_scheduler_type": "cosine",
@@ -547,7 +598,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "models")
     parser.add_argument("--epochs", type=float, default=20.0)
     parser.add_argument("--max-steps", type=int, default=-1)
-    parser.add_argument("--learning-rate", type=float, default=3e-5)
+    parser.add_argument("--learning-rate", type=float, default=1e-4)
     parser.add_argument("--eval-every-epochs", type=float, default=2.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--smoke-test", action="store_true")
