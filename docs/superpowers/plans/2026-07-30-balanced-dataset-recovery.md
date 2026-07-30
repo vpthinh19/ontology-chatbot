@@ -418,7 +418,7 @@ git commit -m "Strengthen procedure intent contrasts"
 - Consumes: 22 procedure anchors and rejection classes hiện có.
 - Produces: 220 rows `question-006273` through `question-006492`, all target `không có thông tin`.
 
-- [ ] **Step 1: Biên soạn 10 OOD cho mỗi quy trình**
+- [x] **Step 1: Biên soạn 10 OOD cho mỗi quy trình**
 
 For every procedure create:
 
@@ -435,15 +435,15 @@ For 11 procedures use register mix `noisy=4, neutral=2, colloquial=2, formal=2`;
 records=220 noisy=77 neutral=55 colloquial=55 formal=33
 ```
 
-- [ ] **Step 2: Review every negative against ontology**
+- [x] **Step 2: Review every negative against ontology**
 
 Confirm the requested fact is absent. Reject any negative answerable by an instruction, eligibility, deadline, office, form, result or source target. Mixed questions combine an answerable request with an unsupported request because product policy rejects the whole compound request.
 
-- [ ] **Step 3: Update rejection checklist**
+- [x] **Step 3: Update rejection checklist**
 
 Append every new ID to exactly one of `near-domain-missing`, `ambiguous`, `mixed`, or `hard-negative` according to allocation 3/2/2/3. Do not alter existing IDs or other classes.
 
-- [ ] **Step 4: Verify Block C**
+- [x] **Step 4: Verify Block C**
 
 Assert ID sequence, 220 rows, 22 anchors ×10, marker, query ID, register totals and checklist partition. Run:
 
@@ -455,7 +455,7 @@ git diff --check -- resources/dataset/main/train.jsonl \
   resources/cases/rejection_checklist.json
 ```
 
-- [ ] **Step 5: Commit Block C only**
+- [x] **Step 5: Commit Block C only**
 
 ```bash
 git add resources/dataset/main/train.jsonl resources/cases/rejection_checklist.json

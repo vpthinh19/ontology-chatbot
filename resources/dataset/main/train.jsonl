@@ -3243,3 +3243,223 @@
 {"id":"question-006270","query_id":"procedure-result","register":"formal","input":"Vui lòng nêu kết quả xử lý việc công nhận, bảo lưu và học bổ sung sau chuyển trường.","target":"SELECT ?answer WHERE { :UniversityTransferProcedure :resultProvision ?part . ?part :officialText ?answer . }"}
 {"id":"question-006271","query_id":"procedure-result","register":"formal","input":"Đề nghị trình bày cách cơ sở tiếp nhận quyết định công nhận các học phần đã tích lũy.","target":"SELECT ?answer WHERE { :UniversityTransferProcedure :resultProvision ?part . ?part :officialText ?answer . }"}
 {"id":"question-006272","query_id":"procedure-result","register":"formal","input":"Xin cho biết kết quả giải quyết học tập đối với sinh viên được chuyển đến.","target":"SELECT ?answer WHERE { :UniversityTransferProcedure :resultProvision ?part . ?part :officialText ?answer . }"}
+{"id":"question-006273","query_id":"no-information","register":"noisy","input":"vi sao sv tot nghiep cao dang lai phai hoc lien thong them","target":"không có thông tin"}
+{"id":"question-006274","query_id":"no-information","register":"neutral","input":"Học liên thông có được giảm học phí so với chương trình chính quy không?","target":"không có thông tin"}
+{"id":"question-006275","query_id":"no-information","register":"colloquial","input":"Nộp hồ sơ liên thông rồi thì bao lâu mới nhận được tin trúng tuyển vậy?","target":"không có thông tin"}
+{"id":"question-006276","query_id":"no-information","register":"noisy","input":"em hoc nganh nay roi lien thong tiep dc ko","target":"không có thông tin"}
+{"id":"question-006277","query_id":"no-information","register":"formal","input":"Trường hợp bằng hiện có của tôi như vậy có được xét học liên thông hay không?","target":"không có thông tin"}
+{"id":"question-006278","query_id":"no-information","register":"colloquial","input":"Chỉ mình cách đăng ký liên thông với dự đoán luôn khả năng đậu nha.","target":"không có thông tin"}
+{"id":"question-006279","query_id":"no-information","register":"formal","input":"Vui lòng cung cấp quy trình học liên thông và tỷ lệ trúng tuyển của năm gần nhất.","target":"không có thông tin"}
+{"id":"question-006280","query_id":"no-information","register":"noisy","input":"co lop lien thong hoc 100 phan tram online ko","target":"không có thông tin"}
+{"id":"question-006281","query_id":"no-information","register":"neutral","input":"Nhà trường có cam kết việc làm cho sinh viên sau khi hoàn thành liên thông không?","target":"không có thông tin"}
+{"id":"question-006282","query_id":"no-information","register":"noisy","input":"xin sdt thay phu trach tuyen sinh lien thong","target":"không có thông tin"}
+{"id":"question-006283","query_id":"no-information","register":"noisy","input":"tai sao nghi co mot buoi cung phai xin phep","target":"không có thông tin"}
+{"id":"question-006284","query_id":"no-information","register":"neutral","input":"Đơn xin nghỉ một buổi học có mất phí xác nhận không?","target":"không có thông tin"}
+{"id":"question-006285","query_id":"no-information","register":"colloquial","input":"Gửi xin phép vắng học rồi bao lâu thì giảng viên phản hồi vậy?","target":"không có thông tin"}
+{"id":"question-006286","query_id":"no-information","register":"noisy","input":"truong hop cua em nghi hoc vay co dc tinh phep ko","target":"không có thông tin"}
+{"id":"question-006287","query_id":"no-information","register":"formal","input":"Với lý do cá nhân của tôi, yêu cầu vắng buổi học có chắc được chấp thuận không?","target":"không có thông tin"}
+{"id":"question-006288","query_id":"no-information","register":"colloquial","input":"Hướng dẫn em xin nghỉ buổi mai rồi nhắn giùm xem thầy đã đồng ý chưa.","target":"không có thông tin"}
+{"id":"question-006289","query_id":"no-information","register":"formal","input":"Hãy nêu thủ tục xin phép vắng học và bảo đảm yêu cầu của tôi sẽ được phê duyệt.","target":"không có thông tin"}
+{"id":"question-006290","query_id":"no-information","register":"noisy","input":"vang hoc thi co bi tru bao nhieu diem chuyen can","target":"không có thông tin"}
+{"id":"question-006291","query_id":"no-information","register":"neutral","input":"Có thể thuê người điểm danh thay trong buổi đã xin nghỉ không?","target":"không có thông tin"}
+{"id":"question-006292","query_id":"no-information","register":"noisy","input":"cho minh zalo rieng cua gv de xin nghi","target":"không có thông tin"}
+{"id":"question-006293","query_id":"no-information","register":"noisy","input":"vi sao co chung chi roi van phai lam thu tuc mien hoc cong diem","target":"không có thông tin"}
+{"id":"question-006294","query_id":"no-information","register":"neutral","input":"Nhà trường thu bao nhiêu tiền để xác minh chứng chỉ miễn học?","target":"không có thông tin"}
+{"id":"question-006295","query_id":"no-information","register":"colloquial","input":"Nộp xin miễn học cộng điểm xong có tra trạng thái hồ sơ trên app được không?","target":"không có thông tin"}
+{"id":"question-006296","query_id":"no-information","register":"noisy","input":"chung chi cua em kieu nay co duoc cong diem ko","target":"không có thông tin"}
+{"id":"question-006297","query_id":"no-information","register":"formal","input":"Thành tích mà tôi đang có sẽ được quy đổi chính xác bao nhiêu điểm?","target":"không có thông tin"}
+{"id":"question-006298","query_id":"no-information","register":"colloquial","input":"Cho em cách xin miễn học và tính thử em được cộng mấy điểm luôn nhé.","target":"không có thông tin"}
+{"id":"question-006299","query_id":"no-information","register":"formal","input":"Trình bày thủ tục miễn học, đồng thời xác nhận tính hợp lệ của bản chứng chỉ tôi chưa cung cấp.","target":"không có thông tin"}
+{"id":"question-006300","query_id":"no-information","register":"noisy","input":"co goi tu van chon chung chi de duoc mien nhieu hp nhat ko","target":"không có thông tin"}
+{"id":"question-006301","query_id":"no-information","register":"neutral","input":"Có dịch vụ kiểm tra trước hồ sơ miễn học qua điện thoại không?","target":"không có thông tin"}
+{"id":"question-006302","query_id":"no-information","register":"noisy","input":"xin danh sach sv tung dc cong diem nam ngoai","target":"không có thông tin"}
+{"id":"question-006303","query_id":"no-information","register":"noisy","input":"tai sao moi ky lai phai dkhp","target":"không có thông tin"}
+{"id":"question-006304","query_id":"no-information","register":"neutral","input":"Đăng ký học phần trên hệ thống có bị tính phí thao tác không?","target":"không có thông tin"}
+{"id":"question-006305","query_id":"no-information","register":"colloquial","input":"Bấm đăng ký môn rồi thì bao lâu hệ thống mới gửi mail xác nhận?","target":"không có thông tin"}
+{"id":"question-006306","query_id":"no-information","register":"noisy","input":"ky nay em dk vay co bi trung lich ko","target":"không có thông tin"}
+{"id":"question-006307","query_id":"no-information","register":"formal","input":"Với thời khóa biểu chưa được cung cấp, tôi nên đăng ký chính xác những học phần nào?","target":"không có thông tin"}
+{"id":"question-006308","query_id":"no-information","register":"colloquial","input":"Chỉ em cách đăng ký học phần rồi xếp lịch học tối ưu giùm luôn.","target":"không có thông tin"}
+{"id":"question-006309","query_id":"no-information","register":"formal","input":"Cung cấp quy trình đăng ký học phần và dự báo lớp nào chắc chắn còn chỗ.","target":"không có thông tin"}
+{"id":"question-006310","query_id":"no-information","register":"noisy","input":"co cach giu cho mon hot truoc khi mo cong dkhp ko","target":"không có thông tin"}
+{"id":"question-006311","query_id":"no-information","register":"neutral","input":"Ai có thể đăng ký học phần hộ nếu tôi đưa mật khẩu tài khoản?","target":"không có thông tin"}
+{"id":"question-006312","query_id":"no-information","register":"noisy","input":"xin lich mo tung lop hp cua ky sau","target":"không có thông tin"}
+{"id":"question-006313","query_id":"no-information","register":"noisy","input":"vi sao rot mon thi bat buoc hoc lai","target":"không có thông tin"}
+{"id":"question-006314","query_id":"no-information","register":"neutral","input":"Học lại một học phần phải đóng thêm chính xác bao nhiêu tiền?","target":"không có thông tin"}
+{"id":"question-006315","query_id":"no-information","register":"colloquial","input":"Đăng ký học lại xong chờ mấy ngày mới thấy lớp hiện lên vậy?","target":"không có thông tin"}
+{"id":"question-006316","query_id":"no-information","register":"noisy","input":"diem nay cua em co can hoc lai ko","target":"không có thông tin"}
+{"id":"question-006317","query_id":"no-information","register":"formal","input":"Trong hoàn cảnh học tập hiện tại của tôi, học lại có phải lựa chọn tối ưu không?","target":"không có thông tin"}
+{"id":"question-006318","query_id":"no-information","register":"colloquial","input":"Nói mình cách học lại với chọn luôn giảng viên dễ đậu nha.","target":"không có thông tin"}
+{"id":"question-006319","query_id":"no-information","register":"formal","input":"Trình bày quy trình học lại và dự đoán điểm số tôi sẽ đạt ở lần học tới.","target":"không có thông tin"}
+{"id":"question-006320","query_id":"no-information","register":"noisy","input":"co lop hoc lai cap toc trong mot tuan ko","target":"không có thông tin"}
+{"id":"question-006321","query_id":"no-information","register":"neutral","input":"Nhà trường có bảo đảm sinh viên qua môn sau khi đóng tiền học lại không?","target":"không có thông tin"}
+{"id":"question-006322","query_id":"no-information","register":"noisy","input":"cho xin review lop hoc lai de dau nhat","target":"không có thông tin"}
+{"id":"question-006323","query_id":"no-information","register":"noisy","input":"tai sao phai quy doi tin chi da hoc o noi khac","target":"không có thông tin"}
+{"id":"question-006324","query_id":"no-information","register":"neutral","input":"Việc thẩm định công nhận tín chỉ có thu phí theo từng môn không?","target":"không có thông tin"}
+{"id":"question-006325","query_id":"no-information","register":"colloquial","input":"Gửi bảng điểm quy đổi rồi bao giờ có thông báo hồ sơ đang tới bước nào?","target":"không có thông tin"}
+{"id":"question-006326","query_id":"no-information","register":"noisy","input":"may mon em hoc truoc day doi dc bao nhieu tc","target":"không có thông tin"}
+{"id":"question-006327","query_id":"no-information","register":"formal","input":"Bảng điểm cá nhân chưa được cung cấp của tôi sẽ được công nhận những học phần nào?","target":"không có thông tin"}
+{"id":"question-006328","query_id":"no-information","register":"colloquial","input":"Chỉ cách xin công nhận tín chỉ rồi quy đổi sẵn bảng điểm của mình luôn nhé.","target":"không có thông tin"}
+{"id":"question-006329","query_id":"no-information","register":"formal","input":"Nêu thủ tục chuyển đổi tín chỉ và cam kết toàn bộ kết quả cũ của tôi được chấp nhận.","target":"không có thông tin"}
+{"id":"question-006330","query_id":"no-information","register":"noisy","input":"co dich vu quy doi tin chi lay ngay trong ngay ko","target":"không có thông tin"}
+{"id":"question-006331","query_id":"no-information","register":"neutral","input":"Có dịch vụ đối sánh thử tín chỉ trước khi sinh viên nộp hồ sơ chính thức không?","target":"không có thông tin"}
+{"id":"question-006332","query_id":"no-information","register":"noisy","input":"xin ty le ho so quy doi tc bi rot nam ngoai","target":"không có thông tin"}
+{"id":"question-006333","query_id":"no-information","register":"noisy","input":"vi sao bi buoc thoi hoc lai con cho xin chuyen ctdt khac","target":"không có thông tin"}
+{"id":"question-006334","query_id":"no-information","register":"neutral","input":"Xin chuyển chương trình sau quyết định buộc thôi học có phải nộp lệ phí không?","target":"không có thông tin"}
+{"id":"question-006335","query_id":"no-information","register":"colloquial","input":"Gửi đơn chuyển chương trình rồi mình xem tiến độ xử lý ở đâu?","target":"không có thông tin"}
+{"id":"question-006336","query_id":"no-information","register":"noisy","input":"truong hop cua em bi xu ly vay chuyen dc khong","target":"không có thông tin"}
+{"id":"question-006337","query_id":"no-information","register":"formal","input":"Tình trạng cá nhân của tôi có chắc được chuyển sang chương trình mong muốn không?","target":"không có thông tin"}
+{"id":"question-006338","query_id":"no-information","register":"colloquial","input":"Cho em thủ tục xin chuyển chương trình với chọn luôn ngành dễ được nhận.","target":"không có thông tin"}
+{"id":"question-006339","query_id":"no-information","register":"formal","input":"Nêu cách đề nghị chuyển chương trình và dự báo quyết định dành riêng cho trường hợp của tôi.","target":"không có thông tin"}
+{"id":"question-006340","query_id":"no-information","register":"noisy","input":"bi buoc thoi hoc co doi thanh canh cao bang tien dc ko","target":"không có thông tin"}
+{"id":"question-006341","query_id":"no-information","register":"neutral","input":"Có hỗ trợ giới thiệu việc làm nếu sinh viên bị buộc thôi học không muốn chuyển chương trình không?","target":"không có thông tin"}
+{"id":"question-006342","query_id":"no-information","register":"noisy","input":"xin ds nganh luon nhan sv bi buoc thoi hoc","target":"không có thông tin"}
+{"id":"question-006343","query_id":"no-information","register":"noisy","input":"vi sao phai xin xet tn som thay vi cu cho dung han","target":"không có thông tin"}
+{"id":"question-006344","query_id":"no-information","register":"neutral","input":"Hồ sơ đề nghị tốt nghiệp sớm có phát sinh phí xét duyệt không?","target":"không có thông tin"}
+{"id":"question-006345","query_id":"no-information","register":"colloquial","input":"Nộp xin ra trường sớm rồi có app nào báo hồ sơ đang ở đâu không?","target":"không có thông tin"}
+{"id":"question-006346","query_id":"no-information","register":"noisy","input":"bang diem nay cua em co chac duoc tn som ko","target":"không có thông tin"}
+{"id":"question-006347","query_id":"no-information","register":"formal","input":"Theo hồ sơ cá nhân chưa cung cấp, tôi sẽ được tốt nghiệp sớm vào ngày nào?","target":"không có thông tin"}
+{"id":"question-006348","query_id":"no-information","register":"colloquial","input":"Hướng dẫn xin tốt nghiệp sớm rồi tính hộ ngày em nhận bằng luôn.","target":"không có thông tin"}
+{"id":"question-006349","query_id":"no-information","register":"formal","input":"Trình bày thủ tục xét tốt nghiệp trước hạn và cam kết hồ sơ của tôi được thông qua.","target":"không có thông tin"}
+{"id":"question-006350","query_id":"no-information","register":"noisy","input":"co goi xet tn som uu tien lay bang trong ba ngay ko","target":"không có thông tin"}
+{"id":"question-006351","query_id":"no-information","register":"neutral","input":"Sinh viên tốt nghiệp sớm có được nhà trường giới thiệu việc làm riêng không?","target":"không có thông tin"}
+{"id":"question-006352","query_id":"no-information","register":"noisy","input":"xin thong ke luong khoi diem cua nguoi tn som","target":"không có thông tin"}
+{"id":"question-006353","query_id":"no-information","register":"noisy","input":"tai sao hoan thi lai tot hon thi luon","target":"không có thông tin"}
+{"id":"question-006354","query_id":"no-information","register":"neutral","input":"Xin hoãn thi cuối kỳ có phải đóng phí sắp xếp ca thi khác không?","target":"không có thông tin"}
+{"id":"question-006355","query_id":"no-information","register":"colloquial","input":"Nộp đơn hoãn thi rồi có tin nhắn báo từng bước xử lý không?","target":"không có thông tin"}
+{"id":"question-006356","query_id":"no-information","register":"noisy","input":"ly do em nhu vay co duoc hoan thi chac ko","target":"không có thông tin"}
+{"id":"question-006357","query_id":"no-information","register":"formal","input":"Với minh chứng mà tôi chưa cung cấp, yêu cầu hoãn thi có được chấp thuận không?","target":"không có thông tin"}
+{"id":"question-006358","query_id":"no-information","register":"colloquial","input":"Chỉ em cách xin hoãn thi rồi chọn luôn ngày thi bù theo ý em.","target":"không có thông tin"}
+{"id":"question-006359","query_id":"no-information","register":"formal","input":"Hãy nêu thủ tục hoãn thi và xác nhận trước đề thi của đợt thi bổ sung.","target":"không có thông tin"}
+{"id":"question-006360","query_id":"no-information","register":"noisy","input":"co dich vu doi ca thi ngay lap tuc ko","target":"không có thông tin"}
+{"id":"question-006361","query_id":"no-information","register":"neutral","input":"Tôi có thể nhờ bạn học thi thay trong ca thi bù không?","target":"không có thông tin"}
+{"id":"question-006362","query_id":"no-information","register":"noisy","input":"xin danh sach cau hoi se ra o dot thi hoan","target":"không có thông tin"}
+{"id":"question-006363","query_id":"no-information","register":"noisy","input":"vi sao truong khong tu mo them lop hp khi dong","target":"không có thông tin"}
+{"id":"question-006364","query_id":"no-information","register":"neutral","input":"Đề nghị mở thêm lớp học phần có thu phí khởi tạo lớp không?","target":"không có thông tin"}
+{"id":"question-006365","query_id":"no-information","register":"colloquial","input":"Gửi đề nghị mở lớp rồi bao lâu mới biết mã lớp mới?","target":"không có thông tin"}
+{"id":"question-006366","query_id":"no-information","register":"noisy","input":"lop nay dong vay co chac dc mo them ko","target":"không có thông tin"}
+{"id":"question-006367","query_id":"no-information","register":"formal","input":"Với số người chưa được cung cấp, đề nghị mở lớp của chúng tôi có được duyệt không?","target":"không có thông tin"}
+{"id":"question-006368","query_id":"no-information","register":"colloquial","input":"Chỉ cách xin mở thêm lớp rồi xếp luôn giảng viên em thích nha.","target":"không có thông tin"}
+{"id":"question-006369","query_id":"no-information","register":"formal","input":"Trình bày thủ tục đề nghị mở lớp và cam kết lớp sẽ không trùng lịch cá nhân tôi.","target":"không có thông tin"}
+{"id":"question-006370","query_id":"no-information","register":"noisy","input":"co the mua them chi tieu cho lop da du nguoi ko","target":"không có thông tin"}
+{"id":"question-006371","query_id":"no-information","register":"neutral","input":"Nhà trường có cho mượn phòng tự học nếu đề nghị mở thêm lớp không được duyệt không?","target":"không có thông tin"}
+{"id":"question-006372","query_id":"no-information","register":"noisy","input":"xin sdt gv se day lop sap mo them","target":"không có thông tin"}
+{"id":"question-006373","query_id":"no-information","register":"noisy","input":"tai sao phai hoc cai thien khi diem van qua mon","target":"không có thông tin"}
+{"id":"question-006374","query_id":"no-information","register":"neutral","input":"Đăng ký học cải thiện phải trả thêm chính xác bao nhiêu tiền?","target":"không có thông tin"}
+{"id":"question-006375","query_id":"no-information","register":"colloquial","input":"Học cải thiện xong bao lâu điểm mới hiện trên cổng sinh viên?","target":"không có thông tin"}
+{"id":"question-006376","query_id":"no-information","register":"noisy","input":"diem cua em vay co nen hoc cai thien ko","target":"không có thông tin"}
+{"id":"question-006377","query_id":"no-information","register":"formal","input":"Dựa trên năng lực cá nhân chưa mô tả, tôi có thể nâng điểm lên mức nào?","target":"không có thông tin"}
+{"id":"question-006378","query_id":"no-information","register":"colloquial","input":"Hướng dẫn học cải thiện rồi chọn hộ môn nào dễ kéo điểm nhất.","target":"không có thông tin"}
+{"id":"question-006379","query_id":"no-information","register":"formal","input":"Nêu quy trình học cải thiện và dự báo điểm trung bình của tôi sau học kỳ.","target":"không có thông tin"}
+{"id":"question-006380","query_id":"no-information","register":"noisy","input":"co lop cai thien bao dam len diem a ko","target":"không có thông tin"}
+{"id":"question-006381","query_id":"no-information","register":"neutral","input":"Nhà trường có chỉ định gia sư riêng cho sinh viên đang học cải thiện không?","target":"không có thông tin"}
+{"id":"question-006382","query_id":"no-information","register":"noisy","input":"xin review thay nao day cai thien de lay diem cao","target":"không có thông tin"}
+{"id":"question-006383","query_id":"no-information","register":"noisy","input":"tai sao do an tn lai quan trong hon hp binh thuong","target":"không có thông tin"}
+{"id":"question-006384","query_id":"no-information","register":"neutral","input":"Đăng ký đồ án tốt nghiệp có phải đóng một khoản phí riêng không?","target":"không có thông tin"}
+{"id":"question-006385","query_id":"no-information","register":"colloquial","input":"Nộp đăng ký đồ án rồi bao lâu mới biết tên giảng viên hướng dẫn?","target":"không có thông tin"}
+{"id":"question-006386","query_id":"no-information","register":"noisy","input":"de tai em dang nghi vay co dc lam do an ko","target":"không có thông tin"}
+{"id":"question-006387","query_id":"no-information","register":"neutral","input":"Với điểm hiện tại chưa nêu, tôi có chắc được giao đồ án tốt nghiệp không?","target":"không có thông tin"}
+{"id":"question-006388","query_id":"no-information","register":"colloquial","input":"Chỉ mình cách đăng ký đồ án rồi chọn hộ đề tài dễ làm với.","target":"không có thông tin"}
+{"id":"question-006389","query_id":"no-information","register":"formal","input":"Nêu thủ tục đăng ký đồ án và phân công cho tôi một giảng viên cụ thể.","target":"không có thông tin"}
+{"id":"question-006390","query_id":"no-information","register":"noisy","input":"co mua san mot de tai do an da lam xong ko","target":"không có thông tin"}
+{"id":"question-006391","query_id":"no-information","register":"neutral","input":"Thư viện có cho sinh viên đăng ký xem đồ án khóa trước tại nhà không?","target":"không có thông tin"}
+{"id":"question-006392","query_id":"no-information","register":"colloquial","input":"Cho mình xin bảng xếp hạng thầy hướng dẫn đồ án dễ tính nhất.","target":"không có thông tin"}
+{"id":"question-006393","query_id":"no-information","register":"noisy","input":"tai sao phai qua buoc xet tn moi dc cap bang","target":"không có thông tin"}
+{"id":"question-006394","query_id":"no-information","register":"neutral","input":"Việc xét công nhận tốt nghiệp có thu lệ phí hồ sơ không?","target":"không có thông tin"}
+{"id":"question-006395","query_id":"no-information","register":"colloquial","input":"Được đưa vào danh sách xét rồi thì theo dõi trạng thái hồ sơ trực tuyến ở đâu?","target":"không có thông tin"}
+{"id":"question-006396","query_id":"no-information","register":"noisy","input":"ho so em nhu nay co chac duoc tn ko","target":"không có thông tin"}
+{"id":"question-006397","query_id":"no-information","register":"neutral","input":"Không cung cấp mã sinh viên thì có kiểm tra tôi đã được công nhận tốt nghiệp chưa?","target":"không có thông tin"}
+{"id":"question-006398","query_id":"no-information","register":"colloquial","input":"Nói quy trình xét tốt nghiệp rồi tra luôn ngày phát bằng của mình nha.","target":"không có thông tin"}
+{"id":"question-006399","query_id":"no-information","register":"formal","input":"Trình bày thủ tục xét tốt nghiệp và dự báo xếp loại cá nhân từ hồ sơ chưa cung cấp.","target":"không có thông tin"}
+{"id":"question-006400","query_id":"no-information","register":"noisy","input":"co goi xet tn nhanh lay bang trong ngay ko","target":"không có thông tin"}
+{"id":"question-006401","query_id":"no-information","register":"neutral","input":"Tôi có thể đổi ngày ghi trên bằng tốt nghiệp theo yêu cầu riêng không?","target":"không có thông tin"}
+{"id":"question-006402","query_id":"no-information","register":"colloquial","input":"Cho xem danh sách sinh viên sắp được xét tốt nghiệp kèm số điện thoại.","target":"không có thông tin"}
+{"id":"question-006403","query_id":"no-information","register":"noisy","input":"tai sao doi nganh lai co loi hon hoc tiep nganh cu","target":"không có thông tin"}
+{"id":"question-006404","query_id":"no-information","register":"neutral","input":"Thực hiện chuyển ngành có phải nộp lệ phí hành chính không?","target":"không có thông tin"}
+{"id":"question-006405","query_id":"no-information","register":"colloquial","input":"Gửi đơn đổi ngành xong có theo dõi tiến độ duyệt trực tuyến được không?","target":"không có thông tin"}
+{"id":"question-006406","query_id":"no-information","register":"noisy","input":"diem em the nay chuyen qua nganh kia dc ko","target":"không có thông tin"}
+{"id":"question-006407","query_id":"no-information","register":"neutral","input":"Chưa nói ngành hiện tại và ngành muốn chuyển thì có kết luận được trường hợp của tôi không?","target":"không có thông tin"}
+{"id":"question-006408","query_id":"no-information","register":"colloquial","input":"Chỉ cách chuyển ngành rồi tư vấn luôn ngành nào ra trường lương cao.","target":"không có thông tin"}
+{"id":"question-006409","query_id":"no-information","register":"formal","input":"Nêu thủ tục chuyển ngành và bảo đảm tôi sẽ được tiếp nhận vào ngành mong muốn.","target":"không có thông tin"}
+{"id":"question-006410","query_id":"no-information","register":"noisy","input":"co dich vu chuyen nganh uu tien trong mot ngay ko","target":"không có thông tin"}
+{"id":"question-006411","query_id":"no-information","register":"neutral","input":"Có dịch vụ tư vấn tâm lý riêng cho sinh viên đang phân vân chuyển ngành không?","target":"không có thông tin"}
+{"id":"question-006412","query_id":"no-information","register":"colloquial","input":"Cho mình bảng tỷ lệ có việc làm của từng ngành để quyết định chuyển.","target":"không có thông tin"}
+{"id":"question-006413","query_id":"no-information","register":"noisy","input":"tai sao nen hoc them ctdt thu hai","target":"không có thông tin"}
+{"id":"question-006414","query_id":"no-information","register":"neutral","input":"Đăng ký chương trình đào tạo thứ hai phải đóng thêm phí hồ sơ bao nhiêu?","target":"không có thông tin"}
+{"id":"question-006415","query_id":"no-information","register":"colloquial","input":"Nộp đơn học chương trình hai rồi khi nào hệ thống báo đã nhận?","target":"không có thông tin"}
+{"id":"question-006416","query_id":"no-information","register":"noisy","input":"hoc luc em vay theo song song dc ko","target":"không có thông tin"}
+{"id":"question-006417","query_id":"no-information","register":"neutral","input":"Không nêu chương trình thứ hai thì có đánh giá được tôi đủ khả năng theo học không?","target":"không có thông tin"}
+{"id":"question-006418","query_id":"no-information","register":"colloquial","input":"Hướng dẫn đăng ký chương trình hai rồi chọn hộ ngành nhẹ nhất nha.","target":"không có thông tin"}
+{"id":"question-006419","query_id":"no-information","register":"formal","input":"Trình bày thủ tục học chương trình thứ hai và dự báo tổng học phí cá nhân của tôi.","target":"không có thông tin"}
+{"id":"question-006420","query_id":"no-information","register":"noisy","input":"co lop ctdt thu hai chi hoc cuoi tuan ko","target":"không có thông tin"}
+{"id":"question-006421","query_id":"no-information","register":"neutral","input":"Sinh viên có được thuê người học hộ toàn bộ chương trình thứ hai không?","target":"không có thông tin"}
+{"id":"question-006422","query_id":"no-information","register":"colloquial","input":"Cho xin review chương trình thứ hai nào dễ lấy bằng nhất.","target":"không có thông tin"}
+{"id":"question-006423","query_id":"no-information","register":"noisy","input":"tai sao di trao doi sv lai co loi cho viec hoc","target":"không có thông tin"}
+{"id":"question-006424","query_id":"no-information","register":"neutral","input":"Tham gia trao đổi sinh viên phải trả phí dịch vụ cho trường bao nhiêu?","target":"không có thông tin"}
+{"id":"question-006425","query_id":"no-information","register":"colloquial","input":"Nộp hồ sơ trao đổi rồi có xem thứ hạng ứng tuyển của mình được không?","target":"không có thông tin"}
+{"id":"question-006426","query_id":"no-information","register":"noisy","input":"ho so em nhu vay di trao doi nuoc nao dc","target":"không có thông tin"}
+{"id":"question-006427","query_id":"no-information","register":"neutral","input":"Chưa chọn trường đối tác thì có thể xác nhận tôi sẽ được tiếp nhận không?","target":"không có thông tin"}
+{"id":"question-006428","query_id":"no-information","register":"colloquial","input":"Chỉ cách đăng ký trao đổi rồi tìm luôn vé máy bay rẻ nhất giúp mình.","target":"không có thông tin"}
+{"id":"question-006429","query_id":"no-information","register":"formal","input":"Nêu quy trình trao đổi sinh viên và bảo đảm thị thực của tôi sẽ được cấp.","target":"không có thông tin"}
+{"id":"question-006430","query_id":"no-information","register":"noisy","input":"co chuong trinh trao doi mien phi toan bo ko","target":"không có thông tin"}
+{"id":"question-006431","query_id":"no-information","register":"neutral","input":"Nhà trường có sắp xếp gia đình bản xứ cho mọi sinh viên trao đổi không?","target":"không có thông tin"}
+{"id":"question-006432","query_id":"no-information","register":"colloquial","input":"Cho mình danh sách sinh viên đang trao đổi kèm số liên lạc nhé.","target":"không có thông tin"}
+{"id":"question-006433","query_id":"no-information","register":"noisy","input":"tai sao bi om lai can nop don xin nghi","target":"không có thông tin"}
+{"id":"question-006434","query_id":"no-information","register":"neutral","input":"Xác nhận nghỉ học vì bệnh có mất phí hành chính không?","target":"không có thông tin"}
+{"id":"question-006435","query_id":"no-information","register":"colloquial","input":"Báo nghỉ ốm xong có ai gọi điện cập nhật hồ sơ cho mình không?","target":"không có thông tin"}
+{"id":"question-006436","query_id":"no-information","register":"noisy","input":"em benh kieu nay nghi co duoc chap nhan ko","target":"không có thông tin"}
+{"id":"question-006437","query_id":"no-information","register":"neutral","input":"Không có thông tin chẩn đoán thì có thể kết luận trường hợp nghỉ bệnh của tôi không?","target":"không có thông tin"}
+{"id":"question-006438","query_id":"no-information","register":"colloquial","input":"Nói cách xin nghỉ ốm rồi đặt lịch khám bác sĩ giúp mình luôn.","target":"không có thông tin"}
+{"id":"question-006439","query_id":"no-information","register":"formal","input":"Trình bày thủ tục nghỉ vì bệnh và xác nhận giấy khám của tôi là thật.","target":"không có thông tin"}
+{"id":"question-006440","query_id":"no-information","register":"noisy","input":"co xe dua sv nghi om tu nha toi phong y te ko","target":"không có thông tin"}
+{"id":"question-006441","query_id":"no-information","register":"neutral","input":"Nhà trường có cấp thuốc cho sinh viên sau khi duyệt nghỉ bệnh không?","target":"không có thông tin"}
+{"id":"question-006442","query_id":"no-information","register":"colloquial","input":"Cho mình số điện thoại riêng của bác sĩ ký giấy nghỉ ốm.","target":"không có thông tin"}
+{"id":"question-006443","query_id":"no-information","register":"noisy","input":"tai sao phai xin hoc lai sau khi het bao luu","target":"không có thông tin"}
+{"id":"question-006444","query_id":"no-information","register":"neutral","input":"Thủ tục trở lại học có thu phí kích hoạt lại tài khoản không?","target":"không có thông tin"}
+{"id":"question-006445","query_id":"no-information","register":"colloquial","input":"Nộp đơn học tiếp rồi bao giờ mở lại được email sinh viên?","target":"không có thông tin"}
+{"id":"question-006446","query_id":"no-information","register":"noisy","input":"em nghi lau nhu vay quay lai hoc dc ko","target":"không có thông tin"}
+{"id":"question-006447","query_id":"no-information","register":"neutral","input":"Không nêu thời gian đã tạm nghỉ thì có xác nhận được tôi còn quyền học tiếp không?","target":"không có thông tin"}
+{"id":"question-006448","query_id":"no-information","register":"colloquial","input":"Chỉ mình cách trở lại học rồi xếp luôn lịch học kỳ mới nhé.","target":"không có thông tin"}
+{"id":"question-006449","query_id":"no-information","register":"formal","input":"Nêu thủ tục tiếp tục học và cam kết mọi học phần cũ của tôi còn được mở.","target":"không có thông tin"}
+{"id":"question-006450","query_id":"no-information","register":"noisy","input":"co goi mo lai tai khoan sv ngay lap tuc ko","target":"không có thông tin"}
+{"id":"question-006451","query_id":"no-information","register":"neutral","input":"Tôi có thể quay lại học nhưng tự chọn một khóa đào tạo khác hoàn toàn không?","target":"không có thông tin"}
+{"id":"question-006452","query_id":"no-information","register":"colloquial","input":"Cho mình danh sách lớp chắc chắn còn chỗ khi quay lại trường.","target":"không có thông tin"}
+{"id":"question-006453","query_id":"no-information","register":"noisy","input":"tai sao nen xin thoi hoc thay vi bao luu","target":"không có thông tin"}
+{"id":"question-006454","query_id":"no-information","register":"neutral","input":"Xin thôi học theo nguyện vọng có phải thanh toán lệ phí hồ sơ không?","target":"không có thông tin"}
+{"id":"question-006455","query_id":"no-information","register":"colloquial","input":"Nộp đơn thôi học rồi bao lâu tài khoản sinh viên bị khóa?","target":"không có thông tin"}
+{"id":"question-006456","query_id":"no-information","register":"noisy","input":"hoan canh em vay co nen rut khoi truong ko","target":"không có thông tin"}
+{"id":"question-006457","query_id":"no-information","register":"neutral","input":"Chưa cung cấp lý do cá nhân thì có thể tư vấn tôi nên thôi học hay không?","target":"không có thông tin"}
+{"id":"question-006458","query_id":"no-information","register":"colloquial","input":"Nói cách xin thôi học rồi tìm việc làm phù hợp giúp mình luôn.","target":"không có thông tin"}
+{"id":"question-006459","query_id":"no-information","register":"formal","input":"Trình bày thủ tục thôi học và dự báo khả năng tôi được trường khác tiếp nhận.","target":"không có thông tin"}
+{"id":"question-006460","query_id":"no-information","register":"noisy","input":"co goi tu van tai chinh rieng cho sv sap xin thoi hoc ko","target":"không có thông tin"}
+{"id":"question-006461","query_id":"no-information","register":"neutral","input":"Có thể bán lại tài khoản sinh viên sau khi thôi học không?","target":"không có thông tin"}
+{"id":"question-006462","query_id":"no-information","register":"colloquial","input":"Cho mình số điện thoại cá nhân của những bạn vừa xin thôi học.","target":"không có thông tin"}
+{"id":"question-006463","query_id":"no-information","register":"noisy","input":"tai sao bao luu lai tot hon xin thoi hoc","target":"không có thông tin"}
+{"id":"question-006464","query_id":"no-information","register":"neutral","input":"Nghỉ học tạm thời có phải đóng phí duy trì hồ sơ mỗi tháng không?","target":"không có thông tin"}
+{"id":"question-006465","query_id":"no-information","register":"colloquial","input":"Xin bảo lưu rồi có tra được hồ sơ đang nằm ở bàn nào không?","target":"không có thông tin"}
+{"id":"question-006466","query_id":"no-information","register":"noisy","input":"ly do em chua noi vay co chac dc bao luu ko","target":"không có thông tin"}
+{"id":"question-006467","query_id":"no-information","register":"neutral","input":"Không cho biết thời gian dự kiến nghỉ thì có xác nhận được yêu cầu bảo lưu không?","target":"không có thông tin"}
+{"id":"question-006468","query_id":"no-information","register":"colloquial","input":"Chỉ mình thủ tục bảo lưu rồi đặt vé về quê giúp luôn nha.","target":"không có thông tin"}
+{"id":"question-006469","query_id":"no-information","register":"formal","input":"Nêu cách xin nghỉ học tạm thời và cam kết học bổng của tôi được giữ nguyên.","target":"không có thông tin"}
+{"id":"question-006470","query_id":"no-information","register":"noisy","input":"co dich vu bao luu cap toc khong can minh chung ko","target":"không có thông tin"}
+{"id":"question-006471","query_id":"no-information","register":"neutral","input":"Sinh viên đang bảo lưu có được sử dụng ký túc xá miễn phí không?","target":"không có thông tin"}
+{"id":"question-006472","query_id":"no-information","register":"colloquial","input":"Cho mình danh sách người đang bảo lưu vì nghĩa vụ quân sự.","target":"không có thông tin"}
+{"id":"question-006473","query_id":"no-information","register":"noisy","input":"tai sao truong chi cho dong hoc phi qua may cach nay","target":"không có thông tin"}
+{"id":"question-006474","query_id":"no-information","register":"neutral","input":"Sau khi chuyển khoản học phí, bao lâu tôi nhận được hóa đơn điện tử?","target":"không có thông tin"}
+{"id":"question-006475","query_id":"no-information","register":"colloquial","input":"Lỡ đóng dư học phí thì trường hoàn tiền vào ngày nào vậy?","target":"không có thông tin"}
+{"id":"question-006476","query_id":"no-information","register":"noisy","input":"em chuyen tien hp vay truong da nhan chua","target":"không có thông tin"}
+{"id":"question-006477","query_id":"no-information","register":"neutral","input":"Không có mã giao dịch thì kiểm tra được khoản học phí của tôi đã vào chưa?","target":"không có thông tin"}
+{"id":"question-006478","query_id":"no-information","register":"colloquial","input":"Chỉ cách đóng học phí rồi tra giúp giao dịch của mình thành công chưa.","target":"không có thông tin"}
+{"id":"question-006479","query_id":"no-information","register":"formal","input":"Trình bày hướng dẫn thanh toán và hoàn lại ngay khoản tôi chuyển nhầm.","target":"không có thông tin"}
+{"id":"question-006480","query_id":"no-information","register":"noisy","input":"co nguoi nhan dong hoc phi tai nha ko","target":"không có thông tin"}
+{"id":"question-006481","query_id":"no-information","register":"neutral","input":"Nhà trường có cho đổi học phí thành tiền mặt sau khi thanh toán không?","target":"không có thông tin"}
+{"id":"question-006482","query_id":"no-information","register":"colloquial","input":"Cho mình số tài khoản cá nhân của nhân viên để chuyển học phí nhanh.","target":"không có thông tin"}
+{"id":"question-006483","query_id":"no-information","register":"noisy","input":"tai sao chuyen truong lai tot hon doi nganh","target":"không có thông tin"}
+{"id":"question-006484","query_id":"no-information","register":"neutral","input":"Làm thủ tục chuyển trường có phải trả phí xác minh hồ sơ không?","target":"không có thông tin"}
+{"id":"question-006485","query_id":"no-information","register":"colloquial","input":"Nộp đơn chuyển trường rồi có mã để theo dõi trực tuyến không?","target":"không có thông tin"}
+{"id":"question-006486","query_id":"no-information","register":"noisy","input":"diem em nhu vay chuyen qua truong kia dc ko","target":"không có thông tin"}
+{"id":"question-006487","query_id":"no-information","register":"neutral","input":"Chưa nêu trường muốn đến thì có thể kết luận hồ sơ của tôi được nhận không?","target":"không có thông tin"}
+{"id":"question-006488","query_id":"no-information","register":"colloquial","input":"Hướng dẫn mình chuyển trường rồi chọn hộ nơi nào học nhẹ nhất.","target":"không có thông tin"}
+{"id":"question-006489","query_id":"no-information","register":"formal","input":"Nêu quy trình chuyển trường và bảo đảm trường đích sẽ tiếp nhận tôi.","target":"không có thông tin"}
+{"id":"question-006490","query_id":"no-information","register":"noisy","input":"co goi chuyen truong nhanh bo qua xac minh ko","target":"không có thông tin"}
+{"id":"question-006491","query_id":"no-information","register":"neutral","input":"Nhà trường có lo chỗ ở tại cơ sở mới cho sinh viên chuyển trường không?","target":"không có thông tin"}
+{"id":"question-006492","query_id":"no-information","register":"colloquial","input":"Cho mình bảng xếp hạng trường dễ chấp nhận sinh viên chuyển đến nhất.","target":"không có thông tin"}
