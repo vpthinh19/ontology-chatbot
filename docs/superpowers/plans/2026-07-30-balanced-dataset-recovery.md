@@ -287,7 +287,7 @@ Do not add `artifacts/`.
 - Consumes: regression suite Task 1.
 - Produces: 176 rows `question-005777` through `question-005952`.
 
-- [ ] **Step 1: Biên soạn 16 câu cho mỗi quy trình**
+- [x] **Step 1: Biên soạn 16 câu cho mỗi quy trình**
 
 Use the first 11 IRI/anchor pairs in Task 1, ending at `GradeImprovementProcedure`. For four procedures use register mix `noisy=5, neutral=4, colloquial=4, formal=3`; for seven procedures use `noisy=6, neutral=4, colloquial=4, formal=2`.
 
@@ -299,20 +299,20 @@ records=176 noisy=62 neutral=44 colloquial=44 formal=26
 
 All rows use `query_id=procedure-instruction` and the canonical instruction target. Include the language families in the spec, but do not copy a regression input verbatim.
 
-- [ ] **Step 2: Review every input-target pair**
+- [x] **Step 2: Review every input-target pair**
 
 For every row verify: procedure is unambiguous; the question asks how to perform it; abbreviations survive `normalize_model_input`; no wording asks eligibility, deadline, form, office, result or source.
 
-- [ ] **Step 3: Verify Block A1**
+- [x] **Step 3: Verify Block A1**
 
-Run a read-only count over ID range 5577–5952 and assert exact ID sequence, 176 rows, 11 targets ×16 and register quota. Then run:
+Run a read-only count over ID range 5777–5952 and assert exact ID sequence, 176 rows, 11 targets ×16 and register quota. Then run:
 
 ```bash
 uv run validate_sparql_dataset >/dev/null
 git diff --check -- resources/dataset/main/train.jsonl
 ```
 
-- [ ] **Step 4: Commit Block A1 only**
+- [x] **Step 4: Commit Block A1 only**
 
 ```bash
 git add resources/dataset/main/train.jsonl
@@ -346,7 +346,7 @@ For every row verify that the procedure is unambiguous, the question asks how to
 
 - [ ] **Step 3: Verify Block A2 and combined Block A**
 
-Assert ID range 5953–6128, 176 rows and quota. Across 5577–6128 assert 352 rows and exactly 16 rows for each of 22 procedure instruction targets. Run validator and `git diff --check`.
+Assert ID range 5953–6128, 176 rows and quota. Across 5777–6128 assert 352 rows and exactly 16 rows for each of 22 procedure instruction targets. Run validator and `git diff --check`.
 
 - [ ] **Step 4: Commit Block A2 only**
 
@@ -512,7 +512,7 @@ Use multi-column wording for targets with several return fields, explicit entity
 
 - [ ] **Step 3: Verify Block D and complete quota**
 
-Assert exact ID range, family counts, registers and total. Across IDs 5577–6672 assert:
+Assert exact ID range, family counts, registers and total. Across IDs 5777–6672 assert:
 
 ```text
 records=896 noisy=314 neutral=224 colloquial=224 formal=134
@@ -571,14 +571,14 @@ def test_balanced_recovery_batches_match_locked_contract() -> None:
         for row in rows
         if row["id"].startswith("question-")
     }
-    new = [numbered[number] for number in range(5577, 6673)]
+    new = [numbered[number] for number in range(5777, 6673)]
 
     assert len(new) == 896
     assert Counter(row["register"] for row in new) == Counter({
         "noisy": 314, "neutral": 224, "colloquial": 224, "formal": 134,
     })
 
-    a1 = [numbered[number] for number in range(5577, 5953)]
+    a1 = [numbered[number] for number in range(5777, 5953)]
     a2 = [numbered[number] for number in range(5953, 6129)]
     for batch in (a1, a2):
         assert len(batch) == 176
