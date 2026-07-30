@@ -368,7 +368,7 @@ git commit -m "Complete basic procedure language coverage"
 - Consumes: nine canonical targets in the design spec.
 - Produces: 144 rows `question-006129` through `question-006272`.
 
-- [ ] **Step 1: Khóa chín target**
+- [x] **Step 1: Khóa chín target**
 
 Use exactly these query/IRI pairs, 16 rows each:
 
@@ -390,15 +390,15 @@ Five targets use mix `noisy=6, neutral=4, colloquial=4, formal=2`; four targets 
 records=144 noisy=50 neutral=36 colloquial=36 formal=22
 ```
 
-- [ ] **Step 2: Biên soạn contrast packs**
+- [x] **Step 2: Biên soạn contrast packs**
 
 For each target, read all sibling targets of the same procedure. Every new question must contain a semantic cue unique to the intended property. Review pairs side by side, especially deadline versus eligibility, source versus result, overview versus form download.
 
-- [ ] **Step 3: Verify Block B**
+- [x] **Step 3: Verify Block B**
 
 Assert exact ID sequence, nine targets ×16, query/IRI pairs and register quota. Run validator and `git diff --check`.
 
-- [ ] **Step 4: Commit Block B only**
+- [x] **Step 4: Commit Block B only**
 
 ```bash
 git add resources/dataset/main/train.jsonl
