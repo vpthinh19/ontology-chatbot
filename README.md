@@ -7,11 +7,11 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
 ## Trạng thái hiện tại
 
 - **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
-  query catalogue và dataset hợp nhất 3.558 câu.
-- **Dataset:** 2.749 câu train, 402 câu validation và 407 câu test; đủ 51 họ
+  query catalogue và dataset hợp nhất 4.454 câu.
+- **Dataset:** 3.645 câu train, 402 câu validation và 407 câu test; đủ 51 họ
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
 - **Quy trình học vụ:** 142 target canonical đều có mặt trong ba split; train có
-  1.632 câu quy trình, mỗi target có ít nhất mười câu và đủ bốn phong cách.
+  2.128 câu `procedure-*`, mỗi target có ít nhất mười câu và đủ bốn phong cách.
 - **Chưa thực hiện:** fine-tune và benchmark BARTpho, ViT5, T5Gemma2 trên
   dataset đang được khóa. Các chỉ số từ dataset trước không đại diện cho trạng
   thái hiện tại.
@@ -86,11 +86,11 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset hợp nhất nằm tại `resources/dataset/main/` và có 3.558 câu: 2.749 train,
-402 validation, 407 test. Trong đó 2.951 câu thuộc năm miền trả lời được
-(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 607 câu ngoài miền
+Dataset hợp nhất nằm tại `resources/dataset/main/` và có 4.454 câu: 3.645 train,
+402 validation, 407 test. Trong đó 3.627 câu thuộc năm miền trả lời được
+(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 827 câu ngoài miền
 dùng marker `không có thông tin`. Bốn phong cách `formal`, `neutral`,
-`colloquial`, `noisy` lần lượt có 882, 929, 851 và 896 câu.
+`colloquial`, `noisy` lần lượt có 1.016, 1.153, 1.075 và 1.210 câu.
 
 Train dạy toàn bộ schema và giá trị slot hữu hạn. Validation dùng cách diễn đạt
 chưa thấy để chọn checkpoint; test được đóng băng và chỉ dùng cho đánh giá cuối.
@@ -106,6 +106,11 @@ và `reports/dataset.json`; contract riêng cho 142 target quy trình nằm tron
 `reports/procedure-dataset.json`. Các câu người dùng thực tế được giữ tại
 `resources/cases/user_queries.txt`; cả bảy câu đều xuất hiện đúng một lần trong
 test để giữ vai trò hồi quy người dùng.
+
+Ngoài test đã khóa, `resources/cases/procedure_language.jsonl` có 308 câu chấp
+nhận production (220 câu quy trình và 88 câu phải từ chối). Bộ này dùng để bắt
+lỗi hồi quy ngôn ngữ cơ bản sau huấn luyện, không được xem là benchmark khoa
+học độc lập hay dùng để chọn checkpoint.
 
 Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
 

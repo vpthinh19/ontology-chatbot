@@ -549,7 +549,7 @@ git commit -m "Strengthen remaining query families"
 - Consumes: completed 3.645-row train and frozen validation/test.
 - Produces: a static-green release with manifest provenance before GPU work.
 
-- [ ] **Step 1: Update release contract tests**
+- [x] **Step 1: Update release contract tests**
 
 Change release sizes to:
 
@@ -652,7 +652,7 @@ Change `tests/research/test_reporting.py`:
 assert report["dataset"]["records"] == 4454
 ```
 
-- [ ] **Step 2: Run the new contract tests**
+- [x] **Step 2: Run the new contract tests**
 
 ```bash
 uv run pytest tests/research/test_dataset_content.py \
@@ -661,7 +661,7 @@ uv run pytest tests/research/test_dataset_content.py \
 
 Expected: PASS. If a quota fails, fix only the responsible new row; do not relax the contract.
 
-- [ ] **Step 3: Regenerate canonical outputs**
+- [x] **Step 3: Regenerate canonical outputs**
 
 ```bash
 uv run generate_reports
@@ -669,15 +669,15 @@ uv run generate_reports
 
 Expected: manifest, `reports/dataset.json` and SVG figures reflect 4.454 rows and 3.645 train rows. Validation/test hashes remain frozen.
 
-- [ ] **Step 4: Update procedure-specific report**
+- [x] **Step 4: Update procedure-specific report**
 
 Measure procedure rows by split, target density, register and SHA-256 with a read-only command. Apply those exact measured values to `reports/procedure-dataset.json`. It must still describe 142 canonical procedure targets and contain no development history.
 
-- [ ] **Step 5: Update public documentation**
+- [x] **Step 5: Update public documentation**
 
 Replace stale counts and distributions in the listed docs. State training and regression evaluation are pending; do not publish old 2.749-row training metrics as current. Document the 308-case suite as a production acceptance check, not an independent scientific benchmark.
 
-- [ ] **Step 6: Run the complete static gate**
+- [x] **Step 6: Run the complete static gate**
 
 ```bash
 uv run pytest -q
@@ -690,7 +690,7 @@ sha256sum resources/dataset/main/val.jsonl resources/dataset/main/test.jsonl
 
 Expected: all tests pass; validator exits 0; regression reference validates; hashes match the frozen values.
 
-- [ ] **Step 7: Commit the locked release**
+- [x] **Step 7: Commit the locked release**
 
 ```bash
 git add README.md docs/DATASET.md docs/EVALUATION.md docs/TRAINING.md \

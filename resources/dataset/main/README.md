@@ -1,7 +1,7 @@
 # Dataset hợp nhất
 
-Thư mục này chứa 3.558 câu dùng chung cho huấn luyện và đánh giá chatbot
-ontology. Dataset có 2.749 câu train, 402 câu validation, 407 câu test và đủ 51
+Thư mục này chứa 4.454 câu dùng chung cho huấn luyện và đánh giá chatbot
+ontology. Dataset có 3.645 câu train, 402 câu validation, 407 câu test và đủ 51
 họ truy vấn của `catalogue.jsonl`.
 
 Mỗi dòng JSONL gồm `id`, `query_id`, `register`, `input`, `target`. Target là một
@@ -10,7 +10,7 @@ cả câu trong miền lẫn ngoài miền; không có dataset phân loại riê
 
 | Tập | Câu | Họ truy vấn |
 |---|---:|---:|
-| `train.jsonl` | 2.749 | 51 |
+| `train.jsonl` | 3.645 | 51 |
 | `val.jsonl` | 402 | 51 |
 | `test.jsonl` | 407 | 51 |
 
@@ -18,7 +18,7 @@ cả câu trong miền lẫn ngoài miền; không có dataset phân loại riê
 phủ theo miền, register, ca số và bảy nhóm từ chối. Test đã đóng băng; không dùng
 test để biên soạn thêm câu hoặc chọn checkpoint.
 
-Riêng miền quy trình có 142 target canonical. Train chứa 1.632 câu
+Riêng miền quy trình có 142 target canonical. Train chứa 2.128 câu
 `procedure-*`, mỗi target có ít nhất mười câu và đủ bốn phong cách;
 validation/test đều phủ đủ 142 target. Báo cáo chi tiết nằm tại
 `reports/procedure-dataset.json`.

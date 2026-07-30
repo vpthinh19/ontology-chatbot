@@ -18,7 +18,7 @@ def test_public_docs_describe_current_dataset_release() -> None:
     )
     joined = "\n".join(_read(path) for path in files)
 
-    assert "3.558 câu" in joined
+    assert "4.454 câu" in joined
     assert "51 họ truy vấn" in joined
     assert "candidate pool" not in joined
     assert "455 câu" not in joined
@@ -58,6 +58,6 @@ def test_docs_connect_canonical_ontology_catalogue_and_dataset() -> None:
     assert "ontology canonical" in readme
     assert "51 họ truy vấn" in readme
     assert "2.953" in ontology
-    assert "3.558 câu" in dataset
+    assert "4.454 câu" in dataset
     assert "coverage hoàn chỉnh" in dataset
     assert "chưa có benchmark chính thức" in _read("docs/TRAINING.md")

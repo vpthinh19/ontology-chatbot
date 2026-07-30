@@ -1,8 +1,8 @@
 # Đánh giá
 
 Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Chưa
-có kết quả model hợp lệ cho dataset 3.558 câu hiện tại; mọi chỉ số chỉ được công
-bố sau khi T5Gemma2 hoàn tất một lần fine-tune và test theo giao thức dưới đây.
+có kết quả model hợp lệ cho dataset 4.454 câu hiện tại; mọi chỉ số chỉ được công
+bố sau khi cả ba model hoàn tất fine-tune và test theo giao thức dưới đây.
 
 ## Hai nhóm test
 
@@ -57,6 +57,11 @@ Validation dùng greedy decoding và chọn checkpoint theo tiêu chí được 
 trước huấn luyện. Test chỉ chạy một lần với checkpoint đã chọn. Mọi SPARQL test
 thuộc catalogue đã xuất hiện trong train; cách diễn đạt thì chưa xuất hiện ở
 train/validation.
+
+Sau benchmark chính thức, bộ `resources/cases/procedure_language.jsonl` gồm 308
+câu được chạy như cổng chấp nhận production: 220 câu hỏi quy trình và 88 câu
+gần miền/ngoài miền phải từ chối. Bộ hồi quy này không tham gia huấn luyện,
+không chọn checkpoint và không thay thế test khoa học đã khóa.
 
 Ngưỡng nghiệm thu được khóa trước khi chạy test:
 

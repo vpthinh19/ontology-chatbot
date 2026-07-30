@@ -4,22 +4,27 @@
   "instruction_target_count": 22,
   "splits": {
     "train": {
-      "records": 2749,
-      "procedure_records": 1632,
-      "no_information_records": 428,
-      "procedure_to_no_information_ratio": 3.813084,
+      "records": 3645,
+      "procedure_records": 2128,
+      "no_information_records": 648,
+      "procedure_to_no_information_ratio": 3.283951,
       "procedure_targets": 142,
       "samples_per_target_histogram": {
-        "10": 103,
-        "14": 23,
-        "16": 5,
-        "18": 10,
-        "20": 1
+        "10": 99,
+        "14": 4,
+        "16": 4,
+        "18": 8,
+        "26": 4,
+        "30": 17,
+        "34": 2,
+        "46": 2,
+        "48": 1,
+        "52": 1
       },
       "registers_per_target_histogram": {
         "4": 142
       },
-      "sha256": "996325d8d16fe1f7ece79108bef2982c0429613e144dbe2cc1f7868fdc601591"
+      "sha256": "98ae96b7539dc0c364ac27548a6590974b423252939d3728a494b97eafc5c436"
     },
     "val": {
       "records": 402,
@@ -66,10 +71,10 @@
   "contracts": {
     "every_train_target_has_at_least_ten_samples": true,
     "every_train_target_has_all_four_registers": true,
-    "every_instruction_target_has_at_least_fourteen_samples": true,
-    "every_instruction_target_has_at_least_ten_direct_questions": true,
+    "every_instruction_target_has_at_least_thirty_samples": true,
+    "every_instruction_target_has_at_least_twenty_six_direct_questions": true,
     "every_instruction_target_has_at_least_four_overview_questions": true,
-    "course_registration_instruction_samples": 20,
+    "course_registration_instruction_samples": 52,
     "every_target_is_present_in_val": true,
     "every_target_is_present_in_test": true,
     "every_instruction_target_has_both_question_types_in_val": true,

@@ -273,7 +273,7 @@ def test_certificate_conversion_detail_rows_use_compact_parent_table_targets() -
 
     assert spec.target_template == expected_template
     assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 27,
+        "train": 38,
         "val": 6,
         "test": 5,
     }
@@ -537,7 +537,18 @@ def test_procedure_first_target_coverage() -> None:
     assert min(train_counts.values()) >= 10
     assert all(train_counts[target] >= 14 for target in instruction_targets)
     assert Counter(train_counts.values()) == Counter(
-        {10: 103, 14: 23, 16: 5, 18: 10, 20: 1}
+        {
+            10: 99,
+            14: 4,
+            16: 4,
+            18: 8,
+            26: 4,
+            30: 17,
+            34: 2,
+            46: 2,
+            48: 1,
+            52: 1,
+        }
     )
     for target in train_counts:
         assert {
@@ -580,7 +591,7 @@ def test_final_release_matrix_and_frozen_evaluation_checksums() -> None:
     release = load_release()
 
     assert {split: len(rows) for split, rows in release.items()} == {
-        "train": 2_749,
+        "train": 3_645,
         "val": 402,
         "test": 407,
     }
@@ -588,6 +599,73 @@ def test_final_release_matrix_and_frozen_evaluation_checksums() -> None:
     test_payload = Path("resources/dataset/main/test.jsonl").read_bytes()
     assert hashlib.sha256(val_payload).hexdigest() == FROZEN_VAL_SHA256
     assert hashlib.sha256(test_payload).hexdigest() == FROZEN_TEST_SHA256
+
+
+def test_balanced_recovery_batches_match_locked_contract() -> None:
+    rows = load_release()["train"]
+    numbered = {
+        int(row["id"].rsplit("-", 1)[-1]): row
+        for row in rows
+        if row["id"].startswith("question-")
+    }
+    new = [numbered[number] for number in range(5777, 6673)]
+
+    assert len(new) == 896
+    assert Counter(row["register"] for row in new) == Counter(
+        {"noisy": 314, "neutral": 224, "colloquial": 224, "formal": 134}
+    )
+
+    a1 = [numbered[number] for number in range(5777, 5953)]
+    a2 = [numbered[number] for number in range(5953, 6129)]
+    for batch in (a1, a2):
+        assert len(batch) == 176
+        assert {row["query_id"] for row in batch} == {"procedure-instruction"}
+        assert Counter(Counter(row["target"] for row in batch).values()) == Counter(
+            {16: 11}
+        )
+        assert Counter(row["register"] for row in batch) == Counter(
+            {"noisy": 62, "neutral": 44, "colloquial": 44, "formal": 26}
+        )
+
+    block_b = [numbered[number] for number in range(6129, 6273)]
+    assert Counter(Counter(row["target"] for row in block_b).values()) == Counter(
+        {16: 9}
+    )
+    assert Counter(row["register"] for row in block_b) == Counter(
+        {"noisy": 50, "neutral": 36, "colloquial": 36, "formal": 22}
+    )
+
+    block_c = [numbered[number] for number in range(6273, 6493)]
+    assert {row["query_id"] for row in block_c} == {"no-information"}
+    assert {row["target"] for row in block_c} == {"không có thông tin"}
+    assert Counter(row["register"] for row in block_c) == Counter(
+        {"noisy": 77, "neutral": 55, "colloquial": 55, "formal": 33}
+    )
+
+    block_d = [numbered[number] for number in range(6493, 6673)]
+    assert Counter(row["query_id"] for row in block_d) == Counter(
+        {
+            "class-size-rule": 14,
+            "academic-actor-list": 12,
+            "doctoral-tuition-details": 12,
+            "form-download": 12,
+            "payment-method-details": 12,
+            "payment-method-list": 11,
+            "payment-bank-list": 11,
+            "payment-fee": 11,
+            "payment-warning": 11,
+            "academic-performance-band": 11,
+            "academic-program-details": 11,
+            "certificate-conversion-details": 11,
+            "class-size-details": 11,
+            "form-document-details": 10,
+            "graduation-classification-band": 10,
+            "official-document-metadata": 10,
+        }
+    )
+    assert Counter(row["register"] for row in block_d) == Counter(
+        {"noisy": 63, "neutral": 45, "colloquial": 45, "formal": 27}
+    )
 
 
 def test_recovered_training_set_strengthens_measured_weak_families() -> None:
@@ -612,20 +690,20 @@ def test_recovered_training_set_strengthens_measured_weak_families() -> None:
     }
 
     assert {query_id: counts[query_id] for query_id in recovered_families} == {
-        "academic-actor-list": 14,
+        "academic-actor-list": 26,
         "academic-performance-details": 14,
-        "academic-program-details": 14,
+        "academic-program-details": 25,
         "certificate-details": 14,
-        "class-size-details": 14,
+        "class-size-details": 25,
         "competency-level-details": 14,
         "course-exemption-details": 14,
         "guidance-document-details": 14,
         "learner-category-details": 16,
-        "payment-fee": 16,
+        "payment-fee": 27,
         "payment-fee-details": 14,
-        "payment-method-details": 14,
-        "payment-method-list": 16,
-        "payment-warning": 16,
+        "payment-method-details": 26,
+        "payment-method-list": 27,
+        "payment-warning": 27,
         "reference-entity-list": 12,
         "tuition-rate-details": 16,
     }

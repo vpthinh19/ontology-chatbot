@@ -1,6 +1,6 @@
 # Báo cáo tái tạo được
 
-Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 3.558 câu:
+Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 4.454 câu:
 
 - `dataset.json`: kích thước, phân bố, coverage, thống kê ontology và checksum;
 - `procedure-dataset.json`: độ phủ 142 target quy trình theo split và checksum;
@@ -10,6 +10,9 @@ Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp t
 
 Sinh lại bằng `uv run generate_reports`. `training_readiness.ready` phải là
 `true`, coverage phải hoàn chỉnh và cả 51 họ truy vấn phải có trong ba split.
+
+Bộ 308 câu tại `resources/cases/procedure_language.jsonl` là cổng chấp nhận
+production riêng, không phải benchmark khoa học độc lập.
 
 Chưa có báo cáo benchmark model chính thức trên dataset này. Báo cáo model chỉ
 được tạo sau khi checkpoint T5Gemma2 đã được nạp lại độc lập và đánh giá trên

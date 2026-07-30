@@ -13,33 +13,34 @@ ontology.
 
 ## Quy mô và phân bố
 
-Dataset có 3.558 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
+Dataset có 4.454 câu, đủ 51 họ truy vấn trong catalogue và coverage hoàn chỉnh.
 
 | Split | Số câu | Vai trò |
 |---|---:|---|
-| Train | 2.749 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
+| Train | 3.645 | Dạy toàn bộ họ query, schema và giá trị slot hữu hạn |
 | Validation | 402 | Chọn checkpoint bằng cách diễn đạt chưa thấy |
 | Test | 407 | Đánh giá cuối; không dùng để sửa dữ liệu hay chọn checkpoint |
 
 | Miền | Số câu |
 |---|---:|
-| Quy trình học vụ | 2.044 |
-| Học phí | 295 |
-| Quy tắc học vụ | 228 |
-| Chứng chỉ | 260 |
-| Biểu mẫu | 124 |
-| Ngoài miền | 607 |
+| Quy trình học vụ | 2.552 |
+| Học phí | 363 |
+| Quy tắc học vụ | 295 |
+| Chứng chỉ | 271 |
+| Biểu mẫu | 146 |
+| Ngoài miền | 827 |
 
-Bốn phong cách diễn đạt được phân bố gần cân bằng: 882 `formal`, 929 `neutral`,
-851 `colloquial` và 896 `noisy`.
+Bốn phong cách diễn đạt có 1.016 `formal`, 1.153 `neutral`, 1.075 `colloquial`
+và 1.210 `noisy`; nhóm `noisy` được tăng có chủ đích để phủ lỗi gõ và viết tắt.
 
 ### Độ phủ quy trình học vụ
 
 Catalogue có 142 target SPARQL canonical thuộc các họ `procedure-*`. Train có
-1.632 câu cho các target này: mỗi target có ít nhất mười câu và đủ `formal`,
+2.128 câu cho các target này: mỗi target có ít nhất mười câu và đủ `formal`,
 `neutral`, `colloquial`, `noisy`. Riêng 22 target hướng dẫn có ít nhất mười câu
-hỏi cách thực hiện và bốn câu yêu cầu nội dung tổng quan; target hướng dẫn đăng
-ký học phần có 20 câu.
+hỏi cách thực hiện và bốn câu yêu cầu nội dung tổng quan; sau đợt tăng cường,
+mỗi target hướng dẫn có ít nhất 26 câu hỏi trực tiếp và tổng cộng ít nhất 30 câu.
+Target hướng dẫn đăng ký học phần có 52 câu.
 
 Validation có 180 và test có 185 câu `procedure-*`; cả hai đều phủ đủ 142
 target. Mỗi target hướng dẫn có cả câu hỏi cách thực hiện lẫn câu hỏi tổng quan,
@@ -80,8 +81,8 @@ từ chối bao phủ bảy nhóm: chào hỏi/trò chuyện, chủ đề không
 nhưng thiếu dữ liệu, câu mơ hồ, câu hỗn hợp, hard negative dùng từ học vụ sai
 quan hệ và câu ngoài miền noisy. Backend không trả lời một phần câu hỗn hợp.
 
-607 câu từ chối được chia thành: 99 mơ hồ, 50 chào hỏi/trò chuyện, 158 hard
-negative, 80 câu hỗn hợp, 100 câu gần miền nhưng thiếu dữ liệu, 60 câu ngoài
+827 câu từ chối được chia thành: 143 mơ hồ, 50 chào hỏi/trò chuyện, 224 hard
+negative, 124 câu hỗn hợp, 166 câu gần miền nhưng thiếu dữ liệu, 60 câu ngoài
 miền noisy và 60 câu không liên quan.
 
 ## Chia tập và chống rò rỉ
