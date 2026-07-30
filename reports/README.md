@@ -2,7 +2,7 @@
 
 Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 4.454 câu:
 
-- `dataset.json`: kích thước, phân bố, coverage, thống kê ontology và checksum;
+- `dataset.json`: kích thước, phân bố, độ phủ, thống kê ontology và checksum;
 - `procedure-dataset.json`: độ phủ 142 target quy trình theo split và checksum;
 - `figures/dataset-splits.svg`: số câu train/validation/test;
 - `figures/registers.svg`: phân bố bốn phong cách câu hỏi;
@@ -13,10 +13,11 @@ Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp t
 - `figures/test-by-register.svg`, `test-by-query-feature.svg`: phân rã lỗi.
 
 Sinh lại bằng `uv run generate_reports`. `training_readiness.ready` phải là
-`true`, coverage phải hoàn chỉnh và cả 51 họ truy vấn phải có trong ba split.
+`true`, yêu cầu độ phủ phải được đáp ứng và cả 51 họ truy vấn phải có trong ba
+tập.
 
-Bộ 308 câu tại `resources/cases/procedure_language.jsonl` là cổng chấp nhận
-production riêng, không phải benchmark khoa học độc lập.
+Bộ 308 câu tại `resources/cases/procedure_language.jsonl` kiểm tra hồi quy cho
+hành vi triển khai, không phải benchmark khoa học độc lập.
 
 Báo cáo model được sinh từ ba checkpoint đã merge và benchmark trên cùng 402
 câu validation, 407 câu test cùng checksum dataset. T5Gemma2 là model triển

@@ -3,53 +3,47 @@
 ## Nguồn sự thật
 
 Ontology được xây từ công văn và tài liệu học vụ chính thức. Chỉ những thông tin
-có căn cứ trong nguồn này mới được đưa vào graph. Dữ liệu cũ không được sao
-chép sang ontology mới nếu chưa đối chiếu lại nguồn.
+có căn cứ trong nguồn này mới được đưa vào đồ thị.
 
 Thứ tự xây dựng bắt buộc:
 
 ```text
-tài liệu chính thức → ontology → inventory khả năng trả lời
-                    → query catalogue → dataset
+tài liệu chính thức → ontology → danh mục khả năng trả lời
+                    → danh mục truy vấn → dataset
 ```
 
 SPARQL và câu hỏi huấn luyện phải đi theo graph đã xác nhận, không dùng dataset
 để quyết định ngược lại hình dạng ontology.
 
-## Trạng thái nghiệm thu
+## Phạm vi dữ liệu
 
-Ontology canonical hiện đã vượt cổng cấu trúc, provenance và semantic index.
-Lớp nguồn chứa 32 điều cùng Phụ lục 1–3 của Quyết định 1052, học phí và 41 ngành
-của Quyết định 729, hướng dẫn thanh toán cùng danh mục biểu mẫu. Các literal
-`officialText@vi`, label và provenance đã được đối chiếu với nguồn `NTUdocs`.
+Ontology biểu diễn 32 điều cùng Phụ lục 1–3 của Quyết định 1052, học phí và 41
+ngành trong Quyết định 729, hướng dẫn thanh toán và danh mục biểu mẫu. Nội dung
+tiếng Việt được lưu bằng `officialText@vi` và `rdfs:label@vi`; mỗi dữ kiện kèm
+thông tin nguồn để có thể truy ngược về tài liệu chính thức. Các khoản và điểm
+đánh số là các node riêng, phù hợp với cấu trúc của văn bản nguồn.
 
-Audit cấu trúc đã tách riêng Khoản 2 Điều 20 và bốn điểm `đ)` từng bị gộp vào
-điểm `d)`. Kiểm thử hiện so sánh các khoản/điểm đánh số trong văn bản cha với
-node con trên toàn bộ 32 điều.
+Lớp ngữ nghĩa gồm 22 quy trình và 2 chính sách. Ví dụ, Điều 20 được biểu diễn
+thành chính sách cảnh báo, chính sách buộc thôi học và quy trình xin chuyển
+chương trình; Điều 29 mô tả quy trình học liên thông; Điều 30 liên kết quy trình
+nghỉ ốm với nghỉ học ngắn ngày, nghỉ học tạm thời và hoãn thi. Chỉ những quan hệ
+có căn cứ trong tài liệu nguồn được lưu trong đồ thị.
 
-Semantic index có 22 quy trình và 2 chính sách. Điều 20 được tách thành chính
-sách cảnh báo, chính sách buộc thôi học và quy trình xin chuyển chương trình;
-Điều 29 có quy trình học liên thông; Điều 30 có quy trình nghỉ ốm cùng liên kết
-đến nghỉ học ngắn ngày, nghỉ học tạm thời và hoãn thi. Ba liên kết kết quả
-không có căn cứ của các quy trình xin phép nghỉ học, miễn học/miễn thi/cộng
-điểm thưởng và xin học trở lại cùng property `documentUrl` rỗng đã được loại bỏ.
+Danh mục khả năng trả lời tại `resources/ontology/answer_inventory.json` được
+sinh từ đồ thị. Mỗi mục lưu thực thể neo, đường đi tới nhãn hoặc literal và
+nguồn dữ liệu, nhưng không sao chép câu trả lời. Danh mục có 2.953 khả năng được
+hỗ trợ; 259 nhãn kỹ thuật nội bộ và năm quyết định nghiệp vụ không đủ dữ liệu để
+trả lời được ghi là `excluded` cùng lý do.
 
-Inventory máy đọc được nằm tại
-`resources/ontology/answer_inventory.json`. File này được sinh xác định từ
-graph, chỉ lưu anchor, đường tới literal/label và provenance; nó không sao chép
-câu trả lời. Các quyết định không hỗ trợ được ghi bằng trạng thái `excluded` và
-lý do. Inventory hiện có 2.953 mục `supported`; 259 label của bản ghi kỹ thuật
-nội bộ cùng năm quyết định nghiệp vụ không hỗ trợ được đánh dấu `excluded`.
-
-Query catalogue canonical nằm tại `resources/dataset/catalogue.jsonl`, có
-51 họ truy vấn và phủ toàn bộ các mục `supported`. Model chỉ sinh IRI của thực
-thể người dùng có thể nhắc tới. Các bản ghi kỹ thuật như dòng quy đổi chứng chỉ
-hoặc dòng học phí được SPARQL tìm từ chứng chỉ, điểm, ngành, khóa và các điều
-kiện nghiệp vụ thay vì bắt model học thuộc IRI của từng dòng.
+Danh mục truy vấn tại `resources/dataset/catalogue.jsonl` gồm 51 họ truy vấn và
+phủ các khả năng được hỗ trợ. Model chỉ cần sinh IRI của thực thể mà người dùng
+có thể nhắc tới. Những bản ghi kỹ thuật, chẳng hạn dòng quy đổi chứng chỉ hoặc
+dòng học phí, được SPARQL xác định từ điều kiện nghiệp vụ thay vì buộc model học
+thuộc IRI của từng bản ghi.
 
 ## Định dạng và namespace
 
-Nguồn canonical dùng Turtle tại `resources/ontology/ontology.ttl` và được đọc
+Ontology chính dùng Turtle tại `resources/ontology/ontology.ttl` và được đọc
 bằng RDFLib. Namespace project phải ổn định sau khi dataset bắt đầu được tạo;
 đổi IRI hoặc quan hệ sau thời điểm đó đòi hỏi kiểm tra lại toàn bộ target.
 
@@ -59,7 +53,7 @@ bằng RDFLib. Namespace project phải ổn định sau khi dataset bắt đầ
 - Property dùng IRI tiếng Anh dạng `camelCase`.
 - `rdfs:label@vi` là tên tiếng Việt chính, đầy đủ và ổn định.
 - `skos:altLabel@vi` chỉ chứa tên gọi thay thế thực sự hữu ích.
-- Alias không chứa câu hỏi mẫu và không thay thế canonical IRI trong SPARQL.
+- Nhãn thay thế không chứa câu hỏi mẫu và không thay thế IRI chuẩn trong SPARQL.
 
 ## Hình dạng graph
 
@@ -78,17 +72,17 @@ không phình thành các node chỉ có label.
 
 ## Kiểm tra tính toàn vẹn
 
-Ontology mới phải vượt các kiểm tra sau trước khi tạo dataset:
+Ontology được kiểm tra theo các tiêu chí sau trước khi tạo dataset:
 
-1. Turtle parse được và namespace đúng contract.
+1. Turtle đọc được và sử dụng đúng namespace quy định.
 2. Mọi class, property và named individual có `rdfs:label@vi`.
 3. IRI duy nhất, tiếng Anh và đúng quy ước chữ hoa/thường.
 4. Domain/range và kiểu literal nhất quán.
 5. Không có node mồ côi hoặc node chỉ làm bản sao của một literal.
 6. Mỗi dữ kiện trả lời được truy ngược về tài liệu chính thức.
-7. Các query catalogue chạy được và chỉ project label/literal.
-8. Mỗi khả năng trả lời quan trọng được ghi vào inventory với trạng thái
+7. Các truy vấn trong danh mục chạy được và chỉ trả về nhãn hoặc literal.
+8. Mỗi khả năng trả lời quan trọng được ghi vào danh mục với trạng thái
    `supported` hoặc `excluded` kèm lý do.
 
 Số lượng class, property, individual và triple chỉ mô tả hình dạng graph, không
-thay thế kiểm tra coverage từ inventory sang catalogue và dataset.
+thay thế kiểm tra độ phủ từ danh mục khả năng trả lời sang truy vấn và dataset.

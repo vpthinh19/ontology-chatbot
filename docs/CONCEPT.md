@@ -1,13 +1,14 @@
 # Concept: tiếng Việt → quyết định miền/SPARQL → ontology
 
-## Trạng thái contract
+## Phạm vi và phương pháp
 
-Kiến trúc một model và hai dạng output đã được chốt. Ontology canonical,
-semantic index và inventory khả năng trả lời đã được đối chiếu và kiểm thử.
-Catalogue 51 họ và dataset 4.454 câu đã vượt các cổng coverage, thực thi và
-leakage. Ba model đã được benchmark bằng cùng giao thức; T5Gemma2 là model
-triển khai sau khi đạt System Answer Exact 92,38% trên test Transformers và
-92,87% qua toàn pipeline CTranslate2.
+Hệ thống sử dụng một model để sinh hai dạng đầu ra: truy vấn SPARQL cho câu hỏi
+được ontology hỗ trợ hoặc marker từ chối cho các câu còn lại. Ontology, danh
+mục khả năng trả lời và 51 họ truy vấn xác định miền kiến thức của chatbot.
+Dataset gồm 4.454 câu và được kiểm tra về độ phủ, khả năng thực thi truy vấn và
+rò rỉ giữa các tập dữ liệu. Ba model được đánh giá bằng cùng một giao thức;
+T5Gemma2 đạt System Answer Exact 92,38% với Transformers và 92,87% trên pipeline
+triển khai CTranslate2.
 
 ## Trách nhiệm của model
 
@@ -24,7 +25,7 @@ hoặc một dòng SPARQL:
 SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }
 ```
 
-Model được phép học schema và canonical IRI của ontology. Nó không học literal
+Model được phép học lược đồ và IRI chuẩn của ontology. Nó không học literal
 câu trả lời; backend lấy literal từ graph khi thực thi query.
 
 ## Luồng dữ liệu
@@ -55,11 +56,11 @@ Marker từ chối áp dụng cho câu ngoài học vụ, câu thiếu dữ li�
 chuyện chung, văn bản vô nghĩa và câu hỗn hợp có bất kỳ phần nào không được hỗ
 trợ. Backend không trả lời một phần câu hỗn hợp.
 
-## Contract SPARQL
+## Định dạng SPARQL
 
 Model chỉ sinh phần `SELECT`, không sinh `PREFIX`. Backend gắn prefix cố định
 cho namespace project, RDF, RDFS, SKOS và XSD. Target nằm trên một dòng, dùng
-khoảng trắng canonical, nêu rõ cột kết quả và không dùng `SELECT *`.
+khoảng trắng thống nhất, nêu rõ biến kết quả và không dùng `SELECT *`.
 
 Kết quả được project phải là:
 
@@ -75,18 +76,18 @@ Ontology là đồ thị, không phải cây. Công văn chính thức là ngu�
 nhất. Thứ tự xây dựng là:
 
 ```text
-tài liệu chính thức → ontology → inventory khả năng trả lời
-                    → SPARQL catalogue → dataset hợp nhất → model
+tài liệu chính thức → ontology → danh mục khả năng trả lời
+                    → danh mục SPARQL → dataset → model
 ```
 
 Không tạo dataset trước rồi sửa ontology để khớp target đã viết.
-Mọi mục được đánh dấu `supported` trong inventory phải có query catalogue; mọi
-template catalogue phải có dữ liệu huấn luyện và đánh giá. Release hiện tại đáp
-ứng đầy đủ chuỗi ràng buộc này.
+Mỗi khả năng được đánh dấu `supported` phải có mẫu truy vấn tương ứng; mỗi mẫu
+truy vấn phải có dữ liệu huấn luyện và đánh giá. Các kiểm tra tự động xác nhận
+tính nhất quán của chuỗi ràng buộc này.
 
-## Contract tài liệu
+## Tổ chức tài liệu
 
 `README.md` là tài liệu tiếng Việt đọc độc lập. Các phụ lục trong `docs/` giải
 thích ontology, dataset, kiến trúc, fine-tuning, đánh giá và triển khai. Số liệu
-dataset, benchmark và biểu đồ chỉ được sinh từ artifact mới đã qua kiểm tra;
-không sao chép số liệu cũ hoặc điền tay.
+dataset, benchmark và biểu đồ được sinh từ dữ liệu và kết quả máy đọc được để
+tránh sai lệch do sao chép hoặc nhập số liệu thủ công.

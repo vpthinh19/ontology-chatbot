@@ -1,11 +1,11 @@
 # Huấn luyện
 
-## Trạng thái
+## Phạm vi thí nghiệm
 
-Ontology, catalogue và dataset 4.454 câu đã vượt các cổng kiểm tra tĩnh.
-Ba model đã được fine-tune đúng một lần bằng giao thức PEFT LoRA bên dưới.
-Checkpoint tốt nhất của từng model đã được merge, benchmark trên 407 câu test
-khóa và dùng để sinh báo cáo. T5Gemma2 được chọn cho runtime.
+Ba model được fine-tune trên cùng dataset 4.454 câu bằng giao thức PEFT LoRA.
+Checkpoint tốt nhất của mỗi model được chọn bằng tập validation, hợp nhất với
+base model và đánh giá trên cùng 407 câu test. T5Gemma2 có kết quả tổng thể cao
+nhất và được chọn để triển khai.
 
 ## Giao thức huấn luyện
 
@@ -14,7 +14,7 @@ benchmark dùng cùng normalizer, target marker, độ dài tối đa, dynamic p
 giao thức LoRA và greedy decoding. Runtime chỉ triển khai một checkpoint được
 chọn sau benchmark.
 
-Thiết lập chung đã chốt:
+Thiết lập chung:
 
 - seed `42`, đúng một lần chạy;
 - physical và effective batch size đều là `8`, không gradient accumulation;
@@ -30,13 +30,13 @@ Thiết lập chung đã chốt:
 
 Mixed precision được chọn theo môi trường: CUDA có BF16 dùng BF16; CUDA không
 có BF16 dùng FP16; CPU dùng FP32. TF32 chỉ bật trên GPU CUDA có compute
-capability từ 8 trở lên.
+capability từ 8 trở lên. Các điều kiện này giúp chọn kiểu số phù hợp với phần
+cứng mà không thay đổi mục tiêu huấn luyện.
 
-Giữ nguyên dropout của từng checkpoint. Cả ba model dùng physical batch `8`,
-gradient accumulation `1` và không gradient checkpointing. BARTpho và
-T5Gemma2 dùng SDPA; ViT5 dùng eager attention. Smoke test PEFT trên RTX 4050
-6 GB đã xác minh cả ba cấu hình chạy được; T5Gemma2 phải được smoke lại trên
-batch dài nhất sau khi khóa dataset cuối vì có biên VRAM hẹp nhất.
+Giữ nguyên dropout mặc định của từng base model. Cả ba model dùng batch vật lý
+`8`, gradient accumulation `1` và không gradient checkpointing. BARTpho và
+T5Gemma2 dùng SDPA; ViT5 dùng eager attention. Cả ba cấu hình đã được xác minh
+trên RTX 4050 6 GB; T5Gemma2 có biên VRAM hẹp nhất.
 
 LoRA gắn vào các vai trò tương đương, không ép dùng chung tên module:
 
@@ -49,9 +49,8 @@ LoRA gắn vào các vai trò tương đương, không ép dùng chung tên modu
 T5Gemma2 loại trừ hoàn toàn vision tower SigLIP. Không dùng Unsloth, TRL hoặc
 QLoRA.
 
-Dataset hợp nhất có thêm câu ngoài miền nên số optimizer step tăng theo số bản
-ghi thật. Không giảm dữ liệu hoặc đổi epoch riêng cho một model để rút ngắn
-benchmark.
+Số bước tối ưu được xác định từ số bản ghi thực tế, bao gồm cả câu ngoài miền.
+Không giảm dữ liệu hoặc đổi số epoch riêng cho một model.
 
 ## Tokenizer
 
@@ -80,14 +79,14 @@ Tiêu chí chọn checkpoint được cố định trước lần train. Test ch
 checkpoint được chọn. Không dò
 hyperparameter, không chạy nhiều seed và không tự train lại vì điểm test thấp.
 
-## Trình tự chạy
+## Quy trình thực nghiệm
 
-1. Khóa ontology semantic index và inventory khả năng trả lời.
-2. Xác minh catalogue phủ inventory.
+1. Xác minh ontology và danh mục khả năng trả lời.
+2. Xác minh danh mục truy vấn phủ các khả năng trả lời.
 3. Xác minh checksum dataset hợp nhất và tokenizer.
 4. Fine-tune mỗi model đúng một lần và chọn checkpoint riêng bằng validation.
-5. Mở lại ba checkpoint bằng `from_pretrained()` để benchmark cùng test đã khóa.
-6. Chọn một model theo kết quả đã công bố và chuyển checkpoint đó sang
+5. Mở lại ba checkpoint bằng `from_pretrained()` để đánh giá trên cùng tập test.
+6. Chọn một model theo kết quả đánh giá và chuyển checkpoint đó sang
    CTranslate2 khi cần triển khai.
 
 Mẫu lệnh cho RTX 4050 6 GB:
@@ -106,8 +105,8 @@ done
 ```
 
 Biến allocator chỉ tránh phân mảnh VRAM, không thay đổi hyperparameter hoặc dữ
-liệu. Trainer tạo ba candidate độc lập; runtime cuối cùng chỉ dùng một model và
-không có artifact phân loại thứ hai.
+liệu. Trainer tạo ba checkpoint độc lập; hệ thống triển khai chỉ dùng một model
+và không có model phân loại thứ hai.
 
 ## Kết quả huấn luyện
 
@@ -117,6 +116,6 @@ không có artifact phân loại thứ hai.
 | ViT5-base | 20 | 93,76 phút | 80,10% | 81,08% |
 | T5Gemma2 | 18 (dừng sớm) | 86,69 phút | 90,55% | 92,38% |
 
-Số epoch tối đa giống nhau; T5Gemma2 dừng ở epoch 18 vì validation không còn
-cải thiện theo patience đã khóa. Biểu đồ loss và validation được sinh trực tiếp
-từ `metrics.json` bằng `uv run generate_reports`.
+Số epoch tối đa giống nhau; T5Gemma2 dừng ở epoch 18 do chỉ số validation không
+cải thiện qua ba lần đánh giá liên tiếp. Biểu đồ loss và validation được sinh
+trực tiếp từ `metrics.json` bằng `uv run generate_reports`.

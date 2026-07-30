@@ -8,7 +8,7 @@ def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
-def test_public_docs_describe_current_dataset_release() -> None:
+def test_public_docs_describe_the_evaluated_dataset() -> None:
     files = (
         "README.md",
         "docs/DATASET.md",
@@ -28,7 +28,7 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     training = _read("docs/TRAINING.md")
     readme = _read("README.md")
 
-    assert "T5Gemma2 được chọn cho runtime" in training
+    assert "được chọn để triển khai" in training
     assert "92,38%" in training
     assert "test không tham gia chọn checkpoint" in training
     assert "## 1. Bài toán nghiên cứu" in readme
@@ -43,7 +43,7 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     assert "Trạng thái hiện tại" not in readme
 
 
-def test_docs_connect_canonical_ontology_catalogue_and_dataset() -> None:
+def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     ontology = _read("docs/ONTOLOGY.md")
     dataset = _read("docs/DATASET.md")
     readme = _read("README.md")
@@ -57,5 +57,5 @@ def test_docs_connect_canonical_ontology_catalogue_and_dataset() -> None:
     assert "22" in readme
     assert "2.953" in ontology
     assert "4.454 câu" in dataset
-    assert "coverage hoàn chỉnh" in dataset
-    assert "T5Gemma2 được chọn cho runtime" in _read("docs/TRAINING.md")
+    assert "phủ đủ 51 họ truy vấn" in dataset
+    assert "được chọn để triển khai" in _read("docs/TRAINING.md")

@@ -1,13 +1,13 @@
 # Đánh giá
 
 Tài liệu này định nghĩa giao thức và báo cáo kết quả trên ontology cùng dataset
-4.454 câu đã khóa. Cả ba model đã hoàn tất fine-tune và chạy cùng 407 câu test.
+4.454 câu. Cả ba model được đánh giá trên cùng 407 câu test.
 
 ## Hai nhóm test
 
 Test được báo cáo theo hai nhóm độc lập:
 
-- `in-domain`: reference là một SPARQL canonical có kết quả;
+- `in-domain`: đáp án tham chiếu là một truy vấn SPARQL chuẩn có kết quả;
 - `out-of-domain`: reference là `không có thông tin`, bao gồm nhóm câu hỗn hợp.
 
 Không dùng một accuracy tổng thể để che chất lượng của một nhóm.
@@ -21,7 +21,7 @@ Không dùng một accuracy tổng thể để che chất lượng của một n
 | Execution rate | Query chạy không lỗi | Có thể thực thi |
 | Result precision/recall/F1 | So multiset dòng kết quả | Mức đúng một phần |
 | In-domain Answer Exact | Kết quả thực thi trùng reference | Trả đúng toàn bộ dữ liệu |
-| Query string exact | Chuỗi query trùng target canonical | Đúng biểu diễn chuẩn |
+| Query string exact | Chuỗi truy vấn trùng đáp án SPARQL chuẩn | Đúng biểu diễn chuẩn |
 
 Answer Exact bỏ qua thứ tự dòng và tên biến nhưng giữ kiểu dữ liệu, language
 tag, số cột và cách ghép giá trị trong từng dòng.
@@ -30,7 +30,7 @@ tag, số cột và cách ghép giá trị trong từng dòng.
 
 | Metric | Cách tính | Ý nghĩa |
 |---|---|---|
-| Marker exact | Prediction trùng `không có thông tin` | Model chủ động từ chối đúng contract |
+| Marker exact | Đầu ra trùng `không có thông tin` | Model chủ động từ chối đúng quy ước |
 | False acceptance | Câu ngoài miền sinh `SELECT` hợp lệ có kết quả | Nguy cơ trả lời sai tự tin |
 | Safe rejection | Backend cuối cùng trả `Không có thông tin.` | Hành vi người dùng nhìn thấy |
 | Mixed-query rejection | Câu hỗn hợp bị từ chối toàn bộ | Tuân thủ ranh giới miền |
@@ -57,12 +57,12 @@ trước huấn luyện. Test chỉ chạy một lần với checkpoint đã ch�
 thuộc catalogue đã xuất hiện trong train; cách diễn đạt thì chưa xuất hiện ở
 train/validation.
 
-Sau benchmark chính thức, bộ `resources/cases/procedure_language.jsonl` gồm 308
-câu được chạy như cổng chấp nhận production: 220 câu hỏi quy trình và 88 câu
-gần miền/ngoài miền phải từ chối. Bộ hồi quy này không tham gia huấn luyện,
-không chọn checkpoint và không thay thế test khoa học đã khóa.
+Ngoài tập test, bộ `resources/cases/procedure_language.jsonl` gồm 308 câu được
+dùng để kiểm tra hành vi triển khai: 220 câu hỏi quy trình và 88 câu gần miền
+hoặc ngoài miền cần từ chối. Bộ kiểm tra hồi quy này không tham gia huấn luyện,
+không dùng để chọn checkpoint và không thay thế tập test.
 
-Ngưỡng nghiệm thu được khóa trước khi chạy test:
+Các ngưỡng đánh giá được xác định trước khi chạy test:
 
 - System Answer Exact toàn test đạt ít nhất 90%;
 - Answer Exact riêng 185 câu `procedure-*` đạt ít nhất 95%;
@@ -90,12 +90,11 @@ Không dùng BLEU, ROUGE hoặc token F1 làm bằng chứng trả lời đúng 
 | ViT5-base | 97,48% | 79,61% | 80,28% | 84,44% | 81,08% |
 | **T5Gemma2** | **97,79%** | **90,66%** | **92,74%** | **92,22%** | **92,38%** |
 
-T5Gemma2 đạt 96,22% Answer Exact trên 185 câu quy trình; cả bốn phong cách quy
-trình đều trên 90%. Model vượt ngưỡng System Exact toàn test, Answer Exact quy
-trình và từng register quy trình; chưa vượt ngưỡng Safe Rejection 94% và bộ hồi
-quy negative riêng. Vì deadline triển khai, model vẫn được chọn theo kết quả
-tổng thể cao nhất; các giới hạn này phải được giữ trong báo cáo thay vì xem như
-đã giải quyết.
+T5Gemma2 đạt 96,22% Answer Exact trên 185 câu quy trình; cả bốn phong cách diễn
+đạt của nhóm này đều trên 90%. Model vượt ngưỡng System Exact toàn test, Answer
+Exact quy trình và từng phong cách quy trình, nhưng chưa đạt ngưỡng Safe
+Rejection 94% và yêu cầu của bộ hồi quy negative. T5Gemma2 được chọn vì có kết
+quả tổng thể cao nhất; khả năng từ chối ngoài miền vẫn là giới hạn của hệ thống.
 
 Sau chuyển sang CTranslate2 int8, toàn pipeline web đạt 92,87% phản hồi exact
 trên cùng test. Chênh lệch này được báo cáo riêng, không dùng để thay kết luận

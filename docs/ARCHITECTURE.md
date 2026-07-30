@@ -46,13 +46,13 @@ chính xác hoặc kiểm tra `SELECT`; không có threshold hay classifier th�
 ## Xử lý lỗi
 
 Marker, query không hợp lệ và kết quả rỗng cùng trả `Không có thông tin.`. Lỗi
-nạp artifact, nạp ontology và lỗi lập trình không bị che thành phản hồi nghiệp
+nạp model, nạp ontology và lỗi lập trình không bị che thành phản hồi nghiệp
 vụ. Mỗi request được log với input chuẩn hoá, output model, trạng thái query,
 số dòng kết quả và latency.
 
-## Vòng đời model
+## Huấn luyện và chuyển đổi model
 
-Ba model candidate dùng cùng interface cấp cao:
+Ba model được đánh giá dùng cùng giao diện cấp cao:
 
 ```text
 AutoTokenizer → AutoModelForSeq2SeqLM → PEFT LoRA → Seq2SeqTrainer
@@ -67,8 +67,8 @@ chuyển sang CTranslate2. CTranslate2 chỉ phục vụ triển khai và đo pa
 ## An toàn truy vấn
 
 Backend chỉ chấp nhận `SELECT`, cấm `SELECT *`, truy vấn liên kết ngoài và thao
-tác thay đổi graph. URI hoặc blank node lọt ra kết quả là vi phạm contract:
-query phải project label hoặc literal.
+tác thay đổi graph. URI hoặc blank node xuất hiện trong kết quả là không hợp
+lệ: query phải trả về label hoặc literal.
 
 ## Dạng dữ liệu nội bộ
 

@@ -44,7 +44,7 @@ ontology của project để lấy nhãn hoặc literal trả về người dùn
 | Transformers | 90,66% | 92,74% | 92,38% |
 | CTranslate2 int8 | 91,15% | 93,38% | 92,87% |
 
-Kết quả đo trên 407 câu test khóa. T5Gemma2 đạt 96,22% Answer Exact trên 185
+Kết quả đo trên 407 câu test độc lập. T5Gemma2 đạt 96,22% Answer Exact trên 185
 câu quy trình. Safe Rejection ngoài miền đạt 92,22%; câu noisy và hard negative
 gần miền vẫn là giới hạn chính.
 
@@ -63,7 +63,7 @@ output = model.generate(**inputs, max_new_tokens=160, do_sample=False, num_beams
 print(tokenizer.decode(output[0], skip_special_tokens=True))
 ```
 
-Artifact CTranslate2 int8 nằm trong thư mục `ctranslate2/`. Runtime hoàn chỉnh,
+Model CTranslate2 int8 nằm trong thư mục `ctranslate2/`. Hệ thống hoàn chỉnh,
 ontology, normalizer, validator SPARQL và hướng dẫn tái lập nằm tại
 <https://github.com/vpthinh19/ontology-chatbot>.
 
