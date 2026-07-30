@@ -3,10 +3,9 @@
 ## Trạng thái
 
 Ontology, catalogue và dataset 4.454 câu đã vượt các cổng kiểm tra tĩnh.
-Chưa có lần benchmark đủ ba model bằng giao thức PEFT LoRA đang khóa; vì vậy
-chưa có benchmark chính thức cho trạng thái này. Checkpoint T5Gemma2 từng được
-full fine-tune trên cùng dataset chỉ là bằng chứng chẩn đoán, không phải kết quả
-so sánh của giao thức hiện hành.
+Ba model đã được fine-tune đúng một lần bằng giao thức PEFT LoRA bên dưới.
+Checkpoint tốt nhất của từng model đã được merge, benchmark trên 407 câu test
+khóa và dùng để sinh báo cáo. T5Gemma2 được chọn cho runtime.
 
 ## Giao thức huấn luyện
 
@@ -109,3 +108,15 @@ done
 Biến allocator chỉ tránh phân mảnh VRAM, không thay đổi hyperparameter hoặc dữ
 liệu. Trainer tạo ba candidate độc lập; runtime cuối cùng chỉ dùng một model và
 không có artifact phân loại thứ hai.
+
+## Kết quả huấn luyện
+
+| Model | Epoch hoàn tất | Thời gian | Validation Answer Exact | Test System Exact |
+|---|---:|---:|---:|---:|
+| BARTpho-syllable | 20 | 74,47 phút | 84,33% | 85,75% |
+| ViT5-base | 20 | 93,76 phút | 80,10% | 81,08% |
+| T5Gemma2 | 18 (dừng sớm) | 86,69 phút | 90,55% | 92,38% |
+
+Số epoch tối đa giống nhau; T5Gemma2 dừng ở epoch 18 vì validation không còn
+cải thiện theo patience đã khóa. Biểu đồ loss và validation được sinh trực tiếp
+từ `metrics.json` bằng `uv run generate_reports`.

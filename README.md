@@ -7,14 +7,16 @@ phụ lục và hướng dẫn chính thức của Trường Đại học Nha Tr
 ## Trạng thái hiện tại
 
 - **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
-  query catalogue và dataset hợp nhất 4.454 câu.
+  query catalogue, dataset hợp nhất 4.454 câu và pipeline web end-to-end.
 - **Dataset:** 3.645 câu train, 402 câu validation và 407 câu test; đủ 51 họ
   truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
 - **Quy trình học vụ:** 142 target canonical đều có mặt trong ba split; train có
   2.128 câu `procedure-*`, mỗi target có ít nhất mười câu và đủ bốn phong cách.
-- **Chưa thực hiện:** fine-tune và benchmark BARTpho, ViT5, T5Gemma2 trên
-  dataset đang được khóa. Các chỉ số từ dataset trước không đại diện cho trạng
-  thái hiện tại.
+- **Model triển khai:** T5Gemma2, được chọn sau khi fine-tune và benchmark cùng
+  BARTpho và ViT5 trên đúng dataset khóa; artifact được công bố tại
+  [vpthinh19/ntu-ontology-chatbot](https://huggingface.co/vpthinh19/ntu-ontology-chatbot).
+- **Kết quả web:** câu trả lời hiển thị khớp 378/407 câu test (92,87%) với
+  artifact CTranslate2 int8; toàn bộ 407 request trả HTTP 200.
 
 Chiều kiểm soát độ phủ bắt buộc là:
 
@@ -136,6 +138,41 @@ chạy đúng một lần trên test đã khóa.
 Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
 tại [docs/EVALUATION.md](docs/EVALUATION.md).
 
+### Kết quả benchmark
+
+Mỗi model chạy đúng một seed và cùng giao thức. Answer Exact so kết quả SPARQL
+đã thực thi; System Exact so phản hồi cuối người dùng nhận được. T5Gemma2 đạt
+cao nhất trên validation và test nên được chọn cho runtime.
+
+| Model | Validation Answer Exact | Test Answer Exact | Test Result F1 | Test System Exact |
+|---|---:|---:|---:|---:|
+| BARTpho-syllable | 84,33% | 84,03% | 84,44% | 85,75% |
+| ViT5-base | 80,10% | 79,61% | 80,28% | 81,08% |
+| **T5Gemma2** | **90,55%** | **90,66%** | **92,74%** | **92,38%** |
+
+![So sánh ba mô hình](reports/figures/model-comparison.svg)
+
+![Đường học trên validation](reports/figures/validation-curve.svg)
+
+![Train loss](reports/figures/training-loss.svg)
+
+Theo phong cách câu hỏi, artifact Transformers T5Gemma2 đạt 98,0% `formal`,
+93,33% `neutral`, 97,83% `colloquial` và 95,45% `noisy` trên riêng nhóm quy
+trình. Trên toàn bộ web test sau chuyển đổi CT2, tỷ lệ phản hồi khớp tương ứng
+là 95,56%, 95,61%, 96,43% và 85,71%. Nhóm noisy vẫn là điểm yếu chính.
+
+### Kết quả triển khai
+
+Checkpoint T5Gemma2 đã merge LoRA được chuyển sang CTranslate2 int8. Khi chạy
+CPU trên 407 câu test, artifact đạt System Exact 92,87%, p50 300 ms và p95
+864 ms mỗi request. Lượng tử hóa làm đổi 9 output so với Transformers: 4 ca
+tốt lên, 2 ca xấu đi và 3 ca vẫn sai. Probe tám request đồng thời trả thành
+công 8/8, thông lượng 3,26 request/giây.
+
+Các JSON nguồn của bảng và biểu đồ nằm trong `reports/` và
+`artifacts/model-benchmark/`; báo cáo web chi tiết nằm tại
+`artifacts/e2e_web_benchmark.json` khi tái tạo trong môi trường nghiên cứu.
+
 ## Kiến trúc phần mềm
 
 ```text
@@ -168,3 +205,46 @@ benchmark checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
 
 Không giữ số liệu giả, không tái sử dụng benchmark hết hiệu lực và không dùng
 test để chọn checkpoint.
+
+### Môi trường thực nghiệm
+
+- Fedora Linux, Python 3.12;
+- NVIDIA GeForce RTX 4050 Laptop GPU 6 GB;
+- PyTorch 2.13.0 + CUDA 13.0, Transformers 5.14.1;
+- CTranslate2 4.8.1, RDFLib 7.6 và OWL-RL 7.6.
+
+Tạo môi trường huấn luyện và chạy kiểm tra:
+
+```bash
+uv sync --extra train
+uv run validate_sparql_dataset
+uv run pytest
+```
+
+Fine-tune một model hoặc sinh lại toàn bộ báo cáo:
+
+```bash
+uv run train_sparql \
+  --model t5gemma2 \
+  --output-dir artifacts/model-benchmark \
+  --epochs 20 --seed 42 --save-model --benchmark-after-training \
+  --local-files-only
+
+uv run generate_reports
+```
+
+Chuyển checkpoint đã chọn và chạy webapp:
+
+```bash
+uv run convert_sparql_model \
+  --model-dir artifacts/model-benchmark/t5gemma2/model \
+  --output-dir artifacts/deployment/t5gemma2-production \
+  --quantization int8
+
+uv run --extra inference serve_sparql \
+  --model-dir artifacts/deployment/t5gemma2-production \
+  --device cpu --compute-type int8 --host 127.0.0.1 --port 8000
+```
+
+Mở `http://127.0.0.1:8000`. Lệnh, cấu trúc artifact và các giới hạn triển khai
+được mô tả chi tiết tại [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).

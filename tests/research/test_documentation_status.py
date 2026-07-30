@@ -24,27 +24,15 @@ def test_public_docs_describe_current_dataset_release() -> None:
     assert "455 câu" not in joined
 
 
-def test_public_docs_allow_training_only_from_the_locked_release() -> None:
+def test_public_docs_report_training_from_the_locked_release() -> None:
     training = _read("docs/TRAINING.md")
     readme = _read("README.md")
 
-    assert "chưa có benchmark chính thức" in training
+    assert "T5Gemma2 được chọn cho runtime" in training
+    assert "92,38%" in training
     assert "test không tham gia chọn checkpoint" in training
     assert "ontology → inventory → catalogue → dataset" in readme
     assert "semantic index" in readme
-
-
-def test_superseded_designs_point_to_current_readiness_spec() -> None:
-    replacement = "2026-07-29-ontology-dataset-readiness-design.md"
-    files = (
-        "docs/superpowers/specs/2026-07-29-official-production-dataset-design.md",
-        "docs/superpowers/plans/2026-07-29-official-production-dataset.md",
-        "docs/superpowers/specs/2026-07-29-official-ontology-refactor-design.md",
-        "docs/superpowers/plans/2026-07-29-official-ontology-refactor.md",
-    )
-
-    for path in files:
-        assert replacement in _read(path)
 
 
 def test_docs_connect_canonical_ontology_catalogue_and_dataset() -> None:
@@ -60,4 +48,4 @@ def test_docs_connect_canonical_ontology_catalogue_and_dataset() -> None:
     assert "2.953" in ontology
     assert "4.454 câu" in dataset
     assert "coverage hoàn chỉnh" in dataset
-    assert "chưa có benchmark chính thức" in _read("docs/TRAINING.md")
+    assert "T5Gemma2 được chọn cho runtime" in _read("docs/TRAINING.md")

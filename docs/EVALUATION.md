@@ -1,8 +1,7 @@
 # Đánh giá
 
-Tài liệu này định nghĩa giao thức áp dụng cho ontology và dataset đã khóa. Chưa
-có kết quả model hợp lệ cho dataset 4.454 câu hiện tại; mọi chỉ số chỉ được công
-bố sau khi cả ba model hoàn tất fine-tune và test theo giao thức dưới đây.
+Tài liệu này định nghĩa giao thức và báo cáo kết quả trên ontology cùng dataset
+4.454 câu đã khóa. Cả ba model đã hoàn tất fine-tune và chạy cùng 407 câu test.
 
 ## Hai nhóm test
 
@@ -82,3 +81,22 @@ Biểu đồ công khai phải lấy dữ liệu từ JSON máy đọc và gồm
 - thời gian train, VRAM và tốc độ inference.
 
 Không dùng BLEU, ROUGE hoặc token F1 làm bằng chứng trả lời đúng dữ liệu.
+
+## Kết quả
+
+| Model | Parse | Answer Exact | Result F1 | Safe Rejection OOD | System Exact |
+|---|---:|---:|---:|---:|---:|
+| BARTpho-syllable | 98,11% | 84,03% | 84,44% | 91,11% | 85,75% |
+| ViT5-base | 97,48% | 79,61% | 80,28% | 84,44% | 81,08% |
+| **T5Gemma2** | **97,79%** | **90,66%** | **92,74%** | **92,22%** | **92,38%** |
+
+T5Gemma2 đạt 96,22% Answer Exact trên 185 câu quy trình; cả bốn phong cách quy
+trình đều trên 90%. Model vượt ngưỡng System Exact toàn test, Answer Exact quy
+trình và từng register quy trình; chưa vượt ngưỡng Safe Rejection 94% và bộ hồi
+quy negative riêng. Vì deadline triển khai, model vẫn được chọn theo kết quả
+tổng thể cao nhất; các giới hạn này phải được giữ trong báo cáo thay vì xem như
+đã giải quyết.
+
+Sau chuyển sang CTranslate2 int8, toàn pipeline web đạt 92,87% phản hồi exact
+trên cùng test. Chênh lệch này được báo cáo riêng, không dùng để thay kết luận
+so sánh ba checkpoint Transformers.

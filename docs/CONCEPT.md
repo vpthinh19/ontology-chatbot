@@ -4,9 +4,10 @@
 
 Kiến trúc một model và hai dạng output đã được chốt. Ontology canonical,
 semantic index và inventory khả năng trả lời đã được đối chiếu và kiểm thử.
-Catalogue 51 họ và dataset 2.888 câu đã vượt các cổng coverage, thực thi và
-leakage. Dataset không quyết định ngược lại phạm vi ontology; hiện chưa có
-benchmark chính thức trên release đã khóa.
+Catalogue 51 họ và dataset 4.454 câu đã vượt các cổng coverage, thực thi và
+leakage. Ba model đã được benchmark bằng cùng giao thức; T5Gemma2 là model
+triển khai sau khi đạt System Answer Exact 92,38% trên test Transformers và
+92,87% qua toàn pipeline CTranslate2.
 
 ## Trách nhiệm của model
 
