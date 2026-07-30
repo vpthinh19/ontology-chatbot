@@ -23,6 +23,7 @@ train = [
     "bitsandbytes>=0.49.2",
     "datasets>=5.0.0",
     "huggingface-hub>=1.24.0",
+    "peft>=0.20.0",
     "torch>=2.13.0",
     "transformers>=5.14.1",
 ]

@@ -16,7 +16,8 @@ Thiết lập chung đã chốt:
 
 - seed `42`, đúng một lần chạy;
 - effective batch size `8`;
-- learning rate `3e-5`, AdamW 8-bit, weight decay `0.005`;
+- PEFT LoRA BF16 với rank `32`, alpha `64`, dropout `0` và bias `none`;
+- learning rate `1e-4`, AdamW 8-bit, weight decay `0.005`;
 - cosine scheduler với `warmup_steps=0.1`;
 - tối đa 20 epoch, validation mỗi 2 epoch;
 - dừng sớm sau ba mốc validation liên tiếp không cải thiện;
@@ -33,6 +34,11 @@ Giữ nguyên dropout của checkpoint. T5Gemma2 dùng microbatch 4, gradient
 accumulation 2, SDPA và gradient checkpointing để giữ effective batch bằng 8
 trong 6 GB VRAM.
 
+LoRA chỉ gắn vào `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`,
+`up_proj` và `down_proj` thuộc text encoder/decoder. Vision tower SigLIP không
+tham gia huấn luyện. Cấu hình này cập nhật 15.187.968 tham số, khoảng 1,9% model;
+không dùng Unsloth, TRL hoặc QLoRA.
+
 Dataset hợp nhất có thêm câu ngoài miền nên số optimizer step tăng theo số bản
 ghi thật. Không giảm dữ liệu hoặc đổi epoch riêng cho một model để rút ngắn
 benchmark.
@@ -44,6 +50,12 @@ T5Gemma2 phải round-trip marker và toàn bộ target trước khi trainer ch�
 sửa vocabulary.
 
 ## Chọn checkpoint
+
+Checkpoint trung gian chứa adapter PEFT. Khi validation chọn được checkpoint
+tốt nhất, pipeline nạp lại adapter trên base pretrained rồi gọi
+`merge_and_unload()`. Validation cuối, benchmark và thư mục `model/` đều dùng
+checkpoint Transformers đã merge; runtime và CTranslate2 không nạp adapter
+riêng.
 
 Validation phải báo cáo riêng:
 

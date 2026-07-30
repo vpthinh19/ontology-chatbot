@@ -114,6 +114,11 @@ Model sinh truy vấn được nghiệm thu trên dataset đã khóa là
 `google/t5gemma-2-270m-270m`. BARTpho và ViT5 không thuộc vòng nghiệm thu hiện
 tại.
 
+Model được huấn luyện bằng PEFT LoRA trên text encoder và decoder. Base
+pretrained được đóng băng trong lúc train; adapter tốt nhất được merge thành một
+checkpoint Transformers độc lập trước khi benchmark và chuyển sang CTranslate2.
+Runtime vì vậy vẫn chỉ nạp một model, không phụ thuộc PEFT.
+
 Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
 miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
 hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn

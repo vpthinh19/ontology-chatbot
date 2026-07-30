@@ -9,9 +9,11 @@ Runtime đích chỉ nạp một checkpoint seq2seq đã chuyển sang CTranslat
 tokenizer và compatibility manifest. Không có artifact phân loại, classifier
 head hoặc ngưỡng quyết định riêng.
 
-Checkpoint Transformers được chọn bằng validation, benchmark độc lập bằng
-`from_pretrained()`, rồi mới chuyển đổi. Artifact CTranslate2 phải được chấm lại
-đúng test set để kiểm tra parity của output, Answer Exact và marker exact.
+Checkpoint PEFT được chọn bằng validation, merge vào base model thành checkpoint
+Transformers độc lập, benchmark bằng `from_pretrained()`, rồi mới chuyển đổi.
+Runtime không nạp adapter hoặc phụ thuộc PEFT. Artifact CTranslate2 phải được
+chấm lại đúng test set để kiểm tra parity của output, Answer Exact và marker
+exact.
 
 Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 dùng
 `beam_size=1`. Beam search không thuộc benchmark hoặc production chính.

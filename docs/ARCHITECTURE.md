@@ -16,8 +16,9 @@ flowchart TB
     F --> UI
     R --> UI
 
-    DS["dataset/main"] --> TR["research/training.py"]
-    TR --> HF["Checkpoint Hugging Face tốt nhất"]
+    DS["dataset/main"] --> TR["Seq2SeqTrainer + PEFT LoRA"]
+    TR --> MG["Merge adapter vào base model"]
+    MG --> HF["Checkpoint Hugging Face độc lập"]
     HF --> BM["Benchmark Transformers"]
     HF --> CV["tools/conversion.py"]
     CV --> CT2
@@ -49,11 +50,12 @@ số dòng kết quả và latency.
 
 ## Vòng đời model
 
-Ba model dùng cùng interface cấp cao:
+Model production dùng interface cấp cao:
 
 ```text
-AutoTokenizer → AutoModelForSeq2SeqLM → Seq2SeqTrainer
-              → checkpoint → from_pretrained() → generate()
+AutoTokenizer → AutoModelForSeq2SeqLM → PEFT LoRA → Seq2SeqTrainer
+              → best adapter → merge_and_unload() → checkpoint độc lập
+              → from_pretrained() → generate()
 ```
 
 Checkpoint Hugging Face được mở lại trong một tiến trình đánh giá độc lập rồi

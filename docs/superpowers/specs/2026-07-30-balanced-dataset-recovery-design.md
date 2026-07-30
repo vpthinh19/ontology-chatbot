@@ -171,8 +171,9 @@ không được trình bày như test khoa học độc lập.
 ## Nghiệm thu
 
 Sau khi toàn bộ static gate đạt, fine-tune T5Gemma2 từ checkpoint pretrained
-gốc đúng một lần với cấu hình đã khóa. Không resume checkpoint hiện tại, không
-đổi seed, epochs, learning rate hoặc decoding sau khi xem kết quả.
+gốc đúng một lần bằng PEFT LoRA theo
+`2026-07-30-peft-lora-training-design.md`. Không resume checkpoint hiện tại,
+không đổi seed, epochs, learning rate hoặc decoding sau khi xem kết quả.
 
 Các điều kiện đạt đồng thời:
 
