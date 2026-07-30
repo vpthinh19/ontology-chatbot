@@ -1,148 +1,224 @@
-# NTU Ontology Chatbot
+# Chatbot hỏi đáp học vụ dựa trên ontology
 
-Chatbot tiếng Việt trả lời câu hỏi học vụ bằng cách chuyển câu hỏi thành SPARQL
-và truy vấn ontology RDF. Ontology và dataset được xây dựng từ các quyết định,
-phụ lục và hướng dẫn chính thức của Trường Đại học Nha Trang.
+## Tóm tắt
 
-## Trạng thái hiện tại
+Nghiên cứu này xây dựng một chatbot tiếng Việt trả lời câu hỏi về quy trình học
+vụ bằng ontology. Thay vì ghi nhớ và sinh trực tiếp câu trả lời, một mô hình
+ngôn ngữ chuyển câu hỏi của người dùng thành truy vấn SPARQL. Truy vấn được kiểm
+tra, thực thi trên đồ thị tri thức và trả về dữ liệu lấy từ các văn bản chính
+thức của Trường Đại học Nha Trang.
 
-- **Đã kiểm chứng:** ontology canonical, semantic index, answer inventory,
-  query catalogue, dataset hợp nhất 4.454 câu và pipeline web end-to-end.
-- **Dataset:** 3.645 câu train, 402 câu validation và 407 câu test; đủ 51 họ
-  truy vấn, sáu miền nội dung và bốn phong cách diễn đạt.
-- **Quy trình học vụ:** 142 target canonical đều có mặt trong ba split; train có
-  2.128 câu `procedure-*`, mỗi target có ít nhất mười câu và đủ bốn phong cách.
-- **Model triển khai:** T5Gemma2, được chọn sau khi fine-tune và benchmark cùng
-  BARTpho và ViT5 trên đúng dataset khóa; artifact được công bố tại
-  [vpthinh19/ntu-ontology-chatbot](https://huggingface.co/vpthinh19/ntu-ontology-chatbot).
-- **Kết quả web:** câu trả lời hiển thị khớp 378/407 câu test (92,87%) với
-  artifact CTranslate2 int8; toàn bộ 407 request trả HTTP 200.
+Hệ thống kết hợp ba thành phần: một ontology biểu diễn quy trình và quy định học
+vụ, một dataset 4.454 câu hỏi tiếng Việt và một mô hình encoder–decoder sinh
+truy vấn có cấu trúc. Ba mô hình BARTpho, ViT5 và T5Gemma2 được huấn luyện trong
+cùng điều kiện. T5Gemma2 đạt kết quả tốt nhất với 92,38% câu trả lời cuối chính
+xác trên tập test; phiên bản triển khai bằng CTranslate2 đạt 92,87%.
 
-Chiều kiểm soát độ phủ bắt buộc là:
+Các đóng góp chính gồm:
 
-```text
-ontology → inventory → catalogue → dataset
-```
+1. đồ thị tri thức học vụ được xây dựng từ các văn bản chính thức;
+2. kiến trúc một mô hình duy nhất vừa sinh SPARQL vừa từ chối câu hỏi không thể
+   trả lời từ ontology;
+3. dataset tiếng Việt bao phủ ngôn ngữ trang trọng, thông thường, khẩu ngữ và
+   câu có lỗi viết;
+4. thực nghiệm so sánh ba mô hình sinh chuỗi và kiểm thử toàn bộ chatbot từ câu
+   hỏi đến nội dung hiển thị.
 
-Catalogue gồm 51 họ truy vấn và phủ bằng máy toàn bộ 2.953 khả năng trả lời
-`supported` trong inventory. Dataset sử dụng đủ 51 họ; mọi target trong miền
-đều parse, qua contract an toàn, thực thi trên graph và trả về dữ liệu.
+## 1. Bài toán nghiên cứu
 
-## Bài toán và phương pháp
+Thông tin về một quy trình học vụ thường nằm rải rác trong quy chế đào tạo, phụ
+lục, hướng dẫn thanh toán và danh mục biểu mẫu. Một câu hỏi như “bảo lưu cần
+nộp đơn ở đâu?” không chỉ cần tìm đoạn văn có từ “bảo lưu”, mà còn phải nối được
+quy trình bảo lưu với đơn vị nhận hồ sơ và tên chính thức của đơn vị đó.
 
-Hệ thống dùng một model encoder-decoder cho hai nhiệm vụ gắn liền nhau:
+Ontology phù hợp với bài toán này vì nó biểu diễn dữ liệu dưới dạng đồ thị có
+quan hệ rõ ràng. Chatbot có thể đi theo các quan hệ giữa quy trình, điều khoản,
+đơn vị, biểu mẫu và quy tắc thay vì tìm một đoạn văn gần nghĩa rồi trả về toàn
+bộ đoạn đó.
 
-1. từ chối câu hỏi mà ontology không thể trả lời trọn vẹn;
-2. sinh một truy vấn SPARQL `SELECT` cho câu hỏi được hỗ trợ.
+Câu hỏi nghiên cứu trung tâm là:
 
-Model không chứa câu trả lời học vụ. Nội dung hướng dẫn, nhãn thực thể, email,
-địa điểm, mức học phí và các literal khác nằm trong ontology và chỉ được lấy ra
-khi backend thực thi SPARQL.
+> Một mô hình encoder–decoder nhỏ có thể chuyển câu hỏi tiếng Việt tự nhiên
+> thành truy vấn chính xác trên ontology, đồng thời từ chối an toàn những câu
+> ontology không thể trả lời hay không?
+
+Phạm vi trọng tâm là các quy trình học vụ. Hệ thống cũng hỗ trợ một số câu hỏi
+liên quan đến học phí, biểu mẫu, chứng chỉ và quy tắc đào tạo khi dữ liệu tương
+ứng có trong ontology. Nó không phải chatbot kiến thức chung.
+
+## 2. Các khái niệm nền tảng
+
+| Khái niệm | Giải thích ngắn gọn |
+|---|---|
+| **Ontology** | Đồ thị mô tả các loại thực thể, thuộc tính và quan hệ trong một miền tri thức. |
+| **RDF triple** | Một sự thật dạng *chủ thể – quan hệ – đối tượng*, ví dụ “bảo lưu – nộp tại – Phòng Công tác Chính trị và Sinh viên”. |
+| **IRI** | Tên định danh duy nhất của một thực thể hoặc quan hệ trong đồ thị. |
+| **Literal** | Giá trị được trả trực tiếp, chẳng hạn nội dung quy định, tên đơn vị, URL hoặc mức học phí. |
+| **SPARQL** | Ngôn ngữ dùng để đặt câu hỏi cho đồ thị RDF, tương tự vai trò của SQL đối với cơ sở dữ liệu quan hệ. |
+| **Mô hình seq2seq** | Mô hình nhận một chuỗi văn bản và sinh một chuỗi khác; ở đây là câu hỏi tiếng Việt → SPARQL. |
+| **Trong miền** | Câu hỏi có thể được trả lời đầy đủ bằng dữ liệu hiện có trong ontology. |
+| **Ngoài miền** | Câu hỏi không liên quan, mơ hồ hoặc yêu cầu dữ liệu ontology không có. |
+
+Model được phép học tên định danh và quan hệ của ontology, nhưng không học thuộc
+nội dung câu trả lời. Nội dung vẫn nằm trong đồ thị và chỉ được lấy ra khi truy
+vấn được thực thi.
+
+## 3. Phương pháp đề xuất
+
+Hệ thống sử dụng một mô hình duy nhất. Với mỗi câu hỏi, model sinh một truy vấn
+SPARQL `SELECT` hoặc chuỗi `không có thông tin`. Backend không dò thực thể bằng
+fuzzy matching, không tự sửa truy vấn và không dùng thêm một model phân loại
+trong/ngoài miền.
 
 ```mermaid
 flowchart LR
-    Q["Câu hỏi tiếng Việt"] --> N["Chuẩn hoá nhẹ"]
-    N --> M["Model seq2seq"]
-    M --> D{"Output"}
+    Q["Câu hỏi tiếng Việt"] --> N["Chuẩn hóa nhẹ"]
+    N --> M["Mô hình seq2seq"]
+    M --> D{"Kết quả sinh"}
     D -- "không có thông tin" --> X["Không có thông tin."]
-    D -- "SELECT ..." --> V["Xác minh SPARQL"]
+    D -- "SPARQL SELECT" --> V["Kiểm tra truy vấn"]
     V -- "không hợp lệ" --> X
-    V -- "hợp lệ" --> O["RDFLib + ontology"]
-    O -- "không có kết quả" --> X
-    O -- "literal" --> R["Định dạng câu trả lời"]
+    V -- "hợp lệ" --> G["Truy vấn đồ thị ontology"]
+    G -- "không có kết quả" --> X
+    G -- "có dữ liệu" --> R["Định dạng câu trả lời"]
 ```
 
-Không có model phân loại thứ hai, fuzzy matching, tự sửa query hoặc logic dò IRI
-trong backend.
+Ví dụ xuyên suốt:
 
-## Ranh giới trong và ngoài miền
+| Giai đoạn | Dữ liệu |
+|---|---|
+| Người dùng | “đăng ký học phần như thế nào?” |
+| Model | Truy vấn quy trình đăng ký học phần và phần nội dung hướng dẫn |
+| Ontology | Nội dung Điều 9 của quy chế đào tạo |
+| Giao diện | Hướng dẫn đăng ký học phần bằng tiếng Việt |
 
-Output model chỉ có hai dạng:
+Nếu câu hỏi là “thời tiết ngày mai thế nào?”, model phải sinh `không có thông
+tin`. Nếu model sinh truy vấn sai cú pháp, sử dụng thao tác không an toàn hoặc
+truy vấn không trả về dữ liệu, backend cũng từ chối thay vì đoán câu trả lời.
 
-```text
-SELECT ?answer WHERE { ... }
+## 4. Đồ thị tri thức học vụ
+
+Ontology được xây dựng từ Quyết định 1052 về đào tạo đại học, các phụ lục về
+chứng chỉ, Quyết định 729 về học phí, hướng dẫn thanh toán học phí và danh mục
+biểu mẫu của nhà trường. Văn bản nguồn quyết định dữ kiện nào được đưa vào đồ
+thị và giới hạn những gì chatbot có thể trả lời.
+
+Một phần đồ thị có hình dạng trừu tượng như sau:
+
+```mermaid
+graph LR
+    P["Quy trình đăng ký học phần"] -->|có hướng dẫn| A["Điều khoản nguồn"]
+    P -->|yêu cầu biểu mẫu| F["Biểu mẫu"]
+    P -->|nộp tại| O["Đơn vị phụ trách"]
+    P -->|được quy định bởi| D["Văn bản chính thức"]
+    A -->|có nội dung| T["Nội dung tiếng Việt"]
+    F -->|có địa chỉ tải| U["URL"]
+    O -->|có tên| L["Nhãn tiếng Việt"]
 ```
 
-```text
-không có thông tin
-```
+Các mũi tên biểu diễn đường đi trong đồ thị. Dữ liệu cuối cùng trả cho người
+dùng là nhãn hoặc giá trị như nội dung, địa điểm, URL và con số; bản thân quan
+hệ chỉ được dùng để tìm tới dữ liệu đó.
 
-Câu ngoài học vụ, câu gần học vụ nhưng ontology thiếu dữ liệu, câu mơ hồ và câu
-trộn nhiều yêu cầu mà có ít nhất một phần không được hỗ trợ đều dùng marker từ
-chối. Hệ thống không trả lời một phần câu hỗn hợp.
+Đồ thị hiện có:
 
-## Ontology
+| Thành phần | Số lượng |
+|---|---:|
+| Bộ ba RDF | 8.345 |
+| Lớp | 43 |
+| Quan hệ giữa các thực thể | 29 |
+| Thuộc tính dữ liệu | 33 |
+| Thực thể có định danh | 858 |
+| Quy trình học vụ | 22 |
+| Chính sách học vụ | 2 |
 
-Nguồn công văn chính thức quyết định dữ liệu và phạm vi trả lời. Ontology dùng
-IRI tiếng Anh ổn định, `rdfs:label@vi` cho tên tiếng Việt chính và
-`skos:altLabel@vi` cho tên gọi thay thế hữu ích. Object property tạo đường đi
-trên graph; label và datatype property là dữ liệu được trả về.
+Mỗi thực thể công khai có tên tiếng Việt; các dữ kiện trả lời được liên kết về
+văn bản nguồn. Chi tiết thiết kế và quy ước đặt tên nằm trong
+[tài liệu ontology](docs/ONTOLOGY.md).
 
-Lớp văn bản nguồn, học phí, biểu mẫu và các bảng quy tắc đã được đối chiếu với
-`NTUdocs`. Ontology canonical hiện có 22 quy trình, 2 chính sách và inventory
-máy đọc được tại `resources/ontology/answer_inventory.json`. Các chủ đề nghỉ
-ốm, học liên thông, cảnh báo và buộc thôi học đã có đường truy vấn về đúng
-provision nguồn.
+## 5. Dataset
 
-Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
+Mỗi bản ghi nối một câu hỏi tiếng Việt với kết quả model cần sinh:
 
-## Dataset
+| Trường | Ví dụ | Vai trò |
+|---|---|---|
+| Câu hỏi | “phòng nào nhận hồ sơ bảo lưu?” | Đầu vào ngôn ngữ tự nhiên |
+| Nhóm truy vấn | Đơn vị tiếp nhận quy trình | Nhóm các câu có cùng logic |
+| Phong cách | Khẩu ngữ | Dạng diễn đạt của câu hỏi |
+| Đích | Một truy vấn SPARQL | Chuỗi model phải sinh |
 
-Dataset hợp nhất nằm tại `resources/dataset/` và có 4.454 câu: 3.645 train,
-402 validation, 407 test. Trong đó 3.627 câu thuộc năm miền trả lời được
-(quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 827 câu ngoài miền
-dùng marker `không có thông tin`. Bốn phong cách `formal`, `neutral`,
-`colloquial`, `noisy` lần lượt có 1.016, 1.153, 1.075 và 1.210 câu.
+Câu ngoài miền dùng cùng hình dạng bản ghi nhưng có đích là `không có thông
+tin`. Vì vậy model học cả truy vấn ontology và giới hạn trả lời trong một nhiệm
+vụ thống nhất.
 
-Train dạy toàn bộ schema và giá trị slot hữu hạn. Validation dùng cách diễn đạt
-chưa thấy để chọn checkpoint; test được đóng băng và chỉ dùng cho đánh giá cuối.
-Mọi họ truy vấn đều có mặt trong cả ba split, nhưng câu hỏi đã chuẩn hóa và câu
-gần trùng cùng họ không được đi xuyên split.
+### 5.1. Quy mô
 
-![Phân bố train, validation và test](reports/figures/dataset-splits.svg)
+| Tập | Số câu | Mục đích |
+|---|---:|---|
+| Train | 3.645 | Dạy model các quan hệ, thực thể và cách diễn đạt |
+| Validation | 402 | Chọn checkpoint mà không nhìn vào test |
+| Test | 407 | Đánh giá cuối cùng bằng cách diễn đạt chưa xuất hiện trong train |
+| **Tổng** | **4.454** | **51 nhóm truy vấn** |
+
+| Miền câu hỏi | Số câu |
+|---|---:|
+| Quy trình học vụ | 2.552 |
+| Học phí | 363 |
+| Quy tắc học vụ | 295 |
+| Chứng chỉ | 271 |
+| Biểu mẫu | 146 |
+| Ngoài miền | 827 |
+
+![Số câu hỏi theo tập dữ liệu](reports/figures/dataset-splits.svg)
+
+### 5.2. Phong cách ngôn ngữ
+
+Dataset không chỉ chứa câu hỏi chuẩn. Bốn phong cách được sử dụng để mô phỏng
+cách sinh viên thực sự đặt câu hỏi:
+
+| Phong cách | Mô tả | Số câu |
+|---|---|---:|
+| Trang trọng | Câu đầy đủ, gần văn bản hành chính | 1.016 |
+| Thông thường | Cách hỏi trung tính hằng ngày | 1.153 |
+| Khẩu ngữ | “tui”, “sao giờ”, cách nói hội thoại | 1.075 |
+| Noisy | Viết tắt, thiếu dấu hoặc lỗi gõ nhưng vẫn còn nghĩa | 1.210 |
 
 ![Phân bố phong cách câu hỏi](reports/figures/registers.svg)
 
-Phân bố cùng checksum được sinh trong `resources/dataset/manifest.json`
-và `reports/dataset.json`; contract riêng cho 142 target quy trình nằm trong
-`reports/procedure-dataset.json`. Các câu người dùng thực tế được giữ tại
-`resources/cases/user_queries.txt`; cả bảy câu đều xuất hiện đúng một lần trong
-test để giữ vai trò hồi quy người dùng.
+Các câu trùng sau chuẩn hóa và các câu gần trùng trong cùng nhóm truy vấn không
+được đi xuyên qua train, validation và test. Mọi truy vấn đích đều được kiểm tra
+cú pháp, độ an toàn và khả năng trả về dữ liệu trên ontology trước khi đưa vào
+dataset. Chi tiết nằm trong [tài liệu dataset](docs/DATASET.md).
 
-Ngoài test đã khóa, `resources/cases/procedure_language.jsonl` có 308 câu chấp
-nhận production (220 câu quy trình và 88 câu phải từ chối). Bộ này dùng để bắt
-lỗi hồi quy ngôn ngữ cơ bản sau huấn luyện, không được xem là benchmark khoa
-học độc lập hay dùng để chọn checkpoint.
+## 6. Thiết kế thực nghiệm
 
-Chi tiết nằm tại [docs/DATASET.md](docs/DATASET.md).
+Ba mô hình encoder–decoder được so sánh:
 
-## Mô hình và đánh giá
+- **BARTpho-syllable:** mô hình BART được tiền huấn luyện cho tiếng Việt;
+- **ViT5-base:** mô hình T5 chuyên cho tiếng Việt;
+- **T5Gemma2:** mô hình T5 thế hệ mới, được tiền huấn luyện đa ngôn ngữ.
 
-Ba model encoder-decoder được benchmark trên cùng dataset và giao thức là
-`vinai/bartpho-syllable`, `VietAI/vit5-base` và
-`google/t5gemma-2-270m-270m`. Kết quả test quyết định checkpoint duy nhất được
-đưa vào runtime.
+Cả ba nhận cùng dữ liệu, batch size 8, tối đa 20 epoch, greedy decoding và đúng
+một seed. PEFT LoRA được dùng để chỉ cập nhật một phần nhỏ tham số; checkpoint
+tốt nhất được chọn bằng validation rồi mới chạy test. Việc đánh giá không dùng
+BLEU hoặc ROUGE vì một câu SPARQL chỉ khác vài ký tự vẫn có thể truy vấn sai dữ
+liệu hoàn toàn.
 
-Mỗi model được huấn luyện bằng PEFT LoRA trên attention và FFN tương ứng của
-encoder/decoder. Base pretrained được đóng băng trong lúc train; adapter tốt
-nhất được merge thành một checkpoint Transformers độc lập trước khi benchmark
-và chuyển sang CTranslate2. Runtime vì vậy vẫn chỉ nạp một model, không phụ
-thuộc PEFT.
+### 6.1. Tiêu chí đánh giá
 
-Metric chính trong miền là Answer Exact sau khi thực thi SPARQL. Phần ngoài
-miền đo tỷ lệ sinh đúng marker, false acceptance và khả năng từ chối câu hỗn
-hợp. System Answer Exact được báo cáo riêng cho trong miền, ngoài miền và toàn
-bộ test. Chỉ công bố số liệu sau khi checkpoint được chọn bằng validation và
-chạy đúng một lần trên test đã khóa.
+| Tiêu chí | Câu hỏi mà tiêu chí trả lời |
+|---|---|
+| Parse rate | Chuỗi model sinh có phải SPARQL hợp lệ không? |
+| Answer Exact | Kết quả truy vấn có trùng hoàn toàn đáp án tham chiếu không? |
+| Result F1 | Nếu chưa đúng hoàn toàn, model lấy đúng được bao nhiêu dữ liệu? |
+| Safe Rejection | Câu ngoài miền có kết thúc bằng “Không có thông tin.” không? |
+| System Exact | Nội dung cuối cùng trên giao diện có đúng hoàn toàn không? |
 
-Giao thức nằm tại [docs/TRAINING.md](docs/TRAINING.md) và định nghĩa metric nằm
-tại [docs/EVALUATION.md](docs/EVALUATION.md).
+`System Exact` phản ánh trực tiếp trải nghiệm người dùng. `Answer Exact` giúp
+phân biệt lỗi truy vấn với lỗi định dạng giao diện. Định nghĩa toán học và cách
+so sánh tập kết quả nằm trong [giao thức đánh giá](docs/EVALUATION.md).
 
-### Kết quả benchmark
-
-Mỗi model chạy đúng một seed và cùng giao thức. Answer Exact so kết quả SPARQL
-đã thực thi; System Exact so phản hồi cuối người dùng nhận được. T5Gemma2 đạt
-cao nhất trên validation và test nên được chọn cho runtime.
+## 7. Kết quả
 
 | Model | Validation Answer Exact | Test Answer Exact | Test Result F1 | Test System Exact |
 |---|---:|---:|---:|---:|
@@ -152,99 +228,87 @@ cao nhất trên validation và test nên được chọn cho runtime.
 
 ![So sánh ba mô hình](reports/figures/model-comparison.svg)
 
-![Đường học trên validation](reports/figures/validation-curve.svg)
+T5Gemma2 đạt kết quả cao nhất trên cả validation và test nên được chọn để triển
+khai. Trên riêng 185 câu hỏi quy trình học vụ, model đạt 96,22% Answer Exact.
+Đây là nhóm quan trọng nhất của đề tài và cũng là nhóm có mật độ dữ liệu huấn
+luyện cao nhất.
 
-![Train loss](reports/figures/training-loss.svg)
+![Độ chính xác theo phong cách câu hỏi](reports/figures/test-by-register.svg)
 
-Theo phong cách câu hỏi, artifact Transformers T5Gemma2 đạt 98,0% `formal`,
-93,33% `neutral`, 97,83% `colloquial` và 95,45% `noisy` trên riêng nhóm quy
-trình. Trên toàn bộ web test sau chuyển đổi CT2, tỷ lệ phản hồi khớp tương ứng
-là 95,56%, 95,61%, 96,43% và 85,71%. Nhóm noisy vẫn là điểm yếu chính.
+Đường validation cho thấy T5Gemma2 học nhanh hơn hai model tiếng Việt trong cấu
+hình thực nghiệm này. Kết quả không có nghĩa model đa ngôn ngữ luôn tốt hơn;
+nó chỉ cho thấy T5Gemma2 phù hợp hơn với dataset và nhiệm vụ sinh SPARQL đang
+xét.
 
-### Kết quả triển khai
+![Quá trình học trên validation](reports/figures/validation-curve.svg)
 
-Checkpoint T5Gemma2 đã merge LoRA được chuyển sang CTranslate2 int8. Khi chạy
-CPU trên 407 câu test, artifact đạt System Exact 92,87%, p50 300 ms và p95
-864 ms mỗi request. Lượng tử hóa làm đổi 9 output so với Transformers: 4 ca
-tốt lên, 2 ca xấu đi và 3 ca vẫn sai. Probe tám request đồng thời trả thành
-công 8/8, thông lượng 3,26 request/giây.
+## 8. Triển khai
 
-Các JSON nguồn của bảng và biểu đồ nằm trong `reports/` và
-`artifacts/model-benchmark/`; báo cáo web chi tiết nằm tại
-`artifacts/e2e_web_benchmark.json` khi tái tạo trong môi trường nghiên cứu.
+Checkpoint T5Gemma2 được chuyển sang CTranslate2 và lượng tử hóa int8 để chạy
+gọn hơn trên CPU. CTranslate2 là bộ máy suy luận tối ưu cho model sinh chuỗi;
+nó không thay đổi ontology hoặc logic trả lời.
 
-## Kiến trúc phần mềm
+| Chỉ số end-to-end | Kết quả |
+|---|---:|
+| Câu test trả HTTP 200 | 407/407 |
+| Câu trả lời cuối chính xác | 378/407 (92,87%) |
+| Trung vị độ trễ CPU | 300 ms |
+| 95% request nhanh hơn | 864 ms |
+| Probe đồng thời | 8/8 request thành công |
 
-```text
-resources/
-├── ontology/ontology.ttl
-├── cases/user_queries.txt
-└── dataset/
-src/ontchatbot/
-├── runtime/      # inference, SPARQL, RDFLib, renderer và API
-├── research/     # dataset, fine-tuning, benchmark và báo cáo
-├── tools/        # tokenizer và chuyển đổi artifact
-├── cli/          # entry point dòng lệnh
-└── settings.py
-docs/             # concept và đặc tả kỹ thuật
-reports/          # JSON nguồn và biểu đồ được sinh lại
-tests/            # kiểm tra theo package
-```
+Artifact Transformers và CTranslate2 được công bố tại
+[vpthinh19/ntu-ontology-chatbot](https://huggingface.co/vpthinh19/ntu-ontology-chatbot).
 
-Runtime production chỉ cần một artifact seq2seq đã chuyển đổi, tokenizer,
-RDFLib và ontology. Thiết kế module chi tiết nằm tại
-[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md); contract triển khai nằm tại
-[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+## 9. Giới hạn
 
-## Tái lập nghiên cứu
+- Câu noisy là nhóm khó nhất; phiên bản CTranslate2 đạt 85,71% trên toàn bộ
+  nhóm này.
+- Safe Rejection ngoài miền của T5Gemma2 đạt 92,22%, vẫn có trường hợp câu gần
+  miền bị model trả lời sai thay vì từ chối.
+- Tập test gồm 407 câu, phù hợp để so sánh trong phạm vi đề tài nhưng chưa đại
+  diện cho mọi cách sinh viên có thể diễn đạt.
+- Model học schema của ontology. Khi thực thể hoặc quan hệ thay đổi đáng kể,
+  dataset phải được cập nhật và model cần được huấn luyện lại.
+- Hệ thống không suy đoán thông tin không có nguồn và không trả lời kiến thức
+  ngoài phạm vi học vụ đã mô hình hóa.
 
-Trình tự tái lập là: xây ontology từ tài liệu chính thức, audit semantic index,
-lập inventory khả năng trả lời, lập catalogue SPARQL có kết quả, xác minh
-dataset hợp nhất, kiểm tra tokenizer, fine-tune model theo giao thức đã khóa,
-benchmark checkpoint được chọn và sinh báo cáo từ JSON máy đọc.
+## 10. Tái lập và sử dụng
 
-Không giữ số liệu giả, không tái sử dụng benchmark hết hiệu lực và không dùng
-test để chọn checkpoint.
+Project yêu cầu Linux và Python 3.12. Thực nghiệm huấn luyện được thực hiện trên
+NVIDIA RTX 4050 Laptop 6 GB với PyTorch 2.13 và Transformers 5.14. Runtime CPU
+dùng CTranslate2 4.8, RDFLib 7.6 và không cần Transformers.
 
-### Môi trường thực nghiệm
-
-- Fedora Linux, Python 3.12;
-- NVIDIA GeForce RTX 4050 Laptop GPU 6 GB;
-- PyTorch 2.13.0 + CUDA 13.0, Transformers 5.14.1;
-- CTranslate2 4.8.1, RDFLib 7.6 và OWL-RL 7.6.
-
-Tạo môi trường huấn luyện và chạy kiểm tra:
+### Chạy chatbot bằng artifact đã công bố
 
 ```bash
-uv sync --extra train
+git clone https://github.com/vpthinh19/ontology-chatbot.git
+cd ontology-chatbot
+uv sync --extra inference
+
+uv run hf download vpthinh19/ntu-ontology-chatbot \
+  --include 'ctranslate2/*' --local-dir model
+
+uv run serve_sparql \
+  --model-dir model/ctranslate2 \
+  --device cpu --compute-type int8 \
+  --host 127.0.0.1 --port 8000
+```
+
+Mở `http://127.0.0.1:8000` để sử dụng giao diện web.
+
+### Kiểm tra dữ liệu và phần mềm
+
+```bash
 uv run validate_sparql_dataset
 uv run pytest
 ```
 
-Fine-tune một model hoặc sinh lại toàn bộ báo cáo:
+Các tài liệu chuyên sâu:
 
-```bash
-uv run train_sparql \
-  --model t5gemma2 \
-  --output-dir artifacts/model-benchmark \
-  --epochs 20 --seed 42 --save-model --benchmark-after-training \
-  --local-files-only
-
-uv run generate_reports
-```
-
-Chuyển checkpoint đã chọn và chạy webapp:
-
-```bash
-uv run convert_sparql_model \
-  --model-dir artifacts/model-benchmark/t5gemma2/model \
-  --output-dir artifacts/deployment/t5gemma2-production \
-  --quantization int8
-
-uv run --extra inference serve_sparql \
-  --model-dir artifacts/deployment/t5gemma2-production \
-  --device cpu --compute-type int8 --host 127.0.0.1 --port 8000
-```
-
-Mở `http://127.0.0.1:8000`. Lệnh, cấu trúc artifact và các giới hạn triển khai
-được mô tả chi tiết tại [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+- [Concept và ranh giới hệ thống](docs/CONCEPT.md)
+- [Thiết kế ontology](docs/ONTOLOGY.md)
+- [Dataset và cách chia tập](docs/DATASET.md)
+- [Kiến trúc phần mềm](docs/ARCHITECTURE.md)
+- [Giao thức huấn luyện](docs/TRAINING.md)
+- [Tiêu chí đánh giá](docs/EVALUATION.md)
+- [Triển khai](docs/DEPLOYMENT.md)
