@@ -8,7 +8,9 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Pull requests may discard obsolete checks. A main-branch run may already be
+  # publishing immutable release assets and must be allowed to finish.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   IMAGE: vpt19/ontchatbot
