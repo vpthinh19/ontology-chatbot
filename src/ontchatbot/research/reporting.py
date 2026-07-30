@@ -171,7 +171,7 @@ def build_model_report(
     *,
     dataset_dir: Path = DATASET_DIR,
 ) -> dict[str, Any] | None:
-    """Read independently reloaded model artifacts and their training logs."""
+    """Read the locked three-model benchmark and its training logs."""
 
     names = ("bartpho", "vit5", "t5gemma2")
     release = load_release(dataset_dir)
@@ -180,7 +180,7 @@ def build_model_report(
         "benchmark": len(release["test"]),
     }
     dataset_manifest_sha256 = sha256_file(dataset_dir / "manifest.json")
-    required_files = ("metrics.json", "validation_metrics.json", "benchmark_metrics.json")
+    required_files = ("metrics.json", "benchmark_metrics.json")
     if not all(
         (models_dir / name / filename).is_file()
         for name in names
@@ -193,31 +193,16 @@ def build_model_report(
         training_report = json.loads(
             (directory / "metrics.json").read_text(encoding="utf-8")
         )
-        validation = json.loads(
-            (directory / "validation_metrics.json").read_text(encoding="utf-8")
-        )
         test = json.loads((directory / "benchmark_metrics.json").read_text(encoding="utf-8"))
-        if not (
-            _verified_artifact_evaluation(
-                directory,
-                name,
-                validation,
-                "validation",
-                expected_records["validation"],
-                dataset_manifest_sha256,
-            )
-            and _verified_artifact_evaluation(
-                directory,
-                name,
-                test,
-                "benchmark",
-                expected_records["benchmark"],
-                dataset_manifest_sha256,
-            )
-        ):
-            return None
         training = training_report["training"]
-        if training.get("dataset_manifest_sha256") != dataset_manifest_sha256:
+        validation = training_report
+        if not _verified_locked_benchmark(
+            directory,
+            training_report,
+            test,
+            expected_records=expected_records,
+            dataset_manifest_sha256=dataset_manifest_sha256,
+        ):
             return None
         loss_curve = [
             {"epoch": item["epoch"], "value": item["loss"]}
@@ -247,9 +232,8 @@ def build_model_report(
                         for point in loss_curve + validation_curve
                     ),
                 ),
-                "artifact_roundtrip_verified": True,
+                "merged_artifact": training.get("merged_artifact") is True,
             },
-            "inference": validation.get("inference"),
             "curves": {"train_loss": loss_curve, "validation_answer_exact": validation_curve},
         }
     if len({model["test"]["count"] for model in models.values()}) != 1:
@@ -267,28 +251,23 @@ def build_model_report(
     }
 
 
-def _verified_artifact_evaluation(
+def _verified_locked_benchmark(
     directory: Path,
-    model: str,
-    report: Mapping[str, Any],
-    suite: str,
-    expected_records: int,
+    training_report: Mapping[str, Any],
+    benchmark_report: Mapping[str, Any],
+    *,
+    expected_records: Mapping[str, int],
     dataset_manifest_sha256: str,
 ) -> bool:
-    expected = {
-        "backend": "transformers",
-        "load_method": "from_pretrained",
-        "model": model,
-        "suite": suite,
-        "dataset_manifest_sha256": dataset_manifest_sha256,
-    }
-    inference = report.get("inference", {})
-    overall = report.get("overall", {})
+    training = training_report.get("training", {})
     return (
         (directory / "model" / "config.json").is_file()
-        and report.get("artifact_evaluation") == expected
-        and inference.get("records") == overall.get("count")
-        and overall.get("count") == expected_records
+        and training.get("dataset_manifest_sha256") == dataset_manifest_sha256
+        and training.get("merged_artifact") is True
+        and training_report.get("overall", {}).get("count")
+        == expected_records["validation"]
+        and benchmark_report.get("overall", {}).get("count")
+        == expected_records["benchmark"]
     )
 
 
@@ -317,11 +296,12 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
     )
     _write_metric_chart(
         figures / "model-comparison.svg",
-        "Chất lượng artifact trên validation và in-domain test",
+        "Chất lượng ba mô hình trên validation và test",
         {
             name: {
                 "validation answer exact": value["validation"]["answer_exact_rate"],
                 "test answer exact": value["test"]["answer_exact_rate"],
+                "test system exact": value["test"]["system_answer_exact_rate"],
                 "test result F1": value["test"]["result_f1"],
             }
             for name, value in models.items()
@@ -683,7 +663,7 @@ def main() -> None:
     write_manifest(report, args.dataset_dir / "manifest.json")
     write_public_reports(report, output_dir=args.output_dir)
     model_report = build_model_report(
-        PROJECT_ROOT / "artifacts/models",
+        PROJECT_ROOT / "artifacts/model-benchmark",
         dataset_dir=args.dataset_dir,
     )
     if model_report is not None:
