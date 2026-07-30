@@ -595,8 +595,8 @@ def test_final_release_matrix_and_frozen_evaluation_checksums() -> None:
         "val": 402,
         "test": 407,
     }
-    val_payload = Path("resources/dataset/main/val.jsonl").read_bytes()
-    test_payload = Path("resources/dataset/main/test.jsonl").read_bytes()
+    val_payload = Path("resources/dataset/val.jsonl").read_bytes()
+    test_payload = Path("resources/dataset/test.jsonl").read_bytes()
     assert hashlib.sha256(val_payload).hexdigest() == FROZEN_VAL_SHA256
     assert hashlib.sha256(test_payload).hexdigest() == FROZEN_TEST_SHA256
 

@@ -15,7 +15,13 @@ from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
 from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
-from ..settings import DATASET_DIR, ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
+from ..settings import (
+    DATASET_DIR,
+    ONTOLOGY_NS,
+    ONTOLOGY_PATH,
+    PROJECT_ROOT,
+    REJECTION_CHECKLIST_PATH,
+)
 from .catalogue import load_catalogue
 from .coverage import assess_coverage, load_coverage_requirements
 from .dataset import (
@@ -484,8 +490,7 @@ def _build_training_readiness(
 
 
 def _load_rejection_checklist(dataset_dir: Path) -> dict[str, list[str]]:
-    path = Path(dataset_dir).parent.parent / "cases" / "rejection_checklist.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(REJECTION_CHECKLIST_PATH.read_text(encoding="utf-8"))
 
 
 def _coverage_gap_count(value: object) -> int:

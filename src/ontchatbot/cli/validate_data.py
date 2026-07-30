@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from ..settings import DATASET_DIR
+from ..settings import DATASET_DIR, REJECTION_CHECKLIST_PATH
 from ..research.catalogue import load_catalogue
 from ..research.coverage import (
     assess_coverage,
@@ -18,8 +18,7 @@ from ..runtime.sparql import load_ontology
 
 
 def _load_rejection_checklist(dataset_dir: Path) -> dict[str, list[str]]:
-    path = Path(dataset_dir).parent.parent / "cases" / "rejection_checklist.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    return json.loads(REJECTION_CHECKLIST_PATH.read_text(encoding="utf-8"))
 
 
 def main() -> None:

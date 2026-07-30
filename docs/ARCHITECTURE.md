@@ -16,7 +16,7 @@ flowchart TB
     F --> UI
     R --> UI
 
-    DS["dataset/main"] --> TR["Seq2SeqTrainer + PEFT LoRA"]
+    DS["dataset"] --> TR["Seq2SeqTrainer + PEFT LoRA"]
     TR --> MG["Merge adapter vào base model"]
     MG --> HF["Checkpoint Hugging Face độc lập"]
     HF --> BM["Benchmark Transformers"]

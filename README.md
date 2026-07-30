@@ -88,7 +88,7 @@ Chi tiết nằm tại [docs/ONTOLOGY.md](docs/ONTOLOGY.md).
 
 ## Dataset
 
-Dataset hợp nhất nằm tại `resources/dataset/main/` và có 4.454 câu: 3.645 train,
+Dataset hợp nhất nằm tại `resources/dataset/` và có 4.454 câu: 3.645 train,
 402 validation, 407 test. Trong đó 3.627 câu thuộc năm miền trả lời được
 (quy trình, học phí, quy tắc học vụ, chứng chỉ, biểu mẫu) và 827 câu ngoài miền
 dùng marker `không có thông tin`. Bốn phong cách `formal`, `neutral`,
@@ -103,7 +103,7 @@ gần trùng cùng họ không được đi xuyên split.
 
 ![Phân bố phong cách câu hỏi](reports/figures/registers.svg)
 
-Phân bố cùng checksum được sinh trong `resources/dataset/main/manifest.json`
+Phân bố cùng checksum được sinh trong `resources/dataset/manifest.json`
 và `reports/dataset.json`; contract riêng cho 142 target quy trình nằm trong
 `reports/procedure-dataset.json`. Các câu người dùng thực tế được giữ tại
 `resources/cases/user_queries.txt`; cả bảy câu đều xuất hiện đúng một lần trong
@@ -179,7 +179,7 @@ Các JSON nguồn của bảng và biểu đồ nằm trong `reports/` và
 resources/
 ├── ontology/ontology.ttl
 ├── cases/user_queries.txt
-└── dataset/main/
+└── dataset/
 src/ontchatbot/
 ├── runtime/      # inference, SPARQL, RDFLib, renderer và API
 ├── research/     # dataset, fine-tuning, benchmark và báo cáo

@@ -13,7 +13,7 @@ def test_public_docs_describe_current_dataset_release() -> None:
         "README.md",
         "docs/DATASET.md",
         "docs/TRAINING.md",
-        "resources/dataset/main/README.md",
+        "resources/dataset/README.md",
         "reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)

@@ -41,7 +41,7 @@ câu trả lời. Các quyết định không hỗ trợ được ghi bằng tr�
 lý do. Inventory hiện có 2.953 mục `supported`; 259 label của bản ghi kỹ thuật
 nội bộ cùng năm quyết định nghiệp vụ không hỗ trợ được đánh dấu `excluded`.
 
-Query catalogue canonical nằm tại `resources/dataset/main/catalogue.jsonl`, có
+Query catalogue canonical nằm tại `resources/dataset/catalogue.jsonl`, có
 51 họ truy vấn và phủ toàn bộ các mục `supported`. Model chỉ sinh IRI của thực
 thể người dùng có thể nhắc tới. Các bản ghi kỹ thuật như dòng quy đổi chứng chỉ
 hoặc dòng học phí được SPARQL tìm từ chứng chỉ, điểm, ngành, khóa và các điều
