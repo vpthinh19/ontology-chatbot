@@ -12,6 +12,7 @@ concurrency:
 
 env:
   IMAGE: vpt19/ontchatbot
+  HF_CT2_REPO: vpthinh19/ntu-ontology-t5gemma-2
 
 jobs:
   test:
@@ -82,11 +83,7 @@ jobs:
       - id: model
         name: Resolve the released SPARQL CTranslate2 model
         run: |
-          REPO="${{ vars.HF_CT2_REPO }}"
-          if [ -z "$REPO" ]; then
-            echo "::error::Set the repository variable HF_CT2_REPO to the converted SPARQL model"
-            exit 1
-          fi
+          REPO="${{ env.HF_CT2_REPO }}"
           REVISION=$(curl -sf "https://huggingface.co/api/models/$REPO" | jq -r .sha)
           if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
             echo "::error::Failed to resolve HF Hub revision"

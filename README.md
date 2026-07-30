@@ -308,7 +308,7 @@ nó không thay đổi ontology hoặc logic trả lời.
 | Probe đồng thời | 8/8 request thành công |
 
 Artifact Transformers và CTranslate2 được công bố tại
-[vpthinh19/ntu-ontology-chatbot](https://huggingface.co/vpthinh19/ntu-ontology-chatbot).
+[vpthinh19/ntu-ontology-t5gemma-2](https://huggingface.co/vpthinh19/ntu-ontology-t5gemma-2).
 
 ## 9. Giới hạn
 
@@ -336,7 +336,7 @@ git clone https://github.com/vpthinh19/ontology-chatbot.git
 cd ontology-chatbot
 uv sync --extra inference
 
-uv run hf download vpthinh19/ntu-ontology-chatbot \
+uv run hf download vpthinh19/ntu-ontology-t5gemma-2 \
   --include 'ctranslate2/*' --local-dir model
 
 uv run serve_sparql \

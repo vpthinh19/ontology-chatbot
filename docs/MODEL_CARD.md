@@ -53,7 +53,7 @@ gần miền vẫn là giới hạn chính.
 ```python
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-repo = "vpthinh19/ntu-ontology-chatbot"
+repo = "vpthinh19/ntu-ontology-t5gemma-2"
 tokenizer = AutoTokenizer.from_pretrained(repo, fix_mistral_regex=False)
 model = AutoModelForSeq2SeqLM.from_pretrained(repo)
 

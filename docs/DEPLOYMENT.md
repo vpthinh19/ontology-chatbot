@@ -3,7 +3,7 @@
 Model triển khai là T5Gemma2 sau khi hợp nhất LoRA, chuyển sang CTranslate2 int8
 và đánh giá end-to-end trên 407 câu test. Cả checkpoint Transformers và model
 CTranslate2 được công bố tại
-<https://huggingface.co/vpthinh19/ntu-ontology-chatbot>.
+<https://huggingface.co/vpthinh19/ntu-ontology-t5gemma-2>.
 
 ## Mô hình triển khai
 
@@ -48,7 +48,7 @@ CLI chỉ nhận một `--model-dir`, device, compute type, log level, host và 
 Không có model gate hoặc threshold thứ hai.
 
 ```bash
-uv run --extra inference hf download vpthinh19/ntu-ontology-chatbot \
+uv run --extra inference hf download vpthinh19/ntu-ontology-t5gemma-2 \
   --include 'ctranslate2/*' --local-dir artifacts/huggingface
 
 uv run --extra inference serve_sparql \
