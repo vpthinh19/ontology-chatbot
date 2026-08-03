@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 import math
+import os
 from collections import Counter
 from html import escape
 from pathlib import Path
@@ -13,7 +14,6 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
-from ..runtime.sparql import load_ontology
 from ..runtime.text import normalize_model_input
 from ..settings import (
     DATASET_DIR,
@@ -143,12 +143,17 @@ def write_public_reports(
     output_dir: Path,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
+    write_json_report(report, output_dir / "dataset.json")
+    _write_dataset_figures(report, output_dir=output_dir)
+
+
+def _write_dataset_figures(
+    report: Mapping[str, Any],
+    *,
+    output_dir: Path,
+) -> None:
     figures = output_dir / "figures"
     figures.mkdir(parents=True, exist_ok=True)
-    (output_dir / "dataset.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
     split_values = {
         split: report["dataset"]["splits"][split]["records"]
         for split in REQUIRED_SPLITS
@@ -170,6 +175,22 @@ def write_public_reports(
         "Đặc trưng SPARQL theo train / validation / test",
         report["dataset"]["query_features_by_split"],
     )
+
+
+def write_consistency_snapshot(
+    snapshot: Any,
+    *,
+    paths: Any,
+    reports_dir: Path,
+) -> None:
+    """Write only the derived artifacts represented by a validated snapshot."""
+
+    write_json_report(snapshot.inventory, paths.inventory)
+    write_json_report(snapshot.manifest, paths.manifest)
+    write_json_report(snapshot.dataset_report, paths.dataset_report)
+    write_json_report(snapshot.procedure_report, paths.procedure_report)
+    write_json_report(snapshot.provenance, paths.provenance)
+    _write_dataset_figures(snapshot.dataset_report, output_dir=reports_dir)
 
 
 def build_model_report(
@@ -337,9 +358,32 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
     )
 
 
-def write_manifest(report: Mapping[str, Any], path: Path) -> None:
+def write_json_report(payload: Mapping[str, Any], path: Path) -> None:
+    """Write a JSON report using the repository's deterministic format."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def build_manifest(
+    report: Mapping[str, Any],
+    *,
+    manifest_path: Path,
+    ontology_path: Path,
+) -> dict[str, Any]:
+    """Build a dataset manifest whose paths resolve from the manifest itself."""
+
     dataset = report["dataset"]
-    manifest = {
+    ontology_relative = Path(
+        os.path.relpath(
+            Path(ontology_path).resolve(),
+            start=Path(manifest_path).parent.resolve(),
+        )
+    ).as_posix()
+    return {
         "schema": {
             "format": "jsonl",
             "fields": ["id", "query_id", "register", "input", "target"],
@@ -385,11 +429,157 @@ def write_manifest(report: Mapping[str, Any], path: Path) -> None:
         },
         "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
         "ontology": {
-            "path": "../../ontology/ontology.ttl",
+            "path": ontology_relative,
             "sha256": report["sha256"]["ontology.ttl"],
         },
     }
-    path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def write_manifest(
+    report: Mapping[str, Any],
+    path: Path,
+    *,
+    ontology_path: Path = ONTOLOGY_PATH,
+) -> None:
+    manifest = build_manifest(
+        report,
+        manifest_path=path,
+        ontology_path=ontology_path,
+    )
+    write_json_report(manifest, path)
+
+
+def build_procedure_dataset_report(
+    release: Mapping[str, list[dict[str, str]]],
+    *,
+    dataset_dir: Path = DATASET_DIR,
+) -> dict[str, Any]:
+    """Derive the academic-procedure coverage report from release rows."""
+
+    procedure_rows = {
+        split: [
+            row
+            for row in release[split]
+            if row["query_id"].startswith("procedure-")
+        ]
+        for split in REQUIRED_SPLITS
+    }
+    train_target_counts = Counter(row["target"] for row in procedure_rows["train"])
+    instruction_targets = {
+        row["target"]
+        for row in procedure_rows["train"]
+        if row["query_id"] == "procedure-instruction"
+    }
+
+    split_reports: dict[str, Any] = {}
+    for split in REQUIRED_SPLITS:
+        rows = procedure_rows[split]
+        target_counts = Counter(row["target"] for row in rows)
+        register_counts = Counter(
+            len({row["register"] for row in rows if row["target"] == target})
+            for target in target_counts
+        )
+        no_information_records = sum(
+            row["query_id"] == "no-information" for row in release[split]
+        )
+        split_reports[split] = {
+            "records": len(release[split]),
+            "procedure_records": len(rows),
+            "no_information_records": no_information_records,
+            "procedure_to_no_information_ratio": round(
+                len(rows) / no_information_records,
+                6,
+            ),
+            "procedure_targets": len(target_counts),
+            "samples_per_target_histogram": {
+                str(count): frequency
+                for count, frequency in sorted(Counter(target_counts.values()).items())
+            },
+            "registers_per_target_histogram": {
+                str(count): frequency
+                for count, frequency in sorted(register_counts.items())
+            },
+            "sha256": sha256_file(Path(dataset_dir) / f"{split}.jsonl"),
+        }
+
+    direct_counts = Counter(
+        row["target"]
+        for row in procedure_rows["train"]
+        if row["query_id"] == "procedure-instruction"
+    )
+    overview_counts = Counter(
+        row["target"]
+        for row in procedure_rows["train"]
+        if row["query_id"] == "procedure-overview"
+    )
+    course_registration_target = (
+        "SELECT ?answer WHERE { :CourseRegistrationProcedure "
+        ":instructionProvision ?part . ?part :officialText ?answer . }"
+    )
+
+    return {
+        "scope": "academic-procedure",
+        "procedure_target_count": len(train_target_counts),
+        "instruction_target_count": len(instruction_targets),
+        "splits": split_reports,
+        "contracts": {
+            "every_train_target_has_at_least_ten_samples": all(
+                count >= 10 for count in train_target_counts.values()
+            ),
+            "every_train_target_has_all_four_registers": all(
+                len(
+                    {
+                        row["register"]
+                        for row in procedure_rows["train"]
+                        if row["target"] == target
+                    }
+                )
+                == len(REGISTER_ORDER)
+                for target in train_target_counts
+            ),
+            "every_instruction_target_has_at_least_thirty_samples": all(
+                train_target_counts[target] >= 30 for target in instruction_targets
+            ),
+            "every_instruction_target_has_at_least_twenty_six_direct_questions": all(
+                direct_counts[target] >= 26 for target in instruction_targets
+            ),
+            "every_instruction_target_has_at_least_four_overview_questions": all(
+                overview_counts[target] >= 4 for target in instruction_targets
+            ),
+            "course_registration_instruction_samples": train_target_counts[
+                course_registration_target
+            ],
+            "every_target_is_present_in_val": set(train_target_counts)
+            <= {row["target"] for row in procedure_rows["val"]},
+            "every_target_is_present_in_test": set(train_target_counts)
+            <= {row["target"] for row in procedure_rows["test"]},
+            "every_instruction_target_has_both_question_types_in_val": (
+                _instruction_targets_have_both_question_types(
+                    procedure_rows["val"], instruction_targets
+                )
+            ),
+            "every_instruction_target_has_both_question_types_in_test": (
+                _instruction_targets_have_both_question_types(
+                    procedure_rows["test"], instruction_targets
+                )
+            ),
+        },
+    }
+
+
+def _instruction_targets_have_both_question_types(
+    rows: Sequence[Mapping[str, str]],
+    instruction_targets: set[str],
+) -> bool:
+    return all(
+        {
+            row["query_id"]
+            for row in rows
+            if row["target"] == target
+        }
+        >= {"procedure-instruction", "procedure-overview"}
+        for target in instruction_targets
+    )
 
 
 def _ontology_summary(graph: Graph) -> dict[str, Any]:
@@ -658,15 +848,21 @@ def _parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = _parse_args()
-    release = load_release(args.dataset_dir)
-    report = build_dataset_report(
-        release,
-        load_ontology(args.ontology),
+    from .consistency import ArtifactPaths, build_consistency_snapshot
+
+    paths = ArtifactPaths(
+        inventory=args.ontology.parent / "answer_inventory.json",
+        manifest=args.dataset_dir / "manifest.json",
+        dataset_report=args.output_dir / "dataset.json",
+        procedure_report=args.output_dir / "procedure-dataset.json",
+        provenance=args.output_dir / "provenance.json",
+    )
+    snapshot = build_consistency_snapshot(
         dataset_dir=args.dataset_dir,
         ontology_path=args.ontology,
+        paths=paths,
     )
-    write_manifest(report, args.dataset_dir / "manifest.json")
-    write_public_reports(report, output_dir=args.output_dir)
+    write_consistency_snapshot(snapshot, paths=paths, reports_dir=args.output_dir)
     model_report = build_model_report(
         PROJECT_ROOT / "artifacts/model-benchmark",
         dataset_dir=args.dataset_dir,
@@ -675,7 +871,11 @@ def main() -> None:
         write_model_reports(model_report, output_dir=args.output_dir)
     print(
         json.dumps(
-            {"dataset": report["dataset"], "models": model_report},
+            {
+                "dataset": snapshot.dataset_report["dataset"],
+                "provenance": snapshot.provenance,
+                "models": model_report,
+            },
             ensure_ascii=False,
             indent=2,
         )

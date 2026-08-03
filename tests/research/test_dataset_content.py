@@ -174,56 +174,18 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
     require_complete_coverage(report)
 
 
-def test_validation_cli_prints_release_and_coverage_summaries_when_complete(
-    monkeypatch, capsys
-) -> None:
-    release_summary = {"records": 1}
-    coverage_summary = {"complete": True}
-    monkeypatch.setattr(validate_data, "load_release", lambda _: {"release": []})
-    monkeypatch.setattr(validate_data, "load_ontology", lambda: object())
-    monkeypatch.setattr(
-        validate_data,
-        "validate_release",
-        lambda release, graph, catalogue=None, **kwargs: release_summary,
-    )
-    monkeypatch.setattr(
-        validate_data,
-        "load_catalogue",
-        lambda _: {"query-0001": object()},
-        raising=False,
-    )
-    monkeypatch.setattr(
-        validate_data,
-        "load_coverage_requirements",
-        lambda path, catalogue: object(),
-        raising=False,
-    )
-    monkeypatch.setattr(
-        validate_data,
-        "_load_rejection_checklist",
-        lambda _: {"hard-negative": []},
-        raising=False,
-    )
-    monkeypatch.setattr(
-        validate_data,
-        "assess_coverage",
-        lambda release, catalogue, requirements, checklist: coverage_summary,
-        raising=False,
-    )
-    monkeypatch.setattr(
-        validate_data,
-        "require_complete_coverage",
-        lambda report: None,
-        raising=False,
-    )
+def test_validation_cli_reports_complete_canonical_chain(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
 
     validate_data.main()
 
-    assert json.loads(capsys.readouterr().out) == {
-        "release": release_summary,
-        "coverage": coverage_summary,
-    }
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["release"]["catalogue_coverage_required"] is True
+    assert payload["catalogue"]["supported_entries"] == 2953
+    assert payload["catalogue"]["uncovered_entries"] == []
+    assert payload["coverage"]["complete"] is True
+    assert payload["artifacts"]["mismatches"] == []
+    assert payload["provenance"]["model_metrics"]["status"] == "current"
 
 
 def test_official_release_is_executable_and_has_complete_coverage() -> None:

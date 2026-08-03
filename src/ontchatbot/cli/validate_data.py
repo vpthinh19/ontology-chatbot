@@ -6,43 +6,62 @@ import argparse
 import json
 from pathlib import Path
 
-from ..settings import DATASET_DIR, REJECTION_CHECKLIST_PATH
-from ..research.catalogue import load_catalogue
-from ..research.coverage import (
-    assess_coverage,
-    load_coverage_requirements,
-    require_complete_coverage,
+from ..research.consistency import (
+    build_consistency_snapshot,
+    compare_committed_artifacts,
+    require_consistent,
 )
-from ..research.dataset import load_release, validate_release
-from ..runtime.sparql import load_ontology
-
-
-def _load_rejection_checklist(dataset_dir: Path) -> dict[str, list[str]]:
-    return json.loads(REJECTION_CHECKLIST_PATH.read_text(encoding="utf-8"))
+from ..research.coverage import require_complete_coverage
+from ..settings import DATASET_DIR
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("path", nargs="?", type=Path, default=DATASET_DIR)
     args = parser.parse_args()
-    release = load_release(args.path)
-    catalogue = load_catalogue(args.path / "catalogue.jsonl")
-    report = validate_release(
-        release,
-        load_ontology(),
-        catalogue,
-        require_complete_catalogue=False,
-    )
-    coverage = assess_coverage(
-        release,
-        catalogue,
-        load_coverage_requirements(args.path / "coverage.json", catalogue),
-        _load_rejection_checklist(args.path),
-    )
+    snapshot = build_consistency_snapshot(dataset_dir=args.path)
+    coverage = snapshot.dataset_report["coverage"]
     require_complete_coverage(coverage)
+
+    is_canonical = args.path.resolve() == DATASET_DIR.resolve()
+    if is_canonical:
+        mismatches = compare_committed_artifacts(snapshot)
+        require_consistent(mismatches)
+        artifacts = {
+            "checked": True,
+            "mismatches": mismatches,
+        }
+    else:
+        artifacts = {
+            "checked": False,
+            "reason": "noncanonical dataset directory",
+            "mismatches": [],
+        }
+
+    inventory_entries = snapshot.inventory["entries"]
+    assert isinstance(inventory_entries, list)
     print(
         json.dumps(
-            {"release": report, "coverage": coverage},
+            {
+                "inventory": {
+                    "entries": len(inventory_entries),
+                    "supported_entries": sum(
+                        entry.get("status") == "supported"
+                        for entry in inventory_entries
+                        if isinstance(entry, dict)
+                    ),
+                    "excluded_entries": sum(
+                        entry.get("status") == "excluded"
+                        for entry in inventory_entries
+                        if isinstance(entry, dict)
+                    ),
+                },
+                "catalogue": snapshot.catalogue_validation,
+                "release": snapshot.dataset_report["validation"],
+                "coverage": coverage,
+                "artifacts": artifacts,
+                "provenance": snapshot.provenance,
+            },
             ensure_ascii=False,
             indent=2,
         )

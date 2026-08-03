@@ -4,13 +4,15 @@ from ontchatbot.research.dataset import load_release
 from ontchatbot.research.reporting import (
     _build_training_readiness,
     build_dataset_report,
+    build_manifest,
     build_model_report,
+    build_procedure_dataset_report,
     sha256_file,
     write_manifest,
     write_public_reports,
 )
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import DATASET_DIR
+from ontchatbot.settings import DATASET_DIR, ONTOLOGY_PATH
 
 
 def _set_suite_count(directory, filename: str, count: int) -> None:
@@ -104,6 +106,57 @@ def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
     assert json.loads(path.read_text(encoding="utf-8"))["coverage"] == {
         "path": "coverage.json",
         "sha256": report["sha256"]["coverage.json"],
+    }
+
+
+def test_manifest_ontology_path_resolves_from_manifest_directory(tmp_path) -> None:
+    resources = tmp_path / "resources"
+    dataset_dir = resources / "dataset"
+    ontology_dir = resources / "ontology"
+    dataset_dir.mkdir(parents=True)
+    ontology_dir.mkdir(parents=True)
+    ontology_path = ontology_dir / "ontology.ttl"
+    ontology_path.write_bytes(ONTOLOGY_PATH.read_bytes())
+    report = build_dataset_report(
+        load_release(),
+        load_ontology(),
+        ontology_path=ontology_path,
+    )
+    manifest_path = dataset_dir / "manifest.json"
+
+    manifest = build_manifest(
+        report,
+        manifest_path=manifest_path,
+        ontology_path=ontology_path,
+    )
+
+    assert manifest["ontology"]["path"] == "../ontology/ontology.ttl"
+    assert (
+        manifest_path.parent / manifest["ontology"]["path"]
+    ).resolve() == ontology_path.resolve()
+    assert manifest["ontology"]["sha256"] == sha256_file(ontology_path)
+
+
+def test_procedure_report_is_derived_from_release() -> None:
+    report = build_procedure_dataset_report(load_release(), dataset_dir=DATASET_DIR)
+
+    assert report["scope"] == "academic-procedure"
+    assert report["procedure_target_count"] == 142
+    assert report["instruction_target_count"] == 22
+    assert report["splits"]["train"]["procedure_records"] == 2128
+    assert report["splits"]["val"]["procedure_records"] == 180
+    assert report["splits"]["test"]["procedure_records"] == 185
+    assert report["contracts"] == {
+        "every_train_target_has_at_least_ten_samples": True,
+        "every_train_target_has_all_four_registers": True,
+        "every_instruction_target_has_at_least_thirty_samples": True,
+        "every_instruction_target_has_at_least_twenty_six_direct_questions": True,
+        "every_instruction_target_has_at_least_four_overview_questions": True,
+        "course_registration_instruction_samples": 52,
+        "every_target_is_present_in_val": True,
+        "every_target_is_present_in_test": True,
+        "every_instruction_target_has_both_question_types_in_val": True,
+        "every_instruction_target_has_both_question_types_in_test": True,
     }
 
 
