@@ -13,7 +13,7 @@ from .runtime.model import CTranslate2Generator
 from .runtime.pipeline import OntologyChatbot
 from .runtime.render import render_rows
 
-__version__ = "0.3.0"
+__version__ = "0.4.1"
 
 __all__ = [
     "PREFIXES",

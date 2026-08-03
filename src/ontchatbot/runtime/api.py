@@ -18,7 +18,7 @@ def create_app(chatbot: OntologyChatbot, webui_dir: Path | None = None):
     except ImportError as exc:  # pragma: no cover - requires inference extra.
         raise RuntimeError("install the inference extra to serve the API") from exc
 
-    app = FastAPI(title="NTU Ontology Chatbot", version="0.3.0")
+    app = FastAPI(title="NTU Ontology Chatbot", version="0.4.1")
 
     @app.get("/healthz")
     async def healthz() -> dict[str, str]:
