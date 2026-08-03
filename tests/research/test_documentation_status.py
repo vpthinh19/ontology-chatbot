@@ -68,3 +68,28 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     assert "4.454 câu" in dataset
     assert "phủ đủ 51 họ truy vấn" in dataset
     assert "được chọn để triển khai" in _read("docs/TRAINING.md")
+
+
+def test_public_docs_describe_consistency_and_metric_provenance() -> None:
+    files = (
+        "README.md",
+        "docs/CONCEPT.md",
+        "docs/ONTOLOGY.md",
+        "docs/DATASET.md",
+        "docs/EVALUATION.md",
+        "docs/MODEL_CARD.md",
+        "docs/DEPLOYMENT.md",
+        "reports/README.md",
+    )
+    joined = "\n".join(_read(path) for path in files)
+
+    assert "ontology → danh mục khả năng trả lời → danh mục truy vấn → dataset" in joined
+    assert "uv run validate_sparql_dataset" in joined
+    assert "uv run generate_reports" in joined
+    assert "reports/provenance.json" in joined
+    assert "baseline v0.4.1" in joined
+    assert "stale" in joined
+    assert "procedure-dataset.json" in joined
+    assert "Claude Code" not in joined
+    assert "CLAUDE.md" not in joined
+    assert "ai agent" not in joined.lower()

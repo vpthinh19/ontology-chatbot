@@ -37,7 +37,7 @@ ontology của project để lấy nhãn hoặc literal trả về người dùn
 - greedy decoding; checkpoint chọn bằng validation Answer Exact;
 - hoàn tất 18 epoch do dừng sớm.
 
-## Kết quả
+## Kết quả — baseline v0.4.1
 
 | Backend | Answer Exact | Result F1 | System Answer Exact |
 |---|---:|---:|---:|
@@ -47,6 +47,10 @@ ontology của project để lấy nhãn hoặc literal trả về người dùn
 Kết quả đo trên 407 câu test độc lập. T5Gemma2 đạt 96,22% Answer Exact trên 185
 câu quy trình. Safe Rejection ngoài miền đạt 92,22%; câu noisy và hard negative
 gần miền vẫn là giới hạn chính.
+
+Repository lưu fingerprint tại `reports/provenance.json`. Khi
+`model_metrics.status` là `stale`, bảng này chỉ mô tả baseline v0.4.1 và không
+phải kết quả đánh giá ontology/dataset canonical mới.
 
 ## Sử dụng Transformers
 

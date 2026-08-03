@@ -7,8 +7,8 @@ Hệ thống sử dụng một model để sinh hai dạng đầu ra: truy vấn
 mục khả năng trả lời và 51 họ truy vấn xác định miền kiến thức của chatbot.
 Dataset gồm 4.454 câu và được kiểm tra về độ phủ, khả năng thực thi truy vấn và
 rò rỉ giữa các tập dữ liệu. Ba model được đánh giá bằng cùng một giao thức;
-T5Gemma2 đạt System Answer Exact 92,38% với Transformers và 92,87% trên pipeline
-triển khai CTranslate2.
+baseline v0.4.1 ghi nhận T5Gemma2 đạt System Answer Exact 92,38% với
+Transformers và 92,87% trên pipeline triển khai CTranslate2.
 
 ## Trách nhiệm của model
 
@@ -72,6 +72,11 @@ Không tạo dataset trước rồi sửa ontology để khớp target đã vi�
 Mỗi khả năng được đánh dấu `supported` phải có mẫu truy vấn tương ứng; mỗi mẫu
 truy vấn phải có dữ liệu huấn luyện và đánh giá. Các kiểm tra tự động xác nhận
 tính nhất quán của chuỗi ràng buộc này.
+
+`uv run validate_sparql_dataset` kiểm tra chuỗi trên ở chế độ chỉ đọc. Lệnh
+`uv run generate_reports` chỉ sinh lại các artifact dẫn xuất. Trạng thái trong
+`reports/provenance.json` cho biết metric model và triển khai còn khớp với input
+canonical hay đã `stale` sau khi ontology/dataset thay đổi.
 
 ## Tổ chức tài liệu
 

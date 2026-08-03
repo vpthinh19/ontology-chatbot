@@ -11,8 +11,9 @@ thức của Trường Đại học Nha Trang.
 Hệ thống kết hợp ba thành phần: một ontology biểu diễn quy trình và quy định học
 vụ, một dataset 4.454 câu hỏi tiếng Việt và một mô hình encoder–decoder sinh
 truy vấn có cấu trúc. Ba mô hình BARTpho, ViT5 và T5Gemma2 được huấn luyện trong
-cùng điều kiện. T5Gemma2 đạt kết quả tốt nhất với 92,38% câu trả lời cuối chính
-xác trên tập test; phiên bản triển khai bằng CTranslate2 đạt 92,87%.
+cùng điều kiện. Trong baseline v0.4.1, T5Gemma2 đạt kết quả tốt nhất với 92,38%
+câu trả lời cuối chính xác trên tập test; phiên bản triển khai bằng CTranslate2
+đạt 92,87%.
 
 Các đóng góp chính gồm:
 
@@ -224,6 +225,10 @@ dataset. Chi tiết nằm trong [tài liệu dataset](docs/DATASET.md).
 ### 5.3. Tài nguyên dữ liệu và đánh giá
 
 Các tài nguyên tĩnh dùng trong nghiên cứu được lưu trực tiếp trong repository:
+`ontology.ttl`, `catalogue.jsonl`, `coverage.json` và ba split là dữ liệu
+canonical. Chuỗi kiểm tra là ontology → danh mục khả năng trả lời → danh mục
+truy vấn → dataset; inventory, manifest và các file trong `reports/` là artifact
+được sinh lại từ chuỗi này.
 
 | Tài nguyên | Địa chỉ | Vai trò |
 |---|---|---|
@@ -251,6 +256,7 @@ Số liệu đứng sau các bảng và biểu đồ cũng được công bố �
 | Dataset và ontology | [`reports/dataset.json`](reports/dataset.json) | Kích thước tập, miền, phong cách, đặc trưng truy vấn và thống kê ontology |
 | Độ phủ quy trình | [`reports/procedure-dataset.json`](reports/procedure-dataset.json) | Số target và số câu quy trình trong từng tập |
 | Huấn luyện và benchmark | [`reports/models.json`](reports/models.json) | Loss, validation, kết quả ba model và phân rã lỗi trên test |
+| Nguồn gốc số liệu | [`reports/provenance.json`](reports/provenance.json) | Hash input của baseline v0.4.1, hash hiện hành và trạng thái metric |
 | Toàn bộ hình trực quan | [`reports/figures/`](reports/figures/) | Các biểu đồ SVG được sinh từ những file JSON trên |
 
 Ý nghĩa từng file và lệnh tái tạo biểu đồ được mô tả tại
@@ -285,7 +291,7 @@ liệu hoàn toàn.
 phân biệt lỗi truy vấn với lỗi định dạng giao diện. Định nghĩa toán học và cách
 so sánh tập kết quả nằm trong [giao thức đánh giá](docs/EVALUATION.md).
 
-## 7. Kết quả
+## 7. Kết quả — baseline v0.4.1
 
 | Model | Validation Answer Exact | Test Answer Exact | Test Result F1 | Test System Exact |
 |---|---:|---:|---:|---:|
@@ -307,9 +313,13 @@ hình thực nghiệm này. Kết quả không có nghĩa model đa ngôn ngữ 
 nó chỉ cho thấy T5Gemma2 phù hợp hơn với dataset và nhiệm vụ sinh SPARQL đang
 xét.
 
+`reports/provenance.json` đối chiếu sáu input canonical với baseline v0.4.1.
+Khi `model_metrics.status` là `stale`, các con số trên chỉ là kết quả lịch sử
+và không được hiểu là đánh giá ontology/dataset mới.
+
 ![Quá trình học trên validation](reports/figures/validation-curve.svg)
 
-## 8. Triển khai
+## 8. Triển khai — baseline v0.4.1
 
 Checkpoint T5Gemma2 được chuyển sang CTranslate2 và lượng tử hóa int8 để chạy
 gọn hơn trên CPU. CTranslate2 là bộ máy suy luận tối ưu cho model sinh chuỗi;
@@ -325,6 +335,8 @@ nó không thay đổi ontology hoặc logic trả lời.
 
 Artifact Transformers và CTranslate2 được công bố tại
 [vpthinh19/ntu-ontology-t5gemma-2](https://huggingface.co/vpthinh19/ntu-ontology-t5gemma-2).
+Trạng thái `deployment_metrics` trong `reports/provenance.json` áp dụng cùng quy
+tắc: `stale` nghĩa là số liệu triển khai chỉ còn là baseline lịch sử.
 
 ## 9. Giới hạn
 
@@ -384,7 +396,10 @@ uv run pytest
 
 ### Các lệnh CLI chính
 
-Kiểm tra dataset và sinh lại toàn bộ số liệu, biểu đồ công khai:
+`validate_sparql_dataset` chỉ đọc và kiểm tra toàn chuỗi canonical cùng các
+artifact đã commit. `generate_reports` chỉ ghi lại inventory, manifest, báo cáo,
+provenance và biểu đồ dẫn xuất; lệnh này không sửa ontology, catalogue,
+coverage hay các split:
 
 ```bash
 uv run validate_sparql_dataset

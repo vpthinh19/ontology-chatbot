@@ -112,14 +112,19 @@ huấn luyện.
 
 ## Tái tạo số liệu
 
-`manifest.json`, `reports/dataset.json`, `reports/procedure-dataset.json` và các
-SVG mô tả dataset; manifest và biểu đồ tổng quát được sinh trực tiếp từ dữ
-liệu. Chạy:
+`ontology.ttl`, `catalogue.jsonl`, `coverage.json` và ba split là input
+canonical. `answer_inventory.json`, `manifest.json`, `reports/dataset.json`,
+`reports/procedure-dataset.json`, `reports/provenance.json` và các SVG là
+artifact được sinh từ các input đó. Chạy:
 
 ```bash
 uv run validate_sparql_dataset
 uv run generate_reports
 ```
 
-Manifest lưu cấu trúc bản ghi, số câu theo tập/miền, quy tắc chia tập và SHA-256
-của dataset, danh mục truy vấn, báo cáo độ phủ và ontology.
+Lệnh validation chỉ đọc, kiểm tra đầy đủ ontology → danh mục khả năng trả lời →
+danh mục truy vấn → dataset và so sánh các artifact đã commit. Lệnh generate
+chỉ ghi artifact dẫn xuất. Manifest lưu cấu trúc bản ghi, số câu theo tập/miền,
+quy tắc chia tập và SHA-256 của dataset, danh mục truy vấn, báo cáo độ phủ và
+ontology. Nếu hash canonical khác baseline v0.4.1, provenance đánh dấu metric
+model/triển khai là `stale` mà vẫn giữ các số liệu lịch sử.

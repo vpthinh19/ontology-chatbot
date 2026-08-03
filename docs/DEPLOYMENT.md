@@ -1,8 +1,8 @@
 # Triển khai
 
-Model triển khai là T5Gemma2 sau khi hợp nhất LoRA, chuyển sang CTranslate2 int8
-và đánh giá end-to-end trên 407 câu test. Cả checkpoint Transformers và model
-CTranslate2 được công bố tại
+Baseline v0.4.1 triển khai T5Gemma2 sau khi hợp nhất LoRA, chuyển sang
+CTranslate2 int8 và đánh giá end-to-end trên 407 câu test. Cả checkpoint
+Transformers và model CTranslate2 được công bố tại
 <https://huggingface.co/vpthinh19/ntu-ontology-t5gemma-2>.
 
 ## Mô hình triển khai
@@ -87,3 +87,8 @@ Kết quả kiểm tra model int8 trên web: 407/407 request trả HTTP 200; ph�
 hiển thị chính xác 378/407 (92,87%); CPU p50 300 ms,
 p95 864 ms; probe tám request đồng thời thành công 8/8 ở 3,26 request/giây.
 Nhóm noisy đạt 85,71% và là giới hạn chính cần lưu ý khi triển khai.
+
+Các con số trong mục này thuộc baseline v0.4.1. Đối chiếu
+`deployment_metrics.status` trong `reports/provenance.json`; trạng thái `stale`
+nghĩa là ontology/dataset canonical đã khác baseline và cần benchmark lại trước
+khi diễn giải các số liệu này như kết quả của input mới.

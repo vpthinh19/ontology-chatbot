@@ -82,7 +82,7 @@ Biểu đồ công khai phải lấy dữ liệu từ JSON máy đọc và gồm
 
 Không dùng BLEU, ROUGE hoặc token F1 làm bằng chứng trả lời đúng dữ liệu.
 
-## Kết quả
+## Kết quả — baseline v0.4.1
 
 | Model | Parse | Answer Exact | Result F1 | Safe Rejection OOD | System Exact |
 |---|---:|---:|---:|---:|---:|
@@ -99,3 +99,8 @@ quả tổng thể cao nhất; khả năng từ chối ngoài miền vẫn là g
 Sau chuyển sang CTranslate2 int8, toàn pipeline web đạt 92,87% phản hồi exact
 trên cùng test. Chênh lệch này được báo cáo riêng, không dùng để thay kết luận
 so sánh ba checkpoint Transformers.
+
+Các metric trên thuộc baseline v0.4.1. `reports/provenance.json` đối chiếu hash
+ontology, catalogue, coverage và ba split; nếu `model_metrics.status` hoặc
+`deployment_metrics.status` là `stale`, số liệu vẫn được giữ làm lịch sử nhưng
+không đại diện cho input canonical mới.

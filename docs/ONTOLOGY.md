@@ -86,3 +86,10 @@ Ontology được kiểm tra theo các tiêu chí sau trước khi tạo dataset
 
 Số lượng class, property, individual và triple chỉ mô tả hình dạng graph, không
 thay thế kiểm tra độ phủ từ danh mục khả năng trả lời sang truy vấn và dataset.
+
+Chạy `uv run validate_sparql_dataset` để kiểm tra read-only toàn chuỗi
+ontology → danh mục khả năng trả lời → danh mục truy vấn → dataset và phát hiện
+artifact dẫn xuất bị lệch. `uv run generate_reports` sinh lại
+`answer_inventory.json`, manifest, `reports/procedure-dataset.json`,
+`reports/provenance.json` và các báo cáo/biểu đồ; lệnh này không ghi vào
+`ontology.ttl` hay các file dataset canonical.
