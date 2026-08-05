@@ -7,7 +7,7 @@ Chỉ những thông tin có căn cứ trong nguồn này mới được đưa v
 
 `resources/ontology/ontology.ttl` là **cơ sở dữ liệu duy nhất** của chatbot: mọi
 truy vấn SPARQL đều chạy trên tệp này. Ontology không có phiên bản. Khi công văn
-thay đổi, sửa trực tiếp tại đây rồi chạy `uv run pytest tests/ontology`.
+thay đổi, sửa trực tiếp tại đây rồi chạy bộ kiểm tra ở cuối tài liệu này.
 
 ## Ba tầng
 
@@ -93,8 +93,8 @@ và phủ toàn bộ các khả năng được hỗ trợ.
 
 Tầng văn bản chỉ chép nguyên văn nên khó sai. Tầng nghiệp vụ diễn giải công văn
 thành đáp án, nên nó là nơi duy nhất có thể sai nội dung học vụ mà không ai phát
-hiện. Mỗi quy tắc dưới đây được kiểm tra bởi `tests/ontology/test_drafting_rules.py`,
-và mỗi quy tắc tồn tại vì một lỗi **đã thực sự xảy ra** khi soạn thảo.
+hiện. Mỗi quy tắc dưới đây đều được kiểm tra tự động, và mỗi quy tắc tồn tại vì
+một lỗi **đã thực sự xảy ra** khi soạn thảo — không phải quy tắc phòng xa.
 
 ### Ranh giới giữa các loại node
 
@@ -114,7 +114,7 @@ Dùng đúng một câu hỏi để quyết định:
 tuyển đầu vào như thí sinh khác" làm `Outcome` của thủ tục thôi học — đó không
 phải kết quả xử lý đơn mà là hệ quả về sau.
 
-### Dẫn nguồn — `missing-source`
+### Mỗi dữ kiện phải dẫn được về công văn
 
 Mọi node tầng nghiệp vụ phải có `:basedOn` trỏ tới phần văn bản **nhỏ nhất thực
 sự chứng minh dữ kiện đó**, không trỏ chung tới cả Điều. Trích dẫn dừng ở mức
@@ -123,14 +123,14 @@ bảng: người đọc chỉ cần biết dữ kiện nằm ở bảng nào, m�
 Dữ liệu không đến từ công văn — địa chỉ, điện thoại phòng ban lấy từ website —
 để ở `OrganizationalUnit`, lớp này không nằm trong danh sách bắt buộc dẫn nguồn.
 
-### Phạm vi của điều kiện — `unscoped-requirement`
+### Điều kiện phải nói rõ nó áp dụng cho ai
 
 Điều kiện chỉ áp dụng cho một trường hợp phải khai `:scopedToCase`. Bản nháp từng
 gắn "phải học ít nhất 01 học kỳ" cho toàn bộ thủ tục nghỉ học tạm thời, trong khi
 Điều 24 chỉ áp cho điểm d — lý do cá nhân. Hậu quả: người đi nghĩa vụ quân sự bị
 trả nhầm điều kiện không liên quan.
 
-### Trường hợp dẫn tới nhiều thủ tục — `ambiguous-case`
+### Một hoàn cảnh dẫn tới nhiều thủ tục thì phải nói rõ khi nào áp dụng cái nào
 
 Một `AcademicCase` được phép dùng chung giữa nhiều thủ tục và **không** được nhân
 bản giả tạo. Nhưng khi nó dẫn tới nhiều thủ tục, mỗi `CaseResolution` phải khai
@@ -151,25 +151,25 @@ bản giả tạo. Nhưng khi nó dẫn tới nhiều thủ tục, mỗi `CaseRe
 Với câu hỏi mơ hồ, truy vấn hợp lệ là **liệt kê điều kiện phân nhánh kèm tên thủ
 tục**, không trả thẳng các bước — vì không tồn tại một câu trả lời đúng duy nhất.
 
-### Không chép nội dung sang hai loại node — `duplicated-text`
+### Không chép cùng một nội dung vào hai chỗ
 
 Thời hạn nằm ở `Deadline`, không được chép lại vào `stepText`. Hai bản sao sẽ
 lệch nhau khi cập nhật.
 
-### `skos:altLabel` chỉ chứa tên gọi tương đương — `utterance-as-altlabel`
+### Tên gọi thay thế chỉ là tên gọi, không phải cách hỏi
 
 Không đặt chỉ tiêu số lượng. Chỉ tiêu "≥8 nhãn" khuyến khích thêm nhãn lỏng nghĩa
 như "bị tai nạn" cho trường hợp *"tai nạn phải điều trị thời gian dài"* — dataset
 sinh từ đó sẽ dạy model trả lời sai một cách tự tin. Cách diễn đạt tình huống và
 biến thể khẩu ngữ thuộc **tầng dataset**, không thuộc ontology.
 
-### Thứ tự — `broken-order`, `missing-order`
+### Các bước phải được đánh số liên tục
 
 `:stepOrder` phải là 1..n liên tục trong mỗi thủ tục; `:requirementOrder` phải
 duy nhất. Kết quả SPARQL vốn không có thứ tự, nên mọi truy vấn trả danh sách bắt
 buộc `ORDER BY` theo thuộc tính này — không được dựa vào thứ tự IRI.
 
-### Ngôn ngữ — `missing-language-tag`
+### Mọi nội dung tiếng Việt phải được đánh dấu ngôn ngữ
 
 Mọi literal nội dung tiếng Việt phải gắn `@vi`.
 
@@ -207,9 +207,13 @@ Ontology được kiểm tra theo các tiêu chí sau trước khi tạo dataset
 9. Mỗi khả năng trả lời được ghi vào danh mục với trạng thái `supported` hoặc
    `excluded` kèm lý do.
 
+Sau mỗi lần sửa đồ thị, chạy hai lệnh sau. Lệnh đầu kiểm tra lược đồ, quy tắc
+biên soạn và câu trả lời của từng miền; lệnh sau kiểm tra cả chuỗi từ ontology
+tới dataset.
+
 ```bash
-uv run pytest tests/ontology       # lược đồ, quy tắc biên soạn, câu trả lời
-uv run validate_sparql_dataset     # toàn chuỗi canonical
+uv run pytest tests/ontology
+uv run validate_sparql_dataset
 ```
 
 ## Danh mục biểu mẫu
