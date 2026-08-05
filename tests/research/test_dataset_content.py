@@ -11,7 +11,7 @@ import pytest
 from rdflib import RDF, Namespace
 
 from ontchatbot.cli import validate_data
-from ontchatbot.research.catalogue import QuerySpec, SlotSpec, load_catalogue
+from ontchatbot.catalogue import QuerySpec, SlotSpec, load_catalogue
 from ontchatbot.research.coverage import (
     assess_coverage,
     load_coverage_requirements,

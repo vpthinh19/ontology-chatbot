@@ -5,9 +5,12 @@ from __future__ import annotations
 import logging
 import time
 import uuid
+from typing import Mapping
 
 from rdflib import Graph
 
+from ..catalogue import QuerySpec, find_query_family, load_catalogue
+from ..settings import QUERY_CATALOGUE_PATH
 from .model import QueryGenerator
 from .render import NO_INFORMATION_REPLY, render_rows
 from .sparql import execute_select, load_ontology
@@ -24,9 +27,16 @@ class OntologyChatbot:
         self,
         generator: QueryGenerator,
         graph: Graph | None = None,
+        catalogue: Mapping[str, QuerySpec] | None = None,
     ) -> None:
         self.generator = generator
         self.graph = graph if graph is not None else load_ontology()
+        # A syntactically valid SELECT can still combine an entity and a property
+        # that no declared query family allows, which executes and answers with
+        # data the question never asked for. An empty mapping disables the check.
+        self.catalogue = (
+            load_catalogue(QUERY_CATALOGUE_PATH) if catalogue is None else catalogue
+        )
 
     def answer(self, question: str) -> str:
         request_id = uuid.uuid4().hex[:12]
@@ -57,14 +67,28 @@ class OntologyChatbot:
                 )
                 return NO_INFORMATION_REPLY
 
+            stage = "catalogue"
+            query_id = (
+                find_query_family(self.catalogue, output) if self.catalogue else None
+            )
+            if self.catalogue and query_id is None:
+                logger.info(
+                    "request=%s off-catalogue query rejected reply=%r total_ms=%.1f",
+                    request_id,
+                    NO_INFORMATION_REPLY,
+                    (time.perf_counter() - request_started) * 1000,
+                )
+                return NO_INFORMATION_REPLY
+
             stage = "ontology"
             stage_started = time.perf_counter()
             rows = execute_select(self.graph, output)
             logger.info(
-                "request=%s ontology rows=%d duration_ms=%.1f",
+                "request=%s ontology rows=%d duration_ms=%.1f query_id=%s",
                 request_id,
                 len(rows),
                 (time.perf_counter() - stage_started) * 1000,
+                query_id,
             )
 
             stage = "renderer"

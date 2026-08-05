@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Mapping
 
 from ..settings import RESOURCES
-from .catalogue import QuerySpec
+from ..catalogue import QuerySpec
 from .dataset import REQUIRED_FIELDS, REQUIRED_SPLITS
 
 DOMAIN_DIRECTORIES = {

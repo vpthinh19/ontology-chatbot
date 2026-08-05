@@ -22,7 +22,7 @@ class _Tokenizer:
         return int(token[1:])
 
     def decode(self, ids, **kwargs):
-        return " SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . } "
+        return " SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :stepText ?answer . } "
 
 
 class _Translator:

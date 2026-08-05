@@ -5,7 +5,7 @@ from itertools import product
 
 import pytest
 
-from ontchatbot.research.catalogue import (
+from ontchatbot.catalogue import (
     CoverageSelector,
     QuerySpec,
     SlotSpec,
@@ -230,47 +230,17 @@ def test_study_year_band_respects_inclusive_boundaries(
     assert execute_select(load_ontology(), target) == expected
 
 
-def test_study_year_details_include_all_four_bands() -> None:
-    graph = load_ontology()
-    target = load_catalogue(QUERY_CATALOGUE_PATH)["study-year-details"].target_template
-    source = execute_select(
-        graph,
-        "SELECT ?document ?answer WHERE { "
-        ":Decision1052 rdfs:label ?document . "
-        ":Decision1052Article19 :officialText ?answer . "
-        "}",
-    )[0]
+def test_study_year_bands_remain_reachable_by_credit_count() -> None:
+    """Bảng xếp hạng năm đào tạo bị họ ``*-details`` cũ bỏ lại phía sau.
 
-    rows = execute_select(graph, target)
+    Họ đó dựng câu trả lời từ ``sourceDocument`` nên không còn chỗ trong lược đồ
+    mới; điều cần giữ là bốn mốc tín chỉ vẫn tra được.
+    """
+
+    graph = load_ontology()
+    rows = execute_select(
+        graph,
+        "SELECT ?answer WHERE { ?band a :StudyYearBand ; :resultLabel ?answer . }",
+    )
 
     assert len(rows) == 4
-    assert {row["result"]: row for row in rows} == {
-        "Sinh viên năm thứ nhất": {
-            "criterion": "Dưới 35",
-            "result": "Sinh viên năm thứ nhất",
-            "minimum": None,
-            "maximum": "35.0",
-            **source,
-        },
-        "Sinh viên năm thứ hai": {
-            "criterion": "Từ 35 đến dưới 70",
-            "result": "Sinh viên năm thứ hai",
-            "minimum": "35.0",
-            "maximum": "70.0",
-            **source,
-        },
-        "Sinh viên năm thứ ba": {
-            "criterion": "Từ 70 đến dưới 105",
-            "result": "Sinh viên năm thứ ba",
-            "minimum": "70.0",
-            "maximum": "105.0",
-            **source,
-        },
-        "Sinh viên năm thứ tư": {
-            "criterion": "Trên 105",
-            "result": "Sinh viên năm thứ tư",
-            "minimum": "105.0",
-            "maximum": None,
-            **source,
-        },
-    }

@@ -14,7 +14,7 @@ from ..settings import (
     ONTOLOGY_PATH,
     PROJECT_ROOT,
 )
-from .catalogue import load_catalogue
+from ..catalogue import load_catalogue
 from .catalogue_validation import validate_catalogue
 from .dataset import REQUIRED_SPLITS, load_release
 from .inventory import build_answer_inventory

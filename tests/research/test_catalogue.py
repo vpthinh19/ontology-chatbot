@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from ontchatbot.research.catalogue import CatalogueError, load_catalogue, match_target
+from ontchatbot.catalogue import CatalogueError, load_catalogue, match_target
 
 
 PROCEDURE = {

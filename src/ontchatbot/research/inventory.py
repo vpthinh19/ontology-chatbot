@@ -9,77 +9,58 @@ from rdflib import OWL, RDF, RDFS, SKOS, Graph, Literal, Namespace, URIRef
 
 from ..runtime.sparql import load_ontology
 from ..settings import ANSWER_INVENTORY_PATH, ONTOLOGY_NS
-from .answer_scope import SOURCE_CLASS_NAMES, is_opaque_record, rdf_type_names
+from .answer_scope import (
+    INTERNAL_CLASS_NAMES,
+    SOURCE_CLASS_NAMES,
+    is_opaque_record,
+    rdf_type_names,
+)
 
 ACADEMIC = Namespace(ONTOLOGY_NS)
-PROVISION_PROPERTIES = (
-    "sourceProvision",
-    "instructionProvision",
-    "eligibilityProvision",
-    "deadlineProvision",
-    "resultProvision",
-    "paymentInstructionProvision",
-)
-LABEL_PROPERTIES = (
-    "sourceDocument",
-    "requiresForm",
-    "submittedTo",
-    "reviewedBy",
-    "decidedBy",
-    "supportsPaymentMethod",
-    "supportsBank",
-    "appliesToPaymentMethod",
-    "appliesToProgram",
-    "appliesToDisciplineGroup",
-    "appliesToCourseCategory",
-    "appliesToEducationLevel",
-    "appliesToEntryQualification",
-    "appliesToLearnerCategory",
-    "appliesToCertificate",
-    "mapsToCompetencyLevel",
-    "grantsCourseExemption",
-    "belongsToDisciplineGroup",
-    "billingUnit",
-    "catalogueEntryForForm",
-    "hasCatalogueEntry",
-)
+
+#: Bước cuối hợp lệ của từng quan hệ.
+#:
+#: Không nhân chéo mọi quan hệ với mọi literal: phần lớn tổ hợp không ai hỏi.
+#: "Căn cứ của quy định này" hỏi trích dẫn hoặc nguyên văn, không hỏi nhãn của
+#: điều luật; "bước thực hiện" hỏi nội dung bước, không hỏi nhãn kỹ thuật của
+#: node bước.
+RELATION_TERMINALS = {
+    "basedOn": ("citationLabel", "officialText"),
+    "hasStep": ("stepText",),
+    "hasRequirement": ("requirementText",),
+    "hasDeadline": ("deadlineText",),
+    "hasOutcome": ("outcomeText",),
+    "hasConsequence": ("consequenceText",),
+    "hasResolution": ("conditionText",),
+    "appliesToCase": ("rdfs:label", "caseText"),
+    "nextProcedure": ("rdfs:label", "summaryText"),
+    "hasCatalogueEntry": ("rdfs:label", "listedTitle", "downloadUrl"),
+    "catalogueEntryForForm": ("rdfs:label",),
+}
+#: Quan hệ không khai ở trên chỉ dẫn tới tên gọi của node đích.
+DEFAULT_TERMINALS = ("rdfs:label",)
+
+
+def object_properties(graph: Graph) -> tuple[str, ...]:
+    """Mọi object property đã khai báo, theo thứ tự ổn định.
+
+    Suy từ lược đồ thay vì liệt kê tay: lược đồ đã khai báo đầy đủ, nên thêm
+    một quan hệ mới là danh mục khả năng trả lời tự biết tới nó.
+    """
+
+    return tuple(
+        sorted(
+            _local_name(subject)
+            for subject in graph.subjects(RDF.type, OWL.ObjectProperty)
+            if isinstance(subject, URIRef) and str(subject).startswith(ONTOLOGY_NS)
+        )
+    )
+#: Khả năng trả lời bị loại có chủ đích, kèm lý do bắt buộc.
+#:
+#: Các ngoại lệ của lược đồ cũ đã hết hiệu lực: bốn ngoại lệ ``*Provision`` mất
+#: cùng quan hệ sinh ra chúng, và nghỉ ốm giờ trả lời được đơn vị nhận hồ sơ vì
+#: hai nhánh đã được tách thành hai thủ tục.
 EXCLUSIONS = (
-    {
-        "id": "ClassAbsenceRequestProcedure-resultProvision",
-        "anchor": "ClassAbsenceRequestProcedure",
-        "answer_kind": "literal",
-        "path": [],
-        "provenance": ["Decision1052Article17Clause01PointB"],
-        "status": "excluded",
-        "reason": "Provision mô tả việc xem xét, không bảo đảm một kết quả.",
-    },
-    {
-        "id": "CourseExemptionAndBonusProcedure-resultProvision",
-        "anchor": "CourseExemptionAndBonusProcedure",
-        "answer_kind": "literal",
-        "path": [],
-        "provenance": ["Decision1052Article21Clause05"],
-        "status": "excluded",
-        "reason": "Khoản 5 chỉ quy định điều kiện được xem xét, không mô tả kết quả giải quyết.",
-    },
-    {
-        "id": "StudyResumptionProcedure-resultProvision",
-        "anchor": "StudyResumptionProcedure",
-        "answer_kind": "literal",
-        "path": [],
-        "provenance": ["Decision1052Article24Clause03"],
-        "status": "excluded",
-        "reason": "Khoản 3 chỉ quy định thủ tục và thời hạn nộp đơn, không mô tả kết quả giải quyết.",
-    },
-    {
-        "id": "SickLeaveProcedure-submittedTo",
-        "anchor": "SickLeaveProcedure",
-        "answer_kind": "label",
-        "path": [],
-        "provenance": ["Decision1052Article30"],
-        "status": "excluded",
-        "reason": "Hai nhánh nghỉ ốm không có một đơn vị nhận hồ sơ chung rõ ràng.",
-    },
     {
         "id": "ArticulationStudyProcedure-requiresForm",
         "anchor": "ArticulationStudyProcedure",
@@ -87,7 +68,7 @@ EXCLUSIONS = (
         "path": [],
         "provenance": ["Decision1052Article29"],
         "status": "excluded",
-        "reason": "Điều 29 không quy định biểu mẫu cụ thể.",
+        "reason": "Điều 29 không quy định biểu mẫu cụ thể cho việc học liên thông.",
     },
 )
 
@@ -123,6 +104,7 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
     """Derive supported answer paths and append explicit exclusions."""
 
     entries: list[dict[str, object]] = []
+    relations = object_properties(graph)
     for anchor in _semantic_individuals(graph):
         anchor_name = _local_name(anchor)
         literal_predicates = {
@@ -153,20 +135,14 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
                 )
                 continue
             _append_supported(graph, entries, anchor_name, [component])
-        for property_name in PROVISION_PROPERTIES:
-            _append_supported(
-                graph,
-                entries,
-                anchor_name,
-                [property_name, "officialText"],
-            )
-        for property_name in LABEL_PROPERTIES:
-            _append_supported(
-                graph,
-                entries,
-                anchor_name,
-                [property_name, "rdfs:label"],
-            )
+        for property_name in relations:
+            for terminal in RELATION_TERMINALS.get(property_name, DEFAULT_TERMINALS):
+                _append_supported(
+                    graph,
+                    entries,
+                    anchor_name,
+                    [property_name, terminal],
+                )
 
     entries.extend(dict(entry) for entry in EXCLUSIONS)
     entries.sort(key=lambda item: str(item["id"]))
@@ -192,7 +168,10 @@ def _semantic_individuals(graph: Graph) -> list[URIRef]:
         for subject in graph.subjects(RDF.type, OWL.NamedIndividual)
         if isinstance(subject, URIRef)
         and str(subject).startswith(ONTOLOGY_NS)
-        and not (rdf_type_names(graph, subject) & SOURCE_CLASS_NAMES)
+        and not (
+            rdf_type_names(graph, subject)
+            & (SOURCE_CLASS_NAMES | INTERNAL_CLASS_NAMES)
+        )
     }
     return sorted(individuals, key=str)
 
@@ -219,16 +198,10 @@ def _append_supported(
 
 
 def _provenance(graph: Graph, anchor: str, path: list[str]) -> list[str]:
+    """Căn cứ của một đường đi: phần văn bản mà chính neo dẫn nguồn tới."""
+
     subject = ACADEMIC[anchor]
-    first = path[0]
-    if first in PROVISION_PROPERTIES:
-        nodes = set(graph.objects(subject, ACADEMIC[first]))
-    else:
-        nodes = set(graph.objects(subject, ACADEMIC.sourceProvision))
-        if not nodes:
-            nodes = set(graph.objects(subject, ACADEMIC.sourceDocument))
-        if not nodes:
-            nodes = {subject}
+    nodes = set(graph.objects(subject, ACADEMIC.basedOn)) or {subject}
     return sorted(_local_name(node) for node in nodes if isinstance(node, URIRef))
 
 

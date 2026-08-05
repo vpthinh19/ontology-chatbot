@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.research.catalogue import QuerySpec
+from ontchatbot.catalogue import QuerySpec
 from ontchatbot.research.curation import (
     CurationError,
     assemble_staging,

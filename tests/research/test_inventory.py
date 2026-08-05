@@ -61,20 +61,15 @@ def test_known_semantic_decisions_are_in_inventory(answer_inventory) -> None:
     }
 
     assert entries[
-        "AcademicDismissalPolicy-sourceProvision-officialText"
+        "AcademicDismissalPolicy-basedOn-officialText"
     ]["status"] == "supported"
     assert entries[
-        "SickLeaveProcedure-instructionProvision-officialText"
+        "SickLeaveProcedure-hasStep-stepText"
     ]["status"] == "supported"
     assert entries[
-        "ClassAbsenceRequestProcedure-resultProvision"
+        "ArticulationStudyProcedure-requiresForm"
     ]["status"] == "excluded"
-    assert entries[
-        "CourseExemptionAndBonusProcedure-resultProvision"
-    ]["status"] == "excluded"
-    assert entries[
-        "StudyResumptionProcedure-resultProvision"
-    ]["status"] == "excluded"
+    assert entries["ArticulationStudyProcedure-requiresForm"]["reason"]
 
 
 def test_opaque_record_labels_are_not_supported(answer_inventory) -> None:
@@ -113,8 +108,8 @@ def test_business_values_inside_opaque_records_remain_supported(
         "DirectBankingFreeFee-appliesToPaymentMethod-rdfs-label",
         "AccreditedGeneralEducationRate-billingUnit-rdfs-label",
         "FormCatalogueEntry001-catalogueEntryForForm-rdfs-label",
-        "UndergraduateFormCatalogue-hasCatalogueEntry-rdfs-label",
-        "TemporaryAcademicLeaveProcedure-sourceDocument-rdfs-label",
+        "UndergraduateFormCatalogue-hasCatalogueEntry-listedTitle",
+        "TemporaryAcademicLeaveProcedure-basedOn-citationLabel",
     ],
 )
 def test_user_facing_object_relations_are_in_inventory(

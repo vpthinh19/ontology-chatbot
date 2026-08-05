@@ -11,7 +11,7 @@ from typing import Any, Mapping
 from rdflib import Graph
 
 from ..settings import QUERY_CATALOGUE_PATH, TEST_DATASET_PATH
-from .catalogue import QuerySpec, load_catalogue, match_target
+from ..catalogue import QuerySpec, load_catalogue, match_target
 from .dataset import ALLOWED_REGISTERS, UNSUPPORTED_TARGET_CHARACTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input

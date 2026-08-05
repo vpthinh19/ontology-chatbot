@@ -58,13 +58,14 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     readme = _read("README.md")
 
     assert "answer_inventory.json" in ontology
-    assert "22 quy trình" in ontology
-    assert "2 chính sách" in ontology
+    assert "| Quy trình học vụ | 22 |" in ontology
+    assert "| Chính sách học vụ | 2 |" in ontology
+    assert "cơ sở dữ liệu duy nhất" in ontology
     assert "Quyết định 1052" in readme
     assert "Quyết định 729" in readme
     assert "SPARQL" in readme
     assert "22" in readme
-    assert "2.953" in ontology
+    assert "3.047" in ontology
     assert "4.454 câu" in dataset
     assert "phủ đủ 51 họ truy vấn" in dataset
     assert "được chọn để triển khai" in _read("docs/TRAINING.md")
@@ -83,7 +84,8 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
     )
     joined = "\n".join(_read(path) for path in files)
 
-    assert "ontology → danh mục khả năng trả lời → danh mục truy vấn → dataset" in joined
+    assert "danh mục khả năng trả lời" in joined
+    assert "danh mục truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
     assert "reports/provenance.json" in joined

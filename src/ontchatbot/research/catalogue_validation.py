@@ -10,7 +10,7 @@ from rdflib import OWL, RDF, Graph, Namespace, URIRef
 from ..runtime.sparql import validate_select
 from ..settings import ONTOLOGY_NS
 from .answer_scope import is_opaque_record, rdf_type_names
-from .catalogue import CoverageSelector, QuerySpec
+from ..catalogue import CoverageSelector, QuerySpec
 
 ACADEMIC = Namespace(ONTOLOGY_NS)
 

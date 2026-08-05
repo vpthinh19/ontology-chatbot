@@ -22,7 +22,7 @@ from ..settings import (
     PROJECT_ROOT,
     REJECTION_CHECKLIST_PATH,
 )
-from .catalogue import load_catalogue
+from ..catalogue import load_catalogue
 from .coverage import assess_coverage, load_coverage_requirements
 from .dataset import (
     HELD_OUT_REGISTERS_PER_QUERY,

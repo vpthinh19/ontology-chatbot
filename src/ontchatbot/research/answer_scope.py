@@ -12,9 +12,23 @@ SOURCE_CLASS_NAMES = frozenset(
         "Point",
         "Appendix",
         "DocumentTable",
-        "DocumentTableRow",
-        "Chapter",
-        "AttachedRegulation",
+        "DocumentBody",
+        "DocumentPart",
+    }
+)
+
+#: Node nội bộ của một quy trình: nội dung của chúng chỉ được hỏi thông qua quy
+#: trình chứa chúng, nên chúng không bao giờ là neo của một đường đi trả lời.
+#: Khác với bản ghi kỹ thuật bên dưới - bản ghi vẫn là neo vì SPARQL tìm tới
+#: chúng bằng điều kiện nghiệp vụ.
+INTERNAL_CLASS_NAMES = frozenset(
+    {
+        "ProcedureStep",
+        "Requirement",
+        "Deadline",
+        "Outcome",
+        "Consequence",
+        "CaseResolution",
     }
 )
 

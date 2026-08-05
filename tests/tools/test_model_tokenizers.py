@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.research.catalogue import load_catalogue
+from ontchatbot.catalogue import load_catalogue
 from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.settings import ARTIFACTS_DIR, QUERY_CATALOGUE_PATH

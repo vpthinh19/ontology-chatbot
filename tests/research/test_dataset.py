@@ -4,7 +4,7 @@ from copy import deepcopy
 
 import pytest
 
-from ontchatbot.research.catalogue import QuerySpec, SlotSpec
+from ontchatbot.catalogue import QuerySpec, SlotSpec
 from ontchatbot.research.dataset import DatasetError, validate_release
 from ontchatbot.runtime.sparql import load_ontology
 

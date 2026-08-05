@@ -4,7 +4,7 @@
 
 Hệ thống sử dụng một model để sinh hai dạng đầu ra: truy vấn SPARQL cho câu hỏi
 được ontology hỗ trợ hoặc marker từ chối cho các câu còn lại. Ontology, danh
-mục khả năng trả lời và 51 họ truy vấn xác định miền kiến thức của chatbot.
+mục khả năng trả lời và 167 họ truy vấn xác định miền kiến thức của chatbot.
 Dataset gồm 4.454 câu và được kiểm tra về độ phủ, khả năng thực thi truy vấn và
 rò rỉ giữa các tập dữ liệu. Ba model được đánh giá bằng cùng một giao thức;
 baseline v0.4.1 ghi nhận T5Gemma2 đạt System Answer Exact 92,38% với
@@ -22,7 +22,7 @@ không có thông tin
 hoặc một dòng SPARQL:
 
 ```sparql
-SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }
+SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :hasStep ?s . ?s :stepOrder ?o ; :stepText ?answer . } ORDER BY ?o
 ```
 
 Model được phép học lược đồ và IRI chuẩn của ontology. Nó không học literal
@@ -61,7 +61,8 @@ Object property chỉ tạo đường đi giữa node, không được trả th�
 ## Nguồn dữ liệu và thứ tự xây dựng
 
 Ontology là đồ thị, không phải cây. Công văn chính thức là nguồn sự thật duy
-nhất. Thứ tự xây dựng là:
+nhất. `ontology.ttl` là cơ sở dữ liệu duy nhất và không có phiên bản. Thứ tự xây
+dựng là:
 
 ```text
 tài liệu chính thức → ontology → danh mục khả năng trả lời

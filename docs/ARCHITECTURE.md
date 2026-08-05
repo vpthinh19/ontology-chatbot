@@ -16,11 +16,25 @@ SentencePiece chỉ thuộc môi trường huấn luyện, không nằm trong ru
 | Normalizer | Câu hỏi | Văn bản sạch nhẹ | Dò entity, intent hoặc IRI |
 | Model | Văn bản | Marker hoặc SPARQL | Đọc literal trong ontology |
 | Validator | SPARQL | SPARQL an toàn | Sửa query |
+| Catalogue guard | SPARQL | Query thuộc một họ đã khai | Đoán họ gần đúng |
 | RDFLib | SPARQL + graph | Các literal | Suy đoán ý người dùng |
 | Renderer | `list[dict]` | Văn bản | Chứa logic riêng cho ontology |
 
 Model là nơi duy nhất quyết định trong/ngoài miền. Backend chỉ nhận diện marker
-chính xác hoặc kiểm tra `SELECT`; không có threshold hay classifier thứ hai.
+chính xác, kiểm tra `SELECT` và đối chiếu query với danh mục truy vấn; không có
+threshold hay classifier thứ hai.
+
+Catalogue guard so khớp **chính xác** query với các `target_template` trong
+`catalogue.jsonl`. Nó không sửa và không chọn họ gần đúng: khớp thì chạy tiếp,
+không khớp thì trả `Không có thông tin.`. Ràng buộc an toàn của `validate_select`
+chỉ chặn cú pháp và thao tác nguy hiểm, nên một query hợp lệ vẫn có thể ghép một
+thực thể với một quan hệ mà không họ truy vấn nào cho phép — ví dụ duyệt toàn bộ
+`?item a :AcademicProcedure` rồi đổ nguyên văn 25 điều ra giao diện. Guard chặn
+đúng lớp lỗi đó. `catalogue.jsonl` vì vậy là hợp đồng ràng buộc, không còn là tài
+liệu tham khảo.
+
+Guard nằm trong `ontchatbot.catalogue` (cùng tầng `settings.py`, chỉ dùng thư
+viện chuẩn) nên runtime vẫn không phụ thuộc code nghiên cứu.
 
 ## Xử lý lỗi
 
@@ -47,7 +61,8 @@ chuyển sang CTranslate2. CTranslate2 chỉ phục vụ triển khai và đo pa
 
 Backend chỉ chấp nhận `SELECT`, cấm `SELECT *`, truy vấn liên kết ngoài và thao
 tác thay đổi graph. URI hoặc blank node xuất hiện trong kết quả là không hợp
-lệ: query phải trả về label hoặc literal.
+lệ: query phải trả về label hoặc literal. Sau các kiểm tra này, query còn phải
+khớp một họ trong danh mục truy vấn mới được thực thi.
 
 ## Dạng dữ liệu nội bộ
 

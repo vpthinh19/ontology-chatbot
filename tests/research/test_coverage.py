@@ -5,7 +5,7 @@ from dataclasses import FrozenInstanceError
 
 import pytest
 
-from ontchatbot.research.catalogue import QuerySpec, SlotSpec, load_catalogue
+from ontchatbot.catalogue import QuerySpec, SlotSpec, load_catalogue
 from ontchatbot.research.coverage import (
     CoverageError,
     NumericCase,

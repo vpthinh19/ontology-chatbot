@@ -86,15 +86,18 @@ ontology.
 đăng ký học phần như thế nào
 
 Đầu ra model:
-SELECT ?answer WHERE { :CourseRegistrationProcedure :instructionProvision ?part . ?part :officialText ?answer . }
+SELECT ?answer WHERE { :CourseRegistrationProcedure :hasStep ?s . ?s :stepOrder ?o ; :stepText ?answer . } ORDER BY ?o
 
 Đầu ra giao diện:
-Nội dung Điều 9 hướng dẫn đăng ký khối lượng học tập.
+- Tìm hiểu chương trình đào tạo, kế hoạch giảng dạy trong học kỳ...
+- Đăng ký lớp của các học phần dự định học trong học kỳ...
+- Xin ý kiến tư vấn của Cố vấn học tập...
+- Xác nhận đăng ký học phần trên Hệ thống quản lý đào tạo.
 ```
 
-Trong truy vấn này, `CourseRegistrationProcedure` là quy trình đăng ký học
-phần, `instructionProvision` dẫn tới điều khoản hướng dẫn và `officialText` lấy
-nội dung tiếng Việt của điều khoản đó.
+Trong truy vấn này, `CourseRegistrationProcedure` là quy trình đăng ký học phần,
+`hasStep` dẫn tới từng bước thực hiện và `stepText` lấy nội dung tiếng Việt của
+bước đó. `ORDER BY` là bắt buộc vì kết quả SPARQL vốn không có thứ tự.
 
 **Ví dụ 2 – hỏi một quan hệ cụ thể**
 
@@ -156,13 +159,15 @@ hệ chỉ được dùng để tìm tới dữ liệu đó.
 
 | Thành phần | Số lượng |
 |---|---:|
-| Bộ ba RDF | 8.345 |
-| Lớp | 43 |
-| Quan hệ giữa các thực thể | 29 |
-| Thuộc tính dữ liệu | 33 |
-| Thực thể có định danh | 858 |
+| Bộ ba RDF | 7.519 |
+| Lớp | 46 |
+| Quan hệ giữa các thực thể | 34 |
+| Thuộc tính dữ liệu | 50 |
+| Thực thể có định danh | 822 |
 | Quy trình học vụ | 22 |
 | Chính sách học vụ | 2 |
+| Bước thực hiện của các quy trình | 44 |
+| Điều kiện được tách riêng | 33 |
 
 Mỗi thực thể công khai có tên tiếng Việt; các dữ kiện trả lời được liên kết về
 văn bản nguồn. Chi tiết thiết kế và quy ước đặt tên nằm trong

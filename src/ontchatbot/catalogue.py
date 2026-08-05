@@ -109,6 +109,23 @@ def match_target(spec: QuerySpec, target: str) -> dict[str, str] | None:
     return matched.groupdict() if matched else None
 
 
+def find_query_family(
+    catalogue: Mapping[str, QuerySpec],
+    target: str,
+) -> str | None:
+    """Return the query_id whose family generates target exactly, else None.
+
+    Rejection families are skipped: the marker never reaches SPARQL execution.
+    """
+
+    for query_id, spec in catalogue.items():
+        if spec.domain == "out-of-domain":
+            continue
+        if match_target(spec, target) is not None:
+            return query_id
+    return None
+
+
 def _parse_spec(payload: object) -> QuerySpec:
     if not isinstance(payload, dict) or set(payload) != _REQUIRED_FIELDS:
         raise CatalogueError(f"fields must be exactly {sorted(_REQUIRED_FIELDS)}")

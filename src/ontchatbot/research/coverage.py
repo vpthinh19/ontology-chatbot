@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
-from .catalogue import QuerySpec, match_target
+from ..catalogue import QuerySpec, match_target
 
 _REQUIRED_FIELDS = {
     "priority_domains",

@@ -10,7 +10,7 @@ from ontchatbot.research.benchmark import (
     load_benchmark,
     validate_benchmark,
 )
-from ontchatbot.research.catalogue import QuerySpec, SlotSpec
+from ontchatbot.catalogue import QuerySpec, SlotSpec
 from ontchatbot.research.dataset import load_release
 from ontchatbot.research.evaluate_transformers import _parse_args
 from ontchatbot.runtime.text import normalize_model_input
@@ -28,7 +28,7 @@ CATALOGUE = {
     "procedure-instruction": QuerySpec(
         "procedure-instruction",
         "procedure",
-        "SELECT ?answer WHERE { ${procedure} :instructionProvision ?part . ?part :officialText ?answer . }",
+        "SELECT ?answer WHERE { ${procedure} :hasStep ?part . ?part :stepText ?answer . }",
         {
             "procedure": SlotSpec(
                 "iri",
@@ -149,7 +149,7 @@ def test_rejects_unknown_query_or_mismatched_target() -> None:
 def test_rejects_finite_iri_not_seen_in_train() -> None:
     target = (
         "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure "
-        ":instructionProvision ?part . ?part :officialText ?answer . }"
+        ":hasStep ?part . ?part :stepText ?answer . }"
     )
     training = [_row("train-1", "procedure-instruction", "bảo lưu sao", target)]
     benchmark = [

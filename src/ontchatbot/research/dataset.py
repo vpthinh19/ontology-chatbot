@@ -13,7 +13,7 @@ from rdflib import Graph
 from ..runtime.sparql import execute_select, validate_select
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, QUERY_CATALOGUE_PATH
-from .catalogue import QuerySpec, load_catalogue, match_target
+from ..catalogue import QuerySpec, load_catalogue, match_target
 
 REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}
 REQUIRED_SPLITS = ("train", "val", "test")
