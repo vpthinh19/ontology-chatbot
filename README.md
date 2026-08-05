@@ -197,6 +197,12 @@ vụ thống nhất.
 | Test | 407 | Đánh giá cuối cùng bằng cách diễn đạt chưa xuất hiện trong train |
 | **Tổng** | **4.454** | **51 nhóm truy vấn** |
 
+> **Trạng thái**: dataset trong bảng trên được xây trước đợt tái cấu trúc
+> ontology và hiện **chưa hợp lệ** — các truy vấn đích của nó dùng những quan hệ
+> đã được thay thế. Ontology và danh mục truy vấn đã hoàn tất; dataset sẽ được
+> sinh lại theo danh mục mới. Các số liệu model ở mục 7 và 8 vì vậy là kết quả
+> của baseline v0.4.1, không phải của ontology hiện hành.
+
 | Miền câu hỏi | Số câu |
 |---|---:|
 | Quy trình học vụ | 2.552 |
@@ -239,7 +245,7 @@ truy vấn → dataset; inventory, manifest và các file trong `reports/` là a
 |---|---|---|
 | Ontology | [`ontology.ttl`](resources/ontology/ontology.ttl) | Đồ thị RDF chứa dữ liệu học vụ được truy vấn khi chatbot trả lời |
 | Danh mục khả năng trả lời | [`answer_inventory.json`](resources/ontology/answer_inventory.json) | Liệt kê các đường đi từ thực thể tới nhãn hoặc literal có thể trả lời |
-| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 51 nhóm truy vấn SPARQL của dataset |
+| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 167 họ truy vấn SPARQL mà model được phép sinh |
 | Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 3.645 câu dùng để cập nhật trọng số model |
 | Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 402 câu dùng để chọn checkpoint |
 | Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 407 câu dùng cho benchmark cuối cùng |
