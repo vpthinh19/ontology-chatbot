@@ -1,0 +1,168 @@
+"""Chấm một LLM có nhắc ví dụ trên ĐÚNG tập mà seq2seq đã chấm.
+
+Ví dụ nhắc kèm lấy từ train, câu chấm lấy từ val - không rò rỉ. Dùng cùng hàm
+đánh giá với các lượt seq2seq nên con số đặt cạnh nhau được.
+
+    uv run python .claude/notes/tools/llm_benchmark.py --model Qwen/Qwen3.5-2B --shots 12
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import time
+from pathlib import Path
+
+import torch
+from transformers import (
+    AutoConfig,
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+)
+
+from ontchatbot.research.evaluation import evaluate_predictions
+from ontchatbot.runtime.llm import LLMQueryGenerator, load_examples
+from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.settings import ARTIFACTS_DIR, DATASET_DIR
+
+
+def build_complete(
+    model_id: str,
+    max_new_tokens: int,
+    gpu_memory: str = "",
+    load_4bit: bool = False,
+    allow_download: bool = False,
+):
+    tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=not allow_download)
+    # Model đã lượng tử hoá thì ĐỪNG ép dtype: ép là trọng số 4-bit bị giải nén
+    # ngược về 16-bit ngay lúc nạp, và card 6 GB tràn ngay.
+    # T4 và P100 KHÔNG có bfloat16 trong phần cứng. Ép nó ở đó là chậm hoặc lỗi.
+    compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+    config = AutoConfig.from_pretrained(model_id, local_files_only=not allow_download)
+    quantized = getattr(config, "quantization_config", None) is not None
+    load_kwargs: dict = {"local_files_only": not allow_download}
+    if load_4bit and not quantized:
+        # Tự nén lúc nạp. Nhanh hơn bản nén sẵn theo compressed-tensors vì
+        # không phải giải nén lại khi tính, và nén được nhiều phần hơn.
+        load_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=compute_dtype,
+            # Mặc định thư viện để NGUYÊN lớp đầu ra. Với từ vựng 262.144 token
+            # thì riêng nó đã ngốn khoảng 0,8 GB - đúng phần làm tràn card 6 GB.
+            llm_int8_skip_modules=[],
+        )
+    elif not quantized:
+        load_kwargs["dtype"] = compute_dtype
+    if gpu_memory:
+        # Model đa phương thức mang theo tháp thị giác và âm thanh mà bài toán
+        # này không dùng tới. Giới hạn phần trên GPU để chúng nằm lại RAM.
+        load_kwargs["device_map"] = "auto"
+        load_kwargs["max_memory"] = {0: gpu_memory, "cpu": "32GiB"}
+    else:
+        load_kwargs["device_map"] = "cuda"
+    model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs).eval()
+
+    def complete(prompt: str) -> str:
+        text = tokenizer.apply_chat_template(
+            [{"role": "user", "content": prompt}],
+            add_generation_prompt=True,
+            tokenize=False,
+        )
+        encoded = tokenizer(text, return_tensors="pt").to(model.device)
+        with torch.no_grad():
+            output = model.generate(
+                **encoded,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+        return tokenizer.decode(
+            output[0][encoded["input_ids"].shape[-1] :], skip_special_tokens=True
+        )
+
+    return complete
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--model", required=True)
+    parser.add_argument("--allow-download", action="store_true", help="cho phép tải model")
+    parser.add_argument("--shots", type=int, default=12)
+    parser.add_argument("--split", default="val")
+    parser.add_argument("--limit", type=int, default=0, help="0 = chấm hết")
+    parser.add_argument("--max-new-tokens", type=int, default=200)
+    parser.add_argument("--gpu-memory", default="", help="vd 4GiB - phần thừa đẩy sang RAM")
+    parser.add_argument("--load-4bit", action="store_true", help="tự nén 4-bit lúc nạp")
+    parser.add_argument("--output", type=Path, default=None)
+    args = parser.parse_args()
+
+    rows = [
+        json.loads(line)
+        for line in (DATASET_DIR / f"{args.split}.jsonl").read_text("utf-8").splitlines()
+        if line.strip()
+    ]
+    if args.limit:
+        rows = rows[: args.limit]
+
+    generator = LLMQueryGenerator(
+        build_complete(
+            args.model,
+            args.max_new_tokens,
+            args.gpu_memory,
+            args.load_4bit,
+            args.allow_download,
+        ),
+        load_examples(DATASET_DIR / "train.jsonl"),
+        shots=args.shots,
+    )
+
+    started = time.monotonic()
+    predictions = []
+    for index, row in enumerate(rows, start=1):
+        predictions.append(generator.generate(row["input"]))
+        if index % 25 == 0:
+            rate = (time.monotonic() - started) / index
+            print(f"  {index}/{len(rows)} · {rate:.1f}s mỗi câu", flush=True)
+    elapsed = time.monotonic() - started
+
+    report = evaluate_predictions(rows, predictions, load_ontology(), include_cases=True)
+    report["run"] = {
+        "model": args.model,
+        "shots": args.shots,
+        "split": args.split,
+        "records": len(rows),
+        "seconds_per_question": round(elapsed / len(rows), 2),
+        "fine_tuned": False,
+    }
+
+    overall = report["overall"]
+    print(
+        "\n".join(
+            [
+                "",
+                f"model            {args.model} (nhắc {args.shots} ví dụ, KHÔNG tinh chỉnh)",
+                f"số câu chấm      {overall['count']}",
+                f"Answer Exact     {overall['answer_exact_rate']:.1%}",
+                f"Hệ thống đúng    {overall['system_answer_exact_rate']:.1%}",
+                f"Từ chối an toàn  {overall['safe_rejection_rate']:.1%}",
+                f"SPARQL hợp lệ    {overall['parse_rate']:.1%}",
+                f"tốc độ           {elapsed / len(rows):.1f}s mỗi câu",
+            ]
+        )
+    )
+
+    destination = args.output or (
+        ARTIFACTS_DIR / "llm-benchmark" / f"{args.model.replace('/', '_')}-{args.shots}shot.json"
+    )
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print("kết quả:", destination)
+
+
+if __name__ == "__main__":
+    main()

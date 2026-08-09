@@ -38,6 +38,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
+benchmark_llm = "ontchatbot.cli.benchmark_llm:main"
 benchmark_sparql = "ontchatbot.cli.benchmark:main"
 convert_sparql_model = "ontchatbot.cli.convert_model:main"
 evaluate_ct2_model = "ontchatbot.cli.evaluate_ct2:main"
