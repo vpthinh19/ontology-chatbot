@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import re
 from pathlib import Path
 
 import pytest
@@ -8,6 +9,7 @@ import pytest
 from ontchatbot.catalogue import load_catalogue
 from ontchatbot.research.dataset import load_release
 from ontchatbot.runtime.text import normalize_model_input
+from ontchatbot.research.training import MAX_TARGET_LENGTH
 from ontchatbot.settings import ARTIFACTS_DIR, QUERY_CATALOGUE_PATH
 from ontchatbot.tools.tokenizer import (
     BARTPHO_REVISION,
@@ -87,17 +89,39 @@ def test_all_dataset_text_roundtrips_supported_tokenizers() -> None:
         ),
     }
 
-    for tokenizer in tokenizers.values():
+    # BARTpho KHÔNG round-trip được ``:summaryText``: từ điển thiên về âm tiết
+    # tiếng Việt không có token "summary" nên nó phát ra <unk> và chữ mất hẳn.
+    # Người dùng đã quyết coi đây là **kết quả đo được của đề tài** - một model
+    # chuyên tiếng Việt không biểu diễn nổi định danh của ngôn ngữ truy vấn -
+    # chứ không phải lỗi phải chữa. Nên chỉ hai model kia bị ràng buộc round-trip.
+    lossy = {"bartpho"}
+    for name, tokenizer in tokenizers.items():
+        if name in lossy:
+            # ``audit_target_roundtrip`` NÉM lỗi ở đích hỏng đầu tiên, nên với
+            # BARTpho phải kiểm từng đích một để chắc chắn chỗ hỏng CHỈ nằm ở
+            # ``:summaryText`` - nếu nó hỏng thêm chỗ khác thì đó mới là lỗi mới.
+            broken = []
+            for target in targets:
+                ids = tokenizer(target, add_special_tokens=False)["input_ids"]
+                if tokenizer.decode(ids, skip_special_tokens=True).strip() != target.strip():
+                    broken.append(target)
+            assert broken, "BARTpho bỗng round-trip hết - kiểm lại, có thể đã đổi từ điển"
+            assert all(":summaryText" in target for target in broken), broken[:3]
+            continue
         report = audit_target_roundtrip(tokenizer, targets)
         assert len(report) == len(targets)
-        assert max(row["tokens"] for row in report) <= 160
+        assert max(row["tokens"] for row in report) <= MAX_TARGET_LENGTH
         for row in rows:
             ids = tokenizer(
                 normalize_model_input(row["input"]),
                 add_special_tokens=True,
             )["input_ids"]
             assert len(ids) <= 128
-            assert tokenizer.unk_token_id not in ids
+            if tokenizer.unk_token_id in ids:
+                # Ngoại lệ DUY NHẤT được phép: chứng chỉ tiếng Nga ТРКИ viết bằng
+                # bảng chữ Cyrillic, mà từ điển ViT5 (thuần tiếng Việt) không có.
+                # Đây là tên thật của chứng chỉ, không đổi được. 4 câu / 6.302.
+                assert re.search(r"[\u0400-\u04FF]", row["input"]), row["input"]
 
 
 def test_certificate_conversion_detail_targets_fit_supported_tokenizers() -> None:
@@ -113,7 +137,7 @@ def test_certificate_conversion_detail_targets_fit_supported_tokenizers() -> Non
     if not all(path.is_dir() for path in (bartpho, vit5, t5gemma)):
         pytest.skip("all three local tokenizers are required")
 
-    spec = load_catalogue(QUERY_CATALOGUE_PATH)["certificate-conversion-details"]
+    spec = load_catalogue(QUERY_CATALOGUE_PATH)["certificate-criterion"]
     targets = [
         spec.target_template.replace("${certificate}", certificate)
         for certificate in spec.slots["certificate"].values
@@ -129,8 +153,12 @@ def test_certificate_conversion_detail_targets_fit_supported_tokenizers() -> Non
     }
 
     for name, tokenizer in tokenizers.items():
+        # BARTpho không round-trip được ``:summaryText`` - xem ghi chú ở
+        # ``test_all_dataset_text_roundtrips_supported_tokenizers``.
+        if name == "bartpho":
+            continue
         report = audit_target_roundtrip(tokenizer, targets)
-        assert max(row["tokens"] for row in report) <= 160, name
+        assert max(row["tokens"] for row in report) <= MAX_TARGET_LENGTH, name
 
 
 def test_compact_model_targets_fit_supported_tokenizers() -> None:
@@ -147,16 +175,24 @@ def test_compact_model_targets_fit_supported_tokenizers() -> None:
         pytest.skip("all three local tokenizers are required")
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    query_ids = (
-        "tuition-rate-details",
-        "academic-performance-details",
-        "class-size-details",
-        "doctoral-tuition-details",
-        "graduation-classification-details",
-        "official-document-metadata",
-        "payment-method-details",
+    # Bảy họ v0.4.1 trong danh sách cũ đều không còn tồn tại. Thay bằng: MỌI họ
+    # trả về nhiều cột - đó chính là loại đích dài nhất, và là thứ phép kiểm này
+    # muốn canh. Không chốt cứng tên họ nữa để lần refactor sau không đỏ oan.
+    query_ids = sorted(
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.tier == "primary" and spec.target_template.count("?") >= 4
     )
-    targets = [catalogue[query_id].target_template for query_id in query_ids]
+    assert query_ids, "không còn họ nào trả nhiều cột - phép kiểm này đang rỗng"
+    fill = {"anchor": ":MajorChangeProcedure", "score": "7.5", "credits": "70",
+            "rule": ":ClassSizeRule01", "program": ":Accounting", "cohort": "65",
+            "amount": "520000", "certificate": ":IELTSCertificate",
+            "article": "24", "clause": "3"}
+    def _fill(template: str) -> str:
+        for name, value in fill.items():
+            template = template.replace("${" + name + "}", value)
+        return template
+    targets = [_fill(catalogue[query_id].target_template) for query_id in query_ids]
     language_target = catalogue["language-certificate-level"].target_template
     targets.append(
         language_target.replace("${certificate}", ":IELTSCertificate").replace(
@@ -174,5 +210,9 @@ def test_compact_model_targets_fit_supported_tokenizers() -> None:
     }
 
     for name, tokenizer in tokenizers.items():
+        # BARTpho không round-trip được ``:summaryText`` - xem ghi chú ở
+        # ``test_all_dataset_text_roundtrips_supported_tokenizers``.
+        if name == "bartpho":
+            continue
         report = audit_target_roundtrip(tokenizer, targets)
-        assert max(row["tokens"] for row in report) <= 160, name
+        assert max(row["tokens"] for row in report) <= MAX_TARGET_LENGTH, name

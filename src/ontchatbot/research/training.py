@@ -30,31 +30,82 @@ from ..tools.tokenizer import (
 )
 from ..runtime.sparql import load_ontology
 
+#: ``eval_batch_size`` phải khai TƯỜNG MINH. Mặc định của thư viện là 1, và với
+#: ``predict_with_generate=True`` thì mỗi lần đánh giá sinh từng câu một, tuần
+#: tự, tới 160 token mỗi câu. Với 455 dòng validation và 5 lần đánh giá là 2.275
+#: lượt sinh - ngang hoặc hơn cả thời gian huấn luyện thật.
+#:
+#: ``batch_size`` GIỮ 8. Đã thử nâng lên 12 và **tràn bộ nhớ ngay ở lượt truyền
+#: ngược đầu tiên** trên RTX 4050 6 GB (đòi thêm 1,03 GiB khi chỉ còn 740 MiB).
+#: Con số 4,55 GB đỉnh ghi trong ghi chú cũ là đo trên dataset nhỏ hơn - đừng tin
+#: nó mà nâng batch, hãy thử một lượt ngắn.
+#:
+#: ``gradient_checkpointing`` BẬT cho CẢ BA model sau khi gộp họ. Việc gộp kéo
+#: đuôi dài của đích lên: với t5gemma2 dài nhất 131 token (trước 102) và tỉ lệ
+#: đích quá 80 token tăng 3,1% -> 10,4%. Lô được đệm theo câu dài nhất trong lô,
+#: nên phần lớn lô nay đệm tới 80-130 thay vì 30-60 và batch 8 **tràn ngay bước
+#: lùi đầu tiên**. Bật checkpointing lấy lại trần bộ nhớ mà **không đụng tới phép
+#: tính**: cùng batch, cùng gradient, chỉ tính lại activation nên chậm hơn khoảng
+#: một phần tư. Hạ batch xuống 4 cũng chữa được nhưng làm lượt này khó so thẳng
+#: với các lượt trước.
+#:
+#: Bật cho cả ba chứ không riêng model đang tràn, vì hai lẽ: benchmark cuối chỉ
+#: so được khi ba model dùng CÙNG một giao thức lô, và ViT5 với BARTpho sinh đích
+#: còn DÀI HƠN t5gemma2 (186 và 162 token) nên chắc chắn cũng tràn khi tới lượt.
+#: Nếu model nào hoá ra không cần thì cái giá chỉ là thời gian, không sai kết quả.
+#:
+#: KHÔNG dùng ``group_by_length`` được: transformers 5.x đã bỏ tham số đó.
+#:
+#: KHÔNG dùng FlashAttention-2 được cho t5gemma2, dù đã cài flash-attn 2.8.3 và
+#: GPU đủ điều kiện (compute 8.9): transformers 5.14.1 báo thẳng
+#: "T5Gemma2ForConditionalGeneration does not support Flash Attention 2 yet".
+#: Đây là giới hạn cài đặt của kiến trúc, không phải cấu hình sai - đừng thử lại
+#: cho tới khi transformers thêm hỗ trợ.
 MODEL_SPECS = {
     "bartpho": {
         "model_id": BARTPHO_MODEL_ID,
         "revision": BARTPHO_REVISION,
         "batch_size": 8,
+        "eval_batch_size": 6,
         "gradient_accumulation": 1,
         "attention": "sdpa",
+        "gradient_checkpointing": True,
     },
     "vit5": {
         "model_id": VIT5_MODEL_ID,
         "revision": VIT5_REVISION,
         "batch_size": 8,
+        "eval_batch_size": 6,
         "gradient_accumulation": 1,
         "attention": "eager",
+        "gradient_checkpointing": True,
     },
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
         "batch_size": 8,
+        "eval_batch_size": 6,
         "gradient_accumulation": 1,
         "attention": "sdpa",
+        "gradient_checkpointing": True,
     },
 }
 MAX_SOURCE_LENGTH = 128
-MAX_TARGET_LENGTH = 160
+#: Trần 160 đặt cho các đích NGẮN của bản cũ. Mỗi lần gộp họ, đích mang nhiều
+#: thông tin hơn nên dài ra, và ViT5 luôn là model chạm trần trước:
+#:
+#:   trước khi gộp   -> ViT5 186 · BARTpho 162 · T5Gemma2 131   (trần 224)
+#:   sau đợt gộp 2   -> ViT5 219 · BARTpho 191 · T5Gemma2 155   (trần 224 -> 288)
+#:
+#: Vượt trần là hỏng ÂM THẦM: đích bị cắt giữa chừng nên luôn sai, mà T5Gemma2
+#: thì không hề hấn gì nên rất dễ bỏ sót nếu chỉ huấn luyện model đó. Giữ biên
+#: rộng vì nới gần như không tốn gì - đây là trần CẮT, không phải độ dài đệm;
+#: model dừng ở EOS chứ không sinh đủ trần, và lô vẫn đệm theo câu dài nhất
+#: trong lô.
+#:
+#: **Sau MỖI lần gộp họ phải đo lại trên cả ba tokenizer** - đoạn mã ở §9 bản
+#: bàn giao.
+MAX_TARGET_LENGTH = 288
 LORA_R = 32
 LORA_ALPHA = 64
 LORA_DROPOUT = 0.0
@@ -645,10 +696,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "models")
-    parser.add_argument("--epochs", type=float, default=20.0)
+    # 16 chứ không phải 20: mất mát huấn luyện về 0,0000 từ epoch 15, và đo được
+    # epoch 16 -> 20 chỉ đổi -0,2% Answer Exact. Bốn epoch cuối là 15 phút lãng phí.
+    parser.add_argument("--epochs", type=float, default=16.0)
     parser.add_argument("--max-steps", type=int, default=-1)
     parser.add_argument("--learning-rate", type=float, default=1e-4)
-    parser.add_argument("--eval-every-epochs", type=float, default=2.0)
+    # 4 chứ không phải 2: mỗi lần đánh giá tốn ~95 giây và từng chiếm 88% thời
+    # gian một lượt chạy. Giãn nhịp cắt một nửa chi phí đó mà vẫn đủ mốc để nhìn.
+    parser.add_argument("--eval-every-epochs", type=float, default=4.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--save-model", action="store_true")

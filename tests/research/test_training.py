@@ -32,10 +32,15 @@ def test_all_benchmark_models_share_one_physical_batch_protocol() -> None:
     assert effective_batches == {"bartpho": 8, "vit5": 8, "t5gemma2": 8}
     assert all(spec["batch_size"] == 8 for spec in MODEL_SPECS.values())
     assert all(spec["gradient_accumulation"] == 1 for spec in MODEL_SPECS.values())
-    assert all(
-        not spec.get("gradient_checkpointing", False)
-        for spec in MODEL_SPECS.values()
-    )
+    # Checkpointing không đổi gradient, chỉ đổi bộ nhớ - nên nó được phép bật.
+    # Cái KHÔNG được phép là bật lệch giữa các model: benchmark cuối chỉ so được
+    # khi cả ba đi cùng một giao thức. Nếu chỉ một model bật, lượt đó sẽ chậm hơn
+    # vì lý do cấu hình chứ không vì bản chất model.
+    checkpointing = {
+        name: spec.get("gradient_checkpointing", False)
+        for name, spec in MODEL_SPECS.items()
+    }
+    assert len(set(checkpointing.values())) == 1, checkpointing
 
 
 def test_structured_generation_disables_inherited_sampling_settings() -> None:
@@ -80,10 +85,19 @@ def test_training_rejects_nonempty_model_output_directory(tmp_path) -> None:
 
 
 def test_cli_defaults_match_canonical_training_protocol() -> None:
+    """Mặc định phải khớp giao thức ĐÃ ĐO, không phải giao thức lịch sử.
+
+    Bản trước chốt 20 epoch và đánh giá mỗi 2 epoch. Cả hai đã được đo lại:
+    mất mát huấn luyện về 0,0000 từ epoch 15 và epoch 16 -> 20 chỉ đổi -0,2%;
+    còn mỗi lần đánh giá tốn ~95 giây và từng chiếm 88% thời gian một lượt chạy.
+    Để mặc định cũ nghĩa là ai chạy mà quên truyền cờ sẽ mất thêm ~25 phút
+    không đổi lại được gì.
+    """
+
     args = _parse_args(["--model", "t5gemma2"])
 
-    assert args.epochs == 20.0
-    assert args.eval_every_epochs == 2.0
+    assert args.epochs == 16.0
+    assert args.eval_every_epochs == 4.0
     assert args.learning_rate == 1e-4
     assert args.seed == 42
     assert args.output_dir == ARTIFACTS_DIR / "models"
