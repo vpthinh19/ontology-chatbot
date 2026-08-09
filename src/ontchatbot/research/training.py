@@ -604,7 +604,13 @@ def _generate_rows(model, tokenizer, rows, torch, *, batch_size: int) -> list[st
     cache_config.use_cache = True
     predictions = []
     try:
-        with torch.inference_mode():
+        # ``no_grad`` chứ KHÔNG phải ``inference_mode``. Chế độ suy luận tạo ra
+        # loại tensor không mang bộ đếm phiên bản, và lớp nhúng vị trí quay của
+        # T5Gemma2 lại cần đúng thứ đó khi nó nới bộ đệm tần số. Trên GPU NVIDIA
+        # không thấy gì, nhưng trên CPU và TPU thì vỡ ngay lượt sinh đầu tiên với
+        # "Cannot set version_counter for inference tensor". Hai chế độ chặn
+        # gradient như nhau nên kết quả không đổi.
+        with torch.no_grad():
             for offset in range(0, len(rows), batch_size):
                 batch = rows[offset : offset + batch_size]
                 encoded = tokenizer(
