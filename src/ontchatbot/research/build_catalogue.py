@@ -175,11 +175,10 @@ _QUESTION_DUPLICATES = frozenset(
         "decision-document-number",
         "decision-issue-date",
         "decision-effective-from-semester",
-        # Đo trên lượt 5: bốn họ thủ tục dưới đây dùng chung 15-22 thực thể neo và
-        # cùng trả lời một câu hỏi của con người - "tôi muốn làm thủ tục X". Chúng
-        # chiếm 13 lần nhầm, nhiều nhất danh mục. ``academic-procedure-overview``
-        # nay trả cả tóm tắt lẫn các bước; ``academic-procedure-handling`` nay trả
-        # cả biểu mẫu cần nộp.
+        # Bốn họ thủ tục dưới đây dùng chung phần lớn thực thể neo và cùng trả lời
+        # một câu hỏi của con người - "tôi muốn làm thủ tục X".
+        # ``academic-procedure-overview`` trả cả tóm tắt lẫn các bước;
+        # ``academic-procedure-handling`` trả cả biểu mẫu cần nộp.
         "academic-procedure-has-step-step-text",
         "academic-procedure-requires-form-label",
         # Cùng 2 neo, cùng hình dạng trả lời, nghĩa NGƯỢC nhau - sinh viên hỏi sàn
@@ -291,8 +290,8 @@ def _template(path: tuple[str, ...], *, anchored: bool, anchor_class: str) -> st
 #: số hiệu điều/khoản/điểm (``article-with-source`` …) đã trả nguyên văn KÈM căn
 #: cứ và đường dẫn bản gốc; họ sinh tự động cho văn bản có TÊN thì chỉ trả mỗi
 #: nguyên văn. Hai hình dạng lệch nhau cho cùng một kiểu câu hỏi - "Điều 22 nói
-#: gì" có nguồn, "Phụ lục I nói gì" thì không - và lượt 6 đo được **12/46 lần
-#: nhầm** dồn vào đúng chỗ lệch đó. Cho cả hai cùng hình dạng thì hết chỗ dụ.
+#: gì" có nguồn, "Phụ lục I nói gì" thì không - và chỗ lệch đó dụ model chọn nhầm.
+#: Cho cả hai cùng hình dạng thì hết chỗ dụ.
 VERBATIM_PATH = ("officialText",)
 VERBATIM_COMPANIONS = ("citationLabel", "documentUrl")
 

@@ -1,12 +1,6 @@
 """Nội dung bản phát hành: chạy được, phủ đủ, và không tự mâu thuẫn.
 
-**Viết lại toàn bộ ở phiên 2.** Bản trước chốt cứng số liệu của bản v0.4.1 -
-``records == 4454``, ``query_families == 51``, checksum đóng băng của val/test,
-và cả ma trận "lô phục hồi" của một đợt vá dataset đã qua. Khi ontology được
-refactor và dataset sinh lại, 15 test trong tệp này đỏ **không phải vì dữ liệu
-hỏng** mà vì chúng đang canh những con số không còn tồn tại.
-
-Mọi luật ở đây giữ nguyên Ý ĐỊNH cũ nhưng đối chiếu với **artifact thật**, theo
+Mọi luật ở đây đối chiếu với **artifact thật** chứ không chốt cứng con số, theo
 đúng cách ``test_public_docs_quote_the_real_catalogue_size`` đã làm: không tệp
 test nào được giữ một con số mà chỉ nó biết.
 """
@@ -40,8 +34,8 @@ from ontchatbot.settings import (
 ACADEMIC = Namespace("http://www.ntu.edu.vn/ontology/academic#")
 CHECKLIST_PATH = Path("resources/cases/rejection_checklist.json")
 USER_QUERIES_PATH = Path("resources/cases/user_queries.json")
-#: Thuộc tính của lược đồ CŨ. Đích nào còn dùng chúng là dấu hiệu một mảnh của
-#: bản v0.4.1 sống lại - lược đồ đó chính là thứ đã bị chẩn đoán là nguồn bệnh.
+#: Thuộc tính của lược đồ CŨ, đã bỏ. Đích nào còn dùng chúng là dấu hiệu lược đồ
+#: cũ sống lại.
 RETIRED_PROPERTIES = (
     ":content",
     ":condition",
@@ -329,9 +323,8 @@ def test_procedure_outcome_slots_exclude_procedures_without_an_outcome(
 def test_targets_never_resurrect_the_retired_schema(release) -> None:
     """Không đích nào được dùng lại thuộc tính của lược đồ cũ.
 
-    Lược đồ v0.4.1 để bốn khía cạnh của cùng một thủ tục trỏ về gần như cùng một
-    đoạn văn - chính là nguyên nhân model nhận đúng thực thể nhưng chọn sai quan
-    hệ. Một mảnh của nó sống lại là một mảnh của căn bệnh sống lại.
+    Lược đồ cũ để bốn khía cạnh của cùng một thủ tục trỏ về gần như cùng một đoạn
+    văn - khiến model nhận đúng thực thể nhưng chọn sai quan hệ.
 
     Bản trước còn cấm đích trỏ THẲNG vào node điều/khoản/điểm. Ràng buộc đó nay
     sai: tra cứu nguyên văn một điều luật là năng lực CÓ CHỦ ĐÍCH của v2.

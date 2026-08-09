@@ -175,7 +175,7 @@ def test_compact_model_targets_fit_supported_tokenizers() -> None:
         pytest.skip("all three local tokenizers are required")
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    # Bảy họ v0.4.1 trong danh sách cũ đều không còn tồn tại. Thay bằng: MỌI họ
+    # Không chốt cứng tên họ, vì danh mục đổi theo ontology. Thay bằng: MỌI họ
     # trả về nhiều cột - đó chính là loại đích dài nhất, và là thứ phép kiểm này
     # muốn canh. Không chốt cứng tên họ nữa để lần refactor sau không đỏ oan.
     query_ids = sorted(

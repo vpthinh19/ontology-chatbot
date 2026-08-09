@@ -211,8 +211,7 @@ def choose_mention(
     những câu không ai nói, kiểu *"ê Được điều động vào lực lượng vũ trang v?"*.
 
     Tương quan này không phải trang trí: nó đúng với cách người ta thật sự nói, và
-    nó dạy model rằng cùng một thực thể có nhiều tên tuỳ ngữ cảnh - chính là năng
-    lực tổng quát hoá mà bản v0.4.1 thiếu.
+    nó dạy model rằng cùng một thực thể có nhiều tên tuỳ ngữ cảnh.
     """
 
     if len(available) == 1:

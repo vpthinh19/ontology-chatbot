@@ -385,7 +385,7 @@ def test_no_two_primary_families_answer_identically() -> None:
 
     Đây là luật đắt giá nhất trong bộ này. Answer Exact so *tập kết quả trả về*,
     không so chuỗi truy vấn - nên khi hai ý định khác nhau cùng trả một đoạn văn,
-    model chọn nhầm vẫn được chấm ĐÚNG. Ở ontology v0.4.1, 59,6% số dòng dataset
+    model chọn nhầm vẫn được chấm ĐÚNG. Đã từng có lược đồ mà phần lớn số dòng
     nằm trong vùng mù đó, và đó là lý do benchmark báo 92% trong khi chatbot thật
     trả lời rất tệ.
 
@@ -420,7 +420,7 @@ def test_no_two_primary_families_answer_identically() -> None:
 def test_no_answer_cell_is_a_wall_of_text() -> None:
     """Một ô trong câu trả lời không được là cả một khối văn bản.
 
-    Bản v0.4.1 có truy vấn trả về 94.401 ký tự - và nó được dạy cho model 20 lần.
+    Truy vấn trả về hàng chục nghìn ký tự là câu trả lời không ai đọc được.
     Answer Exact chấm khối đó là hoàn hảo miễn nó khớp reference, nên độ dài phải
     được canh riêng.
 

@@ -89,7 +89,7 @@ def test_cli_defaults_match_canonical_training_protocol() -> None:
 
     Bản trước chốt 20 epoch và đánh giá mỗi 2 epoch. Cả hai đã được đo lại:
     mất mát huấn luyện về 0,0000 từ epoch 15 và epoch 16 -> 20 chỉ đổi -0,2%;
-    còn mỗi lần đánh giá tốn ~95 giây và từng chiếm 88% thời gian một lượt chạy.
+    còn mỗi lần đánh giá phải sinh lại toàn tập val, rất tốn thời gian.
     Để mặc định cũ nghĩa là ai chạy mà quên truyền cờ sẽ mất thêm ~25 phút
     không đổi lại được gì.
     """

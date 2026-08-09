@@ -78,7 +78,7 @@ def test_every_family_has_enough_frames_to_split(frames) -> None:
 
     Ràng buộc là TỈ LỆ GIẤU, không phải con số tuyệt đối. Bản trước chốt
     ``HELD_OUT_FRAMES >= 2``, mà với 8 khung mỗi họ thì đó là **giấu 50%** - đo
-    được hậu quả ở lượt 4: 13 khung bị giấu sai 100%, tức là model chưa từng thấy
+    hậu quả là những khung bị giấu sai 100%, tức là model chưa từng thấy
     lối nói đó nên phép đo thành đo cách hỏi lạ chứ không đo năng lực. Thông lệ
     là 10-20%.
 
@@ -105,7 +105,7 @@ def test_noisy_questions_survive_the_runtime_normaliser() -> None:
     sau chuẩn hoá câu noisy trở lại y hệt câu sạch - nhóm "có lỗi viết" thành vô
     nghĩa, model không học được gì, mà lỗi gõ thật ngoài whitelist vẫn hỏng.
 
-    Bản v0.4.1 có nhóm noisy yếu nhất (85,71%), nên đây là chỗ phải canh chặt.
+    Nhóm noisy vốn là nhóm khó nhất, nên đây là chỗ phải canh chặt.
     """
 
     rng = random.Random(7)

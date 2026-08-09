@@ -3,15 +3,15 @@
 Chiều đi một chiều, không được đảo: ontology quyết định trả lời được gì, danh mục
 quyết định hình dạng truy vấn, khung quyết định cách hỏi. Câu hỏi được **ghép**
 chứ không viết tay từng câu, và đích được **bung ra từ ``target_template``** chứ
-không gõ lại - 841 dòng của bản cũ chết chỉ vì lệch đúng một từ ``DISTINCT``.
+không gõ lại: một dấu lệch trong truy vấn viết tay làm hỏng cả loạt dòng.
 
-Bốn ràng buộc thiết kế, mỗi cái chống lại một lỗi đã thực sự xảy ra:
+Bốn ràng buộc thiết kế:
 
 1. **Chia tập theo KHUNG, không theo dòng.** Sinh tổ hợp rồi chia ngẫu nhiên thì
    test chỉ là hoán vị của train. Val/test dùng khung mà train chưa từng thấy.
 2. **Cặp tương phản tối thiểu.** Mỗi neo xuất hiện với MỌI ý định hợp lệ của nó,
-   nên ranh giới giữa các ý định được dạy tường minh. Đây là chế độ lỗi đo được ở
-   bản cũ: nhận đúng thực thể, chọn sai quan hệ.
+   nên ranh giới giữa các ý định được dạy tường minh. Chế độ lỗi nó chống lại là
+   nhận đúng thực thể nhưng chọn sai quan hệ.
 3. **Trọng số theo miền.** Quy trình học vụ là trọng tâm dự án nhưng chỉ chiếm 14%
    không gian đích; không cân lại thì model dồn năng lực vào tra cứu điều khoản.
 4. **Câu từ chối sinh từ đồ thị thật**, không bịa: cách gọi mơ hồ và ghép sai neo.
@@ -41,8 +41,7 @@ MARKER = "không có thông tin"
 
 #: Họ trả lời "chatbot làm được gì" - liệt kê thẳng các thủ tục từ ontology.
 CAPABILITY_FAMILY = "assistant-capabilities"
-#: MỌI câu từ chối đều trả ``MARKER``. Đã thử cho nhóm ngoài phạm vi trả về
-#: truy vấn liệt kê năng lực và **đo được 42% sai** - cao nhất toàn bộ danh mục.
+#: MỌI câu từ chối đều trả ``MARKER``, kể cả câu ngoài phạm vi.
 #:
 #: Lý do rất cơ học: ``MARKER`` dài 4 token và là hằng số, model chỉ cần nhớ một
 #: chuỗi. Truy vấn năng lực dài ~30 token và phải sinh chính xác từng ký tự cho
@@ -176,19 +175,13 @@ class Row:
 
 #: Số khung giữ lại cho mỗi tập đánh giá.
 #:
-#: Số khung GIẤU cho mỗi bên (val và test).
+#: Số khung GIẤU cho mỗi bên (val và test): mỗi họ 10 khung, **dạy 8 - chỉnh 1 -
+#: chấm 1**, tức giấu 20%.
 #:
-#: Từng là 2, tức mỗi họ có 8 khung thì dạy 4 giấu 4 - **giấu 50%**, trong khi
-#: thông lệ là 10-20%. Hệ quả đo được ở lượt 4: **13 khung bị giấu sai 100%**,
-#: không đúng lấy một câu. Sai *toàn bộ* nghĩa là model chưa từng thấy lối nói
-#: đó, nên đó là phép đo cách hỏi lạ chứ không phải phép đo năng lực.
-#:
-#: Nay là 1: mỗi họ 10 khung, **dạy 8 - chỉnh 1 - chấm 1**, giấu 20%.
-#:
-#: Một khung mỗi bên nghe mỏng, nhưng nỗi lo "may rủi" chỉ đúng khi đọc TỪNG HỌ.
-#: Số tổng cộng gộp 61 họ nên vẫn có 61 khung chưa từng thấy mỗi bên - đủ dày.
-#: Và nó chỉ mỏng khi khung giấu được chọn thiên lệch; ``split_safe_order`` nay
-#: chọn theo thứ tự băm ổn định chứ không lấy khung dị nhất.
+#: Giấu quá nửa thì tập chấm chỉ còn toàn lối nói model chưa từng thấy, và điểm
+#: số đo cách hỏi lạ chứ không đo năng lực. Một khung mỗi bên nghe mỏng khi đọc
+#: từng họ, nhưng cộng lại vẫn là mỗi bên một khung chưa từng thấy cho mọi họ.
+#: Khung giấu phải chọn theo thứ tự băm ổn định, không lấy khung dị nhất.
 HELD_OUT_FRAMES = 1
 
 #: Chỗ trống trong mẫu câu từ chối ``incomplete-request`` mang ĐÚNG tên slot của
@@ -443,9 +436,8 @@ def incomplete_specifications(
 
     Vài họ đòi hai thông tin mới trả lời được: học phí cần cả NGÀNH và KHOÁ, quy
     đổi chứng chỉ cần cả LOẠI và ĐIỂM. Người hỏi thường chỉ nêu một - *"học phí
-    k67 như thế nào"* - và lượt 6 cho thấy model đáp **550.000** rất chắc chắn
-    trong khi khoá 67 có tới **năm** mức khác nhau tuỳ ngành. Trả một con số tiền
-    sai mà nói như đúng rồi là kiểu hỏng tệ nhất ở một buổi demo.
+    k67 như thế nào"* - trong khi một khoá có nhiều mức khác nhau tuỳ ngành. Trả
+    một con số tiền sai mà nói như đúng rồi là kiểu hỏng tệ nhất.
 
     Đo thẳng trên đồ thị chứ không chốt tay: giữ một slot, chạy hết mọi giá trị
     của slot kia, đếm số đáp án KHÁC NHAU. Chỉ giá trị nào cho ra nhiều hơn một
@@ -816,8 +808,8 @@ def _add_rejections(
     * ``near-domain-missing`` - hỏi một khía cạnh mà ontology không ghi cho thực
       thể đó (thời hạn của một thủ tục không có thời hạn).
 
-    Cả hai đều là ca "gần miền" - nhóm bản v0.4.1 yếu nhất (92,22%, dưới ngưỡng
-    94%) - và sinh từ đồ thị thật thì bảo đảm chúng thực sự không trả lời được.
+    Cả hai đều là ca "gần miền", và sinh từ đồ thị thật thì bảo đảm chúng thực sự
+    không trả lời được.
 
     Tờ đơn và mục tải của chính nó KHÔNG thuộc nhóm này: chúng là một thứ ngoài
     đời bị mô hình hai lần, và coi chúng là mơ hồ đã dạy chatbot từ chối đúng câu

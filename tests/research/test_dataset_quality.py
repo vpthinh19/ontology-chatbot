@@ -181,7 +181,7 @@ def test_hard_negatives_only_use_the_entity_type_their_wording_assumes(
     1052 là bao nhiêu"*.
 
     Câu vô nghĩa vẫn dạy được "từ chối", nhưng dạy model nhận ra sự VÔ NGHĨA chứ
-    không dạy được ranh giới thật - mà ranh giới mới là chỗ bản v0.4.1 yếu nhất.
+    không dạy được ranh giới thật - mà ranh giới mới là chỗ khó nhất.
     """
 
     checklist_path = Path("resources/cases/rejection_checklist.json")

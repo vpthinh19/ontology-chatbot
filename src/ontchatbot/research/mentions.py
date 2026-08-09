@@ -243,9 +243,8 @@ def mention_index(
 
     Cái thứ hai KHÔNG phải rác cần bỏ đi. ``docs/CONCEPT.md`` quy định câu hỏi quá
     mơ hồ để có một câu trả lời đúng duy nhất thì phải bị TỪ CHỐI. Vậy nên đây
-    chính là nguyên liệu tốt nhất cho nhóm câu từ chối "gần miền" - nhóm mà bản
-    v0.4.1 yếu nhất (Safe Rejection 92,22%, dưới ngưỡng 94%). Sinh chúng từ đồ
-    thị thật thì không phải bịa, và bảo đảm chúng thực sự mơ hồ.
+    chính là nguyên liệu tốt nhất cho nhóm câu từ chối "gần miền". Sinh chúng từ
+    đồ thị thật thì không phải bịa, và bảo đảm chúng thực sự mơ hồ.
 
     "Điều 1" là ví dụ: ba tài liệu đều có Điều 1 với nội dung khác hẳn nhau. Nếu
     thêm được tên tài liệu để phân biệt thì dùng dạng đầy đủ; không thì cách gọi
