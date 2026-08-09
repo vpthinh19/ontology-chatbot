@@ -24,6 +24,10 @@ PROCEDURE_LANGUAGE_CASES_PATH = RESOURCES / "cases" / "procedure_language.jsonl"
 REJECTION_CHECKLIST_PATH = RESOURCES / "cases" / "rejection_checklist.json"
 DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
 QUERY_CATALOGUE_PATH = DATASET_DIR / "catalogue.jsonl"
+#: Họ truy vấn viết tay: so sánh ngưỡng, tổng hợp nhiều cột, chọn bản ghi phù
+#: hợp nhất. Bộ sinh cơ học chỉ dựng được truy vấn đi theo đường dẫn nên không
+#: thể tự sinh những họ này; chúng được trộn vào khi dựng lại danh mục.
+QUERY_CATALOGUE_MANUAL_PATH = DATASET_DIR / "catalogue-manual.jsonl"
 COVERAGE_REQUIREMENTS_PATH = DATASET_DIR / "coverage.json"
 
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"

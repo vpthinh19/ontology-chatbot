@@ -5,15 +5,20 @@ from __future__ import annotations
 from rdflib import RDF, Graph, URIRef
 
 
+#: Các lớp của tầng văn bản.
+#:
+#: Chúng LÀ neo trả lời được: "Điều 24 nói gì" là câu hỏi hợp lệ và người dùng
+#: không cần đi vòng qua một dữ kiện nghiệp vụ để hỏi nó. Bản trước loại tầng
+#: này khỏi danh sách neo, khiến 60% nguyên văn công văn nằm chết trong đồ thị.
 SOURCE_CLASS_NAMES = frozenset(
     {
+        "Chapter",
         "Article",
         "Clause",
         "Point",
         "Appendix",
         "DocumentTable",
-        "DocumentBody",
-        "DocumentPart",
+        "DocumentSection",
     }
 )
 

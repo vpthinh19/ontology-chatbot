@@ -15,15 +15,34 @@ def render_rows(rows: QueryRows) -> str:
     if any(tuple(row) != columns for row in rows):
         raise ValueError("all SPARQL rows must have the same columns")
 
-    if len(columns) == 1:
-        values = [_format(row[columns[0]]) for row in rows]
-        return values[0] if len(values) == 1 else "\n".join(f"- {value}" for value in values)
+    # Một cột giữ nguyên cùng một giá trị ở mọi dòng là chú thích cho cả câu
+    # trả lời, không phải dữ liệu của từng dòng: nguồn trích dẫn và đường dẫn
+    # văn bản lặp lại y hệt trên từng bước của một thủ tục. Tách chúng xuống
+    # cuối để danh sách còn đọc được. Quy tắc này thuần hình thức - nó không
+    # biết cột nào mang nghĩa gì.
+    shared = tuple(
+        column for column in columns if len({row[column] for row in rows}) == 1
+    )
+    listed = tuple(column for column in columns if column not in shared)
+    if not listed:
+        listed, shared = columns, ()
 
-    rendered = [
-        "; ".join(f"{column}: {_format(row[column])}" for column in columns)
-        for row in rows
-    ]
-    return rendered[0] if len(rendered) == 1 else "\n".join(f"- {row}" for row in rendered)
+    if len(listed) == 1:
+        values = [_format(row[listed[0]]) for row in rows]
+    else:
+        values = [
+            "\n".join(f"{column}: {_format(row[column])}" for column in listed)
+            for row in rows
+        ]
+
+    unique = list(dict.fromkeys(values))
+    body = unique[0] if len(unique) == 1 else "\n".join(f"- {value}" for value in unique)
+
+    if shared:
+        body += "\n\n" + "\n".join(
+            f"{column}: {_format(rows[0][column])}" for column in shared
+        )
+    return body
 
 
 def _format(value: Primitive) -> str:

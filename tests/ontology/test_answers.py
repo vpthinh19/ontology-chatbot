@@ -109,7 +109,28 @@ def test_a_fact_can_be_traced_back_to_its_article(ontology_graph) -> None:
         ontology_graph,
         "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :basedOn ?p . "
         "?p :citationLabel ?answer . }",
-    ) == ["Điều 24 Quyết định 1052/QĐ-ĐHNT"]
+    ) == [
+        "Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, "
+        "ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+    ]
+
+
+def test_a_citation_tells_the_reader_where_to_verify_it(ontology_graph) -> None:
+    """Người hỏi không biết "Quyết định 1052" là văn bản nào. Trích dẫn phải tự
+    nói ra: điều nào, của văn bản gì, ban hành ngày nào - và kèm nơi tra cứu."""
+
+    rows = execute_select(
+        ontology_graph,
+        "SELECT ?căncứ ?xemtại WHERE { :MajorChangeProcedure :basedOn ?p . "
+        "?p :citationLabel ?căncứ ; :documentUrl ?xemtại . }",
+    )
+
+    assert len(rows) == 1
+    citation = str(rows[0]["căncứ"])
+    assert "Điều 25" in citation
+    assert "1052/QĐ-ĐHNT" in citation
+    assert "17/7/2025" in citation
+    assert str(rows[0]["xemtại"]).startswith("https://")
 
 
 def test_a_provision_can_be_found_by_its_number(ontology_graph) -> None:

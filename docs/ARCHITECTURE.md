@@ -1,75 +1,100 @@
 # Kiến trúc hệ thống
 
-## Thành phần
+Tài liệu này mô tả các thành phần và trách nhiệm của chúng. Nó kỹ thuật hơn
+[tài liệu ý tưởng](CONCEPT.md), nhưng vẫn không đòi hỏi đọc mã nguồn.
 
-![Kiến trúc huấn luyện và vận hành hệ thống](figures/system-architecture.png)
-
-Runtime chỉ phụ thuộc một model đã chuyển đổi, tokenizer, RDFLib và ontology.
-Nó không import trainer, dataset curation hoặc code báo cáo.
-`tokenizer.json` được nạp trực tiếp bằng thư viện `tokenizers`; Transformers và
-SentencePiece chỉ thuộc môi trường huấn luyện, không nằm trong runtime CT2.
-
-## Trách nhiệm
-
-| Thành phần | Nhận | Trả | Không làm |
-|---|---|---|---|
-| Normalizer | Câu hỏi | Văn bản sạch nhẹ | Dò entity, intent hoặc IRI |
-| Model | Văn bản | Marker hoặc SPARQL | Đọc literal trong ontology |
-| Validator | SPARQL | SPARQL an toàn | Sửa query |
-| Catalogue guard | SPARQL | Query thuộc một họ đã khai | Đoán họ gần đúng |
-| RDFLib | SPARQL + graph | Các literal | Suy đoán ý người dùng |
-| Renderer | `list[dict]` | Văn bản | Chứa logic riêng cho ontology |
-
-Model là nơi duy nhất quyết định trong/ngoài miền. Backend chỉ nhận diện marker
-chính xác, kiểm tra `SELECT` và đối chiếu query với danh mục truy vấn; không có
-threshold hay classifier thứ hai.
-
-Catalogue guard so khớp **chính xác** query với các `target_template` trong
-`catalogue.jsonl`. Nó không sửa và không chọn họ gần đúng: khớp thì chạy tiếp,
-không khớp thì trả `Không có thông tin.`. Ràng buộc an toàn của `validate_select`
-chỉ chặn cú pháp và thao tác nguy hiểm, nên một query hợp lệ vẫn có thể ghép một
-thực thể với một quan hệ mà không họ truy vấn nào cho phép — ví dụ duyệt toàn bộ
-`?item a :AcademicProcedure` rồi đổ nguyên văn 25 điều ra giao diện. Guard chặn
-đúng lớp lỗi đó. `catalogue.jsonl` vì vậy là hợp đồng ràng buộc, không còn là tài
-liệu tham khảo.
-
-Guard nằm trong `ontchatbot.catalogue` (cùng tầng `settings.py`, chỉ dùng thư
-viện chuẩn) nên runtime vẫn không phụ thuộc code nghiên cứu.
-
-## Xử lý lỗi
-
-Marker, query không hợp lệ và kết quả rỗng cùng trả `Không có thông tin.`. Lỗi
-nạp model, nạp ontology và lỗi lập trình không bị che thành phản hồi nghiệp
-vụ. Mỗi request được log với input chuẩn hoá, output model, trạng thái query,
-số dòng kết quả và latency.
-
-## Huấn luyện và chuyển đổi model
-
-Ba model được đánh giá dùng cùng giao diện cấp cao:
+## Đường đi của một câu hỏi
 
 ```text
-AutoTokenizer → AutoModelForSeq2SeqLM → PEFT LoRA → Seq2SeqTrainer
-              → best adapter → merge_and_unload() → checkpoint độc lập
-              → from_pretrained() → generate()
+câu hỏi của người dùng
+  → chuẩn hoá nhẹ
+  → mô hình sinh chuỗi
+      ├── báo không có thông tin ──────────────→ "Không có thông tin."
+      └── một câu truy vấn
+            → kiểm tra an toàn
+            → đối chiếu danh mục dạng câu hỏi
+            → chạy trên mạng lưới kiến thức
+            → định dạng kết quả ───────────────→ câu trả lời
 ```
 
-Checkpoint Hugging Face được mở lại trong một tiến trình đánh giá độc lập rồi
-chuyển sang CTranslate2. CTranslate2 chỉ phục vụ triển khai và đo parity; không
-được dùng để thay đổi kết luận về năng lực checkpoint gốc.
+Truy vấn hỏng, không thuộc danh mục, hoặc không trả về dữ liệu đều dẫn tới cùng
+một câu "Không có thông tin."
+
+## Trách nhiệm từng thành phần
+
+| Thành phần | Nhận | Trả | Cố ý **không** làm |
+|---|---|---|---|
+| Chuẩn hoá | câu hỏi thô | văn bản sạch nhẹ | dò thực thể, đoán ý định |
+| Mô hình | văn bản | truy vấn hoặc lời từ chối | đọc nội dung mạng lưới |
+| Kiểm tra an toàn | truy vấn | truy vấn an toàn | sửa truy vấn |
+| Đối chiếu danh mục | truy vấn | truy vấn thuộc một dạng đã khai | chọn dạng gần đúng |
+| Máy truy vấn | truy vấn + mạng lưới | các giá trị | suy đoán ý người dùng |
+| Định dạng | các giá trị | văn bản hiển thị | chứa logic riêng cho học vụ |
+
+Cột cuối quan trọng ngang cột đầu. Mỗi thành phần **từ chối làm hộ việc của
+thành phần khác**, nên khi có lỗi thì xác định được ngay lỗi thuộc về ai.
+
+## Vì sao cần đối chiếu danh mục
+
+Kiểm tra an toàn chỉ chặn cú pháp sai và thao tác nguy hiểm. Nó không chặn được
+một truy vấn hợp lệ hoàn toàn nhưng ghép thực thể với quan hệ theo cách không ai
+định nghĩa — ví dụ duyệt mọi thủ tục rồi đổ nguyên văn hàng chục điều luật ra
+màn hình.
+
+Đối chiếu danh mục so khớp **chính xác** truy vấn với các dạng đã khai báo.
+Khớp thì chạy tiếp; không khớp thì từ chối. Không có "gần đúng".
 
 ## An toàn truy vấn
 
-Backend chỉ chấp nhận `SELECT`, cấm `SELECT *`, truy vấn liên kết ngoài và thao
-tác thay đổi graph. URI hoặc blank node xuất hiện trong kết quả là không hợp
-lệ: query phải trả về label hoặc literal. Sau các kiểm tra này, query còn phải
-khớp một họ trong danh mục truy vấn mới được thực thi.
+Hệ thống chỉ chấp nhận truy vấn **chỉ đọc**. Cụ thể: cấm mọi thao tác thay đổi
+dữ liệu, cấm gọi ra nguồn dữ liệu bên ngoài, cấm lấy tất cả các cột mà không nêu
+rõ cột kết quả, và giới hạn độ dài truy vấn lẫn số dòng trả về.
 
-## Dạng dữ liệu nội bộ
+Kết quả trả về phải là **tên gọi hoặc giá trị**, không bao giờ là một mắt lưới
+trong mạng. Ràng buộc này bảo đảm người dùng luôn nhận được chữ đọc được, chứ
+không phải một mã định danh nội bộ.
 
-Sau RDFLib, dữ liệu chỉ còn:
+## Xử lý lỗi
 
-```python
-list[dict[str, str | int | float | bool | None]]
+Ba tình huống nghiệp vụ — mô hình từ chối, truy vấn không hợp lệ, kết quả rỗng —
+cùng trả về "Không có thông tin." với mã trạng thái thành công, vì đó là câu trả
+lời hợp lệ của hệ thống.
+
+Lỗi nạp mô hình, lỗi đọc mạng lưới và lỗi lập trình **không** bị che thành phản
+hồi nghiệp vụ. Che chúng đi sẽ khiến một sự cố hạ tầng trông y hệt một câu hỏi
+ngoài phạm vi.
+
+Mỗi lượt hỏi được gắn một mã truy vết và ghi lại: câu gốc, câu đã chuẩn hoá,
+chuỗi mô hình sinh ra nguyên văn, thời gian sinh, trạng thái kiểm tra, số dòng
+kết quả, câu trả lời cuối và tổng thời gian.
+
+## Ranh giới giữa phần chạy thật và phần nghiên cứu
+
+Phần chạy thật chỉ cần: một mô hình đã chuyển đổi, bộ tách từ của nó, mạng lưới
+kiến thức, và danh mục dạng câu hỏi. Nó **không** dùng tới mã huấn luyện, mã tạo
+dữ liệu hay mã báo cáo.
+
+Ranh giới này giữ cho bản triển khai nhẹ và có thể kiểm chứng: thứ chạy trên máy
+chủ là một tập con nhỏ, không kéo theo toàn bộ công cụ nghiên cứu.
+
+## Từ huấn luyện tới triển khai
+
+```text
+mô hình gốc → tinh chỉnh một phần nhỏ tham số → chọn điểm dừng bằng tập kiểm định
+            → hợp nhất phần đã tinh chỉnh vào mô hình gốc
+            → đánh giá lại trên tập kiểm tra
+            → chuyển đổi sang dạng chạy nhanh trên CPU
 ```
 
-Không có hierarchy DTO hoặc cấu trúc traversal riêng.
+Ba mô hình được so sánh bằng cùng một giao thức; chỉ một mô hình được triển
+khai. Bản chuyển đổi được đánh giá lại trên đúng tập kiểm tra để xác nhận nó cho
+kết quả tương đương bản gốc — bước chuyển đổi chỉ được phép làm nhanh hơn, không
+được phép làm đổi câu trả lời.
+
+## Dạng dữ liệu bên trong
+
+Sau khi truy vấn chạy xong, dữ liệu chỉ còn là các dòng gồm cặp *tên cột — giá
+trị*, với giá trị là chữ, số, đúng/sai hoặc rỗng.
+
+Không có cấu trúc dữ liệu riêng cho từng loại câu trả lời học vụ. Nhờ vậy thêm
+một dạng câu hỏi mới không đòi hỏi sửa phần định dạng.

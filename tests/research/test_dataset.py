@@ -10,10 +10,10 @@ from ontchatbot.runtime.sparql import load_ontology
 
 
 CATALOGUE = {
-    "procedure-instruction": QuerySpec(
-        "procedure-instruction",
+    "procedure-source": QuerySpec(
+        "procedure-source",
         "procedure",
-        "SELECT ?answer WHERE { ${procedure} :instructionProvision ?part . ?part :officialText ?answer . }",
+        "SELECT ?answer WHERE { ${procedure} :basedOn ?part . ?part :officialText ?answer . }",
         {
             "procedure": SlotSpec(
                 "iri",
@@ -42,8 +42,8 @@ REGISTERS = ("formal", "neutral", "colloquial", "noisy")
 
 def _valid_release():
     procedure_targets = (
-        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
-        "SELECT ?answer WHERE { :CourseRegistrationProcedure :instructionProvision ?part . ?part :officialText ?answer . }",
+        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :basedOn ?part . ?part :officialText ?answer . }",
+        "SELECT ?answer WHERE { :CourseRegistrationProcedure :basedOn ?part . ?part :officialText ?answer . }",
     )
     score_targets = tuple(
         "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= "
@@ -51,7 +51,7 @@ def _valid_release():
         for score in ("8.5", "7", "5.5", "3", "9", "6.5", "4.5", "2")
     )
     questions = {
-        "procedure-instruction": (
+        "procedure-source": (
             "Xin trình bày quy trình nghỉ học tạm thời",
             "Cách đăng ký học phần gồm những gì",
             "bảo lưu thì làm sao vậy",
@@ -84,7 +84,7 @@ def _valid_release():
     }
     release = {"train": [], "val": [], "test": []}
     targets = {
-        "procedure-instruction": procedure_targets * 4,
+        "procedure-source": procedure_targets * 4,
         "performance-band": score_targets,
         "no-information": ("không có thông tin",) * 8,
     }
@@ -115,7 +115,7 @@ def test_accepts_dynamic_targets_and_marker() -> None:
         "out-of-domain": 8,
         "procedure": 8,
     }
-    assert report["slot_coverage"]["procedure-instruction"]["procedure"][
+    assert report["slot_coverage"]["procedure-source"]["procedure"][
         "missing_train"
     ] == []
     assert report["splits"]["train"]["targets"] > report["splits"]["train"]["queries"]
@@ -134,7 +134,7 @@ def test_rejects_finite_iri_missing_from_train() -> None:
     course = ":CourseRegistrationProcedure"
     leave = ":TemporaryAcademicLeaveProcedure"
     for row in release["train"]:
-        if row["query_id"] == "procedure-instruction":
+        if row["query_id"] == "procedure-source":
             row["target"] = row["target"].replace(course, leave)
 
     with pytest.raises(DatasetError, match="finite slot values missing from train"):

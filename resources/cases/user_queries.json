@@ -1,0 +1,41 @@
+{
+  "note": "Câu hỏi do NGƯỜI THẬT gõ vào chatbot, không phải câu sinh ra. Hai câu cuối do giảng viên chủ nhiệm đề tài test. Đây là bộ thử nghiệm chạy trên MODEL sau khi huấn luyện, không phải dữ liệu huấn luyện.",
+  "expectations": [
+    {
+      "question": "chào bạn nha",
+      "expected_query_id": "assistant-capabilities"
+    },
+    {
+      "question": "đăng ký hc phần như nào nhỉ",
+      "expected_query_id": "academic-procedure-overview"
+    },
+    {
+      "question": "đăng ký học phần sao",
+      "expected_query_id": "academic-procedure-overview"
+    },
+    {
+      "question": "vì sao lại đăng ký học phần",
+      "expected_query_id": "no-information"
+    },
+    {
+      "question": "đk hc phần như thế nào",
+      "expected_query_id": "academic-procedure-overview"
+    },
+    {
+      "question": "hc phí k65 cntt",
+      "expected_query_id": "tuition-program-cohort-rate"
+    },
+    {
+      "question": "học phí k67 như thế nào",
+      "expected_query_id": "no-information"
+    },
+    {
+      "question": "Tôi cần thông tin tuyển sinh 2026 của Trường Đại học Nha Trang",
+      "expected_query_id": "no-information"
+    },
+    {
+      "question": "Bạn có thể hỗ trợ thông tin gì",
+      "expected_query_id": "assistant-capabilities"
+    }
+  ]
+}

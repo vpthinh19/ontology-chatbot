@@ -166,9 +166,21 @@ def validate_release(
                 for name, value in (match_target(spec, row["target"]) or {}).items():
                     train_slots[query_id][name].add(value)
 
-    declared_queries = set(catalogue)
+    # Chỉ họ primary mới bắt buộc có dữ liệu huấn luyện. Họ secondary vẫn chạy
+    # được ở runtime và vẫn phủ danh mục khả năng trả lời - chúng chỉ không tiêu
+    # ngân sách dạy học, vì phần lớn là câu hỏi vòng tròn không ai đặt.
+    #
+    # Giao với primary ở CẢ HAI nhánh: một họ secondary tình cờ có vài dòng trong
+    # dataset cũng không vì thế mà bị đòi đủ số dòng, đủ phong cách ở cả ba tập.
+    primary_queries = {
+        query_id for query_id, spec in catalogue.items() if spec.tier == "primary"
+    }
     observed_queries = set().union(*(counts.keys() for counts in query_counts.values()))
-    checked_queries = declared_queries if require_complete_catalogue else observed_queries
+    checked_queries = (
+        primary_queries
+        if require_complete_catalogue
+        else observed_queries & primary_queries
+    )
     missing = {
         split: sorted(checked_queries - query_counts[split].keys())
         for split in REQUIRED_SPLITS
@@ -242,6 +254,13 @@ def validate_release(
         "split_counts": {name: reports[name]["records"] for name in REQUIRED_SPLITS},
         "domains": dict(sorted(domains.items())),
         "catalogue_coverage_required": require_complete_catalogue,
+        # Hai con số này KHÁC nhau và không được gộp: "catalogue phủ đầy đủ" rất
+        # dễ bị đọc thành "model trả lời được đầy đủ". Một họ secondary chạy được
+        # ở runtime không có nghĩa model từng được dạy để sinh ra nó.
+        "families": {
+            "runtime_supported": len(catalogue),
+            "training_covered": len(primary_queries),
+        },
         "slot_coverage": slot_coverage,
         "splits": reports,
     }

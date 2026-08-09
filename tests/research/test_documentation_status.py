@@ -1,11 +1,66 @@
+import re
 from pathlib import Path
+
+from ontchatbot.catalogue import load_catalogue
+from ontchatbot.settings import QUERY_CATALOGUE_MANUAL_PATH, QUERY_CATALOGUE_PATH
 
 
 ROOT = Path(__file__).resolve().parents[2]
 
+#: Tài liệu nào được phép nêu số họ truy vấn.
+_CATALOGUE_DOCS = ("README.md", "docs/DATASET.md", "resources/dataset/README.md")
+#: Một khẳng định về quy mô danh mục: "296 họ", "19 dạng"...
+_CLAIM = re.compile(r"(\d+)\s+(?:họ|dạng)\b")
+
 
 def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def _catalogue_sizes() -> set[int]:
+    """Mọi con số hợp lệ khi tài liệu nói về quy mô danh mục truy vấn."""
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    manual = sum(
+        1
+        for line in QUERY_CATALOGUE_MANUAL_PATH.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    )
+    primary = sum(1 for spec in catalogue.values() if spec.tier == "primary")
+    return {
+        len(catalogue),
+        manual,
+        len(catalogue) - manual - 1,  # sinh tự động; trừ cả họ từ chối
+        primary,
+        len(catalogue) - primary,
+    }
+
+
+def test_public_docs_quote_the_real_catalogue_size() -> None:
+    """Mọi con số về quy mô danh mục trong tài liệu phải khớp `catalogue.jsonl`.
+
+    Bản trước chốt thẳng chuỗi ``"364 họ truy vấn"``. Khi danh mục đổi, test vẫn
+    XANH vì tài liệu cũng chưa được sửa - tức là nó khoá cái sai lại thay vì phát
+    hiện ra, và còn làm việc sửa tài liệu cho đúng bị đỏ. Đọc thẳng từ danh mục thì
+    tài liệu và dữ liệu không thể lệch nhau mà không ai biết.
+
+    Câu nhắc tới danh mục **cũ** được bỏ qua: chúng cố ý nói về con số lịch sử.
+    """
+
+    allowed = _catalogue_sizes()
+
+    stale: list[tuple[str, int]] = []
+    for path in _CATALOGUE_DOCS:
+        for line in _read(path).splitlines():
+            if "cũ" in line:
+                continue
+            stale.extend(
+                (path, int(value))
+                for value in _CLAIM.findall(line)
+                if int(value) not in allowed
+            )
+
+    assert stale == [], f"tài liệu nêu số họ truy vấn không có thật: {stale}"
 
 
 def test_public_docs_describe_the_evaluated_dataset() -> None:
@@ -19,7 +74,9 @@ def test_public_docs_describe_the_evaluated_dataset() -> None:
     joined = "\n".join(_read(path) for path in files)
 
     assert "4.454 câu" in joined
-    assert "51 họ truy vấn" in joined
+    # Dataset đang được dựng lại: tài liệu công khai phải nói rõ điều đó thay vì
+    # để người đọc tưởng các số liệu cũ còn hiệu lực.
+    assert "không còn hợp lệ" in joined
     assert "candidate pool" not in joined
     assert "455 câu" not in joined
 
@@ -58,16 +115,15 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     readme = _read("README.md")
 
     assert "answer_inventory.json" in ontology
-    assert "| Quy trình học vụ | 22 |" in ontology
-    assert "| Chính sách học vụ | 2 |" in ontology
+    assert "| Thủ tục học vụ | 22 |" in ontology
+    assert "| Chính sách học vụ | 3 |" in ontology
     assert "cơ sở dữ liệu duy nhất" in ontology
     assert "Quyết định 1052" in readme
     assert "Quyết định 729" in readme
     assert "SPARQL" in readme
     assert "22" in readme
-    assert "3.047" in ontology
+    assert "6.073" in ontology
     assert "4.454 câu" in dataset
-    assert "phủ đủ 51 họ truy vấn" in dataset
     assert "được chọn để triển khai" in _read("docs/TRAINING.md")
 
 

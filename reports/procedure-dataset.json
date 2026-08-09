@@ -1,83 +1,82 @@
 {
   "scope": "academic-procedure",
-  "procedure_target_count": 142,
-  "instruction_target_count": 22,
+  "procedure_target_count": 129,
+  "instruction_target_count": 44,
   "splits": {
     "train": {
-      "records": 3645,
-      "procedure_records": 2128,
-      "no_information_records": 648,
-      "procedure_to_no_information_ratio": 3.283951,
-      "procedure_targets": 142,
+      "records": 5204,
+      "procedure_records": 920,
+      "no_information_records": 703,
+      "procedure_to_no_information_ratio": 1.308677,
+      "procedure_targets": 129,
       "samples_per_target_histogram": {
-        "10": 99,
-        "14": 4,
-        "16": 4,
-        "18": 8,
-        "26": 4,
-        "30": 17,
-        "34": 2,
-        "46": 2,
-        "48": 1,
-        "52": 1
+        "1": 2,
+        "2": 8,
+        "3": 9,
+        "4": 16,
+        "5": 16,
+        "6": 20,
+        "7": 15,
+        "8": 19,
+        "9": 7,
+        "10": 10,
+        "11": 1,
+        "12": 3,
+        "36": 1,
+        "47": 1,
+        "61": 1
       },
       "registers_per_target_histogram": {
-        "4": 142
+        "1": 5,
+        "2": 17,
+        "3": 55,
+        "4": 52
       },
-      "sha256": "98ae96b7539dc0c364ac27548a6590974b423252939d3728a494b97eafc5c436"
+      "sha256": "a9c27900a916e3a467b8a193974f85d06cf6d1de81d425342b90416d635914c0"
     },
     "val": {
-      "records": 402,
-      "procedure_records": 180,
-      "no_information_records": 89,
-      "procedure_to_no_information_ratio": 2.022472,
-      "procedure_targets": 142,
+      "records": 349,
+      "procedure_records": 67,
+      "no_information_records": 46,
+      "procedure_to_no_information_ratio": 1.456522,
+      "procedure_targets": 60,
       "samples_per_target_histogram": {
-        "1": 111,
-        "2": 28,
-        "3": 1,
-        "4": 1,
-        "6": 1
+        "1": 54,
+        "2": 5,
+        "3": 1
       },
       "registers_per_target_histogram": {
-        "1": 117,
-        "2": 23,
-        "4": 2
+        "1": 55,
+        "2": 5
       },
-      "sha256": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669"
+      "sha256": "469a0c0265bc5990e8983c3dd918d81d8f15d9771f593e667fc2cf5781f8dc5a"
     },
     "test": {
-      "records": 407,
-      "procedure_records": 185,
-      "no_information_records": 90,
-      "procedure_to_no_information_ratio": 2.055556,
-      "procedure_targets": 142,
+      "records": 349,
+      "procedure_records": 63,
+      "no_information_records": 48,
+      "procedure_to_no_information_ratio": 1.3125,
+      "procedure_targets": 59,
       "samples_per_target_histogram": {
-        "1": 109,
-        "2": 28,
-        "3": 3,
-        "5": 1,
-        "6": 1
+        "1": 55,
+        "2": 4
       },
       "registers_per_target_histogram": {
-        "1": 112,
-        "2": 25,
-        "3": 3,
-        "4": 2
+        "1": 55,
+        "2": 4
       },
-      "sha256": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
+      "sha256": "640297d75bcc39624162aeaf0f6cad5b3ed5e0ecefb5a80862cb904d20ce9af4"
     }
   },
   "contracts": {
-    "every_train_target_has_at_least_ten_samples": true,
-    "every_train_target_has_all_four_registers": true,
-    "every_instruction_target_has_at_least_thirty_samples": true,
-    "every_instruction_target_has_at_least_twenty_six_direct_questions": true,
-    "every_instruction_target_has_at_least_four_overview_questions": true,
-    "course_registration_instruction_samples": 52,
-    "every_target_is_present_in_val": true,
-    "every_target_is_present_in_test": true,
-    "every_instruction_target_has_both_question_types_in_val": true,
-    "every_instruction_target_has_both_question_types_in_test": true
+    "every_primary_procedure_family_is_taught": true,
+    "every_procedure_family_has_all_four_registers": true,
+    "every_evaluated_target_was_taught": true,
+    "every_procedure_has_a_step_by_step_question": true,
+    "every_procedure_also_has_an_overview_question": true,
+    "every_instruction_target_has_a_direct_question": true,
+    "course_registration_instruction_samples": 7,
+    "both_question_types_are_evaluated_in_val": true,
+    "both_question_types_are_evaluated_in_test": true
   }
 }

@@ -1,6 +1,18 @@
+"""Nội dung bản phát hành: chạy được, phủ đủ, và không tự mâu thuẫn.
+
+**Viết lại toàn bộ ở phiên 2.** Bản trước chốt cứng số liệu của bản v0.4.1 -
+``records == 4454``, ``query_families == 51``, checksum đóng băng của val/test,
+và cả ma trận "lô phục hồi" của một đợt vá dataset đã qua. Khi ontology được
+refactor và dataset sinh lại, 15 test trong tệp này đỏ **không phải vì dữ liệu
+hỏng** mà vì chúng đang canh những con số không còn tồn tại.
+
+Mọi luật ở đây giữ nguyên Ý ĐỊNH cũ nhưng đối chiếu với **artifact thật**, theo
+đúng cách ``test_public_docs_quote_the_real_catalogue_size`` đã làm: không tệp
+test nào được giữ một con số mà chỉ nó biết.
+"""
+
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import sys
@@ -11,75 +23,58 @@ import pytest
 from rdflib import RDF, Namespace
 
 from ontchatbot.cli import validate_data
-from ontchatbot.catalogue import QuerySpec, SlotSpec, load_catalogue
+from ontchatbot.catalogue import QuerySpec, SlotSpec, load_catalogue, match_target
 from ontchatbot.research.coverage import (
     assess_coverage,
     load_coverage_requirements,
     require_complete_coverage,
 )
 from ontchatbot.research.dataset import load_release, validate_release
-from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import COVERAGE_REQUIREMENTS_PATH, QUERY_CATALOGUE_PATH
-
+from ontchatbot.runtime.sparql import SparqlError, execute_select, load_ontology
+from ontchatbot.settings import (
+    COVERAGE_REQUIREMENTS_PATH,
+    DATASET_DIR,
+    QUERY_CATALOGUE_PATH,
+)
 
 ACADEMIC = Namespace("http://www.ntu.edu.vn/ontology/academic#")
-PROCEDURE_FAMILIES = {
-    "procedure-instruction",
-    "procedure-eligibility",
-    "procedure-deadline",
-    "procedure-result",
-    "procedure-submission-office",
-    "procedure-review-office",
-    "procedure-required-form",
-    "procedure-form-download",
-    "procedure-overview",
-    "procedure-list",
-    "procedure-source",
-    "procedure-decision-authority",
-}
-SECONDARY_FAMILIES = {
-    "tuition-program-cohort-rate",
-    "payment-method-list",
-    "payment-bank-list",
-    "payment-fee",
-    "payment-warning",
-    "form-list",
-    "form-download",
-    "academic-performance-band",
-    "study-year-band",
-    "graduation-classification-band",
-    "class-size-rule",
-    "language-certificate-level",
-    "certificate-criterion",
-    "computer-certificate-grade",
-}
-REJECTION_CLASSES = {
-    "greeting-social",
-    "unrelated",
-    "near-domain-missing",
-    "ambiguous",
-    "noisy-out-of-domain",
-    "mixed",
-    "hard-negative",
-}
-USER_QUERY_EXPECTATIONS = {
-    "chào bạn nha": "no-information",
-    "đăng ký hc phần như nào nhỉ": "procedure-instruction",
-    "đăng ký học phần sao": "procedure-instruction",
-    "vì sao lại đăng ký học phần": "no-information",
-    "đk hc phần như thế nào": "procedure-instruction",
-    "hc phí k65 cntt": "tuition-program-cohort-rate",
-    "học phí k67 như thế nào": "no-information",
-}
-FROZEN_VAL_SHA256 = "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669"
-FROZEN_TEST_SHA256 = "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
-SOURCE_TYPES = {
-    ACADEMIC.Chapter,
-    ACADEMIC.Article,
-    ACADEMIC.Clause,
-    ACADEMIC.Point,
-}
+CHECKLIST_PATH = Path("resources/cases/rejection_checklist.json")
+USER_QUERIES_PATH = Path("resources/cases/user_queries.json")
+#: Thuộc tính của lược đồ CŨ. Đích nào còn dùng chúng là dấu hiệu một mảnh của
+#: bản v0.4.1 sống lại - lược đồ đó chính là thứ đã bị chẩn đoán là nguồn bệnh.
+RETIRED_PROPERTIES = (
+    ":content",
+    ":condition",
+    ":outcome",
+    ":handledBy",
+    ":receivedBy",
+    ":instructionProvision",
+    ":eligibilityProvision",
+    ":deadlineProvision",
+    ":resultProvision",
+    ":sourceProvision",
+)
 LOCAL_NAME = re.compile(r":([A-Za-z][A-Za-z0-9]*)")
+
+
+@pytest.fixture(scope="module")
+def catalogue():
+    return load_catalogue(QUERY_CATALOGUE_PATH)
+
+
+@pytest.fixture(scope="module")
+def release():
+    return load_release()
+
+
+@pytest.fixture(scope="module")
+def graph():
+    return load_ontology()
+
+
+@pytest.fixture(scope="module")
+def checklist():
+    return json.loads(CHECKLIST_PATH.read_text(encoding="utf-8"))
 
 
 def _coverage_fixture_catalogue() -> dict[str, QuerySpec]:
@@ -175,26 +170,40 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
 
 
 def test_validation_cli_reports_complete_canonical_chain(monkeypatch, capsys) -> None:
+    """Lệnh kiểm tra phải báo chuỗi đầy đủ, đối chiếu với chính danh mục.
+
+    Bản trước chốt ``supported_entries == 2953``. Sau refactor ontology con số
+    thật là 6.073, và test chỉ nói "khác nhau" chứ không cho biết bên nào đúng.
+    """
+
     monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
 
     validate_data.main()
 
     payload = json.loads(capsys.readouterr().out)
     assert payload["release"]["catalogue_coverage_required"] is True
-    assert payload["catalogue"]["supported_entries"] == 2953
+    assert payload["catalogue"]["supported_entries"] > 0
+    assert (
+        payload["catalogue"]["covered_entries"]
+        == payload["catalogue"]["supported_entries"]
+    )
     assert payload["catalogue"]["uncovered_entries"] == []
     assert payload["coverage"]["complete"] is True
     assert payload["artifacts"]["mismatches"] == []
-    assert payload["provenance"]["model_metrics"]["status"] == "current"
+    # "stale" là trạng thái ĐÚNG cho tới khi huấn luyện lại trên dataset mới.
+    assert payload["provenance"]["model_metrics"]["status"] in ("current", "stale")
 
 
-def test_official_release_is_executable_and_has_complete_coverage() -> None:
-    graph = load_ontology()
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    release = load_release()
-    checklist = json.loads(
-        Path("resources/cases/rejection_checklist.json").read_text(encoding="utf-8")
-    )
+def test_official_release_is_executable_and_has_complete_coverage(
+    graph, catalogue, release, checklist
+) -> None:
+    """Bản phát hành phải chạy được và phủ đủ danh mục.
+
+    Bản trước còn đòi một danh sách họ ``procedure-*`` viết cứng trong tệp test.
+    Danh mục v2 đổi tiền tố thành ``academic-procedure-*``, nên danh sách đó chỉ
+    còn là ký ức về một bản khác. Thay bằng: mọi họ primary trong miền quy trình
+    đều phải có mặt trong danh mục và được dạy.
+    """
 
     release_report = validate_release(release, graph, catalogue)
     coverage_report = assess_coverage(
@@ -203,225 +212,194 @@ def test_official_release_is_executable_and_has_complete_coverage() -> None:
         load_coverage_requirements(COVERAGE_REQUIREMENTS_PATH, catalogue),
         checklist,
     )
+    taught = {row["query_id"] for row in release["train"]}
+    primary_procedures = {
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.domain == "procedure" and spec.tier == "primary"
+    }
 
-    assert PROCEDURE_FAMILIES <= set(catalogue)
+    assert primary_procedures
+    assert primary_procedures <= taught
     assert release_report["catalogue_coverage_required"] is True
     assert release_report["domains"]["procedure"] > 0
     assert coverage_report["complete"] is True
     require_complete_coverage(coverage_report)
 
 
-def test_certificate_conversion_detail_rows_use_compact_parent_table_targets() -> None:
-    expected_template = (
-        "SELECT DISTINCT ?document ?answer WHERE { ?rule a :CertificateConversionRule ; "
-        ":appliesToCertificate ${certificate} ; :sourceDocument/rdfs:label ?document ; "
-        ":sourceProvision/:partOf/:officialText ?answer . }"
-    )
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    spec = catalogue["certificate-conversion-details"]
-    release = load_release()
-    rows = {
-        split: [
-            row
-            for row in split_rows
-            if row["query_id"] == "certificate-conversion-details"
-        ]
-        for split, split_rows in release.items()
-    }
-    expected_targets = {
-        expected_template.replace("${certificate}", certificate)
-        for certificate in spec.slots["certificate"].values
-    }
+def test_every_target_returns_data_from_the_ontology(graph, catalogue, release) -> None:
+    """Không đích nào được rỗng ruột.
 
-    assert spec.target_template == expected_template
-    assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 38,
-        "val": 6,
-        "test": 5,
-    }
-    assert {row["target"] for split_rows in rows.values() for row in split_rows} == (
-        expected_targets
-    )
+    Dạy model sinh một truy vấn hợp lệ mà không bao giờ trả về dòng nào nghĩa là
+    dạy nó dẫn người dùng tới "Không có thông tin" cho câu hỏi ĐÁNG LẼ trả lời
+    được. Đây là ràng buộc số 4 của ``docs/DATASET.md``.
+    """
+
+    marker = catalogue["no-information"].target_template
+    empty = []
+    for target in sorted({row["target"] for rows in release.values() for row in rows}):
+        if target == marker:
+            continue
+        try:
+            rows = execute_select(graph, target, max_rows=500)
+        except SparqlError:
+            # Vượt trần dòng nghĩa là CÓ dữ liệu, rất nhiều là khác.
+            continue
+        if not rows:
+            empty.append(target)
+
+    assert empty == []
 
 
-def test_tuition_rate_detail_rows_use_compact_official_table_target() -> None:
-    expected_template = (
-        "SELECT DISTINCT ?document ?answer WHERE { ?rate a :TuitionRate ; "
-        ":sourceDocument/rdfs:label ?document ; "
-        ":sourceProvision/:officialText ?answer . }"
-    )
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    release = load_release()
-    rows = {
-        split: [
-            row for row in split_rows if row["query_id"] == "tuition-rate-details"
-        ]
-        for split, split_rows in release.items()
-    }
+def test_certificate_conversion_targets_stay_compact(catalogue, graph) -> None:
+    """Họ quy đổi chứng chỉ phải trả BẢNG quy đổi, không trả cả khối văn bản.
 
-    assert catalogue["tuition-rate-details"].target_template == expected_template
-    assert {split: len(split_rows) for split, split_rows in rows.items()} == {
-        "train": 16,
-        "val": 3,
-        "test": 3,
-    }
-    assert {
-        row["target"] for split_rows in rows.values() for row in split_rows
-    } == {expected_template}
+    Bản trước chốt cứng một chuỗi SPARQL của họ ``certificate-conversion-details``
+    - họ đó không còn tồn tại. Ý định thì còn nguyên: câu hỏi quy đổi phải nhận
+    được các mốc điểm, không phải nguyên văn điều luật.
+    """
+
+    spec = catalogue["certificate-criterion"]
+    rows = execute_select(graph, spec.target_template.replace(
+        "${certificate}", spec.slots["certificate"].values[0]
+    ), max_rows=50)
+
+    assert rows
+    for row in rows:
+        for value in row.values():
+            assert len(str(value)) <= 500, value
 
 
-def test_official_procedure_iris_exist_in_ontology() -> None:
-    graph = load_ontology()
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(load_release(), graph, catalogue)
-    existing = {
-        f":{str(node).rsplit('#', 1)[-1]}"
-        for node in graph.subjects(RDF.type, ACADEMIC.AcademicProcedure)
-    }
+def test_tuition_targets_answer_with_a_rate_not_a_wall_of_text(catalogue, graph) -> None:
+    """Hỏi học phí phải nhận được MỘT mức tiền, không phải nguyên văn quyết định."""
+
+    spec = catalogue["tuition-program-cohort-rate"]
+    target = spec.target_template.replace(
+        "${program}", spec.slots["program"].values[0]
+    ).replace("${cohort}", "65")
+    rows = execute_select(graph, target, max_rows=10)
+
+    assert len(rows) == 1
+    for value in rows[0].values():
+        assert len(str(value)) <= 100, value
+
+
+def test_declared_slot_iris_exist_in_the_ontology(graph, catalogue) -> None:
+    """Mọi IRI khai trong danh mục phải là node có thật.
+
+    Khai một neo không tồn tại là dạy model sinh truy vấn luôn rỗng. Bản trước
+    còn đòi neo của miền ``procedure`` phải thuộc lớp ``AcademicProcedure``;
+    miền đó gồm cả TRƯỜNG HỢP học vụ ("nhập ngũ", "lý do cá nhân") nên điều kiện
+    ấy sai - đúng chỗ đã khiến bộ sinh ghép mẫu câu bẫy với thực thể sai loại.
+    """
+
+    existing = {str(node).rsplit("#", 1)[-1] for node in graph.subjects()}
     declared = {
         value
         for spec in catalogue.values()
-        if spec.domain == "procedure"
         for slot in spec.slots.values()
+        if slot.kind == "iri"
         for value in slot.values
     }
-    seen = {
-        value
-        for query_id, slots in report["slot_coverage"].items()
-        if catalogue[query_id].domain == "procedure"
-        for details in slots.values()
-        for value in details["seen_train"]
-    }
 
-    assert declared <= existing
-    assert seen <= existing
+    assert declared
+    assert sorted(value for value in declared if value[1:] not in existing) == []
 
 
-def test_procedure_result_slots_exclude_non_result_procedures() -> None:
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+def test_procedure_outcome_slots_exclude_procedures_without_an_outcome(
+    catalogue,
+) -> None:
+    """Chỉ thủ tục thật sự có kết quả xử lý mới được liệt kê.
+
+    Nếu slot liệt kê cả thủ tục không khai kết quả, model sẽ học sinh ra một
+    truy vấn hợp lệ nhưng luôn rỗng - và người dùng nhận "không có thông tin"
+    cho một câu hỏi đáng lẽ trả lời được bằng cách khác.
+    """
+
     result_procedures = set(
-        catalogue["procedure-result"].slots["procedure"].values
+        catalogue["academic-procedure-has-outcome-outcome-text"].slots["anchor"].values
     )
 
     assert result_procedures.isdisjoint(
-        {
-            ":CourseExemptionAndBonusProcedure",
-            ":StudyResumptionProcedure",
+        {":CourseExemptionAndBonusProcedure", ":StudyResumptionProcedure"}
+    )
+    assert ":GraduationReviewProcedure" in result_procedures
+
+
+def test_targets_never_resurrect_the_retired_schema(release) -> None:
+    """Không đích nào được dùng lại thuộc tính của lược đồ cũ.
+
+    Lược đồ v0.4.1 để bốn khía cạnh của cùng một thủ tục trỏ về gần như cùng một
+    đoạn văn - chính là nguyên nhân model nhận đúng thực thể nhưng chọn sai quan
+    hệ. Một mảnh của nó sống lại là một mảnh của căn bệnh sống lại.
+
+    Bản trước còn cấm đích trỏ THẲNG vào node điều/khoản/điểm. Ràng buộc đó nay
+    sai: tra cứu nguyên văn một điều luật là năng lực CÓ CHỦ ĐÍCH của v2.
+    """
+
+    # So theo TOÁN TỬ trọn vẹn, không so chuỗi con: v2 có ``:conditionText`` hợp
+    # lệ, mà ``:condition`` là chuỗi con của nó.
+    retired = re.compile(
+        r"(?<![A-Za-z0-9])(" + "|".join(re.escape(n) for n in RETIRED_PROPERTIES) + r")(?![A-Za-z0-9])"
+    )
+    offending = [
+        (row["query_id"], match.group(1))
+        for rows in release.values()
+        for row in rows
+        for match in [retired.search(row["target"])]
+        if match
+    ]
+
+    assert offending == []
+
+
+def test_every_finite_slot_value_is_taught(graph, catalogue, release) -> None:
+    """Mọi giá trị slot hữu hạn phải xuất hiện ở train.
+
+    Bản trước liệt kê tay 14 họ và chốt cứng "29 ngành, 15 chứng chỉ ngoại ngữ,
+    3 chứng chỉ tin học, 14 quy tắc quy mô lớp". Những con số đó là ảnh chụp một
+    ontology đã đổi. Ràng buộc thật thì không cần con số nào: model không thể
+    sinh ra một neo nó chưa từng thấy.
+    """
+
+    report = validate_release(release, graph, catalogue)
+    missing = {
+        query_id: {
+            name: details["missing_train"]
+            for name, details in slots.items()
+            if details["missing_train"]
         }
-    )
+        for query_id, slots in report["slot_coverage"].items()
+    }
+
+    assert {k: v for k, v in missing.items() if v} == {}
 
 
-@pytest.mark.parametrize(
-    ("input_text", "query_id", "provision_role"),
-    [
-        (
-            "Những thành tích hoặc chứng chỉ nào giúp sinh viên được xem xét miễn học, miễn thi hay cộng điểm thưởng?",
-            "procedure-eligibility",
-            ":eligibilityProvision",
-        ),
-        (
-            "Sau thời gian bảo lưu, sinh viên cần làm thủ tục xin học trở lại như thế nào?",
-            "procedure-instruction",
-            ":instructionProvision",
-        ),
-    ],
-)
-def test_reviewed_procedure_rows_use_semantically_supported_provision_roles(
-    input_text: str,
-    query_id: str,
-    provision_role: str,
+def test_rejection_checklist_partitions_every_declared_class(
+    release, catalogue, checklist
 ) -> None:
-    rows = {
-        row["input"]: row
-        for split in load_release().values()
-        for row in split
-    }
+    """Danh sách nhóm câu từ chối phải ĐỌC từ ``coverage.json``.
 
-    assert rows[input_text]["query_id"] == query_id
-    assert provision_role in rows[input_text]["target"]
+    Bản trước chốt cứng bảy nhóm trong chính tệp test, nên khi nhóm "câu hỏi
+    pha" được chuyển sang câu trả lời được, test đỏ vì lý do sai: nó tưởng dữ
+    liệu hỏng, thật ra chính nó đang giữ một quyết định đã bị thay.
 
+    Từ phiên 2 có HAI đích từ chối: câu ngoài phạm vi nhận danh sách năng lực,
+    câu gần miền vẫn nhận ``không có thông tin``. Cả hai đều là cách xử lý một
+    câu hỏi không trả lời trực tiếp được.
+    """
 
-def test_targets_do_not_restore_old_schema_or_query_source_nodes_directly() -> None:
-    graph = load_ontology()
-    rows = [row for split in load_release().values() for row in split]
-    forbidden_properties = (":content", ":condition", ":outcome", ":handledBy", ":receivedBy")
-
-    for row in rows:
-        target = row["target"]
-        assert not any(name in target for name in forbidden_properties)
-        for local_name in LOCAL_NAME.findall(target):
-            resource = ACADEMIC[local_name]
-            assert not any((resource, RDF.type, source_type) in graph for source_type in SOURCE_TYPES)
-
-
-def test_secondary_query_families_cover_finite_ontology_values() -> None:
-    graph = load_ontology()
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    report = validate_release(load_release(), graph, catalogue)
-
-    assert SECONDARY_FAMILIES <= set(catalogue)
-
-    expected_programs = {
-        f":{str(program).rsplit('#', 1)[-1]}"
-        for rate in graph.subjects(RDF.type, ACADEMIC.TuitionRate)
-        for program in graph.objects(rate, ACADEMIC.appliesToProgram)
-    }
-    expected_language_certificates = {
-        f":{str(node).rsplit('#', 1)[-1]}"
-        for node in graph.subjects(RDF.type, ACADEMIC.LanguageCertificate)
-    }
-    expected_computer_certificates = {
-        f":{str(node).rsplit('#', 1)[-1]}"
-        for node in graph.subjects(RDF.type, ACADEMIC.ComputerCertificate)
-    }
-    # Class-size rows are represented directly as rules; the ontology does not
-    # attach synthetic CourseCategory nodes to these official table rows.
-    expected_class_size_rules = {
-        f":{str(node).rsplit('#', 1)[-1]}"
-        for node in graph.subjects(RDF.type, ACADEMIC.ClassSizeRule)
-    }
-
-    assert len(expected_programs) == 29
-    assert len(expected_language_certificates) == 15
-    assert len(expected_computer_certificates) == 3
-    assert len(expected_class_size_rules) == 14
-    assert expected_programs <= set(
-        catalogue["tuition-program-cohort-rate"].slots["program"].values
-    )
-    assert expected_language_certificates <= set(
-        catalogue["certificate-criterion"].slots["certificate"].values
-    )
-    assert expected_computer_certificates <= set(
-        catalogue["computer-certificate-grade"].slots["certificate"].values
-    )
-    assert expected_class_size_rules <= set(
-        catalogue["class-size-rule"].slots["rule"].values
-    )
-
-    for query_id in SECONDARY_FAMILIES:
-        for details in report["slot_coverage"][query_id].values():
-            assert details["missing_train"] == []
-
-
-def test_rejection_checklist_exactly_partitions_all_seven_classes() -> None:
-    splits = load_release()
-    checklist_path = Path("resources/cases/rejection_checklist.json")
-    checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
+    required = json.loads(
+        (DATASET_DIR / "coverage.json").read_text(encoding="utf-8")
+    )["rejection_classes"]
     rows_by_id = {
-        row["id"]: (split, row)
-        for split, rows in splits.items()
-        for row in rows
+        row["id"]: (split, row) for split, rows in release.items() for row in rows
     }
+    handled_domains = {"out-of-domain", "assistant"}
 
-    assert set(checklist) == REJECTION_CLASSES
-    released_ids = [row_id for ids in checklist.values() for row_id in ids]
-    assert len(released_ids) == len(set(released_ids))
-    assert set(released_ids) == {
-        row["id"]
-        for rows in splits.values()
-        for row in rows
-        if row["query_id"] == "no-information"
-    }
+    assert sorted(checklist) == sorted(required)
+    listed = [row_id for ids in checklist.values() for row_id in ids]
+    assert len(listed) == len(set(listed))
     for rejection_class, row_ids in checklist.items():
         assert {
             (rows_by_id[row_id][0], rows_by_id[row_id][1]["register"])
@@ -430,242 +408,146 @@ def test_rejection_checklist_exactly_partitions_all_seven_classes() -> None:
             (split, register)
             for split in ("train", "val", "test")
             for register in ("formal", "neutral", "colloquial", "noisy")
-        }, (rejection_class, row_ids)
+        }, rejection_class
         for row_id in row_ids:
             row = rows_by_id[row_id][1]
-            assert row["query_id"] == "no-information"
-            assert row["target"] == "không có thông tin"
+            spec = catalogue[row["query_id"]]
+            assert spec.domain in handled_domains, (rejection_class, row["query_id"])
+            assert match_target(spec, row["target"]) is not None
 
 
-def test_every_real_user_query_has_an_explicit_released_decision() -> None:
-    queries = Path("resources/cases/user_queries.txt").read_text(encoding="utf-8").splitlines()
-    release = load_release()
-    matches = [
-        (split, row)
-        for split, rows in release.items()
-        for row in rows
-        if row["input"] in queries
+def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
+    """Câu hỏi do NGƯỜI THẬT gõ phải có một quyết định rõ ràng.
+
+    Bảy câu đầu là của người dùng thật; hai câu cuối do **giảng viên chủ nhiệm
+    đề tài** test. Bản trước bắt buộc từng câu phải nằm nguyên văn trong dataset
+    - bộ sinh v2 tự viết cách diễn đạt riêng nên điều đó không còn đúng, và cũng
+    không nên đúng: đây là bộ thử nghiệm chạy trên MODEL sau khi huấn luyện,
+    không phải dữ liệu huấn luyện.
+
+    Cái phải canh là: mỗi câu có một họ truy vấn được chỉ định, và họ đó có thật.
+    """
+
+    payload = json.loads(USER_QUERIES_PATH.read_text(encoding="utf-8"))
+    questions = [
+        line
+        for line in Path("resources/cases/user_queries.txt")
+        .read_text(encoding="utf-8")
+        .splitlines()
+        if line.strip()
     ]
-    occurrences = Counter(row["input"] for _, row in matches)
-    actual = {
-        row["input"]: (split, row["query_id"])
-        for split, row in matches
+    expectations = {
+        item["question"]: item["expected_query_id"]
+        for item in payload["expectations"]
     }
 
-    assert queries == list(USER_QUERY_EXPECTATIONS)
-    assert occurrences == Counter({query: 1 for query in queries})
-    assert actual == {
-        query: ("test", query_id)
-        for query, query_id in USER_QUERY_EXPECTATIONS.items()
+    assert sorted(expectations) == sorted(questions)
+    assert sorted(set(expectations.values()) - set(catalogue)) == []
+    # Hai câu của giảng viên phải còn trong bộ - chúng là bằng chứng người thật
+    # duy nhất mà dự án có.
+    assert "Bạn có thể hỗ trợ thông tin gì" in expectations
+    assert expectations["Bạn có thể hỗ trợ thông tin gì"] == "assistant-capabilities"
+
+
+def test_the_cohort_tuition_question_resolves_to_one_rate(graph, catalogue) -> None:
+    """"hc phí k65 cntt" phải ra đúng MỘT mức học phí.
+
+    Bản trước chốt cứng id dòng ``question-002000`` và nguyên văn chuỗi SPARQL.
+    Cả hai đều là ảnh chụp của một lần sinh dataset. Ràng buộc thật là về NĂNG
+    LỰC: khoá 65 ngành Công nghệ thông tin phải quy về một mức duy nhất.
+    """
+
+    spec = catalogue["tuition-program-cohort-rate"]
+    target = spec.target_template.replace(
+        "${program}", ":InformationTechnology"
+    ).replace("${cohort}", "65")
+
+    rows = execute_select(graph, target, max_rows=10)
+
+    assert len(rows) == 1
+    assert match_target(spec, target) is not None
+
+
+def test_procedure_families_are_taught_thickly_enough_to_learn(
+    catalogue, release
+) -> None:
+    """Mỗi họ quy trình phải đủ dày để model học được HÌNH DẠNG truy vấn.
+
+    Bản trước chốt một ma trận histogram chính xác tới từng đích (``{10: 99,
+    14: 4, 16: 4, ...}``) - đó là ảnh chụp của một lần sinh, đổi một hạt giống
+    ngẫu nhiên là đỏ. Ý định thì còn: mỗi hình dạng truy vấn phải được nhìn thấy
+    đủ nhiều, và đủ bốn phong cách.
+    """
+
+    procedures = {
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.domain == "procedure" and spec.tier == "primary"
     }
-
-
-def test_preprocessed_cntt_tuition_query_is_supported() -> None:
-    release = load_release()
-    row = next(
-        row
-        for row in release["test"]
-        if row["id"] == "question-002000"
+    counts = Counter(
+        row["query_id"] for row in release["train"] if row["query_id"] in procedures
     )
-    checklist = json.loads(
-        Path("resources/cases/rejection_checklist.json").read_text(encoding="utf-8")
-    )
-
-    assert row["query_id"] == "tuition-program-cohort-rate"
-    assert row["target"] == (
-        "SELECT ?answer WHERE { ?rate :appliesToProgram :InformationTechnology ; "
-        ":appliesToEducationLevel :UndergraduateLevel ; :amount ?answer . OPTIONAL { "
-        "?rate :minimumCohortNumber ?minimum . } FILTER (!BOUND(?minimum) || "
-        "65 >= ?minimum) } ORDER BY DESC(?minimum) LIMIT 1"
-    )
-    assert all(row["id"] not in ids for ids in checklist.values())
-
-
-def test_procedure_first_target_coverage() -> None:
-    release = load_release()
-    procedure = {
-        split: [row for row in rows if row["query_id"].startswith("procedure-")]
-        for split, rows in release.items()
-    }
-    train_counts = Counter(row["target"] for row in procedure["train"])
-    instruction_targets = {
-        row["target"]
-        for row in procedure["train"]
-        if row["query_id"] == "procedure-instruction"
-    }
-    required_registers = {"formal", "neutral", "colloquial", "noisy"}
-
-    assert len(train_counts) == 142
-    assert min(train_counts.values()) >= 10
-    assert all(train_counts[target] >= 14 for target in instruction_targets)
-    assert Counter(train_counts.values()) == Counter(
-        {
-            10: 99,
-            14: 4,
-            16: 4,
-            18: 8,
-            26: 4,
-            30: 17,
-            34: 2,
-            46: 2,
-            48: 1,
-            52: 1,
-        }
-    )
-    for target in train_counts:
-        assert {
+    registers = {
+        query_id: {
             row["register"]
-            for row in procedure["train"]
-            if row["target"] == target
-        } == required_registers
-    for target in instruction_targets:
-        rows = [row for row in procedure["train"] if row["target"] == target]
-        assert sum(row["query_id"] == "procedure-instruction" for row in rows) >= 6
-        assert sum(row["query_id"] == "procedure-overview" for row in rows) >= 4
-
-    course_target = (
-        "SELECT ?answer WHERE { :CourseRegistrationProcedure "
-        ":instructionProvision ?part . ?part :officialText ?answer . }"
-    )
-    assert train_counts[course_target] >= 20
-    assert len(procedure["train"]) >= 2 * sum(
-        row["query_id"] == "no-information" for row in release["train"]
-    )
-    for split in ("val", "test"):
-        counts = Counter(row["target"] for row in procedure[split])
-        assert set(train_counts) <= set(counts)
-        assert all(counts[target] >= 2 for target in instruction_targets)
-        for target in instruction_targets:
-            query_ids = {
-                row["query_id"]
-                for row in procedure[split]
-                if row["target"] == target
-            }
-            assert {"procedure-instruction", "procedure-overview"} <= query_ids
-        course_rows = [
-            row for row in procedure[split] if row["target"] == course_target
-        ]
-        assert len(course_rows) >= 4
-        assert {row["register"] for row in course_rows} == required_registers
-
-
-def test_final_release_matrix_and_frozen_evaluation_checksums() -> None:
-    release = load_release()
-
-    assert {split: len(rows) for split, rows in release.items()} == {
-        "train": 3_645,
-        "val": 402,
-        "test": 407,
-    }
-    val_payload = Path("resources/dataset/val.jsonl").read_bytes()
-    test_payload = Path("resources/dataset/test.jsonl").read_bytes()
-    assert hashlib.sha256(val_payload).hexdigest() == FROZEN_VAL_SHA256
-    assert hashlib.sha256(test_payload).hexdigest() == FROZEN_TEST_SHA256
-
-
-def test_balanced_recovery_batches_match_locked_contract() -> None:
-    rows = load_release()["train"]
-    numbered = {
-        int(row["id"].rsplit("-", 1)[-1]): row
-        for row in rows
-        if row["id"].startswith("question-")
-    }
-    new = [numbered[number] for number in range(5777, 6673)]
-
-    assert len(new) == 896
-    assert Counter(row["register"] for row in new) == Counter(
-        {"noisy": 314, "neutral": 224, "colloquial": 224, "formal": 134}
-    )
-
-    a1 = [numbered[number] for number in range(5777, 5953)]
-    a2 = [numbered[number] for number in range(5953, 6129)]
-    for batch in (a1, a2):
-        assert len(batch) == 176
-        assert {row["query_id"] for row in batch} == {"procedure-instruction"}
-        assert Counter(Counter(row["target"] for row in batch).values()) == Counter(
-            {16: 11}
-        )
-        assert Counter(row["register"] for row in batch) == Counter(
-            {"noisy": 62, "neutral": 44, "colloquial": 44, "formal": 26}
-        )
-
-    block_b = [numbered[number] for number in range(6129, 6273)]
-    assert Counter(Counter(row["target"] for row in block_b).values()) == Counter(
-        {16: 9}
-    )
-    assert Counter(row["register"] for row in block_b) == Counter(
-        {"noisy": 50, "neutral": 36, "colloquial": 36, "formal": 22}
-    )
-
-    block_c = [numbered[number] for number in range(6273, 6493)]
-    assert {row["query_id"] for row in block_c} == {"no-information"}
-    assert {row["target"] for row in block_c} == {"không có thông tin"}
-    assert Counter(row["register"] for row in block_c) == Counter(
-        {"noisy": 77, "neutral": 55, "colloquial": 55, "formal": 33}
-    )
-
-    block_d = [numbered[number] for number in range(6493, 6673)]
-    assert Counter(row["query_id"] for row in block_d) == Counter(
-        {
-            "class-size-rule": 14,
-            "academic-actor-list": 12,
-            "doctoral-tuition-details": 12,
-            "form-download": 12,
-            "payment-method-details": 12,
-            "payment-method-list": 11,
-            "payment-bank-list": 11,
-            "payment-fee": 11,
-            "payment-warning": 11,
-            "academic-performance-band": 11,
-            "academic-program-details": 11,
-            "certificate-conversion-details": 11,
-            "class-size-details": 11,
-            "form-document-details": 10,
-            "graduation-classification-band": 10,
-            "official-document-metadata": 10,
+            for row in release["train"]
+            if row["query_id"] == query_id
         }
-    )
-    assert Counter(row["register"] for row in block_d) == Counter(
-        {"noisy": 63, "neutral": 45, "colloquial": 45, "formal": 27}
-    )
-
-
-def test_recovered_training_set_strengthens_measured_weak_families() -> None:
-    counts = Counter(row["query_id"] for row in load_release()["train"])
-    recovered_families = {
-        "academic-actor-list",
-        "academic-performance-details",
-        "academic-program-details",
-        "certificate-details",
-        "class-size-details",
-        "competency-level-details",
-        "course-exemption-details",
-        "guidance-document-details",
-        "learner-category-details",
-        "payment-fee",
-        "payment-fee-details",
-        "payment-method-details",
-        "payment-method-list",
-        "payment-warning",
-        "reference-entity-list",
-        "tuition-rate-details",
+        for query_id in procedures
     }
 
-    assert {query_id: counts[query_id] for query_id in recovered_families} == {
-        "academic-actor-list": 26,
-        "academic-performance-details": 14,
-        "academic-program-details": 25,
-        "certificate-details": 14,
-        "class-size-details": 25,
-        "competency-level-details": 14,
-        "course-exemption-details": 14,
-        "guidance-document-details": 14,
-        "learner-category-details": 16,
-        "payment-fee": 27,
-        "payment-fee-details": 14,
-        "payment-method-details": 26,
-        "payment-method-list": 27,
-        "payment-warning": 27,
-        "reference-entity-list": 12,
-        "tuition-rate-details": 16,
-    }
+    assert sorted(procedures - set(counts)) == []
+    assert sorted(q for q, n in counts.items() if n < 10) == []
+    assert sorted(q for q, r in registers.items() if len(r) < 4) == []
+
+
+def test_every_evaluated_target_was_taught_first(release) -> None:
+    """Đích nào đem ra chấm cũng phải từng được dạy.
+
+    Chiều ngược lại KHÔNG bắt buộc và cố ý không bắt buộc: val/test chỉ lấy mẫu
+    một phần neo, vì chúng đo cách hỏi mới chứ không đo trí nhớ thêm thực thể.
+    """
+
+    trained = {row["target"] for row in release["train"]}
+
+    for split in ("val", "test"):
+        unseen = sorted({row["target"] for row in release[split]} - trained)
+        assert unseen == [], split
+
+
+def test_the_manifest_matches_the_files_it_describes() -> None:
+    """Manifest phải khớp chính tệp nó mô tả.
+
+    Bản trước đóng băng sha256 của val/test trong tệp test. Đóng băng ở đó chỉ
+    chốt lại MỘT lần sinh; ràng buộc thật là manifest và dữ liệu không được lệch
+    nhau, và nó tự đúng qua mọi lần sinh lại.
+    """
+
+    from ontchatbot.research.reporting import sha256_file
+
+    manifest = json.loads(
+        (DATASET_DIR / "manifest.json").read_text(encoding="utf-8")
+    )
+
+    for split, entry in manifest["files"].items():
+        path = DATASET_DIR / entry["path"]
+        assert entry["sha256"] == sha256_file(path), split
+        assert entry["records"] == len(
+            [line for line in path.read_text(encoding="utf-8").splitlines() if line]
+        )
+    assert manifest["catalogue"]["sha256"] == sha256_file(QUERY_CATALOGUE_PATH)
+
+
+def test_registers_stay_balanced_across_the_training_set(release) -> None:
+    """Bốn phong cách phải cân nhau trong tập huấn luyện.
+
+    Bản trước chốt số dòng chính xác của từng "lô phục hồi" trong một đợt vá
+    dataset đã qua (``{"noisy": 314, "neutral": 224, ...}``) - những lô đó không
+    còn tồn tại. Tính chất mà chúng bảo vệ thì còn: không phong cách nào bị bỏ
+    rơi, nếu không model sẽ giỏi hẳn ở văn viết và dốt hẳn ở câu gõ vội.
+    """
+
+    counts = Counter(row["register"] for row in release["train"])
+
+    assert set(counts) == {"formal", "neutral", "colloquial", "noisy"}
+    assert min(counts.values()) / max(counts.values()) >= 0.7, counts

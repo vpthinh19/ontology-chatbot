@@ -25,7 +25,10 @@ ACADEMIC = Namespace(ONTOLOGY_NS)
 #: điều luật; "bước thực hiện" hỏi nội dung bước, không hỏi nhãn kỹ thuật của
 #: node bước.
 RELATION_TERMINALS = {
-    "basedOn": ("citationLabel", "officialText"),
+    # Một dữ kiện phải trả lời được cả ba câu: nội dung là gì, căn cứ ở đâu, và
+    # xem bản gốc tại đâu. Người hỏi không biết "Quyết định 1052" là văn bản nào
+    # nên chỉ nêu số hiệu là chưa đủ.
+    "basedOn": ("citationLabel", "officialText", "documentUrl"),
     "hasStep": ("stepText",),
     "hasRequirement": ("requirementText",),
     "hasDeadline": ("deadlineText",),
@@ -107,10 +110,14 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
     relations = object_properties(graph)
     for anchor in _semantic_individuals(graph):
         anchor_name = _local_name(anchor)
+        # Chỉ nhận thuộc tính của chính dự án (và rdfs:label). Chú thích biên
+        # tập bằng từ vựng ngoài không phải dữ liệu trả lời cho người dùng.
         literal_predicates = {
             predicate
             for predicate, value in graph.predicate_objects(anchor)
-            if isinstance(value, Literal) and predicate != SKOS.altLabel
+            if isinstance(value, Literal)
+            and predicate != SKOS.altLabel
+            and (predicate == RDFS.label or str(predicate).startswith(ONTOLOGY_NS))
         }
         for predicate in sorted(literal_predicates, key=str):
             component = "rdfs:label" if predicate == RDFS.label else _local_name(predicate)
@@ -163,15 +170,19 @@ def write_answer_inventory(graph: Graph, path: Path = ANSWER_INVENTORY_PATH) -> 
 
 
 def _semantic_individuals(graph: Graph) -> list[URIRef]:
+    """Mọi neo mà một câu hỏi có thể nhắm tới.
+
+    Chỉ node nội bộ của một quy trình bị loại: người dùng không gọi tên bước
+    hay điều kiện, họ hỏi qua chính quy trình chứa chúng. Tầng văn bản thì
+    ngược lại - "Điều 24 quy định gì" là cách hỏi tự nhiên nhất.
+    """
+
     individuals = {
         subject
         for subject in graph.subjects(RDF.type, OWL.NamedIndividual)
         if isinstance(subject, URIRef)
         and str(subject).startswith(ONTOLOGY_NS)
-        and not (
-            rdf_type_names(graph, subject)
-            & (SOURCE_CLASS_NAMES | INTERNAL_CLASS_NAMES)
-        )
+        and not (rdf_type_names(graph, subject) & INTERNAL_CLASS_NAMES)
     }
     return sorted(individuals, key=str)
 

@@ -26,6 +26,7 @@ _DOMAINS = {
     "academic-rule",
     "certificate",
     "out-of-domain",
+    "assistant",
 }
 _NUMBER = re.compile(r"-?(?:0|[1-9]\d*)(?:\.\d+)?")
 
@@ -102,22 +103,32 @@ def assess_coverage(
         split: {row.get("query_id") for row in rows}
         for split, rows in rows_by_split.items()
     }
+    # Chỉ họ ``primary`` mới bắt buộc có mặt trong dataset. Họ ``secondary`` vẫn
+    # chạy được ở runtime và vẫn phủ danh mục khả năng trả lời - chúng chỉ không
+    # tiêu ngân sách dạy học, vì phần lớn là câu hỏi vòng tròn không ai đặt.
+    required = {
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.tier == "primary"
+    }
     missing_query_ids = {
-        split: sorted(set(catalogue) - query_ids)
+        split: sorted(required - query_ids)
         for split, query_ids in query_ids_by_split.items()
-        if set(catalogue) - query_ids
+        if required - query_ids
     }
 
     registers = {
         split: _registers_by_query(rows) for split, rows in rows_by_split.items()
     }
     missing_train_registers = _missing_registers(
-        registers["train"], catalogue, requirements.required_registers
+        registers["train"],
+        {query_id: catalogue[query_id] for query_id in required},
+        requirements.required_registers,
     )
     priority_query_ids = {
         query_id
         for query_id, spec in catalogue.items()
-        if spec.domain in requirements.priority_domains
+        if spec.tier == "primary" and spec.domain in requirements.priority_domains
     }
     missing_priority_registers = {
         split: _missing_registers(
@@ -301,4 +312,12 @@ def _is_rejection_row(row: Mapping[str, str], catalogue: Mapping[str, QuerySpec]
     if not isinstance(query_id, str) or not isinstance(target, str):
         return False
     spec = catalogue.get(query_id)
-    return spec is not None and spec.domain == "out-of-domain" and match_target(spec, target) is not None
+    # "Không trả lời câu hỏi theo nghĩa đen" có hai dạng: nói thẳng là không có
+    # thông tin, và - RIÊNG với câu chào - liệt kê những việc mình làm được. Cả
+    # hai đều là cách xử lý một câu không trả lời trực tiếp được, nên cả hai đều
+    # tính là đã phủ nhóm đó.
+    return (
+        spec is not None
+        and spec.domain in ("out-of-domain", "assistant")
+        and match_target(spec, target) is not None
+    )

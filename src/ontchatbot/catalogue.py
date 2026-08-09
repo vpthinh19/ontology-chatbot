@@ -9,12 +9,27 @@ from pathlib import Path
 from typing import Literal, Mapping
 
 SlotKind = Literal["iri", "number"]
+#: ``primary`` là họ mà người dùng thật sự hỏi, nên bắt buộc có dữ liệu huấn
+#: luyện. ``secondary`` vẫn truy vấn được ở runtime và vẫn phủ danh mục khả
+#: năng trả lời, nhưng KHÔNG bắt buộc có mặt trong dataset.
+#:
+#: Phân tầng này tồn tại vì độ phủ và ngân sách dạy học là hai câu hỏi khác
+#: nhau. Bộ sinh cơ học tạo cả những họ hỏi vòng tròn - "khoản 3 Điều 24 thuộc
+#: điều số mấy" - mà câu trả lời đã nằm sẵn trong câu hỏi. Chúng không chỉ tốn
+#: dữ liệu: chúng trông gần giống các họ hữu ích nên làm model lẫn khi chọn họ,
+#: đúng chế độ lỗi đã đo được.
+Tier = Literal["primary", "secondary"]
+#: ``document`` là tra cứu nguyên văn công văn ("Điều 24 nói gì"). Nó tách khỏi
+#: ``academic-rule`` vì là loại câu hỏi khác hẳn: người dùng hỏi một phần văn
+#: bản theo số hiệu, không hỏi một dữ kiện đã được bóc tách.
 Domain = Literal[
     "procedure",
     "tuition",
     "form",
     "academic-rule",
     "certificate",
+    "document",
+    "assistant",
     "out-of-domain",
 ]
 
@@ -25,6 +40,8 @@ _DOMAINS = frozenset(
         "form",
         "academic-rule",
         "certificate",
+        "document",
+        "assistant",
         "out-of-domain",
     }
 )
@@ -32,6 +49,10 @@ _PLACEHOLDER = re.compile(r"\$\{([a-z][a-z0-9_]*)\}")
 _IRI = re.compile(r"^:[A-Za-z][A-Za-z0-9]*$")
 _NUMBER_PATTERN = r"-?(?:0|[1-9]\d*)(?:\.\d+)?"
 _REQUIRED_FIELDS = {"query_id", "domain", "target_template", "slots", "coverage"}
+#: ``tier`` khuyết nghĩa là ``primary``. Giữ nó tuỳ chọn để danh mục viết tay và
+#: các bản danh mục cũ vẫn nạp được mà không phải sửa từng dòng.
+_OPTIONAL_FIELDS = {"tier"}
+_TIERS = frozenset({"primary", "secondary"})
 _LOCAL_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 
 
@@ -59,6 +80,7 @@ class QuerySpec:
     target_template: str
     slots: Mapping[str, SlotSpec]
     coverage: tuple[CoverageSelector, ...] = ()
+    tier: Tier = "primary"
 
 
 def load_catalogue(path: Path) -> dict[str, QuerySpec]:
@@ -127,8 +149,12 @@ def find_query_family(
 
 
 def _parse_spec(payload: object) -> QuerySpec:
-    if not isinstance(payload, dict) or set(payload) != _REQUIRED_FIELDS:
+    if not isinstance(payload, dict):
         raise CatalogueError(f"fields must be exactly {sorted(_REQUIRED_FIELDS)}")
+    if _REQUIRED_FIELDS - set(payload) or set(payload) - _REQUIRED_FIELDS - _OPTIONAL_FIELDS:
+        raise CatalogueError(
+            f"fields must be {sorted(_REQUIRED_FIELDS)} plus optional {sorted(_OPTIONAL_FIELDS)}"
+        )
 
     query_id = payload["query_id"]
     domain = payload["domain"]
@@ -153,18 +179,27 @@ def _parse_spec(payload: object) -> QuerySpec:
     if unused:
         raise CatalogueError(f"unused slots: {unused}")
 
+    tier = payload.get("tier", "primary")
+    if tier not in _TIERS:
+        raise CatalogueError(f"invalid tier {tier!r}")
+
     slots = {name: _parse_slot(name, raw) for name, raw in raw_slots.items()}
     coverage = _parse_coverage(raw_coverage)
     if domain == "out-of-domain" and coverage:
         raise CatalogueError("rejection query cannot declare coverage")
     if domain != "out-of-domain" and not coverage:
         raise CatalogueError("non-rejection query must declare coverage")
+    # Từ chối là hành vi người dùng gặp thường xuyên nhất; nó không bao giờ được
+    # phép nằm ngoài diện bắt buộc có dữ liệu huấn luyện.
+    if domain == "out-of-domain" and tier != "primary":
+        raise CatalogueError("rejection query must stay primary")
     return QuerySpec(  # type: ignore[arg-type]
         query_id,
         domain,
         template,
         slots,
         coverage,
+        tier,
     )
 
 

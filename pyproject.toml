@@ -28,6 +28,11 @@ train = [
     "transformers>=5.14.1",
 ]
 
+[tool.hatch.metadata]
+# flash-attn khai bằng đường dẫn wheel trực tiếp; hatchling chặn kiểu khai đó
+# trừ khi được cho phép tường minh.
+allow-direct-references = true
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -38,6 +43,7 @@ convert_sparql_model = "ontchatbot.cli.convert_model:main"
 evaluate_ct2_model = "ontchatbot.cli.evaluate_ct2:main"
 evaluate_sparql_model = "ontchatbot.cli.evaluate_model:main"
 generate_reports = "ontchatbot.cli.report:main"
+generate_sparql_dataset = "ontchatbot.cli.generate_dataset:main"
 prepare_vit5_tokenizer = "ontchatbot.cli.prepare_tokenizer:main"
 serve_sparql = "ontchatbot.cli.serve:main"
 train_sparql = "ontchatbot.cli.train:main"

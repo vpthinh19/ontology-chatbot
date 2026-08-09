@@ -1,9 +1,13 @@
 # Báo cáo tái tạo được
 
-Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dataset 4.454 câu:
+Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dữ liệu canonical.
+
+> **Lưu ý**: dataset đang được xây dựng lại sau đợt tái cấu trúc ontology, nên
+> các báo cáo dưới đây còn phản ánh bộ dữ liệu cũ cho tới khi được sinh lại.
+
 
 - `dataset.json`: kích thước, phân bố, độ phủ, thống kê ontology và checksum;
-- `procedure-dataset.json`: độ phủ 142 target quy trình theo split và checksum;
+- `procedure-dataset.json`: độ phủ các target quy trình theo split và checksum;
 - `figures/dataset-splits.svg`: số câu train/validation/test;
 - `figures/registers.svg`: phân bố bốn phong cách câu hỏi;
 - `figures/query-features.svg`: đặc trưng SPARQL theo từng split.
@@ -19,7 +23,8 @@ canonical. Inventory, manifest, `dataset.json`, `procedure-dataset.json`,
 `provenance.json` và ba biểu đồ dataset là artifact dẫn xuất. Kiểm tra read-only
 bằng `uv run validate_sparql_dataset`; sinh lại artifact bằng
 `uv run generate_reports`. `training_readiness.ready` phải là `true`, yêu cầu
-độ phủ phải được đáp ứng và cả 51 họ truy vấn phải có trong ba tập.
+độ phủ phải được đáp ứng và mọi họ truy vấn của `catalogue.jsonl` phải có
+mặt trong cả ba tập.
 
 Bộ 308 câu tại `resources/cases/procedure_language.jsonl` kiểm tra hồi quy cho
 hành vi triển khai, không phải benchmark khoa học độc lập.

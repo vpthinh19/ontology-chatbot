@@ -1,5 +1,12 @@
 # Huấn luyện
 
+> **Số liệu trong tài liệu này thuộc baseline v0.4.1.** Ontology đã được dựng lại
+> và dataset đang được sinh lại theo danh mục truy vấn mới, nên các kết quả dưới
+> đây là **lịch sử**, không phải kết quả của dữ liệu canonical hiện hành.
+> `reports/provenance.json` đang đánh dấu `model_metrics.status` là `stale`.
+> Muốn có số liệu mới thì phải sinh lại dataset rồi huấn luyện lại theo đúng giao
+> thức mô tả ở đây.
+
 ## Phạm vi thí nghiệm
 
 Ba model được fine-tune trên cùng dataset 4.454 câu bằng giao thức PEFT LoRA.

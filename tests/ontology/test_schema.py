@@ -16,7 +16,8 @@ from ontchatbot.settings import ONTOLOGY_NS
 PASCAL_CASE = re.compile(r"^[A-Z][A-Za-z0-9]*$")
 CAMEL_CASE = re.compile(r"^[a-z][A-Za-z0-9]*$")
 #: Lớp trừu tượng chỉ dùng làm cha, không có cá thể nào.
-ABSTRACT_CLASSES = {"DocumentPart", "OfficialDocument"}
+#: Lớp cha chỉ dùng để gom nhóm, không bao giờ có instance trực tiếp.
+ABSTRACT_CLASSES = {"DocumentPart", "OfficialDocument", "ThresholdBand"}
 
 
 def _local(node) -> str:

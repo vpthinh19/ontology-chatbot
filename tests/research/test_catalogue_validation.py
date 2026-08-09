@@ -6,6 +6,7 @@ from itertools import product
 import pytest
 
 from ontchatbot.catalogue import (
+    find_query_family,
     CoverageSelector,
     QuerySpec,
     SlotSpec,
@@ -244,3 +245,222 @@ def test_study_year_bands_remain_reachable_by_credit_count() -> None:
     )
 
     assert len(rows) == 4
+
+
+@pytest.mark.parametrize(
+    ("query_id", "slots", "expected_in_answer", "expected_in_citation"),
+    [
+        (
+            "article-with-source",
+            {"article": "24"},
+            "nghỉ học tạm thời",
+            "Điều 24",
+        ),
+        (
+            "clause-with-source",
+            {"article": "20", "clause": "2"},
+            "buộc thôi học",
+            "khoản 2 Điều 20",
+        ),
+        # ĐIỂM không còn họ riêng: ``point-with-source`` đã bỏ vì nó trả về ĐÚNG
+        # cùng một thứ với ``document-official-text`` trên trọn 108 thực thể của
+        # nó - hai đích đều hợp lệ cho một câu hỏi là ép model đoán bừa.
+        (
+            "document-official-text",
+            {"anchor": ":Regulation1052Article25Clause01PointC"},
+            "Trưởng Khoa",
+            "điểm c khoản 1 Điều 25",
+        ),
+        # IRI của điểm đ mã hoá "đ" thành "DD" - ca dễ dựng sai nhất.
+        (
+            "document-official-text",
+            {"anchor": ":Regulation1052Article06Clause02PointDD"},
+            "học phần SV phải học xong",
+            "điểm đ khoản 2 Điều 6",
+        ),
+    ],
+)
+def test_every_level_of_a_document_answers_with_its_own_source(
+    query_id: str,
+    slots: dict[str, str],
+    expected_in_answer: str,
+    expected_in_citation: str,
+) -> None:
+    """Người hỏi không biết "Quyết định 1052" là gì, nên mỗi câu trả lời phải tự
+    kèm nguồn: vị trí trong văn bản, số quyết định, ngày ban hành và nơi tra."""
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    target = catalogue[query_id].target_template
+    for name, value in slots.items():
+        target = target.replace("${" + name + "}", value)
+
+    rows = execute_select(load_ontology(), target)
+
+    assert len(rows) == 1
+    assert expected_in_answer in str(rows[0]["nộidung"])
+    citation = str(rows[0]["căncứ"])
+    assert expected_in_citation in citation
+    assert "1052/QĐ-ĐHNT ngày 17/7/2025" in citation
+    assert str(rows[0]["xemtại"]).startswith("https://")
+
+
+def test_a_query_that_answers_with_its_source_is_declared_in_the_catalogue() -> None:
+    """Guard đối chiếu chính xác, nên một truy vấn kèm nguồn phải nằm trong danh
+    mục - nếu không backend sẽ từ chối nó dù truy vấn hoàn toàn đúng."""
+
+    from ontchatbot.catalogue import find_query_family
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    # Chọn ĐỘNG mọi họ trả nguyên văn kèm nguồn thay vì chốt một tên: các họ này
+    # đã đổi tên và gộp vào nhau nhiều lần, mà hợp đồng cần giữ là "truy vấn kèm
+    # nguồn phải khớp danh mục", không phải "họ tên X còn tồn tại".
+    with_source = [
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.tier == "primary"
+        and {"?nộidung", "?căncứ", "?xemtại"} <= set(spec.target_template.split())
+    ]
+    # Ba cấp: hỏi theo TÊN (văn bản, phụ lục, điểm) và hỏi theo SỐ (điều, khoản).
+    assert len(with_source) >= 3, f"chỉ còn {len(with_source)} họ trả kèm nguồn"
+
+    for query_id in with_source:
+        spec = catalogue[query_id]
+        target = spec.target_template
+        for name, slot in spec.slots.items():
+            # Slot ``number`` không liệt kê giá trị (điều/khoản điền lúc sinh dữ
+            # liệu), slot ``iri`` thì có. Guard chỉ so HÌNH DẠNG truy vấn nên một
+            # giá trị hợp lệ bất kỳ là đủ.
+            value = slot.values[0] if slot.values else "1"
+            target = target.replace("${" + name + "}", value)
+        assert "${" not in target, f"{query_id}: còn chỗ trống chưa thay"
+        assert find_query_family(catalogue, target) == query_id, query_id
+
+
+def test_every_family_matches_itself_and_no_other() -> None:
+    """Mỗi họ phải tự nhận lại được chính mình khi truy vấn đi qua guard runtime.
+
+    ``find_query_family`` trả họ KHỚP ĐẦU TIÊN theo thứ tự khai báo, nên hai họ có
+    template chồng lấn sẽ khiến kết quả phụ thuộc thứ tự dòng trong tệp - một lỗi
+    âm thầm và rất khó truy. Phép gộp ~90 họ trích dẫn thành một họ duy nhất làm
+    rủi ro này đáng canh: nếu họ cũ còn sót lại, chúng sẽ tranh khớp với họ gộp.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+
+    misrouted = []
+    for query_id, spec in catalogue.items():
+        target = spec.target_template
+        for name, slot in spec.slots.items():
+            value = slot.values[0] if slot.kind == "iri" else "0"
+            target = target.replace(f"${{{name}}}", value)
+        if spec.domain == "out-of-domain":
+            continue
+        matched = find_query_family(catalogue, target)
+        if matched != query_id:
+            misrouted.append((query_id, matched))
+
+    assert misrouted == []
+
+
+def _instantiated_targets(catalogue, *, primary_only: bool):
+    """Bung mỗi họ thành các truy vấn cụ thể. Bỏ họ có slot số (miền vô hạn)."""
+
+    for query_id, spec in catalogue.items():
+        if spec.domain == "out-of-domain":
+            continue
+        if primary_only and spec.tier != "primary":
+            continue
+        if any(slot.kind == "number" for slot in spec.slots.values()):
+            continue
+        names = list(spec.slots)
+        for values in product(*(spec.slots[name].values for name in names)):
+            target = spec.target_template
+            for name, value in zip(names, values, strict=True):
+                target = target.replace(f"${{{name}}}", value)
+            yield query_id, dict(zip(names, values, strict=True)), target
+
+
+def test_no_two_primary_families_answer_identically() -> None:
+    """Hai họ khác nhau không được trả kết quả GIỐNG HỆT trên cùng một anchor.
+
+    Đây là luật đắt giá nhất trong bộ này. Answer Exact so *tập kết quả trả về*,
+    không so chuỗi truy vấn - nên khi hai ý định khác nhau cùng trả một đoạn văn,
+    model chọn nhầm vẫn được chấm ĐÚNG. Ở ontology v0.4.1, 59,6% số dòng dataset
+    nằm trong vùng mù đó, và đó là lý do benchmark báo 92% trong khi chatbot thật
+    trả lời rất tệ.
+
+    Chỉ tính họ ``primary``: họ ``secondary`` không có dữ liệu huấn luyện nên
+    không thể làm model lẫn.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    graph = load_ontology()
+
+    by_result: dict[tuple, list[str]] = {}
+    checked = 0
+    for query_id, slots, target in _instantiated_targets(catalogue, primary_only=True):
+        rows = execute_select(graph, target, max_rows=200)
+        if not rows:
+            continue
+        checked += 1
+        key = (
+            frozenset(slots.items()),
+            frozenset(tuple(sorted(row.items())) for row in rows),
+        )
+        by_result.setdefault(key, []).append(query_id)
+
+    collisions = sorted(
+        {tuple(sorted(set(ids))) for ids in by_result.values() if len(set(ids)) > 1}
+    )
+
+    assert collisions == []
+    assert checked >= 1000, f"chỉ kiểm được {checked} truy vấn, danh mục có vấn đề?"
+
+
+def test_no_answer_cell_is_a_wall_of_text() -> None:
+    """Một ô trong câu trả lời không được là cả một khối văn bản.
+
+    Bản v0.4.1 có truy vấn trả về 94.401 ký tự - và nó được dạy cho model 20 lần.
+    Answer Exact chấm khối đó là hoàn hảo miễn nó khớp reference, nên độ dài phải
+    được canh riêng.
+
+    Đo theo TỪNG Ô chứ không theo tổng: một danh sách 19 biểu mẫu dài là chính
+    đáng, một ô chứa nguyên cả điều luật thì không. Họ tra nguyên văn được miễn -
+    người dùng hỏi đúng nguyên văn Điều 24 thì phải nhận nguyên văn Điều 24.
+
+    Ngưỡng 500 có biên rộng: ô dài nhất hiện tại của nhóm không được miễn là 343.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    graph = load_ontology()
+
+    verbatim = {
+        query_id
+        for query_id, spec in catalogue.items()
+        if any(tuple(path) == ("officialText",) for sel in spec.coverage for path in sel.paths)
+    }
+
+    checked = 0
+    oversized = []
+    exercised: set[str] = set()
+    for query_id, slots, target in _instantiated_targets(catalogue, primary_only=True):
+        if query_id in verbatim:
+            continue
+        for row in execute_select(graph, target, max_rows=200):
+            checked += 1
+            exercised.add(query_id)
+            for column, value in row.items():
+                if value is not None and len(str(value)) > 500:
+                    oversized.append((query_id, column, len(str(value)), slots))
+
+    assert oversized[:5] == []
+    # Canh danh mục hỏng, KHÔNG chốt một con số cố định: mỗi đợt gộp họ lại bớt
+    # vài họ primary nên số dòng tụt dần một cách chính đáng (65 họ / 1.030 dòng
+    # -> 62 họ / 990 dòng). Buộc theo SỐ HỌ thật sự trả ra dữ liệu thì canary vẫn
+    # bắt được danh mục vỡ - lúc đó cả trăm họ câm cùng lúc - mà không bắt phải
+    # sửa test sau mỗi lần gộp đúng đắn.
+    askable = {q for q, spec in catalogue.items() if spec.tier == "primary"} - verbatim
+    assert len(exercised) >= 0.7 * len(askable), (
+        f"chỉ {len(exercised)}/{len(askable)} họ primary trả ra dữ liệu"
+    )
+    assert checked >= 15 * len(exercised), f"chỉ kiểm được {checked} dòng, danh mục có vấn đề?"

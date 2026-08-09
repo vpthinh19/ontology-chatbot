@@ -11,17 +11,17 @@
     "test.jsonl": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
   },
   "current_inputs": {
-    "ontology.ttl": "518ec968e9a9412037002d438ea076421c61d70453fe4cc58f0788f89a3c13c2",
-    "catalogue.jsonl": "6ca48b0e5cb2b812b747586cdd73a4cdfbf7979d51d9418267daaaad118837ad",
-    "coverage.json": "3429167d21f84d5e3f6e4ab90ef0b0cd748f118c5beb7dd4ef489c723ecaa881",
-    "train.jsonl": "98ae96b7539dc0c364ac27548a6590974b423252939d3728a494b97eafc5c436",
-    "val.jsonl": "063495561b0025b681d96b9b1fc569208a81cd919dfeeb505c1b10ad1da82669",
-    "test.jsonl": "7e8cc503a9da1478ab448eca6fcce2adec13771720085ccb06b294c7db336305"
+    "ontology.ttl": "3b6a6817b67784353cb2bfb6dad0de5e0e63a3c51f29794b6e7ca40b291559ac",
+    "catalogue.jsonl": "163e14ba1aef49da70da304dbf8ea5cf87943e36620feacc0c11c09efa828a31",
+    "coverage.json": "c2b68a35fc93706d6df7dd2be5159371f8f53166ab37fc17abafedb982cf6221",
+    "train.jsonl": "a9c27900a916e3a467b8a193974f85d06cf6d1de81d425342b90416d635914c0",
+    "val.jsonl": "469a0c0265bc5990e8983c3dd918d81d8f15d9771f593e667fc2cf5781f8dc5a",
+    "test.jsonl": "640297d75bcc39624162aeaf0f6cad5b3ed5e0ecefb5a80862cb904d20ce9af4"
   },
   "model_metrics": {
-    "status": "current"
+    "status": "stale"
   },
   "deployment_metrics": {
-    "status": "current"
+    "status": "stale"
   }
 }

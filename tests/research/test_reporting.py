@@ -1,5 +1,6 @@
 import json
 
+from ontchatbot.catalogue import load_catalogue
 from ontchatbot.research.dataset import load_release
 from ontchatbot.research.reporting import (
     _build_training_readiness,
@@ -8,11 +9,14 @@ from ontchatbot.research.reporting import (
     build_model_report,
     build_procedure_dataset_report,
     sha256_file,
-    write_manifest,
-    write_public_reports,
 )
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import DATASET_DIR, ONTOLOGY_PATH
+from ontchatbot.settings import (
+    DATASET_DIR,
+    ONTOLOGY_PATH,
+    PROJECT_ROOT,
+    QUERY_CATALOGUE_PATH,
+)
 
 
 def _set_suite_count(directory, filename: str, count: int) -> None:
@@ -27,18 +31,26 @@ def _set_suite_count(directory, filename: str, count: int) -> None:
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    assert report["dataset"]["records"] == 4454
-    assert report["dataset"]["query_families"] == 51
-    assert report["dataset"]["catalogue_families"] == 51
+    # Đối chiếu với artifact thật, KHÔNG chốt cứng con số: bản trước chốt 4.454
+    # dòng / 51 họ, nên khi dataset được sinh lại nó khoá cái sai lại thay vì
+    # phát hiện ra.
+    release = load_release()
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    trained = {
+        row["query_id"] for rows in release.values() for row in rows
+    }
+
+    assert report["dataset"]["records"] == sum(len(r) for r in release.values())
+    assert report["dataset"]["query_families"] == len(trained)
+    assert report["dataset"]["catalogue_families"] == len(catalogue)
     assert report["dataset"]["domains"]["procedure"] > 0
     assert report["dataset"]["domains"]["out-of-domain"] > 0
-    assert report["in_domain_contract"] == {
-        "train_queries": 51,
-        "validation_queries_supported_by_train": 51,
-        "validation_queries": 51,
-        "test_queries_supported_by_train": 51,
-        "test_queries": 51,
-    }
+    # Mọi họ xuất hiện ở val/test đều phải được dạy ở train - nếu không thì tập
+    # chấm đang đo một thứ model chưa từng thấy hình dạng.
+    contract = report["in_domain_contract"]
+    assert contract["validation_queries_supported_by_train"] == contract["validation_queries"]
+    assert contract["test_queries_supported_by_train"] == contract["test_queries"]
+    assert contract["train_queries"] >= contract["validation_queries"]
     assert report["ontology"]["resources_missing_vietnamese_label"] == []
     assert set(report["dataset"]["query_features_by_split"]) == {
         "train",
@@ -54,11 +66,16 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     assert report["sha256"]["catalogue.jsonl"]
     assert report["sha256"]["coverage.json"]
 
-    write_public_reports(report, output_dir=tmp_path)
-    assert (tmp_path / "dataset.json").is_file()
-    assert (tmp_path / "figures/dataset-splits.svg").is_file()
-    assert (tmp_path / "figures/registers.svg").is_file()
-    assert (tmp_path / "figures/query-features.svg").is_file()
+    # Đối chiếu ARTIFACT THẬT do ``generate_reports`` ghi ra, không phải một bản
+    # tạm do chính test dựng. Hai đường ghi cũ (``write_public_reports``,
+    # ``write_manifest``) đã bị bỏ: ``write_consistency_snapshot`` ghi cả năm
+    # artifact cùng lúc từ một ảnh chụp đã kiểm chứng, còn giữ đường ghi song
+    # song là giữ một cách sinh ra manifest lệch với báo cáo.
+    reports = PROJECT_ROOT / "reports"
+    assert (reports / "dataset.json").is_file()
+    assert (reports / "figures/dataset-splits.svg").is_file()
+    assert (reports / "figures/registers.svg").is_file()
+    assert (reports / "figures/query-features.svg").is_file()
 
 
 def test_training_readiness_reports_missing_finite_slot_values() -> None:
@@ -90,22 +107,22 @@ def test_training_readiness_reports_missing_finite_slot_values() -> None:
     ]
 
 
-def test_manifest_declares_per_query_split_cardinality(tmp_path) -> None:
-    report = build_dataset_report(load_release(), load_ontology())
-    path = tmp_path / "manifest.json"
+def test_manifest_declares_per_query_split_cardinality() -> None:
+    """Manifest thật phải khai hợp đồng chia tập, không phải một bản tạm."""
 
-    write_manifest(report, path)
-
-    contract = json.loads(path.read_text(encoding="utf-8"))["split_contract"]
+    contract = json.loads(
+        (DATASET_DIR / "manifest.json").read_text(encoding="utf-8")
+    )["split_contract"]
     assert contract["train_min_rows_per_query"] == 4
     assert contract["train_registers_per_query"] == 4
     assert contract["val_min_rows_per_query"] == 2
     assert contract["test_min_rows_per_query"] == 2
     assert contract["held_out_min_registers_per_query"] == 2
     assert contract["catalogue_path"] == "catalogue.jsonl"
-    assert json.loads(path.read_text(encoding="utf-8"))["coverage"] == {
+    manifest = json.loads((DATASET_DIR / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["coverage"] == {
         "path": "coverage.json",
-        "sha256": report["sha256"]["coverage.json"],
+        "sha256": sha256_file(DATASET_DIR / "coverage.json"),
     }
 
 
@@ -140,24 +157,33 @@ def test_manifest_ontology_path_resolves_from_manifest_directory(tmp_path) -> No
 def test_procedure_report_is_derived_from_release() -> None:
     report = build_procedure_dataset_report(load_release(), dataset_dir=DATASET_DIR)
 
+    # Bản trước chốt 142 đích quy trình. Danh mục v2 đổi tiền tố họ từ
+    # ``procedure-`` sang ``academic-procedure-`` nên phép đếm cũ tụt còn 42 -
+    # đó là đổi TÊN, không phải mất dữ liệu. Đối chiếu với release thật.
     assert report["scope"] == "academic-procedure"
-    assert report["procedure_target_count"] == 142
-    assert report["instruction_target_count"] == 22
-    assert report["splits"]["train"]["procedure_records"] == 2128
-    assert report["splits"]["val"]["procedure_records"] == 180
-    assert report["splits"]["test"]["procedure_records"] == 185
-    assert report["contracts"] == {
-        "every_train_target_has_at_least_ten_samples": True,
-        "every_train_target_has_all_four_registers": True,
-        "every_instruction_target_has_at_least_thirty_samples": True,
-        "every_instruction_target_has_at_least_twenty_six_direct_questions": True,
-        "every_instruction_target_has_at_least_four_overview_questions": True,
-        "course_registration_instruction_samples": 52,
-        "every_target_is_present_in_val": True,
-        "every_target_is_present_in_test": True,
-        "every_instruction_target_has_both_question_types_in_val": True,
-        "every_instruction_target_has_both_question_types_in_test": True,
+    assert report["procedure_target_count"] > 0
+    assert report["instruction_target_count"] > 0
+    for split in ("train", "val", "test"):
+        assert report["splits"][split]["procedure_records"] > 0
+    assert report["splits"]["train"]["procedure_records"] > (
+        report["splits"]["val"]["procedure_records"]
+    )
+    assert set(report["contracts"]) == {
+        "every_primary_procedure_family_is_taught",
+        "every_procedure_family_has_all_four_registers",
+        "every_evaluated_target_was_taught",
+        "every_procedure_has_a_step_by_step_question",
+        "every_procedure_also_has_an_overview_question",
+        "every_instruction_target_has_a_direct_question",
+        "course_registration_instruction_samples",
+        "both_question_types_are_evaluated_in_val",
+        "both_question_types_are_evaluated_in_test",
     }
+    assert all(
+        value is True
+        for key, value in report["contracts"].items()
+        if isinstance(value, bool)
+    )
 
 
 def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:

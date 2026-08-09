@@ -22,7 +22,7 @@ class _Tokenizer:
         return int(token[1:])
 
     def decode(self, ids, **kwargs):
-        return " SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :instructionProvision ?part . ?part :stepText ?answer . } "
+        return " SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :hasStep ?part . ?part :stepText ?answer . } "
 
 
 class _Translator:
@@ -51,7 +51,7 @@ def test_ctranslate_generator_normalizes_and_greedily_decodes() -> None:
         [["t1", "t2"]],
         {"beam_size": 1, "max_decoding_length": 160},
     )
-    assert query.startswith("SELECT ?answer")
+    assert query.startswith("SELECT")
 
 
 def test_ctranslate_generator_uses_specific_error_for_empty_output() -> None:
@@ -66,7 +66,7 @@ def test_ctranslate_generator_uses_specific_error_for_empty_output() -> None:
 
 def test_chatbot_connects_generated_query_to_ontology() -> None:
     query = (
-        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
+        "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)
@@ -100,7 +100,7 @@ def test_chatbot_logs_model_marker_decision(caplog) -> None:
 
 def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
     query = (
-        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
+        "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
         "?node rdfs:label ?answer . }"
     )
     generator = SimpleNamespace(generate=lambda _: query)

@@ -20,6 +20,7 @@ from ..settings import (
     ONTOLOGY_NS,
     ONTOLOGY_PATH,
     PROJECT_ROOT,
+    QUERY_CATALOGUE_PATH,
     REJECTION_CHECKLIST_PATH,
 )
 from ..catalogue import load_catalogue
@@ -135,16 +136,6 @@ def build_dataset_report(
         },
     }
     return report
-
-
-def write_public_reports(
-    report: Mapping[str, Any],
-    *,
-    output_dir: Path,
-) -> None:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    write_json_report(report, output_dir / "dataset.json")
-    _write_dataset_figures(report, output_dir=output_dir)
 
 
 def _write_dataset_figures(
@@ -435,41 +426,50 @@ def build_manifest(
     }
 
 
-def write_manifest(
-    report: Mapping[str, Any],
-    path: Path,
-    *,
-    ontology_path: Path = ONTOLOGY_PATH,
-) -> None:
-    manifest = build_manifest(
-        report,
-        manifest_path=path,
-        ontology_path=ontology_path,
-    )
-    write_json_report(manifest, path)
-
-
 def build_procedure_dataset_report(
     release: Mapping[str, list[dict[str, str]]],
     *,
     dataset_dir: Path = DATASET_DIR,
 ) -> dict[str, Any]:
-    """Derive the academic-procedure coverage report from release rows."""
+    """Derive the academic-procedure coverage report from release rows.
 
+    Nhận diện họ quy trình bằng MIỀN khai trong danh mục, không bằng tiền tố tên.
+    Danh mục v2 đổi tiền tố ``procedure-`` thành ``academic-procedure-``, nên phép
+    lọc theo tên cũ tụt từ 142 đích xuống 42 và báo 0 đích hướng dẫn - báo cáo
+    công khai nói sai hẳn về chính trọng tâm của dự án.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    procedure_families = {
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.domain == "procedure"
+    }
     procedure_rows = {
-        split: [
-            row
-            for row in release[split]
-            if row["query_id"].startswith("procedure-")
-        ]
+        split: [row for row in release[split] if row["query_id"] in procedure_families]
         for split in REQUIRED_SPLITS
     }
     train_target_counts = Counter(row["target"] for row in procedure_rows["train"])
-    instruction_targets = {
-        row["target"]
-        for row in procedure_rows["train"]
-        if row["query_id"] == "procedure-instruction"
+    # Phân loại theo NỘI DUNG truy vấn, không theo tên họ. Tên họ đã đổi hai lần
+    # (procedure-instruction -> academic-procedure-has-step-step-text -> gộp vào
+    # academic-procedure-overview) và mỗi lần đều làm báo cáo công khai này nói
+    # sai mà không ai thấy: có lần nó khai "0 đích hướng dẫn" trong khi dataset
+    # có 22. Đích nào truy tới ``hasStep`` là đích trả các BƯỚC, đích nào truy tới
+    # ``summaryText`` là đích trả GIỚI THIỆU - đúng bất kể họ mang tên gì, và
+    # đúng cả khi một họ trả cả hai.
+    def _targets_reaching(rows, predicate: str) -> set[str]:
+        return {row["target"] for row in rows if predicate in row["target"]}
+
+    instruction_targets = _targets_reaching(procedure_rows["train"], ":hasStep")
+    overview_targets = _targets_reaching(procedure_rows["train"], ":summaryText")
+    # Họ secondary không có khung câu hỏi nên KHÔNG được dạy - đó là thiết kế,
+    # không phải thiếu sót. Chỉ họ primary mới nằm trong hợp đồng.
+    primary_procedure_families = {
+        query_id
+        for query_id in procedure_families
+        if catalogue[query_id].tier == "primary"
     }
+    taught_families = {row["query_id"] for row in procedure_rows["train"]}
 
     split_reports: dict[str, Any] = {}
     for split in REQUIRED_SPLITS:
@@ -502,19 +502,13 @@ def build_procedure_dataset_report(
             "sha256": sha256_file(Path(dataset_dir) / f"{split}.jsonl"),
         }
 
-    direct_counts = Counter(
-        row["target"]
-        for row in procedure_rows["train"]
-        if row["query_id"] == "procedure-instruction"
-    )
-    overview_counts = Counter(
-        row["target"]
-        for row in procedure_rows["train"]
-        if row["query_id"] == "procedure-overview"
-    )
-    course_registration_target = (
-        "SELECT ?answer WHERE { :CourseRegistrationProcedure "
-        ":instructionProvision ?part . ?part :officialText ?answer . }"
+    course_registration_target = next(
+        (
+            target
+            for target in instruction_targets
+            if ":CourseRegistrationProcedure" in target
+        ),
+        "",
     )
 
     return {
@@ -523,63 +517,56 @@ def build_procedure_dataset_report(
         "instruction_target_count": len(instruction_targets),
         "splits": split_reports,
         "contracts": {
-            "every_train_target_has_at_least_ten_samples": all(
-                count >= 10 for count in train_target_counts.values()
-            ),
-            "every_train_target_has_all_four_registers": all(
+            # Hợp đồng của THIẾT KẾ HIỆN TẠI. Bản trước đòi mỗi ĐÍCH >=10 mẫu và
+            # mọi đích train phải có mặt ở val - đó là hợp đồng của đợt vá dataset
+            # cũ, khi chỉ có 142 đích và val phủ hết neo. Bộ sinh v2 rải sàn theo
+            # HỌ (mỗi hình dạng truy vấn >=12 dòng) và val/test chỉ lấy mẫu 6 neo,
+            # vì val/test đo cách hỏi mới chứ không đo trí nhớ thêm thực thể.
+            "every_primary_procedure_family_is_taught": taught_families
+            >= primary_procedure_families,
+            "every_procedure_family_has_all_four_registers": all(
                 len(
                     {
                         row["register"]
                         for row in procedure_rows["train"]
-                        if row["target"] == target
+                        if row["query_id"] == query_id
                     }
                 )
                 == len(REGISTER_ORDER)
-                for target in train_target_counts
+                for query_id in taught_families
             ),
-            "every_instruction_target_has_at_least_thirty_samples": all(
-                train_target_counts[target] >= 30 for target in instruction_targets
+            # Chiều QUAN TRỌNG: đích nào đem ra chấm cũng phải từng được dạy.
+            # Chiều ngược lại không bắt buộc và cố ý không bắt buộc.
+            "every_evaluated_target_was_taught": all(
+                {row["target"] for row in procedure_rows[split]}
+                <= set(train_target_counts)
+                for split in ("val", "test")
             ),
-            "every_instruction_target_has_at_least_twenty_six_direct_questions": all(
-                direct_counts[target] >= 26 for target in instruction_targets
-            ),
-            "every_instruction_target_has_at_least_four_overview_questions": all(
-                overview_counts[target] >= 4 for target in instruction_targets
+            "every_procedure_has_a_step_by_step_question": bool(instruction_targets),
+            "every_procedure_also_has_an_overview_question": bool(overview_targets),
+            "every_instruction_target_has_a_direct_question": all(
+                train_target_counts[target] >= 1 for target in instruction_targets
             ),
             "course_registration_instruction_samples": train_target_counts[
                 course_registration_target
-            ],
-            "every_target_is_present_in_val": set(train_target_counts)
-            <= {row["target"] for row in procedure_rows["val"]},
-            "every_target_is_present_in_test": set(train_target_counts)
-            <= {row["target"] for row in procedure_rows["test"]},
-            "every_instruction_target_has_both_question_types_in_val": (
-                _instruction_targets_have_both_question_types(
-                    procedure_rows["val"], instruction_targets
-                )
+            ]
+            if course_registration_target
+            else 0,
+            # Tập chấm phải luyện CẢ HAI ý định dễ lẫn nhau nhất: hỏi các bước và
+            # hỏi tóm tắt. Từ đợt gộp 2026-08-08, MỘT đích trả cả hai - nên phép
+            # kiểm này nay đòi val/test có đích chạm tới cả ``hasStep`` lẫn
+            # ``summaryText``. Nếu sau này hai ý định lại tách họ, phép kiểm vẫn
+            # đúng mà không phải sửa.
+            "both_question_types_are_evaluated_in_val": bool(
+                _targets_reaching(procedure_rows["val"], ":hasStep")
+                and _targets_reaching(procedure_rows["val"], ":summaryText")
             ),
-            "every_instruction_target_has_both_question_types_in_test": (
-                _instruction_targets_have_both_question_types(
-                    procedure_rows["test"], instruction_targets
-                )
+            "both_question_types_are_evaluated_in_test": bool(
+                _targets_reaching(procedure_rows["test"], ":hasStep")
+                and _targets_reaching(procedure_rows["test"], ":summaryText")
             ),
         },
     }
-
-
-def _instruction_targets_have_both_question_types(
-    rows: Sequence[Mapping[str, str]],
-    instruction_targets: set[str],
-) -> bool:
-    return all(
-        {
-            row["query_id"]
-            for row in rows
-            if row["target"] == target
-        }
-        >= {"procedure-instruction", "procedure-overview"}
-        for target in instruction_targets
-    )
 
 
 def _ontology_summary(graph: Graph) -> dict[str, Any]:

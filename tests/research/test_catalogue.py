@@ -198,3 +198,35 @@ def test_rejection_marker_cannot_claim_ontology_coverage(tmp_path) -> None:
 
     with pytest.raises(CatalogueError, match="rejection query cannot declare coverage"):
         load_catalogue(_write_catalogue(tmp_path, [record]))
+
+
+def test_tier_defaults_to_primary_when_absent(tmp_path) -> None:
+    """Danh mục viết tay và các bản cũ không khai tier vẫn phải nạp được."""
+
+    catalogue = load_catalogue(_write_catalogue(tmp_path, [PROCEDURE]))
+
+    assert catalogue["procedure-instruction"].tier == "primary"
+
+
+def test_tier_marks_a_family_as_not_requiring_training_data(tmp_path) -> None:
+    record = {**PROCEDURE, "tier": "secondary"}
+
+    catalogue = load_catalogue(_write_catalogue(tmp_path, [record]))
+
+    assert catalogue["procedure-instruction"].tier == "secondary"
+
+
+def test_rejects_unknown_tier(tmp_path) -> None:
+    record = {**PROCEDURE, "tier": "optional"}
+
+    with pytest.raises(CatalogueError, match="invalid tier"):
+        load_catalogue(_write_catalogue(tmp_path, [record]))
+
+
+def test_rejection_family_cannot_be_demoted(tmp_path) -> None:
+    """Từ chối là hành vi người dùng gặp nhiều nhất; nó luôn cần dữ liệu dạy."""
+
+    record = {**REJECTION, "tier": "secondary"}
+
+    with pytest.raises(CatalogueError, match="rejection query must stay primary"):
+        load_catalogue(_write_catalogue(tmp_path, [record]))

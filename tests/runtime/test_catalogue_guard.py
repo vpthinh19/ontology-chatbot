@@ -6,7 +6,7 @@ from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 from ontchatbot.settings import QUERY_CATALOGUE_PATH
 
 SUBMISSION_OFFICE = (
-    "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
+    "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
     "?node rdfs:label ?answer . }"
 )
 # Valid SPARQL, real entities, but no declared family combines them. Left
@@ -21,7 +21,7 @@ def test_find_query_family_accepts_a_canonical_target() -> None:
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
 
     assert find_query_family(catalogue, SUBMISSION_OFFICE) == (
-        "procedure-submission-office"
+        "academic-procedure-submitted-to-label"
     )
 
 

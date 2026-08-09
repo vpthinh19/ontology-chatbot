@@ -10,28 +10,46 @@ config:
     curve: basis
 ---
 flowchart LR
-    P["Quy trình<br/>đăng ký học phần"]
-    A["Điều khoản<br/>nguồn"]
-    F["Biểu mẫu"]
-    O["Đơn vị<br/>phụ trách"]
-    D["Văn bản<br/>chính thức"]
-    T["Nội dung<br/>tiếng Việt"]
-    U["URL tải"]
-    L["Nhãn<br/>tiếng Việt"]
+    subgraph TRITHUC["TẦNG TRI THỨC — dữ kiện trả lời thẳng cho người hỏi"]
+        direction LR
+        P["Thủ tục<br/>nghỉ học tạm thời"]
+        S1["Bước 1<br/>viết đơn theo Mẫu số 09"]
+        R1["Điều kiện<br/>đã học ít nhất 01 học kỳ"]
+        O["Phòng Công tác<br/>Chính trị và Sinh viên"]
+        F["Mẫu số 09<br/>đơn xin nghỉ học tạm thời"]
+        N["Thủ tục<br/>xin học trở lại"]
+        C["Trường hợp<br/>lý do cá nhân"]
+    end
 
-    P -->|"có hướng dẫn"| A
-    P -->|"yêu cầu biểu mẫu"| F
+    subgraph VANBAN["TẦNG VĂN BẢN — nguyên văn công văn"]
+        direction LR
+        PD["điểm d khoản 1<br/>Điều 24"]
+        K3["khoản 3<br/>Điều 24"]
+        A["Điều 24"]
+        DOC["Quy chế đào tạo trình độ đại học<br/>kèm Quyết định 1052/QĐ-ĐHNT<br/>ngày 17/7/2025"]
+    end
+
+    P -->|"có bước"| S1
+    P -->|"có điều kiện"| R1
     P -->|"nộp tại"| O
-    P -->|"được quy định bởi"| D
-    A -->|"có nội dung"| T
-    F -->|"có địa chỉ tải"| U
-    O -->|"có tên"| L
+    P -->|"cần biểu mẫu"| F
+    P -->|"thủ tục tiếp theo"| N
+    R1 -->|"chỉ áp dụng cho"| C
 
-    classDef anchor fill:#ede9fe,stroke:#7c3aed,stroke-width:2.5px,color:#4c1d95
-    classDef entity fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
-    classDef source fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
-    classDef value fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    P -.->|"căn cứ"| A
+    S1 -.->|"căn cứ"| K3
+    R1 -.->|"căn cứ"| PD
+    F -.->|"căn cứ"| K3
+
+    PD -->|"nằm trong"| K3
+    K3 -->|"nằm trong"| A
+    A -->|"thuộc tài liệu"| DOC
+
+    classDef anchor fill:#ccfbf1,stroke:#0f766e,stroke-width:2.5px,color:#134e4a
+    classDef fact fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
+    classDef text fill:#e0e7ff,stroke:#4338ca,stroke-width:2px,color:#312e81
+    classDef doc fill:#fef3c7,stroke:#b45309,stroke-width:2.5px,color:#78350f
     class P anchor
-    class A,F,O entity
-    class D source
-    class T,U,L value
+    class S1,R1,O,F,N,C fact
+    class A,K3,PD text
+    class DOC doc

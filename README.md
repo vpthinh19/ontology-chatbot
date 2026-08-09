@@ -159,15 +159,23 @@ hệ chỉ được dùng để tìm tới dữ liệu đó.
 
 | Thành phần | Số lượng |
 |---|---:|
-| Bộ ba RDF | 7.519 |
-| Lớp | 46 |
-| Quan hệ giữa các thực thể | 34 |
-| Thuộc tính dữ liệu | 50 |
-| Thực thể có định danh | 822 |
+| Bộ ba RDF | 8.419 |
+| Lớp | 65 |
+| Quan hệ giữa các thực thể | 37 |
+| Thuộc tính dữ liệu | 59 |
+| Thực thể có định danh | 885 |
+| Điều luật được lưu nguyên văn | 38 |
+| Khoản và điểm | 219 |
 | Quy trình học vụ | 22 |
-| Chính sách học vụ | 2 |
 | Bước thực hiện của các quy trình | 44 |
 | Điều kiện được tách riêng | 33 |
+| Khái niệm được định nghĩa | 28 |
+| Quy tắc có ngưỡng | 43 |
+
+Đồ thị có hai tầng và **cả hai đều trả lời được**: tầng văn bản giữ nguyên văn
+công văn theo đúng cấu trúc điều — khoản — điểm, tầng nghiệp vụ giữ các dữ kiện
+đã bóc tách. Nhờ vậy "bảo lưu nộp ở đâu" và "Điều 24 quy định gì" đều là câu hỏi
+hợp lệ.
 
 Mỗi thực thể công khai có tên tiếng Việt; các dữ kiện trả lời được liên kết về
 văn bản nguồn. Chi tiết thiết kế và quy ước đặt tên nằm trong
@@ -195,7 +203,7 @@ vụ thống nhất.
 | Train | 3.645 | Dạy model các quan hệ, thực thể và cách diễn đạt |
 | Validation | 402 | Chọn checkpoint mà không nhìn vào test |
 | Test | 407 | Đánh giá cuối cùng bằng cách diễn đạt chưa xuất hiện trong train |
-| **Tổng** | **4.454** | **51 nhóm truy vấn** |
+| **Tổng** | **4.454** | **51 nhóm truy vấn (danh mục cũ)** |
 
 > **Trạng thái**: dataset trong bảng trên được xây trước đợt tái cấu trúc
 > ontology và hiện **chưa hợp lệ** — các truy vấn đích của nó dùng những quan hệ
@@ -245,10 +253,11 @@ truy vấn → dataset; inventory, manifest và các file trong `reports/` là a
 |---|---|---|
 | Ontology | [`ontology.ttl`](resources/ontology/ontology.ttl) | Đồ thị RDF chứa dữ liệu học vụ được truy vấn khi chatbot trả lời |
 | Danh mục khả năng trả lời | [`answer_inventory.json`](resources/ontology/answer_inventory.json) | Liệt kê các đường đi từ thực thể tới nhãn hoặc literal có thể trả lời |
-| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 167 họ truy vấn SPARQL mà model được phép sinh |
-| Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 3.645 câu dùng để cập nhật trọng số model |
-| Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 402 câu dùng để chọn checkpoint |
-| Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 407 câu dùng cho benchmark cuối cùng |
+| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 183 họ truy vấn SPARQL mà model được phép sinh; 63 họ primary bắt buộc có dữ liệu huấn luyện |
+| Họ truy vấn viết tay | [`catalogue-manual.jsonl`](resources/dataset/catalogue-manual.jsonl) | 29 họ cần so sánh ngưỡng, gom nhiều cột, đi ngược chiều đồ thị hoặc trả kèm nguồn trích dẫn |
+| Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 5.204 câu dùng để cập nhật trọng số model |
+| Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 349 câu dùng để chọn checkpoint |
+| Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 349 câu dùng cho benchmark cuối cùng |
 | Quy tắc độ phủ | [`coverage.json`](resources/dataset/coverage.json) | Các yêu cầu về miền, phong cách diễn đạt và nhóm từ chối |
 | Manifest dataset | [`manifest.json`](resources/dataset/manifest.json) | Cấu trúc, thống kê và checksum của dữ liệu |
 

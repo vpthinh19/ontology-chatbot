@@ -24,12 +24,13 @@ SOURCED_CLASSES = (
     "CaseResolution",
 )
 DOCUMENT_CLASSES = (
+    "Chapter",
     "Article",
     "Clause",
     "Point",
     "Appendix",
     "DocumentTable",
-    "DocumentBody",
+    "DocumentSection",
 )
 TEXT_PROPERTIES = (
     "summaryText",
