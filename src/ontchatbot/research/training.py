@@ -27,6 +27,7 @@ from ..tools.tokenizer import (
     VIT5_REVISION,
     audit_target_roundtrip,
     prepare_vit5_tokenizer,
+    unrepresentable_targets,
 )
 from ..runtime.sparql import load_ontology
 
@@ -221,7 +222,16 @@ def train(args: argparse.Namespace) -> dict:
     )
     rows = release["train"] + release["val"]
     targets = tuple(dict.fromkeys(row["target"] for row in rows))
-    audit_target_roundtrip(tokenizer, targets)
+    audit = audit_target_roundtrip(
+        tokenizer, targets, strict=not args.allow_lossy_targets
+    )
+    lossy = unrepresentable_targets(audit)
+    if lossy:
+        print(
+            f"CẢNH BÁO: tokenizer không tái tạo được {len(lossy)}/{len(targets)} đích "
+            f"({len(lossy) / len(targets):.1%}). Model KHÔNG THỂ sinh đúng chúng, "
+            "nên mọi con số của lượt này phải nêu kèm giới hạn đó."
+        )
 
     train_rows = release["train"]
     validation_rows = release["val"]
@@ -422,6 +432,8 @@ def train(args: argparse.Namespace) -> dict:
         "peak_vram_reserved_bytes": torch.cuda.max_memory_reserved() if torch.cuda.is_available() else None,
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "smoke_test": args.smoke_test,
+        "unrepresentable_targets": len(lossy),
+        "distinct_targets": len(targets),
         "torch_version": torch.__version__,
         "transformers_version": transformers.__version__,
         "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
@@ -682,6 +694,10 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
+    # Cho phép huấn luyện một model KHÔNG biểu diễn nổi mọi đích. Mặc định tắt:
+    # trần trên của nó bị chặn trước khi học, nên con số thu được không so thẳng
+    # với model biểu diễn được đủ. Số đích hỏng được ghi vào metrics.
+    parser.add_argument("--allow-lossy-targets", action="store_true")
     args = parser.parse_args(argv)
     if args.benchmark_after_training and not args.save_model:
         parser.error("--benchmark-after-training requires --save-model")

@@ -6,7 +6,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from ..settings import ARTIFACTS_DIR
 
@@ -173,8 +173,18 @@ def prepare_vit5_tokenizer(
     return manifest
 
 
-def audit_target_roundtrip(tokenizer: Any, targets: Iterable[str]) -> list[dict[str, Any]]:
-    """Require every canonical target to survive encode/decode without UNK."""
+def audit_target_roundtrip(
+    tokenizer: Any,
+    targets: Iterable[str],
+    *,
+    strict: bool = True,
+) -> list[dict[str, Any]]:
+    """Require every canonical target to survive encode/decode without UNK.
+
+    ``strict=False`` khảo sát mà không dừng, để đo được một model KHÔNG biểu diễn
+    nổi toàn bộ đích thì hỏng tới đâu. Đích nào không tái tạo được thì model
+    chắc chắn sai câu đó, nên con số đo được luôn phải nêu kèm số đích hỏng.
+    """
 
     report = []
     for target in targets:
@@ -189,9 +199,19 @@ def audit_target_roundtrip(tokenizer: Any, targets: Iterable[str]) -> list[dict[
             "roundtrip_exact": exact,
         }
         report.append(row)
-        if unknown_count or not exact:
+        if strict and (unknown_count or not exact):
             raise TokenizerContractError(f"target does not round-trip: {row}")
     return report
+
+
+def unrepresentable_targets(report: Iterable[Mapping[str, Any]]) -> list[str]:
+    """Đích mà tokenizer không tái tạo được - model không thể sinh đúng chúng."""
+
+    return [
+        str(row["target"])
+        for row in report
+        if row.get("unknown_tokens") or not row.get("roundtrip_exact")
+    ]
 
 
 def _read_json(path: Path) -> dict[str, Any]:
