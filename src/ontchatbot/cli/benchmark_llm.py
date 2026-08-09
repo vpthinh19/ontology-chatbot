@@ -37,8 +37,13 @@ def build_complete(
     tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=not allow_download)
     # Model đã lượng tử hoá thì ĐỪNG ép dtype: ép là trọng số 4-bit bị giải nén
     # ngược về 16-bit ngay lúc nạp, và card 6 GB tràn ngay.
-    # T4 và P100 KHÔNG có bfloat16 trong phần cứng. Ép nó ở đó là chậm hoặc lỗi.
-    compute_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+    # Hỏi ĐỜI KIẾN TRÚC, đừng hỏi ``is_bf16_supported``: trên T4 hàm đó trả về
+    # True vì nó tính cả trường hợp giả lập bằng phần mềm, mà giả lập thì chậm
+    # hơn hẳn float16 vốn có nhân tính chuyên dụng. bfloat16 chỉ có thật từ
+    # Ampere (đời 8) trở đi.
+    compute_dtype = (
+        torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
+    )
     config = AutoConfig.from_pretrained(model_id, local_files_only=not allow_download)
     quantized = getattr(config, "quantization_config", None) is not None
     load_kwargs: dict = {"local_files_only": not allow_download}
