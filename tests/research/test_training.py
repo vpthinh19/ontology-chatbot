@@ -11,7 +11,6 @@ from ontchatbot.research.training import (
     _generation_cache_config,
     _optimization_arguments,
     _parse_args,
-    _optimizer_name,
     _precision_policy,
     _require_training_ready,
 )
@@ -214,30 +213,22 @@ def test_attach_lora_model_uses_the_locked_seq2seq_protocol() -> None:
 
 
 @pytest.mark.parametrize(
-    ("accelerator", "bf16_supported", "capability", "expected"),
+    ("cuda_available", "bf16_supported", "capability", "expected"),
     [
         (
-            "cuda",
+            True,
             True,
             (8, 9),
             {"dtype": "bfloat16", "bf16": True, "fp16": False, "tf32": True},
         ),
         (
-            "cuda",
+            True,
             False,
             (7, 5),
             {"dtype": "float16", "bf16": False, "fp16": True, "tf32": False},
         ),
-        # TPU cores have no float16 path, and bf16 keeps the arithmetic the same
-        # as every run measured so far on the laptop.
         (
-            "xla",
             False,
-            None,
-            {"dtype": "bfloat16", "bf16": True, "fp16": False, "tf32": False},
-        ),
-        (
-            "cpu",
             False,
             None,
             {"dtype": "float32", "bf16": False, "fp16": False, "tf32": False},
@@ -245,33 +236,16 @@ def test_attach_lora_model_uses_the_locked_seq2seq_protocol() -> None:
     ],
 )
 def test_precision_policy_follows_the_runtime_environment(
-    accelerator: str,
+    cuda_available: bool,
     bf16_supported: bool,
     capability: tuple[int, int] | None,
     expected: dict[str, str | bool],
 ) -> None:
     assert _precision_policy(
-        accelerator=accelerator,
+        cuda_available=cuda_available,
         bf16_supported=bf16_supported,
         compute_capability=capability,
     ) == expected
-
-
-@pytest.mark.parametrize(
-    ("accelerator", "expected"),
-    [
-        ("cuda", "adamw_8bit"),
-        # adamw_8bit is the bitsandbytes optimizer and needs CUDA; asking for it
-        # on a TPU fails at the first step.
-        ("xla", "adamw_torch_xla"),
-        ("cpu", "adamw_torch"),
-    ],
-)
-def test_optimizer_matches_what_the_accelerator_can_run(
-    accelerator: str,
-    expected: str,
-) -> None:
-    assert _optimizer_name(accelerator) == expected
 
 
 def test_optimizer_arguments_use_cosine_warmup_without_compile() -> None:
@@ -282,7 +256,7 @@ def test_optimizer_arguments_use_cosine_warmup_without_compile() -> None:
         "tf32": True,
     }
 
-    assert _optimization_arguments(precision, optimizer="adamw_8bit") == {
+    assert _optimization_arguments(precision) == {
         "lr_scheduler_type": "cosine",
         "warmup_steps": 0.1,
         "weight_decay": 0.005,
@@ -292,3 +266,20 @@ def test_optimizer_arguments_use_cosine_warmup_without_compile() -> None:
         "tf32": True,
         "torch_compile": False,
     }
+
+
+def test_smoke_run_covers_its_complete_training_subset() -> None:
+    assert _effective_max_steps(
+        smoke_test=True,
+        requested_steps=-1,
+        train_records=16,
+        batch_size=8,
+        gradient_accumulation=1,
+    ) == 2
+    assert _effective_max_steps(
+        smoke_test=False,
+        requested_steps=-1,
+        train_records=1084,
+        batch_size=8,
+        gradient_accumulation=1,
+    ) == -1
