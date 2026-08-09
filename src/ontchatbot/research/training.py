@@ -256,13 +256,22 @@ def train(args: argparse.Namespace) -> dict:
         train_rows = _smoke_subset(train_rows, 16)
         validation_rows = _smoke_subset(validation_rows, 8)
 
-    cuda_available = torch.cuda.is_available()
+    accelerator = _accelerator_kind(torch)
+    cuda_available = accelerator == "cuda"
     precision = _precision_policy(
-        cuda_available=cuda_available,
+        accelerator=accelerator,
         bf16_supported=torch.cuda.is_bf16_supported() if cuda_available else False,
         compute_capability=(
             torch.cuda.get_device_capability() if cuda_available else None
         ),
+    )
+    optimizer = _optimizer_name(accelerator)
+    #: Checkpointing trades speed for memory, and it is only on because 6 GB of
+    #: VRAM left no choice. On a larger accelerator it is pure overhead, and
+    #: turning it off changes the arithmetic not at all — so runs stay
+    #: comparable with the ones measured on the laptop.
+    gradient_checkpointing = spec.get("gradient_checkpointing", False) and (
+        not args.no_gradient_checkpointing
     )
     model_dtype = getattr(torch, str(precision["dtype"]))
     model = AutoModelForSeq2SeqLM.from_pretrained(
@@ -285,7 +294,7 @@ def train(args: argparse.Namespace) -> dict:
     cache_config = _generation_cache_config(model.config)
     cache_config.use_cache = False
     _configure_greedy_generation(model.generation_config)
-    if spec.get("gradient_checkpointing", False):
+    if gradient_checkpointing:
         model.gradient_checkpointing_enable(
             gradient_checkpointing_kwargs={"use_reentrant": False}
         )
@@ -327,8 +336,8 @@ def train(args: argparse.Namespace) -> dict:
         per_device_eval_batch_size=spec.get("eval_batch_size", 1),
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
-        **_optimization_arguments(precision),
-        gradient_checkpointing=spec.get("gradient_checkpointing", False),
+        **_optimization_arguments(precision, optimizer=optimizer),
+        gradient_checkpointing=gradient_checkpointing,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         eval_strategy="no" if short_run else "steps",
         eval_steps=eval_steps,
@@ -423,7 +432,7 @@ def train(args: argparse.Namespace) -> dict:
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
         "torch_compile": False,
-        "gradient_checkpointing": spec.get("gradient_checkpointing", False),
+        "gradient_checkpointing": gradient_checkpointing,
         "generation_do_sample": False,
         "dropout_policy": "checkpoint_default",
         "fine_tuning_method": "peft_lora",
@@ -436,7 +445,7 @@ def train(args: argparse.Namespace) -> dict:
         "trainable_parameters": trainable_parameter_count,
         "base_parameters": base_parameter_count,
         "merged_artifact": True,
-        "optimizer": "adamw_8bit",
+        "optimizer": optimizer,
         "learning_rate": args.learning_rate,
         "lr_scheduler_type": "cosine",
         "warmup_steps": 0.1,
@@ -451,7 +460,8 @@ def train(args: argparse.Namespace) -> dict:
         "smoke_test": args.smoke_test,
         "torch_version": torch.__version__,
         "transformers_version": transformers.__version__,
-        "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
+        "gpu": torch.cuda.get_device_name() if cuda_available else None,
+        "accelerator": accelerator,
     }
     report["training_log"] = trainer.state.log_history
     metrics_path = output_dir / "metrics.json"
@@ -659,12 +669,35 @@ def _require_training_ready(
     )
 
 
+def _accelerator_kind(torch) -> str:
+    """Return which accelerator this run will train on.
+
+    ``torch_xla`` only installs on TPU runtimes, so being able to import it is
+    a reliable enough signal — and a cheaper one than asking the runtime for a
+    device, which initialises it as a side effect.
+    """
+    if torch.cuda.is_available():
+        return "cuda"
+    try:
+        import torch_xla  # noqa: F401
+    except ImportError:
+        return "cpu"
+    return "xla"
+
+
 def _precision_policy(
     *,
-    cuda_available: bool,
+    accelerator: str,
     bf16_supported: bool,
     compute_capability: tuple[int, int] | None,
 ) -> dict[str, str | bool]:
+    #: TPU cores multiply in bfloat16 in hardware and have no float16 path at
+    #: all, so bf16 is both the fast choice and the only sensible one. It also
+    #: keeps the arithmetic identical to the RTX 4050 runs, which matters more
+    #: than speed here: every number in the handover was measured in bf16.
+    if accelerator == "xla":
+        return {"dtype": "bfloat16", "bf16": True, "fp16": False, "tf32": False}
+    cuda_available = accelerator == "cuda"
     bf16 = cuda_available and bf16_supported
     return {
         "dtype": "bfloat16" if bf16 else "float16" if cuda_available else "float32",
@@ -676,14 +709,28 @@ def _precision_policy(
     }
 
 
+def _optimizer_name(accelerator: str) -> str:
+    """Pick an optimizer the accelerator can actually run.
+
+    ``adamw_8bit`` is an alias for the bitsandbytes optimizer, which needs
+    CUDA. On anything else it fails at the first step, so there is no point
+    keeping it as a default everywhere.
+    """
+    if accelerator == "cuda":
+        return "adamw_8bit"
+    return "adamw_torch_xla" if accelerator == "xla" else "adamw_torch"
+
+
 def _optimization_arguments(
     precision: dict[str, str | bool],
+    *,
+    optimizer: str,
 ) -> dict[str, object]:
     return {
         "lr_scheduler_type": "cosine",
         "warmup_steps": 0.1,
         "weight_decay": 0.005,
-        "optim": "adamw_8bit",
+        "optim": optimizer,
         "bf16": precision["bf16"],
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
@@ -709,6 +756,10 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
+    # Chỉ dùng khi máy tăng tốc có nhiều bộ nhớ hơn RTX 4050 6 GB. Tắt
+    # checkpointing KHÔNG đổi phép tính - cùng batch, cùng gradient - nên lượt
+    # chạy vẫn so thẳng được với các lượt đo trên máy cũ, chỉ nhanh hơn.
+    parser.add_argument("--no-gradient-checkpointing", action="store_true")
     args = parser.parse_args(argv)
     if args.benchmark_after_training and not args.save_model:
         parser.error("--benchmark-after-training requires --save-model")
