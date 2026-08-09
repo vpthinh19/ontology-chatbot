@@ -9,11 +9,11 @@
 
 | Tệp | Vai trò | Trạng thái |
 |---|---|---|
-| `catalogue.jsonl` | 183 họ truy vấn model được phép sinh, trong đó 63 họ primary | hợp lệ |
+| `catalogue.jsonl` | 183 họ truy vấn model được phép sinh, trong đó 61 họ primary | hợp lệ |
 | `catalogue-manual.jsonl` | 29 họ viết tay, được trộn vào khi dựng lại danh mục | hợp lệ |
 | `coverage.json` | yêu cầu độ phủ theo miền, phong cách, ca số và tám nhóm từ chối | hợp lệ |
 | `manifest.json` | cấu trúc, quy tắc chia tập và checksum | dẫn xuất, sinh cùng dataset |
-| `train.jsonl` `val.jsonl` `test.jsonl` | 5.204 / 349 / 349 câu | hợp lệ |
+| `train.jsonl` `val.jsonl` `test.jsonl` | 5.033 / 333 / 333 câu | hợp lệ |
 
 ## Danh mục truy vấn
 
@@ -31,7 +31,7 @@ backend chỉ thực thi truy vấn khớp chính xác một họ đã khai ở 
 | Giới thiệu năng lực | 1 |
 | Từ chối trả lời | 1 |
 
-Mỗi họ mang một tầng: **63 họ primary** bắt buộc có dữ liệu huấn luyện, **120 họ
+Mỗi họ mang một tầng: **61 họ primary** bắt buộc có dữ liệu huấn luyện, **122 họ
 secondary** vẫn truy vấn được ở runtime nhưng không tiêu ngân sách dạy học. Phần
 lớn họ secondary là câu hỏi vòng tròn không ai đặt ("khoản 3 Điều 24 thuộc điều số
 mấy"); số còn lại là những họ **cố ý bị hạ** vì trùng ý với một họ khác — ép model

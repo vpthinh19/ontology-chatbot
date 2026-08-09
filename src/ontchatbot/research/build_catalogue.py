@@ -199,6 +199,30 @@ _QUESTION_DUPLICATES = frozenset(
     }
 )
 
+#: Trả lời được, nhưng gần như không ai hỏi theo lối đó.
+#:
+#: Người dùng quan tâm NỘI DUNG kèm nguồn, không quan tâm định vị theo số hiệu
+#: điều khoản. ``document-official-text`` và ``source-citation`` vẫn giữ nguyên
+#: vì chúng đúng là "nội dung kèm nguồn"; chỉ bỏ cách hỏi theo số.
+#:
+#: Ba họ này còn kéo theo một tác hại đo được: hỏi *"nội dung khoản 5 ra sao"* mà
+#: không nêu Điều nào thì câu hỏi KHÔNG trả lời được, nhưng sự có mặt của một họ
+#: tra khoản khiến model với lấy nó thay vì từ chối.
+#:
+#: Hạ xuống secondary chứ không xoá: đường đi vẫn được phủ, runtime vẫn chạy
+#: được truy vấn ấy, chỉ thôi tiêu tốn ngân sách dạy.
+#:
+#: ``document-heading-text`` KHÔNG nằm ở đây dù cũng thuộc miền tra cứu văn bản.
+#: Nó là họ duy nhất neo vào các node Điều/Chương/Phụ lục, mà chính những neo đó
+#: nuôi nhóm từ chối câu mơ hồ: "Điều 1" có ở ba văn bản với nội dung khác hẳn
+#: nhau. Hạ nó xuống thì mất luôn vật liệu dạy từ chối ấy.
+_LOW_DEMAND_QUESTIONS = frozenset(
+    {
+        "article-with-source",
+        "clause-with-source",
+    }
+)
+
 
 def _tier(anchor_class: str, path: tuple[str, ...], *, opaque: bool) -> str:
     """Họ này có cần dữ liệu huấn luyện không?
@@ -547,9 +571,10 @@ def main() -> None:
     # Họ viết tay và họ từ chối không khai tier; chúng luôn là primary.
     for family in families:
         family.setdefault("tier", "primary")
-    # ... trừ những họ mà CÂU HỎI của chúng trùng với một họ khác.
+    # ... trừ những họ mà CÂU HỎI của chúng trùng với một họ khác, hoặc gần như
+    # không ai hỏi tới.
     for family in families:
-        if family["query_id"] in _QUESTION_DUPLICATES:
+        if family["query_id"] in _QUESTION_DUPLICATES | _LOW_DEMAND_QUESTIONS:
             family["tier"] = "secondary"
 
     Path(args.output).write_text(

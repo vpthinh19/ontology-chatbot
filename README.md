@@ -253,11 +253,11 @@ truy vấn → dataset; inventory, manifest và các file trong `reports/` là a
 |---|---|---|
 | Ontology | [`ontology.ttl`](resources/ontology/ontology.ttl) | Đồ thị RDF chứa dữ liệu học vụ được truy vấn khi chatbot trả lời |
 | Danh mục khả năng trả lời | [`answer_inventory.json`](resources/ontology/answer_inventory.json) | Liệt kê các đường đi từ thực thể tới nhãn hoặc literal có thể trả lời |
-| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 183 họ truy vấn SPARQL mà model được phép sinh; 63 họ primary bắt buộc có dữ liệu huấn luyện |
+| Danh mục truy vấn | [`catalogue.jsonl`](resources/dataset/catalogue.jsonl) | Định nghĩa 183 họ truy vấn SPARQL mà model được phép sinh; 61 họ primary bắt buộc có dữ liệu huấn luyện |
 | Họ truy vấn viết tay | [`catalogue-manual.jsonl`](resources/dataset/catalogue-manual.jsonl) | 29 họ cần so sánh ngưỡng, gom nhiều cột, đi ngược chiều đồ thị hoặc trả kèm nguồn trích dẫn |
-| Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 5.204 câu dùng để cập nhật trọng số model |
-| Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 349 câu dùng để chọn checkpoint |
-| Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 349 câu dùng cho benchmark cuối cùng |
+| Tập huấn luyện | [`train.jsonl`](resources/dataset/train.jsonl) | 5.033 câu dùng để cập nhật trọng số model |
+| Tập validation | [`val.jsonl`](resources/dataset/val.jsonl) | 333 câu dùng để chọn checkpoint |
+| Tập test | [`test.jsonl`](resources/dataset/test.jsonl) | 333 câu dùng cho benchmark cuối cùng |
 | Quy tắc độ phủ | [`coverage.json`](resources/dataset/coverage.json) | Các yêu cầu về miền, phong cách diễn đạt và nhóm từ chối |
 | Manifest dataset | [`manifest.json`](resources/dataset/manifest.json) | Cấu trúc, thống kê và checksum của dữ liệu |
 

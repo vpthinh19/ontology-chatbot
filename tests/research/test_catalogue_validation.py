@@ -314,11 +314,13 @@ def test_a_query_that_answers_with_its_source_is_declared_in_the_catalogue() -> 
     # Chọn ĐỘNG mọi họ trả nguyên văn kèm nguồn thay vì chốt một tên: các họ này
     # đã đổi tên và gộp vào nhau nhiều lần, mà hợp đồng cần giữ là "truy vấn kèm
     # nguồn phải khớp danh mục", không phải "họ tên X còn tồn tại".
+    # Không lọc theo tier: runtime đối chiếu với TOÀN danh mục, nên một họ phụ
+    # vẫn phải khớp. Lọc theo tier sẽ làm phép kiểm vỡ mỗi lần một họ đổi hạng,
+    # trong khi hợp đồng cần giữ thì không đổi.
     with_source = [
         query_id
         for query_id, spec in catalogue.items()
-        if spec.tier == "primary"
-        and {"?nộidung", "?căncứ", "?xemtại"} <= set(spec.target_template.split())
+        if {"?nộidung", "?căncứ", "?xemtại"} <= set(spec.target_template.split())
     ]
     # Ba cấp: hỏi theo TÊN (văn bản, phụ lục, điểm) và hỏi theo SỐ (điều, khoản).
     assert len(with_source) >= 3, f"chỉ còn {len(with_source)} họ trả kèm nguồn"

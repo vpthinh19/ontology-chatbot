@@ -189,7 +189,12 @@ def test_alternative_labels_are_names_not_ways_of_asking(ontology_graph) -> None
     suspicious = sorted(
         f"{local(subject)}: {value}"
         for subject, value in ontology_graph.subject_objects(SKOS.altLabel)
-        if re.search(r"\?|\bem\b|\btôi\b|làm sao|thế nào|ở đâu", str(value), re.IGNORECASE)
+        if re.search(
+            r"\?|\bem\b|\btôi\b|làm sao|thế nào|ở đâu|là gì|cho ai|khi nào|ra sao"
+            r"|bao nhiêu|gồm những gì",
+            str(value),
+            re.IGNORECASE,
+        )
     )
 
     assert suspicious == []

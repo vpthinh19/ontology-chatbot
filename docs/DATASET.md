@@ -3,7 +3,7 @@
 ## Trạng thái hiện tại
 
 > **Dataset đã được sinh lại theo danh mục hiện hành và kiểm toàn chuỗi đạt.**
-> Bộ hiện tại có **5.902 câu** (huấn luyện 5.204 · kiểm định 349 · kiểm tra 349).
+> Bộ hiện tại có **5.699 câu** (huấn luyện 5.033 · kiểm định 333 · kiểm tra 333).
 >
 > Bộ 4.454 câu mô tả ở cuối tài liệu được tạo trước đợt tái cấu trúc mạng lưới
 > kiến thức và **không còn hợp lệ**: các truy vấn đích của nó dùng những quan hệ
@@ -57,8 +57,8 @@ khả năng nào.
 
 ### Hai tầng ưu tiên
 
-Mỗi dạng mang một tầng. **63 dạng primary** là câu hỏi người dùng thật sự đặt,
-nên bắt buộc có dữ liệu huấn luyện. **120 dạng secondary** vẫn truy vấn được ở
+Mỗi dạng mang một tầng. **61 dạng primary** là câu hỏi người dùng thật sự đặt,
+nên bắt buộc có dữ liệu huấn luyện. **122 dạng secondary** vẫn truy vấn được ở
 runtime và vẫn phủ danh mục khả năng trả lời, nhưng không tiêu ngân sách dạy học.
 
 Số dạng primary **giảm dần theo chủ đích**: mỗi khi hai dạng hoá ra trả lời cùng

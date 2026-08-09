@@ -4,68 +4,71 @@
   "instruction_target_count": 44,
   "splits": {
     "train": {
-      "records": 5204,
-      "procedure_records": 920,
-      "no_information_records": 703,
-      "procedure_to_no_information_ratio": 1.308677,
+      "records": 5033,
+      "procedure_records": 919,
+      "no_information_records": 676,
+      "procedure_to_no_information_ratio": 1.359467,
       "procedure_targets": 129,
       "samples_per_target_histogram": {
-        "1": 2,
-        "2": 8,
-        "3": 9,
+        "1": 3,
+        "2": 7,
+        "3": 8,
         "4": 16,
-        "5": 16,
-        "6": 20,
+        "5": 14,
+        "6": 25,
         "7": 15,
-        "8": 19,
-        "9": 7,
-        "10": 10,
+        "8": 15,
+        "9": 10,
+        "10": 8,
         "11": 1,
-        "12": 3,
+        "12": 2,
+        "13": 1,
+        "14": 1,
         "36": 1,
         "47": 1,
-        "61": 1
+        "54": 1
       },
       "registers_per_target_histogram": {
         "1": 5,
-        "2": 17,
-        "3": 55,
-        "4": 52
+        "2": 22,
+        "3": 48,
+        "4": 54
       },
-      "sha256": "a9c27900a916e3a467b8a193974f85d06cf6d1de81d425342b90416d635914c0"
+      "sha256": "e95ea051ed8ac299bf0c9c5e1a73cd27d47cae47888fabe041fd1d60813b12fc"
     },
     "val": {
-      "records": 349,
-      "procedure_records": 67,
-      "no_information_records": 46,
-      "procedure_to_no_information_ratio": 1.456522,
-      "procedure_targets": 60,
+      "records": 333,
+      "procedure_records": 62,
+      "no_information_records": 44,
+      "procedure_to_no_information_ratio": 1.409091,
+      "procedure_targets": 58,
       "samples_per_target_histogram": {
         "1": 54,
-        "2": 5,
+        "2": 4
+      },
+      "registers_per_target_histogram": {
+        "1": 54,
+        "2": 4
+      },
+      "sha256": "e507d99a698d8c5511089748bf7458ec35d4cc3ce0c0f57f9406a85f10ad5d53"
+    },
+    "test": {
+      "records": 333,
+      "procedure_records": 64,
+      "no_information_records": 46,
+      "procedure_to_no_information_ratio": 1.391304,
+      "procedure_targets": 59,
+      "samples_per_target_histogram": {
+        "1": 55,
+        "2": 3,
         "3": 1
       },
       "registers_per_target_histogram": {
         "1": 55,
-        "2": 5
+        "2": 3,
+        "3": 1
       },
-      "sha256": "469a0c0265bc5990e8983c3dd918d81d8f15d9771f593e667fc2cf5781f8dc5a"
-    },
-    "test": {
-      "records": 349,
-      "procedure_records": 63,
-      "no_information_records": 48,
-      "procedure_to_no_information_ratio": 1.3125,
-      "procedure_targets": 59,
-      "samples_per_target_histogram": {
-        "1": 55,
-        "2": 4
-      },
-      "registers_per_target_histogram": {
-        "1": 55,
-        "2": 4
-      },
-      "sha256": "640297d75bcc39624162aeaf0f6cad5b3ed5e0ecefb5a80862cb904d20ce9af4"
+      "sha256": "d69d5f638034b06ca293ffb198bdf6f52837c2210811674de034a15b8605d704"
     }
   },
   "contracts": {
@@ -75,7 +78,7 @@
     "every_procedure_has_a_step_by_step_question": true,
     "every_procedure_also_has_an_overview_question": true,
     "every_instruction_target_has_a_direct_question": true,
-    "course_registration_instruction_samples": 7,
+    "course_registration_instruction_samples": 4,
     "both_question_types_are_evaluated_in_val": true,
     "both_question_types_are_evaluated_in_test": true
   }

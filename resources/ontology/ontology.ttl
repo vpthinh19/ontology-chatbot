@@ -511,9 +511,10 @@
     rdfs:domain :AcademicProgram ;
     rdfs:range :DisciplineGroup .
 
+#: Không khai miền: cả mức học phí lẫn mức học bổng đều dùng thuộc tính này, mà
+#: hai lớp đó không có lớp cha chung.
 :billingUnit a owl:ObjectProperty ;
     rdfs:label "đơn vị tính"@vi ;
-    rdfs:domain :TuitionRate ;
     rdfs:range :BillingUnit .
 
 :supportsPaymentMethod a owl:ObjectProperty ;
@@ -9293,8 +9294,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Tín chỉ"@vi ;
     :definitionText "Tín chỉ là đơn vị tính khối lượng học tập của người học, bao gồm khối lượng kiến thức và kỹ năng mà người học cần tích lũy trong một khoảng thời gian nhất định."@vi ;
     :basedOn :Regulation1052Article05Clause01 ;
-    skos:altLabel "tín chỉ là gì"@vi ,
-        "đơn vị tín chỉ"@vi .
+    skos:altLabel "đơn vị tín chỉ"@vi .
 
 :CreditWorkloadRule a :AcademicRule, owl:NamedIndividual ;
     rdfs:label "Quy đổi giờ học của một tín chỉ"@vi ;
@@ -9595,7 +9595,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Phạm vi và đối tượng áp dụng của quy chế"@vi ;
     :definitionText "Quy chế áp dụng đối với sinh viên học theo hình thức đào tạo chính quy và vừa làm vừa học; sinh viên học cùng lúc hai chương trình; sinh viên liên thông đối với người có văn bằng khác; sinh viên theo chương trình trao đổi và công nhận tín chỉ; các khoa hoặc viện đào tạo, đơn vị quản lý đào tạo, giảng viên và các đơn vị, cá nhân có liên quan."@vi ;
     :basedOn :Regulation1052Article01Clause02 ;
-    skos:altLabel "quy chế áp dụng cho ai"@vi .
+    skos:altLabel "đối tượng áp dụng của quy chế"@vi .
 
 :CreditBasedTrainingConcept a :AcademicConcept, owl:NamedIndividual ;
     rdfs:label "Phương thức tổ chức đào tạo theo tín chỉ"@vi ;
