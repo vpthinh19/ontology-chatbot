@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 from pathlib import Path
 from typing import TypeAlias
 
@@ -114,4 +115,8 @@ def _to_primitive(value: object, column: str) -> Primitive:
     converted = value.toPython()
     if converted is None or isinstance(converted, (str, int, float, bool)):
         return converted
+    # ``xsd:decimal`` thành ``Decimal``, không phải ``float``. Để nguyên thì nó
+    # rơi xuống ``str`` và sĩ số 20 hiện ra thành "20.0".
+    if isinstance(converted, Decimal):
+        return int(converted) if converted == converted.to_integral_value() else float(converted)
     return str(converted)

@@ -30,7 +30,7 @@ def test_moves_a_column_shared_by_every_row_to_the_end() -> None:
         {"bước": "Nộp đơn", "căncứ": "Điều 24"},
     ]
 
-    assert render_rows(rows) == "- Viết đơn\n- Nộp đơn\n\ncăncứ: Điều 24"
+    assert render_rows(rows) == "- Viết đơn\n- Nộp đơn\n\nCăn cứ: Điều 24"
 
 
 def test_collapses_rows_that_are_entirely_identical() -> None:
@@ -40,3 +40,26 @@ def test_collapses_rows_that_are_entirely_identical() -> None:
 def test_rejects_inconsistent_columns() -> None:
     with pytest.raises(ValueError, match="same columns"):
         render_rows([{"answer": "A"}, {"value": "B"}])
+
+
+def test_labels_columns_for_a_reader_not_for_sparql() -> None:
+    """Tên biến SPARQL không chứa được dấu cách, nên in thẳng ra thì người đọc
+    thấy chữ dính liền và tưởng là lỗi."""
+
+    rows = [{"thủtục": "Xin thôi học", "nộidung": "Chấm dứt việc học"}]
+
+    assert render_rows(rows) == "Thủ tục: Xin thôi học\nNội dung: Chấm dứt việc học"
+
+
+def test_keeps_an_unmapped_column_name_as_is() -> None:
+    """Thêm họ truy vấn mới không được làm vỡ phần hiển thị."""
+
+    assert render_rows([{"cộtlạ": "x", "khác": "y"}]) == "cộtlạ: x\nkhác: y"
+
+
+def test_groups_thousands_only_where_it_cannot_corrupt_a_number() -> None:
+    """Tiền cần dấu phân nhóm; năm học và số hiệu điều khoản thì không."""
+
+    assert render_rows([{"sốtiền": 7200000}]) == "7.200.000"
+    assert render_rows([{"nămhọcápdụng": 2025}]) == "2025"
+    assert render_rows([{"tốithiểu": 20.0}]) == "20"
