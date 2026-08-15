@@ -3779,7 +3779,7 @@
 {"id": "question-004443", "query_id": "document-part-facts", "register": "noisy", "input": "cho hoi diem b khoan 2 Dieu 6 Quy che 1052 quy dinh cu the nhung gi?", "target": "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { { :Regulation1052Article06Clause02PointB ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{:Regulation1052Article06Clause02PointB :sourceCitation ?nguon;:sourceLink ?duongdan} } UNION { :Regulation1052Article06Clause02PointB ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{?con :sourceCitation ?nguon;:sourceLink ?duongdan} } FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) }"}
 {"id": "question-004444", "query_id": "no-information", "register": "noisy", "input": "tôi cần hỏi về một thủ tục nhưngchưa rõ tên z?", "target": "không có thông tin"}
 {"id": "question-004445", "query_id": "no-information", "register": "neutral", "input": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không ạ?", "target": "không có thông tin"}
-{"id": "question-004446", "query_id": "no-information", "register": "neutral", "input": "xin nghỉ ốm trong quá trình học năm nay điểm chuẩn bao nhiêu?", "target": "không có thông tin"}
+{"id": "question-004446", "query_id": "no-information", "register": "neutral", "input": "xin nghỉ ốm trong quá trình học năm nay có bao nhiêu hồ sơ bị trả lại?", "target": "không có thông tin"}
 {"id": "question-004447", "query_id": "no-information", "register": "colloquial", "input": "liên thông có khó không đây ta?", "target": "không có thông tin"}
 {"id": "question-004448", "query_id": "no-information", "register": "neutral", "input": "Cho hỏi lệ phí làm chuyển đổi tín chỉ là bao nhiêu?", "target": "không có thông tin"}
 {"id": "question-004449", "query_id": "no-information", "register": "neutral", "input": "Mình muốn hỏi lệ phí làm thủ tục xin hoãn thi là bao nhiêu?", "target": "không có thông tin"}
@@ -3941,7 +3941,7 @@
 {"id": "question-004605", "query_id": "no-information", "register": "colloquial", "input": "cho hỏi có những điều gì cần biết về mục tải Đơn xin chuyển Chương trình đào tạo với ạ?", "target": "không có thông tin"}
 {"id": "question-004606", "query_id": "no-information", "register": "noisy", "input": "hủy học phần đã đăng ký thi vao ngay nao", "target": "không có thông tin"}
 {"id": "question-004607", "query_id": "no-information", "register": "formal", "input": "Hãy tổng hợp tên và đường dẫn của Đơn xin chuyển Chương trình đào tạo?", "target": "không có thông tin"}
-{"id": "question-004608", "query_id": "no-information", "register": "neutral", "input": "Mình muốn hỏi đăng ký đồ án tốt nghiệp năm nay điểm chuẩn bao nhiêu?", "target": "không có thông tin"}
+{"id": "question-004608", "query_id": "no-information", "register": "neutral", "input": "Mình muốn hỏi đăng ký đồ án tốt nghiệp năm nay có bao nhiêu hồ sơ bị trả lại?", "target": "không có thông tin"}
 {"id": "question-004609", "query_id": "no-information", "register": "formal", "input": "Cho tôi hỏi alo có ai không.", "target": "không có thông tin"}
 {"id": "question-004610", "query_id": "no-information", "register": "noisy", "input": "hoc bong cho nguoi lam trao đổi sinh viên la bao nhieu", "target": "không có thông tin"}
 {"id": "question-004611", "query_id": "no-information", "register": "colloquial", "input": "lệ phí làm xin chuyển chương trình đào tạo là bao nhiêu đây ta?", "target": "không có thông tin"}
@@ -4018,7 +4018,7 @@
 {"id": "question-004682", "query_id": "no-information", "register": "colloquial", "input": "xe buyt so 4 chay tuyen nao thế ạ?", "target": "không có thông tin"}
 {"id": "question-004683", "query_id": "no-information", "register": "formal", "input": "Xin cho biết cho biết hồ sơ cần chuẩn bị cho việc này gồm gì.", "target": "không có thông tin"}
 {"id": "question-004684", "query_id": "no-information", "register": "colloquial", "input": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang sao giờ?", "target": "không có thông tin"}
-{"id": "question-004685", "query_id": "no-information", "register": "formal", "input": "Đề nghị hướng dẫn thủ tục nghỉ học tạm thời năm nay điểm chuẩn bao nhiêu.", "target": "không có thông tin"}
+{"id": "question-004685", "query_id": "no-information", "register": "formal", "input": "Đề nghị hướng dẫn thủ tục nghỉ học tạm thời năm nay có bao nhiêu hồ sơ bị trả lại.", "target": "không có thông tin"}
 {"id": "question-004686", "query_id": "no-information", "register": "noisy", "input": "Xin cho biet Truong Dai hoc Nha Trang co chuong trinh lien ket quoc te nao", "target": "không có thông tin"}
 {"id": "question-004687", "query_id": "no-information", "register": "neutral", "input": "Mình muốn hỏi cach lam banh mi ngon?", "target": "không có thông tin"}
 {"id": "question-004688", "query_id": "no-information", "register": "colloquial", "input": "trang danh mục ghi nhận Đơn xin chuyển Chương trình đào tạo như thế nào sao giờ?", "target": "không có thông tin"}
@@ -4028,7 +4028,7 @@
 {"id": "question-004692", "query_id": "no-information", "register": "colloquial", "input": "hello bạn ơi ta?", "target": "không có thông tin"}
 {"id": "question-004693", "query_id": "no-information", "register": "noisy", "input": "cho hoi xin chuyển chương trình đào tạo co kho khong?", "target": "không có thông tin"}
 {"id": "question-004694", "query_id": "no-information", "register": "formal", "input": "Đề nghị hướng dẫn Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên.", "target": "không có thông tin"}
-{"id": "question-004695", "query_id": "no-information", "register": "formal", "input": "Cho tôi hỏi xin thôi học năm nay điểm chuẩn bao nhiêu.", "target": "không có thông tin"}
+{"id": "question-004695", "query_id": "no-information", "register": "formal", "input": "Cho tôi hỏi xin thôi học năm nay có bao nhiêu hồ sơ bị trả lại.", "target": "không có thông tin"}
 {"id": "question-004696", "query_id": "no-information", "register": "neutral", "input": "Cho hỏi tỷ lệ hồ sơ xét tốt nghiệp được chấp nhận là bao nhiêu?", "target": "không có thông tin"}
 {"id": "question-004697", "query_id": "study-duration-rule-facts", "register": "neutral", "input": "có những điều gì cần lưu ý về thời gian tối đa hoàn thành khóa học ạ?", "target": "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { { :MaximumStudyDurationRule ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{:MaximumStudyDurationRule :sourceCitation ?nguon;:sourceLink ?duongdan} } UNION { :MaximumStudyDurationRule ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{?con :sourceCitation ?nguon;:sourceLink ?duongdan} } FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) }"}
 {"id": "question-004698", "query_id": "no-information", "register": "colloquial", "input": "hello bạn ơi sao giờ?", "target": "không có thông tin"}
@@ -4093,7 +4093,7 @@
 {"id": "question-004757", "query_id": "no-information", "register": "neutral", "input": "Mình muốn hỏi tải phim về máy thế nào?", "target": "không có thông tin"}
 {"id": "question-004758", "query_id": "no-information", "register": "colloquial", "input": "ai biết may bay di ha noi gia bao nhieu không?", "target": "không có thông tin"}
 {"id": "question-004759", "query_id": "no-information", "register": "colloquial", "input": "tui muốn biết hom nay co su kien gi o thanh pho á?", "target": "không có thông tin"}
-{"id": "question-004760", "query_id": "no-information", "register": "colloquial", "input": "xin chuyển chương trình đào tạo năm nay điểm chuẩn bao nhiêu nhỉ?", "target": "không có thông tin"}
+{"id": "question-004760", "query_id": "no-information", "register": "colloquial", "input": "xin chuyển chương trình đào tạo năm nay có bao nhiêu hồ sơ bị trả lại nhỉ?", "target": "không có thông tin"}
 {"id": "question-004761", "query_id": "no-information", "register": "noisy", "input": "truong khac lam tốt nghiệp sớm co giong khong?", "target": "không có thông tin"}
 {"id": "question-004762", "query_id": "no-information", "register": "colloquial", "input": "tôi phải nộp giấy tờ ở đâu cho việc này zậy?", "target": "không có thông tin"}
 {"id": "question-004763", "query_id": "no-information", "register": "colloquial", "input": "tải phim về máy thế nào thế ạ?", "target": "không có thông tin"}
@@ -4137,7 +4137,7 @@
 {"id": "question-004801", "query_id": "no-information", "register": "noisy", "input": "gia thue tro ganbien bao nhieu z?", "target": "không có thông tin"}
 {"id": "question-004802", "query_id": "no-information", "register": "noisy", "input": "dieu kien de xu ly truong hop nay gom nhung gi", "target": "không có thông tin"}
 {"id": "question-004803", "query_id": "no-information", "register": "colloquial", "input": "tui muốn biết may bay di ha noi gia bao nhieu á?", "target": "không có thông tin"}
-{"id": "question-004804", "query_id": "no-information", "register": "noisy", "input": "cho hoi lùi lịch thi nam nay diem chuan bao nhieu?", "target": "không có thông tin"}
+{"id": "question-004804", "query_id": "no-information", "register": "noisy", "input": "cho hoi lùi lịch thi nam nay co bao nhieu ho so bi tra lai?", "target": "không có thông tin"}
 {"id": "question-004805", "query_id": "no-information", "register": "noisy", "input": "đu Đà Lạt mấy tiếng", "target": "không có thông tin"}
 {"id": "question-004806", "query_id": "no-information", "register": "neutral", "input": "quy định áp dụng cho trường hợp tôi đang gặp là gì?", "target": "không có thông tin"}
 {"id": "question-004807", "query_id": "no-information", "register": "neutral", "input": "có những điều gì cần biết về mục tải Đơn xin chuyển Chương trình đào tạo ạ?", "target": "không có thông tin"}
@@ -4251,7 +4251,7 @@
 {"id": "question-004915", "query_id": "no-information", "register": "noisy", "input": "mỗi năm có bao nhiêu sinh vuên làm xin chuyển chương trình đào tạo z?", "target": "không có thông tin"}
 {"id": "question-004916", "query_id": "language-course-facts", "register": "noisy", "input": "cho hoi hay tong hop thoi gian va quy dinh cua ngoai ngu b1.2?", "target": "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { { :LanguageCourseB12 ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{:LanguageCourseB12 :sourceCitation ?nguon;:sourceLink ?duongdan} } UNION { :LanguageCourseB12 ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh OPTIONAL{?con :sourceCitation ?nguon;:sourceLink ?duongdan} } FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) }"}
 {"id": "question-004917", "query_id": "no-information", "register": "colloquial", "input": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên thế ạ?", "target": "không có thông tin"}
-{"id": "question-004918", "query_id": "no-information", "register": "formal", "input": "Đề nghị hướng dẫn đóng tiền học năm nay điểm chuẩn bao nhiêu.", "target": "không có thông tin"}
+{"id": "question-004918", "query_id": "no-information", "register": "formal", "input": "Đề nghị hướng dẫn đóng tiền học năm nay có bao nhiêu hồ sơ bị trả lại.", "target": "không có thông tin"}
 {"id": "question-004919", "query_id": "no-information", "register": "colloquial", "input": "tốt nghiệp sớm tốn bao nhiêu tiền đây ta?", "target": "không có thông tin"}
 {"id": "question-004920", "query_id": "no-information", "register": "formal", "input": "Xin cho biết quán ăn ngon gần trường ở đâu.", "target": "không có thông tin"}
 {"id": "question-004921", "query_id": "no-information", "register": "noisy", "input": "cho hoi le phi lam học cải thiện điểm la bao nhieu?", "target": "không có thông tin"}

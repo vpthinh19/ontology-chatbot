@@ -767,7 +767,7 @@
   "question-004446": {
     "anchor": "SickLeaveProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004447": {
     "anchor": "ArticulationStudyProcedure",
@@ -1482,7 +1482,7 @@
   "question-004608": {
     "anchor": "GraduationProjectRegistrationProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004609": {
     "anchor": "",
@@ -1837,7 +1837,7 @@
   "question-004685": {
     "anchor": "TemporaryAcademicLeaveProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004686": {
     "anchor": "",
@@ -1882,7 +1882,7 @@
   "question-004695": {
     "anchor": "StudyWithdrawalProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004696": {
     "anchor": "GraduationReviewProcedure",
@@ -2152,7 +2152,7 @@
   "question-004760": {
     "anchor": "DismissalTransferRequestProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004761": {
     "anchor": "EarlyGraduationReviewProcedure",
@@ -2352,7 +2352,7 @@
   "question-004804": {
     "anchor": "ExamPostponementProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004805": {
     "anchor": "",
@@ -2842,7 +2842,7 @@
   "question-004918": {
     "anchor": "TuitionPaymentProcedure",
     "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "template": "{anchor} năm nay có bao nhiêu hồ sơ bị trả lại"
   },
   "question-004919": {
     "anchor": "EarlyGraduationReviewProcedure",
