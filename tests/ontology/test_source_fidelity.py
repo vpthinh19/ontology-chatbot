@@ -15,7 +15,7 @@ import re
 import unicodedata
 
 import pytest
-from rdflib import RDF, OWL, URIRef
+from rdflib import RDF, OWL, Literal, URIRef
 
 from ontchatbot.settings import ONTOLOGY_NS, PROJECT_ROOT
 
@@ -63,6 +63,17 @@ TEXT_SOURCED_DOCUMENTS = (
 #: Cả 14 bảng được trả nguyên khối cho LLM. Dòng đầu xác định bảng trực tiếp,
 #: tránh phải dựng lại bảng từ node con hoặc dựa vào heading có thể lặp.
 VERBATIM_TABLE_SOURCES = {
+    # Hai bảng mức học bổng nạp 15/8/2026. Trước đó sáu mức học bổng dẫn nguồn về
+    # câu dẫn "... cụ thể như sau:" của Điều 1/Điều 2 - một câu KHÔNG chứa số tiền
+    # nào. Khai ở đây để phép kiểm đối chiếu từng ký tự với ``references/Qd317.md``.
+    "Decision317Article01Table01": (
+        "Qd317.md",
+        "| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |",
+    ),
+    "Decision317Article02Table01": (
+        "Qd317.md",
+        "| STT | Xếp loại học bổng | Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ) |",
+    ),
     "Regulation1052Article18Clause02Table01": (
         "Qd1052.md",
         "| **Điểm trung bình chung** | **Mức xếp loại** |",
@@ -317,3 +328,63 @@ def test_every_document_part_can_be_traced_to_its_source(ontology_graph) -> None
             missing.append(str(node).rsplit("#", 1)[-1])
 
     assert sorted(missing) == []
+
+
+def test_every_number_appears_in_the_passage_it_cites(ontology_graph) -> None:
+    """Node khẳng định một CON SỐ thì nguồn nó dẫn phải chứa đúng con số đó.
+
+    Đây là phép kiểm sinh ra từ một lỗi thật, tìm ra ngày 15/8/2026: sáu mức học
+    bổng khẳng định 5.000.000 đến 8.640.000 đồng nhưng dẫn nguồn về Điều 1 và
+    Điều 2 QĐ317 - hai câu dẫn kết thúc bằng "cụ thể như sau:" và KHÔNG chứa số
+    nào, vì cái bảng đứng sau chúng chưa bao giờ được nạp. Cả 321 phép kiểm lúc
+    đó đều xanh: trích dẫn có mặt, có ngày, có đường dẫn, chỉ là trỏ nhầm chỗ.
+
+    Vì sao canh riêng CON SỐ chứ không canh cả câu chữ: so bằng tỉ lệ từ trùng
+    nhau là cái bẫy dự án đã vấp ba lần - nó chấm ``currencyCode "VND"`` là sai
+    vì công văn viết "đồng", chấm ``performedBy Sinh viên`` là sai vì công văn
+    viết "SV". Con số thì chuẩn hoá được không mơ hồ: bỏ hết dấu chấm, dấu phẩy
+    và khoảng trắng rồi so chuỗi chữ số.
+
+    Bỏ qua số dưới hai chữ số vì chúng trùng ngẫu nhiên với mọi thứ, và chấp
+    nhận cả ``downloadUrl`` làm nguồn vì tên tệp biểu mẫu mang số hiệu của nó.
+    """
+
+    digits = re.compile(r"[^0-9]")
+    numeric = re.compile(r"^\d+([.,]\d+)?$")
+    based_on = URIRef(ONTOLOGY_NS + "basedOn")
+    text_predicates = (
+        URIRef(ONTOLOGY_NS + "officialText"),
+        URIRef(ONTOLOGY_NS + "verbatimTableText"),
+    )
+    download_url = URIRef(ONTOLOGY_NS + "downloadUrl")
+
+    unsourced = []
+    for node in sorted(set(ontology_graph.subjects(based_on, None)), key=str):
+        passage = "".join(
+            str(value)
+            for source in ontology_graph.objects(node, based_on)
+            for predicate in text_predicates
+            for value in ontology_graph.objects(source, predicate)
+        )
+        links = "".join(
+            str(value) for value in ontology_graph.objects(node, download_url)
+        )
+        haystack = digits.sub("", passage) + " " + digits.sub("", links)
+        for predicate, value in ontology_graph.predicate_objects(node):
+            if not isinstance(value, Literal):
+                continue
+            raw = str(value).strip()
+            if not numeric.match(raw):
+                continue
+            needle = digits.sub("", raw)
+            if len(needle) < 2 or needle in haystack:
+                continue
+            unsourced.append(
+                (
+                    str(node).rsplit("#", 1)[-1],
+                    str(predicate).rsplit("#", 1)[-1],
+                    raw,
+                )
+            )
+
+    assert sorted(unsourced) == []

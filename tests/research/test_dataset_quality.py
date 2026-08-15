@@ -46,6 +46,8 @@ STATIC_SHORT_FAMILIES = {
     "language-course-assessment-table",
     "language-course-classification-table",
     "payment-fee-by-method",
+    "scholarship-rate-table-special-program",
+    "scholarship-rate-table-standard-program",
     "study-year-classification-table",
 }
 

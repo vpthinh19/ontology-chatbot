@@ -4991,7 +4991,33 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision317 ;
     :articleNumber "1"^^xsd:integer ;
-    :officialText "Mức học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy có kết quả học tập và rèn luyện đạt từ mức khá trở, cụ thể như sau:"@vi .
+    :officialText """Mức học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy có kết quả học tập và rèn luyện đạt từ mức khá trở, cụ thể như sau:
+STT — Xếp loại học bổng — Học bổng 05 tháng / học kỳ (VNĐ)
+1 — Xuất sắc — 7.200.000
+2 — Giỏi — 6.000.000
+3 — Khá — 5.000.000"""@vi .
+
+# Điều 1 và Điều 2 kết thúc bằng "cụ thể như sau:" - con số nằm trong BẢNG đứng
+# sau câu đó. Trước 15/8/2026 hai bảng này không được nạp, nên sáu mức học bổng
+# dẫn nguồn về chính câu dẫn: công cụ trả ra "7.200.000 đồng" kèm một trích dẫn
+# không hề chứa con số ấy. Nạp bảng theo khuôn đã chốt 11/8 (mỗi bảng là MỘT
+# node, tra cả bảng) rồi trỏ các mức về bảng.
+:Decision317Article01Table01 a :DocumentTable, owl:NamedIndividual ;
+    rdfs:label "bảng mức học bổng Điều 1 Quyết định 317/QĐ-ĐHNT"@vi ;
+    :citationLabel "bảng mức học bổng tại Điều 1 Quyết định 317/QĐ-ĐHNT ngày 07/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
+    :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
+    :inDocument :Decision317 ;
+    :partOf :Decision317Article01 ;
+    :articleNumber "1"^^xsd:integer ;
+    :verbatimTableText """| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |
+| :---: | :--- | :---: |
+| 1 | Xuất sắc | 7.200.000 |
+| 2 | Giỏi | 6.000.000 |
+| 3 | Khá | 5.000.000 |"""@vi ;
+    :officialText """STT — Xếp loại học bổng — Học bổng 05 tháng / học kỳ (VNĐ)
+1 — Xuất sắc — 7.200.000
+2 — Giỏi — 6.000.000
+3 — Khá — 5.000.000"""@vi .
 
 :Decision317Article02 a :Article, owl:NamedIndividual ;
     rdfs:label "Điều 2 Quyết định 317/QĐ-ĐHNT"@vi ;
@@ -4999,7 +5025,28 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision317 ;
     :articleNumber "2"^^xsd:integer ;
-    :officialText "Mức học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy - chương trình đào tạo đặc biệt có kết quả học tập và rèn luyện đạt từ mức khá, cụ thể như sau:"@vi .
+    :officialText """Mức học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy - chương trình đào tạo đặc biệt có kết quả học tập và rèn luyện đạt từ mức khá, cụ thể như sau:
+STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ)
+1 — Xuất sắc — 8.640.000
+2 — Giỏi — 7.200.000
+3 — Khá — 6.000.000"""@vi .
+
+:Decision317Article02Table01 a :DocumentTable, owl:NamedIndividual ;
+    rdfs:label "bảng mức học bổng chương trình đặc biệt Điều 2 Quyết định 317/QĐ-ĐHNT"@vi ;
+    :citationLabel "bảng mức học bổng tại Điều 2 Quyết định 317/QĐ-ĐHNT ngày 07/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
+    :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
+    :inDocument :Decision317 ;
+    :partOf :Decision317Article02 ;
+    :articleNumber "2"^^xsd:integer ;
+    :verbatimTableText """| STT | Xếp loại học bổng | Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ) |
+| :---: | :--- | :---: |
+| 1 | Xuất sắc | 8.640.000 |
+| 2 | Giỏi | 7.200.000 |
+| 3 | Khá | 6.000.000 |"""@vi ;
+    :officialText """STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ)
+1 — Xuất sắc — 8.640.000
+2 — Giỏi — 7.200.000
+3 — Khá — 6.000.000"""@vi .
 
 :Decision317Article03 a :Article, owl:NamedIndividual ;
     rdfs:label "Điều 3 Quyết định 317/QĐ-ĐHNT"@vi ;
@@ -5010,13 +5057,13 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :officialText "Trưởng phòng Công tác Chính trị và Sinh viên, Trưởng phòng Kế hoạch Tài chính, các trưởng đơn vị liên quan chịu trách nhiệm thi hành Quyết định này./."@vi .
 
 :PerSemester a :BillingUnit, owl:NamedIndividual ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :Decision317Article01Table01 ;
     rdfs:label "đồng trên học kỳ"@vi .
 
 :ExcellentStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "7200000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :Decision317Article01Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5025,7 +5072,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 :GoodStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "6000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :Decision317Article01Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5034,7 +5081,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 :FairStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "5000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :Decision317Article01Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5043,7 +5090,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 :ExcellentSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "8640000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02 ;
+    :basedOn :Decision317Article02Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5052,7 +5099,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 :GoodSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "7200000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02 ;
+    :basedOn :Decision317Article02Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5061,7 +5108,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 :FairSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "6000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02 ;
+    :basedOn :Decision317Article02Table01 ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5354,7 +5401,9 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     :inDocument :ScholarshipAnnouncementGuidance .
 
 :ScholarshipReviewProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :Regulation1052Article18Clause03,
+        :Regulation1052Article19Clause03,
+        :ScholarshipCriteriaGeneralSection ;
     :hasDeadline :ScholarshipFeedbackDeadline ;
     :hasOutcome :ScholarshipReviewOutcome ;
     :hasRequirement :ScholarshipRequirement01,
@@ -5380,7 +5429,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     rdfs:label "Điều kiện học bổng - còn trong thời gian đào tạo"@vi .
 
 :ScholarshipRequirement02 a :Requirement, owl:NamedIndividual ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :ScholarshipCriteriaGeneralSection ;
     :requirementOrder "2"^^xsd:integer ;
     :requirementText "Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên, và không bị kỷ luật từ mức khiển trách trở lên."@vi ;
     rdfs:label "Điều kiện học bổng - học tập và rèn luyện từ khá trở lên"@vi .
@@ -5404,7 +5453,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     rdfs:label "Điều kiện học bổng - không hoãn thi, không phải kỳ đầu sau chuyển ngành"@vi .
 
 :ScholarshipStep01 a :ProcedureStep, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article19Clause03 ;
+    :basedOn :Regulation1052Article18Clause03,
+        :Regulation1052Article19Clause03 ;
     :performedBy :StudentAffairsOffice ;
     :stepOrder "1"^^xsd:integer ;
     :stepText "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè. Sinh viên không phải nộp đơn."@vi ;
@@ -5430,7 +5480,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     rdfs:label "Thời hạn phản hồi danh sách dự kiến học bổng"@vi .
 
 :ScholarshipReviewOutcome a :Outcome, owl:NamedIndividual ;
-    :basedOn :Decision317Article01 ;
+    :basedOn :ScholarshipCriteriaGeneralSection ;
     :outcomeText "Sinh viên đủ điều kiện được cấp học bổng khuyến khích học tập của học kỳ, mức tiền theo xếp loại và theo chương trình chuẩn hay chương trình đào tạo đặc biệt."@vi ;
     rdfs:label "Kết quả xét học bổng khuyến khích học tập"@vi .
 
@@ -5692,11 +5742,12 @@ Phiếu điều chỉnh điểm
     rdfs:label "Kế toán"@vi .
 
 :Agribank a :Bank, owl:NamedIndividual ;
-    :basedOn :TuitionPaymentGuidanceIntro ;
+    :basedOn :TuitionPaymentGuidanceSection02,
+        :TuitionPaymentGuidanceSection03 ;
     rdfs:label "Ngân hàng Agribank"@vi .
 
 :AptisGeneralCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :Regulation1052Appendix2Table01 ;
     rdfs:label "Aptis (General)"@vi ;
     skos:altLabel "Aptis General"@vi .
 
@@ -5783,7 +5834,7 @@ Phiếu điều chỉnh điểm
 
 
 :CambridgeEnglishScaleCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :Regulation1052Appendix2Table01 ;
     rdfs:label "Cambridge English Scale"@vi .
 
 :CashAtBankCounterPayment a :PaymentMethod, owl:NamedIndividual ;
@@ -5825,7 +5876,8 @@ Phiếu điều chỉnh điểm
         "đơn xin phép nghỉ buổi học"@vi .
 
 :ClassAbsenceRequirement01 a :Requirement, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article17Clause01PointA ;
+    :basedOn :Regulation1052Article17Clause01PointA,
+        :Regulation1052Article17Clause01PointB ;
     :requirementOrder "1"^^<http://www.w3.org/2001/XMLSchema#integer> ;
     :requirementText "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học; với học phần thực hành, thí nghiệm, thực tập ngoài trường phải tham dự 100% số giờ học."@vi ;
     rdfs:label "Điều kiện dự thi về số giờ tham dự"@vi .
@@ -5871,12 +5923,12 @@ Phiếu điều chỉnh điểm
 
 
 :CourseExemptionAndBonusProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article21Clause05 ;
+    :basedOn :Regulation1052Article21Clause05,
+        :Regulation1052Article21Clause06 ;
     :hasRequirement :CourseExemptionRequirement01 ;
     :hasStep :CourseExemptionStep01,
         :CourseExemptionStep02 ;
     :requiresForm :Form07ExemptionAndBonus ;
-    :reviewedBy :ProfessionalCouncil ;
     :submittedTo :AcademicManagementUnit ;
     :summaryText "Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện."@vi ;
     rdfs:label "Thủ tục xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
@@ -5960,7 +6012,6 @@ Phiếu điều chỉnh điểm
     :performedBy :Student ;
     :stepOrder "3"^^<http://www.w3.org/2001/XMLSchema#integer> ;
     :stepText "Xin ý kiến tư vấn của Cố vấn học tập trước khi đăng ký các lớp học phần."@vi ;
-    :submittedTo :FacultyOrInstitute ;
     rdfs:label "Đăng ký học phần - bước 3"@vi .
 
 :CourseRegistrationStep04 a :ProcedureStep, owl:NamedIndividual ;
@@ -6190,7 +6241,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Điều kiện xét tốt nghiệp sớm"@vi .
 
 :EarlyGraduationReviewProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article22Clause02 ;
+    :basedOn :Regulation1052Article22Clause02,
+        :Regulation1052Article22Clause03 ;
     :hasRequirement :EarlyGraduationRequirement01 ;
     :hasStep :EarlyGraduationStep01,
         :EarlyGraduationStep02 ;
@@ -6293,7 +6345,8 @@ Phiếu điều chỉnh điểm
 
 
 :ExtraClassOpeningRequestProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article10Clause02 ;
+    :basedOn :Regulation1052Article08Clause02PointC,
+        :Regulation1052Article10Clause02 ;
     :decidedBy :UniversityPresident ;
     :hasRequirement :ExtraClassRequirement01 ;
     :hasStep :ExtraClassStep01,
@@ -6315,7 +6368,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Điều kiện mở thêm lớp học phần"@vi .
 
 :ExtraClassStep01 a :ProcedureStep, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article10Clause02 ;
+    :basedOn :Regulation1052Article08Clause02PointC ;
     :performedBy :Student ;
     :stepOrder "1"^^<http://www.w3.org/2001/XMLSchema#integer> ;
     :stepText "Làm đơn xin mở lớp học phần theo Mẫu số 01 và gửi Phòng Đào tạo Đại học trong thời gian đăng ký học phần."@vi ;
@@ -6371,7 +6424,7 @@ Phiếu điều chỉnh điểm
 
 
 :Form01ExtraClassOpening a :FormDocument, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article10Clause02 ;
+    :basedOn :Regulation1052Article08Clause02PointC ;
     :formNumber "01" ;
     rdfs:label "Mẫu số 01 - Đơn xin mở lớp học phần"@vi .
 
@@ -6492,7 +6545,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: Mẫu số 5 - Đơn xin chuyển Chương trình đào tạo"@vi .
 
 :FormCatalogueEntry007 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article21Clause06 ;
     :catalogueEntryForForm :Form07ExemptionAndBonus ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx" ;
     :listedFormNumber "6" ;
@@ -6507,7 +6561,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: Đơn xin xét tốt nghiệp"@vi .
 
 :FormCatalogueEntry009 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article24Clause03 ;
     :catalogueEntryForForm :Form09TemporaryLeave ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
     :listedFormNumber "8A" ;
@@ -6515,7 +6570,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: Đơn xin nghỉ học tạm thời"@vi .
 
 :FormCatalogueEntry010 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article24Clause03 ;
     :catalogueEntryForForm :Form11Resumption ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
     :listedFormNumber "9" ;
@@ -6523,7 +6579,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: Đơn xin học trở lại"@vi .
 
 :FormCatalogueEntry011 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article25Clause02 ;
     :catalogueEntryForForm :Form12MajorChange ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx" ;
     :listedFormNumber "10" ;
@@ -6538,7 +6595,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: - Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi .
 
 :FormCatalogueEntry013 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article26Clause02 ;
     :catalogueEntryForForm :Form13UniversityTransfer ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
     :listedFormNumber "11" ;
@@ -6546,7 +6604,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Mục tải: Đơn xin chuyển trường"@vi .
 
 :FormCatalogueEntry014 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
+    :basedOn :UndergraduateFormCatalogueListing,
+        :Regulation1052Article28Clause03 ;
     :catalogueEntryForForm :Form15SecondProgram ;
     :downloadUrl "https://pdtdaihoc.ntu.edu.vn/Uploads/38/Mẫu%20số%2013%20-Đơn%20đăng%20ký%20học%20cùng%20lúc%20hai%20chương%20trình%20đào%20tạo%20(mẫu%202).docx" ;
     :listedFormNumber "13" ;
@@ -6599,7 +6658,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Kết quả học cải thiện"@vi .
 
 :GradeImprovementProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article11Clause03 ;
+    :basedOn :Regulation1052Article11Clause03,
+        :Regulation1052Article11Clause04 ;
     :hasOutcome :GradeImprovementOutcome ;
     :hasStep :GradeImprovementStep01 ;
     :summaryText "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi ;
@@ -6757,7 +6817,9 @@ Phiếu điều chỉnh điểm
     rdfs:label "IELTS"@vi .
 
 :IllnessCase a :AcademicCase, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article24Clause01PointC ;
+    :basedOn :Regulation1052Article24Clause01PointC,
+        :Regulation1052Article30Clause01,
+        :Regulation1052Article30Clause02 ;
     :caseText "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi ;
     :hasResolution :IllnessDuringExamResolution,
         :IllnessLongTermResolution,
@@ -6828,11 +6890,12 @@ Phiếu điều chỉnh điểm
     rdfs:label "Luật"@vi .
 
 :LienVietPostBank a :Bank, owl:NamedIndividual ;
-    :basedOn :TuitionPaymentGuidanceIntro ;
+    :basedOn :TuitionPaymentGuidanceSection02,
+        :TuitionPaymentGuidanceSection03 ;
     rdfs:label "Ngân hàng Liên Việt PostBank"@vi .
 
 :LinguaskillCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :Regulation1052Appendix2Table01 ;
     rdfs:label "Linguaskill"@vi .
 
 :MOSCertificate a :Certificate, :ComputerCertificate, owl:NamedIndividual ;
@@ -7054,7 +7117,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Kết quả đăng ký chương trình thứ hai"@vi .
 
 :SecondProgramRegistrationProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :Regulation1052Article28 ;
+    :basedOn :Regulation1052Article28Clause03 ;
     :hasConsequence :SecondProgramSuspensionConsequence ;
     :hasOutcome :SecondProgramOutcome ;
     :hasRequirement :SecondProgramRequirement01,
@@ -7063,7 +7126,6 @@ Phiếu điều chỉnh điểm
     :hasStep :SecondProgramStep01,
         :SecondProgramStep02 ;
     :requiresForm :Form15SecondProgram ;
-    :submittedTo :AcademicManagementUnit ;
     :summaryText "Thủ tục đăng ký học thêm một chương trình đào tạo thứ hai để lấy văn bằng thứ hai."@vi ;
     rdfs:label "Thủ tục đăng ký học cùng lúc hai chương trình"@vi ;
     skos:altLabel "học cùng lúc hai chương trình"@vi,
@@ -7330,7 +7392,10 @@ Phiếu điều chỉnh điểm
     rdfs:label "Kỹ thuật xây dựng công trình giao thông"@vi .
 
 :TuitionPaymentProcedure a :AcademicProcedure, owl:NamedIndividual ;
-    :basedOn :TuitionPaymentGuidanceIntro ;
+    :basedOn :TuitionPaymentGuidanceIntro,
+        :TuitionPaymentGuidanceSection01,
+        :TuitionPaymentGuidanceSection02,
+        :TuitionPaymentGuidanceSection03 ;
     :hasStep :TuitionPaymentStep01,
         :TuitionPaymentStep02,
         :TuitionPaymentStep03 ;
@@ -7470,7 +7535,8 @@ Phiếu điều chỉnh điểm
     rdfs:label "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi .
 
 :VietinBank a :Bank, owl:NamedIndividual ;
-    :basedOn :TuitionPaymentGuidanceIntro ;
+    :basedOn :TuitionPaymentGuidanceSection02,
+        :TuitionPaymentGuidanceSection03 ;
     rdfs:label "Ngân hàng VietinBank"@vi .
 
 

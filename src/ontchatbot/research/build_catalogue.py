@@ -120,6 +120,11 @@ SOURCE_TABLE_FAMILIES: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("language-course-assessment-table", "academic-rule", ("Decision1965Article01Table02",)),
     ("certificate-catalogue-table", "certificate", ("Regulation1052Appendix2Table06",)),
     ("academic-program-catalogue-table", "academic-rule", ("Decision729AppendixIITable01",)),
+    # Hai bảng mức học bổng, nạp 15/8/2026. Tách làm hai họ chứ không gộp một, vì
+    # cùng một xếp loại cho ra hai số tiền khác nhau tuỳ chương trình chuẩn hay
+    # đặc biệt - gộp lại thì câu trả lời mơ hồ đúng ở chỗ người hỏi cần rõ nhất.
+    ("scholarship-rate-table-standard-program", "tuition", ("Decision317Article01Table01",)),
+    ("scholarship-rate-table-special-program", "tuition", ("Decision317Article02Table01",)),
 )
 
 #: Bốn ý định người dùng, sáu bảng nguồn. Không còn slot chứng chỉ hay điều kiện

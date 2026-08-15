@@ -4,10 +4,10 @@
 
 | Tệp | Vai trò | Số dòng |
 |---|---|---:|
-| `train.jsonl` | ví dụ huấn luyện | 3.767 |
-| `val.jsonl` | kiểm định | 398 |
-| `test.jsonl` | kiểm tra cuối | 380 |
-| **Tổng** |  | **4.545** |
+| `train.jsonl` | ví dụ huấn luyện | 3.799 |
+| `val.jsonl` | kiểm định | 402 |
+| `test.jsonl` | kiểm tra cuối | 383 |
+| **Tổng** |  | **4.584** |
 
 Số dòng được đếm trực tiếp từ ba JSONL và khớp với `reports/dataset.json`.
 
@@ -24,7 +24,7 @@ Các tệp hỗ trợ:
 
 ## Catalogue v3
 
-Catalogue hiện có **48 họ**. Hình dạng chính là các họ `*-facts`: neo một node,
+Catalogue hiện có **50 họ**. Hình dạng chính là các họ `*-facts`: neo một node,
 lấy literal trên node và node con trực tiếp, rồi trả
 `?thuoctinh ?giatri ?nguon ?duongdan`. Bảng có họ riêng trả toàn
 `verbatimTableText` của node bảng.
@@ -34,7 +34,7 @@ truy xuất độc lập. Mỗi bảng là một node nguyên văn.
 
 ## Trạng thái
 
-Ba split, frame và catalogue đã đồng bộ. Release phủ đủ 48 họ, 781/781 tên gọi
+Ba split, frame và catalogue đã đồng bộ. Release phủ đủ 50 họ, 781/781 tên gọi
 và tám lớp câu từ chối; val/test không rò câu đã chuẩn hoá từ train. Manifest và
 report được sinh cùng chuỗi với các JSONL, rồi được kiểm checksum read-only.
 

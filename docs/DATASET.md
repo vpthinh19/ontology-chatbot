@@ -2,17 +2,17 @@
 
 ## Quy mô artifact hiện có
 
-Ba tệp JSONL chứa **4.545 câu**:
+Ba tệp JSONL chứa **4.584 câu**:
 
 | Tệp | Số dòng dữ liệu |
 |---|---:|
-| `resources/dataset/train.jsonl` | 3.767 |
-| `resources/dataset/val.jsonl` | 398 |
-| `resources/dataset/test.jsonl` | 380 |
-| **Tổng** | **4.545** |
+| `resources/dataset/train.jsonl` | 3.799 |
+| `resources/dataset/val.jsonl` | 402 |
+| `resources/dataset/test.jsonl` | 383 |
+| **Tổng** | **4.584** |
 
 Các số trên được đếm trực tiếp từ ba tệp. `reports/dataset.json` xác nhận cùng
-tổng `dataset.records = 4545` và cùng số bản ghi theo split. Đây là thống kê
+tổng `dataset.records = 4584` và cùng số bản ghi theo split. Đây là thống kê
 artifact, không phải kết quả model.
 
 ## Trạng thái tương thích
@@ -50,16 +50,16 @@ hàng–cột.
 
 ## Danh mục truy vấn hiện hành
 
-`resources/dataset/catalogue.jsonl` hiện có **48 họ**: các họ bảng, các họ
+`resources/dataset/catalogue.jsonl` hiện có **50 họ**: các họ bảng, các họ
 `*-facts` lấy trọn node, một shape phí theo phương thức và một họ từ chối. Toàn
-bộ **47 họ** ngoài họ từ chối đều được sinh tự động - không còn họ nào viết tay,
+bộ **49 họ** ngoài họ từ chối đều được sinh tự động - không còn họ nào viết tay,
 và `catalogue-manual.jsonl` đã bị xoá cùng họ "liệt kê năng lực" ngày 2026-08-14.
 
-Ba split đều dùng đủ 48 họ hiện hành; họ có mặt ở held-out luôn có mặt ở train.
+Ba split đều dùng đủ 50 họ hiện hành; họ có mặt ở held-out luôn có mặt ở train.
 
 ## Phân bố trong report
 
-`reports/dataset.json` ghi phân bố của 4.545 dòng hiện có:
+`reports/dataset.json` ghi phân bố của 4.584 dòng hiện có:
 
 | Miền | Số câu |
 |---|---:|

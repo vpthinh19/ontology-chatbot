@@ -437,7 +437,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -450,7 +451,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -463,7 +465,8 @@
         "officialText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -475,7 +478,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -488,7 +492,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -501,7 +505,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -514,7 +518,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -526,7 +530,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -1124,7 +1128,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -1137,7 +1141,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -1150,7 +1154,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -1162,7 +1166,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -2007,7 +2011,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2020,7 +2025,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2033,7 +2039,8 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2046,7 +2053,8 @@
         "requirementText"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2059,7 +2067,8 @@
         "stepText"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2071,7 +2080,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2084,20 +2094,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "CourseExemptionAndBonusProcedure-reviewedBy-rdfs-label",
-      "anchor": "CourseExemptionAndBonusProcedure",
-      "answer_kind": "label",
-      "path": [
-        "reviewedBy",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2110,7 +2108,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -2122,7 +2121,8 @@
         "summaryText"
       ],
       "provenance": [
-        "Regulation1052Article21Clause05"
+        "Regulation1052Article21Clause05",
+        "Regulation1052Article21Clause06"
       ],
       "status": "supported"
     },
@@ -3978,6 +3978,105 @@
       "status": "supported"
     },
     {
+      "id": "Decision317Article01Table01-articleNumber",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-citationLabel",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-documentUrl",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-inDocument-rdfs-label",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-officialText",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "Decision317Article01Table01-partOf-rdfs-label",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-rdfs-label",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article01Table01-verbatimTableText",
+      "anchor": "Decision317Article01Table01",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "Decision317Article01Table01"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Decision317Article02-articleNumber",
       "anchor": "Decision317Article02",
       "answer_kind": "literal",
@@ -4047,6 +4146,105 @@
       ],
       "provenance": [
         "Decision317Article02"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-articleNumber",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-citationLabel",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-documentUrl",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-inDocument-rdfs-label",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-officialText",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "Decision317Article02Table01-partOf-rdfs-label",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-rdfs-label",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317Article02Table01-verbatimTableText",
+      "anchor": "Decision317Article02Table01",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -5319,7 +5517,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5332,7 +5531,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5345,7 +5545,8 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5358,7 +5559,8 @@
         "requirementText"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5371,7 +5573,8 @@
         "stepText"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5384,7 +5587,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5397,7 +5601,8 @@
         "summaryText"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5409,7 +5614,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5422,7 +5628,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5435,7 +5642,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5448,7 +5656,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -5460,7 +5669,8 @@
         "summaryText"
       ],
       "provenance": [
-        "Regulation1052Article22Clause02"
+        "Regulation1052Article22Clause02",
+        "Regulation1052Article22Clause03"
       ],
       "status": "supported"
     },
@@ -6172,7 +6382,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6185,7 +6395,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6198,7 +6408,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6211,7 +6421,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6224,7 +6434,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6237,7 +6447,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6249,7 +6459,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6261,7 +6471,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6273,7 +6483,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6285,7 +6495,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6298,7 +6508,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6311,7 +6521,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6324,7 +6534,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6337,7 +6547,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6350,7 +6560,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6362,7 +6572,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6374,7 +6584,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6386,7 +6596,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6474,6 +6684,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6487,6 +6698,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6500,6 +6712,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6513,6 +6726,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6526,6 +6740,7 @@
         "requirementText"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6539,6 +6754,7 @@
         "stepText"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6551,6 +6767,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6564,6 +6781,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6577,6 +6795,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6590,6 +6809,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6602,6 +6822,7 @@
         "summaryText"
       ],
       "provenance": [
+        "Regulation1052Article08Clause02PointC",
         "Regulation1052Article10Clause02"
       ],
       "status": "supported"
@@ -6626,7 +6847,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6639,7 +6860,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6652,7 +6873,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6665,7 +6886,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6678,7 +6899,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6691,7 +6912,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6703,7 +6924,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6715,7 +6936,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6727,7 +6948,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -6739,7 +6960,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6752,7 +6973,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6765,7 +6986,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6778,7 +6999,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6791,7 +7012,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6804,7 +7025,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6816,7 +7037,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6828,7 +7049,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -6840,7 +7061,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -7300,7 +7521,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article10Clause02"
+        "Regulation1052Article08Clause02PointC"
       ],
       "status": "supported"
     },
@@ -7313,7 +7534,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article10Clause02"
+        "Regulation1052Article08Clause02PointC"
       ],
       "status": "supported"
     },
@@ -7326,7 +7547,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article10Clause02"
+        "Regulation1052Article08Clause02PointC"
       ],
       "status": "supported"
     },
@@ -7338,7 +7559,7 @@
         "formNumber"
       ],
       "provenance": [
-        "Regulation1052Article10Clause02"
+        "Regulation1052Article08Clause02PointC"
       ],
       "status": "supported"
     },
@@ -7350,7 +7571,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article10Clause02"
+        "Regulation1052Article08Clause02PointC"
       ],
       "status": "supported"
     },
@@ -8882,6 +9103,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8895,6 +9117,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8908,6 +9131,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8921,6 +9145,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8933,6 +9158,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8945,6 +9171,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8957,6 +9184,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -8969,6 +9197,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article21Clause06",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9069,6 +9298,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9082,6 +9312,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9095,6 +9326,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9108,6 +9340,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9120,6 +9353,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9132,6 +9366,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9144,6 +9379,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9156,6 +9392,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9169,6 +9406,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9182,6 +9420,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9195,6 +9434,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9208,6 +9448,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9220,6 +9461,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9232,6 +9474,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9244,6 +9487,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9256,6 +9500,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article24Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9269,6 +9514,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9282,6 +9528,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9295,6 +9542,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9308,6 +9556,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9320,6 +9569,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9332,6 +9582,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9344,6 +9595,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9356,6 +9608,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article25Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9456,6 +9709,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9469,6 +9723,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9482,6 +9737,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9495,6 +9751,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9507,6 +9764,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9519,6 +9777,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9531,6 +9790,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9543,6 +9803,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article26Clause02",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9556,6 +9817,7 @@
         "citationLabel"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9569,6 +9831,7 @@
         "documentUrl"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9582,6 +9845,7 @@
         "officialText"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9595,6 +9859,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9607,6 +9872,7 @@
         "downloadUrl"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9619,6 +9885,7 @@
         "listedFormNumber"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9631,6 +9898,7 @@
         "listedTitle"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -9643,6 +9911,7 @@
         "rdfs:label"
       ],
       "provenance": [
+        "Regulation1052Article28Clause03",
         "UndergraduateFormCatalogueListing"
       ],
       "status": "supported"
@@ -10169,7 +10438,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10182,7 +10451,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10195,7 +10464,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10208,7 +10477,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10221,7 +10490,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10234,7 +10503,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10246,7 +10515,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10258,7 +10527,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10270,7 +10539,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02"
+        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -10282,7 +10551,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10295,7 +10564,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10308,7 +10577,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10321,7 +10590,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10334,7 +10603,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10347,7 +10616,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10359,7 +10628,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10371,7 +10640,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10383,7 +10652,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -10471,7 +10740,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10484,7 +10754,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10497,7 +10768,8 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10510,7 +10782,8 @@
         "outcomeText"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10523,7 +10796,8 @@
         "stepText"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10535,7 +10809,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -10547,7 +10822,8 @@
         "summaryText"
       ],
       "provenance": [
-        "Regulation1052Article11Clause03"
+        "Regulation1052Article11Clause03",
+        "Regulation1052Article11Clause04"
       ],
       "status": "supported"
     },
@@ -11408,7 +11684,9 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -11421,7 +11699,9 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -11434,7 +11714,9 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -11446,7 +11728,9 @@
         "caseText"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -11459,7 +11743,9 @@
         "conditionText"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -11471,7 +11757,9 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article24Clause01PointC"
+        "Regulation1052Article24Clause01PointC",
+        "Regulation1052Article30Clause01",
+        "Regulation1052Article30Clause02"
       ],
       "status": "supported"
     },
@@ -12431,7 +12719,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -12444,7 +12733,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -12457,7 +12747,8 @@
         "officialText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -12469,7 +12760,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -12482,7 +12774,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -12495,7 +12787,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -12508,7 +12800,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -12520,7 +12812,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "Regulation1052Appendix2Table01"
       ],
       "status": "supported"
     },
@@ -14087,7 +14379,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -14100,7 +14392,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -14113,7 +14405,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -14125,7 +14417,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Decision317Article01Table01"
       ],
       "status": "supported"
     },
@@ -46456,7 +46748,9 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46469,7 +46763,9 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46482,7 +46778,9 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46495,7 +46793,9 @@
         "deadlineText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46508,7 +46808,9 @@
         "outcomeText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46521,7 +46823,9 @@
         "requirementText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46534,7 +46838,9 @@
         "stepText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46546,7 +46852,9 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46559,7 +46867,9 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46571,7 +46881,9 @@
         "summaryText"
       ],
       "provenance": [
-        "Decision317Article01"
+        "Regulation1052Article18Clause03",
+        "Regulation1052Article19Clause03",
+        "ScholarshipCriteriaGeneralSection"
       ],
       "status": "supported"
     },
@@ -46648,7 +46960,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46661,7 +46973,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46674,7 +46986,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46687,7 +46999,7 @@
         "consequenceText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46700,7 +47012,7 @@
         "outcomeText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46713,7 +47025,7 @@
         "requirementText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46726,7 +47038,7 @@
         "stepText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46738,7 +47050,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46751,20 +47063,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article28"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "SecondProgramRegistrationProcedure-submittedTo-rdfs-label",
-      "anchor": "SecondProgramRegistrationProcedure",
-      "answer_kind": "label",
-      "path": [
-        "submittedTo",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -46776,7 +47075,7 @@
         "summaryText"
       ],
       "provenance": [
-        "Regulation1052Article28"
+        "Regulation1052Article28Clause03"
       ],
       "status": "supported"
     },
@@ -49003,7 +49302,10 @@
         "citationLabel"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49016,7 +49318,10 @@
         "documentUrl"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49029,7 +49334,10 @@
         "officialText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49042,7 +49350,10 @@
         "stepText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49054,7 +49365,10 @@
         "rdfs:label"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49066,7 +49380,10 @@
         "summaryText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49079,7 +49396,10 @@
         "rdfs:label"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceIntro",
+        "TuitionPaymentGuidanceSection01",
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49961,7 +50281,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49974,7 +50295,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49987,7 +50309,8 @@
         "officialText"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },
@@ -49999,7 +50322,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "TuitionPaymentGuidanceIntro"
+        "TuitionPaymentGuidanceSection02",
+        "TuitionPaymentGuidanceSection03"
       ],
       "status": "supported"
     },

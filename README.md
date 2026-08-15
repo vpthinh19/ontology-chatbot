@@ -8,9 +8,9 @@ cuối: nó chuyển yêu cầu truy xuất thành SPARQL đã được giới h
 node** liên quan từ ontology, rồi trả dữ liệu cùng nguồn cho LLM tổng hợp. Lớp
 điều phối tool-calling hoàn chỉnh chưa được tích hợp trong runtime hiện tại.
 
-Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **4.545 câu**, gồm
-3.767 câu huấn luyện, 398 câu kiểm định và 380 câu kiểm tra. Danh mục khả năng
-trả lời hiện ghi nhận **4.021 khả năng trả lời** được hỗ trợ. Đây là số liệu về
+Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **4.584 câu**, gồm
+3.799 câu huấn luyện, 402 câu kiểm định và 383 câu kiểm tra. Danh mục khả năng
+trả lời hiện ghi nhận **4.033 khả năng trả lời** được hỗ trợ. Đây là số liệu về
 artifact dữ liệu, không phải điểm chất lượng của model.
 
 Kiến trúc v3 có ba nguyên tắc:
@@ -142,7 +142,7 @@ phí theo sinh viên không được lưu vì phụ thuộc kỳ, khóa, ngành,
 học phần thực tế; ontology chỉ giữ những hướng dẫn thanh toán có nguồn ổn định.
 
 `resources/ontology/answer_inventory.json` được sinh từ ontology và hiện có
-4.021 mục `supported`. Mỗi mục biểu diễn một đường trả lời được phép từ node tới
+4.033 mục `supported`. Mỗi mục biểu diễn một đường trả lời được phép từ node tới
 literal hoặc nhãn. Chi tiết về node văn bản, node nghiệp vụ và bảng nguyên văn
 nằm trong [tài liệu ontology](docs/ONTOLOGY.md).
 
@@ -152,10 +152,10 @@ Ba split JSONL hiện có:
 
 | Tập | Số câu | Vai trò |
 |---|---:|---|
-| Huấn luyện | 3.767 | Kho ví dụ cho ánh xạ câu hỏi sang shape truy xuất |
-| Kiểm định | 398 | Kiểm tra lựa chọn/cấu hình mà không dùng tập kiểm tra |
-| Kiểm tra | 380 | Đánh giá cuối sau khi cấu hình đã cố định |
-| **Tổng** | **4.545** | Tổng số dòng thực tế trong ba tệp |
+| Huấn luyện | 3.799 | Kho ví dụ cho ánh xạ câu hỏi sang shape truy xuất |
+| Kiểm định | 402 | Kiểm tra lựa chọn/cấu hình mà không dùng tập kiểm tra |
+| Kiểm tra | 383 | Đánh giá cuối sau khi cấu hình đã cố định |
+| **Tổng** | **4.584** | Tổng số dòng thực tế trong ba tệp |
 
 Các số này được đếm trực tiếp từ
 `resources/dataset/train.jsonl`, `resources/dataset/val.jsonl` và
