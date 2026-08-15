@@ -1,5 +1,4 @@
-url: https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong
-
+Cập nhật lúc 15:07, 29/03/21
 I.Học bổng khuyến khích học tập (HBKK)
 1.1. Chế độ học bổng HBKK học tập cho sinh viên thực hiện theo các nghị định, quyết định, thông tư liên tịch, các quy định hiện hành của Nhà nước, Bộ Giáo dục và Đào tạo và của Nhà trường.
 1.2. Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất.
@@ -28,22 +27,22 @@ Học bổng khuyến khích học tập được cấp theo từng học kì v�
 Quỹ HBKK học tập được trích từ nguồn học phí theo quy định hiện hành của Nhà nước. Việc xét học bổng được thống nhất xét theo khóa học và ngành học hoặc lớp chuyên ngành.
 6. Học bổng trợ cấp xã hội
 Học bổng trợ cấp xã hội (sinh viên mồ côi cả cha lẫn mẹ không nơi nương tựa. sinh viên là người dân tộc ít người sống ở vùng cao. Sinh viên là người tàn tật theo quy định của Nhà nước. Sinh viên có hoàn cảnh khó khăn đặc biệt về kinh tế, vượt khó trong học tập mà gia đình thuộc diện xóa đói giảm nghèo có giấy chứng nhận là hộ đói nghèo do Sở Lao động Thương binh Xã hội cấp), mức học bổng: 200.000đ/1 tháng/1 người (mức học bổng sẽ thay đổi khi có văn bản quy định mới ban hành)
---- GHI CHÚ KIỂM CHỨNG 2026-08-10 ---
-ĐỪNG NẠP NỘI DUNG TRÊN VÀO ONTOLOGY.
+--- GHI CHÚ NGUỒN, 2026-08-15 ---
 
-Đã mở lại URL ở đầu tệp hai lần trong ngày: trang KHÔNG còn phần tiêu chuẩn học
-bổng. Thứ nó trả về bây giờ là thông tin liên hệ của Trung tâm Đổi mới sáng tạo
-(số 02 Nguyễn Đình Chiểu, điện thoại 0583 831 149) và dòng "Copyright © 2021".
-Trang cũng không ghi ngày đăng hay ngày cập nhật ở bất kỳ đâu.
+Nội dung trên do NGƯỜI DÙNG mở trang ở đầu tệp bằng trình duyệt rồi chép về.
 
-Nghĩa là: các con số ở trên - 14 tín chỉ tối thiểu, điểm lần đầu từ 5.5, thang
-phân loại 2.50-3.19 / 3.20-3.59 / 3.60-4.0 - hiện KHÔNG kiểm chứng được, và
-không biết chúng thuộc về năm học nào. Dẫn nguồn bằng URL đó sẽ đưa cho sinh
-viên một đường dẫn không hề nói điều mình vừa trả lời, tệ hơn là không có nguồn.
+Một ghi chú cũ đề ngày 10/8 từng viết "ĐỪNG NẠP NỘI DUNG TRÊN VÀO ONTOLOGY", lý
+do nêu là mở URL đó không còn thấy phần tiêu chuẩn học bổng. Kết luận ấy SAI, và
+sai vì cách kiểm: nó tải HTML thô. Đo lại ngày 15/8 thì `curl` vẫn cho 0 kết quả
+khi tìm "khiển trách", "tín chỉ", "Tiêu chuẩn chung" — nhưng trình duyệt thật
+hiển thị bình thường. Trang dựng nội dung bằng JavaScript nên tải thô chỉ ra vỏ.
 
-Đã tìm chỗ khác trên site trường: mục học bổng của Phòng CTCT&SV
-(https://phongctsv.ntu.edu.vn/danh-muc/hoc-bong-khuyen-khich-hoc-tap) chỉ có
-thông báo danh sách từng học kỳ, không có bài nào nêu tiêu chuẩn xét.
+Bài học: đừng tuyên bố một trang đã chết chỉ vì một lượt tải thô không thấy chữ.
+Trang động phải mở bằng trình duyệt, hoặc hỏi người mở được.
 
-Muốn nạp thì phải xin Phòng CTCT&SV bản quy định còn hiệu lực, có số hiệu và
-ngày ban hành.
+Vì vậy `ScholarshipCriteriaGuidance` và hai mục con của nó là NGUỒN HỢP LỆ; bảy
+node dẫn về chúng giữ nguyên.
+
+Riêng câu "sinh viên không phải nộp đơn" thì gỡ khỏi đồ thị — không phải vì
+nguồn hỏng mà vì KHÔNG đoạn nào ở trên nói ra điều đó. Người dùng xác nhận nó
+đúng trong thực tế và đồng ý gỡ (15/8/2026).

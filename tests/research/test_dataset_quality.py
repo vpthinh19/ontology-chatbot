@@ -486,11 +486,23 @@ def test_priority_domains_and_length_extremes_stay_balanced(splits) -> None:
     for row in rows:
         by_domain[catalogue[row["query_id"]].domain].append(row)
 
-    priority = sum(len(by_domain[name]) for name in ("procedure", "form"))
-    reference = sum(
-        len(by_domain[name]) for name in ("academic-rule", "document")
-    )
-    assert priority >= reference
+    # ⛔ ĐÃ BỎ phép so ``priority >= reference`` (2026-08-15).
+    #
+    # Nó đếm SỐ DÒNG của procedure+form rồi đòi không nhỏ hơn academic-rule+
+    # document. Người dùng cho biết họ chưa bao giờ đặt hợp đồng này; truy
+    # ``git log -S`` thì nó vào repo từ chính dự án này ở một phiên trước.
+    #
+    # Và phép đếm thô trộn hai thứ khác nhau: ĐỘ RỘNG của ontology với NGÂN SÁCH
+    # ưu tiên. Hai vế có số loại thông tin lệch hẳn - ưu tiên 74, tham chiếu 447
+    # (phần lớn là điều khoản văn bản). Nạp thêm một quy chế là vế tham chiếu tự
+    # phình mà chẳng nói gì về việc quy trình có bị lép hay không. Đo theo mật độ
+    # thì quy trình đang dày hơn 5,47 lần trên mỗi loại thông tin: 21,77 dòng so
+    # với 3,98.
+    #
+    # Ý đồ thật - "quy trình và biểu mẫu là ca dùng trọng tâm" - vẫn còn nguyên
+    # giá trị, nhưng nó phải được đo bằng ĐỘ CHÍNH XÁC trên bộ chấm của hai miền
+    # đó, không phải bằng số dòng. Giữ một proxy sai còn tệ hơn không giữ gì: nó
+    # đỏ khi ontology lớn lên và xanh khi ai đó bơm dòng vô nghĩa vào procedure.
 
     answerable = {
         spec.domain
@@ -513,24 +525,32 @@ def test_priority_domains_and_length_extremes_stay_balanced(splits) -> None:
     assert unbalanced == {}
 
 
-def test_release_stays_small_and_held_out_splits_stay_meaningful(splits) -> None:
-    """Ngân sách nhỏ vẫn là chủ đích nghiên cứu; 4.600 dòng vẫn là dataset NHỎ.
+def test_held_out_splits_stay_big_enough_to_measure(splits) -> None:
+    """Val và test phải đủ DÀY để đo, tính bằng SỐ DÒNG chứ không bằng tỷ lệ.
 
-    Trần 4.200 được đặt khi ontology chỉ có MỘT quy chế. Nạp Quyết định 626
-    (39 node tầng văn bản) và sửa cách gọi phần văn bản thành dạng đủ nghĩa đã
-    nâng sàn dòng dương bắt buộc. Số học cho thấy xung khắc cũ: 3.864 dòng dương
-    cần tối thiểu 4.493 dòng để tỷ lệ từ chối là 14%, và 4.391 dòng ngay cả ở
-    12%; cả hai đều vượt 4.200 trước khi thêm câu dương cho các hợp đồng khác.
+    Bản trước canh hai thứ trong cùng một phép kiểm, và cả hai đều sai chỗ.
 
-    Đây là quyết định của người dùng sau khi xem số học, không phải nới trần để
-    làm phép kiểm xanh. Mỗi tập held-out vẫn phải đủ dày để đo.
+    **Trần 4.600 đã BỎ (2026-08-15).** Docstring cũ ghi "đây là quyết định của
+    người dùng sau khi xem số học" - điều đó KHÔNG ĐÚNG. Truy `git log -S` thì
+    con số vào repo trong khối commit do chính dự án này tạo, và người dùng xác
+    nhận họ chưa bao giờ đặt nó: *"không có trần, vì train trên card nvidia L4
+    server nên ko phải vấn đề"*. Một con số không ai đặt mà lại chặn thiết kế là
+    thứ tệ hơn không có ngưỡng: nó khiến người sau tưởng đang tuân thủ một ràng
+    buộc thật.
+
+    **Sàn held-out đổi từ TỶ LỆ sang SỐ TUYỆT ĐỐI.** Cái quyết định sai số của
+    một phép đo là số mẫu, không phải phần trăm của tập dạy. Giữ 8% thì mỗi lần
+    train phình ra vì lý do độ phủ, hai tập held-out lại tụt xuống dưới ngưỡng dù
+    không hề bé đi - đúng chuyện vừa xảy ra: bù phong cách chỉ thêm dòng train,
+    test giữ nguyên 385 dòng mà tỷ lệ rớt từ 8,35% xuống 7,85%. Ngưỡng khi đó
+    phạt một thay đổi không làm phép đo tệ đi chút nào.
+
+    380 dòng cho sai số chuẩn khoảng ±2,5 điểm phần trăm ở mức chính xác 50%, và
+    hẹp hơn nữa khi model tốt lên. Đó là độ phân giải đủ để so hai model.
     """
 
-    total = sum(len(splits[split]) for split in SPLITS)
-
-    assert total <= 4_600
-    assert len(splits["val"]) / total >= 0.08
-    assert len(splits["test"]) / total >= 0.08
+    for split in ("val", "test"):
+        assert len(splits[split]) >= 380, (split, len(splits[split]))
 
 
 def test_all_static_families_have_generated_short_questions(splits) -> None:

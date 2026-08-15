@@ -1133,10 +1133,21 @@ def generate(
 
     _add_contrast_pairs(splits, emit, frames, catalogue, mentions, bindings, rng)
     _balance_letter_case(splits, emit, frames, catalogue, mentions, bindings, rng)
+    _fill_missing_registers(splits, attempt, frames, catalogue, bindings)
+    # Câu ngắn và câu nhiễu sinh SAU phép bù, không phải trước. Bù xong mới sinh
+    # thì quota câu ngắn tính trên tổng dòng cuối cùng; đảo lại thì phép bù chỉ
+    # thêm câu dài và làm loãng tỷ lệ 2-6 từ - đo được academic-rule tụt còn
+    # 13,9%, dưới sàn 15%. Câu ngắn bị loãng là đúng căn bệnh nặng nhất dự án
+    # từng mắc: model học rằng hỏi ngắn thì từ chối.
     _add_short_questions(splits, emit, catalogue, mentions, bindings, rng)
     _add_distractions(
         splits, emit, frames, catalogue, mentions, bindings, rng, templates
     )
+    # SAU cùng trong các lượt sinh câu dương. Đặt trước ``_add_distractions`` thì
+    # lượt đó lại thêm dòng dài vào chính miền vừa kéo lên, và academic-rule rơi
+    # từ đích 17% xuống 15,2% - dư đúng 0,2 điểm so với sàn. Câu từ chối sinh sau
+    # nữa nhưng thuộc miền out-of-domain nên không làm loãng miền trọng tâm.
+    _top_up_short_questions(splits, emit, catalogue, mentions, bindings, rng)
     checklist: dict[str, list[str]] = {}
     provenance: dict[str, dict[str, str]] = {}
     _add_rejections(
@@ -1234,6 +1245,72 @@ _MEDIUM_TAILS: tuple[str, ...] = (
     " được hướng dẫn chi tiết theo quy định như thế nào",
 )
 _MEDIUM_TRAIN_ROWS = 0
+
+
+
+#: Toạ độ cấu trúc trong ID node. Neo mang một trong các mảnh này thì câu hỏi gọi
+#: nó bằng toạ độ ("điểm c khoản 1 Điều 26 Quy chế 1052"), tức chính câu hỏi đã
+#: chứa sẵn tên neo. Đo trên dataset: 310/321 neo họ điều khoản thuộc loại này,
+#: và 743/743 câu hỏi nhắm chúng đều nhắc toạ độ.
+_COORDINATE_MARKERS = ("Article", "Clause", "Point", "Chapter", "Appendix")
+
+
+def _fill_missing_registers(
+    splits: dict[str, list[Row]],
+    attempt,
+    frames: Mapping[str, tuple[Frame, ...]],
+    catalogue: Mapping[str, QuerySpec],
+    bindings: Mapping[str, list[dict[str, str]]],
+) -> None:
+    """Mỗi neo gọi bằng TÊN phải được dạy đủ bốn phong cách.
+
+    Người dùng đặt điều kiện: *"để truy xuất một loại thông tin nhất định thì cần
+    nhiều sample với nhiều sắc thái prompt, từ trang trọng cho đến dân dã cụt
+    ngủn"*. Đo trước khi có hàm này: 291/564 loại thông tin có DƯỚI BA phong cách
+    và 79 loại chỉ có ĐÚNG MỘT, vì vòng bốc chính chọn cả neo lẫn phong cách ngẫu
+    nhiên nên neo nào ít được bốc trúng thì phong cách của nó là mẫu cỡ 2-4.
+
+    **Phải chạy SAU mọi lượt sinh khác.** Hai bản trước đặt sai chỗ và cùng hỏng:
+
+    - Cân phong cách ngay trong vòng bốc, không thêm dòng: chỉ tiêu xấu đi
+      289 -> 303 và phân bố lệch về ``formal``. Không thêm dòng thì chỉ là đẩy
+      phần thiếu sang chỗ khác.
+    - Bù ngay sau vòng bốc: thêm 499 dòng trong khi chỗ thiếu thật chỉ 217 ô, vì
+      lúc đó các lượt dạy tên, khung ngắn và tương phản chưa chạy xong. Bù xong
+      chúng lại sinh tiếp, phủ lên đúng những ô vừa bù.
+
+    Chạy cuối thì đếm được TOÀN BỘ dòng đã có, nên chỉ thêm đúng phần khuyết.
+
+    Bỏ qua neo toạ độ: câu hỏi đã chứa sẵn tên neo nên model chỉ cần ánh xạ toạ
+    độ sang node, không cần tích Descartes 4 phong cách × 310 toạ độ. Nhưng chỉ
+    bỏ qua ĐÚNG NEO TOẠ ĐỘ chứ không bỏ cả họ điều khoản: 11 neo của họ đó là mục
+    gọi bằng tên đời thường ("phần mở đầu Hướng dẫn đóng học phí", "danh mục biểu
+    mẫu"), và chúng cần đủ phong cách y như một thủ tục.
+    """
+
+    seen: dict[tuple[str, str], set[str]] = {}
+    for row in splits["train"]:
+        seen.setdefault((row.query_id, row.target), set()).add(row.register)
+
+    for query_id in sorted(frames):
+        spec = catalogue[query_id]
+        for binding in bindings.get(query_id, ()):
+            anchor = binding.get("anchor", "")
+            if any(marker in anchor for marker in _COORDINATE_MARKERS):
+                continue
+            key = (query_id, _fill_targets(spec, binding))
+            for register in REGISTERS:
+                if register in seen.get(key, ()):
+                    continue
+                # ``attempt`` từ chối câu trùng hoặc gần trùng câu đã có; thử vài
+                # lần rồi thôi. Neo nào khung quá nghèo để diễn đạt theo phong
+                # cách này thì chịu, không ép ra câu gượng.
+                for _ in range(6):
+                    if attempt(
+                        "train", query_id, spec, binding, frames[query_id], register
+                    ):
+                        seen.setdefault(key, set()).add(register)
+                        break
 
 
 def _add_short_questions(
@@ -1364,6 +1441,98 @@ def _add_short_questions(
                 "train", query_id, register, question, _fill_targets(spec, binding)
             ):
                 produced += 1
+
+
+
+def _top_up_short_questions(
+    splits: dict[str, list[Row]],
+    emit,
+    catalogue: Mapping[str, QuerySpec],
+    mentions: Mapping[str, tuple[str, ...]],
+    bindings: Mapping[str, list[dict[str, str]]],
+    rng: random.Random,
+) -> None:
+    """Kéo tỷ lệ câu 2-6 từ của mỗi miền lên trên sàn, CÓ BIÊN.
+
+    ``_add_short_questions`` phát theo quota là SỐ CỐ ĐỊNH cho mỗi họ. Số đó
+    được chỉnh tay theo tổng dòng ở thời điểm viết, nên hễ dataset lớn lên vì bất
+    kỳ lý do nào là tỷ lệ ngắn tụt xuống dù không ai bỏ đi câu ngắn nào - đo được
+    khi bù phong cách: academic-rule còn 13,5%, certificate 14,5%, cả hai dưới
+    sàn 15%.
+
+    Hợp đồng vốn phát biểu bằng TỶ LỆ, nên bộ sinh phải nhắm thẳng vào tỷ lệ.
+    Nhắm 17% chứ không phải 15%: đích có biên thì phải sửa tính chất mới đạt,
+    còn đặt sát ngưỡng thì lần sau chỉ cần thêm vài dòng là đỏ lại.
+
+    Vì sao câu ngắn đáng được canh riêng: model học "hỏi ngắn thì từ chối" là căn
+    bệnh nặng nhất dự án từng mắc, và bốn trong sáu câu người dùng gõ tay bị từ
+    chối oan đều là câu ngắn.
+    """
+
+    floor, target = 0.15, 0.17
+    domains: dict[str, list[str]] = {}
+    for query_id, spec in sorted(catalogue.items()):
+        if spec.tier != "primary" or spec.domain == "out-of-domain":
+            continue
+        if frozenset(spec.slots) != {"anchor"} or spec.slots["anchor"].kind != "iri":
+            continue
+        domains.setdefault(spec.domain, []).append(query_id)
+
+    for domain, family_ids in sorted(domains.items()):
+        rows = [
+            row
+            for row in splits["train"]
+            if catalogue[row.query_id].domain == domain
+        ]
+        if not rows:
+            continue
+        short = sum(2 <= len(row.input.split()) <= 6 for row in rows)
+        if short / len(rows) >= target:
+            continue
+        # Mỗi dòng thêm vào vừa tăng tử số vừa tăng mẫu số, nên số cần thêm là
+        # nghiệm của (short + n) / (len + n) >= target.
+        needed = int((target * len(rows) - short) / (1 - target)) + 1
+        produced, index = 0, 0
+        # CHỈ lấy thực thể thuộc phần train của phép chia trong
+        # ``_add_short_questions``. Bỏ qua ràng buộc này thì câu ngắn của train
+        # đụng đúng câu ngắn của val/test - cùng tên gọi, cùng bộ đuôi, nên chỉ
+        # cần bỏ dấu là hai câu thành một và tập chấm hết còn là held-out.
+        pools = []
+        for query_id in family_ids:
+            options = [b for b in bindings.get(query_id, ()) if "anchor" in b]
+            buckets: dict[str, list[dict[str, str]]] = {
+                "train": [], "val": [], "test": []
+            }
+            for position, binding in enumerate(options):
+                buckets[
+                    _SHORT_SPLIT_CYCLE[position % len(_SHORT_SPLIT_CYCLE)]
+                ].append(binding)
+            for binding in buckets["train"] or options:
+                pools.append((query_id, binding))
+        if not pools:
+            continue
+        while produced < needed and index < needed * 40:
+            query_id, binding = pools[index % len(pools)]
+            register = REGISTERS[index % len(REGISTERS)]
+            tail = _SHORT_TAILS[index % len(_SHORT_TAILS)]
+            index += 1
+            names = mentions.get(binding["anchor"][1:])
+            if not names:
+                continue
+            question = decorate(
+                f"{choose_mention(names, register, rng)}{tail}", register, rng,
+                short=True,
+            )
+            if not 2 <= len(question.split()) <= 6:
+                continue
+            if emit(
+                "train", query_id, register, question,
+                _fill_targets(catalogue[query_id], binding),
+            ):
+                produced += 1
+        assert short + produced >= floor * (len(rows) + produced), (
+            f"không kéo nổi miền {domain} lên sàn câu ngắn"
+        )
 
 
 def _add_contrast_pairs(

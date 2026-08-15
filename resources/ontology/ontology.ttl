@@ -5415,7 +5415,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
         :ScholarshipStep02,
         :ScholarshipStep03 ;
     :reviewedBy :StudentAffairsOffice ;
-    :summaryText "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; sinh viên không phải nộp đơn, nhưng người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi ;
+    :summaryText "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi ;
     rdfs:label "Thủ tục xét và cấp học bổng khuyến khích học tập"@vi ;
     skos:altLabel "cấp học bổng"@vi,
         "nhận tiền học bổng"@vi,
@@ -5457,7 +5457,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
         :Regulation1052Article19Clause03 ;
     :performedBy :StudentAffairsOffice ;
     :stepOrder "1"^^xsd:integer ;
-    :stepText "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè. Sinh viên không phải nộp đơn."@vi ;
+    :stepText "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè."@vi ;
     rdfs:label "Xét học bổng - bước 1"@vi .
 
 :ScholarshipStep02 a :ProcedureStep, owl:NamedIndividual ;
