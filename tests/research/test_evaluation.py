@@ -1,5 +1,13 @@
-from ontchatbot.research.evaluation import evaluate_predictions
+import json
+from collections import Counter
+
+from ontchatbot.catalogue import QuerySpec, SlotSpec
+from ontchatbot.research.evaluation import (
+    evaluate_predictions,
+    evaluate_query_id_expectations,
+)
 from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.settings import TEST_DATASET_PATH, VAL_DATASET_PATH
 
 
 def _example(
@@ -13,6 +21,55 @@ def _example(
         "input": "phòng nào xử lý bảo lưu",
         "target": target,
     }
+
+
+V3_CATALOGUE = {
+    "node-facts": QuerySpec(
+        "node-facts",
+        "procedure",
+        "SELECT ?answer WHERE { ${anchor} rdfs:label ?answer . }",
+        {"anchor": SlotSpec("iri", (":AcademicAdvisor", ":CourseLecturer"))},
+    ),
+    "no-information": QuerySpec(
+        "no-information", "out-of-domain", "không có thông tin", {}
+    ),
+}
+
+
+def _v3_example(identifier: str, query_id: str, target: str) -> dict[str, str]:
+    return {
+        "id": identifier,
+        "query_id": query_id,
+        "register": "neutral",
+        "input": identifier,
+        "target": target,
+    }
+
+
+def test_held_out_splits_carry_both_kinds_of_row() -> None:
+    """Val và test đều phải có CẢ HAI loại dòng: dump node và từ chối.
+
+    Chỉ còn hai loại. Loại thứ ba - hỏi năng lực - đã bị bỏ khỏi thiết kế ngày
+    2026-08-14: công cụ chỉ truy ra dữ kiện hoặc nói không có thông tin.
+
+    Tên cũ hứa ba con số của v2 (``167_plus_28_plus_6``) mà thân hàm không kiểm
+    con số nào - chuỗi ``167`` chỉ tồn tại trong cái tên. Dòng khẳng định cuối
+    của bản cũ cũng đã gỡ: nó định nghĩa ``node_rows = tổng − a − b`` rồi khẳng
+    định ``node_rows + a + b == tổng``, tức hằng đúng, không bao giờ đỏ kể cả khi
+    dataset hỏng hoàn toàn.
+    """
+
+    for path in (VAL_DATASET_PATH, TEST_DATASET_PATH):
+        rows = [
+            json.loads(line)
+            for line in path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        query_ids = Counter(row["query_id"] for row in rows)
+
+        assert rows
+        assert query_ids["no-information"] > 0
+        assert len(rows) - query_ids["no-information"] > 0
 
 
 def test_perfect_prediction_scores_every_metric() -> None:
@@ -221,3 +278,109 @@ def test_marker_for_supported_query_is_a_false_rejection() -> None:
     assert report["overall"]["system_answer_exact_rate"] == 0.0
     assert report["error_counts"] == {"false_rejection": 1}
     assert report["cases"][0]["error_category"] == "false_rejection"
+
+
+def test_v3_metrics_are_separate_and_account_for_every_group() -> None:
+    node_target = V3_CATALOGUE["node-facts"].target_template.replace(
+        "${anchor}", ":AcademicAdvisor"
+    )
+    examples = [
+        _v3_example("node", "node-facts", node_target),
+        _v3_example("rejection", "no-information", "không có thông tin"),
+    ]
+
+    report = evaluate_predictions(
+        examples,
+        [node_target, "không có thông tin"],
+        load_ontology(),
+        catalogue=V3_CATALOGUE,
+    )
+
+    assert report["primary_metrics"] == {
+        "node_selection": {"count": 1, "correct": 1, "rate": 1.0},
+        "query_shape": {"count": 1, "correct": 1, "rate": 1.0},
+        "rejection_decision": {"count": 2, "correct": 2, "rate": 1.0},
+    }
+    assert report["coverage_accounting"] == {
+        "total": 2,
+        "accounted_for": 2,
+        "groups": {
+            "node_queries": {
+                "count": 1,
+                "scored_by": [
+                    "node_selection",
+                    "query_shape",
+                    "rejection_decision",
+                ],
+            },
+            "out_of_domain": {
+                "count": 1,
+                "scored_by": ["rejection_decision"],
+            },
+        },
+    }
+
+
+def test_node_metric_accepts_another_explicit_syntax_but_shape_does_not() -> None:
+    target = V3_CATALOGUE["node-facts"].target_template.replace(
+        "${anchor}", ":AcademicAdvisor"
+    )
+    equivalent = (
+        "SELECT ?answer WHERE { VALUES ?entity { :AcademicAdvisor } "
+        "?entity rdfs:label ?answer . }"
+    )
+
+    report = evaluate_predictions(
+        [_v3_example("node", "node-facts", target)],
+        [equivalent],
+        load_ontology(),
+        catalogue=V3_CATALOGUE,
+        include_cases=True,
+    )
+
+    assert report["primary_metrics"]["node_selection"]["rate"] == 1.0
+    assert report["primary_metrics"]["query_shape"]["rate"] == 0.0
+    assert report["cases"][0]["expected_nodes"] == ["AcademicAdvisor"]
+    assert report["cases"][0]["predicted_nodes"] == ["AcademicAdvisor"]
+
+
+def test_invalid_sparql_is_wrong_in_every_applicable_v3_metric() -> None:
+    target = V3_CATALOGUE["node-facts"].target_template.replace(
+        "${anchor}", ":AcademicAdvisor"
+    )
+
+    report = evaluate_predictions(
+        [_v3_example("node", "node-facts", target)],
+        ["SELECT ?answer WHERE {"],
+        load_ontology(),
+        catalogue=V3_CATALOGUE,
+    )
+
+    assert report["primary_metrics"] == {
+        "node_selection": {"count": 1, "correct": 0, "rate": 0.0},
+        "query_shape": {"count": 1, "correct": 0, "rate": 0.0},
+        "rejection_decision": {"count": 1, "correct": 0, "rate": 0.0},
+    }
+
+
+def test_real_user_questions_are_scored_separately_by_query_id() -> None:
+    node_target = V3_CATALOGUE["node-facts"].target_template.replace(
+        "${anchor}", ":AcademicAdvisor"
+    )
+    expectations = [
+        {"question": "cố vấn học tập", "expected_query_id": "node-facts"},
+        {"question": "thời tiết", "expected_query_id": "no-information"},
+    ]
+
+    report = evaluate_query_id_expectations(
+        expectations,
+        [node_target, "SELECT ?answer WHERE {"],
+        catalogue=V3_CATALOGUE,
+        include_cases=True,
+    )
+
+    assert report["count"] == 2
+    assert report["correct"] == 1
+    assert report["query_id_accuracy"] == 0.5
+    assert report["mixed_into_generated_benchmark"] is False
+    assert report["cases"][1]["predicted_query_id"] is None

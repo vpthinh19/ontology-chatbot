@@ -1,11 +1,22 @@
 from __future__ import annotations
 
+
+def _procedure_target() -> str:
+    """Đích chuẩn lấy thẳng từ danh mục - xem ghi chú ở test_catalogue_guard."""
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    return catalogue["academic-procedure-facts"].target_template.replace(
+        "${anchor}", ":TemporaryAcademicLeaveProcedure"
+    )
+
 import logging
 from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.runtime.model import CTranslate2Generator
+from ontchatbot.runtime.model import MAX_TARGET_LENGTH, CTranslate2Generator
+from ontchatbot.catalogue import load_catalogue
+from ontchatbot.settings import QUERY_CATALOGUE_PATH
 from ontchatbot.runtime.pipeline import OntologyChatbot
 from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 
@@ -49,7 +60,7 @@ def test_ctranslate_generator_normalizes_and_greedily_decodes() -> None:
     assert tokenizer.seen[0] == "tui đi nghĩa vụ quân sự, muốn bảo lưu"
     assert translator.call == (
         [["t1", "t2"]],
-        {"beam_size": 1, "max_decoding_length": 160},
+        {"beam_size": 1, "max_decoding_length": MAX_TARGET_LENGTH},
     )
     assert query.startswith("SELECT")
 
@@ -65,10 +76,7 @@ def test_ctranslate_generator_uses_specific_error_for_empty_output() -> None:
 
 
 def test_chatbot_connects_generated_query_to_ontology() -> None:
-    query = (
-        "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
-        "?node rdfs:label ?answer . }"
-    )
+    query = _procedure_target()
     generator = SimpleNamespace(generate=lambda _: query)
 
     reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
@@ -99,10 +107,7 @@ def test_chatbot_logs_model_marker_decision(caplog) -> None:
 
 
 def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
-    query = (
-        "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
-        "?node rdfs:label ?answer . }"
-    )
+    query = _procedure_target()
     generator = SimpleNamespace(generate=lambda _: query)
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
@@ -110,7 +115,11 @@ def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
     assert f"model output={query!r}" in trace
-    assert "ontology rows=1" in trace
+    # Khuôn dump trả cả chục dòng chứ không phải một; chốt con số cứng là chốt
+    # ảnh chụp của một lần dựng danh mục. Điều cần canh là nhật ký CÓ ghi số
+    # dòng, và ghi một số dương.
+    assert "ontology rows=" in trace
+    assert "ontology rows=0" not in trace
     assert f"reply={reply!r}" in trace
     assert "total_ms=" in trace
 

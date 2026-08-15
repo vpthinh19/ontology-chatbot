@@ -21,7 +21,11 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
-from ontchatbot.research.evaluation import evaluate_predictions
+from ontchatbot.research.benchmark import load_user_query_expectations
+from ontchatbot.research.evaluation import (
+    evaluate_predictions,
+    evaluate_query_id_expectations,
+)
 from ontchatbot.runtime.llm import LLMQueryGenerator, load_examples
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import ARTIFACTS_DIR, DATASET_DIR
@@ -33,6 +37,7 @@ def build_complete(
     gpu_memory: str = "",
     load_4bit: bool = False,
     allow_download: bool = False,
+    adapter=None,
 ):
     tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=not allow_download)
     # Model đã lượng tử hoá thì ĐỪNG ép dtype: ép là trọng số 4-bit bị giải nén
@@ -68,7 +73,14 @@ def build_complete(
         load_kwargs["max_memory"] = {0: gpu_memory, "cpu": "32GiB"}
     else:
         load_kwargs["device_map"] = "cuda"
-    model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs).eval()
+    model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs)
+    if adapter:
+        # Chấm model ĐÃ TINH CHỈNH. Không có cờ này thì bộ chấm chỉ đo cách
+        # nhắc ví dụ, và hai phép đo đó không so được với nhau.
+        from peft import PeftModel
+
+        model = PeftModel.from_pretrained(model, str(adapter))
+    model = model.eval()
 
     def complete(prompt: str) -> str:
         text = tokenizer.apply_chat_template(
@@ -101,6 +113,12 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=200)
     parser.add_argument("--gpu-memory", default="", help="vd 4GiB - phần thừa đẩy sang RAM")
     parser.add_argument("--load-4bit", action="store_true", help="tự nén 4-bit lúc nạp")
+    parser.add_argument(
+        "--adapter",
+        type=Path,
+        default=None,
+        help="thư mục adapter LoRA; bỏ trống thì chấm model gốc bằng nhắc ví dụ",
+    )
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
 
@@ -119,6 +137,7 @@ def main() -> None:
             args.gpu_memory,
             args.load_4bit,
             args.allow_download,
+            args.adapter,
         ),
         load_examples(DATASET_DIR / "train.jsonl"),
         shots=args.shots,
@@ -134,6 +153,25 @@ def main() -> None:
     elapsed = time.monotonic() - started
 
     report = evaluate_predictions(rows, predictions, load_ontology(), include_cases=True)
+    real_user_expectations = load_user_query_expectations()
+    real_user_started = time.monotonic()
+    real_user_predictions = [
+        generator.generate(item["question"]) for item in real_user_expectations
+    ]
+    real_user_elapsed = time.monotonic() - real_user_started
+    report["real_user_cases"] = evaluate_query_id_expectations(
+        real_user_expectations,
+        real_user_predictions,
+        include_cases=True,
+    )
+    report["real_user_cases"]["inference"] = {
+        "records": len(real_user_expectations),
+        "seconds": round(real_user_elapsed, 3),
+        "seconds_per_question": round(
+            real_user_elapsed / len(real_user_expectations),
+            3,
+        ),
+    }
     report["run"] = {
         "model": args.model,
         "shots": args.shots,
@@ -143,17 +181,17 @@ def main() -> None:
         "fine_tuned": False,
     }
 
-    overall = report["overall"]
+    primary = report["primary_metrics"]
+    real_user = report["real_user_cases"]
     print(
         "\n".join(
             [
                 "",
                 f"model            {args.model} (nhắc {args.shots} ví dụ, KHÔNG tinh chỉnh)",
-                f"số câu chấm      {overall['count']}",
-                f"Answer Exact     {overall['answer_exact_rate']:.1%}",
-                f"Hệ thống đúng    {overall['system_answer_exact_rate']:.1%}",
-                f"Từ chối an toàn  {overall['safe_rejection_rate']:.1%}",
-                f"SPARQL hợp lệ    {overall['parse_rate']:.1%}",
+                f"đúng node        {primary['node_selection']['correct']}/{primary['node_selection']['count']} ({primary['node_selection']['rate']:.1%})",
+                f"đúng dạng        {primary['query_shape']['correct']}/{primary['query_shape']['count']} ({primary['query_shape']['rate']:.1%})",
+                f"từ chối đúng     {primary['rejection_decision']['correct']}/{primary['rejection_decision']['count']} ({primary['rejection_decision']['rate']:.1%})",
+                f"9 câu người thật {real_user['correct']}/{real_user['count']} ({real_user['query_id_accuracy']:.1%}) — báo riêng",
                 f"tốc độ           {elapsed / len(rows):.1f}s mỗi câu",
             ]
         )

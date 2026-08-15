@@ -1,29 +1,31 @@
 {
-  "note": "Câu hỏi do NGƯỜI THẬT gõ vào chatbot, không phải câu sinh ra. Hai câu cuối do giảng viên chủ nhiệm đề tài test. Đây là bộ thử nghiệm chạy trên MODEL sau khi huấn luyện, không phải dữ liệu huấn luyện.",
+  "note": "CÂU HỎI là của NGƯỜI THẬT gõ vào chatbot, không phải câu sinh ra; hai câu cuối do giảng viên chủ nhiệm đề tài test. NHÃN THÌ KHÔNG: expected_query_id do các phiên làm việc trước SUY RA, và đã bị sửa máy ít nhất hai lần - bản đầu còn trỏ vào những họ của v2 nay không tồn tại (academic-procedure-overview, tuition-program-cohort-rate). Vì vậy ĐỪNG coi nhãn ở đây là chuẩn ngoại: chấm model bằng nhãn do chính thiết kế suy ra là chấm vòng tròn. Người dùng đã tự gán bốn nhãn (14/8 và 15/8), năm nhãn còn lại vẫn là suy ra - xem trường 'label_basis' để biết cái nào là cái nào.",
   "expectations": [
     {
       "question": "chào bạn nha",
-      "expected_query_id": "assistant-capabilities"
+      "expected_query_id": "no-information",
+      "note": "người dùng chốt 2026-08-14: công cụ chỉ truy ra dữ kiện hoặc nói không có; câu chào không phải việc của nó"
     },
     {
       "question": "đăng ký hc phần như nào nhỉ",
-      "expected_query_id": "academic-procedure-overview"
+      "expected_query_id": "academic-procedure-facts"
     },
     {
       "question": "đăng ký học phần sao",
-      "expected_query_id": "academic-procedure-overview"
+      "expected_query_id": "academic-procedure-facts"
     },
     {
       "question": "vì sao lại đăng ký học phần",
-      "expected_query_id": "no-information"
+      "expected_query_id": "academic-procedure-facts",
+      "note": "người dùng chốt 2026-08-14: dump trả nguyên văn quy chế 'Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi SV', tức dữ liệu CÓ"
     },
     {
       "question": "đk hc phần như thế nào",
-      "expected_query_id": "academic-procedure-overview"
+      "expected_query_id": "academic-procedure-facts"
     },
     {
       "question": "hc phí k65 cntt",
-      "expected_query_id": "tuition-program-cohort-rate"
+      "expected_query_id": "no-information"
     },
     {
       "question": "học phí k67 như thế nào",
@@ -31,11 +33,14 @@
     },
     {
       "question": "Tôi cần thông tin tuyển sinh 2026 của Trường Đại học Nha Trang",
-      "expected_query_id": "no-information"
+      "expected_query_id": "official-document-facts",
+      "note": "người dùng chốt 2026-08-15: nạp Quyết định 626 vào đồ thị CHÍNH LÀ để trả lời câu này. Neo là cả văn bản QĐ 626 (quy chế tuyển sinh 2026), vì câu hỏi không nêu điều khoản nào cụ thể; dump trả tên, số hiệu, ngày ban hành và đường dẫn PDF - đúng thứ hợp đồng nguồn hứa. Điểm chuẩn và chỉ tiêu VẪN từ chối vì đồ thị cố ý không lưu con số."
     },
     {
       "question": "Bạn có thể hỗ trợ thông tin gì",
-      "expected_query_id": "assistant-capabilities"
+      "expected_query_id": "no-information",
+      "note": "người dùng chốt 2026-08-14: họ 'liệt kê năng lực' đã bị bỏ khỏi thiết kế; giới thiệu phạm vi là việc của LLM lớn"
     }
-  ]
+  ],
+  "label_basis": "HỖN HỢP tính đến 2026-08-15. Bốn nhãn do NGƯỜI DÙNG chốt, xem trường 'note' của từng câu: 'chào bạn nha', 'vì sao lại đăng ký học phần', 'Bạn có thể hỗ trợ thông tin gì', 'Tôi cần thông tin tuyển sinh 2026...'. Năm nhãn còn lại (ba biến thể đăng ký học phần, hai câu học phí khoá) vẫn do thiết kế SUY RA, chưa ai xác nhận - chấm model bằng chúng vẫn là chấm vòng tròn."
 }

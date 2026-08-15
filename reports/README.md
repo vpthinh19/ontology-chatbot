@@ -1,39 +1,42 @@
-# Báo cáo tái tạo được
+# Báo cáo dẫn xuất
 
-Thư mục này chứa số liệu và hình ảnh được sinh trực tiếp từ dữ liệu canonical.
+Thư mục này chỉ được dùng làm nguồn cho thống kê artifact có thể tái tạo. Không
+có báo cáo model hợp lệ trong repository và tài liệu công khai không công bố kết
+quả model cũ.
 
-> **Lưu ý**: dataset đang được xây dựng lại sau đợt tái cấu trúc ontology, nên
-> các báo cáo dưới đây còn phản ánh bộ dữ liệu cũ cho tới khi được sinh lại.
+## Artifact được dùng
 
+- `dataset.json`: số dòng ba split, phân bố miền/register, đặc trưng query và
+  checksum tại thời điểm report được sinh;
+- `procedure-dataset.json`: snapshot dẫn xuất về các target thủ tục;
+- `provenance.json`: fingerprint input và trạng thái vô hiệu của metric model,
+  deployment;
+- `figures/dataset-splits.svg`, `figures/registers.svg` và
+  `figures/query-features.svg`: hình dẫn xuất từ thống kê dataset.
 
-- `dataset.json`: kích thước, phân bố, độ phủ, thống kê ontology và checksum;
-- `procedure-dataset.json`: độ phủ các target quy trình theo split và checksum;
-- `figures/dataset-splits.svg`: số câu train/validation/test;
-- `figures/registers.svg`: phân bố bốn phong cách câu hỏi;
-- `figures/query-features.svg`: đặc trưng SPARQL theo từng split.
-- `models.json`: giao thức, đường học và metric cuối của ba model;
-- `provenance.json`: fingerprint baseline v0.4.1, fingerprint input canonical
-  hiện hành và trạng thái metric model/triển khai;
-- `figures/training-loss.svg`, `validation-curve.svg`: quá trình fine-tune;
-- `figures/model-comparison.svg`: benchmark validation/test;
-- `figures/test-by-register.svg`, `test-by-query-feature.svg`: phân rã lỗi.
+Ba split JSONL hiện có 3.767, 398 và 380 dòng, tổng **4.545 câu**.
+`dataset.json` ghi cùng các số này và `training_readiness.ready = true` sau khi
+đối chiếu coverage, tên gọi, target và catalogue hiện hành.
 
-`ontology.ttl`, `catalogue.jsonl`, `coverage.json` và ba split là input
-canonical. Inventory, manifest, `dataset.json`, `procedure-dataset.json`,
-`provenance.json` và ba biểu đồ dataset là artifact dẫn xuất. Kiểm tra read-only
-bằng `uv run validate_sparql_dataset`; sinh lại artifact bằng
-`uv run generate_reports`. `training_readiness.ready` phải là `true`, yêu cầu
-độ phủ phải được đáp ứng và mọi họ truy vấn của `catalogue.jsonl` phải có
-mặt trong cả ba tập.
+`provenance.json` giữ `model_metrics.status = stale` và
+`deployment_metrics.status = stale` để tránh diễn giải nhầm artifact cũ. Nó
+không phải nguồn metric và không biến model cũ thành baseline. Fingerprint này
+được nhận từ **baseline v0.4.1**; `reports/provenance.json` là nơi phân biệt
+input baseline với input hiện hành.
 
-Bộ 308 câu tại `resources/cases/procedure_language.jsonl` kiểm tra hồi quy cho
-hành vi triển khai, không phải benchmark khoa học độc lập.
+## Tái tạo
 
-Báo cáo model được sinh từ ba checkpoint đã merge và benchmark trên cùng 402
-câu validation, 407 câu test cùng checksum dataset. T5Gemma2 là model triển
-khai; kết quả CT2/web được giữ riêng để không trộn backend lượng tử hóa với
-benchmark Transformers.
+Kiểm tra read-only:
 
-Các số liệu model và CT2/web hiện có là baseline v0.4.1. Nếu một input canonical
-thay đổi mà chưa benchmark lại, generator giữ nguyên các số liệu lịch sử và đặt
-trạng thái tương ứng trong `reports/provenance.json` thành `stale`.
+```bash
+uv run validate_sparql_dataset
+```
+
+Chỉ khi input đã đồng bộ và việc ghi artifact được cho phép mới chạy:
+
+```bash
+uv run generate_reports
+```
+
+Chuỗi sinh report cũng ghi `procedure-dataset.json`, manifest và các hình từ
+cùng một snapshot để các artifact không trôi lệch nhau.

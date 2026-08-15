@@ -95,6 +95,7 @@ def assess_coverage(
     catalogue: Mapping[str, QuerySpec],
     requirements: CoverageRequirements,
     rejection_checklist: Mapping[str, list[str]],
+    mentions: Mapping[str, tuple[str, ...]],
 ) -> dict[str, object]:
     """Report whether a release meets the additional official coverage contract."""
 
@@ -153,6 +154,7 @@ def assess_coverage(
         requirements,
         rejection_checklist,
     )
+    name_coverage = assess_name_coverage(splits, catalogue, mentions)
     complete = not any(
         (
             missing_query_ids,
@@ -160,6 +162,7 @@ def assess_coverage(
             missing_priority_registers,
             missing_numeric_cases,
             missing_rejection_coverage,
+            name_coverage["missing"],
         )
     )
     return {
@@ -169,14 +172,88 @@ def assess_coverage(
         "missing_priority_registers": missing_priority_registers,
         "missing_numeric_cases": missing_numeric_cases,
         "missing_rejection_coverage": missing_rejection_coverage,
+        "name_coverage": name_coverage,
     }
 
 
 def require_complete_coverage(report: Mapping[str, object]) -> None:
     """Raise when an assessed release still has required coverage gaps."""
 
-    if report.get("complete") is not True:
-        raise CoverageError("coverage incomplete")
+    if report.get("complete") is True:
+        return
+    name_coverage = report.get("name_coverage")
+    if isinstance(name_coverage, Mapping):
+        missing = name_coverage.get("missing")
+        if isinstance(missing, list) and missing:
+            details = "\n".join(
+                f"- node {item.get('node')}: thiếu nhãn {item.get('label')!r}"
+                for item in missing
+                if isinstance(item, Mapping)
+            )
+            raise CoverageError(
+                "coverage incomplete; các cặp (node, nhãn) chưa có dòng dạy:\n"
+                + details
+            )
+    raise CoverageError("coverage incomplete")
+
+
+def assess_name_coverage(
+    splits: Mapping[str, list[Mapping[str, str]]],
+    catalogue: Mapping[str, QuerySpec],
+    mentions: Mapping[str, tuple[str, ...]],
+) -> dict[str, object]:
+    """Đo mọi cặp ``(node, tên gọi)`` đã xuất hiện trong dòng dạy hay chưa.
+
+    Một node xuất hiện trong đích chưa đủ: chính tên gọi phải nằm trong input của
+    một dòng train có đích ràng buộc tới node đó. So không phân biệt hoa/thường,
+    vì hoa/thường là một trục phong cách riêng chứ không phải hai tên khác nhau.
+    """
+
+    expected = {
+        (value, label)
+        for spec in catalogue.values()
+        if spec.tier == "primary" and spec.domain != "out-of-domain"
+        for slot in spec.slots.values()
+        if slot.kind == "iri"
+        for value in slot.values
+        for label in mentions.get(value[1:], ())
+    }
+    covered: set[tuple[str, str]] = set()
+    for row in splits.get("train", []):
+        query_id = row.get("query_id")
+        target = row.get("target")
+        question = row.get("input")
+        if not all(isinstance(value, str) for value in (query_id, target, question)):
+            continue
+        spec = catalogue.get(query_id)
+        if spec is None:
+            continue
+        binding = match_target(spec, target)
+        if binding is None:
+            continue
+        folded_question = _fold_name(question)
+        for slot_name, value in binding.items():
+            slot = spec.slots.get(slot_name)
+            if slot is None or slot.kind != "iri":
+                continue
+            for label in mentions.get(value[1:], ()):
+                if _fold_name(label) in folded_question:
+                    covered.add((value, label))
+
+    missing = sorted(expected - covered, key=lambda pair: (pair[0], pair[1].casefold()))
+    return {
+        "total": len(expected),
+        "covered": len(expected) - len(missing),
+        "missing_count": len(missing),
+        "missing": [
+            {"node": node, "label": label}
+            for node, label in missing
+        ],
+    }
+
+
+def _fold_name(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().casefold()
 
 
 def _parse_unique_names(

@@ -1,79 +1,30 @@
----
-license: gemma
-language:
-- vi
-library_name: transformers
-pipeline_tag: other
-base_model: google/t5gemma-2-270m-270m
-tags:
-- sparql
-- ontology
-- vietnamese
-- ctranslate2
----
+# Model card — trạng thái đã ngừng
 
-# NTU Ontology Chatbot — T5Gemma2
+## Trạng thái
 
-Model seq2seq tiếng Việt sinh truy vấn SPARQL cho chatbot hỏi đáp quy trình học
-vụ Trường Đại học Nha Trang. Model sinh đúng một trong hai dạng:
+Model seq2seq từng đi kèm repository đã **ngừng sử dụng**. Nó được dựng trên
+dataset hỏng, vì vậy:
 
-```text
-SELECT ?answer WHERE { ... }
-```
+- không có metric nào của model được công bố;
+- không dùng checkpoint làm baseline;
+- không dùng checkpoint làm phương án lui;
+- không dùng kết luận chọn model cũ để thiết kế v3.
 
-```text
-không có thông tin
-```
+Tài liệu này cố ý không cung cấp lệnh tải hoặc chạy model cũ.
 
-Model không chứa câu trả lời học vụ. SPARQL phải được xác minh và thực thi trên
-ontology của project để lấy nhãn hoặc literal trả về người dùng.
+## Kiến trúc thay thế
 
-## Huấn luyện
+V3 không chỉ định một checkpoint chatbot nhỏ. Một LLM lớn ở lớp hội thoại gọi
+công cụ ontology, nhận trọn node cùng nguồn rồi tổng hợp câu trả lời. Thành phần
+ánh xạ câu hỏi sang SPARQL phải bị giới hạn bởi danh mục truy vấn và được đánh
+giá lại trên artifact đồng bộ.
 
-- Base model: `google/t5gemma-2-270m-270m`;
-- dataset: 4.454 câu (3.645 train, 402 validation, 407 test);
-- PEFT LoRA rank 32, alpha 64, dropout 0; adapter tốt nhất được merge vào base;
-- batch 8, learning rate 1e-4, cosine scheduler, BF16, seed 42;
-- greedy decoding; checkpoint chọn bằng validation Answer Exact;
-- hoàn tất 18 epoch do dừng sớm.
+## Dấu vết còn lại
 
-## Kết quả — baseline v0.4.1
+`docs/TRAINING.md` mô tả quy trình huấn luyện lịch sử mà không giữ con số hoặc
+kết quả. `reports/provenance.json` đánh dấu `model_metrics.status` và
+`deployment_metrics.status` là `stale`; đây là cảnh báo vô hiệu, không phải một
+mức chất lượng.
 
-| Backend | Answer Exact | Result F1 | System Answer Exact |
-|---|---:|---:|---:|
-| Transformers | 90,66% | 92,74% | 92,38% |
-| CTranslate2 int8 | 91,15% | 93,38% | 92,87% |
-
-Kết quả đo trên 407 câu test độc lập. T5Gemma2 đạt 96,22% Answer Exact trên 185
-câu quy trình. Safe Rejection ngoài miền đạt 92,22%; câu noisy và hard negative
-gần miền vẫn là giới hạn chính.
-
-Repository lưu fingerprint tại `reports/provenance.json`. Khi
-`model_metrics.status` là `stale`, bảng này chỉ mô tả baseline v0.4.1 và không
-phải kết quả đánh giá ontology/dataset canonical mới.
-
-## Sử dụng Transformers
-
-```python
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-
-repo = "vpthinh19/ntu-ontology-t5gemma-2"
-tokenizer = AutoTokenizer.from_pretrained(repo, fix_mistral_regex=False)
-model = AutoModelForSeq2SeqLM.from_pretrained(repo)
-
-question = "đăng ký học phần như thế nào"
-inputs = tokenizer(question, return_tensors="pt", truncation=True, max_length=128)
-output = model.generate(**inputs, max_new_tokens=160, do_sample=False, num_beams=1)
-print(tokenizer.decode(output[0], skip_special_tokens=True))
-```
-
-Model CTranslate2 int8 nằm trong thư mục `ctranslate2/`. Hệ thống hoàn chỉnh,
-ontology, normalizer, validator SPARQL và hướng dẫn tái lập nằm tại
-<https://github.com/vpthinh19/ontology-chatbot>.
-
-## Giới hạn và giấy phép
-
-Model chỉ dành cho miền ontology đi kèm, không phải chatbot kiến thức chung.
-Output sai hoặc query không có kết quả phải được chuyển thành `Không có thông
-tin.`; không thực thi query thay đổi graph. Model kế thừa điều khoản sử dụng
-Gemma từ base model.
+Repository hiện chưa có model card định lượng cho v3. Chỉ tạo model card mới sau
+khi toàn bộ kiểm tra dữ liệu xanh và benchmark mới có artifact máy đọc.

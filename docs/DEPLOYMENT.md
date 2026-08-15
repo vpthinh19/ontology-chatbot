@@ -1,94 +1,73 @@
-# Triển khai
+# Triển khai kiến trúc v3
 
-Baseline v0.4.1 triển khai T5Gemma2 sau khi hợp nhất LoRA, chuyển sang
-CTranslate2 int8 và đánh giá end-to-end trên 407 câu test. Cả checkpoint
-Transformers và model CTranslate2 được công bố tại
-<https://huggingface.co/vpthinh19/ntu-ontology-t5gemma-2>.
+## Trạng thái
 
-## Mô hình triển khai
+Chưa có benchmark triển khai công khai cho v3. Runtime seq2seq/CTranslate2 còn
+trong repository là dấu vết của kiến trúc đã ngừng, không phải phương án lui và
+không được dùng để suy ra chất lượng hệ thống hiện hành.
 
-Hệ thống chỉ nạp một checkpoint seq2seq đã chuyển sang CTranslate2 cùng
-tokenizer và manifest tương thích. Không có model phân loại, classifier
-head hoặc ngưỡng quyết định riêng.
+## Thành phần cần triển khai
 
-Checkpoint PEFT được chọn bằng validation, merge vào base model thành checkpoint
-Transformers độc lập, benchmark bằng `from_pretrained()`, rồi mới chuyển đổi.
-Hệ thống không nạp adapter hoặc phụ thuộc PEFT. Model CTranslate2 được đánh giá
-lại trên cùng tập test để kiểm tra tính tương đương của output, Answer Exact và marker
-exact.
+Một deployment v3 gồm:
 
-Runtime đọc trực tiếp `tokenizer.json` bằng thư viện `tokenizers`. Nó không cần
-Transformers hoặc SentencePiece; hai dependency đó chỉ phục vụ huấn luyện và
-benchmark các model nguồn.
+1. LLM lớn hỗ trợ gọi công cụ;
+2. lớp điều phối hội thoại và policy gọi công cụ;
+3. công cụ ontology nhận yêu cầu truy xuất;
+4. thành phần ánh xạ yêu cầu sang SPARQL thuộc danh mục;
+5. validator chỉ đọc và matcher danh mục truy vấn;
+6. RDFLib cùng `ontology.ttl`;
+7. serializer trả trọn node, trích dẫn và URL.
 
-Transformers dùng `num_beams=1`, `do_sample=False`; CTranslate2 dùng
-`beam_size=1`. Beam search không thuộc benchmark hoặc production chính.
+LLM lớn và công cụ phải là hai ranh giới rõ ràng. Công cụ không được nhận query
+tùy ý từ model và LLM không được tự bổ sung dữ kiện khi công cụ trả rỗng.
 
-## Luồng xử lý
+## Hợp đồng trả về
 
-```text
-input
-→ normalize_model_input
-→ CTranslate2 seq2seq
-→ marker: Không có thông tin.
-→ SELECT: validate → RDFLib → render
-→ query lỗi/kết quả rỗng: Không có thông tin.
+Kết quả thành công nên có dạng khái niệm:
+
+```json
+{
+  "status": "ok",
+  "nodes": [
+    {
+      "id": "TemporaryAcademicLeaveProcedure",
+      "facts": [{"property": "...", "value": "..."}],
+      "citation": "...",
+      "source_url": "..."
+    }
+  ]
+}
 ```
 
-API trả HTTP 200 cho các phản hồi nghiệp vụ trên. Lỗi nạp model, ontology hoặc
-lỗi lập trình vẫn là lỗi hệ thống.
+Node bảng trả `verbatimTableText` trong `facts` như một khối, không trả danh
+sách cell. Trạng thái `no_data` phải mang lý do có kiểm soát; lỗi nạp ontology,
+timeout và exception phải dùng kênh lỗi hệ thống.
 
-Mỗi request được trace bằng một request ID. Log cấp INFO gồm input gốc, input
-chuẩn hoá, output model nguyên văn, thời gian sinh, trạng thái xác minh, số dòng,
-reply và tổng latency. Exception ghi stage cùng traceback.
+## An toàn
 
-## CLI
+- chỉ nhận SPARQL `SELECT`;
+- cấm thao tác ghi và nguồn dữ liệu bên ngoài;
+- query phải khớp chính xác catalogue;
+- giới hạn kích thước kết quả;
+- escape dữ liệu khi hiển thị;
+- giữ URL nguồn và trích dẫn trong context;
+- không cho LLM biến kết quả rỗng thành câu trả lời dựa trên trí nhớ.
 
-CLI chỉ nhận một `--model-dir`, device, compute type, log level, host và port.
-Không có model gate hoặc threshold thứ hai.
+## Quan sát
 
-```bash
-uv run --extra inference hf download vpthinh19/ntu-ontology-t5gemma-2 \
-  --include 'ctranslate2/*' --local-dir artifacts/huggingface
+Mỗi tool call cần request ID, query nguyên văn, shape khớp, node neo, trạng thái,
+số giá trị, nguồn và latency. Log không lưu chain-of-thought của LLM. Dữ liệu
+người dùng cần được xử lý theo chính sách của môi trường triển khai.
 
-uv run --extra inference serve_sparql \
-  --model-dir artifacts/huggingface/ctranslate2 \
-  --device cpu --compute-type int8 --host 127.0.0.1 --port 8000
-```
+## Điều kiện phát hành
 
-Hoặc tự chuyển checkpoint Transformers vừa fine-tune:
+Không phát hành v3 cho tới khi:
 
-```bash
-uv run convert_sparql_model \
-  --model-dir artifacts/model-benchmark/t5gemma2/model \
-  --output-dir artifacts/deployment/t5gemma2-production \
-  --quantization int8
+- chuỗi ontology → inventory → catalogue → dataset xanh;
+- tool-calling được kiểm thử cả trong miền, ngoài miền và lỗi;
+- bảng nguyên văn round-trip không đổi;
+- câu trả lời cuối được đánh giá độ bám nguồn;
+- manifest triển khai ghim checksum ontology và catalogue.
 
-uv run --extra inference serve_sparql \
-  --model-dir artifacts/deployment/t5gemma2-production \
-  --device cpu --compute-type int8 --host 127.0.0.1 --port 8000
-```
-
-Thư mục CTranslate2 lưu `model.bin`, tokenizer, cấu hình sinh và `manifest.json` chứa
-phiên bản CT2, kiểu lượng tử hóa, nguồn checkpoint cùng SHA-256 từng file.
-
-## Kiểm tra triển khai
-
-Trước khi sử dụng model:
-
-1. kiểm tra checksum tokenizer/model/ontology;
-2. chạy parity trên toàn test;
-3. chạy ca thực tế trong `resources/cases/user_queries.txt`;
-4. kiểm tra câu trong miền, ngoài miền, mơ hồ và hỗn hợp;
-5. đo latency, memory và request đồng thời;
-6. xác nhận log đủ để truy nguyên output model và SPARQL.
-
-Kết quả kiểm tra model int8 trên web: 407/407 request trả HTTP 200; phản hồi
-hiển thị chính xác 378/407 (92,87%); CPU p50 300 ms,
-p95 864 ms; probe tám request đồng thời thành công 8/8 ở 3,26 request/giây.
-Nhóm noisy đạt 85,71% và là giới hạn chính cần lưu ý khi triển khai.
-
-Các con số trong mục này thuộc baseline v0.4.1. Đối chiếu
-`deployment_metrics.status` trong `reports/provenance.json`; trạng thái `stale`
-nghĩa là ontology/dataset canonical đã khác baseline và cần benchmark lại trước
-khi diễn giải các số liệu này như kết quả của input mới.
+`reports/provenance.json` hiện có trạng thái `stale` cho metric model và
+deployment; không có số liệu cũ nào được dùng làm tiêu chí phát hành.

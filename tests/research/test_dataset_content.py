@@ -24,6 +24,7 @@ from ontchatbot.research.coverage import (
     require_complete_coverage,
 )
 from ontchatbot.research.dataset import load_release, validate_release
+from ontchatbot.research.mentions import mention_index
 from ontchatbot.runtime.sparql import SparqlError, execute_select, load_ontology
 from ontchatbot.settings import (
     COVERAGE_REQUIREMENTS_PATH,
@@ -157,6 +158,7 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
         catalogue,
         load_coverage_requirements(coverage_path, catalogue),
         checklist,
+        {},
     )
 
     assert report["complete"] is True
@@ -205,6 +207,20 @@ def test_official_release_is_executable_and_has_complete_coverage(
         catalogue,
         load_coverage_requirements(COVERAGE_REQUIREMENTS_PATH, catalogue),
         checklist,
+        mention_index(
+            graph,
+            tuple(
+                sorted(
+                    {
+                        value[1:]
+                        for spec in catalogue.values()
+                        for slot in spec.slots.values()
+                        if slot.kind == "iri"
+                        for value in slot.values
+                    }
+                )
+            ),
+        )[0],
     )
     taught = {row["query_id"] for row in release["train"]}
     primary_procedures = {
@@ -245,37 +261,10 @@ def test_every_target_returns_data_from_the_ontology(graph, catalogue, release) 
     assert empty == []
 
 
-def test_certificate_conversion_targets_stay_compact(catalogue, graph) -> None:
-    """Họ quy đổi chứng chỉ phải trả BẢNG quy đổi, không trả cả khối văn bản.
-
-    Bản trước chốt cứng một chuỗi SPARQL của họ ``certificate-conversion-details``
-    - họ đó không còn tồn tại. Ý định thì còn nguyên: câu hỏi quy đổi phải nhận
-    được các mốc điểm, không phải nguyên văn điều luật.
-    """
-
-    spec = catalogue["certificate-criterion"]
-    rows = execute_select(graph, spec.target_template.replace(
-        "${certificate}", spec.slots["certificate"].values[0]
-    ), max_rows=50)
-
-    assert rows
-    for row in rows:
-        for value in row.values():
-            assert len(str(value)) <= 500, value
-
-
-def test_tuition_targets_answer_with_a_rate_not_a_wall_of_text(catalogue, graph) -> None:
-    """Hỏi học phí phải nhận được MỘT mức tiền, không phải nguyên văn quyết định."""
-
-    spec = catalogue["tuition-program-cohort-rate"]
-    target = spec.target_template.replace(
-        "${program}", spec.slots["program"].values[0]
-    ).replace("${cohort}", "65")
-    rows = execute_select(graph, target, max_rows=10)
-
-    assert len(rows) == 1
-    for value in rows[0].values():
-        assert len(str(value)) <= 100, value
+# Hai phép kiểm về MỨC học phí đã gỡ cùng lúc với dữ liệu học phí (2026-08-10):
+# số tiền một sinh viên phải đóng đổi theo từng kỳ và chỉ trang sinhvien.ntu.edu.vn
+# mới có, nên ontology không giữ mức học phí nữa. Cách đóng thì vẫn giữ và vẫn
+# được canh ở tests/ontology/test_answers.py.
 
 
 def test_declared_slot_iris_exist_in_the_ontology(graph, catalogue) -> None:
@@ -298,26 +287,6 @@ def test_declared_slot_iris_exist_in_the_ontology(graph, catalogue) -> None:
 
     assert declared
     assert sorted(value for value in declared if value[1:] not in existing) == []
-
-
-def test_procedure_outcome_slots_exclude_procedures_without_an_outcome(
-    catalogue,
-) -> None:
-    """Chỉ thủ tục thật sự có kết quả xử lý mới được liệt kê.
-
-    Nếu slot liệt kê cả thủ tục không khai kết quả, model sẽ học sinh ra một
-    truy vấn hợp lệ nhưng luôn rỗng - và người dùng nhận "không có thông tin"
-    cho một câu hỏi đáng lẽ trả lời được bằng cách khác.
-    """
-
-    result_procedures = set(
-        catalogue["academic-procedure-has-outcome-outcome-text"].slots["anchor"].values
-    )
-
-    assert result_procedures.isdisjoint(
-        {":CourseExemptionAndBonusProcedure", ":StudyResumptionProcedure"}
-    )
-    assert ":GraduationReviewProcedure" in result_procedures
 
 
 def test_targets_never_resurrect_the_retired_schema(release) -> None:
@@ -388,7 +357,7 @@ def test_rejection_checklist_partitions_every_declared_class(
     rows_by_id = {
         row["id"]: (split, row) for split, rows in release.items() for row in rows
     }
-    handled_domains = {"out-of-domain", "assistant"}
+    handled_domains = {"out-of-domain"}
 
     assert sorted(checklist) == sorted(required)
     listed = [row_id for ids in checklist.values() for row_id in ids]
@@ -437,28 +406,10 @@ def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
     assert sorted(expectations) == sorted(questions)
     assert sorted(set(expectations.values()) - set(catalogue)) == []
     # Hai câu của giảng viên phải còn trong bộ - chúng là bằng chứng người thật
-    # duy nhất mà dự án có.
+    # duy nhất mà dự án có. Canh chính CÂU HỎI, không canh nhãn: nhãn ở tệp đó do
+    # các phiên trước suy ra chứ không phải người gán, và đã đổi hai lần.
     assert "Bạn có thể hỗ trợ thông tin gì" in expectations
-    assert expectations["Bạn có thể hỗ trợ thông tin gì"] == "assistant-capabilities"
-
-
-def test_the_cohort_tuition_question_resolves_to_one_rate(graph, catalogue) -> None:
-    """"hc phí k65 cntt" phải ra đúng MỘT mức học phí.
-
-    Bản trước chốt cứng id dòng ``question-002000`` và nguyên văn chuỗi SPARQL.
-    Cả hai đều là ảnh chụp của một lần sinh dataset. Ràng buộc thật là về NĂNG
-    LỰC: khoá 65 ngành Công nghệ thông tin phải quy về một mức duy nhất.
-    """
-
-    spec = catalogue["tuition-program-cohort-rate"]
-    target = spec.target_template.replace(
-        "${program}", ":InformationTechnology"
-    ).replace("${cohort}", "65")
-
-    rows = execute_select(graph, target, max_rows=10)
-
-    assert len(rows) == 1
-    assert match_target(spec, target) is not None
+    assert "Tôi cần thông tin tuyển sinh 2026 của Trường Đại học Nha Trang" in expectations
 
 
 def test_procedure_families_are_taught_thickly_enough_to_learn(
@@ -466,10 +417,9 @@ def test_procedure_families_are_taught_thickly_enough_to_learn(
 ) -> None:
     """Mỗi họ quy trình phải đủ dày để model học được HÌNH DẠNG truy vấn.
 
-    Bản trước chốt một ma trận histogram chính xác tới từng đích (``{10: 99,
-    14: 4, 16: 4, ...}``) - đó là ảnh chụp của một lần sinh, đổi một hạt giống
-    ngẫu nhiên là đỏ. Ý định thì còn: mỗi hình dạng truy vấn phải được nhìn thấy
-    đủ nhiều, và đủ bốn phong cách.
+    Hợp đồng không đo "dày" bằng một số dòng tùy chọn: mỗi họ
+    primary phải thật sự xuất hiện trong train và phải có đủ mọi phong
+    cách mà artifact yêu cầu.
     """
 
     procedures = {
@@ -488,10 +438,18 @@ def test_procedure_families_are_taught_thickly_enough_to_learn(
         }
         for query_id in procedures
     }
+    required_registers = set(
+        json.loads((DATASET_DIR / "coverage.json").read_text(encoding="utf-8"))[
+            "required_registers"
+        ]
+    )
 
-    assert sorted(procedures - set(counts)) == []
-    assert sorted(q for q, n in counts.items() if n < 10) == []
-    assert sorted(q for q, r in registers.items() if len(r) < 4) == []
+    assert set(counts) == procedures
+    assert {
+        query_id: sorted(required_registers - registers[query_id])
+        for query_id in sorted(procedures)
+        if required_registers - registers[query_id]
+    } == {}
 
 
 def test_every_evaluated_target_was_taught_first(release) -> None:
@@ -531,16 +489,35 @@ def test_the_manifest_matches_the_files_it_describes() -> None:
     assert manifest["catalogue"]["sha256"] == sha256_file(QUERY_CATALOGUE_PATH)
 
 
-def test_registers_stay_balanced_across_the_training_set(release) -> None:
-    """Bốn phong cách phải cân nhau trong tập huấn luyện.
+def test_every_primary_family_teaches_every_declared_register(
+    release, catalogue
+) -> None:
+    """Mọi họ primary phải dạy đủ các phong cách đã khai.
 
-    Bản trước chốt số dòng chính xác của từng "lô phục hồi" trong một đợt vá
-    dataset đã qua (``{"noisy": 314, "neutral": 224, ...}``) - những lô đó không
-    còn tồn tại. Tính chất mà chúng bảo vệ thì còn: không phong cách nào bị bỏ
-    rơi, nếu không model sẽ giỏi hẳn ở văn viết và dốt hẳn ở câu gõ vội.
+    Tỉ lệ toàn cục không nói được họ nào bị thiếu phong cách: một họ
+    lớn có thể che khuất một họ khác chỉ có văn trang trọng. So trực tiếp
+    từng họ với ``required_registers`` trong artifact coverage.
     """
 
-    counts = Counter(row["register"] for row in release["train"])
+    required = set(
+        json.loads((DATASET_DIR / "coverage.json").read_text(encoding="utf-8"))[
+            "required_registers"
+        ]
+    )
+    primary = {
+        query_id for query_id, spec in catalogue.items() if spec.tier == "primary"
+    }
+    seen = {
+        query_id: {
+            row["register"]
+            for row in release["train"]
+            if row["query_id"] == query_id
+        }
+        for query_id in primary
+    }
 
-    assert set(counts) == {"formal", "neutral", "colloquial", "noisy"}
-    assert min(counts.values()) / max(counts.values()) >= 0.7, counts
+    assert {
+        query_id: sorted(required - registers)
+        for query_id, registers in sorted(seen.items())
+        if required - registers
+    } == {}

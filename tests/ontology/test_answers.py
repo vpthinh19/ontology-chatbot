@@ -155,18 +155,12 @@ def test_an_office_answers_more_than_its_name(ontology_graph) -> None:
 
 
 # -------------------------------------------------------------- học phí
-def test_tuition_is_found_by_programme_and_cohort(ontology_graph) -> None:
-    rate = answers(
-        ontology_graph,
-        "SELECT ?answer WHERE { ?r :appliesToProgram :InformationTechnology ; "
-        ":appliesToEducationLevel :UndergraduateLevel ; :amount ?answer . "
-        "OPTIONAL { ?r :minimumCohortNumber ?m . } "
-        "FILTER (!BOUND(?m) || 65 >= ?m) } ORDER BY DESC(?m) LIMIT 1",
-    )
-
-    assert rate == ["620000"]
-
-
+#
+# Không còn phép kiểm nào tra MỨC học phí: các mức đã được gỡ khỏi ontology
+# (2026-08-10). Số tiền một sinh viên phải đóng phụ thuộc khoá, ngành, chương
+# trình và học phần đã đăng ký, thay đổi từng kỳ, và chỉ trang sinhvien.ntu.edu.vn
+# mới có con số thật - ontology không đuổi kịp. Thứ giữ lại là CÁCH đóng, vốn ổn
+# định và có nguồn: xem hai phép kiểm dưới đây.
 def test_payment_methods_are_listed(ontology_graph) -> None:
     methods = answers(
         ontology_graph,
@@ -177,35 +171,29 @@ def test_payment_methods_are_listed(ontology_graph) -> None:
     assert len(methods) == 4
 
 
-# --------------------------------------------------------- quy tắc điểm
-def test_a_score_maps_to_its_performance_band(ontology_graph) -> None:
-    assert answers(
-        ontology_graph,
-        "SELECT ?answer WHERE { ?b a :AcademicPerformanceBand ; :minimumValue ?min ; "
-        ":maximumValue ?max ; :resultLabel ?answer . "
-        "FILTER (7.50 >= ?min && ?max >= 7.50) }",
-    ) == ["Khá"]
-
-
-def test_a_cumulative_score_maps_to_its_graduation_band(ontology_graph) -> None:
-    assert answers(
-        ontology_graph,
-        "SELECT ?answer WHERE { ?b a :GraduationClassificationBand ; :minimumValue ?min ; "
-        ":maximumValue ?max ; :resultLabel ?answer . "
-        "FILTER (8.20 >= ?min && ?max >= 8.20) }",
-    ) == ["Giỏi"]
-
-
 # ------------------------------------------------------------ chứng chỉ
-def test_a_certificate_score_maps_to_a_competency_level(ontology_graph) -> None:
-    levels = answers(
+def test_certificate_conversion_is_returned_as_six_whole_tables(ontology_graph) -> None:
+    tables = answers(
         ontology_graph,
-        "SELECT DISTINCT ?answer WHERE { ?r a :CertificateConversionRule ; "
-        ":appliesToCertificate :IELTSCertificate ; :mapsToCompetencyLevel ?l . "
-        "?l rdfs:label ?answer . }",
+        "SELECT ?answer WHERE { ?table a :CertificateConversionTable ; "
+        ":verbatimTableText ?answer . }",
     )
 
-    assert levels
+    assert len(tables) == 6
+    # Chọn bảng bằng CỘT của nó, không bằng thứ tự trả về. HAI bảng cùng liệt kê
+    # "Công nghệ thông tin" - bảng tiếng Anh và bảng các ngoại ngữ khác - nên
+    # phép chọn cũ lấy "cái đầu tiên khớp" vốn đã phụ thuộc thứ tự, mà truy vấn
+    # thì không có mệnh đề sắp xếp nào. Engine cũ tình cờ trả đúng thứ tự; đổi
+    # kho lưu trữ là lộ ra ngay. Dữ liệu không hề đổi: dòng kỳ vọng vẫn nguyên.
+    special_english_tables = [
+        text
+        for text in tables
+        if "IELTS" in text.splitlines()[0] and "Công nghệ thông tin" in text
+    ]
+    assert len(special_english_tables) == 1
+    special_english = special_english_tables[0]
+    assert "| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 |" in special_english
+    assert "| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 65 | ≥ 5.0 |" not in special_english
 
 
 # ------------------------------------------------------------ biểu mẫu

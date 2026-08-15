@@ -10,9 +10,9 @@ from typing import Any, Mapping
 
 from rdflib import Graph
 
-from ..settings import QUERY_CATALOGUE_PATH, TEST_DATASET_PATH
+from ..settings import QUERY_CATALOGUE_PATH, TEST_DATASET_PATH, USER_QUERIES_PATH
 from ..catalogue import QuerySpec, load_catalogue, match_target
-from .dataset import ALLOWED_REGISTERS, UNSUPPORTED_TARGET_CHARACTERS
+from .dataset import ALLOWED_REGISTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import execute_select, validate_select
@@ -26,6 +26,34 @@ class BenchmarkError(ValueError):
 
 def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, str]]:
     return _load_jsonl(Path(path), kind="benchmark")
+
+
+def load_user_query_expectations(
+    path: Path = USER_QUERIES_PATH,
+) -> list[dict[str, str]]:
+    """Nạp chín câu người thật; đây không phải một split sinh tự động."""
+
+    try:
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise BenchmarkError("real-user cases contain invalid JSON") from exc
+    if not isinstance(payload, dict) or not isinstance(payload.get("expectations"), list):
+        raise BenchmarkError("real-user cases must contain an expectations list")
+    expectations = payload["expectations"]
+    # ``note`` là trường TUỲ CHỌN, thêm 2026-08-14: nhãn ở tệp này do các phiên
+    # làm việc trước SUY RA chứ không phải người gán, nên mỗi lần sửa nhãn phải
+    # ghi kèm căn cứ. Bắt buộc hai trường kia, cho phép thêm ``note``.
+    required = {"question", "expected_query_id"}
+    allowed = required | {"note"}
+    for index, item in enumerate(expectations, 1):
+        if not isinstance(item, dict) or not required <= set(item) <= allowed:
+            raise BenchmarkError(
+                f"real-user case {index}: fields must be question and expected_query_id"
+                " (optional: note)"
+            )
+        if not all(isinstance(value, str) and value for value in item.values()):
+            raise BenchmarkError(f"real-user case {index}: values must be non-empty text")
+    return expectations
 
 
 def validate_benchmark(
@@ -88,11 +116,6 @@ def validate_benchmark(
         target = row["target"]
         if "\n" in target or "\r" in target or re.search(r"\s{2,}", target):
             raise BenchmarkError(f"{record_id}: target must be one canonical line")
-        unsupported = sorted(set(target) & UNSUPPORTED_TARGET_CHARACTERS)
-        if unsupported:
-            raise BenchmarkError(
-                f"{record_id}: tokenizer-unsafe target characters: {unsupported}"
-            )
         query_id = row["query_id"]
         spec = catalogue.get(query_id)
         if spec is None:

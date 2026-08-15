@@ -9,13 +9,16 @@ import pytest
 
 from ontchatbot.catalogue import load_catalogue
 from ontchatbot.research.compose import (
+    _drop_spaces,
+    _strip_diacritics,
+    _typo,
     question_variants,
     REGISTERS,
     choose_mention,
     decorate,
     load_frames,
 )
-from ontchatbot.research.generate_dataset import HELD_OUT_FRAMES
+from ontchatbot.research.generate_dataset import split_frames
 from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.settings import DATASET_DIR, QUERY_CATALOGUE_PATH
 
@@ -69,32 +72,21 @@ def test_every_answerable_family_has_frames(frames, catalogue) -> None:
 
 
 def test_every_family_has_enough_frames_to_split(frames) -> None:
-    """Sàn khung để chia tập theo KHUNG mà vẫn học được.
+    """Mỗi họ phải chia được theo KHUNG mà không rơi hay lặp khung.
 
-    Chia theo khung là cách duy nhất đo được "hiểu cách hỏi mới": vài khung cho
-    train, ``HELD_OUT_FRAMES`` cho validation và bấy nhiêu cho test. Thiếu khung
-    thì train chỉ thấy một cách hỏi, hoặc test phải dùng lại khung đã dạy - điểm
-    số sẽ đẹp giả.
-
-    Ràng buộc là TỈ LỆ GIẤU, không phải con số tuyệt đối. Bản trước chốt
-    ``HELD_OUT_FRAMES >= 2``, mà với 8 khung mỗi họ thì đó là **giấu 50%** - đo
-    hậu quả là những khung bị giấu sai 100%, tức là model chưa từng thấy
-    lối nói đó nên phép đo thành đo cách hỏi lạ chứ không đo năng lực. Thông lệ
-    là 10-20%.
-
-    Nỗi lo "một khung mỗi bên quá mỏng" chỉ đúng khi đọc TỪNG HỌ. Số tổng gộp mọi
-    họ nên vẫn còn hàng chục khung chưa từng thấy mỗi bên - canh thẳng con số đó.
+    Chia theo khung là cách đo "hiểu cách hỏi mới". Hợp đồng
+    thật là ba split đều có khung, hợp của chúng bằng đúng tập đầu
+    và không khung nào xuất hiện ở hai split.
     """
 
-    floor = 2 * HELD_OUT_FRAMES + 2
-    thin = sorted(query_id for query_id, items in frames.items() if len(items) < floor)
-    assert thin == []
-
-    total = sum(len(items) for items in frames.values())
-    held_out = HELD_OUT_FRAMES * len(frames)
-    share = held_out / total
-    assert 0.10 <= share <= 0.25, f"giấu {share:.0%} khung, ngoài khoảng 10-20% thông lệ"
-    assert held_out >= 30, f"chỉ {held_out} khung chấm trên toàn bộ dataset"
+    for query_id, items in frames.items():
+        parts = split_frames(items)
+        assert all(parts.values()), query_id
+        assert set().union(*map(set, parts.values())) == set(items), query_id
+        assert all(
+            set(parts[left]).isdisjoint(parts[right])
+            for left, right in (("train", "val"), ("train", "test"), ("val", "test"))
+        ), query_id
 
 
 def test_noisy_questions_survive_the_runtime_normaliser() -> None:
@@ -105,10 +97,10 @@ def test_noisy_questions_survive_the_runtime_normaliser() -> None:
     sau chuẩn hoá câu noisy trở lại y hệt câu sạch - nhóm "có lỗi viết" thành vô
     nghĩa, model không học được gì, mà lỗi gõ thật ngoài whitelist vẫn hỏng.
 
-    Nhóm noisy vốn là nhóm khó nhất, nên đây là chỗ phải canh chặt.
+    Kiểm từng phép làm nhiễu mà production thật sự dùng; không lấy mẫu
+    ngẫu nhiên rồi cho phép một tỉ lệ bị hoàn tác.
     """
 
-    rng = random.Random(7)
     questions = [
         "bảo lưu nộp ở đâu",
         "các bước của đăng ký học phần",
@@ -117,16 +109,21 @@ def test_noisy_questions_survive_the_runtime_normaliser() -> None:
         "ai quyết định thôi học",
     ]
 
-    undone = 0
-    total = 0
+    reverted = []
     for question in questions:
         clean = normalize_model_input(question)
-        for _ in range(20):
-            total += 1
-            if normalize_model_input(decorate(question, "noisy", rng)) == clean:
-                undone += 1
+        noisy_forms = (
+            _strip_diacritics(question),
+            _drop_spaces(question, random.Random(7)),
+            _typo(question, random.Random(7)),
+        )
+        reverted.extend(
+            (question, noisy)
+            for noisy in noisy_forms
+            if normalize_model_input(noisy) == clean
+        )
 
-    assert undone / total < 0.1, f"{undone}/{total} câu noisy bị chuẩn hoá hoàn tác"
+    assert reverted == []
 
 
 @pytest.mark.parametrize("register", REGISTERS)

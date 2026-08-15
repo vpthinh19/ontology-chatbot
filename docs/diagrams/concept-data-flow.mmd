@@ -1,35 +1,9 @@
----
-config:
-  theme: base
-  themeVariables:
-    fontFamily: "Cantarell, Arial, sans-serif"
-    primaryTextColor: "#172033"
-    lineColor: "#64748b"
-    edgeLabelBackground: "#ffffff"
-  flowchart:
-    curve: basis
----
-flowchart TB
-    Q["Văn bản<br/>tự nhiên"] --> N["NFC · khoảng trắng<br/>viết tắt chắc nghĩa"]
-    N --> M["T5Gemma2"]
-    M --> D{"Đầu ra model"}
-    D -- "không có thông tin" --> X["Không có<br/>thông tin."]
-    D -- "SELECT ..." --> V["Parser và kiểm tra<br/>thao tác cấm"]
-    V -- "query lỗi" --> X
-    V -- "query hợp lệ" --> G["RDFLib<br/>thực thi query"]
-    G -- "không có dòng" --> X
-    G -- "có kết quả" --> R["Dữ liệu có cấu trúc<br/>list[dict]"]
-    R --> T["Văn bản<br/>trả lời"]
-
-    classDef input fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
-    classDef model fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#4c1d95
-    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
-    classDef process fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#172033
-    classDef success fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    classDef reject fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#7f1d1d
-    class Q input
-    class M model
-    class D decision
-    class N,V,G,R process
-    class T success
-    class X reject
+flowchart LR
+    U["Người dùng"] --> L["LLM lớn"]
+    L -->|"gọi công cụ"| T["Công cụ ontology"]
+    T --> C["Danh mục truy vấn"]
+    T --> O["Ontology"]
+    O --> N["Trọn node + nguồn"]
+    N --> T
+    T --> L
+    L --> A["Câu trả lời bám nguồn"]

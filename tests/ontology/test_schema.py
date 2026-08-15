@@ -7,6 +7,7 @@ mới được chuyển sang: 42 quan hệ và 22 lớp dùng mà chưa khai.
 """
 
 import re
+import unicodedata
 
 import pytest
 from rdflib import OWL, RDF, RDFS, SKOS, Literal, URIRef
@@ -90,6 +91,33 @@ def test_every_declared_term_carries_a_vietnamese_label(ontology_graph, declared
     assert missing == []
 
 
+def test_every_literal_bearing_property_carries_a_vietnamese_label(ontology_graph) -> None:
+    """Kể cả thuộc tính mượn của chuẩn - nếu không, câu trả lời mất dòng mà không ai hay.
+
+    Khuôn dump lấy tên cột bằng phép nối ``?p rdfs:label ?tên``. Phép nối này là
+    một phép lọc trá hình: thuộc tính nào không có nhãn thì mọi dòng của nó biến
+    mất, không lỗi, không cảnh báo. ``test_every_declared_term_carries_a_vietnamese_label``
+    ở trên không bắt được vì nó chỉ soi các thuộc tính mang tên miền của dự án,
+    trong khi ``rdfs:label`` và ``skos:altLabel`` là của W3C - và chính chúng
+    từng nuốt 1.227 trên 4.002 dòng literal, trong đó có tên gọi của chính thực
+    thể đang được hỏi.
+    """
+
+    missing = sorted(
+        {
+            str(predicate)
+            for _, predicate, value in ontology_graph
+            if isinstance(value, Literal)
+            and not any(
+                getattr(label, "language", None) == "vi"
+                for label in ontology_graph.objects(predicate, RDFS.label)
+            )
+        }
+    )
+
+    assert missing == []
+
+
 def test_every_named_individual_carries_a_vietnamese_label(ontology_graph) -> None:
     missing = [
         _local(node)
@@ -101,6 +129,32 @@ def test_every_named_individual_carries_a_vietnamese_label(ontology_graph) -> No
     ]
 
     assert missing == []
+
+
+def test_a_name_points_at_exactly_one_individual(ontology_graph) -> None:
+    """Không tên gọi nào - chính hay phụ - được trỏ vào hai thực thể.
+
+    Tên dùng chung là cách chắc chắn nhất để dạy model trả lời sai: bộ sinh
+    dataset lấy nhãn làm biến thể bề mặt, nên một tên trỏ hai chỗ sẽ sinh ra hai
+    dòng cùng câu hỏi khác đích, và thước đo vẫn chấm đúng dù model chọn nhầm.
+
+    Chín mức học phí chương trình đạt kiểm định từng vi phạm chỗ này: bốn nhãn
+    bị hai đến ba node dùng chung trong khi số tiền khác nhau, nên người đọc
+    thấy mấy dòng cùng tên khác giá mà không biết dòng nào của mình.
+    """
+
+    owners: dict[str, set] = {}
+    for subject, predicate, value in ontology_graph:
+        if predicate not in (RDFS.label, SKOS.altLabel):
+            continue
+        if not str(subject).startswith(ONTOLOGY_NS):
+            continue
+        name = unicodedata.normalize("NFC", str(value)).strip().casefold()
+        owners.setdefault(name, set()).add(_local(subject))
+
+    shared = {name: sorted(who) for name, who in owners.items() if len(who) > 1}
+
+    assert shared == {}
 
 
 def test_alternative_labels_are_names_not_questions(ontology_graph) -> None:

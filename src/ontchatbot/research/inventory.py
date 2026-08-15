@@ -7,7 +7,7 @@ from pathlib import Path
 
 from rdflib import OWL, RDF, RDFS, SKOS, Graph, Literal, Namespace, URIRef
 
-from ..runtime.sparql import load_ontology
+from ..runtime.sparql import SOURCE_PROJECTION_PREDICATES, load_ontology
 from ..settings import ANSWER_INVENTORY_PATH, ONTOLOGY_NS
 from .answer_scope import (
     INTERNAL_CLASS_NAMES,
@@ -117,10 +117,34 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
             for predicate, value in graph.predicate_objects(anchor)
             if isinstance(value, Literal)
             and predicate != SKOS.altLabel
+            and predicate not in SOURCE_PROJECTION_PREDICATES
             and (predicate == RDFS.label or str(predicate).startswith(ONTOLOGY_NS))
         }
         for predicate in sorted(literal_predicates, key=str):
             component = "rdfs:label" if predicate == RDFS.label else _local_name(predicate)
+            table_types = {"DocumentTable", "CertificateConversionTable"}
+            if component == "officialText" and (
+                rdf_type_names(graph, anchor) & table_types
+            ):
+                entries.append(
+                    {
+                        "id": f"{anchor_name}-officialText",
+                        "anchor": anchor_name,
+                        "answer_kind": "literal",
+                        "path": ["officialText"],
+                        "provenance": _provenance(
+                            graph,
+                            anchor_name,
+                            ["officialText"],
+                        ),
+                        "status": "excluded",
+                        "reason": (
+                            "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả "
+                            "verbatimTableText giữ nguyên cột từ nguồn."
+                        ),
+                    }
+                )
+                continue
             if predicate == RDFS.label and is_opaque_record(graph, anchor):
                 entries.append(
                     {

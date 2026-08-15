@@ -30,6 +30,7 @@ DOCUMENT_CLASSES = (
     "Point",
     "Appendix",
     "DocumentTable",
+    "CertificateConversionTable",
     "DocumentSection",
 )
 TEXT_PROPERTIES = (
@@ -242,6 +243,70 @@ def test_a_document_part_belongs_to_a_document(ontology_graph) -> None:
     )
 
     assert detached == []
+
+
+def test_the_old_regulation_is_quoted_only_where_the_new_one_is_silent(ontology_graph) -> None:
+    """Quy chế 2021 chỉ được có mặt ở đúng Điều 10, không nhiều hơn.
+
+    QĐ1052 thay thế QĐ753 ở mọi chỗ hai bản cùng nói - nó tự giới hạn phạm vi
+    thay thế ở khoản 1 Điều 32: thay thế những gì "trái với" nó. Điều 10 của
+    QĐ753 lọt lại vì QĐ1052 không có điều nào về việc sinh viên rút bớt học
+    phần.
+
+    Nạp thêm bất kỳ điều nào khác của QĐ753 là dựng hai đời của cùng một quy
+    định cạnh nhau, và chatbot sẽ trả lời khác nhau tuỳ nó bắt trúng đời nào.
+    Luật này đỏ ngay khi có người làm thế.
+    """
+
+    allowed = {
+        "Regulation753Article10",
+        "Regulation753Article10Clause01",
+        "Regulation753Article10Clause02",
+        "Regulation753Article10Clause03",
+    }
+    old = URIRef(ONTOLOGY_NS + "Regulation753")
+
+    unexpected = sorted(
+        local(node)
+        for node in ontology_graph.subjects(A("inDocument"), old)
+        if local(node) not in allowed
+    )
+
+    assert unexpected == []
+
+
+def test_a_training_regulation_says_which_cohorts_it_governs(ontology_graph) -> None:
+    """Quy chế đào tạo phải khai khoá áp dụng, vì đã có hơn một thế hệ.
+
+    QĐ753 ghi "áp dụng cho khóa 60 trở đi", QĐ1052 ghi "khóa 64 trở đi". Thiếu
+    trường này thì hai quy chế trông như nhau, và chatbot có thể dẫn nguồn từ
+    bản đã bị thay cho một sinh viên thuộc khoá bản mới quản.
+
+    Kiểm riêng quy chế đào tạo: quy chế tuyển sinh QĐ626 có hiệu lực từ ngày ký,
+    không gắn với khoá; quyết định học phí hay học bổng cũng không gắn với khoá.
+    """
+
+    missing = sorted(
+        local(node)
+        for node in typed(ontology_graph, "Regulation")
+        if "đào tạo" in str(next(ontology_graph.objects(node, A("title")), "")).casefold()
+        if not list(ontology_graph.objects(node, A("minimumCohortNumber")))
+    )
+
+    assert missing == []
+
+
+def test_ielts_and_toefl_columns_stay_in_the_source_table_order(ontology_graph) -> None:
+    """Lỗi IELTS bị chặn ngay trên nguyên khối bảng, không qua node chép tay."""
+
+    table = A("Regulation1052Appendix2Table03")
+    text = str(next(ontology_graph.objects(table, A("verbatimTableText"))))
+
+    assert "| TOEIC | IELTS | TOEFL iBT |" in text
+    assert text.count("| ≥ 600 | ≥ 5.0 | ≥ 65 |") == 3
+    assert text.count("| ≥ 700 | ≥ 5.5 | ≥ 70 |") == 3
+    assert "| ≥ 600 | ≥ 65 | ≥ 5.0 |" not in text
+    assert "| ≥ 700 | ≥ 70 | ≥ 5.5 |" not in text
 
 
 def test_every_citation_is_readable(ontology_graph) -> None:

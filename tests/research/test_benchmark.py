@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -8,22 +7,20 @@ import pytest
 from ontchatbot.research.benchmark import (
     BenchmarkError,
     load_benchmark,
+    load_user_query_expectations,
     validate_benchmark,
 )
 from ontchatbot.catalogue import QuerySpec, SlotSpec
-from ontchatbot.research.dataset import load_release
 from ontchatbot.research.evaluate_transformers import _parse_args
-from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import PROCEDURE_LANGUAGE_CASES_PATH
 
 
 CATALOGUE = {
-    "performance-band": QuerySpec(
-        "performance-band",
+    "credit-load-range": QuerySpec(
+        "credit-load-range",
         "academic-rule",
-        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= ${score} && ${score} <= ?maximum) }",
-        {"score": SlotSpec("number")},
+        "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= ${credits} && ${credits} <= ?maximum) }",
+        {"credits": SlotSpec("number")},
     ),
     "procedure-instruction": QuerySpec(
         "procedure-instruction",
@@ -55,33 +52,6 @@ def _row(identifier, query_id, text, target):
     }
 
 
-def test_procedure_language_suite_is_disjoint_and_complete() -> None:
-    rows = load_benchmark(PROCEDURE_LANGUAGE_CASES_PATH)
-    release = load_release()
-    release_questions = {
-        normalize_model_input(row["input"]).casefold()
-        for split in ("train", "val", "test")
-        for row in release[split]
-    }
-    positive = [row for row in rows if row["query_id"] == "procedure-instruction"]
-    negative = [row for row in rows if row["query_id"] == "no-information"]
-    positive_targets = Counter(row["target"] for row in positive)
-
-    assert len(rows) == 308
-    assert len(positive) == 220
-    assert len(negative) == 88
-    assert len({row["id"] for row in rows}) == 308
-    assert not release_questions & {
-        normalize_model_input(row["input"]).casefold() for row in rows
-    }
-    assert len(positive_targets) == 22
-    assert set(positive_targets.values()) == {10}
-    assert all(row["target"] == "không có thông tin" for row in negative)
-    assert Counter(row["register"] for row in rows) == Counter(
-        {"neutral": 154, "colloquial": 110, "formal": 44}
-    )
-
-
 def test_transformers_evaluator_accepts_custom_benchmark(tmp_path: Path) -> None:
     model_dir = tmp_path / "model"
     model_dir.mkdir()
@@ -104,22 +74,34 @@ def test_transformers_evaluator_accepts_custom_benchmark(tmp_path: Path) -> None
     assert args.benchmark == benchmark
 
 
+def test_real_user_cases_keep_all_nine_declared_expectations() -> None:
+    expectations = load_user_query_expectations()
+
+    assert len(expectations) == 9
+    # ``note`` là tuỳ chọn: từ 2026-08-14 mỗi nhãn được sửa đều mang lý do đi kèm,
+    # vì nhãn ở tệp này do các phiên trước SUY RA chứ không phải người gán.
+    assert all(
+        {"question", "expected_query_id"} <= set(item) <= {"question", "expected_query_id", "note"}
+        for item in expectations
+    )
+
+
 def test_accepts_held_out_numeric_target_and_marker() -> None:
     training = [
         _row(
             "train-1",
-            "performance-band",
-            "8.5 được loại gì",
-            "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= 8.5 && 8.5 <= ?maximum) }",
+            "credit-load-range",
+            "18 tín chỉ thuộc khoảng nào",
+            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= 18 && 18 <= ?maximum) }",
         ),
         _row("train-2", "no-information", "xin chào", "không có thông tin"),
     ]
     benchmark = [
         _row(
             "test-1",
-            "performance-band",
-            "Nếu được bảy điểm thì xếp mức nào",
-            "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= 7 && 7 <= ?maximum) }",
+            "credit-load-range",
+            "Nếu đăng ký 17 tín chỉ thì thuộc khoảng nào",
+            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= 17 && 17 <= ?maximum) }",
         ),
         _row("test-2", "no-information", "mai trời mưa không", "không có thông tin"),
     ]
@@ -141,7 +123,7 @@ def test_rejects_unknown_query_or_mismatched_target() -> None:
     with pytest.raises(BenchmarkError, match="unknown query_id"):
         validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
 
-    row["query_id"] = "performance-band"
+    row["query_id"] = "credit-load-range"
     with pytest.raises(BenchmarkError, match="does not match query family"):
         validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
 

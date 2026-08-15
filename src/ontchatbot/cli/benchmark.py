@@ -10,11 +10,13 @@ from ..research.benchmark import (
     evaluate_benchmark,
     load_benchmark,
     load_predictions,
+    load_user_query_expectations,
     reference_predictions,
     validate_benchmark,
 )
 from ..settings import DATASET_DIR, TEST_DATASET_PATH
 from ..research.dataset import load_release
+from ..research.evaluation import evaluate_query_id_expectations
 from ..runtime.sparql import load_ontology
 
 
@@ -23,9 +25,19 @@ def main() -> None:
     parser.add_argument("--benchmark", type=Path, default=TEST_DATASET_PATH)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--predictions", type=Path)
+    parser.add_argument(
+        "--real-user-predictions",
+        type=Path,
+        help="JSONL id=real-user-001..009; chấm riêng, không trộn benchmark",
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--details", action="store_true")
     args = parser.parse_args()
+    if args.predictions and not args.real_user_predictions:
+        parser.error(
+            "--predictions requires --real-user-predictions so the separate "
+            "9-case report cannot disappear"
+        )
 
     graph = load_ontology()
     rows = load_benchmark(args.benchmark)
@@ -47,6 +59,39 @@ def main() -> None:
         include_cases=args.details,
     )
     report["benchmark"] = validation
+    real_user_expectations = load_user_query_expectations()
+    if args.real_user_predictions:
+        real_user_map = load_predictions(args.real_user_predictions)
+        real_user_predictions = [
+            real_user_map.get(f"real-user-{index:03d}", "")
+            for index in range(1, len(real_user_expectations) + 1)
+        ]
+        report["real_user_cases"] = evaluate_query_id_expectations(
+            real_user_expectations,
+            real_user_predictions,
+            include_cases=args.details,
+        )
+        report["real_user_cases"]["prediction_file"] = {
+            "missing_ids": [
+                f"real-user-{index:03d}"
+                for index in range(1, len(real_user_expectations) + 1)
+                if f"real-user-{index:03d}" not in real_user_map
+            ],
+            "unexpected_ids": sorted(
+                set(real_user_map)
+                - {
+                    f"real-user-{index:03d}"
+                    for index in range(1, len(real_user_expectations) + 1)
+                }
+            ),
+        }
+    else:
+        report["real_user_cases"] = {
+            "status": "not_scored",
+            "count": len(real_user_expectations),
+            "reason": "supply --real-user-predictions to score this separate set",
+            "mixed_into_generated_benchmark": False,
+        }
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

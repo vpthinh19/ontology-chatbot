@@ -39,6 +39,10 @@ from ..settings import (
 )
 
 REJECTION_CHECKLIST_PATH = Path("resources/cases/rejection_checklist.json")
+#: Khuôn và neo đã đẻ ra từng câu từ chối. Dòng dataset chỉ mang câu hỏi trần,
+#: nên không có sổ này thì phép kiểm phải đoán ngược khuôn từ chữ nghĩa - đúng
+#: cái bẫy đã để lọt 24 câu từ chối oan.
+REJECTION_PROVENANCE_PATH = Path("resources/cases/rejection_provenance.json")
 
 
 def _numbers(graph: Graph) -> tuple[tuple[str, ...], tuple[tuple[str, str], ...]]:
@@ -81,10 +85,6 @@ def main() -> None:
             if line.strip()
         )
     }
-    requirements = json.loads(
-        (DATASET_DIR / "coverage.json").read_text(encoding="utf-8")
-    )
-
     anchors = tuple(
         sorted(
             {
@@ -120,15 +120,16 @@ def main() -> None:
     }
 
     articles, clauses = _numbers(graph)
-    bindings = executable_bindings(
+    filtered = executable_bindings(
         graph,
         catalogue,
         build_bindings(
-            catalogue, frames, requirements["numeric_cases"], articles, clauses
+            graph, catalogue, frames, articles, clauses
         ),
     )
+    bindings = filtered.bindings
 
-    splits, checklist = generate(
+    splits, checklist, provenance = generate(
         graph,
         catalogue,
         frames,
@@ -143,6 +144,10 @@ def main() -> None:
         json.dumps(checklist, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    REJECTION_PROVENANCE_PATH.write_text(
+        json.dumps(provenance, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     total = sum(len(rows) for rows in splits.values())
     rejections = sum(
@@ -152,7 +157,9 @@ def main() -> None:
         f"{total} dòng ("
         + ", ".join(f"{name} {len(rows)}" for name, rows in splits.items())
         + f"); {rejections} câu từ chối; "
-        f"{len({row.target for rows in splits.values() for row in rows})} đích khác nhau"
+        f"{len({row.target for rows in splits.values() for row in rows})} đích khác nhau; "
+        f"loại {filtered.rejected_out_of_range} binding ngoài thang và "
+        f"{filtered.rejected_non_executable} binding không thực thi được"
     )
 
 

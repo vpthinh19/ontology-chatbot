@@ -26,7 +26,26 @@ from ontchatbot.settings import ONTOLOGY_NS, PROJECT_ROOT
 #: lên" vào chỗ bản gốc chỉ ghi "trở", tự bỏ chữ lặp "Trường Trường"). Đã hoàn
 #: nguyên về đúng mặt chữ bản gốc - ontology trích dẫn công văn thật, không
 #: trích dẫn bản đã được máy làm sạch.
-SOURCE_FILES = ("Qd1052.md", "Qd729.md", "huong_dan_dong_hoc_phi.md", "Qd317.md")
+#:
+#: ``Qd753.md`` cũng là bản OCR, và Điều 10 của nó từng mất dấu ở bốn chỗ:
+#: "học phan", "dé nghị", "quản ly", "Mdu số 2". Đã mở bản scan ra đối chiếu và
+#: hoàn nguyên về đúng mặt chữ - đây là sửa lỗi CỦA MÁY, không phải sửa lỗi của
+#: công văn. Bản scan nay nằm ở ``references/Qd753.pdf`` để lần sau khỏi phải đi
+#: tìm.
+#:
+#: ``Qd1965.md`` thì bản OCR hỏng tới mức không cứu được - hai bảng vỡ nát, chữ
+#: dính vào nhau. Đã chép tay lại toàn bộ từ bản scan. Lưu ý một chỗ dễ bị
+#: "sửa hộ": Điều 2 của công văn ghi *"có hiệu lực kể ngày ký ban hành"*, thiếu
+#: chữ "từ". Đó là lỗi CỦA CÔNG VĂN và phải giữ nguyên.
+SOURCE_FILES = (
+    "Qd1052.md",
+    "Qd729.md",
+    "huong_dan_dong_hoc_phi.md",
+    "Qd317.md",
+    "DongHocPhi_VCB_2021.md",
+    "Qd753.md",
+    "Qd1965.md",
+)
 
 #: Tài liệu lấy nội dung từ các tệp trên. Danh mục biểu mẫu không nằm đây vì
 #: nguồn của nó là một trang web, chép về sẽ khác hình thức.
@@ -36,7 +55,71 @@ TEXT_SOURCED_DOCUMENTS = (
     "Decision729",
     "TuitionPaymentGuidance",
     "Decision317",
+    "VNPAYPaymentGuidance",
+    "Regulation753",
+    "Decision1965",
 )
+
+#: Cả 14 bảng được trả nguyên khối cho LLM. Dòng đầu xác định bảng trực tiếp,
+#: tránh phải dựng lại bảng từ node con hoặc dựa vào heading có thể lặp.
+VERBATIM_TABLE_SOURCES = {
+    "Regulation1052Article18Clause02Table01": (
+        "Qd1052.md",
+        "| **Điểm trung bình chung** | **Mức xếp loại** |",
+    ),
+    "Regulation1052Article19Clause01Table01": (
+        "Qd1052.md",
+        "| **TT** | **Số tín chỉ đã tích lũy** | **Xếp trình độ năm học** |",
+    ),
+    "Regulation1052Article23Clause02Table01": (
+        "Qd1052.md",
+        "| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |",
+    ),
+    "Regulation1052Appendix1Table01": (
+        "Qd1052.md",
+        "| **TT** | **Học phần** | **Số lượng sinh viên** | |",
+    ),
+    "Regulation1052Appendix2Table01": (
+        "Qd1052.md",
+        "| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |",
+    ),
+    "Regulation1052Appendix2Table02": (
+        "Qd1052.md",
+        "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |",
+    ),
+    "Regulation1052Appendix2Table03": (
+        "Qd1052.md",
+        "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |",
+    ),
+    "Regulation1052Appendix2Table04": (
+        "Qd1052.md",
+        "| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |",
+    ),
+    "Regulation1052Appendix2Table05": (
+        "Qd1052.md",
+        "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |",
+    ),
+    "Regulation1052Appendix2Table06": (
+        "Qd1052.md",
+        "| TT | Ngoại ngữ | Từ viết tắt | Viết đầy đủ |",
+    ),
+    "Regulation1052Appendix3Table01": (
+        "Qd1052.md",
+        "| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |",
+    ),
+    "Decision1965Article01Table01": (
+        "Qd1965.md",
+        "| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |",
+    ),
+    "Decision1965Article01Table02": (
+        "Qd1965.md",
+        "| STT | Học phần | Thành phần đánh giá | Tỷ trọng |",
+    ),
+    "Decision729AppendixIITable01": (
+        "Qd729.md",
+        "| **TT** | **Tên ngành đào tạo** |",
+    ),
+}
 
 
 def _normalise(text: str) -> str:
@@ -46,6 +129,19 @@ def _normalise(text: str) -> str:
     text = re.sub(r"<br\s*/?>", " ", text).replace("&nbsp;", " ")
     text = re.sub(r"[*_`#>\\]", "", text)
     return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def _markdown_table_at(source: str, header: str) -> str:
+    """Đọc nguyên khối Markdown từ dòng đầu, giữ cả ô rỗng và hàng căn lề."""
+
+    lines = source.splitlines()
+    start = lines.index(header)
+
+    rows: list[str] = []
+    while start < len(lines) and lines[start].startswith("|"):
+        rows.append(lines[start])
+        start += 1
+    return "\n".join(rows)
 
 
 @pytest.fixture(scope="session")
@@ -77,12 +173,15 @@ def _leaves(graph) -> list:
     in_document = URIRef(ONTOLOGY_NS + "inDocument")
     checked = {ONTOLOGY_NS + name for name in TEXT_SOURCED_DOCUMENTS}
 
-    table = URIRef(ONTOLOGY_NS + "DocumentTable")
+    table_classes = {
+        URIRef(ONTOLOGY_NS + "DocumentTable"),
+        URIRef(ONTOLOGY_NS + "CertificateConversionTable"),
+    }
     return [
         node
         for node in graph.subjects(official, None)
         if not kids.get(node)
-        and (node, RDF.type, table) not in graph
+        and not any((node, RDF.type, table) in graph for table in table_classes)
         and any(str(d) in checked for d in graph.objects(node, in_document))
     ]
 
@@ -106,6 +205,37 @@ def test_every_leaf_provision_is_copied_verbatim(ontology_graph, source_text) ->
     assert drifted == []
 
 
+def test_all_tables_are_copied_cell_for_cell_from_their_sources(ontology_graph) -> None:
+    """Cả 14 bảng trả lời phải khớp nguồn từng ký tự và đúng một giá trị."""
+
+    verbatim_table = URIRef(ONTOLOGY_NS + "verbatimTableText")
+    document_table = URIRef(ONTOLOGY_NS + "DocumentTable")
+    conversion_table = URIRef(ONTOLOGY_NS + "CertificateConversionTable")
+
+    mismatches = []
+    for local_name, (source_name, header) in VERBATIM_TABLE_SOURCES.items():
+        node = URIRef(ONTOLOGY_NS + local_name)
+        source = (PROJECT_ROOT / "references" / source_name).read_text(encoding="utf-8")
+        expected = _markdown_table_at(source, header)
+        actual = list(ontology_graph.objects(node, verbatim_table))
+        if (
+            not any(
+                (node, RDF.type, table_class) in ontology_graph
+                for table_class in (document_table, conversion_table)
+            )
+            or len(actual) != 1
+            or str(actual[0]) != expected
+        ):
+            mismatches.append(local_name)
+
+    actual_tables = set(ontology_graph.subjects(verbatim_table, None))
+    expected_tables = {
+        URIRef(ONTOLOGY_NS + local_name) for local_name in VERBATIM_TABLE_SOURCES
+    }
+    assert actual_tables == expected_tables
+    assert mismatches == []
+
+
 def test_no_provision_diverges_from_its_own_subdivisions(ontology_graph) -> None:
     """MỌI cấp văn bản: nguyên văn của con phải nằm nguyên trong nguyên văn của cha.
 
@@ -123,7 +253,15 @@ def test_no_provision_diverges_from_its_own_subdivisions(ontology_graph) -> None
     official = URIRef(ONTOLOGY_NS + "officialText")
     kids = _children(ontology_graph)
 
-    checked = 0
+    textual = set(ontology_graph.subjects(official, None))
+    expected_pairs = {
+        (child, parent)
+        for child, _, parent in ontology_graph.triples(
+            (None, URIRef(ONTOLOGY_NS + "partOf"), None)
+        )
+        if child in textual and parent in textual
+    }
+    checked_pairs = set()
     drifted = []
     for parent, children in kids.items():
         whole = _normalise(next(ontology_graph.objects(parent, official), ""))
@@ -133,16 +271,15 @@ def test_no_provision_diverges_from_its_own_subdivisions(ontology_graph) -> None
             part = _normalise(next(ontology_graph.objects(child, official), ""))
             if not part:
                 continue
-            checked += 1
+            checked_pairs.add((child, parent))
             if part not in whole:
                 drifted.append(
                     f"{str(child).rsplit('#', 1)[-1]} ⊄ {str(parent).rsplit('#', 1)[-1]}"
                 )
 
     assert sorted(drifted) == []
-    # Nếu quan hệ partOf hỏng, phép duyệt trả về rỗng và test sẽ lặng lẽ xanh -
-    # đúng kiểu hỏng nguy hiểm nhất. Chốt số cặp tối thiểu để nó phải đỏ.
-    assert checked >= 200, f"chỉ kiểm được {checked} cặp cha-con, quan hệ partOf có vấn đề?"
+    assert expected_pairs, "không có cặp partOf nào mang nguyên văn ở cả hai cấp"
+    assert checked_pairs == expected_pairs
 
 
 def test_no_provision_carries_two_different_texts(ontology_graph) -> None:

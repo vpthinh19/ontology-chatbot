@@ -9,7 +9,7 @@ from ontchatbot.runtime.api import create_app
 
 
 def test_package_version_matches_installed_release() -> None:
-    assert ontchatbot.__version__ == version("ontchatbot") == "0.4.1"
+    assert ontchatbot.__version__ == version("ontchatbot")
 
 
 def test_http_api_reports_the_production_release(monkeypatch, tmp_path) -> None:
@@ -23,7 +23,7 @@ def test_http_api_reports_the_production_release(monkeypatch, tmp_path) -> None:
 
     app = create_app(SimpleNamespace(answer=lambda _: "unused"), webui_dir=tmp_path)
 
-    assert app.version == "0.4.1"
+    assert app.version == ontchatbot.__version__
 
 
 class _FakeFastAPI:

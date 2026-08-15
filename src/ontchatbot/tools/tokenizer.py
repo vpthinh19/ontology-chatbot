@@ -5,6 +5,8 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import math
+import statistics
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -212,6 +214,46 @@ def unrepresentable_targets(report: Iterable[Mapping[str, Any]]) -> list[str]:
         for row in report
         if row.get("unknown_tokens") or not row.get("roundtrip_exact")
     ]
+
+
+def summarize_target_audit(
+    report: Iterable[Mapping[str, Any]],
+    *,
+    generation_ceiling: int,
+) -> dict[str, Any]:
+    """Summarize one model's measurements over unique canonical targets.
+
+    Representability is reported separately from the generation ceiling. A
+    lossy tokenizer is a research result, while a target beyond the configured
+    ceiling is a reproducible truncation error in the training/generation
+    protocol.
+    """
+
+    rows = list(report)
+    if not rows:
+        raise TokenizerContractError("cannot summarize an empty target audit")
+    lengths = sorted(int(row["tokens"]) for row in rows)
+    unrepresentable = unrepresentable_targets(rows)
+    over_ceiling = [
+        str(row["target"])
+        for row in rows
+        if int(row["tokens"]) > generation_ceiling
+    ]
+    return {
+        "unique_targets": len(rows),
+        "representable_targets": len(rows) - len(unrepresentable),
+        "unrepresentable_targets": len(unrepresentable),
+        "token_lengths": {
+            "min": lengths[0],
+            "median": statistics.median(lengths),
+            "p95": lengths[math.ceil(0.95 * len(lengths)) - 1],
+            "max": lengths[-1],
+        },
+        "generation_ceiling": generation_ceiling,
+        "targets_over_ceiling": len(over_ceiling),
+        "unrepresentable_examples": unrepresentable[:3],
+        "over_ceiling_examples": over_ceiling[:3],
+    }
 
 
 def _read_json(path: Path) -> dict[str, Any]:

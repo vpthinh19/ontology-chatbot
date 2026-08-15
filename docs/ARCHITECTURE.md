@@ -1,100 +1,96 @@
-# Kiến trúc hệ thống
+# Kiến trúc hệ thống v3
 
-Tài liệu này mô tả các thành phần và trách nhiệm của chúng. Nó kỹ thuật hơn
-[tài liệu ý tưởng](CONCEPT.md), nhưng vẫn không đòi hỏi đọc mã nguồn.
+## Tổng quan
 
-## Đường đi của một câu hỏi
-
-```text
-câu hỏi của người dùng
-  → chuẩn hoá nhẹ
-  → mô hình sinh chuỗi
-      ├── báo không có thông tin ──────────────→ "Không có thông tin."
-      └── một câu truy vấn
-            → kiểm tra an toàn
-            → đối chiếu danh mục dạng câu hỏi
-            → chạy trên mạng lưới kiến thức
-            → định dạng kết quả ───────────────→ câu trả lời
-```
-
-Truy vấn hỏng, không thuộc danh mục, hoặc không trả về dữ liệu đều dẫn tới cùng
-một câu "Không có thông tin."
-
-## Trách nhiệm từng thành phần
-
-| Thành phần | Nhận | Trả | Cố ý **không** làm |
-|---|---|---|---|
-| Chuẩn hoá | câu hỏi thô | văn bản sạch nhẹ | dò thực thể, đoán ý định |
-| Mô hình | văn bản | truy vấn hoặc lời từ chối | đọc nội dung mạng lưới |
-| Kiểm tra an toàn | truy vấn | truy vấn an toàn | sửa truy vấn |
-| Đối chiếu danh mục | truy vấn | truy vấn thuộc một dạng đã khai | chọn dạng gần đúng |
-| Máy truy vấn | truy vấn + mạng lưới | các giá trị | suy đoán ý người dùng |
-| Định dạng | các giá trị | văn bản hiển thị | chứa logic riêng cho học vụ |
-
-Cột cuối quan trọng ngang cột đầu. Mỗi thành phần **từ chối làm hộ việc của
-thành phần khác**, nên khi có lỗi thì xác định được ngay lỗi thuộc về ai.
-
-## Vì sao cần đối chiếu danh mục
-
-Kiểm tra an toàn chỉ chặn cú pháp sai và thao tác nguy hiểm. Nó không chặn được
-một truy vấn hợp lệ hoàn toàn nhưng ghép thực thể với quan hệ theo cách không ai
-định nghĩa — ví dụ duyệt mọi thủ tục rồi đổ nguyên văn hàng chục điều luật ra
-màn hình.
-
-Đối chiếu danh mục so khớp **chính xác** truy vấn với các dạng đã khai báo.
-Khớp thì chạy tiếp; không khớp thì từ chối. Không có "gần đúng".
-
-## An toàn truy vấn
-
-Hệ thống chỉ chấp nhận truy vấn **chỉ đọc**. Cụ thể: cấm mọi thao tác thay đổi
-dữ liệu, cấm gọi ra nguồn dữ liệu bên ngoài, cấm lấy tất cả các cột mà không nêu
-rõ cột kết quả, và giới hạn độ dài truy vấn lẫn số dòng trả về.
-
-Kết quả trả về phải là **tên gọi hoặc giá trị**, không bao giờ là một mắt lưới
-trong mạng. Ràng buộc này bảo đảm người dùng luôn nhận được chữ đọc được, chứ
-không phải một mã định danh nội bộ.
-
-## Xử lý lỗi
-
-Ba tình huống nghiệp vụ — mô hình từ chối, truy vấn không hợp lệ, kết quả rỗng —
-cùng trả về "Không có thông tin." với mã trạng thái thành công, vì đó là câu trả
-lời hợp lệ của hệ thống.
-
-Lỗi nạp mô hình, lỗi đọc mạng lưới và lỗi lập trình **không** bị che thành phản
-hồi nghiệp vụ. Che chúng đi sẽ khiến một sự cố hạ tầng trông y hệt một câu hỏi
-ngoài phạm vi.
-
-Mỗi lượt hỏi được gắn một mã truy vết và ghi lại: câu gốc, câu đã chuẩn hoá,
-chuỗi mô hình sinh ra nguyên văn, thời gian sinh, trạng thái kiểm tra, số dòng
-kết quả, câu trả lời cuối và tổng thời gian.
-
-## Ranh giới giữa phần chạy thật và phần nghiên cứu
-
-Phần chạy thật chỉ cần: một mô hình đã chuyển đổi, bộ tách từ của nó, mạng lưới
-kiến thức, và danh mục dạng câu hỏi. Nó **không** dùng tới mã huấn luyện, mã tạo
-dữ liệu hay mã báo cáo.
-
-Ranh giới này giữ cho bản triển khai nhẹ và có thể kiểm chứng: thứ chạy trên máy
-chủ là một tập con nhỏ, không kéo theo toàn bộ công cụ nghiên cứu.
-
-## Từ huấn luyện tới triển khai
+V3 đặt chatbot ontology bên trong vòng lặp dùng công cụ của một LLM lớn:
 
 ```text
-mô hình gốc → tinh chỉnh một phần nhỏ tham số → chọn điểm dừng bằng tập kiểm định
-            → hợp nhất phần đã tinh chỉnh vào mô hình gốc
-            → đánh giá lại trên tập kiểm tra
-            → chuyển đổi sang dạng chạy nhanh trên CPU
+người dùng
+  → LLM lớn
+      → gọi công cụ ontology
+          → chuẩn hoá yêu cầu
+          → sinh hoặc chọn SPARQL thuộc danh mục
+          → kiểm tra chỉ đọc + khớp shape
+          → RDFLib lấy trọn node và nguồn
+      ← context có cấu trúc
+  ← câu trả lời dựa trên context
 ```
 
-Ba mô hình được so sánh bằng cùng một giao thức; chỉ một mô hình được triển
-khai. Bản chuyển đổi được đánh giá lại trên đúng tập kiểm tra để xác nhận nó cho
-kết quả tương đương bản gốc — bước chuyển đổi chỉ được phép làm nhanh hơn, không
-được phép làm đổi câu trả lời.
+Công cụ không sở hữu hội thoại và không viết câu trả lời cuối. LLM không được
+truy cập ontology bằng query tự do.
 
-## Dạng dữ liệu bên trong
+## Hợp đồng của công cụ
 
-Sau khi truy vấn chạy xong, dữ liệu chỉ còn là các dòng gồm cặp *tên cột — giá
-trị*, với giá trị là chữ, số, đúng/sai hoặc rỗng.
+Đầu vào tối thiểu là yêu cầu truy xuất học vụ do LLM chuyển tới. Đầu ra thành
+công gồm:
 
-Không có cấu trúc dữ liệu riêng cho từng loại câu trả lời học vụ. Nhờ vậy thêm
-một dạng câu hỏi mới không đòi hỏi sửa phần định dạng.
+- node hoặc các node được chọn;
+- các cặp thuộc tính–giá trị đọc được của node;
+- literal trên node con trực tiếp khi shape khai báo;
+- trích dẫn tự giải thích;
+- URL văn bản chính thức;
+- trạng thái truy xuất.
+
+Đầu ra không có dữ liệu phải phân biệt được với lỗi hệ thống để LLM không nhầm
+“ngoài phạm vi” với “dịch vụ hỏng”.
+
+## Shape chính: node đầy đủ
+
+Các họ `*-facts` trong danh mục dùng cùng ý tưởng:
+
+```sparql
+{ :Anchor ?p ?giatri . FILTER(isLiteral(?giatri)) }
+UNION
+{ :Anchor ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) }
+```
+
+Kết quả được gắn nhãn thuộc tính, trích dẫn và URL trước khi trả cho LLM. Query
+không chỉ lấy một cạnh theo đúng từ khóa câu hỏi; nó lấy context của node để LLM
+xử lý điều kiện và ngoại lệ trong cùng một lượt.
+
+## Shape bảng
+
+Các họ bảng neo trực tiếp vào node `DocumentTable`. Giá trị chính là
+`verbatimTableText`; quan hệ `inDocument` và `partOf` cung cấp ngữ cảnh, còn
+`citationLabel` và `documentUrl` cung cấp nguồn.
+
+Mỗi bảng là một node nguyên văn. Không dựng cell, row hay mapping song song cho
+các giá trị chỉ tồn tại trong bảng. Điều này bảo toàn vị trí cột và tạo một điểm
+duy nhất để kiểm tra độ trung thực với nguồn.
+
+## Các cửa kiểm
+
+Trước khi chạy, query phải:
+
+1. là truy vấn chỉ đọc;
+2. không gọi nguồn ngoài;
+3. khớp chính xác một shape trong danh mục truy vấn;
+4. giới hạn đầu ra theo hợp đồng runtime.
+
+Sau khi chạy, công cụ kiểm tra kết quả có dữ liệu đọc được và nguồn theo yêu cầu.
+Công cụ không tự sửa query gần đúng.
+
+## Ranh giới code hiện tại
+
+Repository vẫn chứa runtime seq2seq/CTranslate2 và code huấn luyện cũ để truy
+vết lịch sử. Chúng không đại diện cho kiến trúc v3 và không phải fallback.
+`src/ontchatbot/runtime/llm.py` là phần thử nghiệm ánh xạ câu hỏi sang query bằng
+LLM, nhưng lớp điều phối tool-calling hoàn chỉnh vẫn cần được tích hợp và đánh
+giá trước khi công bố triển khai.
+
+## Quan sát và ghi vết
+
+Mỗi lần gọi công cụ cần ghi request ID, yêu cầu đã chuẩn hoá, query nguyên văn,
+shape khớp, node neo, trạng thái kiểm tra, số giá trị trả về, nguồn và latency.
+Không ghi lại suy luận riêng tư của LLM.
+
+## Artifact
+
+- `resources/ontology/ontology.ttl`: dữ liệu có thẩm quyền;
+- `resources/ontology/answer_inventory.json`: danh mục khả năng trả lời;
+- `resources/dataset/catalogue.jsonl`: hợp đồng query;
+- ba split JSONL: ví dụ ánh xạ;
+- `reports/dataset.json`: snapshot thống kê dẫn xuất.
+
+Tính tương thích của cả chuỗi do test quyết định; một trường “ready” trong report
+không thay thế kết quả kiểm tra hiện hành.

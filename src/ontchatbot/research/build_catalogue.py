@@ -1,16 +1,30 @@
-"""Sinh bản nháp danh mục truy vấn từ danh mục khả năng trả lời.
+"""Dựng danh mục truy vấn từ danh mục khả năng trả lời.
 
-``catalogue_validation`` bắt mọi mục ``supported`` phải được ít nhất một họ truy
-vấn phủ. Viết tay 100+ họ vừa chậm vừa dễ sót, nên bản nháp được sinh cơ học từ
-chính danh mục khả năng trả lời rồi mới chỉnh tay.
+Bản trước sinh MỘT HỌ CHO MỖI CẶP (lớp neo, đường đi), ra 183 họ. Đo lại thì
+86,3% số họ không trả cột nguồn và 87,4% trả đúng một cột trần trụi - tức là
+danh mục tự nó dạy model làm hai việc mà đặc tả cấm. Sửa từng họ là vô vọng vì
+chúng do máy sinh; phải sửa ở đây.
 
-Hai loại neo được xử lý khác nhau:
+Bản này chỉ có MỘT hình dạng truy vấn, dùng cho mọi họ:
 
-* **neo gọi tên được** - quy trình, chính sách, biểu mẫu, ngành. Model sinh IRI
-  của chúng, nên slot liệt kê giá trị hữu hạn.
-* **bản ghi kỹ thuật** - mức học phí, quy tắc quy đổi chứng chỉ. Người dùng
-  không gọi tên chúng, nên truy vấn ràng buộc theo lớp và để backend tìm bằng
-  điều kiện nghiệp vụ; không có slot IRI nào cả.
+    lấy mọi giá trị chữ của neo và của các node kề nó, kèm tên cột lấy từ nhãn
+    thuộc tính, kèm trích dẫn và đường dẫn bản gốc
+
+Hình dạng đó trả 4 cột và luôn có chỗ cho nguồn, nên hai lỗi trên không thể tái
+diễn từ khâu sinh. Nó cũng phủ đúng những gì danh mục khả năng trả lời liệt kê:
+mọi đường đi ở đó dài 1 hoặc 2 chặng, đúng hai nhánh của khuôn.
+
+Khác biệt duy nhất giữa các họ là **cách ghim neo**:
+
+* **ghim bằng tên** - thủ tục, biểu mẫu, ngành, phần văn bản. Người hỏi gọi tên
+  chúng, nên slot liệt kê IRI hữu hạn.
+* **ghim gián tiếp** - bảng xếp loại, quy tắc quy đổi chứng chỉ, phí thanh
+  toán. Không ai gọi tên "bậc xếp loại học lực khá"; người ta đưa ra một con số,
+  hoặc một phương thức nộp tiền, rồi hỏi nó rơi vào đâu. Neo được tìm bằng phép
+  so ngưỡng hoặc bằng quan hệ, chứ không bằng tên.
+
+Nói cách khác: họ tham số KHÔNG phải một loại họ khác, nó là cùng một khuôn với
+mệnh đề tìm neo khác. Đó là lý do tệp này ngắn hơn hẳn bản trước.
 """
 
 from __future__ import annotations
@@ -21,530 +35,517 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from rdflib import URIRef
+from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
+from ..catalogue import CatalogueError, load_catalogue
+from ..runtime.sparql import load_ontology
 from ..settings import (
     ANSWER_INVENTORY_PATH,
     ONTOLOGY_NS,
     QUERY_CATALOGUE_MANUAL_PATH,
     QUERY_CATALOGUE_PATH,
 )
-from ..runtime.sparql import load_ontology
-from .answer_scope import is_opaque_record, rdf_type_names
 
-#: Lớp neo -> miền của họ truy vấn, dùng cho báo cáo độ phủ.
+#: Các lớp trả lời cùng một kiểu câu hỏi thì gộp làm một họ. Tách ra chỉ tạo ra
+#: những họ gần giống hệt nhau, và đó chính là chế độ lỗi đã đo được ở v2: model
+#: nhận đúng thực thể nhưng chọn nhầm họ.
+CLASS_GROUPS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    (
+        "document-part",
+        "document",
+        (
+            "Chapter",
+            "Article",
+            "Clause",
+            "Point",
+            "Appendix",
+            "DocumentSection",
+        ),
+    ),
+    ("official-document", "document", ("Decision", "Regulation", "GuidanceDocument", "FormCatalogue")),
+    ("certificate", "certificate", ("Certificate", "LanguageCertificate", "ComputerCertificate")),
+)
+
+#: Lớp neo -> miền, dùng cho báo cáo độ phủ.
 DOMAIN_OF_CLASS = {
     "AcademicProcedure": "procedure",
-    "AcademicPolicy": "academic-rule",
-    "AcademicProgram": "tuition",
-    "DisciplineGroup": "tuition",
-    "TuitionRate": "tuition",
-    "DoctoralTuitionDurationRule": "tuition",
+    "AcademicCase": "procedure",
+    "CaseResolution": "procedure",
+    "ProcedureStep": "procedure",
+    "Requirement": "procedure",
+    "Deadline": "procedure",
+    "Outcome": "procedure",
+    "Consequence": "procedure",
+    "OrganizationalUnit": "procedure",
+    "AcademicActor": "procedure",
     "PaymentMethod": "tuition",
     "PaymentFeeRule": "tuition",
     "Bank": "tuition",
     "BillingUnit": "tuition",
-    "Certificate": "certificate",
-    "LanguageCertificate": "certificate",
-    "ComputerCertificate": "certificate",
-    "CertificateConversionRule": "certificate",
-    "LanguageCompetencyLevel": "certificate",
-    "CourseExemption": "certificate",
-    "LearnerCategory": "certificate",
+    "ScholarshipRate": "tuition",
     "FormDocument": "form",
-    "FormCatalogue": "form",
     "FormCatalogueEntry": "form",
-    # Tầng văn bản: tra cứu nguyên văn theo số hiệu điều khoản.
-    "Decision": "document",
-    "Regulation": "document",
-    "GuidanceDocument": "document",
-    "Chapter": "document",
-    "Article": "document",
-    "Clause": "document",
-    "Point": "document",
-    "Appendix": "document",
-    "DocumentTable": "document",
-    "DocumentSection": "document",
 }
 DEFAULT_DOMAIN = "academic-rule"
+
+#: Neo KHÔNG gọi tên được. Mỗi mục: mệnh đề tìm neo, các slot, và miền.
+#:
+#: Đây là chỗ duy nhất trong tệp phải viết tay, vì mỗi bảng ngưỡng dùng một cặp
+#: trường khác nhau và không suy ra cơ học được. Danh sách ngắn có chủ đích: chỉ
+#: những lớp mà người hỏi không gọi tên được mới nằm đây. Lớp chỉ mang số hiệu -
+#: điều, khoản, biểu mẫu - không thuộc nhóm này; số hiệu là định danh, khớp bằng
+#: phép bằng, và chúng được ghim bằng tên như mọi neo gọi tên được khác.
+INDIRECT_ANCHORS: tuple[dict[str, object], ...] = (
+    {
+        # Không ai gọi tên "phí VNPAY đối với ngân hàng khác". Người ta hỏi
+        # "đóng qua VNPay có mất phí không", tức là ghim bằng PHƯƠNG THỨC NỘP.
+        # Đây là ca cho thấy "ghim gián tiếp" không đồng nghĩa với "ghim bằng số".
+        "query_id": "payment-fee-by-method",
+        "domain": "tuition",
+        "classes": ("PaymentFeeRule",),
+        "slots": {"phuongthuc": "iri"},
+        "iri_class": "PaymentMethod",
+        "where": "?x a :PaymentFeeRule ; :appliesToPaymentMethod ${phuongthuc} .",
+    },
+)
+
+#: Tám bảng còn lại, mỗi bảng ứng với một ý định độc lập. Ba bảng cuối giới
+#: thiệu thực thể; các thực thể vẫn tồn tại, còn bảng giữ nguyên bố cục nguồn.
+SOURCE_TABLE_FAMILIES: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("academic-performance-table", "academic-rule", ("Regulation1052Article18Clause02Table01",)),
+    ("study-year-classification-table", "academic-rule", ("Regulation1052Article19Clause01Table01",)),
+    ("graduation-classification-table", "academic-rule", ("Regulation1052Article23Clause02Table01",)),
+    ("class-size-table", "academic-rule", ("Regulation1052Appendix1Table01",)),
+    ("language-course-classification-table", "academic-rule", ("Decision1965Article01Table01",)),
+    ("language-course-assessment-table", "academic-rule", ("Decision1965Article01Table02",)),
+    ("certificate-catalogue-table", "certificate", ("Regulation1052Appendix2Table06",)),
+    ("academic-program-catalogue-table", "academic-rule", ("Decision729AppendixIITable01",)),
+)
+
+#: Bốn ý định người dùng, sáu bảng nguồn. Không còn slot chứng chỉ hay điều kiện
+#: trên từng dòng: chọn đúng họ là chọn thẳng node bảng, rồi trả nguyên khối để
+#: LLM lớn tự đọc. Hai nhóm có hai bảng vì công văn tách tiếng Anh và các ngoại
+#: ngữ khác thành hai bảng độc lập.
+CONVERSION_TABLE_FAMILIES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    (
+        "certificate-conversion-table-english-language-major-student",
+        ("Regulation1052Appendix2Table05",),
+    ),
+    (
+        "certificate-conversion-table-special-program-non-language-major-student",
+        ("Regulation1052Appendix2Table03", "Regulation1052Appendix2Table04"),
+    ),
+    (
+        "certificate-conversion-table-standard-program-non-language-major-student",
+        ("Regulation1052Appendix2Table01", "Regulation1052Appendix2Table02"),
+    ),
+    (
+        "certificate-conversion-table-moi-doi-tuong",
+        ("Regulation1052Appendix3Table01",),
+    ),
+)
+
+#: Khuôn chung. ``${bind}`` là mệnh đề ghim neo, phần còn lại giống nhau ở mọi họ.
+#:
+#: Bốn cột, và hai trong số đó là nguồn - nên không họ nào sinh ra từ đây có thể
+#: vi phạm luật "phải kèm nguồn" hay "không được trả một cột".
+#:
+#: ``FILTER(?p != skos:altLabel)`` giấu nhãn phụ khỏi câu trả lời. Nhãn phụ là
+#: phương tiện để TÌM RA thực thể, không phải nội dung trả lời; thả vào thì một
+#: thủ tục phình thêm chục dòng "bảo lưu", "phòng CTSV".
+#: Nguồn được GỘP chứ không nối thẳng. Nối thẳng thì mỗi nguồn NHÂN ĐÔI toàn bộ
+#: dữ kiện: quy tắc phí VNPAY có ba nguồn nên 17 dữ kiện thành 51 dòng, hai quy
+#: tắc thành 102 - vượt trần 100 dòng của runtime và truy vấn ném lỗi, sinh viên
+#: không nhận được gì. Gộp lại còn 34 dòng và vẫn thấy đủ ba nguồn.
+#:
+#: Đây là lỗi của KHUÔN chứ không của riêng họ nào: mọi node có nhiều hơn một
+#: :basedOn đều bị nhân lên như vậy.
+#: KHÔNG dùng DISTINCT. Hai cột phải khớp nhau theo thứ tự: trích dẫn thứ i đi
+#: với đường dẫn thứ i. ``DISTINCT`` trên đường dẫn gộp mất bản trùng - quy tắc
+#: phí VNPAY có ba nguồn nhưng hai trong số đó cùng một thông báo, nên ra 3 trích
+#: dẫn với 2 đường dẫn và người đọc không biết ghép cái nào với cái nào. Đường
+#: dẫn lặp lại là đúng: hai mục khác nhau của cùng một văn bản.
+#:
+#: Nhánh UNION thứ hai cho PHẦN VĂN BẢN tự dẫn chính nó. Điều 24 không có
+#: ``basedOn`` - nó LÀ nguồn - nên nếu chỉ đi theo ``basedOn`` thì cả tầng văn
+#: bản, hơn 280 neo, trả lời với cột nguồn RỖNG. Luật "mọi họ phải có cột nguồn"
+#: vẫn xanh vì nó chỉ kiểm tên cột có mặt, không kiểm cột có giá trị.
+#: HAI CHI TIẾT KHÔNG ĐƯỢC BỎ, cả hai đều đã gây lỗi thật:
+#:
+#: 1. ``STR(?u)`` là BẮT BUỘC. ``documentUrl`` khai kiểu ``xsd:anyURI``, mà
+#:    ``GROUP_CONCAT`` theo chuẩn chỉ nhận chuỗi. rdflib dễ tính nên vẫn nối,
+#:    Oxigraph đúng chuẩn nên trả UNBOUND - và đó là điều đã xảy ra: đổi engine
+#:    làm mất cột đường dẫn ở **471/521 đích** suốt nhiều tháng mà bộ kiểm im
+#:    lặng, vì nó chỉ kiểm tên cột có mặt chứ không kiểm cột có giá trị.
+#: 2. Trích dẫn và đường dẫn nay lấy RIÊNG bằng hai ``OPTIONAL``, chỉ cần MỘT
+#:    trong hai là đủ để coi như có nguồn. Hợp đồng nguồn là "công văn HOẶC web
+#:    chính chủ", nên một trang web không có Điều/Khoản để trích dẫn vẫn phải
+#:    dẫn được nguồn. Bản trước đòi cả hai bằng dấu ``;`` nên thiếu một là mất
+#:    sạch cả hai, âm thầm.
+#:
+#: ``COALESCE`` giữ chuỗi rỗng thay cho giá trị vắng để HAI CỘT KHỚP NHAU THEO
+#: THỨ TỰ - ``GROUP_CONCAT`` bỏ qua giá trị unbound, nên thiếu nó thì trích dẫn
+#: thứ i không còn đi với đường dẫn thứ i.
+#: 3. Đường dẫn nhận CẢ ``documentUrl`` LẪN ``webPageUrl``. Hai tên cho cùng một
+#:    thứ: phần công văn dùng cái đầu, còn tài liệu web (hướng dẫn nộp học phí,
+#:    trang cơ cấu tổ chức, danh mục biểu mẫu) dùng cái sau. Chỉ nhận một tên là
+#:    năm tài liệu web tự trả lời về mình mà KHÔNG có đường dẫn nào - tức nguồn
+#:    web bị đối xử kém hơn công văn, trái với hợp đồng đã chốt.
+_SOURCE_CLAUSE = "OPTIONAL{?x :sourceCitation ?nguon;:sourceLink ?duongdan} "
+
+DUMP_TEMPLATE = (
+    "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { "
+    "${bind} "
+    "{ ?x ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "UNION "
+    "{ ?x ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) "
+    + _SOURCE_CLAUSE +
+    "}"
+)
+
+# Với neo IRI hữu hạn, không ghim ``?x`` bằng ``BIND``: Oxigraph mất hàng nghìn
+# lần thời gian cho hình dạng đó. IRI được đặt thẳng vào hai nhánh lấy dữ kiện.
+#
+# Phần nguồn dùng đường ``:basedOn?``: độ dài 0 lấy chính neo văn bản, độ dài 1
+# lấy căn cứ của node nghiệp vụ. Cách này giữ đúng hai trường hợp của hai nhánh
+# ``UNION`` cũ mà chỉ phải ghi IRI neo thêm một lần. Đây không chỉ là rút gọn
+# hình thức: tên IRI dài từng làm 448/523 target vượt trần 320 token của ViT5.
+# Subquery chỉ phục vụ một neo cố định nên không cần chiếu/group theo ``?x``.
+# ``HAVING`` giữ hai cột nguồn ở trạng thái unbound khi neo không có nguồn,
+# thay vì biến chúng thành chuỗi rỗng do aggregate trên tập nghiệm rỗng.
+NAMED_DUMP_TEMPLATE = (
+    "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { "
+    "{ ${anchor} ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "UNION "
+    "{ ${anchor} ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) "
+    "OPTIONAL{${anchor} :sourceCitation ?nguon;:sourceLink ?duongdan} "
+    "}"
+)
+
+# Bảng là ngoại lệ có chủ đích đối với khuôn duyệt node kề ở trên.
+# Mỗi họ phải trả đúng nguyên khối của các node đã ghim: đi qua ``partOf`` sẽ
+# kéo cả Phụ lục mẹ vào, vừa nhân dòng vừa gắn nhầm trích dẫn bảng con cho văn
+# bản của cha.
+TABLE_DUMP_TEMPLATE = (
+    "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { "
+    "${bind} "
+    "?x :citationLabel ?nguon ; :documentUrl ?duongdan . "
+    "{ "
+    # Không thụt lề các dòng nối tiếp: khuôn này được ghép thành MỘT dòng,
+    # nên khoảng trắng thụt lề sẽ thành khoảng trắng đôi trong truy vấn, và
+    # phép kiểm "target phải là một dòng canonical" sẽ đỏ.
+    "{ VALUES ?p { :verbatimTableText :citationLabel :documentUrl } "
+    "?x ?p ?giatri . ?p rdfs:label ?thuoctinh } "
+    "UNION "
+    "{ ?x rdfs:label ?giatri . BIND(\"nhãn tiếng Việt\"@vi AS ?thuoctinh) } "
+    "UNION "
+    "{ VALUES ?p { :inDocument :partOf } "
+    "?x ?p ?related . ?related rdfs:label ?giatri . ?p rdfs:label ?thuoctinh } "
+    "} "
+    "}"
+)
+
+
+_COLUMN = re.compile(r"^[a-z][a-zA-Z0-9]*$")
 _CAMEL = re.compile(r"(?<!^)(?=[A-Z])")
 
-#: Hai đường đi tới trích dẫn. Chúng KHÔNG sinh họ riêng cho từng lớp neo.
-#:
-#: Người hỏi "cái này căn cứ vào đâu" luôn muốn đúng một thứ - tên điều khoản kèm
-#: đường dẫn bản gốc - bất kể đang hỏi về chứng chỉ, học phí hay một quy tắc. Tách
-#: thành ~90 họ gần giống hệt nhau không thêm năng lực nào, mà làm model lẫn khi
-#: chọn họ: đó chính là chế độ lỗi đã đo được (nhận đúng thực thể, sai quan hệ).
-#: Một họ gộp trả cả hai cột cùng lúc, đúng nguyên tắc "nội dung kèm nguồn" mà các
-#: họ ``*-with-source`` viết tay đã theo.
-CITATION_PATHS = (("basedOn", "citationLabel"), ("basedOn", "documentUrl"))
-CITATION_QUERY_ID = "source-citation"
 
-#: Lớp của tầng văn bản, dùng để nhận ra câu hỏi vòng tròn bên dưới.
-_DOCUMENT_PART_CLASSES = frozenset(
-    {"Chapter", "Article", "Clause", "Point", "Appendix", "DocumentTable", "DocumentSection"}
-)
-#: Số hiệu định vị. Hỏi chúng trên chính phần văn bản vừa được gọi tên là hỏi
-#: vòng tròn: "khoản 3 Điều 24 thuộc điều số mấy" đã có câu trả lời trong câu hỏi.
-_LOCATOR_TERMINALS = frozenset(
-    {"articleNumber", "clauseNumber", "pointLetter", "chapterNumber", "appendixNumber"}
-)
-#: Cờ boolean của bảng ngưỡng: dữ liệu nội bộ để so sánh, không phải câu trả lời.
-_INTERNAL_FLAG_TERMINALS = frozenset({"minimumInclusive", "maximumInclusive"})
-#: Cột ngưỡng số của bảng phân loại. Người dùng hỏi chúng bằng MỘT GIÁ TRỊ ("7,5
-#: điểm xếp loại gì") qua họ viết tay, không bao giờ hỏi "liệt kê mọi ngưỡng dưới".
-_THRESHOLD_TERMINALS = frozenset(
-    {
-        "minimumValue", "maximumValue",
-        "minimumScore", "maximumScore",
-        "minimumCredits", "maximumCredits",
-        "minimumPercentage", "maximumPercentage",
-    }
-)
-#: Quan hệ chỉ dùng để đi ngược cây cấu trúc văn bản.
-_STRUCTURAL_RELATIONS = frozenset({"inDocument", "partOf"})
-
-
-#: Họ mà CÂU HỎI của nó trùng với một họ khác, dù truy vấn khác nhau.
-#:
-#: Đo được từ hai lượt huấn luyện: model nhầm ``class-size-rule`` với
-#: ``class-size-rule-maximum-value`` **17 lần** - nhiều nhất trong 83 cặp bị
-#: nhầm. Đọc câu chấm thật thì rõ vì sao: *"quy mô lớp X giới hạn bao nhiêu sinh
-#: viên"* và *"sĩ số tối đa của quy mô lớp X"* là **cùng một câu hỏi**, mà dataset
-#: bắt model chọn hai đích khác nhau rồi chấm sai khi nó đoán nhầm.
-#:
-#: Họ cha ``class-size-rule`` (viết tay) trả về cả dòng quy tắc - đã kiểm chứng
-#: là chứa đúng giá trị mà hai họ con trả riêng. ``criterion-text`` thì chép lại
-#: chính hai con số đó dưới dạng câu văn.
-#:
-#: Hạ xuống secondary chứ KHÔNG xoá: chúng vẫn chạy được ở runtime và vẫn phủ
-#: answer inventory, chỉ thôi cạnh tranh với họ cha khi dạy.
-_QUESTION_DUPLICATES = frozenset(
-    {
-        # Họ cha ``class-size-rule`` trả cả dòng quy tắc, đã kiểm chứng là chứa
-        # đúng giá trị hai họ con trả riêng.
-        "class-size-rule-maximum-value",
-        "class-size-rule-minimum-value",
-        "class-size-rule-criterion-text",
-        # Người dùng: "không ai hỏi tiêu đề cả". Với một văn bản thì "tên" và
-        # "tiêu đề" là một thứ trong đầu người hỏi; model nhầm 13 lần.
-        "document-title",
-        # Người dùng: hỏi biểu mẫu thì "chỉ cần trả về link tải là đủ, vì hầu hết
-        # thông tin của biểu mẫu nằm trong file tải qua link". Họ ``form-download``
-        # trả tên + số hiệu + link cùng lúc.
-        "form-catalogue-entry-listed-title",
-        "form-catalogue-entry-listed-form-number",
-        "form-catalogue-entry-download-url",
-        "form-catalogue-entry-catalogue-entry-for-form-label",
-        # Người dùng: mô tả trường hợp và cách giải quyết "rất giống nhau, có khả
-        # năng thay thế cho nhau trong cùng một câu nói". ``academic-case-details``
-        # trả cả hai.
-        "academic-case-case-text",
-        "academic-case-has-resolution-condition-text",
-        # Người dùng: tên thủ tục kế tiếp và mô tả của nó "rất giống nhau, có thể
-        # xem như một". ``academic-procedure-next-procedure-details`` trả cả hai.
-        "academic-procedure-next-procedure-label",
-        "academic-procedure-next-procedure-summary-text",
-        # Người dùng: "chatbot nhỏ nên không cần trả lời quá ngắn như tên, mà nên
-        # trả về thông tin có giá trị. Trả về thông tin ngắn chỉ có ý nghĩa nếu
-        # có LLM đứng sau đọc hộ." Năm nhóm dưới đây đều trả một mẩu rời của cùng
-        # một thực thể; các họ ``*-overview`` / ``*-contact`` / ``*-handling`` gộp
-        # chúng lại thành một câu trả lời dùng được.
-        # Node "Trường Đại học Nha Trang" mang cả lớp AcademicActor nên bộ sinh
-        # đẻ ra bản sao "academic-rule-office-*" của cùng năm mẩu liên hệ.
-        "academic-rule-office-address",
-        "academic-rule-office-location",
-        "academic-rule-office-phone",
-        "academic-rule-office-email",
-        "academic-rule-office-website",
-        "organizational-unit-office-address",
-        "organizational-unit-office-location",
-        "organizational-unit-office-phone",
-        "organizational-unit-office-email",
-        "organizational-unit-office-website",
-        "academic-procedure-label",
-        "academic-procedure-summary-text",
-        "academic-procedure-submitted-to-label",
-        "academic-procedure-decided-by-label",
-        "academic-procedure-reviewed-by-label",
-        # Hỏi "nộp học phí ở đâu" phải ra CỔNG THANH TOÁN, không phải im lặng vì
-        # thủ tục đó không nộp giấy cho ai.
-        "academic-procedure-supports-payment-method-label",
-        "academic-rule-label",
-        "academic-rule-definition-text",
-        "decision-document-number",
-        "decision-issue-date",
-        "decision-effective-from-semester",
-        # Bốn họ thủ tục dưới đây dùng chung phần lớn thực thể neo và cùng trả lời
-        # một câu hỏi của con người - "tôi muốn làm thủ tục X".
-        # ``academic-procedure-overview`` trả cả tóm tắt lẫn các bước;
-        # ``academic-procedure-handling`` trả cả biểu mẫu cần nộp.
-        "academic-procedure-has-step-step-text",
-        "academic-procedure-requires-form-label",
-        # Cùng 2 neo, cùng hình dạng trả lời, nghĩa NGƯỢC nhau - sinh viên hỏi sàn
-        # mà nhận trần là bị hướng dẫn sai hẳn. ``credit-load-rule-limits`` trả cả
-        # hai, kèm nguyên văn dòng quy tắc: đó là chỗ DUY NHẤT nêu trần 32 tín chỉ
-        # của chương trình 4,5 năm, mà ``maximumCredits`` = 27 thì trả lời sai cho
-        # nhóm sinh viên đó.
-        "credit-load-rule-maximum-credits",
-        "credit-load-rule-minimum-credits",
-        # Học bổng: bộ sinh đẻ ra bốn họ trả MẨU RỜI của cùng một mức học bổng -
-        # riêng số tiền, riêng "VND", riêng "đồng trên học kỳ", riêng bậc đào tạo.
-        # Không ai hỏi "học bổng loại giỏi dùng đơn vị tiền tệ gì".
-        # ``scholarship-rate-details`` trả tên + số tiền + đơn vị + xếp loại.
-        "scholarship-rate-amount",
-        "scholarship-rate-applies-to-education-level-label",
-        "scholarship-rate-billing-unit-label",
-        "scholarship-rate-currency-code",
-    }
-)
-
-#: Trả lời được, nhưng gần như không ai hỏi theo lối đó.
-#:
-#: Người dùng quan tâm NỘI DUNG kèm nguồn, không quan tâm định vị theo số hiệu
-#: điều khoản. ``document-official-text`` và ``source-citation`` vẫn giữ nguyên
-#: vì chúng đúng là "nội dung kèm nguồn"; chỉ bỏ cách hỏi theo số.
-#:
-#: Ba họ này còn kéo theo một tác hại đo được: hỏi *"nội dung khoản 5 ra sao"* mà
-#: không nêu Điều nào thì câu hỏi KHÔNG trả lời được, nhưng sự có mặt của một họ
-#: tra khoản khiến model với lấy nó thay vì từ chối.
-#:
-#: Hạ xuống secondary chứ không xoá: đường đi vẫn được phủ, runtime vẫn chạy
-#: được truy vấn ấy, chỉ thôi tiêu tốn ngân sách dạy.
-#:
-#: ``document-heading-text`` KHÔNG nằm ở đây dù cũng thuộc miền tra cứu văn bản.
-#: Nó là họ duy nhất neo vào các node Điều/Chương/Phụ lục, mà chính những neo đó
-#: nuôi nhóm từ chối câu mơ hồ: "Điều 1" có ở ba văn bản với nội dung khác hẳn
-#: nhau. Hạ nó xuống thì mất luôn vật liệu dạy từ chối ấy.
-_LOW_DEMAND_QUESTIONS = frozenset(
-    {
-        "article-with-source",
-        "clause-with-source",
-    }
-)
-
-
-def _tier(anchor_class: str, path: tuple[str, ...], *, opaque: bool) -> str:
-    """Họ này có cần dữ liệu huấn luyện không?
-
-    ``secondary`` vẫn truy vấn được ở runtime và vẫn phủ danh mục khả năng trả
-    lời - nó chỉ không tiêu ngân sách dạy học. Các tiêu chí dưới đây đều nhận ra
-    cùng một thứ: câu hỏi mà không người dùng nào đặt.
-    """
-
-    terminal = path[-1]
-    document_part = anchor_class in _DOCUMENT_PART_CLASSES
-
-    if document_part and terminal in _LOCATOR_TERMINALS:
-        return "secondary"
-    # Ràng buộc `document_part` là bắt buộc: `partOf` chỉ vô nghĩa khi dùng để đi
-    # ngược cây cấu trúc VĂN BẢN. Một lớp nghiệp vụ về sau có quan hệ cùng tên thì
-    # không được vạ lây - hiện chưa có lớp nào như vậy, nên đây là chặn trước.
-    if (
-        document_part
-        and len(path) == 2
-        and path[0] in _STRUCTURAL_RELATIONS
-        and terminal == "rdfs:label"
-    ):
-        return "secondary"
-    if document_part and path == ("rdfs:label",):
-        return "secondary"
-    if terminal in _INTERNAL_FLAG_TERMINALS:
-        return "secondary"
-    # MỌI họ neo trên bản ghi kỹ thuật. Người dùng không gọi tên chúng - họ hỏi
-    # bằng một giá trị ("7,5 điểm xếp loại gì", "học phí ngành X khoá 65"), và các
-    # câu đó đã có họ viết tay riêng. Hỏi theo lớp chỉ ra những câu về CẤU TRÚC
-    # một bảng nội bộ ("bảng học phí gồm những khối ngành nào") mà không ai đặt.
-    #
-    # Vì bản ghi kỹ thuật luôn bị ràng buộc theo lớp (không có slot IRI), luật này
-    # bao trùm cả trích dẫn, đường dẫn lẫn cột ngưỡng của chúng.
-    if opaque:
-        return "secondary"
-    # Một dữ kiện nhỏ trỏ ngược về nguyên văn CẢ điều luật chứng minh nó. Hỏi
-    # "đơn vị tính học phí là gì" - đáng lẽ nhận "đồng trên tín chỉ" - lại nhận
-    # 2.892 ký tự nguyên văn Quyết định 729.
-    if path == ("basedOn", "officialText"):
-        return "secondary"
-    # Trích dẫn và đường dẫn đứng một mình trên phần văn bản. Không ai hỏi riêng
-    # chuỗi trích dẫn; người ta muốn NỘI DUNG KÈM NGUỒN, và các họ ``*-with-source``
-    # đã làm đúng việc đó. Đường dẫn còn vô nghĩa hơn: mọi phần của cùng một tài
-    # liệu dùng chung một URL, nên hỏi theo từng khoản là hàng trăm target trỏ về
-    # vài đường dẫn giống nhau.
-    if len(path) == 1 and terminal in {"citationLabel", "documentUrl"}:
-        return "secondary"
-    return "primary"
+class CatalogueBuildError(ValueError):
+    """Bộ dựng từ chối sinh ra một họ vi phạm luật của danh mục."""
 
 
 def _kebab(name: str) -> str:
-    return _CAMEL.sub("-", name.replace("rdfs:label", "Label")).lower()
+    return _CAMEL.sub("-", name).lower()
 
 
-def _primary_class(classes: tuple[str, ...]) -> str:
-    """Lớp cụ thể nhất: lớp con luôn đứng sau lớp cha trong dữ liệu dự án."""
-
-    for preferred in (
-        "AcademicProcedure", "AcademicPolicy", "CertificateConversionRule",
-        "TuitionRate", "FormCatalogueEntry", "FormDocument", "AcademicProgram",
-    ):
-        if preferred in classes:
-            return preferred
-    return classes[0] if classes else "Thing"
+def _local(node: URIRef) -> str:
+    return str(node).rsplit("#", 1)[-1]
 
 
-def _template(path: tuple[str, ...], *, anchored: bool, anchor_class: str) -> str:
-    """Dựng một truy vấn một dòng đi theo đúng đường đi đã khai.
+def _classes_of(graph: Graph, node: URIRef) -> list[str]:
+    """Lớp của một node, bỏ owl:NamedIndividual và lớp ngoài tên miền dự án."""
 
-    Neo gọi tên được thì đứng thẳng làm chủ thể. Bản ghi kỹ thuật thì ràng buộc
-    theo lớp và để một biến làm chủ thể - model không phải học IRI của chúng.
-    """
-
-    if anchored:
-        steps, cursor = [], "${anchor}"
-    else:
-        steps, cursor = [f"?item a :{anchor_class} ."], "?item"
-    for index, component in enumerate(path):
-        predicate = "rdfs:label" if component == "rdfs:label" else f":{component}"
-        target = "?answer" if index == len(path) - 1 else "?node"
-        steps.append(f"{cursor} {predicate} {target} .")
-        cursor = target
-    return f"SELECT DISTINCT ?answer WHERE {{ {' '.join(steps)} }}"
-
-
-#: Đường đi ``officialText`` trả NGUYÊN VĂN một văn bản. Ba họ viết tay hỏi theo
-#: số hiệu điều/khoản/điểm (``article-with-source`` …) đã trả nguyên văn KÈM căn
-#: cứ và đường dẫn bản gốc; họ sinh tự động cho văn bản có TÊN thì chỉ trả mỗi
-#: nguyên văn. Hai hình dạng lệch nhau cho cùng một kiểu câu hỏi - "Điều 22 nói
-#: gì" có nguồn, "Phụ lục I nói gì" thì không - và chỗ lệch đó dụ model chọn nhầm.
-#: Cho cả hai cùng hình dạng thì hết chỗ dụ.
-VERBATIM_PATH = ("officialText",)
-VERBATIM_COMPANIONS = ("citationLabel", "documentUrl")
-
-
-def _verbatim_with_source_template() -> str:
-    return (
-        "SELECT ?nộidung ?căncứ ?xemtại WHERE { BIND(${anchor} AS ?d) "
-        "?d :officialText ?nộidung ; :citationLabel ?căncứ ; :documentUrl ?xemtại . }"
+    return sorted(
+        _local(t)
+        for t in graph.objects(node, RDF.type)
+        if t != OWL.NamedIndividual and str(t).startswith(ONTOLOGY_NS)
     )
 
 
-def _has_all(graph, anchors, predicates) -> bool:
-    """Mọi neo trong nhóm có ĐỦ các thuộc tính đi kèm hay không.
+def _most_specific(graph: Graph, names: list[str]) -> str:
+    """Lớp con cùng trong danh sách - lớp không phải cha của lớp nào khác ở đó."""
 
-    Thiếu dù một neo cũng phải trả về False: ba triple bắt buộc tạo một phép
-    join, neo nào thiếu sẽ trả về RỖNG - tức là câu hỏi hợp lệ mà chatbot im
-    lặng, kiểu hỏng tệ hơn hẳn việc trả lời thiếu cột.
+    if not names:
+        return ""
+    parents = {
+        name: {_local(p) for p in graph.objects(URIRef(ONTOLOGY_NS + name), RDFS.subClassOf)}
+        for name in names
+    }
+    leaves = [n for n in names if not any(n in parents[m] for m in names)]
+    return sorted(leaves)[0] if leaves else sorted(names)[0]
+
+
+#: Trần dòng của runtime. Truy vấn vượt là ném lỗi, người hỏi không nhận được gì.
+ROW_LIMIT = 100
+#: Số tổ hợp slot thử mỗi họ. Lấy mẫu trải đều là đủ, vì họ phình thường phình
+#: ở nhiều tổ hợp chứ không riêng một.
+_SAMPLED_COMBINATIONS = 40
+_SAMPLE_NUMBERS = ("0", "5", "6.5", "35", "68", "70", "105", "600")
+
+
+def _check_row_limit(graph: Graph, family: dict[str, object]) -> None:
+    """Không họ nào được trả quá trần dòng của runtime.
+
+    Ba luật ở ``_check`` chỉ soi HÌNH DẠNG họ - đủ cột, có cột nguồn, tên cột
+    ASCII. Chúng không thấy được họ trả về quá nhiều dòng, và đó là cách một họ
+    vỡ ở runtime mà mọi phép kiểm vẫn xanh: họ phí thanh toán từng trả 102 dòng
+    cho cổng VNPAY, tức là ném lỗi thay vì trả lời.
     """
 
-    return all(
-        (URIRef(ONTOLOGY_NS + anchor), URIRef(ONTOLOGY_NS + predicate), None) in graph
-        for anchor in anchors
-        for predicate in predicates
-    )
+    import random
+    from itertools import product
 
+    from ..runtime.sparql import SparqlError, execute_select
 
-def build(inventory_path: Path = ANSWER_INVENTORY_PATH) -> list[dict[str, object]]:
-    graph = load_ontology()
-    entries = json.loads(Path(inventory_path).read_text(encoding="utf-8"))["entries"]
-    groups: dict[tuple[tuple[str, ...], tuple[str, ...]], list[str]] = defaultdict(list)
-    for entry in entries:
-        if entry["status"] != "supported":
+    slots = dict(family["slots"])  # type: ignore[arg-type]
+    pools = [
+        tuple(slot["values"]) if slot["kind"] == "iri" else _SAMPLE_NUMBERS
+        for slot in slots.values()
+    ]
+    # Lấy mẫu TRẢI ĐỀU, không phải 24 tổ hợp đầu. ``product`` chạy chậm nhất ở
+    # slot đầu tiên, nên lấy phần đầu là chỉ thử đúng MỘT chứng chỉ trong mười
+    # tám - đúng kiểu chốt chặn nhìn thì có mà không canh được gì. Hạt giống cố
+    # định để bộ dựng vẫn tái lập được.
+    space = list(product(*pools)) if pools else [()]
+    if len(space) > _SAMPLED_COMBINATIONS:
+        space = random.Random(0).sample(space, _SAMPLED_COMBINATIONS)
+    combos = space
+    for values in combos:
+        query = str(family["target_template"])
+        for name, value in zip(slots, values):
+            query = query.replace("${" + name + "}", value)
+        try:
+            rows = execute_select(graph, query, max_rows=ROW_LIMIT * 10)
+        except SparqlError:
             continue
-        node = URIRef(ONTOLOGY_NS + entry["anchor"])
-        classes = tuple(sorted(rdf_type_names(graph, node) - {"NamedIndividual"}))
-        groups[(classes, tuple(entry["path"]))].append(entry["anchor"])
+        if len(rows) > ROW_LIMIT:
+            raise CatalogueBuildError(
+                f"{family['query_id']}: trả {len(rows)} dòng với {dict(zip(slots, values))}, "
+                f"vượt trần {ROW_LIMIT} của runtime"
+            )
+
+
+def _check(family: dict[str, object]) -> dict[str, object]:
+    """Ba luật của đặc tả, chặn tại khâu sinh chứ không sửa tay về sau."""
+
+    query_id = family["query_id"]
+    target = str(family["target_template"])
+    head = target.split("WHERE", 1)[0]
+    columns = re.findall(r"\?(\w+)", head)
+
+    if len(columns) < 2:
+        raise CatalogueBuildError(f"{query_id}: họ chỉ trả {len(columns)} cột")
+    if not {"nguon", "duongdan"} & set(columns):
+        raise CatalogueBuildError(f"{query_id}: họ không có cột nguồn")
+    bad = [c for c in columns if not _COLUMN.match(c)]
+    if bad:
+        raise CatalogueBuildError(f"{query_id}: tên cột không hợp lệ: {bad}")
+    return family
+
+
+def _grouped_inventory(
+    graph: Graph, entries: list[dict]
+) -> dict[str, dict[str, set]]:
+    """Gom mục supported theo nhóm lớp neo."""
+
+    group_of: dict[str, str] = {}
+    for group_id, _, classes in CLASS_GROUPS:
+        for name in classes:
+            group_of[name] = group_id
+
+    buckets: dict[str, dict[str, set]] = defaultdict(
+        lambda: {"paths": set(), "anchors": set(), "classes": set()}
+    )
+    for entry in entries:
+        node = URIRef(ONTOLOGY_NS + str(entry["anchor"]))
+        specific = _most_specific(graph, _classes_of(graph, node))
+        if not specific:
+            continue
+        key = group_of.get(specific, specific)
+        bucket = buckets[key]
+        bucket["paths"].add(tuple(entry["path"]))
+        bucket["anchors"].add(str(entry["anchor"]))
+        bucket["classes"].add(specific)
+    return buckets
+
+
+def _domain_for(classes: set[str], group_id: str) -> str:
+    for group, domain, _ in CLASS_GROUPS:
+        if group == group_id:
+            return domain
+    for name in sorted(classes):
+        if name in DOMAIN_OF_CLASS:
+            return DOMAIN_OF_CLASS[name]
+    return DEFAULT_DOMAIN
+
+
+def _indirect_family(graph: Graph, spec: dict, bucket: dict[str, set]) -> dict[str, object]:
+    where = str(spec["where"])
+    slots: dict[str, object] = {}
+    for name, kind in dict(spec["slots"]).items():  # type: ignore[arg-type]
+        if kind == "number":
+            slots[name] = {"kind": "number"}
+            continue
+        class_name = str(spec.get(f"iri_class_{name}", spec["iri_class"]))
+        values = sorted(
+            f":{_local(node)}"
+            for node in graph.subjects(RDF.type, URIRef(ONTOLOGY_NS + class_name))
+        )
+        slots[name] = {"kind": "iri", "values": values}
+    return _check(
+        {
+            "query_id": spec["query_id"],
+            "domain": spec["domain"],
+            "target_template": DUMP_TEMPLATE.replace("${bind}", where),
+            "slots": slots,
+            "coverage": [
+                {
+                    "anchor_classes": sorted(bucket["classes"]),
+                    "paths": [list(path) for path in sorted(bucket["paths"])],
+                }
+            ],
+        }
+    )
+
+
+def _table_families(
+    graph: Graph,
+    bucket: dict[str, set],
+    declarations: tuple[tuple[str, str, tuple[str, ...]], ...],
+    class_name: str,
+) -> list[dict[str, object]]:
+    """Ghim từng họ thẳng vào node bảng nguồn, không đi qua node con."""
+
+    families = []
+    for query_id, domain, table_names in declarations:
+        anchors = [f":{name}" for name in table_names]
+        where = "VALUES ?x { " + " ".join(anchors) + " }"
+        paths = []
+        for path in sorted(bucket["paths"]):
+            nodes: set[object] = {
+                URIRef(ONTOLOGY_NS + table_name) for table_name in table_names
+            }
+            for component in path:
+                predicate = (
+                    RDFS.label
+                    if component == "rdfs:label"
+                    else URIRef(ONTOLOGY_NS + component)
+                )
+                nodes = {
+                    value
+                    for node in nodes
+                    if isinstance(node, URIRef)
+                    for value in graph.objects(node, predicate)
+                }
+            if nodes:
+                paths.append(list(path))
+        families.append(
+            _check(
+                {
+                    "query_id": query_id,
+                    "domain": domain,
+                    "target_template": TABLE_DUMP_TEMPLATE.replace("${bind}", where),
+                    "slots": {},
+                    "coverage": [
+                        {
+                            "anchor_classes": [class_name],
+                            "anchors": list(table_names),
+                            "paths": paths,
+                        }
+                    ],
+                }
+            )
+        )
+    return families
+
+
+def _named_family(group_id: str, bucket: dict[str, set]) -> dict[str, object]:
+    return _check(
+        {
+            "query_id": f"{_kebab(group_id)}-facts",
+            "domain": _domain_for(set(bucket["classes"]), group_id),
+            "target_template": NAMED_DUMP_TEMPLATE,
+            "slots": {
+                "anchor": {
+                    "kind": "iri",
+                    "values": [f":{name}" for name in sorted(bucket["anchors"])],
+                }
+            },
+            "coverage": [
+                {
+                    "anchor_classes": sorted(bucket["classes"]),
+                    "paths": [list(path) for path in sorted(bucket["paths"])],
+                }
+            ],
+        }
+    )
+
+
+def build(
+    graph: Graph | None = None,
+    inventory_path: Path = ANSWER_INVENTORY_PATH,
+) -> list[dict[str, object]]:
+    graph = graph if graph is not None else load_ontology()
+    inventory = json.loads(Path(inventory_path).read_text(encoding="utf-8"))
+    entries = [e for e in inventory["entries"] if e.get("status") == "supported"]
+    buckets = _grouped_inventory(graph, entries)
 
     families: list[dict[str, object]] = []
-    used: set[str] = {CITATION_QUERY_ID}
-    citation_anchors: set[str] = set()
-    citation_classes: set[str] = set()
-    for (classes, path), anchors in sorted(groups.items()):
-        anchor_class = _primary_class(classes)
-        opaque = is_opaque_record(graph, URIRef(ONTOLOGY_NS + anchors[0]))
-        # Bản ghi kỹ thuật không được mang slot IRI - người dùng không gọi tên
-        # chúng - nên chúng ở ngoài phép gộp và giữ họ ràng buộc theo lớp.
-        if path in CITATION_PATHS and not opaque:
-            # Thủ tục ĐỨNG NGOÀI họ căn cứ chung. ``source-citation`` phủ 223 neo,
-            # trong đó có TRỌN neo của ``procedure-steps-with-source`` (22/22) và
-            # ``procedure-requirements-with-source`` (17/17). Hệ quả: câu "cho xin
-            # nguồn của thủ tục X" có ba đích đều hợp lệ và model buộc phải lụi.
-            # Hai họ kia trả căn cứ KÈM nội dung nên hữu ích hơn; đường đi vẫn được
-            # chúng phủ nên bỏ thủ tục ở đây không tạo lỗ hổng.
-            if "AcademicProcedure" in classes:
+    handled: set[str] = set()
+    if "CertificateConversionTable" in buckets:
+        declarations = tuple(
+            (query_id, "certificate", table_names)
+            for query_id, table_names in CONVERSION_TABLE_FAMILIES
+        )
+        families.extend(
+            _table_families(
+                graph,
+                buckets["CertificateConversionTable"],
+                declarations,
+                "CertificateConversionTable",
+            )
+        )
+        handled.add("CertificateConversionTable")
+    if "DocumentTable" in buckets:
+        families.extend(
+            _table_families(
+                graph,
+                buckets["DocumentTable"],
+                SOURCE_TABLE_FAMILIES,
+                "DocumentTable",
+            )
+        )
+        handled.add("DocumentTable")
+    for spec in INDIRECT_ANCHORS:
+        for name in tuple(spec["classes"]):  # type: ignore[arg-type]
+            if name not in buckets:
                 continue
-            citation_anchors.update(anchors)
-            citation_classes.update(classes)
+            families.append(_indirect_family(graph, spec, buckets[name]))
+            handled.add(name)
+            break
+    for group_id in sorted(buckets):
+        if group_id in handled:
             continue
-        query_id = "-".join([_kebab(anchor_class), *(_kebab(p) for p in path)])
-        suffix = 2
-        while query_id in used:
-            query_id = f"{query_id}-{suffix}"
-            suffix += 1
-        used.add(query_id)
-
-        # Văn bản có TÊN thì trả nguyên văn KÈM căn cứ và đường dẫn, cùng hình
-        # dạng với ``article-with-source`` / ``clause-with-source`` /
-        # ``point-with-source``. Điều kiện đủ thuộc tính được kiểm trên ĐỒ THỊ chứ
-        # không chốt cứng tên họ, nên thêm văn bản mới vào ontology là tự có nguồn.
-        verbatim_with_source = (
-            path == VERBATIM_PATH
-            and not opaque
-            and _has_all(graph, anchors, VERBATIM_COMPANIONS)
-        )
-        if verbatim_with_source:
-            template = _verbatim_with_source_template()
-            covered_paths = [list(VERBATIM_PATH)] + [[p] for p in VERBATIM_COMPANIONS]
-        else:
-            template = _template(path, anchored=not opaque, anchor_class=anchor_class)
-            covered_paths = [list(path)]
-        slots: dict[str, object] = (
-            {}
-            if opaque
-            else {"anchor": {"kind": "iri", "values": [f":{a}" for a in sorted(anchors)]}}
-        )
-        families.append(
-            {
-                "query_id": query_id,
-                "domain": DOMAIN_OF_CLASS.get(anchor_class, DEFAULT_DOMAIN),
-                "target_template": template,
-                "slots": slots,
-                "coverage": [
-                    {"anchor_classes": [anchor_class], "paths": covered_paths}
-                ],
-                "tier": _tier(anchor_class, path, opaque=opaque),
-            }
-        )
-    if citation_anchors:
-        families.append(_citation_family(citation_anchors, citation_classes))
-    return _consolidate(families)
-
-
-def _consolidate(families: list[dict[str, object]]) -> list[dict[str, object]]:
-    """Gộp các họ KHÔNG phân biệt được với nhau ở bất kỳ khía cạnh nào đã khai.
-
-    Bộ sinh nhóm theo lớp neo, nhưng template lại không nhắc tới lớp: ``${anchor}
-    rdfs:label ?answer`` giống hệt nhau cho thủ tục, chứng chỉ, ngân hàng... Kết
-    quả là 48 họ ``*-label`` cùng một câu SPARQL, chỉ khác danh sách neo.
-
-    Gộp chúng lại là **phép biến đổi tương đương**: cùng template, hợp các danh
-    sách neo rời nhau thì sinh ra đúng tập target cũ. Nhưng nó bỏ được một khối
-    lớn họ na ná nhau - đúng thứ làm model lẫn khi chọn họ, và cũng là khối lượng
-    soạn khung câu hỏi bị nhân lên vô ích.
-
-    Khoá gộp gồm cả ``tier`` và ``domain``: hai họ khác tầng hoặc khác miền thì
-    vẫn phân biệt được, không được nhập một.
-    """
-
-    grouped: dict[tuple[str, str, str], list[dict[str, object]]] = {}
+        families.append(_named_family(group_id, buckets[group_id]))
     for family in families:
-        key = (
-            str(family["target_template"]),
-            str(family["tier"]),
-            str(family["domain"]),
-        )
-        grouped.setdefault(key, []).append(family)
-
-    merged: list[dict[str, object]] = []
-    for (template, tier, domain), group in grouped.items():
-        anchors: set[str] = set()
-        classes: set[str] = set()
-        paths: set[tuple[str, ...]] = set()
-        for family in group:
-            slot = family["slots"].get("anchor")  # type: ignore[union-attr]
-            if slot is not None:
-                anchors.update(slot["values"])
-            for selector in family["coverage"]:  # type: ignore[union-attr]
-                classes.update(selector["anchor_classes"])
-                paths.update(tuple(path) for path in selector["paths"])
-        first = group[0]
-        merged.append(
-            {
-                "query_id": _merged_query_id(domain, _naming_path(paths), tier)
-                if len(group) > 1
-                else first["query_id"],
-                "domain": domain,
-                "target_template": template,
-                "slots": (
-                    {"anchor": {"kind": "iri", "values": sorted(anchors)}}
-                    if anchors
-                    else {}
-                ),
-                "coverage": [
-                    {
-                        "anchor_classes": sorted(classes),
-                        "paths": [list(path) for path in sorted(paths)],
-                    }
-                ],
-                "tier": tier,
-            }
-        )
-    return merged
-
-
-def _naming_path(paths: set[tuple[str, ...]]) -> tuple[str, ...]:
-    """Đường đi dùng để ĐẶT TÊN cho họ đã gộp.
-
-    Mặc định lấy đường đi đầu theo thứ tự chữ cái - đủ dùng khi các đường đi
-    ngang hàng nhau. Nhưng họ trả nguyên văn KÈM nguồn thì không ngang hàng:
-    ``officialText`` mới là thứ người ta hỏi, ``citationLabel`` và ``documentUrl``
-    chỉ đi kèm. Xếp chữ cái sẽ đặt tên nó là ``document-citation-label`` - đọc
-    lên tưởng họ chỉ trả căn cứ, trong khi nó trả cả nguyên văn.
-    """
-
-    return VERBATIM_PATH if VERBATIM_PATH in paths else sorted(paths)[0]
-
-
-def _merged_query_id(domain: str, path: tuple[str, ...], tier: str) -> str:
-    """Tên cho họ đã gộp: giữ tên của một lớp neo cụ thể sẽ gây hiểu nhầm."""
-
-    name = "-".join([domain, *(_kebab(part) for part in path)])
-    return name if tier == "primary" else f"{name}-secondary"
-
-
-def _citation_family(
-    anchors: set[str],
-    classes: set[str],
-) -> dict[str, object]:
-    """Một họ duy nhất trả căn cứ kèm đường dẫn bản gốc cho mọi neo gọi tên được.
-
-    Hai triple bắt buộc tạo một phép join: neo thiếu ``documentUrl`` sẽ trả rỗng.
-    ``catalogue_validation`` chỉ đối chiếu từng đường đi rời nên không tự bắt được
-    lỗi đồng xuất hiện đó - ``tests/research/test_catalogue_validation.py`` canh nó.
-    """
-
-    return {
-        "query_id": CITATION_QUERY_ID,
-        "domain": "document",
-        "target_template": (
-            "SELECT ?căncứ ?xemtại WHERE { ${anchor} :basedOn ?part . "
-            "?part :citationLabel ?căncứ ; :documentUrl ?xemtại . }"
-        ),
-        "slots": {"anchor": {"kind": "iri", "values": [f":{a}" for a in sorted(anchors)]}},
-        "coverage": [
-            {
-                "anchor_classes": sorted(classes),
-                "paths": [list(path) for path in CITATION_PATHS],
-            }
-        ],
-        "tier": "primary",
-    }
-
-
-def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=QUERY_CATALOGUE_PATH)
-    return parser.parse_args()
+        _check_row_limit(graph, family)
+    return families
 
 
 def _manual_families(path: Path) -> list[dict[str, object]]:
-    """Họ truy vấn viết tay, giữ nguyên thứ tự khai báo.
-
-    Bộ sinh cơ học chỉ dựng được truy vấn đi theo một đường dẫn. Những câu hỏi
-    hữu ích nhất lại cần so sánh ngưỡng ("7,5 điểm xếp loại gì", "70 tín chỉ là
-    năm mấy", "học phí ngành X khoá 65") hoặc gom nhiều cột về một bản ghi. Mất
-    tệp này là mất luôn các câu hỏi đó, nên nó là dữ liệu canonical.
-    """
-
-    if not path.is_file():
+    if not path.exists():
         return []
     return [
         json.loads(line)
@@ -553,9 +554,16 @@ def _manual_families(path: Path) -> list[dict[str, object]]:
     ]
 
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=QUERY_CATALOGUE_PATH)
+    return parser.parse_args()
+
+
 def main() -> None:
     args = _parse_args()
-    generated = build()
+    graph = load_ontology()
+    generated = build(graph)
     manual = _manual_families(QUERY_CATALOGUE_MANUAL_PATH)
     declared = {family["query_id"] for family in manual}
     families = manual + [f for f in generated if f["query_id"] not in declared]
@@ -568,31 +576,18 @@ def main() -> None:
             "coverage": [],
         }
     )
-    # Họ viết tay và họ từ chối không khai tier; chúng luôn là primary.
     for family in families:
         family.setdefault("tier", "primary")
-    # ... trừ những họ mà CÂU HỎI của chúng trùng với một họ khác, hoặc gần như
-    # không ai hỏi tới.
-    for family in families:
-        if family["query_id"] in _QUESTION_DUPLICATES | _LOW_DEMAND_QUESTIONS:
-            family["tier"] = "secondary"
 
-    Path(args.output).write_text(
-        "".join(
-            json.dumps(family, ensure_ascii=False, separators=(",", ":")) + "\n"
-            for family in families
-        ),
+    args.output.write_text(
+        "".join(json.dumps(f, ensure_ascii=False) + "\n" for f in families),
         encoding="utf-8",
     )
-    anchored = sum(1 for family in families if family["slots"])
-    primary = sum(1 for family in families if family["tier"] == "primary")
-    print(
-        f"{len(families)} họ truy vấn "
-        f"({primary} primary, {len(families) - primary} secondary; "
-        f"{len(manual)} viết tay, {anchored} có slot, "
-        f"{len(families) - anchored} ràng buộc theo lớp) "
-        f"-> {args.output}"
-    )
+    try:
+        load_catalogue(args.output)
+    except CatalogueError as exc:
+        raise SystemExit(f"danh mục vừa sinh không hợp lệ: {exc}") from exc
+    print(f"{len(families)} họ -> {args.output}")
 
 
 if __name__ == "__main__":

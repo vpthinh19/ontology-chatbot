@@ -35,6 +35,7 @@ from .dataset import (
     validate_release,
 )
 from .query_features import extract_query_features, query_feature_tags
+from .mentions import mention_index
 
 
 def sha256_file(path: Path) -> str:
@@ -56,6 +57,19 @@ def build_dataset_report(
 
     catalogue_path = Path(dataset_dir) / "catalogue.jsonl"
     catalogue = load_catalogue(catalogue_path)
+    named_nodes = tuple(
+        sorted(
+            {
+                value[1:]
+                for spec in catalogue.values()
+                if spec.tier == "primary" and spec.domain != "out-of-domain"
+                for slot in spec.slots.values()
+                if slot.kind == "iri"
+                for value in slot.values
+            }
+        )
+    )
+    resolved_mentions, _ = mention_index(graph, named_nodes)
     validation = validate_release(
         dict(release),
         graph,
@@ -67,6 +81,7 @@ def build_dataset_report(
         catalogue,
         load_coverage_requirements(Path(dataset_dir) / "coverage.json", catalogue),
         _load_rejection_checklist(dataset_dir),
+        resolved_mentions,
     )
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
@@ -450,18 +465,6 @@ def build_procedure_dataset_report(
         for split in REQUIRED_SPLITS
     }
     train_target_counts = Counter(row["target"] for row in procedure_rows["train"])
-    # Phân loại theo NỘI DUNG truy vấn, không theo tên họ. Tên họ đã đổi hai lần
-    # (procedure-instruction -> academic-procedure-has-step-step-text -> gộp vào
-    # academic-procedure-overview) và mỗi lần đều làm báo cáo công khai này nói
-    # sai mà không ai thấy: có lần nó khai "0 đích hướng dẫn" trong khi dataset
-    # có 22. Đích nào truy tới ``hasStep`` là đích trả các BƯỚC, đích nào truy tới
-    # ``summaryText`` là đích trả GIỚI THIỆU - đúng bất kể họ mang tên gì, và
-    # đúng cả khi một họ trả cả hai.
-    def _targets_reaching(rows, predicate: str) -> set[str]:
-        return {row["target"] for row in rows if predicate in row["target"]}
-
-    instruction_targets = _targets_reaching(procedure_rows["train"], ":hasStep")
-    overview_targets = _targets_reaching(procedure_rows["train"], ":summaryText")
     # Họ secondary không có khung câu hỏi nên KHÔNG được dạy - đó là thiết kế,
     # không phải thiếu sót. Chỉ họ primary mới nằm trong hợp đồng.
     primary_procedure_families = {
@@ -502,19 +505,10 @@ def build_procedure_dataset_report(
             "sha256": sha256_file(Path(dataset_dir) / f"{split}.jsonl"),
         }
 
-    course_registration_target = next(
-        (
-            target
-            for target in instruction_targets
-            if ":CourseRegistrationProcedure" in target
-        ),
-        "",
-    )
-
     return {
         "scope": "academic-procedure",
         "procedure_target_count": len(train_target_counts),
-        "instruction_target_count": len(instruction_targets),
+        "procedure_family_count": len(procedure_families),
         "splits": split_reports,
         "contracts": {
             # Hợp đồng của THIẾT KẾ HIỆN TẠI. Bản trước đòi mỗi ĐÍCH >=10 mẫu và
@@ -542,28 +536,11 @@ def build_procedure_dataset_report(
                 <= set(train_target_counts)
                 for split in ("val", "test")
             ),
-            "every_procedure_has_a_step_by_step_question": bool(instruction_targets),
-            "every_procedure_also_has_an_overview_question": bool(overview_targets),
-            "every_instruction_target_has_a_direct_question": all(
-                train_target_counts[target] >= 1 for target in instruction_targets
-            ),
-            "course_registration_instruction_samples": train_target_counts[
-                course_registration_target
-            ]
-            if course_registration_target
-            else 0,
-            # Tập chấm phải luyện CẢ HAI ý định dễ lẫn nhau nhất: hỏi các bước và
-            # hỏi tóm tắt. Từ đợt gộp 2026-08-08, MỘT đích trả cả hai - nên phép
-            # kiểm này nay đòi val/test có đích chạm tới cả ``hasStep`` lẫn
-            # ``summaryText``. Nếu sau này hai ý định lại tách họ, phép kiểm vẫn
-            # đúng mà không phải sửa.
-            "both_question_types_are_evaluated_in_val": bool(
-                _targets_reaching(procedure_rows["val"], ":hasStep")
-                and _targets_reaching(procedure_rows["val"], ":summaryText")
-            ),
-            "both_question_types_are_evaluated_in_test": bool(
-                _targets_reaching(procedure_rows["test"], ":hasStep")
-                and _targets_reaching(procedure_rows["test"], ":summaryText")
+            # V3 dùng một shape lấy trọn node. Target cố ý không còn chứa
+            # ``:hasStep`` hay ``:summaryText`` để biểu diễn hai ý định riêng;
+            # các thuộc tính đó được lấy qua biến predicate trong cùng query.
+            "every_held_out_split_has_procedure_questions": all(
+                bool(procedure_rows[split]) for split in ("val", "test")
             ),
         },
     }
@@ -654,6 +631,7 @@ def _build_training_readiness(
                         "missing_priority_registers",
                         "missing_numeric_cases",
                         "missing_rejection_coverage",
+                        "name_coverage",
                     )
                 },
             }

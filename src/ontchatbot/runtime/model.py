@@ -8,7 +8,9 @@ from typing import Protocol
 from .text import normalize_model_input
 
 MAX_SOURCE_LENGTH = 128
-MAX_TARGET_LENGTH = 160
+# Keep deployed CTranslate2 decoding aligned with the training/evaluation
+# protocol. The canonical release reaches 307 ViT5 tokens before EOS.
+MAX_TARGET_LENGTH = 320
 
 
 class QueryGenerator(Protocol):

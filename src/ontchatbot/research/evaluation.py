@@ -1,14 +1,20 @@
-"""Execution-based metrics for generated SPARQL."""
+"""Structural primary metrics and execution diagnostics for generated SPARQL."""
 
 from __future__ import annotations
 
 import re
 from collections import Counter, defaultdict
+from collections.abc import Mapping
 from typing import Any, Iterable
 
+from pyparsing import ParseResults
 from rdflib import OWL, RDF, Graph, URIRef
+from rdflib.plugins.sparql.parser import parseQuery
+from rdflib.plugins.sparql.parserutils import CompValue
 
-from ..runtime.sparql import SparqlError, execute_select, validate_select
+from ..catalogue import QuerySpec, load_catalogue, match_target
+from ..runtime.sparql import PREFIXES, SparqlError, execute_select, validate_select
+from ..settings import ONTOLOGY_NS, QUERY_CATALOGUE_PATH
 from .query_features import extract_query_features, query_feature_tags
 
 _PREFIXED_NAME = re.compile(r":[A-Za-z][A-Za-z0-9]*")
@@ -22,11 +28,13 @@ def evaluate_predictions(
     graph: Graph,
     *,
     include_cases: bool = False,
+    catalogue: Mapping[str, QuerySpec] | None = None,
 ) -> dict[str, Any]:
     predictions = list(predictions)
     if len(examples) != len(predictions):
         raise ValueError("examples and predictions must have the same length")
 
+    catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
     totals: Counter[str] = Counter()
     in_domain: Counter[str] = Counter()
     out_of_domain: Counter[str] = Counter()
@@ -41,12 +49,23 @@ def evaluate_predictions(
         if isinstance(subject, URIRef)
     )
     error_counts: Counter[str] = Counter()
+    primary: dict[str, Counter[str]] = {
+        "node_selection": Counter(),
+        "query_shape": Counter(),
+        "rejection_decision": Counter(),
+    }
+    accounting: Counter[str] = Counter()
     cases = []
     for example, prediction in zip(examples, predictions, strict=True):
         target = example["target"]
         register = example["register"]
         query_id = example["query_id"]
         marker_reference = target == _NO_INFORMATION
+        # Chỉ còn HAI nhóm. Họ "liệt kê năng lực" đã bị bỏ khỏi thiết kế
+        # (2026-08-14): công cụ chỉ truy ra dữ kiện hoặc nói không có, còn việc
+        # giới thiệu phạm vi là của LLM lớn gọi nó.
+        evaluation_group = "out_of_domain" if marker_reference else "node_queries"
+        accounting[evaluation_group] += 1
         query_features = (
             {}
             if marker_reference
@@ -87,6 +106,13 @@ def evaluate_predictions(
         marker_exact = marker_reference and canonical_exact
         false_acceptance = False
         safe_rejection = False
+        predicted_query_id = None
+        predicted_slots: dict[str, str] = {}
+        expected_slots: dict[str, str] = {}
+        expected_nodes: tuple[str, ...] = ()
+        predicted_nodes: tuple[str, ...] = ()
+        node_correct: bool | None = None
+        shape_correct: bool | None = None
         if marker_reference:
             answer_exact = marker_exact
             if not marker_exact:
@@ -126,6 +152,49 @@ def evaluate_predictions(
                 answer_exact=answer_exact,
                 graph=graph,
             )
+
+        # Ba thước chính không dựa vào tập kết quả. Một query chỉ được xem là
+        # đầu ra được hệ thống chấp nhận khi nó vừa hợp cú pháp vừa khớp một họ
+        # catalogue; điều này đúng với cả causal LM và seq2seq vì cả hai cùng
+        # sinh ra đúng một chuỗi đích.
+        if parse_ok:
+            predicted_query_id, predicted_slots = _match_catalogue(
+                catalogue,
+                prediction.strip(),
+            )
+        rejection_correct = (
+            marker_exact if marker_reference else predicted_query_id is not None
+        )
+        primary["rejection_decision"]["count"] += 1
+        primary["rejection_decision"]["correct"] += int(rejection_correct)
+
+        if not marker_reference:
+            expected_spec = catalogue.get(query_id)
+            if expected_spec is not None:
+                expected_slots = match_target(expected_spec, target) or {}
+            non_node_slots = (
+                {
+                    name
+                    for name, slot in expected_spec.slots.items()
+                    if slot.kind != "iri"
+                }
+                if expected_spec is not None
+                else set()
+            )
+            shape_correct = predicted_query_id == query_id and all(
+                predicted_slots.get(name) == expected_slots.get(name)
+                for name in non_node_slots
+            )
+            primary["query_shape"]["count"] += 1
+            primary["query_shape"]["correct"] += int(shape_correct)
+
+        if evaluation_group == "node_queries":
+            expected_nodes = _query_anchor_nodes(target, graph)
+            if parse_ok:
+                predicted_nodes = _query_anchor_nodes(prediction, graph)
+            node_correct = bool(expected_nodes) and predicted_nodes == expected_nodes
+            primary["node_selection"]["count"] += 1
+            primary["node_selection"]["correct"] += int(node_correct)
         system_answer_exact = safe_rejection if marker_reference else answer_exact
         if error_category is not None:
             error_counts[error_category] += 1
@@ -177,6 +246,15 @@ def evaluate_predictions(
                     "false_acceptance": false_acceptance,
                     "safe_rejection": safe_rejection,
                     "system_answer_exact": system_answer_exact,
+                    "evaluation_group": evaluation_group,
+                    "predicted_query_id": predicted_query_id,
+                    "expected_slots": expected_slots,
+                    "predicted_slots": predicted_slots,
+                    "expected_nodes": list(expected_nodes),
+                    "predicted_nodes": list(predicted_nodes),
+                    "node_selection_correct": node_correct,
+                    "query_shape_correct": shape_correct,
+                    "rejection_decision_correct": rejection_correct,
                     "error": error,
                     "error_category": error_category,
                     "predicted_rows": predicted_rows,
@@ -184,6 +262,19 @@ def evaluate_predictions(
             )
 
     report = {
+        "metric_policy": {
+            "primary": [
+                "node_selection",
+                "query_shape",
+                "rejection_decision",
+            ],
+            "composite_score": None,
+            "result_set_metrics_are_diagnostic_only": True,
+        },
+        "primary_metrics": {
+            name: _primary_rate(counts) for name, counts in primary.items()
+        },
+        "coverage_accounting": _coverage_accounting(accounting),
         "overall": _rates(totals),
         "in_domain": _rates(in_domain),
         "out_of_domain": _rates(out_of_domain),
@@ -195,6 +286,180 @@ def evaluate_predictions(
     if include_cases:
         report["cases"] = cases
     return report
+
+
+def evaluate_query_id_expectations(
+    expectations: list[dict[str, str]],
+    predictions: Iterable[str],
+    *,
+    catalogue: Mapping[str, QuerySpec] | None = None,
+    include_cases: bool = False,
+) -> dict[str, Any]:
+    """Chấm riêng các câu người thật chỉ có oracle ở mức ``query_id``.
+
+    Tệp người thật không khai node hoặc target SPARQL nên không được trộn vào ba
+    mẫu số của benchmark sinh. Query sai cú pháp và query ngoài catalogue đều
+    nhận ``predicted_query_id = None`` và luôn sai.
+    """
+
+    predictions = list(predictions)
+    if len(expectations) != len(predictions):
+        raise ValueError("expectations and predictions must have the same length")
+    catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
+    correct = 0
+    cases = []
+    by_expected: dict[str, Counter[str]] = defaultdict(Counter)
+    for index, (item, prediction) in enumerate(
+        zip(expectations, predictions, strict=True),
+        start=1,
+    ):
+        expected_query_id = item["expected_query_id"]
+        normalized = prediction.strip()
+        syntax_valid = False
+        if normalized == _NO_INFORMATION:
+            predicted_query_id = "no-information"
+        else:
+            try:
+                validate_select(normalized)
+                syntax_valid = True
+            except SparqlError:
+                predicted_query_id = None
+            else:
+                predicted_query_id, _ = _match_catalogue(catalogue, normalized)
+        item_correct = predicted_query_id == expected_query_id
+        correct += int(item_correct)
+        by_expected[expected_query_id]["count"] += 1
+        by_expected[expected_query_id]["correct"] += int(item_correct)
+        if include_cases:
+            cases.append(
+                {
+                    "id": f"real-user-{index:03d}",
+                    "question": item["question"],
+                    "expected_query_id": expected_query_id,
+                    "prediction": prediction,
+                    "predicted_query_id": predicted_query_id,
+                    "syntax_valid": syntax_valid,
+                    "correct": item_correct,
+                }
+            )
+    report: dict[str, Any] = {
+        "count": len(expectations),
+        "correct": correct,
+        "query_id_accuracy": correct / len(expectations) if expectations else 0.0,
+        "by_expected_query_id": {
+            query_id: _primary_rate(counts)
+            for query_id, counts in sorted(by_expected.items())
+        },
+        "mixed_into_generated_benchmark": False,
+    }
+    if include_cases:
+        report["cases"] = cases
+    return report
+
+
+def _match_catalogue(
+    catalogue: Mapping[str, QuerySpec],
+    query: str,
+) -> tuple[str | None, dict[str, str]]:
+    for query_id, spec in catalogue.items():
+        if spec.domain == "out-of-domain":
+            continue
+        slots = match_target(spec, query)
+        if slots is not None:
+            return query_id, slots
+    return None, {}
+
+
+def _query_anchor_nodes(query: str, graph: Graph) -> tuple[str, ...]:
+    """Lấy tập node neo tường minh, không phụ thuộc cách viết SPARQL.
+
+    Bộ phân tích cú pháp RDFLib làm cho phép đo không phụ thuộc tên biến, thứ tự
+    nhánh, hay việc neo bằng ``BIND``, ``VALUES`` hoặc một triple trực tiếp.
+    Predicate và class là từ vựng của shape nên bị loại; các IRI cá thể/bảng còn
+    lại là node được chọn. Một query chỉ tìm node gián tiếp bằng nhãn không có
+    neo tường minh và vì thế không đạt hợp đồng "chọn node" của hệ thống này.
+    """
+
+    parsed = parseQuery(PREFIXES + query)
+    terms: set[URIRef] = set()
+    _collect_project_iris(parsed, terms)
+    schema_terms = set(graph.predicates()) | set(graph.objects(predicate=RDF.type))
+    return tuple(
+        sorted(
+            str(term).rsplit("#", 1)[-1]
+            for term in terms
+            if str(term).startswith(ONTOLOGY_NS)
+            and str(term) != ONTOLOGY_NS
+            and term not in schema_terms
+        )
+    )
+
+
+def _collect_project_iris(value: object, found: set[URIRef]) -> None:
+    if isinstance(value, URIRef):
+        found.add(value)
+        return
+    if isinstance(value, CompValue):
+        if value.name == "pname":
+            # ``CompValue.get`` is attribute-oriented and returns the key name
+            # itself for a missing value; use membership explicitly here.
+            prefix = value["prefix"] if "prefix" in value else ""
+            local = value["localname"] if "localname" in value else None
+            namespaces = {
+                "": ONTOLOGY_NS,
+                "rdf": str(RDF),
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                "skos": "http://www.w3.org/2004/02/skos/core#",
+                "xsd": "http://www.w3.org/2001/XMLSchema#",
+            }
+            if local is not None and prefix in namespaces:
+                found.add(URIRef(namespaces[prefix] + str(local)))
+            return
+        for child in value.values():
+            _collect_project_iris(child, found)
+        return
+    if isinstance(value, (ParseResults, list, tuple)):
+        for child in value:
+            _collect_project_iris(child, found)
+        return
+    if isinstance(value, Mapping):
+        for child in value.values():
+            _collect_project_iris(child, found)
+
+
+def _primary_rate(counts: Counter[str]) -> dict[str, int | float]:
+    count = counts["count"]
+    correct = counts["correct"]
+    return {
+        "count": count,
+        "correct": correct,
+        "rate": correct / count if count else 0.0,
+    }
+
+
+def _coverage_accounting(counts: Counter[str]) -> dict[str, Any]:
+    groups = {
+        "node_queries": {
+            "count": counts["node_queries"],
+            "scored_by": [
+                "node_selection",
+                "query_shape",
+                "rejection_decision",
+            ],
+        },
+        "out_of_domain": {
+            "count": counts["out_of_domain"],
+            "scored_by": ["rejection_decision"],
+        },
+    }
+    total = sum(group["count"] for group in groups.values())
+    return {
+        "total": total,
+        "accounted_for": total,
+        "groups": groups,
+    }
+
+
 def _error_category(
     target: str,
     prediction: str,

@@ -1,12 +1,17 @@
 import json
 
 from ontchatbot.catalogue import load_catalogue
-from ontchatbot.research.dataset import load_release
+from ontchatbot.research.dataset import (
+    ALLOWED_REGISTERS,
+    HELD_OUT_MIN_REGISTERS_PER_QUERY,
+    HELD_OUT_MIN_ROWS_PER_QUERY,
+    TRAIN_MIN_ROWS_PER_QUERY,
+    load_release,
+)
 from ontchatbot.research.reporting import (
     _build_training_readiness,
     build_dataset_report,
     build_manifest,
-    build_model_report,
     build_procedure_dataset_report,
     sha256_file,
 )
@@ -17,15 +22,6 @@ from ontchatbot.settings import (
     PROJECT_ROOT,
     QUERY_CATALOGUE_PATH,
 )
-
-
-def _set_suite_count(directory, filename: str, count: int) -> None:
-    path = directory / filename
-    metrics = json.loads(path.read_text(encoding="utf-8"))
-    metrics["overall"]["count"] = count
-    if "inference" in metrics:
-        metrics["inference"]["records"] = count
-    path.write_text(json.dumps(metrics), encoding="utf-8")
 
 
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
@@ -113,11 +109,14 @@ def test_manifest_declares_per_query_split_cardinality() -> None:
     contract = json.loads(
         (DATASET_DIR / "manifest.json").read_text(encoding="utf-8")
     )["split_contract"]
-    assert contract["train_min_rows_per_query"] == 4
-    assert contract["train_registers_per_query"] == 4
-    assert contract["val_min_rows_per_query"] == 2
-    assert contract["test_min_rows_per_query"] == 2
-    assert contract["held_out_min_registers_per_query"] == 2
+    assert contract["train_min_rows_per_query"] == TRAIN_MIN_ROWS_PER_QUERY
+    assert contract["train_registers_per_query"] == len(ALLOWED_REGISTERS)
+    assert contract["val_min_rows_per_query"] == HELD_OUT_MIN_ROWS_PER_QUERY
+    assert contract["test_min_rows_per_query"] == HELD_OUT_MIN_ROWS_PER_QUERY
+    assert (
+        contract["held_out_min_registers_per_query"]
+        == HELD_OUT_MIN_REGISTERS_PER_QUERY
+    )
     assert contract["catalogue_path"] == "catalogue.jsonl"
     manifest = json.loads((DATASET_DIR / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["coverage"] == {
@@ -162,7 +161,7 @@ def test_procedure_report_is_derived_from_release() -> None:
     # đó là đổi TÊN, không phải mất dữ liệu. Đối chiếu với release thật.
     assert report["scope"] == "academic-procedure"
     assert report["procedure_target_count"] > 0
-    assert report["instruction_target_count"] > 0
+    assert report["procedure_family_count"] > 0
     for split in ("train", "val", "test"):
         assert report["splits"][split]["procedure_records"] > 0
     assert report["splits"]["train"]["procedure_records"] > (
@@ -172,126 +171,10 @@ def test_procedure_report_is_derived_from_release() -> None:
         "every_primary_procedure_family_is_taught",
         "every_procedure_family_has_all_four_registers",
         "every_evaluated_target_was_taught",
-        "every_procedure_has_a_step_by_step_question",
-        "every_procedure_also_has_an_overview_question",
-        "every_instruction_target_has_a_direct_question",
-        "course_registration_instruction_samples",
-        "both_question_types_are_evaluated_in_val",
-        "both_question_types_are_evaluated_in_test",
+        "every_held_out_split_has_procedure_questions",
     }
     assert all(
         value is True
         for key, value in report["contracts"].items()
         if isinstance(value, bool)
     )
-
-
-def test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path) -> None:
-    release = load_release()
-    manifest_sha256 = sha256_file(DATASET_DIR / "manifest.json")
-    for name in ("bartpho", "vit5", "t5gemma2"):
-        directory = tmp_path / name
-        (directory / "model").mkdir(parents=True)
-        (directory / "model" / "config.json").write_text("{}", encoding="utf-8")
-        (directory / "metrics.json").write_text(
-            json.dumps(
-                {
-                    "overall": {
-                        "count": len(release["val"]),
-                        "answer_exact_rate": 0.5,
-                    },
-                    "training": {
-                        "model_id": name,
-                        "train_records": 10,
-                        "train_runtime_seconds": 12.5,
-                        "peak_vram_bytes": 100,
-                        "dataset_manifest_sha256": manifest_sha256,
-                        "merged_artifact": True,
-                    },
-                    "training_log": [
-                        {"epoch": 1.0, "loss": 1.0},
-                        {"epoch": 1.0, "eval_answer_exact_rate": 0.25},
-                    ],
-                }
-            ),
-            encoding="utf-8",
-        )
-        (directory / "benchmark_metrics.json").write_text(
-            json.dumps(
-                {
-                    "overall": {
-                        "count": len(release["test"]),
-                        "answer_exact_rate": 0.4,
-                        "system_answer_exact_rate": 0.45,
-                        "result_f1": 0.42,
-                    },
-                    "by_register": {},
-                    "by_query_feature": {},
-                    "error_counts": {},
-                }
-            ),
-            encoding="utf-8",
-        )
-
-    report = build_model_report(tmp_path)
-
-    assert report is not None
-    assert report["models"]["bartpho"]["validation"]["answer_exact_rate"] == 0.5
-    assert report["models"]["bartpho"]["training"]["merged_artifact"] is True
-
-
-def test_model_report_rejects_unmerged_artifact(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    path = tmp_path / "vit5" / "metrics.json"
-    metrics = json.loads(path.read_text(encoding="utf-8"))
-    metrics["training"]["merged_artifact"] = False
-    path.write_text(json.dumps(metrics), encoding="utf-8")
-
-    assert build_model_report(tmp_path) is None
-
-
-def test_model_report_rejects_different_benchmark_sizes(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    path = tmp_path / "t5gemma2" / "benchmark_metrics.json"
-    metrics = json.loads(path.read_text(encoding="utf-8"))
-    metrics["overall"]["count"] = 3
-    path.write_text(json.dumps(metrics), encoding="utf-8")
-
-    assert build_model_report(tmp_path) is None
-
-
-def test_model_report_rejects_metrics_for_a_different_dataset_size(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    for name in ("bartpho", "vit5", "t5gemma2"):
-        directory = tmp_path / name
-        _set_suite_count(directory, "metrics.json", 2)
-        _set_suite_count(directory, "benchmark_metrics.json", 2)
-
-    assert build_model_report(tmp_path) is None
-
-
-def test_model_report_rejects_missing_model_artifact(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    (tmp_path / "vit5" / "model" / "config.json").unlink()
-
-    assert build_model_report(tmp_path) is None
-
-
-def test_model_report_rejects_missing_training_dataset_provenance(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    path = tmp_path / "bartpho" / "metrics.json"
-    metrics = json.loads(path.read_text(encoding="utf-8"))
-    del metrics["training"]["dataset_manifest_sha256"]
-    path.write_text(json.dumps(metrics), encoding="utf-8")
-
-    assert build_model_report(tmp_path) is None
-
-
-def test_model_report_rejects_mismatched_training_dataset_provenance(tmp_path) -> None:
-    test_model_report_uses_independently_reloaded_artifact_metrics(tmp_path)
-    path = tmp_path / "bartpho" / "metrics.json"
-    metrics = json.loads(path.read_text(encoding="utf-8"))
-    metrics["training"]["dataset_manifest_sha256"] = "stale-manifest"
-    path.write_text(json.dumps(metrics), encoding="utf-8")
-
-    assert build_model_report(tmp_path) is None

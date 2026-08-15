@@ -22,6 +22,7 @@ VAL_DATASET_PATH = DATASET_DIR / "val.jsonl"
 TEST_DATASET_PATH = DATASET_DIR / "test.jsonl"
 PROCEDURE_LANGUAGE_CASES_PATH = RESOURCES / "cases" / "procedure_language.jsonl"
 REJECTION_CHECKLIST_PATH = RESOURCES / "cases" / "rejection_checklist.json"
+USER_QUERIES_PATH = RESOURCES / "cases" / "user_queries.json"
 DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
 QUERY_CATALOGUE_PATH = DATASET_DIR / "catalogue.jsonl"
 #: Họ truy vấn viết tay: so sánh ngưỡng, tổng hợp nhiều cột, chọn bản ghi phù

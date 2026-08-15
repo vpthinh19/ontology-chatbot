@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from decimal import Decimal
+from functools import lru_cache
 from pathlib import Path
 from typing import TypeAlias
 
@@ -25,6 +26,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 """
 
 MAX_QUERY_CHARS = 4096
+SOURCE_CITATION = URIRef(ONTOLOGY_NS + "sourceCitation")
+SOURCE_LINK = URIRef(ONTOLOGY_NS + "sourceLink")
+SOURCE_PROJECTION_PREDICATES = frozenset((SOURCE_CITATION, SOURCE_LINK))
 _FORBIDDEN_KEYWORDS = re.compile(
     r"\b(?:SERVICE|FROM|INSERT|DELETE|LOAD|CLEAR|CREATE|DROP|COPY|MOVE|ADD|WITH)\b",
     flags=re.IGNORECASE,
@@ -36,9 +40,65 @@ class SparqlError(ValueError):
 
 
 def load_ontology(path: Path = ONTOLOGY_PATH) -> Graph:
-    """Load the canonical Turtle ontology."""
+    """Load the canonical Turtle ontology and its compact source view."""
 
-    return Graph().parse(Path(path), format="turtle")
+    graph = Graph(store="Oxigraph").parse(Path(path), format="turtle")
+    _add_source_projection(graph)
+    return graph
+
+
+def _add_source_projection(graph: Graph) -> None:
+    """Materialize one compact, paired source record for every answer anchor.
+
+    Canonical queries emit the two project source fields rather than repeating
+    a long source subquery. The projection is a runtime view: both
+    ``documentUrl`` and ``webPageUrl`` normalize here, and an empty string keeps
+    an absent member of a citation/URL pair.
+    """
+
+    based_on = URIRef(ONTOLOGY_NS + "basedOn")
+    citation_label = URIRef(ONTOLOGY_NS + "citationLabel")
+    document_url = URIRef(ONTOLOGY_NS + "documentUrl")
+    web_page_url = URIRef(ONTOLOGY_NS + "webPageUrl")
+
+    subjects = sorted(
+        {subject for subject in graph.subjects() if isinstance(subject, URIRef)},
+        key=str,
+    )
+    for subject in subjects:
+        source_nodes = sorted(
+            {
+                node
+                for node in graph.objects(subject, based_on)
+                if isinstance(node, URIRef)
+            },
+            key=str,
+        ) or [subject]
+        pairs: list[tuple[str, str]] = []
+        for source in source_nodes:
+            citations = sorted(
+                str(value) for value in graph.objects(source, citation_label)
+            )
+            urls = sorted(
+                str(value)
+                for predicate in (document_url, web_page_url)
+                for value in graph.objects(source, predicate)
+            )
+            if citations or urls:
+                pairs.extend(
+                    (citation, url)
+                    for citation in (citations or [""])
+                    for url in (urls or [""])
+                )
+        if pairs:
+            graph.add(
+                (
+                    subject,
+                    SOURCE_CITATION,
+                    Literal(" · ".join(citation for citation, _ in pairs)),
+                )
+            )
+            graph.add((subject, SOURCE_LINK, Literal(" · ".join(url for _, url in pairs))))
 
 
 def validate_select(query: str) -> str:
@@ -61,11 +121,25 @@ def validate_select(query: str) -> str:
     if forbidden:
         raise SparqlError(f"SPARQL keyword is not allowed: {forbidden.group(0).upper()}")
 
+    _parse_select(query)
+    return query
+
+
+@lru_cache(maxsize=4096)
+def _parse_select(query: str) -> None:
+    """Parse one query text, remembering the result.
+
+    Parsing is pure - the same text always parses the same way - but it is by
+    far the most expensive step here, and callers replay a small set of texts
+    many times over: validating a dataset parses every row, and the rows share
+    a few hundred distinct targets. ``lru_cache`` does not remember raised
+    exceptions, so an invalid query is still re-parsed and still reported.
+    """
+
     try:
         parseQuery(PREFIXES + query)
     except Exception as exc:  # RDFLib exposes parser implementation exceptions.
         raise SparqlError(f"invalid SPARQL: {exc}") from exc
-    return query
 
 
 def execute_select(

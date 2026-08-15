@@ -5,7 +5,11 @@ from copy import deepcopy
 import pytest
 
 from ontchatbot.catalogue import QuerySpec, SlotSpec
-from ontchatbot.research.dataset import DatasetError, validate_release
+from ontchatbot.research.dataset import (
+    DatasetError,
+    _validate_target_text,
+    validate_release,
+)
 from ontchatbot.runtime.sparql import load_ontology
 
 
@@ -24,11 +28,11 @@ CATALOGUE = {
             )
         },
     ),
-    "performance-band": QuerySpec(
-        "performance-band",
+    "credit-load-range": QuerySpec(
+        "credit-load-range",
         "academic-rule",
-        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= ${score} && ${score} <= ?maximum) }",
-        {"score": SlotSpec("number")},
+        "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= ${credits} && ${credits} <= ?maximum) }",
+        {"credits": SlotSpec("number")},
     ),
     "no-information": QuerySpec(
         "no-information",
@@ -46,9 +50,9 @@ def _valid_release():
         "SELECT ?answer WHERE { :CourseRegistrationProcedure :basedOn ?part . ?part :officialText ?answer . }",
     )
     score_targets = tuple(
-        "SELECT ?answer WHERE { ?band a :AcademicPerformanceBand ; :minimumValue ?minimum ; :maximumValue ?maximum ; :resultLabel ?answer . FILTER (?minimum <= "
-        f"{score} && {score} <= ?maximum) }}"
-        for score in ("8.5", "7", "5.5", "3", "9", "6.5", "4.5", "2")
+        "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= "
+        f"{credits} && {credits} <= ?maximum) }}"
+        for credits in ("15", "16", "17", "18", "19", "20", "21", "22")
     )
     questions = {
         "procedure-source": (
@@ -61,15 +65,15 @@ def _valid_release():
             "Nêu thủ tục tạm nghỉ chương trình đào tạo",
             "tui muốn chọn hp kỳ tới",
         ),
-        "performance-band": (
-            "Điểm trung bình 8.5 được xếp loại nào",
-            "Mức 7 điểm thuộc loại gì",
-            "5.5 thì kết quả học tập loại nào",
-            "có 3 điểm xếp hạng sao",
-            "Xếp loại kết quả với điểm 9",
-            "6.5 được đánh giá mức nào",
-            "Cho biết loại học lực khi đạt 4.5",
-            "2 điểm là loại j",
+        "credit-load-range": (
+            "Đăng ký 15 tín chỉ thuộc khoảng nào",
+            "Mức 16 tín chỉ có hợp lệ không",
+            "17 tín chỉ thì áp dụng quy tắc nào",
+            "có 18 tín chỉ thuộc mức nào",
+            "Xác định quy tắc với 19 tín chỉ",
+            "20 tín chỉ được đánh giá thế nào",
+            "Cho biết khoảng khi đăng ký 21 tín chỉ",
+            "22 tín chỉ là mức gì",
         ),
         "no-information": (
             "Xin chào bạn",
@@ -85,7 +89,7 @@ def _valid_release():
     release = {"train": [], "val": [], "test": []}
     targets = {
         "procedure-source": procedure_targets * 4,
-        "performance-band": score_targets,
+        "credit-load-range": score_targets,
         "no-information": ("không có thông tin",) * 8,
     }
     offsets = {"train": (0, 4), "val": (4, 6), "test": (6, 8)}
@@ -119,6 +123,23 @@ def test_accepts_dynamic_targets_and_marker() -> None:
         "missing_train"
     ] == []
     assert report["splits"]["train"]["targets"] > report["splits"]["train"]["queries"]
+
+
+@pytest.mark.parametrize(
+    "target",
+    (
+        "SELECT (GROUP_CONCAT(?x) AS ?answer) WHERE { ?s ?p ?x }",
+        "SELECT ?answer WHERE { ?s ?p \"1\"^^xsd:integer . }",
+        'SELECT ?answer WHERE { ?s ?p "xin chào"@vi . }',
+    ),
+)
+def test_target_text_accepts_sparql_rdf_punctuation(target: str) -> None:
+    _validate_target_text(target, "punctuation-probe")
+
+
+def test_target_text_still_rejects_noncanonical_layout() -> None:
+    with pytest.raises(DatasetError, match="one canonical line"):
+        _validate_target_text("SELECT ?answer\nWHERE { ?s ?p ?answer }", "bad-layout")
 
 
 def test_rejects_target_that_does_not_match_query_family() -> None:

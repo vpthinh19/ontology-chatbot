@@ -54,6 +54,17 @@ def test_supported_inventory_paths_end_in_literals(
             assert entry["operation"]
 
 
+def test_runtime_source_projection_is_not_answerable(answer_inventory) -> None:
+    """Runtime-only source fields must not become hand-authored answer paths."""
+
+    derived_fields = {"sourceCitation", "sourceLink"}
+
+    assert all(
+        not derived_fields.intersection(entry["path"])
+        for entry in answer_inventory["entries"]
+    )
+
+
 def test_known_semantic_decisions_are_in_inventory(answer_inventory) -> None:
     entries = {
         item["id"]: item
@@ -75,12 +86,7 @@ def test_known_semantic_decisions_are_in_inventory(answer_inventory) -> None:
 def test_opaque_record_labels_are_not_supported(answer_inventory) -> None:
     entries = {entry["id"]: entry for entry in answer_inventory["entries"]}
 
-    assert entries[
-        "StandardEnglishCertificateTableRule03IELTS-rdfs-label"
-    ]["status"] == "excluded"
-    assert entries[
-        "Cohort65InformationTechnologyAccreditedRate-rdfs-label"
-    ]["status"] == "excluded"
+    assert entries["VNPAYOtherBankFee-rdfs-label"]["status"] == "excluded"
     assert entries[
         "TemporaryAcademicLeaveProcedure-rdfs-label"
     ]["status"] == "supported"
@@ -91,22 +97,22 @@ def test_business_values_inside_opaque_records_remain_supported(
 ) -> None:
     entries = {entry["id"]: entry for entry in answer_inventory["entries"]}
 
+    assert entries["VNPAYOtherBankFee-feeAmount"]["status"] == "supported"
     assert entries[
-        "StandardEnglishCertificateTableRule03IELTS-criterionText"
+        "Regulation1052Appendix2Table03-verbatimTableText"
     ]["status"] == "supported"
     assert entries[
-        "Cohort65InformationTechnologyAccreditedRate-amount"
-    ]["status"] == "supported"
+        "Regulation1052Appendix2Table03-officialText"
+    ]["status"] == "excluded"
 
 
 @pytest.mark.parametrize(
     "entry_id",
     [
-        "GroupIIIMasterRate-appliesToDisciplineGroup-rdfs-label",
-        "DoctoralBachelorEntryFourYearRule-appliesToEntryQualification-rdfs-label",
-        "StandardEnglishCertificateTableRule03IELTS-appliesToLearnerCategory-rdfs-label",
+        "CourseWithdrawalProcedure-requiresForm-rdfs-label",
+        "Regulation1052Appendix2Table03-partOf-rdfs-label",
         "DirectBankingFreeFee-appliesToPaymentMethod-rdfs-label",
-        "AccreditedGeneralEducationRate-billingUnit-rdfs-label",
+        "ExcellentSpecialScholarshipRate-billingUnit-rdfs-label",
         "FormCatalogueEntry001-catalogueEntryForForm-rdfs-label",
         "UndergraduateFormCatalogue-hasCatalogueEntry-listedTitle",
         "TemporaryAcademicLeaveProcedure-basedOn-citationLabel",

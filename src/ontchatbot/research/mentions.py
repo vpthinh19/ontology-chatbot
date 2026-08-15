@@ -78,16 +78,53 @@ def _document_coordinates(
     # hay không là chuyện của phong cách diễn đạt, và trộn hai tầng vào nhau sẽ
     # khiến cùng một node trông như hai cách gọi khác nhau.
     if "Point" in classes and point and clause and article:
-        return (f"điểm {point} khoản {clause} Điều {article}",)
-    if "Clause" in classes and clause and article:
-        return (f"khoản {clause} Điều {article}",)
-    if "Article" in classes and article:
-        return (f"Điều {article}",)
-    if "Chapter" in classes and chapter:
-        return (f"Chương {chapter}",)
-    if "Appendix" in classes and appendix:
-        return (f"Phụ lục {appendix}",)
-    return ()
+        coordinate = f"điểm {point} khoản {clause} Điều {article}"
+    elif "Clause" in classes and clause and article:
+        coordinate = f"khoản {clause} Điều {article}"
+    elif "Article" in classes and article:
+        coordinate = f"Điều {article}"
+    elif "Chapter" in classes and chapter:
+        coordinate = f"Chương {chapter}"
+    elif "Appendix" in classes and appendix:
+        coordinate = f"Phụ lục {appendix}"
+    else:
+        return ()
+
+    # TOẠ ĐỘ TRẦN KHÔNG BAO GIỜ LÀ MỘT CÁCH GỌI. "Điều 12" tách khỏi văn bản thì
+    # không chỉ về cái gì cả - mỗi quy chế đều có Điều 12 của riêng nó.
+    #
+    # Bản trước trả về đúng toạ độ trần và bỏ qua ``rdfs:label``, dù nhãn ấy vốn
+    # đã đầy đủ ("Điều 10 Quy chế đào tạo trình độ đại học"). Nó CHẠY ĐƯỢC chỉ vì
+    # đồ thị tình cờ có mỗi một văn bản mang số đó - đúng do may, không do thiết
+    # kế. Nạp thêm Quy chế tuyển sinh là **111 cách gọi lật sang mơ hồ** cùng lúc,
+    # kéo theo 609 dòng dataset đang dạy hỏi bằng toạ độ trần.
+    #
+    # Nay lấy chính nhãn làm cách gọi, cộng dạng ngắn theo số hiệu văn bản, vì
+    # người hỏi dùng cả hai: "Điều 10 Quy chế đào tạo trình độ đại học" và
+    # "Điều 10 Quy chế 1052".
+    # MỘT cách gọi cho mỗi phần, không hai. Luật phủ bắt dạy TỪNG cặp (node, cách
+    # gọi) ít nhất một lần, nên thêm một cách gọi là nhân đôi sàn dòng của cả
+    # miền văn bản - đo thật: 533 phần văn bản thành 1.066 dòng bắt buộc, đẩy
+    # dataset lên 6.083 và làm miền trọng tâm tụt từ 39,4% xuống 25,7%.
+    #
+    # Dùng dạng THEO SỐ HIỆU ("Điều 24 Quy chế 1052"), không dùng nhãn đầy đủ
+    # ("Điều 24 Quy chế đào tạo trình độ đại học"). Cả hai đều đủ nghĩa, nhưng
+    # dạng số hiệu dài 5 từ còn nhãn đầy đủ dài 9 - mà luật "mỗi miền trả lời
+    # được phải có ít nhất 15% câu ngắn 2-6 từ" thì nhãn 9 từ KHÔNG BAO GIỜ sinh
+    # nổi một câu ngắn. Đo thật: lấy nhãn đầy đủ thì miền văn bản chỉ còn 8,6%
+    # câu ngắn, tức phải hạ hợp đồng - đúng thứ không được làm.
+    #
+    # Dạng số hiệu cũng là quy ước dự án đã dùng sẵn để gỡ mơ hồ, nên không đẻ
+    # thêm khái niệm nào.
+    short = _document_short_name(graph, node)
+    found = [f"{coordinate} {short}"] if short else []
+    if not found:
+        label = next(graph.objects(node, RDFS.label), None)
+        if label is not None:
+            found.append(str(label))
+    # Không còn cách nào định vị được văn bản thì thà giữ toạ độ trần còn hơn để
+    # node mất sạch cách gọi - chốt chặn ở ``mention_index`` sẽ báo nếu nó mơ hồ.
+    return tuple(dict.fromkeys(found)) or (coordinate,)
 
 
 def _named_entity(graph: Graph, node: URIRef) -> tuple[str, ...]:
@@ -185,8 +222,25 @@ def _document_short_name(graph: Graph, node: URIRef) -> str | None:
     number = next(graph.objects(document, URIRef(ONTOLOGY_NS + "documentNumber")), None)
     if number is not None:
         return f"Quyết định {str(number).split('/', 1)[0]}"
-    # Bốn từ đầu là tên gọi tự nhiên của quy chế ("Quy chế đào tạo"); nhãn đầy đủ
-    # dài tới "... trình độ đại học Trường Đại học Nha Trang", không ai gõ vậy.
+    # Quy chế không mang số hiệu của riêng nó - nó được BAN HÀNH KÈM một quyết
+    # định, và số hiệu quyết định là thứ phân biệt hai đời quy chế. Đi thêm một
+    # chặng để lấy số đó.
+    #
+    # Trước đây chỗ này lấy bốn từ đầu của nhãn, và bốn từ đầu của cả hai quy chế
+    # đều là "Quy chế đào tạo trình độ": chữ phân biệt "năm 2021" nằm tận cuối
+    # nhãn. Hậu quả là "Điều 10" của hai đời quy chế cùng rút thành một cách gọi,
+    # trong khi Điều 10 bản 2025 nói về xoá lớp học phần còn bản 2021 nói về rút
+    # bớt học phần.
+    #
+    # Phải gọi là "Quy chế 1052" chứ KHÔNG phải "Quyết định 1052": quyết định ban
+    # hành và quy chế kèm theo là hai tài liệu riêng, cả hai đều có Điều 1 với
+    # nội dung khác hẳn nhau. Mượn nguyên tên quyết định thì gỡ được mơ hồ giữa
+    # hai đời quy chế nhưng lại tạo mơ hồ mới giữa quy chế và quyết định của nó.
+    issuer = next(graph.objects(document, URIRef(ONTOLOGY_NS + "issuedBy")), None)
+    if issuer is not None:
+        number = next(graph.objects(issuer, URIRef(ONTOLOGY_NS + "documentNumber")), None)
+        if number is not None:
+            return f"Quy chế {str(number).split('/', 1)[0]}"
     label = next(graph.objects(document, RDFS.label), None)
     return None if label is None else " ".join(str(label).split()[:4])
 
@@ -272,6 +326,19 @@ def mention_index(
             # ra "Mẫu số 13 mẫu số 13". Trường hợp đó phải là câu từ chối.
             if qualifier is not None and qualifier.casefold() in text.casefold():
                 qualifier = None
+            # Bổ ngữ chỉ đáng dùng khi nó THẬT SỰ tách được các bên ra. Trước đây
+            # chỗ này gắn bổ ngữ mà không kiểm, nên khi hai quy chế cùng cho ra
+            # bổ ngữ "Quy chế đào tạo" thì cả hai đều nhận cùng một cách gọi và
+            # mơ hồ vẫn nguyên - chỉ khác là nó không còn bị báo nữa.
+            if qualifier is not None:
+                others = {
+                    _document_short_name(graph, URIRef(ONTOLOGY_NS + other))
+                    or _form_number_hint(graph, URIRef(ONTOLOGY_NS + other))
+                    for other in sharers
+                    if other != name
+                }
+                if qualifier in others:
+                    qualifier = None
             if qualifier is not None:
                 resolved[name].append(f"{text} {qualifier}")
             else:

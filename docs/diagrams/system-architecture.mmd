@@ -1,51 +1,23 @@
----
-config:
-  theme: base
-  themeVariables:
-    fontFamily: "Cantarell, Arial, sans-serif"
-    primaryTextColor: "#172033"
-    lineColor: "#64748b"
-    edgeLabelBackground: "#ffffff"
-    clusterBkg: "#f8fafc"
-    clusterBorder: "#cbd5e1"
-  flowchart:
-    curve: basis
----
 flowchart TB
-    subgraph TRAIN["Huấn luyện và đánh giá"]
-        direction LR
-        DS["Dataset"] --> TR["Seq2SeqTrainer<br/>PEFT LoRA"]
-        TR --> MG["Hợp nhất adapter<br/>vào base model"]
-        MG --> HF["Checkpoint<br/>Hugging Face"]
-        HF --> BM["Benchmark<br/>Transformers"]
-        HF --> CV["Chuyển đổi<br/>CTranslate2"]
-        CV --> PA["Kiểm tra tương đương<br/>và hiệu năng"]
+    subgraph HOST["LLM host"]
+        UI["Hội thoại"] --> L["LLM lớn"]
+        L --> TC["Tool call"]
+        TC --> L
+        L --> OUT["Câu trả lời"]
     end
 
-    subgraph SERVE["Hệ thống hỏi đáp"]
-        direction LR
-        UI["Web / API"] --> API["API runtime"]
-        API --> P["OntologyChatbot"]
-        P --> G["QueryGenerator"]
-        G --> CT2["Model<br/>CTranslate2"]
-        CT2 --> D{"Marker<br/>hoặc SELECT"}
-        D -- "marker" --> R["Không có<br/>thông tin."]
-        D -- "SELECT" --> Q["Xác minh và<br/>thực thi SPARQL"]
-        Q --> RDF["Ontology<br/>Turtle"]
-        RDF --> F["Định dạng<br/>kết quả"]
-        F --> UI
-        R --> UI
+    subgraph TOOL["Công cụ ontology"]
+        API["Tool API"] --> QG["Sinh/chọn query"]
+        QG --> SAFE["Validator + catalogue matcher"]
+        SAFE --> RDF["RDFLib"]
+        RDF --> SER["Serializer trọn node"]
     end
 
-    CV -. "model triển khai" .-> CT2
+    subgraph DATA["Artifact"]
+        CAT["catalogue.jsonl"] --> SAFE
+        ONT["ontology.ttl"] --> RDF
+        INV["answer_inventory.json"] --> CAT
+    end
 
-    classDef data fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0c4a6e
-    classDef model fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#4c1d95
-    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
-    classDef process fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#172033
-    classDef output fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    class DS,RDF data
-    class HF,CT2 model
-    class D decision
-    class TR,MG,BM,CV,PA,API,P,G,Q,F process
-    class UI,R output
+    TC --> API
+    SER --> TC

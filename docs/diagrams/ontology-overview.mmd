@@ -1,83 +1,18 @@
----
-config:
-  theme: base
-  themeVariables:
-    fontFamily: "Cantarell, Arial, sans-serif"
-    primaryTextColor: "#172033"
-    lineColor: "#64748b"
-    edgeLabelBackground: "#ffffff"
-  flowchart:
-    curve: basis
-    nodeSpacing: 34
-    rankSpacing: 44
----
 flowchart TB
-    subgraph TRITHUC["TẦNG TRI THỨC"]
-        direction LR
+    SRC["Văn bản chính thức"] --> DOC["Node văn bản"]
+    DOC --> PART["Điều · khoản · điểm · phụ lục"]
+    PART --> TABLE["Bảng: một node nguyên văn"]
 
-        subgraph G1["Thủ tục học vụ · 22"]
-            direction TB
-            PROC["Thủ tục"]
-            PARTS["Bước · Điều kiện · Thời hạn<br/>Kết quả · Hệ quả"]
-            RES["Hướng xử lý"]
-            CASE["Trường hợp áp dụng"]
-            PROC -->|"gồm"| PARTS
-            CASE --> RES
-            RES -->|"giải quyết bằng"| PROC
-        end
+    DOC --> FACT["Node nghiệp vụ"]
+    FACT --> PROC["Thủ tục và dữ kiện con"]
+    FACT --> RULE["Quy tắc và khái niệm"]
+    FACT --> REF["Biểu mẫu · ngành · chứng chỉ · đơn vị"]
 
-        subgraph G2["Khái niệm và quy tắc"]
-            direction TB
-            CON["Khái niệm · 28<br/>tín chỉ, loại học phần, điểm chữ"]
-            RULE["Quy tắc có ngưỡng · 43<br/>cảnh báo, thôi học, tín chỉ mỗi kỳ"]
-            BAND["Bảng phân loại · 14<br/>học lực, năm học, hạng tốt nghiệp"]
-            POL["Chính sách học vụ · 3"]
-        end
+    PROC -. "basedOn" .-> PART
+    RULE -. "basedOn" .-> PART
+    REF -. "basedOn" .-> PART
 
-        subgraph G3["Danh mục tham chiếu"]
-            direction TB
-            PRG["Ngành · 41<br/>Học phí · 24"]
-            CER["Chứng chỉ · 18<br/>Quy tắc quy đổi · 212"]
-            FRM["Biểu mẫu · 15<br/>+ 19 mục trên website"]
-            ORG["Đơn vị và chủ thể · 11"]
-            VOC["10 bảng từ vựng nhỏ"]
-        end
-
-        PARTS ~~~ CON
-        POL ~~~ PRG
-    end
-
-    CITE(["căn cứ — 28 loại thực thể đều dẫn về đây"])
-
-    subgraph VANBAN["TẦNG VĂN BẢN"]
-        direction LR
-        DOC["Tài liệu · 5<br/>quyết định · quy chế · hướng dẫn"]
-        CH["Chương · 5"]
-        ART["Điều · 38"]
-        CL["Khoản · 111"]
-        PT["Điểm · 108"]
-        APX["Phụ lục · 5<br/>Bảng · 13"]
-        DOC --> CH --> ART --> CL --> PT
-        ART --> APX
-    end
-
-    PARTS -.-> CITE
-    BAND -.-> CITE
-    VOC -.-> CITE
-    CITE -.-> DOC
-
-    NOTE["mỗi mảnh văn bản mang: nguyên văn · trích dẫn tự giải thích · link bản gốc · toạ độ điều–khoản–điểm"]
-    PT --- NOTE
-
-    classDef anchor fill:#ccfbf1,stroke:#0f766e,stroke-width:2.5px,color:#134e4a
-    classDef fact fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0c4a6e
-    classDef text fill:#e0e7ff,stroke:#4338ca,stroke-width:1.5px,color:#312e81
-    classDef doc fill:#e0e7ff,stroke:#4338ca,stroke-width:2.5px,color:#312e81
-    classDef cite fill:#fbf1e2,stroke:#b45309,stroke-width:2.5px,color:#78350f
-    classDef note fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#475569
-    class PROC anchor
-    class PARTS,CASE,RES,CON,RULE,BAND,POL,PRG,CER,FRM,ORG,VOC fact
-    class CH,ART,CL,PT,APX text
-    class DOC doc
-    class CITE cite
-    class NOTE note
+    PROC --> FULL["Truy xuất trọn node"]
+    RULE --> FULL
+    REF --> FULL
+    TABLE --> FULL

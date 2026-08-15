@@ -67,6 +67,7 @@ _PLACEHOLDER = re.compile(r"\{([a-z][a-z0-9_]*)\}")
 class Frame:
     query_id: str
     text: str
+    short: bool = False
 
     def fill(self, values: dict[str, str]) -> str:
         text = self.text
@@ -100,9 +101,11 @@ def load_frames(
         if query_id in frames:
             raise ValueError(f"dòng {number}: khung trùng cho {query_id}")
         texts = payload["frames"]
+        short_texts = payload.get("short_frames", [])
         if not texts:
             raise ValueError(f"dòng {number}: {query_id} không có khung nào")
         items = [Frame(query_id, text) for text in texts]
+        items.extend(Frame(query_id, text, short=True) for text in short_texts)
         if catalogue is not None:
             spec = catalogue.get(query_id)
             if spec is None:
@@ -139,17 +142,28 @@ _OPENERS = tuple(
 )
 
 
-def decorate(question: str, register: str, rng: random.Random) -> str:
+def decorate(
+    question: str,
+    register: str,
+    rng: random.Random,
+    *,
+    short: bool = False,
+) -> str:
     """Khoác phong cách lên một câu hỏi đã ghép xong.
 
     Câu vốn đã mở đầu bằng một từ dẫn thì chỉ nhận đuôi, không nhận thêm đầu:
     mẫu câu soạn tay *"cho hỏi {anchor} làm thế nào, tiện thể…"* gặp tiền tố
     trang trọng đã sinh ra *"Xin cho biết cho hỏi …"* trong 14 dòng.
+
+    ``short=True`` giữ câu ngắn: chỉ nhận đuôi, không nhận từ dẫn nào. Người thật
+    gõ *"chuyển ngành"*, và khoác lên thành *"Đề nghị hướng dẫn chuyển ngành."*
+    là biến nó trở lại thành câu dài - đúng thứ đang cần chữa. Bốn phong cách đều
+    có ít nhất một lựa chọn đuôi-trần nên không phong cách nào bị mất.
     """
 
     options = _DECORATIONS[register]
     lowered = question.lstrip().casefold()
-    if any(lowered.startswith(opener) for opener in _OPENERS):
+    if short or any(lowered.startswith(opener) for opener in _OPENERS):
         options = tuple(pair for pair in options if not pair[0].strip()) or options
     prefix, suffix = rng.choice(options)
     text = f"{prefix}{question}{suffix}"

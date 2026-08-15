@@ -5,10 +5,21 @@ from ontchatbot.runtime.pipeline import OntologyChatbot
 from ontchatbot.runtime.render import NO_INFORMATION_REPLY
 from ontchatbot.settings import QUERY_CATALOGUE_PATH
 
-SUBMISSION_OFFICE = (
-    "SELECT DISTINCT ?answer WHERE { :TemporaryAcademicLeaveProcedure :submittedTo ?node . "
-    "?node rdfs:label ?answer . }"
-)
+def _procedure_target() -> str:
+    """Đích chuẩn của ``academic-procedure-facts``, lấy thẳng từ danh mục.
+
+    KHÔNG chốt cứng chuỗi truy vấn: khuôn dump đổi vài lần trong lúc dựng lại
+    danh mục, và mỗi lần đổi là phép kiểm mục theo dù hợp đồng không hề đổi.
+    Thứ cần canh là "đích của một họ có khớp danh mục không", không phải mặt chữ.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    return catalogue["academic-procedure-facts"].target_template.replace(
+        "${anchor}", ":TemporaryAcademicLeaveProcedure"
+    )
+
+
+SUBMISSION_OFFICE = _procedure_target()
 # Valid SPARQL, real entities, but no declared family combines them. Left
 # unchecked it dumps every article of the regulation into the reply.
 UNBOUND_ARTICLE_DUMP = (
@@ -20,9 +31,7 @@ UNBOUND_ARTICLE_DUMP = (
 def test_find_query_family_accepts_a_canonical_target() -> None:
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
 
-    assert find_query_family(catalogue, SUBMISSION_OFFICE) == (
-        "academic-procedure-submitted-to-label"
-    )
+    assert find_query_family(catalogue, SUBMISSION_OFFICE) == "academic-procedure-facts"
 
 
 def test_find_query_family_rejects_an_undeclared_combination() -> None:

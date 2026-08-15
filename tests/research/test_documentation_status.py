@@ -1,7 +1,9 @@
+import json
 import re
 from pathlib import Path
 
 from ontchatbot.catalogue import load_catalogue
+from ontchatbot.research.dataset import load_release
 from ontchatbot.settings import QUERY_CATALOGUE_MANUAL_PATH, QUERY_CATALOGUE_PATH
 
 
@@ -11,20 +13,54 @@ ROOT = Path(__file__).resolve().parents[2]
 _CATALOGUE_DOCS = ("README.md", "docs/DATASET.md", "resources/dataset/README.md")
 #: Một khẳng định về quy mô danh mục: "296 họ", "19 dạng"...
 _CLAIM = re.compile(r"(\d+)\s+(?:họ|dạng)\b")
+_PERCENTAGE = re.compile(r"\d+(?:[.,]\d+)?%")
 
 
 def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def _json(path: str) -> dict:
+    return json.loads(_read(path))
+
+
+def _vi_number(value: int) -> str:
+    return f"{value:,}".replace(",", ".")
+
+
+def _metric_percentages(payload: object) -> set[str]:
+    """Các phần trăm được sinh từ artifact metric hiện hành."""
+
+    found: set[str] = set()
+    if isinstance(payload, dict):
+        for key, value in payload.items():
+            if key.endswith("_rate") and isinstance(value, (int, float)):
+                found.add(f"{value * 100:.2f}%".replace(".", ","))
+            else:
+                found.update(_metric_percentages(value))
+    elif isinstance(payload, list):
+        for value in payload:
+            found.update(_metric_percentages(value))
+    return found
+
+
 def _catalogue_sizes() -> set[int]:
     """Mọi con số hợp lệ khi tài liệu nói về quy mô danh mục truy vấn."""
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    manual = sum(
-        1
-        for line in QUERY_CATALOGUE_MANUAL_PATH.read_text(encoding="utf-8").splitlines()
-        if line.strip()
+    # Tệp khai tay đã bị XOÁ cùng họ "liệt kê năng lực" (2026-08-14) - nó chỉ
+    # chứa đúng họ đó. Giữ nhánh này để tài liệu vẫn nói đúng nếu sau có ai khai
+    # tay một họ mới, nhưng không được vỡ khi tệp không tồn tại.
+    manual = (
+        sum(
+            1
+            for line in QUERY_CATALOGUE_MANUAL_PATH.read_text(
+                encoding="utf-8"
+            ).splitlines()
+            if line.strip()
+        )
+        if QUERY_CATALOGUE_MANUAL_PATH.exists()
+        else 0
     )
     primary = sum(1 for spec in catalogue.values() if spec.tier == "primary")
     return {
@@ -64,46 +100,48 @@ def test_public_docs_quote_the_real_catalogue_size() -> None:
 
 
 def test_public_docs_describe_the_evaluated_dataset() -> None:
-    files = (
-        "README.md",
-        "docs/DATASET.md",
-        "docs/TRAINING.md",
-        "resources/dataset/README.md",
-        "reports/README.md",
-    )
-    joined = "\n".join(_read(path) for path in files)
+    release = load_release()
+    total = _vi_number(sum(map(len, release.values())))
+    splits = {
+        split: _vi_number(len(rows)) for split, rows in release.items()
+    }
+    readme = _read("README.md")
+    dataset = _read("docs/DATASET.md")
+    resource = _read("resources/dataset/README.md")
 
-    assert "4.454 câu" in joined
-    # Dataset đang được dựng lại: tài liệu công khai phải nói rõ điều đó thay vì
-    # để người đọc tưởng các số liệu cũ còn hiệu lực.
-    assert "không còn hợp lệ" in joined
-    assert "candidate pool" not in joined
-    assert "455 câu" not in joined
+    assert f"{total} câu" in readme
+    assert f"{total} câu" in dataset
+    assert all(value in dataset for value in splits.values())
+    assert all(value in resource for value in splits.values())
+    assert "candidate pool" not in "\n".join((readme, dataset, resource))
 
 
 def test_readme_explains_the_research_to_new_readers() -> None:
     training = _read("docs/TRAINING.md")
     readme = _read("README.md")
+    model_report = ROOT / "reports/models.json"
 
-    assert "được chọn để triển khai" in training
-    assert "92,38%" in training
     assert "test không tham gia chọn checkpoint" in training
     assert "## 1. Bài toán nghiên cứu" in readme
     assert "## 2. Các khái niệm nền tảng" in readme
     assert "## 3. Phương pháp đề xuất" in readme
     assert "### 3.1. Hình dạng đầu vào và đầu ra của model" in readme
-    assert "SELECT ?answer WHERE { :CourseRegistrationProcedure" in readme
-    assert "Phòng Công tác Chính trị và Sinh viên" in readme
+    assert "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE" in readme
+    assert "TemporaryAcademicLeaveProcedure" in readme
     assert "## 9. Giới hạn" in readme
     assert "resources/dataset/train.jsonl" in readme
     assert "resources/dataset/test.jsonl" in readme
-    assert "resources/cases/procedure_language.jsonl" in readme
-    assert "reports/models.json" in readme
     assert "uv run generate_reports" in readme
-    assert "uv run train_sparql" in readme
-    assert "uv run convert_sparql_model" in readme
-    assert "uv run serve_sparql" in readme
-    assert "docker run --rm --publish 8000:8000 vpt19/ontchatbot:0.4.1" in readme
+    assert ".venv/bin/python -m ontchatbot.research.inventory" in readme
+    assert ".venv/bin/python -m ontchatbot.cli.generate_dataset" in readme
+    assert "điều phối tool-calling hoàn chỉnh chưa được tích hợp" in readme
+    if model_report.is_file():
+        documented = set(_PERCENTAGE.findall(training))
+        assert _metric_percentages(json.loads(model_report.read_text())) <= documented
+    else:
+        # Không có artifact metric thì tài liệu không được công bố một
+        # phần trăm model như thể đó là kết quả hiện hành.
+        assert _PERCENTAGE.findall(training) == []
     assert "NTUdocs" not in readme
     assert "artifacts/" not in readme
     assert "Trạng thái hiện tại" not in readme
@@ -113,18 +151,20 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     ontology = _read("docs/ONTOLOGY.md")
     dataset = _read("docs/DATASET.md")
     readme = _read("README.md")
+    inventory = _json("resources/ontology/answer_inventory.json")
+    supported = sum(
+        entry["status"] == "supported" for entry in inventory["entries"]
+    )
+    records = sum(map(len, load_release().values()))
 
     assert "answer_inventory.json" in ontology
-    assert "| Thủ tục học vụ | 22 |" in ontology
-    assert "| Chính sách học vụ | 3 |" in ontology
     assert "cơ sở dữ liệu duy nhất" in ontology
     assert "Quyết định 1052" in readme
-    assert "Quyết định 729" in readme
+    assert "Quyết định 317" in readme
     assert "SPARQL" in readme
-    assert "22" in readme
-    assert "6.073" in ontology
-    assert "4.454 câu" in dataset
-    assert "được chọn để triển khai" in _read("docs/TRAINING.md")
+    assert "1052" in readme
+    assert f"{_vi_number(supported)} khả năng trả lời" in ontology
+    assert f"{_vi_number(records)} câu" in dataset
 
 
 def test_public_docs_describe_consistency_and_metric_provenance() -> None:
@@ -139,15 +179,19 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
         "reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)
+    provenance = _json("reports/provenance.json")
+    baseline = provenance["baseline_release"]
 
     assert "danh mục khả năng trả lời" in joined
     assert "danh mục truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
     assert "reports/provenance.json" in joined
-    assert "baseline v0.4.1" in joined
-    assert "stale" in joined
+    assert f"baseline {baseline}" in joined
+    assert provenance["model_metrics"]["status"] in joined
+    assert provenance["deployment_metrics"]["status"] in joined
     assert "procedure-dataset.json" in joined
+    assert ("models.json" in joined) == (ROOT / "reports/models.json").is_file()
     assert "Claude Code" not in joined
     assert "CLAUDE.md" not in joined
     assert "ai agent" not in joined.lower()

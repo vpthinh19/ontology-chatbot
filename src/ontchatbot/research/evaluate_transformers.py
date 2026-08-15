@@ -7,9 +7,14 @@ import json
 import time
 from pathlib import Path
 
-from .benchmark import evaluate_benchmark, load_benchmark, validate_benchmark
+from .benchmark import (
+    evaluate_benchmark,
+    load_benchmark,
+    load_user_query_expectations,
+    validate_benchmark,
+)
 from .dataset import load_release, validate_release
-from .evaluation import evaluate_predictions
+from .evaluation import evaluate_predictions, evaluate_query_id_expectations
 from .reporting import sha256_file
 from ..settings import DATASET_DIR, TEST_DATASET_PATH
 from ..runtime.text import normalize_model_input
@@ -59,7 +64,10 @@ def evaluate(args: argparse.Namespace) -> dict:
         report["artifact_evaluation"] = _artifact_evaluation(args.model, "validation")
         _write_report(output_dir / "validation_metrics.json", report)
         _write_predictions(output_dir / "validation_predictions.jsonl", rows, predictions)
-        reports["validation"] = report["overall"]
+        reports["validation"] = {
+            "primary_metrics": report["primary_metrics"],
+            "coverage_accounting": report["coverage_accounting"],
+        }
 
     if args.suite in {"benchmark", "both"}:
         rows = load_benchmark(args.benchmark)
@@ -78,12 +86,33 @@ def evaluate(args: argparse.Namespace) -> dict:
             graph,
             include_cases=True,
         )
+        real_user_expectations = load_user_query_expectations()
+        real_user_predictions, real_user_inference = _generate(
+            model,
+            tokenizer,
+            [{"input": item["question"]} for item in real_user_expectations],
+            torch,
+            args.batch_size,
+        )
+        report["real_user_cases"] = evaluate_query_id_expectations(
+            real_user_expectations,
+            real_user_predictions,
+            include_cases=True,
+        )
+        report["real_user_cases"]["inference"] = real_user_inference
         report["benchmark"] = benchmark_validation
         report["inference"] = inference
         report["artifact_evaluation"] = _artifact_evaluation(args.model, "benchmark")
         _write_report(output_dir / "benchmark_metrics.json", report)
         _write_predictions(output_dir / "benchmark_predictions.jsonl", rows, predictions)
-        reports["benchmark"] = report["overall"]
+        reports["benchmark"] = {
+            "primary_metrics": report["primary_metrics"],
+            "coverage_accounting": report["coverage_accounting"],
+            "real_user_cases": {
+                key: report["real_user_cases"][key]
+                for key in ("count", "correct", "query_id_accuracy")
+            },
+        }
 
     print(json.dumps(reports, ensure_ascii=False, indent=2))
     return reports

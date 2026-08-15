@@ -23,8 +23,9 @@ import hashlib
 import json
 import random
 import re
-from itertools import product
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
+from itertools import product
 from pathlib import Path
 from typing import Mapping
 
@@ -35,49 +36,168 @@ from ..settings import ONTOLOGY_NS
 from ..runtime.sparql import SparqlError, execute_select
 from ..runtime.text import normalize_model_input
 from .compose import Frame, REGISTERS, choose_mention, decorate, question_variants
+from .coverage import assess_name_coverage, require_complete_coverage
 from .dataset import NEAR_DUPLICATE_THRESHOLD, _character_trigrams
 
 MARKER = "không có thông tin"
 
-#: Họ trả lời "chatbot làm được gì" - liệt kê thẳng các thủ tục từ ontology.
-CAPABILITY_FAMILY = "assistant-capabilities"
-#: MỌI câu từ chối đều trả ``MARKER``, kể cả câu ngoài phạm vi.
+#: Họ dump trọn node của thủ tục học vụ. Kho neo của câu từ chối lấy từ đây, và
+#: cũng chính truy vấn này quyết định câu từ chối có bị gán oan hay không.
+PROCEDURE_FAMILY = "academic-procedure-facts"
+
+# CÔNG CỤ NÀY CHỈ CÓ HAI VIỆC: truy ra dữ kiện đã có, hoặc nói không có thông
+# tin. Không có việc thứ ba.
+#
+# Vì vậy MỌI câu từ chối đều trả ``MARKER``, và **họ "liệt kê năng lực" đã bị bỏ
+# hẳn** (2026-08-14, người dùng chốt). Nay không còn ngoại lệ nào cả.
+#
+# Đường đi của quyết định này, ghi lại kẻo có người khôi phục:
+#
+# * Ban đầu nhóm ``greeting-social`` được trả về họ liệt kê thủ tục, lý do: câu
+#   chào là thứ đầu tiên ai cũng gõ, từ chối ngay thì người ta đóng app.
+# * 2026-08-12 bỏ ngoại lệ đó cho câu chào, vì "bạn tên là gì" và "cảm ơn nhiều
+#   nhé" đều trả về 24 thủ tục - người dùng chỉ thẳng đây là sai.
+# * 2026-08-14 bỏ nốt CẢ HỌ. Câu hỏi năng lực thật ("bạn có thể hỗ trợ thông tin
+#   gì") cũng không phải việc của công cụ: giới thiệu phạm vi là việc của LLM
+#   lớn, nó biết mình gắn công cụ nào.
+#
+# Lý do kỹ thuật củng cố thêm: ``MARKER`` dài 4 token và là hằng số, model chỉ
+# cần nhớ một chuỗi. Truy vấn năng lực dài ~30 token và phải sinh đúng từng ký
+# tự cho những câu vào chẳng liên quan gì nhau. Chế độ lỗi cũng tệ hơn: thay vì
+# im lặng an toàn, model đẻ ra truy vấn trông hợp lý với thực thể BỊA
+# (":GradalReviewProcedure" cho câu "đi Đà Lạt mấy tiếng"), và một câu như vậy
+# đã lọt qua cả bốn cửa runtime.
+#
+# CÒN BỎ NGỎ: công cụ nên phân biệt "đây là câu xã giao" với "tôi không tìm ra
+# gì" - hai tín hiệu khác nhau đối với LLM lớn. Hiện cả hai cùng rơi vào
+# ``no-information``. Để lại cho lượt thêm vỏ bọc đầu ra.
+
+#: Dấu hiệu cho thấy KẾT QUẢ DUMP đã trả lời câu mà khuôn từ chối hỏi.
 #:
-#: Lý do rất cơ học: ``MARKER`` dài 4 token và là hằng số, model chỉ cần nhớ một
-#: chuỗi. Truy vấn năng lực dài ~30 token và phải sinh chính xác từng ký tự cho
-#: những câu vào chẳng liên quan gì nhau, từ "chào bạn" tới "giá vàng hôm nay".
-#: Chế độ lỗi cũng tệ hơn: thay vì im lặng an toàn, model đẻ ra truy vấn trông
-#: hợp lý với thực thể BỊA (":GradalReviewProcedure" cho câu "đi Đà Lạt mấy
-#: tiếng"), và một câu như vậy đã lọt qua cả bốn cửa runtime.
+#: Mọi họ ``*-facts`` đều lấy TRỌN node, nên nếu dữ kiện được hỏi nằm trong kết
+#: quả dump thì nhãn ``no-information`` là sai, và thước đo quay ra trừ điểm
+#: chính hành vi đúng. Khuôn khai ở đây chỉ được ghép với neo mà kết quả dump
+#: KHÔNG chứa dấu hiệu tương ứng.
 #:
-#: NGOẠI LỆ DUY NHẤT: nhóm ``greeting-social``. Câu chào là thứ đầu tiên gần như
-#: ai cũng gõ, và trả "Không có thông tin." ngay câu đầu thì phần lớn người ta
-#: đóng luôn - còn liệt kê thủ tục thì vừa chào lại vừa chỉ đường.
+#: ĐỌC KỸ CHỖ NÀY - ĐÂY LÀ HAI THỨ RẤT DỄ LẪN:
 #:
-#: Khác hẳn lần thử trước ở chỗ QUY MÔ: lần đó bắt model sinh chuỗi 30 token cho
-#: MỌI câu lạc đề, từ "chào bạn" tới "giá vàng hôm nay" tới "cách nấu phở" -
-#: những câu chẳng liên quan gì nhau mà cùng một đáp án. Chào hỏi thì là một tập
-#: nhỏ, rất đều, và model đã nhận đúng 6/6 ở lượt đo gần nhất.
-_CAPABILITY_KINDS = frozenset({"greeting-social"})
+#: * Cụm từ dưới đây dò trong **CÂU TRẢ LỜI** (kết quả dump của từng neo), không
+#:   dò trong câu hỏi. Nó đọc dữ liệu thật, và đổi theo ontology: sửa một bước
+#:   trong ``hasStep`` là kết luận đổi theo, không ai phải nhớ sửa danh sách.
+#: * Bản hỏng trước dò cụm từ trong **CÂU HỎI** bằng 16 cụm viết cứng, và để lọt
+#:   24 câu từ chối oan. Đừng quay lại kiểu đó.
+#:
+#: VÌ SAO KHÔNG CANH BẰNG "NODE CÓ THUỘC TÍNH X": đã thử và KHÔNG ĐỦ. Dữ kiện
+#: hay nằm trong chữ tự do của ``stepText`` chứ không thành thuộc tính riêng -
+#: mức phí 5.500đ của thủ tục nộp học phí và người ký của thủ tục xét tốt nghiệp
+#: đều nằm trong nội dung bước. Canh theo thuộc tính bỏ lọt đúng những ca đó.
+#:
+#: THÀ LỌC RỘNG CÒN HƠN LỌC HỤT. Lọc rộng chỉ mất vài câu từ chối hợp lệ; lọc
+#: hụt là dạy model từ chối câu trả lời được, và đó là bệnh đang chữa. Cùng
+#: nguyên tắc đã ghi ở nhóm ``incomplete-request``.
+#: ĐỪNG khai nhãn của ObjectProperty ở đây - nó KHÔNG BAO GIỜ xuất hiện trong
+#: kết quả. Khuôn dump lọc ``isLiteral(?giatri)``, mà ``decidedBy`` trỏ tới node
+#: ``:UniversityPresident`` chứ không phải chuỗi chữ, nên nhãn "do ai quyết định"
+#: rơi mất; dữ kiện chỉ tới được qua NHÁNH NHẢY MỘT BƯỚC và hiện ra dưới dạng
+#: ``tên gọi => Hiệu trưởng``. Vì vậy phải bắt bằng chính giá trị đó.
+#:
+#: Đây cũng là lý do cách canh này chặt hơn cách canh theo thuộc tính: cụm
+#: "hiệu trưởng" bắt được 11 neo, trong khi ``decidedBy`` chỉ có ở 9 - hai neo
+#: kia nhắc người ký trong nội dung bước mà không có thuộc tính riêng.
+#: ``test_declared_answer_marks_still_appear_in_some_dump`` canh cho không cụm
+#: nào ở đây mục ruỗng thành vô dụng.
+_SIGNER = ("ký quyết định", "hiệu trưởng")
+_FEE = ("miễn phí", "chịu phí", "đồng mỗi lần", "phí 5.500")
+_DURATION = ("nội dung thời hạn", "trong thời hạn", "trong vòng")
+ANSWERED_BY: Mapping[str, tuple[str, ...]] = {
+    # Người ký. KHÔNG chặn theo ``reviewedBy``: "được xét bởi" là hội đồng thẩm
+    # định, không phải người ký quyết định - hai vai trò khác nhau trong chính
+    # ontology. Neo nào mà bước của nó có nhắc tới việc ký thì cụm ở trên bắt
+    # được, không cần mượn ``reviewedBy`` làm proxy.
+    "{anchor} do ai ký duyệt": _SIGNER,
+    "ai ký quyết định cho {anchor}": _SIGNER,
+    "ai là người ký duyệt {anchor} năm nay": _SIGNER,
+    # Phí. Thủ tục nộp học phí ghi thẳng "miễn phí ... chịu phí 5.500 đồng mỗi
+    # lần" trong nội dung bước.
+    "{anchor} có mất phí không": _FEE,
+    "{anchor} tốn bao nhiêu tiền": _FEE,
+    "lệ phí làm {anchor} là bao nhiêu": _FEE,
+    "{anchor} phải đóng thêm khoản nào không": _FEE,
+    # Người phụ trách. Đa số thủ tục nộp cho phòng/khoa, nhưng thủ tục nghỉ ốm
+    # nộp thẳng cho "Giảng viên giảng dạy học phần".
+    "giảng viên nào phụ trách {anchor}": ("giảng viên",),
+    # Thời gian xử lý. Cố ý lấy rộng: "trong thời hạn 03 tháng" của thủ tục xét
+    # tốt nghiệp là thời gian xử lý thật, còn "nộp đơn trong vòng 01 tuần" thì
+    # chỉ là hạn nộp - lọc rộng gạt cả hai, và đó là phía an toàn.
+    "{anchor} mất bao nhiêu ngày mới được duyệt": _DURATION,
+    "làm {anchor} mất bao lâu mới xong": _DURATION,
+}
+
+
+def dump_literals(
+    graph: Graph, catalogue: Mapping[str, QuerySpec], family: str
+) -> dict[str, str]:
+    """Chạy truy vấn dump THẬT cho mọi neo của ``family``, gộp chữ trả về.
+
+    Một truy vấn cho mỗi neo, không phải cho mỗi cặp (khuôn, neo): câu dump chỉ
+    phụ thuộc neo. 24 lượt truy vấn, đủ rẻ để chạy trong cả bộ sinh lẫn bộ kiểm.
+    """
+
+    spec = catalogue[family]
+    slot = spec.slots["anchor"]
+    values: dict[str, str] = {}
+    for value in slot.values:
+        query = spec.target_template.replace("${anchor}", value)
+        rows = execute_select(graph, query)
+        values[value[1:]] = " · ".join(
+            str(cell) for row in rows for cell in row.values() if cell is not None
+        ).casefold()
+    return values
+
+
+def answered_in_dump(dumped: str, template: str) -> bool:
+    """Kết quả dump ``dumped`` có chứa dữ kiện mà ``template`` hỏi không?
+
+    Khuôn không khai trong :data:`ANSWERED_BY` thì luôn trả ``False`` - nó hỏi
+    thứ ontology không mô hình hoá, nên neo nào cũng hợp lệ.
+    """
+
+    return any(mark in dumped for mark in ANSWERED_BY.get(template, ()))
+
 
 #: Số dòng train sinh cho mỗi target, theo miền.
 #:
 #: Quy trình học vụ là trọng tâm dự án. Cân bằng bằng SỐ CÂU chứ không bằng cách
 #: cắt bớt khả năng trả lời: tra cứu điều khoản vẫn phủ đủ, chỉ ít câu hơn.
 DOMAIN_WEIGHT = {
-    "procedure": 6,
+    # Một lượt dương thêm cho mỗi neo thủ tục trải đều các băng độ dài, nhất là
+    # 10-13 từ, để bậc này không chỉ học tín hiệu từ chối.
+    "procedure": 14,
     # Biểu mẫu là một trong bốn việc người dùng nêu, mà chỉ chiếm 6,7% dataset.
-    "form": 6,
-    "certificate": 3,
-    "tuition": 3,
-    "academic-rule": 2,
+    "form": 13,
+    "certificate": 1,
+    "tuition": 1,
+    "academic-rule": 1,
     "document": 1,
 }
-DEFAULT_WEIGHT = 2
+DEFAULT_WEIGHT = 1
+
+#: Trần số dòng theo số cặp tên/neo của mỗi họ. Trọng số miền trước đây không
+#: có tác dụng ở ``procedure`` và ``form`` vì trần chung 2 lần chặn lại trước.
+#: Hai miền trọng tâm được phép lặp nhiều cách hỏi hơn; các miền còn lại dừng
+#: ngay ở sàn cặp tên/neo để điều khoản/văn bản không tiếp tục lấn át.
+DOMAIN_ROW_CAP_MULTIPLIER = {
+    "procedure": 7,
+    "form": 7,
+}
+DEFAULT_ROW_CAP_MULTIPLIER = 1
 
 #: Số neo lấy mẫu cho val và test ở mỗi họ. Val/test đo cách hỏi mới, không đo
 #: khả năng nhớ thêm thực thể, nên không cần phủ hết neo.
-HELD_OUT_ANCHORS = 6
+#: Tập chấm phải chiếm đủ tỷ lệ sau khi quota train được cân lại. 32 neo giữ
+#: val/test trên 8,3% tổng thay vì để tập chấm bị loãng khi số ví dụ train đổi;
+#: đây là lượng mẫu theo mỗi họ, không phải chỉ tiêu tổng chốt cứng.
+HELD_OUT_ANCHORS = 32
 #: Sàn dòng train cho MỖI HỌ, bất kể họ đó áp cho bao nhiêu thực thể.
 #:
 #: Mỗi họ là một HÌNH DẠNG câu truy vấn - một tổ hợp cú pháp SPARQL riêng. Model
@@ -97,11 +217,13 @@ _MIN_HELD_OUT_ROWS = 2
 #: Không xếp hạng 22 thủ tục theo phỏng đoán: dự án không có log câu hỏi thật,
 #: đoán sai thì đóng đinh một thiên lệch sai vào dữ liệu mà không ai biết. Ba
 #: mẩu bằng chứng đang có: người dùng khẳng định nộp tiền/đóng học phí là câu
-#: phổ biến nhất; giảng viên chủ nhiệm đề tài test câu "bạn hỗ trợ được gì";
-#: và bốn việc người dùng nêu là làm được gì / quy trình / biểu mẫu / nguồn.
+#: phổ biến nhất; và bốn việc người dùng nêu là làm được gì / quy trình / biểu
+#: mẫu / nguồn.
+#:
+#: Họ ``assistant-capabilities`` từng đứng đầu bảng này với trọng số 40, vì câu
+#: "bạn hỗ trợ được gì" gần như ai cũng hỏi. Đã BỎ cùng cả họ ngày 2026-08-14:
+#: giới thiệu phạm vi trả lời là việc của LLM lớn, không phải của công cụ.
 FAMILY_WEIGHT = {
-    # Câu đầu tiên gần như ai cũng hỏi, mà chỉ có đúng một đích.
-    "assistant-capabilities": 40,
     # Người dùng khẳng định đây là câu phổ biến nhất; cũng chỉ một đích.
     "academic-procedure-supports-payment-method-label": 24,
     # "Nguồn công văn nếu cần" - một trong bốn việc người dùng nêu. CHỈ nâng các
@@ -136,7 +258,7 @@ CONTRAST_PAIRS = (
      "academic-procedure-next-procedure-summary-text"),
 )
 #: Số lượt sinh cho mỗi cặp, mỗi bên.
-_CONTRAST_ROWS = 14
+_CONTRAST_ROWS = 8
 
 #: Thực thể được hỏi nhiều hơn hẳn phần còn lại, theo người dùng.
 PRIORITY_ANCHORS = frozenset({":TuitionPaymentProcedure"})
@@ -146,13 +268,17 @@ _PRIORITY_ANCHOR_SHARE = 0.35
 _PRIORITY_DOMAINS = frozenset({"procedure"})
 
 #: Tỷ lệ câu từ chối trên mỗi tập.
-_REJECTION_SHARE = 0.18
+#: 16,8% giữ tín hiệu ``no-information`` trong dải phát hành 14--16%. Ngân sách
+#: dòng đã được người dùng nâng sau khi ontology có thêm Quyết định 626; các
+#: câu dương băng 7--9 được bơm riêng bên dưới để tỷ lệ này không làm dốc theo
+#: độ dài trở lại.
+_REJECTION_SHARE = 0.168
 #: Tỷ lệ câu hỏi trả lời được nhưng có kèm một vế ngoài lề.
 #:
 #: Đây KHÔNG phải câu từ chối. Bản trước dạy "có vế ngoài lề thì từ chối tất",
 #: nghĩa là người dùng viết *"đăng ký học phần thế nào ạ, em cảm ơn"* cũng có
 #: nguy cơ bị im lặng. Giờ dạy ngược lại: bỏ qua vế thừa, trả lời phần hỏi thật.
-_DISTRACTION_SHARE = 0.04
+_DISTRACTION_SHARE = 0.014
 
 
 @dataclass(frozen=True)
@@ -171,6 +297,92 @@ class Row:
             "input": self.input,
             "target": self.target,
         }
+
+
+@dataclass(frozen=True)
+class BindingFilterResult:
+    """Binding còn dùng được và số binding bị từng hàng rào loại."""
+
+    bindings: dict[str, list[dict[str, str]]]
+    rejected_out_of_range: int
+    rejected_non_executable: int
+
+
+@dataclass(frozen=True)
+class _NumericFamily:
+    """Cách đọc một miền số có cấu trúc từ ontology."""
+
+    number_slot: str
+    anchor_class: str
+    context: tuple[tuple[str, str], ...]
+    minimum: str
+    maximum: str
+
+
+@dataclass(frozen=True)
+class NumericAnchor:
+    """Một neo/tổ hợp thật cùng khoảng số và mốc đại diện nhỏ gọn của nó."""
+
+    query_id: str
+    identity: str
+    number_slot: str
+    context: tuple[tuple[str, str], ...]
+    minimum: Decimal | None
+    minimum_inclusive: bool
+    maximum: Decimal | None
+    maximum_inclusive: bool
+    representative: Decimal
+
+    def contains(self, binding: Mapping[str, str]) -> bool:
+        if any(binding.get(slot) != value for slot, value in self.context):
+            return False
+        try:
+            number = Decimal(binding[self.number_slot])
+        except (KeyError, InvalidOperation):
+            return False
+        if self.minimum is not None and (
+            number < self.minimum
+            or (number == self.minimum and not self.minimum_inclusive)
+        ):
+            return False
+        return self.maximum is None or number < self.maximum or (
+            number == self.maximum and self.maximum_inclusive
+        )
+
+
+# Chỉ bốn họ này có ô số mang nghĩa một miền. Số điều/khoản là định danh và đi
+# nhánh riêng. Mỗi cấu hình chỉ nêu thuộc tính RDF có cấu trúc; tuyệt đối không
+# đọc số từ ``criterionText``.
+_NUMERIC_FAMILIES = {
+    "academic-performance-band-by-score": _NumericFamily(
+        number_slot="diem",
+        anchor_class="AcademicPerformanceBand",
+        context=(),
+        minimum="minimumValue",
+        maximum="maximumValue",
+    ),
+    "graduation-band-by-score": _NumericFamily(
+        number_slot="diem",
+        anchor_class="GraduationClassificationBand",
+        context=(),
+        minimum="minimumValue",
+        maximum="maximumValue",
+    ),
+    "study-year-band-by-credits": _NumericFamily(
+        number_slot="tinchi",
+        anchor_class="StudyYearBand",
+        context=(),
+        minimum="minimumValue",
+        maximum="maximumValue",
+    ),
+    "language-course-type-by-cohort": _NumericFamily(
+        number_slot="khoa",
+        anchor_class="LanguageCourseClassification",
+        context=(("hocphan", "appliesToLanguageCourse"),),
+        minimum="minimumCohortNumber",
+        maximum="maximumCohortNumber",
+    ),
+}
 
 
 #: Số khung giữ lại cho mỗi tập đánh giá.
@@ -353,6 +565,26 @@ def _fill_targets(spec: QuerySpec, binding: Mapping[str, str]) -> str:
     return target
 
 
+def name_teaching_cases(
+    spec: QuerySpec,
+    bindings: list[dict[str, str]],
+    mentions: Mapping[str, tuple[str, ...]],
+) -> list[tuple[dict[str, str], str, str]]:
+    """Liệt kê ổn định mọi ``(binding, slot IRI, tên gọi)`` cần dạy.
+
+    Hàm không nhận RNG: seed chỉ được phép đổi cách trang trí các dòng, không
+    được đổi tập cặp ``(node, nhãn)`` bắt buộc.
+    """
+
+    return [
+        (binding, slot_name, label)
+        for binding in bindings
+        for slot_name in sorted(binding)
+        if spec.slots[slot_name].kind == "iri"
+        for label in mentions[binding[slot_name][1:]]
+    ]
+
+
 def _question_core(
     frame: Frame,
     binding: Mapping[str, str],
@@ -362,6 +594,7 @@ def _question_core(
     rng: random.Random,
     *,
     variants: bool = True,
+    mention_overrides: Mapping[str, str] | None = None,
 ) -> str:
     """Câu hỏi đã ghép xong nhưng CHƯA khoác phong cách.
 
@@ -372,7 +605,11 @@ def _question_core(
     values: dict[str, str] = {}
     for name, value in binding.items():
         if spec.slots[name].kind == "iri":
-            values[name] = choose_mention(mentions[value[1:]], register, rng)
+            values[name] = (
+                mention_overrides[name]
+                if mention_overrides is not None and name in mention_overrides
+                else choose_mention(mentions[value[1:]], register, rng)
+            )
         else:
             values[name] = value
     filled = frame.fill(values)
@@ -391,40 +628,227 @@ def _question(
     rng: random.Random,
     *,
     variants: bool = True,
+    mention_overrides: Mapping[str, str] | None = None,
 ) -> str:
     """Ghép một câu hỏi hoàn chỉnh từ khung, cách gọi tên và phong cách."""
 
     core = _question_core(
-        frame, binding, mentions, spec, register, rng, variants=variants
+        frame,
+        binding,
+        mentions,
+        spec,
+        register,
+        rng,
+        variants=variants,
+        mention_overrides=mention_overrides,
     )
-    return decorate(core, register, rng)
+    return decorate(core, register, rng, short=frame.short)
 
 
 def executable_bindings(
     graph: Graph,
     catalogue: Mapping[str, QuerySpec],
     bindings: Mapping[str, list[dict[str, str]]],
-) -> dict[str, list[dict[str, str]]]:
-    """Bỏ những bộ giá trị mà truy vấn thật sự KHÔNG trả về dòng nào.
+) -> BindingFilterResult:
+    """Bỏ binding ngoài thang hoặc không trả về dòng nào, kèm số bị loại.
 
-    Validator bắt mọi đích trong miền phải lấy ra được dữ liệu. Slot IRI thì đã
-    có test riêng bảo đảm, nhưng slot số lấy từ ``coverage.json`` là giá trị do
-    người chốt - một mốc ngưỡng viết sai sẽ tạo ra dòng dạy model sinh truy vấn
-    rỗng ruột, đúng thứ ràng buộc số 4 của ``docs/DATASET.md`` cấm.
+    Validator bắt mọi đích trong miền phải lấy ra được dữ liệu. Slot số dù được
+    suy từ ontology vẫn phải qua hàng rào độc lập: một ánh xạ thuộc tính sai có
+    thể tạo ra dòng dạy model sinh truy vấn rỗng ruột, đúng thứ ràng buộc số 4
+    của ``docs/DATASET.md`` cấm.
+
+    Kiểm tra miền số trước khi chạy truy vấn để một thay đổi ở câu SPARQL không
+    thể vô tình biến giá trị ngoài thang thành binding hợp lệ.
     """
 
     kept: dict[str, list[dict[str, str]]] = {}
+    rejected_out_of_range = 0
+    rejected_non_executable = 0
+    anchors = numeric_anchors(graph)
     for query_id, options in bindings.items():
         spec = catalogue[query_id]
         alive = []
         for binding in options:
+            if query_id in _NUMERIC_FAMILIES and not any(
+                anchor.contains(binding) for anchor in anchors[query_id]
+            ):
+                rejected_out_of_range += 1
+                continue
             try:
                 if execute_select(graph, _fill_targets(spec, binding), max_rows=200):
                     alive.append(binding)
+                else:
+                    rejected_non_executable += 1
             except SparqlError:
+                rejected_non_executable += 1
                 continue
         kept[query_id] = alive
-    return kept
+    return BindingFilterResult(
+        bindings=kept,
+        rejected_out_of_range=rejected_out_of_range,
+        rejected_non_executable=rejected_non_executable,
+    )
+
+
+def _compact_iri(value: URIRef) -> str:
+    text = str(value)
+    if not text.startswith(ONTOLOGY_NS):
+        raise ValueError(f"IRI ngoài namespace ontology: {text}")
+    return ":" + text.removeprefix(ONTOLOGY_NS)
+
+
+def _decimal(graph: Graph, node: URIRef, predicate: str) -> Decimal | None:
+    value = next(graph.objects(node, URIRef(ONTOLOGY_NS + predicate)), None)
+    return Decimal(str(value)) if value is not None else None
+
+
+def _inclusive(graph: Graph, node: URIRef, predicate: str) -> bool:
+    value = next(graph.objects(node, URIRef(ONTOLOGY_NS + predicate)), None)
+    return True if value is None else bool(value.toPython())
+
+
+def _representative(
+    minimum: Decimal | None,
+    minimum_inclusive: bool,
+    maximum: Decimal | None,
+    maximum_inclusive: bool,
+) -> Decimal:
+    """Chọn đúng một mốc, dịch một đơn vị vào trong nếu cận đang mở."""
+
+    if minimum is not None:
+        return minimum if minimum_inclusive else minimum + Decimal(1)
+    if maximum is not None:
+        return maximum if maximum_inclusive else maximum - Decimal(1)
+    raise ValueError("neo số không có cận có cấu trúc")
+
+
+def numeric_anchors(graph: Graph) -> dict[str, tuple[NumericAnchor, ...]]:
+    """Đọc các neo/tổ hợp số thật; không đụng tới ``criterionText``.
+
+    Các dải học lực, tốt nghiệp, năm học và khóa học giữ từng cá thể làm neo.
+    Cận mở được dịch vào trong trước khi tạo binding, nên ``> 68`` sinh 69 chứ
+    không sinh 68.
+    """
+
+    result: dict[str, tuple[NumericAnchor, ...]] = {}
+    for query_id, family in _NUMERIC_FAMILIES.items():
+        nodes = sorted(
+            set(
+                graph.subjects(
+                    RDF.type, URIRef(ONTOLOGY_NS + family.anchor_class)
+                )
+            ),
+            key=str,
+        )
+        records: list[
+            tuple[
+                URIRef,
+                tuple[tuple[str, str], ...],
+                Decimal | None,
+                bool,
+                Decimal | None,
+                bool,
+            ]
+        ] = []
+        for node in nodes:
+            context_options: list[tuple[str, tuple[str, ...]]] = []
+            for slot, predicate in family.context:
+                values = tuple(
+                    sorted(
+                        _compact_iri(value)
+                        for value in graph.objects(
+                            node, URIRef(ONTOLOGY_NS + predicate)
+                        )
+                        if isinstance(value, URIRef)
+                    )
+                )
+                if not values:
+                    break
+                context_options.append((slot, values))
+            else:
+                minimum = _decimal(graph, node, family.minimum)
+                maximum = _decimal(graph, node, family.maximum)
+                if minimum is None and maximum is None:
+                    continue
+                for values in product(*(values for _, values in context_options)):
+                    records.append(
+                        (
+                            node,
+                            tuple(
+                                (slot, value)
+                                for (slot, _), value in zip(
+                                    context_options, values, strict=True
+                                )
+                            ),
+                            minimum,
+                            _inclusive(graph, node, "minimumInclusive"),
+                            maximum,
+                            _inclusive(graph, node, "maximumInclusive"),
+                        )
+                    )
+
+        result[query_id] = tuple(
+            NumericAnchor(
+                query_id=query_id,
+                identity=_compact_iri(node),
+                number_slot=family.number_slot,
+                context=context,
+                minimum=minimum,
+                minimum_inclusive=minimum_inclusive,
+                maximum=maximum,
+                maximum_inclusive=maximum_inclusive,
+                representative=_representative(
+                    minimum,
+                    minimum_inclusive,
+                    maximum,
+                    maximum_inclusive,
+                ),
+            )
+            for (
+                node,
+                context,
+                minimum,
+                minimum_inclusive,
+                maximum,
+                maximum_inclusive,
+            ) in records
+        )
+    return result
+
+
+def numeric_binding_gaps(
+    graph: Graph,
+    bindings: Mapping[str, list[dict[str, str]]],
+) -> dict[str, tuple[str, ...]]:
+    """Neo/tổ hợp số thật chưa được bất kỳ binding nào phủ."""
+
+    return {
+        query_id: tuple(
+            anchor.identity
+            for anchor in anchors
+            if not any(
+                anchor.contains(binding)
+                for binding in bindings.get(query_id, ())
+            )
+        )
+        for query_id, anchors in numeric_anchors(graph).items()
+    }
+
+
+def out_of_range_numeric_bindings(
+    graph: Graph,
+    bindings: Mapping[str, list[dict[str, str]]],
+) -> list[tuple[str, dict[str, str]]]:
+    """Binding số không nằm trong bất kỳ thang thật nào của đúng ngữ cảnh."""
+
+    anchors = numeric_anchors(graph)
+    return [
+        (query_id, binding)
+        for query_id, options in bindings.items()
+        if query_id in anchors
+        for binding in options
+        if not any(anchor.contains(binding) for anchor in anchors[query_id])
+    ]
 
 
 def incomplete_specifications(
@@ -434,10 +858,10 @@ def incomplete_specifications(
 ) -> dict[str, list[tuple[str, str]]]:
     """Giá trị nào mà nêu MỘT MÌNH nó thì câu hỏi còn nhiều đáp án.
 
-    Vài họ đòi hai thông tin mới trả lời được: học phí cần cả NGÀNH và KHOÁ, quy
-    đổi chứng chỉ cần cả LOẠI và ĐIỂM. Người hỏi thường chỉ nêu một - *"học phí
-    k67 như thế nào"* - trong khi một khoá có nhiều mức khác nhau tuỳ ngành. Trả
-    một con số tiền sai mà nói như đúng rồi là kiểu hỏng tệ nhất.
+    Vài họ đòi hai thông tin mới trả lời được: phân loại học phần ngoại ngữ cần
+    cả HỌC PHẦN và KHOÁ. Người hỏi thường chỉ nêu một - *"khóa 68 học ngoại ngữ
+    thế nào"* - trong khi một khoá có nhiều học phần. Trả một phân loại sai mà
+    nói như đúng rồi là kiểu hỏng tệ nhất.
 
     Đo thẳng trên đồ thị chứ không chốt tay: giữ một slot, chạy hết mọi giá trị
     của slot kia, đếm số đáp án KHÁC NHAU. Chỉ giá trị nào cho ra nhiều hơn một
@@ -497,6 +921,22 @@ def generate(
 ) -> tuple[dict[str, list[Row]], dict[str, list[str]]]:
     """Sinh ba tập và bảng phân nhóm câu từ chối."""
 
+    missing_bindings = sorted(
+        query_id
+        for query_id, spec in catalogue.items()
+        if spec.tier == "primary"
+        and spec.domain != "out-of-domain"
+        and not bindings.get(query_id)
+    )
+    if missing_bindings:
+        raise ValueError(
+            "các họ trong danh mục không thể sinh dataset:\n"
+            + "\n".join(
+                f"- {query_id}: không sinh được binding"
+                for query_id in missing_bindings
+            )
+        )
+
     rng = random.Random(seed)
     splits: dict[str, list[Row]] = {"train": [], "val": [], "test": []}
     seen: set[str] = set()
@@ -513,6 +953,17 @@ def generate(
         key = normalize_model_input(question).casefold()
         if not key or key in seen:
             return False
+        grams = _character_trigrams(question)
+        if any(
+            row.query_id == query_id
+            and len(grams & other) / len(grams | other)
+            >= NEAR_DUPLICATE_THRESHOLD
+            for other_split, rows in splits.items()
+            if other_split != split
+            for row in rows
+            for other in [_character_trigrams(row.input)]
+        ):
+            return False
         seen.add(key)
         counter += 1
         splits[split].append(
@@ -527,15 +978,21 @@ def generate(
         binding: Mapping[str, str],
         options: tuple[Frame, ...],
         register: str,
+        *,
+        mention_overrides: Mapping[str, str] | None = None,
+        preferred_frame: Frame | None = None,
     ) -> bool:
         """Thử vài lần với khung khác nhau cho tới khi ra một câu chưa có."""
 
         target = _fill_targets(spec, binding)
-        for _ in range(12):
-            frame = rng.choice(options)
+        candidates = ([preferred_frame] if preferred_frame is not None else []) + [
+            rng.choice(options) for _ in range(12)
+        ]
+        for frame in candidates:
             question = _question(
                 frame, binding, mentions, spec, register, rng,
                 variants=split == "train",
+                mention_overrides=mention_overrides,
             )
             if emit(split, query_id, register, question, target):
                 return True
@@ -544,22 +1001,68 @@ def generate(
     for query_id in sorted(frames):
         spec = catalogue[query_id]
         parts = split_frames(frames[query_id])
-        options = bindings.get(query_id, [])
-        if not options:
-            continue
+        options = bindings[query_id]
         weight = FAMILY_WEIGHT.get(
             query_id, DOMAIN_WEIGHT.get(spec.domain, DEFAULT_WEIGHT)
         )
 
         # TRAIN. Ba lượt, theo đúng thứ tự ưu tiên của các ràng buộc:
-        #   1. mỗi neo ít nhất một lần  -> phủ hết giá trị slot hữu hạn;
+        #   1. mỗi cặp (node, tên gọi) ít nhất một lần;
         #   2. mỗi phong cách ít nhất một lần -> đủ bốn register;
-        #   3. bơm thêm cho đủ trọng số miền.
+        #   3. bơm thêm có giới hạn, không quá hai lượt cho mỗi cặp tên.
         used: set[str] = set()
-        for index, binding in enumerate(options):
-            register = REGISTERS[index % len(REGISTERS)]
-            if attempt("train", query_id, spec, binding, parts["train"], register):
+        name_pairs = name_teaching_cases(spec, options, mentions)
+        # ``noisy`` cố ý phá chính tả, nên không dùng nó cho dòng chứng minh một
+        # nhãn đã được dạy nguyên vẹn. Lượt register kế tiếp vẫn bổ sung noisy.
+        teaching_registers = ("formal", "neutral", "colloquial")
+        for index, (binding, slot_name, label) in enumerate(name_pairs):
+            register = teaching_registers[index % len(teaching_registers)]
+            if attempt(
+                "train",
+                query_id,
+                spec,
+                binding,
+                parts["train"],
+                register,
+                mention_overrides={slot_name: label},
+                preferred_frame=parts["train"][index % len(parts["train"])],
+            ):
                 used.add(register)
+        # Khung đánh dấu ``short`` là cam kết dữ liệu, không phải gợi ý để RNG
+        # có thể vô tình bỏ qua. Mỗi khung ngắn nằm ở phần train phải sinh được
+        # ít nhất một dòng và phải đi qua ``decorate(..., short=True)``.
+        for index, frame in enumerate(
+            item for item in parts["train"] if item.short
+        ):
+            register = REGISTERS[index % len(REGISTERS)]
+            short_options = sorted(
+                options,
+                key=lambda binding: sum(
+                    min(
+                        (len(text.split()) for text in mentions.get(value[1:], ())),
+                        default=1000,
+                    )
+                    for name, value in binding.items()
+                    if spec.slots[name].kind == "iri"
+                ),
+            )
+            if attempt(
+                "train",
+                query_id,
+                spec,
+                short_options[index % len(short_options)],
+                parts["train"],
+                register,
+                preferred_frame=frame,
+            ):
+                used.add(register)
+        # Họ không có slot IRI (các bảng cố định) vẫn cần một dòng nền trước khi
+        # đi qua sàn phong cách và trọng số.
+        if not name_pairs:
+            for index, binding in enumerate(options):
+                register = REGISTERS[index % len(REGISTERS)]
+                if attempt("train", query_id, spec, binding, parts["train"], register):
+                    used.add(register)
         for register in REGISTERS:
             if register in used:
                 continue
@@ -567,7 +1070,14 @@ def generate(
                 if attempt("train", query_id, spec, binding, parts["train"], register):
                     used.add(register)
                     break
-        target_rows = max(_MIN_TRAIN_ROWS, len(options) * weight)
+        pair_floor = max(len(name_pairs), len(options))
+        row_cap_multiplier = DOMAIN_ROW_CAP_MULTIPLIER.get(
+            spec.domain, DEFAULT_ROW_CAP_MULTIPLIER
+        )
+        target_rows = max(
+            _MIN_TRAIN_ROWS,
+            min(len(options) * weight, row_cap_multiplier * pair_floor),
+        )
         produced = sum(1 for row in splits["train"] if row.query_id == query_id)
         priority = [
             option
@@ -606,23 +1116,254 @@ def generate(
             )
             registers = list(REGISTERS)
             rng.shuffle(registers)
-            for index in range(max(floor, len(sample))):
+            wanted = max(floor, len(sample))
+            produced = 0
+            used_registers: set[str] = set()
+            # ``attempt`` có thể bị từ chối vì trùng/gần-trùng. Chỉ gọi đúng
+            # ``wanted`` lần làm một họ thỉnh thoảng hụt sàn val/test khi seed
+            # đổi đường RNG; thử bù có giới hạn và đếm những dòng thật đã emit.
+            for index in range(wanted * 12):
+                if produced >= wanted and len(used_registers) >= floor:
+                    break
                 binding = sample[index % len(sample)]
                 register = registers[index % len(REGISTERS)]
-                attempt(split, query_id, spec, binding, parts[split], register)
+                if attempt(split, query_id, spec, binding, parts[split], register):
+                    produced += 1
+                    used_registers.add(register)
 
     _add_contrast_pairs(splits, emit, frames, catalogue, mentions, bindings, rng)
     _balance_letter_case(splits, emit, frames, catalogue, mentions, bindings, rng)
+    _add_short_questions(splits, emit, catalogue, mentions, bindings, rng)
     _add_distractions(
         splits, emit, frames, catalogue, mentions, bindings, rng, templates
     )
     checklist: dict[str, list[str]] = {}
+    provenance: dict[str, dict[str, str]] = {}
     _add_rejections(
         splits, emit, graph, frames, catalogue, mentions, ambiguous, bindings, rng,
         templates, checklist,
         incomplete_specifications(graph, catalogue, bindings),
+        provenance,
     )
-    return splits, checklist
+    name_coverage = assess_name_coverage(
+        {
+            split: [row.as_json() for row in rows]
+            for split, rows in splits.items()
+        },
+        catalogue,
+        mentions,
+    )
+    require_complete_coverage(
+        {"complete": not name_coverage["missing"], "name_coverage": name_coverage}
+    )
+    return splits, checklist, provenance
+
+
+#: Đuôi ngắn ghép ngay sau tên gọi. MỌI tập dùng chung rổ này, kể cả đuôi rỗng.
+#:
+#: Chống rò rỉ bằng cách chia THỰC THỂ chứ không chia đuôi câu. Chia theo đuôi
+#: thì dạng "tên gọi đứng một mình" - đúng ca người dùng thử hỏng - chỉ nằm ở
+#: train, và tập test không bao giờ đo được nó. Chia theo thực thể thì cả ba tập
+#: đều có dạng trần, chỉ khác tên gọi, nên vẫn không có câu nào trùng câu nào.
+#:
+#: Và nó biến đây thành PHÉP ĐO TỔNG QUÁT HOÁ thật: thực thể ở val/test vẫn được
+#: dạy đầy đủ ở train qua các khung DÀI, chỉ chưa từng thấy ở dạng ngắn. Câu hỏi
+#: đo được là "học dạng ngắn ở thực thể này, có bắc sang thực thể khác không".
+#:
+#: Mọi đuôi đều là kiểu "kể tôi nghe về X", hợp với MỌI họ, vì thiết kế nay trả
+#: TRỌN NODE bất kể hỏi cách nào. Cố ý không dùng đuôi hẹp nghĩa (" các bước",
+#: " hạn nộp") - chúng chỉ hợp một số họ và sẽ đẻ ra câu vô nghĩa ở họ khác.
+_SHORT_TAILS: tuple[str, ...] = ("", " thế nào", " làm sao", " ra sao", " là gì")
+
+#: Thực thể thứ i của một họ thuộc về tập nào, khi sinh câu ngắn. Ba trên năm
+#: cho train, còn lại chia đôi - đủ để val và test đều có dạng trần.
+_SHORT_SPLIT_CYCLE = ("train", "train", "train", "val", "test")
+
+#: Số dòng câu ngắn mỗi họ, theo miền và tập. Đây là các con số CỐ Ý: tập dạy cũ có đúng 53
+#: dòng từ 6 từ trở xuống trên 2.065, và 45,3% trong số đó bị gán từ chối - tức
+#: là nó dạy thẳng "ngắn thì từ chối". Chỗ này bơm đủ dòng ngắn TRẢ LỜI ĐƯỢC để
+#: xoá tương quan ấy, ở mọi họ chứ không riêng họ nào.
+#:
+#: Quota được đo theo miền thay vì cộng 22 dòng vào mọi họ: ``document`` cần bù
+#: nhiều vì tên dài, còn ``academic-rule`` có nhiều họ nên chỉ cần sáu dòng/họ.
+#: Val/test giữ quota nhỏ; độ dày của chúng đến từ số neo held-out riêng.
+_SHORT_ROWS_BY_DOMAIN = {
+    "academic-rule": {"train": 6, "val": 3, "test": 3},
+    # Thủ tục cần thêm mẫu 2-6 từ để chính miền trọng tâm vượt sàn 15%; quota
+    # này dạy cách gọi ngắn trả lời được, không trộn nó với câu từ chối.
+    "procedure": {"train": 39, "val": 3, "test": 3},
+    "form": {"train": 45, "val": 3, "test": 3},
+    # Tên toạ độ văn bản dài năm từ nên vẫn cần quota riêng; 80 giữ tỷ lệ 2-6
+    # từ trong vùng 16-19%, đồng thời nhường ngân sách cho miền trọng tâm thay
+    # vì để document một mình đẩy tổng và vế tham chiếu lên quá cao.
+    "document": {"train": 80, "val": 4, "test": 4},
+    "tuition": {"train": 7, "val": 3, "test": 3},
+    "certificate": {"train": 8, "val": 3, "test": 3},
+}
+_DEFAULT_SHORT_ROWS = {"train": 4, "val": 3, "test": 3}
+
+# Vùng 7-9 từ từng có 31,8% câu từ chối, cao hơn cả vùng 2-6. Chỉ bơm tên gọi
+# trần không chữa được bậc này, nên train nhận thêm câu hỏi-chung được giữ đúng
+# trong khoảng 7-9 từ. Các đuôi vẫn hỏi trọn node, không thu hẹp sang một thuộc
+# tính cụ thể.
+_COMPACT_TAILS: tuple[str, ...] = (
+    " cần biết gì",
+    " có gì cần lưu ý",
+    " hướng dẫn đầy đủ giúp mình",
+    " cho mình biết với",
+    " thông tin đầy đủ",
+    " quy định thế nào",
+)
+_COMPACT_TRAIN_ROWS_BY_DOMAIN = {
+    # Giữ câu dương 7-9 từ đúng tại miền trọng tâm để dốc từ chối của bậc này
+    # không vượt nền; 70 tạo biên dưới 1,42×, còn quota từ chối được hạ riêng
+    # để tổng vẫn nằm dưới 4.150 dòng mà không rút ví dụ dương của bậc này.
+    "procedure": 70,
+    "form": 35,
+    "tuition": 6,
+    "certificate": 6,
+}
+_DEFAULT_COMPACT_TRAIN_ROWS = 1
+
+# Từng bù riêng bậc 10-13; sau khi chuyển quota 7-9 sang miền trọng tâm, bậc này
+# đã tự ở dưới trần. Giữ đường sinh với quota 0 để phép đo sau có thể bật lại.
+_MEDIUM_TAILS: tuple[str, ...] = (
+    " có những nội dung quan trọng nào cần lưu ý",
+    " được quy định cụ thể trong văn bản hiện hành ra sao",
+    " cần tra cứu đầy đủ những thông tin học vụ nào",
+    " được hướng dẫn chi tiết theo quy định như thế nào",
+)
+_MEDIUM_TRAIN_ROWS = 0
+
+
+def _add_short_questions(
+    splits: dict[str, list[Row]],
+    emit,
+    catalogue: Mapping[str, QuerySpec],
+    mentions: Mapping[str, tuple[str, ...]],
+    bindings: Mapping[str, list[dict[str, str]]],
+    rng: random.Random,
+) -> None:
+    """Tên gọi đứng một mình, và tên gọi cộng một hai từ.
+
+    Người dùng đặc tả rõ: *"với các kiểu 'abcxyz làm thế nào', 'làm sao abcxyz',
+    hay đơn giản 'abcxyz' thì lấy hết toàn bộ thuộc tính của node đó"*. Vế cuối
+    chưa bao giờ vào khung, và hậu quả đo được: câu dạy NGẮN NHẤT chứa "chuyển
+    ngành" dài 11 từ, "bảo lưu" 10 từ, "học lại" 7 từ. Model chưa từng thấy một
+    tên gọi đứng một mình nên nó từ chối - đúng bốn câu người dùng thử tay.
+
+    Chỉ chạy cho họ lấy trọn một node qua chỗ trống ``anchor``. Mười ba họ không
+    có chỗ trống và ``payment-fee-by-method`` (có ``phuongthuc`` nhưng hỏi phí,
+    không hỏi trọn node phương thức) phải dùng khung ngắn soạn tay. Nếu cho họ
+    phí đi đường này, câu trần "VNPAY" sẽ bị gán thành câu hỏi phí giao dịch.
+    """
+
+    for query_id, spec in sorted(catalogue.items()):
+        slots = frozenset(spec.slots)
+        if slots != {"anchor"}:
+            continue
+        slot = "anchor"
+        if spec.slots[slot].kind != "iri":
+            continue
+        options = [b for b in bindings.get(query_id, ()) if slot in b]
+        if not options:
+            continue
+        # Thực thể chia về tập theo vị trí, nên một thực thể chỉ sinh câu ngắn
+        # cho ĐÚNG MỘT tập - không có đường nào để câu test trùng câu train.
+        buckets: dict[str, list[dict[str, str]]] = {"train": [], "val": [], "test": []}
+        for index, binding in enumerate(options):
+            buckets[_SHORT_SPLIT_CYCLE[index % len(_SHORT_SPLIT_CYCLE)]].append(binding)
+        # Họ chỉ có một hai thực thể thì phép chia trên bỏ đói train. Dạy vẫn là
+        # ưu tiên: thà val/test thiếu câu ngắn ở họ đó còn hơn train không có.
+        if not buckets["train"]:
+            buckets["train"] = options
+
+        short_rows = _SHORT_ROWS_BY_DOMAIN.get(spec.domain, _DEFAULT_SHORT_ROWS)
+        for split, wanted in short_rows.items():
+            pool = buckets[split]
+            if not pool:
+                continue
+            produced = 0
+            # Nhiều lượt hơn hẳn số cần: emit trả False khi câu đã tồn tại, và
+            # tên gọi ngắn rất dễ đụng nhau giữa các họ cùng trỏ một thực thể.
+            for index in range(wanted * 12):
+                if produced >= wanted:
+                    break
+                binding = pool[index % len(pool)]
+                register = REGISTERS[index % len(REGISTERS)]
+                tail = _SHORT_TAILS[index % len(_SHORT_TAILS)]
+                names = mentions.get(binding[slot][1:])
+                if not names:
+                    break
+                question = decorate(
+                    f"{choose_mention(names, register, rng)}{tail}",
+                    register,
+                    rng,
+                    short=True,
+                )
+                # Tên thực thể có thể tự nó đã dài hơn sáu từ. Không được tính
+                # một câu như vậy vào quota "ngắn", nếu không các miền nhiều
+                # tên văn bản dài vẫn thiếu mẫu 2-6 từ dù bộ sinh báo đủ quota.
+                if not 2 <= len(question.split()) <= 6:
+                    continue
+                if emit(split, query_id, register, question,
+                        _fill_targets(spec, binding)):
+                    produced += 1
+
+        # Bậc 7-9 cần mẫu dương riêng; kiểm số từ TRƯỚC khi emit để thay đổi tên
+        # dài/ngắn trong ontology không âm thầm đẩy chúng sang bậc khác.
+        produced = 0
+        pool = buckets["train"]
+        compact_rows = _COMPACT_TRAIN_ROWS_BY_DOMAIN.get(
+            spec.domain, _DEFAULT_COMPACT_TRAIN_ROWS
+        )
+        for index in range(compact_rows * 80):
+            if produced >= compact_rows:
+                break
+            binding = pool[index % len(pool)]
+            register = REGISTERS[index % len(REGISTERS)]
+            names = mentions.get(binding[slot][1:])
+            if not names:
+                continue
+            tail = _COMPACT_TAILS[index % len(_COMPACT_TAILS)]
+            question = decorate(
+                f"{choose_mention(names, register, rng)}{tail}",
+                register,
+                rng,
+                short=True,
+            )
+            if not 7 <= len(question.split()) <= 9:
+                continue
+            if emit(
+                "train",
+                query_id,
+                register,
+                question,
+                _fill_targets(spec, binding),
+            ):
+                produced += 1
+
+        produced = 0
+        for index in range(_MEDIUM_TRAIN_ROWS * 80):
+            if produced >= _MEDIUM_TRAIN_ROWS:
+                break
+            binding = pool[index % len(pool)]
+            register = REGISTERS[index % len(REGISTERS)]
+            names = mentions.get(binding[slot][1:])
+            if not names:
+                continue
+            tail = _MEDIUM_TAILS[index % len(_MEDIUM_TAILS)]
+            question = decorate(
+                f"{choose_mention(names, register, rng)}{tail}",
+                register,
+                rng,
+            )
+            if not 10 <= len(question.split()) <= 13:
+                continue
+            if emit(
+                "train", query_id, register, question, _fill_targets(spec, binding)
+            ):
+                produced += 1
 
 
 def _add_contrast_pairs(
@@ -798,8 +1539,15 @@ def _add_rejections(
     templates: Mapping[str, tuple[str, ...]],
     checklist: dict[str, list[str]],
     incomplete: Mapping[str, list[tuple[str, str]]],
+    provenance: dict[str, dict[str, str]],
 ) -> None:
     """Câu từ chối, đủ các nhóm mà ``coverage.json`` đòi, mỗi nhóm đủ bốn phong cách.
+
+    ``provenance`` nhận lại **khuôn và neo đã đẻ ra từng dòng**. Dòng dataset chỉ
+    mang câu hỏi trần, nên không có sổ này thì phép kiểm buộc phải đoán ngược
+    khuôn từ chữ nghĩa câu hỏi - đúng cái bẫy đã để lọt 24 câu từ chối oan. Có
+    sổ thì phép kiểm tra thẳng đồ thị: neo này có mang dữ kiện khuôn kia hỏi
+    không.
 
     Hai nhóm sinh thẳng từ đồ thị nên không phải bịa:
 
@@ -843,18 +1591,32 @@ def _add_rejections(
         for binding in bindings[query_id]
         if binding.get("anchor") in procedures
     ]
+    # Chạy MỘT lần cho cả lượt sinh: câu dump chỉ phụ thuộc neo, mà mỗi neo bị
+    # thử với hàng chục khuôn.
+    dumped = dump_literals(graph, catalogue, PROCEDURE_FAMILY)
 
-    def anchor_text(register: str) -> str | None:
-        if not procedural:
+    def anchor_text(register: str, template: str = "") -> tuple[str, str] | None:
+        """Bốc một thủ tục làm neo, nhưng LOẠI thủ tục trả lời được câu hỏi.
+
+        ``template`` phải truyền vào TRƯỚC khi bốc neo, không phải sau: chọn neo
+        rồi mới chọn khuôn thì không còn cơ hội loại cặp hỏng.
+
+        Trả về ``(cách gọi, tên node)`` - tên node đi vào sổ ``provenance``.
+        """
+
+        pool = [
+            item
+            for item in procedural
+            if not answered_in_dump(dumped.get(item[1]["anchor"][1:], ""), template)
+        ]
+        if not pool:
             return None
-        local = rng.choice(procedural)[1]["anchor"][1:]
-        return (
-            choose_mention(mentions[local], register, rng)
-            if local in mentions
-            else None
-        )
+        local = rng.choice(pool)[1]["anchor"][1:]
+        if local not in mentions:
+            return None
+        return choose_mention(mentions[local], register, rng), local
 
-    def build(kind: str, register: str, split: str) -> str | None:
+    def build(kind: str, register: str, split: str) -> tuple[str, str, str] | None:
         """Mẫu câu cũng phải CHIA THEO TẬP, y như khung ý định.
 
         Dùng chung mẫu giữa các tập sinh ra câu gần trùng, và validator bắt đúng
@@ -862,31 +1624,62 @@ def _add_rejections(
         không phải hai câu khác nhau.
         """
 
+        def decorate_with_anchor(template: str, mention: str) -> str:
+            """Khoác register nhưng không làm lỗi chính tả bên trong tên neo."""
+
+            placeholder = "§§§"
+            decorated = decorate(
+                template.replace("{anchor}", placeholder), register, rng
+            )
+            return decorated.replace(placeholder, mention)
+
         if kind == "ambiguous":
             if not ambiguous:
                 return None
             # Khung phải là khung của một họ NHẬN được chính thực thể đó, nếu
             # không ta hỏi thời hạn của một điều luật và câu vô nghĩa vì sai
             # loại chứ không vì mơ hồ - hai lý do từ chối rất khác nhau.
+            #
+            # Và họ đó phải nhận được TỪ HAI chủ sở hữu trở lên. Cách gọi mơ hồ
+            # thôi thì CHƯA đủ: nếu các chủ sở hữu nằm ở những họ khác nhau,
+            # chính KHUNG đã gỡ xong mơ hồ và câu hỏi có đúng một đáp án.
+            #
+            # Ca thật đã dính: "Mẫu số 13" trỏ tới hai tờ đơn KHÁC NHAU ngoài
+            # đời - quyết định đánh số 13 cho đơn xin chuyển trường, website
+            # đánh số 13 cho đơn học cùng lúc hai chương trình. Nhưng hỏi
+            # "thông tin tải xuống của Mẫu số 13" thì chỉ còn mục tải, tức trả
+            # lời được; 15 dòng đã bị gán từ chối oan vì thiếu điều kiện này.
+            # "Điều 1" thì ngược lại: cả ba tài liệu đều rơi vào cùng một họ
+            # tra điều luật, nên khung không gỡ được gì và nó mơ hồ thật.
             text = rng.choice(sorted(ambiguous))
             owners = {f":{name}" for name in ambiguous[text]}
             fitting = [
                 query_id
                 for query_id in anchored
-                if owners & {
-                    binding["anchor"]
-                    for binding in bindings[query_id]
-                    if "anchor" in binding
-                }
+                if len(
+                    owners
+                    & {
+                        binding["anchor"]
+                        for binding in bindings[query_id]
+                        if "anchor" in binding
+                    }
+                )
+                > 1
             ]
             if not fitting:
                 return None
             frame = rng.choice(split_frames(frames[rng.choice(fitting)])[split])
-            return decorate(frame.fill({"anchor": text}), register, rng)
+            # Neo ở đây là một CÁCH GỌI mơ hồ, cố ý không trỏ về một node duy
+            # nhất, nên không có tên node để ghi sổ.
+            return decorate_with_anchor(frame.text, text), frame.text, ""
         if kind == "incomplete-request":
-            # Mẫu mang đúng MỘT chỗ trống, tên trùng tên slot. Ghép nó với những
-            # giá trị đã ĐO ĐƯỢC là gây nhiều đáp án - xem
-            # ``incomplete_specifications``. Không đo được thì không sinh, thà
+            # V3 có hai dạng yêu cầu thiếu thông tin hợp lệ:
+            #
+            # * không có chỗ trống: người hỏi chưa nêu BẤT KỲ thực thể nào;
+            # * đúng một chỗ trống: người hỏi chỉ nêu một slot đã ĐO ĐƯỢC là
+            #   còn dẫn tới nhiều đáp án - xem ``incomplete_specifications``.
+            #
+            # Không chấp nhận nhiều chỗ trống hay một slot chưa đo được; thà
             # thiếu câu từ chối còn hơn dạy từ chối một câu trả lời được.
             options = _split_templates(templates.get(kind, ()), split)
             if not options:
@@ -895,6 +1688,8 @@ def _add_rejections(
             slot_names = {
                 name for name in _SLOT_PLACEHOLDER.findall(text)
             }
+            if not slot_names:
+                return decorate(text, register, rng), text, ""
             if len(slot_names) != 1:
                 return None
             name = slot_names.pop()
@@ -913,33 +1708,36 @@ def _add_rejections(
                 if slot.kind == "iri"
                 else value
             )
-            return decorate(text.replace("{" + name + "}", filled), register, rng)
-        if kind == "near-domain-missing":
-            query_id = rng.choice(anchored)
-            text = _outsider_mention(
-                query_id, catalogue, bindings, mentions, register, rng
+            return (
+                decorate(text.replace("{" + name + "}", filled), register, rng),
+                text,
+                value[1:] if slot.kind == "iri" else "",
             )
-            if text is None:
+        if kind == "near-domain-missing":
+            # Hỏi một THUỘC TÍNH không có của thủ tục thật. Bản trước lấy một
+            # thực thể ngoài họ A rồi nhét vào khung hỏi-chung của A; nhưng mọi
+            # họ ``*-facts`` đều lấy trọn node, nên câu ấy vẫn trả lời được qua
+            # họ B và bị gán sai ``no-information``.
+            options = _split_templates(templates.get(kind, ()), split)
+            if not options:
                 return None
-            frame = rng.choice(split_frames(frames[query_id])[split])
-            return decorate(frame.fill({"anchor": text}), register, rng)
+            template = rng.choice(options)
+            picked = anchor_text(register, template)
+            if picked is None:
+                return None
+            mention, local = picked
+            return decorate_with_anchor(template, mention), template, local
         options = _split_templates(templates.get(kind, ()), split)
         if not options:
             return None
         text = rng.choice(options)
         if "{anchor}" in text:
-            mention = anchor_text(register)
-            if mention is None:
+            picked = anchor_text(register, text)
+            if picked is None:
                 return None
-            text = text.replace("{anchor}", mention)
-        return decorate(text, register, rng)
-
-    def outcome(kind: str) -> tuple[str, str]:
-        """Đích của một câu từ chối - xem ghi chú đầu tệp về ngoại lệ chào hỏi."""
-
-        if kind in _CAPABILITY_KINDS and CAPABILITY_FAMILY in catalogue:
-            return CAPABILITY_FAMILY, catalogue[CAPABILITY_FAMILY].target_template
-        return "no-information", MARKER
+            mention, local = picked
+            return decorate_with_anchor(text, mention), text, local
+        return decorate(text, register, rng), text, ""
 
     kinds = ("greeting-social", "unrelated", "near-domain-missing", "ambiguous",
              "noisy-out-of-domain", "hard-negative", "adjacent-domain",
@@ -955,15 +1753,31 @@ def _add_rejections(
         for kind in kinds:
             for register in REGISTERS:
                 for _ in range(40):
-                    question = build(kind, register, split)
-                    if question is None:
+                    built = build(kind, register, split)
+                    if built is None:
                         continue
+                    question, template, anchor = built
                     before = len(splits[split])
-                    family, target = outcome(kind)
+                    family, target = "no-information", MARKER
                     emit(split, family, register, question, target)
                     if len(splits[split]) > before:
                         checklist.setdefault(kind, []).append(splits[split][-1].id)
+                        provenance[splits[split][-1].id] = {
+                            "class": kind, "template": template, "anchor": anchor
+                        }
                         produced += 1
+                        if kind == "near-domain-missing":
+                            _emit_cross_family_general_question(
+                                split,
+                                register,
+                                splits,
+                                emit,
+                                frames,
+                                catalogue,
+                                mentions,
+                                bindings,
+                                rng,
+                            )
                         break
         # Lượt hai: bơm cho đủ tỷ lệ.
         for _ in range(quota * 12):
@@ -971,15 +1785,31 @@ def _add_rejections(
                 break
             kind = rng.choice(kinds)
             register = rng.choice(REGISTERS)
-            question = build(kind, register, split)
-            if question is None:
+            built = build(kind, register, split)
+            if built is None:
                 continue
+            question, template, anchor = built
             before = len(splits[split])
-            family, target = outcome(kind)
+            family, target = "no-information", MARKER
             emit(split, family, register, question, target)
             if len(splits[split]) > before:
                 checklist.setdefault(kind, []).append(splits[split][-1].id)
+                provenance[splits[split][-1].id] = {
+                    "class": kind, "template": template, "anchor": anchor
+                }
                 produced += 1
+                if kind == "near-domain-missing":
+                    _emit_cross_family_general_question(
+                        split,
+                        register,
+                        splits,
+                        emit,
+                        frames,
+                        catalogue,
+                        mentions,
+                        bindings,
+                        rng,
+                    )
 
 
 def _split_templates(options: tuple[str, ...], split: str) -> tuple[str, ...]:
@@ -997,35 +1827,77 @@ def _split_templates(options: tuple[str, ...], split: str) -> tuple[str, ...]:
     }[split]
 
 
-def _outsider_mention(
-    query_id: str,
-    catalogue: Mapping[str, QuerySpec],
-    bindings: Mapping[str, list[dict[str, str]]],
-    mentions: Mapping[str, tuple[str, ...]],
+def _emit_cross_family_general_question(
+    split: str,
     register: str,
+    splits: Mapping[str, list[Row]],
+    emit,
+    frames: Mapping[str, tuple[Frame, ...]],
+    catalogue: Mapping[str, QuerySpec],
+    mentions: Mapping[str, tuple[str, ...]],
+    bindings: Mapping[str, list[dict[str, str]]],
     rng: random.Random,
-) -> str | None:
-    """Một thực thể CÙNG MIỀN nhưng nằm ngoài danh sách neo của họ này.
+) -> bool:
+    """Dạy khung hỏi-chung của họ A với thực thể thật thuộc họ B.
 
-    Ví dụ hỏi thời hạn của một thủ tục mà ontology không ghi thời hạn: câu nghe
-    hoàn toàn hợp lý, và đó chính là điều làm nó thành ca từ chối khó.
+    Đây là đúng nhóm trước kia bị gán nhầm ``no-information``. Khung có thể nói
+    "quy tắc", "điều kiện", "cần lưu ý" hay "hướng dẫn", nhưng hợp đồng của
+    công cụ là nhận ra tên gọi rồi trả trọn node. Đích vì vậy phải thuộc họ đang
+    sở hữu thực thể, không thuộc họ cung cấp cách diễn đạt.
     """
 
-    spec = catalogue[query_id]
-    allowed = {binding["anchor"] for binding in bindings.get(query_id, [])}
-    pool = [
-        binding["anchor"]
-        for other, options in bindings.items()
-        if catalogue[other].domain == spec.domain
-        for binding in options
-        if "anchor" in binding and binding["anchor"] not in allowed
+    sources = [
+        query_id
+        for query_id in sorted(frames)
+        if set(catalogue[query_id].slots) == {"anchor"}
+        and bindings.get(query_id)
     ]
-    if not pool:
-        return None
-    local = rng.choice(pool)[1:]
-    if local not in mentions:
-        return None
-    return choose_mention(mentions[local], register, rng)
+    for _ in range(40):
+        source_id = rng.choice(sources)
+        source_spec = catalogue[source_id]
+        disallowed = {
+            binding["anchor"] for binding in bindings[source_id]
+        }
+        owners = [
+            (owner_id, binding)
+            for owner_id, options in sorted(bindings.items())
+            if owner_id != source_id
+            and catalogue[owner_id].domain == source_spec.domain
+            and set(catalogue[owner_id].slots) == {"anchor"}
+            for binding in options
+            if binding["anchor"] not in disallowed
+            and binding["anchor"][1:] in mentions
+        ]
+        if not owners:
+            continue
+        owner_id, binding = rng.choice(owners)
+        frame = rng.choice(split_frames(frames[source_id])[split])
+        mention = choose_mention(
+            mentions[binding["anchor"][1:]], register, rng
+        )
+        question = decorate(
+            frame.fill({"anchor": mention}), register, rng, short=frame.short
+        )
+        grams = _character_trigrams(question)
+        if any(
+            row.query_id == owner_id
+            and len(grams & other) / len(grams | other)
+            >= NEAR_DUPLICATE_THRESHOLD
+            for other_split, rows in splits.items()
+            if other_split != split
+            for row in rows
+            for other in [_character_trigrams(row.input)]
+        ):
+            continue
+        if emit(
+            split,
+            owner_id,
+            register,
+            question,
+            _fill_targets(catalogue[owner_id], binding),
+        ):
+            return True
+    return False
 
 
 def write_splits(splits: Mapping[str, list[Row]], directory: Path) -> None:
@@ -1040,24 +1912,30 @@ def write_splits(splits: Mapping[str, list[Row]], directory: Path) -> None:
 
 
 def build_bindings(
+    graph: Graph,
     catalogue: Mapping[str, QuerySpec],
     frames: Mapping[str, tuple[Frame, ...]],
-    numeric_cases: list[dict],
     article_numbers: tuple[str, ...],
     clause_numbers: tuple[tuple[str, str], ...],
 ) -> dict[str, list[dict[str, str]]]:
     """Mọi bộ giá trị slot hợp lệ của từng họ.
 
-    Slot IRI lấy thẳng danh sách đã khai trong danh mục - **không bao giờ** lấy
-    neo ngoài danh sách đó, vì truy vấn sinh ra sẽ rỗng và ta lại dạy model một
-    liên kết không có thật. Slot số lấy từ ``coverage.json``, riêng số hiệu điều
-    và khoản suy thẳng từ ontology.
+    Slot IRI độc lập lấy danh sách đã khai trong danh mục. Bốn họ có miền số suy
+    đúng một mốc cho mỗi neo/tổ hợp từ thuộc tính RDF có cấu trúc. Riêng số hiệu
+    điều và cặp điều–khoản cũng suy thẳng từ ontology.
     """
 
     by_query: dict[str, list[dict[str, str]]] = {}
-    cases: dict[str, list[dict[str, str]]] = {}
-    for case in numeric_cases:
-        cases.setdefault(case["query_id"], []).append(case["slots"])
+    inferred_numeric = {
+        query_id: [
+            {
+                **dict(anchor.context),
+                anchor.number_slot: format(anchor.representative, "f"),
+            }
+            for anchor in anchors
+        ]
+        for query_id, anchors in numeric_anchors(graph).items()
+    }
 
     for query_id in frames:
         spec = catalogue[query_id]
@@ -1076,24 +1954,7 @@ def build_bindings(
             continue
         numbers = [name for name in names if spec.slots[name].kind == "number"]
         if numbers:
-            # Slot số có miền vô hạn nên giá trị phải do người chốt, không sinh
-            # bừa: mỗi ca trong coverage.json là một mốc ngưỡng có chủ đích.
-            #
-            # Nhưng slot IRI đi kèm thì PHẢI phủ hết: họ học phí khai 41 ngành,
-            # mà coverage.json chỉ nêu 6 ca mẫu. Nhân chéo mốc ngưỡng với toàn bộ
-            # danh sách IRI; tổ hợp nào không trả về dòng nào sẽ bị
-            # ``executable_bindings`` loại sau.
-            marks = [
-                {name: slots[name] for name in numbers}
-                for slots in cases.get(query_id, [])
-                if all(name in slots for name in numbers)
-            ]
-            iris = [name for name in names if name not in numbers]
-            by_query[query_id] = [
-                {**mark, **dict(zip(iris, combination, strict=True))}
-                for mark in marks
-                for combination in product(*(spec.slots[name].values for name in iris))
-            ]
+            by_query[query_id] = inferred_numeric.get(query_id, [])
             continue
         # Slot IRI không phải lúc nào cũng tên "anchor" - còn "rule", "certificate",
         # "program". Nhân chéo các danh sách đã khai; không họ nào có quá một slot

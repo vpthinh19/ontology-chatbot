@@ -75,11 +75,13 @@ MODEL_SPECS = {
 MAX_SOURCE_LENGTH = 128
 #: Trần CẮT, không phải độ dài đệm: model dừng ở EOS nên nới trần gần như không
 #: tốn gì, còn vượt trần thì đích bị cắt giữa chừng và luôn sai - hỏng âm thầm.
-#: ViT5 sinh đích dài nhất trong ba model nên nó chạm trần trước.
+#: ViT5 sinh đích dài nhất trong ba model nên nó chạm trần trước. Dataset hiện
+#: tại đạt 307 token ViT5 (không tính special token), vì vậy 320 chừa chỗ cho
+#: EOS mà không cắt một đích canonical nào.
 #:
 #: Họ truy vấn trả càng nhiều thông tin thì đích càng dài, nên **sau mỗi lần gộp
 #: họ phải đo lại độ dài đích trên cả ba tokenizer**.
-MAX_TARGET_LENGTH = 288
+MAX_TARGET_LENGTH = 320
 LORA_R = 32
 LORA_ALPHA = 64
 LORA_DROPOUT = 0.0

@@ -37,11 +37,19 @@ def anchors() -> tuple[str, ...]:
 @pytest.mark.parametrize(
     ("anchor", "expected"),
     [
-        ("Regulation1052Article24", "Điều 24"),
-        ("Regulation1052Article24Clause03", "khoản 3 Điều 24"),
-        ("Regulation1052Article24Clause01PointA", "điểm a khoản 1 Điều 24"),
-        ("Regulation1052ChapterIV", "Chương IV"),
-        ("TemporaryAcademicLeaveProcedure", "bảo lưu"),
+        # TOẠ ĐỘ PHẢI KÈM TÊN VĂN BẢN. "Điều 24" trơ trọi không chỉ về đâu cả -
+        # mỗi quy chế đều có Điều 24 của riêng nó, nên tách khỏi văn bản thì
+        # chương/điều/khoản đều vô nghĩa. Bản trước lấy toạ độ trần làm cách gọi
+        # CHÍNH và bỏ qua ``rdfs:label`` vốn đã đầy đủ; nó chỉ chạy được vì đồ
+        # thị tình cờ có mỗi một văn bản mang số đó.
+        ("Regulation1052Article24", "Điều 24 Quy chế 1052"),
+        ("Regulation626Article24", "Điều 24 Quy chế 626"),
+        ("Regulation1052Article24Clause03", "khoản 3 Điều 24 Quy chế 1052"),
+        ("Regulation1052Article24Clause01PointA", "điểm a khoản 1 Điều 24 Quy chế 1052"),
+        ("Regulation1052ChapterIV", "Chương IV Quy chế 1052"),
+        # Trước đây là "bảo lưu" trơ trọi. Đã bỏ khỏi ontology: QĐ1052 dùng từ
+        # này ở năm ngữ cảnh khác nhau, nên một mình nó không trỏ được vào đâu.
+        ("TemporaryAcademicLeaveProcedure", "bảo lưu kết quả"),
         ("Form09TemporaryLeave", "Mẫu số 09"),
         ("Accounting", "Kế toán"),
     ],
@@ -55,15 +63,15 @@ def test_entities_are_named_the_way_a_student_would(graph, anchor, expected) -> 
 def test_every_anchor_keeps_at_least_one_unambiguous_mention(graph, anchors) -> None:
     """Không neo nào được mất hết cách gọi sau khi phân giải mơ hồ.
 
-    ``mention_index`` tự ném lỗi nếu có neo trắng, nên test này chốt lại hợp đồng
-    đó và đồng thời canh số lượng: nếu bộ rút gọn hỏng, tổng cách gọi sẽ tụt.
+    ``mention_index`` tự ném lỗi nếu có neo trắng; test này chốt lại
+    hợp đồng thật: đúng toàn bộ neo được trả về và neo nào cũng có
+    ít nhất một cách gọi không mơ hồ.
     """
 
     resolved, _ = mention_index(graph, anchors)
 
     assert set(resolved) == set(anchors)
     assert all(resolved[anchor] for anchor in anchors)
-    assert sum(len(texts) for texts in resolved.values()) >= 700
 
 
 def test_a_mention_never_points_at_two_DIFFERENT_things(graph, anchors) -> None:
@@ -97,15 +105,27 @@ def test_a_mention_never_points_at_two_DIFFERENT_things(graph, anchors) -> None:
 
 
 def test_article_numbers_shared_by_documents_are_qualified(graph, anchors) -> None:
-    """Ba tài liệu đều có Điều 1; cách gọi phải nêu rõ tài liệu nào."""
+    """Số hiệu điều trùng nhau thì cách gọi phải nêu rõ tài liệu nào.
+
+    Có hai trục trùng, và bổ ngữ phải gỡ được cả hai:
+
+    * quyết định ban hành với quy chế kèm theo nó - cả hai đều có Điều 1;
+    * hai ĐỜI quy chế - cả hai đều có Điều 10, mà bản 2025 nói về xoá lớp học
+      phần còn bản 2021 nói về rút bớt học phần đã đăng ký.
+
+    Trục thứ hai từng lọt lưới: bổ ngữ lấy bốn từ đầu của nhãn tài liệu, mà bốn
+    từ đầu của cả hai quy chế đều là "Quy chế đào tạo trình độ".
+    """
 
     resolved, _ = mention_index(graph, anchors)
 
     assert "Điều 1 Quyết định 1052" in resolved["Decision1052Article01"]
-    assert "Điều 1 Quyết định 729" in resolved["Decision729Article01"]
-    assert "Điều 1 Quy chế đào tạo" in resolved["Regulation1052Article01"]
-    # Điều 24 chỉ có ở quy chế nên không cần nêu tài liệu.
-    assert "Điều 24" in resolved["Regulation1052Article24"]
+    assert "Điều 1 Quy chế 1052" in resolved["Regulation1052Article01"]
+    assert "Điều 10 Quy chế 1052" in resolved["Regulation1052Article10"]
+    assert "Điều 10 Quy chế 753" in resolved["Regulation753Article10"]
+    # Điều 24 nay có ở cả hai quy chế, nên phải nêu rõ nguồn.
+    assert "Điều 24 Quy chế 1052" in resolved["Regulation1052Article24"]
+    assert "Điều 24 Quy chế 626" in resolved["Regulation626Article24"]
 
 
 def test_ambiguous_mentions_are_reported_for_the_rejection_class(graph, anchors) -> None:
@@ -122,7 +142,9 @@ def test_ambiguous_mentions_are_reported_for_the_rejection_class(graph, anchors)
     # Bảng mơ hồ khoá theo dạng casefold: "Đơn xin nghỉ học" và "đơn xin nghỉ
     # học" là MỘT cách gọi, tách đôi sẽ đếm thừa và sinh câu từ chối trùng nhau.
     assert all(text == text.casefold() for text in ambiguous)
-    assert "đơn xin nghỉ học" in ambiguous
+    # Các diện miễn học phần đã được gộp về bảng nguyên văn, nên ví dụ còn sống
+    # là số mẫu xuất hiện ở cả văn bản biểu mẫu và mục tải tương ứng.
+    assert "mẫu số 13" in ambiguous
 
 
 def test_forms_are_not_ambiguous_with_their_own_download_entry(graph, anchors) -> None:
@@ -156,21 +178,21 @@ def test_download_entries_never_keep_the_web_ui_prefix(graph, anchors) -> None:
     assert not [text for text in every if _LEADING_PUNCTUATION.match(text)]
 
 
-def test_overloaded_mentions_include_shared_article_numbers(graph, anchors) -> None:
-    """Nguyên liệu câu từ chối phải gồm cả cách gọi ĐÃ gỡ được bằng bổ ngữ.
+def test_document_coordinates_are_never_raw_rejection_material(graph, anchors) -> None:
+    """Toạ độ văn bản không đủ nghĩa không được sinh ở bất kỳ nhánh nào.
 
-    ``mention_index`` cứu "Điều 1" bằng cách thêm tên tài liệu, nên nó biến mất
-    khỏi bảng mơ hồ. Nhưng người dùng gõ đúng "Điều 1" mới là câu mơ hồ thật, và
-    là ca từ chối sát thực tế nhất mà đồ thị sinh ra được.
+    ``mention_index`` chỉ nhận cách gọi kèm tài liệu, nên ``overloaded_mentions``
+    cũng không được khôi phục "Điều 1" làm nguyên liệu câu từ chối. Một toạ độ
+    trần không phải câu hỏi mơ hồ: nó không định vị được văn bản nào để hỏi.
     """
 
+    resolved, _ = mention_index(graph, anchors)
     overloaded = overloaded_mentions(graph, anchors)
 
-    # KHÔNG chốt con số: mỗi công văn mới thêm vào ontology lại có "Điều 1" của
-    # riêng nó, nên số này tăng theo thời gian một cách chính đáng. Cái phải giữ
-    # là "Điều 1" bị nhiều tài liệu dùng chung, còn "Điều 24" thì không.
-    assert len(overloaded["Điều 1"]) >= 3
-    assert all(name.endswith("Article01") for name in overloaded["Điều 1"])
+    assert "Điều 1" not in {
+        text for texts in resolved.values() for text in texts
+    }
+    assert "Điều 1" not in overloaded
     assert "Điều 24" not in overloaded
     # Tờ đơn và mục tải của nó là MỘT thứ, không phải nguyên liệu từ chối.
     assert "Đơn xin chuyển trường" not in overloaded

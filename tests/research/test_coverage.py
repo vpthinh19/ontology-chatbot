@@ -10,6 +10,7 @@ from ontchatbot.research.coverage import (
     CoverageError,
     NumericCase,
     assess_coverage,
+    assess_name_coverage,
     load_coverage_requirements,
     require_complete_coverage,
 )
@@ -184,7 +185,7 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
     )
     splits, checklist = _complete_splits()
 
-    report = assess_coverage(splits, _catalogue(), requirements, checklist)
+    report = assess_coverage(splits, _catalogue(), requirements, checklist, {})
 
     assert report["complete"] is True
     require_complete_coverage(report)
@@ -197,7 +198,7 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
         ]
         for split, rows in splits.items()
     }
-    report = assess_coverage(incomplete, _catalogue(), requirements, checklist)
+    report = assess_coverage(incomplete, _catalogue(), requirements, checklist, {})
 
     assert report["complete"] is False
     assert report["missing_numeric_cases"] == [
@@ -244,6 +245,7 @@ def test_numeric_case_requires_its_finite_context_slot(tmp_path, target: str) ->
         _catalogue(),
         requirements,
         {},
+        {},
     )
 
     assert report["missing_numeric_cases"] == [
@@ -265,3 +267,40 @@ def test_canonical_numeric_cases_execute_on_the_ontology() -> None:
         for name, value in numeric_case.slots:
             target = target.replace(f"${{{name}}}", value)
         assert execute_select(graph, target), numeric_case
+
+
+def test_name_coverage_reports_the_missing_node_and_label() -> None:
+    catalogue = {
+        "named-family": QuerySpec(
+            "named-family",
+            "procedure",
+            "PROCEDURE ${anchor}",
+            {"anchor": SlotSpec("iri", (":Procedure",))},
+        )
+    }
+    mentions = {"Procedure": ("Thủ tục chính thức", "tên phụ")}
+    splits = {
+        "train": [
+            {
+                "query_id": "named-family",
+                "input": "Cho hỏi thủ tục chính thức làm thế nào?",
+                "target": "PROCEDURE :Procedure",
+            }
+        ],
+        "val": [],
+        "test": [],
+    }
+
+    report = assess_name_coverage(splits, catalogue, mentions)
+
+    assert report == {
+        "total": 2,
+        "covered": 1,
+        "missing_count": 1,
+        "missing": [{"node": ":Procedure", "label": "tên phụ"}],
+    }
+    with pytest.raises(
+        CoverageError,
+        match=r"node :Procedure: thiếu nhãn 'tên phụ'",
+    ):
+        require_complete_coverage({"complete": False, "name_coverage": report})

@@ -1,106 +1,123 @@
-# Đánh giá
+# Đánh giá model sinh SPARQL
 
-Tài liệu này định nghĩa giao thức và báo cáo kết quả trên ontology cùng dataset
-4.454 câu. Cả ba model được đánh giá trên cùng 407 câu test.
+Thước v3 nằm trong `src/ontchatbot/research/evaluation.py`. Ba đường chạy model
+đều gọi cùng `evaluate_predictions`, vì vậy causal LLM và seq2seq được chấm trên
+cùng chuỗi đầu ra, cùng catalogue, cùng ontology và cùng ba định nghĩa:
 
-## Hai nhóm test
+1. **Đúng node** (`node_selection`): model neo vào đúng tập thực thể/bảng mà
+   câu chuẩn yêu cầu.
+2. **Đúng dạng** (`query_shape`): query khớp đúng họ catalogue; tham số không
+   phải node, nếu có, cũng phải đúng. Giá trị IRI dùng để neo được chấm ở chỉ số
+   đúng node thay vì tính hai lần trong định nghĩa đúng dạng.
+3. **Từ chối đúng** (`rejection_decision`): câu ngoài miền phải sinh đúng marker
+   `không có thông tin`; câu trong miền phải sinh một query mà runtime chấp nhận
+   (hợp cú pháp và thuộc catalogue).
 
-Test được báo cáo theo hai nhóm độc lập:
+Không có điểm tổng hợp. Artifact ghi rõ `composite_score: null`. Các số
+`answer_exact`, precision/recall/F1 trên tập kết quả và exact string cũ vẫn còn
+để chẩn đoán tương thích, nhưng `metric_policy` đánh dấu chúng **không phải chỉ
+số chính**.
 
-- `in-domain`: đáp án tham chiếu là một truy vấn SPARQL chuẩn có kết quả;
-- `out-of-domain`: reference là `không có thông tin`, bao gồm nhóm câu hỗn hợp.
+## Mẫu số và đối soát các split held-out
 
-Không dùng một accuracy tổng thể để che chất lượng của một nhóm.
+`coverage_accounting` phân hoạch mọi dòng vào đúng một trong ba nhóm. Hai split
+hiện có các mẫu số khác nhau và đều được dẫn xuất trực tiếp từ JSONL:
 
-## Metric trong miền
+| Nhóm | Validation | Test | Tiêu chí được chấm |
+|---|---:|---:|---|
+| Query có node cụ thể | 296 | 287 | đúng node, đúng dạng, từ chối đúng |
+| Ngoài miền (`no-information`) | 52 | 50 | từ chối đúng |
+| **Tổng đối soát** | **348** | **337** | mọi dòng xuất hiện trong ít nhất một mẫu số |
 
-| Metric | Cách tính | Ý nghĩa |
-|---|---|---|
-| Validation loss | Cross-entropy token với teacher forcing | Hội tụ/overfit |
-| Parse rate | Query qua parser | Đúng cú pháp |
-| Execution rate | Query chạy không lỗi | Có thể thực thi |
-| Result precision/recall/F1 | So multiset dòng kết quả | Mức đúng một phần |
-| In-domain Answer Exact | Kết quả thực thi trùng reference | Trả đúng toàn bộ dữ liệu |
-| Query string exact | Chuỗi truy vấn trùng đáp án SPARQL chuẩn | Đúng biểu diễn chuẩn |
+Chỉ còn HAI nhóm. Nhóm thứ ba - hỏi năng lực - đã bị bỏ khỏi thiết kế ngày
+2026-08-14: công cụ chỉ có hai việc là truy ra dữ kiện đã có hoặc nói không có
+thông tin, còn việc giới thiệu phạm vi trả lời là của LLM lớn gọi nó.
 
-Answer Exact bỏ qua thứ tự dòng và tên biến nhưng giữ kiểu dữ liệu, language
-tag, số cột và cách ghép giá trị trong từng dòng.
+## “Đúng node” khi SPARQL có nhiều cách viết
 
-## Metric ngoài miền
+Thước không so chuỗi query và cũng không dùng tập kết quả để quyết định đúng
+node. Sau khi query qua phép kiểm cú pháp, RDFLib phân tích nó thành cây cú pháp.
+Thước thu các IRI ontology xuất hiện tường minh, bỏ predicate và class (đó là từ
+vựng của dạng query), rồi so **đúng tập** node còn lại với oracle. Vì vậy các
+cách viết sau không làm thay đổi điểm node:
 
-| Metric | Cách tính | Ý nghĩa |
-|---|---|---|
-| Marker exact | Đầu ra trùng `không có thông tin` | Model chủ động từ chối đúng quy ước |
-| False acceptance | Câu ngoài miền sinh `SELECT` hợp lệ có kết quả | Nguy cơ trả lời sai tự tin |
-| Safe rejection | Backend cuối cùng trả `Không có thông tin.` | Hành vi người dùng nhìn thấy |
-| Mixed-query rejection | Câu hỗn hợp bị từ chối toàn bộ | Tuân thủ ranh giới miền |
+- đổi tên biến;
+- đổi thứ tự nhánh;
+- neo cùng IRI bằng `BIND`, `VALUES`, hoặc đặt IRI trực tiếp trong triple;
+- viết một hay nhiều node bảng trong `VALUES`.
 
-Output sai cú pháp có thể được backend chặn an toàn nhưng không được tính là
-marker exact. Nhờ vậy benchmark phân biệt model thực sự học từ chối với lỗi sinh
-chuỗi vô tình dẫn tới cùng phản hồi giao diện.
+Query sai cú pháp nhận điểm sai, không bị bỏ khỏi mẫu số. Query có đúng node
+nhưng viết ngoài shape catalogue có thể đạt “đúng node” và trượt “đúng dạng”;
+đây là chủ ý để hai lỗi không bị nhập làm một. Query chỉ dò node gián tiếp bằng
+nhãn, không nêu IRI neo, không đạt hợp đồng “chọn node” của kiến trúc và bị tính
+sai ở chỉ số này.
 
-## System Answer Exact
+## Cùng thước cho causal LLM và seq2seq
 
-System Answer Exact chạy prediction qua toàn backend:
+Đầu vào của thước chỉ là danh sách record chuẩn và danh sách chuỗi model sinh
+ra. Nó không đọc logits, loss, tokenizer hay kiến trúc model. Causal LLM có thể
+dùng prompt/few-shot; seq2seq có thể chạy bằng Transformers hoặc CTranslate2;
+sau bước generate cả ba đều giao cùng một chuỗi cho `evaluate_predictions`.
+Vì vậy so sánh ba chỉ số có cùng ý nghĩa khi dùng đúng cùng split. Thời gian,
+VRAM, số shot và thông tin checkpoint được ghi riêng, không tham gia điểm.
 
-- câu trong miền đúng khi literal cuối cùng trùng reference;
-- câu ngoài miền đúng khi giao diện trả `Không có thông tin.`.
+## Chín câu người thật
 
-Metric này được báo cáo riêng cho in-domain, out-of-domain, mixed và tổng thể,
-luôn kèm số mẫu từng nhóm. In-domain Answer Exact vẫn là chỉ số chính cho năng
-lực chatbot ontology.
+`resources/cases/user_queries.json` có 9 câu không do bộ sinh tạo ra. Tệp chỉ có
+oracle `expected_query_id`, không có target SPARQL/node, nên
+`evaluate_query_id_expectations` báo riêng `query_id_accuracy` và từng case;
+không trộn chúng vào các mẫu số held-out ở trên. Query sai cú pháp hoặc ngoài catalogue
+nhận sai. Các evaluator chạy model tự sinh thêm 9 prediction này sau benchmark.
 
-## Validation và test
+## Lệnh chạy
 
-Validation dùng greedy decoding và chọn checkpoint theo tiêu chí được cố định
-trước huấn luyện. Test chỉ chạy một lần với checkpoint đã chọn. Mọi SPARQL test
-thuộc catalogue đã xuất hiện trong train; cách diễn đạt thì chưa xuất hiện ở
-train/validation.
+Chấm causal LLM (tự chấm thêm 9 câu người thật):
 
-Ngoài tập test, bộ `resources/cases/procedure_language.jsonl` gồm 308 câu được
-dùng để kiểm tra hành vi triển khai: 220 câu hỏi quy trình và 88 câu gần miền
-hoặc ngoài miền cần từ chối. Bộ kiểm tra hồi quy này không tham gia huấn luyện,
-không dùng để chọn checkpoint và không thay thế tập test.
+```bash
+uv run benchmark_llm --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
+```
 
-Các ngưỡng đánh giá được xác định trước khi chạy test:
+Chấm checkpoint seq2seq đã có, không huấn luyện:
 
-- System Answer Exact toàn test đạt ít nhất 90%;
-- Answer Exact riêng 185 câu `procedure-*` đạt ít nhất 95%;
-- mỗi phong cách trong nhóm quy trình đạt ít nhất 90%;
-- các câu người dùng cốt lõi đúng 100%;
-- không từ chối nhầm câu hỏi hướng dẫn đăng ký học phần;
-- Safe Rejection ngoài miền đạt ít nhất 94%.
+```bash
+uv run evaluate_sparql_model --model t5gemma2 --model-dir artifacts/models/t5gemma2/model --suite both --output-dir artifacts/evaluation/t5gemma2
+uv run evaluate_ct2_model --model-dir artifacts/models/t5gemma2-ct2 --output artifacts/evaluation/t5gemma2-ct2.json
+```
 
-Biểu đồ công khai phải lấy dữ liệu từ JSON máy đọc và gồm:
+Chấm file prediction có sẵn. File thứ hai dùng ID `real-user-001` đến
+`real-user-009` và vẫn được ghi thành phần báo cáo riêng:
 
-- train/validation loss;
-- In-domain Answer Exact của model;
-- marker exact, false acceptance và mixed-query rejection;
-- System Answer Exact theo nhóm;
-- lỗi theo register và đặc trưng SPARQL;
-- thời gian train, VRAM và tốc độ inference.
+```bash
+uv run benchmark_sparql --benchmark resources/dataset/val.jsonl --predictions artifacts/val-predictions.jsonl --real-user-predictions artifacts/real-user-predictions.jsonl --details --output artifacts/evaluation/val.json
+```
 
-Không dùng BLEU, ROUGE hoặc token F1 làm bằng chứng trả lời đúng dữ liệu.
+Lệnh offline ở trên vẫn chạy toàn bộ validation trước khi chấm. Có thể
+smoke-test riêng thước bằng unit test sau (đây không phải kết quả model):
 
-## Kết quả — baseline v0.4.1
+```bash
+.venv/bin/python -m pytest tests/research/test_evaluation.py -q
+```
 
-| Model | Parse | Answer Exact | Result F1 | Safe Rejection OOD | System Exact |
-|---|---:|---:|---:|---:|---:|
-| BARTpho-syllable | 98,11% | 84,03% | 84,44% | 91,11% | 85,75% |
-| ViT5-base | 97,48% | 79,61% | 80,28% | 84,44% | 81,08% |
-| **T5Gemma2** | **97,79%** | **90,66%** | **92,74%** | **92,22%** | **92,38%** |
+## Vùng mù còn lại
 
-T5Gemma2 đạt 96,22% Answer Exact trên 185 câu quy trình; cả bốn phong cách diễn
-đạt của nhóm này đều trên 90%. Model vượt ngưỡng System Exact toàn test, Answer
-Exact quy trình và từng phong cách quy trình, nhưng chưa đạt ngưỡng Safe
-Rejection 94% và yêu cầu của bộ hồi quy negative. T5Gemma2 được chọn vì có kết
-quả tổng thể cao nhất; khả năng từ chối ngoài miền vẫn là giới hạn của hệ thống.
+- Đúng node chỉ xác nhận IRI neo, không chứng minh mọi nhánh, filter, cột nguồn
+  hay thứ tự bảng đều đúng; phần đó thuộc đúng dạng/catalogue và các phép kiểm
+  dữ liệu tĩnh.
+- Đúng dạng yêu cầu query thuộc catalogue production. Một SPARQL tương đương về
+  toán học nhưng ngoài catalogue vẫn sai dạng vì runtime cũng sẽ từ chối nó.
+- Tập kết quả bằng nhau có thể che lỗi khi hai query tình cờ trả cùng dữ liệu;
+  vì vậy nó chỉ là chẩn đoán. Ngược lại, nó vẫn hữu ích để tìm query đúng
+  node/dạng nhưng lỗi thực thi hoặc lấy thiếu dữ liệu.
+- Ba chỉ số này đánh giá sinh và truy xuất SPARQL, chưa đo độ trung thành của câu
+  trả lời tự nhiên do LLM tổng hợp từ context.
+- Chín câu người thật chỉ có oracle họ truy vấn và mẫu rất nhỏ; chưa đo được đúng
+  node, đúng literal, hay độ bền trên phân phối người dùng rộng hơn.
+- Một query có thể nêu đúng IRI neo nhưng thêm logic vô nghĩa; đúng node vẫn đạt,
+  còn đúng dạng sẽ trượt nếu logic đó làm query ra ngoài catalogue.
 
-Sau chuyển sang CTranslate2 int8, toàn pipeline web đạt 92,87% phản hồi exact
-trên cùng test. Chênh lệch này được báo cáo riêng, không dùng để thay kết luận
-so sánh ba checkpoint Transformers.
+## Trạng thái metric
 
-Các metric trên thuộc baseline v0.4.1. `reports/provenance.json` đối chiếu hash
-ontology, catalogue, coverage và ba split; nếu `model_metrics.status` hoặc
-`deployment_metrics.status` là `stale`, số liệu vẫn được giữ làm lịch sử nhưng
-không đại diện cho input canonical mới.
+Repository chưa công bố metric model v3. Các mẫu số ở trên mô tả hợp đồng chấm
+và release hiện hành, không phải kết quả inference. `reports/provenance.json`
+đánh dấu cả metric model và deployment là `stale` so với baseline v0.4.1; chỉ
+artifact benchmark có fingerprint input hiện hành mới được dùng để công bố số.

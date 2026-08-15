@@ -1,62 +1,49 @@
 # Dataset
 
-> **Đang được xây dựng lại.** Ba tệp `train.jsonl`, `val.jsonl`, `test.jsonl`
-> được tạo trước đợt tái cấu trúc ontology và **không còn hợp lệ**: các truy vấn
-> đích của chúng dùng những quan hệ đã bị thay thế. Chúng được giữ lại để đối
-> chiếu cho tới khi bộ mới được sinh xong.
+## Các tệp và số dòng
 
-## Các tệp
+| Tệp | Vai trò | Số dòng |
+|---|---|---:|
+| `train.jsonl` | ví dụ huấn luyện | 3.767 |
+| `val.jsonl` | kiểm định | 398 |
+| `test.jsonl` | kiểm tra cuối | 380 |
+| **Tổng** |  | **4.545** |
 
-| Tệp | Vai trò | Trạng thái |
-|---|---|---|
-| `catalogue.jsonl` | 183 họ truy vấn model được phép sinh, trong đó 61 họ primary | hợp lệ |
-| `catalogue-manual.jsonl` | 29 họ viết tay, được trộn vào khi dựng lại danh mục | hợp lệ |
-| `coverage.json` | yêu cầu độ phủ theo miền, phong cách, ca số và tám nhóm từ chối | hợp lệ |
-| `manifest.json` | cấu trúc, quy tắc chia tập và checksum | dẫn xuất, sinh cùng dataset |
-| `train.jsonl` `val.jsonl` `test.jsonl` | 5.033 / 333 / 333 câu | hợp lệ |
+Số dòng được đếm trực tiếp từ ba JSONL và khớp với `reports/dataset.json`.
 
-## Danh mục truy vấn
+Các tệp hỗ trợ:
 
-`catalogue.jsonl` là hợp đồng ràng buộc chứ không phải tài liệu tham khảo:
-backend chỉ thực thi truy vấn khớp chính xác một họ đã khai ở đây.
+| Tệp | Vai trò |
+|---|---|
+| `catalogue.jsonl` | danh mục truy vấn v3 |
+| `catalogue-manual.jsonl` | họ viết tay được trộn vào catalogue |
+| `frames.jsonl` | khung diễn đạt theo họ |
+| `coverage.json` | hợp đồng độ phủ |
+| `manifest.json` | checksum và hợp đồng split |
+| `rejections.jsonl` | khung câu ngoài phạm vi |
 
-| Miền | Số họ |
-|---|---:|
-| Quy tắc học vụ | 64 |
-| Học phí | 32 |
-| Quy trình học vụ | 24 |
-| Tra cứu văn bản | 23 |
-| Chứng chỉ | 23 |
-| Biểu mẫu | 15 |
-| Giới thiệu năng lực | 1 |
-| Từ chối trả lời | 1 |
+## Catalogue v3
 
-Mỗi họ mang một tầng: **61 họ primary** bắt buộc có dữ liệu huấn luyện, **122 họ
-secondary** vẫn truy vấn được ở runtime nhưng không tiêu ngân sách dạy học. Phần
-lớn họ secondary là câu hỏi vòng tròn không ai đặt ("khoản 3 Điều 24 thuộc điều số
-mấy"); số còn lại là những họ **cố ý bị hạ** vì trùng ý với một họ khác — ép model
-chọn giữa hai đích đều đúng chỉ dạy nó đoán bừa.
+Catalogue hiện có **48 họ**. Hình dạng chính là các họ `*-facts`: neo một node,
+lấy literal trên node và node con trực tiếp, rồi trả
+`?thuoctinh ?giatri ?nguon ?duongdan`. Bảng có họ riêng trả toàn
+`verbatimTableText` của node bảng.
 
-153 họ được sinh tự động từ ontology. 29 họ trong `catalogue-manual.jsonl` phải
-viết tay vì cần so sánh ngưỡng ("7,5 điểm xếp loại gì", "70 tín chỉ là năm mấy",
-"học phí ngành X khoá 65"), gom nhiều cột về một bản ghi, hoặc trả nội dung kèm
-nguồn trích dẫn và link văn bản gốc — bộ sinh cơ học chỉ dựng được truy vấn đi
-theo một đường dẫn. Dựng lại danh mục bằng:
+Catalogue không còn coi từng thuộc tính nhỏ hay từng cell bảng là một mục tiêu
+truy xuất độc lập. Mỗi bảng là một node nguyên văn.
 
-```bash
-uv run python -m ontchatbot.research.build_catalogue
-```
+## Trạng thái
 
-## Hình dạng một bản ghi
-
-Mỗi dòng JSONL gồm `id`, `query_id`, `register`, `input`, `target`. Target là một
-dòng SPARQL chuẩn hoặc marker chính xác `không có thông tin`. Ba tập chứa cả câu
-trong miền lẫn ngoài miền; không có dataset phân loại riêng. Tập test chỉ phục vụ
-đánh giá cuối, không dùng để biên soạn thêm câu hoặc chọn checkpoint.
+Ba split, frame và catalogue đã đồng bộ. Release phủ đủ 48 họ, 781/781 tên gọi
+và tám lớp câu từ chối; val/test không rò câu đã chuẩn hoá từ train. Manifest và
+report được sinh cùng chuỗi với các JSONL, rồi được kiểm checksum read-only.
 
 ## Kiểm tra
 
 ```bash
 uv run validate_sparql_dataset
-uv run generate_reports
+.venv/bin/python -m pytest tests/research -q
 ```
+
+Tập test không tham gia chọn checkpoint hoặc prompt. Không công bố metric model
+trước khi các lệnh kiểm tra dữ liệu xanh.

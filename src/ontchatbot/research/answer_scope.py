@@ -18,6 +18,7 @@ SOURCE_CLASS_NAMES = frozenset(
         "Point",
         "Appendix",
         "DocumentTable",
+        "CertificateConversionTable",
         "DocumentSection",
     }
 )
@@ -39,13 +40,10 @@ INTERNAL_CLASS_NAMES = frozenset(
 
 OPAQUE_RECORD_CLASS_NAMES = frozenset(
     {
-        "CertificateConversionRule",
-        "TuitionRate",
         "PaymentFeeRule",
         "AcademicPerformanceBand",
         "GraduationClassificationBand",
         "StudyYearBand",
-        "DoctoralTuitionDurationRule",
     }
 )
 

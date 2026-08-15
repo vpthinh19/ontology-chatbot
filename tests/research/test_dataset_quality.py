@@ -20,13 +20,34 @@ import pytest
 from rdflib import RDF, URIRef
 
 from ontchatbot.catalogue import load_catalogue
-from ontchatbot.research.mentions import mention_index
+from ontchatbot.research.generate_dataset import (
+    ANSWERED_BY,
+    PROCEDURE_FAMILY,
+    answered_in_dump,
+    dump_literals,
+)
+from ontchatbot.research.mentions import mention_index, overloaded_mentions
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.settings import DATASET_DIR, ONTOLOGY_NS, QUERY_CATALOGUE_PATH
 
 MARKER = "không có thông tin"
 SPLITS = ("train", "val", "test")
+STATIC_SHORT_FAMILIES = {
+    "academic-performance-table",
+    "academic-program-catalogue-table",
+    "certificate-catalogue-table",
+    "certificate-conversion-table-english-language-major-student",
+    "certificate-conversion-table-moi-doi-tuong",
+    "certificate-conversion-table-special-program-non-language-major-student",
+    "certificate-conversion-table-standard-program-non-language-major-student",
+    "class-size-table",
+    "graduation-classification-table",
+    "language-course-assessment-table",
+    "language-course-classification-table",
+    "payment-fee-by-method",
+    "study-year-classification-table",
+}
 
 
 def _flatten(text: str, *, fold_d: bool = False) -> str:
@@ -46,6 +67,12 @@ def _flatten(text: str, *, fold_d: bool = False) -> str:
     decomposed = unicodedata.normalize("NFD", lowered)
     stripped = "".join(c for c in decomposed if not unicodedata.combining(c))
     return stripped.replace("đ", "d") if fold_d else stripped
+
+
+def _contains_phrase(text: str, phrase: str) -> bool:
+    """So cụm trọn vẹn; ``Điều 1`` không được khớp ``Điều 10``."""
+
+    return re.search(rf"(?<!\w){re.escape(phrase)}(?!\w)", text) is not None
 
 
 @pytest.fixture(scope="module")
@@ -126,6 +153,404 @@ def test_no_question_leaks_across_splits_even_without_diacritics(splits) -> None
     ]
 
     assert leaked == []
+
+
+@pytest.fixture(scope="module")
+def provenance() -> dict[str, dict[str, str]]:
+    """Khuôn và neo đã đẻ ra từng câu từ chối, do bộ sinh ghi lại."""
+
+    path = Path("resources/cases/rejection_provenance.json")
+    assert path.exists(), (
+        "thiếu sổ khuôn câu từ chối - chạy lại `python -m "
+        "ontchatbot.cli.generate_dataset`"
+    )
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def test_rejection_provenance_covers_every_rejection_row(rows, provenance) -> None:
+    """Sổ khuôn phải phủ ĐỦ câu từ chối, nếu không phép kiểm dưới soi hụt.
+
+    Một dòng từ chối vắng mặt trong sổ là một dòng không ai canh được, và nó im
+    lặng - phép kiểm vẫn xanh vì nó chỉ duyệt những dòng có trong sổ.
+    """
+
+    rejected = {row["id"] for row in rows if row["query_id"] == "no-information"}
+    assert rejected, "không đọc được dòng từ chối nào"
+    assert rejected - set(provenance) == set()
+
+
+def test_rejection_provenance_matches_the_question_it_claims_to_explain(
+    rows, provenance, resolved
+) -> None:
+    """Sổ khuôn phải nói THẬT: neo nó khai phải có mặt trong chính câu hỏi.
+
+    Đây là chỗ chống "tự chấm bài mình". Ba phép kiểm kia đọc sổ để biết dòng
+    nào hỏi cái gì; nếu sổ ghi sai neo, hoặc ghi neo rỗng cho một dòng có neo,
+    thì chúng bỏ qua dòng đó mà vẫn xanh. Phép kiểm này đối chiếu sổ với văn bản
+    câu hỏi, là thứ sổ không tự dựng ra được.
+
+    Dùng được vì bộ sinh cố ý KHÔNG làm lỗi chính tả bên trong tên neo: phong
+    cách ``noisy`` chỉ tác động phần còn lại của câu, nên cách gọi luôn còn
+    nguyên văn trong câu hỏi.
+    """
+
+    text_of = {row["id"]: row["input"].casefold() for row in rows}
+    anchored = {
+        row_id: entry
+        for row_id, entry in sorted(provenance.items())
+        if entry["anchor"]
+    }
+    assert anchored, "sổ khuôn không ghi neo cho dòng nào"
+
+    wrong = [
+        (row_id, entry["anchor"])
+        for row_id, entry in anchored.items()
+        if not any(
+            mention.casefold() in text_of.get(row_id, "")
+            for mention in resolved.get(entry["anchor"], ())
+        )
+    ]
+
+    assert wrong == []
+
+
+def test_no_rejection_row_asks_a_fact_its_own_anchor_carries(
+    rows, provenance, graph
+) -> None:
+    """Câu từ chối không được hỏi thứ mà chính neo của nó trả lời được.
+
+    ĐÂY LÀ PHÉP KIỂM CANH DỮ LIỆU, KHÔNG CANH CHỮ NGHĨA. Bản trước nhận diện
+    câu hỏi chung bằng **danh sách 16 cụm từ viết cứng**; nó xanh sạch mà vẫn
+    để lọt **24 câu** hỏi ``ai ký duyệt`` / ``vì sao`` / ``sinh ra để làm gì``,
+    vì những cụm ấy không có trong danh sách. Thêm cụm vào danh sách chỉ đẩy lỗi
+    sang chỗ khác - dự án đã vấp đúng hình dạng sai lầm đó ba lần.
+
+    Cách canh đúng: mọi họ ``*-facts`` lấy TRỌN node, nên **chạy truy vấn dump
+    thật rồi hỏi dữ kiện được hỏi có nằm trong kết quả không**. Kết quả đọc lại
+    cho từng neo một, nên sửa một bước trong ``hasStep`` là kết luận đổi theo,
+    không ai phải nhớ sửa danh sách.
+
+    Phải soi KẾT QUẢ chứ không soi thuộc tính: bản trước canh "node có mang
+    ``decidedBy`` không" và bỏ lọt bảy cặp, vì mức phí 5.500đ lẫn người ký đều
+    nằm trong chữ tự do của ``stepText`` chứ không thành thuộc tính riêng.
+    """
+
+    dumped = dump_literals(graph, load_catalogue(QUERY_CATALOGUE_PATH), PROCEDURE_FAMILY)
+    wrong = [
+        (row_id, entry)
+        for row_id, entry in sorted(provenance.items())
+        if entry["anchor"]
+        and answered_in_dump(dumped.get(entry["anchor"], ""), entry["template"])
+    ]
+
+    assert wrong == []
+
+
+def test_no_rejection_template_runs_out_of_valid_anchors(graph) -> None:
+    """Khuôn từ chối phải còn ít nhất MỘT neo hợp lệ, nếu không nó là khuôn chết.
+
+    Khuôn mà MỌI thủ tục đều trả lời được thì lọc bao nhiêu cũng vô nghĩa - phải
+    gỡ khỏi ``rejections.jsonl``. Bốn khuôn hỏi mục đích (*"vì sao lại {anchor}"*,
+    *"{anchor} sinh ra để làm gì"*...) đúng vào ca này và đã bị gỡ.
+
+    Phép kiểm này canh chiều ngược lại của phép kiểm trên: chỗ kia bảo đảm không
+    cặp nào hỏng, chỗ này bảo đảm việc loại cặp hỏng không âm thầm biến một khuôn
+    thành khuôn không bao giờ sinh ra dòng nào.
+    """
+
+    dumped = dump_literals(graph, load_catalogue(QUERY_CATALOGUE_PATH), PROCEDURE_FAMILY)
+    assert dumped, "không dựng được kết quả dump cho thủ tục nào"
+
+    templates = {
+        template
+        for payload in (
+            json.loads(line)
+            for line in (DATASET_DIR / "rejections.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        )
+        for template in payload["templates"]
+        if "{anchor}" in template
+    }
+    assert templates, "không đọc được khuôn từ chối có chỗ trống nào"
+
+    dead = sorted(
+        template
+        for template in templates
+        if all(answered_in_dump(text, template) for text in dumped.values())
+    )
+
+    assert dead == []
+
+
+def test_ambiguous_rejections_are_not_resolved_by_their_own_frame(
+    rows, provenance, graph
+) -> None:
+    """Câu "mơ hồ" chỉ được từ chối khi CHÍNH KHUNG cũng không gỡ được mơ hồ.
+
+    Cách gọi trỏ tới nhiều node là điều kiện CẦN, chưa đủ. Nếu các node đó nằm ở
+    những họ khác nhau thì khung câu hỏi đã chọn hộ một họ, và câu hỏi còn đúng
+    một đáp án - từ chối là từ chối oan.
+
+    Ca thật: *"Mẫu số 13"* trỏ tới hai tờ đơn khác nhau ngoài đời, nhưng hỏi
+    *"thông tin tải xuống của Mẫu số 13"* thì chỉ còn mục tải trên website.
+    **15 dòng** đã bị gán từ chối oan trước khi có phép kiểm này. Ngược lại,
+    *"Điều 1"* có ở cả ba tài liệu nhưng cả ba cùng một họ tra điều luật, nên
+    khung không gỡ được gì và nó mơ hồ thật.
+    """
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    by_family = {
+        query_id: {
+            value
+            for slot in spec.slots.values()
+            if slot.kind == "iri"
+            for value in slot.values
+        }
+        for query_id, spec in catalogue.items()
+    }
+    anchors = tuple(sorted({value[1:] for values in by_family.values() for value in values}))
+    overloaded = overloaded_mentions(graph, anchors)
+    text_of = {row["id"]: _flatten(row["input"]) for row in rows}
+
+    wrong = []
+    for row_id, entry in sorted(provenance.items()):
+        if entry["class"] != "ambiguous":
+            continue
+        question = text_of.get(row_id, "")
+        for mention, names in overloaded.items():
+            if _flatten(mention) not in question:
+                continue
+            owners = {f":{name}" for name in names}
+            if not any(len(owners & values) > 1 for values in by_family.values()):
+                wrong.append((row_id, mention, sorted(names)))
+            break
+
+    assert wrong == []
+
+
+def test_declared_answer_marks_still_appear_in_some_dump(graph) -> None:
+    """Mỗi dấu hiệu khai trong ``ANSWERED_BY`` phải còn bắt được ÍT NHẤT một neo.
+
+    Đây là chỗ chống mục ruỗng âm thầm. Sửa một bước trong ontology, hay đổi cách
+    diễn đạt, mà quên sửa dấu hiệu ở đây thì ``answered_in_dump`` trả ``False``
+    cho mọi neo: phép lọc **ngừng lọc mà không có triệu chứng nào**, và câu từ
+    chối oan lặng lẽ quay lại đúng chỗ vừa dọn.
+    """
+
+    dumped = dump_literals(graph, load_catalogue(QUERY_CATALOGUE_PATH), PROCEDURE_FAMILY)
+    marks = sorted({mark for values in ANSWERED_BY.values() for mark in values})
+    assert marks, "không khai dấu hiệu nào"
+
+    unused = [
+        mark
+        for mark in marks
+        if not any(mark in text for text in dumped.values())
+    ]
+
+    assert unused == []
+
+
+def test_no_general_entity_question_with_a_real_name_is_rejected(
+    rows, resolved, graph, provenance
+) -> None:
+    """Tên gọi thật + khuôn hỏi-chung phải trả trọn node, không được từ chối.
+
+    GIỮ LẠI DÙ CANH BẰNG CỤM TỪ, và biết rõ giới hạn của nó: nó bắt được lớp lỗi
+    "hỏi chung chung về một thực thể có thật" (38 câu, đã sửa xong), là lớp lỗi
+    mà phép kiểm theo neo ở trên KHÔNG thấy - vì những câu ấy do khung ý định
+    ghép sai họ đẻ ra, không do khuôn từ chối. Hai phép kiểm soi hai chỗ khác
+    nhau; đây là phép kiểm phụ, phép kiểm theo dữ liệu ở trên mới là phép chính.
+
+    **Đừng thêm cụm từ vào danh sách dưới đây khi có câu từ chối oan mới.** Đó
+    là cách vá đã hỏng ba lần. Sửa ở bộ sinh và khai vào ``ANSWERED_BY``.
+
+    Lỗi cũ lấy thực thể ngoài họ A rồi ghép vào khung của A, dù thực thể ấy có
+    họ B trả lời được. Các cụm dưới đây là khuôn hỏi trọn node, không phải câu
+    hỏi một thuộc tính vắng như lệ phí, điểm chuẩn hay người ký duyệt.
+    """
+
+    owners: dict[str, set[str]] = defaultdict(set)
+    for node, texts in resolved.items():
+        for text in texts:
+            owners[_flatten(text, fold_d=True)].add(node)
+    answerable_names = sorted(
+        (text for text, nodes in owners.items() if len(nodes) == 1),
+        key=len,
+        reverse=True,
+    )
+    general_markers = tuple(
+        _flatten(text, fold_d=True)
+        for text in (
+            "cho biết đầy đủ",
+            "hướng dẫn đầy đủ",
+            "mình cần tra cứu",
+            "hãy tổng hợp",
+            "có những điều gì cần biết",
+            "có những điều gì cần lưu ý",
+            "hồ sơ nguồn",
+            "hồ sơ chính thức",
+            "hướng dẫn nguồn",
+            "trang danh mục ghi nhận",
+            "nguồn chính thức trình bày",
+            "được thực hiện cụ thể ra sao",
+            "được tổ chức cụ thể ra sao",
+            "được áp dụng cụ thể ra sao",
+            "được xác định cụ thể ra sao",
+            "được định nghĩa cụ thể ra sao",
+        )
+    )
+
+    wrong = []
+    for row in rows:
+        if row["query_id"] != "no-information":
+            continue
+        question = _flatten(row["input"], fold_d=True)
+        # Tên thật nhưng trỏ tới nhiều node ("Điều 1", "khoản 1 Điều 10") là
+        # nhóm ``ambiguous`` và phải tiếp tục từ chối.
+        #
+        # Hỏi SỔ KHUÔN chứ đừng dò lại tên mơ hồ trong câu hỏi: phong cách
+        # ``noisy`` xoá dấu cách nên tên neo dính vào từ đứng trước
+        # ("...tải xuống củaĐơn xin chuyển Chương trình đào tạo"), phép so ranh
+        # giới từ trượt, và dòng từ chối ĐÚNG bị báo là sai. Bản trước dò bằng
+        # chữ nghĩa nên dính đúng bẫy này.
+        if provenance[row["id"]]["class"] == "ambiguous":
+            continue
+        if any(marker in question for marker in general_markers) and any(
+            _contains_phrase(question, name) for name in answerable_names
+        ):
+            wrong.append(row["input"])
+
+    assert answerable_names, "không nạp được tên gọi trả lời được"
+    assert wrong == []
+
+
+def test_rejection_rate_does_not_spike_by_question_length(splits) -> None:
+    """Không bậc độ dài nào được vượt 1,5 lần tỷ lệ từ chối nền ở train."""
+
+    rows = splits["train"]
+    baseline = sum(
+        row["query_id"] == "no-information" for row in rows
+    ) / len(rows)
+    bands: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    for row in rows:
+        words = len(row["input"].split())
+        band = (
+            "2-6" if words <= 6 else
+            "7-9" if words <= 9 else
+            "10-13" if words <= 13 else
+            "14-17" if words <= 17 else
+            "18+"
+        )
+        bands[band][1] += 1
+        bands[band][0] += row["query_id"] == "no-information"
+
+    rates = {
+        band: rejected / total
+        for band, (rejected, total) in bands.items()
+    }
+    assert set(rates) == {"2-6", "7-9", "10-13", "14-17", "18+"}
+    assert {
+        band: rate
+        for band, rate in rates.items()
+        if rate > baseline * 1.5
+    } == {}
+
+
+def test_release_rejection_rate_preserves_enough_no_information_training(rows) -> None:
+    """Release phải giữ 12--20% câu ``no-information``.
+
+    Phép kiểm này tồn tại vì trong một lượt chỉnh số, tham số từng bị hạ từ
+    0,18 xuống 0,065, cắt hơn nửa tín hiệu dạy model từ chối, mà không phép
+    kiểm nào thấy: chỗ không ai canh là chỗ trôi. Khoảng 12--20% rộng có chủ
+    đích: nó canh việc tham số bị đổi âm thầm, không phải canh một con số cụ
+    thể của release hôm nay.
+    """
+
+    rejection_rate = sum(
+        row["query_id"] == "no-information" for row in rows
+    ) / len(rows)
+
+    assert 0.12 <= rejection_rate <= 0.20
+
+
+def test_priority_domains_and_length_extremes_stay_balanced(splits) -> None:
+    """Miền trọng tâm không lép vế; mọi miền trả lời được có đủ ngắn và dài."""
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    rows = splits["train"]
+    by_domain: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        by_domain[catalogue[row["query_id"]].domain].append(row)
+
+    priority = sum(len(by_domain[name]) for name in ("procedure", "form"))
+    reference = sum(
+        len(by_domain[name]) for name in ("academic-rule", "document")
+    )
+    assert priority >= reference
+
+    answerable = {
+        spec.domain
+        for spec in catalogue.values()
+        if spec.tier == "primary" and spec.domain != "out-of-domain"
+    }
+    unbalanced = {}
+    for domain in sorted(answerable):
+        domain_rows = by_domain[domain]
+        assert domain_rows, f"miền trả lời được bị mất khỏi train: {domain}"
+        short = sum(2 <= len(row["input"].split()) <= 6 for row in domain_rows)
+        long = sum(len(row["input"].split()) >= 14 for row in domain_rows)
+        if short / len(domain_rows) < 0.15 or long / len(domain_rows) < 0.15:
+            unbalanced[domain] = {
+                "rows": len(domain_rows),
+                "short": short,
+                "long": long,
+            }
+
+    assert unbalanced == {}
+
+
+def test_release_stays_small_and_held_out_splits_stay_meaningful(splits) -> None:
+    """Ngân sách nhỏ vẫn là chủ đích nghiên cứu; 4.600 dòng vẫn là dataset NHỎ.
+
+    Trần 4.200 được đặt khi ontology chỉ có MỘT quy chế. Nạp Quyết định 626
+    (39 node tầng văn bản) và sửa cách gọi phần văn bản thành dạng đủ nghĩa đã
+    nâng sàn dòng dương bắt buộc. Số học cho thấy xung khắc cũ: 3.864 dòng dương
+    cần tối thiểu 4.493 dòng để tỷ lệ từ chối là 14%, và 4.391 dòng ngay cả ở
+    12%; cả hai đều vượt 4.200 trước khi thêm câu dương cho các hợp đồng khác.
+
+    Đây là quyết định của người dùng sau khi xem số học, không phải nới trần để
+    làm phép kiểm xanh. Mỗi tập held-out vẫn phải đủ dày để đo.
+    """
+
+    total = sum(len(splits[split]) for split in SPLITS)
+
+    assert total <= 4_600
+    assert len(splits["val"]) / total >= 0.08
+    assert len(splits["test"]) / total >= 0.08
+
+
+def test_all_static_families_have_generated_short_questions(splits) -> None:
+    """Mười bốn họ không đi đường ``anchor`` vẫn phải có câu ngắn thật."""
+
+    from ontchatbot.research.compose import load_frames
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+    frames = load_frames(DATASET_DIR / "frames.jsonl", catalogue)
+    declared = {
+        query_id
+        for query_id, items in frames.items()
+        if any(frame.short for frame in items)
+    }
+    generated = {
+        row["query_id"]
+        for row in splits["train"]
+        if len(row["input"].split()) <= 6
+    }
+
+    assert declared == STATIC_SHORT_FAMILIES
+    assert STATIC_SHORT_FAMILIES - generated == set()
 
 
 def test_every_official_name_is_also_seen_in_lower_case(rows, resolved) -> None:
@@ -267,41 +692,42 @@ def test_a_question_with_an_off_topic_tail_is_still_answered(rows) -> None:
 
 
 def test_held_out_frames_are_not_near_duplicates_of_taught_frames() -> None:
-    """Khung dùng để chấm không được gần trùng khung đã dạy.
+    """Khung dùng để chấm không được là biến thể của khung đã dạy.
 
     Nếu train có *"{X} web đánh số bao nhiêu"* còn test có *"{X} trên web đánh số
     mấy"* thì tập chấm không đo "cách hỏi chưa từng thấy" nữa - nó đo trí nhớ.
 
-    Đo trên câu ĐÃ ghép tên thực thể, vì tên đóng góp y hệt vào cả hai câu và kéo
-    độ giống lên: một cặp chỉ 0,816 ở dạng khung trần đã thành 0,934 sau khi ghép.
+    Bung toàn bộ phép thay từ để hỏi mà bộ sinh thật sự dùng, rồi so
+    theo chuẩn hoá runtime. Như vậy hợp đồng là "không cùng một biến thể
+    sinh được", không phải một ngưỡng similarity tùy chọn.
     """
 
-    from ontchatbot.research.compose import load_frames
-    from ontchatbot.research.generate_dataset import (
-        NEAR_DUPLICATE_THRESHOLD,
-        _probe_grams,
-        split_frames,
-    )
+    from ontchatbot.research.compose import load_frames, question_variants
+    from ontchatbot.research.generate_dataset import split_frames
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
     frames = load_frames(DATASET_DIR / "frames.jsonl", catalogue)
 
-    too_close = []
+    duplicate_variants = []
     for query_id, items in frames.items():
         parts = split_frames(items)
-        grams = {frame.text: _probe_grams(frame) for frame in items}
+        variants = {
+            frame.text: {
+                normalize_model_input(text).casefold()
+                for text in question_variants(frame.text)
+            }
+            for frame in items
+        }
         for left_split, right_split in (("train", "val"), ("train", "test"), ("val", "test")):
             for left in parts[left_split]:
                 for right in parts[right_split]:
-                    score = max(
-                        len(a & b) / len(a | b)
-                        for a in grams[left.text]
-                        for b in grams[right.text]
-                    )
-                    if score >= NEAR_DUPLICATE_THRESHOLD:
-                        too_close.append((round(score, 3), query_id, left.text, right.text))
+                    overlap = variants[left.text] & variants[right.text]
+                    if overlap:
+                        duplicate_variants.append(
+                            (query_id, left.text, right.text, sorted(overlap))
+                        )
 
-    assert too_close == []
+    assert duplicate_variants == []
 
 
 def test_rejection_classes_come_from_the_requirements_file() -> None:
@@ -321,3 +747,61 @@ def test_rejection_classes_come_from_the_requirements_file() -> None:
 
     assert sorted(checklist) == sorted(required)
     assert all(checklist[name] for name in required)
+
+
+def test_every_answer_carries_a_dated_source(rows, graph) -> None:
+    """HỢP ĐỒNG NGUỒN — người dùng chốt 2026-08-14.
+
+    *Mỗi dữ kiện trả về phải kèm tên nguồn cụ thể, ngày của nguồn, và một đường
+    dẫn. Công văn hay web chính chủ đều được, chỉ cần MỘT. Node chỉ có tên gọi
+    mà không khẳng định dữ kiện nào thì không cần nguồn.*
+
+    Phép kiểm **chạy truy vấn thật rồi soi kết quả**, không đọc khuôn. Lý do rất
+    cụ thể: luật "mọi họ phải có cột nguồn" trước đây chỉ kiểm **tên cột có mặt**,
+    nên khi đổi engine sang Oxigraph làm cột đường dẫn rỗng ở **471/521 đích**,
+    cả bộ kiểm vẫn xanh suốt nhiều tháng. ``GROUP_CONCAT`` theo chuẩn không nhận
+    ``xsd:anyURI``; rdflib dễ tính nên nối được, Oxigraph đúng chuẩn nên trả
+    unbound. Một phép kiểm đọc khuôn không thể thấy chuyện đó.
+
+    Ngoại lệ được TÍNH TỪ DỮ LIỆU, không phải danh sách viết tay: node nào chỉ
+    trả về ``tên gọi`` thì nó không khẳng định dữ kiện nào để mà dẫn nguồn -
+    "Hiệu trưởng", "Cố vấn học tập", "Bộ môn" tồn tại để dữ kiện khác trỏ vào.
+    Thêm một thuộc tính thật cho chúng là phép kiểm đòi nguồn ngay.
+    """
+
+    from ontchatbot.runtime.sparql import execute_select
+
+    date_marks = re.compile(r"ngày \d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2}")
+    targets = {
+        row["target"]: row["query_id"]
+        for row in rows
+        if row["query_id"] != "no-information"
+    }
+    assert targets, "không đọc được đích trả lời được nào"
+
+    missing_source, missing_date = [], []
+    for target, query_id in sorted(targets.items()):
+        answer = execute_select(graph, target)
+        if not answer:
+            continue
+        if {str(row["thuoctinh"]) for row in answer} == {"tên gọi"}:
+            continue
+        # Đòi ĐƯỜNG DẪN, không phải "tên nguồn HOẶC đường dẫn". Bản đầu của phép
+        # kiểm này viết OR và tôi thử lại trên dataset trước khi sửa: nó chỉ bắt
+        # được 12 đích, BỎ LỌT đúng 471 đích mà engine làm mất đường dẫn - tức
+        # là bỏ lọt chính cái lỗi nó sinh ra để canh. Đường dẫn là thứ người
+        # dùng cần để tự tra sâu hơn, nên nó là điều kiện cứng.
+        #
+        # Tên trích dẫn KHÔNG đòi riêng: một văn bản tự trả lời về mình thì nó
+        # LÀ nguồn, và tiêu đề với ngày ban hành đã nằm ngay trong câu trả lời.
+        if not any(row.get("duongdan") for row in answer):
+            missing_source.append(query_id)
+            continue
+        text = " | ".join(
+            str(value) for row in answer for value in row.values() if value
+        )
+        if not date_marks.search(text):
+            missing_date.append(query_id)
+
+    assert missing_source == []
+    assert missing_date == []

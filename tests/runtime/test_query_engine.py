@@ -3,13 +3,18 @@ from __future__ import annotations
 import pytest
 from rdflib import Graph, URIRef
 
-from ontchatbot.runtime.sparql import SparqlError, execute_select, validate_select
+from ontchatbot.runtime.sparql import (
+    SparqlError,
+    execute_select,
+    load_ontology,
+    validate_select,
+)
 from ontchatbot.settings import ONTOLOGY_NS
 
 
 @pytest.fixture(scope="module")
 def graph():
-    return Graph().parse(
+    return Graph(store="Oxigraph").parse(
         data=f"""
             @prefix : <{ONTOLOGY_NS}> .
             @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -79,6 +84,37 @@ def test_multiple_columns_preserve_pairing(graph) -> None:
     assert len(rows) == 2
     assert all(set(row) == {"document", "url"} for row in rows)
     assert all(row["url"].startswith("https://") for row in rows)
+
+
+def test_source_projection_keeps_web_only_sources_and_pairs() -> None:
+    """The compact query view preserves both citation and URL source fields."""
+
+    graph = load_ontology()
+
+    organisation_rows = execute_select(
+        graph,
+        "SELECT ?citation ?url WHERE { :AcademicManagementUnit :sourceCitation ?citation ; :sourceLink ?url . }",
+    )
+    web_only_rows = execute_select(
+        graph,
+        "SELECT ?citation ?url WHERE { :OrganizationStructurePage :sourceCitation ?citation ; :sourceLink ?url . }",
+    )
+
+    assert organisation_rows == [
+        {
+            "citation": (
+                "danh sách đơn vị trên trang Cơ cấu tổ chức - Khối tham mưu, "
+                "quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026"
+            ),
+            "url": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
+        }
+    ]
+    assert web_only_rows == [
+        {
+            "citation": "",
+            "url": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
+        }
+    ]
 
 
 def test_filter_and_typed_number(graph) -> None:

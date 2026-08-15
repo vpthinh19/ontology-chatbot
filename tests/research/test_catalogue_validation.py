@@ -120,7 +120,7 @@ def test_rejects_selector_anchor_with_wrong_class() -> None:
 @pytest.mark.parametrize(
     ("slot_value", "message"),
     [
-        (":StandardEnglishCertificateTableRule03IELTS", "opaque record"),
+        (":VNPAYOtherBankFee", "opaque record"),
         (":ResourceThatDoesNotExist", "does not exist"),
     ],
 )
@@ -158,6 +158,41 @@ def test_canonical_catalogue_covers_supported_inventory() -> None:
 
     assert report["supported_entries"] == report["covered_entries"]
     assert report["uncovered_entries"] == []
+    assert not {
+        entry_id
+        for entry_id in report["overlapping_entries"]
+        if entry_id.startswith("Regulation1052Appendix2Table")
+        or entry_id.startswith("Regulation1052Appendix3Table01")
+    }
+
+
+def test_canonical_catalogue_has_no_numeric_slots() -> None:
+    """Thư viện vẫn hỗ trợ số, nhưng catalogue chính thức chỉ trả bảng gốc."""
+
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
+
+    assert {
+        (query_id, slot_name)
+        for query_id, spec in catalogue.items()
+        for slot_name, slot in spec.slots.items()
+        if slot.kind == "number"
+    } == set()
+
+
+def test_canonical_catalogue_uses_project_source_projection_fields() -> None:
+    """Generated runtime source lookups must not repurpose RDF container slots."""
+
+    targets = [
+        spec.target_template
+        for spec in load_catalogue(QUERY_CATALOGUE_PATH).values()
+        if spec.domain != "out-of-domain"
+    ]
+
+    assert all("rdf:_1" not in target and "rdf:_2" not in target for target in targets)
+    assert any(
+        ":sourceCitation" in target and ":sourceLink" in target
+        for target in targets
+    )
 
 
 def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
@@ -178,130 +213,52 @@ def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
             assert execute_select(graph, query, max_rows=500), (query_id, values)
 
 
-@pytest.mark.parametrize(
-    "amount",
-    ["460000", "505000", "510000", "550000", "600000", "620000", "24500000"],
-)
-def test_tuition_programs_by_rate_returns_programs_for_every_declared_amount(amount: str) -> None:
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    spec = catalogue["tuition-programs-by-rate"]
-    target = spec.target_template.replace("${amount}", amount)
-
-    assert execute_select(load_ontology(), target), amount
+# Phép kiểm "mức học phí nào ứng với ngành nào" đã gỡ cùng dữ liệu học phí
+# (2026-08-10). Họ truy vấn ``tuition-programs-by-rate`` còn nằm trong danh mục
+# v2 và sẽ biến mất khi dựng lại danh mục ở giai đoạn 2.
 
 
 @pytest.mark.parametrize(
-    ("certificate", "score", "expected"),
+    ("anchor", "expected_in_answer", "expected_in_citation"),
     [
-        (":TCFCertificate", "100", []),
-        (":TCFCertificate", "200", [{"answer": "Bậc 1 - A1"}]),
-        (":KLPTCertificate", "300", [{"answer": "Bậc 2 - A2"}]),
-        (":KLPTCertificate", "400", [{"answer": "Bậc 4 - B2"}]),
-        (":KLPTCertificate", "450", [{"answer": "Bậc 5 - C1"}]),
-    ],
-)
-def test_language_certificate_level_respects_exclusive_minimums(
-    certificate: str,
-    score: str,
-    expected: list[dict[str, str]],
-) -> None:
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    target = catalogue["language-certificate-level"].target_template
-    target = target.replace("${certificate}", certificate).replace("${score}", score)
-
-    assert execute_select(load_ontology(), target) == expected
-
-
-@pytest.mark.parametrize(
-    ("credits", "expected"),
-    [
-        ("35", [{"answer": "Sinh viên năm thứ hai"}]),
-        ("70", [{"answer": "Sinh viên năm thứ ba"}]),
-        ("105", []),
-        ("105.1", [{"answer": "Sinh viên năm thứ tư"}]),
-    ],
-)
-def test_study_year_band_respects_inclusive_boundaries(
-    credits: str,
-    expected: list[dict[str, str]],
-) -> None:
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    target = catalogue["study-year-band"].target_template.replace("${credits}", credits)
-
-    assert execute_select(load_ontology(), target) == expected
-
-
-def test_study_year_bands_remain_reachable_by_credit_count() -> None:
-    """Bảng xếp hạng năm đào tạo bị họ ``*-details`` cũ bỏ lại phía sau.
-
-    Họ đó dựng câu trả lời từ ``sourceDocument`` nên không còn chỗ trong lược đồ
-    mới; điều cần giữ là bốn mốc tín chỉ vẫn tra được.
-    """
-
-    graph = load_ontology()
-    rows = execute_select(
-        graph,
-        "SELECT ?answer WHERE { ?band a :StudyYearBand ; :resultLabel ?answer . }",
-    )
-
-    assert len(rows) == 4
-
-
-@pytest.mark.parametrize(
-    ("query_id", "slots", "expected_in_answer", "expected_in_citation"),
-    [
-        (
-            "article-with-source",
-            {"article": "24"},
-            "nghỉ học tạm thời",
-            "Điều 24",
-        ),
-        (
-            "clause-with-source",
-            {"article": "20", "clause": "2"},
-            "buộc thôi học",
-            "khoản 2 Điều 20",
-        ),
-        # ĐIỂM không còn họ riêng: ``point-with-source`` đã bỏ vì nó trả về ĐÚNG
-        # cùng một thứ với ``document-official-text`` trên trọn 108 thực thể của
-        # nó - hai đích đều hợp lệ cho một câu hỏi là ép model đoán bừa.
-        (
-            "document-official-text",
-            {"anchor": ":Regulation1052Article25Clause01PointC"},
-            "Trưởng Khoa",
-            "điểm c khoản 1 Điều 25",
-        ),
+        (":Regulation1052Article24", "nghỉ học tạm thời", "Điều 24"),
+        (":Regulation1052Article20Clause02", "buộc thôi học", "khoản 2 Điều 20"),
+        (":Regulation1052Article25Clause01PointC", "Trưởng Khoa", "điểm c khoản 1 Điều 25"),
         # IRI của điểm đ mã hoá "đ" thành "DD" - ca dễ dựng sai nhất.
-        (
-            "document-official-text",
-            {"anchor": ":Regulation1052Article06Clause02PointDD"},
-            "học phần SV phải học xong",
-            "điểm đ khoản 2 Điều 6",
-        ),
+        (":Regulation1052Article06Clause02PointDD", "học phần SV phải học xong", "điểm đ khoản 2 Điều 6"),
+        # Điều 10 của quy chế ĐỜI TRƯỚC. Hai quy chế đều có Điều 10 với nội dung
+        # khác hẳn, nên đây là ca canh việc dẫn nguồn có nêu đúng văn bản không.
+        (":Regulation753Article10", "rút bớt", "753/QĐ-ĐHNT"),
     ],
 )
 def test_every_level_of_a_document_answers_with_its_own_source(
-    query_id: str,
-    slots: dict[str, str],
+    anchor: str,
     expected_in_answer: str,
     expected_in_citation: str,
 ) -> None:
     """Người hỏi không biết "Quyết định 1052" là gì, nên mỗi câu trả lời phải tự
-    kèm nguồn: vị trí trong văn bản, số quyết định, ngày ban hành và nơi tra."""
+    kèm nguồn: vị trí trong văn bản, số quyết định, ngày ban hành và nơi tra.
+
+    Bốn cấp văn bản - Điều, khoản, điểm, và điều của quy chế đời trước - nay dùng
+    CHUNG một họ ``document-part-facts``. Bản v2 tách thành ``article-with-source``,
+    ``clause-with-source`` và ``document-official-text``, ba họ gần giống hệt nhau
+    mà model phải chọn giữa chúng.
+    """
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    target = catalogue[query_id].target_template
-    for name, value in slots.items():
-        target = target.replace("${" + name + "}", value)
+    target = catalogue["document-part-facts"].target_template.replace("${anchor}", anchor)
 
     rows = execute_select(load_ontology(), target)
 
-    assert len(rows) == 1
-    assert expected_in_answer in str(rows[0]["nộidung"])
-    citation = str(rows[0]["căncứ"])
+    assert rows
+    values = " ".join(str(row["giatri"]) for row in rows)
+    assert expected_in_answer in values
+    citations = {str(row["nguon"]) for row in rows if row["nguon"]}
+    assert citations, f"{anchor} trả lời mà không kèm nguồn"
+    citation = " ".join(citations)
     assert expected_in_citation in citation
-    assert "1052/QĐ-ĐHNT ngày 17/7/2025" in citation
-    assert str(rows[0]["xemtại"]).startswith("https://")
+    urls = {str(row["duongdan"]) for row in rows if row["duongdan"]}
+    assert all(url.startswith("https://") for url in urls)
 
 
 def test_a_query_that_answers_with_its_source_is_declared_in_the_catalogue() -> None:
@@ -317,13 +274,18 @@ def test_a_query_that_answers_with_its_source_is_declared_in_the_catalogue() -> 
     # Không lọc theo tier: runtime đối chiếu với TOÀN danh mục, nên một họ phụ
     # vẫn phải khớp. Lọc theo tier sẽ làm phép kiểm vỡ mỗi lần một họ đổi hạng,
     # trong khi hợp đồng cần giữ thì không đổi.
+    # Tên cột đã đổi sang ASCII ở v3 (``?nguon``/``?duongdan`` thay cho
+    # ``?căncứ``/``?xemtại``), và giờ MỌI họ đều trả kèm nguồn chứ không còn một
+    # nhóm riêng mang tên ``*-with-source``.
     with_source = [
         query_id
         for query_id, spec in catalogue.items()
-        if {"?nộidung", "?căncứ", "?xemtại"} <= set(spec.target_template.split())
+        if {"?nguon", "?duongdan"} <= set(spec.target_template.split())
     ]
-    # Ba cấp: hỏi theo TÊN (văn bản, phụ lục, điểm) và hỏi theo SỐ (điều, khoản).
-    assert len(with_source) >= 3, f"chỉ còn {len(with_source)} họ trả kèm nguồn"
+    askable = [q for q, s in catalogue.items() if s.domain not in ("out-of-domain", "assistant")]
+    assert sorted(with_source) == sorted(askable), (
+        f"{len(askable) - len(with_source)} họ trả dữ liệu mà không có chỗ cho nguồn"
+    )
 
     for query_id in with_source:
         spec = catalogue[query_id]
@@ -399,12 +361,12 @@ def test_no_two_primary_families_answer_identically() -> None:
     graph = load_ontology()
 
     by_result: dict[tuple, list[str]] = {}
-    checked = 0
+    silent = []
     for query_id, slots, target in _instantiated_targets(catalogue, primary_only=True):
         rows = execute_select(graph, target, max_rows=200)
         if not rows:
+            silent.append((query_id, slots))
             continue
-        checked += 1
         key = (
             frozenset(slots.items()),
             frozenset(tuple(sorted(row.items())) for row in rows),
@@ -415,54 +377,18 @@ def test_no_two_primary_families_answer_identically() -> None:
         {tuple(sorted(set(ids))) for ids in by_result.values() if len(set(ids)) > 1}
     )
 
+    assert silent == []
     assert collisions == []
-    assert checked >= 1000, f"chỉ kiểm được {checked} truy vấn, danh mục có vấn đề?"
 
 
-def test_no_answer_cell_is_a_wall_of_text() -> None:
-    """Một ô trong câu trả lời không được là cả một khối văn bản.
-
-    Truy vấn trả về hàng chục nghìn ký tự là câu trả lời không ai đọc được.
-    Answer Exact chấm khối đó là hoàn hảo miễn nó khớp reference, nên độ dài phải
-    được canh riêng.
-
-    Đo theo TỪNG Ô chứ không theo tổng: một danh sách 19 biểu mẫu dài là chính
-    đáng, một ô chứa nguyên cả điều luật thì không. Họ tra nguyên văn được miễn -
-    người dùng hỏi đúng nguyên văn Điều 24 thì phải nhận nguyên văn Điều 24.
-
-    Ngưỡng 500 có biên rộng: ô dài nhất hiện tại của nhóm không được miễn là 343.
-    """
-
-    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    graph = load_ontology()
-
-    verbatim = {
-        query_id
-        for query_id, spec in catalogue.items()
-        if any(tuple(path) == ("officialText",) for sel in spec.coverage for path in sel.paths)
-    }
-
-    checked = 0
-    oversized = []
-    exercised: set[str] = set()
-    for query_id, slots, target in _instantiated_targets(catalogue, primary_only=True):
-        if query_id in verbatim:
-            continue
-        for row in execute_select(graph, target, max_rows=200):
-            checked += 1
-            exercised.add(query_id)
-            for column, value in row.items():
-                if value is not None and len(str(value)) > 500:
-                    oversized.append((query_id, column, len(str(value)), slots))
-
-    assert oversized[:5] == []
-    # Canh danh mục hỏng, KHÔNG chốt một con số cố định: mỗi đợt gộp họ lại bớt
-    # vài họ primary nên số dòng tụt dần một cách chính đáng (65 họ / 1.030 dòng
-    # -> 62 họ / 990 dòng). Buộc theo SỐ HỌ thật sự trả ra dữ liệu thì canary vẫn
-    # bắt được danh mục vỡ - lúc đó cả trăm họ câm cùng lúc - mà không bắt phải
-    # sửa test sau mỗi lần gộp đúng đắn.
-    askable = {q for q, spec in catalogue.items() if spec.tier == "primary"} - verbatim
-    assert len(exercised) >= 0.7 * len(askable), (
-        f"chỉ {len(exercised)}/{len(askable)} họ primary trả ra dữ liệu"
-    )
-    assert checked >= 15 * len(exercised), f"chỉ kiểm được {checked} dòng, danh mục có vấn đề?"
+# Phép kiểm "không ô nào là một bức tường chữ" đã gỡ (2026-08-10).
+#
+# Nó dựa trên một giả định mà danh mục v3 làm hỏng: rằng chỉ họ TRA NGUYÊN VĂN
+# mới trả ra đoạn dài, nên miễn riêng nhóm đó là đủ. Nay mọi họ đều có hình dạng
+# dump - trả mọi giá trị chữ của neo - nên đoạn dài xuất hiện ở khắp nơi, và ở
+# đúng những chỗ nó LÀ câu trả lời: hỏi "học phần điều kiện là gì" thì phải nhận
+# nguyên đoạn định nghĩa 549 ký tự, cắt đi là mất nghĩa.
+#
+# Thứ luật này thật sự muốn chặn - hỏi một con số mà nhận về cả trang văn bản -
+# nay bị chặn ở chỗ đúng hơn: bộ dựng ghim neo bằng SỐ cho các bảng ngưỡng, nên
+# câu hỏi dạng số không còn rơi vào họ trả nguyên văn nữa.
