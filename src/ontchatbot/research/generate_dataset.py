@@ -23,7 +23,9 @@ import hashlib
 import json
 import random
 import re
+import unicodedata
 from dataclasses import dataclass
+from functools import lru_cache
 from decimal import Decimal, InvalidOperation
 from itertools import product
 from pathlib import Path
@@ -32,7 +34,7 @@ from typing import Mapping
 from rdflib import RDF, Graph, URIRef
 
 from ..catalogue import QuerySpec
-from ..settings import ONTOLOGY_NS
+from ..settings import DATASET_DIR, ONTOLOGY_NS
 from ..runtime.sparql import SparqlError, execute_select
 from ..runtime.text import normalize_model_input
 from .compose import Frame, REGISTERS, choose_mention, decorate, question_variants
@@ -585,6 +587,51 @@ def name_teaching_cases(
     ]
 
 
+
+#: Câu hỏi do LLM VIẾT, không phải do script ghép khuôn.
+#:
+#: Người dùng chốt 15/8/2026: *"việc tăng này nên được sinh ra thay vì dùng script
+#: để mở rộng"*. Lý do đo được: script ghép khuôn cho ra đa dạng TỔ HỢP chứ không
+#: phải đa dạng NGÔN NGỮ. Toàn bộ 19 câu dạy "đăng ký học phần" chỉ là 5 khuôn mở
+#: đầu × 5 biến thể tên gọi, và ghép máy móc nên có câu hỏng hẳn - *"có những điều
+#: những gì cần biết trước khi chọn môn học z?"*. Cả tập cũ chỉ có 1.491 kiểu mở
+#: đầu trên 4.373 câu, riêng *"đề nghị hướng dẫn"* chiếm 194 câu. Không sinh viên
+#: nào mở đầu như vậy.
+#:
+#: Bản viết tay: 2.304 câu cho 238 loại, 1.415 kiểu mở đầu - gấp đôi mật độ.
+#:
+#: CHỈ dùng cho neo gọi bằng TÊN. Neo gọi bằng toạ độ ("Điều 12 Quy chế 1052")
+#: không cần: người dùng chốt *"toạ độ thì ko cần, vì ko ai đi hỏi cái đó cả"*.
+WRITTEN_QUESTIONS_PATH = DATASET_DIR / "written-questions.jsonl"
+
+
+@lru_cache(maxsize=1)
+def written_questions() -> Mapping[tuple[str, str, str], tuple[str, ...]]:
+    """Câu viết tay, tra theo (họ truy vấn, neo, phong cách)."""
+
+    if not WRITTEN_QUESTIONS_PATH.is_file():
+        return {}
+    pool: dict[tuple[str, str, str], list[str]] = {}
+    for line in WRITTEN_QUESTIONS_PATH.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        key = (row["query_id"], row["anchor"], row["register"])
+        pool.setdefault(key, []).append(row["input"])
+    return {key: tuple(value) for key, value in pool.items()}
+
+
+
+def _fold_for_dedup(question: str) -> str:
+    """Chuẩn hoá như runtime rồi BỎ DẤU - dạng mà model thật sự nhìn thấy."""
+
+    lowered = unicodedata.normalize(
+        "NFD", normalize_model_input(question).casefold()
+    )
+    stripped = "".join(c for c in lowered if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", stripped.replace("đ", "d")).strip()
+
+
 def _question_core(
     frame: Frame,
     binding: Mapping[str, str],
@@ -950,7 +997,13 @@ def generate(
         """
 
         nonlocal counter
-        key = normalize_model_input(question).casefold()
+        # Khoá chống trùng phải BỎ DẤU. Người Việt gõ chat rất hay bỏ dấu, và
+        # nhóm ``noisy`` cũng sinh ra dạng không dấu, nên "Phiếu điều chỉnh điểm"
+        # và "phieu dieu chinh diem" là MỘT câu đối với model. Khoá cũ giữ nguyên
+        # dấu nên để lọt chúng sang hai tập khác nhau; phép so ba-ký-tự cũng
+        # không cứu được vì bỏ dấu làm đổi gần hết ký tự. Phép kiểm rò rỉ vốn đã
+        # canh chặt hơn khoá này - nay hai bên dùng chung một định nghĩa.
+        key = _fold_for_dedup(question)
         if not key or key in seen:
             return False
         grams = _character_trigrams(question)
@@ -985,6 +1038,34 @@ def generate(
         """Thử vài lần với khung khác nhau cho tới khi ra một câu chưa có."""
 
         target = _fill_targets(spec, binding)
+
+        # ƯU TIÊN CÂU VIẾT TAY. Chúng đã mang sẵn phong cách nên KHÔNG khoác thêm
+        # ``decorate``: khoác chồng lên là tái tạo đúng thứ đang muốn bỏ - câu
+        # ghép máy móc kiểu "Cho hỏi hướng dẫn đầy đủ cách Thủ tục đăng ký khối
+        # lượng học tập?", trộn giọng nói chuyện với tên gọi trang trọng.
+        #
+        # ``emit`` vẫn là cửa cuối: câu trùng hoặc gần trùng bị từ chối ở đó, và
+        # phép chia tập vẫn do vòng ngoài quyết. Hết câu viết tay thì lui về khung,
+        # nên neo nào chưa được viết đủ mười câu vẫn có dữ liệu.
+        # KHÔNG chiếm chỗ khi người gọi đã chỉ định cách gọi hoặc khung cụ thể.
+        # Lượt dạy tên gọi ép dùng đúng một nhãn phụ qua ``mention_overrides``;
+        # trả về một câu viết tay không chứa nhãn ấy là bỏ rơi chính việc dạy nó -
+        # bộ sinh bắt ngay: "node :TuitionLookupPage thiếu nhãn 'cổng thông tin
+        # sinh viên'". Câu viết tay phục vụ đa dạng diễn đạt, không thay được lượt
+        # phủ tên gọi.
+        anchor = binding.get("anchor", "")
+        if (
+            mention_overrides is None
+            and preferred_frame is None
+            and isinstance(anchor, str)
+            and anchor.startswith(":")
+        ):
+            for written in written_questions().get(
+                (query_id, anchor[1:], register), ()
+            ):
+                if emit(split, query_id, register, written, target):
+                    return True
+
         candidates = ([preferred_frame] if preferred_frame is not None else []) + [
             rng.choice(options) for _ in range(12)
         ]
@@ -1078,6 +1159,35 @@ def generate(
             _MIN_TRAIN_ROWS,
             min(len(options) * weight, row_cap_multiplier * pair_floor),
         )
+        # PHÁT HẾT CÂU VIẾT TAY TRƯỚC, rồi mới để khung lấp phần còn thiếu.
+        #
+        # Không phát trước thì quota của họ đầy bằng câu ghép khuôn và kho viết
+        # tay chỉ dùng được 54%: thứ đắt nhất bị thứ rẻ nhất chiếm chỗ.
+        #
+        # Chừa MỘT câu mỗi (neo, phong cách) cho val/test. Vòng held-out chạy sau
+        # và cũng gọi ``attempt``, nên nó nhặt đúng câu còn lại. Tập chấm phải là
+        # cách hỏi CHƯA từng thấy, mà câu người viết mới là phép thử thật - để
+        # held-out toàn câu ghép khuôn thì ta đang chấm model trên thứ dễ hơn hẳn
+        # thứ nó sẽ gặp.
+        for binding in options:
+            anchor_name = str(binding.get("anchor", ""))[1:]
+            if not anchor_name:
+                continue
+            # Chừa HAI câu MỖI NEO, không phải một câu mỗi phong cách. Chừa theo
+            # phong cách thì với mười câu chia bốn giọng, ta giữ lại tới bốn - tức
+            # 40% kho viết tay không vào train, và câu ghép khuôn lại chiếm chỗ.
+            # Hai câu là đủ cho val và test.
+            held = 0
+            for register in REGISTERS:
+                pool = written_questions().get((query_id, anchor_name, register), ())
+                keep = 1 if held < 2 and len(pool) > 1 else 0
+                held += keep
+                for question in pool[: len(pool) - keep]:
+                    emit(
+                        "train", query_id, register, question,
+                        _fill_targets(spec, binding),
+                    )
+
         produced = sum(1 for row in splits["train"] if row.query_id == query_id)
         priority = [
             option

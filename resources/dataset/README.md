@@ -4,10 +4,10 @@
 
 | Tệp | Vai trò | Số dòng |
 |---|---|---:|
-| `train.jsonl` | ví dụ huấn luyện | 4.299 |
-| `val.jsonl` | kiểm định | 400 |
+| `train.jsonl` | ví dụ huấn luyện | 5.451 |
+| `val.jsonl` | kiểm định | 399 |
 | `test.jsonl` | kiểm tra cuối | 389 |
-| **Tổng** |  | **5.088** |
+| **Tổng** |  | **6.239** |
 
 Số dòng được đếm trực tiếp từ ba JSONL và khớp với `reports/dataset.json`.
 
