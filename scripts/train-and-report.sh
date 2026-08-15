@@ -12,6 +12,16 @@
 #     bash scripts/train-and-report.sh --smoke-test    # thử một bước, xem có vừa VRAM
 #
 # Xong sẽ có MỘT tệp .tar.gz ở artifacts/. Mang tệp đó về là đủ.
+#
+# TRÊN MÁY LỚN (L4 24 GB) script tự tắt gradient checkpointing và chạy nhanh hơn
+# 30-40% mà kết quả không đổi - đó là phép đánh đổi thuần bộ nhớ lấy tốc độ. Trên
+# card 6 GB nó tự bật lại, vì không bật thì batch 2 cũng tràn. Đọc
+# ``gradient_checkpointing_effective`` trong dòng RUN_CONFIG của log để biết máy
+# đó đã chọn gì. Ép tay bằng ``--gradient-checkpointing on|off`` nếu cần.
+#
+# Dòng "CUDA OOM at batch 8; retrying..." KHÔNG phải lỗi - bộ huấn luyện tự lùi
+# lô vật lý và giữ nguyên lô hiệu dụng, nên kết quả không đổi. Chỉ đáng lo khi nó
+# lùi tới 1 mà vẫn tràn.
 
 set -euo pipefail
 

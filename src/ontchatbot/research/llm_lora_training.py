@@ -309,6 +309,59 @@ def _cast_tied_weight_to_dtype(model, dtype) -> dict[str, Any]:
     }
 
 
+
+#: Ngưỡng VRAM để tự tắt gradient checkpointing.
+#:
+#: Checkpointing đánh đổi TỐC ĐỘ lấy BỘ NHỚ: nó bỏ activation rồi tính lại ở lượt
+#: truyền ngược, thường mất 30-40% tốc độ. Trên card 6 GB đó là đánh đổi bắt buộc
+#: - không bật thì batch 2 cũng tràn. Trên L4 24 GB thì đó là trả giá mà không
+#: mua gì: batch 8 nằm gọn trong bộ nhớ.
+#:
+#: Kết quả huấn luyện KHÔNG đổi. Đây là phép đánh đổi thuần tuý bộ nhớ - phép tính
+#: giống hệt, gradient giống hệt.
+#:
+#: 16 GiB là ngưỡng chia hai loại máy dự án thực sự dùng: 6 GB ở local, 24 GB trên
+#: server thuê. Không có máy nào nằm giữa để phải cân nhắc.
+GRADIENT_CHECKPOINT_VRAM_THRESHOLD = 16 * 1024**3
+
+
+def _should_checkpoint_gradients(torch, choice: str) -> bool:
+    """Có nên bỏ activation để tính lại không - hỏi theo VRAM của máy đang chạy."""
+
+    if choice == "on":
+        return True
+    if choice == "off":
+        return False
+    if not torch.cuda.is_available():
+        return True
+    total = torch.cuda.get_device_properties(0).total_memory
+    return total < GRADIENT_CHECKPOINT_VRAM_THRESHOLD
+
+
+
+def _gpu_total_bytes() -> int | None:
+    """VRAM của máy đang chạy, hoặc None nếu không có GPU."""
+
+    try:
+        import torch
+    except ImportError:
+        return None
+    if not torch.cuda.is_available():
+        return None
+    return int(torch.cuda.get_device_properties(0).total_memory)
+
+
+
+def _checkpointing_for_log(args) -> bool | None:
+    """Quyết định checkpointing, tính riêng để ghi log trước khi vào vòng thử lô."""
+
+    try:
+        import torch
+    except ImportError:
+        return None
+    return _should_checkpoint_gradients(torch, args.gradient_checkpointing)
+
+
 def _compute_dtype(torch):
     # Turing reports software bf16 support in some stacks.  Native bf16 starts
     # at compute capability 8, so a 6 GB pre-Ampere card must use fp16.
@@ -365,6 +418,9 @@ def _run_attempt(
     )
 
     compute_dtype = _compute_dtype(torch)
+    checkpoint_gradients = _should_checkpoint_gradients(
+        torch, args.gradient_checkpointing
+    )
     lora = _lora_spec(args.lora_profile)
     quantization = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -414,7 +470,7 @@ def _run_attempt(
         stage = "kbit_prepare"
         model = prepare_model_for_kbit_training(
             model,
-            use_gradient_checkpointing=True,
+            use_gradient_checkpointing=checkpoint_gradients,
             gradient_checkpointing_kwargs={"use_reentrant": False},
         )
         _record_cuda_memory(torch, memory_records, "after_kbit_prepare")
@@ -478,7 +534,7 @@ def _run_attempt(
                 weight_decay=0.0,
                 optim="paged_adamw_8bit",
                 max_grad_norm=0.3,
-                gradient_checkpointing=True,
+                gradient_checkpointing=checkpoint_gradients,
                 gradient_checkpointing_kwargs={"use_reentrant": False},
                 bf16=compute_dtype is torch.bfloat16,
                 fp16=compute_dtype is torch.float16,
@@ -545,7 +601,7 @@ def _run_attempt(
                 "effective_batch_size": EFFECTIVE_BATCH_SIZE,
                 "max_sequence_length": MAX_SEQUENCE_LENGTH,
                 "dynamic_padding_multiple": 8,
-                "gradient_checkpointing": True,
+                "gradient_checkpointing": checkpoint_gradients,
                 "group_by_length": False,
                 "quantization": "4-bit NF4 double-quant; tied lm_head skipped",
                 "allocator_conf": os.environ.get("PYTORCH_CUDA_ALLOC_CONF"),
@@ -632,6 +688,12 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
                 "lora_profile": args.lora_profile,
                 "model_profile": args.model_profile,
                 "keep_tied_weight_fp32": args.keep_tied_weight_fp32,
+                # Ghi CẢ lựa chọn lẫn kết quả suy ra. Đọc log nguội mà chỉ thấy
+                # "auto" thì không biết máy đó đã bật hay tắt, mà đó lại là thứ
+                # giải thích phần lớn chênh lệch tốc độ giữa hai lượt chạy.
+                "gradient_checkpointing_choice": args.gradient_checkpointing,
+                "gradient_checkpointing_effective": _checkpointing_for_log(args),
+                "gpu_total_bytes": _gpu_total_bytes(),
                 "smoke_test": args.smoke_test,
                 "smoke_steps": SMOKE_STEPS if args.smoke_test else None,
             },
@@ -737,6 +799,15 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--keep-tied-weight-fp32",
         action="store_true",
         help="A/B probe only: do not return the frozen tied embedding/lm_head to compute dtype",
+    )
+    parser.add_argument(
+        "--gradient-checkpointing",
+        choices=("auto", "on", "off"),
+        default="auto",
+        help=(
+            "auto: bật khi VRAM dưới 16 GiB, tắt khi trên. Tắt thì nhanh hơn "
+            "30-40%% mà kết quả không đổi, nhưng tốn bộ nhớ hơn hẳn."
+        ),
     )
     parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--save-adapter", action="store_true")
