@@ -137,15 +137,22 @@ def _flash_attention_available() -> bool:
     return find_spec("flash_attn") is not None
 
 
-def _cached_snapshot() -> Path:
-    """Resolve the pinned model without ever authorizing a Hub download."""
+def _cached_snapshot(*, allow_download: bool = False) -> Path:
+    """Tìm model đã ghim. KHÔNG tự tải trừ khi người chạy nói rõ là được.
+
+    Mặc định là chặn, và chặn có lý do: 4,57 GB trên một máy thuê tính tiền theo
+    giờ, tải âm thầm giữa lượt huấn luyện thì vừa tốn vừa khó truy. Nhưng máy vừa
+    clone về thì chưa có gì trong cache, nên phải có đường mở CÓ CHỦ Ý -
+    ``benchmark_llm`` vốn đã có ``--allow-download``, bên này thiếu nên người chạy
+    kẹt cứng không có lối nào ngoài việc tự đoán lệnh tải.
+    """
 
     try:
         return Path(
             snapshot_download(
                 MODEL_ID,
                 revision=MODEL_REVISION,
-                local_files_only=True,
+                local_files_only=not allow_download,
             )
         )
     except LocalEntryNotFoundError as exc:
@@ -154,7 +161,8 @@ def _cached_snapshot() -> Path:
         raise RuntimeError(
             f"{MODEL_ID}@{MODEL_REVISION} is not complete in the local cache; "
             f"stopped without downloading. Approval would be required for about "
-            f"{gb:.2f} GB ({gib:.2f} GiB)."
+            f"{gb:.2f} GB ({gib:.2f} GiB). Chạy lại với --allow-download nếu "
+            f"muốn cho phép tải."
         ) from exc
 
 
@@ -653,7 +661,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
     import torch
     from transformers import AutoTokenizer
 
-    snapshot = _cached_snapshot()
+    snapshot = _cached_snapshot(allow_download=args.allow_download)
     if args.smoke_test and args.save_adapter:
         raise ValueError("smoke test never saves a model")
     if not torch.cuda.is_available():
@@ -807,6 +815,14 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help=(
             "auto: bật khi VRAM dưới 16 GiB, tắt khi trên. Tắt thì nhanh hơn "
             "30-40%% mà kết quả không đổi, nhưng tốn bộ nhớ hơn hẳn."
+        ),
+    )
+    parser.add_argument(
+        "--allow-download",
+        action="store_true",
+        help=(
+            "cho phép tải model đã ghim từ Hugging Face nếu cache chưa có "
+            "(khoảng 4,57 GB). Mặc định là KHÔNG tải."
         ),
     )
     parser.add_argument("--smoke-test", action="store_true")

@@ -11,6 +11,12 @@
 #     bash scripts/train-and-report.sh                 # đủ ba epoch
 #     bash scripts/train-and-report.sh --smoke-test    # thử một bước, xem có vừa VRAM
 #
+# MÁY VỪA CLONE VỀ chưa có model trong cache. Bộ huấn luyện KHÔNG tự tải 4,57 GB -
+# tải âm thầm trên máy thuê tính tiền theo giờ là chuyện không nên xảy ra. Lần
+# đầu thì thêm cờ cho phép, các lần sau không cần nữa:
+#
+#     bash scripts/train-and-report.sh --smoke-test --allow-download
+#
 # Xong sẽ có MỘT tệp .tar.gz ở artifacts/. Mang tệp đó về là đủ.
 #
 # TRÊN MÁY LỚN (L4 24 GB) script tự tắt gradient checkpointing và chạy nhanh hơn
