@@ -5652,6 +5652,40 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 #
 # Phần liên hệ của chính Trường nằm ở chân trang này, nên cả ba đơn vị cùng dẫn
 # về đây. Đã đối chiếu từng ký tự ngày 14/8/2026.
+# HAI TRANG TRA CỨU, nạp 15/8/2026. Chúng tồn tại để công cụ có thứ CHỈ ĐƯỜNG
+# thay vì chỉ nói "không có thông tin".
+#
+# Người dùng chốt: học phí và điểm chuẩn KHÔNG lưu con số vào đồ thị. Học phí đổi
+# theo kỳ và khác nhau giữa khoá, ngành, thời gian, trường không công bố ra ngoài
+# - mỗi sinh viên tự đăng nhập xem của mình. Điểm chuẩn và chỉ tiêu thì quá biến
+# động, và đang là thông tin nóng nhất nước vào mùa tuyển sinh. Một con số chung
+# cho mọi người là thứ không tồn tại, nên trả ra con số nào cũng là bịa.
+#
+# Cả hai URL đều đã được văn bản chính thức trong đồ thị nêu đích danh, nên nguồn
+# của chúng không phải một trang web tự khai: sinhvien.ntu.edu.vn nằm trong
+# phương thức 1 của Hướng dẫn đóng học phí, tuyensinh.ntu.edu.vn nằm trong Phụ
+# lục V Quy chế tuyển sinh kèm Quyết định 626.
+:TuitionLookupPage a :GuidanceDocument, owl:NamedIndividual ;
+    rdfs:label "Trang tra cứu học phí sinh viên"@vi ;
+    skos:altLabel "cổng thông tin sinh viên"@vi,
+        "tra cứu học phí"@vi,
+        "xem học phí của mình"@vi ;
+    :title "Cổng thông tin sinh viên - mục học phí"@vi ;
+    :basedOn :TuitionPaymentGuidanceSection01 ;
+    :retrievedDate "2026-08-15"^^xsd:date ;
+    :webPageUrl "http://sinhvien.ntu.edu.vn/"^^xsd:anyURI .
+
+:AdmissionsLookupPage a :GuidanceDocument, owl:NamedIndividual ;
+    rdfs:label "Trang thông tin tuyển sinh"@vi ;
+    skos:altLabel "chỉ tiêu tuyển sinh"@vi,
+        "trang tuyển sinh của trường"@vi,
+        "tra cứu điểm chuẩn"@vi,
+        "điểm chuẩn"@vi ;
+    :title "Trang thông tin tuyển sinh Trường Đại học Nha Trang"@vi ;
+    :basedOn :Regulation626AppendixV ;
+    :retrievedDate "2026-08-15"^^xsd:date ;
+    :webPageUrl "https://tuyensinh.ntu.edu.vn/"^^xsd:anyURI .
+
 :OrganizationStructurePage a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Trang Cơ cấu tổ chức - Khối tham mưu, quản lý"@vi ;
     :title "Khối tham mưu, quản lý"@vi ;

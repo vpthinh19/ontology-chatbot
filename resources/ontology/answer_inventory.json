@@ -429,6 +429,93 @@
       "status": "supported"
     },
     {
+      "id": "AdmissionsLookupPage-basedOn-citationLabel",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "citationLabel"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-basedOn-documentUrl",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "documentUrl"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-basedOn-officialText",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "officialText"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-rdfs-label",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-retrievedDate",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "retrievedDate"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-title",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "title"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AdmissionsLookupPage-webPageUrl",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "webPageUrl"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Agribank-basedOn-citationLabel",
       "anchor": "Agribank",
       "answer_kind": "literal",
@@ -48986,6 +49073,93 @@
       ],
       "provenance": [
         "Decision729AppendixIITable01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-basedOn-citationLabel",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "citationLabel"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-basedOn-documentUrl",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "documentUrl"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-basedOn-officialText",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "basedOn",
+        "officialText"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-rdfs-label",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-retrievedDate",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "retrievedDate"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-title",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "title"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionLookupPage-webPageUrl",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "webPageUrl"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
       ],
       "status": "supported"
     },

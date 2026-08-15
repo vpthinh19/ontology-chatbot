@@ -25,11 +25,13 @@
     },
     {
       "question": "hc phí k65 cntt",
-      "expected_query_id": "no-information"
+      "expected_query_id": "no-information",
+      "note": "người dùng chốt 2026-08-15: đồ thị KHÔNG lưu học phí theo khoá là đúng thiết kế, không phải thiếu sót. Giá mỗi tín chỉ đổi theo kỳ học và khác nhau giữa khoá, ngành, thời gian cùng nhiều yếu tố ngoài; trường KHÔNG công bố ra ngoài. Mỗi sinh viên tự đăng nhập http://sinhvien.ntu.edu.vn/ bằng tài khoản cá nhân để xem học phí của chính mình. Một con số chung cho mọi người là không tồn tại, nên trả lời bất cứ con số nào cũng là bịa."
     },
     {
       "question": "học phí k67 như thế nào",
-      "expected_query_id": "no-information"
+      "expected_query_id": "no-information",
+      "note": "người dùng chốt 2026-08-15: đồ thị KHÔNG lưu học phí theo khoá là đúng thiết kế, không phải thiếu sót. Giá mỗi tín chỉ đổi theo kỳ học và khác nhau giữa khoá, ngành, thời gian cùng nhiều yếu tố ngoài; trường KHÔNG công bố ra ngoài. Mỗi sinh viên tự đăng nhập http://sinhvien.ntu.edu.vn/ bằng tài khoản cá nhân để xem học phí của chính mình. Một con số chung cho mọi người là không tồn tại, nên trả lời bất cứ con số nào cũng là bịa."
     },
     {
       "question": "Tôi cần thông tin tuyển sinh 2026 của Trường Đại học Nha Trang",
@@ -72,5 +74,5 @@
       "note": "gõ tay trong test_llm.log. Model cũ LIỆT KÊ 24 thủ tục."
     }
   ],
-  "label_basis": "HỖN HỢP tính đến 2026-08-15. Bốn nhãn do NGƯỜI DÙNG chốt (xem 'note' từng câu). Năm nhãn của ba biến thể đăng ký học phần và hai câu học phí khoá vẫn do thiết kế SUY RA. Sáu nhãn mới thêm từ test_llm.log suy từ DỮ LIỆU chứ không từ thiết kế - mỗi câu khớp đúng một nhãn phụ có thật trong ontology - nhưng NGƯỜI DÙNG CHƯA XÁC NHẬN, cần gán lại một lượt."
+  "label_basis": "HỖN HỢP tính đến 2026-08-15. SÁU nhãn do NGƯỜI DÙNG chốt, xem 'note' từng câu: 'chào bạn nha', 'vì sao lại đăng ký học phần', 'Bạn có thể hỗ trợ thông tin gì', 'Tôi cần thông tin tuyển sinh 2026...', và hai câu học phí theo khoá. CHÍN nhãn còn lại chưa ai xác nhận: ba biến thể đăng ký học phần (suy từ thiết kế) và sáu câu lấy từ test_llm.log (suy từ DỮ LIỆU - mỗi câu khớp đúng một nhãn phụ có thật trong ontology - nhưng vẫn cần người gán)."
 }

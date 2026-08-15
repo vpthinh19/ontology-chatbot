@@ -1,104 +1,104 @@
 {
   "dataset": {
-    "records": 5036,
+    "records": 5064,
     "query_families": 50,
     "catalogue_families": 50,
-    "targets": 565,
+    "targets": 567,
     "domains": {
-      "academic-rule": 1099,
-      "certificate": 227,
-      "document": 1002,
-      "form": 640,
-      "out-of-domain": 707,
-      "procedure": 1137,
-      "tuition": 224
+      "academic-rule": 1101,
+      "certificate": 228,
+      "document": 1026,
+      "form": 635,
+      "out-of-domain": 710,
+      "procedure": 1143,
+      "tuition": 221
     },
     "splits": {
       "train": {
-        "records": 4251,
+        "records": 4271,
         "query_families": 50,
-        "targets": 565,
+        "targets": 567,
         "domains": {
-          "academic-rule": 830,
-          "certificate": 164,
-          "document": 894,
-          "form": 557,
-          "out-of-domain": 597,
-          "procedure": 1035,
-          "tuition": 174
+          "academic-rule": 827,
+          "certificate": 166,
+          "document": 914,
+          "form": 553,
+          "out-of-domain": 600,
+          "procedure": 1043,
+          "tuition": 168
         }
       },
       "val": {
-        "records": 398,
+        "records": 406,
         "query_families": 50,
-        "targets": 268,
+        "targets": 271,
         "domains": {
-          "academic-rule": 135,
+          "academic-rule": 141,
           "certificate": 31,
-          "document": 54,
+          "document": 55,
           "form": 42,
           "out-of-domain": 56,
-          "procedure": 53,
-          "tuition": 27
+          "procedure": 52,
+          "tuition": 29
         }
       },
       "test": {
         "records": 387,
         "query_families": 50,
-        "targets": 272,
+        "targets": 276,
         "domains": {
-          "academic-rule": 134,
-          "certificate": 32,
-          "document": 54,
-          "form": 41,
+          "academic-rule": 133,
+          "certificate": 31,
+          "document": 57,
+          "form": 40,
           "out-of-domain": 54,
-          "procedure": 49,
-          "tuition": 23
+          "procedure": 48,
+          "tuition": 24
         }
       }
     },
     "registers": {
-      "colloquial": 1394,
-      "formal": 1091,
-      "neutral": 1306,
-      "noisy": 1245
+      "colloquial": 1404,
+      "formal": 1103,
+      "neutral": 1333,
+      "noisy": 1224
     },
     "query_features": {
-      "filter": 4092,
-      "graph_hop": 264,
-      "multi_branch": 4329,
-      "multi_column": 4329,
-      "values": 237
+      "filter": 4115,
+      "graph_hop": 266,
+      "multi_branch": 4354,
+      "multi_column": 4354,
+      "values": 239
     },
     "query_features_by_split": {
       "train": {
-        "filter": 3473,
-        "graph_hop": 200,
-        "multi_branch": 3654,
-        "multi_column": 3654,
-        "values": 181
+        "filter": 3491,
+        "graph_hop": 199,
+        "multi_branch": 3671,
+        "multi_column": 3671,
+        "values": 180
       },
       "val": {
-        "filter": 314,
-        "graph_hop": 32,
-        "multi_branch": 342,
-        "multi_column": 342,
-        "values": 28
+        "filter": 321,
+        "graph_hop": 33,
+        "multi_branch": 350,
+        "multi_column": 350,
+        "values": 29
       },
       "test": {
-        "filter": 305,
-        "graph_hop": 32,
+        "filter": 303,
+        "graph_hop": 34,
         "multi_branch": 333,
         "multi_column": 333,
-        "values": 28
+        "values": 30
       }
     },
     "input_words": {
       "min": 2,
       "median": 13,
       "p95": 21,
-      "max": 31,
-      "mean": 12.57
+      "max": 34,
+      "mean": 12.61
     }
   },
   "in_domain_contract": {
@@ -116,8 +116,8 @@
     "missing_numeric_cases": [],
     "missing_rejection_coverage": {},
     "name_coverage": {
-      "total": 781,
-      "covered": 781,
+      "total": 790,
+      "covered": 790,
       "missing_count": 0,
       "missing": []
     }
@@ -128,28 +128,28 @@
     "gaps": []
   },
   "ontology": {
-    "triples": 7634,
+    "triples": 7659,
     "classes": 56,
     "object_properties": 29,
     "datatype_properties": 55,
-    "named_individuals": 684,
+    "named_individuals": 686,
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 5036,
+    "records": 5064,
     "split_counts": {
-      "train": 4251,
-      "val": 398,
+      "train": 4271,
+      "val": 406,
       "test": 387
     },
     "domains": {
-      "academic-rule": 1099,
-      "certificate": 227,
-      "document": 1002,
-      "form": 640,
-      "out-of-domain": 707,
-      "procedure": 1137,
-      "tuition": 224
+      "academic-rule": 1101,
+      "certificate": 228,
+      "document": 1026,
+      "form": 635,
+      "out-of-domain": 710,
+      "procedure": 1143,
+      "tuition": 221
     },
     "catalogue_coverage_required": true,
     "families": {
@@ -1422,6 +1422,7 @@
       "official-document-facts": {
         "anchor": {
           "declared": [
+            ":AdmissionsLookupPage",
             ":Decision1052",
             ":Decision1965",
             ":Decision317",
@@ -1434,11 +1435,13 @@
             ":Regulation753",
             ":ScholarshipAnnouncementGuidance",
             ":ScholarshipCriteriaGuidance",
+            ":TuitionLookupPage",
             ":TuitionPaymentGuidance",
             ":UndergraduateFormCatalogue",
             ":VNPAYPaymentGuidance"
           ],
           "seen_train": [
+            ":AdmissionsLookupPage",
             ":Decision1052",
             ":Decision1965",
             ":Decision317",
@@ -1451,6 +1454,7 @@
             ":Regulation753",
             ":ScholarshipAnnouncementGuidance",
             ":ScholarshipCriteriaGuidance",
+            ":TuitionLookupPage",
             ":TuitionPaymentGuidance",
             ":UndergraduateFormCatalogue",
             ":VNPAYPaymentGuidance"
@@ -1590,75 +1594,75 @@
     },
     "splits": {
       "train": {
-        "records": 4251,
+        "records": 4271,
         "queries": 50,
-        "targets": 565,
+        "targets": 567,
         "query_counts": {
-          "academic-actor-facts": 191,
-          "academic-case-facts": 173,
-          "academic-concept-facts": 48,
+          "academic-actor-facts": 193,
+          "academic-case-facts": 175,
+          "academic-concept-facts": 46,
           "academic-performance-table": 12,
-          "academic-policy-facts": 24,
-          "academic-procedure-facts": 483,
-          "academic-program-catalogue-table": 14,
-          "academic-program-facts": 225,
-          "academic-rule-facts": 15,
-          "academic-warning-rule-facts": 22,
-          "assessment-component-facts": 23,
-          "attendance-rule-facts": 23,
-          "bank-facts": 35,
-          "billing-unit-facts": 26,
-          "certificate-catalogue-table": 13,
+          "academic-policy-facts": 26,
+          "academic-procedure-facts": 484,
+          "academic-program-catalogue-table": 13,
+          "academic-program-facts": 226,
+          "academic-rule-facts": 14,
+          "academic-warning-rule-facts": 19,
+          "assessment-component-facts": 22,
+          "attendance-rule-facts": 20,
+          "bank-facts": 33,
+          "billing-unit-facts": 25,
+          "certificate-catalogue-table": 12,
           "certificate-conversion-table-english-language-major-student": 12,
-          "certificate-conversion-table-moi-doi-tuong": 12,
-          "certificate-conversion-table-special-program-non-language-major-student": 13,
-          "certificate-conversion-table-standard-program-non-language-major-student": 13,
-          "certificate-facts": 101,
-          "class-size-table": 15,
-          "course-type-facts": 54,
-          "credit-load-rule-facts": 19,
+          "certificate-conversion-table-moi-doi-tuong": 13,
+          "certificate-conversion-table-special-program-non-language-major-student": 15,
+          "certificate-conversion-table-standard-program-non-language-major-student": 12,
+          "certificate-facts": 102,
+          "class-size-table": 12,
+          "course-type-facts": 51,
+          "credit-load-rule-facts": 16,
           "credit-transfer-rule-facts": 20,
-          "delivery-mode-facts": 21,
+          "delivery-mode-facts": 20,
           "discipline-group-facts": 33,
-          "dismissal-rule-facts": 17,
-          "document-part-facts": 742,
+          "dismissal-rule-facts": 19,
+          "document-part-facts": 747,
           "education-level-facts": 19,
           "form-catalogue-entry-facts": 252,
-          "form-document-facts": 305,
-          "grade-code-facts": 30,
-          "graduation-classification-table": 13,
+          "form-document-facts": 301,
+          "grade-code-facts": 31,
+          "graduation-classification-table": 12,
           "graduation-honours-penalty-rule-facts": 15,
           "language-course-assessment-table": 14,
-          "language-course-classification-table": 13,
-          "language-course-facts": 40,
-          "no-information": 597,
-          "official-document-facts": 152,
-          "online-training-rule-facts": 14,
-          "organizational-unit-facts": 188,
+          "language-course-classification-table": 14,
+          "language-course-facts": 41,
+          "no-information": 600,
+          "official-document-facts": 167,
+          "online-training-rule-facts": 21,
+          "organizational-unit-facts": 191,
           "payment-fee-by-method": 19,
-          "payment-method-facts": 35,
-          "scholarship-rate-facts": 34,
-          "scholarship-rate-table-special-program": 12,
+          "payment-method-facts": 32,
+          "scholarship-rate-facts": 32,
+          "scholarship-rate-table-special-program": 14,
           "scholarship-rate-table-standard-program": 13,
-          "semester-type-facts": 25,
+          "semester-type-facts": 28,
           "study-duration-rule-facts": 30,
           "study-year-classification-table": 12,
-          "training-mode-facts": 20
+          "training-mode-facts": 21
         },
         "register_counts": {
-          "colloquial": 1197,
-          "formal": 887,
-          "neutral": 1130,
-          "noisy": 1037
+          "colloquial": 1204,
+          "formal": 895,
+          "neutral": 1151,
+          "noisy": 1021
         },
         "domains": {
-          "academic-rule": 830,
-          "certificate": 164,
-          "document": 894,
-          "form": 557,
-          "out-of-domain": 597,
-          "procedure": 1035,
-          "tuition": 174
+          "academic-rule": 827,
+          "certificate": 166,
+          "document": 914,
+          "form": 553,
+          "out-of-domain": 600,
+          "procedure": 1043,
+          "tuition": 168
         },
         "slot_values": {
           "academic-actor-facts": {
@@ -2275,6 +2279,7 @@
           },
           "official-document-facts": {
             "anchor": [
+              ":AdmissionsLookupPage",
               ":Decision1052",
               ":Decision1965",
               ":Decision317",
@@ -2287,6 +2292,7 @@
               ":Regulation753",
               ":ScholarshipAnnouncementGuidance",
               ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
               ":TuitionPaymentGuidance",
               ":UndergraduateFormCatalogue",
               ":VNPAYPaymentGuidance"
@@ -2354,23 +2360,23 @@
         }
       },
       "val": {
-        "records": 398,
+        "records": 406,
         "queries": 50,
-        "targets": 268,
+        "targets": 271,
         "query_counts": {
-          "academic-actor-facts": 10,
+          "academic-actor-facts": 9,
           "academic-case-facts": 7,
           "academic-concept-facts": 11,
           "academic-performance-table": 2,
           "academic-policy-facts": 3,
           "academic-procedure-facts": 28,
           "academic-program-catalogue-table": 2,
-          "academic-program-facts": 35,
-          "academic-rule-facts": 3,
-          "academic-warning-rule-facts": 4,
-          "assessment-component-facts": 2,
-          "attendance-rule-facts": 3,
-          "bank-facts": 3,
+          "academic-program-facts": 40,
+          "academic-rule-facts": 2,
+          "academic-warning-rule-facts": 3,
+          "assessment-component-facts": 3,
+          "attendance-rule-facts": 4,
+          "bank-facts": 4,
           "billing-unit-facts": 2,
           "certificate-catalogue-table": 2,
           "certificate-conversion-table-english-language-major-student": 2,
@@ -2379,11 +2385,11 @@
           "certificate-conversion-table-standard-program-non-language-major-student": 2,
           "certificate-facts": 21,
           "class-size-table": 2,
-          "course-type-facts": 12,
+          "course-type-facts": 13,
           "credit-load-rule-facts": 2,
           "credit-transfer-rule-facts": 3,
           "delivery-mode-facts": 2,
-          "discipline-group-facts": 8,
+          "discipline-group-facts": 7,
           "dismissal-rule-facts": 2,
           "document-part-facts": 34,
           "education-level-facts": 2,
@@ -2394,35 +2400,35 @@
           "graduation-honours-penalty-rule-facts": 2,
           "language-course-assessment-table": 2,
           "language-course-classification-table": 2,
-          "language-course-facts": 10,
+          "language-course-facts": 11,
           "no-information": 56,
-          "official-document-facts": 20,
+          "official-document-facts": 21,
           "online-training-rule-facts": 2,
           "organizational-unit-facts": 8,
           "payment-fee-by-method": 4,
-          "payment-method-facts": 8,
-          "scholarship-rate-facts": 6,
+          "payment-method-facts": 7,
+          "scholarship-rate-facts": 7,
           "scholarship-rate-table-special-program": 2,
-          "scholarship-rate-table-standard-program": 2,
+          "scholarship-rate-table-standard-program": 3,
           "semester-type-facts": 2,
-          "study-duration-rule-facts": 4,
+          "study-duration-rule-facts": 3,
           "study-year-classification-table": 2,
-          "training-mode-facts": 2
+          "training-mode-facts": 3
         },
         "register_counts": {
-          "colloquial": 98,
-          "formal": 103,
-          "neutral": 87,
-          "noisy": 110
+          "colloquial": 101,
+          "formal": 106,
+          "neutral": 92,
+          "noisy": 107
         },
         "domains": {
-          "academic-rule": 135,
+          "academic-rule": 141,
           "certificate": 31,
-          "document": 54,
+          "document": 55,
           "form": 42,
           "out-of-domain": 56,
-          "procedure": 53,
-          "tuition": 27
+          "procedure": 52,
+          "tuition": 29
         },
         "slot_values": {
           "academic-actor-facts": {
@@ -2507,6 +2513,7 @@
               ":EnglishLanguage",
               ":FinanceAndBanking",
               ":FisheriesExploitation",
+              ":FisheriesManagement",
               ":FisheriesScience",
               ":FoodQualityAndSafetyAssurance",
               ":FoodTechnology",
@@ -2742,6 +2749,7 @@
           },
           "official-document-facts": {
             "anchor": [
+              ":AdmissionsLookupPage",
               ":Decision1052",
               ":Decision1965",
               ":Decision317",
@@ -2754,6 +2762,7 @@
               ":Regulation753",
               ":ScholarshipAnnouncementGuidance",
               ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
               ":TuitionPaymentGuidance",
               ":UndergraduateFormCatalogue",
               ":VNPAYPaymentGuidance"
@@ -2823,19 +2832,19 @@
       "test": {
         "records": 387,
         "queries": 50,
-        "targets": 272,
+        "targets": 276,
         "query_counts": {
           "academic-actor-facts": 9,
           "academic-case-facts": 4,
-          "academic-concept-facts": 12,
+          "academic-concept-facts": 11,
           "academic-performance-table": 2,
           "academic-policy-facts": 3,
-          "academic-procedure-facts": 28,
+          "academic-procedure-facts": 27,
           "academic-program-catalogue-table": 2,
-          "academic-program-facts": 37,
+          "academic-program-facts": 38,
           "academic-rule-facts": 2,
-          "academic-warning-rule-facts": 3,
-          "assessment-component-facts": 2,
+          "academic-warning-rule-facts": 4,
+          "assessment-component-facts": 3,
           "attendance-rule-facts": 3,
           "bank-facts": 3,
           "billing-unit-facts": 2,
@@ -2844,52 +2853,52 @@
           "certificate-conversion-table-moi-doi-tuong": 2,
           "certificate-conversion-table-special-program-non-language-major-student": 2,
           "certificate-conversion-table-standard-program-non-language-major-student": 2,
-          "certificate-facts": 22,
+          "certificate-facts": 21,
           "class-size-table": 2,
-          "course-type-facts": 13,
+          "course-type-facts": 12,
           "credit-load-rule-facts": 2,
           "credit-transfer-rule-facts": 3,
           "delivery-mode-facts": 2,
           "discipline-group-facts": 5,
           "dismissal-rule-facts": 2,
-          "document-part-facts": 35,
-          "education-level-facts": 3,
-          "form-catalogue-entry-facts": 22,
+          "document-part-facts": 36,
+          "education-level-facts": 2,
+          "form-catalogue-entry-facts": 21,
           "form-document-facts": 19,
-          "grade-code-facts": 4,
+          "grade-code-facts": 5,
           "graduation-classification-table": 2,
           "graduation-honours-penalty-rule-facts": 2,
-          "language-course-assessment-table": 2,
+          "language-course-assessment-table": 3,
           "language-course-classification-table": 2,
           "language-course-facts": 10,
           "no-information": 54,
-          "official-document-facts": 19,
-          "online-training-rule-facts": 3,
+          "official-document-facts": 21,
+          "online-training-rule-facts": 2,
           "organizational-unit-facts": 8,
           "payment-fee-by-method": 4,
           "payment-method-facts": 4,
           "scholarship-rate-facts": 6,
           "scholarship-rate-table-special-program": 2,
-          "scholarship-rate-table-standard-program": 2,
-          "semester-type-facts": 3,
-          "study-duration-rule-facts": 4,
+          "scholarship-rate-table-standard-program": 3,
+          "semester-type-facts": 2,
+          "study-duration-rule-facts": 3,
           "study-year-classification-table": 2,
           "training-mode-facts": 2
         },
         "register_counts": {
           "colloquial": 99,
-          "formal": 101,
-          "neutral": 89,
-          "noisy": 98
+          "formal": 102,
+          "neutral": 90,
+          "noisy": 96
         },
         "domains": {
-          "academic-rule": 134,
-          "certificate": 32,
-          "document": 54,
-          "form": 41,
+          "academic-rule": 133,
+          "certificate": 31,
+          "document": 57,
+          "form": 40,
           "out-of-domain": 54,
-          "procedure": 49,
-          "tuition": 23
+          "procedure": 48,
+          "tuition": 24
         },
         "slot_values": {
           "academic-actor-facts": {
@@ -2991,7 +3000,8 @@
               ":PowerMechanicalEngineering",
               ":SeafoodProcessingTechnology",
               ":ThermalEngineering",
-              ":TourismAndTravelServiceManagement"
+              ":TourismAndTravelServiceManagement",
+              ":TransportationInfrastructureEngineering"
             ]
           },
           "academic-rule-facts": {
@@ -3125,6 +3135,7 @@
               ":Regulation1052Article21Clause06",
               ":Regulation1052Article22Clause01PointA",
               ":Regulation1052Article22Clause01PointC",
+              ":Regulation1052Article24Clause01PointC",
               ":Regulation1052Article26",
               ":Regulation1052Article26Clause01PointA",
               ":Regulation1052Article27Clause02",
@@ -3213,6 +3224,7 @@
           },
           "official-document-facts": {
             "anchor": [
+              ":AdmissionsLookupPage",
               ":Decision1052",
               ":Decision1965",
               ":Decision317",
@@ -3225,6 +3237,7 @@
               ":Regulation753",
               ":ScholarshipAnnouncementGuidance",
               ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
               ":TuitionPaymentGuidance",
               ":UndergraduateFormCatalogue",
               ":VNPAYPaymentGuidance"
@@ -3294,11 +3307,11 @@
     }
   },
   "sha256": {
-    "train.jsonl": "e14b82e862848eba807e3dd5fcfe6bd3eb4705b05d062ebd552c154f2947938d",
-    "val.jsonl": "07fa67b62125ef269e0efde100100909be9b2e27783502717fe3d58342e80ce0",
-    "test.jsonl": "80996c4396693a4742db210741ac50c0b3451e2fa60730f465beceb656c4c793",
-    "catalogue.jsonl": "f204b2b40eb2115c6e12b7d81afd8e0767f8ec21533107922e908a07a9af6e27",
+    "train.jsonl": "992cf3930d0b1b651393411cdbafdc8f054cb27c2627e4b6357833f5bee33931",
+    "val.jsonl": "814cc0775fdecc67fd71ba421b10f07d0b57a937b18b6cc88b08ba2bba226a67",
+    "test.jsonl": "b48c47ae16d24a3a3ef5c54cafedbe8e435ceea2cddf476324eaaeaa22025cdb",
+    "catalogue.jsonl": "3683e68971dd1431a0f6bdb75d25a3633093912c30504ceeb77cff0f02400361",
     "coverage.json": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251",
-    "ontology.ttl": "7f287b84353648bbc7ce9667991ab271ec4f82b4a765b2e9d4cb61e546c993eb"
+    "ontology.ttl": "b879c482f2cd8094cf8b283c4091e13334013808a58390d16b2a765ef1163ed9"
   }
 }
