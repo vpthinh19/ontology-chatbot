@@ -14,7 +14,7 @@ quả model cũ.
 - `figures/dataset-splits.svg`, `figures/registers.svg` và
   `figures/query-features.svg`: hình dẫn xuất từ thống kê dataset.
 
-Ba split JSONL hiện có 4.271, 402 và 383 dòng, tổng **5.064 câu**.
+Ba split JSONL hiện có 4.299, 402 và 383 dòng, tổng **5.088 câu**.
 `dataset.json` ghi cùng các số này và `training_readiness.ready = true` sau khi
 đối chiếu coverage, tên gọi, target và catalogue hiện hành.
 

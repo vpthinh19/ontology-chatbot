@@ -5678,6 +5678,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 :AdmissionsLookupPage a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Trang thông tin tuyển sinh"@vi ;
     skos:altLabel "chỉ tiêu tuyển sinh"@vi,
+        "lệ phí xét tuyển"@vi,
         "trang tuyển sinh của trường"@vi,
         "tra cứu điểm chuẩn"@vi,
         "điểm chuẩn"@vi ;

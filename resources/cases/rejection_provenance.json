@@ -1,493 +1,353 @@
 {
-  "question-004238": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004239": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004240": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004241": {
+  "question-004271": {
     "anchor": "",
     "class": "greeting-social",
     "template": "bạn có khoẻ không"
   },
-  "question-004242": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004243": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004244": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004245": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004246": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004248": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004250": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004252": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004254": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-004255": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004256": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-004257": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004258": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004259": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004260": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004261": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
-  },
-  "question-004262": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004263": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004264": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004265": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004266": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
-  },
-  "question-004267": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004268": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004269": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004270": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004271": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
   "question-004272": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
   },
   "question-004273": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
   },
   "question-004274": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
   },
   "question-004275": {
     "anchor": "",
     "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
+    "template": "tải phim về máy thế nào"
   },
   "question-004276": {
     "anchor": "",
     "class": "unrelated",
-    "template": "đi Đà Lạt mấy tiếng"
+    "template": "phim nào đang chiếu rạp"
   },
   "question-004277": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004279": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004281": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004282": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004283": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004284": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004285": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
-  },
-  "question-004286": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004287": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004288": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
-  },
-  "question-004289": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004290": {
     "anchor": "",
     "class": "unrelated",
     "template": "kết quả bóng đá tối qua thế nào"
   },
-  "question-004291": {
+  "question-004278": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
   },
-  "question-004292": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
+  "question-004279": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
   },
-  "question-004293": {
+  "question-004281": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004283": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004285": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004287": {
     "anchor": "",
     "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
-  "question-004294": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
-  },
-  "question-004295": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
-  },
-  "question-004296": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004297": {
+  "question-004288": {
     "anchor": "",
     "class": "ambiguous",
     "template": "có những điều gì cần biết về mục tải {anchor}"
   },
-  "question-004298": {
+  "question-004289": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
-  "question-004299": {
-    "anchor": "GraduationReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004301": {
+  "question-004290": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
-  "question-004302": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004304": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004305": {
-    "anchor": "SecondProgramRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004307": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004308": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004309": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004311": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
-  },
-  "question-004312": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004313": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
-  },
-  "question-004314": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004315": {
+  "question-004291": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "cach lam banh mi ngon"
   },
-  "question-004316": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004318": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004320": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004321": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004322": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004323": {
+  "question-004292": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "may bay di ha noi gia bao nhieu"
   },
-  "question-004324": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004325": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004326": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004327": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004329": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004330": {
+  "question-004293": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "hom nay co su kien gi o thanh pho"
   },
-  "question-004331": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-004332": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004333": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004335": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004336": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004337": {
+  "question-004294": {
     "anchor": "",
     "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
+    "template": "hom nay co su kien gi o thanh pho"
   },
-  "question-004338": {
+  "question-004295": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
+  },
+  "question-004296": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ được duyệt cao không"
+  },
+  "question-004297": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004298": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} phải đóng thêm khoản nào không"
+  },
+  "question-004299": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+  },
+  "question-004300": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004301": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004302": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+  },
+  "question-004303": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004304": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
   },
-  "question-004339": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "hard-negative",
-    "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-004340": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004341": {
+  "question-004305": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
   },
-  "question-004342": {
+  "question-004306": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "đi Đà Lạt mấy tiếng"
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
   },
-  "question-004343": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004344": {
+  "question-004307": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "xin chào"
+    "template": "alo có ai không"
   },
-  "question-004345": {
+  "question-004308": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+  },
+  "question-004309": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004310": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004311": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004313": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004315": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004316": {
     "anchor": "",
     "class": "unrelated",
     "template": "giá vàng hôm nay bao nhiêu"
   },
-  "question-004346": {
+  "question-004317": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
+    "class": "adjacent-domain",
+    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
   },
-  "question-004347": {
+  "question-004318": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} phải đóng thêm khoản nào không"
+  },
+  "question-004319": {
     "anchor": "",
     "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
-  "question-004348": {
+  "question-004320": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004321": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004322": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004323": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004324": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004326": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004327": {
     "anchor": "",
     "class": "greeting-social",
     "template": "chào bạn"
   },
-  "question-004349": {
+  "question-004328": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách tải nhạc về điện thoại"
+  },
+  "question-004329": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+  },
+  "question-004330": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn có khoẻ không"
+  },
+  "question-004331": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004332": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004333": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004335": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004336": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004337": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004338": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "hello bạn ơi"
+  },
+  "question-004339": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004340": {
+    "anchor": "MajorChangeProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004342": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004343": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "xin chào"
+  },
+  "question-004344": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004345": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004346": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có mất phí không"
+  },
+  "question-004347": {
     "anchor": "",
     "class": "unrelated",
     "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004348": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004349": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
   },
   "question-004350": {
     "anchor": "",
@@ -495,254 +355,269 @@
     "template": "ngày mai Nha Trang có mưa không"
   },
   "question-004351": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+    "anchor": "CourseRetakeProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
   },
   "question-004352": {
     "anchor": "",
     "class": "unrelated",
-    "template": "tải phim về máy thế nào"
+    "template": "cách nấu phở bò"
   },
   "question-004353": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004354": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004355": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004356": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004357": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004358": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004360": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004361": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004362": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
-  },
-  "question-004363": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004365": {
-    "anchor": "ArticulationStudyProcedure",
+    "anchor": "CreditRecognitionProcedure",
     "class": "near-domain-missing",
     "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
-  "question-004367": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "ai là người ký duyệt {anchor} năm nay"
-  },
-  "question-004368": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "hard-negative",
-    "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-004369": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
-  "question-004370": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004371": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004372": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004374": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004375": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004376": {
+  "question-004355": {
     "anchor": "",
     "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
-  "question-004377": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
-  },
-  "question-004378": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004380": {
+  "question-004356": {
     "anchor": "",
     "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
+    "template": "gia thue tro gan bien bao nhieu"
   },
-  "question-004381": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
+  "question-004357": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
   },
-  "question-004382": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004384": {
+  "question-004358": {
     "anchor": "",
     "class": "adjacent-domain",
     "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
   },
-  "question-004385": {
+  "question-004359": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004360": {
     "anchor": "",
     "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
   },
-  "question-004386": {
-    "anchor": "StudentExchangeProcedure",
+  "question-004361": {
+    "anchor": "ScholarshipReviewProcedure",
     "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+    "template": "{anchor} do ai ký duyệt"
   },
-  "question-004388": {
+  "question-004363": {
     "anchor": "",
     "class": "ambiguous",
     "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
-  "question-004389": {
+  "question-004364": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
-  "question-004390": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004391": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004392": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
-  },
-  "question-004393": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004394": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004395": {
-    "anchor": "MajorChangeProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004397": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004398": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004400": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004402": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004403": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
-  },
-  "question-004404": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
-  },
-  "question-004405": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
-  "question-004406": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004407": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
-  },
-  "question-004408": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004410": {
+  "question-004365": {
     "anchor": "",
     "class": "unrelated",
     "template": "phim nào đang chiếu rạp"
   },
-  "question-004411": {
+  "question-004366": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "xin chào"
+  },
+  "question-004367": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004368": {
     "anchor": "",
     "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
+  },
+  "question-004369": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} thi vào ngày nào"
+  },
+  "question-004370": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004371": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004373": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
+  },
+  "question-004374": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004375": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+  },
+  "question-004376": {
+    "anchor": "SickLeaveProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
+  },
+  "question-004377": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  },
+  "question-004378": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
+  },
+  "question-004379": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004380": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "điều kiện để xử lý trường hợp này gồm những gì"
+  },
+  "question-004381": {
+    "anchor": "SickLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004383": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} do ai ký duyệt"
+  },
+  "question-004385": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004387": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004388": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004389": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
+  },
+  "question-004390": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004391": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004392": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004393": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
+  },
+  "question-004394": {
+    "anchor": "SickLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004396": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004397": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "cach lam banh mi ngon"
+  },
+  "question-004398": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
+  },
+  "question-004399": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "hard-negative",
+    "template": "mỗi năm bao nhiêu người nộp {anchor}"
+  },
+  "question-004400": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004401": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004402": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn có khoẻ không"
+  },
+  "question-004403": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004405": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004406": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004407": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "hello bạn ơi"
+  },
+  "question-004408": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004409": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
+  },
+  "question-004410": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
+  },
+  "question-004411": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
   },
   "question-004412": {
     "anchor": "",
@@ -751,548 +626,538 @@
   },
   "question-004413": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004414": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004416": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004417": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004419": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
-  },
-  "question-004420": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004422": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004423": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004424": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004425": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tốn bao nhiêu tiền"
-  },
-  "question-004426": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004428": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004429": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
-  },
-  "question-004430": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004431": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004432": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004433": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
-  },
-  "question-004434": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
-  },
-  "question-004435": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004436": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004437": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
-  },
-  "question-004438": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004439": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004440": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004441": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004442": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004444": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004446": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004448": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004449": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004450": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004451": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
-  },
-  "question-004452": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004453": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004454": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004455": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-004456": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004457": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004458": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004459": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004461": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004462": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
-  "question-004463": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004464": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
-  },
-  "question-004465": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004466": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004467": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004468": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
-  },
-  "question-004469": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004470": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "ai là người ký duyệt {anchor} năm nay"
-  },
-  "question-004471": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004472": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004473": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004474": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004475": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004476": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
-  },
-  "question-004477": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004478": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
-  },
-  "question-004479": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004481": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004482": {
-    "anchor": "EarlyGraduationReviewProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
-  },
-  "question-004483": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004485": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004487": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004488": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004489": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
-  },
-  "question-004490": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004491": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004492": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004494": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004496": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004497": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004498": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004499": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004500": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004501": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
-  },
-  "question-004502": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004504": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004505": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004506": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004507": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004509": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004510": {
-    "anchor": "",
     "class": "unrelated",
     "template": "giá vàng hôm nay bao nhiêu"
   },
-  "question-004511": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004512": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004513": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004514": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004515": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "ai là người ký duyệt {anchor} năm nay"
-  },
-  "question-004516": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004517": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004519": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004520": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
-  },
-  "question-004521": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
-  },
-  "question-004522": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004523": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004524": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004525": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004526": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
-  },
-  "question-004527": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004529": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004530": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004531": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004532": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004534": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004535": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004537": {
+  "question-004414": {
     "anchor": "",
     "class": "unrelated",
     "template": "cách tải nhạc về điện thoại"
   },
-  "question-004538": {
+  "question-004415": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
   },
-  "question-004539": {
+  "question-004416": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "may bay di ha noi gia bao nhieu"
   },
-  "question-004540": {
+  "question-004417": {
+    "anchor": "StudyResumptionProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004419": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
+  },
+  "question-004420": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004422": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004423": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+  },
+  "question-004424": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004426": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004428": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004429": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
+  },
+  "question-004430": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004431": {
     "anchor": "CourseExemptionAndBonusProcedure",
     "class": "hard-negative",
+    "template": "xếp hạng của {anchor} so với trường khác"
+  },
+  "question-004432": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004433": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách tải nhạc về điện thoại"
+  },
+  "question-004434": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004435": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
     "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004436": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "ai là người ký duyệt {anchor} năm nay"
+  },
+  "question-004437": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004438": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
+  },
+  "question-004439": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004440": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004441": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004442": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004444": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+  },
+  "question-004445": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004446": {
+    "anchor": "SickLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004447": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004448": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004449": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004450": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004451": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004453": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004455": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004456": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004457": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004458": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004459": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} phải đóng thêm khoản nào không"
+  },
+  "question-004460": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
+  },
+  "question-004461": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004462": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004463": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004464": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách tải nhạc về điện thoại"
+  },
+  "question-004465": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004466": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004467": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} do ai ký duyệt"
+  },
+  "question-004469": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
+  },
+  "question-004470": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "xin chào"
+  },
+  "question-004471": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "giá vàng hôm nay bao nhiêu"
+  },
+  "question-004472": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004473": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
+  },
+  "question-004474": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004475": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004476": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004477": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004478": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "điều kiện để xử lý trường hợp này gồm những gì"
+  },
+  "question-004479": {
+    "anchor": "SickLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004481": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004482": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004483": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
+  },
+  "question-004484": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004485": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004486": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004488": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004489": {
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004491": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004492": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
+  },
+  "question-004493": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004494": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004495": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  },
+  "question-004496": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004497": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004499": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
+  },
+  "question-004500": {
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004502": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004504": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
+  },
+  "question-004505": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
+  },
+  "question-004506": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004507": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004509": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004511": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004513": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} phải đóng thêm khoản nào không"
+  },
+  "question-004514": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004515": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004517": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004519": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004520": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004521": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004522": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "hard-negative",
+    "template": "ai là người ký duyệt {anchor} năm nay"
+  },
+  "question-004523": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004524": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004525": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004526": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004527": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004528": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
+  },
+  "question-004529": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ được duyệt cao không"
+  },
+  "question-004530": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004531": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004532": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn có khoẻ không"
+  },
+  "question-004533": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004534": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "xin chào"
+  },
+  "question-004535": {
+    "anchor": "MajorChangeProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004536": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} do ai ký duyệt"
+  },
+  "question-004538": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004539": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
   "question-004541": {
     "anchor": "",
@@ -1301,108 +1166,123 @@
   },
   "question-004542": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004543": {
-    "anchor": "GraduationReviewProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004544": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
-  },
-  "question-004545": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004547": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004548": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004549": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004550": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004552": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
-  "question-004553": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004554": {
-    "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "may bay di ha noi gia bao nhieu"
   },
-  "question-004555": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tốn bao nhiêu tiền"
+  "question-004543": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
-  "question-004556": {
+  "question-004544": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004545": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004546": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
+  },
+  "question-004547": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004549": {
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} phải đóng thêm khoản nào không"
+  },
+  "question-004550": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004551": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "điều kiện để xử lý trường hợp này gồm những gì"
+  },
+  "question-004552": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
+  },
+  "question-004553": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004554": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004555": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
   },
+  "question-004556": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
   "question-004557": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+  },
+  "question-004558": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
   },
   "question-004559": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "đi Đà Lạt mấy tiếng"
+    "anchor": "ArticulationStudyProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
   },
   "question-004560": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004561": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
   },
   "question-004562": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
   },
   "question-004563": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
   },
   "question-004564": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004565": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "wifi quan cafe nao manh"
   },
+  "question-004565": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
   "question-004566": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
   },
   "question-004567": {
     "anchor": "",
@@ -1410,104 +1290,104 @@
     "template": "đi Đà Lạt mấy tiếng"
   },
   "question-004568": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004570": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004571": {
     "anchor": "",
     "class": "adjacent-domain",
     "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
   },
-  "question-004569": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004571": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
   "question-004572": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
   },
   "question-004573": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004574": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004575": {
-    "anchor": "SecondProgramRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-004576": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004577": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004578": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
-  },
-  "question-004579": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004580": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004581": {
     "anchor": "",
     "class": "greeting-social",
     "template": "alo có ai không"
   },
-  "question-004582": {
+  "question-004574": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
   },
-  "question-004583": {
+  "question-004575": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
   },
-  "question-004584": {
-    "anchor": "EarlyGraduationReviewProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  "question-004576": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
   },
-  "question-004585": {
+  "question-004577": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách tải nhạc về điện thoại"
+  },
+  "question-004578": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+  },
+  "question-004579": {
     "anchor": "",
     "class": "ambiguous",
     "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
+  "question-004580": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004581": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách tải nhạc về điện thoại"
+  },
+  "question-004582": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004583": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004584": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có mất phí không"
+  },
+  "question-004585": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
   "question-004586": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-004587": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
   },
   "question-004588": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
   },
   "question-004589": {
     "anchor": "",
@@ -1515,294 +1395,309 @@
     "template": "hom nay co su kien gi o thanh pho"
   },
   "question-004590": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004592": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004593": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004595": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004596": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004597": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
-  },
-  "question-004598": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004599": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004600": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004601": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004603": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004604": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "đi Đà Lạt mấy tiếng"
-  },
-  "question-004605": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có khó không"
-  },
-  "question-004606": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004608": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004609": {
-    "anchor": "SecondProgramRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004611": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004612": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "hard-negative",
-    "template": "ai là người ký duyệt {anchor} năm nay"
-  },
-  "question-004613": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004614": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004615": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004616": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004617": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
-  },
-  "question-004618": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004620": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004621": {
     "anchor": "StudentExchangeProcedure",
     "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004622": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004623": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004624": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
-  },
-  "question-004625": {
-    "anchor": "EarlyGraduationReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004627": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004628": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004629": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
-  },
-  "question-004630": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004631": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004632": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004634": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "học bổng cho người làm {anchor} là bao nhiêu"
-  },
-  "question-004635": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004636": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004637": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004638": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "hard-negative",
     "template": "giảng viên nào phụ trách {anchor}"
   },
-  "question-004639": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004640": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004641": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
-  "question-004642": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004643": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004644": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004645": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
-  },
-  "question-004646": {
+  "question-004591": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
+    "template": "hello bạn ơi"
   },
-  "question-004647": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
-  },
-  "question-004648": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tốn bao nhiêu tiền"
-  },
-  "question-004649": {
+  "question-004592": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
   },
-  "question-004650": {
+  "question-004593": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004594": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+  },
+  "question-004595": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004596": {
     "anchor": "",
     "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
   },
-  "question-004651": {
+  "question-004597": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004598": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
+  },
+  "question-004599": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004600": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004602": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
+  },
+  "question-004603": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
+  },
+  "question-004604": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "mỗi năm bao nhiêu người nộp {anchor}"
+  },
+  "question-004605": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
+  },
+  "question-004606": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} thi vào ngày nào"
+  },
+  "question-004607": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004608": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004609": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004610": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004611": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004612": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} do ai ký duyệt"
+  },
+  "question-004614": {
+    "anchor": "GraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004615": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
+  },
+  "question-004616": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004618": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004620": {
     "anchor": "",
     "class": "ambiguous",
     "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
-  "question-004652": {
+  "question-004621": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004622": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004624": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004625": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004626": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "bye nhé"
+    "template": "chào bạn"
+  },
+  "question-004627": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004628": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004629": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004630": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ được duyệt cao không"
+  },
+  "question-004631": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "hello bạn ơi"
+  },
+  "question-004632": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004633": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004634": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004635": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "cach lam banh mi ngon"
+  },
+  "question-004636": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "hello bạn ơi"
+  },
+  "question-004637": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  },
+  "question-004639": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004640": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "ngày mai Nha Trang có mưa không"
+  },
+  "question-004641": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004642": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004643": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004644": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004645": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "cach lam banh mi ngon"
+  },
+  "question-004646": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004647": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004648": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004649": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004650": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004651": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004652": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
   },
   "question-004653": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "hard-negative",
+    "template": "mỗi năm bao nhiêu người nộp {anchor}"
+  },
+  "question-004654": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
   },
   "question-004655": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "bye nhé"
+    "template": "bạn có khoẻ không"
   },
   "question-004656": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
   },
   "question-004657": {
     "anchor": "",
@@ -1810,154 +1705,164 @@
     "template": "tỷ giá đô la hôm nay"
   },
   "question-004658": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004659": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
   },
   "question-004660": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+    "anchor": "SickLeaveProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004661": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
   },
   "question-004662": {
-    "anchor": "SecondProgramRegistrationProcedure",
+    "anchor": "CourseExemptionAndBonusProcedure",
     "class": "hard-negative",
     "template": "giảng viên nào phụ trách {anchor}"
   },
   "question-004663": {
-    "anchor": "SickLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004665": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004666": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004668": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "hard-negative",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004669": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004670": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004671": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
-  },
-  "question-004672": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004673": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-004674": {
-    "anchor": "EarlyGraduationReviewProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004675": {
     "anchor": "",
     "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
   },
-  "question-004676": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004677": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi giờ mở cửa thư viện Trường Đại học Nha Trang"
-  },
-  "question-004678": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004679": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
-  },
-  "question-004680": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tốn bao nhiêu tiền"
-  },
-  "question-004681": {
-    "anchor": "GraduationReviewProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
-  },
-  "question-004682": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004683": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
-  },
-  "question-004684": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
-  },
-  "question-004685": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004686": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
-  },
-  "question-004687": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004688": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004689": {
+  "question-004664": {
     "anchor": "",
     "class": "adjacent-domain",
     "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
-  "question-004690": {
+  "question-004665": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004666": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004667": {
     "anchor": "",
     "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
+    "template": "xe buyt so 4 chay tuyen nao"
   },
-  "question-004691": {
+  "question-004668": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004669": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004670": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "hard-negative",
+    "template": "xếp hạng của {anchor} so với trường khác"
+  },
+  "question-004671": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004672": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004673": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "chào bạn"
+    "template": "bye nhé"
+  },
+  "question-004674": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  },
+  "question-004675": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "giá vàng hôm nay bao nhiêu"
+  },
+  "question-004676": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004677": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+  },
+  "question-004678": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004680": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004681": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004682": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004683": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004684": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004685": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004686": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004687": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "cach lam banh mi ngon"
+  },
+  "question-004688": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004689": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004690": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
   },
   "question-004692": {
     "anchor": "",
@@ -1965,649 +1870,644 @@
     "template": "hello bạn ơi"
   },
   "question-004693": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
   },
   "question-004694": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
   "question-004695": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
+    "anchor": "StudyWithdrawalProcedure",
     "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
   },
   "question-004696": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004697": {
-    "anchor": "CourseWithdrawalProcedure",
+    "anchor": "GraduationReviewProcedure",
     "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
   },
-  "question-004699": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "cach lam banh mi ngon"
-  },
-  "question-004700": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004702": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
-  },
-  "question-004703": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004704": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004705": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004706": {
+  "question-004698": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "bye nhé"
+    "template": "hello bạn ơi"
   },
-  "question-004707": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  "question-004699": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
   },
-  "question-004708": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004709": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004710": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-004711": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004712": {
+  "question-004701": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "may bay di ha noi gia bao nhieu"
   },
-  "question-004713": {
-    "anchor": "EarlyGraduationReviewProcedure",
+  "question-004702": {
+    "anchor": "CourseRegistrationProcedure",
     "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004714": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004715": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "near-domain-missing",
     "template": "giảng viên nào phụ trách {anchor}"
   },
-  "question-004717": {
+  "question-004703": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "giá vàng hôm nay bao nhiêu"
+  },
+  "question-004704": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
   },
-  "question-004718": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004719": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004720": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004721": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004722": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004724": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004725": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004726": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004727": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004729": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
-  },
-  "question-004730": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004731": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004732": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004733": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004734": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004735": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004736": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004738": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004740": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004742": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004744": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004745": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004746": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004747": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có khó không"
-  },
-  "question-004748": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004749": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004750": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
-  },
-  "question-004751": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004753": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004755": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004756": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004757": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004759": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004761": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
-  },
-  "question-004762": {
-    "anchor": "EarlyGraduationReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004764": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004765": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004766": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "xin chào"
-  },
-  "question-004767": {
-    "anchor": "MajorChangeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ được duyệt cao không"
-  },
-  "question-004768": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004769": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "học bổng cho người làm {anchor} là bao nhiêu"
-  },
-  "question-004770": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004771": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004772": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004773": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004774": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004775": {
+  "question-004705": {
     "anchor": "",
     "class": "adjacent-domain",
     "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
   },
-  "question-004776": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
+  "question-004706": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
   },
-  "question-004777": {
+  "question-004708": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004710": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn có khoẻ không"
+  },
+  "question-004711": {
+    "anchor": "MajorChangeProcedure",
+    "class": "hard-negative",
+    "template": "xếp hạng của {anchor} so với trường khác"
+  },
+  "question-004712": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
+  },
+  "question-004713": {
     "anchor": "",
     "class": "unrelated",
     "template": "ngày mai Nha Trang có mưa không"
   },
-  "question-004778": {
+  "question-004714": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} do ai ký duyệt"
+  },
+  "question-004716": {
     "anchor": "",
     "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
   },
-  "question-004779": {
-    "anchor": "CourseRegistrationProcedure",
+  "question-004717": {
+    "anchor": "ArticulationStudyProcedure",
     "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
   },
-  "question-004780": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004781": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004782": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
-  },
-  "question-004783": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004784": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004785": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004787": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004788": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
-  },
-  "question-004789": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "cảm ơn nhiều nhé"
-  },
-  "question-004790": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004791": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tỷ lệ đậu là bao nhiêu phần trăm"
-  },
-  "question-004792": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "giá vàng hôm nay bao nhiêu"
-  },
-  "question-004793": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
-  },
-  "question-004794": {
+  "question-004718": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
   },
-  "question-004795": {
+  "question-004719": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+    "class": "greeting-social",
+    "template": "bạn có khoẻ không"
   },
-  "question-004796": {
+  "question-004720": {
     "anchor": "",
     "class": "unrelated",
     "template": "ngày mai Nha Trang có mưa không"
   },
-  "question-004797": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004798": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "giảng viên nào phụ trách {anchor}"
-  },
-  "question-004799": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-004800": {
+  "question-004721": {
     "anchor": "",
     "class": "greeting-social",
     "template": "hello bạn ơi"
   },
-  "question-004801": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  "question-004722": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ được duyệt cao không"
   },
-  "question-004803": {
+  "question-004723": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "chào bạn"
+  },
+  "question-004724": {
     "anchor": "",
     "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
+    "template": "phim nào đang chiếu rạp"
   },
-  "question-004804": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn tên là gì"
-  },
-  "question-004805": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "ai là người ký duyệt {anchor} năm nay"
-  },
-  "question-004806": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004807": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004808": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004809": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-004810": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004812": {
-    "anchor": "MajorChangeProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004814": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004815": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004816": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bye nhé"
-  },
-  "question-004817": {
+  "question-004725": {
     "anchor": "ArticulationStudyProcedure",
     "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+    "template": "giảng viên nào phụ trách {anchor}"
   },
-  "question-004819": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  "question-004727": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
   },
-  "question-004821": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
-  "question-004822": {
+  "question-004728": {
     "anchor": "",
     "class": "unrelated",
     "template": "giá vàng hôm nay bao nhiêu"
   },
-  "question-004823": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
+  "question-004729": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
   },
-  "question-004824": {
+  "question-004730": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004731": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004732": {
     "anchor": "",
     "class": "unrelated",
     "template": "đi Đà Lạt mấy tiếng"
   },
-  "question-004825": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
-  },
-  "question-004826": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} có thay đổi gì trong năm 2026"
-  },
-  "question-004828": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004829": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004830": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004831": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004832": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004833": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
-  },
-  "question-004834": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
-  "question-004835": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
-  },
-  "question-004836": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004837": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004838": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
-  },
-  "question-004839": {
+  "question-004733": {
     "anchor": "MajorChangeProcedure",
     "class": "near-domain-missing",
     "template": "lệ phí làm {anchor} là bao nhiêu"
   },
-  "question-004841": {
+  "question-004735": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
+  },
+  "question-004736": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} nộp vào buổi sáng hay chiều"
+  },
+  "question-004737": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
+  },
+  "question-004738": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004739": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004740": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004742": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004743": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004744": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004746": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004748": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004750": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004751": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004752": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004753": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004754": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có khó không"
+  },
+  "question-004755": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "xe buyt so 4 chay tuyen nao"
+  },
+  "question-004756": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004757": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004758": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004759": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "hom nay co su kien gi o thanh pho"
+  },
+  "question-004760": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004761": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004762": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004763": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004764": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004766": {
+    "anchor": "UniversityTransferProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có mất phí không"
+  },
+  "question-004767": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004768": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+  },
+  "question-004769": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
+  },
+  "question-004770": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "cach lam banh mi ngon"
+  },
+  "question-004771": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004772": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "có bao nhiêu sinh viên đã làm {anchor}"
+  },
+  "question-004773": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004774": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004775": {
+    "anchor": "StudyResumptionProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004776": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004777": {
+    "anchor": "UniversityTransferProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004778": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004779": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004780": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004781": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
+  },
+  "question-004782": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "giá vàng hôm nay bao nhiêu"
+  },
+  "question-004783": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004784": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+  },
+  "question-004785": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
+  },
+  "question-004786": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có mất phí không"
+  },
+  "question-004787": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bye nhé"
+  },
+  "question-004788": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004789": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "hello bạn ơi"
+  },
+  "question-004790": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004791": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "alo có ai không"
+  },
+  "question-004792": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004794": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} thi vào ngày nào"
+  },
+  "question-004795": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004797": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004798": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004800": {
     "anchor": "",
     "class": "ambiguous",
     "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
-  "question-004842": {
+  "question-004801": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004802": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "điều kiện để xử lý trường hợp này gồm những gì"
+  },
+  "question-004803": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004804": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004805": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004806": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004807": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
+  },
+  "question-004808": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004809": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
+  },
+  "question-004810": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004812": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "cách nấu phở bò"
+  },
+  "question-004813": {
+    "anchor": "StudyResumptionProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004815": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+  },
+  "question-004816": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004817": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "cảm ơn nhiều nhé"
+  },
+  "question-004818": {
     "anchor": "",
     "class": "greeting-social",
     "template": "xin chào"
   },
-  "question-004843": {
+  "question-004819": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004821": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004823": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004824": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004826": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004828": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
+  },
+  "question-004829": {
     "anchor": "",
     "class": "incomplete-request",
-    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004830": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} thi vào ngày nào"
+  },
+  "question-004831": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004833": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
+  },
+  "question-004834": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004835": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "hard-negative",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004836": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
+  },
+  "question-004837": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004838": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
+  },
+  "question-004839": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004840": {
+    "anchor": "StudyResumptionProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004842": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "hard-negative",
+    "template": "có bao nhiêu sinh viên đã làm {anchor}"
+  },
+  "question-004843": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
   },
   "question-004844": {
     "anchor": "",
@@ -2615,919 +2515,949 @@
     "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
   },
   "question-004845": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
+    "anchor": "ClassAbsenceRequestProcedure",
     "class": "hard-negative",
-    "template": "{anchor} có mất phí không"
+    "template": "{anchor} tốn bao nhiêu tiền"
   },
   "question-004846": {
     "anchor": "",
     "class": "unrelated",
-    "template": "ngày mai Nha Trang có mưa không"
+    "template": "cách nấu phở bò"
   },
   "question-004847": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} tốn bao nhiêu tiền"
-  },
-  "question-004848": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004849": {
-    "anchor": "CreditRecognitionProcedure",
-    "class": "near-domain-missing",
-    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-004851": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004852": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "gia thue tro gan bien bao nhieu"
-  },
-  "question-004853": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} nộp vào buổi sáng hay chiều"
-  },
-  "question-004854": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004855": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004856": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
-  },
-  "question-004857": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-004859": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004860": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
-  },
-  "question-004861": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004862": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "kết quả bóng đá tối qua thế nào"
-  },
-  "question-004863": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-004864": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
-  },
-  "question-004865": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
-  },
-  "question-004866": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "hãy cho biết các bước cần làm trong trường hợp này"
-  },
-  "question-004867": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-004868": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
-  "question-004869": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004870": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tỷ giá đô la hôm nay"
-  },
-  "question-004871": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "tải phim về máy thế nào"
-  },
-  "question-004872": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-004873": {
-    "anchor": "SickLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004875": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} do ai ký duyệt"
-  },
-  "question-004877": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-004879": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi muốn tra quy định liên quan nhưng chưa nêu nội dung"
-  },
-  "question-004880": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có khó không"
-  },
-  "question-004881": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004882": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-004883": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách nấu phở bò"
-  },
-  "question-004884": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "alo có ai không"
-  },
-  "question-004885": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "quán ăn ngon gần trường ở đâu"
-  },
-  "question-004886": {
-    "anchor": "GraduationProjectRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004888": {
-    "anchor": "ClassAbsenceRequestProcedure",
-    "class": "hard-negative",
-    "template": "mỗi năm bao nhiêu người nộp {anchor}"
-  },
-  "question-004889": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004890": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn có khoẻ không"
-  },
-  "question-004891": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004893": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "hello bạn ơi"
-  },
-  "question-004894": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
-  },
-  "question-004895": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-004896": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "chào bạn"
-  },
-  "question-004897": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
-  },
-  "question-004898": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "đi Đà Lạt mấy tiếng"
-  },
-  "question-004899": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "may bay di ha noi gia bao nhieu"
-  },
-  "question-004900": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004902": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004904": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
   },
-  "question-004905": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
+  "question-004848": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
-  "question-004907": {
-    "anchor": "ArticulationStudyProcedure",
-    "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
+  "question-004849": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
   },
-  "question-004909": {
+  "question-004850": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tỷ giá đô la hôm nay"
+  },
+  "question-004851": {
     "anchor": "",
     "class": "greeting-social",
     "template": "bye nhé"
   },
-  "question-004910": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "hard-negative",
-    "template": "tôi có nên làm {anchor} không"
-  },
-  "question-004911": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004912": {
+  "question-004852": {
     "anchor": "",
     "class": "unrelated",
-    "template": "cách tải nhạc về điện thoại"
+    "template": "cách nấu phở bò"
   },
-  "question-004913": {
+  "question-004853": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "wifi quan cafe nao manh"
+    "class": "greeting-social",
+    "template": "xin chào"
   },
-  "question-004914": {
-    "anchor": "CourseExemptionAndBonusProcedure",
+  "question-004854": {
+    "anchor": "UniversityTransferProcedure",
+    "class": "hard-negative",
+    "template": "có bao nhiêu sinh viên đã làm {anchor}"
+  },
+  "question-004855": {
+    "anchor": "CourseWithdrawalProcedure",
     "class": "hard-negative",
     "template": "ai là người ký duyệt {anchor} năm nay"
   },
-  "question-004915": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
-  },
-  "question-004916": {
+  "question-004856": {
     "anchor": "",
     "class": "unrelated",
-    "template": "phim nào đang chiếu rạp"
+    "template": "đi Đà Lạt mấy tiếng"
   },
-  "question-004917": {
-    "anchor": "StudentExchangeProcedure",
+  "question-004857": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
+  },
+  "question-004858": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004859": {
+    "anchor": "UniversityTransferProcedure",
     "class": "hard-negative",
-    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+    "template": "{anchor} tỷ lệ được duyệt cao không"
   },
-  "question-004918": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-004919": {
-    "anchor": "ArticulationStudyProcedure",
+  "question-004860": {
+    "anchor": "GraduationProjectRegistrationProcedure",
     "class": "near-domain-missing",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
   },
-  "question-004921": {
+  "question-004862": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
   },
-  "question-004922": {
+  "question-004863": {
     "anchor": "",
     "class": "incomplete-request",
     "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
   },
-  "question-004923": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "hard-negative",
-    "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-004924": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
-  },
-  "question-004925": {
+  "question-004864": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
   },
-  "question-004926": {
-    "anchor": "ExamPostponementProcedure",
-    "class": "hard-negative",
-    "template": "lệ phí làm {anchor} là bao nhiêu"
-  },
-  "question-004927": {
-    "anchor": "EarlyGraduationReviewProcedure",
+  "question-004865": {
+    "anchor": "UniversityTransferProcedure",
     "class": "hard-negative",
     "template": "{anchor} nộp vào buổi sáng hay chiều"
   },
-  "question-004928": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "near-domain-missing",
-    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-004930": {
-    "anchor": "TemporaryAcademicLeaveProcedure",
+  "question-004866": {
+    "anchor": "GraduationProjectRegistrationProcedure",
     "class": "near-domain-missing",
     "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
   },
-  "question-004932": {
-    "anchor": "ExamPostponementProcedure",
+  "question-004868": {
+    "anchor": "ClassAbsenceRequestProcedure",
     "class": "hard-negative",
-    "template": "trường khác làm {anchor} có giống không"
+    "template": "lệ phí làm {anchor} là bao nhiêu"
   },
-  "question-004933": {
+  "question-004869": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
+  },
+  "question-004870": {
     "anchor": "",
     "class": "unrelated",
-    "template": "tải phim về máy thế nào"
+    "template": "ngày mai Nha Trang có mưa không"
   },
-  "question-004934": {
-    "anchor": "CourseExemptionAndBonusProcedure",
+  "question-004871": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
+  },
+  "question-004872": {
+    "anchor": "TuitionPaymentProcedure",
     "class": "hard-negative",
-    "template": "{anchor} phải đóng thêm khoản nào không"
+    "template": "giảng viên nào phụ trách {anchor}"
   },
-  "question-004935": {
+  "question-004873": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004874": {
+    "anchor": "ScholarshipReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004875": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004876": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  },
+  "question-004877": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004878": {
+    "anchor": "MajorChangeProcedure",
+    "class": "near-domain-missing",
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
+  },
+  "question-004880": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
+  },
+  "question-004881": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "đi Đà Lạt mấy tiếng"
+  },
+  "question-004882": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin hỏi thủ tục cấp lại thẻ sinh viên bị mất của Trường Đại học Nha Trang"
+  },
+  "question-004883": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004884": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004885": {
+    "anchor": "CourseRetakeProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004887": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
+  },
+  "question-004889": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004891": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004892": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004893": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004894": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "xin hướng dẫn giúp trường hợp của tôi phải làm thế nào"
+  },
+  "question-004895": {
     "anchor": "",
     "class": "unrelated",
     "template": "quán ăn ngon gần trường ở đâu"
   },
-  "question-004936": {
+  "question-004896": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
+  },
+  "question-004897": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004898": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi cần hỏi về một thủ tục nhưng chưa rõ tên"
+  },
+  "question-004899": {
+    "anchor": "GraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tỷ lệ được duyệt cao không"
+  },
+  "question-004900": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004901": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang có chương trình liên kết quốc tế nào"
+  },
+  "question-004902": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004903": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
+  },
+  "question-004904": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "hard-negative",
+    "template": "học bổng cho người làm {anchor} là bao nhiêu"
+  },
+  "question-004905": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004907": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "template": "alo có ai không"
+  },
+  "question-004908": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004909": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "kết quả bóng đá tối qua thế nào"
+  },
+  "question-004910": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "phim nào đang chiếu rạp"
+  },
+  "question-004911": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "tôi phải nộp giấy tờ ở đâu cho việc này"
+  },
+  "question-004912": {
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "mỗi năm bao nhiêu người nộp {anchor}"
+  },
+  "question-004913": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "cho biết hồ sơ cần chuẩn bị cho việc này gồm gì"
+  },
+  "question-004914": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "mức áp dụng cho trường hợp của tôi được tính thế nào"
+  },
+  "question-004915": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004917": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+  },
+  "question-004918": {
+    "anchor": "TuitionPaymentProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} năm nay điểm chuẩn bao nhiêu"
+  },
+  "question-004919": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} tốn bao nhiêu tiền"
+  },
+  "question-004920": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "quán ăn ngon gần trường ở đâu"
+  },
+  "question-004921": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "near-domain-missing",
+    "template": "lệ phí làm {anchor} là bao nhiêu"
+  },
+  "question-004923": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "hard-negative",
+    "template": "tôi có nên làm {anchor} không"
+  },
+  "question-004924": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
+  },
+  "question-004925": {
+    "anchor": "StudyResumptionProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
+  },
+  "question-004927": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
+  },
+  "question-004928": {
+    "anchor": "EarlyGraduationReviewProcedure",
+    "class": "near-domain-missing",
+    "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
+  },
+  "question-004930": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "hãy cho biết các bước cần làm trong trường hợp này"
+  },
+  "question-004931": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
+  },
+  "question-004932": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "tải phim về máy thế nào"
+  },
+  "question-004933": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "near-domain-missing",
+    "template": "giảng viên nào phụ trách {anchor}"
+  },
+  "question-004935": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "near-domain-missing",
+    "template": "{anchor} có thay đổi gì trong năm 2026"
   },
   "question-004937": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
+    "template": "trường khác làm {anchor} có giống không"
   },
   "question-004938": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "class": "adjacent-domain",
+    "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
   "question-004939": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "class": "noisy-out-of-domain",
+    "template": "wifi quan cafe nao manh"
   },
   "question-004940": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "hard-negative",
+    "template": "ai là người ký duyệt {anchor} năm nay"
   },
   "question-004941": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
+    "class": "ambiguous",
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-004942": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
+    "class": "ambiguous",
+    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-004943": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "hard-negative",
+    "template": "ai là người ký duyệt {anchor} năm nay"
   },
   "question-004944": {
-    "anchor": "GraduationReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "trang danh mục ghi nhận {anchor} như thế nào"
+  },
+  "question-004945": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
   },
   "question-004946": {
-    "anchor": "StudentExchangeProcedure",
+    "anchor": "UniversityTransferProcedure",
     "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
   },
   "question-004948": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
+  },
+  "question-004949": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "xin chào"
   },
   "question-004950": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "gia thue tro gan bien bao nhieu"
+  },
+  "question-004951": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "may bay di ha noi gia bao nhieu"
   },
   "question-004952": {
     "anchor": "",
     "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
+    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-004953": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
+    "class": "incomplete-request",
+    "template": "quy định áp dụng cho trường hợp tôi đang gặp là gì"
   },
   "question-004954": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi Trường Đại học Nha Trang có xe buýt đưa đón sinh viên không"
   },
   "question-004955": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
+    "class": "greeting-social",
+    "template": "bạn tên là gì"
   },
   "question-004956": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
-  },
-  "question-004957": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
+    "anchor": "CreditRecognitionProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
   "question-004958": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
+    "anchor": "CourseWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "ai là người ký duyệt {anchor} năm nay"
   },
   "question-004959": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
-  },
-  "question-004960": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "hard-negative",
-    "template": "làm {anchor} mất bao lâu mới xong"
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
   "question-004961": {
-    "anchor": "CourseRetakeProcedure",
+    "anchor": "StudyResumptionProcedure",
     "class": "hard-negative",
-    "template": "làm {anchor} mất bao lâu mới xong"
+    "template": "giảng viên nào phụ trách {anchor}"
   },
   "question-004962": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "làm {anchor} mất bao lâu mới xong"
-  },
-  "question-004963": {
-    "anchor": "StudentExchangeProcedure",
-    "class": "hard-negative",
-    "template": "làm {anchor} mất bao lâu mới xong"
+    "anchor": "TuitionPaymentProcedure",
+    "class": "near-domain-missing",
+    "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
   "question-004964": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Tôi muốn hỏi lệ phí xét tuyển vào Trường Đại học Nha Trang năm 2026"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-004965": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Tôi muốn hỏi lệ phí xét tuyển vào Trường Đại học Nha Trang năm 2026"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-004966": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Tôi muốn hỏi lệ phí xét tuyển vào Trường Đại học Nha Trang năm 2026"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-004967": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Tôi muốn hỏi lệ phí xét tuyển vào Trường Đại học Nha Trang năm 2026"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-004968": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+    "class": "unrelated",
+    "template": "cách tải game về máy"
   },
   "question-004969": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+    "class": "unrelated",
+    "template": "cách tải game về máy"
   },
   "question-004970": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+    "class": "unrelated",
+    "template": "cách tải game về máy"
   },
   "question-004971": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
-  },
-  "question-004972": {
-    "anchor": "",
     "class": "unrelated",
     "template": "cách tải game về máy"
   },
-  "question-004973": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
+  "question-004972": {
+    "anchor": "ExamPostponementProcedure",
     "class": "near-domain-missing",
     "template": "thống kê tỷ lệ đậu của {anchor}"
   },
-  "question-004975": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
+  "question-004974": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "thống kê tỷ lệ đậu của {anchor}"
   },
   "question-004976": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
-  },
-  "question-004977": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "thống kê tỷ lệ đậu của {anchor}"
   },
   "question-004978": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "hard-negative",
-    "template": "làm {anchor} mất bao lâu mới xong"
-  },
-  "question-004979": {
     "anchor": "EarlyGraduationReviewProcedure",
     "class": "near-domain-missing",
     "template": "thống kê tỷ lệ đậu của {anchor}"
   },
-  "question-004981": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
-  },
-  "question-004983": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "cách tải game về máy"
-  },
-  "question-004984": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
-  },
-  "question-004986": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Tôi muốn hỏi lệ phí xét tuyển vào Trường Đại học Nha Trang năm 2026"
-  },
-  "question-004987": {
+  "question-004980": {
     "anchor": "",
     "class": "ambiguous",
     "template": "cho biết đầy đủ về mục {anchor}"
   },
-  "question-004988": {
+  "question-004981": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "class": "ambiguous",
+    "template": "cho biết đầy đủ về mục {anchor}"
+  },
+  "question-004982": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "cho biết đầy đủ về mục {anchor}"
+  },
+  "question-004983": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "cho biết đầy đủ về mục {anchor}"
+  },
+  "question-004984": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
+  },
+  "question-004985": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
+  },
+  "question-004986": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
+  },
+  "question-004987": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
+  },
+  "question-004988": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-004989": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "anchor": "CourseRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-004990": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-004991": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-004992": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "bạn là người hay máy"
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi bãi giữ xe của Trường Đại học Nha Trang thu phí bao nhiêu"
   },
   "question-004993": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi bãi giữ xe của Trường Đại học Nha Trang thu phí bao nhiêu"
+  },
+  "question-004994": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi bãi giữ xe của Trường Đại học Nha Trang thu phí bao nhiêu"
   },
   "question-004995": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi bãi giữ xe của Trường Đại học Nha Trang thu phí bao nhiêu"
+  },
+  "question-004996": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
   },
   "question-004997": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
   },
   "question-004998": {
-    "anchor": "CourseWithdrawalProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+  },
+  "question-004999": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
   },
   "question-005000": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "dien thoai nao dang giam gia"
+    "anchor": "TuitionPaymentProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-005001": {
-    "anchor": "ScholarshipReviewProcedure",
-    "class": "near-domain-missing",
-    "template": "thống kê tỷ lệ đậu của {anchor}"
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
+  },
+  "question-005002": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-005003": {
-    "anchor": "DismissalTransferRequestProcedure",
+    "anchor": "CourseRetakeProcedure",
     "class": "hard-negative",
     "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-005004": {
     "anchor": "",
     "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "template": "bạn là người hay máy"
   },
   "question-005005": {
-    "anchor": "",
-    "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "anchor": "CourseRetakeProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-005006": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "class": "unrelated",
+    "template": "cách tải game về máy"
   },
   "question-005007": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
   },
   "question-005008": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-005009": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-005010": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
-  },
-  "question-005011": {
-    "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "thống kê tỷ lệ đậu của {anchor}"
   },
   "question-005012": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
+  },
+  "question-005013": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Cho tôi hỏi bãi giữ xe của Trường Đại học Nha Trang thu phí bao nhiêu"
   },
   "question-005014": {
-    "anchor": "SecondProgramRegistrationProcedure",
+    "anchor": "ArticulationStudyProcedure",
     "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
+    "template": "thống kê tỷ lệ đậu của {anchor}"
   },
   "question-005016": {
-    "anchor": "CourseRetakeProcedure",
-    "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
+  },
+  "question-005017": {
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
   },
   "question-005018": {
-    "anchor": "CourseRegistrationProcedure",
-    "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
+    "anchor": "UniversityTransferProcedure",
+    "class": "hard-negative",
+    "template": "làm {anchor} mất bao lâu mới xong"
+  },
+  "question-005019": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "bạn là người hay máy"
   },
   "question-005020": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+    "class": "incomplete-request",
+    "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
   },
   "question-005021": {
     "anchor": "",
     "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+    "template": "cho biết đầy đủ về mục {anchor}"
   },
   "question-005022": {
     "anchor": "",
     "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+    "template": "cho biết đầy đủ về mục {anchor}"
   },
   "question-005023": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+    "class": "noisy-out-of-domain",
+    "template": "dien thoai nao dang giam gia"
   },
   "question-005024": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
+    "class": "ambiguous",
+    "template": "cho biết đầy đủ về mục {anchor}"
   },
   "question-005025": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
+    "class": "unrelated",
+    "template": "cách tải game về máy"
   },
   "question-005026": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
   },
   "question-005027": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
   },
   "question-005028": {
-    "anchor": "TuitionPaymentProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
   },
   "question-005029": {
-    "anchor": "SickLeaveProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
   },
   "question-005030": {
-    "anchor": "CourseExemptionAndBonusProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+    "anchor": "",
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
   },
   "question-005031": {
-    "anchor": "StudyResumptionProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+    "anchor": "",
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
   },
   "question-005032": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
   },
   "question-005033": {
     "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
   },
   "question-005034": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
-  },
-  "question-005035": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
-  },
-  "question-005036": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
-  },
-  "question-005037": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
-  },
-  "question-005038": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
-  },
-  "question-005039": {
-    "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
-  },
-  "question-005040": {
-    "anchor": "StudyWithdrawalProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
-  },
-  "question-005041": {
-    "anchor": "DismissalTransferRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
-  },
-  "question-005042": {
-    "anchor": "SickLeaveProcedure",
-    "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
-  },
-  "question-005044": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
-  },
-  "question-005045": {
-    "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
-  },
-  "question-005046": {
-    "anchor": "",
-    "class": "adjacent-domain",
-    "template": "Cho tôi hỏi Trường Đại học Nha Trang tổ chức hoạt động ngoại khoá gì cho sinh viên"
-  },
-  "question-005047": {
     "anchor": "ArticulationStudyProcedure",
     "class": "near-domain-missing",
     "template": "ai ký quyết định cho {anchor}"
   },
-  "question-005049": {
-    "anchor": "ExtraClassOpeningRequestProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  "question-005036": {
+    "anchor": "GraduationProjectRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
   },
-  "question-005050": {
+  "question-005038": {
+    "anchor": "SecondProgramRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005040": {
+    "anchor": "ExamPostponementProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005042": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
   },
-  "question-005051": {
+  "question-005043": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
   },
-  "question-005052": {
+  "question-005044": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
   },
-  "question-005053": {
+  "question-005045": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
   },
-  "question-005054": {
-    "anchor": "UniversityTransferProcedure",
-    "class": "hard-negative",
-    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
-  },
-  "question-005055": {
+  "question-005046": {
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "meo hoc tieng nhat nhanh"
   },
+  "question-005047": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "meo hoc tieng nhat nhanh"
+  },
+  "question-005048": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "meo hoc tieng nhat nhanh"
+  },
+  "question-005049": {
+    "anchor": "",
+    "class": "noisy-out-of-domain",
+    "template": "meo hoc tieng nhat nhanh"
+  },
+  "question-005050": {
+    "anchor": "TemporaryAcademicLeaveProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005051": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005052": {
+    "anchor": "CreditRecognitionProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005053": {
+    "anchor": "GradeImprovementProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005054": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
+  },
+  "question-005055": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
+  },
   "question-005056": {
     "anchor": "",
-    "class": "unrelated",
-    "template": "số điện thoại tổng đài điện lực"
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
   },
   "question-005057": {
-    "anchor": "GradeImprovementProcedure",
-    "class": "near-domain-missing",
-    "template": "ai ký quyết định cho {anchor}"
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
+  },
+  "question-005058": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
   },
   "question-005059": {
     "anchor": "",
-    "class": "greeting-social",
-    "template": "nói chuyện với mình đi"
+    "class": "incomplete-request",
+    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
   },
   "question-005060": {
     "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+    "class": "incomplete-request",
+    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
   },
   "question-005061": {
     "anchor": "",
@@ -3536,17 +3466,112 @@
   },
   "question-005062": {
     "anchor": "",
-    "class": "incomplete-request",
-    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
   },
   "question-005063": {
+    "anchor": "StudentExchangeProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005064": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
+  },
+  "question-005065": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005067": {
     "anchor": "",
     "class": "unrelated",
     "template": "số điện thoại tổng đài điện lực"
   },
-  "question-005064": {
+  "question-005068": {
+    "anchor": "CourseExemptionAndBonusProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005070": {
+    "anchor": "ClassAbsenceRequestProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005072": {
     "anchor": "",
-    "class": "noisy-out-of-domain",
-    "template": "meo hoc tieng nhat nhanh"
+    "class": "incomplete-request",
+    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
+  },
+  "question-005073": {
+    "anchor": "",
+    "class": "adjacent-domain",
+    "template": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao"
+  },
+  "question-005074": {
+    "anchor": "ExtraClassOpeningRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005075": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+  },
+  "question-005076": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+  },
+  "question-005077": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
+  },
+  "question-005078": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+  },
+  "question-005079": {
+    "anchor": "",
+    "class": "incomplete-request",
+    "template": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả"
+  },
+  "question-005080": {
+    "anchor": "DismissalTransferRequestProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005081": {
+    "anchor": "StudyWithdrawalProcedure",
+    "class": "hard-negative",
+    "template": "{anchor} có ảnh hưởng học bổng của tôi không"
+  },
+  "question-005082": {
+    "anchor": "ArticulationStudyProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005084": {
+    "anchor": "",
+    "class": "greeting-social",
+    "template": "nói chuyện với mình đi"
+  },
+  "question-005085": {
+    "anchor": "",
+    "class": "ambiguous",
+    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
+  },
+  "question-005086": {
+    "anchor": "CourseRegistrationProcedure",
+    "class": "near-domain-missing",
+    "template": "ai ký quyết định cho {anchor}"
+  },
+  "question-005088": {
+    "anchor": "",
+    "class": "unrelated",
+    "template": "số điện thoại tổng đài điện lực"
   }
 }

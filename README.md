@@ -8,8 +8,8 @@ cuối: nó chuyển yêu cầu truy xuất thành SPARQL đã được giới h
 node** liên quan từ ontology, rồi trả dữ liệu cùng nguồn cho LLM tổng hợp. Lớp
 điều phối tool-calling hoàn chỉnh chưa được tích hợp trong runtime hiện tại.
 
-Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **5.064 câu**, gồm
-4.271 câu huấn luyện, 406 câu kiểm định và 387 câu kiểm tra. Danh mục khả năng
+Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **5.088 câu**, gồm
+4.299 câu huấn luyện, 400 câu kiểm định và 389 câu kiểm tra. Danh mục khả năng
 trả lời hiện ghi nhận **4.047 khả năng trả lời** được hỗ trợ. Đây là số liệu về
 artifact dữ liệu, không phải điểm chất lượng của model.
 
@@ -152,10 +152,10 @@ Ba split JSONL hiện có:
 
 | Tập | Số câu | Vai trò |
 |---|---:|---|
-| Huấn luyện | 4.271 | Kho ví dụ cho ánh xạ câu hỏi sang shape truy xuất |
-| Kiểm định | 406 | Kiểm tra lựa chọn/cấu hình mà không dùng tập kiểm tra |
-| Kiểm tra | 387 | Đánh giá cuối sau khi cấu hình đã cố định |
-| **Tổng** | **5.064** | Tổng số dòng thực tế trong ba tệp |
+| Huấn luyện | 4.299 | Kho ví dụ cho ánh xạ câu hỏi sang shape truy xuất |
+| Kiểm định | 400 | Kiểm tra lựa chọn/cấu hình mà không dùng tập kiểm tra |
+| Kiểm tra | 389 | Đánh giá cuối sau khi cấu hình đã cố định |
+| **Tổng** | **5.088** | Tổng số dòng thực tế trong ba tệp |
 
 Các số này được đếm trực tiếp từ
 `resources/dataset/train.jsonl`, `resources/dataset/val.jsonl` và

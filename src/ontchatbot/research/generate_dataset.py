@@ -1231,6 +1231,14 @@ _COMPACT_TRAIN_ROWS_BY_DOMAIN = {
     # để tổng vẫn nằm dưới 4.150 dòng mà không rút ví dụ dương của bậc này.
     "procedure": 70,
     "form": 35,
+    # Quota này tính THEO TỪNG HỌ, không phải theo miền. ``academic-rule`` và
+    # ``document`` gồm hàng chục họ nên trước nay mỗi họ chỉ được MỘT dòng 7-9 từ
+    # theo mặc định, trong khi khuôn từ chối rải đều mọi bậc độ dài - đủ để đẩy
+    # dốc bậc 7-9 lên 21,13% so với trần 21,05%. Ba dòng mỗi họ là đủ, và vẫn ít
+    # hơn hẳn miền trọng tâm. (Đặt 66 như miền trọng tâm là nhầm đơn vị: nhân với
+    # số họ thành hơn một nghìn dòng.)
+    "academic-rule": 3,
+    "document": 3,
     "tuition": 6,
     "certificate": 6,
 }
