@@ -36,8 +36,16 @@ cd "$(dirname "$0")/.."
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUT="artifacts/run-${STAMP}"
 LOG="${OUT}/train.log"
-ADAPTER="${OUT}/adapter"
+# ADAPTER đặt sẵn từ ngoài thì dùng lại adapter cũ thay vì huấn luyện mới.
+ADAPTER="${ADAPTER:-${OUT}/adapter}"
 mkdir -p "${OUT}"
+
+SKIP_TRAIN=0
+ARGS=()
+for ARG in "$@"; do
+    if [ "${ARG}" = "--skip-train" ]; then SKIP_TRAIN=1; else ARGS+=("${ARG}"); fi
+done
+set -- ${ARGS+"${ARGS[@]}"}
 
 PY="${PY:-.venv/bin/python}"
 if [ ! -x "${PY}" ]; then
@@ -104,7 +112,9 @@ for ARG in "$@"; do
     if [ "${ARG}" = "--smoke-test" ]; then SMOKE=1; fi
 done
 
-if [ "${SMOKE}" = "1" ]; then
+if [ "${SKIP_TRAIN}" = "1" ]; then
+    echo "(BỎ QUA huấn luyện; chấm lại adapter có sẵn: ${ADAPTER})"
+elif [ "${SMOKE}" = "1" ]; then
     echo "(chế độ THỬ: một bước, không lưu adapter, không chấm - chỉ để xem có vừa VRAM)"
     "${PY}" -m ontchatbot.cli.train_llm_lora "$@"
 else
@@ -114,6 +124,11 @@ else
         "$@"
 fi
 
+# Chấm lại một adapter ĐÃ CÓ, khỏi train lại:
+#     ADAPTER=artifacts/run-2026.../adapter bash scripts/train-and-report.sh --skip-train
+#
+# Có lý do rất cụ thể: lượt chạy đầu trên L4 huấn luyện xong sau 79 phút rồi mới
+# chết ở khâu chấm. Bắt train lại 79 phút chỉ để chấm là phí tiền máy thuê.
 if [ ! -d "${ADAPTER}" ]; then
     echo "KHÔNG có adapter - bỏ qua phần chấm."
 else

@@ -31,6 +31,19 @@ from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import ARTIFACTS_DIR, DATASET_DIR
 
 
+
+def _pinned_revision(model_id: str) -> str | None:
+    """Bản model đã ghim cho ``model_id``, hoặc None nếu không ghim bản nào.
+
+    Đường huấn luyện ghim cứng một commit. Đường chấm phải hỏi đúng commit ấy,
+    nếu không thì adapter và model gốc có thể lệch nhau mà không báo gì.
+    """
+
+    from ..research.llm_lora_training import MODEL_ID, MODEL_REVISION
+
+    return MODEL_REVISION if model_id == MODEL_ID else None
+
+
 def build_complete(
     model_id: str,
     max_new_tokens: int,
@@ -39,7 +52,18 @@ def build_complete(
     allow_download: bool = False,
     adapter=None,
 ):
-    tokenizer = AutoTokenizer.from_pretrained(model_id, local_files_only=not allow_download)
+    # GHIM ĐÚNG BẢN MODEL MÀ ADAPTER ĐÃ HỌC TRÊN ĐÓ.
+    #
+    # Không ghim thì thư viện hỏi nhánh ``main``, và nó phải gọi mạng chỉ để biết
+    # ``main`` đang trỏ vào đâu - nên máy offline chết ngay dù model đã nằm sẵn
+    # trong cache. Đó là triệu chứng; bệnh nặng hơn nằm ở chỗ khác: nếu máy CÓ
+    # mạng và ``main`` đã nhích sang bản mới, ta sẽ lặng lẽ chấm adapter trên một
+    # model KHÁC với model nó được huấn luyện, và con số thu được vô nghĩa mà
+    # không ai thấy sai ở đâu.
+    revision = _pinned_revision(model_id)
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_id, revision=revision, local_files_only=not allow_download
+    )
     # Model đã lượng tử hoá thì ĐỪNG ép dtype: ép là trọng số 4-bit bị giải nén
     # ngược về 16-bit ngay lúc nạp, và card 6 GB tràn ngay.
     # Hỏi ĐỜI KIẾN TRÚC, đừng hỏi ``is_bf16_supported``: trên T4 hàm đó trả về
@@ -49,9 +73,11 @@ def build_complete(
     compute_dtype = (
         torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
     )
-    config = AutoConfig.from_pretrained(model_id, local_files_only=not allow_download)
+    config = AutoConfig.from_pretrained(
+        model_id, revision=revision, local_files_only=not allow_download
+    )
     quantized = getattr(config, "quantization_config", None) is not None
-    load_kwargs: dict = {"local_files_only": not allow_download}
+    load_kwargs: dict = {"local_files_only": not allow_download, "revision": revision}
     if load_4bit and not quantized:
         # Tự nén lúc nạp. Nhanh hơn bản nén sẵn theo compressed-tensors vì
         # không phải giải nén lại khi tính, và nén được nhiều phần hơn.
@@ -60,9 +86,16 @@ def build_complete(
             bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=compute_dtype,
-            # Mặc định thư viện để NGUYÊN lớp đầu ra. Với từ vựng 262.144 token
-            # thì riêng nó đã ngốn khoảng 0,8 GB - đúng phần làm tràn card 6 GB.
-            llm_int8_skip_modules=[],
+            # KHÔNG nén lớp đầu ra, dù nó là phần nặng nhất còn lại.
+            #
+            # Ghi chú cũ ở đây nói nén nó để tiết kiệm 0,8 GB trên card 6 GB.
+            # Điều đó không thực hiện được với model này: ``lm_head`` BUỘC CHUNG
+            # trọng số với lớp nhúng, mà bitsandbytes đòi trọng số 4-bit đã đóng
+            # gói nên trọng số buộc chung không đóng gói được - nó vấp thẳng
+            # ``assert module.weight.shape[1] == 1`` ở lượt truyền xuôi đầu tiên.
+            # Đường huấn luyện đã loại nó ra từ đầu vì đúng lý do này; đường chấm
+            # thì chưa, nên chấm bằng model 4-bit chưa bao giờ chạy nổi.
+            llm_int8_skip_modules=["lm_head"],
         )
     elif not quantized:
         load_kwargs["dtype"] = compute_dtype
@@ -191,7 +224,7 @@ def main() -> None:
                 f"đúng node        {primary['node_selection']['correct']}/{primary['node_selection']['count']} ({primary['node_selection']['rate']:.1%})",
                 f"đúng dạng        {primary['query_shape']['correct']}/{primary['query_shape']['count']} ({primary['query_shape']['rate']:.1%})",
                 f"từ chối đúng     {primary['rejection_decision']['correct']}/{primary['rejection_decision']['count']} ({primary['rejection_decision']['rate']:.1%})",
-                f"9 câu người thật {real_user['correct']}/{real_user['count']} ({real_user['query_id_accuracy']:.1%}) — báo riêng",
+                f"câu người thật {real_user['correct']}/{real_user['count']} ({real_user['query_id_accuracy']:.1%}) — báo riêng",
                 f"tốc độ           {elapsed / len(rows):.1f}s mỗi câu",
             ]
         )

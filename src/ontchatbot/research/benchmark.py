@@ -31,7 +31,12 @@ def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, str]]:
 def load_user_query_expectations(
     path: Path = USER_QUERIES_PATH,
 ) -> list[dict[str, str]]:
-    """Nạp chín câu người thật; đây không phải một split sinh tự động."""
+    """Nạp bộ câu người thật; đây không phải một split sinh tự động.
+
+    Không chốt số lượng ở đây. Bộ này CHỈ ĐƯỢC PHÌNH RA - chín câu ban đầu cộng
+    sáu câu thêm ngày 15/8/2026 - nên mọi chỗ ghi cứng "chín câu" đều thành sai
+    ngay lần bổ sung kế tiếp.
+    """
 
     try:
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
