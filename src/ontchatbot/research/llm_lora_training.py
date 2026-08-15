@@ -213,8 +213,28 @@ def encode_training_example(
     }
 
 
-def _batch_plans(requested: int | None) -> tuple[BatchPlan, ...]:
-    sizes = (requested,) if requested is not None else (EFFECTIVE_BATCH_SIZE, 4, 2, 1)
+def _batch_plans(
+    requested: int | None, *, checkpointing: bool = True
+) -> tuple[BatchPlan, ...]:
+    """Thang lô để thử, từ lớn xuống nhỏ.
+
+    Bỏ activation đi (checkpointing) thì lô 8 vừa; giữ activation lại thì không.
+    Đo trên L4 24 GB ngày 15/8/2026, chuỗi dài nhất 266 token: tắt checkpointing
+    rồi thử lô 8 thì đỉnh **20,30 / 22,0 GiB rồi tràn**, lùi về lô 4 chỉ còn
+    13,44 GiB. Bắt đầu từ 8 trong trường hợp đó là chắc chắn tràn, và mỗi lần
+    tràn phải nạp lại model từ đầu.
+
+    Lô hiệu dụng không đổi dù bắt đầu ở đâu - phần chênh được bù bằng tích luỹ
+    gradient - nên bỏ nấc 8 không làm đổi kết quả huấn luyện, chỉ bớt một lượt
+    nạp model vô ích.
+    """
+
+    if requested is not None:
+        sizes: tuple[int, ...] = (requested,)
+    elif checkpointing:
+        sizes = (EFFECTIVE_BATCH_SIZE, 4, 2, 1)
+    else:
+        sizes = (4, 2, 1)
     return tuple(
         BatchPlan(
             per_device_batch_size=size,
@@ -711,7 +731,9 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     last_oom_detail: str | None = None
-    for plan in _batch_plans(args.batch_size):
+    for plan in _batch_plans(
+        args.batch_size, checkpointing=_checkpointing_for_log(args)
+    ):
         model = None
         try:
             metrics, model = _run_attempt(
