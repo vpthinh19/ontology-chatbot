@@ -1,5 +1,5 @@
 {
-  "note": "CÂU HỎI là của NGƯỜI THẬT gõ vào chatbot, không phải câu sinh ra; hai câu cuối do giảng viên chủ nhiệm đề tài test. NHÃN THÌ KHÔNG: expected_query_id do các phiên làm việc trước SUY RA, và đã bị sửa máy ít nhất hai lần - bản đầu còn trỏ vào những họ của v2 nay không tồn tại (academic-procedure-overview, tuition-program-cohort-rate). Vì vậy ĐỪNG coi nhãn ở đây là chuẩn ngoại: chấm model bằng nhãn do chính thiết kế suy ra là chấm vòng tròn. Người dùng đã tự gán bốn nhãn (14/8 và 15/8), năm nhãn còn lại vẫn là suy ra - xem trường 'label_basis' để biết cái nào là cái nào.",
+  "note": "CÂU HỎI là của NGƯỜI THẬT gõ vào chatbot, không phải câu sinh ra; hai câu cuối do giảng viên chủ nhiệm đề tài test. NHÃN THÌ KHÔNG: expected_query_id do các phiên làm việc trước SUY RA, và đã bị sửa máy ít nhất hai lần - bản đầu còn trỏ vào những họ của v2 nay không tồn tại (academic-procedure-overview, tuition-program-cohort-rate). Vì vậy ĐỪNG coi nhãn ở đây là chuẩn ngoại: chấm model bằng nhãn do chính thiết kế suy ra là chấm vòng tròn. Người dùng đã tự gán bốn nhãn (14/8 và 15/8), năm nhãn còn lại vẫn là suy ra - xem trường 'label_basis' để biết cái nào là cái nào. BỔ SUNG 15/8/2026: sáu câu cuối lấy từ test_llm.log - cũng là người thật gõ, trong một phiên thử model huấn luyện trên dataset CŨ. Model cũ trả lời SAI CẢ SÁU theo kiểu đảo ngược: từ chối bốn câu trả lời được, và liệt kê năng lực cho hai câu phải từ chối. Đây là mốc 'trước' để so sau khi train.",
   "expectations": [
     {
       "question": "chào bạn nha",
@@ -40,7 +40,37 @@
       "question": "Bạn có thể hỗ trợ thông tin gì",
       "expected_query_id": "no-information",
       "note": "người dùng chốt 2026-08-14: họ 'liệt kê năng lực' đã bị bỏ khỏi thiết kế; giới thiệu phạm vi là việc của LLM lớn"
+    },
+    {
+      "question": "làm sao để bảo lưu kết quả",
+      "expected_query_id": "academic-procedure-facts",
+      "note": "gõ tay trong test_llm.log. Neo :TemporaryAcademicLeaveProcedure mang nhãn phụ 'bảo lưu kết quả'. Model cũ TỪ CHỐI câu này."
+    },
+    {
+      "question": "đóng tiền sao nhỉ",
+      "expected_query_id": "academic-procedure-facts",
+      "note": "gõ tay trong test_llm.log. Neo :TuitionPaymentProcedure mang nhãn phụ 'đóng tiền học'. Model cũ TỪ CHỐI."
+    },
+    {
+      "question": "học lại như thế nào",
+      "expected_query_id": "academic-procedure-facts",
+      "note": "gõ tay trong test_llm.log. Neo :CourseRetakeProcedure mang nhãn phụ 'học lại'. Model cũ TỪ CHỐI."
+    },
+    {
+      "question": "bạn làm được gì",
+      "expected_query_id": "no-information",
+      "note": "gõ tay trong test_llm.log. Model cũ LIỆT KÊ 24 thủ tục - đúng họ 'liệt kê năng lực' đã bị bỏ khỏi thiết kế 14/8."
+    },
+    {
+      "question": "chuyển ngành",
+      "expected_query_id": "academic-procedure-facts",
+      "note": "gõ tay trong test_llm.log. Neo :MajorChangeProcedure mang nhãn phụ 'chuyển ngành'. Model cũ TỪ CHỐI."
+    },
+    {
+      "question": "bạn tên là gì",
+      "expected_query_id": "no-information",
+      "note": "gõ tay trong test_llm.log. Model cũ LIỆT KÊ 24 thủ tục."
     }
   ],
-  "label_basis": "HỖN HỢP tính đến 2026-08-15. Bốn nhãn do NGƯỜI DÙNG chốt, xem trường 'note' của từng câu: 'chào bạn nha', 'vì sao lại đăng ký học phần', 'Bạn có thể hỗ trợ thông tin gì', 'Tôi cần thông tin tuyển sinh 2026...'. Năm nhãn còn lại (ba biến thể đăng ký học phần, hai câu học phí khoá) vẫn do thiết kế SUY RA, chưa ai xác nhận - chấm model bằng chúng vẫn là chấm vòng tròn."
+  "label_basis": "HỖN HỢP tính đến 2026-08-15. Bốn nhãn do NGƯỜI DÙNG chốt (xem 'note' từng câu). Năm nhãn của ba biến thể đăng ký học phần và hai câu học phí khoá vẫn do thiết kế SUY RA. Sáu nhãn mới thêm từ test_llm.log suy từ DỮ LIỆU chứ không từ thiết kế - mỗi câu khớp đúng một nhãn phụ có thật trong ontology - nhưng NGƯỜI DÙNG CHƯA XÁC NHẬN, cần gán lại một lượt."
 }

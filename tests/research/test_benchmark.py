@@ -74,10 +74,19 @@ def test_transformers_evaluator_accepts_custom_benchmark(tmp_path: Path) -> None
     assert args.benchmark == benchmark
 
 
-def test_real_user_cases_keep_all_nine_declared_expectations() -> None:
+def test_real_user_cases_keep_every_declared_expectation() -> None:
+    """Bộ câu người thật chỉ được PHÌNH ra, không được teo đi.
+
+    Chín câu đầu là bằng chứng người thật duy nhất dự án có được trong nhiều
+    tháng; sáu câu thêm ngày 15/8/2026 lấy từ ``test_llm.log`` - một phiên người
+    dùng gõ tay thử model huấn luyện trên dataset cũ. Canh bằng ngưỡng SÀN chứ
+    không bằng con số cố định: thêm câu người thật là việc tốt, còn mất câu nào
+    thì phải đỏ.
+    """
+
     expectations = load_user_query_expectations()
 
-    assert len(expectations) == 9
+    assert len(expectations) >= 15
     # ``note`` là tuỳ chọn: từ 2026-08-14 mỗi nhãn được sửa đều mang lý do đi kèm,
     # vì nhãn ở tệp này do các phiên trước SUY RA chứ không phải người gán.
     assert all(
