@@ -1,4 +1,62 @@
-# Quy trình huấn luyện lịch sử
+# Huấn luyện
+
+## Đường đang dùng: QLoRA cho LLM sinh SPARQL
+
+Một model nhân quả được tinh chỉnh bằng QLoRA để sinh truy vấn SPARQL từ câu hỏi
+tiếng Việt. Chatbot là **công cụ cho một LLM lớn gọi**, không phải người trả lời:
+nó truy ra trọn vẹn một node rồi để LLM lớn đọc và tự viết câu.
+
+### Chạy trên máy có GPU
+
+```bash
+uv sync --extra train
+bash scripts/train-and-report.sh --smoke-test --allow-download   # lần đầu
+bash scripts/train-and-report.sh                                  # chạy thật
+```
+
+Script ghi bối cảnh máy, phiên bản thư viện, commit, **vân tay SHA256 của từng
+tập dữ liệu**, rồi huấn luyện, chấm cả validation lẫn test, và gói mọi thứ thành
+một `.tar.gz`. Vân tay là phần quan trọng nhất: thiếu nó thì không ai chứng minh
+được một con số thuộc về bản dataset nào.
+
+Chấm lại một adapter đã có, khỏi huấn luyện lại:
+
+```bash
+ADAPTER=artifacts/run-<mốc>/adapter bash scripts/train-and-report.sh --skip-train
+```
+
+### Hai thứ tự điều chỉnh theo máy
+
+**Gradient checkpointing** bật khi VRAM dưới 16 GiB và tắt khi trên. Nó đổi bộ nhớ
+lấy tốc độ: bỏ activation rồi tính lại ở lượt truyền ngược. Kết quả huấn luyện
+không đổi. Ép tay bằng `--gradient-checkpointing on|off`.
+
+**Lô vật lý** tự lùi khi hết bộ nhớ, và **lô hiệu dụng luôn giữ nguyên 8** nhờ
+tích luỹ gradient — nên một lượt chạy trên card 6 GB và một lượt trên card 24 GB
+so sánh được với nhau.
+
+### Số đo tham chiếu
+
+Lượt huấn luyện ngày 15/8/2026 trên NVIDIA L4 24 GB: **79 phút**, 2.046 bước,
+3 epoch, lô vật lý 4, checkpointing tắt, VRAM đỉnh 13,43 GiB, 3,445 mẫu/giây,
+mất mát 1,928 → 0,0018.
+
+### Ghim bản model
+
+Cả đường huấn luyện lẫn đường chấm đều hỏi **cùng một commit** của model gốc.
+Không ghim thì thư viện hỏi nhánh `main`, và nếu nhánh đó nhích đi thì adapter bị
+chấm trên một model khác với model nó đã học — số thu về vô nghĩa mà không có dấu
+hiệu nào báo sai.
+
+### Model không tự tải về
+
+Cả hai đường đều từ chối tải model nếu cache chưa có. Tải âm thầm 4,57 GB trên
+máy tính tiền theo giờ là chuyện không nên xảy ra. Cho phép bằng
+`--allow-download` khi đã biết mình đang làm gì.
+
+---
+
+## Quy trình huấn luyện lịch sử (v2, đã ngừng)
 
 > **Đã ngừng. Không phải baseline.** Tài liệu này chỉ giải thích quy trình v2
 > còn dấu vết trong mã nguồn. Dataset dùng cho các lượt huấn luyện đó hỏng, nên
