@@ -10,7 +10,7 @@ node** liên quan từ ontology, rồi trả dữ liệu cùng nguồn cho LLM t
 
 Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **5.088 câu**, gồm
 4.299 câu huấn luyện, 400 câu kiểm định và 389 câu kiểm tra. Danh mục khả năng
-trả lời hiện ghi nhận **4.047 khả năng trả lời** được hỗ trợ. Đây là số liệu về
+trả lời hiện ghi nhận **4.064 khả năng trả lời** được hỗ trợ. Đây là số liệu về
 artifact dữ liệu, không phải điểm chất lượng của model.
 
 Kiến trúc v3 có ba nguyên tắc:
@@ -142,7 +142,7 @@ phí theo sinh viên không được lưu vì phụ thuộc kỳ, khóa, ngành,
 học phần thực tế; ontology chỉ giữ những hướng dẫn thanh toán có nguồn ổn định.
 
 `resources/ontology/answer_inventory.json` được sinh từ ontology và hiện có
-4.047 mục `supported`. Mỗi mục biểu diễn một đường trả lời được phép từ node tới
+4.064 mục `supported`. Mỗi mục biểu diễn một đường trả lời được phép từ node tới
 literal hoặc nhãn. Chi tiết về node văn bản, node nghiệp vụ và bảng nguyên văn
 nằm trong [tài liệu ontology](docs/ONTOLOGY.md).
 

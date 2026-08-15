@@ -849,6 +849,7 @@ skos:altLabel rdfs:label "tên gọi khác"@vi .
 
 :Decision1052 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 1052/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 của Hiệu trưởng Trường Đại học Nha Trang ban hành Quy chế đào tạo trình độ đại học"@vi ;
     :documentNumber "1052/QĐ-ĐHNT"@vi ;
     :issueDate "2025-07-17"^^xsd:date ;
     :title "Ban hành Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"@vi ;
@@ -863,6 +864,7 @@ skos:altLabel rdfs:label "tên gọi khác"@vi .
 # còn hiệu lực. Đừng mô hình hoá thành thay thế toàn bộ.
 :Regulation1052 a :Regulation, owl:NamedIndividual ;
     rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang"@vi ;
+    :citationLabel "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :issuedBy :Decision1052 ;
     :title "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"@vi ;
     :effectiveFromAcademicYear "2025-2026"@vi ;
@@ -881,6 +883,7 @@ skos:altLabel rdfs:label "tên gọi khác"@vi .
 
 :Decision626 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 626/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 626/QĐ-ĐHNT ngày 29/4/2026 của Hiệu trưởng Trường Đại học Nha Trang ban hành Quy chế tuyển sinh đại học"@vi ;
     :documentNumber "626/QĐ-ĐHNT"@vi ;
     :issueDate "2026-04-29"^^xsd:date ;
     :title "Ban hành Quy chế tuyển sinh đại học của Trường Đại học Nha Trang"@vi ;
@@ -888,6 +891,7 @@ skos:altLabel rdfs:label "tên gọi khác"@vi .
 
 :Regulation626 a :Regulation, owl:NamedIndividual ;
     rdfs:label "Quy chế tuyển sinh đại học Trường Đại học Nha Trang"@vi ;
+    :citationLabel "Quy chế tuyển sinh đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 626/QĐ-ĐHNT ngày 29/4/2026"@vi ;
     :issuedBy :Decision626 ;
     :title "Quy chế tuyển sinh đại học của Trường Đại học Nha Trang"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/Doc/890/qd-626-ban-hanh-quy-che-tuyen-sinh-dai-hoc-truong-dh-nha-trang-29-4-2026-pdf.pdf"^^xsd:anyURI .
@@ -1514,6 +1518,7 @@ c) Y tá, dược tá, hộ lý, y sĩ, điều dưỡng viên, hộ sinh viên,
 
 :Decision753 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 753/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 753/QĐ-ĐHNT ngày 13/8/2021 của Hiệu trưởng Trường Đại học Nha Trang ban hành Quy chế đào tạo trình độ đại học"@vi ;
     :documentNumber "753/QĐ-ĐHNT"@vi ;
     :issueDate "2021-08-13"^^xsd:date ;
     :title "Ban hành Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang năm 2021"@vi ;
@@ -1523,6 +1528,7 @@ c) Y tá, dược tá, hộ lý, y sĩ, điều dưỡng viên, hộ sinh viên,
 
 :Regulation753 a :Regulation, owl:NamedIndividual ;
     rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang năm 2021"@vi ;
+    :citationLabel "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 753/QĐ-ĐHNT ngày 13/8/2021"@vi ;
     :issuedBy :Decision753 ;
     :title "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang năm 2021"@vi ;
     :effectiveFromAcademicYear "2021-2022"@vi ;
@@ -4967,6 +4973,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 
 :Decision729 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 729/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026"@vi ;
     :documentNumber "729/QĐ-ĐHNT"@vi ;
     :issueDate "2025-05-28"^^xsd:date ;
     :title "Ban hành mức học phí chương trình đào tạo trình độ đại học, sau đại học hình thức chính quy Học kỳ I năm học 2025-2026 của Trường Đại học Nha Trang"@vi ;
@@ -4976,6 +4983,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
 
 :Decision317 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 317/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 317/QĐ-ĐHNT ngày 7/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
     :documentNumber "317/QĐ-ĐHNT"@vi ;
     :issueDate "2025-03-07"^^xsd:date ;
     :title "Về mức học bổng khuyến khích học tập cho sinh viên năm học 2024-2025"@vi ;
@@ -5275,6 +5283,7 @@ IV — Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo ch
 # nhất nêu mức 3.300đ nộp tiền mặt tại quầy.
 :TuitionPaymentGuidance a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Hướng dẫn đóng học phí qua ngân hàng"@vi ;
+    :citationLabel "Thông báo cách thức nộp học phí sinh viên của Trường Đại học Nha Trang ngày 11/10/2024"@vi ;
     :title "Thông báo cách thức nộp học phí sinh viên"@vi ;
     :issueDate "2024-10-11"^^xsd:date ;
     :retrievedDate "2026-08-10"^^xsd:date ;
@@ -5322,6 +5331,7 @@ IV — Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo ch
 # đây, vẫn chỉ dựa vào ghi chú không ngày ở trên.
 :VNPAYPaymentGuidance a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Hướng dẫn đóng học phí qua cổng thanh toán VNPAY - Vietcombank"@vi ;
+    :citationLabel "Hướng dẫn đóng học phí qua cổng thanh toán VNPAY-Vietcombank của Trường Đại học Nha Trang, truy cập ngày 10/8/2026"@vi ;
     :title "Hướng dẫn đóng học phí qua cổng thanh toán trực tuyến VNPAY - Vietcombank"@vi ;
     :retrievedDate "2026-08-10"^^xsd:date ;
     :webPageUrl "https://daotao.ntu.edu.vn/DongHocPhi_VCB_2021.pdf"^^xsd:anyURI .
@@ -5362,6 +5372,7 @@ IV — Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo ch
 
 :ScholarshipCriteriaGuidance a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Tiêu chuẩn xét học bổng khuyến khích học tập"@vi ;
+    :citationLabel "trang Học bổng và tiêu chuẩn học bổng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026"@vi ;
     :title "Học bổng, tiêu chuẩn học bổng"@vi ;
     :retrievedDate "2026-08-10"^^xsd:date ;
     :webPageUrl "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI .
@@ -5389,6 +5400,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 # "không làm gì cả": người có tên còn phải nộp số tài khoản mới nhận được tiền.
 :ScholarshipAnnouncementGuidance a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Thông báo danh sách dự kiến học bổng khuyến khích học tập"@vi ;
+    :citationLabel "Thông báo danh sách dự kiến học bổng khuyến khích học tập của Trường Đại học Nha Trang, truy cập ngày 25/3/2026"@vi ;
     :title "Danh sách dự kiến Học bổng khuyến khích học tập"@vi ;
     :issueDate "2026-03-25"^^xsd:date ;
     :retrievedDate "2026-08-10"^^xsd:date ;
@@ -5501,6 +5513,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 :Decision1965 a :Decision, owl:NamedIndividual ;
     rdfs:label "Quyết định số 1965/QĐ-ĐHNT"@vi ;
+    :citationLabel "Quyết định 1965/QĐ-ĐHNT ngày 19/12/2025 của Hiệu trưởng Trường Đại học Nha Trang về học phần ngoại ngữ"@vi ;
     :documentNumber "1965/QĐ-ĐHNT"@vi ;
     :issueDate "2025-12-19"^^xsd:date ;
     :title "Sửa đổi, bổ sung Phụ lục quy chế đào tạo trình độ đại học"@vi ;
@@ -5667,6 +5680,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 # lục V Quy chế tuyển sinh kèm Quyết định 626.
 :TuitionLookupPage a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Trang tra cứu học phí sinh viên"@vi ;
+    :citationLabel "cổng thông tin sinh viên của Trường Đại học Nha Trang, mục học phí, truy cập ngày 15/8/2026"@vi ;
     skos:altLabel "cổng thông tin sinh viên"@vi,
         "tra cứu học phí"@vi,
         "xem học phí của mình"@vi ;
@@ -5677,6 +5691,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 :AdmissionsLookupPage a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Trang thông tin tuyển sinh"@vi ;
+    :citationLabel "trang thông tin tuyển sinh của Trường Đại học Nha Trang, truy cập ngày 15/8/2026"@vi ;
     skos:altLabel "chỉ tiêu tuyển sinh"@vi,
         "lệ phí xét tuyển"@vi,
         "trang tuyển sinh của trường"@vi,
@@ -5689,6 +5704,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 :OrganizationStructurePage a :GuidanceDocument, owl:NamedIndividual ;
     rdfs:label "Trang Cơ cấu tổ chức - Khối tham mưu, quản lý"@vi ;
+    :citationLabel "trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026"@vi ;
     :title "Khối tham mưu, quản lý"@vi ;
     :retrievedDate "2026-08-14"^^xsd:date ;
     :webPageUrl "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly"^^xsd:anyURI .
@@ -5701,6 +5717,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 :UndergraduateFormCatalogue a :FormCatalogue, owl:NamedIndividual ;
     rdfs:label "Danh mục biểu mẫu đào tạo đại học"@vi ;
+    :citationLabel "Danh mục biểu mẫu của Phòng Đào tạo Đại học, Trường Đại học Nha Trang, truy cập ngày 30/7/2026"@vi ;
     :title "Danh mục biểu mẫu của Phòng Đào tạo Đại học"@vi ;
     # Ngày lấy về suy từ lịch sử kho: references/bieumau_url.txt vào repo 30/7/2026.
     :retrievedDate "2026-07-30"^^xsd:date ;
@@ -7811,7 +7828,9 @@ Phiếu điều chỉnh điểm
 :GradingScaleConcept a :AcademicConcept, owl:NamedIndividual ;
     rdfs:label "Thang điểm đánh giá"@vi ;
     :definitionText "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi ;
-    :basedOn :Regulation1052Article15Clause01 ;
+    :basedOn :Regulation1052Article15Clause01,
+        :Regulation1052Article16Clause02PointB,
+        :Regulation1052Article16Clause02PointC ;
     skos:altLabel "thang điểm 10"@vi ,
         "thang điểm"@vi .
 

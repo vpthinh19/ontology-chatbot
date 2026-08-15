@@ -155,6 +155,13 @@ CONVERSION_TABLE_FAMILIES: tuple[tuple[str, tuple[str, ...]], ...] = (
 #: Bốn cột, và hai trong số đó là nguồn - nên không họ nào sinh ra từ đây có thể
 #: vi phạm luật "phải kèm nguồn" hay "không được trả một cột".
 #:
+#: ĐÃ THỬ chặn nhánh hai đi sang LỚP bằng ``FILTER(?l != rdf:type)``, và BỎ. Nó
+#: dọn được 46 dòng kiểu ``tên gọi = Khoản`` vốn không trích dẫn được vì lớp không
+#: đến từ văn bản nào - nhưng nó cũng làm họ ``academic-actor-facts`` mất sạch nội
+#: dung: node vai trò chỉ có đúng tên gọi, bỏ nhãn lớp đi thì dump còn một dòng và
+#: bộ sinh từ chối. Dòng nhãn lớp không đánh lừa ai, chỉ để trống cột nguồn, nên
+#: giữ lại là đổi ít lấy nhiều.
+#:
 #: ``FILTER(?p != skos:altLabel)`` giấu nhãn phụ khỏi câu trả lời. Nhãn phụ là
 #: phương tiện để TÌM RA thực thể, không phải nội dung trả lời; thả vào thì một
 #: thủ tục phình thêm chục dòng "bảo lưu", "phòng CTSV".
@@ -201,11 +208,12 @@ _SOURCE_CLAUSE = "OPTIONAL{?x :sourceCitation ?nguon;:sourceLink ?duongdan} "
 DUMP_TEMPLATE = (
     "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { "
     "${bind} "
-    "{ ?x ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "{ ?x ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh "
+    + _SOURCE_CLAUSE + "} "
     "UNION "
-    "{ ?x ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "{ ?x ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh "
+"OPTIONAL{?con :sourceCitation ?nguon;:sourceLink ?duongdan} } "
     "FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) "
-    + _SOURCE_CLAUSE +
     "}"
 )
 
@@ -219,13 +227,39 @@ DUMP_TEMPLATE = (
 # Subquery chỉ phục vụ một neo cố định nên không cần chiếu/group theo ``?x``.
 # ``HAVING`` giữ hai cột nguồn ở trạng thái unbound khi neo không có nguồn,
 # thay vì biến chúng thành chuỗi rỗng do aggregate trên tập nghiệm rỗng.
+# Nguồn gắn theo NODE SỞ HỮU dữ kiện, không theo neo. Bản trước đặt một
+# ``OPTIONAL`` duy nhất ở ngoài, chiếu nguồn của neo cho MỌI dòng - kể cả dòng
+# mượn qua nhánh thứ hai. Hậu quả đo được 15/8/2026: 304 dòng dataset trả dữ kiện
+# của một văn bản kèm trích dẫn của văn bản khác. Nặng nhất là hỏi "thủ tục xin
+# miễn học miễn thi" thì ra ``hộp thư = daotao@ntu.edu.vn`` kèm nguồn "khoản 5
+# Điều 21 Quy chế đào tạo" - khoản đó nói về các trường hợp được miễn thi, không
+# có địa chỉ email nào. Email đến từ trang Cơ cấu tổ chức, một tài liệu khác hẳn.
+#
+# Sinh viên bấm vào nguồn mà không thấy điều vừa được trả lời thì trích dẫn còn
+# tệ hơn không có: nó tạo lòng tin sai.
+#
+# KHÔNG có mệnh đề lui trong truy vấn. Bản đầu thêm hai ``OPTIONAL`` cộng hai
+# ``BIND`` để lui về nguồn của neo khi node cho mượn thiếu trích dẫn, và trả giá
+# đắt: đích dài thêm khoảng 60 token, đẩy 551/567 đích vượt trần sinh 320 token
+# của ViT5 - tức model seq2seq không sinh nổi chính đích của nó.
+#
+# Chỗ thiếu nằm ở DỮ LIỆU chứ không ở truy vấn: 17 node văn bản không khai
+# ``citationLabel`` cho chính mình, nên khi một điều khoản mượn số hiệu và ngày
+# ban hành của văn bản mẹ thì dòng đó không có nguồn. Đã khai đủ 17 trích dẫn ấy.
+# Sửa dữ liệu thì truy vấn ngắn lại, và văn bản cũng tự mô tả được mình.
+# Bản sửa đầu bỏ bước lui này và làm dữ kiện thiếu nguồn vọt từ 4,1% lên 17,2%:
+# phần lớn là dữ kiện ĐỊNH DANH của văn bản mẹ - số hiệu, ngày ban hành, tên gọi
+# - lấy qua ``:inDocument``. Node văn bản không khai ``citationLabel`` cho chính
+# nó, mà trích dẫn của điều khoản đang hỏi thì vốn đã nêu đúng văn bản ấy. Lui về
+# neo ở đó là ĐÚNG, không phải nhân nhượng.
 NAMED_DUMP_TEMPLATE = (
     "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE { "
-    "{ ${anchor} ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "{ ${anchor} ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh "
+    "OPTIONAL{${anchor} :sourceCitation ?nguon;:sourceLink ?duongdan} } "
     "UNION "
-    "{ ${anchor} ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh } "
+    "{ ${anchor} ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) ?p rdfs:label ?thuoctinh "
+"OPTIONAL{?con :sourceCitation ?nguon;:sourceLink ?duongdan} } "
     "FILTER(?p!=skos:altLabel&&?p!=:sourceCitation&&?p!=:sourceLink) "
-    "OPTIONAL{${anchor} :sourceCitation ?nguon;:sourceLink ?duongdan} "
     "}"
 )
 

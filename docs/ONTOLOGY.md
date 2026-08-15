@@ -53,7 +53,7 @@ nên giữ nguồn khi tổng hợp câu trả lời, nhất là với điều k
 ## Danh mục khả năng trả lời
 
 `resources/ontology/answer_inventory.json` được sinh từ ontology. Đếm trực tiếp
-các entry có `status == "supported"` cho kết quả **4.047 khả năng trả lời**.
+các entry có `status == "supported"` cho kết quả **4.064 khả năng trả lời**.
 Artifact cũng có 21 entry `excluded` kèm lý do; các mục bị loại không được tính
 vào khả năng công bố.
 

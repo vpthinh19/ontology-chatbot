@@ -86,8 +86,20 @@ def test_multiple_columns_preserve_pairing(graph) -> None:
     assert all(row["url"].startswith("https://") for row in rows)
 
 
-def test_source_projection_keeps_web_only_sources_and_pairs() -> None:
-    """The compact query view preserves both citation and URL source fields."""
+def test_every_source_pair_carries_a_citation_and_a_url() -> None:
+    """Khuôn nguồn rút gọn phải giữ ĐỦ CẢ HAI vế: trích dẫn và đường dẫn.
+
+    Bản trước của phép kiểm này chốt cứng rằng trang web tự trả lời về mình chỉ có
+    đường dẫn, còn trích dẫn là CHUỖI RỖNG - và coi đó là hành vi đúng. Nó không
+    đúng, chỉ là mô tả hiện trạng lúc ấy: 17 node văn bản chưa khai
+    ``citationLabel`` cho chính mình.
+
+    Chuỗi rỗng đó âm thầm gây hại. Khi một điều khoản mượn số hiệu hay ngày ban
+    hành của văn bản mẹ, dòng đó nhận trích dẫn rỗng, và cả một mệnh đề lui trong
+    truy vấn cũng không cứu được vì ``COALESCE`` chỉ lui khi biến CHƯA GÁN chứ
+    không lui khi gán chuỗi rỗng. Đã khai đủ 17 trích dẫn (15/8/2026), nên nay
+    mọi cặp nguồn đều đủ hai vế.
+    """
 
     graph = load_ontology()
 
@@ -111,10 +123,21 @@ def test_source_projection_keeps_web_only_sources_and_pairs() -> None:
     ]
     assert web_only_rows == [
         {
-            "citation": "",
+            "citation": (
+                "trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học "
+                "Nha Trang, truy cập ngày 14/8/2026"
+            ),
             "url": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
         }
     ]
+
+    # Không node văn bản nào được để trống vế trích dẫn nữa - canh cả lớp, không
+    # canh riêng một node, để lần nạp văn bản sau không lặng lẽ tái diễn.
+    empty = execute_select(
+        graph,
+        "SELECT ?x WHERE { ?x :sourceCitation ?citation . FILTER(STRLEN(?citation)=0) }",
+    )
+    assert empty == []
 
 
 def test_filter_and_typed_number(graph) -> None:

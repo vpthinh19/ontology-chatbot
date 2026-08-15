@@ -468,6 +468,18 @@
       "status": "supported"
     },
     {
+      "id": "AdmissionsLookupPage-citationLabel",
+      "anchor": "AdmissionsLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Regulation626AppendixV"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "AdmissionsLookupPage-rdfs-label",
       "anchor": "AdmissionsLookupPage",
       "answer_kind": "label",
@@ -3153,6 +3165,18 @@
       "status": "supported"
     },
     {
+      "id": "Decision1052-citationLabel",
+      "anchor": "Decision1052",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision1052"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Decision1052-documentNumber",
       "anchor": "Decision1052",
       "answer_kind": "literal",
@@ -3462,6 +3486,18 @@
       "path": [
         "amends",
         "rdfs:label"
+      ],
+      "provenance": [
+        "Decision1965"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision1965-citationLabel",
+      "anchor": "Decision1965",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
       ],
       "provenance": [
         "Decision1965"
@@ -3916,6 +3952,18 @@
       ],
       "provenance": [
         "Decision1965Article03"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision317-citationLabel",
+      "anchor": "Decision317",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision317"
       ],
       "status": "supported"
     },
@@ -4409,6 +4457,18 @@
       "status": "supported"
     },
     {
+      "id": "Decision626-citationLabel",
+      "anchor": "Decision626",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision626"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Decision626-documentNumber",
       "anchor": "Decision626",
       "answer_kind": "literal",
@@ -4688,6 +4748,18 @@
       "status": "supported"
     },
     {
+      "id": "Decision729-citationLabel",
+      "anchor": "Decision729",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision729"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Decision729-documentNumber",
       "anchor": "Decision729",
       "answer_kind": "literal",
@@ -4928,6 +5000,18 @@
       ],
       "provenance": [
         "Decision729AppendixIITable01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Decision753-citationLabel",
+      "anchor": "Decision753",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Decision753"
       ],
       "status": "supported"
     },
@@ -11148,7 +11232,9 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Article15Clause01"
+        "Regulation1052Article15Clause01",
+        "Regulation1052Article16Clause02PointB",
+        "Regulation1052Article16Clause02PointC"
       ],
       "status": "supported"
     },
@@ -11161,7 +11247,9 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Article15Clause01"
+        "Regulation1052Article15Clause01",
+        "Regulation1052Article16Clause02PointB",
+        "Regulation1052Article16Clause02PointC"
       ],
       "status": "supported"
     },
@@ -11174,7 +11262,9 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Article15Clause01"
+        "Regulation1052Article15Clause01",
+        "Regulation1052Article16Clause02PointB",
+        "Regulation1052Article16Clause02PointC"
       ],
       "status": "supported"
     },
@@ -11186,7 +11276,9 @@
         "definitionText"
       ],
       "provenance": [
-        "Regulation1052Article15Clause01"
+        "Regulation1052Article15Clause01",
+        "Regulation1052Article16Clause02PointB",
+        "Regulation1052Article16Clause02PointC"
       ],
       "status": "supported"
     },
@@ -11198,7 +11290,9 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Article15Clause01"
+        "Regulation1052Article15Clause01",
+        "Regulation1052Article16Clause02PointB",
+        "Regulation1052Article16Clause02PointC"
       ],
       "status": "supported"
     },
@@ -14163,6 +14257,18 @@
       "status": "supported"
     },
     {
+      "id": "OrganizationStructurePage-citationLabel",
+      "anchor": "OrganizationStructurePage",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "OrganizationStructurePage"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "OrganizationStructurePage-rdfs-label",
       "anchor": "OrganizationStructurePage",
       "answer_kind": "label",
@@ -14996,6 +15102,18 @@
       "provenance": [
         "TuitionPaymentGuidanceIntro",
         "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "Regulation1052-citationLabel",
+      "anchor": "Regulation1052",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Regulation1052"
       ],
       "status": "supported"
     },
@@ -42616,6 +42734,18 @@
       "status": "supported"
     },
     {
+      "id": "Regulation626-citationLabel",
+      "anchor": "Regulation626",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Regulation626"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Regulation626-documentUrl",
       "anchor": "Regulation626",
       "answer_kind": "literal",
@@ -45832,6 +45962,18 @@
       "status": "supported"
     },
     {
+      "id": "Regulation753-citationLabel",
+      "anchor": "Regulation753",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "Regulation753"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "Regulation753-documentUrl",
       "anchor": "Regulation753",
       "answer_kind": "literal",
@@ -46548,6 +46690,18 @@
       "status": "supported"
     },
     {
+      "id": "ScholarshipAnnouncementGuidance-citationLabel",
+      "anchor": "ScholarshipAnnouncementGuidance",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ScholarshipAnnouncementGuidance"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "ScholarshipAnnouncementGuidance-issueDate",
       "anchor": "ScholarshipAnnouncementGuidance",
       "answer_kind": "literal",
@@ -46714,6 +46868,18 @@
       ],
       "provenance": [
         "ScholarshipCriteriaGeneralSection"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipCriteriaGuidance-citationLabel",
+      "anchor": "ScholarshipCriteriaGuidance",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ScholarshipCriteriaGuidance"
       ],
       "status": "supported"
     },
@@ -49116,6 +49282,18 @@
       "status": "supported"
     },
     {
+      "id": "TuitionLookupPage-citationLabel",
+      "anchor": "TuitionLookupPage",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "TuitionLookupPage-rdfs-label",
       "anchor": "TuitionLookupPage",
       "answer_kind": "label",
@@ -49160,6 +49338,18 @@
       ],
       "provenance": [
         "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "TuitionPaymentGuidance-citationLabel",
+      "anchor": "TuitionPaymentGuidance",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "TuitionPaymentGuidance"
       ],
       "status": "supported"
     },
@@ -49574,6 +49764,18 @@
         "TuitionPaymentGuidanceSection01",
         "TuitionPaymentGuidanceSection02",
         "TuitionPaymentGuidanceSection03"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "UndergraduateFormCatalogue-citationLabel",
+      "anchor": "UndergraduateFormCatalogue",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "UndergraduateFormCatalogue"
       ],
       "status": "supported"
     },
@@ -50170,6 +50372,18 @@
       "provenance": [
         "TuitionPaymentGuidanceIntro",
         "TuitionPaymentGuidanceSection01"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "VNPAYPaymentGuidance-citationLabel",
+      "anchor": "VNPAYPaymentGuidance",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "VNPAYPaymentGuidance"
       ],
       "status": "supported"
     },
