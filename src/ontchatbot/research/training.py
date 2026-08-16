@@ -37,9 +37,22 @@ from ..runtime.sparql import load_ontology
 #: ``eval_batch_size`` phải khai tường minh: mặc định của thư viện là 1, và với
 #: ``predict_with_generate`` thì mỗi lần đánh giá sinh tuần tự từng câu.
 #:
-#: ``batch_size`` 8 là trần trên GPU 6 GB. ``gradient_checkpointing`` bù lại phần
-#: bộ nhớ mà đích dài đòi thêm; nó không đụng tới phép tính, chỉ tính lại
-#: activation nên chậm hơn khoảng một phần tư.
+#: ``batch_size`` 4 với tích luỹ 2 - lô HIỆU DỤNG vẫn là 8, khớp với đường LLM.
+#:
+#: Trước đây là lô 8 tích luỹ 1, con số đó là trần đo trên card 6 GB KHI CÒN BẬT
+#: checkpointing. Tắt checkpointing trên card 24 GB rồi giữ nguyên lô 8 thì tràn
+#: - và tràn không phải vì model to. Bộ nhớ ở đây do ``lô × độ dài × từ điển``
+#: quyết định, tức khối logits:
+#:
+#:     LLM  : lô 4 × 266 token × 248.320  = 264 triệu phần tử  (~2,5 GiB)
+#:     T5   : lô 8 × 320 token × 262.144  = 671 triệu phần tử  (~6,2 GiB)
+#:
+#: Model 540 triệu tham số mà khối logits gấp 2,5 lần model 1,88 tỉ, chỉ vì lô
+#: gấp đôi, chuỗi dài hơn và từ điển to hơn. Hạ lô vật lý về 4 đưa nó về ~3,1
+#: GiB, ngang đường LLM, mà lô hiệu dụng không đổi nên số đo vẫn so được.
+#:
+#: ``gradient_checkpointing`` tính lại activation thay vì giữ; nó không đụng tới
+#: phép tính, chỉ chậm hơn khoảng một phần tư.
 #:
 #: Hai giới hạn của thư viện: ``group_by_length`` không còn trong transformers
 #: 5.x, và FlashAttention-2 chưa hỗ trợ t5gemma2.
@@ -47,27 +60,27 @@ MODEL_SPECS = {
     "bartpho": {
         "model_id": BARTPHO_MODEL_ID,
         "revision": BARTPHO_REVISION,
-        "batch_size": 8,
+        "batch_size": 4,
         "eval_batch_size": 6,
-        "gradient_accumulation": 1,
+        "gradient_accumulation": 2,
         "attention": "sdpa",
         "gradient_checkpointing": True,
     },
     "vit5": {
         "model_id": VIT5_MODEL_ID,
         "revision": VIT5_REVISION,
-        "batch_size": 8,
+        "batch_size": 4,
         "eval_batch_size": 6,
-        "gradient_accumulation": 1,
+        "gradient_accumulation": 2,
         "attention": "eager",
         "gradient_checkpointing": True,
     },
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
-        "batch_size": 8,
+        "batch_size": 4,
         "eval_batch_size": 6,
-        "gradient_accumulation": 1,
+        "gradient_accumulation": 2,
         "attention": "sdpa",
         "gradient_checkpointing": True,
     },
@@ -194,7 +207,7 @@ def train(args: argparse.Namespace) -> dict:
     # vào TrainingArguments, và ghi vào metrics - nên để mỗi chỗ tự suy lại là
     # mở đường cho việc sửa một chỗ rồi tưởng đã xong.
     checkpoint_gradients = _should_checkpoint_gradients(
-        spec.get("gradient_checkpointing", False)
+        spec.get("gradient_checkpointing", False), args.gradient_checkpointing
     )
     if not args.batch_size:
         spec["eval_batch_size"] = _eval_batch_size(spec.get("eval_batch_size", 1))
@@ -372,7 +385,28 @@ def train(args: argparse.Namespace) -> dict:
 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
-    train_result = trainer.train()
+    try:
+        train_result = trainer.train()
+    except (torch.OutOfMemoryError, RuntimeError) as exc:
+        # HẾT BỘ NHỚ THÌ NÓI RÕ PHẢI LÀM GÌ, đừng để người chạy tự đoán.
+        #
+        # Đường LLM tự lùi lô rồi bù bằng tích luỹ gradient; đường này chưa làm
+        # được vậy vì Trainer đã dựng xong trạng thái trước khi bước đầu chạy.
+        # Nhưng ít nhất nó phải chỉ đúng hai cần gạt, thay vì ném ra một vệt
+        # traceback của torch rồi để người chạy mò.
+        if "out of memory" not in str(exc).casefold():
+            raise
+        raise RuntimeError(
+            "CUDA hết bộ nhớ khi huấn luyện "
+            f"({args.model}, lô {spec['batch_size']}, "
+            f"checkpointing {checkpoint_gradients}, "
+            f"lô đánh giá {spec.get('eval_batch_size')}).\n"
+            "Thử theo thứ tự:\n"
+            "  --gradient-checkpointing on   (đổi ~1/4 tốc độ lấy bộ nhớ, "
+            "KHÔNG đổi kết quả)\n"
+            "  --batch-size 4                (lô hiệu dụng vẫn giữ 8 nhờ "
+            "tích luỹ gradient)"
+        ) from None
     inference_model = trainer.model
     if trainer.state.best_model_checkpoint:
         # Rebuild the accepted adapter on a clean pretrained base. The final artifact
@@ -689,11 +723,15 @@ def _eval_batch_size(spec_default: int) -> int:
     if not torch.cuda.is_available():
         return spec_default
     if torch.cuda.get_device_properties(0).total_memory >= 16 * 1024**3:
-        return 32
+        # 16, không phải 32. Đặt 32 đã làm lượt chạy trên L4 tràn bộ nhớ: sinh
+        # 32 chuỗi dài tới 320 token, mỗi bước tính logits trên từ điển ~256
+        # nghìn token của Gemma - phần logits đó lớn hơn nhiều so với trực giác
+        # "model 270M thì nhẹ".
+        return 16
     return spec_default
 
 
-def _should_checkpoint_gradients(spec_default: bool) -> bool:
+def _should_checkpoint_gradients(spec_default: bool, choice: str = "auto") -> bool:
     """Bỏ activation để tính lại, hay giữ - hỏi theo VRAM của máy đang chạy.
 
     ``MODEL_SPECS`` bật sẵn cho MỌI model vì lúc soạn chỉ có card 6 GB, và chính
@@ -705,6 +743,10 @@ def _should_checkpoint_gradients(spec_default: bool) -> bool:
     đụng tới phép tính.
     """
 
+    if choice == "on":
+        return True
+    if choice == "off":
+        return False
     try:
         import torch
     except ImportError:
@@ -762,6 +804,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     # Card 6 GB tràn ngay ở lô 8 và chết hẳn - trong khi đường LLM tự lùi lô rồi
     # bù bằng tích luỹ gradient. Cùng một dự án mà hai đường xử lý hết bộ nhớ
     # theo hai kiểu là chỗ để người chạy mất một lượt máy thuê.
+    parser.add_argument(
+        "--gradient-checkpointing",
+        choices=("auto", "on", "off"),
+        default="auto",
+        help="auto: bật khi VRAM dưới 16 GiB. Bật thì chậm hơn ~1/4 mà tốn ít bộ nhớ hơn hẳn",
+    )
     parser.add_argument(
         "--batch-size",
         type=int,
