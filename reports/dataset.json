@@ -128,7 +128,7 @@
     "gaps": []
   },
   "ontology": {
-    "triples": 7679,
+    "triples": 7708,
     "classes": 56,
     "object_properties": 29,
     "datatype_properties": 55,
@@ -3314,6 +3314,6 @@
     "test.jsonl": "d9b2c289e43f95fd9be57bc7dbef8b9e5bfb3aea751716a5a7cc580a484c31ee",
     "catalogue.jsonl": "dca2739452b7dcaf48e4d95b3abe797d78d95c68fd022957d1132735ad021315",
     "coverage.json": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251",
-    "ontology.ttl": "5e4ee7a8c61efe3268444e7b8f5a0208490b07c87dcd443ec7edacca2de91bb4"
+    "ontology.ttl": "ca086d44e6bb8ade14597b9c6e640c90acffc6dcd061283e002ac73f5a09aacf"
   }
 }

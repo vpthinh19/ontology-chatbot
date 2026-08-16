@@ -101,6 +101,6 @@
   "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
   "ontology": {
     "path": "../ontology/ontology.ttl",
-    "sha256": "5e4ee7a8c61efe3268444e7b8f5a0208490b07c87dcd443ec7edacca2de91bb4"
+    "sha256": "ca086d44e6bb8ade14597b9c6e640c90acffc6dcd061283e002ac73f5a09aacf"
   }
 }

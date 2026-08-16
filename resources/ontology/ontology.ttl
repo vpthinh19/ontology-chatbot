@@ -3186,7 +3186,10 @@ b) Đối với các học phần thực hành, thí nghiệm, thực tập ngo�
     :clauseNumber "2"^^xsd:integer .
 
 :Regulation1052Article18Clause02Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng xếp loại học lực"@vi ;
+    skos:altLabel "xếp loại học lực theo điểm trung bình chung"@vi ;
+    skos:altLabel "thang xếp loại học lực"@vi ;
+    skos:altLabel "mức xếp loại học lực"@vi ;
     :citationLabel "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -3256,7 +3259,9 @@ TT — Số tín chỉ đã tích lũy — Xếp trình độ năm học
     :clauseNumber "1"^^xsd:integer .
 
 :Regulation1052Article19Clause01Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 khoản 1 Điều 19 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng xếp trình độ năm học"@vi ;
+    skos:altLabel "xếp trình độ năm học theo số tín chỉ tích lũy"@vi ;
+    skos:altLabel "trình độ năm học của sinh viên"@vi ;
     :citationLabel "bảng 1 khoản 1 Điều 19 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -3848,7 +3853,10 @@ TT. — Điểm trung bình chung tích lũy của toàn khoá — Xếp loại
     :clauseNumber "2"^^xsd:integer .
 
 :Regulation1052Article23Clause02Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 khoản 2 Điều 23 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng xếp hạng tốt nghiệp"@vi ;
+    skos:altLabel "hạng tốt nghiệp theo điểm trung bình chung tích lũy toàn khoá"@vi ;
+    skos:altLabel "xếp loại tốt nghiệp"@vi ;
+    skos:altLabel "thang xếp loại bằng tốt nghiệp"@vi ;
     :citationLabel "bảng 1 khoản 2 Điều 23 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4677,7 +4685,9 @@ Tối thiểu — Tối đa
     :headingText "Điều kiện, số lượng sinh viên để tổ chức một lớp học phần"@vi .
 
 :Regulation1052Appendix1Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 Phụ lục 1 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng sĩ số lớp học phần"@vi ;
+    skos:altLabel "số lượng sinh viên tối thiểu và tối đa mỗi lớp học phần"@vi ;
+    skos:altLabel "quy mô lớp học phần"@vi ;
     :citationLabel "bảng 1 Phụ lục 1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4790,7 +4800,9 @@ TCF — Test de Connaissance Français
     :headingText "Bảng quy đổi điểm đối với chứng chỉ ngoại ngữ quốc tế cho sinh viên"@vi .
 
 :Regulation1052Appendix2Table01 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 Phụ lục 2 mục 1.1 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng quy đổi chứng chỉ tiếng Anh chương trình chuẩn"@vi ;
+    skos:altLabel "quy đổi điểm chứng chỉ tiếng Anh quốc tế cho sinh viên không chuyên ngữ chương trình chuẩn"@vi ;
+    skos:altLabel "quy đổi IELTS TOEIC TOEFL sang điểm 10"@vi ;
     :citationLabel "bảng 1 Phụ lục 2 mục 1.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4834,7 +4846,9 @@ Bậc 5 — N2 — 740 — TRKI 3 — TOPIK 5 — > 400
 Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 
 :Regulation1052Appendix2Table03 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
+    skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi ;
+    skos:altLabel "yêu cầu tiếng Anh chương trình đặc biệt"@vi ;
     :citationLabel "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4878,7 +4892,9 @@ Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 6 — Quản trị dịch vụ du lịch và lữ hành — HSK 4 — TOCFL 3 — N3 — 610 — TRKI 2 — B2 — ≥ 400 — TOPIK 3"""@vi .
 
 :Regulation1052Appendix2Table05 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng quy đổi ngoại ngữ hai ngành Ngôn ngữ Anh"@vi ;
+    skos:altLabel "quy đổi chứng chỉ ngoại ngữ quốc tế cho sinh viên ngành Ngôn ngữ Anh"@vi ;
+    skos:altLabel "quy đổi HSK JLPT TOPIK cho sinh viên ngành Ngôn ngữ Anh"@vi ;
     :citationLabel "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4900,7 +4916,9 @@ Bậc 5 — HSK 5 — N2 — 740 — TRKI 3 — TOPIK 5 — ≥ 400
 Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 
 :Regulation1052Appendix2Table06 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 6 Phụ lục 2 mục III Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "danh mục viết tắt chứng chỉ ngoại ngữ"@vi ;
+    skos:altLabel "các từ viết tắt của chứng chỉ ngoại ngữ quốc tế"@vi ;
+    skos:altLabel "tên đầy đủ của các chứng chỉ ngoại ngữ quốc tế"@vi ;
     :citationLabel "bảng 6 Phụ lục 2 mục III Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4956,7 +4974,9 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :headingText "Bảng quy đổi điểm đối với chứng chỉ tin học quốc tế cho sinh viên"@vi .
 
 :Regulation1052Appendix3Table01 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 Phụ lục 3 Quy chế đào tạo trình độ đại học"@vi ;
+    rdfs:label "bảng quy đổi chứng chỉ tin học"@vi ;
+    skos:altLabel "quy đổi điểm IC3 ICDL MOS"@vi ;
+    skos:altLabel "điểm thưởng chứng chỉ tin học"@vi ;
     :citationLabel "bảng 1 Phụ lục 3 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -5011,7 +5031,9 @@ STT — Xếp loại học bổng — Học bổng 05 tháng / học kỳ (VNĐ)
 # không hề chứa con số ấy. Nạp bảng theo khuôn đã chốt 11/8 (mỗi bảng là MỘT
 # node, tra cả bảng) rồi trỏ các mức về bảng.
 :Decision317Article01Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng mức học bổng Điều 1 Quyết định 317/QĐ-ĐHNT"@vi ;
+    rdfs:label "bảng mức học bổng chương trình chuẩn"@vi ;
+    skos:altLabel "mức tiền học bổng khuyến khích học tập"@vi ;
+    skos:altLabel "mức tiền học bổng theo xếp loại"@vi ;
     :citationLabel "bảng mức học bổng tại Điều 1 Quyết định 317/QĐ-ĐHNT ngày 07/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
     :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision317 ;
@@ -5040,7 +5062,8 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 3 — Khá — 6.000.000"""@vi .
 
 :Decision317Article02Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng mức học bổng chương trình đặc biệt Điều 2 Quyết định 317/QĐ-ĐHNT"@vi ;
+    rdfs:label "bảng mức học bổng chương trình đặc biệt"@vi ;
+    skos:altLabel "mức tiền học bổng của chương trình đào tạo đặc biệt"@vi ;
     :citationLabel "bảng mức học bổng tại Điều 2 Quyết định 317/QĐ-ĐHNT ngày 07/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
     :documentUrl "https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision317 ;
@@ -5178,7 +5201,9 @@ IV — Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo ch
     :appendixNumber "II" .
 
 :Decision729AppendixIITable01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT"@vi ;
+    rdfs:label "danh mục ngành đào tạo theo khối ngành"@vi ;
+    skos:altLabel "danh sách ngành đào tạo của trường"@vi ;
+    skos:altLabel "ngành đào tạo phân theo khối ngành"@vi ;
     :citationLabel "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026"@vi ;
     :documentUrl "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision729 ;
@@ -5529,7 +5554,9 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     :officialText "Sửa đổi, bổ sung Phụ lục của Quy chế đào tạo trình độ đại học kèm theo Quyết định số 1052/QĐ-ĐHNT ngày 17/7/2025 của Hiệu trưởng Trường Đại học Nha Trang, cụ thể như sau: Bổ sung khoản 1.3 và 1.4 trong Mục 1 của Phụ lục 2, với nội dung."@vi .
 
 :Decision1965Article01Table01 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng khoản 1.3 danh mục học phần ngoại ngữ"@vi ;
+    rdfs:label "danh mục học phần ngoại ngữ"@vi ;
+    skos:altLabel "các học phần ngoại ngữ và số tín chỉ"@vi ;
+    skos:altLabel "phân loại học phần điều kiện và học phần bắt buộc của ngoại ngữ"@vi ;
     :citationLabel "bảng khoản 1.3 Điều 1 Quyết định 1965/QĐ-ĐHNT ngày 19/12/2025 của Hiệu trưởng Trường Đại học Nha Trang về sửa đổi, bổ sung Phụ lục quy chế đào tạo trình độ đại học"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/Doc/809/qd-1965--19-12-2025--sua-doi--bo-sung-phu-luc-quy-che-dao-tao-trinh-do-dai-hoc-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision1965 ;
@@ -5547,7 +5574,9 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 1 — Ngoại ngữ A1 — 4 tín chỉ — Bậc 1 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n2 — Ngoại ngữ A2.1 — 4 tín chỉ — Bậc 2 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n3 — Ngoại ngữ A2.2 — 4 tín chỉ — Bậc 2 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n4 — Ngoại ngữ B1.1 — 4 tín chỉ — Bậc 3 — Khóa 67 trở về trước: Học phần bắt buộc (HPBB) — Khóa 68 trở đi: HPĐK\n5 — Ngoại ngữ B1.2 — 4 tín chỉ — Bậc 3 — Khóa 67 trở về trước: Học phần bắt buộc (HPBB) — Khóa 68 trở đi: HPĐK\n6 — Ngoại ngữ B2.1 — 4 tín chỉ — Bậc 4 — Khóa 67 trở về trước: HPBB (chương trình kỹ sư) — Khóa 68 trở đi: HPBB\n7 — Ngoại ngữ B2.2 — 4 tín chỉ — Bậc 4 — Khóa 67 trở về trước: HPBB (chương trình kỹ sư) — Khóa 68 trở đi: HPBB"""@vi .
 
 :Decision1965Article01Table02 a :DocumentTable, owl:NamedIndividual ;
-    rdfs:label "bảng khoản 1.4 kiểm tra đánh giá học phần ngoại ngữ"@vi ;
+    rdfs:label "bảng đánh giá học phần ngoại ngữ"@vi ;
+    skos:altLabel "tỷ trọng điểm của học phần ngoại ngữ"@vi ;
+    skos:altLabel "thành phần đánh giá học phần ngoại ngữ"@vi ;
     :citationLabel "bảng khoản 1.4 Điều 1 Quyết định 1965/QĐ-ĐHNT ngày 19/12/2025 của Hiệu trưởng Trường Đại học Nha Trang về sửa đổi, bổ sung Phụ lục quy chế đào tạo trình độ đại học"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/Doc/809/qd-1965--19-12-2025--sua-doi--bo-sung-phu-luc-quy-che-dao-tao-trinh-do-dai-hoc-pdf.pdf"^^xsd:anyURI ;
     :inDocument :Decision1965 ;
