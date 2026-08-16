@@ -27,8 +27,17 @@ from ontchatbot.research.evaluation import (
     evaluate_predictions,
     evaluate_query_id_expectations,
 )
-from ontchatbot.research.llm_lora_training import _is_cuda_oom
-from ontchatbot.runtime.llm import LLMQueryGenerator, load_examples
+from ontchatbot.research.llm_lora_training import (
+    MODEL_ID,
+    MODEL_REVISION,
+    SYSTEM_PROMPT,
+    _is_cuda_oom,
+)
+from ontchatbot.runtime.llm import (
+    FineTunedQueryGenerator,
+    LLMQueryGenerator,
+    load_examples,
+)
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import ARTIFACTS_DIR, DATASET_DIR
 
@@ -40,8 +49,6 @@ def _pinned_revision(model_id: str) -> str | None:
     Đường huấn luyện ghim cứng một commit. Đường chấm phải hỏi đúng commit ấy,
     nếu không thì adapter và model gốc có thể lệch nhau mà không báo gì.
     """
-
-    from ..research.llm_lora_training import MODEL_ID, MODEL_REVISION
 
     return MODEL_REVISION if model_id == MODEL_ID else None
 
@@ -72,6 +79,28 @@ def base_precision_for_adapter(adapter, requested: str) -> str:
         )
     quantization = json.loads(metrics.read_text(encoding="utf-8")).get("quantization")
     return "4bit" if quantization and "4-bit" in quantization else "bf16"
+
+
+def fine_tuned_prompt(tokenizer, question: str) -> str:
+    """Bọc câu hỏi ĐÚNG như lúc huấn luyện đã bọc nó.
+
+    Nằm ở cấp mô-đun chứ không nấp trong ``build_complete`` để phép kiểm gọi
+    được mà không phải nạp model - phép kiểm ấy đối chiếu thẳng với đường huấn
+    luyện, và nếu có nó từ đầu thì lượt chấm 16/8 đã không đo nhầm.
+
+    ``question`` phải là câu ĐÃ chuẩn hoá; bên gọi lo bước đó, y như bên huấn
+    luyện.
+    """
+
+    return tokenizer.apply_chat_template(
+        [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": question},
+        ],
+        add_generation_prompt=True,
+        tokenize=False,
+        enable_thinking=False,
+    )
 
 
 def build_complete(
@@ -162,6 +191,20 @@ def build_complete(
     model = model.eval()
 
     def _as_chat(prompt: str) -> str:
+        # HỎI MODEL ĐÃ TINH CHỈNH BẰNG ĐÚNG KHUÔN NÓ ĐƯỢC DẠY.
+        #
+        # Khuôn huấn luyện là lời hệ thống + câu hỏi trần, và phần trả lời bắt
+        # đầu ngay sau khối ``<think>`` rỗng. Khuôn nhắc ví dụ thì không có lời
+        # hệ thống, không có khối đó, và dài gấp mấy chục lần vì cõng theo 12 ví
+        # dụ. Suốt hơn hai nghìn bước huấn luyện, model chưa gặp khuôn ấy lần
+        # nào.
+        #
+        # Hỏi sai khuôn KHÔNG làm model câm - nó vẫn trả lời gần đúng, chỉ trượt
+        # một token ở cùng một chỗ, và một token đó đủ để truy vấn rơi khỏi danh
+        # mục. Đo được trên lượt chấm ngày 16/8: 150 trong 399 câu sai đúng một
+        # token, kéo cả ba chỉ số xuống cùng lúc.
+        if adapter is not None:
+            return fine_tuned_prompt(tokenizer, prompt)
         return tokenizer.apply_chat_template(
             [{"role": "user", "content": prompt}],
             add_generation_prompt=True,
@@ -281,12 +324,16 @@ def main() -> None:
         args.adapter,
         args.batch_size,
     )
-    generator = LLMQueryGenerator(
-        complete,
-        load_examples(DATASET_DIR / "train.jsonl"),
-        shots=args.shots,
-        complete_batch=complete_batch,
-    )
+    if args.adapter:
+        # Model đã tinh chỉnh KHÔNG được nhắc ví dụ: xem ghi chú ở ``_as_chat``.
+        generator = FineTunedQueryGenerator(complete, complete_batch=complete_batch)
+    else:
+        generator = LLMQueryGenerator(
+            complete,
+            load_examples(DATASET_DIR / "train.jsonl"),
+            shots=args.shots,
+            complete_batch=complete_batch,
+        )
 
     started = time.monotonic()
     predictions: list[str] = []
@@ -322,7 +369,7 @@ def main() -> None:
     }
     report["run"] = {
         "model": args.model,
-        "shots": args.shots,
+        "shots": None if args.adapter else args.shots,
         "split": args.split,
         "records": len(rows),
         "seconds_per_question": round(elapsed / len(rows), 2),

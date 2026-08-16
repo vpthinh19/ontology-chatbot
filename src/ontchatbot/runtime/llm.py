@@ -72,48 +72,27 @@ def load_examples(path: Path) -> tuple[Example, ...]:
     return tuple(examples)
 
 
-class LLMQueryGenerator:
-    """Sinh truy vấn bằng một LLM bất kỳ, gọi qua ``complete``.
+class _QueryGeneratorBase:
+    """Phần chung của mọi cách sinh truy vấn: chuẩn hoá, gọi model, dọn kết quả.
 
-    ``complete`` nhận prompt đã dựng sẵn và trả về văn bản model sinh ra. Tách
-    như vậy để đổi model không phải sửa gì ở đây - chạy local hay gọi dịch vụ
-    đều cắm vào cùng một chỗ.
+    Chỉ ``build_prompt`` là khác nhau giữa model có nhắc ví dụ và model đã tinh
+    chỉnh. Mọi bước còn lại nằm ở đây, một bản duy nhất, vì để hai đường tự đi
+    tự đến là cách dự án này đã tự bắn vào chân mình: bộ chấm từng hỏi adapter
+    bằng khuôn nhắc 12 ví dụ - thứ adapter chưa thấy bao giờ - và con số thu về
+    đo một model không tồn tại.
     """
 
     def __init__(
         self,
         complete: Callable[[str], str],
-        examples: Sequence[Example],
         *,
-        shots: int = 12,
         complete_batch: Callable[[Sequence[str]], Sequence[str]] | None = None,
     ) -> None:
-        if shots < 1:
-            raise ValueError("cần ít nhất một ví dụ nhắc kèm")
         self._complete = complete
-        self._examples = tuple(examples)
-        self._shots = shots
         self._complete_batch = complete_batch
 
-    def nearest(self, question: str) -> tuple[Example, ...]:
-        wanted = _shingles(question)
-        ranked = sorted(
-            self._examples,
-            key=lambda example: _similarity(wanted, example._shingles),
-            reverse=True,
-        )
-        return tuple(ranked[: self._shots])
-
     def build_prompt(self, question: str) -> str:
-        # Ví dụ giống nhất đặt SÁT câu hỏi: phần cuối prompt là phần model chú ý
-        # nhất, nên xếp tăng dần theo độ giống.
-        chosen = tuple(reversed(self.nearest(question)))
-        blocks = "\n\n".join(
-            f"Câu hỏi: {example.question}\nTruy vấn: {example.target}"
-            for example in chosen
-        )
-        instruction = _INSTRUCTION.format(marker=MARKER)
-        return f"{instruction}\n\n{blocks}\n\nCâu hỏi: {question}\nTruy vấn:"
+        raise NotImplementedError
 
     def generate(self, text: str) -> str:
         question = normalize_model_input(text)
@@ -145,6 +124,64 @@ class LLMQueryGenerator:
                 f"gom lô trả về {len(raw)} kết quả cho {len(prompts)} câu hỏi"
             )
         return [_clean(text) for text in raw]
+
+
+class FineTunedQueryGenerator(_QueryGeneratorBase):
+    """Sinh truy vấn bằng model ĐÃ tinh chỉnh: câu hỏi trần, không ví dụ nhắc.
+
+    Model đã học thuộc bài thì không cần ai nhắc bài. Đưa ví dụ vào là đưa nó
+    một khuôn khác hẳn khuôn nó được dạy - dài gấp mấy chục lần, thiếu lời hệ
+    thống - và nó sẽ quay sang bắt chước ví dụ thay vì dùng thứ đã học.
+
+    Phần bọc câu hỏi thành hội thoại nằm ở bên gọi, vì đó là việc của bộ tách
+    từ. Ở đây chỉ đảm bảo câu hỏi được chuẩn hoá y như lúc huấn luyện.
+    """
+
+    def build_prompt(self, question: str) -> str:
+        return question
+
+
+class LLMQueryGenerator(_QueryGeneratorBase):
+    """Sinh truy vấn bằng một LLM CHƯA tinh chỉnh, nhắc kèm ví dụ.
+
+    ``complete`` nhận prompt đã dựng sẵn và trả về văn bản model sinh ra. Tách
+    như vậy để đổi model không phải sửa gì ở đây - chạy local hay gọi dịch vụ
+    đều cắm vào cùng một chỗ.
+    """
+
+    def __init__(
+        self,
+        complete: Callable[[str], str],
+        examples: Sequence[Example],
+        *,
+        shots: int = 12,
+        complete_batch: Callable[[Sequence[str]], Sequence[str]] | None = None,
+    ) -> None:
+        if shots < 1:
+            raise ValueError("cần ít nhất một ví dụ nhắc kèm")
+        super().__init__(complete, complete_batch=complete_batch)
+        self._examples = tuple(examples)
+        self._shots = shots
+
+    def nearest(self, question: str) -> tuple[Example, ...]:
+        wanted = _shingles(question)
+        ranked = sorted(
+            self._examples,
+            key=lambda example: _similarity(wanted, example._shingles),
+            reverse=True,
+        )
+        return tuple(ranked[: self._shots])
+
+    def build_prompt(self, question: str) -> str:
+        # Ví dụ giống nhất đặt SÁT câu hỏi: phần cuối prompt là phần model chú ý
+        # nhất, nên xếp tăng dần theo độ giống.
+        chosen = tuple(reversed(self.nearest(question)))
+        blocks = "\n\n".join(
+            f"Câu hỏi: {example.question}\nTruy vấn: {example.target}"
+            for example in chosen
+        )
+        instruction = _INSTRUCTION.format(marker=MARKER)
+        return f"{instruction}\n\n{blocks}\n\nCâu hỏi: {question}\nTruy vấn:"
 
 
 def _clean(raw: str) -> str:

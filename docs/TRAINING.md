@@ -54,6 +54,28 @@ Nén 4-bit sinh ra cho card 6 GB. Trên card lớn nó chỉ làm chậm: bitsan
 nén trọng số ở mỗi lượt truyền xuôi, mà giải mã tuần tự từng token thì phần đó
 lấn át — đo được **6,9 giây/câu ở 4-bit so với 5,0 ở bf16**.
 
+### Khuôn nhắc lúc chấm phải là khuôn lúc dạy
+
+**Model đã tinh chỉnh thì KHÔNG nhắc ví dụ.** Bộ chấm bọc câu hỏi đúng như lúc
+huấn luyện: lời hệ thống + câu hỏi trần, phần trả lời bắt đầu sau khối `<think>`
+rỗng. Chỉ khi chấm model **gốc chưa tinh chỉnh** nó mới dựng khuôn nhắc 12 ví dụ,
+vì lúc đó ví dụ là thứ duy nhất nói cho model biết phải làm gì. Cờ `--shots`
+không có tác dụng khi có `--adapter`, và báo cáo ghi lại là không dùng.
+
+Vì sao phải viết hẳn ra: lượt chấm 16/8 hỏi adapter bằng khuôn nhắc — khuôn dài
+**2.253 token** trong khi khuôn huấn luyện chỉ **61 token**, lại thiếu cả lời hệ
+thống lẫn khối `<think>`. Model không câm. Nó trả lời gần đúng, chỉ trượt **đúng
+một token** ở cùng một chỗ trong **150 trên 399 câu**, và một token đó đủ để truy
+vấn rơi khỏi danh mục — kéo cả ba chỉ số xuống cùng lúc, trông như model kém chứ
+không như thước đo hỏng.
+
+Có một phép kiểm so khuôn chấm với khuôn huấn luyện **tới từng token**. Nó cần
+model trong cache, không có thì tự bỏ qua.
+
+> **Khi nào nối LLM vào đường phục vụ thì dùng lại đúng lớp sinh đó.** Hôm nay
+> đường phục vụ chỉ chạy seq2seq nên chưa dính, nhưng dựng lại khuôn nhắc ở chỗ
+> mới là lặp lại đúng lỗi này ngoài production.
+
 > **Gom lô đổi vài dự đoán, và đó là chuyện bình thường.** Phép nhân ma trận theo
 > lô cộng dồn theo thứ tự khác lúc chạy một câu, nên chỗ hai token gần ngang điểm
 > có thể lật. Đo trên 32 câu validation: **30/32 giống hệt từng ký tự**, hai câu
