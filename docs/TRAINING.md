@@ -10,8 +10,9 @@ nó truy ra trọn vẹn một node rồi để LLM lớn đọc và tự viết
 
 ```bash
 uv sync --extra train
-bash scripts/train-and-report.sh --smoke-test --allow-download   # lần đầu
-bash scripts/train-and-report.sh                                  # chạy thật
+bash scripts/train.sh --smoke-test --allow-download   # lần đầu, kiểm có vừa VRAM
+bash scripts/train.sh                                  # LLM, chạy thật
+bash scripts/train.sh t5gemma2                         # seq2seq
 ```
 
 Script ghi bối cảnh máy, phiên bản thư viện, commit, **vân tay SHA256 của từng
@@ -22,7 +23,7 @@ một `.tar.gz`. Vân tay là phần quan trọng nhất: thiếu nó thì khôn
 Chấm lại một adapter đã có, khỏi huấn luyện lại:
 
 ```bash
-ADAPTER=artifacts/run-<mốc>/adapter bash scripts/train-and-report.sh --skip-train
+ADAPTER=artifacts/run-<mốc>/adapter bash scripts/train.sh --skip-train
 ```
 
 ### Ba thứ tự điều chỉnh theo máy
@@ -33,8 +34,8 @@ là **LoRA thường trên máy lớn, QLoRA trên card 6 GB**. Ép tay bằng
 
 Nén 4-bit bắt bitsandbytes giải nén trọng số ở **mỗi** lượt truyền, mà lô nhỏ với
 chuỗi ngắn thì không có đủ phép tính để chia đều chi phí đó — huấn luyện trả giá
-cả lượt xuôi lẫn lượt ngược. Model 1,2 tỉ tham số ở bf16 chỉ tốn khoảng 2,4 GB,
-nên trên L4 24 GB việc nén chỉ lấy đi tốc độ. Trên card 6 GB thì ngược lại: 4-bit
+cả lượt xuôi lẫn lượt ngược. Trọng số gốc ở bf16 chiếm 3,76 GB (đo trên L4),
+nên card 24 GB thừa sức giữ nguyên và việc nén chỉ lấy đi tốc độ. Trên card 6 GB thì ngược lại: 4-bit
 là cách duy nhất nạp vừa.
 
 > **Đổi nền là ĐỔI PHÉP THỬ, không phải chỉnh tốc độ.** Adapter học bù cho đúng
@@ -97,11 +98,19 @@ model trong cache, không có thì tự bỏ qua.
 > lệch đều là câu model đoán bừa và sai ở cả hai đường. Hệ quả thực dụng: **so hai
 > lượt chấm thì phải cùng cỡ lô** — vì vậy cỡ lô được ghi vào báo cáo.
 
-### Số đo tham chiếu
+### Số đo tham chiếu — NVIDIA L4 24 GB, 3 epoch, lô vật lý 4, checkpointing tắt
 
-Lượt huấn luyện ngày 15/8/2026 trên NVIDIA L4 24 GB: **79 phút**, 2.046 bước,
-3 epoch, lô vật lý 4, checkpointing tắt, VRAM đỉnh 13,43 GiB, 3,445 mẫu/giây,
-mất mát 1,928 → 0,0018.
+| | QLoRA 4-bit (15/8) | LoRA bf16 (16/8) |
+|---|---|---|
+| bước | 2.046 | 2.250 |
+| **giây mỗi bước** | **2,320** | **2,076** |
+| tổng | 79 phút | 77,9 phút |
+| VRAM đỉnh | 13,43 GiB | 15,40 GiB |
+| mất mát cuối | 0,0374 | 0,0360 |
+
+Bỏ nén 4-bit nhanh hơn **10,5% mỗi bước** — không phải gấp đôi như từng dự đoán
+trong dự án này. Tổng thời gian gần bằng nhau vì lượt sau có thêm 10% số bước
+(dataset lớn hơn). Con số đáng nhớ là giây/bước, không phải tổng.
 
 ### Ghim bản model
 
