@@ -19,3 +19,6 @@ logs/
 /dev/
 ontology.ipynb
 ontology_old.ttl
+
+# Gói kết quả mang về từ máy thuê: nhị phân, nặng, và dựng lại được từ log.
+*.tar.gz
