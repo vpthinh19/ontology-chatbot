@@ -37,6 +37,12 @@ from ..runtime.sparql import load_ontology
 #: ``eval_batch_size`` phải khai tường minh: mặc định của thư viện là 1, và với
 #: ``predict_with_generate`` thì mỗi lần đánh giá sinh tuần tự từng câu.
 #:
+#: ĐỪNG nâng nó lên vì thấy card còn trống. Đã thử 32 rồi 16 trên L4 24 GB và
+#: tràn cả hai lần: khâu huấn luyện (checkpointing tắt) đã giữ ~21 GB khi chạm
+#: mốc đánh giá đầu tiên, còn đánh giá thì đòi thêm một khối logits
+#: ``lô × 320 × 262.144``. Chỗ trống nhìn thấy lúc epoch 0,3 không phải chỗ
+#: trống lúc epoch 2.
+#:
 #: ``batch_size`` 4 với tích luỹ 2 - lô HIỆU DỤNG vẫn là 8, khớp với đường LLM.
 #:
 #: Trước đây là lô 8 tích luỹ 1, con số đó là trần đo trên card 6 GB KHI CÒN BẬT
@@ -209,8 +215,6 @@ def train(args: argparse.Namespace) -> dict:
     checkpoint_gradients = _should_checkpoint_gradients(
         spec.get("gradient_checkpointing", False), args.gradient_checkpointing
     )
-    if not args.batch_size:
-        spec["eval_batch_size"] = _eval_batch_size(spec.get("eval_batch_size", 1))
     output_dir = Path(args.output_dir) / args.model
     _prepare_output_directory(output_dir)
     snapshot = Path(
@@ -702,33 +706,6 @@ def _require_training_ready(
     raise RuntimeError(
         "dataset is not ready for full training: " + ", ".join(codes)
     )
-
-
-def _eval_batch_size(spec_default: int) -> int:
-    """Cỡ lô lúc ĐÁNH GIÁ - thứ đáng nới nhất khi card còn dư bộ nhớ.
-
-    Đánh giá ở đây sinh chữ trên toàn tập val, và hồ sơ dự án ghi rõ khâu này
-    từng chiếm 88% thời gian một lượt chạy. Nó là SUY LUẬN thuần tuý: nới lô
-    không đụng gì tới trọng số học được, khác hẳn lô huấn luyện - nâng lô huấn
-    luyện là đổi phép thử, nâng lô đánh giá chỉ là bớt để card chạy không tải.
-
-    Với ``--eval-every-epochs 2`` và trần 16 epoch thì có tới tám lượt đánh giá,
-    nên đây là chỗ tiết kiệm được nhiều nhất.
-    """
-
-    try:
-        import torch
-    except ImportError:
-        return spec_default
-    if not torch.cuda.is_available():
-        return spec_default
-    if torch.cuda.get_device_properties(0).total_memory >= 16 * 1024**3:
-        # 16, không phải 32. Đặt 32 đã làm lượt chạy trên L4 tràn bộ nhớ: sinh
-        # 32 chuỗi dài tới 320 token, mỗi bước tính logits trên từ điển ~256
-        # nghìn token của Gemma - phần logits đó lớn hơn nhiều so với trực giác
-        # "model 270M thì nhẹ".
-        return 16
-    return spec_default
 
 
 def _should_checkpoint_gradients(spec_default: bool, choice: str = "auto") -> bool:
