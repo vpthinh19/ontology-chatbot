@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, Sequence
 
 from .text import normalize_model_input
 
@@ -15,6 +15,8 @@ MAX_TARGET_LENGTH = 320
 
 class QueryGenerator(Protocol):
     def generate(self, text: str) -> str: ...
+
+    def generate_many(self, texts: Sequence[str]) -> list[str]: ...
 
 
 class QueryGenerationError(ValueError):
@@ -58,19 +60,34 @@ class CTranslate2Generator:
         )
         return cls(translator, tokenizer)
 
-    def generate(self, text: str) -> str:
-        source = normalize_model_input(text)
-        if not source:
+    def generate_many(self, texts: Sequence[str]) -> list[str]:
+        """Sinh cho nhiều câu một lượt, giữ nguyên thứ tự đưa vào.
+
+        ``translate_batch`` vốn nhận cả lô - đường một câu vẫn gọi nó với danh
+        sách MỘT phần tử, tức để engine chạy không tải. Bộ chấm LLM từng mất hơn
+        ba tiếng vì đúng lỗi này; đừng lặp lại ở đây.
+        """
+
+        sources = [normalize_model_input(text) for text in texts]
+        if any(not source for source in sources):
             raise ValueError("question is empty")
-        source_tokens = self._tokenizer.encode(
-            source,
-            add_special_tokens=True,
-        ).tokens
-        result = self._translator.translate_batch(
-            [source_tokens],
+        if not sources:
+            return []
+        batch = [
+            self._tokenizer.encode(source, add_special_tokens=True).tokens
+            for source in sources
+        ]
+        results = self._translator.translate_batch(
+            batch,
             beam_size=1,
             max_decoding_length=MAX_TARGET_LENGTH,
-        )[0]
+        )
+        return [self._decode(result) for result in results]
+
+    def generate(self, text: str) -> str:
+        return self.generate_many([text])[0]
+
+    def _decode(self, result) -> str:
         target_ids = []
         for token in result.hypotheses[0]:
             token_id = self._tokenizer.token_to_id(token)

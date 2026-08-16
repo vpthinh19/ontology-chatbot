@@ -103,6 +103,46 @@ def fine_tuned_prompt(tokenizer, question: str) -> str:
     )
 
 
+
+class _Seq2SeqGenerator:
+    """Cho checkpoint seq2seq đi qua ĐÚNG bộ chấm của LLM.
+
+    Dùng lại thẳng ``_generate_rows`` của đường huấn luyện thay vì viết vòng
+    sinh thứ hai: hai vòng sinh là hai cách chuẩn hoá, hai cách đệm, hai cách
+    cắt chuỗi - và khi chúng trôi ra thì con số của hai họ model không còn so
+    được, mà so được chính là lý do tồn tại của phép đo này.
+    """
+
+    def __init__(self, model, tokenizer, batch_size: int) -> None:
+        self._model = model
+        self._tokenizer = tokenizer
+        self._batch_size = max(1, batch_size)
+
+    def generate_many(self, texts):
+        from ontchatbot.research.training import _generate_rows
+
+        return _generate_rows(
+            self._model,
+            self._tokenizer,
+            [{"input": text} for text in texts],
+            torch,
+            batch_size=self._batch_size,
+        )
+
+    def generate(self, text: str) -> str:
+        return self.generate_many([text])[0]
+
+
+def _seq2seq_generator(model_dir, batch_size: int) -> _Seq2SeqGenerator:
+    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(model_dir, local_files_only=True)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_dir, local_files_only=True)
+    if torch.cuda.is_available():
+        model = model.to("cuda")
+    return _Seq2SeqGenerator(model, tokenizer, batch_size)
+
+
 def build_complete(
     model_id: str,
     max_new_tokens: int,
@@ -277,7 +317,13 @@ def build_complete(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True)
+    parser.add_argument("--model", default=MODEL_ID)
+    parser.add_argument(
+        "--seq2seq-model",
+        type=Path,
+        default=None,
+        help="thư mục checkpoint seq2seq; chấm bằng CÙNG thước với LLM",
+    )
     parser.add_argument("--allow-download", action="store_true", help="cho phép tải model")
     parser.add_argument("--shots", type=int, default=12)
     parser.add_argument("--split", default="val")
@@ -313,27 +359,39 @@ def main() -> None:
     if args.limit:
         rows = rows[: args.limit]
 
-    base_precision = base_precision_for_adapter(args.adapter, args.base_precision)
-    print(f"trọng số gốc: {base_precision} · lô sinh: {args.batch_size}", flush=True)
-    complete, complete_batch = build_complete(
-        args.model,
-        args.max_new_tokens,
-        args.gpu_memory,
-        base_precision == "4bit",
-        args.allow_download,
-        args.adapter,
-        args.batch_size,
-    )
-    if args.adapter:
-        # Model đã tinh chỉnh KHÔNG được nhắc ví dụ: xem ghi chú ở ``_as_chat``.
-        generator = FineTunedQueryGenerator(complete, complete_batch=complete_batch)
+    # SEQ2SEQ ĐI QUA ĐÚNG BỘ CHẤM NÀY, không có thước riêng.
+    #
+    # Trước đây mỗi họ model có một đường chấm: LLM chấm val+test kèm 15 câu
+    # người thật, bộ chấm gắn trong seq2seq chỉ chấm val và bỏ câu người thật,
+    # bộ chấm CTranslate2 lại dùng một tập benchmark khác hẳn. Ba thước khác
+    # nhau thì con số của hai họ không đặt cạnh nhau được - mà đặt cạnh nhau
+    # chính là lý do tồn tại của cả phép so.
+    if args.seq2seq_model:
+        print(f"seq2seq: {args.seq2seq_model}", flush=True)
+        generator = _seq2seq_generator(args.seq2seq_model, args.batch_size)
+        base_precision = "fp32"
     else:
-        generator = LLMQueryGenerator(
-            complete,
-            load_examples(DATASET_DIR / "train.jsonl"),
-            shots=args.shots,
-            complete_batch=complete_batch,
+        base_precision = base_precision_for_adapter(args.adapter, args.base_precision)
+        print(f"trọng số gốc: {base_precision} · lô sinh: {args.batch_size}", flush=True)
+        complete, complete_batch = build_complete(
+            args.model,
+            args.max_new_tokens,
+            args.gpu_memory,
+            base_precision == "4bit",
+            args.allow_download,
+            args.adapter,
+            args.batch_size,
         )
+        if args.adapter:
+            # Model đã tinh chỉnh KHÔNG được nhắc ví dụ: xem ghi chú ở ``_as_chat``.
+            generator = FineTunedQueryGenerator(complete, complete_batch=complete_batch)
+        else:
+            generator = LLMQueryGenerator(
+                complete,
+                load_examples(DATASET_DIR / "train.jsonl"),
+                shots=args.shots,
+                complete_batch=complete_batch,
+            )
 
     started = time.monotonic()
     predictions: list[str] = []
@@ -368,15 +426,16 @@ def main() -> None:
         ),
     }
     report["run"] = {
-        "model": args.model,
-        "shots": None if args.adapter else args.shots,
+        "model": str(args.seq2seq_model) if args.seq2seq_model else args.model,
+        "shots": None if (args.adapter or args.seq2seq_model) else args.shots,
         "split": args.split,
         "records": len(rows),
         "seconds_per_question": round(elapsed / len(rows), 2),
         # Có adapter là ĐÃ tinh chỉnh. Trước đây ô này ghi cứng False, nên đúng
         # lượt chấm adapter - lý do tồn tại của cả bộ chấm - lại tự khai là chưa
         # tinh chỉnh, và báo cáo nói ngược với thứ nó vừa đo.
-        "fine_tuned": args.adapter is not None,
+        "fine_tuned": args.adapter is not None or args.seq2seq_model is not None,
+        "family": "seq2seq" if args.seq2seq_model else "causal-lm",
         "adapter": str(args.adapter) if args.adapter else None,
         # Ghi CẢ nền trọng số lẫn cỡ lô. Thiếu nền thì vài tuần sau không ai
         # chứng minh được con số này đo trên đúng model mà adapter đã học; thiếu
