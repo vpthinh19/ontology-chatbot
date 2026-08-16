@@ -14,19 +14,19 @@
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 5996,
+      "records": 5518,
       "query_families": 50,
       "targets": 567,
       "domains": {
-        "academic-rule": 1701,
-        "certificate": 455,
-        "document": 1061,
-        "form": 574,
-        "out-of-domain": 839,
-        "procedure": 1057,
-        "tuition": 309
+        "academic-rule": 1476,
+        "certificate": 413,
+        "document": 1003,
+        "form": 550,
+        "out-of-domain": 773,
+        "procedure": 1021,
+        "tuition": 282
       },
-      "sha256": "7153f33c57c1aaed26ec7c506b6a573be87544c794e2032054cca324e0e02bcd"
+      "sha256": "4822b4137b42ae8b9b3a00579b092a909af776d710088a6e9278ef25180e3317"
     },
     "val": {
       "path": "val.jsonl",
@@ -34,31 +34,31 @@
       "query_families": 50,
       "targets": 271,
       "domains": {
-        "academic-rule": 137,
-        "certificate": 31,
-        "document": 56,
-        "form": 41,
+        "academic-rule": 135,
+        "certificate": 32,
+        "document": 55,
+        "form": 42,
         "out-of-domain": 56,
         "procedure": 51,
-        "tuition": 28
+        "tuition": 29
       },
-      "sha256": "430ae7dee892214bd279a4e7e60f639296b948964fa51ace9a581fcc55794d80"
+      "sha256": "e3fd2cf7b89ebf878dd1dcd93a40aa890663a74e9fbe309c854b1e6dbcd8d9a0"
     },
     "test": {
       "path": "test.jsonl",
-      "records": 388,
+      "records": 390,
       "query_families": 50,
       "targets": 273,
       "domains": {
-        "academic-rule": 132,
-        "certificate": 32,
-        "document": 56,
-        "form": 41,
-        "out-of-domain": 54,
+        "academic-rule": 131,
+        "certificate": 31,
+        "document": 57,
+        "form": 42,
+        "out-of-domain": 55,
         "procedure": 49,
-        "tuition": 24
+        "tuition": 25
       },
-      "sha256": "904fc534446bffaa58df6c67f4b677aae36415bb6faabcc3259a99769e2284a9"
+      "sha256": "6c1c848eaf2716e3fd8514af056b099c5d36c4d02e04737579490bcb11390cd3"
     }
   },
   "catalogue": {
@@ -71,17 +71,17 @@
     "sha256": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251"
   },
   "totals": {
-    "records": 6784,
+    "records": 6308,
     "query_families": 50,
     "targets": 567,
     "domains": {
-      "academic-rule": 1970,
-      "certificate": 518,
-      "document": 1173,
-      "form": 656,
-      "out-of-domain": 949,
-      "procedure": 1157,
-      "tuition": 361
+      "academic-rule": 1742,
+      "certificate": 476,
+      "document": 1115,
+      "form": 634,
+      "out-of-domain": 884,
+      "procedure": 1121,
+      "tuition": 336
     }
   },
   "split_contract": {

@@ -2,17 +2,17 @@
 
 ## Quy mô artifact hiện có
 
-Ba tệp JSONL chứa **6.784 câu**:
+Ba tệp JSONL chứa **6.308 câu**:
 
 | Tệp | Số dòng dữ liệu |
 |---|---:|
-| `resources/dataset/train.jsonl` | 5.996 |
+| `resources/dataset/train.jsonl` | 5.518 |
 | `resources/dataset/val.jsonl` | 400 |
-| `resources/dataset/test.jsonl` | 388 |
-| **Tổng** | **6.784** |
+| `resources/dataset/test.jsonl` | 390 |
+| **Tổng** | **6.308** |
 
 Các số trên được đếm trực tiếp từ ba tệp. `reports/dataset.json` xác nhận cùng
-tổng `dataset.records = 6784` và cùng số bản ghi theo split. Đây là thống kê
+tổng `dataset.records = 6308` và cùng số bản ghi theo split. Đây là thống kê
 artifact, không phải kết quả model.
 
 ## Trạng thái tương thích
@@ -59,7 +59,7 @@ Ba split đều dùng đủ 50 họ hiện hành; họ có mặt ở held-out lu
 
 ## Phân bố trong report
 
-`reports/dataset.json` ghi phân bố của 6.784 dòng hiện có:
+`reports/dataset.json` ghi phân bố của 6.308 dòng hiện có:
 
 | Miền | Số câu |
 |---|---:|

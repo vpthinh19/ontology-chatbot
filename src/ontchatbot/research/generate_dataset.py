@@ -1186,15 +1186,22 @@ def generate(
             if anchor_name in seen_anchor_keys:
                 continue
             seen_anchor_keys.add(anchor_name)
-            # Chừa HAI câu MỖI NEO, không phải một câu mỗi phong cách. Chừa theo
-            # phong cách thì với mười câu chia bốn giọng, ta giữ lại tới bốn - tức
-            # 40% kho viết tay không vào train, và câu ghép khuôn lại chiếm chỗ.
-            # Hai câu là đủ cho val và test.
-            held = 0
+            # CHỪA MỘT CÂU CHO MỖI PHONG CÁCH, không phải hai câu mỗi neo.
+            #
+            # Luật cũ ("hai câu là đủ cho val và test") coi câu viết tay là tài
+            # nguyên khan hiếm cho tập DẠY. Nó tối ưu nhầm thứ: câu viết tay quý
+            # nhất khi làm THƯỚC ĐO. Hậu quả đo được ngày 16/8: tập test thành
+            # 78% câu ghép khuôn, mà model làm tốt hơn hẳn trên loại đó - 91,9%
+            # so với 87,8% trên câu người viết. Điểm công bố bị thổi lên bởi
+            # chính những câu dễ nhất.
+            #
+            # Chừa theo phong cách thì mọi ô (neo, giọng nói) của tập chấm đều
+            # có sẵn một câu người viết để dùng. Tập dạy mất vài trăm câu và vẫn
+            # còn hơn hai nghìn, cộng toàn bộ câu ghép khuôn - câu khuôn nằm ở
+            # tập dạy thì vô hại, nó vẫn dạy đúng ánh xạ.
             for register in REGISTERS:
                 pool = written_questions().get((query_id, anchor_name, register), ())
-                keep = 1 if held < 2 and len(pool) > 1 else 0
-                held += keep
+                keep = 1 if len(pool) > 1 else 0
                 for question in pool[: len(pool) - keep]:
                     emit(
                         "train", query_id, register, question,
