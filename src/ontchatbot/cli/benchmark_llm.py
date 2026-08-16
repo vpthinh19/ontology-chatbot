@@ -22,11 +22,7 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
-from ontchatbot.research.benchmark import load_user_query_expectations
-from ontchatbot.research.evaluation import (
-    evaluate_predictions,
-    evaluate_query_id_expectations,
-)
+from ontchatbot.research.evaluation import evaluate_predictions
 from ontchatbot.research.llm_lora_training import (
     MODEL_ID,
     MODEL_REVISION,
@@ -405,26 +401,11 @@ def main() -> None:
         )
     elapsed = time.monotonic() - started
 
+    # 15 CÂU NGƯỜI THẬT KHÔNG NẰM Ở ĐÂY NỮA.
+    #
+    # Chúng là dữ liệu nội bộ để chủ dự án và tôi đánh giá model, không thuộc
+    # train/val/test và không đưa ra ngoài. Đo bằng ``scripts/danh-gia-noi-bo.py``.
     report = evaluate_predictions(rows, predictions, load_ontology(), include_cases=True)
-    real_user_expectations = load_user_query_expectations()
-    real_user_started = time.monotonic()
-    real_user_predictions = generator.generate_many(
-        [item["question"] for item in real_user_expectations]
-    )
-    real_user_elapsed = time.monotonic() - real_user_started
-    report["real_user_cases"] = evaluate_query_id_expectations(
-        real_user_expectations,
-        real_user_predictions,
-        include_cases=True,
-    )
-    report["real_user_cases"]["inference"] = {
-        "records": len(real_user_expectations),
-        "seconds": round(real_user_elapsed, 3),
-        "seconds_per_question": round(
-            real_user_elapsed / len(real_user_expectations),
-            3,
-        ),
-    }
     report["run"] = {
         "model": str(args.seq2seq_model) if args.seq2seq_model else args.model,
         "shots": None if (args.adapter or args.seq2seq_model) else args.shots,
@@ -446,7 +427,6 @@ def main() -> None:
     }
 
     primary = report["primary_metrics"]
-    real_user = report["real_user_cases"]
     print(
         "\n".join(
             [
@@ -457,7 +437,6 @@ def main() -> None:
                 f"đúng node        {primary['node_selection']['correct']}/{primary['node_selection']['count']} ({primary['node_selection']['rate']:.1%})",
                 f"đúng dạng        {primary['query_shape']['correct']}/{primary['query_shape']['count']} ({primary['query_shape']['rate']:.1%})",
                 f"từ chối đúng     {primary['rejection_decision']['correct']}/{primary['rejection_decision']['count']} ({primary['rejection_decision']['rate']:.1%})",
-                f"câu người thật {real_user['correct']}/{real_user['count']} ({real_user['query_id_accuracy']:.1%}) — báo riêng",
                 f"tốc độ           {elapsed / len(rows):.1f}s mỗi câu",
             ]
         )

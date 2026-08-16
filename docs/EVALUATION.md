@@ -1,8 +1,8 @@
 # Đánh giá model sinh SPARQL
 
-Thước v3 nằm trong `src/ontchatbot/research/evaluation.py`. Ba đường chạy model
-đều gọi cùng `evaluate_predictions`, vì vậy causal LLM và seq2seq được chấm trên
-cùng chuỗi đầu ra, cùng catalogue, cùng ontology và cùng ba định nghĩa:
+Thước v3 nằm trong `src/ontchatbot/research/evaluation.py`. Causal LLM và seq2seq
+đi qua **cùng một lệnh chấm**, nên chúng được đo trên cùng chuỗi đầu ra, cùng
+catalogue, cùng ontology và cùng ba định nghĩa:
 
 1. **Đúng node** (`node_selection`): model neo vào đúng tập thực thể/bảng mà
    câu chuẩn yêu cầu.
@@ -55,23 +55,27 @@ sai ở chỉ số này.
 ## Cùng thước cho causal LLM và seq2seq
 
 Đầu vào của thước chỉ là danh sách record chuẩn và danh sách chuỗi model sinh
-ra. Nó không đọc logits, loss, tokenizer hay kiến trúc model. Causal LLM có thể
-dùng prompt/few-shot; seq2seq có thể chạy bằng Transformers hoặc CTranslate2;
-sau bước generate cả ba đều giao cùng một chuỗi cho `evaluate_predictions`.
+ra. Nó không đọc logits, loss, tokenizer hay kiến trúc model. Causal LLM chưa
+tinh chỉnh dùng prompt nhắc ví dụ; bản đã tinh chỉnh dùng đúng khuôn đã dạy nó;
+seq2seq nhận thẳng câu hỏi. Sau bước generate cả ba giao cùng một chuỗi cho
+`evaluate_predictions`.
 Vì vậy so sánh ba chỉ số có cùng ý nghĩa khi dùng đúng cùng split. Thời gian,
 VRAM, số shot và thông tin checkpoint được ghi riêng, không tham gia điểm.
 
-## Chín câu người thật
+## Câu người thật — NỘI BỘ, không nằm trong báo cáo này
 
-`resources/cases/user_queries.json` có 9 câu không do bộ sinh tạo ra. Tệp chỉ có
-oracle `expected_query_id`, không có target SPARQL/node, nên
-`evaluate_query_id_expectations` báo riêng `query_id_accuracy` và từng case;
-không trộn chúng vào các mẫu số held-out ở trên. Query sai cú pháp hoặc ngoài catalogue
-nhận sai. Các evaluator chạy model tự sinh thêm 9 prediction này sau benchmark.
+`resources/cases/user_queries.json` giữ các câu do người thật gõ vào chatbot,
+nhãn do chủ dự án tự xác nhận từng câu. Chúng **không thuộc train/val/test** nên
+**không xuất hiện trong báo cáo benchmark**: báo cáo chỉ đo trên đúng ba tập của
+release hiện hành.
+
+Đo riêng bằng `scripts/danh-gia-noi-bo.py`. Tệp chỉ có oracle
+`expected_query_id`, không có target SPARQL/node, nên chỉ báo được
+`query_id_accuracy` và từng case.
 
 ## Lệnh chạy
 
-Chấm causal LLM (tự chấm thêm 9 câu người thật):
+Chấm causal LLM:
 
 ```bash
 uv run benchmark_llm --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
@@ -82,18 +86,25 @@ Sinh theo lô 16 câu, tự hạ khi tràn VRAM (`--batch-size`). Nền trọng 
 (`--base-precision`). Cả hai được ghi vào báo cáo, vì **hai lượt chấm khác cỡ lô
 không so được với nhau đến từng câu** — xem `docs/TRAINING.md`.
 
-Chấm checkpoint seq2seq đã có, không huấn luyện:
+Chấm checkpoint seq2seq đã có — **cùng lệnh, cùng thước** với LLM:
 
 ```bash
-uv run evaluate_sparql_model --model t5gemma2 --model-dir artifacts/models/t5gemma2/model --suite both --output-dir artifacts/evaluation/t5gemma2
-uv run evaluate_ct2_model --model-dir artifacts/models/t5gemma2-ct2 --output artifacts/evaluation/t5gemma2-ct2.json
+uv run benchmark_llm --seq2seq-model artifacts/seq2seq-<mốc>/model --split test --output artifacts/seq2seq-test.json
 ```
 
-Chấm file prediction có sẵn. File thứ hai dùng ID `real-user-001` đến
-`real-user-009` và vẫn được ghi thành phần báo cáo riêng:
+Trước đây mỗi họ model có một bộ chấm riêng, và bộ chấm CTranslate2 còn dùng một
+tập benchmark khác hẳn. Ba thước đo ba kiểu thì số của hai họ không đặt cạnh
+nhau được, mà đặt cạnh nhau chính là lý do chạy phép so. Nay chỉ còn một đường.
+
+Báo cáo nhóm kết quả theo **giọng nói** (`by_register`), **đặc điểm truy vấn**
+(`by_query_feature`), **họ truy vấn** (`by_query_id`), **miền** (`by_domain`) và
+**kiểu tên node** (`by_anchor_kind`: `table` hỏi bằng nội dung · `document-part`
+hỏi bằng toạ độ · `named` tên mang nghĩa).
+
+Chấm file prediction có sẵn:
 
 ```bash
-uv run benchmark_sparql --benchmark resources/dataset/val.jsonl --predictions artifacts/val-predictions.jsonl --real-user-predictions artifacts/real-user-predictions.jsonl --details --output artifacts/evaluation/val.json
+uv run benchmark_sparql --benchmark resources/dataset/val.jsonl --predictions artifacts/val-predictions.jsonl --details --output artifacts/evaluation/val.json
 ```
 
 Lệnh offline ở trên vẫn chạy toàn bộ validation trước khi chấm. Có thể
@@ -115,8 +126,9 @@ smoke-test riêng thước bằng unit test sau (đây không phải kết quả
   node/dạng nhưng lỗi thực thi hoặc lấy thiếu dữ liệu.
 - Ba chỉ số này đánh giá sinh và truy xuất SPARQL, chưa đo độ trung thành của câu
   trả lời tự nhiên do LLM tổng hợp từ context.
-- Chín câu người thật chỉ có oracle họ truy vấn và mẫu rất nhỏ; chưa đo được đúng
-  node, đúng literal, hay độ bền trên phân phối người dùng rộng hơn.
+- Câu người thật chỉ có oracle họ truy vấn và mẫu rất nhỏ; chưa đo được đúng
+  node, đúng literal, hay độ bền trên phân phối người dùng rộng hơn. Chúng được
+  đo riêng và không nằm trong báo cáo này.
 - Một query có thể nêu đúng IRI neo nhưng thêm logic vô nghĩa; đúng node vẫn đạt,
   còn đúng dạng sẽ trượt nếu logic đó làm query ra ngoài catalogue.
 

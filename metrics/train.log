@@ -1,0 +1,365 @@
+=== BỐI CẢNH LƯỢT CHẠY 20260816-064312 ===
+--- máy ---
+name, memory.total [MiB], driver_version
+NVIDIA L4, 23034 MiB, 580.173.02
+--- mã nguồn ---
+7db0c3ae0493f097dd36c6cd4dad83e4dc7311e3
+ M uv.lock
+--- thư viện ---
+python 3.12.13
+torch 2.13.0+cu130
+transformers 5.15.0
+peft 0.20.0
+bitsandbytes 0.50.0
+trl CHƯA CÀI
+cuda 13.0 · khả dụng: True
+--- dữ liệu đã train ---
+train: 5451 dòng · sha256 1c7726eba56f0123
+val: 399 dòng · sha256 e4203c6fd2bf2248
+test: 389 dòng · sha256 2ef1807f4460347e
+ontology.ttl: sha256 312a09d3f96a9740
+câu do LLM viết: 2526
+
+=== HUẤN LUYỆN ===
+RUN_CONFIG {"allocator_conf": "expandable_segments:True", "gpu_total_bytes": 23659151360, "gradient_checkpointing_choice": "auto", "gradient_checkpointing_effective": false, "keep_tied_weight_fp32": false, "lora_profile": "attention-r8", "model_profile": "text-only", "smoke_steps": null, "smoke_test": false}
+CUDA_MEMORY {"allocated_bytes": 0, "inactive_split_bytes": 0, "peak_allocated_bytes": 0, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 0, "physical_free_bytes": 23455727616, "physical_total_bytes": 23659151360, "reserved_bytes": 0, "reserved_unallocated_bytes": 0, "stage": "before_model_load"}
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<05:16,  1.01it/s]Loading weights:   2%|▏         | 6/320 [00:01<00:43,  7.14it/s]Loading weights:  12%|█▎        | 40/320 [00:01<00:04, 57.34it/s]Loading weights:  24%|██▍       | 76/320 [00:01<00:02, 110.57it/s]Loading weights:  33%|███▎      | 107/320 [00:01<00:01, 150.56it/s]Loading weights:  46%|████▌     | 146/320 [00:01<00:00, 202.79it/s]Loading weights:  57%|█████▋    | 181/320 [00:01<00:00, 238.06it/s]Loading weights:  67%|██████▋   | 213/320 [00:01<00:00, 256.45it/s]Loading weights:  79%|███████▉  | 252/320 [00:01<00:00, 289.75it/s]Loading weights:  90%|█████████ | 288/320 [00:01<00:00, 306.58it/s]Loading weights: 100%|██████████| 320/320 [00:02<00:00, 158.72it/s]
+CUDA_MEMORY {"allocated_bytes": 1726784512, "inactive_split_bytes": 0, "peak_allocated_bytes": 1745931264, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 1772093440, "physical_free_bytes": 21652176896, "physical_total_bytes": 23659151360, "reserved_bytes": 1772093440, "reserved_unallocated_bytes": 45308928, "stage": "after_model_load"}
+CUDA_MEMORY {"allocated_bytes": 2744994816, "inactive_split_bytes": 0, "peak_allocated_bytes": 3761021952, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 3787456512, "physical_free_bytes": 20643446784, "physical_total_bytes": 23659151360, "reserved_bytes": 2780823552, "reserved_unallocated_bytes": 35828736, "stage": "after_kbit_prepare"}
+TIED_WEIGHT {"after_bytes": 1017118720, "before_bytes": 2034237440, "dtype": "bfloat16", "logical_parameters": 508559360, "parameter_class": "Parameter", "requires_grad": false, "saved_bytes": 1017118720, "storage_bytes": 1017118720, "tied": true}
+CUDA_MEMORY {"allocated_bytes": 1727876096, "inactive_split_bytes": 0, "peak_allocated_bytes": 3762113536, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 3787456512, "physical_free_bytes": 21671051264, "physical_total_bytes": 23659151360, "reserved_bytes": 1753219072, "reserved_unallocated_bytes": 25342976, "stage": "after_tied_weight_cast"}
+CUDA_MEMORY {"allocated_bytes": 1742640128, "inactive_split_bytes": 0, "peak_allocated_bytes": 3762113536, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 3787456512, "physical_free_bytes": 21656371200, "physical_total_bytes": 23659151360, "reserved_bytes": 1767899136, "reserved_unallocated_bytes": 25259008, "stage": "after_adapter"}
+CUDA_MEMORY {"allocated_bytes": 1742640128, "inactive_split_bytes": 0, "peak_allocated_bytes": 3762113536, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 3787456512, "physical_free_bytes": 21656371200, "physical_total_bytes": 23659151360, "reserved_bytes": 1767899136, "reserved_unallocated_bytes": 25259008, "stage": "after_trainer_init"}
+{'loss': '1.919', 'grad_norm': '2.19', 'learning_rate': '6.129e-05', 'epoch': '0.02935'}
+{'loss': '0.5854', 'grad_norm': '1.847', 'learning_rate': '0.0001258', 'epoch': '0.05869'}
+{'loss': '0.1639', 'grad_norm': '1.021', 'learning_rate': '0.0001903', 'epoch': '0.08804'}
+{'loss': '0.07971', 'grad_norm': '0.4885', 'learning_rate': '0.0002', 'epoch': '0.1174'}
+{'loss': '0.07121', 'grad_norm': '0.5935', 'learning_rate': '0.0001998', 'epoch': '0.1467'}
+{'loss': '0.0542', 'grad_norm': '0.3905', 'learning_rate': '0.0001996', 'epoch': '0.1761'}
+{'loss': '0.05248', 'grad_norm': '0.3797', 'learning_rate': '0.0001993', 'epoch': '0.2054'}
+{'loss': '0.04937', 'grad_norm': '0.2937', 'learning_rate': '0.0001988', 'epoch': '0.2348'}
+{'loss': '0.03541', 'grad_norm': '0.3603', 'learning_rate': '0.0001983', 'epoch': '0.2641'}
+{'loss': '0.03828', 'grad_norm': '0.4254', 'learning_rate': '0.0001977', 'epoch': '0.2935'}
+{'loss': '0.0289', 'grad_norm': '0.3805', 'learning_rate': '0.0001969', 'epoch': '0.3228'}
+{'loss': '0.03268', 'grad_norm': '0.3626', 'learning_rate': '0.0001961', 'epoch': '0.3522'}
+{'loss': '0.02767', 'grad_norm': '0.3777', 'learning_rate': '0.0001952', 'epoch': '0.3815'}
+{'loss': '0.02561', 'grad_norm': '0.3486', 'learning_rate': '0.0001942', 'epoch': '0.4109'}
+{'loss': '0.02376', 'grad_norm': '0.277', 'learning_rate': '0.000193', 'epoch': '0.4402'}
+{'loss': '0.02441', 'grad_norm': '0.415', 'learning_rate': '0.0001918', 'epoch': '0.4696'}
+{'loss': '0.0222', 'grad_norm': '0.2435', 'learning_rate': '0.0001905', 'epoch': '0.4989'}
+{'loss': '0.01774', 'grad_norm': '0.3735', 'learning_rate': '0.0001891', 'epoch': '0.5282'}
+{'loss': '0.02143', 'grad_norm': '0.3517', 'learning_rate': '0.0001877', 'epoch': '0.5576'}
+{'loss': '0.01997', 'grad_norm': '0.1475', 'learning_rate': '0.0001861', 'epoch': '0.5869'}
+{'loss': '0.01627', 'grad_norm': '0.1251', 'learning_rate': '0.0001844', 'epoch': '0.6163'}
+{'loss': '0.01475', 'grad_norm': '0.3249', 'learning_rate': '0.0001827', 'epoch': '0.6456'}
+{'loss': '0.02065', 'grad_norm': '0.2027', 'learning_rate': '0.0001809', 'epoch': '0.675'}
+{'loss': '0.01317', 'grad_norm': '0.2119', 'learning_rate': '0.000179', 'epoch': '0.7043'}
+{'loss': '0.01505', 'grad_norm': '0.1439', 'learning_rate': '0.000177', 'epoch': '0.7337'}
+{'loss': '0.01455', 'grad_norm': '0.3909', 'learning_rate': '0.0001749', 'epoch': '0.763'}
+{'loss': '0.0141', 'grad_norm': '0.1809', 'learning_rate': '0.0001728', 'epoch': '0.7924'}
+{'loss': '0.01246', 'grad_norm': '0.09214', 'learning_rate': '0.0001706', 'epoch': '0.8217'}
+{'loss': '0.01203', 'grad_norm': '0.2577', 'learning_rate': '0.0001683', 'epoch': '0.8511'}
+{'loss': '0.01164', 'grad_norm': '0.1374', 'learning_rate': '0.000166', 'epoch': '0.8804'}
+{'loss': '0.01238', 'grad_norm': '0.1318', 'learning_rate': '0.0001636', 'epoch': '0.9098'}
+{'loss': '0.008997', 'grad_norm': '0.1651', 'learning_rate': '0.0001611', 'epoch': '0.9391'}
+{'loss': '0.01024', 'grad_norm': '0.1625', 'learning_rate': '0.0001585', 'epoch': '0.9685'}
+{'loss': '0.009449', 'grad_norm': '0.2544', 'learning_rate': '0.000156', 'epoch': '0.9978'}
+{'loss': '0.009074', 'grad_norm': '0.07763', 'learning_rate': '0.0001533', 'epoch': '1.026'}
+{'loss': '0.009114', 'grad_norm': '0.1467', 'learning_rate': '0.0001506', 'epoch': '1.056'}
+{'loss': '0.006356', 'grad_norm': '0.2378', 'learning_rate': '0.0001478', 'epoch': '1.085'}
+{'loss': '0.008345', 'grad_norm': '0.2795', 'learning_rate': '0.000145', 'epoch': '1.114'}
+{'loss': '0.007675', 'grad_norm': '0.09266', 'learning_rate': '0.0001422', 'epoch': '1.144'}
+{'loss': '0.006645', 'grad_norm': '0.277', 'learning_rate': '0.0001393', 'epoch': '1.173'}
+{'loss': '0.007928', 'grad_norm': '0.1861', 'learning_rate': '0.0001364', 'epoch': '1.202'}
+{'loss': '0.005832', 'grad_norm': '0.03609', 'learning_rate': '0.0001334', 'epoch': '1.232'}
+{'loss': '0.005398', 'grad_norm': '0.06154', 'learning_rate': '0.0001304', 'epoch': '1.261'}
+{'loss': '0.007093', 'grad_norm': '0.1082', 'learning_rate': '0.0001274', 'epoch': '1.291'}
+{'loss': '0.006071', 'grad_norm': '0.4721', 'learning_rate': '0.0001243', 'epoch': '1.32'}
+{'loss': '0.007944', 'grad_norm': '0.04024', 'learning_rate': '0.0001212', 'epoch': '1.349'}
+{'loss': '0.006664', 'grad_norm': '0.1982', 'learning_rate': '0.0001181', 'epoch': '1.379'}
+{'loss': '0.006974', 'grad_norm': '0.09538', 'learning_rate': '0.000115', 'epoch': '1.408'}
+{'loss': '0.005864', 'grad_norm': '0.1851', 'learning_rate': '0.0001118', 'epoch': '1.437'}
+{'loss': '0.005438', 'grad_norm': '0.2572', 'learning_rate': '0.0001087', 'epoch': '1.467'}
+{'loss': '0.00498', 'grad_norm': '0.01708', 'learning_rate': '0.0001055', 'epoch': '1.496'}
+{'loss': '0.003952', 'grad_norm': '0.3218', 'learning_rate': '0.0001024', 'epoch': '1.525'}
+{'loss': '0.006676', 'grad_norm': '0.08523', 'learning_rate': '9.921e-05', 'epoch': '1.555'}
+{'loss': '0.005318', 'grad_norm': '0.1154', 'learning_rate': '9.604e-05', 'epoch': '1.584'}
+{'loss': '0.005952', 'grad_norm': '0.06794', 'learning_rate': '9.288e-05', 'epoch': '1.613'}
+{'loss': '0.005292', 'grad_norm': '0.1236', 'learning_rate': '8.973e-05', 'epoch': '1.643'}
+{'loss': '0.005331', 'grad_norm': '0.2159', 'learning_rate': '8.658e-05', 'epoch': '1.672'}
+{'loss': '0.004241', 'grad_norm': '0.1787', 'learning_rate': '8.345e-05', 'epoch': '1.701'}
+{'loss': '0.005679', 'grad_norm': '0.01255', 'learning_rate': '8.034e-05', 'epoch': '1.731'}
+{'loss': '0.003734', 'grad_norm': '0.09367', 'learning_rate': '7.724e-05', 'epoch': '1.76'}
+{'loss': '0.002875', 'grad_norm': '0.1056', 'learning_rate': '7.417e-05', 'epoch': '1.789'}
+{'loss': '0.005904', 'grad_norm': '0.1546', 'learning_rate': '7.112e-05', 'epoch': '1.819'}
+{'loss': '0.004836', 'grad_norm': '0.1506', 'learning_rate': '6.811e-05', 'epoch': '1.848'}
+{'loss': '0.004256', 'grad_norm': '0.1899', 'learning_rate': '6.512e-05', 'epoch': '1.877'}
+{'loss': '0.005108', 'grad_norm': '0.195', 'learning_rate': '6.217e-05', 'epoch': '1.907'}
+{'loss': '0.004381', 'grad_norm': '0.09181', 'learning_rate': '5.926e-05', 'epoch': '1.936'}
+{'loss': '0.003164', 'grad_norm': '0.1689', 'learning_rate': '5.639e-05', 'epoch': '1.966'}
+{'loss': '0.00238', 'grad_norm': '0.003096', 'learning_rate': '5.356e-05', 'epoch': '1.995'}
+{'loss': '0.003259', 'grad_norm': '0.1187', 'learning_rate': '5.078e-05', 'epoch': '2.023'}
+{'loss': '0.00232', 'grad_norm': '0.1661', 'learning_rate': '4.805e-05', 'epoch': '2.053'}
+{'loss': '0.001573', 'grad_norm': '0.03821', 'learning_rate': '4.537e-05', 'epoch': '2.082'}
+{'loss': '0.001899', 'grad_norm': '0.231', 'learning_rate': '4.274e-05', 'epoch': '2.112'}
+{'loss': '0.001807', 'grad_norm': '0.03933', 'learning_rate': '4.018e-05', 'epoch': '2.141'}
+{'loss': '0.001958', 'grad_norm': '0.007021', 'learning_rate': '3.767e-05', 'epoch': '2.17'}
+{'loss': '0.002134', 'grad_norm': '0.002301', 'learning_rate': '3.522e-05', 'epoch': '2.2'}
+{'loss': '0.001716', 'grad_norm': '0.1167', 'learning_rate': '3.284e-05', 'epoch': '2.229'}
+{'loss': '0.002702', 'grad_norm': '0.1744', 'learning_rate': '3.053e-05', 'epoch': '2.258'}
+{'loss': '0.001442', 'grad_norm': '0.284', 'learning_rate': '2.829e-05', 'epoch': '2.288'}
+{'loss': '0.001276', 'grad_norm': '0.003438', 'learning_rate': '2.612e-05', 'epoch': '2.317'}
+{'loss': '0.001429', 'grad_norm': '0.1382', 'learning_rate': '2.402e-05', 'epoch': '2.346'}
+{'loss': '0.001627', 'grad_norm': '0.02557', 'learning_rate': '2.2e-05', 'epoch': '2.376'}
+{'loss': '0.002092', 'grad_norm': '0.1874', 'learning_rate': '2.006e-05', 'epoch': '2.405'}
+{'loss': '0.001284', 'grad_norm': '0.02118', 'learning_rate': '1.82e-05', 'epoch': '2.434'}
+{'loss': '0.0006442', 'grad_norm': '0.004899', 'learning_rate': '1.642e-05', 'epoch': '2.464'}
+{'loss': '0.002374', 'grad_norm': '0.1099', 'learning_rate': '1.472e-05', 'epoch': '2.493'}
+{'loss': '0.001419', 'grad_norm': '0.1569', 'learning_rate': '1.311e-05', 'epoch': '2.522'}
+{'loss': '0.001189', 'grad_norm': '0.02429', 'learning_rate': '1.158e-05', 'epoch': '2.552'}
+{'loss': '0.001037', 'grad_norm': '0.01731', 'learning_rate': '1.015e-05', 'epoch': '2.581'}
+{'loss': '0.001373', 'grad_norm': '0.001344', 'learning_rate': '8.805e-06', 'epoch': '2.61'}
+{'loss': '0.001852', 'grad_norm': '0.09997', 'learning_rate': '7.552e-06', 'epoch': '2.64'}
+{'loss': '0.001292', 'grad_norm': '0.08637', 'learning_rate': '6.391e-06', 'epoch': '2.669'}
+{'loss': '0.001889', 'grad_norm': '0.1757', 'learning_rate': '5.324e-06', 'epoch': '2.698'}
+{'loss': '0.002146', 'grad_norm': '0.01912', 'learning_rate': '4.352e-06', 'epoch': '2.728'}
+{'loss': '0.0009056', 'grad_norm': '0.01527', 'learning_rate': '3.476e-06', 'epoch': '2.757'}
+{'loss': '0.001006', 'grad_norm': '0.04978', 'learning_rate': '2.697e-06', 'epoch': '2.787'}
+{'loss': '0.002637', 'grad_norm': '0.1829', 'learning_rate': '2.015e-06', 'epoch': '2.816'}
+{'loss': '0.001602', 'grad_norm': '0.01585', 'learning_rate': '1.432e-06', 'epoch': '2.845'}
+{'loss': '0.0009068', 'grad_norm': '0.006403', 'learning_rate': '9.474e-07', 'epoch': '2.875'}
+{'loss': '0.001053', 'grad_norm': '0.0751', 'learning_rate': '5.622e-07', 'epoch': '2.904'}
+{'loss': '0.001276', 'grad_norm': '0.03148', 'learning_rate': '2.768e-07', 'epoch': '2.933'}
+{'loss': '0.001653', 'grad_norm': '0.1437', 'learning_rate': '9.138e-08', 'epoch': '2.963'}
+{'loss': '0.001166', 'grad_norm': '0.05235', 'learning_rate': '6.143e-09', 'epoch': '2.992'}
+{'train_runtime': '4760', 'train_samples_per_second': '3.436', 'train_steps_per_second': '0.43', 'train_loss': '0.03648', 'epoch': '3'}
+CUDA_MEMORY {"allocated_bytes": 1767306752, "inactive_split_bytes": 0, "peak_allocated_bytes": 13425958912, "peak_inactive_split_bytes": 0, "peak_reserved_bytes": 14130610176, "physical_free_bytes": 9264300032, "physical_total_bytes": 23659151360, "reserved_bytes": 14130610176, "reserved_unallocated_bytes": 12363303424, "stage": "after_train"}
+{
+  "model_id": "Qwen/Qwen3.5-2B",
+  "revision": "15852e8c16360a2fea060d615a32b45270f8a8fc",
+  "model_profile": "text-only",
+  "model_cached": true,
+  "cache_bytes": 4571274023,
+  "dataset_train_records": 5451,
+  "dataset_manifest_sha256": "6a5655cea1f61436a7a7efa1040c76a7488c25b74f05925a1e5c0eb1b163db0a",
+  "smoke_test": false,
+  "smoke_steps": null,
+  "evaluation": false,
+  "model_saved": true,
+  "optimizer_steps": 2046,
+  "epochs": 3.0,
+  "per_device_batch_size": 4,
+  "gradient_accumulation_steps": 2,
+  "effective_batch_size": 8,
+  "max_sequence_length": 320,
+  "dynamic_padding_multiple": 8,
+  "gradient_checkpointing": false,
+  "group_by_length": false,
+  "quantization": "4-bit NF4 double-quant; tied lm_head skipped",
+  "allocator_conf": "expandable_segments:True",
+  "compute_dtype": "bfloat16",
+  "lora_profile": "attention-r8",
+  "lora_rank": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.05,
+  "lora_target_modules": [
+    "in_proj_qkv",
+    "in_proj_z",
+    "in_proj_b",
+    "in_proj_a",
+    "out_proj",
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+  ],
+  "lora_projection_layers": 114,
+  "trainable_parameters": 3691008,
+  "total_parameters": 1199157568,
+  "tied_weight": {
+    "tied": true,
+    "dtype": "bfloat16",
+    "parameter_class": "Parameter",
+    "logical_parameters": 508559360,
+    "storage_bytes": 1017118720,
+    "requires_grad": false,
+    "before_bytes": 2034237440,
+    "after_bytes": 1017118720,
+    "saved_bytes": 1017118720
+  },
+  "train_loss": 0.0364839180148701,
+  "elapsed_seconds": 4760.246,
+  "seconds_per_optimizer_step": 2.327,
+  "steps_per_epoch": 682,
+  "estimated_seconds_per_epoch": 1586.7,
+  "estimated_full_run_seconds": 4760.2,
+  "initialization_peak_allocated_bytes": 3762113536,
+  "initialization_peak_reserved_bytes": 3787456512,
+  "training_peak_allocated_bytes": 13425958912,
+  "training_peak_reserved_bytes": 14130610176,
+  "cuda_memory_records": [
+    {
+      "stage": "before_model_load",
+      "allocated_bytes": 0,
+      "reserved_bytes": 0,
+      "reserved_unallocated_bytes": 0,
+      "physical_free_bytes": 23455727616,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 0,
+      "peak_reserved_bytes": 0,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_model_load",
+      "allocated_bytes": 1726784512,
+      "reserved_bytes": 1772093440,
+      "reserved_unallocated_bytes": 45308928,
+      "physical_free_bytes": 21652176896,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 1745931264,
+      "peak_reserved_bytes": 1772093440,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_kbit_prepare",
+      "allocated_bytes": 2744994816,
+      "reserved_bytes": 2780823552,
+      "reserved_unallocated_bytes": 35828736,
+      "physical_free_bytes": 20643446784,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 3761021952,
+      "peak_reserved_bytes": 3787456512,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_tied_weight_cast",
+      "allocated_bytes": 1727876096,
+      "reserved_bytes": 1753219072,
+      "reserved_unallocated_bytes": 25342976,
+      "physical_free_bytes": 21671051264,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 3762113536,
+      "peak_reserved_bytes": 3787456512,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_adapter",
+      "allocated_bytes": 1742640128,
+      "reserved_bytes": 1767899136,
+      "reserved_unallocated_bytes": 25259008,
+      "physical_free_bytes": 21656371200,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 3762113536,
+      "peak_reserved_bytes": 3787456512,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_trainer_init",
+      "allocated_bytes": 1742640128,
+      "reserved_bytes": 1767899136,
+      "reserved_unallocated_bytes": 25259008,
+      "physical_free_bytes": 21656371200,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 3762113536,
+      "peak_reserved_bytes": 3787456512,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    },
+    {
+      "stage": "after_train",
+      "allocated_bytes": 1767306752,
+      "reserved_bytes": 14130610176,
+      "reserved_unallocated_bytes": 12363303424,
+      "physical_free_bytes": 9264300032,
+      "physical_total_bytes": 23659151360,
+      "peak_allocated_bytes": 13425958912,
+      "peak_reserved_bytes": 14130610176,
+      "inactive_split_bytes": 0,
+      "peak_inactive_split_bytes": 0
+    }
+  ],
+  "gpu": "NVIDIA L4",
+  "torch_version": "2.13.0+cu130",
+  "longest_training_sequence": 266
+}
+
+=== CHẤM val ===
+trọng số gốc: 4bit · lô sinh: 16
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<01:30,  3.53it/s]Loading weights:   4%|▍         | 14/320 [00:00<00:06, 45.68it/s]Loading weights:  15%|█▍        | 47/320 [00:00<00:02, 134.75it/s]Loading weights:  28%|██▊       | 89/320 [00:00<00:01, 222.54it/s]Loading weights:  38%|███▊      | 120/320 [00:00<00:00, 246.28it/s]Loading weights:  48%|████▊     | 153/320 [00:00<00:00, 268.14it/s]Loading weights:  61%|██████    | 195/320 [00:00<00:00, 311.46it/s]Loading weights:  72%|███████▏  | 229/320 [00:01<00:00, 315.69it/s]Loading weights:  82%|████████▏ | 263/320 [00:01<00:00, 311.06it/s]Loading weights:  94%|█████████▍| 302/320 [00:01<00:00, 333.29it/s]Loading weights: 100%|██████████| 320/320 [00:01<00:00, 249.04it/s]
+  16/399 · 1.20s mỗi câu
+  32/399 · 1.14s mỗi câu
+  48/399 · 1.12s mỗi câu
+  64/399 · 1.10s mỗi câu
+  80/399 · 1.10s mỗi câu
+  96/399 · 1.09s mỗi câu
+  112/399 · 1.09s mỗi câu
+  128/399 · 1.08s mỗi câu
+  144/399 · 1.08s mỗi câu
+  160/399 · 1.09s mỗi câu
+  176/399 · 1.11s mỗi câu
+  192/399 · 1.11s mỗi câu
+  208/399 · 1.11s mỗi câu
+  224/399 · 1.11s mỗi câu
+  240/399 · 1.11s mỗi câu
+  256/399 · 1.11s mỗi câu
+  272/399 · 1.11s mỗi câu
+  288/399 · 1.10s mỗi câu
+  304/399 · 1.10s mỗi câu
+  320/399 · 1.10s mỗi câu
+  336/399 · 1.10s mỗi câu
+  352/399 · 1.11s mỗi câu
+  368/399 · 1.10s mỗi câu
+  384/399 · 1.10s mỗi câu
+  399/399 · 1.06s mỗi câu
+
+model            Qwen/Qwen3.5-2B (nhắc 12 ví dụ, adapter artifacts/run-20260816-064312/adapter)
+đúng node        304/343 (88.6%)
+đúng dạng        307/343 (89.5%)
+từ chối đúng     384/399 (96.2%)
+câu người thật 11/15 (73.3%) — báo riêng
+tốc độ           1.1s mỗi câu
+kết quả: artifacts/run-20260816-064312/benchmark-val.json
+
+=== CHẤM test ===
+trọng số gốc: 4bit · lô sinh: 16
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:   0%|          | 1/320 [00:00<01:30,  3.53it/s]Loading weights:   4%|▍         | 14/320 [00:00<00:06, 45.66it/s]Loading weights:  15%|█▍        | 47/320 [00:00<00:02, 135.19it/s]Loading weights:  28%|██▊       | 89/320 [00:00<00:01, 219.89it/s]Loading weights:  37%|███▋      | 119/320 [00:00<00:00, 242.87it/s]Loading weights:  48%|████▊     | 152/320 [00:00<00:00, 264.12it/s]Loading weights:  58%|█████▊    | 187/320 [00:00<00:00, 288.40it/s]Loading weights:  70%|███████   | 224/320 [00:01<00:00, 310.01it/s]Loading weights:  80%|████████  | 257/320 [00:01<00:00, 311.64it/s]Loading weights:  91%|█████████▏| 292/320 [00:01<00:00, 322.49it/s]Loading weights: 100%|██████████| 320/320 [00:01<00:00, 245.88it/s]
+  16/389 · 1.22s mỗi câu
+  32/389 · 1.15s mỗi câu
+  48/389 · 1.12s mỗi câu
+  64/389 · 1.11s mỗi câu
+  80/389 · 1.12s mỗi câu
+  96/389 · 1.11s mỗi câu
+  112/389 · 1.10s mỗi câu
+  128/389 · 1.10s mỗi câu
+  144/389 · 1.09s mỗi câu
+  160/389 · 1.10s mỗi câu
+  176/389 · 1.12s mỗi câu
+  192/389 · 1.12s mỗi câu
+  208/389 · 1.12s mỗi câu
+  224/389 · 1.12s mỗi câu
+  240/389 · 1.11s mỗi câu
+  256/389 · 1.11s mỗi câu
+  272/389 · 1.11s mỗi câu
+  288/389 · 1.11s mỗi câu
+  304/389 · 1.11s mỗi câu
+  320/389 · 1.11s mỗi câu
+  336/389 · 1.11s mỗi câu
+  352/389 · 1.11s mỗi câu
+  368/389 · 1.11s mỗi câu
+  384/389 · 1.11s mỗi câu
+  389/389 · 1.14s mỗi câu
+
+model            Qwen/Qwen3.5-2B (nhắc 12 ví dụ, adapter artifacts/run-20260816-064312/adapter)
+đúng node        292/335 (87.2%)
+đúng dạng        297/335 (88.7%)
+từ chối đúng     349/389 (89.7%)
+câu người thật 11/15 (73.3%) — báo riêng
+tốc độ           1.1s mỗi câu
+kết quả: artifacts/run-20260816-064312/benchmark-test.json
+
+=== GÓI LẠI ===

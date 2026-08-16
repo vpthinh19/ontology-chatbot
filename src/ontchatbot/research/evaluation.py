@@ -22,6 +22,23 @@ _STRING_LITERAL = re.compile(r'"(?:[^"\\]|\\.)*"')
 _NO_INFORMATION = "không có thông tin"
 
 
+
+def _anchor_kind(node: str) -> str:
+    """Node được HỎI bằng nội dung hay bằng toạ độ văn bản.
+
+    Ba nhóm, và chênh lệch giữa chúng là thứ giải thích phần lớn lỗi:
+    ``table`` được hỏi bằng nội dung ("xếp loại tốt nghiệp"), ``document-part``
+    được hỏi bằng chính toạ độ ("Điều 12 Quy chế 1052"), ``named`` là node có
+    tên mang nghĩa. Đo trên test 16/8: 26,7% - 97,1% - 90,4%.
+    """
+
+    if node.endswith("Table") or re.search(r"Table\d+$", node):
+        return "table"
+    if re.search(r"Article\d|Clause\d|Appendix|Chapter\d|Point\d", node):
+        return "document-part"
+    return "named"
+
+
 def evaluate_predictions(
     examples: list[dict[str, str]],
     predictions: Iterable[str],
@@ -42,6 +59,8 @@ def evaluate_predictions(
         "register": defaultdict(Counter),
         "query_feature": defaultdict(Counter),
         "query_id": defaultdict(Counter),
+        "domain": defaultdict(Counter),
+        "anchor_kind": defaultdict(Counter),
     }
     object_properties = frozenset(
         str(subject).rsplit("#", 1)[-1]
@@ -86,6 +105,9 @@ def evaluate_predictions(
                 () if marker_reference else query_feature_tags(query_features)
             ),
             "query_id": (query_id,),
+            "domain": (
+                (catalogue[query_id].domain,) if query_id in catalogue else ()
+            ),
         }
         for group_name, values in groups.items():
             for value in values:
@@ -190,6 +212,16 @@ def evaluate_predictions(
 
         if evaluation_group == "node_queries":
             expected_nodes = _query_anchor_nodes(target, graph)
+            # NHÓM THEO KIỂU TÊN NODE. Phép chia này đã phải viết lại bằng script
+            # vứt đi ba lần để chẩn đoán, vì báo cáo không có nó: bảng bị hỏi
+            # bằng NỘI DUNG nhưng từng được đặt tên bằng TOẠ ĐỘ, còn điều/khoản
+            # thì được hỏi bằng chính toạ độ của nó. Hai chuyện khác hẳn nhau mà
+            # gộp chung thì không thấy gì.
+            if expected_nodes:
+                kind = _anchor_kind(expected_nodes[0])
+                groups["anchor_kind"] = (kind,)
+                grouped["anchor_kind"][kind]["count"] += 1
+                grouped["anchor_kind"][kind]["sparql_count"] += 1
             if parse_ok:
                 predicted_nodes = _query_anchor_nodes(prediction, graph)
             node_correct = bool(expected_nodes) and predicted_nodes == expected_nodes
@@ -281,6 +313,8 @@ def evaluate_predictions(
         "by_register": _group_rates(grouped["register"]),
         "by_query_feature": _group_rates(grouped["query_feature"]),
         "by_query_id": _group_rates(grouped["query_id"]),
+        "by_domain": _group_rates(grouped["domain"]),
+        "by_anchor_kind": _group_rates(grouped["anchor_kind"]),
         "error_counts": dict(sorted(error_counts.items())),
     }
     if include_cases:
