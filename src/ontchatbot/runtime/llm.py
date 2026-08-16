@@ -86,12 +86,14 @@ class LLMQueryGenerator:
         examples: Sequence[Example],
         *,
         shots: int = 12,
+        complete_batch: Callable[[Sequence[str]], Sequence[str]] | None = None,
     ) -> None:
         if shots < 1:
             raise ValueError("cần ít nhất một ví dụ nhắc kèm")
         self._complete = complete
         self._examples = tuple(examples)
         self._shots = shots
+        self._complete_batch = complete_batch
 
     def nearest(self, question: str) -> tuple[Example, ...]:
         wanted = _shingles(question)
@@ -117,6 +119,32 @@ class LLMQueryGenerator:
         question = normalize_model_input(text)
         raw = self._complete(self.build_prompt(question))
         return _clean(raw)
+
+    def generate_many(self, texts: Sequence[str]) -> list[str]:
+        """Sinh cho nhiều câu một lượt, giữ nguyên thứ tự đưa vào.
+
+        Đi qua ĐÚNG các bước của ``generate`` - chuẩn hoá, dựng prompt, dọn kết
+        quả - và chỉ thay chỗ gọi model. Viết lại đường ống này ở nơi khác là tự
+        chuốc lấy hai đường chấm lệch nhau mà không ai thấy: bộ chấm sẽ đo một
+        thứ, còn lúc chạy thật lại là thứ khác.
+
+        Không có ``complete_batch`` thì lùi về gọi từng câu. Nhờ vậy đường phục
+        vụ (một câu một lượt) không phải biết gì về gom lô.
+        """
+
+        prompts = [
+            self.build_prompt(normalize_model_input(text)) for text in texts
+        ]
+        if not prompts:
+            return []
+        if self._complete_batch is None:
+            return [_clean(self._complete(prompt)) for prompt in prompts]
+        raw = list(self._complete_batch(prompts))
+        if len(raw) != len(prompts):
+            raise ValueError(
+                f"gom lô trả về {len(raw)} kết quả cho {len(prompts)} câu hỏi"
+            )
+        return [_clean(text) for text in raw]
 
 
 def _clean(raw: str) -> str:

@@ -35,6 +35,31 @@ không đổi. Ép tay bằng `--gradient-checkpointing on|off`.
 tích luỹ gradient — nên một lượt chạy trên card 6 GB và một lượt trên card 24 GB
 so sánh được với nhau.
 
+### Chấm: gom lô, và nền trọng số theo adapter
+
+Bộ chấm sinh **theo lô**, mặc định 16 câu một lượt, tự hạ khi tràn VRAM. Đổi bằng
+biến `BENCH_BATCH`. Sinh chữ bị chặn bởi băng thông bộ nhớ — mỗi bước giải mã đọc
+toàn bộ trọng số dù đang xử lý một câu hay ba mươi hai câu — nên sinh từng câu là
+để card chạy không tải. Đo trên card 6 GB, 32 câu validation: **4,8 giây/câu ở lô
+1 xuống 2,3 giây/câu ở lô 16** (thực tế tự hạ về 4 vì card nhỏ).
+
+**Nền trọng số gốc chọn theo lượt đã huấn luyện adapter, không theo máy đang
+chạy.** Bộ chấm đọc `training_metrics.json` nằm cạnh adapter. Adapter học cách bù
+cho một nền trọng số cụ thể; chấm nó trên nền khác là chấm một model khác, và
+triệu chứng duy nhất là con số hơi lệch mà không ai biết vì sao — cùng một họ lỗi
+với việc ghim bản model ở dưới. Adapter không có tệp đó thì bộ chấm **dừng và
+hỏi** chứ không đoán; chỉ rõ bằng `--base-precision 4bit|bf16`.
+
+Nén 4-bit sinh ra cho card 6 GB. Trên card lớn nó chỉ làm chậm: bitsandbytes giải
+nén trọng số ở mỗi lượt truyền xuôi, mà giải mã tuần tự từng token thì phần đó
+lấn át — đo được **6,9 giây/câu ở 4-bit so với 5,0 ở bf16**.
+
+> **Gom lô đổi vài dự đoán, và đó là chuyện bình thường.** Phép nhân ma trận theo
+> lô cộng dồn theo thứ tự khác lúc chạy một câu, nên chỗ hai token gần ngang điểm
+> có thể lật. Đo trên 32 câu validation: **30/32 giống hệt từng ký tự**, hai câu
+> lệch đều là câu model đoán bừa và sai ở cả hai đường. Hệ quả thực dụng: **so hai
+> lượt chấm thì phải cùng cỡ lô** — vì vậy cỡ lô được ghi vào báo cáo.
+
 ### Số đo tham chiếu
 
 Lượt huấn luyện ngày 15/8/2026 trên NVIDIA L4 24 GB: **79 phút**, 2.046 bước,

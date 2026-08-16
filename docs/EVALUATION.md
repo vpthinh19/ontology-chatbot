@@ -77,6 +77,11 @@ Chấm causal LLM (tự chấm thêm 9 câu người thật):
 uv run benchmark_llm --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
 ```
 
+Sinh theo lô 16 câu, tự hạ khi tràn VRAM (`--batch-size`). Nền trọng số gốc mặc
+định lấy theo lượt đã huấn luyện adapter, không theo máy đang chạy
+(`--base-precision`). Cả hai được ghi vào báo cáo, vì **hai lượt chấm khác cỡ lô
+không so được với nhau đến từng câu** — xem `docs/TRAINING.md`.
+
 Chấm checkpoint seq2seq đã có, không huấn luyện:
 
 ```bash

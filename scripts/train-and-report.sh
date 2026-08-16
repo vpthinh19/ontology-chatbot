@@ -38,6 +38,9 @@ OUT="artifacts/run-${STAMP}"
 LOG="${OUT}/train.log"
 # ADAPTER đặt sẵn từ ngoài thì dùng lại adapter cũ thay vì huấn luyện mới.
 ADAPTER="${ADAPTER:-${OUT}/adapter}"
+# Số câu sinh cùng lúc lúc chấm. Bộ chấm tự hạ khi tràn nên đặt cao là an toàn;
+# đặt 1 thì quay về nếp cũ, dùng khi cần so tốc độ với lượt chạy trước.
+BENCH_BATCH="${BENCH_BATCH:-16}"
 mkdir -p "${OUT}"
 
 SKIP_TRAIN=0
@@ -137,11 +140,17 @@ else
     for SPLIT in val test; do
         echo
         echo "=== CHẤM ${SPLIT} ==="
+        # KHÔNG ghim --load-4bit ở đây nữa. Cờ đó sinh ra cho card 6 GB, và ghim
+        # cứng nó nghĩa là mọi lượt chấm trên card lớn đều tự làm mình chậm:
+        # bitsandbytes giải nén trọng số ở mỗi lượt truyền xuôi, mà giải mã tuần
+        # tự từng token thì phần đó lấn át. Nay bộ chấm tự đọc lượt huấn luyện
+        # của adapter và dùng đúng nền trọng số ấy - chọn theo cái adapter đã
+        # học, không theo cái máy đang chạy.
         "${PY}" -m ontchatbot.cli.benchmark_llm \
             --model Qwen/Qwen3.5-2B \
             --adapter "${ADAPTER}" \
             --split "${SPLIT}" \
-            --load-4bit \
+            --batch-size "${BENCH_BATCH}" \
             --output "${OUT}/benchmark-${SPLIT}.json" \
             || echo "chấm ${SPLIT} THẤT BẠI - xem log phía trên"
     done
