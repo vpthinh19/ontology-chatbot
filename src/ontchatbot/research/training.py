@@ -320,7 +320,9 @@ def train(args: argparse.Namespace) -> dict:
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
         **_optimization_arguments(precision),
-        gradient_checkpointing=spec.get("gradient_checkpointing", False),
+        gradient_checkpointing=_should_checkpoint_gradients(
+            spec.get("gradient_checkpointing", False)
+        ),
         gradient_checkpointing_kwargs={"use_reentrant": False},
         eval_strategy="no" if short_run else "steps",
         eval_steps=eval_steps,
@@ -655,6 +657,27 @@ def _require_training_ready(
     )
 
 
+def _should_checkpoint_gradients(spec_default: bool) -> bool:
+    """Bỏ activation để tính lại, hay giữ - hỏi theo VRAM của máy đang chạy.
+
+    ``MODEL_SPECS`` bật sẵn cho MỌI model vì lúc soạn chỉ có card 6 GB, và chính
+    ghi chú ở đó nói nó "chậm hơn khoảng một phần tư". Trên card 24 GB thì đó là
+    trả một phần tư tốc độ để mua bộ nhớ đang thừa. Đường LLM đã tự tắt theo
+    VRAM từ trước; đường này thì chưa, nên cùng một dự án chạy hai kiểu.
+
+    Kết quả huấn luyện không đổi: checkpointing chỉ tính lại activation, không
+    đụng tới phép tính.
+    """
+
+    try:
+        import torch
+    except ImportError:
+        return spec_default
+    if not torch.cuda.is_available():
+        return spec_default
+    return torch.cuda.get_device_properties(0).total_memory < 16 * 1024**3
+
+
 def _precision_policy(
     *,
     cuda_available: bool,
@@ -679,7 +702,11 @@ def _optimization_arguments(
         "lr_scheduler_type": "cosine",
         "warmup_steps": 0.1,
         "weight_decay": 0.005,
-        "optim": "adamw_8bit",
+        # Đo trên đường LLM, 60 bước: adamw_torch 4,902 · fused 4,914 · 8-bit
+        # 4,940 giây/bước - chênh 0,8%, tức nhiễu. LoRA chỉ chỉnh vài triệu tham
+        # số nên trạng thái optimizer quá nhỏ để việc nén nó đổi được gì, và
+        # bản 8-bit kéo theo bitsandbytes vào một đường vốn không cần.
+        "optim": "adamw_torch_fused",
         "bf16": precision["bf16"],
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
