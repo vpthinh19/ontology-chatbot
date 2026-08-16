@@ -108,9 +108,10 @@ model trong cache, không có thì tự bỏ qua.
 | VRAM đỉnh | 13,43 GiB | 15,40 GiB |
 | mất mát cuối | 0,0374 | 0,0360 |
 
-Bỏ nén 4-bit nhanh hơn **10,5% mỗi bước** — không phải gấp đôi như từng dự đoán
-trong dự án này. Tổng thời gian gần bằng nhau vì lượt sau có thêm 10% số bước
-(dataset lớn hơn). Con số đáng nhớ là giây/bước, không phải tổng.
+Bỏ nén 4-bit tiết kiệm **0,244 giây mỗi bước** — khoảng một phần mười, không
+phải gấp đôi như từng dự đoán trong dự án này. Tổng thời gian gần bằng nhau vì
+lượt sau chạy thêm 204 bước (dataset lớn hơn). Con số đáng nhớ là giây mỗi bước,
+không phải tổng.
 
 ### Ghim bản model
 
