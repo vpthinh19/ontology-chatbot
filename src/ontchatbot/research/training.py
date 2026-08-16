@@ -190,6 +190,14 @@ def train(args: argparse.Namespace) -> dict:
         # thử, và số đo hết so được với lượt trước.
         spec["gradient_accumulation"] = max(1, effective // args.batch_size)
         spec["eval_batch_size"] = min(spec.get("eval_batch_size", 1), args.batch_size)
+    # Chốt MỘT LẦN rồi dùng chung. Ba chỗ cùng đọc cờ này - bật trên model, đưa
+    # vào TrainingArguments, và ghi vào metrics - nên để mỗi chỗ tự suy lại là
+    # mở đường cho việc sửa một chỗ rồi tưởng đã xong.
+    checkpoint_gradients = _should_checkpoint_gradients(
+        spec.get("gradient_checkpointing", False)
+    )
+    if not args.batch_size:
+        spec["eval_batch_size"] = _eval_batch_size(spec.get("eval_batch_size", 1))
     output_dir = Path(args.output_dir) / args.model
     _prepare_output_directory(output_dir)
     snapshot = Path(
@@ -277,7 +285,7 @@ def train(args: argparse.Namespace) -> dict:
     cache_config = _generation_cache_config(model.config)
     cache_config.use_cache = False
     _configure_greedy_generation(model.generation_config)
-    if spec.get("gradient_checkpointing", False):
+    if checkpoint_gradients:
         model.gradient_checkpointing_enable(
             gradient_checkpointing_kwargs={"use_reentrant": False}
         )
@@ -320,9 +328,7 @@ def train(args: argparse.Namespace) -> dict:
         gradient_accumulation_steps=spec["gradient_accumulation"],
         learning_rate=args.learning_rate,
         **_optimization_arguments(precision),
-        gradient_checkpointing=_should_checkpoint_gradients(
-            spec.get("gradient_checkpointing", False)
-        ),
+        gradient_checkpointing=checkpoint_gradients,
         gradient_checkpointing_kwargs={"use_reentrant": False},
         eval_strategy="no" if short_run else "steps",
         eval_steps=eval_steps,
@@ -417,7 +423,9 @@ def train(args: argparse.Namespace) -> dict:
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
         "torch_compile": False,
-        "gradient_checkpointing": spec.get("gradient_checkpointing", False),
+        "eval_batch_size": spec.get("eval_batch_size", 1),
+        "gradient_checkpointing_spec": spec.get("gradient_checkpointing", False),
+        "gradient_checkpointing": checkpoint_gradients,
         "generation_do_sample": False,
         "dropout_policy": "checkpoint_default",
         "fine_tuning_method": "peft_lora",
@@ -655,6 +663,29 @@ def _require_training_ready(
     raise RuntimeError(
         "dataset is not ready for full training: " + ", ".join(codes)
     )
+
+
+def _eval_batch_size(spec_default: int) -> int:
+    """Cỡ lô lúc ĐÁNH GIÁ - thứ đáng nới nhất khi card còn dư bộ nhớ.
+
+    Đánh giá ở đây sinh chữ trên toàn tập val, và hồ sơ dự án ghi rõ khâu này
+    từng chiếm 88% thời gian một lượt chạy. Nó là SUY LUẬN thuần tuý: nới lô
+    không đụng gì tới trọng số học được, khác hẳn lô huấn luyện - nâng lô huấn
+    luyện là đổi phép thử, nâng lô đánh giá chỉ là bớt để card chạy không tải.
+
+    Với ``--eval-every-epochs 2`` và trần 16 epoch thì có tới tám lượt đánh giá,
+    nên đây là chỗ tiết kiệm được nhiều nhất.
+    """
+
+    try:
+        import torch
+    except ImportError:
+        return spec_default
+    if not torch.cuda.is_available():
+        return spec_default
+    if torch.cuda.get_device_properties(0).total_memory >= 16 * 1024**3:
+        return 32
+    return spec_default
 
 
 def _should_checkpoint_gradients(spec_default: bool) -> bool:

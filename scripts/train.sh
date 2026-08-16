@@ -83,10 +83,17 @@ PYEOF
 echo
 echo "=== HUẤN LUYỆN ==="
 if [ "${FAMILY}" = "seq2seq" ]; then
+    # Đánh giá mỗi 2 epoch, không phải 4. Cơ chế dừng sớm có kiên nhẫn 3 lượt
+    # đánh giá, nên nhịp 4 nghĩa là phải 12 epoch không tiến bộ mới dừng - với
+    # trần 16 thì nó gần như chạy hết và trần thành vô nghĩa. Nhịp 2 cắt ở 6
+    # epoch không tiến bộ, và vẫn trả về checkpoint TỐT NHẤT chứ không phải
+    # checkpoint cuối.
     "${PY}" -m ontchatbot.cli.train \
         --model "${SEQ2SEQ_MODEL}" \
+        --eval-every-epochs 2 \
         --save-model \
-        --output-dir "${OUT}/model"
+        --output-dir "${OUT}/model" \
+        "$@"
     TARGET="$(find "${OUT}/model" -maxdepth 3 -type d -name model | head -1)"
     SCORE_FLAG=(--seq2seq-model "${TARGET}")
 elif [ "${SKIP_TRAIN}" = "1" ]; then
