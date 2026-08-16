@@ -162,7 +162,7 @@ def test_canonical_catalogue_covers_supported_inventory() -> None:
         entry_id
         for entry_id in report["overlapping_entries"]
         if entry_id.startswith("Regulation1052Appendix2Table")
-        or entry_id.startswith("Regulation1052Appendix3Table01")
+        or entry_id.startswith("ComputerCertificateConversionTable")
     }
 
 

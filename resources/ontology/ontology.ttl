@@ -3185,7 +3185,7 @@ b) Đối với các học phần thực hành, thí nghiệm, thực tập ngo�
     :articleNumber "18"^^xsd:integer ;
     :clauseNumber "2"^^xsd:integer .
 
-:Regulation1052Article18Clause02Table01 a :DocumentTable, owl:NamedIndividual ;
+:AcademicPerformanceTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng xếp loại học lực"@vi ;
     skos:altLabel "xếp loại học lực theo điểm trung bình chung"@vi ;
     skos:altLabel "thang xếp loại học lực"@vi ;
@@ -3258,7 +3258,7 @@ TT — Số tín chỉ đã tích lũy — Xếp trình độ năm học
     :articleNumber "19"^^xsd:integer ;
     :clauseNumber "1"^^xsd:integer .
 
-:Regulation1052Article19Clause01Table01 a :DocumentTable, owl:NamedIndividual ;
+:StudyYearClassificationTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng xếp trình độ năm học"@vi ;
     skos:altLabel "xếp trình độ năm học theo số tín chỉ tích lũy"@vi ;
     skos:altLabel "trình độ năm học của sinh viên"@vi ;
@@ -3852,7 +3852,7 @@ TT. — Điểm trung bình chung tích lũy của toàn khoá — Xếp loại
     :articleNumber "23"^^xsd:integer ;
     :clauseNumber "2"^^xsd:integer .
 
-:Regulation1052Article23Clause02Table01 a :DocumentTable, owl:NamedIndividual ;
+:GraduationClassificationTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng xếp hạng tốt nghiệp"@vi ;
     skos:altLabel "hạng tốt nghiệp theo điểm trung bình chung tích lũy toàn khoá"@vi ;
     skos:altLabel "xếp loại tốt nghiệp"@vi ;
@@ -4684,7 +4684,7 @@ Tối thiểu — Tối đa
     :appendixNumber "1" ;
     :headingText "Điều kiện, số lượng sinh viên để tổ chức một lớp học phần"@vi .
 
-:Regulation1052Appendix1Table01 a :DocumentTable, owl:NamedIndividual ;
+:ClassSizeTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng sĩ số lớp học phần"@vi ;
     skos:altLabel "số lượng sinh viên tối thiểu và tối đa mỗi lớp học phần"@vi ;
     skos:altLabel "quy mô lớp học phần"@vi ;
@@ -4799,7 +4799,7 @@ TCF — Test de Connaissance Français
     :appendixNumber "2" ;
     :headingText "Bảng quy đổi điểm đối với chứng chỉ ngoại ngữ quốc tế cho sinh viên"@vi .
 
-:Regulation1052Appendix2Table01 a :CertificateConversionTable, owl:NamedIndividual ;
+:EnglishConversionTableStandardProgram a :CertificateConversionTable, owl:NamedIndividual ;
     rdfs:label "bảng quy đổi chứng chỉ tiếng Anh chương trình chuẩn"@vi ;
     skos:altLabel "quy đổi điểm chứng chỉ tiếng Anh quốc tế cho sinh viên không chuyên ngữ chương trình chuẩn"@vi ;
     skos:altLabel "quy đổi IELTS TOEIC TOEFL sang điểm 10"@vi ;
@@ -4823,8 +4823,10 @@ Bậc 4 — B2 — ≥ 600 — ≥ 70 — ≥ 5.5 — ≥ 153 — 160 — 160 �
 Bậc 5 — C1 — ≥ 700 — ≥ 80 — ≥ 6.5 — ≥ 170 — 180
 Bậc 6 — C2 — ≥ 850 — ≥ 110 — ≥ 8.5 — ≥ 190 — ≥ 200"""@vi .
 
-:Regulation1052Appendix2Table02 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 2 Phụ lục 2 mục 1.2 Quy chế đào tạo trình độ đại học"@vi ;
+:OtherLanguageConversionTableStandardProgram a :CertificateConversionTable, owl:NamedIndividual ;
+    rdfs:label "bảng quy đổi ngoại ngữ khác chương trình chuẩn"@vi ;
+    skos:altLabel "quy đổi chứng chỉ ngoại ngữ quốc tế khác cho sinh viên không chuyên ngữ chương trình chuẩn"@vi ;
+    skos:altLabel "quy đổi HSK JLPT TOPIK sang điểm 10"@vi ;
     :citationLabel "bảng 2 Phụ lục 2 mục 1.2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4845,7 +4847,7 @@ Bậc 4 — HSK 4 — TOCFL 4 — N3 — 610 — TRKI 2 — B2 — ≥ 400 — T
 Bậc 5 — N2 — 740 — TRKI 3 — TOPIK 5 — > 400
 Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 
-:Regulation1052Appendix2Table03 a :CertificateConversionTable, owl:NamedIndividual ;
+:EnglishRequirementTableSpecialProgram a :CertificateConversionTable, owl:NamedIndividual ;
     rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
     skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi ;
     skos:altLabel "yêu cầu tiếng Anh chương trình đặc biệt"@vi ;
@@ -4869,8 +4871,9 @@ Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 5 — Quản trị kinh doanh — Bậc 4 hoặc B2 — ≥ 700 — ≥ 5.5 — ≥ 70 — > 160 — > 153 — ≥ 160
 6 — Quản trị dịch vụ du lịch và lữ hành — Bậc 4 hoặc B2 — ≥ 700 — ≥ 5.5 — ≥ 70 — > 160 — > 153 — ≥ 160"""@vi .
 
-:Regulation1052Appendix2Table04 a :CertificateConversionTable, owl:NamedIndividual ;
-    rdfs:label "bảng 4 Phụ lục 2 mục 2.2 Quy chế đào tạo trình độ đại học"@vi ;
+:OtherLanguageRequirementTableSpecialProgram a :CertificateConversionTable, owl:NamedIndividual ;
+    rdfs:label "bảng chuẩn ngoại ngữ khác chương trình đặc biệt"@vi ;
+    skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi ;
     :citationLabel "bảng 4 Phụ lục 2 mục 2.2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"@vi ;
     :documentUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"^^xsd:anyURI ;
     :inDocument :Regulation1052 ;
@@ -4891,7 +4894,7 @@ Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 5 — Quản trị kinh doanh — HSK 4 — TOCFL 3 — N3 — 610 — TRKI 2 — B2 — ≥ 400 — TOPIK 3
 6 — Quản trị dịch vụ du lịch và lữ hành — HSK 4 — TOCFL 3 — N3 — 610 — TRKI 2 — B2 — ≥ 400 — TOPIK 3"""@vi .
 
-:Regulation1052Appendix2Table05 a :CertificateConversionTable, owl:NamedIndividual ;
+:SecondLanguageConversionTableEnglishMajor a :CertificateConversionTable, owl:NamedIndividual ;
     rdfs:label "bảng quy đổi ngoại ngữ hai ngành Ngôn ngữ Anh"@vi ;
     skos:altLabel "quy đổi chứng chỉ ngoại ngữ quốc tế cho sinh viên ngành Ngôn ngữ Anh"@vi ;
     skos:altLabel "quy đổi HSK JLPT TOPIK cho sinh viên ngành Ngôn ngữ Anh"@vi ;
@@ -4915,7 +4918,7 @@ Bậc 4 — HSK 4 — TOCFL 4 — N3 — 610 — TRKI 2 — B2 — 400 — TOPIK
 Bậc 5 — HSK 5 — N2 — 740 — TRKI 3 — TOPIK 5 — ≥ 400
 Bậc 6 — N1 — 880 — TRKI 4 — TOPIK 6 — > 450"""@vi .
 
-:Regulation1052Appendix2Table06 a :DocumentTable, owl:NamedIndividual ;
+:ForeignLanguageCertificateAbbreviationTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "danh mục viết tắt chứng chỉ ngoại ngữ"@vi ;
     skos:altLabel "các từ viết tắt của chứng chỉ ngoại ngữ quốc tế"@vi ;
     skos:altLabel "tên đầy đủ của các chứng chỉ ngoại ngữ quốc tế"@vi ;
@@ -4973,7 +4976,7 @@ MOS (Microsoft Office Specialist): MOS là bài thi đánh giá kỹ năng tin h
     :appendixNumber "3" ;
     :headingText "Bảng quy đổi điểm đối với chứng chỉ tin học quốc tế cho sinh viên"@vi .
 
-:Regulation1052Appendix3Table01 a :CertificateConversionTable, owl:NamedIndividual ;
+:ComputerCertificateConversionTable a :CertificateConversionTable, owl:NamedIndividual ;
     rdfs:label "bảng quy đổi chứng chỉ tin học"@vi ;
     skos:altLabel "quy đổi điểm IC3 ICDL MOS"@vi ;
     skos:altLabel "điểm thưởng chứng chỉ tin học"@vi ;
@@ -5030,7 +5033,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng / học kỳ (VNĐ)
 # dẫn nguồn về chính câu dẫn: công cụ trả ra "7.200.000 đồng" kèm một trích dẫn
 # không hề chứa con số ấy. Nạp bảng theo khuôn đã chốt 11/8 (mỗi bảng là MỘT
 # node, tra cả bảng) rồi trỏ các mức về bảng.
-:Decision317Article01Table01 a :DocumentTable, owl:NamedIndividual ;
+:ScholarshipRateTableStandardProgram a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng mức học bổng chương trình chuẩn"@vi ;
     skos:altLabel "mức tiền học bổng khuyến khích học tập"@vi ;
     skos:altLabel "mức tiền học bổng theo xếp loại"@vi ;
@@ -5061,7 +5064,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 2 — Giỏi — 7.200.000
 3 — Khá — 6.000.000"""@vi .
 
-:Decision317Article02Table01 a :DocumentTable, owl:NamedIndividual ;
+:ScholarshipRateTableSpecialProgram a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng mức học bổng chương trình đặc biệt"@vi ;
     skos:altLabel "mức tiền học bổng của chương trình đào tạo đặc biệt"@vi ;
     :citationLabel "bảng mức học bổng tại Điều 2 Quyết định 317/QĐ-ĐHNT ngày 07/3/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học bổng khuyến khích học tập năm học 2024-2025"@vi ;
@@ -5088,13 +5091,13 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
     :officialText "Trưởng phòng Công tác Chính trị và Sinh viên, Trưởng phòng Kế hoạch Tài chính, các trưởng đơn vị liên quan chịu trách nhiệm thi hành Quyết định này./."@vi .
 
 :PerSemester a :BillingUnit, owl:NamedIndividual ;
-    :basedOn :Decision317Article01Table01 ;
+    :basedOn :ScholarshipRateTableStandardProgram ;
     rdfs:label "đồng trên học kỳ"@vi .
 
 :ExcellentStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "7200000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01Table01 ;
+    :basedOn :ScholarshipRateTableStandardProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5103,7 +5106,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 :GoodStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "6000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01Table01 ;
+    :basedOn :ScholarshipRateTableStandardProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5112,7 +5115,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 :FairStandardScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "5000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article01Table01 ;
+    :basedOn :ScholarshipRateTableStandardProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5121,7 +5124,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 :ExcellentSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "8640000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02Table01 ;
+    :basedOn :ScholarshipRateTableSpecialProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5130,7 +5133,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 :GoodSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "7200000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02Table01 ;
+    :basedOn :ScholarshipRateTableSpecialProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5139,7 +5142,7 @@ STT — Xếp loại học bổng — Học bổng 05 tháng - chương trình �
 :FairSpecialScholarshipRate a :ScholarshipRate, owl:NamedIndividual ;
     :amount "6000000"^^xsd:nonNegativeInteger ;
     :appliesToEducationLevel :UndergraduateLevel ;
-    :basedOn :Decision317Article02Table01 ;
+    :basedOn :ScholarshipRateTableSpecialProgram ;
     :billingUnit :PerSemester ;
     :criterionText "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
     :currencyCode "VND" ;
@@ -5200,7 +5203,7 @@ IV — Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo ch
 9 — Kinh tế và quản lý tài nguyên biển"""@vi ;
     :appendixNumber "II" .
 
-:Decision729AppendixIITable01 a :DocumentTable, owl:NamedIndividual ;
+:AcademicProgramCatalogueTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "danh mục ngành đào tạo theo khối ngành"@vi ;
     skos:altLabel "danh sách ngành đào tạo của trường"@vi ;
     skos:altLabel "ngành đào tạo phân theo khối ngành"@vi ;
@@ -5553,7 +5556,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     :articleNumber "1"^^xsd:integer ;
     :officialText "Sửa đổi, bổ sung Phụ lục của Quy chế đào tạo trình độ đại học kèm theo Quyết định số 1052/QĐ-ĐHNT ngày 17/7/2025 của Hiệu trưởng Trường Đại học Nha Trang, cụ thể như sau: Bổ sung khoản 1.3 và 1.4 trong Mục 1 của Phụ lục 2, với nội dung."@vi .
 
-:Decision1965Article01Table01 a :DocumentTable, owl:NamedIndividual ;
+:ForeignLanguageCourseCatalogueTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "danh mục học phần ngoại ngữ"@vi ;
     skos:altLabel "các học phần ngoại ngữ và số tín chỉ"@vi ;
     skos:altLabel "phân loại học phần điều kiện và học phần bắt buộc của ngoại ngữ"@vi ;
@@ -5573,7 +5576,7 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     :officialText """STT — Học phần — Tín chỉ — Khung NLNN tương ứng — Khóa 67 trở về trước — Khóa 68 trở đi
 1 — Ngoại ngữ A1 — 4 tín chỉ — Bậc 1 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n2 — Ngoại ngữ A2.1 — 4 tín chỉ — Bậc 2 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n3 — Ngoại ngữ A2.2 — 4 tín chỉ — Bậc 2 — Khóa 67 trở về trước: Học phần điều kiện (HPĐK) — Khóa 68 trở đi: HPĐK\n4 — Ngoại ngữ B1.1 — 4 tín chỉ — Bậc 3 — Khóa 67 trở về trước: Học phần bắt buộc (HPBB) — Khóa 68 trở đi: HPĐK\n5 — Ngoại ngữ B1.2 — 4 tín chỉ — Bậc 3 — Khóa 67 trở về trước: Học phần bắt buộc (HPBB) — Khóa 68 trở đi: HPĐK\n6 — Ngoại ngữ B2.1 — 4 tín chỉ — Bậc 4 — Khóa 67 trở về trước: HPBB (chương trình kỹ sư) — Khóa 68 trở đi: HPBB\n7 — Ngoại ngữ B2.2 — 4 tín chỉ — Bậc 4 — Khóa 67 trở về trước: HPBB (chương trình kỹ sư) — Khóa 68 trở đi: HPBB"""@vi .
 
-:Decision1965Article01Table02 a :DocumentTable, owl:NamedIndividual ;
+:ForeignLanguageCourseAssessmentTable a :DocumentTable, owl:NamedIndividual ;
     rdfs:label "bảng đánh giá học phần ngoại ngữ"@vi ;
     skos:altLabel "tỷ trọng điểm của học phần ngoại ngữ"@vi ;
     skos:altLabel "thành phần đánh giá học phần ngoại ngữ"@vi ;
@@ -5624,8 +5627,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
     :officialText "Trưởng phòng Đào tạo Đại học, các Trưởng đơn vị liên quan và sinh viên chịu trách nhiệm thi hành Quyết định này./."@vi .
 
 :LanguageCourseA1 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
     rdfs:label "Ngoại ngữ A1"@vi .
@@ -5633,8 +5636,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseA21 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
     rdfs:label "Ngoại ngữ A2.1"@vi .
@@ -5642,8 +5645,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseA22 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
     rdfs:label "Ngoại ngữ A2.2"@vi .
@@ -5651,8 +5654,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseB11 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
     rdfs:label "Ngoại ngữ B1.1"@vi .
@@ -5660,8 +5663,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseB12 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
     rdfs:label "Ngoại ngữ B1.2"@vi .
@@ -5669,8 +5672,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseB21 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
     rdfs:label "Ngoại ngữ B2.1"@vi .
@@ -5678,8 +5681,8 @@ Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng
 
 
 :LanguageCourseB22 a :LanguageCourse, owl:NamedIndividual ;
-    :basedOn :Decision1965Article01Table01,
-        :Decision1965Article01Table02 ;
+    :basedOn :ForeignLanguageCourseCatalogueTable,
+        :ForeignLanguageCourseAssessmentTable ;
     :creditCount "4"^^xsd:integer ;
     :assessmentText "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
     rdfs:label "Ngoại ngữ B2.2"@vi .
@@ -5818,7 +5821,7 @@ Phiếu điều chỉnh điểm
         "cảnh báo kết quả học tập"@vi .
 
 :Accounting a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Kế toán"@vi .
 
@@ -5828,12 +5831,12 @@ Phiếu điều chỉnh điểm
     rdfs:label "Ngân hàng Agribank"@vi .
 
 :AptisGeneralCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table01 ;
+    :basedOn :EnglishConversionTableStandardProgram ;
     rdfs:label "Aptis (General)"@vi ;
     skos:altLabel "Aptis General"@vi .
 
 :Aquaculture a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Nuôi trồng thuỷ sản"@vi .
 
@@ -5892,30 +5895,30 @@ Phiếu điều chỉnh điểm
         "liên thông"@vi .
 
 :Auditing a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Kiểm toán"@vi .
 
 :AutomotiveEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật ô tô"@vi .
 
 
 
 :Biotechnology a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIV ;
     rdfs:label "Công nghệ sinh học"@vi .
 
 :BusinessAdministration a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Quản trị kinh doanh"@vi .
 
 
 :CambridgeEnglishScaleCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table01 ;
+    :basedOn :EnglishConversionTableStandardProgram ;
     rdfs:label "Cambridge English Scale"@vi .
 
 :CashAtBankCounterPayment a :PaymentMethod, owl:NamedIndividual ;
@@ -5927,12 +5930,12 @@ Phiếu điều chỉnh điểm
     rdfs:label "Nộp tiền mặt tại quầy ngân hàng"@vi .
 
 :ChemicalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật hóa học"@vi .
 
 :CivilEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật xây dựng"@vi .
 
@@ -5980,18 +5983,18 @@ Phiếu điều chỉnh điểm
     rdfs:label "Xin nghỉ học - bước 2"@vi .
 
 :CommercialBusiness a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Kinh doanh thương mại"@vi .
 
 
 :ComputerScience a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Khoa học máy tính"@vi .
 
 :ControlAndAutomationEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật điều khiển và tự động hóa"@vi .
 
@@ -6234,7 +6237,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Công nhận tín chỉ - bước 2"@vi .
 
 :DELFCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Diplôme d'Études en Langue Française" ;
     rdfs:label "DELF"@vi .
 
@@ -6245,7 +6248,7 @@ Phiếu điều chỉnh điểm
     skos:altLabel "bộ môn quản lý học phần"@vi .
 
 :DevelopmentEconomics a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Kinh tế phát triển"@vi .
 
@@ -6258,19 +6261,19 @@ Phiếu điều chỉnh điểm
     rdfs:label "Miễn phí Mobile Banking hoặc Internet Banking"@vi .
 
 :DisciplineGroupIII a :DisciplineGroup, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     rdfs:label "Khối ngành III: Kinh doanh và quản lý, pháp luật"@vi .
 
 :DisciplineGroupIV a :DisciplineGroup, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     rdfs:label "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên"@vi .
 
 :DisciplineGroupV a :DisciplineGroup, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi .
 
 :DisciplineGroupVII a :DisciplineGroup, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi .
 
 :DismissalTransferOutcome a :Outcome, owl:NamedIndividual ;
@@ -6354,30 +6357,30 @@ Phiếu điều chỉnh điểm
     rdfs:label "Tốt nghiệp sớm - bước 2"@vi .
 
 :EconomicManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Quản lý kinh tế"@vi .
 
 :Economics a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Kinh tế"@vi .
 
 
 :ElectricalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật điện"@vi .
 
 
 :EnglishLanguage a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Ngôn ngữ Anh"@vi .
 
 
 :EnvironmentalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật môi trường"@vi .
 
@@ -6473,33 +6476,33 @@ Phiếu điều chỉnh điểm
 
 
 :FinanceAndBanking a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Tài chính - Ngân hàng"@vi .
 
 
 :FisheriesExploitation a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Khai thác thủy sản"@vi .
 
 :FisheriesManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Quản lý thủy sản"@vi .
 
 :FisheriesScience a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Khoa học thủy sản"@vi .
 
 :FoodQualityAndSafetyAssurance a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 
 :FoodTechnology a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Công nghệ thực phẩm"@vi .
 
@@ -6726,7 +6729,7 @@ Phiếu điều chỉnh điểm
 
 
 :FrenchVietnameseBilingualTourismAndTravelServiceManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt)"@vi .
 
@@ -6875,12 +6878,12 @@ Phiếu điều chỉnh điểm
     rdfs:label "Xét tốt nghiệp - bước 2"@vi .
 
 :HSKCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Hanyu Shuiping Kaoshi" ;
     rdfs:label "HSK"@vi .
 
 :HotelManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Quản trị khách sạn"@vi .
 
@@ -6893,7 +6896,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "ICDL"@vi .
 
 :IELTSCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "International English Language Testing System" ;
     rdfs:label "IELTS"@vi .
 
@@ -6933,7 +6936,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Ốm ngắn ngày trong quá trình học"@vi .
 
 :InformationTechnology a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Công nghệ thông tin"@vi .
 
@@ -6951,22 +6954,22 @@ Phiếu điều chỉnh điểm
     rdfs:label "Dự thi quốc tế - hướng xử lý"@vi .
 
 :JLPTCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Japanese Language Proficiency Test" ;
     rdfs:label "JLPT"@vi .
 
 :JPTCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Japanese Proficiency Test" ;
     rdfs:label "JPT"@vi .
 
 :KLPTCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Korean Language Proficiency Test" ;
     rdfs:label "KLPT"@vi .
 
 :Law a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Luật"@vi .
 
@@ -6976,7 +6979,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Ngân hàng Liên Việt PostBank"@vi .
 
 :LinguaskillCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table01 ;
+    :basedOn :EnglishConversionTableStandardProgram ;
     rdfs:label "Linguaskill"@vi .
 
 :MOSCertificate a :Certificate, :ComputerCertificate, owl:NamedIndividual ;
@@ -7055,43 +7058,43 @@ Phiếu điều chỉnh điểm
     rdfs:label "Chuyển ngành - bước 2"@vi .
 
 :ManagementInformationSystems a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Hệ thống thông tin quản lý"@vi .
 
 :ManufacturingEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Công nghệ chế tạo máy"@vi .
 
 :MarineEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật biển"@vi .
 
 :MarineResourceEconomicsAndManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Kinh tế và quản lý tài nguyên biển"@vi .
 
 :MaritimeScience a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Khoa học hàng hải"@vi .
 
 :Marketing a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupIII ;
     rdfs:label "Marketing"@vi .
 
 :MechanicalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật cơ khí"@vi .
 
 
 :MechatronicsEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật cơ điện tử"@vi .
 
@@ -7104,7 +7107,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi .
 
 :NavalArchitecture a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật tàu thuỷ"@vi .
 
@@ -7145,7 +7148,7 @@ Phiếu điều chỉnh điểm
 
 
 :PowerMechanicalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật cơ khí động lực"@vi .
 
@@ -7188,7 +7191,7 @@ Phiếu điều chỉnh điểm
     rdfs:label "Học trở lại - bước 2"@vi .
 
 :SeafoodProcessingTechnology a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Công nghệ chế biến thủy sản"@vi .
 
@@ -7384,33 +7387,33 @@ Phiếu điều chỉnh điểm
         "xin thôi học"@vi .
 
 :TCFCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Test de Connaissance Français" ;
     rdfs:label "TCF"@vi .
 
 :TOCFLCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Test of Chinese as a Foreign Language" ;
     rdfs:label "TOCFL"@vi .
 
 :TOEFLIBTCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Test Of English as a Foreign Language (Internet Based Test)" ;
     rdfs:label "TOEFL (iBT)"@vi ;
     skos:altLabel "TOEFL iBT"@vi .
 
 :TOEICCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Test of English for International Communication" ;
     rdfs:label "TOEIC"@vi .
 
 :TOPIKCertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Test of Proficiency in Korean" ;
     rdfs:label "TOPIK"@vi .
 
 :TRKICertificate a :Certificate, :LanguageCertificate, owl:NamedIndividual ;
-    :basedOn :Regulation1052Appendix2Table06 ;
+    :basedOn :ForeignLanguageCertificateAbbreviationTable ;
     :officialCertificateName "Тест по русскому языку как иностранному" ;
     rdfs:label "ТРКИ"@vi ;
     skos:altLabel "TPKN"@vi,
@@ -7457,18 +7460,18 @@ Phiếu điều chỉnh điểm
     rdfs:label "Nghỉ học tạm thời - bước 2"@vi .
 
 :ThermalEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật nhiệt"@vi .
 
 
 :TourismAndTravelServiceManagement a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupVII ;
     rdfs:label "Quản trị dịch vụ du lịch và lữ hành"@vi .
 
 :TransportationInfrastructureEngineering a :AcademicProgram, owl:NamedIndividual ;
-    :basedOn :Decision729AppendixIITable01 ;
+    :basedOn :AcademicProgramCatalogueTable ;
     :belongsToDisciplineGroup :DisciplineGroupV ;
     rdfs:label "Kỹ thuật xây dựng công trình giao thông"@vi .
 

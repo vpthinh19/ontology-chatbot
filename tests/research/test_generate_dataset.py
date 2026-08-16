@@ -20,18 +20,18 @@ def test_certificate_families_return_the_six_source_tables_as_whole_nodes() -> N
 
     expected = {
         "certificate-conversion-table-english-language-major-student": {
-            "Regulation1052Appendix2Table05",
+            "SecondLanguageConversionTableEnglishMajor",
         },
         "certificate-conversion-table-special-program-non-language-major-student": {
-            "Regulation1052Appendix2Table03",
-            "Regulation1052Appendix2Table04",
+            "EnglishRequirementTableSpecialProgram",
+            "OtherLanguageRequirementTableSpecialProgram",
         },
         "certificate-conversion-table-standard-program-non-language-major-student": {
-            "Regulation1052Appendix2Table01",
-            "Regulation1052Appendix2Table02",
+            "EnglishConversionTableStandardProgram",
+            "OtherLanguageConversionTableStandardProgram",
         },
         "certificate-conversion-table-moi-doi-tuong": {
-            "Regulation1052Appendix3Table01",
+            "ComputerCertificateConversionTable",
         },
     }
 

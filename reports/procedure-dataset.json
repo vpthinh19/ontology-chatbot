@@ -36,7 +36,7 @@
       "registers_per_target_histogram": {
         "4": 39
       },
-      "sha256": "b091890742b7afa9ecc80141c8504486f4534f098d88979ecef5450ef4c824d7"
+      "sha256": "1c7726eba56f01234964883640255147dd90c64037f49c5071fe1367c833dfe0"
     },
     "val": {
       "records": 399,
@@ -56,7 +56,7 @@
         "3": 1,
         "4": 2
       },
-      "sha256": "8e04a29f952fe34633d5714236fe9e8e7fda8b6bbabe05e58ccc9fe0d6b1e1fb"
+      "sha256": "e4203c6fd2bf2248cbce292e6a36c4020f40e6a29bbbea5f836b1a46cbdcdc3e"
     },
     "test": {
       "records": 389,
@@ -74,7 +74,7 @@
         "2": 3,
         "3": 2
       },
-      "sha256": "d9b2c289e43f95fd9be57bc7dbef8b9e5bfb3aea751716a5a7cc580a484c31ee"
+      "sha256": "2ef1807f4460347e07becad01bf5b9ab7be04449d11b5a9a0ee490b9eab03077"
     }
   },
   "contracts": {

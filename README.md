@@ -121,7 +121,7 @@ cho câu trả lời hiện tại.
 Với bảng, công cụ trả nguyên `verbatimTableText` của node bảng:
 
 ```text
-node: Regulation1052Article18Clause02Table01
+node: AcademicPerformanceTable
 giá trị: toàn bộ bảng xếp loại học lực dưới dạng Markdown
 nguồn: khoản chứa bảng và URL văn bản
 ```

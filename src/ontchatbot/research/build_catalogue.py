@@ -112,19 +112,19 @@ INDIRECT_ANCHORS: tuple[dict[str, object], ...] = (
 #: Tám bảng còn lại, mỗi bảng ứng với một ý định độc lập. Ba bảng cuối giới
 #: thiệu thực thể; các thực thể vẫn tồn tại, còn bảng giữ nguyên bố cục nguồn.
 SOURCE_TABLE_FAMILIES: tuple[tuple[str, str, tuple[str, ...]], ...] = (
-    ("academic-performance-table", "academic-rule", ("Regulation1052Article18Clause02Table01",)),
-    ("study-year-classification-table", "academic-rule", ("Regulation1052Article19Clause01Table01",)),
-    ("graduation-classification-table", "academic-rule", ("Regulation1052Article23Clause02Table01",)),
-    ("class-size-table", "academic-rule", ("Regulation1052Appendix1Table01",)),
-    ("language-course-classification-table", "academic-rule", ("Decision1965Article01Table01",)),
-    ("language-course-assessment-table", "academic-rule", ("Decision1965Article01Table02",)),
-    ("certificate-catalogue-table", "certificate", ("Regulation1052Appendix2Table06",)),
-    ("academic-program-catalogue-table", "academic-rule", ("Decision729AppendixIITable01",)),
+    ("academic-performance-table", "academic-rule", ("AcademicPerformanceTable",)),
+    ("study-year-classification-table", "academic-rule", ("StudyYearClassificationTable",)),
+    ("graduation-classification-table", "academic-rule", ("GraduationClassificationTable",)),
+    ("class-size-table", "academic-rule", ("ClassSizeTable",)),
+    ("language-course-classification-table", "academic-rule", ("ForeignLanguageCourseCatalogueTable",)),
+    ("language-course-assessment-table", "academic-rule", ("ForeignLanguageCourseAssessmentTable",)),
+    ("certificate-catalogue-table", "certificate", ("ForeignLanguageCertificateAbbreviationTable",)),
+    ("academic-program-catalogue-table", "academic-rule", ("AcademicProgramCatalogueTable",)),
     # Hai bảng mức học bổng, nạp 15/8/2026. Tách làm hai họ chứ không gộp một, vì
     # cùng một xếp loại cho ra hai số tiền khác nhau tuỳ chương trình chuẩn hay
     # đặc biệt - gộp lại thì câu trả lời mơ hồ đúng ở chỗ người hỏi cần rõ nhất.
-    ("scholarship-rate-table-standard-program", "tuition", ("Decision317Article01Table01",)),
-    ("scholarship-rate-table-special-program", "tuition", ("Decision317Article02Table01",)),
+    ("scholarship-rate-table-standard-program", "tuition", ("ScholarshipRateTableStandardProgram",)),
+    ("scholarship-rate-table-special-program", "tuition", ("ScholarshipRateTableSpecialProgram",)),
 )
 
 #: Bốn ý định người dùng, sáu bảng nguồn. Không còn slot chứng chỉ hay điều kiện
@@ -134,19 +134,19 @@ SOURCE_TABLE_FAMILIES: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 CONVERSION_TABLE_FAMILIES: tuple[tuple[str, tuple[str, ...]], ...] = (
     (
         "certificate-conversion-table-english-language-major-student",
-        ("Regulation1052Appendix2Table05",),
+        ("SecondLanguageConversionTableEnglishMajor",),
     ),
     (
         "certificate-conversion-table-special-program-non-language-major-student",
-        ("Regulation1052Appendix2Table03", "Regulation1052Appendix2Table04"),
+        ("EnglishRequirementTableSpecialProgram", "OtherLanguageRequirementTableSpecialProgram"),
     ),
     (
         "certificate-conversion-table-standard-program-non-language-major-student",
-        ("Regulation1052Appendix2Table01", "Regulation1052Appendix2Table02"),
+        ("EnglishConversionTableStandardProgram", "OtherLanguageConversionTableStandardProgram"),
     ),
     (
         "certificate-conversion-table-moi-doi-tuong",
-        ("Regulation1052Appendix3Table01",),
+        ("ComputerCertificateConversionTable",),
     ),
 )
 

@@ -239,6 +239,204 @@
       "status": "supported"
     },
     {
+      "id": "AcademicPerformanceTable-articleNumber",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-citationLabel",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-clauseNumber",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "clauseNumber"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-documentUrl",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-inDocument-rdfs-label",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-officialText",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "AcademicPerformanceTable-partOf-rdfs-label",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-rdfs-label",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicPerformanceTable-verbatimTableText",
+      "anchor": "AcademicPerformanceTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "AcademicPerformanceTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-citationLabel",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-documentUrl",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-inDocument-rdfs-label",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-officialText",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-partOf-rdfs-label",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-rdfs-label",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "AcademicProgramCatalogueTable-verbatimTableText",
+      "anchor": "AcademicProgramCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "AcademicWarningPolicy-basedOn-citationLabel",
       "anchor": "AcademicWarningPolicy",
       "answer_kind": "literal",
@@ -310,7 +508,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -323,7 +521,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -336,7 +534,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -349,7 +547,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -361,7 +559,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -591,7 +789,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -604,7 +802,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -617,7 +815,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -629,7 +827,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -642,7 +840,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -655,7 +853,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -668,7 +866,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -681,7 +879,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -693,7 +891,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -971,7 +1169,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -984,7 +1182,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -997,7 +1195,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1010,7 +1208,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1022,7 +1220,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1035,7 +1233,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1048,7 +1246,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1061,7 +1259,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1074,7 +1272,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1086,7 +1284,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1099,7 +1297,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1112,7 +1310,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1125,7 +1323,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1138,7 +1336,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1150,7 +1348,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1163,7 +1361,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1176,7 +1374,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1189,7 +1387,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1202,7 +1400,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1214,7 +1412,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1227,7 +1425,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -1240,7 +1438,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -1253,7 +1451,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -1265,7 +1463,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -1347,7 +1545,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1360,7 +1558,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1373,7 +1571,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1386,7 +1584,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1398,7 +1596,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1411,7 +1609,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1424,7 +1622,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1437,7 +1635,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1450,7 +1648,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1462,7 +1660,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1595,6 +1793,93 @@
       "status": "supported"
     },
     {
+      "id": "ClassSizeTable-citationLabel",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ClassSizeTable-documentUrl",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ClassSizeTable-inDocument-rdfs-label",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ClassSizeTable-officialText",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ClassSizeTable-partOf-rdfs-label",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ClassSizeTable-rdfs-label",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ClassSizeTable-verbatimTableText",
+      "anchor": "ClassSizeTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ClassSizeTable"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "CommercialBusiness-basedOn-citationLabel",
       "anchor": "CommercialBusiness",
       "answer_kind": "literal",
@@ -1603,7 +1888,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1616,7 +1901,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1629,7 +1914,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1642,7 +1927,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1654,7 +1939,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1722,6 +2007,93 @@
       "status": "supported"
     },
     {
+      "id": "ComputerCertificateConversionTable-citationLabel",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ComputerCertificateConversionTable-documentUrl",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ComputerCertificateConversionTable-inDocument-rdfs-label",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ComputerCertificateConversionTable-officialText",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ComputerCertificateConversionTable-partOf-rdfs-label",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ComputerCertificateConversionTable-rdfs-label",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ComputerCertificateConversionTable-verbatimTableText",
+      "anchor": "ComputerCertificateConversionTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ComputerCertificateConversionTable"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "ComputerScience-basedOn-citationLabel",
       "anchor": "ComputerScience",
       "answer_kind": "literal",
@@ -1730,7 +2102,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1743,7 +2115,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1756,7 +2128,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1769,7 +2141,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1781,7 +2153,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1920,7 +2292,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1933,7 +2305,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1946,7 +2318,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1959,7 +2331,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -1971,7 +2343,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -3110,7 +3482,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -3123,7 +3495,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -3136,7 +3508,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -3148,7 +3520,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -3160,7 +3532,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -3638,178 +4010,6 @@
       "status": "supported"
     },
     {
-      "id": "Decision1965Article01Table01-citationLabel",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table01-documentUrl",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table01-headingText",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "headingText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table01-inDocument-rdfs-label",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table01-officialText",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Decision1965Article01Table01-rdfs-label",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table01-verbatimTableText",
-      "anchor": "Decision1965Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-citationLabel",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-documentUrl",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-headingText",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "literal",
-      "path": [
-        "headingText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-inDocument-rdfs-label",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-officialText",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Decision1965Article01Table02-rdfs-label",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision1965Article01Table02-verbatimTableText",
-      "anchor": "Decision1965Article01Table02",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Decision1965Article01Table02"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Decision1965Article02-articleNumber",
       "anchor": "Decision1965Article02",
       "answer_kind": "literal",
@@ -4113,105 +4313,6 @@
       "status": "supported"
     },
     {
-      "id": "Decision317Article01Table01-articleNumber",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "articleNumber"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-citationLabel",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-documentUrl",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-inDocument-rdfs-label",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-officialText",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Decision317Article01Table01-partOf-rdfs-label",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-rdfs-label",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article01Table01-verbatimTableText",
-      "anchor": "Decision317Article01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Decision317Article01Table01"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Decision317Article02-articleNumber",
       "anchor": "Decision317Article02",
       "answer_kind": "literal",
@@ -4281,105 +4382,6 @@
       ],
       "provenance": [
         "Decision317Article02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-articleNumber",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "articleNumber"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-citationLabel",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-documentUrl",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-inDocument-rdfs-label",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-officialText",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Decision317Article02Table01-partOf-rdfs-label",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-rdfs-label",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision317Article02Table01-verbatimTableText",
-      "anchor": "Decision317Article02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Decision317Article02Table01"
       ],
       "status": "supported"
     },
@@ -4917,93 +4919,6 @@
       "status": "supported"
     },
     {
-      "id": "Decision729AppendixIITable01-citationLabel",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision729AppendixIITable01-documentUrl",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision729AppendixIITable01-inDocument-rdfs-label",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision729AppendixIITable01-officialText",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Decision729AppendixIITable01-partOf-rdfs-label",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision729AppendixIITable01-rdfs-label",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Decision729AppendixIITable01-verbatimTableText",
-      "anchor": "Decision729AppendixIITable01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Decision729AppendixIITable01"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Decision753-citationLabel",
       "anchor": "Decision753",
       "answer_kind": "literal",
@@ -5120,7 +5035,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5133,7 +5048,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5146,7 +5061,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5159,7 +5074,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5171,7 +5086,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5280,7 +5195,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5293,7 +5208,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5306,7 +5221,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5318,7 +5233,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5331,7 +5246,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5344,7 +5259,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5357,7 +5272,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5369,7 +5284,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5382,7 +5297,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5395,7 +5310,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5408,7 +5323,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5420,7 +5335,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5433,7 +5348,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5446,7 +5361,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5459,7 +5374,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5471,7 +5386,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5854,7 +5769,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5867,7 +5782,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5880,7 +5795,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5893,7 +5808,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5905,7 +5820,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5918,7 +5833,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5931,7 +5846,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5944,7 +5859,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5957,7 +5872,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -5969,7 +5884,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6045,7 +5960,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6058,7 +5973,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6071,7 +5986,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6084,7 +5999,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6096,7 +6011,94 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-citationLabel",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-documentUrl",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-inDocument-rdfs-label",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-officialText",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-partOf-rdfs-label",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-rdfs-label",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishConversionTableStandardProgram-verbatimTableText",
+      "anchor": "EnglishConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6109,7 +6111,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6122,7 +6124,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6135,7 +6137,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6148,7 +6150,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6160,7 +6162,94 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-citationLabel",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-documentUrl",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-inDocument-rdfs-label",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-officialText",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-partOf-rdfs-label",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-rdfs-label",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "EnglishRequirementTableSpecialProgram-verbatimTableText",
+      "anchor": "EnglishRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "EnglishRequirementTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6173,7 +6262,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6186,7 +6275,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6199,7 +6288,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6212,7 +6301,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6224,7 +6313,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -6553,7 +6642,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6566,7 +6655,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6579,7 +6668,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6592,7 +6681,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6605,7 +6694,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6618,7 +6707,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6630,7 +6719,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6642,7 +6731,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6654,7 +6743,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -6666,7 +6755,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6679,7 +6768,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6692,7 +6781,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6705,7 +6794,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6718,7 +6807,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6731,7 +6820,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6743,7 +6832,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6755,7 +6844,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -6767,7 +6856,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7018,7 +7107,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7031,7 +7120,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7044,7 +7133,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7057,7 +7146,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7070,7 +7159,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7083,7 +7172,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7095,7 +7184,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7107,7 +7196,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7119,7 +7208,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -7131,7 +7220,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7144,7 +7233,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7157,7 +7246,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7170,7 +7259,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7183,7 +7272,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7196,7 +7285,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7208,7 +7297,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7220,7 +7309,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7232,7 +7321,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -7308,7 +7397,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7321,7 +7410,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7334,7 +7423,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7347,7 +7436,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7359,7 +7448,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7372,7 +7461,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7385,7 +7474,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7398,7 +7487,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7411,7 +7500,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7423,7 +7512,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7436,7 +7525,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7449,7 +7538,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7462,7 +7551,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7475,7 +7564,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7487,7 +7576,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7500,7 +7589,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7513,7 +7602,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7526,7 +7615,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7539,7 +7628,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7551,7 +7640,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7564,7 +7653,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7577,7 +7666,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7590,7 +7679,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7603,7 +7692,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7615,7 +7704,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7628,7 +7717,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7641,7 +7730,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7654,7 +7743,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7667,7 +7756,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -7679,7 +7768,266 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-citationLabel",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-documentUrl",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-inDocument-rdfs-label",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-officialText",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-partOf-rdfs-label",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-rdfs-label",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCertificateAbbreviationTable-verbatimTableText",
+      "anchor": "ForeignLanguageCertificateAbbreviationTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ForeignLanguageCertificateAbbreviationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-citationLabel",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-documentUrl",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-headingText",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "literal",
+      "path": [
+        "headingText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-inDocument-rdfs-label",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-officialText",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-rdfs-label",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseAssessmentTable-verbatimTableText",
+      "anchor": "ForeignLanguageCourseAssessmentTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseAssessmentTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-citationLabel",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-documentUrl",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-headingText",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "headingText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-inDocument-rdfs-label",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-officialText",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-rdfs-label",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ForeignLanguageCourseCatalogueTable-verbatimTableText",
+      "anchor": "ForeignLanguageCourseCatalogueTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10483,7 +10831,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10496,7 +10844,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10509,7 +10857,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10522,7 +10870,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10534,7 +10882,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -10609,7 +10957,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10622,7 +10970,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10635,7 +10983,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10648,7 +10996,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10661,7 +11009,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10674,7 +11022,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10686,7 +11034,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10698,7 +11046,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10710,7 +11058,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article02Table01"
+        "ScholarshipRateTableSpecialProgram"
       ],
       "status": "supported"
     },
@@ -10722,7 +11070,7 @@
         "amount"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10735,7 +11083,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10748,7 +11096,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10761,7 +11109,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10774,7 +11122,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10787,7 +11135,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10799,7 +11147,7 @@
         "criterionText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10811,7 +11159,7 @@
         "currencyCode"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -10823,7 +11171,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -11297,6 +11645,117 @@
       "status": "supported"
     },
     {
+      "id": "GraduationClassificationTable-articleNumber",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-citationLabel",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-clauseNumber",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "clauseNumber"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-documentUrl",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-inDocument-rdfs-label",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-officialText",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "GraduationClassificationTable-partOf-rdfs-label",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-rdfs-label",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "GraduationClassificationTable-verbatimTableText",
+      "anchor": "GraduationClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "GraduationClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "GraduationCouncil-rdfs-label",
       "anchor": "GraduationCouncil",
       "answer_kind": "label",
@@ -11573,7 +12032,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11586,7 +12045,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11599,7 +12058,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11611,7 +12070,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11623,7 +12082,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11636,7 +12095,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11649,7 +12108,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11662,7 +12121,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11675,7 +12134,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11687,7 +12146,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11802,7 +12261,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11815,7 +12274,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11828,7 +12287,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11840,7 +12299,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11852,7 +12311,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -11953,7 +12412,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11966,7 +12425,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11979,7 +12438,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -11992,7 +12451,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12004,7 +12463,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12080,7 +12539,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12093,7 +12552,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12106,7 +12565,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12118,7 +12577,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12130,7 +12589,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12143,7 +12602,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12156,7 +12615,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12169,7 +12628,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12181,7 +12640,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12193,7 +12652,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12206,7 +12665,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12219,7 +12678,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12232,7 +12691,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12244,7 +12703,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12256,7 +12715,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -12268,8 +12727,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12282,8 +12741,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12296,8 +12755,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12310,8 +12769,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12323,8 +12782,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12336,8 +12795,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12349,8 +12808,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12363,8 +12822,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12377,8 +12836,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12391,8 +12850,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12404,8 +12863,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12417,8 +12876,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12430,8 +12889,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12444,8 +12903,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12458,8 +12917,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12472,8 +12931,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12485,8 +12944,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12498,8 +12957,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12511,8 +12970,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12525,8 +12984,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12539,8 +12998,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12553,8 +13012,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12566,8 +13025,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12579,8 +13038,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12592,8 +13051,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12606,8 +13065,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12620,8 +13079,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12634,8 +13093,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12647,8 +13106,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12660,8 +13119,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12673,8 +13132,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12687,8 +13146,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12701,8 +13160,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12715,8 +13174,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12728,8 +13187,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12741,8 +13200,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12754,8 +13213,8 @@
         "assessmentText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12768,8 +13227,8 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12782,8 +13241,8 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12796,8 +13255,8 @@
         "officialText"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12809,8 +13268,8 @@
         "creditCount"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12822,8 +13281,8 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision1965Article01Table01",
-        "Decision1965Article01Table02"
+        "ForeignLanguageCourseAssessmentTable",
+        "ForeignLanguageCourseCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12836,7 +13295,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12849,7 +13308,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12862,7 +13321,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12875,7 +13334,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12887,7 +13346,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -12955,7 +13414,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -12968,7 +13427,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -12981,7 +13440,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -12993,7 +13452,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table01"
+        "EnglishConversionTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -13274,7 +13733,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13287,7 +13746,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13300,7 +13759,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13313,7 +13772,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13325,7 +13784,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13338,7 +13797,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13351,7 +13810,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13364,7 +13823,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13377,7 +13836,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13389,7 +13848,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13402,7 +13861,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13415,7 +13874,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13428,7 +13887,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13441,7 +13900,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13453,7 +13912,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13466,7 +13925,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13479,7 +13938,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13492,7 +13951,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13505,7 +13964,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13517,7 +13976,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13530,7 +13989,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13543,7 +14002,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13556,7 +14015,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13569,7 +14028,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13581,7 +14040,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13594,7 +14053,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13607,7 +14066,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13620,7 +14079,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13633,7 +14092,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13645,7 +14104,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13721,7 +14180,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13734,7 +14193,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13747,7 +14206,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13760,7 +14219,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13772,7 +14231,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13785,7 +14244,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13798,7 +14257,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13811,7 +14270,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13824,7 +14283,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13836,7 +14295,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13918,7 +14377,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13931,7 +14390,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13944,7 +14403,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13957,7 +14416,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -13969,7 +14428,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -14317,6 +14776,180 @@
       "status": "supported"
     },
     {
+      "id": "OtherLanguageConversionTableStandardProgram-citationLabel",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-documentUrl",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-inDocument-rdfs-label",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-officialText",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-partOf-rdfs-label",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-rdfs-label",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageConversionTableStandardProgram-verbatimTableText",
+      "anchor": "OtherLanguageConversionTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "OtherLanguageConversionTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-citationLabel",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-documentUrl",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-inDocument-rdfs-label",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-officialText",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-partOf-rdfs-label",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-rdfs-label",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "OtherLanguageRequirementTableSpecialProgram-verbatimTableText",
+      "anchor": "OtherLanguageRequirementTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "OtherLanguageRequirementTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "OutsideNhaTrangCounterFee-appliesToPaymentMethod-rdfs-label",
       "anchor": "OutsideNhaTrangCounterFee",
       "answer_kind": "label",
@@ -14572,7 +15205,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -14585,7 +15218,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -14598,7 +15231,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -14610,7 +15243,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision317Article01Table01"
+        "ScholarshipRateTableStandardProgram"
       ],
       "status": "supported"
     },
@@ -14686,7 +15319,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -14699,7 +15332,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -14712,7 +15345,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -14725,7 +15358,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -14737,7 +15370,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -15276,93 +15909,6 @@
       "status": "supported"
     },
     {
-      "id": "Regulation1052Appendix1Table01-citationLabel",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-documentUrl",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-officialText",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-rdfs-label",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix1Table01-verbatimTableText",
-      "anchor": "Regulation1052Appendix1Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix1Table01"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Regulation1052Appendix2-appendixNumber",
       "anchor": "Regulation1052Appendix2",
       "answer_kind": "literal",
@@ -15448,528 +15994,6 @@
       "status": "supported"
     },
     {
-      "id": "Regulation1052Appendix2Table01-citationLabel",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-documentUrl",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-officialText",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table01-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-citationLabel",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-documentUrl",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-officialText",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table02-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table02",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-citationLabel",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-documentUrl",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-officialText",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table03-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table03",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table03"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-citationLabel",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-documentUrl",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-officialText",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table04-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table04",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table04"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-citationLabel",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-documentUrl",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-officialText",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table05-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table05",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table05"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-citationLabel",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-documentUrl",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-officialText",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-rdfs-label",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix2Table06-verbatimTableText",
-      "anchor": "Regulation1052Appendix2Table06",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix2Table06"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Regulation1052Appendix3-appendixNumber",
       "anchor": "Regulation1052Appendix3",
       "answer_kind": "literal",
@@ -16051,93 +16075,6 @@
       ],
       "provenance": [
         "Regulation1052Appendix3"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-citationLabel",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-documentUrl",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-officialText",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-rdfs-label",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Appendix3Table01-verbatimTableText",
-      "anchor": "Regulation1052Appendix3Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Appendix3Table01"
       ],
       "status": "supported"
     },
@@ -29896,117 +29833,6 @@
       "status": "supported"
     },
     {
-      "id": "Regulation1052Article18Clause02Table01-articleNumber",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "articleNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-citationLabel",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-clauseNumber",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "clauseNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-documentUrl",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-officialText",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-rdfs-label",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article18Clause02Table01-verbatimTableText",
-      "anchor": "Regulation1052Article18Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Article18Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
       "id": "Regulation1052Article18Clause03-articleNumber",
       "anchor": "Regulation1052Article18Clause03",
       "answer_kind": "literal",
@@ -30297,117 +30123,6 @@
       ],
       "provenance": [
         "Regulation1052Article19Clause01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-articleNumber",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "articleNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-citationLabel",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-clauseNumber",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "clauseNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-documentUrl",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-officialText",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-rdfs-label",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article19Clause01Table01-verbatimTableText",
-      "anchor": "Regulation1052Article19Clause01Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Article19Clause01Table01"
       ],
       "status": "supported"
     },
@@ -35376,117 +35091,6 @@
       ],
       "provenance": [
         "Regulation1052Article23Clause02"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-articleNumber",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "articleNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-citationLabel",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "citationLabel"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-clauseNumber",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "clauseNumber"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-documentUrl",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "documentUrl"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-inDocument-rdfs-label",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "inDocument",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-officialText",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "officialText"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "excluded",
-      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-partOf-rdfs-label",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "partOf",
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-rdfs-label",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "label",
-      "path": [
-        "rdfs:label"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
-      ],
-      "status": "supported"
-    },
-    {
-      "id": "Regulation1052Article23Clause02Table01-verbatimTableText",
-      "anchor": "Regulation1052Article23Clause02Table01",
-      "answer_kind": "literal",
-      "path": [
-        "verbatimTableText"
-      ],
-      "provenance": [
-        "Regulation1052Article23Clause02Table01"
       ],
       "status": "supported"
     },
@@ -46993,6 +46597,204 @@
       "status": "supported"
     },
     {
+      "id": "ScholarshipRateTableSpecialProgram-articleNumber",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-citationLabel",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-documentUrl",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-inDocument-rdfs-label",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-officialText",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-partOf-rdfs-label",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-rdfs-label",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableSpecialProgram-verbatimTableText",
+      "anchor": "ScholarshipRateTableSpecialProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ScholarshipRateTableSpecialProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-articleNumber",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-citationLabel",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-documentUrl",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-inDocument-rdfs-label",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-officialText",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-partOf-rdfs-label",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-rdfs-label",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "ScholarshipRateTableStandardProgram-verbatimTableText",
+      "anchor": "ScholarshipRateTableStandardProgram",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "ScholarshipRateTableStandardProgram"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "ScholarshipReviewProcedure-basedOn-citationLabel",
       "anchor": "ScholarshipReviewProcedure",
       "answer_kind": "literal",
@@ -47149,7 +46951,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -47162,7 +46964,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -47175,7 +46977,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -47188,7 +46990,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -47200,7 +47002,94 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-citationLabel",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-documentUrl",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-inDocument-rdfs-label",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-officialText",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-partOf-rdfs-label",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-rdfs-label",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "SecondLanguageConversionTableEnglishMajor-verbatimTableText",
+      "anchor": "SecondLanguageConversionTableEnglishMajor",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "SecondLanguageConversionTableEnglishMajor"
       ],
       "status": "supported"
     },
@@ -48168,6 +48057,117 @@
       "status": "supported"
     },
     {
+      "id": "StudyYearClassificationTable-articleNumber",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "articleNumber"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-citationLabel",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "citationLabel"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-clauseNumber",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "clauseNumber"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-documentUrl",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "documentUrl"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-inDocument-rdfs-label",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "inDocument",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-officialText",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "officialText"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "excluded",
+      "reason": "Bản phẳng cũ làm mất vị trí ô rỗng; bảng chỉ trả verbatimTableText giữ nguyên cột từ nguồn."
+    },
+    {
+      "id": "StudyYearClassificationTable-partOf-rdfs-label",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "partOf",
+        "rdfs:label"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-rdfs-label",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "label",
+      "path": [
+        "rdfs:label"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
+      "id": "StudyYearClassificationTable-verbatimTableText",
+      "anchor": "StudyYearClassificationTable",
+      "answer_kind": "literal",
+      "path": [
+        "verbatimTableText"
+      ],
+      "provenance": [
+        "StudyYearClassificationTable"
+      ],
+      "status": "supported"
+    },
+    {
       "id": "SummerSemester-basedOn-citationLabel",
       "anchor": "SummerSemester",
       "answer_kind": "literal",
@@ -48302,7 +48302,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48315,7 +48315,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48328,7 +48328,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48340,7 +48340,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48352,7 +48352,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48365,7 +48365,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48378,7 +48378,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48391,7 +48391,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48403,7 +48403,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48415,7 +48415,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48428,7 +48428,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48441,7 +48441,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48454,7 +48454,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48466,7 +48466,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48478,7 +48478,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48491,7 +48491,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48504,7 +48504,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48517,7 +48517,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48529,7 +48529,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48541,7 +48541,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48554,7 +48554,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48567,7 +48567,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48580,7 +48580,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48592,7 +48592,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48604,7 +48604,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48617,7 +48617,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48630,7 +48630,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48643,7 +48643,7 @@
         "officialText"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48655,7 +48655,7 @@
         "officialCertificateName"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48667,7 +48667,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Regulation1052Appendix2Table06"
+        "ForeignLanguageCertificateAbbreviationTable"
       ],
       "status": "supported"
     },
@@ -48909,7 +48909,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48922,7 +48922,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48935,7 +48935,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48948,7 +48948,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48960,7 +48960,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48973,7 +48973,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48986,7 +48986,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -48999,7 +48999,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49012,7 +49012,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49024,7 +49024,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49187,7 +49187,7 @@
         "citationLabel"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49200,7 +49200,7 @@
         "documentUrl"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49213,7 +49213,7 @@
         "officialText"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49226,7 +49226,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },
@@ -49238,7 +49238,7 @@
         "rdfs:label"
       ],
       "provenance": [
-        "Decision729AppendixIITable01"
+        "AcademicProgramCatalogueTable"
       ],
       "status": "supported"
     },

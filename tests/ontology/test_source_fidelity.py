@@ -66,67 +66,67 @@ VERBATIM_TABLE_SOURCES = {
     # Hai bảng mức học bổng nạp 15/8/2026. Trước đó sáu mức học bổng dẫn nguồn về
     # câu dẫn "... cụ thể như sau:" của Điều 1/Điều 2 - một câu KHÔNG chứa số tiền
     # nào. Khai ở đây để phép kiểm đối chiếu từng ký tự với ``references/Qd317.md``.
-    "Decision317Article01Table01": (
+    "ScholarshipRateTableStandardProgram": (
         "Qd317.md",
         "| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |",
     ),
-    "Decision317Article02Table01": (
+    "ScholarshipRateTableSpecialProgram": (
         "Qd317.md",
         "| STT | Xếp loại học bổng | Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ) |",
     ),
-    "Regulation1052Article18Clause02Table01": (
+    "AcademicPerformanceTable": (
         "Qd1052.md",
         "| **Điểm trung bình chung** | **Mức xếp loại** |",
     ),
-    "Regulation1052Article19Clause01Table01": (
+    "StudyYearClassificationTable": (
         "Qd1052.md",
         "| **TT** | **Số tín chỉ đã tích lũy** | **Xếp trình độ năm học** |",
     ),
-    "Regulation1052Article23Clause02Table01": (
+    "GraduationClassificationTable": (
         "Qd1052.md",
         "| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |",
     ),
-    "Regulation1052Appendix1Table01": (
+    "ClassSizeTable": (
         "Qd1052.md",
         "| **TT** | **Học phần** | **Số lượng sinh viên** | |",
     ),
-    "Regulation1052Appendix2Table01": (
+    "EnglishConversionTableStandardProgram": (
         "Qd1052.md",
         "| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |",
     ),
-    "Regulation1052Appendix2Table02": (
+    "OtherLanguageConversionTableStandardProgram": (
         "Qd1052.md",
         "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |",
     ),
-    "Regulation1052Appendix2Table03": (
+    "EnglishRequirementTableSpecialProgram": (
         "Qd1052.md",
         "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |",
     ),
-    "Regulation1052Appendix2Table04": (
+    "OtherLanguageRequirementTableSpecialProgram": (
         "Qd1052.md",
         "| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |",
     ),
-    "Regulation1052Appendix2Table05": (
+    "SecondLanguageConversionTableEnglishMajor": (
         "Qd1052.md",
         "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |",
     ),
-    "Regulation1052Appendix2Table06": (
+    "ForeignLanguageCertificateAbbreviationTable": (
         "Qd1052.md",
         "| TT | Ngoại ngữ | Từ viết tắt | Viết đầy đủ |",
     ),
-    "Regulation1052Appendix3Table01": (
+    "ComputerCertificateConversionTable": (
         "Qd1052.md",
         "| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |",
     ),
-    "Decision1965Article01Table01": (
+    "ForeignLanguageCourseCatalogueTable": (
         "Qd1965.md",
         "| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |",
     ),
-    "Decision1965Article01Table02": (
+    "ForeignLanguageCourseAssessmentTable": (
         "Qd1965.md",
         "| STT | Học phần | Thành phần đánh giá | Tỷ trọng |",
     ),
-    "Decision729AppendixIITable01": (
+    "AcademicProgramCatalogueTable": (
         "Qd729.md",
         "| **TT** | **Tên ngành đào tạo** |",
     ),

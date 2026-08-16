@@ -299,7 +299,7 @@ def test_a_training_regulation_says_which_cohorts_it_governs(ontology_graph) -> 
 def test_ielts_and_toefl_columns_stay_in_the_source_table_order(ontology_graph) -> None:
     """Lỗi IELTS bị chặn ngay trên nguyên khối bảng, không qua node chép tay."""
 
-    table = A("Regulation1052Appendix2Table03")
+    table = A("EnglishRequirementTableSpecialProgram")
     text = str(next(ontology_graph.objects(table, A("verbatimTableText"))))
 
     assert "| TOEIC | IELTS | TOEFL iBT |" in text

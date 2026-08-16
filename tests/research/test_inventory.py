@@ -99,10 +99,10 @@ def test_business_values_inside_opaque_records_remain_supported(
 
     assert entries["VNPAYOtherBankFee-feeAmount"]["status"] == "supported"
     assert entries[
-        "Regulation1052Appendix2Table03-verbatimTableText"
+        "EnglishRequirementTableSpecialProgram-verbatimTableText"
     ]["status"] == "supported"
     assert entries[
-        "Regulation1052Appendix2Table03-officialText"
+        "EnglishRequirementTableSpecialProgram-officialText"
     ]["status"] == "excluded"
 
 
@@ -110,7 +110,7 @@ def test_business_values_inside_opaque_records_remain_supported(
     "entry_id",
     [
         "CourseWithdrawalProcedure-requiresForm-rdfs-label",
-        "Regulation1052Appendix2Table03-partOf-rdfs-label",
+        "EnglishRequirementTableSpecialProgram-partOf-rdfs-label",
         "DirectBankingFreeFee-appliesToPaymentMethod-rdfs-label",
         "ExcellentSpecialScholarshipRate-billingUnit-rdfs-label",
         "FormCatalogueEntry001-catalogueEntryForForm-rdfs-label",
