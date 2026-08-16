@@ -608,14 +608,19 @@ def _run_attempt(
                 # transformers 5.x accepts fractional warmup through this field.
                 warmup_steps=0.03,
                 weight_decay=0.0,
-                optim="paged_adamw_8bit",
+                # Đo trên 60 bước, card 6 GB, bf16: adamw_torch 4,902 · fused
+                # 4,914 · paged_adamw_8bit 4,940 giây/bước. Chênh 0,8%, tức
+                # nhiễu. LoRA học 3,69 triệu tham số còn mỗi bước phải đẩy qua
+                # 1,2 tỉ trọng số đóng băng, nên bước optimizer không phải chỗ
+                # tốn thời gian. Chốt bản fused, đừng đo lại.
+                optim="adamw_torch_fused",
                 max_grad_norm=0.3,
                 gradient_checkpointing=checkpoint_gradients,
                 gradient_checkpointing_kwargs={"use_reentrant": False},
                 bf16=compute_dtype is torch.bfloat16,
                 fp16=compute_dtype is torch.float16,
                 tf32=torch.cuda.get_device_capability()[0] >= 8,
-                torch_compile=False,
+                torch_compile=args.torch_compile,
                 eval_strategy="no",
                 save_strategy="no",
                 logging_strategy="steps",
@@ -773,6 +778,8 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
             {
                 "allocator_conf": os.environ.get("PYTORCH_CUDA_ALLOC_CONF"),
                 "lora_profile": args.lora_profile,
+                "optim": "adamw_torch_fused",
+                "torch_compile": args.torch_compile,
                 "model_profile": args.model_profile,
                 "keep_tied_weight_fp32": args.keep_tied_weight_fp32,
                 # Ghi CẢ lựa chọn lẫn kết quả suy ra. Đọc log nguội mà chỉ thấy
@@ -872,6 +879,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "resulting adapter is not a release candidate, and the gaps are "
             "printed so the run cannot be mistaken for a clean one"
         ),
+    )
+    parser.add_argument(
+        "--torch-compile",
+        action="store_true",
+        help="biên dịch đồ thị huấn luyện; ĐO trước khi tin, xem docs/TRAINING.md",
     )
     parser.add_argument(
         "--base-precision",
