@@ -367,6 +367,26 @@ def _should_checkpoint_gradients(torch, choice: str) -> bool:
 
 
 
+def _resolve_base_precision(choice: str) -> str:
+    """Nén 4-bit trọng số gốc hay giữ bf16 - hỏi theo VRAM của máy đang chạy.
+
+    Cùng cách chọn với gradient checkpointing, và cùng lý do: một cờ sinh ra cho
+    card 6 GB không nên đi theo dự án lên card 24 GB. Nén 4-bit bắt bitsandbytes
+    giải nén trọng số ở MỖI lượt truyền, mà lô nhỏ với chuỗi ngắn thì không có
+    đủ phép tính để chia đều chi phí đó - huấn luyện trả giá cả xuôi lẫn ngược.
+
+    Ngưỡng dùng chung với checkpointing: model 1,2 tỉ tham số ở bf16 tốn khoảng
+    2,4 GB, nên 16 GiB là dư dả, còn 6 GB thì 4-bit là cách DUY NHẤT vừa.
+    """
+
+    if choice != "auto":
+        return choice
+    total = _gpu_total_bytes()
+    if total is None:
+        return "4bit"
+    return "bf16" if total >= GRADIENT_CHECKPOINT_VRAM_THRESHOLD else "4bit"
+
+
 def _gpu_total_bytes() -> int | None:
     """VRAM của máy đang chạy, hoặc None nếu không có GPU."""
 
@@ -450,15 +470,29 @@ def _run_attempt(
         torch, args.gradient_checkpointing
     )
     lora = _lora_spec(args.lora_profile)
-    quantization = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_compute_dtype=compute_dtype,
-        # Lớp lm_head phải ở dạng đầy đủ: bitsandbytes đòi trọng số 4-bit đã
-        # đóng gói, còn lm_head buộc nhau trọng số với lớp nhúng nên không đóng
-        # gói. Lượng tử hoá nó thì vấp assert ngay lượt truyền xuôi đầu tiên.
-        llm_int8_skip_modules=["lm_head"],
+    # NÉN 4-BIT LÀ TUỲ CHỌN, VÀ KHÔNG CÒN LÀ MẶC ĐỊNH.
+    #
+    # Nó sinh ra cho card 6 GB. Trên card lớn nó chỉ lấy đi tốc độ:
+    # bitsandbytes giải nén trọng số ở MỖI lượt truyền, mà lô nhỏ với chuỗi
+    # ngắn thì gần như không có phép tính nào để chia đều chi phí đó - huấn
+    # luyện trả giá hai lần, xuôi và ngược. Model 1,2 tỉ tham số ở bf16 chỉ tốn
+    # khoảng 2,4 GB nên L4 24 GB thừa sức giữ nguyên.
+    #
+    # Vẫn giữ đường 4-bit vì card 6 GB không nạp nổi bf16.
+    quantize = args.base_precision == "4bit"
+    quantization = (
+        BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=compute_dtype,
+            # Lớp lm_head phải ở dạng đầy đủ: bitsandbytes đòi trọng số 4-bit đã
+            # đóng gói, còn lm_head buộc nhau trọng số với lớp nhúng nên không đóng
+            # gói. Lượng tử hoá nó thì vấp assert ngay lượt truyền xuôi đầu tiên.
+            llm_int8_skip_modules=["lm_head"],
+        )
+        if quantize
+        else None
     )
     memory_records: list[dict] = []
     model = None
@@ -472,11 +506,12 @@ def _run_attempt(
         stage = "model_load"
         load_kwargs = {
             "local_files_only": True,
-            "quantization_config": quantization,
             "dtype": compute_dtype,
             "device_map": {"": torch.cuda.current_device()},
             "low_cpu_mem_usage": True,
         }
+        if quantization is not None:
+            load_kwargs["quantization_config"] = quantization
         # FlashAttention-2 is optional: the wheel is pinned to one CUDA/torch/
         # Python combination, so a checkout on another machine will not have it.
         # It buys headroom during training, not during adapter construction,
@@ -496,16 +531,29 @@ def _run_attempt(
 
         model.config.use_cache = False
         stage = "kbit_prepare"
-        model = prepare_model_for_kbit_training(
-            model,
-            use_gradient_checkpointing=checkpoint_gradients,
-            gradient_checkpointing_kwargs={"use_reentrant": False},
-        )
+        if quantize:
+            model = prepare_model_for_kbit_training(
+                model,
+                use_gradient_checkpointing=checkpoint_gradients,
+                gradient_checkpointing_kwargs={"use_reentrant": False},
+            )
+        else:
+            # ``prepare_model_for_kbit_training`` chỉ có nghĩa với trọng số đã
+            # nén: nó gỡ lớp nén ra khỏi đồ thị gradient rồi ép vài lớp lên
+            # fp32. Không nén thì nó thừa, nhưng hai việc nó làm thêm thì vẫn
+            # cần - đóng băng trọng số gốc và bật checkpointing.
+            for parameter in model.parameters():
+                parameter.requires_grad = False
+            if checkpoint_gradients:
+                model.gradient_checkpointing_enable(
+                    gradient_checkpointing_kwargs={"use_reentrant": False}
+                )
+                model.enable_input_require_grads()
         _record_cuda_memory(torch, memory_records, "after_kbit_prepare")
 
         stage = "tied_weight_cast"
         tied_weight = _tied_weight_status(model)
-        if args.keep_tied_weight_fp32:
+        if args.keep_tied_weight_fp32 or not quantize:
             tied_weight = {
                 **tied_weight,
                 "before_bytes": tied_weight["storage_bytes"],
@@ -631,7 +679,15 @@ def _run_attempt(
                 "dynamic_padding_multiple": 8,
                 "gradient_checkpointing": checkpoint_gradients,
                 "group_by_length": False,
-                "quantization": "4-bit NF4 double-quant; tied lm_head skipped",
+                # Bộ chấm ĐỌC ô này để chọn nền trọng số, nên nó phải nói đúng
+                # sự thật: adapter học bù cho một nền cụ thể, chấm trên nền khác
+                # là chấm một model khác mà không có triệu chứng gì.
+                "quantization": (
+                    "4-bit NF4 double-quant; tied lm_head skipped"
+                    if quantize
+                    else None
+                ),
+                "base_precision": args.base_precision,
                 "allocator_conf": os.environ.get("PYTORCH_CUDA_ALLOC_CONF"),
                 "compute_dtype": str(compute_dtype).removeprefix("torch."),
                 "lora_profile": args.lora_profile,
@@ -689,6 +745,9 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
             f"{MODEL_ID} is present in the local cache at {snapshot}, but CUDA is "
             "not available; refusing to run a misleading CPU smoke test"
         )
+    # Chốt "auto" thành giá trị thật NGAY ĐÂY, trước khi bất cứ ai đọc nó. Để
+    # mỗi chỗ tự suy lại là mở đường cho hai chỗ suy ra hai kiểu.
+    args.base_precision = _resolve_base_precision(args.base_precision)
     rows = _load_rows(
         smoke_test=args.smoke_test,
         dataset_dir=args.dataset_dir,
@@ -719,6 +778,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
                 # Ghi CẢ lựa chọn lẫn kết quả suy ra. Đọc log nguội mà chỉ thấy
                 # "auto" thì không biết máy đó đã bật hay tắt, mà đó lại là thứ
                 # giải thích phần lớn chênh lệch tốc độ giữa hai lượt chạy.
+                "base_precision": args.base_precision,
                 "gradient_checkpointing_choice": args.gradient_checkpointing,
                 "gradient_checkpointing_effective": _checkpointing_for_log(args),
                 "gpu_total_bytes": _gpu_total_bytes(),
@@ -811,6 +871,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "train despite readiness gaps. For exploratory runs only - the "
             "resulting adapter is not a release candidate, and the gaps are "
             "printed so the run cannot be mistaken for a clean one"
+        ),
+    )
+    parser.add_argument(
+        "--base-precision",
+        choices=("auto", "bf16", "4bit"),
+        default="auto",
+        help=(
+            "độ chính xác trọng số GỐC. Mặc định tự chọn: bf16 khi VRAM ≥ 16 GiB "
+            "(LoRA thường, nhanh hơn), 4bit khi dưới (QLoRA, cách duy nhất vừa "
+            "card 6 GB)."
         ),
     )
     parser.add_argument(

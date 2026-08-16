@@ -25,7 +25,22 @@ Chấm lại một adapter đã có, khỏi huấn luyện lại:
 ADAPTER=artifacts/run-<mốc>/adapter bash scripts/train-and-report.sh --skip-train
 ```
 
-### Hai thứ tự điều chỉnh theo máy
+### Ba thứ tự điều chỉnh theo máy
+
+**Nền trọng số gốc** là bf16 khi VRAM từ 16 GiB trở lên và 4-bit khi dưới — tức
+là **LoRA thường trên máy lớn, QLoRA trên card 6 GB**. Ép tay bằng
+`--base-precision bf16|4bit`.
+
+Nén 4-bit bắt bitsandbytes giải nén trọng số ở **mỗi** lượt truyền, mà lô nhỏ với
+chuỗi ngắn thì không có đủ phép tính để chia đều chi phí đó — huấn luyện trả giá
+cả lượt xuôi lẫn lượt ngược. Model 1,2 tỉ tham số ở bf16 chỉ tốn khoảng 2,4 GB,
+nên trên L4 24 GB việc nén chỉ lấy đi tốc độ. Trên card 6 GB thì ngược lại: 4-bit
+là cách duy nhất nạp vừa.
+
+> **Đổi nền là ĐỔI PHÉP THỬ, không phải chỉnh tốc độ.** Adapter học bù cho đúng
+> nền nó thấy, nên số đo của lượt QLoRA và lượt LoRA bf16 **không so trực tiếp
+> được với nhau**. Lượt train ghi lựa chọn này vào `training_metrics.json`, và bộ
+> chấm đọc lại đúng ô đó để chấm trên cùng nền — xem mục chấm bên dưới.
 
 **Gradient checkpointing** bật khi VRAM dưới 16 GiB và tắt khi trên. Nó đổi bộ nhớ
 lấy tốc độ: bỏ activation rồi tính lại ở lượt truyền ngược. Kết quả huấn luyện
