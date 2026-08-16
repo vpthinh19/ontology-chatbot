@@ -182,7 +182,14 @@ def train(args: argparse.Namespace) -> dict:
     except ImportError as exc:  # pragma: no cover - CLI requires train extra.
         raise RuntimeError("install the train extra to fine-tune models") from exc
 
-    spec = MODEL_SPECS[args.model]
+    spec = dict(MODEL_SPECS[args.model])
+    if args.batch_size:
+        effective = spec["batch_size"] * spec["gradient_accumulation"]
+        spec["batch_size"] = args.batch_size
+        # Giữ NGUYÊN lô hiệu dụng: lùi lô vật lý mà không bù thì đổi luôn phép
+        # thử, và số đo hết so được với lượt trước.
+        spec["gradient_accumulation"] = max(1, effective // args.batch_size)
+        spec["eval_batch_size"] = min(spec.get("eval_batch_size", 1), args.batch_size)
     output_dir = Path(args.output_dir) / args.model
     _prepare_output_directory(output_dir)
     snapshot = Path(
@@ -688,6 +695,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     # Mất mát về 0 từ khoảng epoch 15; thêm epoch không đổi kết quả.
     parser.add_argument("--epochs", type=float, default=16.0)
     parser.add_argument("--max-steps", type=int, default=-1)
+    # Lô của seq2seq trước đây ghim cứng trong MODEL_SPECS, không có đường lùi.
+    # Card 6 GB tràn ngay ở lô 8 và chết hẳn - trong khi đường LLM tự lùi lô rồi
+    # bù bằng tích luỹ gradient. Cùng một dự án mà hai đường xử lý hết bộ nhớ
+    # theo hai kiểu là chỗ để người chạy mất một lượt máy thuê.
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=None,
+        help="ép lô vật lý; bỏ trống thì lấy theo model và tự lùi khi tràn",
+    )
     parser.add_argument("--learning-rate", type=float, default=1e-4)
     # Mỗi lần đánh giá phải sinh lại toàn tập val, nên nhịp thưa mà vẫn đủ mốc.
     parser.add_argument("--eval-every-epochs", type=float, default=4.0)
