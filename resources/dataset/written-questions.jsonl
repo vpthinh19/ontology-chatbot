@@ -2524,3 +2524,607 @@
 {"anchor": "PartTimeTrainingMode", "query_id": "training-mode-facts", "register": "noisy", "input": "tg hoc vlvh co linh hoat ko"}
 {"anchor": "PartTimeTrainingMode", "query_id": "training-mode-facts", "register": "noisy", "input": "thuc tap he vua lam vua hoc dc hoc ngoai truong ko"}
 {"anchor": "PartTimeTrainingMode", "query_id": "training-mode-facts", "register": "noisy", "input": "vl vh hoc o dau"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin cho biết trường xếp loại học lực của sinh viên theo những mức nào ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Tôi muốn biết thang xếp loại học lực được quy định ra sao."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Đề nghị hướng dẫn cách xác định mức xếp loại học lực theo điểm trung bình chung ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin hỏi điểm trung bình chung bao nhiêu thì được xếp loại giỏi ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Cho tôi hỏi mức xếp loại học lực thấp nhất được quy định là gì ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin cho biết sinh viên đạt 9,0 điểm trung bình chung thì xếp loại nào ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Tôi cần biết khoảng điểm nào tương ứng với loại khá."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin hỏi trường căn cứ vào đâu để xếp loại học lực cho sinh viên."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Đề nghị cho biết quy định về các mức xếp loại học lực của trường ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin cho biết loại xuất sắc yêu cầu điểm trung bình chung từ bao nhiêu ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Xếp loại học lực có mấy mức?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Điểm trung bình chung bao nhiêu thì loại khá?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Thang xếp loại học lực quy định thế nào?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Sinh viên 7,5 điểm xếp loại gì?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Mức xếp loại học lực thấp nhất là gì?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Xếp loại học lực dựa vào điểm nào?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Bao nhiêu điểm thì được loại giỏi?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Ngưỡng điểm của loại trung bình là bao nhiêu?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Loại xuất sắc cần điểm trung bình chung bao nhiêu?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Các mức xếp loại học lực gồm những gì?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "học lực xếp mấy loại nhỉ"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "mấy điểm thì được giỏi vậy ạ"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "8 phẩy là loại gì thế"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "xếp loại học lực tính sao ạ"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "em 6,5 thì rơi vào loại nào ạ"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "bảng xếp loại học lực đâu ta"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "muốn xuất sắc phải mấy phẩy v"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "học lực yếu là từ bao nhiêu điểm hả"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "xếp loại theo điểm trung bình chung hả bạn"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "colloquial", "input": "cho hỏi thang xếp loại học lực với"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "hl xep theo thang nao z"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "may diem thi duoc gioi"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "8 phay la loai gi"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "nguong xep loai hoc luc"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "hoc luc yeu tu bao nhieu diem"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "bang xep loai hoc luc o dau"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "diem tbc bao nhieu thi kha"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "xuat sac can may phay z"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "xep loai hoc luc dua vao dau a"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "noisy", "input": "thang diem xep loai hl"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Xin cho biết hạng tốt nghiệp được xác định theo những mức nào ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Tôi muốn biết trường xếp hạng bằng tốt nghiệp căn cứ vào điểm nào."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Đề nghị cho biết điểm trung bình chung tích lũy toàn khóa bao nhiêu thì tốt nghiệp loại giỏi ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Xin hỏi bằng tốt nghiệp loại xuất sắc yêu cầu mức điểm nào ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Cho tôi hỏi hạng tốt nghiệp thấp nhất được công nhận là gì ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Xin cho biết quy định xếp loại tốt nghiệp của trường ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Tôi cần biết khoảng điểm tương ứng với bằng loại khá."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Xin hỏi sinh viên đạt 8,2 điểm tích lũy toàn khóa thì tốt nghiệp loại nào."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Đề nghị hướng dẫn cách xác định hạng tốt nghiệp ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Xin cho biết loại trung bình tương ứng với khoảng điểm nào ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Xếp loại tốt nghiệp có mấy hạng?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Tốt nghiệp loại giỏi cần bao nhiêu điểm?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Hạng tốt nghiệp xác định theo điểm nào?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Bằng loại khá ứng với khoảng điểm nào?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Điểm tích lũy toàn khóa 9,1 thì tốt nghiệp loại gì?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Ngưỡng xếp hạng bằng tốt nghiệp quy định ra sao?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Loại xuất sắc yêu cầu điểm bao nhiêu?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Hạng tốt nghiệp thấp nhất là gì?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Các mức xếp loại tốt nghiệp gồm những gì?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Bằng tốt nghiệp xếp hạng dựa trên cơ sở nào?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "tốt nghiệp loại gì tính sao nhỉ"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "mấy phẩy thì bằng giỏi vậy"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "muốn bằng xuất sắc cần bao nhiêu ạ"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "em 7,2 ra trường loại gì thế"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "bảng xếp hạng tốt nghiệp đâu ạ"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "bằng khá là từ mấy phẩy hả"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "xếp loại bằng theo điểm tích lũy hả bạn"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "ra trường loại trung bình là bao nhiêu điểm v"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "cho hỏi ngưỡng xếp loại tốt nghiệp với"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "colloquial", "input": "hạng tốt nghiệp có mấy mức ta"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "ra truong xep hang kieu gi z"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "may phay thi bang gioi"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "nguong xep hang tot nghiep"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "bang xuat sac can bao nhieu diem"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "7,2 ra truong loai gi"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "hang tot nghiep tinh the nao"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "diem tich luy toan khoa xep loai"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "bang kha tu may phay z"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "cac muc xep loai tn"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "noisy", "input": "tot nghiep loai tb la bao nhieu a"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin cho biết trường xếp trình độ năm học của sinh viên dựa vào đâu ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Tôi muốn biết cần tích lũy bao nhiêu tín chỉ để được xếp là sinh viên năm thứ hai."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Đề nghị cho biết quy định xếp trình độ năm học theo số tín chỉ ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin hỏi sinh viên tích lũy 80 tín chỉ thì thuộc năm thứ mấy ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Cho tôi hỏi bao nhiêu tín chỉ thì được xếp vào năm cuối ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin cho biết ngưỡng tín chỉ của sinh viên năm thứ nhất ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Tôi cần biết cách trường xác định sinh viên đang học năm mấy."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin hỏi trình độ năm học có được tính theo thời gian nhập học không ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Đề nghị hướng dẫn cách tra trình độ năm học của sinh viên ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin cho biết mốc tín chỉ phân chia các năm học ạ."}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Sinh viên năm mấy tính theo gì?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Bao nhiêu tín chỉ thì lên năm hai?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Trình độ năm học xếp theo tín chỉ tích lũy ra sao?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Tích lũy 100 tín chỉ là sinh viên năm thứ mấy?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Ngưỡng tín chỉ của năm thứ ba là bao nhiêu?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Xếp trình độ năm học quy định thế nào?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Dưới bao nhiêu tín chỉ vẫn là năm nhất?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Sinh viên năm tư cần tích lũy bao nhiêu tín chỉ?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Các mốc tín chỉ chia năm học gồm những gì?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Trình độ năm học có mấy bậc?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "em đang là sinh viên năm mấy nhỉ"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "bao nhiêu tín chỉ thì lên năm 2 vậy"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "được 72 tín rồi là năm mấy ạ"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "xếp năm học tính theo tín hả"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "muốn lên năm cuối cần mấy tín thế"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "bảng xếp năm học đâu ta"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "dưới 35 tín vẫn năm nhất hả v"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "cho hỏi mốc tín chỉ chia năm với"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "học mãi mà vẫn năm hai là sao ạ"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "colloquial", "input": "trình độ năm học chia mấy bậc nhỉ"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "sinh vien nam may"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "bao nhieu tin chi thi len nam 2"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "xep trinh do nam hoc"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "72 tin la nam may"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "moc tin chi chia nam hoc"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "duoi 35 tin la nam nhat a"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "nam cuoi can bao nhieu tin"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "xep nam hoc tinh theo gi z"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "chia may bac nam hoc v"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "noisy", "input": "tich luy 105 tin la nam thu may"}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin cho biết quy định về số lượng sinh viên tối thiểu và tối đa của một lớp học phần ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Tôi muốn biết lớp học phần giáo dục tổng quát được mở với sĩ số bao nhiêu."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Đề nghị cho biết sĩ số tối đa của lớp ngoại ngữ ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin hỏi một lớp học phần cần tối thiểu bao nhiêu sinh viên mới được mở ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Cho tôi hỏi quy mô lớp học phần khối kỹ thuật công nghệ được quy định ra sao ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin cho biết lớp lý luận chính trị có giới hạn sĩ số tối đa không ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Tôi cần biết sĩ số lớp giáo dục thể chất được quy định thế nào."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin hỏi lớp tiếng Anh chuyên ngành mở tối đa bao nhiêu sinh viên ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Đề nghị hướng dẫn tra quy định sĩ số lớp học phần ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin cho biết bảng quy mô lớp học phần của trường ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp học phần tối thiểu bao nhiêu sinh viên?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Sĩ số tối đa của lớp học phần là bao nhiêu?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Quy mô lớp học phần quy định thế nào?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp ngoại ngữ B1 mở tối đa mấy sinh viên?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp giáo dục tổng quát có sĩ số bao nhiêu?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Sĩ số lớp khối kỹ thuật công nghệ là bao nhiêu?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp lý luận chính trị tối thiểu bao nhiêu người?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Giới hạn sĩ số lớp học phần ra sao?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp giáo dục thể chất quy định sĩ số thế nào?"}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Bảng sĩ số lớp học phần gồm những khối nào?"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "lớp học phần bao nhiêu người thì mở nhỉ"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "sĩ số tối đa một lớp là mấy ạ"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "lớp tiếng anh đông tối đa bao nhiêu thế"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "ít người quá có mở lớp không ta"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "lớp thể chất giới hạn mấy bạn v"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "quy mô lớp học phần đâu ạ"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "lớp chính trị cần tối thiểu bao nhiêu hả"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "cho hỏi sĩ số lớp học phần với"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "khối kỹ thuật lớp bao nhiêu bạn nhỉ"}
+{"anchor": "", "query_id": "class-size-table", "register": "colloquial", "input": "bảng sĩ số lớp ở đâu vậy ạ"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "si so lop hoc phan"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "lop toi thieu bao nhieu sv thi mo"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "si so toi da mot lop"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "lop ngoai ngu toi da may ban"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "quy mo lop hoc phan"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "lop the chat gioi han bao nhieu"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "lop ly luan chinh tri toi thieu"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "bang si so lop o dau z"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "khoi ky thuat lop may nguoi a"}
+{"anchor": "", "query_id": "class-size-table", "register": "noisy", "input": "lop gd tong quat si so bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin cho biết mức học bổng khuyến khích học tập của trường là bao nhiêu ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Tôi muốn biết học bổng loại giỏi được cấp bao nhiêu tiền một học kỳ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Đề nghị cho biết mức học bổng xuất sắc trong một học kỳ ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin hỏi học bổng được cấp cho mấy tháng trong một học kỳ ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Cho tôi hỏi mức học bổng loại khá là bao nhiêu ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin cho biết bảng mức học bổng theo xếp loại của trường ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Tôi cần biết học bổng khuyến khích học tập có mấy mức."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin hỏi số tiền học bổng cao nhất sinh viên có thể nhận là bao nhiêu ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Đề nghị hướng dẫn tra mức tiền học bổng theo xếp loại ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin cho biết mức học bổng thấp nhất được cấp là bao nhiêu ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng khuyến khích học tập bao nhiêu tiền?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Mức học bổng loại giỏi là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng xuất sắc được bao nhiêu một kỳ?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng cấp cho mấy tháng mỗi học kỳ?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Mức học bổng khá là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Bảng mức học bổng gồm những loại nào?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng có mấy mức xếp loại?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Số tiền học bổng cao nhất là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Mức học bổng thấp nhất bao nhiêu tiền?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng khuyến khích học tập tính theo gì?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "học bổng được bao nhiêu tiền nhỉ"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "loại giỏi thì học bổng mấy triệu ạ"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "xuất sắc được bao nhiêu thế"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "học bổng một kỳ bao nhiêu v"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "bảng mức học bổng đâu ta"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "khá thì được mấy triệu hả"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "cho hỏi tiền học bổng với ạ"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "học bổng tính mấy tháng vậy nhỉ"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "được học bổng cao nhất là bao nhiêu ạ"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "colloquial", "input": "học bổng chia mấy mức thế"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "hoc bong bao nhieu tien"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "muc hoc bong loai gioi"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "xuat sac duoc bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "hoc bong mot ky bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "bang muc hoc bong"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "kha duoc may trieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "tien hoc bong khuyen khich hoc tap"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "hoc bong tinh may thang z"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "muc hoc bong cao nhat a"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "noisy", "input": "hb khuyen khich bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin cho biết mức học bổng của chương trình đào tạo đặc biệt là bao nhiêu ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Tôi muốn biết sinh viên chương trình đặc biệt loại giỏi được cấp bao nhiêu tiền."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Đề nghị cho biết mức học bổng xuất sắc của chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin hỏi học bổng chương trình đào tạo đặc biệt có khác chương trình chuẩn không ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Cho tôi hỏi mức học bổng loại khá của chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin cho biết bảng học bổng dành cho chương trình đào tạo đặc biệt ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Tôi cần biết số tiền học bổng cao nhất của chương trình đặc biệt."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin hỏi học bổng chương trình đặc biệt được cấp theo mấy mức ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Đề nghị hướng dẫn tra mức học bổng chương trình đào tạo đặc biệt ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin cho biết mức thấp nhất của học bổng chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Học bổng chương trình đặc biệt bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Mức học bổng giỏi của chương trình đặc biệt là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Chương trình đào tạo đặc biệt có mức học bổng nào?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Học bổng xuất sắc chương trình đặc biệt bao nhiêu tiền?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Bảng học bổng chương trình đặc biệt gồm mấy mức?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Mức khá của học bổng chương trình đặc biệt là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Học bổng chương trình đặc biệt cấp cho mấy tháng?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Số tiền học bổng cao nhất của chương trình đặc biệt?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Học bổng chương trình đặc biệt tính theo xếp loại nào?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Mức thấp nhất học bổng chương trình đặc biệt là bao nhiêu?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "học bổng chương trình đặc biệt bao nhiêu nhỉ"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "ctdb giỏi được mấy triệu ạ"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "chương trình đặc biệt xuất sắc bao nhiêu thế"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "học bổng bên đặc biệt cao hơn hả"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "bảng học bổng ctdb đâu ta"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "khá bên chương trình đặc biệt mấy triệu v"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "cho hỏi học bổng chương trình đặc biệt với"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "học đặc biệt thì học bổng sao ạ"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "mức cao nhất bên đặc biệt là bao nhiêu nhỉ"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "colloquial", "input": "học bổng ctdb chia mấy mức thế"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "hoc bong chuong trinh dac biet"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "ctdb gioi duoc bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "muc hb chuong trinh dac biet"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "xuat sac ben dac biet bao nhieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "bang hoc bong ctdb"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "kha chuong trinh dac biet may trieu"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "hoc bong dac biet cao hon a"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "hb ctdb bao nhieu tien z"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "muc cao nhat ben dac biet"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "noisy", "input": "hoc bong dt dac biet chia may muc"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin cho biết trường đang đào tạo những ngành nào ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Tôi muốn biết danh mục ngành đào tạo của trường được phân theo khối ngành ra sao."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Đề nghị cho biết ngành Công nghệ sinh học thuộc khối ngành nào ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin hỏi khối ngành kinh doanh và quản lý gồm những ngành nào ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Cho tôi hỏi trường có đào tạo ngành Luật không ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin cho biết danh sách ngành đào tạo trình độ đại học của trường ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Tôi cần biết ngành Kế toán được xếp vào khối ngành thứ mấy."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin hỏi trường phân ngành đào tạo theo bao nhiêu khối ngành ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Đề nghị hướng dẫn tra danh mục ngành đào tạo ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin cho biết ngành Marketing có trong danh mục đào tạo không ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Trường đào tạo những ngành nào?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Danh mục ngành đào tạo gồm những gì?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Ngành Quản trị kinh doanh thuộc khối ngành nào?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Khối ngành V gồm những ngành gì?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Trường có ngành Kiểm toán không?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Ngành đào tạo được phân theo mấy khối?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Danh sách ngành trình độ đại học của trường?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Ngành Hệ thống thông tin quản lý nằm ở khối nào?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Khối ngành khoa học sự sống có ngành nào?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Trường mở bao nhiêu ngành đào tạo?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "trường mình có những ngành nào nhỉ"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "ngành luật có không ạ"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "danh sách ngành đào tạo đâu ta"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "công nghệ sinh học thuộc khối nào thế"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "trường có dạy marketing không v"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "cho hỏi các ngành của trường với"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "kế toán nằm khối mấy hả"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "trường bao nhiêu ngành vậy ạ"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "khối kinh doanh gồm ngành gì nhỉ"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "colloquial", "input": "muốn xem danh mục ngành thì sao ạ"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "truong co nhung nganh nao"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "danh muc nganh dao tao"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "nganh luat co khong"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "cong nghe sinh hoc thuoc khoi nao"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "danh sach nganh cua truong"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "ke toan nam khoi may"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "truong bao nhieu nganh z"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "khoi kinh doanh gom nganh gi"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "co day marketing khong a"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "noisy", "input": "cac nganh dt trinh do dai hoc"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin cho biết chứng chỉ tiếng Anh quốc tế được quy đổi thành điểm như thế nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Tôi muốn biết IELTS 5.0 được quy đổi ra bậc mấy theo khung năng lực ngoại ngữ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Đề nghị cho biết bảng quy đổi điểm chứng chỉ tiếng Anh cho sinh viên chương trình chuẩn ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin hỏi TOEIC bao nhiêu điểm thì tương đương bậc 4 ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Cho tôi hỏi chứng chỉ tiếng Anh nào được trường chấp nhận quy đổi ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin cho biết bậc 3 khung năng lực ngoại ngữ tương ứng với trình độ CEFR nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Tôi cần biết TOEFL iBT bao nhiêu điểm thì đạt bậc 5."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin hỏi có chứng chỉ tiếng Anh thì được miễn những học phần điều kiện nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Đề nghị hướng dẫn cách quy đổi chứng chỉ tiếng Anh sang thang điểm 10 ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin cho biết mức Cambridge English Scale tương ứng với bậc 4 ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Chứng chỉ tiếng Anh quy đổi thành điểm thế nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "IELTS 5.5 tương đương bậc mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "TOEIC bao nhiêu thì đạt bậc 4?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Bảng quy đổi chứng chỉ tiếng Anh gồm những loại nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Bậc 3 khung năng lực ngoại ngữ ứng với CEFR nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Linguaskill bao nhiêu điểm thì đạt bậc 4?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Chứng chỉ Aptis được quy đổi ra sao?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Có chứng chỉ tiếng Anh thì miễn học phần nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "TOEFL iBT 80 tương đương bậc mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Quy đổi chứng chỉ tiếng Anh sang điểm 10 thế nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "ielts 6.0 quy đổi được mấy điểm nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "toeic bao nhiêu thì qua bậc 4 ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "có chứng chỉ tiếng anh thì được gì thế"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "bảng quy đổi tiếng anh đâu ta"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "em có ielts 5.0 thì sao ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "chứng chỉ nào trường nhận vậy nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "toefl bao nhiêu là bậc 5 hả"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "cho hỏi quy đổi chứng chỉ tiếng anh với"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "bậc 4 tương đương b2 hả bạn"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "colloquial", "input": "có bằng anh văn được miễn học phần nào ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "quy doi chung chi tieng anh"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "ielts 5 cham 5 ra bac nao"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "toeic bao nhieu thi bac 4"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "bang quy doi tieng anh"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "co chung chi tieng anh duoc gi"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "toefl ibt 80 la bac may"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "chung chi nao truong nhan z"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "quy doi chung chi ra diem 10"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "linguaskill bao nhieu diem a"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "noisy", "input": "bac 3 tuong duong b1 khong"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin cho biết chuẩn tiếng Anh đầu ra của các chương trình đào tạo đặc biệt ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Tôi muốn biết ngành Công nghệ thông tin chương trình đặc biệt yêu cầu tiếng Anh mức nào."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Đề nghị cho biết yêu cầu IELTS của ngành Quản trị khách sạn chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin hỏi chương trình đặc biệt ngành Kế toán cần TOEIC bao nhiêu ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Cho tôi hỏi những ngành nào có chương trình đào tạo đặc biệt ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin cho biết chuẩn tiếng Anh của ngành Quản trị kinh doanh chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Tôi cần biết yêu cầu ngoại ngữ của chương trình đặc biệt có cao hơn chương trình chuẩn không."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin hỏi ngành Tài chính Ngân hàng chương trình đặc biệt yêu cầu bậc mấy ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Đề nghị hướng dẫn tra chuẩn tiếng Anh theo từng chương trình đặc biệt ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin cho biết ngành Quản trị dịch vụ du lịch và lữ hành cần mức tiếng Anh nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Chương trình đặc biệt yêu cầu tiếng Anh mức nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Ngành Công nghệ thông tin đặc biệt cần TOEIC bao nhiêu?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Chuẩn tiếng Anh của chương trình đặc biệt là gì?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Quản trị khách sạn chương trình đặc biệt yêu cầu IELTS bao nhiêu?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Những ngành nào có chương trình đào tạo đặc biệt?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Yêu cầu ngoại ngữ chương trình đặc biệt theo bậc mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Kế toán chương trình đặc biệt cần chứng chỉ mức nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Chuẩn tiếng Anh từng ngành đặc biệt khác nhau ra sao?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Tài chính Ngân hàng đặc biệt yêu cầu bao nhiêu điểm?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Chương trình đặc biệt có chuẩn tiếng Anh cao hơn không?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "chương trình đặc biệt cần tiếng anh mấy chấm nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "cntt đặc biệt yêu cầu toeic bao nhiêu ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "học ctdb thì ielts mấy thế"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "ngành nào có chương trình đặc biệt vậy"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "quản trị khách sạn cần ielts bao nhiêu hả"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "chuẩn tiếng anh bên đặc biệt cao hơn hả bạn"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "cho hỏi yêu cầu ngoại ngữ ctdb với"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "kế toán đặc biệt cần bằng gì nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "bảng chuẩn tiếng anh chương trình đặc biệt đâu ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "colloquial", "input": "học đặc biệt khó ra trường vì tiếng anh không ta"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "chuan tieng anh chuong trinh dac biet"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "cntt dac biet can toeic bao nhieu"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "ctdb yeu cau ielts may cham"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "nganh nao co chuong trinh dac biet"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "quan tri khach san can ielts bao nhieu"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "yeu cau ngoai ngu ctdb"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "ke toan dac biet can bang gi z"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "chuan tieng anh tung nganh dac biet"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "tcnh dac biet bao nhieu diem a"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "noisy", "input": "bang chuan ta chuong trinh dac biet"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin cho biết sinh viên ngành Ngôn ngữ Anh quy đổi chứng chỉ ngoại ngữ hai như thế nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Tôi muốn biết chứng chỉ HSK được quy đổi ra bậc mấy cho sinh viên ngành Ngôn ngữ Anh."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Đề nghị cho biết bảng quy đổi ngoại ngữ dành cho sinh viên chuyên ngữ tiếng Anh ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin hỏi JLPT N3 tương đương bậc mấy theo quy định của trường ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Cho tôi hỏi sinh viên ngành Ngôn ngữ Anh được dùng những chứng chỉ ngoại ngữ nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin cho biết TOPIK mấy thì đạt bậc 4 ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Tôi cần biết chứng chỉ tiếng Pháp DELF được quy đổi ra sao."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin hỏi sinh viên chuyên ngữ có phải học ngoại ngữ thứ hai không ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Đề nghị hướng dẫn tra bảng quy đổi ngoại ngữ hai ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin cho biết chứng chỉ tiếng Nga TRKI tương ứng với bậc nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Sinh viên ngành Ngôn ngữ Anh quy đổi ngoại ngữ hai thế nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "HSK 4 tương đương bậc mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "JLPT N2 quy đổi ra bậc nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Bảng quy đổi ngoại ngữ cho sinh viên chuyên ngữ gồm tiếng nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "TOPIK 4 đạt bậc mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Chứng chỉ tiếng Pháp nào được chấp nhận?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Sinh viên Ngôn ngữ Anh học ngoại ngữ hai gì?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "TOCFL được quy đổi ra sao?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Tiếng Nga quy đổi theo chứng chỉ nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Ngoại ngữ hai của ngành Ngôn ngữ Anh quy đổi ra điểm 10 thế nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "học ngôn ngữ anh thì ngoại ngữ hai tính sao nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "hsk 4 được bậc mấy ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "em có jlpt n3 thì sao thế"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "bảng quy đổi ngoại ngữ hai đâu ta"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "chuyên ngữ anh học thêm tiếng gì vậy"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "topik 4 là bậc mấy hả"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "cho hỏi quy đổi tiếng trung với ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "tiếng nhật quy đổi thế nào nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "sinh viên ngôn ngữ anh dùng chứng chỉ nào v"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "colloquial", "input": "có bằng tiếng hàn thì quy đổi được không ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "quy doi ngoai ngu hai nganh ngon ngu anh"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "hsk 4 duoc bac may"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "jlpt n3 tuong duong bac nao"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "bang quy doi ngoai ngu hai"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "chuyen ngu anh hoc them tieng gi"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "topik 4 la bac may"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "quy doi tieng trung tieng nhat"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "sv ngon ngu anh dung chung chi nao z"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "tieng phap delf quy doi sao a"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "noisy", "input": "chung chi quoc te doi diem cho sv ngon ngu anh"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin cho biết các chứng chỉ ngoại ngữ quốc tế được viết tắt như thế nào ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Tôi muốn biết CEFR là tên viết tắt của cụm từ nào."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Đề nghị cho biết danh mục tên đầy đủ của các chứng chỉ ngoại ngữ ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin hỏi TOEIC là viết tắt của cụm từ tiếng Anh nào ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Cho tôi hỏi IELTS có tên đầy đủ là gì ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin cho biết HSK là tên gọi tắt của kỳ thi nào ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Tôi cần biết TOPIK là chứng chỉ của ngôn ngữ nào."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin hỏi JLPT là viết tắt của cụm từ nào ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Đề nghị hướng dẫn tra danh mục viết tắt chứng chỉ ngoại ngữ ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin cho biết TOCFL là chứng chỉ tiếng gì ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Các chứng chỉ ngoại ngữ viết tắt thế nào?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "CEFR là viết tắt của gì?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Tên đầy đủ của TOEIC là gì?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Danh mục viết tắt chứng chỉ ngoại ngữ gồm những gì?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "IELTS viết đầy đủ ra sao?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "HSK là kỳ thi tiếng nào?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "TOPIK thuộc ngôn ngữ nào?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "JLPT dùng cho ngôn ngữ nào?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "TOCFL là viết tắt của cụm từ nào?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Bảng tên chứng chỉ ngoại ngữ quốc tế gồm mấy thứ tiếng?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "cefr là viết tắt của gì nhỉ"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "toeic đầy đủ là gì ạ"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "bảng tên chứng chỉ đâu ta"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "hsk là tiếng gì thế"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "ielts viết đủ ra sao hả"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "topik của tiếng hàn hả bạn"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "cho hỏi các chứng chỉ viết tắt với"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "jlpt là gì vậy ạ"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "danh mục viết tắt chứng chỉ ở đâu nhỉ"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "colloquial", "input": "tocfl là chứng chỉ tiếng nào v"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "cac chung chi ngoai ngu viet tat"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "cefr noi day du la gi z"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "ten day du cua toeic"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "ten goi day du cac chung chi nn"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "hsk la tieng gi"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "ielts viet day du"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "topik cua tieng nao"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "danh muc viet tat chung chi z"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "jlpt la chung chi gi a"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "noisy", "input": "tocfl viet tat cua cum tu nao"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin cho biết chứng chỉ tin học được quy đổi thành điểm thưởng như thế nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Tôi muốn biết chứng chỉ MOS bao nhiêu điểm thì được quy đổi mức 10."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Đề nghị cho biết bảng quy đổi điểm chứng chỉ tin học quốc tế ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin hỏi trường chấp nhận những chứng chỉ tin học nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Cho tôi hỏi chứng chỉ IC3 bao nhiêu điểm thì được 9 ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin cho biết điểm thưởng cao nhất từ chứng chỉ tin học là bao nhiêu ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Tôi cần biết chứng chỉ ICDL được quy đổi ra sao."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin hỏi điểm IC3 được tính theo mấy mô-đun ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Đề nghị hướng dẫn tra bảng quy đổi chứng chỉ tin học ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin cho biết mức điểm thưởng thấp nhất của chứng chỉ tin học ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Chứng chỉ tin học quy đổi điểm thế nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "MOS bao nhiêu điểm thì được 10?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Trường nhận chứng chỉ tin học nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "IC3 bao nhiêu điểm thì quy đổi được 9?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Bảng quy đổi chứng chỉ tin học gồm những loại nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Điểm thưởng cao nhất từ chứng chỉ tin học là bao nhiêu?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "ICDL quy đổi ra điểm mấy?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Điểm IC3 tính theo mấy mô-đun?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Chứng chỉ tin học được cộng điểm thưởng ra sao?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Mức quy đổi thấp nhất của chứng chỉ tin học là bao nhiêu?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "có chứng chỉ tin học được cộng điểm không nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "mos bao nhiêu thì được 10 ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "ic3 quy đổi sao thế"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "bảng quy đổi tin học đâu ta"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "em có icdl thì được mấy điểm ạ"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "trường nhận chứng chỉ tin học nào vậy"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "điểm thưởng tin học cao nhất là mấy hả"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "cho hỏi quy đổi chứng chỉ tin học với"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "ic3 tính mấy mô đun nhỉ"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "colloquial", "input": "có bằng tin học quốc tế được gì không v"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "quy doi chung chi tin hoc"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "mos may diem thi quy doi 10"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "ic3 quy doi ra may diem"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "bang quy doi tin hoc"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "truong chap nhan bang tin hoc gi"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "diem thuong tin hoc cao nhat"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "icdl duoc may diem"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "ic3 tinh may mo dun z"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "co chung chi tin hoc duoc cong diem a"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "noisy", "input": "muc quy doi thap nhat tin hoc"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin cho biết trường có những học phần ngoại ngữ nào ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Tôi muốn biết học phần Ngoại ngữ A1 có mấy tín chỉ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Đề nghị cho biết danh mục học phần ngoại ngữ và số tín chỉ tương ứng ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin hỏi học phần Ngoại ngữ B1.1 là học phần điều kiện hay bắt buộc ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Cho tôi hỏi sinh viên khóa 68 học những học phần ngoại ngữ nào ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin cho biết học phần Ngoại ngữ A2.1 tương ứng với bậc mấy khung năng lực ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Tôi cần biết các học phần ngoại ngữ được xếp loại ra sao với khóa 67 trở về trước."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin hỏi học phần ngoại ngữ nào tương ứng bậc 4 ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Đề nghị hướng dẫn tra danh mục học phần ngoại ngữ ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin cho biết mỗi học phần ngoại ngữ có bao nhiêu tín chỉ ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Trường có những học phần ngoại ngữ nào?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Học phần Ngoại ngữ A1 có bao nhiêu tín chỉ?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Danh mục học phần ngoại ngữ gồm những gì?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Ngoại ngữ B1.1 là học phần điều kiện hay bắt buộc?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Khóa 68 học những học phần ngoại ngữ nào?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Ngoại ngữ A2.2 ứng với bậc mấy?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Học phần ngoại ngữ nào tương ứng bậc 3?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Số tín chỉ của học phần ngoại ngữ là bao nhiêu?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Khóa 67 trở về trước phân loại học phần ngoại ngữ ra sao?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Học phần ngoại ngữ B2.1 thuộc bậc nào?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "có mấy học phần ngoại ngữ nhỉ"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "ngoại ngữ a1 mấy tín ạ"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "b1.1 là bắt buộc hay điều kiện thế"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "danh mục học phần ngoại ngữ đâu ta"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "khóa 68 học mấy học phần tiếng anh v"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "a2.1 là bậc mấy hả"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "cho hỏi các học phần ngoại ngữ với"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "học phần nào ứng bậc 4 nhỉ"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "mỗi hp ngoại ngữ mấy tín chỉ ạ"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "colloquial", "input": "khóa cũ với khóa mới học khác nhau hả"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "cac hoc phan ngoai ngu"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "hp nn a1 nang bao nhieu tin"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "b1.1 la hp dieu kien hay bat buoc"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "danh muc hp ngoai ngu"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "khoa 68 hoc may hp tieng anh"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "a2.1 la bac may"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "hoc phan nao ung bac 4"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "moi hp ngoai ngu may tin z"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "khoa 67 tro ve truoc hoc gi a"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "noisy", "input": "b2.1 thuoc bac nao"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin cho biết học phần ngoại ngữ được đánh giá theo những thành phần nào ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Tôi muốn biết tỷ trọng điểm thi cuối kỳ của học phần ngoại ngữ là bao nhiêu."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Đề nghị cho biết cách tính điểm học phần Ngoại ngữ A1 ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin hỏi thi giữa kỳ học phần ngoại ngữ gồm những kỹ năng nào ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Cho tôi hỏi đánh giá quá trình chiếm bao nhiêu phần trăm ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin cho biết thi cuối kỳ ngoại ngữ kiểm tra kỹ năng gì ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Tôi cần biết bảng thành phần đánh giá học phần ngoại ngữ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin hỏi điểm giữa kỳ chiếm tỷ trọng bao nhiêu ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Đề nghị hướng dẫn tra cách đánh giá học phần ngoại ngữ ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin cho biết học phần ngoại ngữ có mấy đầu điểm ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Học phần ngoại ngữ đánh giá theo thành phần nào?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Thi cuối kỳ ngoại ngữ chiếm bao nhiêu phần trăm?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Đánh giá quá trình chiếm tỷ trọng bao nhiêu?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Thi giữa kỳ ngoại ngữ thi kỹ năng gì?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Cách tính điểm học phần ngoại ngữ ra sao?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Thi cuối kỳ ngoại ngữ gồm những kỹ năng nào?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Học phần ngoại ngữ có mấy đầu điểm?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Tỷ trọng điểm giữa kỳ là bao nhiêu?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Bảng đánh giá học phần ngoại ngữ quy định thế nào?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Điểm quá trình của học phần ngoại ngữ tính bao nhiêu?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "học phần ngoại ngữ tính điểm sao nhỉ"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "cuối kỳ chiếm bao nhiêu phần trăm ạ"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "giữa kỳ thi nghe nói hả"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "điểm quá trình mấy phần trăm thế"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "bảng đánh giá ngoại ngữ đâu ta"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "cuối kỳ thi đọc viết hả bạn"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "cho hỏi cách tính điểm tiếng anh với"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "học phần ngoại ngữ mấy cột điểm nhỉ"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "thi giữa kỳ ngoại ngữ gồm gì v"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "colloquial", "input": "tỷ trọng điểm ngoại ngữ ra sao ạ"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "hoc phan ngoai ngu tinh diem sao"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "cuoi ky chiem bao nhieu phan tram"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "giua ky thi nghe noi"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "diem qua trinh may phan tram"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "bang danh gia hp ngoai ngu"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "cuoi ky thi doc viet a"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "cach tinh diem tieng anh"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "hp ngoai ngu may cot diem z"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "ty trong diem giua ky"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "noisy", "input": "thanh phan danh gia ngoai ngu"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Xin cho biết sinh viên có chứng chỉ tiếng Anh quốc tế thì được quy đổi thành điểm số như thế nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Tôi muốn biết trường căn cứ vào bảng nào để quy đổi điểm chứng chỉ tiếng Anh của sinh viên chương trình chuẩn."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "formal", "input": "Đề nghị nhà trường hướng dẫn cách đối chiếu điểm IELTS với bậc năng lực ngoại ngữ sáu bậc dùng cho Việt Nam ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Sinh viên không chuyên ngữ học chương trình chuẩn quy đổi chứng chỉ tiếng Anh quốc tế theo bảng nào của trường?"}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Xin cho biết từng ngành thuộc chương trình đào tạo đặc biệt yêu cầu mức chứng chỉ tiếng Anh quốc tế nào ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "formal", "input": "Tôi muốn biết chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn chương trình đặc biệt được quy định ra sao."}
+{"anchor": "", "query_id": "certificate-conversion-table-special-program-non-language-major-student", "register": "neutral", "input": "Các ngành trong chương trình đào tạo đặc biệt có yêu cầu tiếng Anh khác nhau như thế nào theo quy chế?"}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Xin cho biết sinh viên ngành Ngôn ngữ Anh quy đổi chứng chỉ ngoại ngữ thứ hai theo bảng nào của trường ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "formal", "input": "Tôi muốn biết chứng chỉ tiếng Trung, tiếng Nhật hay tiếng Hàn được quy đổi ra bậc năng lực ngoại ngữ như thế nào."}
+{"anchor": "", "query_id": "certificate-conversion-table-english-language-major-student", "register": "neutral", "input": "Sinh viên chuyên ngữ tiếng Anh dùng chứng chỉ ngoại ngữ thứ hai nào để quy đổi sang thang điểm mười?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Xin cho biết tên viết tắt và tên đầy đủ của các chứng chỉ ngoại ngữ quốc tế mà trường đang sử dụng ạ."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "formal", "input": "Tôi muốn biết danh mục viết tắt chứng chỉ ngoại ngữ quốc tế của trường bao gồm những thứ tiếng nào."}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Danh mục viết tắt chứng chỉ ngoại ngữ quốc tế của trường liệt kê tên đầy đủ cho những kỳ thi nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Xin cho biết sinh viên có chứng chỉ tin học quốc tế thì được quy đổi thành điểm thưởng bao nhiêu ạ."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "formal", "input": "Tôi muốn biết trường quy đổi điểm của các chứng chỉ tin học IC3, ICDL và MOS theo bảng nào."}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Chứng chỉ tin học quốc tế được trường quy đổi thành điểm thưởng theo những mức điểm cụ thể nào?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Trường xếp loại học lực sinh viên theo những mức điểm nào?"}
+{"anchor": "", "query_id": "academic-performance-table", "register": "formal", "input": "Xin cho biết các mức xếp loại học lực và khoảng điểm ạ."}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Hạng tốt nghiệp được xác định theo khoảng điểm tích lũy nào?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "formal", "input": "Hạng tốt nghiệp gồm những mức nào và điểm bao nhiêu ạ?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "neutral", "input": "Tín chỉ tích lũy quyết định sinh viên học năm thứ mấy?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin cho biết mốc tín chỉ xếp năm học của sinh viên ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Lớp học phần cần tối thiểu bao nhiêu sinh viên để mở?"}
+{"anchor": "", "query_id": "class-size-table", "register": "formal", "input": "Xin cho biết sĩ số tối thiểu và tối đa mỗi lớp ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Học bổng khuyến khích học tập được cấp theo những mức tiền nào?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "formal", "input": "Xin cho biết số tiền học bổng theo từng xếp loại ạ."}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "neutral", "input": "Chương trình đặc biệt cấp học bổng theo mức tiền nào?"}
+{"anchor": "", "query_id": "scholarship-rate-table-special-program", "register": "formal", "input": "Xin cho biết mức học bổng chương trình đào tạo đặc biệt ạ."}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Các ngành đào tạo của trường được xếp vào những khối ngành nào?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "formal", "input": "Xin cho biết danh mục ngành đào tạo theo khối ngành ạ."}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "neutral", "input": "Học phần ngoại ngữ có bao nhiêu tín chỉ mỗi học phần?"}
+{"anchor": "", "query_id": "language-course-classification-table", "register": "formal", "input": "Xin cho biết danh mục học phần ngoại ngữ và tín chỉ ạ."}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Điểm học phần ngoại ngữ gồm những thành phần nào?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "formal", "input": "Xin cho biết tỷ trọng các thành phần đánh giá ngoại ngữ ạ."}
+{"anchor": "", "query_id": "academic-performance-table", "register": "neutral", "input": "Điểm trung bình chung nào ứng với loại xuất sắc và giỏi?"}
+{"anchor": "", "query_id": "graduation-classification-table", "register": "neutral", "input": "Bằng tốt nghiệp được xếp hạng theo mấy mức điểm khác nhau?"}
+{"anchor": "", "query_id": "study-year-classification-table", "register": "formal", "input": "Xin cho biết ngưỡng tín chỉ của từng năm học ạ."}
+{"anchor": "", "query_id": "class-size-table", "register": "neutral", "input": "Mỗi khối kiến thức có giới hạn sĩ số lớp riêng không?"}
+{"anchor": "", "query_id": "scholarship-rate-table-standard-program", "register": "neutral", "input": "Mỗi học kỳ sinh viên nhận học bổng trong bao nhiêu tháng?"}
+{"anchor": "", "query_id": "academic-program-catalogue-table", "register": "neutral", "input": "Trường đang đào tạo bao nhiêu ngành và thuộc khối nào?"}
+{"anchor": "", "query_id": "certificate-conversion-table-standard-program-non-language-major-student", "register": "neutral", "input": "Bậc năng lực ngoại ngữ nào tương ứng với trình độ CEFR B2?"}
+{"anchor": "", "query_id": "certificate-catalogue-table", "register": "neutral", "input": "Những kỳ thi ngoại ngữ nào có tên viết tắt trong danh mục?"}
+{"anchor": "", "query_id": "certificate-conversion-table-moi-doi-tuong", "register": "neutral", "input": "Chứng chỉ tin học nào được trường dùng để quy đổi điểm?"}
+{"anchor": "", "query_id": "language-course-assessment-table", "register": "neutral", "input": "Thi giữa kỳ và cuối kỳ ngoại ngữ chiếm bao nhiêu phần trăm?"}

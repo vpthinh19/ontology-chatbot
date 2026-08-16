@@ -1054,14 +1054,22 @@ def generate(
         # sinh viên'". Câu viết tay phục vụ đa dạng diễn đạt, không thay được lượt
         # phủ tên gọi.
         anchor = binding.get("anchor", "")
+        # Neo RỖNG là khoá hợp lệ, không phải trường hợp bỏ qua.
+        #
+        # 14 họ bảng ghim sẵn một node trong đích nên không có slot neo. Trước
+        # đây cả hai chỗ dùng câu viết tay đều đòi neo bắt đầu bằng ":", nên câu
+        # viết tay KHÔNG BAO GIỜ tới được đúng 14 họ mỏng nhất tập dạy - viết
+        # thêm bao nhiêu cũng vô ích mà không có gì báo.
+        anchor_key = (
+            anchor[1:] if isinstance(anchor, str) and anchor.startswith(":") else ""
+        )
         if (
             mention_overrides is None
             and preferred_frame is None
             and isinstance(anchor, str)
-            and anchor.startswith(":")
         ):
             for written in written_questions().get(
-                (query_id, anchor[1:], register), ()
+                (query_id, anchor_key, register), ()
             ):
                 if emit(split, query_id, register, written, target):
                     return True
@@ -1169,10 +1177,15 @@ def generate(
         # cách hỏi CHƯA từng thấy, mà câu người viết mới là phép thử thật - để
         # held-out toàn câu ghép khuôn thì ta đang chấm model trên thứ dễ hơn hẳn
         # thứ nó sẽ gặp.
+        seen_anchor_keys: set[str] = set()
         for binding in options:
             anchor_name = str(binding.get("anchor", ""))[1:]
-            if not anchor_name:
+            # Họ bảng cố định dùng khoá neo rỗng - xem ghi chú ở ``attempt``. Một
+            # họ như thế có thể có nhiều binding trỏ cùng một đích, nên phát
+            # đúng một lần cho mỗi khoá.
+            if anchor_name in seen_anchor_keys:
                 continue
+            seen_anchor_keys.add(anchor_name)
             # Chừa HAI câu MỖI NEO, không phải một câu mỗi phong cách. Chừa theo
             # phong cách thì với mười câu chia bốn giọng, ta giữ lại tới bốn - tức
             # 40% kho viết tay không vào train, và câu ghép khuôn lại chiếm chỗ.

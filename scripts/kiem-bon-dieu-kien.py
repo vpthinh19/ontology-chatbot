@@ -207,6 +207,11 @@ for fam, n in by_family.most_common():
     print(f"    {n:4}/{total:<4} {fam}")
 report["dk4"] = {"tong_loai": len(by_type), "mong": thin, "theo_ho": dict(by_family)}
 
-out = Path("/tmp/claude-1000/-home-vpt-dev-ontology-chatbot/73a09785-ec23-42bd-b785-f865900915a7/scratchpad/audit-report.json")
+# Đường ra nhận từ ngoài, mặc định nằm cạnh repo. Bản trước ghim cứng scratchpad
+# của đúng một phiên làm việc, nên script chết ngay khi phiên đó kết thúc - mà
+# nó chỉ chết ở DÒNG CUỐI, sau khi đã in xong toàn bộ kết quả, nên trông như
+# chạy được.
+out = Path(sys.argv[1] if len(sys.argv) > 1 else "reports/audit-bon-dieu-kien.json")
+out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 print(f"\nBáo cáo đầy đủ: {out}")
