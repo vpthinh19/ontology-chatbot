@@ -55,9 +55,18 @@ echo "--- mã nguồn ---"
 git rev-parse HEAD
 git status --porcelain
 echo "--- thư viện ---"
-"${PY}" - <<'PYEOF'
+# Chỉ in thư viện mà lượt chạy NÀY thật sự dùng. In bitsandbytes cho lượt
+# seq2seq là nói rằng nó có tham gia, trong khi đường đó không đụng tới nó -
+# và đúng dòng đó đã làm chủ dự án tưởng bitsandbytes vẫn còn trong mạch.
+FAMILY="${FAMILY}" "${PY}" - <<'PYEOF'
 import importlib
-for name in ("torch", "transformers", "peft", "bitsandbytes"):
+import os
+
+names = ["torch", "transformers", "peft"]
+if os.environ.get("FAMILY") == "llm":
+    # Chỉ đường LLM mới có thể nén 4-bit, và chỉ khi card nhỏ.
+    names.append("bitsandbytes")
+for name in names:
     try:
         print(name, importlib.import_module(name).__version__)
     except Exception:

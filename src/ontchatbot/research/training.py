@@ -438,11 +438,16 @@ def train(args: argparse.Namespace) -> dict:
         "trainable_parameters": trainable_parameter_count,
         "base_parameters": base_parameter_count,
         "merged_artifact": True,
-        "optimizer": "adamw_8bit",
+        # Đọc THẲNG từ cấu hình đã đưa vào Trainer. Chép tay vào đây là cách
+        # bản ghi nói dối: optimizer đã đổi sang fused mà ô này vẫn ghi 8-bit,
+        # và người đọc log không có cách nào biết. Cùng lỗi với cờ
+        # checkpointing, lần thứ ba trong một phiên.
+        **{
+            key: value
+            for key, value in _optimization_arguments(precision).items()
+            if key in ("optim", "lr_scheduler_type", "warmup_steps", "weight_decay")
+        },
         "learning_rate": args.learning_rate,
-        "lr_scheduler_type": "cosine",
-        "warmup_steps": 0.1,
-        "weight_decay": 0.005,
         "evaluation_every_epochs": args.eval_every_epochs,
         "early_stopping_patience": 3 if keep_checkpoints else None,
         "train_runtime_seconds": round(train_result.metrics.get("train_runtime", 0.0), 3),
