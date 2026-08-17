@@ -49,9 +49,16 @@ Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "học phí m
 Không nên:  "Hãy hướng dẫn tôi cách đăng ký học phần nhé"
             "cho mình hỏi muốn nghỉ học tạm thời thì cần làm những gì ạ"
 
-Một lần gọi tra một chủ đề; câu hỏi chứa hai chủ đề thì gọi hai lần. Không tra
-được thì thử từ khoá ngắn hơn, hoặc một cách gọi khác của cùng mục - ví dụ
-"bảo lưu" thay cho "nghỉ học tạm thời"."""
+Một lần gọi tra một chủ đề; câu hỏi chứa hai chủ đề thì gọi hai lần.
+
+Công cụ trả về TRỌN VẸN một mục trong đồ thị, gồm mọi thuộc tính của mục đó -
+nên vài dòng đầu có thể không phải phần bạn cần, mà phần bạn cần nằm ở giữa. Đọc
+hết rồi hãy quyết định. Đã có dữ liệu trả về thì ĐỪNG gọi lại cùng chủ đề với từ
+khoá khác; gọi lại chỉ trả về đúng mục đó lần nữa.
+
+Chỉ gọi lại khi công cụ báo không có thông tin, và nhiều nhất một lần nữa với
+một cách gọi khác của cùng mục - ví dụ "bảo lưu" thay cho "nghỉ học tạm thời".
+Lần thứ hai vẫn không có thì nói với người dùng là không tìm thấy."""
 
 
 @dataclass(frozen=True)
