@@ -90,54 +90,65 @@ def read_vocabulary(graph=None, limit: int = NAMES_PER_KIND) -> OntologyVocabula
     )
 
 
-def _bullets(title: str, names: Sequence[str]) -> str:
+#: Tiền tố kỹ thuật trong nhãn ontology, không thuộc tên biểu mẫu.
+_LABEL_NOISE = ("Mục tải:", "Thủ tục")
+
+
+def _clean(name: str) -> str:
+    """Bỏ tiền tố phân loại khỏi nhãn để còn lại tên người gọi hàng ngày."""
+
+    for prefix in _LABEL_NOISE:
+        if name.startswith(prefix):
+            name = name[len(prefix) :]
+    return name.lstrip(" -").strip()
+
+
+def _line(title: str, names: Sequence[str], limit: int) -> str:
     if not names:
         return ""
-    return f"{title}: " + " · ".join(names) + "\n"
+    cleaned = [_clean(name) for name in names[:limit]]
+    return f"- {title}: " + ", ".join(cleaned) + "\n"
 
 
 def build_instructions(vocabulary: OntologyVocabulary | None = None) -> str:
-    """Dựng khuôn nhắc hệ thống cho trợ lý.
+    """Dựng lời hướng dẫn hệ thống cho trợ lý.
 
-    Khuôn nhắc phải nói ba điều, vì thiếu điều nào thì mô hình cũng hỏng theo một
-    kiểu riêng: trợ lý làm được gì (thiếu thì nó từ chối việc nó làm được), phạm
-    vi dữ liệu (thiếu thì nó gọi công cụ cho câu ngoài miền), và cách gọi công cụ
-    (thiếu thì nó truyền cả câu hỏi dài và công cụ tra trượt).
+    Thứ tự trong lời hướng dẫn quyết định hành vi nhiều hơn nội dung. Quy tắc gọi
+    công cụ đứng đầu và đứng riêng; danh sách chủ đề đứng sau. Đảo lại thì quy
+    tắc bị chôn giữa một khối tên dài và tỉ lệ gọi công cụ tụt hẳn.
+
+    Danh sách chủ đề không phục vụ việc gọi công cụ - nó phục vụ lúc người dùng
+    hỏi trợ lý giúp được gì, và lúc trợ lý cần gợi ý hướng hỏi tiếp.
     """
 
     vocabulary = vocabulary or read_vocabulary()
-    known = "".join(
+    topics = "".join(
         (
-            _bullets("Thủ tục học vụ", vocabulary.procedures),
-            _bullets("Đơn vị phụ trách", vocabulary.units),
-            _bullets("Biểu mẫu", vocabulary.forms),
-            _bullets("Ngành đào tạo", vocabulary.programs),
+            _line("Thủ tục", vocabulary.procedures, 8),
+            _line("Biểu mẫu", vocabulary.forms, 6),
+            _line("Ngành đào tạo", vocabulary.programs, 8),
+            _line("Đơn vị", vocabulary.units, 4),
         )
     )
-    return f"""Bạn là trợ lý học vụ của Trường Đại học Nha Trang. Bạn trả lời câu
-hỏi về quy chế đào tạo, thủ tục học vụ, biểu mẫu, học phí, chứng chỉ và ngành
-đào tạo.
+    return f"""Bạn là trợ lý học vụ của Trường Đại học Nha Trang.
 
-QUY TẮC BẮT BUỘC: với MỌI câu hỏi về học vụ, gọi `tra_cuu_hoc_vu` TRƯỚC khi
-viết câu trả lời. Kể cả khi bạn thấy mình đã biết câu trả lời, kể cả khi chủ đề
-có tên trong danh sách bên dưới - vẫn phải gọi. Quy chế của trường này khác với
-quy chế bạn từng đọc ở nơi khác, và một con số nhớ nhầm là một sinh viên nộp sai
-hồ sơ.
+Bạn KHÔNG biết quy định nào của trường này. Mọi điều bạn tưởng mình nhớ về quy
+chế, thủ tục, biểu mẫu, học phí hay ngành đào tạo của trường đều là của trường
+khác.
 
-Nếu công cụ không trả về dữ kiện, hãy nói rõ là không tìm thấy thông tin và gợi ý
-người dùng hỏi lại bằng cách khác - đừng suy đoán, đừng bịa số, đừng dẫn một quy
-định mà công cụ không đưa ra.
+Mọi câu hỏi về học vụ: GỌI `tra_cuu_hoc_vu` TRƯỚC, rồi mới trả lời dựa trên kết
+quả trả về. Chưa gọi công cụ thì chưa được trả lời. Công cụ không có dữ kiện thì
+nói là không tìm thấy, đừng suy đoán và đừng bịa số.
 
-Khi trả lời, giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo, để người
-đọc đối chiếu được với văn bản gốc.
+Câu hỏi không liên quan tới trường - thời tiết, nấu ăn, chuyện phiếm - thì trả
+lời thẳng là ngoài phạm vi, không gọi công cụ.
 
-Danh sách dưới đây cho biết công cụ TRA ĐƯỢC những gì, để bạn chọn từ khoá. Nó
-KHÔNG phải nội dung câu trả lời - tên có trong danh sách không có nghĩa là bạn
-biết nội dung của nó. Còn nhiều mục khác cùng loại không liệt kê ở đây.
+Giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo.
 
-{known}
-Câu hỏi ngoài phạm vi học vụ của trường - thời tiết, nấu ăn, chuyện phiếm - thì
-trả lời thẳng là ngoài phạm vi, không gọi công cụ."""
+Khi người dùng hỏi bạn giúp được gì, hoặc khi cần gợi ý hướng hỏi tiếp, đây là
+vài chủ đề tra được (còn nhiều mục khác):
+
+{topics}"""
 
 
 def build_tool(chatbot: OntologyChatbot):

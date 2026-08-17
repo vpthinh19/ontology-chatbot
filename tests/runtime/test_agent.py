@@ -70,10 +70,12 @@ def test_instructions_name_what_the_assistant_can_look_up() -> None:
 
     instructions = build_instructions(VOCABULARY)
 
+    # Tên xuất hiện sau khi bỏ tiền tố phân loại của ontology: người dùng gọi
+    # "nghỉ học tạm thời", không gọi "Thủ tục nghỉ học tạm thời".
     for name in (
-        "Thủ tục nghỉ học tạm thời",
+        "nghỉ học tạm thời",
         "Phòng Đào tạo Đại học",
-        "Mục tải: Đơn xin hoãn thi",
+        "Đơn xin hoãn thi",
         "Công nghệ thông tin",
     ):
         assert name in instructions, name
@@ -87,6 +89,9 @@ def test_instructions_forbid_answering_from_memory() -> None:
     assert "tra_cuu_hoc_vu" in instructions
     assert "đừng suy đoán" in instructions
     assert "đừng bịa số" in instructions
+    # Quy tắc gọi công cụ phải đứng TRƯỚC danh sách chủ đề. Đảo lại thì nó bị
+    # chôn giữa một khối tên dài và tỉ lệ gọi công cụ tụt hẳn.
+    assert instructions.index("GỌI `tra_cuu_hoc_vu` TRƯỚC") < instructions.index("Thủ tục:")
     # Trích dẫn và đường dẫn phải đi tới câu trả lời cuối, nếu không người đọc
     # mất đường đối chiếu với văn bản gốc.
     assert "trích dẫn" in instructions and "đường dẫn" in instructions
@@ -100,8 +105,8 @@ def test_instructions_are_built_from_the_graph_not_written_by_hand() -> None:
         procedures=("Thủ tục chuyển trường",), units=(), forms=(), programs=()
     )
 
-    assert "Thủ tục chuyển trường" in build_instructions(other)
-    assert "Thủ tục nghỉ học tạm thời" not in build_instructions(other)
+    assert "chuyển trường" in build_instructions(other)
+    assert "nghỉ học tạm thời" not in build_instructions(other)
 
 
 def test_tool_description_is_the_shared_constant() -> None:
