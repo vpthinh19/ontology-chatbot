@@ -1,96 +1,65 @@
 # Kiến trúc hệ thống
 
-## Tổng quan
+Tệp này trả lời câu hỏi hệ thống biến một câu hỏi học vụ thành dữ kiện có nguồn như thế nào. Tệp dành cho giảng viên, kỹ sư mới và người cần đánh giá khả năng dùng lại dự án mà không đọc mã nguồn.
 
-V3 đặt chatbot ontology bên trong vòng lặp dùng công cụ của một LLM lớn:
+## Luồng xử lý
 
-```text
-người dùng
-  → LLM lớn
-      → gọi công cụ ontology
-          → chuẩn hoá yêu cầu
-          → sinh hoặc chọn SPARQL thuộc danh mục
-          → kiểm tra chỉ đọc + khớp shape
-          → RDFLib lấy trọn node và nguồn
-      ← context có cấu trúc
-  ← câu trả lời dựa trên context
+```mermaid
+flowchart LR
+    A[Câu hỏi tiếng Việt] --> B[Mô hình tạo câu truy vấn]
+    B --> C[Kiểm tra khuôn và quyền đọc]
+    C -->|Hợp lệ| D[Đồ thị tri thức]
+    C -->|Không hợp lệ hoặc ngoài phạm vi| E[Không có thông tin]
+    D --> F[Dữ kiện và nguồn]
 ```
 
-Công cụ không sở hữu hội thoại và không viết câu trả lời cuối. LLM không được
-truy cập ontology bằng query tự do.
+| Bước | Ý nghĩa |
+|---|---|
+| Nhận câu hỏi | Hệ thống nhận một câu tiếng Việt về nội dung học vụ. |
+| Tạo câu truy vấn | Mô hình đổi câu hỏi thành SPARQL. SPARQL là ngôn ngữ dùng để hỏi dữ liệu có cấu trúc; người dùng không cần tự viết nó. |
+| Kiểm tra | Hệ thống chỉ chấp nhận câu truy vấn khớp một trong 50 khuôn đã định và chỉ đọc dữ liệu. |
+| Tra cứu | Câu hợp lệ được chạy trên ontology. Ontology là tập dữ kiện và liên kết được sắp xếp để máy có thể tra cứu. |
+| Trả kết quả | Hệ thống trả dữ kiện, trích dẫn và đường dẫn đến tài liệu gốc, hoặc trả “không có thông tin”. |
 
-## Hợp đồng của công cụ
+## Thành phần và trách nhiệm
 
-Đầu vào tối thiểu là yêu cầu truy xuất học vụ do LLM chuyển tới. Đầu ra thành
-công gồm:
+| Thành phần | Làm gì | Không làm gì |
+|---|---|---|
+| Mô hình tạo truy vấn | Chọn một khuôn phù hợp và điền thông tin cần tra cứu. | Tự suy đoán quy định. |
+| Danh mục khuôn truy vấn | Giới hạn 50 cách đọc dữ liệu được phép. | Mở quyền hỏi dữ liệu bất kỳ. |
+| Ontology | Lưu nội dung học vụ và liên kết về nguồn. | Tự cập nhật quy định. |
+| Bộ trả kết quả | Chuyển dữ liệu tra được thành dữ kiện dễ đọc kèm nguồn. | Viết câu trả lời hội thoại đầy đủ. |
+| Lớp hội thoại bên ngoài | Có thể gọi công cụ này khi cần và viết câu trả lời cuối. | Thay thế nguồn dữ liệu của công cụ. |
 
-- node hoặc các node được chọn;
-- các cặp thuộc tính–giá trị đọc được của node;
-- literal trên node con trực tiếp khi shape khai báo;
-- trích dẫn tự giải thích;
-- URL văn bản chính thức;
-- trạng thái truy xuất.
+Một node là một mục dữ liệu trong ontology, chẳng hạn một thủ tục hoặc một bảng. Khi chọn được node, hệ thống lấy các dữ kiện liên quan và nguồn của chúng để tránh trả lời chỉ bằng một mảnh thông tin rời rạc.
 
-Đầu ra không có dữ liệu phải phân biệt được với lỗi hệ thống để LLM không nhầm
-“ngoài phạm vi” với “dịch vụ hỏng”.
+## Kết quả trả về
 
-## Shape chính: node đầy đủ
+| Tình huống | Kết quả |
+|---|---|
+| Câu hỏi thuộc phạm vi và tra được dữ liệu | Dữ kiện, trích dẫn và đường dẫn tới văn bản gốc. |
+| Câu hỏi ngoài phạm vi | “Không có thông tin”. |
+| Câu truy vấn không thuộc khuôn cho phép | “Không có thông tin”. |
+| Lỗi nạp dữ liệu hoặc lỗi dịch vụ | Báo lỗi hệ thống, không được đánh đồng với thiếu thông tin. |
 
-Các họ `*-facts` trong danh mục dùng cùng ý tưởng:
+Các bảng được trả nguyên khối để giữ tiêu đề, hàng, cột và ô trống như trong tài liệu. Vì vậy, người dùng có thể đối chiếu lại nội dung với nguồn thay vì nhận một bảng đã diễn giải lại.
 
-```sparql
-{ :Anchor ?p ?giatri . FILTER(isLiteral(?giatri)) }
-UNION
-{ :Anchor ?l ?con . ?con ?p ?giatri . FILTER(isLiteral(?giatri)) }
+## Phạm vi hiện có
+
+Dự án cung cấp thành phần tra cứu và dịch vụ nhận câu hỏi. Lớp điều phối để một mô hình ngôn ngữ lớn quyết định lúc nào gọi công cụ, rồi viết câu trả lời cuối, chưa nằm trong dự án. Khi tích hợp lớp này, dữ kiện học vụ vẫn phải đến từ kết quả của công cụ.
+
+## Kiểm tra chuỗi dữ liệu
+
+```bash
+uv run validate_sparql_dataset
+.venv/bin/python -m pytest tests -q
 ```
 
-Kết quả được gắn nhãn thuộc tính, trích dẫn và URL trước khi trả cho LLM. Query
-không chỉ lấy một cạnh theo đúng từ khóa câu hỏi; nó lấy context của node để LLM
-xử lý điều kiện và ngoại lệ trong cùng một lượt.
+Lệnh đầu kiểm tra sự khớp nhau giữa ontology, danh mục khuôn truy vấn và bộ câu hỏi. Lệnh sau chạy các phép kiểm tự động của toàn dự án.
 
-## Shape bảng
+## Tài liệu liên quan
 
-Các họ bảng neo trực tiếp vào node `DocumentTable`. Giá trị chính là
-`verbatimTableText`; quan hệ `inDocument` và `partOf` cung cấp ngữ cảnh, còn
-`citationLabel` và `documentUrl` cung cấp nguồn.
-
-Mỗi bảng là một node nguyên văn. Không dựng cell, row hay mapping song song cho
-các giá trị chỉ tồn tại trong bảng. Điều này bảo toàn vị trí cột và tạo một điểm
-duy nhất để kiểm tra độ trung thực với nguồn.
-
-## Các cửa kiểm
-
-Trước khi chạy, query phải:
-
-1. là truy vấn chỉ đọc;
-2. không gọi nguồn ngoài;
-3. khớp chính xác một shape trong danh mục truy vấn;
-4. giới hạn đầu ra theo hợp đồng runtime.
-
-Sau khi chạy, công cụ kiểm tra kết quả có dữ liệu đọc được và nguồn theo yêu cầu.
-Công cụ không tự sửa query gần đúng.
-
-## Ranh giới code hiện tại
-
-Repository vẫn chứa runtime seq2seq/CTranslate2 và code huấn luyện cũ để truy
-vết lịch sử. Chúng không đại diện cho kiến trúc hệ thống và không phải fallback.
-`src/ontchatbot/runtime/llm.py` là phần thử nghiệm ánh xạ câu hỏi sang query bằng
-LLM, nhưng lớp điều phối tool-calling hoàn chỉnh vẫn cần được tích hợp và đánh
-giá trước khi công bố triển khai.
-
-## Quan sát và ghi vết
-
-Mỗi lần gọi công cụ cần ghi request ID, yêu cầu đã chuẩn hoá, query nguyên văn,
-shape khớp, node neo, trạng thái kiểm tra, số giá trị trả về, nguồn và latency.
-Không ghi lại suy luận riêng tư của LLM.
-
-## Artifact
-
-- `resources/ontology/ontology.ttl`: dữ liệu có thẩm quyền;
-- `resources/ontology/answer_inventory.json`: danh mục khả năng trả lời;
-- `resources/ontology/catalogue.jsonl`: hợp đồng query;
-- ba split JSONL: ví dụ ánh xạ;
-- `artifacts/reports/dataset.json`: snapshot thống kê dẫn xuất.
-
-Tính tương thích của cả chuỗi do test quyết định; một trường “ready” trong report
-không thay thế kết quả kiểm tra hiện hành.
+- [Khái niệm và phạm vi](CONCEPT.md)
+- [Ontology và nguồn](ONTOLOGY.md)
+- [Bộ câu hỏi](DATASET.md)
+- [Cách đo kết quả](EVALUATION.md)

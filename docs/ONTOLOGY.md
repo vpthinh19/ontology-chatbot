@@ -1,91 +1,82 @@
-# Ontology học vụ
+# Ontology và nguồn dữ liệu
 
-## Nguồn dữ liệu duy nhất
+Tệp này trả lời dữ kiện học vụ trong dự án đến từ đâu và được tổ chức ra sao. Tệp dành cho người cần kiểm tra mức độ truy xuất được nguồn mà không đọc mã nguồn.
 
-Toàn bộ kiến thức học vụ được truy xuất nằm trong
-`resources/ontology/ontology.ttl`. Đây là **cơ sở dữ liệu duy nhất** của công cụ:
-LLM lớn có thể diễn đạt lại context, nhưng không được thêm dữ kiện học vụ không
-có trong node được trả về.
+## Ontology là gì
 
-Ontology lấy căn cứ từ các văn bản chính thức trong `references/`, gồm Quyết
-định 1052 và quy chế kèm theo, các văn bản sửa đổi/liên quan, Quyết định 317 về
-học bổng, phần danh mục ngành của Quyết định 729, hướng dẫn thanh toán và danh
-mục biểu mẫu.
+Ontology là tập dữ kiện cùng các liên kết giữa chúng, được tổ chức để máy có thể tra cứu. Trong dự án, ontology liên kết quy định, thủ tục, biểu mẫu, bảng và phần văn bản làm căn cứ.
 
-## Hai nhóm node
+Một node là một mục dữ liệu trong ontology. Node có thể là một điều của quy chế, một thủ tục, một biểu mẫu hoặc một bảng. Các liên kết cho biết mục nào thuộc văn bản nào và dữ kiện nào dựa trên phần nguồn nào.
 
-**Node văn bản** giữ cấu trúc tài liệu, chương, điều, khoản, điểm, phụ lục và
-bảng. Node mang nguyên văn, trích dẫn và URL nguồn.
+## Nguồn dữ liệu
 
-**Node nghiệp vụ** giữ thủ tục, yêu cầu, bước, trường hợp, quy tắc, đơn vị, biểu
-mẫu, ngành, chứng chỉ và các khái niệm mà người dùng có thể hỏi. Quan hệ
-`basedOn` nối dữ kiện nghiệp vụ về node văn bản làm căn cứ.
+Ontology được xây từ các văn bản chính thức của Trường Đại học Nha Trang:
 
-V3 truy xuất node đầy đủ thay vì chọn một literal riêng lẻ. Với thủ tục, công cụ
-có thể lấy literal trên node và trên các node con trực tiếp trong cùng query.
-LLM lớn nhận toàn bộ context này và chọn phần liên quan đến câu hỏi.
+- Quyết định 1052 về quy chế đào tạo đại học và các phụ lục.
+- Quyết định 626 về quy chế tuyển sinh.
+- Quyết định 1965 sửa đổi phụ lục.
+- Phần còn hiệu lực của Quyết định 753.
+- Quyết định 317 về học bổng.
+- Phụ lục II của Quyết định 729 về ngành đào tạo.
+- Hướng dẫn thanh toán và danh mục biểu mẫu.
 
-## Bảng nguyên văn
+Mỗi mục được lưu cùng thông tin nguồn để người dùng có thể đối chiếu lại văn bản gốc.
 
-Bảng là trường hợp cần giữ hình dạng nguồn. Mỗi bảng được biểu diễn bằng một node
-`DocumentTable` và lưu nguyên khối Markdown trong `verbatimTableText`. Dấu phân
-cột, tiêu đề nhiều hàng và ô rỗng đều là dữ liệu có nghĩa.
-
-Không tách nội dung bảng thành từng cell hoặc từng mapping kỹ thuật. Nếu cùng
-một ánh xạ vừa nằm trong bảng nguyên văn vừa nằm trong các cạnh RDF, hai bản có
-thể trôi lệch. Một node bảng tạo ra một nguồn sự thật duy nhất.
-
-Các thực thể có vai trò ngoài bảng vẫn được giữ độc lập. Ví dụ một ngành hoặc
-chứng chỉ mà node khác trỏ tới không bị xóa chỉ vì tên nó cũng xuất hiện trong
-bảng; điều bị loại là bản sao của chính ánh xạ hàng–cột.
-
-## Trích dẫn
-
-Node trả lời phải dẫn được về văn bản chính thức. Context công cụ dùng hai trường
-chính:
-
-- `citationLabel`: trích dẫn tự giải thích được;
-- `documentUrl`: đường dẫn tới văn bản gốc.
-
-Các quan hệ `inDocument` và `partOf` cho biết bảng hoặc đoạn văn nằm ở đâu. LLM
-nên giữ nguồn khi tổng hợp câu trả lời, nhất là với điều kiện, ngoại lệ và bảng.
+Ontology là cơ sở dữ liệu nội dung duy nhất của hệ thống. Không có kho văn bản
+thứ hai, không có bảng dữ liệu song song: mọi dữ kiện mà công cụ trả về đều đọc
+ra từ đây. Một nguồn duy nhất là cách để hai chỗ không nói hai điều khác nhau về
+cùng một quy định.
 
 ## Danh mục khả năng trả lời
 
-`resources/ontology/answer_inventory.json` được sinh từ ontology. Đếm trực tiếp
-các entry có `status == "supported"` cho kết quả **4.064 khả năng trả lời**.
-Artifact cũng có 21 entry `excluded` kèm lý do; các mục bị loại không được tính
-vào khả năng công bố.
+Từ ontology, dự án sinh ra một danh mục khả năng trả lời, lưu ở
+`answer_inventory.json`. Mỗi mục trong danh mục là một đường đi hợp lệ từ một
+node tới một dữ kiện đọc được.
 
-Một khả năng trả lời là một đường hợp lệ từ node neo tới literal hoặc nhãn đọc
-được. Con số này đo phạm vi cấu trúc của ontology, không phải số câu hỏi tự nhiên
-và không phải metric model.
+Danh mục hiện ghi nhận 4.064 khả năng trả lời được hỗ trợ. Đây là số đường đi
+hợp lệ trong đồ thị, không phải số câu hỏi hệ thống đã trả lời đúng.
 
-## Quan hệ với danh mục truy vấn
+Danh mục này trả lời câu hỏi "hệ thống có thể trả lời được những gì", và nó được
+sinh lại từ ontology chứ không viết tay, nên nó không thể hứa nhiều hơn thứ đồ
+thị thật sự có.
 
-Danh mục khả năng trả lời mô tả ontology có thể cung cấp gì. Danh mục truy vấn
-mô tả công cụ được phép lấy theo shape nào. Dataset chỉ được tạo sau hai lớp đó
-và phải dùng `query_id` còn tồn tại.
+## Cách tổ chức nội dung
 
-Shape chính gom các đường của cùng loại node thành một query `*-facts`. Shape
-bảng trả toàn `verbatimTableText`. Vì vậy số khả năng trả lời không cần tương
-ứng một-một với số họ truy vấn.
+| Nhóm mục | Nội dung |
+|---|---|
+| Mục văn bản | Chương, điều, khoản, điểm, phụ lục và bảng của tài liệu. |
+| Mục nghiệp vụ | Thủ tục, điều kiện, bước thực hiện, biểu mẫu, ngành và chứng chỉ. |
+| Nguồn | Trích dẫn và đường dẫn tới văn bản gốc. |
 
-## Giới hạn nội dung
+SPARQL là ngôn ngữ dùng để hỏi ontology. Người dùng không cần viết SPARQL; hệ thống chỉ chạy các câu truy vấn nằm trong 50 khuôn đã định.
 
-- Mức học phí cá nhân không được lưu vì thay đổi theo dữ liệu đăng ký thực tế.
-- Công thức hoặc ký hiệu hỏng trong bản nguồn không được đoán để điền.
-- Khoảng trống và mơ hồ của văn bản được giữ nguyên, không “sửa” bằng kiến thức
-  ngoài.
-- Ontology chưa tự giải quyết hiệu lực theo thời gian cho nhiều phiên bản văn
-  bản.
+## Bảng và trích dẫn
+
+Bảng được giữ nguyên khối, gồm tiêu đề, hàng, cột và ô trống. Cách lưu này tránh làm thay đổi nghĩa của bảng khi tách thành các mẩu dữ liệu nhỏ.
+
+Kết quả tra cứu cần gồm:
+
+- dữ kiện đọc được;
+- trích dẫn cho biết dữ kiện thuộc phần nào của tài liệu;
+- đường dẫn tới văn bản gốc.
+
+## Giới hạn của dữ liệu
+
+- Không lưu mức học phí riêng của từng người vì thông tin này phụ thuộc đăng ký thực tế.
+- Không tự điền phần bị thiếu hoặc mơ hồ trong văn bản nguồn.
+- Không tự giải quyết mọi thay đổi hiệu lực theo thời gian giữa các văn bản.
 
 ## Kiểm tra
 
 ```bash
-uv run pytest tests/ontology
 uv run validate_sparql_dataset
+.venv/bin/python -m pytest tests/ontology -q
 ```
 
-Lệnh thứ hai kiểm cả chuỗi ontology → danh mục khả năng trả lời → danh mục truy
-vấn → dataset. Nếu đỏ, tài liệu không được tuyên bố chuỗi đã sẵn sàng.
+Lệnh đầu kiểm tra sự liên kết giữa ontology, danh mục khuôn truy vấn và bộ câu hỏi. Lệnh sau kiểm tra riêng nội dung và nguồn của ontology.
+
+## Tài liệu liên quan
+
+- [Khái niệm và phạm vi](CONCEPT.md)
+- [Cách các thành phần phối hợp](ARCHITECTURE.md)
+- [Bộ câu hỏi](DATASET.md)

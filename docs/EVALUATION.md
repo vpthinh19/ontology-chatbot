@@ -1,140 +1,60 @@
-# Đánh giá model sinh SPARQL
+# Cách đo kết quả
 
-Thước nằm trong `src/ontchatbot/research/evaluation.py`. Causal LLM và seq2seq
-đi qua **cùng một lệnh chấm**, nên chúng được đo trên cùng chuỗi đầu ra, cùng
-catalogue, cùng ontology và cùng ba định nghĩa:
+Tệp này trả lời kết quả của mô hình được chấm theo tiêu chí nào và các con số trong README có nghĩa gì. Tệp dành cho giảng viên, người đánh giá và kỹ sư chạy lại phép đo.
 
-1. **Đúng node** (`node_selection`): model neo vào đúng tập thực thể/bảng mà
-   câu chuẩn yêu cầu.
-2. **Đúng dạng** (`query_shape`): query khớp đúng họ catalogue; tham số không
-   phải node, nếu có, cũng phải đúng. Giá trị IRI dùng để neo được chấm ở chỉ số
-   đúng node thay vì tính hai lần trong định nghĩa đúng dạng.
-3. **Từ chối đúng** (`rejection_decision`): câu ngoài miền phải sinh đúng marker
-   `không có thông tin`; câu trong miền phải sinh một query mà runtime chấp nhận
-   (hợp cú pháp và thuộc catalogue).
+## Ba chỉ số chính
 
-Không có điểm tổng hợp. Artifact ghi rõ `composite_score: null`. Các số
-`answer_exact`, precision/recall/F1 trên tập kết quả và exact string cũ vẫn còn
-để chẩn đoán tương thích, nhưng `metric_policy` đánh dấu chúng **không phải chỉ
-số chính**.
+Benchmark là phép đo được chạy trên một tập dữ liệu đã giữ riêng để so sánh kết quả theo cùng quy tắc. Dự án báo ba chỉ số riêng vì mỗi chỉ số trả lời một câu hỏi khác nhau.
 
-## Mẫu số và đối soát các split held-out
+| Chỉ số | Câu hỏi được trả lời | Tập chỉnh | Tập chấm |
+|---|---|---:|---:|
+| Chọn đúng mục trong đồ thị | Mô hình có tìm đúng nơi chứa thông tin cần thiết không? | 80,2% | 76,4% |
+| Dựng đúng dạng truy vấn | Câu truy vấn có khớp khuôn được phép và đủ phần cần thiết không? | 85,5% | 81,8% |
+| Từ chối đúng câu ngoài phạm vi | Mô hình có trả “không có thông tin” khi cần không? | 96,5% | 90,8% |
 
-`coverage_accounting` phân hoạch mọi dòng vào đúng một trong ba nhóm. Hai split
-hiện có các mẫu số khác nhau và đều được dẫn xuất trực tiếp từ JSONL:
+Đồ thị tri thức là tập dữ kiện và liên kết giúp tra cứu quy định theo cấu trúc. Một node là một mục trong đồ thị, chẳng hạn một thủ tục hoặc bảng. SPARQL là ngôn ngữ dùng để hỏi đồ thị; mô hình tạo SPARQL ở bên trong hệ thống.
 
-| Nhóm | Validation | Test | Tiêu chí được chấm |
-|---|---:|---:|---|
-| Query có node cụ thể | 296 | 287 | đúng node, đúng dạng, từ chối đúng |
-| Ngoài miền (`no-information`) | 52 | 50 | từ chối đúng |
-| **Tổng đối soát** | **348** | **337** | mọi dòng xuất hiện trong ít nhất một mẫu số |
+## Cách đọc các chỉ số
 
-Chỉ còn HAI nhóm. Nhóm thứ ba - hỏi năng lực - đã bị bỏ khỏi thiết kế ngày
-2026-08-14: công cụ chỉ có hai việc là truy ra dữ kiện đã có hoặc nói không có
-thông tin, còn việc giới thiệu phạm vi trả lời là của LLM lớn gọi nó.
+- Chọn đúng mục trong đồ thị chưa khẳng định mọi điều kiện và mọi chi tiết của kết quả đều đúng.
+- Dựng đúng dạng truy vấn xác nhận câu truy vấn thuộc một trong 50 khuôn hệ thống cho phép chạy.
+- Từ chối đúng giúp giảm nguy cơ trả lời cho một câu hỏi không thuộc dữ liệu dự án.
+- Không có điểm tổng hợp. Ba chỉ số được giữ riêng để người đọc thấy rõ loại lỗi nào đang xảy ra.
 
-## “Đúng node” khi SPARQL có nhiều cách viết
+## Tập dùng để đo
 
-Thước không so chuỗi query và cũng không dùng tập kết quả để quyết định đúng
-node. Sau khi query qua phép kiểm cú pháp, RDFLib phân tích nó thành cây cú pháp.
-Thước thu các IRI ontology xuất hiện tường minh, bỏ predicate và class (đó là từ
-vựng của dạng query), rồi so **đúng tập** node còn lại với oracle. Vì vậy các
-cách viết sau không làm thay đổi điểm node:
+| Tập | Số dòng | Vai trò trong phép đo |
+|---|---:|---|
+| Tập chỉnh | 400 | Dùng khi chọn thiết lập trước khi chấm cuối. |
+| Tập chấm | 390 | Dùng để báo kết quả cuối sau khi lựa chọn đã cố định. |
 
-- đổi tên biến;
-- đổi thứ tự nhánh;
-- neo cùng IRI bằng `BIND`, `VALUES`, hoặc đặt IRI trực tiếp trong triple;
-- viết một hay nhiều node bảng trong `VALUES`.
+Kết quả trên hai tập không thay thế cho việc đánh giá câu trả lời bằng văn xuôi của một lớp hội thoại bên ngoài. Các chỉ số ở đây chỉ đo bước đổi câu hỏi thành truy vấn và bước tra cứu có kiểm soát.
 
-Query sai cú pháp nhận điểm sai, không bị bỏ khỏi mẫu số. Query có đúng node
-nhưng viết ngoài shape catalogue có thể đạt “đúng node” và trượt “đúng dạng”;
-đây là chủ ý để hai lỗi không bị nhập làm một. Query chỉ dò node gián tiếp bằng
-nhãn, không nêu IRI neo, không đạt hợp đồng “chọn node” của kiến trúc và bị tính
-sai ở chỉ số này.
+## Chạy lại phép đo
 
-## Cùng thước cho causal LLM và seq2seq
-
-Đầu vào của thước chỉ là danh sách record chuẩn và danh sách chuỗi model sinh
-ra. Nó không đọc logits, loss, tokenizer hay kiến trúc model. Causal LLM chưa
-tinh chỉnh dùng prompt nhắc ví dụ; bản đã tinh chỉnh dùng đúng khuôn đã dạy nó;
-seq2seq nhận thẳng câu hỏi. Sau bước generate cả ba giao cùng một chuỗi cho
-`evaluate_predictions`.
-Vì vậy so sánh ba chỉ số có cùng ý nghĩa khi dùng đúng cùng split. Thời gian,
-VRAM, số shot và thông tin checkpoint được ghi riêng, không tham gia điểm.
-
-## Câu người thật — NỘI BỘ, không nằm trong báo cáo này
-
-`resources/cases/user_queries.json` giữ các câu do người thật gõ vào chatbot,
-nhãn do chủ dự án tự xác nhận từng câu. Chúng **không thuộc train/val/test** nên
-**không xuất hiện trong báo cáo benchmark**: báo cáo chỉ đo trên đúng ba tập của
-release hiện hành.
-
-Đo riêng bằng `python -m ontchatbot.cli.internal_eval`. Tệp chỉ có oracle
-`expected_query_id`, không có target SPARQL/node, nên chỉ báo được
-`query_id_accuracy` và từng case.
-
-## Lệnh chạy
-
-Chấm causal LLM:
+Mô hình được chấm ở đây là mô hình xử lý chuỗi-thành-chuỗi, còn gọi là seq2seq: mô hình nhận một chuỗi chữ và tạo một chuỗi chữ khác.
 
 ```bash
-uv run benchmark_model --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
+uv run benchmark_model --seq2seq-model <thu_muc_mo_hinh> --split test --output artifacts/benchmark-test.json
 ```
 
-Sinh theo lô 16 câu, tự hạ khi tràn VRAM (`--batch-size`). Nền trọng số gốc mặc
-định lấy theo lượt đã huấn luyện adapter, không theo máy đang chạy
-(`--base-precision`). Cả hai được ghi vào báo cáo, vì **hai lượt chấm khác cỡ lô
-không so được với nhau đến từng câu** — xem `docs/TRAINING.md`.
-
-Chấm checkpoint seq2seq đã có — **cùng lệnh, cùng thước** với LLM:
-
-```bash
-uv run benchmark_model --seq2seq-model artifacts/runs/seq2seq-<mốc>/model --split test --output artifacts/runs/seq2seq-test.json
-```
-
-Trước đây mỗi họ model có một bộ chấm riêng, và bộ chấm CTranslate2 còn dùng một
-tập benchmark khác hẳn. Ba thước đo ba kiểu thì số của hai họ không đặt cạnh
-nhau được, mà đặt cạnh nhau chính là lý do chạy phép so. Nay chỉ còn một đường.
-
-Báo cáo nhóm kết quả theo **giọng nói** (`by_register`), **đặc điểm truy vấn**
-(`by_query_feature`), **họ truy vấn** (`by_query_id`), **miền** (`by_domain`) và
-**kiểu tên node** (`by_anchor_kind`: `table` hỏi bằng nội dung · `document-part`
-hỏi bằng toạ độ · `named` tên mang nghĩa).
-
-Chấm file prediction có sẵn:
+Thay `<thu_muc_mo_hinh>` bằng thư mục mô hình cần chấm.
 
 ```bash
 uv run benchmark_sparql --benchmark resources/dataset/val.jsonl --predictions artifacts/val-predictions.jsonl --details --output artifacts/evaluation/val.json
-```
-
-Lệnh offline ở trên vẫn chạy toàn bộ validation trước khi chấm. Có thể
-smoke-test riêng thước bằng unit test sau (đây không phải kết quả model):
-
-```bash
 .venv/bin/python -m pytest tests/research/test_evaluation.py -q
 ```
 
-## Vùng mù còn lại
+Lệnh đầu chấm một tệp dự đoán có sẵn. Lệnh sau kiểm tra riêng các quy tắc tính chỉ số.
 
-- Đúng node chỉ xác nhận IRI neo, không chứng minh mọi nhánh, filter, cột nguồn
-  hay thứ tự bảng đều đúng; phần đó thuộc đúng dạng/catalogue và các phép kiểm
-  dữ liệu tĩnh.
-- Đúng dạng yêu cầu query thuộc catalogue production. Một SPARQL tương đương về
-  toán học nhưng ngoài catalogue vẫn sai dạng vì runtime cũng sẽ từ chối nó.
-- Tập kết quả bằng nhau có thể che lỗi khi hai query tình cờ trả cùng dữ liệu;
-  vì vậy nó chỉ là chẩn đoán. Ngược lại, nó vẫn hữu ích để tìm query đúng
-  node/dạng nhưng lỗi thực thi hoặc lấy thiếu dữ liệu.
-- Ba chỉ số này đánh giá sinh và truy xuất SPARQL, chưa đo độ trung thành của câu
-  trả lời tự nhiên do LLM tổng hợp từ context.
-- Câu người thật chỉ có oracle họ truy vấn và mẫu rất nhỏ; chưa đo được đúng
-  node, đúng literal, hay độ bền trên phân phối người dùng rộng hơn. Chúng được
-  đo riêng và không nằm trong báo cáo này.
-- Một query có thể nêu đúng IRI neo nhưng thêm logic vô nghĩa; đúng node vẫn đạt,
-  còn đúng dạng sẽ trượt nếu logic đó làm query ra ngoài catalogue.
+## Giới hạn của phép đo
 
-## Trạng thái metric
+- Một câu truy vấn có thể chọn đúng node nhưng vẫn thiếu điều kiện hoặc lấy sai phần dữ liệu.
+- Kết quả không đo việc người dùng hiểu câu trả lời hay có thể hoàn tất thủ tục.
+- Kết quả không đo độ chính xác của nội dung do một mô hình ngôn ngữ lớn diễn đạt thêm bên ngoài công cụ.
 
-Repository chưa công bố metric model. Các mẫu số ở trên mô tả hợp đồng chấm
-và release hiện hành, không phải kết quả inference. `artifacts/reports/provenance.json`
-đánh dấu cả metric model và deployment là `stale` so với baseline v0.4.1; chỉ
-artifact benchmark có fingerprint input hiện hành mới được dùng để công bố số.
+## Tài liệu liên quan
+
+- [Bộ câu hỏi](DATASET.md)
+- [Huấn luyện](TRAINING.md)
+- [Thông tin về mô hình](MODEL_CARD.md)

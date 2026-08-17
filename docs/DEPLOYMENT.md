@@ -1,73 +1,58 @@
-# Triển khai hệ thống
+# Đưa vào môi trường sử dụng
 
-## Trạng thái
+Tệp này trả lời cần có gì để chạy thành phần tra cứu trong một hệ thống khác. Tệp dành cho kỹ sư tích hợp dự án, không giả định người đọc đã mở mã nguồn.
 
-Chưa có benchmark triển khai công khai. Runtime seq2seq/CTranslate2 còn
-trong repository là dấu vết của kiến trúc đã ngừng, không phải phương án lui và
-không được dùng để suy ra chất lượng hệ thống hiện hành.
+## Thành phần cần có
 
-## Thành phần cần triển khai
+| Thành phần | Vai trò |
+|---|---|
+| Mô hình đã huấn luyện | Đổi câu hỏi tiếng Việt thành câu truy vấn hoặc “không có thông tin”. |
+| Ontology | Tập dữ kiện học vụ và liên kết về văn bản nguồn. |
+| Danh mục 50 khuôn truy vấn | Chỉ ra các cách đọc dữ liệu được phép. |
+| Dịch vụ tra cứu | Kiểm tra câu truy vấn, chạy truy vấn và trả dữ kiện. |
+| Lớp hội thoại, nếu cần | Nhận hội thoại và dùng dữ kiện trả về để viết câu trả lời cuối. |
 
-Một deployment gồm:
+SPARQL là ngôn ngữ dùng để hỏi ontology. Ontology là dữ liệu có cấu trúc gồm các mục học vụ và liên kết giữa chúng. Một node là một mục trong ontology, ví dụ một thủ tục hoặc một bảng.
 
-1. LLM lớn hỗ trợ gọi công cụ;
-2. lớp điều phối hội thoại và policy gọi công cụ;
-3. công cụ ontology nhận yêu cầu truy xuất;
-4. thành phần ánh xạ yêu cầu sang SPARQL thuộc danh mục;
-5. validator chỉ đọc và matcher danh mục truy vấn;
-6. RDFLib cùng `ontology.ttl`;
-7. serializer trả trọn node, trích dẫn và URL.
+## Luồng tích hợp
 
-LLM lớn và công cụ phải là hai ranh giới rõ ràng. Công cụ không được nhận query
-tùy ý từ model và LLM không được tự bổ sung dữ kiện khi công cụ trả rỗng.
+1. Gửi câu hỏi tiếng Việt đến thành phần tra cứu.
+2. Thành phần tạo SPARQL hoặc trả “không có thông tin”.
+3. Hệ thống kiểm tra câu truy vấn có thuộc một trong 50 khuôn và chỉ đọc dữ liệu hay không.
+4. Nếu hợp lệ, hệ thống trả dữ kiện của node, trích dẫn và đường dẫn tới tài liệu gốc.
+5. Nếu có lớp hội thoại bên ngoài, lớp này chỉ dùng các dữ kiện trả về để diễn đạt câu trả lời.
 
-## Hợp đồng trả về
+## Yêu cầu an toàn
 
-Kết quả thành công nên có dạng khái niệm:
+- Chỉ cho phép truy vấn đọc dữ liệu.
+- Không cho câu truy vấn mở dữ liệu từ nguồn bên ngoài.
+- Từ chối câu không khớp danh mục khuôn truy vấn.
+- Giới hạn lượng dữ liệu trả về cho mỗi yêu cầu.
+- Giữ trích dẫn và đường dẫn nguồn cùng với dữ kiện khi hiển thị.
+- Phân biệt “không có thông tin” với lỗi của dịch vụ.
 
-```json
-{
-  "status": "ok",
-  "nodes": [
-    {
-      "id": "TemporaryAcademicLeaveProcedure",
-      "facts": [{"property": "...", "value": "..."}],
-      "citation": "...",
-      "source_url": "..."
-    }
-  ]
-}
+## Chạy dịch vụ
+
+Inference là giai đoạn mô hình tạo kết quả cho một yêu cầu đang được phục vụ. Nhóm cài đặt cùng tên chứa các thư viện cần cho giai đoạn này.
+
+```bash
+uv sync --extra inference
+uv run serve_sparql --model-dir <thu_muc_mo_hinh>
 ```
 
-Node bảng trả `verbatimTableText` trong `facts` như một khối, không trả danh
-sách cell. Trạng thái `no_data` phải mang lý do có kiểm soát; lỗi nạp ontology,
-timeout và exception phải dùng kênh lỗi hệ thống.
+Lệnh đầu cài các thư viện cần để chạy dịch vụ. Lệnh thứ hai khởi động dịch vụ với thư mục chứa mô hình đã chuyển đổi để phục vụ.
 
-## An toàn
+## Điều cần kiểm tra trước khi dùng
 
-- chỉ nhận SPARQL `SELECT`;
-- cấm thao tác ghi và nguồn dữ liệu bên ngoài;
-- query phải khớp chính xác catalogue;
-- giới hạn kích thước kết quả;
-- escape dữ liệu khi hiển thị;
-- giữ URL nguồn và trích dẫn trong context;
-- không cho LLM biến kết quả rỗng thành câu trả lời dựa trên trí nhớ.
+```bash
+uv run validate_sparql_dataset
+.venv/bin/python -m pytest tests -q
+```
 
-## Quan sát
+Các lệnh này kiểm tra chuỗi dữ liệu và các phép kiểm tự động. Dự án chưa có số đo công khai cho việc vận hành dịch vụ; cần đo trong môi trường dự kiến sử dụng trước khi đặt yêu cầu về tốc độ hoặc tải xử lý.
 
-Mỗi tool call cần request ID, query nguyên văn, shape khớp, node neo, trạng thái,
-số giá trị, nguồn và latency. Log không lưu chain-of-thought của LLM. Dữ liệu
-người dùng cần được xử lý theo chính sách của môi trường triển khai.
+## Tài liệu liên quan
 
-## Điều kiện phát hành
-
-Không phát hành cho tới khi:
-
-- chuỗi ontology → inventory → catalogue → dataset xanh;
-- tool-calling được kiểm thử cả trong miền, ngoài miền và lỗi;
-- bảng nguyên văn round-trip không đổi;
-- câu trả lời cuối được đánh giá độ bám nguồn;
-- manifest triển khai ghim checksum ontology và catalogue.
-
-`artifacts/reports/provenance.json` hiện có trạng thái `stale` cho metric model và
-deployment; không có số liệu cũ nào được dùng làm tiêu chí phát hành.
+- [Cách các thành phần phối hợp](ARCHITECTURE.md)
+- [Ontology và nguồn](ONTOLOGY.md)
+- [Thông tin về mô hình](MODEL_CARD.md)

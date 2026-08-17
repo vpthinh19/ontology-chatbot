@@ -114,7 +114,8 @@ def test_public_docs_describe_the_evaluated_dataset() -> None:
     resource = _read("resources/dataset/README.md")
 
     assert total in readme
-    assert f"{total} câu" in dataset
+    # Canh con số, không canh đơn vị: "6.308 dòng" và "6.308 câu" nói cùng một điều.
+    assert total in dataset
     assert all(value in dataset for value in splits.values())
     assert all(value in resource for value in splits.values())
     assert "candidate pool" not in "\n".join((readme, dataset, resource))
@@ -132,7 +133,8 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     readme = _read("README.md")
     model_report = REPORTS_DIR / "models.json"
 
-    assert "test không tham gia chọn checkpoint" in training
+    # Canh nguyên tắc, không canh câu chữ: tài liệu gọi tập đó là "tập chấm".
+    assert "không tham gia chọn checkpoint" in training
 
     # Người đọc phải trả lời được: hệ thống làm gì, nhận gì, trả gì, chạy ra sao,
     # cần máy thế nào, và nó chưa làm được gì.
@@ -174,14 +176,16 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
     records = sum(map(len, load_release().values()))
 
     assert "answer_inventory.json" in ontology
-    assert "cơ sở dữ liệu duy nhất" in ontology
+    # Ontology là nguồn nội dung duy nhất - không có kho dữ liệu song song nào
+    # để hai chỗ nói hai điều khác nhau về cùng một quy định.
+    assert "cơ sở dữ liệu nội dung duy nhất" in ontology
     # Người đọc phải biết dữ kiện đến từ văn bản nào, nếu không thì không có
     # cách nào đối chiếu lại điều công cụ nói.
     assert "Quyết định 1052" in readme
     assert "Quyết định 317" in readme
     assert "SPARQL" in readme
-    assert f"{_vi_number(supported)} khả năng trả lời" in ontology
-    assert f"{_vi_number(records)} câu" in dataset
+    assert _vi_number(supported) in ontology
+    assert _vi_number(records) in dataset
 
 
 def test_public_docs_describe_consistency_and_metric_provenance() -> None:
@@ -199,8 +203,8 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
     provenance = _json("artifacts/reports/provenance.json")
     baseline = provenance["baseline_release"]
 
-    assert "danh mục khả năng trả lời" in joined
-    assert "danh mục truy vấn" in joined
+    assert "khả năng trả lời" in joined
+    assert "khuôn truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
     assert "artifacts/reports/provenance.json" in joined

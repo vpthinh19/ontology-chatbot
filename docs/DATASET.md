@@ -1,101 +1,64 @@
-# Dataset
+# Bộ câu hỏi
 
-## Quy mô artifact hiện có
+Tệp này trả lời bộ dữ liệu dùng để dạy và chấm mô hình gồm những gì. Tệp dành cho người cần đánh giá phạm vi dữ liệu hoặc chạy lại việc huấn luyện mà không đọc mã nguồn.
 
-Ba tệp JSONL chứa **6.308 câu**:
+## Quy mô và cách chia
 
-| Tệp | Số dòng dữ liệu |
-|---|---:|
-| `resources/dataset/train.jsonl` | 5.518 |
-| `resources/dataset/val.jsonl` | 400 |
-| `resources/dataset/test.jsonl` | 390 |
-| **Tổng** | **6.308** |
+Bộ câu hỏi có 6.308 dòng. Mỗi dòng ghép một câu hỏi tiếng Việt với đầu ra đúng mà hệ thống cần tạo.
 
-Các số trên được đếm trực tiếp từ ba tệp. `artifacts/reports/dataset.json` xác nhận cùng
-tổng `dataset.records = 6308` và cùng số bản ghi theo split. Đây là thống kê
-artifact, không phải kết quả model.
+| Tập dữ liệu | Số dòng | Mục đích |
+|---|---:|---|
+| Tập dạy | 5.518 | Cho mô hình học cách đổi câu hỏi thành đầu ra có cấu trúc. |
+| Tập chỉnh | 400 | Chọn thiết lập trước khi chấm cuối cùng. |
+| Tập chấm | 390 | Đo kết quả sau khi đã cố định các lựa chọn. |
+| Tổng | 6.308 | Toàn bộ bộ câu hỏi. |
 
-## Trạng thái tương thích
+Tập chỉnh là phần dữ liệu dùng để lựa chọn cách huấn luyện. Tập chấm được giữ riêng để kết quả cuối không bị ảnh hưởng bởi các lựa chọn đó.
 
-Dataset được sinh từ catalogue hiện tại. Mọi họ xuất hiện ở val/test đã được
-dạy ở train; mọi giá trị slot hữu hạn cần thiết đều có ở train; 781/781 tên gọi
-được phủ; các split không trùng sau chuẩn hoá. Tám lớp câu từ chối trong
-`coverage.json`, gồm `incomplete-request`, đều có đủ ba split và bốn register.
+## Hình dạng của một dòng dữ liệu
 
-## Hình dạng bản ghi
-
-Mỗi dòng JSONL có:
-
-| Trường | Vai trò |
+| Phần | Ý nghĩa |
 |---|---|
-| `id` | mã duy nhất |
-| `query_id` | họ/shape truy vấn |
-| `register` | phong cách diễn đạt |
-| `input` | câu hỏi tiếng Việt |
-| `target` | SPARQL chuẩn hoặc marker không có thông tin |
+| Mã nhận diện | Giúp phân biệt từng câu hỏi. |
+| Câu hỏi | Câu tiếng Việt mà người dùng có thể đặt. |
+| Loại truy vấn | Cho biết mẫu dữ liệu mà câu hỏi cần lấy. |
+| Đầu ra đúng | Một câu SPARQL hoặc “không có thông tin”. |
 
-Ba split phục vụ các vai trò khác nhau. Tập kiểm tra chỉ dùng ở bước đánh giá
-cuối; không dùng để chọn cấu hình hoặc bổ sung ví dụ.
+SPARQL là ngôn ngữ dùng để hỏi dữ liệu có cấu trúc trong ontology. Ontology là tập các mục dữ liệu học vụ và liên kết giữa chúng; người học không phải viết SPARQL.
 
-## Mục tiêu
+## Phạm vi nội dung
 
-Dataset phải dạy ánh xạ từ yêu cầu tiếng Việt sang shape lấy trọn node. Shape
-chính trả `?thuoctinh ?giatri ?nguon ?duongdan` cho node neo và dữ kiện con
-trực tiếp. Câu hỏi về nhiều khía cạnh của cùng một thủ tục dùng chung một shape
-node đầy đủ thay vì mỗi khía cạnh một query hẹp.
-
-Các bảng dùng shape riêng để trả nguyên `verbatimTableText` của node bảng cùng
-nguồn. Dataset không được tạo target truy vấn từng cell hoặc tái dựng mapping
-hàng–cột.
-
-## Danh mục truy vấn hiện hành
-
-`resources/ontology/catalogue.jsonl` hiện có **50 họ**: các họ bảng, các họ
-`*-facts` lấy trọn node, một shape phí theo phương thức và một họ từ chối. Toàn
-bộ **49 họ** ngoài họ từ chối đều được sinh tự động - không còn họ nào viết tay,
-và `catalogue-manual.jsonl` đã bị xoá cùng họ "liệt kê năng lực" ngày 2026-08-14.
-
-Ba split đều dùng đủ 50 họ hiện hành; họ có mặt ở held-out luôn có mặt ở train.
-
-## Phân bố trong report
-
-`artifacts/reports/dataset.json` ghi phân bố của 6.308 dòng hiện có:
-
-| Miền | Số câu |
+| Miền câu hỏi | Số câu |
 |---|---:|
-| `academic-rule` | 894 |
-| `procedure` | 1.114 |
-| `form` | 621 |
-| `out-of-domain` | 638 |
-| `document` | 931 |
-| `tuition` | 159 |
-| `certificate` | 188 |
+| Quy tắc học vụ | 1.742 |
+| Thủ tục | 1.121 |
+| Văn bản | 1.115 |
+| Ngoài phạm vi | 884 |
+| Biểu mẫu | 634 |
+| Chứng chỉ | 476 |
+| Học phí | 336 |
 
-| Phong cách | Số câu |
-|---|---:|
-| `colloquial` | 1.305 |
-| `neutral` | 1.221 |
-| `formal` | 954 |
-| `noisy` | 1.065 |
+Có 50 khuôn truy vấn. Mỗi khuôn giới hạn kiểu dữ liệu mà hệ thống được phép đọc, nên một câu hỏi không thể biến thành yêu cầu truy xuất tùy ý.
 
-Các bảng này mô tả nội dung file hiện có. Coverage/readiness được dẫn xuất riêng
-trong cùng report và chỉ xanh khi toàn bộ hợp đồng dữ liệu đạt.
+Bộ dữ liệu có bốn giọng hỏi: trang trọng, trung tính, thân mật và gõ vội không dấu. Giọng hỏi là cách diễn đạt khác nhau của cùng một nhu cầu thông tin.
 
-## Điều kiện trước khi dùng lại dataset
+## Điều bộ dữ liệu không làm
 
-- mọi `query_id` phải có trong catalogue hiện hành;
-- mọi target trong miền phải khớp shape, chỉ đọc và trả dữ liệu;
-- frame phải dùng đúng slot mà họ truy vấn khai báo;
-- các split không trùng sau chuẩn hoá;
-- train phải phủ các giá trị hữu hạn cần thiết;
-- manifest và report phải có checksum đúng với file;
-- tập test không tham gia chọn checkpoint.
+- Không là nguồn quy định học vụ; nguồn là các văn bản được liên kết trong ontology.
+- Không thay thế câu trả lời cuối cho người dùng.
+- Không dùng tập chấm để chọn mô hình hoặc điều chỉnh cách dạy.
 
-Kiểm tra read-only bằng:
+## Kiểm tra dữ liệu
 
 ```bash
 uv run validate_sparql_dataset
 .venv/bin/python -m pytest tests/research -q
 ```
 
-Sinh lại report bằng `uv run generate_reports` sau mỗi lần thay nguồn dataset.
+Lệnh đầu kiểm tra bộ dữ liệu có khớp ontology và 50 khuôn truy vấn hay không. Lệnh sau chạy các phép kiểm tự động liên quan đến dữ liệu và đánh giá.
+
+## Tài liệu liên quan
+
+- [Ontology và nguồn](ONTOLOGY.md)
+- [Huấn luyện](TRAINING.md)
+- [Cách đo kết quả](EVALUATION.md)

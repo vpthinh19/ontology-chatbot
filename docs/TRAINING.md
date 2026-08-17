@@ -1,188 +1,70 @@
-# Huấn luyện
+# Huấn luyện mô hình
 
-## Đường đang dùng: QLoRA cho LLM sinh SPARQL
+Tệp này trả lời cách dạy lại và chấm lại các mô hình trong dự án. Tệp dành cho kỹ sư có môi trường huấn luyện và cần các lệnh chạy, không cần đọc mã nguồn.
 
-Một model nhân quả được tinh chỉnh bằng QLoRA để sinh truy vấn SPARQL từ câu hỏi
-tiếng Việt. Chatbot là **công cụ cho một LLM lớn gọi**, không phải người trả lời:
-nó truy ra trọn vẹn một node rồi để LLM lớn đọc và tự viết câu.
+## Mô hình học gì
 
-### Chạy trên máy có GPU
+Mô hình nhận câu hỏi tiếng Việt và tạo một câu SPARQL hoặc “không có thông tin”. SPARQL là ngôn ngữ dùng để hỏi ontology. Ontology là tập dữ kiện và liên kết giúp máy tra cứu nội dung học vụ.
+
+Dự án huấn luyện các mô hình seq2seq. Seq2seq là mô hình nhận một chuỗi chữ và tạo một chuỗi chữ khác; ở đây, chuỗi vào là câu hỏi và chuỗi ra là câu truy vấn.
+
+## Chuẩn bị môi trường
 
 ```bash
 uv sync --extra train
-# Trên máy mình - chỉ huấn luyện, kết quả nằm sẵn trên đĩa
-python -m ontchatbot.cli.train --model t5gemma2 --smoke-test   # kiểm có vừa VRAM
-python -m ontchatbot.cli.train --model t5gemma2 --epochs 3 --save-model
-
-# Trên máy thuê - thêm bối cảnh máy, chấm val/test, nén mang về
-bash train-server.sh t5gemma2 --epochs 3
-bash train-server.sh                                           # LLM
 ```
 
-Script ghi bối cảnh máy, phiên bản thư viện, commit, **vân tay SHA256 của từng
-tập dữ liệu**, rồi huấn luyện, chấm cả validation lẫn test, và gói mọi thứ thành
-một `.tar.gz`. Vân tay là phần quan trọng nhất: thiếu nó thì không ai chứng minh
-được một con số thuộc về bản dataset nào.
+Lệnh này cài các thư viện cần cho huấn luyện và đánh giá.
 
-Chấm lại một adapter đã có, khỏi huấn luyện lại:
+## Chạy huấn luyện và chấm
 
 ```bash
-ADAPTER=artifacts/runs/run-<mốc>/adapter bash train-server.sh --skip-train
+bash train-server.sh
 ```
 
-### Ba thứ tự điều chỉnh theo máy
+Lệnh này huấn luyện và chấm ba mô hình. Kết quả gồm các tệp đo và nhật ký để đối chiếu lại lượt chạy.
 
-**Nền trọng số gốc** là bf16 khi VRAM từ 16 GiB trở lên và 4-bit khi dưới — tức
-là **LoRA thường trên máy lớn, QLoRA trên card 6 GB**. Ép tay bằng
-`--base-precision bf16|4bit`.
+```bash
+MODELS="t5gemma2" bash train-server.sh
+```
 
-Nén 4-bit bắt bitsandbytes giải nén trọng số ở **mỗi** lượt truyền, mà lô nhỏ với
-chuỗi ngắn thì không có đủ phép tính để chia đều chi phí đó — huấn luyện trả giá
-cả lượt xuôi lẫn lượt ngược. Trọng số gốc ở bf16 chiếm 3,76 GB (đo trên L4),
-nên card 24 GB thừa sức giữ nguyên và việc nén chỉ lấy đi tốc độ. Trên card 6 GB thì ngược lại: 4-bit
-là cách duy nhất nạp vừa.
+Lệnh này chỉ chạy một mô hình khi cần kiểm tra riêng.
 
-> **Đổi nền là ĐỔI PHÉP THỬ, không phải chỉnh tốc độ.** Adapter học bù cho đúng
-> nền nó thấy, nên số đo của lượt QLoRA và lượt LoRA bf16 **không so trực tiếp
-> được với nhau**. Lượt train ghi lựa chọn này vào `training_metrics.json`, và bộ
-> chấm đọc lại đúng ô đó để chấm trên cùng nền — xem mục chấm bên dưới.
+## Thời gian và phần cứng tham khảo
 
-**Gradient checkpointing** bật khi VRAM dưới 16 GiB và tắt khi trên. Nó đổi bộ nhớ
-lấy tốc độ: bỏ activation rồi tính lại ở lượt truyền ngược. Kết quả huấn luyện
-không đổi. Ép tay bằng `--gradient-checkpointing on|off`.
+Một lượt huấn luyện một mô hình trong 3 epoch trên card đồ hoạ NVIDIA L4 24 GB mất khoảng 16 phút và dùng bộ nhớ card ở mức đỉnh 6,5 GB. Epoch là một lượt mô hình đi qua toàn bộ tập dạy.
 
-**Lô vật lý** tự lùi khi hết bộ nhớ, và **lô hiệu dụng luôn giữ nguyên 8** nhờ
-tích luỹ gradient — nên một lượt chạy trên card 6 GB và một lượt trên card 24 GB
-so sánh được với nhau.
+Hệ thống có thể chạy trên card đồ hoạ 6 GB khi giảm cỡ lô. Cỡ lô là số câu hỏi được xử lý cùng lúc; giảm cỡ lô giảm bộ nhớ cần dùng nhưng có thể làm thời gian chạy dài hơn.
 
-### Chấm: gom lô, và nền trọng số theo adapter
+## Kiểm tra trước và sau khi huấn luyện
 
-Bộ chấm sinh **theo lô**, mặc định 16 câu một lượt, tự hạ khi tràn VRAM. Đổi bằng
-biến `BENCH_BATCH`. Sinh chữ bị chặn bởi băng thông bộ nhớ — mỗi bước giải mã đọc
-toàn bộ trọng số dù đang xử lý một câu hay ba mươi hai câu — nên sinh từng câu là
-để card chạy không tải. Đo trên card 6 GB, 32 câu validation: **4,8 giây/câu ở lô
-1 xuống 2,3 giây/câu ở lô 16** (thực tế tự hạ về 4 vì card nhỏ).
+```bash
+uv run validate_sparql_dataset
+.venv/bin/python -m pytest tests -q
+```
 
-**Nền trọng số gốc chọn theo lượt đã huấn luyện adapter, không theo máy đang
-chạy.** Bộ chấm đọc `training_metrics.json` nằm cạnh adapter. Adapter học cách bù
-cho một nền trọng số cụ thể; chấm nó trên nền khác là chấm một model khác, và
-triệu chứng duy nhất là con số hơi lệch mà không ai biết vì sao — cùng một họ lỗi
-với việc ghim bản model ở dưới. Adapter không có tệp đó thì bộ chấm **dừng và
-hỏi** chứ không đoán; chỉ rõ bằng `--base-precision 4bit|bf16`.
+Lệnh đầu kiểm tra bộ câu hỏi và 50 khuôn truy vấn có khớp dữ liệu hay không. Lệnh sau chạy các phép kiểm tự động của dự án.
 
-Nén 4-bit sinh ra cho card 6 GB. Trên card lớn nó chỉ làm chậm: bitsandbytes giải
-nén trọng số ở mỗi lượt truyền xuôi, mà giải mã tuần tự từng token thì phần đó
-lấn át — đo được **6,9 giây/câu ở 4-bit so với 5,0 ở bf16**.
+Sau khi huấn luyện, dùng [Cách đo kết quả](EVALUATION.md) để chấm trên tập chỉnh và tập chấm. Không dùng tập chấm để chọn thiết lập huấn luyện.
 
-### Khuôn nhắc lúc chấm phải là khuôn lúc dạy
+## Vì sao tập chấm được giữ riêng
 
-**Model đã tinh chỉnh thì KHÔNG nhắc ví dụ.** Bộ chấm bọc câu hỏi đúng như lúc
-huấn luyện: lời hệ thống + câu hỏi trần, phần trả lời bắt đầu sau khối `<think>`
-rỗng. Chỉ khi chấm model **gốc chưa tinh chỉnh** nó mới dựng khuôn nhắc 12 ví dụ,
-vì lúc đó ví dụ là thứ duy nhất nói cho model biết phải làm gì. Cờ `--shots`
-không có tác dụng khi có `--adapter`, và báo cáo ghi lại là không dùng.
+Tập chấm không tham gia chọn checkpoint. Checkpoint là bản lưu của mô hình tại
+một thời điểm trong quá trình học; lượt chạy lưu nhiều bản và chọn một bản để
+giữ lại. Việc chọn đó chỉ dùng tập chỉnh.
 
-Vì sao phải viết hẳn ra: lượt chấm 16/8 hỏi adapter bằng khuôn nhắc — khuôn dài
-**2.253 token** trong khi khuôn huấn luyện chỉ **61 token**, lại thiếu cả lời hệ
-thống lẫn khối `<think>`. Model không câm. Nó trả lời gần đúng, chỉ trượt **đúng
-một token** ở cùng một chỗ trong **150 trên 399 câu**, và một token đó đủ để truy
-vấn rơi khỏi danh mục — kéo cả ba chỉ số xuống cùng lúc, trông như model kém chứ
-không như thước đo hỏng.
+Nếu tập chấm tham gia chọn, con số cuối cùng không còn nói mô hình làm được gì
+với câu hỏi chưa từng thấy - nó nói mô hình làm được gì với câu hỏi đã được dùng
+để chọn ra chính nó. Tập chấm chỉ được mở sau khi mọi lựa chọn đã cố định.
 
-Có một phép kiểm so khuôn chấm với khuôn huấn luyện **tới từng token**. Nó cần
-model trong cache, không có thì tự bỏ qua.
+## Giới hạn
 
-> **Khi nào nối LLM vào đường phục vụ thì dùng lại đúng lớp sinh đó.** Hôm nay
-> đường phục vụ chỉ chạy seq2seq nên chưa dính, nhưng dựng lại khuôn nhắc ở chỗ
-> mới là lặp lại đúng lỗi này ngoài production.
+- Kết quả huấn luyện chỉ cho biết khả năng đổi câu hỏi thành câu truy vấn và từ chối câu ngoài phạm vi.
+- Kết quả không thay thế việc kiểm tra văn bản gốc trước khi trả lời một trường hợp có ảnh hưởng thực tế.
+- Giọng gõ vội không dấu là dạng câu hỏi khó hơn trong dữ liệu.
 
-> **Gom lô đổi vài dự đoán, và đó là chuyện bình thường.** Phép nhân ma trận theo
-> lô cộng dồn theo thứ tự khác lúc chạy một câu, nên chỗ hai token gần ngang điểm
-> có thể lật. Đo trên 32 câu validation: **30/32 giống hệt từng ký tự**, hai câu
-> lệch đều là câu model đoán bừa và sai ở cả hai đường. Hệ quả thực dụng: **so hai
-> lượt chấm thì phải cùng cỡ lô** — vì vậy cỡ lô được ghi vào báo cáo.
+## Tài liệu liên quan
 
-### Số đo tham chiếu — NVIDIA L4 24 GB, 3 epoch, lô vật lý 4, checkpointing tắt
-
-| | QLoRA 4-bit (15/8) | LoRA bf16 (16/8) |
-|---|---|---|
-| bước | 2.046 | 2.250 |
-| **giây mỗi bước** | **2,320** | **2,076** |
-| tổng | 79 phút | 77,9 phút |
-| VRAM đỉnh | 13,43 GiB | 15,40 GiB |
-| mất mát cuối | 0,0374 | 0,0360 |
-
-Bỏ nén 4-bit tiết kiệm **0,244 giây mỗi bước** — khoảng một phần mười, không
-phải gấp đôi như từng dự đoán trong dự án này. Tổng thời gian gần bằng nhau vì
-lượt sau chạy thêm 204 bước (dataset lớn hơn). Con số đáng nhớ là giây mỗi bước,
-không phải tổng.
-
-### Ghim bản model
-
-Cả đường huấn luyện lẫn đường chấm đều hỏi **cùng một commit** của model gốc.
-Không ghim thì thư viện hỏi nhánh `main`, và nếu nhánh đó nhích đi thì adapter bị
-chấm trên một model khác với model nó đã học — số thu về vô nghĩa mà không có dấu
-hiệu nào báo sai.
-
-### Model không tự tải về
-
-Cả hai đường đều từ chối tải model nếu cache chưa có. Tải âm thầm 4,57 GB trên
-máy tính tiền theo giờ là chuyện không nên xảy ra. Cho phép bằng
-`--allow-download` khi đã biết mình đang làm gì.
-
----
-
-## Quy trình huấn luyện lịch sử
-
-> **Đã ngừng. Không phải baseline.** Tài liệu này chỉ giải thích quy trình
-> còn dấu vết trong mã nguồn. Dataset dùng cho các lượt huấn luyện đó hỏng, nên
-> mọi metric, bảng kết quả, kết luận chọn model và số liệu triển khai đều vô giá
-> trị. Model cũ không phải phương án lui.
-
-## Mục đích lưu lại
-
-Code huấn luyện vẫn giúp truy vết một quyết định kỹ thuật trong lịch sử dự án:
-một model seq2seq được dạy để sinh SPARQL từ câu hỏi tiếng Việt. Giữ mô tả quy
-trình giúp đọc code và hiểu vì sao repository còn các dependency huấn luyện,
-nhưng không hợp thức hoá checkpoint hay kết quả cũ.
-
-## Luồng thí nghiệm đã dùng
-
-Quy trình lịch sử gồm:
-
-1. kiểm tra ontology, danh mục khả năng trả lời và danh mục truy vấn;
-2. chia dữ liệu thành train, validation và test;
-3. fine-tune các model sinh chuỗi bằng adapter;
-4. chọn checkpoint dựa trên validation;
-5. hợp nhất adapter rồi mới đánh giá;
-6. chuyển model đã chọn sang runtime tối ưu nếu cần.
-
-Nguyên tắc chống rò rỉ vẫn đúng về phương pháp: test không tham gia chọn checkpoint.
-Test chỉ được mở sau khi model, prompt, hyperparameter và tiêu chí
-chọn đã cố định.
-
-## Điều không còn được công bố
-
-Tài liệu không giữ:
-
-- kích thước dataset của các lượt huấn luyện trước đó;
-- hyperparameter và thời gian chạy của các lượt vô hiệu;
-- metric validation/test;
-- so sánh hoặc xếp hạng model;
-- metric runtime và latency;
-- liên kết tới báo cáo hay biểu đồ model đã xoá.
-
-`artifacts/reports/provenance.json` vẫn giữ fingerprint và đánh dấu
-`model_metrics.status` cùng `deployment_metrics.status` là `stale`. Các trạng
-thái đó không biến metric cũ thành lịch sử dùng được; chúng chỉ ngăn artifact cũ
-bị hiểu là kết quả hiện hành.
-
-## Quan hệ với hệ thống
-
-Chatbot ontology là công cụ cho một LLM lớn. Hình dạng truy xuất chính
-là trọn node; bảng được trả nguyên văn. Nếu sau này huấn luyện một thành phần
-ánh xạ mới, giao thức phải được thiết kế và phê duyệt lại từ đầu trên dataset đã
-đồng bộ, không kế thừa điểm số hay quyết định chọn model trước đó.
-
-Cho tới khi chuỗi artifact xanh, không chạy lại huấn luyện và không công bố
-benchmark.
+- [Bộ câu hỏi](DATASET.md)
+- [Cách đo kết quả](EVALUATION.md)
+- [Đưa vào môi trường sử dụng](DEPLOYMENT.md)
