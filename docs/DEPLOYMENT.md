@@ -31,6 +31,25 @@ SPARQL là ngôn ngữ dùng để hỏi ontology. Ontology là dữ liệu có 
 - Giữ trích dẫn và đường dẫn nguồn cùng với dữ kiện khi hiển thị.
 - Phân biệt “không có thông tin” với lỗi của dịch vụ.
 
+## Biến môi trường
+
+Trợ lý gọi một mô hình ngôn ngữ lớn qua mạng, nên nó cần biết gọi đi đâu và bằng
+khoá nào. Ba giá trị này truyền bằng biến môi trường:
+
+| Biến | Nghĩa |
+|---|---|
+| `ONTCHATBOT_LLM_API_KEY` | khoá truy cập máy chủ mô hình |
+| `ONTCHATBOT_LLM_BASE_URL` | địa chỉ máy chủ, theo giao thức của OpenAI |
+| `ONTCHATBOT_LLM_MODEL` | tên mô hình trên máy chủ đó |
+
+Khoá **chỉ** đọc từ biến môi trường. Không có tham số dòng lệnh nào nhận khoá,
+nên nó không lọt vào lịch sử lệnh hay danh sách tiến trình đang chạy; mã nguồn
+cũng không ghi khoá ra log.
+
+Khi chạy bằng Docker, truyền chúng qua phần khai báo biến môi trường của
+container. Khi chạy tại chỗ để thử, đặt trong tệp `.env` ở gốc dự án - tệp này
+đã được loại khỏi git.
+
 ## Chạy dịch vụ
 
 Inference là giai đoạn mô hình tạo kết quả cho một yêu cầu đang được phục vụ. Nhóm cài đặt cùng tên chứa các thư viện cần cho giai đoạn này.
