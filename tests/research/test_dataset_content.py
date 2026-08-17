@@ -30,11 +30,14 @@ from ontchatbot.settings import (
     COVERAGE_REQUIREMENTS_PATH,
     DATASET_DIR,
     QUERY_CATALOGUE_PATH,
+    REJECTION_CHECKLIST_PATH,
+    USER_QUERIES_PATH,
+    USER_QUERIES_TEXT_PATH,
 )
 
 ACADEMIC = Namespace("http://www.ntu.edu.vn/ontology/academic#")
-CHECKLIST_PATH = Path("resources/cases/rejection_checklist.json")
-USER_QUERIES_PATH = Path("resources/cases/user_queries.json")
+CHECKLIST_PATH = REJECTION_CHECKLIST_PATH
+
 #: Thuộc tính của lược đồ CŨ, đã bỏ. Đích nào còn dùng chúng là dấu hiệu lược đồ
 #: cũ sống lại.
 RETIRED_PROPERTIES = (
@@ -393,7 +396,7 @@ def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
     payload = json.loads(USER_QUERIES_PATH.read_text(encoding="utf-8"))
     questions = [
         line
-        for line in Path("resources/cases/user_queries.txt")
+        for line in USER_QUERIES_TEXT_PATH
         .read_text(encoding="utf-8")
         .splitlines()
         if line.strip()

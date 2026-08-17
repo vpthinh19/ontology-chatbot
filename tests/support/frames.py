@@ -8,7 +8,7 @@ vì ngồi viết 40 câu.
 Ba trục cố ý tách rời nhau:
 
 * **cách gọi tên** (``mentions.py``) - suy từ ontology, không bịa;
-* **khung ý định** (``resources/dataset/frames.jsonl``) - soạn tay, quyết định
+* **khung ý định** (``resources/provenance/frames.jsonl``) - soạn tay, quyết định
   chatbot hiểu ý định nào;
 * **phong cách** (module này) - thuần hình thức, không đụng tới nghĩa.
 
@@ -330,3 +330,34 @@ def _collapse_repeats(text: str) -> str:
         if index == 0 or word.lower() != words[index - 1].lower()
     ]
     return " ".join(cleaned)
+
+
+#: Số khung giữ lại cho mỗi tập đánh giá.
+#:
+#: Số khung GIẤU cho mỗi bên (val và test): mỗi họ 10 khung, **dạy 8 - chỉnh 1 -
+#: chấm 1**, tức giấu 20%.
+#:
+#: Giấu quá nửa thì tập chấm chỉ còn toàn lối nói model chưa từng thấy, và điểm
+#: số đo cách hỏi lạ chứ không đo năng lực. Một khung mỗi bên nghe mỏng khi đọc
+#: từng họ, nhưng cộng lại vẫn là mỗi bên một khung chưa từng thấy cho mọi họ.
+#: Khung giấu phải chọn theo thứ tự băm ổn định, không lấy khung dị nhất.
+HELD_OUT_FRAMES = 1
+
+
+def split_frames(frames: tuple[Frame, ...]) -> dict[str, tuple[Frame, ...]]:
+    """Chia khung: phần lớn cho train, hai cho val, hai cho test.
+
+    Đây là trục chia tập DUY NHẤT. Neo thì phải xuất hiện ở train (model cần học
+    tên của chúng); cái được giấu đi là CÁCH HỎI.
+    """
+
+    held = HELD_OUT_FRAMES
+    if len(frames) < 2 * held + 2:
+        raise ValueError(
+            f"{frames[0].query_id}: cần ít nhất {2 * held + 2} khung để chia tập"
+        )
+    return {
+        "train": frames[: -2 * held],
+        "val": frames[-2 * held : -held],
+        "test": frames[-held:],
+    }

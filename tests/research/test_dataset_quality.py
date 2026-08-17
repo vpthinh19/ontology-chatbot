@@ -20,7 +20,7 @@ import pytest
 from rdflib import RDF, URIRef
 
 from ontchatbot.catalogue import load_catalogue
-from ontchatbot.research.generate_dataset import (
+from ontchatbot.research.answer_scope import (
     ANSWERED_BY,
     PROCEDURE_FAMILY,
     answered_in_dump,
@@ -29,7 +29,15 @@ from ontchatbot.research.generate_dataset import (
 from ontchatbot.research.mentions import mention_index, overloaded_mentions
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.runtime.text import normalize_model_input
-from ontchatbot.settings import DATASET_DIR, ONTOLOGY_NS, QUERY_CATALOGUE_PATH
+from ontchatbot.settings import (
+    DATASET_DIR,
+    FRAMES_PATH,
+    ONTOLOGY_NS,
+    QUERY_CATALOGUE_PATH,
+    REJECTION_CHECKLIST_PATH,
+    REJECTION_FRAMES_PATH,
+    REJECTION_PROVENANCE_PATH,
+)
 
 MARKER = "không có thông tin"
 SPLITS = ("train", "val", "test")
@@ -161,10 +169,11 @@ def test_no_question_leaks_across_splits_even_without_diacritics(splits) -> None
 def provenance() -> dict[str, dict[str, str]]:
     """Khuôn và neo đã đẻ ra từng câu từ chối, do bộ sinh ghi lại."""
 
-    path = Path("resources/cases/rejection_provenance.json")
+    path = REJECTION_PROVENANCE_PATH
     assert path.exists(), (
-        "thiếu sổ khuôn câu từ chối - chạy lại `python -m "
-        "ontchatbot.cli.generate_dataset`"
+        "thiếu sổ khuôn câu từ chối. Bộ sinh đã gỡ khỏi mã nguồn, nên tệp "
+        "này là bản ghi DUY NHẤT về khuôn đã đẻ ra từng câu từ chối - lấy lại "
+        "từ lịch sử git chứ không sinh lại được."
     )
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -267,7 +276,7 @@ def test_no_rejection_template_runs_out_of_valid_anchors(graph) -> None:
         template
         for payload in (
             json.loads(line)
-            for line in (DATASET_DIR / "rejections.jsonl")
+            for line in (REJECTION_FRAMES_PATH)
             .read_text(encoding="utf-8")
             .splitlines()
             if line.strip()
@@ -556,10 +565,10 @@ def test_held_out_splits_stay_big_enough_to_measure(splits) -> None:
 def test_all_static_families_have_generated_short_questions(splits) -> None:
     """Mười bốn họ không đi đường ``anchor`` vẫn phải có câu ngắn thật."""
 
-    from ontchatbot.research.compose import load_frames
+    from tests.support.frames import load_frames
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    frames = load_frames(DATASET_DIR / "frames.jsonl", catalogue)
+    frames = load_frames(FRAMES_PATH, catalogue)
     declared = {
         query_id
         for query_id, items in frames.items()
@@ -631,7 +640,7 @@ def test_hard_negatives_only_use_the_entity_type_their_wording_assumes(
     không dạy được ranh giới thật - mà ranh giới mới là chỗ khó nhất.
     """
 
-    checklist_path = Path("resources/cases/rejection_checklist.json")
+    checklist_path = REJECTION_CHECKLIST_PATH
     checklist = json.loads(checklist_path.read_text(encoding="utf-8"))
     by_id = {row["id"]: row for row in rows}
 
@@ -687,7 +696,7 @@ def test_a_question_with_an_off_topic_tail_is_still_answered(rows) -> None:
         payload["class"]: payload["templates"]
         for payload in (
             json.loads(line)
-            for line in (DATASET_DIR / "rejections.jsonl")
+            for line in (REJECTION_FRAMES_PATH)
             .read_text(encoding="utf-8")
             .splitlines()
             if line.strip()
@@ -724,11 +733,11 @@ def test_held_out_frames_are_not_near_duplicates_of_taught_frames() -> None:
     sinh được", không phải một ngưỡng similarity tùy chọn.
     """
 
-    from ontchatbot.research.compose import load_frames, question_variants
-    from ontchatbot.research.generate_dataset import split_frames
+    from tests.support.frames import load_frames, question_variants
+    from tests.support.frames import split_frames
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    frames = load_frames(DATASET_DIR / "frames.jsonl", catalogue)
+    frames = load_frames(FRAMES_PATH, catalogue)
 
     duplicate_variants = []
     for query_id, items in frames.items():
@@ -764,7 +773,7 @@ def test_rejection_classes_come_from_the_requirements_file() -> None:
         (DATASET_DIR / "coverage.json").read_text(encoding="utf-8")
     )["rejection_classes"]
     checklist = json.loads(
-        Path("resources/cases/rejection_checklist.json").read_text(encoding="utf-8")
+        REJECTION_CHECKLIST_PATH.read_text(encoding="utf-8")
     )
 
     assert sorted(checklist) == sorted(required)

@@ -11,10 +11,16 @@ __pycache__/
 .agents/
 
 checkpoints/
-/model/
 models/
 logs/
-/artifacts/
+
+# MỌI thứ sinh ra nằm dưới ``artifacts/``. Chỉ ``artifacts/reports/`` được theo
+# dõi: đó là bản đối chứng mà chuỗi kiểm nhất quán so với nguồn hiện tại, nên
+# nó PHẢI nằm trong git thì trôi lệch mới hiện ra thành một diff. Phần còn lại -
+# lượt huấn luyện, model đã convert, tokenizer - là nhị phân nặng, dựng lại
+# được, và không có hai dòng dưới thì một lệnh ``git add -A`` là chúng vào repo.
+/artifacts/*
+!/artifacts/reports/
 
 /dev/
 ontology.ipynb
@@ -22,3 +28,4 @@ ontology_old.ttl
 
 # Gói kết quả mang về từ máy thuê: nhị phân, nặng, và dựng lại được từ log.
 *.tar.gz
+

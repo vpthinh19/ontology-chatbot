@@ -20,15 +20,27 @@ DATASET_DIR = RESOURCES / "dataset"
 TRAIN_DATASET_PATH = DATASET_DIR / "train.jsonl"
 VAL_DATASET_PATH = DATASET_DIR / "val.jsonl"
 TEST_DATASET_PATH = DATASET_DIR / "test.jsonl"
-PROCEDURE_LANGUAGE_CASES_PATH = RESOURCES / "cases" / "procedure_language.jsonl"
-REJECTION_CHECKLIST_PATH = RESOURCES / "cases" / "rejection_checklist.json"
+#: Nguồn gốc của dataset: khung ý định, câu từ chối, câu viết tay và quan hệ
+#: giữa khung với câu được sinh. Các phép kiểm dùng chúng để xác minh dataset.
+PROVENANCE_DIR = RESOURCES / "provenance"
+FRAMES_PATH = PROVENANCE_DIR / "frames.jsonl"
+REJECTION_FRAMES_PATH = PROVENANCE_DIR / "rejections.jsonl"
+WRITTEN_QUESTIONS_PATH = PROVENANCE_DIR / "written-questions.jsonl"
+REJECTION_CHECKLIST_PATH = PROVENANCE_DIR / "rejection_checklist.json"
+REJECTION_PROVENANCE_PATH = PROVENANCE_DIR / "rejection_provenance.json"
+
+#: Câu hỏi thực tế, được đánh giá riêng và không thuộc train/val/test.
 USER_QUERIES_PATH = RESOURCES / "cases" / "user_queries.json"
+USER_QUERIES_TEXT_PATH = RESOURCES / "cases" / "user_queries.txt"
 DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
-QUERY_CATALOGUE_PATH = DATASET_DIR / "catalogue.jsonl"
-#: Họ truy vấn viết tay: so sánh ngưỡng, tổng hợp nhiều cột, chọn bản ghi phù
-#: hợp nhất. Bộ sinh cơ học chỉ dựng được truy vấn đi theo đường dẫn nên không
-#: thể tự sinh những họ này; chúng được trộn vào khi dựng lại danh mục.
-QUERY_CATALOGUE_MANUAL_PATH = DATASET_DIR / "catalogue-manual.jsonl"
+#: Danh mục truy vấn là cấu hình runtime dùng để xác định các truy vấn hợp lệ,
+#: không phải dữ liệu huấn luyện.
+QUERY_CATALOGUE_PATH = ONTOLOGY_DIR / "catalogue.jsonl"
+#: Họ truy vấn thủ công cho các phép so sánh, tổng hợp và lựa chọn bản ghi.
+QUERY_CATALOGUE_MANUAL_PATH = ONTOLOGY_DIR / "catalogue-manual.jsonl"
 COVERAGE_REQUIREMENTS_PATH = DATASET_DIR / "coverage.json"
 
+#: Thư mục gốc cho lượt huấn luyện, model chuyển đổi và báo cáo dẫn xuất.
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
+#: Báo cáo dẫn xuất được dùng làm đối chứng để phát hiện trôi lệch nguồn.
+REPORTS_DIR = ARTIFACTS_DIR / "reports"

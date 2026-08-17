@@ -8,7 +8,8 @@ import re
 import pytest
 
 from ontchatbot.catalogue import load_catalogue
-from ontchatbot.research.compose import (
+from tests.support.frames import (
+    split_frames,
     _drop_spaces,
     _strip_diacritics,
     _typo,
@@ -18,11 +19,9 @@ from ontchatbot.research.compose import (
     decorate,
     load_frames,
 )
-from ontchatbot.research.generate_dataset import split_frames
 from ontchatbot.runtime.text import normalize_model_input
-from ontchatbot.settings import DATASET_DIR, QUERY_CATALOGUE_PATH
+from ontchatbot.settings import FRAMES_PATH, QUERY_CATALOGUE_PATH
 
-FRAMES_PATH = DATASET_DIR / "frames.jsonl"
 
 
 @pytest.fixture(scope="module")

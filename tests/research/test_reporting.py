@@ -21,6 +21,7 @@ from ontchatbot.settings import (
     ONTOLOGY_PATH,
     PROJECT_ROOT,
     QUERY_CATALOGUE_PATH,
+    REPORTS_DIR,
 )
 
 
@@ -67,7 +68,7 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     # ``write_manifest``) đã bị bỏ: ``write_consistency_snapshot`` ghi cả năm
     # artifact cùng lúc từ một ảnh chụp đã kiểm chứng, còn giữ đường ghi song
     # song là giữ một cách sinh ra manifest lệch với báo cáo.
-    reports = PROJECT_ROOT / "reports"
+    reports = REPORTS_DIR
     assert (reports / "dataset.json").is_file()
     assert (reports / "figures/dataset-splits.svg").is_file()
     assert (reports / "figures/registers.svg").is_file()

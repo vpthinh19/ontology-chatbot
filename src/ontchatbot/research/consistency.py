@@ -13,6 +13,8 @@ from ..settings import (
     DATASET_DIR,
     ONTOLOGY_PATH,
     PROJECT_ROOT,
+    QUERY_CATALOGUE_PATH,
+    REPORTS_DIR,
 )
 from ..catalogue import load_catalogue
 from .catalogue_validation import validate_catalogue
@@ -59,7 +61,7 @@ class ConsistencySnapshot:
 
 
 def canonical_artifact_paths() -> ArtifactPaths:
-    reports_dir = PROJECT_ROOT / "reports"
+    reports_dir = REPORTS_DIR
     return ArtifactPaths(
         inventory=ANSWER_INVENTORY_PATH,
         manifest=DATASET_DIR / "manifest.json",
@@ -76,7 +78,7 @@ def build_input_fingerprint(
 ) -> dict[str, str]:
     paths = {
         "ontology.ttl": Path(ontology_path),
-        "catalogue.jsonl": Path(dataset_dir) / "catalogue.jsonl",
+        "catalogue.jsonl": QUERY_CATALOGUE_PATH,
         "coverage.json": Path(dataset_dir) / "coverage.json",
         **{
             f"{split}.jsonl": Path(dataset_dir) / f"{split}.jsonl"
@@ -110,7 +112,7 @@ def build_consistency_snapshot(
     artifact_paths = paths or canonical_artifact_paths()
     graph = load_ontology(ontology_path)
     inventory = build_answer_inventory(graph)
-    catalogue = load_catalogue(Path(dataset_dir) / "catalogue.jsonl")
+    catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
     catalogue_validation = validate_catalogue(graph, inventory, catalogue)
     release = load_release(dataset_dir)
     dataset_report = build_dataset_report(

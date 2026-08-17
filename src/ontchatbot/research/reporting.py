@@ -21,6 +21,7 @@ from ..settings import (
     ONTOLOGY_PATH,
     PROJECT_ROOT,
     QUERY_CATALOGUE_PATH,
+    REPORTS_DIR,
     REJECTION_CHECKLIST_PATH,
 )
 from ..catalogue import load_catalogue
@@ -55,7 +56,7 @@ def build_dataset_report(
 ) -> dict[str, Any]:
     """Summarize the data contract without exposing curation history."""
 
-    catalogue_path = Path(dataset_dir) / "catalogue.jsonl"
+    catalogue_path = QUERY_CATALOGUE_PATH
     catalogue = load_catalogue(catalogue_path)
     named_nodes = tuple(
         sorted(
@@ -465,8 +466,7 @@ def build_procedure_dataset_report(
         for split in REQUIRED_SPLITS
     }
     train_target_counts = Counter(row["target"] for row in procedure_rows["train"])
-    # Họ secondary không có khung câu hỏi nên KHÔNG được dạy - đó là thiết kế,
-    # không phải thiếu sót. Chỉ họ primary mới nằm trong hợp đồng.
+    # Họ secondary không thuộc hợp đồng huấn luyện; chỉ họ primary được yêu cầu.
     primary_procedure_families = {
         query_id
         for query_id in procedure_families
@@ -511,11 +511,8 @@ def build_procedure_dataset_report(
         "procedure_family_count": len(procedure_families),
         "splits": split_reports,
         "contracts": {
-            # Hợp đồng của THIẾT KẾ HIỆN TẠI. Bản trước đòi mỗi ĐÍCH >=10 mẫu và
-            # mọi đích train phải có mặt ở val - đó là hợp đồng của đợt vá dataset
-            # cũ, khi chỉ có 142 đích và val phủ hết neo. Bộ sinh v2 rải sàn theo
-            # HỌ (mỗi hình dạng truy vấn >=12 dòng) và val/test chỉ lấy mẫu 6 neo,
-            # vì val/test đo cách hỏi mới chứ không đo trí nhớ thêm thực thể.
+            # Huấn luyện phủ mọi họ primary; mỗi họ dùng đủ các phong cách. Tập
+            # giữ lại đo cách hỏi mới trên các neo đã được dạy.
             "every_primary_procedure_family_is_taught": taught_families
             >= primary_procedure_families,
             "every_procedure_family_has_all_four_registers": all(
@@ -529,16 +526,13 @@ def build_procedure_dataset_report(
                 == len(REGISTER_ORDER)
                 for query_id in taught_families
             ),
-            # Chiều QUAN TRỌNG: đích nào đem ra chấm cũng phải từng được dạy.
-            # Chiều ngược lại không bắt buộc và cố ý không bắt buộc.
+            # Mọi đích ở val/test phải xuất hiện trong train.
             "every_evaluated_target_was_taught": all(
                 {row["target"] for row in procedure_rows[split]}
                 <= set(train_target_counts)
                 for split in ("val", "test")
             ),
-            # V3 dùng một shape lấy trọn node. Target cố ý không còn chứa
-            # ``:hasStep`` hay ``:summaryText`` để biểu diễn hai ý định riêng;
-            # các thuộc tính đó được lấy qua biến predicate trong cùng query.
+            # Một shape lấy toàn bộ node qua biến predicate.
             "every_held_out_split_has_procedure_questions": all(
                 bool(procedure_rows[split]) for split in ("val", "test")
             ),
@@ -807,7 +801,7 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--ontology", type=Path, default=ONTOLOGY_PATH)
-    parser.add_argument("--output-dir", type=Path, default=PROJECT_ROOT / "reports")
+    parser.add_argument("--output-dir", type=Path, default=REPORTS_DIR)
     return parser.parse_args()
 
 

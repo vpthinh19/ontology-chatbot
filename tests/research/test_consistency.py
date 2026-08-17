@@ -17,7 +17,13 @@ from ontchatbot.research.consistency import (
 )
 from ontchatbot.cli import validate_data
 from ontchatbot.research.reporting import sha256_file, write_consistency_snapshot
-from ontchatbot.settings import ANSWER_INVENTORY_PATH, DATASET_DIR, PROJECT_ROOT
+from ontchatbot.settings import (
+    ANSWER_INVENTORY_PATH,
+    DATASET_DIR,
+    PROJECT_ROOT,
+    QUERY_CATALOGUE_PATH,
+    REPORTS_DIR,
+)
 
 
 def test_matching_complete_fingerprint_is_current() -> None:
@@ -101,7 +107,7 @@ def test_validation_cli_does_not_write_derived_artifacts(monkeypatch, capsys) ->
 def test_snapshot_generation_round_trips_without_changing_inputs(tmp_path) -> None:
     paths = _temporary_artifacts(tmp_path)
     paths.provenance.write_bytes(
-        (PROJECT_ROOT / "reports/provenance.json").read_bytes()
+        (REPORTS_DIR / "provenance.json").read_bytes()
     )
     protected = _canonical_input_paths()
     before = {name: sha256_file(path) for name, path in protected.items()}
@@ -131,7 +137,7 @@ def test_generation_preserves_stale_baseline_and_updates_current_inputs(
 ) -> None:
     paths = _temporary_artifacts(tmp_path)
     baseline = json.loads(
-        (PROJECT_ROOT / "reports/provenance.json").read_text(encoding="utf-8")
+        (REPORTS_DIR / "provenance.json").read_text(encoding="utf-8")
     )
     baseline["baseline_inputs"]["ontology.ttl"] = "a" * 64
     paths.provenance.write_text(
@@ -196,7 +202,7 @@ def _temporary_artifacts(root: Path) -> ArtifactPaths:
 def _canonical_input_paths() -> dict[str, Path]:
     return {
         "ontology.ttl": PROJECT_ROOT / "resources/ontology/ontology.ttl",
-        "catalogue.jsonl": DATASET_DIR / "catalogue.jsonl",
+        "catalogue.jsonl": QUERY_CATALOGUE_PATH,
         "coverage.json": DATASET_DIR / "coverage.json",
         "train.jsonl": DATASET_DIR / "train.jsonl",
         "val.jsonl": DATASET_DIR / "val.jsonl",
@@ -205,7 +211,7 @@ def _canonical_input_paths() -> dict[str, Path]:
 
 
 def _canonical_artifacts() -> ArtifactPaths:
-    reports = PROJECT_ROOT / "reports"
+    reports = REPORTS_DIR
     return ArtifactPaths(
         inventory=ANSWER_INVENTORY_PATH,
         manifest=DATASET_DIR / "manifest.json",
