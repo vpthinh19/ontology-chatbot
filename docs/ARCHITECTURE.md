@@ -1,4 +1,4 @@
-# Kiến trúc hệ thống v3
+# Kiến trúc hệ thống
 
 ## Tổng quan
 
@@ -73,7 +73,7 @@ Công cụ không tự sửa query gần đúng.
 ## Ranh giới code hiện tại
 
 Repository vẫn chứa runtime seq2seq/CTranslate2 và code huấn luyện cũ để truy
-vết lịch sử. Chúng không đại diện cho kiến trúc v3 và không phải fallback.
+vết lịch sử. Chúng không đại diện cho kiến trúc hệ thống và không phải fallback.
 `src/ontchatbot/runtime/llm.py` là phần thử nghiệm ánh xạ câu hỏi sang query bằng
 LLM, nhưng lớp điều phối tool-calling hoàn chỉnh vẫn cần được tích hợp và đánh
 giá trước khi công bố triển khai.

@@ -214,8 +214,8 @@ def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
 
 
 # Phép kiểm "mức học phí nào ứng với ngành nào" đã gỡ cùng dữ liệu học phí
-# (2026-08-10). Họ truy vấn ``tuition-programs-by-rate`` còn nằm trong danh mục
-# v2 và sẽ biến mất khi dựng lại danh mục ở giai đoạn 2.
+# (2026-08-10). Họ truy vấn ``tuition-programs-by-rate`` không còn thuộc danh
+# mục và sẽ biến mất khi dựng lại danh mục ở giai đoạn 2.
 
 
 @pytest.mark.parametrize(
@@ -239,10 +239,8 @@ def test_every_level_of_a_document_answers_with_its_own_source(
     """Người hỏi không biết "Quyết định 1052" là gì, nên mỗi câu trả lời phải tự
     kèm nguồn: vị trí trong văn bản, số quyết định, ngày ban hành và nơi tra.
 
-    Bốn cấp văn bản - Điều, khoản, điểm, và điều của quy chế đời trước - nay dùng
-    CHUNG một họ ``document-part-facts``. Bản v2 tách thành ``article-with-source``,
-    ``clause-with-source`` và ``document-official-text``, ba họ gần giống hệt nhau
-    mà model phải chọn giữa chúng.
+    Bốn cấp văn bản - Điều, khoản, điểm, và điều của quy chế đời trước - dùng
+    CHUNG một họ ``document-part-facts``.
     """
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
@@ -274,7 +272,7 @@ def test_a_query_that_answers_with_its_source_is_declared_in_the_catalogue() -> 
     # Không lọc theo tier: runtime đối chiếu với TOÀN danh mục, nên một họ phụ
     # vẫn phải khớp. Lọc theo tier sẽ làm phép kiểm vỡ mỗi lần một họ đổi hạng,
     # trong khi hợp đồng cần giữ thì không đổi.
-    # Tên cột đã đổi sang ASCII ở v3 (``?nguon``/``?duongdan`` thay cho
+    # Tên cột dùng ASCII (``?nguon``/``?duongdan`` thay cho
     # ``?căncứ``/``?xemtại``), và giờ MỌI họ đều trả kèm nguồn chứ không còn một
     # nhóm riêng mang tên ``*-with-source``.
     with_source = [
@@ -383,7 +381,7 @@ def test_no_two_primary_families_answer_identically() -> None:
 
 # Phép kiểm "không ô nào là một bức tường chữ" đã gỡ (2026-08-10).
 #
-# Nó dựa trên một giả định mà danh mục v3 làm hỏng: rằng chỉ họ TRA NGUYÊN VĂN
+# Nó dựa trên một giả định không còn đúng: rằng chỉ họ TRA NGUYÊN VĂN
 # mới trả ra đoạn dài, nên miễn riêng nhóm đó là đủ. Nay mọi họ đều có hình dạng
 # dump - trả mọi giá trị chữ của neo - nên đoạn dài xuất hiện ở khắp nơi, và ở
 # đúng những chỗ nó LÀ câu trả lời: hỏi "học phần điều kiện là gì" thì phải nhận

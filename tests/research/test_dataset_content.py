@@ -198,10 +198,9 @@ def test_official_release_is_executable_and_has_complete_coverage(
 ) -> None:
     """Bản phát hành phải chạy được và phủ đủ danh mục.
 
-    Bản trước còn đòi một danh sách họ ``procedure-*`` viết cứng trong tệp test.
-    Danh mục v2 đổi tiền tố thành ``academic-procedure-*``, nên danh sách đó chỉ
-    còn là ký ức về một bản khác. Thay bằng: mọi họ primary trong miền quy trình
-    đều phải có mặt trong danh mục và được dạy.
+    Điều kiện là: mọi họ primary trong miền quy trình đều có mặt trong danh mục
+    và được dạy. Không viết cứng danh sách tên họ trong tệp kiểm - một lần đổi
+    tiền tố họ là danh sách đó khoá lại một cách gọi không còn tồn tại.
     """
 
     release_report = validate_release(release, graph, catalogue)
@@ -298,12 +297,12 @@ def test_targets_never_resurrect_the_retired_schema(release) -> None:
     Lược đồ cũ để bốn khía cạnh của cùng một thủ tục trỏ về gần như cùng một đoạn
     văn - khiến model nhận đúng thực thể nhưng chọn sai quan hệ.
 
-    Bản trước còn cấm đích trỏ THẲNG vào node điều/khoản/điểm. Ràng buộc đó nay
-    sai: tra cứu nguyên văn một điều luật là năng lực CÓ CHỦ ĐÍCH của v2.
+    Đích được phép trỏ thẳng vào node điều, khoản hoặc điểm: tra cứu nguyên văn
+    một điều luật là năng lực có chủ đích của hệ thống.
     """
 
-    # So theo TOÁN TỬ trọn vẹn, không so chuỗi con: v2 có ``:conditionText`` hợp
-    # lệ, mà ``:condition`` là chuỗi con của nó.
+    # So theo toán tử trọn vẹn, không so chuỗi con: ``:conditionText`` là thuộc
+    # tính hợp lệ, mà ``:condition`` đã bỏ lại là chuỗi con của nó.
     retired = re.compile(
         r"(?<![A-Za-z0-9])(" + "|".join(re.escape(n) for n in RETIRED_PROPERTIES) + r")(?![A-Za-z0-9])"
     )
@@ -384,11 +383,9 @@ def test_rejection_checklist_partitions_every_declared_class(
 def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
     """Câu hỏi do NGƯỜI THẬT gõ phải có một quyết định rõ ràng.
 
-    Bảy câu đầu là của người dùng thật; hai câu cuối do **giảng viên chủ nhiệm
-    đề tài** test. Bản trước bắt buộc từng câu phải nằm nguyên văn trong dataset
-    - bộ sinh v2 tự viết cách diễn đạt riêng nên điều đó không còn đúng, và cũng
-    không nên đúng: đây là bộ thử nghiệm chạy trên MODEL sau khi huấn luyện,
-    không phải dữ liệu huấn luyện.
+    Bảy câu đầu là của người dùng thật; hai câu cuối do giảng viên chủ nhiệm đề
+    tài test. Không đòi từng câu phải nằm nguyên văn trong dataset: đây là bộ thử
+    chạy trên model sau khi huấn luyện, không phải dữ liệu huấn luyện.
 
     Cái phải canh là: mỗi câu có một họ truy vấn được chỉ định, và họ đó có thật.
     """

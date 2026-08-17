@@ -1,6 +1,6 @@
 # Đánh giá model sinh SPARQL
 
-Thước v3 nằm trong `src/ontchatbot/research/evaluation.py`. Causal LLM và seq2seq
+Thước nằm trong `src/ontchatbot/research/evaluation.py`. Causal LLM và seq2seq
 đi qua **cùng một lệnh chấm**, nên chúng được đo trên cùng chuỗi đầu ra, cùng
 catalogue, cùng ontology và cùng ba định nghĩa:
 
@@ -134,7 +134,7 @@ smoke-test riêng thước bằng unit test sau (đây không phải kết quả
 
 ## Trạng thái metric
 
-Repository chưa công bố metric model v3. Các mẫu số ở trên mô tả hợp đồng chấm
+Repository chưa công bố metric model. Các mẫu số ở trên mô tả hợp đồng chấm
 và release hiện hành, không phải kết quả inference. `artifacts/reports/provenance.json`
 đánh dấu cả metric model và deployment là `stale` so với baseline v0.4.1; chỉ
 artifact benchmark có fingerprint input hiện hành mới được dùng để công bố số.

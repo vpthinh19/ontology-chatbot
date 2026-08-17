@@ -893,10 +893,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--torchao",
         choices=("off", "int8", "int4"),
-        default="int8",
+        default="off",
         help=(
-            "nén trọng số NỀN bằng torchao. Đi cặp với --compile: tensor "
-            "subclass của torchao cho compile fuse phép giải nén vào matmul"
+            "nén trọng số nền bằng torchao. Đổi khoảng 6 phần trăm tốc độ lấy "
+            "0,6 GiB bộ nhớ, nên chỉ đáng khi card chật; trên card rộng nó chỉ "
+            "thêm thời gian biên dịch và một đường vòng lúc gộp adapter"
         ),
     )
     parser.add_argument(

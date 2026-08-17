@@ -8,7 +8,7 @@ dataset hỏng, vì vậy:
 - không có metric nào của model được công bố;
 - không dùng checkpoint làm baseline;
 - không dùng checkpoint làm phương án lui;
-- không dùng kết luận chọn model cũ để thiết kế v3.
+- không dùng kết luận chọn model cũ để thiết kế hệ thống.
 
 Tài liệu này cố ý không cung cấp lệnh tải hoặc chạy model cũ.
 
@@ -26,5 +26,5 @@ kết quả. `artifacts/reports/provenance.json` đánh dấu `model_metrics.sta
 `deployment_metrics.status` là `stale`; đây là cảnh báo vô hiệu, không phải một
 mức chất lượng.
 
-Repository hiện chưa có model card định lượng cho v3. Chỉ tạo model card mới sau
+Repository hiện chưa có model card định lượng. Chỉ tạo model card mới sau
 khi toàn bộ kiểm tra dữ liệu xanh và benchmark mới có artifact máy đọc.

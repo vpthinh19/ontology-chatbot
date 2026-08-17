@@ -157,9 +157,9 @@ def test_manifest_ontology_path_resolves_from_manifest_directory(tmp_path) -> No
 def test_procedure_report_is_derived_from_release() -> None:
     report = build_procedure_dataset_report(load_release(), dataset_dir=DATASET_DIR)
 
-    # Bản trước chốt 142 đích quy trình. Danh mục v2 đổi tiền tố họ từ
-    # ``procedure-`` sang ``academic-procedure-`` nên phép đếm cũ tụt còn 42 -
-    # đó là đổi TÊN, không phải mất dữ liệu. Đối chiếu với release thật.
+    # Họ quy trình mang tiền tố ``academic-procedure-``. Đối chiếu số đích với
+    # release thật thay vì chốt cứng một con số, vì một lần đổi tiền tố cũng làm
+    # phép đếm chốt cứng tụt xuống mà không có dữ liệu nào mất đi.
     assert report["scope"] == "academic-procedure"
     assert report["procedure_target_count"] > 0
     assert report["procedure_family_count"] > 0

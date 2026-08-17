@@ -67,7 +67,7 @@ Danh mục khả năng trả lời mô tả ontology có thể cung cấp gì. D
 mô tả công cụ được phép lấy theo shape nào. Dataset chỉ được tạo sau hai lớp đó
 và phải dùng `query_id` còn tồn tại.
 
-Shape chính v3 gom các đường của cùng loại node thành một query `*-facts`. Shape
+Shape chính gom các đường của cùng loại node thành một query `*-facts`. Shape
 bảng trả toàn `verbatimTableText`. Vì vậy số khả năng trả lời không cần tương
 ứng một-một với số họ truy vấn.
 

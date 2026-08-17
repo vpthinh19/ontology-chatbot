@@ -15,14 +15,14 @@ Các tệp hỗ trợ:
 
 | Tệp | Vai trò |
 |---|---|
-| `catalogue.jsonl` | danh mục truy vấn v3 |
+| `catalogue.jsonl` | danh mục truy vấn |
 | `catalogue-manual.jsonl` | họ viết tay được trộn vào catalogue |
 | `frames.jsonl` | khung diễn đạt theo họ |
 | `coverage.json` | hợp đồng độ phủ |
 | `manifest.json` | checksum và hợp đồng split |
 | `rejections.jsonl` | khung câu ngoài phạm vi |
 
-## Catalogue v3
+## Catalogue
 
 Catalogue hiện có **50 họ**. Hình dạng chính là các họ `*-facts`: neo một node,
 lấy literal trên node và node con trực tiếp, rồi trả

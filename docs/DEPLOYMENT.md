@@ -1,14 +1,14 @@
-# Triển khai kiến trúc v3
+# Triển khai hệ thống
 
 ## Trạng thái
 
-Chưa có benchmark triển khai công khai cho v3. Runtime seq2seq/CTranslate2 còn
+Chưa có benchmark triển khai công khai. Runtime seq2seq/CTranslate2 còn
 trong repository là dấu vết của kiến trúc đã ngừng, không phải phương án lui và
 không được dùng để suy ra chất lượng hệ thống hiện hành.
 
 ## Thành phần cần triển khai
 
-Một deployment v3 gồm:
+Một deployment gồm:
 
 1. LLM lớn hỗ trợ gọi công cụ;
 2. lớp điều phối hội thoại và policy gọi công cụ;
@@ -61,7 +61,7 @@ người dùng cần được xử lý theo chính sách của môi trường tr
 
 ## Điều kiện phát hành
 
-Không phát hành v3 cho tới khi:
+Không phát hành cho tới khi:
 
 - chuỗi ontology → inventory → catalogue → dataset xanh;
 - tool-calling được kiểm thử cả trong miền, ngoài miền và lỗi;

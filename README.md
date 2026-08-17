@@ -2,7 +2,7 @@
 
 ## Tóm tắt
 
-Kiến trúc v3 của dự án xác định một công cụ truy xuất kiến thức học vụ để một
+Dự án xác định một công cụ truy xuất kiến thức học vụ để một
 LLM lớn gọi trong quá trình trả lời người dùng. Công cụ không tự viết câu trả lời
 cuối: nó chuyển yêu cầu truy xuất thành SPARQL đã được giới hạn, lấy **trọn
 node** liên quan từ ontology, rồi trả dữ liệu cùng nguồn cho LLM tổng hợp. Lớp
@@ -13,7 +13,7 @@ Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **6.30
 trả lời hiện ghi nhận **4.064 khả năng trả lời** được hỗ trợ. Đây là số liệu về
 artifact dữ liệu, không phải điểm chất lượng của model.
 
-Kiến trúc v3 có ba nguyên tắc:
+Kiến trúc có ba nguyên tắc:
 
 1. LLM hội thoại là bên quyết định khi nào cần gọi công cụ ontology.
 2. Hình dạng truy xuất chính là toàn bộ thuộc tính đọc được của một node, kèm
@@ -21,7 +21,7 @@ Kiến trúc v3 có ba nguyên tắc:
 3. Mỗi bảng trong văn bản nguồn là một node chứa nguyên khối bảng; hệ thống
    không chép lại từng ô thành các sự thật song song.
 
-Các kết quả model v2 đã bị rút khỏi tài liệu công khai. Dataset dùng để dựng
+Các kết quả model trước đó đã bị rút khỏi tài liệu công khai. Dataset dùng để dựng
 model đó hỏng, nên model và các metric của nó không phải baseline và không phải
 phương án lui.
 
@@ -31,7 +31,7 @@ Thông tin học vụ nằm rải trong quy chế, quyết định, phụ lục,
 toán và danh mục biểu mẫu. Một LLM hội thoại có thể diễn đạt câu trả lời dễ đọc,
 nhưng không nên tự nhớ hay đoán nội dung pháp quy.
 
-Câu hỏi nghiên cứu của v3 là:
+Câu hỏi nghiên cứu là:
 
 > Có thể cung cấp cho một LLM lớn đúng node ontology có liên quan, đầy đủ ngữ
 > cảnh và nguồn, để LLM trả lời dựa trên dữ liệu kiểm chứng được hay không?
@@ -56,7 +56,7 @@ Ontology không phải kho đoạn văn để tìm gần nghĩa. Quan hệ trong
 
 ## 3. Phương pháp đề xuất
 
-Luồng v3:
+Luồng xử lý:
 
 ```text
 người dùng
@@ -76,7 +76,7 @@ phỏng đoán.
 
 ### 3.1. Hình dạng đầu vào và đầu ra của model
 
-Trong kiến trúc v3, model ở lớp hội thoại nhận câu hỏi và có quyền gọi một công
+Trong kiến trúc này, model ở lớp hội thoại nhận câu hỏi và có quyền gọi một công
 cụ chuyên biệt. Công cụ nhận yêu cầu học vụ và trả **context có cấu trúc**, chứ
 không trả câu trả lời đã viết sẵn.
 
@@ -183,7 +183,7 @@ Xem [tài liệu dataset](docs/DATASET.md) và
 
 ## 6. Đánh giá
 
-Thước sinh SPARQL v3 công bố ba số rời: **đúng node · đúng dạng · từ chối
+Thước sinh SPARQL công bố ba số rời: **đúng node · đúng dạng · từ chối
 đúng**; không gộp thành accuracy tổng. Validation và test mỗi bên chỉ còn HAI nhóm: câu truy vấn node và câu
 ngoài miền. Họ "liệt kê năng lực" đã bị bỏ khỏi thiết kế ngày 2026-08-14 -
 công cụ chỉ truy ra dữ kiện hoặc nói không có thông tin. Chín câu người thật được báo riêng ở mức đúng `query_id`, không
@@ -196,14 +196,14 @@ Với bảng, phép kiểm phải so toàn khối `verbatimTableText` và giữ 
 Với node thường, phép kiểm phải kiểm tra đủ các thuộc tính liên quan và trích
 dẫn, không chỉ một literal tình cờ đúng.
 
-Repository hiện không công bố metric model v3. Giao thức chi tiết nằm trong
+Repository hiện không công bố metric model. Giao thức chi tiết nằm trong
 [docs/EVALUATION.md](docs/EVALUATION.md).
 
 ## 7. Trạng thái model cũ
 
-Model seq2seq v2 được huấn luyện từ dataset hỏng. Mọi số đo, kết luận so sánh và
+Model seq2seq trước đó được huấn luyện từ dataset hỏng. Mọi số đo, kết luận so sánh và
 artifact triển khai của nó đã bị rút khỏi tài liệu công khai. Model đó không
-được dùng làm baseline, không được dùng để đánh giá v3 và không phải phương án
+được dùng làm baseline, không được dùng để đánh giá hệ thống và không phải phương án
 lui.
 
 [docs/TRAINING.md](docs/TRAINING.md) chỉ giữ mô tả quy trình lịch sử để giải
@@ -259,9 +259,9 @@ bằng `.venv/bin/python -m ontchatbot.cli.validate_data`.
 ## 10. Tài liệu
 
 - [Ý tưởng và ranh giới](docs/CONCEPT.md)
-- [Kiến trúc v3](docs/ARCHITECTURE.md)
+- [Kiến trúc](docs/ARCHITECTURE.md)
 - [Ontology](docs/ONTOLOGY.md)
 - [Dataset](docs/DATASET.md)
 - [Quy trình huấn luyện lịch sử](docs/TRAINING.md)
-- [Đánh giá v3](docs/EVALUATION.md)
-- [Triển khai v3](docs/DEPLOYMENT.md)
+- [Đánh giá](docs/EVALUATION.md)
+- [Triển khai](docs/DEPLOYMENT.md)

@@ -449,10 +449,9 @@ def build_procedure_dataset_report(
 ) -> dict[str, Any]:
     """Derive the academic-procedure coverage report from release rows.
 
-    Nhận diện họ quy trình bằng MIỀN khai trong danh mục, không bằng tiền tố tên.
-    Danh mục v2 đổi tiền tố ``procedure-`` thành ``academic-procedure-``, nên phép
-    lọc theo tên cũ tụt từ 142 đích xuống 42 và báo 0 đích hướng dẫn - báo cáo
-    công khai nói sai hẳn về chính trọng tâm của dự án.
+    Nhận diện họ quy trình bằng miền khai trong danh mục, không bằng tiền tố tên:
+    tiền tố là một cách gọi có thể đổi, và lọc theo nó thì báo cáo công khai âm
+    thầm bỏ sót phần lớn số đích thuộc trọng tâm của dự án.
     """
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)

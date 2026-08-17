@@ -132,12 +132,12 @@ máy tính tiền theo giờ là chuyện không nên xảy ra. Cho phép bằng
 
 ---
 
-## Quy trình huấn luyện lịch sử (v2, đã ngừng)
+## Quy trình huấn luyện lịch sử
 
-> **Đã ngừng. Không phải baseline.** Tài liệu này chỉ giải thích quy trình v2
+> **Đã ngừng. Không phải baseline.** Tài liệu này chỉ giải thích quy trình
 > còn dấu vết trong mã nguồn. Dataset dùng cho các lượt huấn luyện đó hỏng, nên
 > mọi metric, bảng kết quả, kết luận chọn model và số liệu triển khai đều vô giá
-> trị. Model cũ không phải phương án lui cho v3.
+> trị. Model cũ không phải phương án lui.
 
 ## Mục đích lưu lại
 
@@ -165,7 +165,7 @@ chọn đã cố định.
 
 Tài liệu không giữ:
 
-- kích thước dataset v2;
+- kích thước dataset của các lượt huấn luyện trước đó;
 - hyperparameter và thời gian chạy của các lượt vô hiệu;
 - metric validation/test;
 - so sánh hoặc xếp hạng model;
@@ -177,12 +177,12 @@ Tài liệu không giữ:
 thái đó không biến metric cũ thành lịch sử dùng được; chúng chỉ ngăn artifact cũ
 bị hiểu là kết quả hiện hành.
 
-## Quan hệ với v3
+## Quan hệ với hệ thống
 
-V3 dùng chatbot ontology như công cụ cho một LLM lớn. Hình dạng truy xuất chính
+Chatbot ontology là công cụ cho một LLM lớn. Hình dạng truy xuất chính
 là trọn node; bảng được trả nguyên văn. Nếu sau này huấn luyện một thành phần
 ánh xạ mới, giao thức phải được thiết kế và phê duyệt lại từ đầu trên dataset đã
-đồng bộ, không kế thừa điểm số hay quyết định chọn model v2.
+đồng bộ, không kế thừa điểm số hay quyết định chọn model trước đó.
 
 Cho tới khi chuỗi artifact xanh, không chạy lại huấn luyện và không công bố
 benchmark.

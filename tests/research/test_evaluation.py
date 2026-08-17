@@ -52,8 +52,9 @@ def test_held_out_splits_carry_both_kinds_of_row() -> None:
     Chỉ còn hai loại. Loại thứ ba - hỏi năng lực - đã bị bỏ khỏi thiết kế ngày
     2026-08-14: công cụ chỉ truy ra dữ kiện hoặc nói không có thông tin.
 
-    Tên cũ hứa ba con số của v2 (``167_plus_28_plus_6``) mà thân hàm không kiểm
-    con số nào - chuỗi ``167`` chỉ tồn tại trong cái tên. Dòng khẳng định cuối
+    Tên hàm không được hứa những con số mà thân hàm không kiểm: một tên dạng
+    ``167_plus_28_plus_6`` khiến người đọc tin có ba phép khẳng định, trong khi
+    các con số đó chỉ tồn tại trong cái tên. Dòng khẳng định cuối
     của bản cũ cũng đã gỡ: nó định nghĩa ``node_rows = tổng − a − b`` rồi khẳng
     định ``node_rows + a + b == tổng``, tức hằng đúng, không bao giờ đỏ kể cả khi
     dataset hỏng hoàn toàn.

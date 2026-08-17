@@ -1,6 +1,6 @@
 # Ý tưởng hệ thống và ranh giới trả lời
 
-## Vai trò của chatbot v3
+## Vai trò của chatbot
 
 Chatbot ontology không còn là model nhỏ tự nhận câu hỏi rồi trả lời trực tiếp.
 Nó là **một công cụ truy xuất chuyên miền** để một LLM lớn gọi. LLM giữ hội
@@ -12,7 +12,7 @@ không phải trí nhớ phụ của model.
 
 ## Đơn vị truy xuất là trọn node
 
-Hình dạng chính của v3 là “tìm đúng node rồi lấy trọn node”. Một node thủ tục
+Hình dạng chính là “tìm đúng node rồi lấy trọn node”. Một node thủ tục
 được trả cùng nhãn, yêu cầu, bước thực hiện, nơi nộp, thời hạn, kết quả, quan hệ
 tiếp theo và nguồn nếu các dữ kiện đó tồn tại.
 
@@ -26,7 +26,7 @@ bằng node đầy đủ.
 Một bảng pháp quy có ý nghĩa nhờ cả hàng, cột, tiêu đề và ô rỗng. Tách từng ô
 thành các node kỹ thuật tạo ra một bản chép thứ hai và có thể làm lệch cột.
 
-V3 giữ mỗi bảng trong một node với `verbatimTableText`. Khi bảng liên quan, công
+Mỗi bảng được giữ trong một node với `verbatimTableText`. Khi bảng liên quan, công
 cụ trả toàn khối Markdown cùng trích dẫn và URL. Những thực thể được phần khác
 của đồ thị tham chiếu, như ngành hoặc chứng chỉ, vẫn tồn tại; nhưng ánh xạ nằm
 trong bảng không được chép thêm thành một hệ quan hệ song song.
@@ -66,7 +66,7 @@ từ nguồn và ontology.
 
 ## Model cũ
 
-Quy trình seq2seq v2 đã ngừng vì dataset nền bị hỏng. Metric của nó không phải
+Quy trình seq2seq trước đó đã ngừng vì dataset nền bị hỏng. Metric của nó không phải
 baseline và model không phải phương án lui. `docs/TRAINING.md` chỉ lưu lại luồng
 thực nghiệm lịch sử, không công bố kết quả.
 

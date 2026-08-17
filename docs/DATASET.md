@@ -17,7 +17,7 @@ artifact, không phải kết quả model.
 
 ## Trạng thái tương thích
 
-Dataset được sinh từ catalogue v3 hiện tại. Mọi họ xuất hiện ở val/test đã được
+Dataset được sinh từ catalogue hiện tại. Mọi họ xuất hiện ở val/test đã được
 dạy ở train; mọi giá trị slot hữu hạn cần thiết đều có ở train; 781/781 tên gọi
 được phủ; các split không trùng sau chuẩn hoá. Tám lớp câu từ chối trong
 `coverage.json`, gồm `incomplete-request`, đều có đủ ba split và bốn register.
@@ -37,9 +37,9 @@ Mỗi dòng JSONL có:
 Ba split phục vụ các vai trò khác nhau. Tập kiểm tra chỉ dùng ở bước đánh giá
 cuối; không dùng để chọn cấu hình hoặc bổ sung ví dụ.
 
-## Mục tiêu v3
+## Mục tiêu
 
-Dataset v3 phải dạy ánh xạ từ yêu cầu tiếng Việt sang shape lấy trọn node. Shape
+Dataset phải dạy ánh xạ từ yêu cầu tiếng Việt sang shape lấy trọn node. Shape
 chính trả `?thuoctinh ?giatri ?nguon ?duongdan` cho node neo và dữ kiện con
 trực tiếp. Câu hỏi về nhiều khía cạnh của cùng một thủ tục dùng chung một shape
 node đầy đủ thay vì mỗi khía cạnh một query hẹp.
