@@ -31,31 +31,17 @@ from ..tools.tokenizer import (
 )
 from ..runtime.sparql import load_ontology
 
-#: Ba model dùng CÙNG một giao thức lô, vì benchmark cuối chỉ so được khi chúng
-#: chịu cùng điều kiện.
+#: Ba model dùng cùng một giao thức lô để benchmark so sánh trong cùng điều kiện.
 #:
 #: ``eval_batch_size`` phải khai tường minh: mặc định của thư viện là 1, và với
 #: ``predict_with_generate`` thì mỗi lần đánh giá sinh tuần tự từng câu.
 #:
-#: ĐỪNG nâng nó lên vì thấy card còn trống. Đã thử 32 rồi 16 trên L4 24 GB và
-#: tràn cả hai lần: khâu huấn luyện (checkpointing tắt) đã giữ ~21 GB khi chạm
-#: mốc đánh giá đầu tiên, còn đánh giá thì đòi thêm một khối logits
-#: ``lô × 320 × 262.144``. Chỗ trống nhìn thấy lúc epoch 0,3 không phải chỗ
-#: trống lúc epoch 2.
+#: Bộ nhớ trống lúc đầu lượt chạy không phản ánh bộ nhớ tại thời điểm đánh giá:
+#: khâu huấn luyện còn giữ chỗ, và đánh giá cần thêm logits
+#: ``lô × độ dài đích × cỡ từ điển``.
 #:
-#: ``batch_size`` 4 với tích luỹ 2 - lô HIỆU DỤNG vẫn là 8, khớp với đường LLM.
-#:
-#: Trước đây là lô 8 tích luỹ 1, con số đó là trần đo trên card 6 GB KHI CÒN BẬT
-#: checkpointing. Tắt checkpointing trên card 24 GB rồi giữ nguyên lô 8 thì tràn
-#: - và tràn không phải vì model to. Bộ nhớ ở đây do ``lô × độ dài × từ điển``
-#: quyết định, tức khối logits:
-#:
-#:     LLM  : lô 4 × 266 token × 248.320  = 264 triệu phần tử  (~2,5 GiB)
-#:     T5   : lô 8 × 320 token × 262.144  = 671 triệu phần tử  (~6,2 GiB)
-#:
-#: Model 540 triệu tham số mà khối logits gấp 2,5 lần model 1,88 tỉ, chỉ vì lô
-#: gấp đôi, chuỗi dài hơn và từ điển to hơn. Hạ lô vật lý về 4 đưa nó về ~3,1
-#: GiB, ngang đường LLM, mà lô hiệu dụng không đổi nên số đo vẫn so được.
+#: Khi hạ ``batch_size`` vật lý, tăng tích luỹ gradient để giữ nguyên lô hiệu
+#: dụng. Bộ nhớ logits tăng theo ``lô × độ dài × từ điển``.
 #:
 #: ``gradient_checkpointing`` tính lại activation thay vì giữ; nó không đụng tới
 #: phép tính, chỉ chậm hơn khoảng một phần tư.
@@ -92,14 +78,10 @@ MODEL_SPECS = {
     },
 }
 MAX_SOURCE_LENGTH = 128
-#: Trần CẮT, không phải độ dài đệm: model dừng ở EOS nên nới trần gần như không
-#: tốn gì, còn vượt trần thì đích bị cắt giữa chừng và luôn sai - hỏng âm thầm.
-#: ViT5 sinh đích dài nhất trong ba model nên nó chạm trần trước. Dataset hiện
-#: tại đạt 307 token ViT5 (không tính special token), vì vậy 320 chừa chỗ cho
-#: EOS mà không cắt một đích canonical nào.
+#: Đây là trần cắt, không phải độ dài đệm. Đích vượt trần bị cắt giữa chừng và
+#: không còn canonical; 320 token chừa chỗ cho EOS ngoài đích ViT5 dài nhất.
 #:
-#: Họ truy vấn trả càng nhiều thông tin thì đích càng dài, nên **sau mỗi lần gộp
-#: họ phải đo lại độ dài đích trên cả ba tokenizer**.
+#: Sau mỗi lần gộp họ truy vấn, phải đo lại độ dài đích trên cả ba tokenizer.
 MAX_TARGET_LENGTH = 320
 LORA_R = 32
 LORA_ALPHA = 64
@@ -171,25 +153,19 @@ def _attach_lora_model(
     return get_peft_model(model, config)
 
 
-#: Lớp KHÔNG được nén.
-#:
-#: ``lm_head`` buộc chung trọng số với lớp nhúng, nên nén nó là nén luôn bảng
-#: nhúng - đúng chỗ đã làm đường chấm 4-bit không bao giờ chạy nổi. Lớp nhúng
-#: cũng không phải phép nhân ma trận nên nén nó chẳng nhanh thêm được gì.
+#: Không nén ``lm_head`` và các lớp nhúng: ``lm_head`` dùng chung trọng số với
+#: bảng nhúng, còn lớp nhúng không hưởng lợi từ việc nén phép nhân ma trận.
 _TORCHAO_SKIP = ("lm_head", "embed_tokens", "shared")
 
 
 def _apply_torchao(model, mode: str) -> int:
-    """Nén trọng số NỀN bằng torchao, trả về số lớp đã nén.
+    """Nén trọng số nền bằng torchao, trả về số lớp đã nén.
 
-    Gọi TRƯỚC khi gắn LoRA: nền bị đóng băng nên nén nó không đụng tới thứ đang
+    Gọi trước khi gắn LoRA: nền bị đóng băng nên nén nó không đụng tới thứ đang
     học, còn adapter thì ở lại bf16 và vẫn nhận gradient bình thường.
 
-    Vì sao torchao chứ không phải bitsandbytes: torchao gói trọng số thành
-    tensor subclass mà ``torch.compile`` truy được vào trong, nên phép giải nén
-    được fuse thẳng vào matmul. bitsandbytes giải nén thành một lượt riêng ở mỗi
-    lượt truyền xuôi - đó là lý do bản 4-bit đo được CHẬM hơn bf16 28% ở khâu
-    sinh chữ. Hai thư viện nén cùng một thứ nhưng trả giá ở hai chỗ khác nhau.
+    Torchao biểu diễn trọng số nén bằng tensor subclass để ``torch.compile`` có
+    thể fuse phép giải nén vào phép nhân ma trận.
     """
 
     if mode == "off":
@@ -288,13 +264,10 @@ def train(args: argparse.Namespace) -> dict:
     if args.batch_size:
         effective = spec["batch_size"] * spec["gradient_accumulation"]
         spec["batch_size"] = args.batch_size
-        # Giữ NGUYÊN lô hiệu dụng: lùi lô vật lý mà không bù thì đổi luôn phép
-        # thử, và số đo hết so được với lượt trước.
+        # Giữ nguyên lô hiệu dụng khi thay đổi lô vật lý.
         spec["gradient_accumulation"] = max(1, effective // args.batch_size)
         spec["eval_batch_size"] = min(spec.get("eval_batch_size", 1), args.batch_size)
-    # Chốt MỘT LẦN rồi dùng chung. Ba chỗ cùng đọc cờ này - bật trên model, đưa
-    # vào TrainingArguments, và ghi vào metrics - nên để mỗi chỗ tự suy lại là
-    # mở đường cho việc sửa một chỗ rồi tưởng đã xong.
+    # Tính một lần để model, TrainingArguments và metrics dùng cùng một giá trị.
     checkpoint_gradients = _should_checkpoint_gradients(
         spec.get("gradient_checkpointing", False), args.gradient_checkpointing
     )
@@ -424,20 +397,8 @@ def train(args: argparse.Namespace) -> dict:
         save_total_limit=1 if keep_checkpoints else None,
         save_only_model=True,
         load_best_model_at_end=keep_checkpoints,
-        # Chọn checkpoint bằng MẤT MÁT trên tập held-out, không bằng
-        # ``answer_exact_rate``. Hai lý do, cái nào cũng đủ:
-        #
-        # Một, giá. Sinh chữ cho cả 400 câu val mất 15,6 phút mỗi lượt trên L4 -
-        # 47 trong 76 phút của lượt chạy là khâu đánh giá. Một lượt truyền xuôi
-        # tính mất mát thì rẻ hơn hàng chục lần vì nó không giải mã tuần tự.
-        #
-        # Hai, nhất quán. ``docs/EVALUATION.md`` ghi rõ ``answer_exact_rate``
-        # chỉ là chỉ số CHẨN ĐOÁN, không phải chỉ số chính - mà nó lại đang là
-        # thứ quyết định giữ checkpoint nào.
-        #
-        # Đo trên lượt t5gemma2 17/8, ba mốc, ``eval_loss`` xếp hạng đúng như
-        # chất lượng thật: 0,0319→0,6225 · 0,0171→0,7925 · 0,0105→0,8175. Điểm
-        # sinh chữ vẫn được đo MỘT LẦN sau khi train xong, ngay bên dưới.
+        # Chọn checkpoint theo mất mát trên tập held-out. Sinh chữ được đánh giá
+        # sau huấn luyện để tránh giải mã tuần tự ở mỗi mốc đánh giá.
         metric_for_best_model="eval_loss",
         greater_is_better=False,
         logging_strategy="steps",
@@ -447,34 +408,25 @@ def train(args: argparse.Namespace) -> dict:
         seed=args.seed,
         data_seed=args.seed,
         predict_with_generate=False,
-        # BẮT BUỘC đi kèm ``predict_with_generate=False``. Thiếu nó thì Trainer
-        # gom logits của cả tập val để đưa cho ``compute_metrics``: 400 câu ×
-        # 192 vị trí × 262.144 token từ điển, tức hàng chục GB - tràn ngay, mà
-        # lại tràn ở lượt đánh giá đầu tiên chứ không phải lúc khởi động.
+        # Đi cùng ``predict_with_generate=False`` để Trainer không giữ logits
+        # của toàn bộ tập validation cho ``compute_metrics``.
         prediction_loss_only=True,
         generation_max_length=MAX_TARGET_LENGTH,
         generation_num_beams=1,
         torch_compile=args.compile,
-        # ``max-autotune`` KHÔNG dùng được ở đây: nó kéo theo CUDA graphs, mà
-        # CUDA graphs xung khắc với tích luỹ gradient - bộ đệm ``.grad`` bị bắt
-        # vào graph rồi ghi đè ở micro-batch sau, và lượt chạy chết giữa chừng
-        # với "accessing gradient tensor output of CUDAGraphs that has been
-        # overwritten". Đã đo: chết ở ngay lượt truyền ngược đầu tiên.
-        #
-        # Bản ``-no-cudagraphs`` giữ phần tự dò kernel của Inductor mà bỏ phần
-        # graph. Trên card này phần tự dò GEMM cũng bị bỏ qua ("Not enough SMs
-        # to use max_autotune_gemm"), nên thứ còn lại chủ yếu là fuse kernel.
+        # CUDA graphs yêu cầu bộ đệm gradient có địa chỉ cố định qua các
+        # micro-batch; chế độ ``-no-cudagraphs`` tránh ràng buộc này.
         torch_compile_mode=args.compile_mode if args.compile else None,
     )
     source_pad, target_pad = _fixed_pad_lengths(train_dataset, validation_dataset)
 
     class _FixedShapeCollator(DataCollatorForSeq2Seq):
-        """Đệm MỌI lô về cùng một hình dạng, nguồn và đích đệm riêng.
+        """Đệm mọi lô về cùng một hình dạng, nguồn và đích đệm riêng.
 
-        Bộ gom lô sẵn có đệm theo câu dài nhất TRONG LÔ, nên mỗi lô một hình
+        Bộ gom lô sẵn có đệm theo câu dài nhất trong lô, nên mỗi lô một hình
         dạng. Lớp này đệm nhãn tới ``target_pad`` trước rồi để lớp cha đệm nguồn
-        tới ``source_pad`` - hai độ dài khác nhau, vì dùng chung một độ dài thì
-        nguồn (dài nhất 43 token) bị kéo lên bằng đích (186).
+        tới ``source_pad``; hai độ dài được giữ riêng để tránh đệm nguồn theo
+        độ dài đích.
         """
 
         def __call__(self, features, return_tensors=None):
@@ -514,12 +466,7 @@ def train(args: argparse.Namespace) -> dict:
     try:
         train_result = trainer.train()
     except (torch.OutOfMemoryError, RuntimeError) as exc:
-        # HẾT BỘ NHỚ THÌ NÓI RÕ PHẢI LÀM GÌ, đừng để người chạy tự đoán.
-        #
-        # Đường LLM tự lùi lô rồi bù bằng tích luỹ gradient; đường này chưa làm
-        # được vậy vì Trainer đã dựng xong trạng thái trước khi bước đầu chạy.
-        # Nhưng ít nhất nó phải chỉ đúng hai cần gạt, thay vì ném ra một vệt
-        # traceback của torch rồi để người chạy mò.
+        # Chuyển lỗi hết bộ nhớ thành hướng dẫn về các tham số giảm bộ nhớ.
         if "out of memory" not in str(exc).casefold():
             raise
         raise RuntimeError(
@@ -536,20 +483,12 @@ def train(args: argparse.Namespace) -> dict:
     inference_model = trainer.model
     adapter_source = trainer.state.best_model_checkpoint
     if adapter_source is None and args.torchao != "off":
-        # Gộp LoRA vào một nền ĐÃ NÉN thì PEFT dừng lại: nó không biết nén lại
-        # lớp nền sau khi cộng adapter vào ("TorchaoLoraLinear was instantiated
-        # without get_apply_tensor_subclass"). Lối ra là dựng lại trên nền bf16
-        # sạch - cũng chính là thứ nên đem đi phục vụ, vì bản gộp lúc đó không
-        # đòi torchao có mặt ở máy chạy thật.
-        #
-        # Adapter học trên nền đã nén rồi gộp vào nền bf16 là ĐỔI nền một chút,
-        # đúng như QLoRA vẫn làm. Bản ghi khai rõ ``torchao`` của lượt train nên
-        # người đọc số biết điều đó.
+        # PEFT gộp adapter vào nền bf16 sạch; artifact đã gộp không cần torchao
+        # khi phục vụ. Metrics ghi lại chế độ nén đã dùng trong huấn luyện.
         adapter_source = str(output_dir / "adapter-final")
         inference_model.save_pretrained(adapter_source)
     if adapter_source:
-        # Rebuild the accepted adapter on a clean pretrained base. The final artifact
-        # is merged below, so runtime never needs to load PEFT separately.
+        # Rebuild the adapter on a clean pretrained base before merging it.
         trainer.model = None
         trainer.model_wrapped = None
         del inference_model
@@ -617,10 +556,7 @@ def train(args: argparse.Namespace) -> dict:
         "trainable_parameters": trainable_parameter_count,
         "base_parameters": base_parameter_count,
         "merged_artifact": True,
-        # Đọc THẲNG từ cấu hình đã đưa vào Trainer. Chép tay vào đây là cách
-        # bản ghi nói dối: optimizer đã đổi sang fused mà ô này vẫn ghi 8-bit,
-        # và người đọc log không có cách nào biết. Cùng lỗi với cờ
-        # checkpointing, lần thứ ba trong một phiên.
+        # Đọc trực tiếp cấu hình đã truyền cho Trainer để metrics khớp cấu hình.
         **{
             key: value
             for key, value in _optimization_arguments(precision).items()
@@ -735,22 +671,18 @@ def _tokenized_dataset(Dataset, rows, tokenizer):
 
 #: Bội số để làm tròn độ dài đệm cố định.
 #:
-#: Hình dạng cố định là điều kiện để ``torch.compile`` có ích: đệm động làm mỗi
-#: lô một hình dạng khác, và bản biên dịch bị vứt đi rồi dựng lại liên tục - đó
-#: chính là lý do lần thử compile trước trên đường LLM không xong nổi 60 bước
-#: trong thời gian bản thường chạy hết.
+#: Hình dạng cố định giúp ``torch.compile`` tái sử dụng bản biên dịch thay vì
+#: biên dịch lại cho mỗi lô có độ dài khác nhau.
 PAD_MULTIPLE = 64
 
 
 def _fixed_pad_lengths(*datasets) -> tuple[int, int]:
-    """Độ dài đệm cố định, đo TỪ DỮ LIỆU chứ không đặt tay.
+    """Độ dài đệm cố định, đo từ dữ liệu.
 
-    Đệm tới TRẦN CẮT (128 · 320) là phình nguồn chín lần và đích hai lần - phần
-    tính thêm đó lớn hơn mọi thứ compile tiết kiệm được. Đệm tới độ dài thật lớn
-    nhất, làm tròn lên bội số 64, thì gần như miễn phí mà hình dạng vẫn cố định.
+    Làm tròn độ dài lớn nhất lên bội số 64 để giữ hình dạng cố định mà không
+    đệm mọi lô tới trần cắt.
 
-    Đo từ dữ liệu chứ không ghim hằng số vì hằng số sẽ mục: thêm một câu dài hơn
-    là đích bị cắt cụt, và câu bị cắt thì luôn sai mà không có lỗi nào báo.
+    Đo từ dữ liệu để đích không bị cắt khi dữ liệu có câu dài hơn.
     """
 
     longest_source = 0
@@ -882,15 +814,9 @@ def _require_training_ready(
 
 
 def _should_checkpoint_gradients(spec_default: bool, choice: str = "auto") -> bool:
-    """Bỏ activation để tính lại, hay giữ - hỏi theo VRAM của máy đang chạy.
+    """Chọn checkpointing gradient theo VRAM của máy đang chạy.
 
-    ``MODEL_SPECS`` bật sẵn cho MỌI model vì lúc soạn chỉ có card 6 GB, và chính
-    ghi chú ở đó nói nó "chậm hơn khoảng một phần tư". Trên card 24 GB thì đó là
-    trả một phần tư tốc độ để mua bộ nhớ đang thừa. Đường LLM đã tự tắt theo
-    VRAM từ trước; đường này thì chưa, nên cùng một dự án chạy hai kiểu.
-
-    Kết quả huấn luyện không đổi: checkpointing chỉ tính lại activation, không
-    đụng tới phép tính.
+    Checkpointing tính lại activation để giảm bộ nhớ mà không thay đổi phép tính.
     """
 
     if choice == "on":
@@ -930,10 +856,8 @@ def _optimization_arguments(
         "lr_scheduler_type": "cosine",
         "warmup_steps": 0.1,
         "weight_decay": 0.005,
-        # Đo trên đường LLM, 60 bước: adamw_torch 4,902 · fused 4,914 · 8-bit
-        # 4,940 giây/bước - chênh 0,8%, tức nhiễu. LoRA chỉ chỉnh vài triệu tham
-        # số nên trạng thái optimizer quá nhỏ để việc nén nó đổi được gì, và
-        # bản 8-bit kéo theo bitsandbytes vào một đường vốn không cần.
+        # LoRA chỉ tối ưu một phần nhỏ tham số, nên dùng optimizer fused không
+        # cần trạng thái optimizer nén.
         "optim": "adamw_torch_fused",
         "bf16": precision["bf16"],
         "fp16": precision["fp16"],
@@ -946,13 +870,10 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "models")
-    # Mất mát về 0 từ khoảng epoch 15; thêm epoch không đổi kết quả.
+    # Số epoch mặc định là 16.
     parser.add_argument("--epochs", type=float, default=16.0)
     parser.add_argument("--max-steps", type=int, default=-1)
-    # Lô của seq2seq trước đây ghim cứng trong MODEL_SPECS, không có đường lùi.
-    # Card 6 GB tràn ngay ở lô 8 và chết hẳn - trong khi đường LLM tự lùi lô rồi
-    # bù bằng tích luỹ gradient. Cùng một dự án mà hai đường xử lý hết bộ nhớ
-    # theo hai kiểu là chỗ để người chạy mất một lượt máy thuê.
+    # Khi giảm lô vật lý, tích luỹ gradient giữ nguyên lô hiệu dụng.
     parser.add_argument(
         "--gradient-checkpointing",
         choices=("auto", "on", "off"),
@@ -996,9 +917,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
-    # Cho phép huấn luyện một model KHÔNG biểu diễn nổi mọi đích. Mặc định tắt:
-    # trần trên của nó bị chặn trước khi học, nên con số thu được không so thẳng
-    # với model biểu diễn được đủ. Số đích hỏng được ghi vào metrics.
+    # Cho phép huấn luyện khi tokenizer không biểu diễn được mọi đích; số đích
+    # đó được ghi vào metrics.
     parser.add_argument("--allow-lossy-targets", action="store_true")
     args = parser.parse_args(argv)
     if args.benchmark_after_training and not args.save_model:
