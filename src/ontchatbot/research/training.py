@@ -66,29 +66,29 @@ MODEL_SPECS = {
     "bartpho": {
         "model_id": BARTPHO_MODEL_ID,
         "revision": BARTPHO_REVISION,
-        "batch_size": 4,
+        "batch_size": 8,
         "eval_batch_size": 6,
-        "gradient_accumulation": 2,
+        "gradient_accumulation": 1,
         "attention": "sdpa",
-        "gradient_checkpointing": True,
+        "gradient_checkpointing": False,
     },
     "vit5": {
         "model_id": VIT5_MODEL_ID,
         "revision": VIT5_REVISION,
-        "batch_size": 4,
+        "batch_size": 8,
         "eval_batch_size": 6,
-        "gradient_accumulation": 2,
+        "gradient_accumulation": 1,
         "attention": "eager",
-        "gradient_checkpointing": True,
+        "gradient_checkpointing": False,
     },
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
-        "batch_size": 4,
+        "batch_size": 8,
         "eval_batch_size": 6,
-        "gradient_accumulation": 2,
+        "gradient_accumulation": 1,
         "attention": "sdpa",
-        "gradient_checkpointing": True,
+        "gradient_checkpointing": False,
     },
 }
 MAX_SOURCE_LENGTH = 128
@@ -171,6 +171,88 @@ def _attach_lora_model(
     return get_peft_model(model, config)
 
 
+#: Lớp KHÔNG được nén.
+#:
+#: ``lm_head`` buộc chung trọng số với lớp nhúng, nên nén nó là nén luôn bảng
+#: nhúng - đúng chỗ đã làm đường chấm 4-bit không bao giờ chạy nổi. Lớp nhúng
+#: cũng không phải phép nhân ma trận nên nén nó chẳng nhanh thêm được gì.
+_TORCHAO_SKIP = ("lm_head", "embed_tokens", "shared")
+
+
+def _apply_torchao(model, mode: str) -> int:
+    """Nén trọng số NỀN bằng torchao, trả về số lớp đã nén.
+
+    Gọi TRƯỚC khi gắn LoRA: nền bị đóng băng nên nén nó không đụng tới thứ đang
+    học, còn adapter thì ở lại bf16 và vẫn nhận gradient bình thường.
+
+    Vì sao torchao chứ không phải bitsandbytes: torchao gói trọng số thành
+    tensor subclass mà ``torch.compile`` truy được vào trong, nên phép giải nén
+    được fuse thẳng vào matmul. bitsandbytes giải nén thành một lượt riêng ở mỗi
+    lượt truyền xuôi - đó là lý do bản 4-bit đo được CHẬM hơn bf16 28% ở khâu
+    sinh chữ. Hai thư viện nén cùng một thứ nhưng trả giá ở hai chỗ khác nhau.
+    """
+
+    if mode == "off":
+        return 0
+    from torchao.quantization import (
+        Int4WeightOnlyConfig,
+        Int8WeightOnlyConfig,
+        quantize_,
+    )
+
+    config = Int8WeightOnlyConfig() if mode == "int8" else Int4WeightOnlyConfig()
+    skipped: list[str] = []
+    quantized: list[str] = []
+
+    def keep(module, fully_qualified_name: str) -> bool:
+        import torch.nn as nn
+
+        if not isinstance(module, nn.Linear):
+            return False
+        leaf = fully_qualified_name.rsplit(".", 1)[-1]
+        if leaf in _TORCHAO_SKIP or any(part in fully_qualified_name for part in _TORCHAO_SKIP):
+            skipped.append(fully_qualified_name)
+            return False
+        quantized.append(fully_qualified_name)
+        return True
+
+    quantize_(model, config, filter_fn=keep)
+    print(
+        f"torchao {mode}: nén {len(quantized)} lớp, bỏ qua {len(skipped)} "
+        f"({', '.join(sorted({n.rsplit('.', 1)[-1] for n in skipped})) or 'không có'})",
+        flush=True,
+    )
+    return len(quantized)
+
+
+def _stable_gradient_buffers(TrainerCallback, torch):
+    """Callback giữ bộ đệm ``.grad`` cố định qua các bước.
+
+    CUDA graph ghi nhớ địa chỉ của mọi tensor nó chạm tới. PyTorch mặc định đặt
+    ``.grad`` về ``None`` sau mỗi bước, nên bước sau cấp tensor ở địa chỉ khác
+    và graph đọc phải vùng nhớ đã bị ghi đè. Cấp sẵn bộ đệm rồi chỉ ghi số 0 vào
+    chúng thì địa chỉ giữ nguyên, nhờ đó tích luỹ gradient dùng chung được với
+    CUDA graphs.
+    """
+
+    class _Callback(TrainerCallback):
+        def on_train_begin(self, args, state, control, model=None, optimizer=None, **kwargs):
+            if optimizer is None or model is None:
+                return control
+            for parameter in model.parameters():
+                if parameter.requires_grad and parameter.grad is None:
+                    parameter.grad = torch.zeros_like(parameter)
+            original = optimizer.zero_grad
+
+            def zero_grad_in_place(set_to_none: bool = True) -> None:
+                original(set_to_none=False)
+
+            optimizer.zero_grad = zero_grad_in_place
+            return control
+
+    return _Callback()
+
+
 def _prepare_output_directory(path: Path) -> None:
     if path.exists() and (not path.is_dir() or any(path.iterdir())):
         raise RuntimeError(f"model output directory is not empty: {path}")
@@ -195,6 +277,7 @@ def train(args: argparse.Namespace) -> dict:
             AutoTokenizer,
             DataCollatorForSeq2Seq,
             EarlyStoppingCallback,
+            TrainerCallback,
             Seq2SeqTrainer,
             Seq2SeqTrainingArguments,
         )
@@ -289,6 +372,7 @@ def train(args: argparse.Namespace) -> dict:
         dtype=model_dtype,
     )
     base_parameter_count = sum(parameter.numel() for parameter in model.parameters())
+    quantized_layers = _apply_torchao(model, args.torchao)
     model = _attach_lora_model(
         model,
         model_name=args.model,
@@ -313,20 +397,6 @@ def train(args: argparse.Namespace) -> dict:
     )
     eval_steps = max(1, round(steps_per_epoch * args.eval_every_epochs))
     short_run = args.smoke_test
-    def compute_metrics(prediction) -> dict[str, float]:
-        prediction_ids = prediction.predictions
-        if isinstance(prediction_ids, tuple):
-            prediction_ids = prediction_ids[0]
-        prediction_ids = np.asarray(prediction_ids).copy()
-        prediction_ids[prediction_ids < 0] = tokenizer.pad_token_id
-        decoded = [text.strip() for text in tokenizer.batch_decode(prediction_ids, skip_special_tokens=True)]
-        report = evaluate_predictions(validation_rows, decoded, graph)
-        return {
-            "parse_rate": report["overall"]["parse_rate"],
-            "execution_rate": report["overall"]["execution_rate"],
-            "answer_exact_rate": report["overall"]["answer_exact_rate"],
-            "canonical_query_exact_rate": report["overall"]["canonical_query_exact_rate"],
-        }
 
     keep_checkpoints = args.save_model and not short_run
     effective_max_steps = _effective_max_steps(
@@ -354,22 +424,73 @@ def train(args: argparse.Namespace) -> dict:
         save_total_limit=1 if keep_checkpoints else None,
         save_only_model=True,
         load_best_model_at_end=keep_checkpoints,
-        metric_for_best_model="answer_exact_rate",
-        greater_is_better=True,
+        # Chọn checkpoint bằng MẤT MÁT trên tập held-out, không bằng
+        # ``answer_exact_rate``. Hai lý do, cái nào cũng đủ:
+        #
+        # Một, giá. Sinh chữ cho cả 400 câu val mất 15,6 phút mỗi lượt trên L4 -
+        # 47 trong 76 phút của lượt chạy là khâu đánh giá. Một lượt truyền xuôi
+        # tính mất mát thì rẻ hơn hàng chục lần vì nó không giải mã tuần tự.
+        #
+        # Hai, nhất quán. ``docs/EVALUATION.md`` ghi rõ ``answer_exact_rate``
+        # chỉ là chỉ số CHẨN ĐOÁN, không phải chỉ số chính - mà nó lại đang là
+        # thứ quyết định giữ checkpoint nào.
+        #
+        # Đo trên lượt t5gemma2 17/8, ba mốc, ``eval_loss`` xếp hạng đúng như
+        # chất lượng thật: 0,0319→0,6225 · 0,0171→0,7925 · 0,0105→0,8175. Điểm
+        # sinh chữ vẫn được đo MỘT LẦN sau khi train xong, ngay bên dưới.
+        metric_for_best_model="eval_loss",
+        greater_is_better=False,
         logging_strategy="steps",
         logging_steps=1 if args.smoke_test else 50,
         disable_tqdm=True,
         report_to="none",
         seed=args.seed,
         data_seed=args.seed,
-        predict_with_generate=True,
+        predict_with_generate=False,
+        # BẮT BUỘC đi kèm ``predict_with_generate=False``. Thiếu nó thì Trainer
+        # gom logits của cả tập val để đưa cho ``compute_metrics``: 400 câu ×
+        # 192 vị trí × 262.144 token từ điển, tức hàng chục GB - tràn ngay, mà
+        # lại tràn ở lượt đánh giá đầu tiên chứ không phải lúc khởi động.
+        prediction_loss_only=True,
         generation_max_length=MAX_TARGET_LENGTH,
         generation_num_beams=1,
+        torch_compile=args.compile,
+        # ``max-autotune`` KHÔNG dùng được ở đây: nó kéo theo CUDA graphs, mà
+        # CUDA graphs xung khắc với tích luỹ gradient - bộ đệm ``.grad`` bị bắt
+        # vào graph rồi ghi đè ở micro-batch sau, và lượt chạy chết giữa chừng
+        # với "accessing gradient tensor output of CUDAGraphs that has been
+        # overwritten". Đã đo: chết ở ngay lượt truyền ngược đầu tiên.
+        #
+        # Bản ``-no-cudagraphs`` giữ phần tự dò kernel của Inductor mà bỏ phần
+        # graph. Trên card này phần tự dò GEMM cũng bị bỏ qua ("Not enough SMs
+        # to use max_autotune_gemm"), nên thứ còn lại chủ yếu là fuse kernel.
+        torch_compile_mode=args.compile_mode if args.compile else None,
     )
-    collator = DataCollatorForSeq2Seq(
+    source_pad, target_pad = _fixed_pad_lengths(train_dataset, validation_dataset)
+
+    class _FixedShapeCollator(DataCollatorForSeq2Seq):
+        """Đệm MỌI lô về cùng một hình dạng, nguồn và đích đệm riêng.
+
+        Bộ gom lô sẵn có đệm theo câu dài nhất TRONG LÔ, nên mỗi lô một hình
+        dạng. Lớp này đệm nhãn tới ``target_pad`` trước rồi để lớp cha đệm nguồn
+        tới ``source_pad`` - hai độ dài khác nhau, vì dùng chung một độ dài thì
+        nguồn (dài nhất 43 token) bị kéo lên bằng đích (186).
+        """
+
+        def __call__(self, features, return_tensors=None):
+            for feature in features:
+                labels = list(feature["labels"])
+                feature["labels"] = labels + [self.label_pad_token_id] * (
+                    target_pad - len(labels)
+                )
+            return super().__call__(features, return_tensors)
+
+    collator = _FixedShapeCollator(
         tokenizer,
         model=model,
-        pad_to_multiple_of=8,
+        padding="max_length",
+        max_length=source_pad,
+        pad_to_multiple_of=None,
         label_pad_token_id=-100,
     )
     trainer = Seq2SeqTrainer(
@@ -379,13 +500,14 @@ def train(args: argparse.Namespace) -> dict:
         eval_dataset=validation_dataset,
         data_collator=collator,
         processing_class=tokenizer,
-        compute_metrics=compute_metrics,
         callbacks=(
             [EarlyStoppingCallback(early_stopping_patience=3)]
             if keep_checkpoints
             else None
         ),
     )
+    if args.compile and spec["gradient_accumulation"] > 1:
+        trainer.add_callback(_stable_gradient_buffers(TrainerCallback, torch))
 
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
@@ -412,7 +534,20 @@ def train(args: argparse.Namespace) -> dict:
             "tích luỹ gradient)"
         ) from None
     inference_model = trainer.model
-    if trainer.state.best_model_checkpoint:
+    adapter_source = trainer.state.best_model_checkpoint
+    if adapter_source is None and args.torchao != "off":
+        # Gộp LoRA vào một nền ĐÃ NÉN thì PEFT dừng lại: nó không biết nén lại
+        # lớp nền sau khi cộng adapter vào ("TorchaoLoraLinear was instantiated
+        # without get_apply_tensor_subclass"). Lối ra là dựng lại trên nền bf16
+        # sạch - cũng chính là thứ nên đem đi phục vụ, vì bản gộp lúc đó không
+        # đòi torchao có mặt ở máy chạy thật.
+        #
+        # Adapter học trên nền đã nén rồi gộp vào nền bf16 là ĐỔI nền một chút,
+        # đúng như QLoRA vẫn làm. Bản ghi khai rõ ``torchao`` của lượt train nên
+        # người đọc số biết điều đó.
+        adapter_source = str(output_dir / "adapter-final")
+        inference_model.save_pretrained(adapter_source)
+    if adapter_source:
         # Rebuild the accepted adapter on a clean pretrained base. The final artifact
         # is merged below, so runtime never needs to load PEFT separately.
         trainer.model = None
@@ -429,7 +564,7 @@ def train(args: argparse.Namespace) -> dict:
         )
         inference_model = PeftModel.from_pretrained(
             inference_base,
-            trainer.state.best_model_checkpoint,
+            adapter_source,
             is_trainable=False,
         ).to(training_args.device)
     inference_model = inference_model.merge_and_unload()
@@ -455,12 +590,18 @@ def train(args: argparse.Namespace) -> dict:
         "dataset_manifest_sha256": sha256_file(args.dataset_dir / "manifest.json"),
         "batch_size": spec["batch_size"],
         "gradient_accumulation": spec["gradient_accumulation"],
-        "dynamic_padding_multiple": 8,
+        "source_pad_length": source_pad,
+        "target_pad_length": target_pad,
         "dtype": precision["dtype"],
         "bf16": precision["bf16"],
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
-        "torch_compile": False,
+        "torch_compile": bool(training_args.torch_compile),
+        "torchao": args.torchao,
+        "torchao_quantized_layers": quantized_layers,
+        "torch_compile_mode": training_args.torch_compile_mode,
+        "checkpoint_selection_metric": training_args.metric_for_best_model,
+        "eval_generates_text": bool(training_args.predict_with_generate),
         "eval_batch_size": spec.get("eval_batch_size", 1),
         "gradient_checkpointing_spec": spec.get("gradient_checkpointing", False),
         "gradient_checkpointing": checkpoint_gradients,
@@ -590,6 +731,38 @@ def _tokenized_dataset(Dataset, rows, tokenizer):
         return encoded
 
     return dataset.map(tokenize, batched=True, remove_columns=["source", "target"])
+
+
+#: Bội số để làm tròn độ dài đệm cố định.
+#:
+#: Hình dạng cố định là điều kiện để ``torch.compile`` có ích: đệm động làm mỗi
+#: lô một hình dạng khác, và bản biên dịch bị vứt đi rồi dựng lại liên tục - đó
+#: chính là lý do lần thử compile trước trên đường LLM không xong nổi 60 bước
+#: trong thời gian bản thường chạy hết.
+PAD_MULTIPLE = 64
+
+
+def _fixed_pad_lengths(*datasets) -> tuple[int, int]:
+    """Độ dài đệm cố định, đo TỪ DỮ LIỆU chứ không đặt tay.
+
+    Đệm tới TRẦN CẮT (128 · 320) là phình nguồn chín lần và đích hai lần - phần
+    tính thêm đó lớn hơn mọi thứ compile tiết kiệm được. Đệm tới độ dài thật lớn
+    nhất, làm tròn lên bội số 64, thì gần như miễn phí mà hình dạng vẫn cố định.
+
+    Đo từ dữ liệu chứ không ghim hằng số vì hằng số sẽ mục: thêm một câu dài hơn
+    là đích bị cắt cụt, và câu bị cắt thì luôn sai mà không có lỗi nào báo.
+    """
+
+    longest_source = 0
+    longest_target = 0
+    for dataset in datasets:
+        for row in dataset:
+            longest_source = max(longest_source, len(row["input_ids"]))
+            longest_target = max(longest_target, len(row["labels"]))
+    return (
+        min(MAX_SOURCE_LENGTH, math.ceil(longest_source / PAD_MULTIPLE) * PAD_MULTIPLE),
+        min(MAX_TARGET_LENGTH, math.ceil(longest_target / PAD_MULTIPLE) * PAD_MULTIPLE),
+    )
 
 
 def _ensure_eos_token(
@@ -765,7 +938,6 @@ def _optimization_arguments(
         "bf16": precision["bf16"],
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
-        "torch_compile": False,
     }
 
 
@@ -797,6 +969,29 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     # Mỗi lần đánh giá phải sinh lại toàn tập val, nên nhịp thưa mà vẫn đủ mốc.
     parser.add_argument("--eval-every-epochs", type=float, default=4.0)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--torchao",
+        choices=("off", "int8", "int4"),
+        default="int8",
+        help=(
+            "nén trọng số NỀN bằng torchao. Đi cặp với --compile: tensor "
+            "subclass của torchao cho compile fuse phép giải nén vào matmul"
+        ),
+    )
+    parser.add_argument(
+        "--compile",
+        action="store_true",
+        help=(
+            "biên dịch model bằng torch.compile(max-autotune). Chỉ có ích khi "
+            "hình dạng lô cố định, và bản biên dịch tốn vài phút hâm nóng - "
+            "PHẢI đo mới biết nó lãi hay lỗ trên card của bạn"
+        ),
+    )
+    parser.add_argument(
+        "--compile-mode",
+        default="max-autotune",
+        help="chế độ torch.compile; mặc định bỏ CUDA graphs vì chúng xung khắc với tích luỹ gradient",
+    )
     parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--save-model", action="store_true")
     parser.add_argument("--benchmark-after-training", action="store_true")
