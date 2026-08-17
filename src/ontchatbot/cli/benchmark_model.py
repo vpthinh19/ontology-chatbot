@@ -158,10 +158,20 @@ def _seq2seq_adapter_generator(adapter_dir, batch_size: int) -> _Seq2SeqGenerato
             flush=True,
         )
 
-    snapshot = snapshot_download(
-        spec["model_id"], revision=spec["revision"], local_files_only=True
+    snapshot = Path(
+        snapshot_download(
+            spec["model_id"], revision=spec["revision"], local_files_only=True
+        )
     )
-    tokenizer = AutoTokenizer.from_pretrained(adapter_dir, local_files_only=True)
+    # Tokenizer lấy từ thư mục adapter nếu có, nếu không thì từ model nền. Gói
+    # kết quả mang về chỉ chứa trọng số adapter, còn checkpoint lưu tại chỗ thì
+    # kèm cả tokenizer - cùng một đường nạp phải chạy được với cả hai.
+    tokenizer_source = (
+        adapter_dir if (adapter_dir / "tokenizer.json").is_file() else snapshot
+    )
+    tokenizer = AutoTokenizer.from_pretrained(
+        str(tokenizer_source), local_files_only=True
+    )
     dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
     base = AutoModelForSeq2SeqLM.from_pretrained(
         snapshot,

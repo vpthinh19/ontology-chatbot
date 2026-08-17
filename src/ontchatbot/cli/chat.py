@@ -26,8 +26,17 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--model-dir",
         type=Path,
         default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
-        required="ONTCHATBOT_MODEL_DIR" not in os.environ,
         help="thư mục model sinh truy vấn đã chuyển sang định dạng chạy nhanh",
+    )
+    parser.add_argument(
+        "--adapter",
+        type=Path,
+        default=None,
+        help=(
+            "thay cho --model-dir: thư mục adapter mang về từ lượt huấn luyện. "
+            "Chậm hơn vì chạy qua thư viện huấn luyện, nhưng khỏi phải chuyển "
+            "định dạng trước khi thử"
+        ),
     )
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument("--compute-type", default="int8")
@@ -66,9 +75,16 @@ def main() -> None:
             "ONTCHATBOT_LLM_MODEL"
         )
 
-    generator = CTranslate2Generator(
-        args.model_dir, device=args.device, compute_type=args.compute_type
-    )
+    if args.adapter:
+        from .benchmark_model import _seq2seq_adapter_generator
+
+        generator = _seq2seq_adapter_generator(args.adapter, 1)
+    elif args.model_dir:
+        generator = CTranslate2Generator(
+            args.model_dir, device=args.device, compute_type=args.compute_type
+        )
+    else:
+        raise SystemExit("cần --model-dir hoặc --adapter")
     agent = build_agent(
         _Trace(OntologyChatbot(generator)),
         model=args.llm,
