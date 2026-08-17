@@ -7,11 +7,6 @@ import json
 import math
 from pathlib import Path
 
-from .benchmark import (
-    evaluate_benchmark,
-    load_benchmark,
-    validate_benchmark,
-)
 from ..settings import ARTIFACTS_DIR, DATASET_DIR
 from .dataset import load_release
 from .evaluation import evaluate_predictions
@@ -57,7 +52,10 @@ MODEL_SPECS = {
         "gradient_accumulation": 1,
         "attention": "sdpa",
         "gradient_checkpointing": False,
-    },
+            # Từ điển không đánh vần nổi mọi đích, nên trần của model này thấp
+        # hơn 100% trước khi học. Đo xem nó đạt tới đâu, đừng từ chối đo.
+        "allow_lossy_targets": True,
+},
     "vit5": {
         "model_id": VIT5_MODEL_ID,
         "revision": VIT5_REVISION,
@@ -66,7 +64,10 @@ MODEL_SPECS = {
         "gradient_accumulation": 1,
         "attention": "eager",
         "gradient_checkpointing": False,
-    },
+            # Từ điển không đánh vần nổi mọi đích, nên trần của model này thấp
+        # hơn 100% trước khi học. Đo xem nó đạt tới đâu, đừng từ chối đo.
+        "allow_lossy_targets": True,
+},
     "t5gemma2": {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
@@ -77,6 +78,16 @@ MODEL_SPECS = {
         "gradient_checkpointing": False,
     },
 }
+#: Cấu hình đã chốt bằng đo đạc, nên nó là hằng số chứ không phải tham số: một
+#: cờ cho một quyết định đã chốt chỉ là cách để vô tình chạy cấu hình chưa ai đo.
+#:
+#: ``reduce-overhead`` thay vì ``max-autotune`` vì phần tự dò GEMM của
+#: ``max-autotune`` cần nhiều SM hơn cả card huấn luyện lẫn card thử nghiệm có,
+#: nên nó chỉ thêm thời gian biên dịch mà không đổi lại được gì.
+COMPILE_MODE = "reduce-overhead"
+#: Đánh giá mỗi epoch. Nhịp thưa hơn số epoch của một lượt chạy nghĩa là không
+#: có mốc nào giữa chừng, và việc chọn checkpoint mất hết ý nghĩa.
+EVAL_EVERY_EPOCHS = 1.0
 MAX_SOURCE_LENGTH = 128
 #: Đây là trần cắt, không phải độ dài đệm. Đích vượt trần bị cắt giữa chừng và
 #: không còn canonical; 320 token chừa chỗ cho EOS ngoài đích ViT5 dài nhất.
@@ -153,54 +164,6 @@ def _attach_lora_model(
     return get_peft_model(model, config)
 
 
-#: Không nén ``lm_head`` và các lớp nhúng: ``lm_head`` dùng chung trọng số với
-#: bảng nhúng, còn lớp nhúng không hưởng lợi từ việc nén phép nhân ma trận.
-_TORCHAO_SKIP = ("lm_head", "embed_tokens", "shared")
-
-
-def _apply_torchao(model, mode: str) -> int:
-    """Nén trọng số nền bằng torchao, trả về số lớp đã nén.
-
-    Gọi trước khi gắn LoRA: nền bị đóng băng nên nén nó không đụng tới thứ đang
-    học, còn adapter thì ở lại bf16 và vẫn nhận gradient bình thường.
-
-    Torchao biểu diễn trọng số nén bằng tensor subclass để ``torch.compile`` có
-    thể fuse phép giải nén vào phép nhân ma trận.
-    """
-
-    if mode == "off":
-        return 0
-    from torchao.quantization import (
-        Int4WeightOnlyConfig,
-        Int8WeightOnlyConfig,
-        quantize_,
-    )
-
-    config = Int8WeightOnlyConfig() if mode == "int8" else Int4WeightOnlyConfig()
-    skipped: list[str] = []
-    quantized: list[str] = []
-
-    def keep(module, fully_qualified_name: str) -> bool:
-        import torch.nn as nn
-
-        if not isinstance(module, nn.Linear):
-            return False
-        leaf = fully_qualified_name.rsplit(".", 1)[-1]
-        if leaf in _TORCHAO_SKIP or any(part in fully_qualified_name for part in _TORCHAO_SKIP):
-            skipped.append(fully_qualified_name)
-            return False
-        quantized.append(fully_qualified_name)
-        return True
-
-    quantize_(model, config, filter_fn=keep)
-    print(
-        f"torchao {mode}: nén {len(quantized)} lớp, bỏ qua {len(skipped)} "
-        f"({', '.join(sorted({n.rsplit('.', 1)[-1] for n in skipped})) or 'không có'})",
-        flush=True,
-    )
-    return len(quantized)
-
-
 def _stable_gradient_buffers(TrainerCallback, torch):
     """Callback giữ bộ đệm ``.grad`` cố định qua các bước.
 
@@ -269,7 +232,7 @@ def train(args: argparse.Namespace) -> dict:
         spec["eval_batch_size"] = min(spec.get("eval_batch_size", 1), args.batch_size)
     # Tính một lần để model, TrainingArguments và metrics dùng cùng một giá trị.
     checkpoint_gradients = _should_checkpoint_gradients(
-        spec.get("gradient_checkpointing", False), args.gradient_checkpointing
+        spec.get("gradient_checkpointing", False)
     )
     output_dir = Path(args.output_dir) / args.model
     _prepare_output_directory(output_dir)
@@ -313,7 +276,7 @@ def train(args: argparse.Namespace) -> dict:
     rows = release["train"] + release["val"]
     targets = tuple(dict.fromkeys(row["target"] for row in rows))
     audit = audit_target_roundtrip(
-        tokenizer, targets, strict=not args.allow_lossy_targets
+        tokenizer, targets, strict=not spec.get("allow_lossy_targets", False)
     )
     lossy = unrepresentable_targets(audit)
     if lossy:
@@ -345,7 +308,6 @@ def train(args: argparse.Namespace) -> dict:
         dtype=model_dtype,
     )
     base_parameter_count = sum(parameter.numel() for parameter in model.parameters())
-    quantized_layers = _apply_torchao(model, args.torchao)
     model = _attach_lora_model(
         model,
         model_name=args.model,
@@ -368,7 +330,7 @@ def train(args: argparse.Namespace) -> dict:
     steps_per_epoch = math.ceil(
         len(train_rows) / (spec["batch_size"] * spec["gradient_accumulation"])
     )
-    eval_steps = max(1, round(steps_per_epoch * args.eval_every_epochs))
+    eval_steps = max(1, round(steps_per_epoch * EVAL_EVERY_EPOCHS))
     short_run = args.smoke_test
 
     keep_checkpoints = args.save_model and not short_run
@@ -416,7 +378,7 @@ def train(args: argparse.Namespace) -> dict:
         torch_compile=args.compile,
         # CUDA graphs yêu cầu bộ đệm gradient có địa chỉ cố định qua các
         # micro-batch; chế độ ``-no-cudagraphs`` tránh ràng buộc này.
-        torch_compile_mode=args.compile_mode if args.compile else None,
+        torch_compile_mode=COMPILE_MODE if args.compile else None,
     )
     source_pad, target_pad = _fixed_pad_lengths(train_dataset, validation_dataset)
 
@@ -482,11 +444,6 @@ def train(args: argparse.Namespace) -> dict:
         ) from None
     inference_model = trainer.model
     adapter_source = trainer.state.best_model_checkpoint
-    if adapter_source is None and args.torchao != "off":
-        # PEFT gộp adapter vào nền bf16 sạch; artifact đã gộp không cần torchao
-        # khi phục vụ. Metrics ghi lại chế độ nén đã dùng trong huấn luyện.
-        adapter_source = str(output_dir / "adapter-final")
-        inference_model.save_pretrained(adapter_source)
     if adapter_source:
         # Rebuild the adapter on a clean pretrained base before merging it.
         trainer.model = None
@@ -536,8 +493,6 @@ def train(args: argparse.Namespace) -> dict:
         "fp16": precision["fp16"],
         "tf32": precision["tf32"],
         "torch_compile": bool(training_args.torch_compile),
-        "torchao": args.torchao,
-        "torchao_quantized_layers": quantized_layers,
         "torch_compile_mode": training_args.torch_compile_mode,
         "checkpoint_selection_metric": training_args.metric_for_best_model,
         "eval_generates_text": bool(training_args.predict_with_generate),
@@ -563,7 +518,7 @@ def train(args: argparse.Namespace) -> dict:
             if key in ("optim", "lr_scheduler_type", "warmup_steps", "weight_decay")
         },
         "learning_rate": args.learning_rate,
-        "evaluation_every_epochs": args.eval_every_epochs,
+        "evaluation_every_epochs": EVAL_EVERY_EPOCHS,
         "early_stopping_patience": 3 if keep_checkpoints else None,
         "train_runtime_seconds": round(train_result.metrics.get("train_runtime", 0.0), 3),
         "train_loss": round(train_result.metrics.get("train_loss", 0.0), 6),
@@ -583,61 +538,6 @@ def train(args: argparse.Namespace) -> dict:
     if args.save_model:
         inference_model.save_pretrained(output_dir / "model")
         tokenizer.save_pretrained(output_dir / "model")
-    if args.benchmark_after_training:
-        benchmark_rows = load_benchmark()
-        benchmark_validation = validate_benchmark(
-            benchmark_rows,
-            graph,
-            training_rows=release["train"],
-        )
-        benchmark_decoded = _generate_rows(
-            inference_model,
-            tokenizer,
-            benchmark_rows,
-            torch,
-            batch_size=spec.get("eval_batch_size", 1),
-        )
-        benchmark_predictions = dict(
-            zip(
-                (row["id"] for row in benchmark_rows),
-                benchmark_decoded,
-                strict=True,
-            )
-        )
-        benchmark_report = evaluate_benchmark(
-            benchmark_rows,
-            benchmark_predictions,
-            graph,
-            include_cases=True,
-        )
-        benchmark_report["benchmark"] = benchmark_validation
-        (output_dir / "benchmark_metrics.json").write_text(
-            json.dumps(benchmark_report, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        (output_dir / "benchmark_predictions.jsonl").write_text(
-            "".join(
-                json.dumps(
-                    {"id": row["id"], "prediction": prediction},
-                    ensure_ascii=False,
-                )
-                + "\n"
-                for row, prediction in zip(
-                    benchmark_rows,
-                    benchmark_decoded,
-                    strict=True,
-                )
-            ),
-            encoding="utf-8",
-        )
-        print(
-            json.dumps(
-                {"benchmark_overall": benchmark_report["overall"]},
-                ensure_ascii=False,
-                indent=2,
-            )
-        )
-    print(json.dumps({"overall": report["overall"], "training": report["training"], "metrics": str(metrics_path)}, ensure_ascii=False, indent=2))
     return report
 
 
@@ -813,7 +713,7 @@ def _require_training_ready(
     )
 
 
-def _should_checkpoint_gradients(spec_default: bool, choice: str = "auto") -> bool:
+def _should_checkpoint_gradients(spec_default: bool) -> bool:
     """Chọn checkpointing gradient theo VRAM của máy đang chạy.
 
     Checkpointing tính lại activation để giảm bộ nhớ mà không thay đổi phép tính.
@@ -870,62 +770,28 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model", choices=sorted(MODEL_SPECS), required=True)
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--output-dir", type=Path, default=ARTIFACTS_DIR / "models")
-    # Số epoch mặc định là 16.
-    parser.add_argument("--epochs", type=float, default=16.0)
-    parser.add_argument("--max-steps", type=int, default=-1)
-    # Khi giảm lô vật lý, tích luỹ gradient giữ nguyên lô hiệu dụng.
-    parser.add_argument(
-        "--gradient-checkpointing",
-        choices=("auto", "on", "off"),
-        default="auto",
-        help="auto: bật khi VRAM dưới 16 GiB. Bật thì chậm hơn ~1/4 mà tốn ít bộ nhớ hơn hẳn",
-    )
+    parser.add_argument("--epochs", type=float, default=3.0)
+    parser.add_argument("--learning-rate", type=float, default=1e-4)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument(
         "--batch-size",
         type=int,
         default=None,
-        help="ép lô vật lý; bỏ trống thì lấy theo model và tự lùi khi tràn",
-    )
-    parser.add_argument("--learning-rate", type=float, default=1e-4)
-    # Mỗi lần đánh giá phải sinh lại toàn tập val, nên nhịp thưa mà vẫn đủ mốc.
-    parser.add_argument("--eval-every-epochs", type=float, default=4.0)
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument(
-        "--torchao",
-        choices=("off", "int8", "int4"),
-        default="off",
-        help=(
-            "nén trọng số nền bằng torchao. Đổi khoảng 6 phần trăm tốc độ lấy "
-            "0,6 GiB bộ nhớ, nên chỉ đáng khi card chật; trên card rộng nó chỉ "
-            "thêm thời gian biên dịch và một đường vòng lúc gộp adapter"
-        ),
+        help="ép lô vật lý; bỏ trống thì lấy theo model, tích luỹ gradient bù lại để lô hiệu dụng không đổi",
     )
     parser.add_argument(
-        "--compile",
+        "--no-compile",
         action="store_true",
-        help=(
-            "biên dịch model bằng torch.compile(max-autotune). Chỉ có ích khi "
-            "hình dạng lô cố định, và bản biên dịch tốn vài phút hâm nóng - "
-            "PHẢI đo mới biết nó lãi hay lỗ trên card của bạn"
-        ),
+        help="tắt torch.compile; lối lui khi một model không biên dịch được",
     )
-    parser.add_argument(
-        "--compile-mode",
-        default="reduce-overhead",
-        help="chế độ torch.compile; mặc định bỏ CUDA graphs vì chúng xung khắc với tích luỹ gradient",
-    )
-    parser.add_argument("--smoke-test", action="store_true")
     parser.add_argument("--save-model", action="store_true")
-    parser.add_argument("--benchmark-after-training", action="store_true")
     parser.add_argument("--local-files-only", action="store_true")
-    # Cho phép huấn luyện khi tokenizer không biểu diễn được mọi đích; số đích
-    # đó được ghi vào metrics.
-    parser.add_argument("--allow-lossy-targets", action="store_true")
+    # Hai cờ chỉ dùng để thử máy: chạy vài bước trên vài dòng dữ liệu để biết
+    # môi trường dựng được model hay không, trước khi tiêu một lượt máy thuê.
+    parser.add_argument("--smoke-test", action="store_true")
+    parser.add_argument("--max-steps", type=int, default=-1)
     args = parser.parse_args(argv)
-    if args.benchmark_after_training and not args.save_model:
-        parser.error("--benchmark-after-training requires --save-model")
-    if args.benchmark_after_training and args.smoke_test:
-        parser.error("benchmark is only available after a full training run")
+    args.compile = not args.no_compile
     return args
 
 
