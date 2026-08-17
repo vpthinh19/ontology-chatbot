@@ -70,35 +70,47 @@ case " ${MODELS} " in
         ;;
 esac
 
+# Hỏng thật thì lượt chạy thoát bằng mã lỗi; những chuyện chỉ cần ghi nhận,
+# như bỏ compile, không được làm một lượt chạy tốt trông như đã hỏng.
 FAILED=()
+NOTES=()
 for MODEL in ${MODELS}; do
     OUT="${ROOT}/${MODEL}"
     mkdir -p "${OUT}"
     echo
     echo "############ ${MODEL} ############"
+    # torch.compile chưa chạy được trên mọi tổ hợp card và model, và nó hỏng ở
+    # bước huấn luyện đầu tiên chứ không phải lúc khởi động. Thử 5 bước trước để
+    # biết trong vài phút thay vì mất cả lượt chạy rồi mới phải bắt đầu lại.
+    # Bản biên dịch được lưu ra đĩa nên lượt thật dùng lại, không dịch hai lần.
+    echo "=== THỬ COMPILE ${MODEL} (5 bước) ==="
+    COMPILE=()
+    if "${PY}" -m ontchatbot.cli.train \
+        --model "${MODEL}" \
+        --max-steps 5 \
+        --eval-every-epochs 999 \
+        --compile \
+        --output-dir "${OUT}/probe" \
+        "$@"; then
+        COMPILE=(--compile)
+        echo "compile chạy được"
+    else
+        echo "compile KHÔNG chạy được trên máy này - lượt thật sẽ không compile"
+        NOTES+=("${MODEL}:không-compile")
+    fi
+    rm -rf "${OUT}/probe"
+
     echo "=== HUẤN LUYỆN ${MODEL} ==="
-    # torch.compile chưa chạy được trên mọi tổ hợp card và model. Hỏng thì chạy
-    # lại không compile, vì mất tốc độ vẫn hơn mất cả một model trong lượt chạy.
     if ! "${PY}" -m ontchatbot.cli.train \
         --model "${MODEL}" \
         --epochs "${EPOCHS_DEFAULT}" \
-        --compile \
+        ${COMPILE+"${COMPILE[@]}"} \
         --save-model \
         --output-dir "${OUT}/model" \
         "$@"; then
-        echo "HUẤN LUYỆN ${MODEL} VỚI COMPILE THẤT BẠI - chạy lại không compile"
-        rm -rf "${OUT}/model"
-        if ! "${PY}" -m ontchatbot.cli.train \
-            --model "${MODEL}" \
-            --epochs "${EPOCHS_DEFAULT}" \
-            --save-model \
-            --output-dir "${OUT}/model" \
-            "$@"; then
-            echo "HUẤN LUYỆN ${MODEL} THẤT BẠI"
-            FAILED+=("${MODEL}:train")
-            continue
-        fi
-        FAILED+=("${MODEL}:compile-bỏ-qua")
+        echo "HUẤN LUYỆN ${MODEL} THẤT BẠI"
+        FAILED+=("${MODEL}:train")
+        continue
     fi
 
     # Thư mục model đã lưu nằm bên trong --output-dir; bỏ thư mục xuất phát vì
@@ -141,6 +153,9 @@ tar -czf "${BUNDLE}" -C "${ROOT}" \
 echo "MANG TỆP NÀY VỀ: ${BUNDLE}"
 ls -lh "${BUNDLE}"
 
+if [ ${#NOTES[@]} -gt 0 ]; then
+    echo "GHI NHẬN: ${NOTES[*]}"
+fi
 if [ ${#FAILED[@]} -gt 0 ]; then
     echo "THẤT BẠI: ${FAILED[*]}"
     exit 1
