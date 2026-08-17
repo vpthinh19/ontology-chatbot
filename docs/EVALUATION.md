@@ -69,7 +69,7 @@ nhãn do chủ dự án tự xác nhận từng câu. Chúng **không thuộc tr
 **không xuất hiện trong báo cáo benchmark**: báo cáo chỉ đo trên đúng ba tập của
 release hiện hành.
 
-Đo riêng bằng `scripts/danh-gia-noi-bo.py`. Tệp chỉ có oracle
+Đo riêng bằng `python -m ontchatbot.cli.internal_eval`. Tệp chỉ có oracle
 `expected_query_id`, không có target SPARQL/node, nên chỉ báo được
 `query_id_accuracy` và từng case.
 
@@ -78,7 +78,7 @@ release hiện hành.
 Chấm causal LLM:
 
 ```bash
-uv run benchmark_llm --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
+uv run benchmark_model --model Qwen/Qwen3.5-2B --split val --shots 12 --output artifacts/llm-benchmark/qwen-val.json
 ```
 
 Sinh theo lô 16 câu, tự hạ khi tràn VRAM (`--batch-size`). Nền trọng số gốc mặc
@@ -89,7 +89,7 @@ không so được với nhau đến từng câu** — xem `docs/TRAINING.md`.
 Chấm checkpoint seq2seq đã có — **cùng lệnh, cùng thước** với LLM:
 
 ```bash
-uv run benchmark_llm --seq2seq-model artifacts/seq2seq-<mốc>/model --split test --output artifacts/seq2seq-test.json
+uv run benchmark_model --seq2seq-model artifacts/runs/seq2seq-<mốc>/model --split test --output artifacts/runs/seq2seq-test.json
 ```
 
 Trước đây mỗi họ model có một bộ chấm riêng, và bộ chấm CTranslate2 còn dùng một
@@ -135,6 +135,6 @@ smoke-test riêng thước bằng unit test sau (đây không phải kết quả
 ## Trạng thái metric
 
 Repository chưa công bố metric model v3. Các mẫu số ở trên mô tả hợp đồng chấm
-và release hiện hành, không phải kết quả inference. `reports/provenance.json`
+và release hiện hành, không phải kết quả inference. `artifacts/reports/provenance.json`
 đánh dấu cả metric model và deployment là `stale` so với baseline v0.4.1; chỉ
 artifact benchmark có fingerprint input hiện hành mới được dùng để công bố số.

@@ -1,9 +1,8 @@
-"""Chấm một LLM có nhắc ví dụ trên ĐÚNG tập mà seq2seq đã chấm.
+"""Chấm LLM và seq2seq trên cùng bộ benchmark.
 
 Ví dụ nhắc kèm lấy từ train, câu chấm lấy từ val - không rò rỉ. Dùng cùng hàm
 đánh giá với các lượt seq2seq nên con số đặt cạnh nhau được.
 
-    uv run python .claude/notes/tools/llm_benchmark.py --model Qwen/Qwen3.5-2B --shots 12
 """
 
 from __future__ import annotations
@@ -40,26 +39,15 @@ from ontchatbot.settings import ARTIFACTS_DIR, DATASET_DIR
 
 
 def _pinned_revision(model_id: str) -> str | None:
-    """Bản model đã ghim cho ``model_id``, hoặc None nếu không ghim bản nào.
-
-    Đường huấn luyện ghim cứng một commit. Đường chấm phải hỏi đúng commit ấy,
-    nếu không thì adapter và model gốc có thể lệch nhau mà không báo gì.
-    """
+    """Bản model đã ghim cho ``model_id``, hoặc ``None`` nếu không ghim."""
 
     return MODEL_REVISION if model_id == MODEL_ID else None
 
 
 def base_precision_for_adapter(adapter, requested: str) -> str:
-    """Chọn độ chính xác của trọng số GỐC, mặc định theo đúng lượt huấn luyện.
+    """Chọn độ chính xác của trọng số gốc, mặc định theo adapter.
 
-    Cùng một họ lỗi với việc ghim bản model ở trên. Adapter học cách bù cho một
-    nền trọng số CỤ THỂ; chấm nó trên nền khác là chấm một model khác, mà triệu
-    chứng thì không có - chỉ là con số hơi lệch, không ai biết vì sao.
-
-    Nén 4-bit sinh ra cho card 6 GB. Trên card lớn nó chỉ làm CHẬM: bitsandbytes
-    giải nén trọng số ở mỗi lượt truyền xuôi, mà giải mã tuần tự từng token thì
-    phần đó lấn át (đo trên card 6 GB: 6,9 giây/câu so với 5,0 ở bf16). Nên đây
-    không phải cờ để bật cho vui - nó phải theo lượt huấn luyện, không theo máy.
+    Adapter phải được chấm trên cùng cấu hình trọng số với lúc huấn luyện.
     """
 
     if requested != "match-adapter":
@@ -78,14 +66,9 @@ def base_precision_for_adapter(adapter, requested: str) -> str:
 
 
 def fine_tuned_prompt(tokenizer, question: str) -> str:
-    """Bọc câu hỏi ĐÚNG như lúc huấn luyện đã bọc nó.
+    """Bọc câu hỏi theo khuôn huấn luyện.
 
-    Nằm ở cấp mô-đun chứ không nấp trong ``build_complete`` để phép kiểm gọi
-    được mà không phải nạp model - phép kiểm ấy đối chiếu thẳng với đường huấn
-    luyện, và nếu có nó từ đầu thì lượt chấm 16/8 đã không đo nhầm.
-
-    ``question`` phải là câu ĐÃ chuẩn hoá; bên gọi lo bước đó, y như bên huấn
-    luyện.
+    ``question`` phải được chuẩn hóa trước khi gọi hàm này.
     """
 
     return tokenizer.apply_chat_template(
@@ -101,12 +84,9 @@ def fine_tuned_prompt(tokenizer, question: str) -> str:
 
 
 class _Seq2SeqGenerator:
-    """Cho checkpoint seq2seq đi qua ĐÚNG bộ chấm của LLM.
+    """Cho checkpoint seq2seq đi qua cùng bộ chấm với LLM.
 
-    Dùng lại thẳng ``_generate_rows`` của đường huấn luyện thay vì viết vòng
-    sinh thứ hai: hai vòng sinh là hai cách chuẩn hoá, hai cách đệm, hai cách
-    cắt chuỗi - và khi chúng trôi ra thì con số của hai họ model không còn so
-    được, mà so được chính là lý do tồn tại của phép đo này.
+    Dùng lại đường sinh của huấn luyện để giữ nhất quán chuẩn hóa, đệm và cắt chuỗi.
     """
 
     def __init__(self, model, tokenizer, batch_size: int) -> None:
@@ -139,6 +119,65 @@ def _seq2seq_generator(model_dir, batch_size: int) -> _Seq2SeqGenerator:
     return _Seq2SeqGenerator(model, tokenizer, batch_size)
 
 
+def _seq2seq_adapter_generator(adapter_dir, batch_size: int) -> _Seq2SeqGenerator:
+    """Nạp và gộp adapter LoRA seq2seq trên model gốc đã ghim.
+
+    Cấu hình sinh phải tất định và model gốc phải cùng bản với lúc huấn luyện.
+    """
+    from huggingface_hub import snapshot_download
+    from peft import PeftModel
+    from transformers import AutoModelForSeq2SeqLM
+
+    from ontchatbot.research.training import (
+        MODEL_SPECS,
+        _configure_greedy_generation,
+    )
+
+    adapter_dir = Path(adapter_dir)
+    config = json.loads((adapter_dir / "adapter_config.json").read_text("utf-8"))
+    trained_on = str(config.get("base_model_name_or_path", ""))
+    family = next(
+        (
+            name
+            for name, spec in MODEL_SPECS.items()
+            if spec["model_id"] in trained_on
+            or spec["model_id"].replace("/", "--") in trained_on
+        ),
+        None,
+    )
+    if family is None:
+        raise SystemExit(
+            f"không nhận ra model gốc của adapter này: {trained_on!r}\n"
+            f"biết các họ: {', '.join(MODEL_SPECS)}"
+        )
+    spec = MODEL_SPECS[family]
+    if spec["revision"] not in trained_on:
+        print(
+            f"CẢNH BÁO: adapter học trên {trained_on!r}, mà bản đã ghim là "
+            f"{spec['revision']}. Số đo sẽ không so được.",
+            flush=True,
+        )
+
+    snapshot = snapshot_download(
+        spec["model_id"], revision=spec["revision"], local_files_only=True
+    )
+    tokenizer = AutoTokenizer.from_pretrained(adapter_dir, local_files_only=True)
+    dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+    base = AutoModelForSeq2SeqLM.from_pretrained(
+        snapshot,
+        local_files_only=True,
+        attn_implementation=spec["attention"],
+        dtype=dtype,
+    )
+    model = PeftModel.from_pretrained(base, adapter_dir, is_trainable=False)
+    model = model.merge_and_unload()
+    _configure_greedy_generation(model.generation_config)
+    if torch.cuda.is_available():
+        model = model.to("cuda")
+    print(f"nền: {family} @ {spec['revision'][:12]} · LoRA: {adapter_dir}", flush=True)
+    return _Seq2SeqGenerator(model, tokenizer, batch_size)
+
+
 def build_complete(
     model_id: str,
     max_new_tokens: int,
@@ -148,39 +187,19 @@ def build_complete(
     adapter=None,
     batch_size: int = 1,
 ):
-    # ``batch_size`` bị hạ dần khi tràn VRAM, xem ``complete_batch`` bên dưới.
+    # ``batch_size`` có thể giảm khi thiếu bộ nhớ GPU.
     batch_size = max(1, batch_size)
-    # GHIM ĐÚNG BẢN MODEL MÀ ADAPTER ĐÃ HỌC TRÊN ĐÓ.
-    #
-    # Không ghim thì thư viện hỏi nhánh ``main``, và nó phải gọi mạng chỉ để biết
-    # ``main`` đang trỏ vào đâu - nên máy offline chết ngay dù model đã nằm sẵn
-    # trong cache. Đó là triệu chứng; bệnh nặng hơn nằm ở chỗ khác: nếu máy CÓ
-    # mạng và ``main`` đã nhích sang bản mới, ta sẽ lặng lẽ chấm adapter trên một
-    # model KHÁC với model nó được huấn luyện, và con số thu được vô nghĩa mà
-    # không ai thấy sai ở đâu.
+    # Ghim bản model để adapter luôn dùng cùng nền trọng số với lúc huấn luyện.
     revision = _pinned_revision(model_id)
     tokenizer = AutoTokenizer.from_pretrained(
         model_id, revision=revision, local_files_only=not allow_download
     )
-    # ĐỆM BÊN TRÁI, và đây không phải chuyện gọn gàng - nó là chuyện đúng/sai.
-    #
-    # Model kiểu này sinh tiếp vào ĐUÔI chuỗi. Đệm bên phải thì đuôi là một dãy
-    # token rỗng, model sinh tiếp vào đó và câu trả lời hỏng - mà hỏng lặng lẽ:
-    # vẫn ra chữ, vẫn chấm được, chỉ là điểm thấp không rõ nguyên nhân. Câu dài
-    # nhất trong lô không đệm gì nên vẫn đúng, và đó chính là lý do lỗi này khó
-    # thấy: lô nào cũng có vài câu đúng.
-    #
-    # Huấn luyện thì ngược lại, đệm bên phải, vì ở đó không sinh tiếp mà chỉ
-    # tính mất mát trên nhãn.
+    # Sinh tự hồi quy từ đuôi chuỗi nên lô suy luận phải đệm bên trái.
     tokenizer.padding_side = "left"
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
-    # Model đã lượng tử hoá thì ĐỪNG ép dtype: ép là trọng số 4-bit bị giải nén
-    # ngược về 16-bit ngay lúc nạp, và card 6 GB tràn ngay.
-    # Hỏi ĐỜI KIẾN TRÚC, đừng hỏi ``is_bf16_supported``: trên T4 hàm đó trả về
-    # True vì nó tính cả trường hợp giả lập bằng phần mềm, mà giả lập thì chậm
-    # hơn hẳn float16 vốn có nhân tính chuyên dụng. bfloat16 chỉ có thật từ
-    # Ampere (đời 8) trở đi.
+    # Không ép ``dtype`` cho model đã lượng tử hóa. Chỉ dùng bfloat16 trên GPU
+    # có năng lực tính toán từ 8 trở lên.
     compute_dtype = (
         torch.bfloat16 if torch.cuda.get_device_capability()[0] >= 8 else torch.float16
     )
@@ -190,22 +209,14 @@ def build_complete(
     quantized = getattr(config, "quantization_config", None) is not None
     load_kwargs: dict = {"local_files_only": not allow_download, "revision": revision}
     if load_4bit and not quantized:
-        # Tự nén lúc nạp. Nhanh hơn bản nén sẵn theo compressed-tensors vì
-        # không phải giải nén lại khi tính, và nén được nhiều phần hơn.
+        # Lượng tử hóa khi nạp để dùng cấu hình 4-bit thống nhất.
         load_kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
             bnb_4bit_use_double_quant=True,
             bnb_4bit_compute_dtype=compute_dtype,
-            # KHÔNG nén lớp đầu ra, dù nó là phần nặng nhất còn lại.
-            #
-            # Ghi chú cũ ở đây nói nén nó để tiết kiệm 0,8 GB trên card 6 GB.
-            # Điều đó không thực hiện được với model này: ``lm_head`` BUỘC CHUNG
-            # trọng số với lớp nhúng, mà bitsandbytes đòi trọng số 4-bit đã đóng
-            # gói nên trọng số buộc chung không đóng gói được - nó vấp thẳng
-            # ``assert module.weight.shape[1] == 1`` ở lượt truyền xuôi đầu tiên.
-            # Đường huấn luyện đã loại nó ra từ đầu vì đúng lý do này; đường chấm
-            # thì chưa, nên chấm bằng model 4-bit chưa bao giờ chạy nổi.
+            # ``lm_head`` dùng chung trọng số với lớp nhúng và không thể lượng tử
+            # hóa độc lập bằng bitsandbytes.
             llm_int8_skip_modules=["lm_head"],
         )
     elif not quantized:
@@ -219,26 +230,14 @@ def build_complete(
         load_kwargs["device_map"] = "cuda"
     model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs)
     if adapter:
-        # Chấm model ĐÃ TINH CHỈNH. Không có cờ này thì bộ chấm chỉ đo cách
-        # nhắc ví dụ, và hai phép đo đó không so được với nhau.
+        # Nạp adapter để chấm model đã tinh chỉnh.
         from peft import PeftModel
 
         model = PeftModel.from_pretrained(model, str(adapter))
     model = model.eval()
 
     def _as_chat(prompt: str) -> str:
-        # HỎI MODEL ĐÃ TINH CHỈNH BẰNG ĐÚNG KHUÔN NÓ ĐƯỢC DẠY.
-        #
-        # Khuôn huấn luyện là lời hệ thống + câu hỏi trần, và phần trả lời bắt
-        # đầu ngay sau khối ``<think>`` rỗng. Khuôn nhắc ví dụ thì không có lời
-        # hệ thống, không có khối đó, và dài gấp mấy chục lần vì cõng theo 12 ví
-        # dụ. Suốt hơn hai nghìn bước huấn luyện, model chưa gặp khuôn ấy lần
-        # nào.
-        #
-        # Hỏi sai khuôn KHÔNG làm model câm - nó vẫn trả lời gần đúng, chỉ trượt
-        # một token ở cùng một chỗ, và một token đó đủ để truy vấn rơi khỏi danh
-        # mục. Đo được trên lượt chấm ngày 16/8: 150 trong 399 câu sai đúng một
-        # token, kéo cả ba chỉ số xuống cùng lúc.
+        # Model đã tinh chỉnh dùng khuôn huấn luyện; model gốc dùng khuôn nhắc ví dụ.
         if adapter is not None:
             return fine_tuned_prompt(tokenizer, prompt)
         return tokenizer.apply_chat_template(
@@ -260,7 +259,7 @@ def build_complete(
                 do_sample=False,
                 pad_token_id=tokenizer.pad_token_id,
             )
-        # Đệm bên trái nên mọi chuỗi vào đều dài bằng nhau: cắt một chỗ là xong.
+        # Đệm bên trái làm mọi prompt trong lô có cùng độ dài.
         prompt_length = encoded["input_ids"].shape[-1]
         return tokenizer.batch_decode(
             output[:, prompt_length:], skip_special_tokens=True
@@ -270,20 +269,9 @@ def build_complete(
         return _generate([prompt])[0]
 
     def complete_batch(prompts: Sequence[str]) -> list[str]:
-        """Sinh theo lô, tự thu nhỏ lô khi tràn VRAM.
+        """Sinh theo lô và giảm cỡ lô khi thiếu bộ nhớ GPU.
 
-        Gom lô ở đây không phải tối ưu vụn vặt. Sinh chữ bị chặn bởi băng thông
-        bộ nhớ: mỗi bước giải mã phải đọc TOÀN BỘ trọng số dù đang xử lý một câu
-        hay ba mươi hai câu. Sinh từng câu một là để card chạy không tải - 788
-        câu val+test từng mất hơn ba tiếng, lâu hơn cả lượt huấn luyện.
-
-        Không xếp câu theo độ dài trước khi chia lô: phần lâu là số BƯỚC GIẢI MÃ,
-        mà số đó do câu trả lời dài nhất trong lô quyết định, không phải câu hỏi.
-        Xếp theo độ dài câu hỏi chỉ bớt được phần đệm lúc đọc prompt, vốn đã rẻ.
-
-        Cỡ lô đã hạ thì GIỮ NGUYÊN cho những lần gọi sau. Đặt lại về cỡ ban đầu
-        mỗi lần gọi nghĩa là card nhỏ phải tràn đi tràn lại suốt cả lượt chấm,
-        mỗi lần tràn tốn một lượt sinh hỏng.
+        Cỡ lô đã giảm được giữ cho các lần gọi sau của cùng lượt chấm.
         """
 
         nonlocal batch_size
@@ -304,8 +292,7 @@ def build_complete(
             index += len(window)
         return outputs
 
-    # Cỡ lô THỰC SỰ đã chạy, cho báo cáo đọc. Ghi cỡ yêu cầu là ghi sai khi card
-    # phải hạ lô, mà cỡ lô lại là thứ quyết định cả tốc độ lẫn mấy chỗ lật token.
+    # Báo cáo ghi cỡ lô thực tế sau khi đã điều chỉnh theo bộ nhớ GPU.
     complete_batch.batch_size = batch_size
 
     return complete, complete_batch
@@ -355,13 +342,7 @@ def main() -> None:
     if args.limit:
         rows = rows[: args.limit]
 
-    # SEQ2SEQ ĐI QUA ĐÚNG BỘ CHẤM NÀY, không có thước riêng.
-    #
-    # Trước đây mỗi họ model có một đường chấm: LLM chấm val+test kèm 15 câu
-    # người thật, bộ chấm gắn trong seq2seq chỉ chấm val và bỏ câu người thật,
-    # bộ chấm CTranslate2 lại dùng một tập benchmark khác hẳn. Ba thước khác
-    # nhau thì con số của hai họ không đặt cạnh nhau được - mà đặt cạnh nhau
-    # chính là lý do tồn tại của cả phép so.
+    # Seq2seq và LLM dùng cùng dữ liệu và chỉ số benchmark.
     if args.seq2seq_model:
         print(f"seq2seq: {args.seq2seq_model}", flush=True)
         generator = _seq2seq_generator(args.seq2seq_model, args.batch_size)
@@ -379,7 +360,7 @@ def main() -> None:
             args.batch_size,
         )
         if args.adapter:
-            # Model đã tinh chỉnh KHÔNG được nhắc ví dụ: xem ghi chú ở ``_as_chat``.
+            # Model đã tinh chỉnh dùng khuôn huấn luyện, không kèm ví dụ nhắc.
             generator = FineTunedQueryGenerator(complete, complete_batch=complete_batch)
         else:
             generator = LLMQueryGenerator(
@@ -401,10 +382,7 @@ def main() -> None:
         )
     elapsed = time.monotonic() - started
 
-    # 15 CÂU NGƯỜI THẬT KHÔNG NẰM Ở ĐÂY NỮA.
-    #
-    # Chúng là dữ liệu nội bộ để chủ dự án và tôi đánh giá model, không thuộc
-    # train/val/test và không đưa ra ngoài. Đo bằng ``scripts/danh-gia-noi-bo.py``.
+    # Câu hỏi thực tế được đánh giá riêng bằng ``ontchatbot.cli.internal_eval``.
     report = evaluate_predictions(rows, predictions, load_ontology(), include_cases=True)
     report["run"] = {
         "model": str(args.seq2seq_model) if args.seq2seq_model else args.model,
@@ -412,18 +390,18 @@ def main() -> None:
         "split": args.split,
         "records": len(rows),
         "seconds_per_question": round(elapsed / len(rows), 2),
-        # Có adapter là ĐÃ tinh chỉnh. Trước đây ô này ghi cứng False, nên đúng
-        # lượt chấm adapter - lý do tồn tại của cả bộ chấm - lại tự khai là chưa
-        # tinh chỉnh, và báo cáo nói ngược với thứ nó vừa đo.
+        # Sự hiện diện của adapter xác định model đã tinh chỉnh.
         "fine_tuned": args.adapter is not None or args.seq2seq_model is not None,
         "family": "seq2seq" if args.seq2seq_model else "causal-lm",
         "adapter": str(args.adapter) if args.adapter else None,
-        # Ghi CẢ nền trọng số lẫn cỡ lô. Thiếu nền thì vài tuần sau không ai
-        # chứng minh được con số này đo trên đúng model mà adapter đã học; thiếu
-        # cỡ lô thì không so được tốc độ giữa hai lượt chạy.
+        # Ghi nền trọng số và cỡ lô để tái lập điều kiện benchmark.
         "base_precision": base_precision,
         "generation_batch_size_requested": args.batch_size,
-        "generation_batch_size_effective": complete_batch.batch_size,
+        # Đường seq2seq không có bộ tự hạ lô, nên cỡ lô thực tế bằng cỡ yêu cầu.
+        # Đường LLM hạ dần khi thiếu bộ nhớ nên phải hỏi lại giá trị đã dùng.
+        "generation_batch_size_effective": (
+            args.batch_size if args.seq2seq_model else complete_batch.batch_size
+        ),
     }
 
     primary = report["primary_metrics"]
@@ -431,9 +409,16 @@ def main() -> None:
         "\n".join(
             [
                 "",
-                f"model            {args.model} (nhắc {args.shots} ví dụ, "
-                + ("adapter " + str(args.adapter) if args.adapter else "KHÔNG tinh chỉnh")
-                + ")",
+                # Nhãn phải lấy từ report["run"], là nơi ghi model thật sự chạy.
+                # Đọc thẳng args.model thì lượt seq2seq vẫn in tên model LLM.
+                f"model            {report['run']['model']}"
+                + (
+                    " (seq2seq)"
+                    if args.seq2seq_model
+                    else f" (nhắc {args.shots} ví dụ, "
+                    + ("adapter " + str(args.adapter) if args.adapter else "KHÔNG tinh chỉnh")
+                    + ")"
+                ),
                 f"đúng node        {primary['node_selection']['correct']}/{primary['node_selection']['count']} ({primary['node_selection']['rate']:.1%})",
                 f"đúng dạng        {primary['query_shape']['correct']}/{primary['query_shape']['count']} ({primary['query_shape']['rate']:.1%})",
                 f"từ chối đúng     {primary['rejection_decision']['correct']}/{primary['rejection_decision']['count']} ({primary['rejection_decision']['rate']:.1%})",

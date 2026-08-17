@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.cli.benchmark_llm import fine_tuned_prompt
+from ontchatbot.cli.benchmark_model import fine_tuned_prompt
 from ontchatbot.research.llm_lora_training import (
     MODEL_ID,
     MODEL_REVISION,

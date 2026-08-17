@@ -69,5 +69,5 @@ Không phát hành v3 cho tới khi:
 - câu trả lời cuối được đánh giá độ bám nguồn;
 - manifest triển khai ghim checksum ontology và catalogue.
 
-`reports/provenance.json` hiện có trạng thái `stale` cho metric model và
+`artifacts/reports/provenance.json` hiện có trạng thái `stale` cho metric model và
 deployment; không có số liệu cũ nào được dùng làm tiêu chí phát hành.

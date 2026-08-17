@@ -11,7 +11,6 @@ from ontchatbot.research.benchmark import (
     validate_benchmark,
 )
 from ontchatbot.catalogue import QuerySpec, SlotSpec
-from ontchatbot.research.evaluate_transformers import _parse_args
 from ontchatbot.runtime.sparql import load_ontology
 
 
@@ -50,28 +49,6 @@ def _row(identifier, query_id, text, target):
         "input": text,
         "target": target,
     }
-
-
-def test_transformers_evaluator_accepts_custom_benchmark(tmp_path: Path) -> None:
-    model_dir = tmp_path / "model"
-    model_dir.mkdir()
-    benchmark = tmp_path / "cases.jsonl"
-    benchmark.write_text("", encoding="utf-8")
-
-    args = _parse_args(
-        [
-            "--model",
-            "t5gemma2",
-            "--model-dir",
-            str(model_dir),
-            "--suite",
-            "benchmark",
-            "--benchmark",
-            str(benchmark),
-        ]
-    )
-
-    assert args.benchmark == benchmark
 
 
 def test_real_user_cases_keep_every_declared_expectation() -> None:

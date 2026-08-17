@@ -70,7 +70,7 @@ người dùng
 
 LLM hội thoại không được nhận quyền truy vấn tùy ý. Công cụ chỉ thực thi
 `SELECT` an toàn và khớp một shape trong
-`resources/dataset/catalogue.jsonl`. Truy vấn sai, ngoài danh mục hoặc rỗng
+`resources/ontology/catalogue.jsonl`. Truy vấn sai, ngoài danh mục hoặc rỗng
 được trả về như một lần gọi công cụ không có dữ liệu; LLM không được bù bằng
 phỏng đoán.
 
@@ -160,9 +160,9 @@ Ba split JSONL hiện có:
 Các số này được đếm trực tiếp từ
 `resources/dataset/train.jsonl`, `resources/dataset/val.jsonl` và
 `resources/dataset/test.jsonl`; trường `dataset.records` và
-`dataset.splits` trong `reports/dataset.json` ghi cùng các giá trị.
+`dataset.splits` trong `artifacts/reports/dataset.json` ghi cùng các giá trị.
 
-`reports/dataset.json` còn ghi phân bố hiện có theo miền:
+`artifacts/reports/dataset.json` còn ghi phân bố hiện có theo miền:
 
 | Miền | Số câu |
 |---|---:|
@@ -176,7 +176,7 @@ Các số này được đếm trực tiếp từ
 
 Chuỗi kiểm tra đối chiếu mọi `query_id`, target, giá trị slot, tên gọi, register,
 nhóm từ chối và checksum với catalogue/ontology hiện hành. Trạng thái có thể đọc
-máy nằm ở `training_readiness` và `coverage` trong `reports/dataset.json`.
+máy nằm ở `training_readiness` và `coverage` trong `artifacts/reports/dataset.json`.
 
 Xem [tài liệu dataset](docs/DATASET.md) và
 [bản kê trong thư mục dataset](resources/dataset/README.md).
@@ -228,16 +228,21 @@ uv run validate_sparql_dataset
 
 `uv run generate_reports` ghi lại artifact dẫn xuất; không chạy lệnh này khi
 chỉ kiểm tra vì nó có thể thay đổi report/manifest. Nguồn số liệu được mô tả ở
-[reports/README.md](reports/README.md).
+[artifacts/reports/README.md](artifacts/reports/README.md).
 
-Khi nguồn thay đổi, sinh lại toàn chuỗi theo đúng thứ tự:
+Khi nguồn thay đổi, dựng lại kiểm kê và báo cáo theo đúng thứ tự:
 
 ```bash
 .venv/bin/python -m ontchatbot.research.inventory
-.venv/bin/python -m ontchatbot.research.build_catalogue
-.venv/bin/python -m ontchatbot.cli.generate_dataset
 .venv/bin/python -m ontchatbot.cli.report
 ```
+
+Dataset thì **không sinh lại nữa**. Ba tệp `train/val/test.jsonl` cùng
+`catalogue.jsonl` đã chốt và được commit như dữ liệu cuối cùng; đường sinh ra
+chúng đã gỡ khỏi mã nguồn sau khi hình dạng dataset được chốt, vì để lại một bộ
+sinh không ai chạy là để lại một cách âm thầm làm lệch tập đã dùng để huấn
+luyện. Cần tra lại thì lấy trong lịch sử git. Dữ liệu hiện tại vẫn được canh
+bằng `.venv/bin/python -m ontchatbot.cli.validate_data`.
 
 ## 9. Giới hạn
 

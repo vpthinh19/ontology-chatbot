@@ -88,9 +88,9 @@ Không ghi lại suy luận riêng tư của LLM.
 
 - `resources/ontology/ontology.ttl`: dữ liệu có thẩm quyền;
 - `resources/ontology/answer_inventory.json`: danh mục khả năng trả lời;
-- `resources/dataset/catalogue.jsonl`: hợp đồng query;
+- `resources/ontology/catalogue.jsonl`: hợp đồng query;
 - ba split JSONL: ví dụ ánh xạ;
-- `reports/dataset.json`: snapshot thống kê dẫn xuất.
+- `artifacts/reports/dataset.json`: snapshot thống kê dẫn xuất.
 
 Tính tương thích của cả chuỗi do test quyết định; một trường “ready” trong report
 không thay thế kết quả kiểm tra hiện hành.

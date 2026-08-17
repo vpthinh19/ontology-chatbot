@@ -4,7 +4,11 @@ from pathlib import Path
 
 from ontchatbot.catalogue import load_catalogue
 from ontchatbot.research.dataset import load_release
-from ontchatbot.settings import QUERY_CATALOGUE_MANUAL_PATH, QUERY_CATALOGUE_PATH
+from ontchatbot.settings import (
+    QUERY_CATALOGUE_MANUAL_PATH,
+    QUERY_CATALOGUE_PATH,
+    REPORTS_DIR,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -119,7 +123,7 @@ def test_public_docs_describe_the_evaluated_dataset() -> None:
 def test_readme_explains_the_research_to_new_readers() -> None:
     training = _read("docs/TRAINING.md")
     readme = _read("README.md")
-    model_report = ROOT / "reports/models.json"
+    model_report = REPORTS_DIR / "models.json"
 
     assert "test không tham gia chọn checkpoint" in training
     assert "## 1. Bài toán nghiên cứu" in readme
@@ -133,7 +137,8 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     assert "resources/dataset/test.jsonl" in readme
     assert "uv run generate_reports" in readme
     assert ".venv/bin/python -m ontchatbot.research.inventory" in readme
-    assert ".venv/bin/python -m ontchatbot.cli.generate_dataset" in readme
+    assert ".venv/bin/python -m ontchatbot.cli.validate_data" in readme
+    assert "không sinh lại nữa" in readme
     assert "điều phối tool-calling hoàn chỉnh chưa được tích hợp" in readme
     if model_report.is_file():
         documented = set(_PERCENTAGE.findall(training))
@@ -143,7 +148,11 @@ def test_readme_explains_the_research_to_new_readers() -> None:
         # phần trăm model như thể đó là kết quả hiện hành.
         assert _PERCENTAGE.findall(training) == []
     assert "NTUdocs" not in readme
-    assert "artifacts/" not in readme
+    # README không được dẫn người đọc tới rác của một lượt chạy cục bộ. Ngoại lệ
+    # DUY NHẤT là ``artifacts/reports/``: từ khi mọi thứ sinh ra dồn về
+    # ``artifacts/``, đó là chỗ ở của bản đối chứng nằm trong git, nên nhắc tới
+    # nó là đúng - còn ``artifacts/run-...`` thì vẫn không.
+    assert re.sub(r"artifacts/reports/", "", readme).find("artifacts/") == -1
     assert "Trạng thái hiện tại" not in readme
 
 
@@ -176,22 +185,22 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
         "docs/EVALUATION.md",
         "docs/MODEL_CARD.md",
         "docs/DEPLOYMENT.md",
-        "reports/README.md",
+        "artifacts/reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)
-    provenance = _json("reports/provenance.json")
+    provenance = _json("artifacts/reports/provenance.json")
     baseline = provenance["baseline_release"]
 
     assert "danh mục khả năng trả lời" in joined
     assert "danh mục truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
-    assert "reports/provenance.json" in joined
+    assert "artifacts/reports/provenance.json" in joined
     assert f"baseline {baseline}" in joined
     assert provenance["model_metrics"]["status"] in joined
     assert provenance["deployment_metrics"]["status"] in joined
     assert "procedure-dataset.json" in joined
-    assert ("models.json" in joined) == (ROOT / "reports/models.json").is_file()
+    assert ("models.json" in joined) == (REPORTS_DIR / "models.json").is_file()
     assert "Claude Code" not in joined
     assert "CLAUDE.md" not in joined
     assert "ai agent" not in joined.lower()

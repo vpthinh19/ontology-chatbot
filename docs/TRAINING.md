@@ -10,9 +10,13 @@ nó truy ra trọn vẹn một node rồi để LLM lớn đọc và tự viết
 
 ```bash
 uv sync --extra train
-bash scripts/train.sh --smoke-test --allow-download   # lần đầu, kiểm có vừa VRAM
-bash scripts/train.sh                                  # LLM, chạy thật
-bash scripts/train.sh t5gemma2                         # seq2seq
+# Trên máy mình - chỉ huấn luyện, kết quả nằm sẵn trên đĩa
+python -m ontchatbot.cli.train --model t5gemma2 --smoke-test   # kiểm có vừa VRAM
+python -m ontchatbot.cli.train --model t5gemma2 --epochs 3 --save-model
+
+# Trên máy thuê - thêm bối cảnh máy, chấm val/test, nén mang về
+bash train-server.sh t5gemma2 --epochs 3
+bash train-server.sh                                           # LLM
 ```
 
 Script ghi bối cảnh máy, phiên bản thư viện, commit, **vân tay SHA256 của từng
@@ -23,7 +27,7 @@ một `.tar.gz`. Vân tay là phần quan trọng nhất: thiếu nó thì khôn
 Chấm lại một adapter đã có, khỏi huấn luyện lại:
 
 ```bash
-ADAPTER=artifacts/run-<mốc>/adapter bash scripts/train.sh --skip-train
+ADAPTER=artifacts/runs/run-<mốc>/adapter bash train-server.sh --skip-train
 ```
 
 ### Ba thứ tự điều chỉnh theo máy
@@ -168,7 +172,7 @@ Tài liệu không giữ:
 - metric runtime và latency;
 - liên kết tới báo cáo hay biểu đồ model đã xoá.
 
-`reports/provenance.json` vẫn giữ fingerprint và đánh dấu
+`artifacts/reports/provenance.json` vẫn giữ fingerprint và đánh dấu
 `model_metrics.status` cùng `deployment_metrics.status` là `stale`. Các trạng
 thái đó không biến metric cũ thành lịch sử dùng được; chúng chỉ ngăn artifact cũ
 bị hiểu là kết quả hiện hành.

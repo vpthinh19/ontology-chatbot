@@ -22,7 +22,7 @@ giá lại trên artifact đồng bộ.
 ## Dấu vết còn lại
 
 `docs/TRAINING.md` mô tả quy trình huấn luyện lịch sử mà không giữ con số hoặc
-kết quả. `reports/provenance.json` đánh dấu `model_metrics.status` và
+kết quả. `artifacts/reports/provenance.json` đánh dấu `model_metrics.status` và
 `deployment_metrics.status` là `stale`; đây là cảnh báo vô hiệu, không phải một
 mức chất lượng.
 

@@ -11,7 +11,7 @@ Ba tệp JSONL chứa **6.308 câu**:
 | `resources/dataset/test.jsonl` | 390 |
 | **Tổng** | **6.308** |
 
-Các số trên được đếm trực tiếp từ ba tệp. `reports/dataset.json` xác nhận cùng
+Các số trên được đếm trực tiếp từ ba tệp. `artifacts/reports/dataset.json` xác nhận cùng
 tổng `dataset.records = 6308` và cùng số bản ghi theo split. Đây là thống kê
 artifact, không phải kết quả model.
 
@@ -50,7 +50,7 @@ hàng–cột.
 
 ## Danh mục truy vấn hiện hành
 
-`resources/dataset/catalogue.jsonl` hiện có **50 họ**: các họ bảng, các họ
+`resources/ontology/catalogue.jsonl` hiện có **50 họ**: các họ bảng, các họ
 `*-facts` lấy trọn node, một shape phí theo phương thức và một họ từ chối. Toàn
 bộ **49 họ** ngoài họ từ chối đều được sinh tự động - không còn họ nào viết tay,
 và `catalogue-manual.jsonl` đã bị xoá cùng họ "liệt kê năng lực" ngày 2026-08-14.
@@ -59,7 +59,7 @@ Ba split đều dùng đủ 50 họ hiện hành; họ có mặt ở held-out lu
 
 ## Phân bố trong report
 
-`reports/dataset.json` ghi phân bố của 6.308 dòng hiện có:
+`artifacts/reports/dataset.json` ghi phân bố của 6.308 dòng hiện có:
 
 | Miền | Số câu |
 |---|---:|
