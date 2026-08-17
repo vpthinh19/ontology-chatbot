@@ -15,6 +15,7 @@ dependencies = [
 [project.optional-dependencies]
 inference = [
     "fastapi[standard]>=0.140.0",
+    "openai-agents>=0.21.1",
     "huggingface-hub>=1.24.0",
     "tokenizers>=0.22.2",
 ]
@@ -47,6 +48,7 @@ benchmark_sparql = "ontchatbot.cli.benchmark:main"
 convert_sparql_model = "ontchatbot.cli.convert_model:main"
 generate_reports = "ontchatbot.cli.report:main"
 prepare_vit5_tokenizer = "ontchatbot.cli.prepare_tokenizer:main"
+chat_agent = "ontchatbot.cli.chat:main"
 serve_sparql = "ontchatbot.cli.serve:main"
 try_model = "ontchatbot.cli.try_model:main"
 report_page = "ontchatbot.cli.report_page:main"
