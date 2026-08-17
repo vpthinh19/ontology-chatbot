@@ -18,7 +18,7 @@ set -uo pipefail
 cd "$(dirname "$0")"
 
 MODELS="${MODELS:-t5gemma2 vit5 bartpho}"
-EPOCHS_DEFAULT=3
+EPOCHS_DEFAULT=8
 STAMP="$(date +%Y%m%d-%H%M%S)"
 ROOT="artifacts/runs/${STAMP}"
 BENCH_BATCH="${BENCH_BATCH:-16}"

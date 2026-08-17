@@ -56,7 +56,9 @@ def test_settled_configuration_is_not_a_command_line_choice() -> None:
 def test_defaults_match_the_measured_run() -> None:
     args = _parse_args(["--model", "t5gemma2"])
 
-    assert args.epochs == 3.0
+    # Trần chứ không phải đích: chất lượng còn lên ở epoch 3 của lượt đo, và
+    # dừng sớm mới là thứ quyết định lượt chạy kết thúc ở đâu.
+    assert args.epochs == 8.0
     assert args.learning_rate == 1e-4
     assert args.seed == 42
     # Biên dịch bật sẵn; tắt được vì có model không biên dịch nổi, và mất tốc độ
