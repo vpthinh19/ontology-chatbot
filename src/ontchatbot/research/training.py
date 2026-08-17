@@ -458,7 +458,7 @@ def train(args: argparse.Namespace) -> dict:
             else None
         ),
     )
-    if args.compile and spec["gradient_accumulation"] > 1:
+    if args.compile:
         trainer.add_callback(_stable_gradient_buffers(TrainerCallback, torch))
 
     if torch.cuda.is_available():
@@ -910,7 +910,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--compile-mode",
-        default="max-autotune",
+        default="reduce-overhead",
         help="chế độ torch.compile; mặc định bỏ CUDA graphs vì chúng xung khắc với tích luỹ gradient",
     )
     parser.add_argument("--smoke-test", action="store_true")

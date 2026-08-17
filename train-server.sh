@@ -85,8 +85,11 @@ for MODEL in ${MODELS}; do
     # Bản biên dịch được lưu ra đĩa nên lượt thật dùng lại, không dịch hai lần.
     echo "=== THỬ COMPILE ${MODEL} (5 bước) ==="
     COMPILE=()
+    # ``--smoke-test`` để khâu sinh chữ cuối lượt chỉ chạy trên vài câu. Không có
+    # nó, lượt thử vẫn sinh trọn tập kiểm định và tốn hơn cả phần nó đang thử.
     if "${PY}" -m ontchatbot.cli.train \
         --model "${MODEL}" \
+        --smoke-test \
         --max-steps 5 \
         --eval-every-epochs 999 \
         --compile \
