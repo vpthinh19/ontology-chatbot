@@ -170,12 +170,8 @@ def validate_release(
                 for name, value in (match_target(spec, row["target"]) or {}).items():
                     train_slots[query_id][name].add(value)
 
-    # Chỉ họ primary mới bắt buộc có dữ liệu huấn luyện. Họ secondary vẫn chạy
-    # được ở runtime và vẫn phủ danh mục khả năng trả lời - chúng chỉ không tiêu
-    # ngân sách dạy học, vì phần lớn là câu hỏi vòng tròn không ai đặt.
-    #
-    # Giao với primary ở CẢ HAI nhánh: một họ secondary tình cờ có vài dòng trong
-    # dataset cũng không vì thế mà bị đòi đủ số dòng, đủ phong cách ở cả ba tập.
+    # Chỉ họ primary phải có dữ liệu huấn luyện. Họ secondary chỉ hỗ trợ runtime.
+    # Các họ secondary xuất hiện trong dataset không phải thỏa mọi điều kiện phủ.
     primary_queries = {
         query_id for query_id, spec in catalogue.items() if spec.tier == "primary"
     }

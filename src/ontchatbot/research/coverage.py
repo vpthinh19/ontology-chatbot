@@ -104,9 +104,7 @@ def assess_coverage(
         split: {row.get("query_id") for row in rows}
         for split, rows in rows_by_split.items()
     }
-    # Chỉ họ ``primary`` mới bắt buộc có mặt trong dataset. Họ ``secondary`` vẫn
-    # chạy được ở runtime và vẫn phủ danh mục khả năng trả lời - chúng chỉ không
-    # tiêu ngân sách dạy học, vì phần lớn là câu hỏi vòng tròn không ai đặt.
+    # Chỉ họ ``primary`` bắt buộc có mặt trong dataset; ``secondary`` chỉ hỗ trợ runtime.
     required = {
         query_id
         for query_id, spec in catalogue.items()
@@ -389,10 +387,7 @@ def _is_rejection_row(row: Mapping[str, str], catalogue: Mapping[str, QuerySpec]
     if not isinstance(query_id, str) or not isinstance(target, str):
         return False
     spec = catalogue.get(query_id)
-    # "Không trả lời câu hỏi theo nghĩa đen" có hai dạng: nói thẳng là không có
-    # thông tin, và - RIÊNG với câu chào - liệt kê những việc mình làm được. Cả
-    # hai đều là cách xử lý một câu không trả lời trực tiếp được, nên cả hai đều
-    # tính là đã phủ nhóm đó.
+    # Các phản hồi từ chối và phản hồi khả năng đều phủ nhóm không có đáp án trực tiếp.
     return (
         spec is not None
         and spec.domain in ("out-of-domain", "assistant")

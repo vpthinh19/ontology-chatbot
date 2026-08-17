@@ -5,17 +5,12 @@ cách diễn đạt; ghép ba trục lại mới ra một câu hỏi.
 
 Neo chia làm hai nhóm có cách gọi tên khác hẳn nhau:
 
-* **Phần văn bản** (Điều, khoản, điểm, chương, phụ lục) - 280 neo, không neo nào
-  có ``skos:altLabel`` và cũng không cần: người ta gọi chúng bằng SỐ HIỆU. Nhãn
-  đầy đủ *"khoản 3 Điều 24 Quy chế đào tạo trình độ đại học"* không phải cách ai
-  gõ vào ô chat. Cách gọi được dựng lại từ chính toạ độ của node nên không thể
-  lệch với cấu trúc thật.
-* **Thực thể có tên** - nhãn ĐÃ LÀ cách người ta gọi (*"Kế toán"*, *"Kỹ thuật
-  nhiệt"*). Thêm ``skos:altLabel`` khi có, cộng vài phép rút gọn cơ học.
+* **Phần văn bản** (Điều, khoản, điểm, chương, phụ lục): cách gọi được dựng từ
+  toạ độ của node để phản ánh cấu trúc tài liệu.
+* **Thực thể có tên**: dùng nhãn chính, ``skos:altLabel`` và các phép rút gọn
+  cơ học.
 
-Ontology cố ý KHÔNG chứa biến thể khẩu ngữ - ``docs/ONTOLOGY.md`` cấm nhồi
-``altLabel`` cho đủ chỉ tiêu, vì tên lỏng nghĩa sẽ dạy chatbot trả lời sai một
-cách tự tin. Biến thể diễn đạt thuộc về dataset, và đó là việc của module này.
+Ontology chỉ lưu các tên có nghĩa xác định; biến thể diễn đạt thuộc về dataset.
 """
 
 from __future__ import annotations
@@ -31,13 +26,9 @@ from .answer_scope import rdf_type_names
 #: Nhận cả gạch nối ngắn lẫn gạch dài: nguồn công văn dùng lẫn lộn hai loại, và
 #: nhãn nào dùng gạch dài mà không tách được sẽ đi thẳng vào câu hỏi nguyên khối.
 _SPLIT = re.compile(r"\s+[-‐-―]\s+|:\s+")
-#: Tiền tố phân loại mà người hỏi thường bỏ đi, nhưng dạng đầy đủ VẪN là cách gọi
-#: tự nhiên: "Thủ tục nghỉ học tạm thời" là câu người ta thật sự nói.
+#: Tiền tố phân loại có thể bỏ khi tạo cách gọi rút gọn.
 _DROPPED_PREFIXES = ("Thủ tục ", "Quy tắc ")
-#: Tiền tố là NHÃN GIAO DIỆN của nguồn, không phải cách gọi. Không ai hỏi "Mục
-#: tải: Đơn xin hoãn thi tương ứng mẫu số mấy" - giữ dạng đầy đủ chỉ sinh ra câu
-#: không người dùng nào gõ, mà lại dính nhiều nhất ở giọng trang trọng vì luật
-#: chọn tên ưu tiên tên dài.
+#: Tiền tố giao diện của nguồn không phải là một phần của cách gọi thực thể.
 _ARTIFACT_PREFIXES = ("Mục tải: ",)
 #: Dấu câu sót lại ở đầu nhãn sau khi bóc tiền tố.
 _LEADING_PUNCTUATION = re.compile(r"^[^\wÀ-ỹ]+")
@@ -74,9 +65,7 @@ def _document_coordinates(
     chapter = value("chapterNumber")
     appendix = value("appendixNumber")
 
-    # Một dạng chuẩn cho mỗi node, KHÔNG sinh biến thể hoa/thường ở đây: viết hoa
-    # hay không là chuyện của phong cách diễn đạt, và trộn hai tầng vào nhau sẽ
-    # khiến cùng một node trông như hai cách gọi khác nhau.
+    # Một dạng chuẩn cho mỗi node; biến thể hoa/thường thuộc tầng phong cách.
     if "Point" in classes and point and clause and article:
         coordinate = f"điểm {point} khoản {clause} Điều {article}"
     elif "Clause" in classes and clause and article:
@@ -90,40 +79,15 @@ def _document_coordinates(
     else:
         return ()
 
-    # TOẠ ĐỘ TRẦN KHÔNG BAO GIỜ LÀ MỘT CÁCH GỌI. "Điều 12" tách khỏi văn bản thì
-    # không chỉ về cái gì cả - mỗi quy chế đều có Điều 12 của riêng nó.
-    #
-    # Bản trước trả về đúng toạ độ trần và bỏ qua ``rdfs:label``, dù nhãn ấy vốn
-    # đã đầy đủ ("Điều 10 Quy chế đào tạo trình độ đại học"). Nó CHẠY ĐƯỢC chỉ vì
-    # đồ thị tình cờ có mỗi một văn bản mang số đó - đúng do may, không do thiết
-    # kế. Nạp thêm Quy chế tuyển sinh là **111 cách gọi lật sang mơ hồ** cùng lúc,
-    # kéo theo 609 dòng dataset đang dạy hỏi bằng toạ độ trần.
-    #
-    # Nay lấy chính nhãn làm cách gọi, cộng dạng ngắn theo số hiệu văn bản, vì
-    # người hỏi dùng cả hai: "Điều 10 Quy chế đào tạo trình độ đại học" và
-    # "Điều 10 Quy chế 1052".
-    # MỘT cách gọi cho mỗi phần, không hai. Luật phủ bắt dạy TỪNG cặp (node, cách
-    # gọi) ít nhất một lần, nên thêm một cách gọi là nhân đôi sàn dòng của cả
-    # miền văn bản - đo thật: 533 phần văn bản thành 1.066 dòng bắt buộc, đẩy
-    # dataset lên 6.083 và làm miền trọng tâm tụt từ 39,4% xuống 25,7%.
-    #
-    # Dùng dạng THEO SỐ HIỆU ("Điều 24 Quy chế 1052"), không dùng nhãn đầy đủ
-    # ("Điều 24 Quy chế đào tạo trình độ đại học"). Cả hai đều đủ nghĩa, nhưng
-    # dạng số hiệu dài 5 từ còn nhãn đầy đủ dài 9 - mà luật "mỗi miền trả lời
-    # được phải có ít nhất 15% câu ngắn 2-6 từ" thì nhãn 9 từ KHÔNG BAO GIỜ sinh
-    # nổi một câu ngắn. Đo thật: lấy nhãn đầy đủ thì miền văn bản chỉ còn 8,6%
-    # câu ngắn, tức phải hạ hợp đồng - đúng thứ không được làm.
-    #
-    # Dạng số hiệu cũng là quy ước dự án đã dùng sẵn để gỡ mơ hồ, nên không đẻ
-    # thêm khái niệm nào.
+    # Toạ độ phải kèm định danh tài liệu để không mơ hồ giữa các tài liệu có cùng
+    # số điều. Mỗi phần văn bản có một cách gọi chuẩn để duy trì độ phủ dataset.
     short = _document_short_name(graph, node)
     found = [f"{coordinate} {short}"] if short else []
     if not found:
         label = next(graph.objects(node, RDFS.label), None)
         if label is not None:
             found.append(str(label))
-    # Không còn cách nào định vị được văn bản thì thà giữ toạ độ trần còn hơn để
-    # node mất sạch cách gọi - chốt chặn ở ``mention_index`` sẽ báo nếu nó mơ hồ.
+    # Dùng toạ độ trần làm dự phòng; ``mention_index`` kiểm tra mọi trường hợp mơ hồ.
     return tuple(dict.fromkeys(found)) or (coordinate,)
 
 
@@ -134,15 +98,12 @@ def _named_entity(graph: Graph, node: URIRef) -> tuple[str, ...]:
     raw: list[str] = [] if label is None else [str(label)]
     raw.extend(sorted(str(value) for value in graph.objects(node, SKOS.altLabel)))
 
-    # Tiền tố giao diện bị THAY THẾ chứ không bổ sung: giữ lại dạng đầy đủ nghĩa
-    # là vẫn để nó lọt vào câu hỏi.
+    # Bỏ tiền tố giao diện trước khi tạo các cách gọi.
     found = [_without_artifact_prefix(text) for text in raw]
     for text in list(found):
         found.extend(_shortened(text))
 
-    # Lọc trùng KHÔNG phân biệt hoa thường, giữ dạng gặp đầu tiên (là rdfs:label).
-    # Vài thực thể có altLabel chỉ khác nhãn chính ở chữ hoa - giữ cả hai sẽ thành
-    # hai "cách gọi" cho cùng một thứ, và phá vỡ ràng buộc mỗi cách gọi một neo.
+    # Khử trùng theo chữ thường; khác biệt hoa/thường không tạo cách gọi mới.
     seen: dict[str, str] = {}
     for text in found:
         cleaned = re.sub(r"\s+", " ", text).strip()
@@ -152,11 +113,7 @@ def _named_entity(graph: Graph, node: URIRef) -> tuple[str, ...]:
 
 
 def _without_artifact_prefix(text: str) -> str:
-    """Bóc nhãn giao diện của nguồn, kèm dấu câu sót lại ngay sau nó.
-
-    *"Mục tải: – Đơn xin chuyển ngành…"* để nguyên sẽ thành một cách gọi mở đầu
-    bằng dấu gạch, và nó đã đi vào 41 dòng dataset.
-    """
+    """Bóc nhãn giao diện của nguồn và dấu câu sót lại ngay sau nó."""
 
     for prefix in _ARTIFACT_PREFIXES:
         if text.startswith(prefix):
@@ -175,8 +132,7 @@ def _shortened(text: str) -> list[str]:
 
     for prefix in _DROPPED_PREFIXES:
         if text.startswith(prefix) and len(text) > len(prefix) + 3:
-            # Tiền tố phân loại đứng riêng thì vô nghĩa và trùng nhau ở hàng chục
-            # thực thể, nên KHÔNG tách tiếp phần đuôi.
+            # Không tách tiếp tiền tố phân loại để tránh một cách gọi thiếu nghĩa.
             return [text[len(prefix) :]]
 
     parts = [_LEADING_PUNCTUATION.sub("", part).strip() for part in _SPLIT.split(text)]
@@ -189,14 +145,10 @@ def overloaded_mentions(
     graph: Graph,
     local_names: tuple[str, ...],
 ) -> dict[str, tuple[str, ...]]:
-    """Cách gọi trỏ tới nhiều thực thể, KỂ CẢ khi gỡ được bằng bổ ngữ.
+    """Cách gọi trỏ tới nhiều thực thể, kể cả khi có thể gỡ bằng bổ ngữ.
 
-    Khác ``mention_index``: ở đó *"Điều 1"* được cứu bằng cách thêm tên tài liệu,
-    nên nó biến mất khỏi danh sách mơ hồ. Nhưng người dùng gõ đúng *"Điều 1"* mới
-    là câu mơ hồ thật, và là ca từ chối sát thực tế nhất mà đồ thị sinh ra được -
-    ba tài liệu đều có Điều 1 với nội dung khác hẳn nhau.
-
-    Dùng cho nhóm câu từ chối, không dùng để sinh câu trả lời được.
+    Dùng cho nhóm câu từ chối, không dùng để sinh câu trả lời được. Các cách gọi
+    này giữ nguyên mức mơ hồ của chúng, thay vì thêm bổ ngữ để phân giải.
     """
 
     owners: dict[str, set[str]] = {}
@@ -222,20 +174,8 @@ def _document_short_name(graph: Graph, node: URIRef) -> str | None:
     number = next(graph.objects(document, URIRef(ONTOLOGY_NS + "documentNumber")), None)
     if number is not None:
         return f"Quyết định {str(number).split('/', 1)[0]}"
-    # Quy chế không mang số hiệu của riêng nó - nó được BAN HÀNH KÈM một quyết
-    # định, và số hiệu quyết định là thứ phân biệt hai đời quy chế. Đi thêm một
-    # chặng để lấy số đó.
-    #
-    # Trước đây chỗ này lấy bốn từ đầu của nhãn, và bốn từ đầu của cả hai quy chế
-    # đều là "Quy chế đào tạo trình độ": chữ phân biệt "năm 2021" nằm tận cuối
-    # nhãn. Hậu quả là "Điều 10" của hai đời quy chế cùng rút thành một cách gọi,
-    # trong khi Điều 10 bản 2025 nói về xoá lớp học phần còn bản 2021 nói về rút
-    # bớt học phần.
-    #
-    # Phải gọi là "Quy chế 1052" chứ KHÔNG phải "Quyết định 1052": quyết định ban
-    # hành và quy chế kèm theo là hai tài liệu riêng, cả hai đều có Điều 1 với
-    # nội dung khác hẳn nhau. Mượn nguyên tên quyết định thì gỡ được mơ hồ giữa
-    # hai đời quy chế nhưng lại tạo mơ hồ mới giữa quy chế và quyết định của nó.
+    # Quy chế dùng số hiệu của quyết định ban hành. Tiền tố ``Quy chế`` phân biệt
+    # quy chế với quyết định ban hành, là hai tài liệu riêng.
     issuer = next(graph.objects(document, URIRef(ONTOLOGY_NS + "issuedBy")), None)
     if issuer is not None:
         number = next(graph.objects(issuer, URIRef(ONTOLOGY_NS + "documentNumber")), None)
@@ -261,17 +201,7 @@ def _form_number_hint(graph: Graph, node: URIRef) -> str | None:
 
 
 def _one_real_thing(graph: Graph, names: set[str]) -> bool:
-    """Các neo này có phải cùng MỘT thứ ngoài đời, chỉ được mô hình nhiều lần?
-
-    Một tờ đơn nằm trong ontology hai lần: bản theo Quyết định 1052 và mục tải
-    trên trang web, nối với nhau bằng ``catalogueEntryForForm``. Người hỏi *"Đơn
-    xin chuyển trường là mẫu số mấy"* không hề mơ hồ - họ hỏi về một tờ đơn duy
-    nhất. Coi đây là mơ hồ thì câu hỏi tự nhiên nhất về biểu mẫu bị TỪ CHỐI.
-
-    Hai node vẫn giữ nguyên vì hai nguồn đánh số khác nhau (web ghi mẫu 11,
-    quyết định ghi mẫu 13); chính KHUNG CÂU HỎI chọn node nào - họ hỏi số hiệu
-    trên web đều mang chữ "trên web".
-    """
+    """Kiểm tra các neo có cùng thực thể được mô hình hóa từ nhiều nguồn."""
 
     link = URIRef(ONTOLOGY_NS + "catalogueEntryForForm")
     nodes = {URIRef(ONTOLOGY_NS + name) for name in names}
@@ -288,21 +218,15 @@ def mention_index(
     graph: Graph,
     local_names: tuple[str, ...],
 ) -> tuple[dict[str, tuple[str, ...]], dict[str, tuple[str, ...]]]:
-    """Cách gọi ĐÃ PHÂN GIẢI, kèm danh sách cách gọi mơ hồ.
+    """Cách gọi đã phân giải, kèm danh sách cách gọi mơ hồ.
 
     Trả về hai thứ:
 
     * ``resolved`` - mỗi neo và các cách gọi chỉ trỏ tới đúng nó;
     * ``ambiguous`` - cách gọi trỏ tới nhiều neo, kèm danh sách các neo đó.
 
-    Cái thứ hai KHÔNG phải rác cần bỏ đi. ``docs/CONCEPT.md`` quy định câu hỏi quá
-    mơ hồ để có một câu trả lời đúng duy nhất thì phải bị TỪ CHỐI. Vậy nên đây
-    chính là nguyên liệu tốt nhất cho nhóm câu từ chối "gần miền". Sinh chúng từ
-    đồ thị thật thì không phải bịa, và bảo đảm chúng thực sự mơ hồ.
-
-    "Điều 1" là ví dụ: ba tài liệu đều có Điều 1 với nội dung khác hẳn nhau. Nếu
-    thêm được tên tài liệu để phân biệt thì dùng dạng đầy đủ; không thì cách gọi
-    đó thuộc về nhóm từ chối.
+    Các cách gọi không phân giải được được dùng cho nhóm câu từ chối. Bổ ngữ chỉ
+    được thêm khi nó phân biệt duy nhất thực thể.
     """
 
     raw = {name: mentions(graph, name) for name in local_names}
@@ -322,14 +246,10 @@ def mention_index(
                 resolved[name].append(text)
                 continue
             qualifier = _document_short_name(graph, node) or _form_number_hint(graph, node)
-            # Bổ ngữ đã nằm sẵn trong cách gọi thì không gỡ được mơ hồ, chỉ sinh
-            # ra "Mẫu số 13 mẫu số 13". Trường hợp đó phải là câu từ chối.
+            # Không lặp bổ ngữ đã có trong cách gọi.
             if qualifier is not None and qualifier.casefold() in text.casefold():
                 qualifier = None
-            # Bổ ngữ chỉ đáng dùng khi nó THẬT SỰ tách được các bên ra. Trước đây
-            # chỗ này gắn bổ ngữ mà không kiểm, nên khi hai quy chế cùng cho ra
-            # bổ ngữ "Quy chế đào tạo" thì cả hai đều nhận cùng một cách gọi và
-            # mơ hồ vẫn nguyên - chỉ khác là nó không còn bị báo nữa.
+            # Chỉ dùng bổ ngữ nếu nó phân biệt được với mọi neo còn lại.
             if qualifier is not None:
                 others = {
                     _document_short_name(graph, URIRef(ONTOLOGY_NS + other))
@@ -342,8 +262,7 @@ def mention_index(
             if qualifier is not None:
                 resolved[name].append(f"{text} {qualifier}")
             else:
-                # Khoá theo casefold: "Đơn xin nghỉ học" và "đơn xin nghỉ học" là
-                # MỘT cách gọi, tách đôi sẽ đếm thừa và sinh câu từ chối trùng nhau.
+                # Khóa theo ``casefold`` để tránh các câu từ chối trùng nhau.
                 ambiguous.setdefault(text.casefold(), set()).update(sharers)
 
     missing = sorted(name for name, texts in resolved.items() if not texts)

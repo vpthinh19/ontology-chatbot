@@ -138,13 +138,9 @@ def _flash_attention_available() -> bool:
 
 
 def _cached_snapshot(*, allow_download: bool = False) -> Path:
-    """Tìm model đã ghim. KHÔNG tự tải trừ khi người chạy nói rõ là được.
+    """Tìm model đã ghim; chỉ tải khi người chạy cho phép rõ ràng.
 
-    Mặc định là chặn, và chặn có lý do: 4,57 GB trên một máy thuê tính tiền theo
-    giờ, tải âm thầm giữa lượt huấn luyện thì vừa tốn vừa khó truy. Nhưng máy vừa
-    clone về thì chưa có gì trong cache, nên phải có đường mở CÓ CHỦ Ý -
-    ``benchmark_llm`` vốn đã có ``--allow-download``, bên này thiếu nên người chạy
-    kẹt cứng không có lối nào ngoài việc tự đoán lệnh tải.
+    Mặc định dùng cache cục bộ để lượt huấn luyện không tự phát sinh tải xuống.
     """
 
     try:
@@ -216,17 +212,10 @@ def encode_training_example(
 def _batch_plans(
     requested: int | None, *, checkpointing: bool = True
 ) -> tuple[BatchPlan, ...]:
-    """Thang lô để thử, từ lớn xuống nhỏ.
+    """Thang cỡ lô từ lớn xuống nhỏ.
 
-    Bỏ activation đi (checkpointing) thì lô 8 vừa; giữ activation lại thì không.
-    Đo trên L4 24 GB ngày 15/8/2026, chuỗi dài nhất 266 token: tắt checkpointing
-    rồi thử lô 8 thì đỉnh **20,30 / 22,0 GiB rồi tràn**, lùi về lô 4 chỉ còn
-    13,44 GiB. Bắt đầu từ 8 trong trường hợp đó là chắc chắn tràn, và mỗi lần
-    tràn phải nạp lại model từ đầu.
-
-    Lô hiệu dụng không đổi dù bắt đầu ở đâu - phần chênh được bù bằng tích luỹ
-    gradient - nên bỏ nấc 8 không làm đổi kết quả huấn luyện, chỉ bớt một lượt
-    nạp model vô ích.
+    Khi tắt checkpointing, bắt đầu từ 4 để giới hạn bộ nhớ; tích lũy gradient
+    giữ cỡ lô hiệu dụng không đổi.
     """
 
     if requested is not None:
@@ -340,16 +329,8 @@ def _cast_tied_weight_to_dtype(model, dtype) -> dict[str, Any]:
 
 #: Ngưỡng VRAM để tự tắt gradient checkpointing.
 #:
-#: Checkpointing đánh đổi TỐC ĐỘ lấy BỘ NHỚ: nó bỏ activation rồi tính lại ở lượt
-#: truyền ngược, thường mất 30-40% tốc độ. Trên card 6 GB đó là đánh đổi bắt buộc
-#: - không bật thì batch 2 cũng tràn. Trên L4 24 GB thì đó là trả giá mà không
-#: mua gì: batch 8 nằm gọn trong bộ nhớ.
-#:
-#: Kết quả huấn luyện KHÔNG đổi. Đây là phép đánh đổi thuần tuý bộ nhớ - phép tính
-#: giống hệt, gradient giống hệt.
-#:
-#: 16 GiB là ngưỡng chia hai loại máy dự án thực sự dùng: 6 GB ở local, 24 GB trên
-#: server thuê. Không có máy nào nằm giữa để phải cân nhắc.
+#: Checkpointing giảm bộ nhớ bằng cách tính lại activation trong lượt truyền
+#: ngược. Ngưỡng 16 GiB chọn cấu hình phù hợp với dung lượng bộ nhớ GPU.
 GRADIENT_CHECKPOINT_VRAM_THRESHOLD = 16 * 1024**3
 
 
@@ -470,15 +451,7 @@ def _run_attempt(
         torch, args.gradient_checkpointing
     )
     lora = _lora_spec(args.lora_profile)
-    # NÉN 4-BIT LÀ TUỲ CHỌN, VÀ KHÔNG CÒN LÀ MẶC ĐỊNH.
-    #
-    # Nó sinh ra cho card 6 GB. Trên card lớn nó chỉ lấy đi tốc độ:
-    # bitsandbytes giải nén trọng số ở MỖI lượt truyền, mà lô nhỏ với chuỗi
-    # ngắn thì gần như không có phép tính nào để chia đều chi phí đó - huấn
-    # luyện trả giá hai lần, xuôi và ngược. Model 1,2 tỉ tham số ở bf16 chỉ tốn
-    # khoảng 2,4 GB nên L4 24 GB thừa sức giữ nguyên.
-    #
-    # Vẫn giữ đường 4-bit vì card 6 GB không nạp nổi bf16.
+    # Lượng tử hóa 4-bit là tùy chọn cho GPU không đủ bộ nhớ dùng bf16.
     quantize = args.base_precision == "4bit"
     quantization = (
         BitsAndBytesConfig(
@@ -608,11 +581,8 @@ def _run_attempt(
                 # transformers 5.x accepts fractional warmup through this field.
                 warmup_steps=0.03,
                 weight_decay=0.0,
-                # Đo trên 60 bước, card 6 GB, bf16: adamw_torch 4,902 · fused
-                # 4,914 · paged_adamw_8bit 4,940 giây/bước. Chênh 0,8%, tức
-                # nhiễu. LoRA học 3,69 triệu tham số còn mỗi bước phải đẩy qua
-                # 1,2 tỉ trọng số đóng băng, nên bước optimizer không phải chỗ
-                # tốn thời gian. Chốt bản fused, đừng đo lại.
+                # LoRA cập nhật ít tham số; optimizer fused giữ cấu hình chuẩn
+                # cho đường huấn luyện này.
                 optim="adamw_torch_fused",
                 max_grad_norm=0.3,
                 gradient_checkpointing=checkpoint_gradients,
@@ -750,8 +720,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
             f"{MODEL_ID} is present in the local cache at {snapshot}, but CUDA is "
             "not available; refusing to run a misleading CPU smoke test"
         )
-    # Chốt "auto" thành giá trị thật NGAY ĐÂY, trước khi bất cứ ai đọc nó. Để
-    # mỗi chỗ tự suy lại là mở đường cho hai chỗ suy ra hai kiểu.
+    # Phân giải ``auto`` một lần để mọi thành phần dùng cùng cấu hình.
     args.base_precision = _resolve_base_precision(args.base_precision)
     rows = _load_rows(
         smoke_test=args.smoke_test,
@@ -782,9 +751,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
                 "torch_compile": args.torch_compile,
                 "model_profile": args.model_profile,
                 "keep_tied_weight_fp32": args.keep_tied_weight_fp32,
-                # Ghi CẢ lựa chọn lẫn kết quả suy ra. Đọc log nguội mà chỉ thấy
-                # "auto" thì không biết máy đó đã bật hay tắt, mà đó lại là thứ
-                # giải thích phần lớn chênh lệch tốc độ giữa hai lượt chạy.
+                # Ghi lựa chọn và giá trị đã phân giải để tái lập cấu hình chạy.
                 "base_precision": args.base_precision,
                 "gradient_checkpointing_choice": args.gradient_checkpointing,
                 "gradient_checkpointing_effective": _checkpointing_for_log(args),

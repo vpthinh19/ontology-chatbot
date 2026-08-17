@@ -20,14 +20,9 @@ ACADEMIC = Namespace(ONTOLOGY_NS)
 
 #: Bước cuối hợp lệ của từng quan hệ.
 #:
-#: Không nhân chéo mọi quan hệ với mọi literal: phần lớn tổ hợp không ai hỏi.
-#: "Căn cứ của quy định này" hỏi trích dẫn hoặc nguyên văn, không hỏi nhãn của
-#: điều luật; "bước thực hiện" hỏi nội dung bước, không hỏi nhãn kỹ thuật của
-#: node bước.
+#: Mỗi quan hệ chỉ có các đầu cuối mang ý nghĩa trả lời tương ứng.
 RELATION_TERMINALS = {
-    # Một dữ kiện phải trả lời được cả ba câu: nội dung là gì, căn cứ ở đâu, và
-    # xem bản gốc tại đâu. Người hỏi không biết "Quyết định 1052" là văn bản nào
-    # nên chỉ nêu số hiệu là chưa đủ.
+    # Căn cứ gồm nội dung, trích dẫn và liên kết tới văn bản nguồn.
     "basedOn": ("citationLabel", "officialText", "documentUrl"),
     "hasStep": ("stepText",),
     "hasRequirement": ("requirementText",),
@@ -58,11 +53,7 @@ def object_properties(graph: Graph) -> tuple[str, ...]:
             if isinstance(subject, URIRef) and str(subject).startswith(ONTOLOGY_NS)
         )
     )
-#: Khả năng trả lời bị loại có chủ đích, kèm lý do bắt buộc.
-#:
-#: Các ngoại lệ của lược đồ cũ đã hết hiệu lực: bốn ngoại lệ ``*Provision`` mất
-#: cùng quan hệ sinh ra chúng, và nghỉ ốm giờ trả lời được đơn vị nhận hồ sơ vì
-#: hai nhánh đã được tách thành hai thủ tục.
+#: Khả năng trả lời bị loại, kèm lý do.
 EXCLUSIONS = (
     {
         "id": "ArticulationStudyProcedure-requiresForm",
@@ -196,9 +187,8 @@ def write_answer_inventory(graph: Graph, path: Path = ANSWER_INVENTORY_PATH) -> 
 def _semantic_individuals(graph: Graph) -> list[URIRef]:
     """Mọi neo mà một câu hỏi có thể nhắm tới.
 
-    Chỉ node nội bộ của một quy trình bị loại: người dùng không gọi tên bước
-    hay điều kiện, họ hỏi qua chính quy trình chứa chúng. Tầng văn bản thì
-    ngược lại - "Điều 24 quy định gì" là cách hỏi tự nhiên nhất.
+    Node nội bộ của quy trình được hỏi qua quy trình chứa chúng; các phần văn
+    bản vẫn là neo trả lời trực tiếp.
     """
 
     individuals = {

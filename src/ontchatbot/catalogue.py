@@ -9,15 +9,8 @@ from pathlib import Path
 from typing import Literal, Mapping
 
 SlotKind = Literal["iri", "number"]
-#: ``primary`` là họ mà người dùng thật sự hỏi, nên bắt buộc có dữ liệu huấn
-#: luyện. ``secondary`` vẫn truy vấn được ở runtime và vẫn phủ danh mục khả
-#: năng trả lời, nhưng KHÔNG bắt buộc có mặt trong dataset.
-#:
-#: Phân tầng này tồn tại vì độ phủ và ngân sách dạy học là hai câu hỏi khác
-#: nhau. Bộ sinh cơ học tạo cả những họ hỏi vòng tròn - "khoản 3 Điều 24 thuộc
-#: điều số mấy" - mà câu trả lời đã nằm sẵn trong câu hỏi. Chúng không chỉ tốn
-#: dữ liệu: chúng trông gần giống các họ hữu ích nên làm model lẫn khi chọn họ,
-#: đúng chế độ lỗi đã đo được.
+#: Họ ``primary`` phải có dữ liệu huấn luyện; ``secondary`` chỉ được hỗ trợ ở
+#: runtime. Phân tầng tách độ phủ khả năng trả lời khỏi ngân sách huấn luyện.
 Tier = Literal["primary", "secondary"]
 #: ``document`` là tra cứu nguyên văn công văn ("Điều 24 nói gì"). Nó tách khỏi
 #: ``academic-rule`` vì là loại câu hỏi khác hẳn: người dùng hỏi một phần văn
@@ -49,8 +42,7 @@ _PLACEHOLDER = re.compile(r"\$\{([a-z][a-z0-9_]*)\}")
 _IRI = re.compile(r"^:[A-Za-z][A-Za-z0-9]*$")
 _NUMBER_PATTERN = r"-?(?:0|[1-9]\d*)(?:\.\d+)?"
 _REQUIRED_FIELDS = {"query_id", "domain", "target_template", "slots", "coverage"}
-#: ``tier`` khuyết nghĩa là ``primary``. Giữ nó tuỳ chọn để danh mục viết tay và
-#: các bản danh mục cũ vẫn nạp được mà không phải sửa từng dòng.
+#: ``tier`` khuyết có giá trị ``primary``.
 _OPTIONAL_FIELDS = {"tier"}
 _TIERS = frozenset({"primary", "secondary"})
 _LOCAL_NAME = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
@@ -189,8 +181,7 @@ def _parse_spec(payload: object) -> QuerySpec:
         raise CatalogueError("rejection query cannot declare coverage")
     if domain != "out-of-domain" and not coverage:
         raise CatalogueError("non-rejection query must declare coverage")
-    # Từ chối là hành vi người dùng gặp thường xuyên nhất; nó không bao giờ được
-    # phép nằm ngoài diện bắt buộc có dữ liệu huấn luyện.
+    # Truy vấn từ chối luôn thuộc diện phải có dữ liệu huấn luyện.
     if domain == "out-of-domain" and tier != "primary":
         raise CatalogueError("rejection query must stay primary")
     return QuerySpec(  # type: ignore[arg-type]

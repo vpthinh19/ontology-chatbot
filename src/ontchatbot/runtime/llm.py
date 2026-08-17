@@ -1,8 +1,7 @@
-"""Sinh truy vấn bằng LLM có nhắc ví dụ, thay cho seq2seq đã tinh chỉnh.
+"""Sinh truy vấn bằng LLM có nhắc ví dụ hoặc đã tinh chỉnh.
 
 Cài đặt cùng giao diện với ``CTranslate2Generator``: đưa vào câu hỏi, trả ra một
-chuỗi truy vấn. Bốn cửa kiểm ở tầng chạy không đổi, nên LLM bịa cũng bị chặn y
-như model cũ.
+chuỗi truy vấn. Tầng chạy áp dụng cùng các bước kiểm cho mọi model.
 
 Ví dụ nhắc kèm được lấy từ chính tập huấn luyện, chọn theo độ giống chữ. Không
 dùng vector nhúng: câu hỏi ở đây ngắn và hay viết tắt, viết không dấu, nên so
@@ -73,13 +72,9 @@ def load_examples(path: Path) -> tuple[Example, ...]:
 
 
 class _QueryGeneratorBase:
-    """Phần chung của mọi cách sinh truy vấn: chuẩn hoá, gọi model, dọn kết quả.
+    """Phần chung của mọi cách sinh truy vấn: chuẩn hóa, gọi model, dọn kết quả.
 
-    Chỉ ``build_prompt`` là khác nhau giữa model có nhắc ví dụ và model đã tinh
-    chỉnh. Mọi bước còn lại nằm ở đây, một bản duy nhất, vì để hai đường tự đi
-    tự đến là cách dự án này đã tự bắn vào chân mình: bộ chấm từng hỏi adapter
-    bằng khuôn nhắc 12 ví dụ - thứ adapter chưa thấy bao giờ - và con số thu về
-    đo một model không tồn tại.
+    Chỉ ``build_prompt`` khác nhau giữa model có nhắc ví dụ và model đã tinh chỉnh.
     """
 
     def __init__(
@@ -102,13 +97,8 @@ class _QueryGeneratorBase:
     def generate_many(self, texts: Sequence[str]) -> list[str]:
         """Sinh cho nhiều câu một lượt, giữ nguyên thứ tự đưa vào.
 
-        Đi qua ĐÚNG các bước của ``generate`` - chuẩn hoá, dựng prompt, dọn kết
-        quả - và chỉ thay chỗ gọi model. Viết lại đường ống này ở nơi khác là tự
-        chuốc lấy hai đường chấm lệch nhau mà không ai thấy: bộ chấm sẽ đo một
-        thứ, còn lúc chạy thật lại là thứ khác.
-
-        Không có ``complete_batch`` thì lùi về gọi từng câu. Nhờ vậy đường phục
-        vụ (một câu một lượt) không phải biết gì về gom lô.
+        Dùng cùng các bước chuẩn hóa, dựng prompt và dọn kết quả như ``generate``.
+        Nếu không có ``complete_batch``, gọi model cho từng câu.
         """
 
         prompts = [

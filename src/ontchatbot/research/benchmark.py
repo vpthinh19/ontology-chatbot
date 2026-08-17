@@ -31,11 +31,9 @@ def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, str]]:
 def load_user_query_expectations(
     path: Path = USER_QUERIES_PATH,
 ) -> list[dict[str, str]]:
-    """Nạp bộ câu người thật; đây không phải một split sinh tự động.
+    """Nạp bộ câu hỏi thực tế, tách biệt với các split sinh tự động.
 
-    Không chốt số lượng ở đây. Bộ này CHỈ ĐƯỢC PHÌNH RA - chín câu ban đầu cộng
-    sáu câu thêm ngày 15/8/2026 - nên mọi chỗ ghi cứng "chín câu" đều thành sai
-    ngay lần bổ sung kế tiếp.
+    Số lượng câu hỏi được lấy trực tiếp từ tệp, không ghi cứng trong mã.
     """
 
     try:
@@ -45,9 +43,7 @@ def load_user_query_expectations(
     if not isinstance(payload, dict) or not isinstance(payload.get("expectations"), list):
         raise BenchmarkError("real-user cases must contain an expectations list")
     expectations = payload["expectations"]
-    # ``note`` là trường TUỲ CHỌN, thêm 2026-08-14: nhãn ở tệp này do các phiên
-    # làm việc trước SUY RA chứ không phải người gán, nên mỗi lần sửa nhãn phải
-    # ghi kèm căn cứ. Bắt buộc hai trường kia, cho phép thêm ``note``.
+    # ``note`` là trường tùy chọn để ghi căn cứ cho nhãn kỳ vọng.
     required = {"question", "expected_query_id"}
     allowed = required | {"note"}
     for index, item in enumerate(expectations, 1):

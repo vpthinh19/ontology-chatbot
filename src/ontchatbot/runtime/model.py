@@ -9,7 +9,7 @@ from .text import normalize_model_input
 
 MAX_SOURCE_LENGTH = 128
 # Keep deployed CTranslate2 decoding aligned with the training/evaluation
-# protocol. The canonical release reaches 307 ViT5 tokens before EOS.
+# protocol. The target limit of 320 tokens includes room for EOS.
 MAX_TARGET_LENGTH = 320
 
 
@@ -63,9 +63,7 @@ class CTranslate2Generator:
     def generate_many(self, texts: Sequence[str]) -> list[str]:
         """Sinh cho nhiều câu một lượt, giữ nguyên thứ tự đưa vào.
 
-        ``translate_batch`` vốn nhận cả lô - đường một câu vẫn gọi nó với danh
-        sách MỘT phần tử, tức để engine chạy không tải. Bộ chấm LLM từng mất hơn
-        ba tiếng vì đúng lỗi này; đừng lặp lại ở đây.
+        Luôn dùng ``translate_batch`` để thực hiện suy luận theo lô.
         """
 
         sources = [normalize_model_input(text) for text in texts]

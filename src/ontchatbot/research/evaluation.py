@@ -24,12 +24,10 @@ _NO_INFORMATION = "không có thông tin"
 
 
 def _anchor_kind(node: str) -> str:
-    """Node được HỎI bằng nội dung hay bằng toạ độ văn bản.
+    """Phân loại neo theo cách người dùng tham chiếu đến nó.
 
-    Ba nhóm, và chênh lệch giữa chúng là thứ giải thích phần lớn lỗi:
-    ``table`` được hỏi bằng nội dung ("xếp loại tốt nghiệp"), ``document-part``
-    được hỏi bằng chính toạ độ ("Điều 12 Quy chế 1052"), ``named`` là node có
-    tên mang nghĩa. Đo trên test 16/8: 26,7% - 97,1% - 90,4%.
+    ``table`` được hỏi bằng nội dung, ``document-part`` bằng toạ độ văn bản và
+    ``named`` bằng tên mang nghĩa.
     """
 
     if node.endswith("Table") or re.search(r"Table\d+$", node):
@@ -80,9 +78,8 @@ def evaluate_predictions(
         register = example["register"]
         query_id = example["query_id"]
         marker_reference = target == _NO_INFORMATION
-        # Chỉ còn HAI nhóm. Họ "liệt kê năng lực" đã bị bỏ khỏi thiết kế
-        # (2026-08-14): công cụ chỉ truy ra dữ kiện hoặc nói không có, còn việc
-        # giới thiệu phạm vi là của LLM lớn gọi nó.
+        # Hai nhóm đánh giá là truy vấn neo và câu hỏi ngoài miền; giới thiệu
+        # phạm vi thuộc về lớp LLM gọi công cụ.
         evaluation_group = "out_of_domain" if marker_reference else "node_queries"
         accounting[evaluation_group] += 1
         query_features = (
@@ -212,11 +209,8 @@ def evaluate_predictions(
 
         if evaluation_group == "node_queries":
             expected_nodes = _query_anchor_nodes(target, graph)
-            # NHÓM THEO KIỂU TÊN NODE. Phép chia này đã phải viết lại bằng script
-            # vứt đi ba lần để chẩn đoán, vì báo cáo không có nó: bảng bị hỏi
-            # bằng NỘI DUNG nhưng từng được đặt tên bằng TOẠ ĐỘ, còn điều/khoản
-            # thì được hỏi bằng chính toạ độ của nó. Hai chuyện khác hẳn nhau mà
-            # gộp chung thì không thấy gì.
+            # Nhóm theo kiểu tham chiếu neo: bảng dùng nội dung, còn điều/khoản
+            # dùng toạ độ văn bản.
             if expected_nodes:
                 kind = _anchor_kind(expected_nodes[0])
                 groups["anchor_kind"] = (kind,)
