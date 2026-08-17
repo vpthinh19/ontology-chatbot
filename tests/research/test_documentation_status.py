@@ -113,7 +113,7 @@ def test_public_docs_describe_the_evaluated_dataset() -> None:
     dataset = _read("docs/DATASET.md")
     resource = _read("resources/dataset/README.md")
 
-    assert f"{total} câu" in readme
+    assert total in readme
     assert f"{total} câu" in dataset
     assert all(value in dataset for value in splits.values())
     assert all(value in resource for value in splits.values())
@@ -121,25 +121,34 @@ def test_public_docs_describe_the_evaluated_dataset() -> None:
 
 
 def test_readme_explains_the_research_to_new_readers() -> None:
+    """README viết cho người chưa biết gì và không mở mã nguồn.
+
+    Canh những gì người đọc đó CẦN, không canh cách trình bày: đánh số mục hay
+    dán một truy vấn mẫu là lựa chọn biên tập, còn việc nói rõ mô hình nhận gì
+    và trả gì thì không.
+    """
+
     training = _read("docs/TRAINING.md")
     readme = _read("README.md")
     model_report = REPORTS_DIR / "models.json"
 
     assert "test không tham gia chọn checkpoint" in training
-    assert "## 1. Bài toán nghiên cứu" in readme
-    assert "## 2. Các khái niệm nền tảng" in readme
-    assert "## 3. Phương pháp đề xuất" in readme
-    assert "### 3.1. Hình dạng đầu vào và đầu ra của model" in readme
-    assert "SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE" in readme
-    assert "TemporaryAcademicLeaveProcedure" in readme
-    assert "## 9. Giới hạn" in readme
-    assert "resources/dataset/train.jsonl" in readme
-    assert "resources/dataset/test.jsonl" in readme
-    assert "uv run generate_reports" in readme
-    assert ".venv/bin/python -m ontchatbot.research.inventory" in readme
-    assert ".venv/bin/python -m ontchatbot.cli.validate_data" in readme
-    assert "không sinh lại nữa" in readme
-    assert "điều phối tool-calling hoàn chỉnh chưa được tích hợp" in readme
+
+    # Người đọc phải trả lời được: hệ thống làm gì, nhận gì, trả gì, chạy ra sao,
+    # cần máy thế nào, và nó chưa làm được gì.
+    for topic in ("Bài toán", "vào và ra", "Chạy lại", "phần cứng", "Giới hạn"):
+        assert topic in readme, topic
+
+    # Đầu ra chỉ có hai dạng, và đó là ràng buộc quan trọng nhất của công cụ.
+    assert "không có thông tin" in readme
+    # Lớp điều phối chưa tích hợp - người đọc phải biết trước khi tin vào số
+    # liệu. Canh Ý chứ không canh cụm từ: bản trước ghim đúng chữ
+    # "tool-calling", thuật ngữ mà tài liệu hướng người ngoài phải dịch ra.
+    assert "điều phối" in readme and "chưa được tích hợp" in readme
+
+    # Sơ đồ thay cho mô tả bằng lời: một cho luồng xử lý, một cho luồng dữ liệu.
+    assert readme.count("```mermaid") >= 2
+
     if model_report.is_file():
         documented = set(_PERCENTAGE.findall(training))
         assert _metric_percentages(json.loads(model_report.read_text())) <= documented
@@ -149,9 +158,7 @@ def test_readme_explains_the_research_to_new_readers() -> None:
         assert _PERCENTAGE.findall(training) == []
     assert "NTUdocs" not in readme
     # README không được dẫn người đọc tới rác của một lượt chạy cục bộ. Ngoại lệ
-    # DUY NHẤT là ``artifacts/reports/``: từ khi mọi thứ sinh ra dồn về
-    # ``artifacts/``, đó là chỗ ở của bản đối chứng nằm trong git, nên nhắc tới
-    # nó là đúng - còn ``artifacts/run-...`` thì vẫn không.
+    # duy nhất là ``artifacts/reports/``, nơi bản đối chứng nằm trong git.
     assert re.sub(r"artifacts/reports/", "", readme).find("artifacts/") == -1
     assert "Trạng thái hiện tại" not in readme
 
@@ -168,10 +175,11 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
 
     assert "answer_inventory.json" in ontology
     assert "cơ sở dữ liệu duy nhất" in ontology
+    # Người đọc phải biết dữ kiện đến từ văn bản nào, nếu không thì không có
+    # cách nào đối chiếu lại điều công cụ nói.
     assert "Quyết định 1052" in readme
     assert "Quyết định 317" in readme
     assert "SPARQL" in readme
-    assert "1052" in readme
     assert f"{_vi_number(supported)} khả năng trả lời" in ontology
     assert f"{_vi_number(records)} câu" in dataset
 

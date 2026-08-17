@@ -1,267 +1,219 @@
 # Chatbot hỏi đáp học vụ dựa trên ontology
 
-## Tóm tắt
+## Dự án này là gì
 
-Dự án xác định một công cụ truy xuất kiến thức học vụ để một
-LLM lớn gọi trong quá trình trả lời người dùng. Công cụ không tự viết câu trả lời
-cuối: nó chuyển yêu cầu truy xuất thành SPARQL đã được giới hạn, lấy **trọn
-node** liên quan từ ontology, rồi trả dữ liệu cùng nguồn cho LLM tổng hợp. Lớp
-điều phối tool-calling hoàn chỉnh chưa được tích hợp trong runtime hiện tại.
+Đây là công cụ truy xuất thông tin học vụ để một mô hình ngôn ngữ lớn gọi khi
+cần trả lời câu hỏi. Mô hình ngôn ngữ lớn, hay LLM, là phần mềm đọc và viết ngôn
+ngữ tự nhiên; trong hệ thống này nó không tự đoán quy định mà gọi công cụ để lấy
+dữ kiện có nguồn. Công cụ nhận câu hỏi tiếng Việt, chọn đúng mục dữ liệu học vụ
+và trả các dữ kiện kèm trích dẫn. Nó không phải chatbot tự trả lời người dùng.
 
-Ontology là nơi giữ nội dung có thẩm quyền. Dataset hiện có **6.308 câu**, gồm
-5.518 câu huấn luyện, 400 câu kiểm định và 390 câu kiểm tra. Danh mục khả năng
-trả lời hiện ghi nhận **4.064 khả năng trả lời** được hỗ trợ. Đây là số liệu về
-artifact dữ liệu, không phải điểm chất lượng của model.
+## Bài toán
 
-Kiến trúc có ba nguyên tắc:
+Thông tin học vụ của Trường Đại học Nha Trang nằm rải trong quy chế, quyết định,
+phụ lục, hướng dẫn thanh toán và danh mục biểu mẫu. Một câu hỏi có thể liên quan
+đến điều kiện, hồ sơ, thời hạn, nơi nộp hoặc một bảng trong các văn bản này.
 
-1. LLM hội thoại là bên quyết định khi nào cần gọi công cụ ontology.
-2. Hình dạng truy xuất chính là toàn bộ thuộc tính đọc được của một node, kèm
-   trích dẫn và đường dẫn nguồn.
-3. Mỗi bảng trong văn bản nguồn là một node chứa nguyên khối bảng; hệ thống
-   không chép lại từng ô thành các sự thật song song.
+Không nên để mô hình ngôn ngữ tự trả lời bằng trí nhớ hoặc suy đoán. Một quy
+định bị trả lời sai có thể làm người học nộp nhầm hồ sơ, lỡ thời hạn hoặc hiểu
+sai nghĩa vụ học phí. Vì vậy, công cụ chỉ đưa lại dữ kiện đã được liên kết với
+nguồn chính thức; phần viết câu trả lời cuối cùng thuộc về mô hình ngôn ngữ lớn.
 
-Các kết quả model trước đó đã bị rút khỏi tài liệu công khai. Dataset dùng để dựng
-model đó hỏng, nên model và các metric của nó không phải baseline và không phải
-phương án lui.
+## Cách hệ thống hoạt động
 
-## 1. Bài toán nghiên cứu
+```mermaid
+flowchart LR
+    A[Câu hỏi của người dùng] --> B[Mô hình chọn cách truy xuất]
+    B --> C[Mô hình sinh câu truy vấn]
+    C --> D[Kiểm tra khuôn hợp lệ]
+    D -->|Hợp lệ| E[Đồ thị tri thức học vụ]
+    D -->|Không hợp lệ hoặc ngoài phạm vi| F[Không có thông tin]
+    E --> G[Dữ kiện, trích dẫn và đường dẫn nguồn]
+    G --> H[Mô hình ngôn ngữ lớn viết câu trả lời]
+    F --> H
+    H --> I[Câu trả lời cho người dùng]
+```
 
-Thông tin học vụ nằm rải trong quy chế, quyết định, phụ lục, hướng dẫn thanh
-toán và danh mục biểu mẫu. Một LLM hội thoại có thể diễn đạt câu trả lời dễ đọc,
-nhưng không nên tự nhớ hay đoán nội dung pháp quy.
+Đầu tiên, người dùng đặt câu hỏi bằng tiếng Việt. Mô hình sinh câu truy vấn:
+đó là một câu lệnh có cấu trúc để chỉ rõ phải lấy thông tin nào, thay vì một câu
+trả lời bằng văn xuôi.
 
-Câu hỏi nghiên cứu là:
+Câu truy vấn phải đi qua bộ kiểm tra. Bộ này chỉ chấp nhận câu khớp một khuôn
+hợp lệ đã định sẵn và chỉ cho phép đọc dữ liệu. Nếu câu hỏi ngoài phạm vi hoặc
+câu truy vấn không hợp lệ, công cụ trả về “không có thông tin”.
 
-> Có thể cung cấp cho một LLM lớn đúng node ontology có liên quan, đầy đủ ngữ
-> cảnh và nguồn, để LLM trả lời dựa trên dữ liệu kiểm chứng được hay không?
+Nếu hợp lệ, câu truy vấn chạy trên đồ thị tri thức. Đồ thị tri thức là tập các
+mục dữ liệu và liên kết giữa chúng, giúp giữ quy định, thủ tục, bảng biểu và
+nguồn của chúng theo một cấu trúc có thể tra cứu. Công cụ trả dữ kiện, trích
+dẫn và đường dẫn đến văn bản gốc; LLM dùng đúng phần này để viết câu trả lời.
 
-Công cụ chỉ phục vụ miền ontology đi kèm. Câu hỏi ngoài phạm vi hoặc yêu cầu
-không ánh xạ được tới một node được hỗ trợ phải được từ chối.
+## Dữ liệu vào và ra của mô hình
 
-## 2. Các khái niệm nền tảng
+Đây là phần quyết định phạm vi công cụ có thể làm được. Đầu vào là một câu hỏi
+tiếng Việt viết thường, chẳng hạn: “học phí một tín chỉ là bao nhiêu”.
 
-| Khái niệm | Nghĩa trong dự án |
+Đầu ra chỉ có đúng một trong hai dạng. Dạng thứ nhất là một câu truy vấn có cấu
+trúc trỏ đến một mục trong đồ thị tri thức. Dạng thứ hai là câu “không có thông
+tin”. Công cụ không sinh thêm dạng trả lời thứ ba.
+
+SPARQL là ngôn ngữ dùng để hỏi dữ liệu trong đồ thị tri thức. Người dùng không
+cần viết SPARQL: mô hình tạo nó ở bên trong hệ thống. Câu SPARQL tạo ra được
+kiểm tra để phải khớp một trong 50 khuôn truy vấn hợp lệ, tức 50 mẫu câu lệnh
+đã giới hạn trước về dữ liệu có thể đọc. Sau đó nó mới được chạy trên đồ thị.
+
+Kết quả trả về gồm các dữ kiện của mục đã chọn, trích dẫn và đường dẫn đến văn
+bản gốc. Trích dẫn cho biết dữ kiện lấy từ phần nào của tài liệu; đường dẫn cho
+phép mở trực tiếp tài liệu đó để đối chiếu.
+
+Ví dụ đầu-cuối:
+
+| Bước | Nội dung |
 |---|---|
-| Ontology | Đồ thị RDF chứa thực thể học vụ, quan hệ, literal và nguồn. |
-| Node | Một thực thể được định danh trong đồ thị, chẳng hạn một thủ tục, điều khoản hoặc bảng. |
-| Trọn node | Nhãn, literal, dữ kiện con trực tiếp và thông tin nguồn của node được lấy trong cùng một lần truy xuất. |
-| SPARQL | Ngôn ngữ truy vấn nội bộ của công cụ ontology. |
-| Danh mục truy vấn | Danh sách hữu hạn các shape SPARQL công cụ được phép thực thi. |
-| LLM lớn | Model hội thoại bên ngoài công cụ; model gọi công cụ và viết câu trả lời cuối. |
-| Bảng nguyên văn | Một bảng nguồn được giữ trong `verbatimTableText` như một khối Markdown duy nhất. |
+| Câu hỏi vào | `bảo lưu cần làm gì` |
+| Mục được chọn | Thủ tục bảo lưu kết quả học tập |
+| Câu truy vấn rút gọn | Lấy toàn bộ dữ kiện và nguồn của mục “thủ tục bảo lưu”. |
+| Dữ kiện trả về | Điều kiện thực hiện, hồ sơ cần nộp, nơi nộp, các bước xử lý và kết quả thủ tục. |
+| Nguồn kèm theo | Trích dẫn của thủ tục và đường dẫn đến văn bản chính thức. |
 
-Ontology không phải kho đoạn văn để tìm gần nghĩa. Quan hệ trong đồ thị giúp
-định vị node; toàn bộ nội dung đọc được của node cung cấp ngữ cảnh cho LLM.
+Với câu hỏi về mức học phí một tín chỉ, hệ thống chỉ trả dữ kiện khi đồ thị có
+một mục nguồn phù hợp. Nếu không có mức phí ổn định trong tài liệu, kết quả là
+“không có thông tin”, thay vì suy ra một con số.
 
-## 3. Phương pháp đề xuất
-
-Luồng xử lý:
-
-```text
-người dùng
-  → LLM hội thoại
-  → gọi công cụ ontology khi cần dữ kiện học vụ
-  → sinh/chọn truy vấn thuộc danh mục
-  → kiểm tra chỉ đọc và khớp shape
-  → lấy trọn node cùng nguồn
-  → LLM hội thoại tổng hợp câu trả lời
+```mermaid
+flowchart LR
+    A[Văn bản pháp quy] --> B[Đồ thị tri thức]
+    B --> C[Bộ câu hỏi mẫu]
+    C --> D[Mô hình đã huấn luyện]
+    D --> E[Câu truy vấn hoặc không có thông tin]
+    E --> F[Đồ thị tri thức]
+    F --> G[Câu trả lời có nguồn]
 ```
 
-LLM hội thoại không được nhận quyền truy vấn tùy ý. Công cụ chỉ thực thi
-`SELECT` an toàn và khớp một shape trong
-`resources/ontology/catalogue.jsonl`. Truy vấn sai, ngoài danh mục hoặc rỗng
-được trả về như một lần gọi công cụ không có dữ liệu; LLM không được bù bằng
-phỏng đoán.
+Văn bản pháp quy là các tài liệu chính thức quy định việc đào tạo và thủ tục.
+Từ các tài liệu này, dự án tạo đồ thị tri thức. Bộ câu hỏi mẫu là tập câu hỏi
+kèm đầu ra đúng để dạy mô hình; mô hình đã huấn luyện là mô hình đã học từ tập
+mẫu đó. Khi phục vụ, nó tạo câu truy vấn hoặc từ chối, rồi công cụ trả câu trả
+lời có nguồn từ đồ thị.
 
-### 3.1. Hình dạng đầu vào và đầu ra của model
+## Dữ liệu của dự án
 
-Trong kiến trúc này, model ở lớp hội thoại nhận câu hỏi và có quyền gọi một công
-cụ chuyên biệt. Công cụ nhận yêu cầu học vụ và trả **context có cấu trúc**, chứ
-không trả câu trả lời đã viết sẵn.
+Đồ thị tri thức được xây từ các văn bản chính thức của Trường Đại học Nha Trang:
+Quyết định 1052 về quy chế đào tạo đại học cùng các phụ lục, Quyết định 626 về
+quy chế tuyển sinh, Quyết định 1965 sửa đổi phụ lục, phần còn hiệu lực của Quyết
+định 753, Quyết định 317 về học bổng, Phụ lục II của Quyết định 729 về ngành đào
+tạo, cùng các hướng dẫn thanh toán và danh mục biểu mẫu. Mỗi mục được lưu kèm
+thông tin nguồn để đối chiếu lại văn bản gốc.
 
-Ví dụ rút gọn cho câu “bảo lưu cần làm gì”:
+Bộ câu hỏi có 6.308 dòng. Trong đó, 5.518 dòng dùng để dạy mô hình, 400 dòng
+dùng để chỉnh lựa chọn trước khi chấm, và 390 dòng dùng để chấm cuối cùng.
 
-```text
-LLM → công cụ:
-{"question": "bảo lưu cần làm gì"}
-
-Công cụ → LLM:
-- node: TemporaryAcademicLeaveProcedure
-- thuộc tính/giá trị: nhãn, yêu cầu, bước, nơi nộp, kết quả, thủ tục tiếp theo
-- nguồn: trích dẫn đầy đủ
-- đường dẫn: văn bản chính thức
-```
-
-Shape SPARQL chính dùng một node neo và lấy literal của chính node lẫn các node
-con trực tiếp:
-
-```sparql
-SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE {
-  {
-    :TemporaryAcademicLeaveProcedure ?p ?giatri .
-    FILTER(isLiteral(?giatri))
-    ?p rdfs:label ?thuoctinh
-  }
-  UNION
-  {
-    :TemporaryAcademicLeaveProcedure ?l ?con .
-    ?con ?p ?giatri .
-    FILTER(isLiteral(?giatri))
-    ?p rdfs:label ?thuoctinh
-  }
-  # catalogue bổ sung trích dẫn và URL nguồn
-}
-```
-
-Đây là “lấy trọn node”: câu hỏi về cách làm, điều kiện hay nơi nộp đều có thể
-nhận cùng một node thủ tục đầy đủ. LLM lớn đọc context và chọn phần cần thiết
-cho câu trả lời hiện tại.
-
-Với bảng, công cụ trả nguyên `verbatimTableText` của node bảng:
-
-```text
-node: AcademicPerformanceTable
-giá trị: toàn bộ bảng xếp loại học lực dưới dạng Markdown
-nguồn: khoản chứa bảng và URL văn bản
-```
-
-Mỗi bảng chỉ có một bản nguyên văn. Không có một lớp ô/bản ghi thứ hai có thể
-lệch cột hoặc mâu thuẫn với bảng nguồn.
-
-## 4. Đồ thị tri thức học vụ
-
-Ontology được xây dựng từ Quyết định 1052 về đào tạo đại học và các phụ lục,
-Quyết định 626 về quy chế tuyển sinh đại học,
-Quyết định 1965 sửa đổi phụ lục, phần còn hiệu lực cần dùng của Quyết định 753,
-Quyết định 317 về học bổng, Phụ lục II của Quyết định 729 về ngành đào tạo, các
-hướng dẫn thanh toán và danh mục biểu mẫu của Trường Đại học Nha Trang.
-
-`resources/ontology/ontology.ttl` là cơ sở dữ liệu nội dung duy nhất. Mức học
-phí theo sinh viên không được lưu vì phụ thuộc kỳ, khóa, ngành, chương trình và
-học phần thực tế; ontology chỉ giữ những hướng dẫn thanh toán có nguồn ổn định.
-
-`resources/ontology/answer_inventory.json` được sinh từ ontology và hiện có
-4.064 mục `supported`. Mỗi mục biểu diễn một đường trả lời được phép từ node tới
-literal hoặc nhãn. Chi tiết về node văn bản, node nghiệp vụ và bảng nguyên văn
-nằm trong [tài liệu ontology](docs/ONTOLOGY.md).
-
-## 5. Dataset
-
-Ba split JSONL hiện có:
-
-| Tập | Số câu | Vai trò |
+| Tập dữ liệu | Số dòng | Mục đích |
 |---|---:|---|
-| Huấn luyện | 5.518 | Kho ví dụ cho ánh xạ câu hỏi sang shape truy xuất |
-| Kiểm định | 400 | Kiểm tra lựa chọn/cấu hình mà không dùng tập kiểm tra |
-| Kiểm tra | 390 | Đánh giá cuối sau khi cấu hình đã cố định |
-| **Tổng** | **6.308** | Tổng số dòng thực tế trong ba tệp |
+| Tập dạy | 5.518 | Cho mô hình học cách đổi câu hỏi thành đầu ra có cấu trúc. |
+| Tập chỉnh | 400 | Chọn các thiết lập trước khi đo kết quả cuối. |
+| Tập chấm | 390 | Đo kết quả sau khi mọi lựa chọn đã cố định. |
+| Tổng | 6.308 | Toàn bộ bộ câu hỏi. |
 
-Các số này được đếm trực tiếp từ
-`resources/dataset/train.jsonl`, `resources/dataset/val.jsonl` và
-`resources/dataset/test.jsonl`; trường `dataset.records` và
-`dataset.splits` trong `artifacts/reports/dataset.json` ghi cùng các giá trị.
+Có 50 khuôn truy vấn. Chúng giới hạn các kiểu dữ liệu mà công cụ được phép lấy
+từ đồ thị, để một câu hỏi không thể biến thành yêu cầu đọc dữ liệu tùy ý.
 
-`artifacts/reports/dataset.json` còn ghi phân bố hiện có theo miền:
+Phân bố câu hỏi theo miền như sau: quy tắc học vụ 1.742 · thủ tục 1.121 · văn
+bản 1.115 · ngoài phạm vi 884 · biểu mẫu 634 · chứng chỉ 476 · học phí 336.
 
-| Miền | Số câu |
-|---|---:|
-| Quy tắc học vụ | 894 |
-| Thủ tục | 1.114 |
-| Biểu mẫu | 621 |
-| Ngoài miền | 638 |
-| Văn bản | 931 |
-| Học phí/hướng dẫn thanh toán | 159 |
-| Chứng chỉ | 188 |
+Bốn giọng hỏi được dùng là trang trọng, trung tính, thân mật và gõ vội không
+dấu. “Giọng hỏi” ở đây là cách diễn đạt cùng một nhu cầu; ví dụ, dạng gõ vội có
+thể bỏ dấu tiếng Việt và rút ngắn từ.
 
-Chuỗi kiểm tra đối chiếu mọi `query_id`, target, giá trị slot, tên gọi, register,
-nhóm từ chối và checksum với catalogue/ontology hiện hành. Trạng thái có thể đọc
-máy nằm ở `training_readiness` và `coverage` trong `artifacts/reports/dataset.json`.
+![Biểu đồ chia bộ dữ liệu](artifacts/reports/figures/dataset-splits.svg)
 
-Xem [tài liệu dataset](docs/DATASET.md) và
-[bản kê trong thư mục dataset](resources/dataset/README.md).
+Hình này cho thấy số câu dành cho tập dạy, tập chỉnh và tập chấm.
 
-## 6. Đánh giá
+![Biểu đồ các giọng hỏi](artifacts/reports/figures/registers.svg)
 
-Thước sinh SPARQL công bố ba số rời: **đúng node · đúng dạng · từ chối
-đúng**; không gộp thành accuracy tổng. Validation và test mỗi bên chỉ còn HAI nhóm: câu truy vấn node và câu
-ngoài miền. Họ "liệt kê năng lực" đã bị bỏ khỏi thiết kế ngày 2026-08-14 -
-công cụ chỉ truy ra dữ kiện hoặc nói không có thông tin. Chín câu người thật được báo riêng ở mức đúng `query_id`, không
-trộn vào benchmark sinh.
+Hình này cho thấy sự có mặt của bốn cách diễn đạt câu hỏi trong dữ liệu.
 
-Độ trung thành của câu trả lời cuối là một lớp đánh giá tiếp theo: LLM chỉ được
-dùng context công cụ, không thêm dữ kiện không có trong node.
+![Biểu đồ đặc điểm câu truy vấn](artifacts/reports/figures/query-features.svg)
 
-Với bảng, phép kiểm phải so toàn khối `verbatimTableText` và giữ vị trí cột.
-Với node thường, phép kiểm phải kiểm tra đủ các thuộc tính liên quan và trích
-dẫn, không chỉ một literal tình cờ đúng.
+Hình này cho thấy các đặc điểm của những câu truy vấn mà mô hình cần tạo.
 
-Repository hiện không công bố metric model. Giao thức chi tiết nằm trong
-[docs/EVALUATION.md](docs/EVALUATION.md).
+## Kết quả đo được
 
-## 7. Trạng thái model cũ
+Ba chỉ số được báo riêng, vì mỗi chỉ số trả lời một câu hỏi khác nhau. “Tập
+chỉnh” là tập dùng để lựa chọn thiết lập; “tập chấm” chỉ được mở sau khi mọi lựa
+chọn đã cố định, nên dùng để đánh giá cuối cùng.
 
-Model seq2seq trước đó được huấn luyện từ dataset hỏng. Mọi số đo, kết luận so sánh và
-artifact triển khai của nó đã bị rút khỏi tài liệu công khai. Model đó không
-được dùng làm baseline, không được dùng để đánh giá hệ thống và không phải phương án
-lui.
+Chọn đúng mục trong đồ thị đo xem mô hình có tìm đúng nơi chứa thông tin cần
+thiết hay không. Kết quả là 80,2% trên tập chỉnh và 76,4% trên tập chấm.
 
-[docs/TRAINING.md](docs/TRAINING.md) chỉ giữ mô tả quy trình lịch sử để giải
-thích code nghiên cứu còn trong repository. [docs/MODEL_CARD.md](docs/MODEL_CARD.md)
-ghi rõ model đã ngừng.
+Dựng đúng dạng truy vấn đo xem câu truy vấn có theo đúng khuôn hợp lệ, gồm đúng
+các phần cần thiết để lấy dữ liệu, hay không. Kết quả là 85,5% trên tập chỉnh
+và 81,8% trên tập chấm.
 
-## 8. Kiểm tra và artifact
+Từ chối đúng câu ngoài phạm vi đo xem mô hình có nói “không có thông tin” khi
+câu hỏi không thuộc dữ liệu dự án hay không. Kết quả là 96,5% trên tập chỉnh và
+90,8% trên tập chấm.
 
-Chuỗi mong muốn là:
+| Chỉ số | Tập chỉnh | Tập chấm |
+|---|---:|---:|
+| Chọn đúng mục trong đồ thị | 80,2% | 76,4% |
+| Dựng đúng dạng truy vấn | 85,5% | 81,8% |
+| Từ chối đúng câu ngoài phạm vi | 96,5% | 90,8% |
 
-```text
-văn bản nguồn → ontology → danh mục khả năng trả lời
-               → danh mục truy vấn → ba split JSONL → báo cáo dẫn xuất
-```
-
-Chạy kiểm tra read-only:
+## Chạy lại thế nào
 
 ```bash
-.venv/bin/python -m pytest tests -q
+uv sync --extra train
+```
+
+Lệnh này cài các thư viện cần để huấn luyện và đánh giá.
+
+```bash
 uv run validate_sparql_dataset
 ```
 
-`uv run generate_reports` ghi lại artifact dẫn xuất; không chạy lệnh này khi
-chỉ kiểm tra vì nó có thể thay đổi report/manifest. Nguồn số liệu được mô tả ở
-[artifacts/reports/README.md](artifacts/reports/README.md).
-
-Khi nguồn thay đổi, dựng lại kiểm kê và báo cáo theo đúng thứ tự:
+Lệnh này kiểm tra bộ câu hỏi và 50 khuôn truy vấn có khớp dữ liệu hay không.
 
 ```bash
-.venv/bin/python -m ontchatbot.research.inventory
-.venv/bin/python -m ontchatbot.cli.report
+bash train-server.sh
 ```
 
-Dataset thì **không sinh lại nữa**. Ba tệp `train/val/test.jsonl` cùng
-`catalogue.jsonl` đã chốt và được commit như dữ liệu cuối cùng; đường sinh ra
-chúng đã gỡ khỏi mã nguồn sau khi hình dạng dataset được chốt, vì để lại một bộ
-sinh không ai chạy là để lại một cách âm thầm làm lệch tập đã dùng để huấn
-luyện. Cần tra lại thì lấy trong lịch sử git. Dữ liệu hiện tại vẫn được canh
-bằng `.venv/bin/python -m ontchatbot.cli.validate_data`.
+Lệnh này huấn luyện và đánh giá cả ba mô hình.
 
-## 9. Giới hạn
+```bash
+.venv/bin/python -m pytest tests -q
+```
 
-- Dataset kiểm được tính sẵn sàng của dữ liệu, không tự nó chứng minh chất lượng
-  một model chưa huấn luyện và đánh giá lại.
-- Chưa có benchmark công khai cho kiến trúc LLM gọi công cụ.
-- Chất lượng câu trả lời cuối phụ thuộc cả việc gọi công cụ, truy xuất node và
-  khả năng bám nguồn của LLM lớn.
-- Một node đầy đủ có thể chứa nhiều thông tin hơn câu hỏi cần; LLM phải chọn lọc
-  nhưng không được làm mất điều kiện hoặc ngoại lệ quan trọng.
-- Bảng nguyên văn tránh sai lệch do chép từng ô, nhưng đòi hỏi LLM đọc đúng cấu
-  trúc hàng/cột.
+Lệnh này chạy các phép kiểm tự động của dự án.
 
-## 10. Tài liệu
+## Yêu cầu phần cứng
 
-- [Ý tưởng và ranh giới](docs/CONCEPT.md)
-- [Kiến trúc](docs/ARCHITECTURE.md)
-- [Ontology](docs/ONTOLOGY.md)
-- [Dataset](docs/DATASET.md)
-- [Quy trình huấn luyện lịch sử](docs/TRAINING.md)
-- [Đánh giá](docs/EVALUATION.md)
-- [Triển khai](docs/DEPLOYMENT.md)
+Huấn luyện một mô hình trong 3 vòng học cần một card đồ hoạ NVIDIA L4 24 GB,
+mất khoảng 16 phút và dùng bộ nhớ card ở mức đỉnh 6,5 GB. “Vòng học” là một
+lượt mô hình đi qua toàn bộ dữ liệu dùng để dạy.
+
+Hệ thống cũng có thể chạy trên card đồ hoạ 6 GB nếu hạ cỡ lô. Cỡ lô là số câu
+hỏi được xử lý cùng lúc; hạ số này giảm bộ nhớ cần dùng nhưng có thể làm chạy lâu
+hơn.
+
+Khi phục vụ, mô hình đã được chuyển sang định dạng chạy nhanh. Do đó không cần
+một card đồ hoạ lớn để đưa công cụ vào sử dụng.
+
+## Giới hạn
+
+- Lớp điều phối gọi công cụ chưa được tích hợp. Đây là lớp nhận biết khi nào mô
+  hình ngôn ngữ lớn cần gọi công cụ và chuyển kết quả về câu trả lời cuối.
+- Hai mô hình dùng để so sánh có bộ từ vựng không viết nổi mọi câu truy vấn.
+  Bộ từ vựng là tập các mảnh chữ mà mô hình có thể tạo, nên trần kết quả của hai
+  mô hình này thấp hơn 100%.
+- Giọng gõ vội không dấu là điểm yếu rõ nhất.
+
+## Tài liệu chi tiết
+
+- [Khái niệm và phạm vi](docs/CONCEPT.md)
+- [Cách các thành phần phối hợp](docs/ARCHITECTURE.md)
+- [Đồ thị tri thức và nguồn](docs/ONTOLOGY.md)
+- [Bộ câu hỏi](docs/DATASET.md)
+- [Cách đo kết quả](docs/EVALUATION.md)
+- [Huấn luyện](docs/TRAINING.md)
+- [Đưa vào môi trường sử dụng](docs/DEPLOYMENT.md)
+- [Thông tin về mô hình](docs/MODEL_CARD.md)
