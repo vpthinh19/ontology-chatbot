@@ -122,5 +122,14 @@ def test_tool_teaches_the_model_to_read_the_structured_result_and_stop() -> None
     assert "ĐỪNG gọi lại" in description
 
 
+def test_instructions_require_one_lookup_for_every_topic() -> None:
+    instructions = build_instructions(VOCABULARY)
+
+    assert "Câu hỏi có nhiều chủ đề độc lập" in instructions
+    assert "đúng một lần cho từng chủ đề" in instructions
+    assert "Không suy" in instructions and "luận" in instructions
+    assert "bảng chung cho một ngành cụ thể" in instructions
+
+
 def test_system_prompt_stays_below_four_hundred_words() -> None:
     assert len(build_instructions().split()) < 400
