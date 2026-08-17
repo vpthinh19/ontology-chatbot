@@ -79,41 +79,39 @@ for MODEL in ${MODELS}; do
     mkdir -p "${OUT}"
     echo
     echo "############ ${MODEL} ############"
-    # torch.compile chưa chạy được trên mọi tổ hợp card và model, và nó hỏng ở
-    # bước huấn luyện đầu tiên chứ không phải lúc khởi động. Thử 5 bước trước để
-    # biết trong vài phút thay vì mất cả lượt chạy rồi mới phải bắt đầu lại.
-    # Bản biên dịch được lưu ra đĩa nên lượt thật dùng lại, không dịch hai lần.
-    echo "=== THỬ COMPILE ${MODEL} (5 bước) ==="
-    COMPILE=()
-    # ``--smoke-test`` để khâu sinh chữ cuối lượt chỉ chạy trên vài câu. Không có
-    # nó, lượt thử vẫn sinh trọn tập kiểm định và tốn hơn cả phần nó đang thử.
-    if "${PY}" -m ontchatbot.cli.train \
-        --model "${MODEL}" \
-        --smoke-test \
-        --max-steps 5 \
-        --eval-every-epochs 999 \
-        --compile \
-        --output-dir "${OUT}/probe" \
-        "$@"; then
-        COMPILE=(--compile)
-        echo "compile chạy được"
-    else
-        echo "compile KHÔNG chạy được trên máy này - lượt thật sẽ không compile"
-        NOTES+=("${MODEL}:không-compile")
-    fi
-    rm -rf "${OUT}/probe"
+    # ViT5 mang một tokenizer không tái tạo được mọi đích của dataset. Đó là
+    # giới hạn của model, không phải lỗi dữ liệu: lượt chạy đếm số đích hỏng và
+    # ghi vào metrics thay vì dừng, để con số ấy đi kèm mọi kết quả của nó.
+    LOSSY=()
+    [ "${MODEL}" = "vit5" ] && LOSSY=(--allow-lossy-targets)
 
     echo "=== HUẤN LUYỆN ${MODEL} ==="
+    # Biên dịch hỏng thì chạy lại không biên dịch: mất tốc độ vẫn hơn mất cả một
+    # model trong lượt chạy.
     if ! "${PY}" -m ontchatbot.cli.train \
         --model "${MODEL}" \
         --epochs "${EPOCHS_DEFAULT}" \
-        ${COMPILE+"${COMPILE[@]}"} \
+        --eval-every-epochs 1 \
+        --compile \
+        ${LOSSY+"${LOSSY[@]}"} \
         --save-model \
         --output-dir "${OUT}/model" \
         "$@"; then
-        echo "HUẤN LUYỆN ${MODEL} THẤT BẠI"
-        FAILED+=("${MODEL}:train")
-        continue
+        echo "HUẤN LUYỆN ${MODEL} VỚI COMPILE THẤT BẠI - chạy lại không compile"
+        rm -rf "${OUT}/model"
+        if ! "${PY}" -m ontchatbot.cli.train \
+            --model "${MODEL}" \
+            --epochs "${EPOCHS_DEFAULT}" \
+            --eval-every-epochs 1 \
+            ${LOSSY+"${LOSSY[@]}"} \
+            --save-model \
+            --output-dir "${OUT}/model" \
+            "$@"; then
+            echo "HUẤN LUYỆN ${MODEL} THẤT BẠI"
+            FAILED+=("${MODEL}:train")
+            continue
+        fi
+        NOTES+=("${MODEL}:không-compile")
     fi
 
     # Thư mục model đã lưu nằm bên trong --output-dir; bỏ thư mục xuất phát vì
