@@ -22,11 +22,22 @@ from ontchatbot.research.training import (
 #: nhau là so ba phép thử khác nhau.
 EFFECTIVE_BATCH = 8
 
+#: Cỡ lô bộ chấm dùng; khâu đánh giá phải khớp để hai đường cùng điều kiện.
+SCORER_BATCH = 16
+
 
 def test_every_model_trains_at_the_same_effective_batch() -> None:
     for name, spec in MODEL_SPECS.items():
         effective = spec["batch_size"] * spec["gradient_accumulation"]
         assert effective == EFFECTIVE_BATCH, name
+
+
+def test_evaluation_batch_matches_the_scorer() -> None:
+    """Lô đánh giá chi phối cả các lượt đánh giá lẫn lượt sinh chữ cuối lượt
+    chạy. Để nó nhỏ hơn lô của bộ chấm là đo cùng một việc bằng hai điều kiện."""
+
+    for name, spec in MODEL_SPECS.items():
+        assert spec["eval_batch_size"] == SCORER_BATCH, name
 
 
 def test_settled_configuration_is_not_a_command_line_choice() -> None:

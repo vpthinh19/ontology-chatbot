@@ -28,8 +28,10 @@ from ..runtime.sparql import load_ontology
 
 #: Ba model dùng cùng một giao thức lô để benchmark so sánh trong cùng điều kiện.
 #:
-#: ``eval_batch_size`` phải khai tường minh: mặc định của thư viện là 1, và với
-#: ``predict_with_generate`` thì mỗi lần đánh giá sinh tuần tự từng câu.
+#: ``eval_batch_size`` phải khai tường minh vì mặc định của thư viện là 1. Nó
+#: chi phối hai chỗ: các lượt đánh giá trong khi huấn luyện, và lượt sinh chữ
+#: trên tập kiểm định sau khi huấn luyện xong. Bộ chấm chạy cùng cỡ lô này trên
+#: cùng phần cứng, nên hai đường không lệch nhau về điều kiện đo.
 #:
 #: Bộ nhớ trống lúc đầu lượt chạy không phản ánh bộ nhớ tại thời điểm đánh giá:
 #: khâu huấn luyện còn giữ chỗ, và đánh giá cần thêm logits
@@ -48,7 +50,7 @@ MODEL_SPECS = {
         "model_id": BARTPHO_MODEL_ID,
         "revision": BARTPHO_REVISION,
         "batch_size": 8,
-        "eval_batch_size": 6,
+        "eval_batch_size": 16,
         "gradient_accumulation": 1,
         "attention": "sdpa",
         "gradient_checkpointing": False,
@@ -60,7 +62,7 @@ MODEL_SPECS = {
         "model_id": VIT5_MODEL_ID,
         "revision": VIT5_REVISION,
         "batch_size": 8,
-        "eval_batch_size": 6,
+        "eval_batch_size": 16,
         "gradient_accumulation": 1,
         "attention": "eager",
         "gradient_checkpointing": False,
@@ -72,7 +74,7 @@ MODEL_SPECS = {
         "model_id": T5GEMMA_MODEL_ID,
         "revision": T5GEMMA_REVISION,
         "batch_size": 8,
-        "eval_batch_size": 6,
+        "eval_batch_size": 16,
         "gradient_accumulation": 1,
         "attention": "sdpa",
         "gradient_checkpointing": False,
