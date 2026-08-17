@@ -79,11 +79,17 @@ for MODEL in ${MODELS}; do
     mkdir -p "${OUT}"
     echo
     echo "############ ${MODEL} ############"
-    # ViT5 mang một tokenizer không tái tạo được mọi đích của dataset. Đó là
-    # giới hạn của model, không phải lỗi dữ liệu: lượt chạy đếm số đích hỏng và
-    # ghi vào metrics thay vì dừng, để con số ấy đi kèm mọi kết quả của nó.
+    # ViT5 và BARTPho mang tokenizer không tái tạo được mọi đích của dataset:
+    # từ điển của chúng không đánh vần nổi một phần ngôn ngữ truy vấn, nên trần
+    # của chúng thấp hơn 100% trước khi học bất cứ điều gì. Đó là giới hạn của
+    # model chứ không phải lỗi dữ liệu, và đo xem chúng đạt tới đâu nói được
+    # nhiều hơn là từ chối đo. Lượt chạy ghi số đích hỏng vào metrics để con số
+    # ấy đi kèm mọi kết quả của chúng.
+    #
+    # t5gemma2 tái tạo được toàn bộ đích, nên với nó phép kiểm vẫn chặn - đó là
+    # thứ duy nhất bắt được một đích hỏng âm thầm khi dataset đổi.
     LOSSY=()
-    [ "${MODEL}" = "vit5" ] && LOSSY=(--allow-lossy-targets)
+    case "${MODEL}" in vit5|bartpho) LOSSY=(--allow-lossy-targets) ;; esac
 
     echo "=== HUẤN LUYỆN ${MODEL} ==="
     # Biên dịch hỏng thì chạy lại không biên dịch: mất tốc độ vẫn hơn mất cả một
