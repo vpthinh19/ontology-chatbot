@@ -719,10 +719,6 @@ def _should_checkpoint_gradients(spec_default: bool) -> bool:
     Checkpointing tính lại activation để giảm bộ nhớ mà không thay đổi phép tính.
     """
 
-    if choice == "on":
-        return True
-    if choice == "off":
-        return False
     try:
         import torch
     except ImportError:
