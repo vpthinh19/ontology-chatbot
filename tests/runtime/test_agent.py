@@ -111,3 +111,16 @@ def test_instructions_are_built_from_the_graph_not_written_by_hand() -> None:
 
 def test_tool_description_is_the_shared_constant() -> None:
     assert build_tool(_StubChatbot()).description == TOOL_DESCRIPTION.strip()
+
+
+def test_tool_teaches_the_model_to_read_the_structured_result_and_stop() -> None:
+    description = build_tool(_StubChatbot()).description
+
+    assert "JSON" in description
+    assert "du_lieu" in description and "ma_nguon" in description
+    assert "không xuất hiện" in description
+    assert "ĐỪNG gọi lại" in description
+
+
+def test_system_prompt_stays_below_four_hundred_words() -> None:
+    assert len(build_instructions().split()) < 400

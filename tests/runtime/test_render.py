@@ -1,40 +1,107 @@
+import json
+
 import pytest
 
 from ontchatbot.runtime.render import render_rows
 
 
-def test_renders_empty_result() -> None:
-    assert render_rows([]) == "Không có thông tin."
+def _payload(rows):
+    return json.loads(render_rows(rows))
 
 
-def test_renders_single_value_without_decoration() -> None:
-    assert render_rows([{"answer": "Phòng Công tác Sinh viên"}]) == "Phòng Công tác Sinh viên"
+def test_renders_empty_result_as_an_explicit_status() -> None:
+    payload = _payload([])
+
+    assert payload == {
+        "trang_thai": "khong_co_thong_tin",
+        "huong_dan": (
+            "Có thể tra lại một lần với cách gọi ngắn khác; nếu vẫn không có "
+            "thì dừng."
+        ),
+        "du_lieu": [],
+        "nguon": [],
+    }
 
 
-def test_renders_multiple_values_as_list() -> None:
-    assert render_rows([{"answer": "A"}, {"answer": "B"}]) == "- A\n- B"
+def test_renders_rows_as_json_records() -> None:
+    payload = _payload([{"answer": "Phòng Công tác Sinh viên"}])
+
+    assert payload["trang_thai"] == "co_du_lieu"
+    assert payload["du_lieu"] == [{"answer": "Phòng Công tác Sinh viên"}]
 
 
-def test_renders_multiple_columns_without_ontology_dto() -> None:
-    assert render_rows([{"document": "Đơn bảo lưu", "url": "https://example.com"}]) == (
-        "document: Đơn bảo lưu\nurl: https://example.com"
+def test_keeps_all_distinct_rows_and_collapses_identical_ones() -> None:
+    payload = _payload([{"answer": "A"}, {"answer": "B"}, {"answer": "A"}])
+
+    assert payload["du_lieu"] == [{"answer": "A"}, {"answer": "B"}]
+
+
+def test_keeps_multiple_columns_together_in_each_record() -> None:
+    payload = _payload(
+        [{"document": "Đơn bảo lưu", "url": "https://example.com"}]
     )
 
-
-def test_moves_a_column_shared_by_every_row_to_the_end() -> None:
-    """Nguồn trích dẫn lặp y hệt trên từng bước của một thủ tục. Ghi lại nó ở
-    mỗi dòng khiến danh sách không đọc nổi."""
-
-    rows = [
-        {"bước": "Viết đơn", "căncứ": "Điều 24"},
-        {"bước": "Nộp đơn", "căncứ": "Điều 24"},
+    assert payload["du_lieu"] == [
+        {"document": "Đơn bảo lưu", "url": "https://example.com"}
     ]
 
-    assert render_rows(rows) == "- Viết đơn\n- Nộp đơn\n\nCăn cứ: Điều 24"
+
+def test_deduplicates_citations_and_links_without_losing_row_pairing() -> None:
+    rows = [
+        {
+            "thuoctinh": "bước",
+            "giatri": "Viết đơn",
+            "nguon": "Điều 24",
+            "duongdan": "https://example.com/quy-che",
+        },
+        {
+            "thuoctinh": "bước",
+            "giatri": "Nộp đơn",
+            "nguon": "Điều 24",
+            "duongdan": "https://example.com/quy-che",
+        },
+    ]
+
+    payload = _payload(rows)
+
+    assert payload["du_lieu"] == [
+        {"thuoc_tinh": "bước", "gia_tri": "Viết đơn", "ma_nguon": 1},
+        {"thuoc_tinh": "bước", "gia_tri": "Nộp đơn", "ma_nguon": 1},
+    ]
+    assert payload["nguon"] == [
+        {
+            "ma_nguon": 1,
+            "trich_dan": "Điều 24",
+            "duong_dan": "https://example.com/quy-che",
+        }
+    ]
 
 
-def test_collapses_rows_that_are_entirely_identical() -> None:
-    assert render_rows([{"answer": "A"}, {"answer": "A"}]) == "A"
+def test_a_row_without_a_source_does_not_get_a_source_reference() -> None:
+    payload = _payload(
+        [
+            {
+                "thuoctinh": "tên gọi",
+                "giatri": "Ngành đào tạo",
+                "nguon": None,
+                "duongdan": None,
+            }
+        ]
+    )
+
+    assert payload["du_lieu"] == [
+        {"thuoc_tinh": "tên gọi", "gia_tri": "Ngành đào tạo"}
+    ]
+    assert payload["nguon"] == []
+
+
+def test_instruction_precedes_data_and_says_missing_detail_is_final() -> None:
+    rendered = render_rows([{"answer": "A"}])
+    payload = json.loads(rendered)
+
+    assert rendered.index('"huong_dan"') < rendered.index('"du_lieu"')
+    assert "Đọc hết" in payload["huong_dan"]
+    assert "không tra lại cùng chủ đề" in payload["huong_dan"]
 
 
 def test_rejects_inconsistent_columns() -> None:
@@ -42,24 +109,11 @@ def test_rejects_inconsistent_columns() -> None:
         render_rows([{"answer": "A"}, {"value": "B"}])
 
 
-def test_labels_columns_for_a_reader_not_for_sparql() -> None:
-    """Tên biến SPARQL không chứa được dấu cách, nên in thẳng ra thì người đọc
-    thấy chữ dính liền và tưởng là lỗi."""
+def test_preserves_json_primitive_types() -> None:
+    payload = _payload(
+        [{"sốtiền": 7_200_000, "tốithiểu": 20.0, "đạt": True, "ghi_chú": None}]
+    )
 
-    rows = [{"thủtục": "Xin thôi học", "nộidung": "Chấm dứt việc học"}]
-
-    assert render_rows(rows) == "Thủ tục: Xin thôi học\nNội dung: Chấm dứt việc học"
-
-
-def test_keeps_an_unmapped_column_name_as_is() -> None:
-    """Thêm họ truy vấn mới không được làm vỡ phần hiển thị."""
-
-    assert render_rows([{"cộtlạ": "x", "khác": "y"}]) == "cộtlạ: x\nkhác: y"
-
-
-def test_groups_thousands_only_where_it_cannot_corrupt_a_number() -> None:
-    """Tiền cần dấu phân nhóm; năm học và số hiệu điều khoản thì không."""
-
-    assert render_rows([{"sốtiền": 7200000}]) == "7.200.000"
-    assert render_rows([{"nămhọcápdụng": 2025}]) == "2025"
-    assert render_rows([{"tốithiểu": 20.0}]) == "20"
+    assert payload["du_lieu"] == [
+        {"sốtiền": 7_200_000, "tốithiểu": 20.0, "đạt": True, "ghi_chú": None}
+    ]

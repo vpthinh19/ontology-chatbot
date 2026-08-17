@@ -1,66 +1,49 @@
-"""Generic rendering for SPARQL rows; no ontology-specific result DTOs."""
+"""Render SPARQL rows as a compact, explicit contract for the LLM agent."""
 
 from __future__ import annotations
 
-from .sparql import Primitive, QueryRows
+import json
 
-NO_INFORMATION_REPLY = "Không có thông tin."
+from .sparql import QueryRows
 
-#: Tên cột trong SPARQL không chứa được dấu cách, nên chúng dính liền và nhìn
-#: như lỗi khi in ra cho người dùng. Bảng này chỉ đổi CÁCH HIỂN THỊ; cột nào
-#: không có trong bảng thì giữ nguyên tên, nên thêm họ truy vấn mới không vỡ.
-_LABELS = {
-    "ápdụngcho": "Áp dụng cho",
-    "biểumẫu": "Biểu mẫu",
-    "bước": "Các bước",
-    "cáchgiảiquyết": "Cách giải quyết",
-    "căncứ": "Căn cứ",
-    "cổngthanhtoán": "Cổng thanh toán",
-    "địachỉ": "Địa chỉ",
-    "điềukiện": "Điều kiện",
-    "điệnthoại": "Điện thoại",
-    "địnhnghĩa": "Định nghĩa",
-    "đơnvị": "Đơn vị",
-    "đơnvịthẩmđịnh": "Đơn vị thẩm định",
-    "họcbổng": "Học bổng",
-    "họckỳ": "Học kỳ",
-    "kháiniệm": "Khái niệm",
-    "linktải": "Link tải",
-    "ngàybanhành": "Ngày ban hành",
-    "nămhọcápdụng": "Năm học áp dụng",
-    "ngườiquyếtđịnh": "Người quyết định",
-    "nơinộp": "Nơi nộp",
-    "nộidung": "Nội dung",
-    "quyđịnh": "Quy định",
-    "sốhiệu": "Số hiệu",
-    "sốtiền": "Số tiền",
-    "tênbiểumẫu": "Tên biểu mẫu",
-    "thủtục": "Thủ tục",
-    "thủtụctiếptheo": "Thủ tục tiếp theo",
-    "tómtắt": "Tóm tắt",
-    "tốiđa": "Tối đa",
-    "tốithiểu": "Tối thiểu",
-    "trangweb": "Trang web",
-    "trườnghợp": "Trường hợp",
-    "vịtrí": "Vị trí",
-    "xếploại": "Xếp loại",
-    "xemtại": "Xem tại",
-    "amount": "Số tiền",
-    "email": "Email",
-    "level": "Bậc",
-    "levelLabel": "Bậc",
-    "maximum": "Tối đa",
-    "max": "Tối đa",
-    "minimum": "Tối thiểu",
-    "min": "Tối thiểu",
+_FOUND_GUIDANCE = (
+    "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi "
+    "không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng "
+    "chủ đề."
+)
+_NOT_FOUND_GUIDANCE = (
+    "Có thể tra lại một lần với cách gọi ngắn khác; nếu vẫn không có thì dừng."
+)
+
+_JSON_KEYS = {
+    "thuoctinh": "thuoc_tinh",
+    "giatri": "gia_tri",
 }
+_SOURCE_COLUMNS = ("nguon", "duongdan")
 
 
-def _label(column: str) -> str:
-    return _LABELS.get(column, column)
+def _dump(payload: dict[str, object]) -> str:
+    return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
+NO_INFORMATION_REPLY = _dump(
+    {
+        "trang_thai": "khong_co_thong_tin",
+        "huong_dan": _NOT_FOUND_GUIDANCE,
+        "du_lieu": [],
+        "nguon": [],
+    }
+)
 
 
 def render_rows(rows: QueryRows) -> str:
+    """Return valid JSON, preserving rows while factoring repeated sources.
+
+    Catalogue queries conventionally project ``nguon`` and ``duongdan`` on
+    every row. Repeating those long strings obscures the actual facts, so each
+    distinct pair is emitted once and rows refer to it by ``ma_nguon``.
+    """
+
     if not rows:
         return NO_INFORMATION_REPLY
 
@@ -68,45 +51,47 @@ def render_rows(rows: QueryRows) -> str:
     if any(tuple(row) != columns for row in rows):
         raise ValueError("all SPARQL rows must have the same columns")
 
-    # Một cột giữ nguyên cùng một giá trị ở mọi dòng là chú thích cho cả câu
-    # trả lời, không phải dữ liệu của từng dòng: nguồn trích dẫn và đường dẫn
-    # văn bản lặp lại y hệt trên từng bước của một thủ tục. Tách chúng xuống
-    # cuối để danh sách còn đọc được. Quy tắc này thuần hình thức - nó không
-    # biết cột nào mang nghĩa gì.
-    shared = tuple(
-        column for column in columns if len({row[column] for row in rows}) == 1
+    unique_rows = []
+    seen_rows = set()
+    for row in rows:
+        values = tuple(row[column] for column in columns)
+        if values not in seen_rows:
+            seen_rows.add(values)
+            unique_rows.append(row)
+
+    factor_sources = all(column in columns for column in _SOURCE_COLUMNS)
+    source_ids = {}
+    sources = []
+    data = []
+
+    for row in unique_rows:
+        record = {
+            _JSON_KEYS.get(column, column): row[column]
+            for column in columns
+            if not factor_sources or column not in _SOURCE_COLUMNS
+        }
+        if factor_sources:
+            source_pair = (row["nguon"], row["duongdan"])
+            if any(value not in (None, "") for value in source_pair):
+                source_id = source_ids.get(source_pair)
+                if source_id is None:
+                    source_id = len(sources) + 1
+                    source_ids[source_pair] = source_id
+                    sources.append(
+                        {
+                            "ma_nguon": source_id,
+                            "trich_dan": source_pair[0],
+                            "duong_dan": source_pair[1],
+                        }
+                    )
+                record["ma_nguon"] = source_id
+        data.append(record)
+
+    return _dump(
+        {
+            "trang_thai": "co_du_lieu",
+            "huong_dan": _FOUND_GUIDANCE,
+            "du_lieu": data,
+            "nguon": sources,
+        }
     )
-    listed = tuple(column for column in columns if column not in shared)
-    if not listed:
-        listed, shared = columns, ()
-
-    if len(listed) == 1:
-        values = [_format(row[listed[0]]) for row in rows]
-    else:
-        values = [
-            "\n".join(f"{_label(column)}: {_format(row[column])}" for column in listed)
-            for row in rows
-        ]
-
-    unique = list(dict.fromkeys(values))
-    body = unique[0] if len(unique) == 1 else "\n".join(f"- {value}" for value in unique)
-
-    if shared:
-        body += "\n\n" + "\n".join(
-            f"{_label(column)}: {_format(rows[0][column])}" for column in shared
-        )
-    return body
-
-
-def _format(value: Primitive) -> str:
-    if value is None:
-        return "—"
-    if isinstance(value, bool):
-        return "có" if value else "không"
-    if isinstance(value, float) and value.is_integer():
-        value = int(value)
-    # Nhóm hàng nghìn cho số tiền, nhưng chỉ từ 5 chữ số trở lên: năm học và số
-    # hiệu điều khoản đều dưới ngưỡng đó nên không bị chấm dấu oan.
-    if isinstance(value, int) and abs(value) >= 10000:
-        return f"{value:,}".replace(",", ".")
-    return str(value)

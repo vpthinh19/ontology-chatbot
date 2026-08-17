@@ -38,7 +38,7 @@ NAMES_PER_KIND = 12
 #: Ví dụ đứng ở đây vì bộ sinh truy vấn được dạy trên câu hỏi ngắn: câu hỏi
 #: người dùng gõ thường dài và lịch sự, còn tên mục trong đồ thị thì ngắn.
 TOOL_DESCRIPTION = """Tra dữ kiện học vụ từ đồ thị tri thức của trường: quy chế
-đào tạo, thủ tục, biểu mẫu, học phí, chứng chỉ, ngành đào tạo.
+đào tạo, thủ tục, biểu mẫu, học phí, chứng chỉ và ngành đào tạo.
 
 Truyền vào TỪ KHOÁ NGẮN, không phải câu hỏi đầy đủ. Công cụ khớp từ khoá với tên
 các mục trong đồ thị, nên câu càng dài càng dễ trượt.
@@ -49,16 +49,17 @@ Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "học phí m
 Không nên:  "Hãy hướng dẫn tôi cách đăng ký học phần nhé"
             "cho mình hỏi muốn nghỉ học tạm thời thì cần làm những gì ạ"
 
-Một lần gọi tra một chủ đề; câu hỏi chứa hai chủ đề thì gọi hai lần.
+Một lần gọi tra một chủ đề; câu hỏi có hai chủ đề thì gọi hai lần.
 
-Công cụ trả về TRỌN VẸN một mục trong đồ thị, gồm mọi thuộc tính của mục đó -
-nên vài dòng đầu có thể không phải phần bạn cần, mà phần bạn cần nằm ở giữa. Đọc
-hết rồi hãy quyết định. Đã có dữ liệu trả về thì ĐỪNG gọi lại cùng chủ đề với từ
-khoá khác; gọi lại chỉ trả về đúng mục đó lần nữa.
-
-Chỉ gọi lại khi công cụ báo không có thông tin, và nhiều nhất một lần nữa với
-một cách gọi khác của cùng mục - ví dụ "bảo lưu" thay cho "nghỉ học tạm thời".
-Lần thứ hai vẫn không có thì nói với người dùng là không tìm thấy."""
+Kết quả là JSON. Cách đọc:
+- `trang_thai=co_du_lieu`: `du_lieu` là TRỌN VẸN mục khớp từ khoá; phải đọc HẾT
+  mọi bản ghi. `ma_nguon` trỏ tới trích dẫn và đường dẫn trong `nguon`.
+- Nếu chi tiết người dùng hỏi không xuất hiện trong bất kỳ bản ghi nào, cơ sở dữ
+  liệu không có chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề bằng từ
+  khoá khác.
+- `trang_thai=khong_co_thong_tin`: chỉ lúc này mới thử thêm tối đa một lần bằng
+  cách gọi ngắn khác, ví dụ "bảo lưu" thay cho "nghỉ học tạm thời". Vẫn không có
+  thì dừng và nói không tìm thấy."""
 
 
 @dataclass(frozen=True)
@@ -146,6 +147,10 @@ khác.
 Mọi câu hỏi về học vụ: GỌI `tra_cuu_hoc_vu` TRƯỚC, rồi mới trả lời dựa trên kết
 quả trả về. Chưa gọi công cụ thì chưa được trả lời. Công cụ không có dữ kiện thì
 nói là không tìm thấy, đừng suy đoán và đừng bịa số.
+
+Khi công cụ trả `co_du_lieu`, đọc hết `du_lieu` rồi coi đó là kết quả cuối của
+chủ đề. Nếu chi tiết được hỏi không xuất hiện, nói dữ liệu hiện có không chứa
+chi tiết ấy; không đổi từ khoá để tra tiếp.
 
 Câu hỏi không liên quan tới trường - thời tiết, nấu ăn, chuyện phiếm - thì trả
 lời thẳng là ngoài phạm vi, không gọi công cụ.
