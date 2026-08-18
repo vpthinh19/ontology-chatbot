@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 #
-# Huấn luyện và chấm lần lượt cả ba model seq2seq trên máy từ xa, rồi đóng gói
-# đúng phần cần mang về.
+# Huấn luyện và chấm model seq2seq trên máy từ xa, rồi đóng gói đúng phần cần
+# mang về.
 #
-#     bash train-server.sh                       # cả ba model, 3 epoch
+# Ba model kia đã chấm xong trên đúng bộ dữ liệu hiện tại, nên lượt mặc định chỉ
+# còn mbart. Gói mang về đặt cạnh kết quả cũ là đủ bốn model để dựng báo cáo.
+#
+#     bash train-server.sh                       # mbart, 8 epoch
 #     bash train-server.sh --epochs 4            # cờ nào cũng chuyển xuống lệnh train
-#     MODELS="t5gemma2" bash train-server.sh     # chỉ một model
+#     MODELS="t5gemma2 vit5 bartpho mbart" bash train-server.sh   # chạy lại cả bốn
 #
 # Gói mang về chỉ chứa chỉ số và log, không chứa trọng số: trọng số nằm lại trên
 # máy chạy, và bảng biểu chỉ cần các tệp JSON.
@@ -17,7 +20,7 @@ set -uo pipefail
 
 cd "$(dirname "$0")"
 
-MODELS="${MODELS:-t5gemma2 vit5 bartpho}"
+MODELS="${MODELS:-mbart}"
 EPOCHS_DEFAULT=8
 STAMP="$(date +%Y%m%d-%H%M%S)"
 ROOT="artifacts/runs/${STAMP}"
@@ -54,6 +57,24 @@ for name in ("train", "val", "test"):
 ontology = Path("resources/ontology/ontology.ttl").read_bytes()
 print(f"ontology.ttl: sha256 {hashlib.sha256(ontology).hexdigest()[:16]}")
 PYEOF
+
+# Điểm của bốn model chỉ đặt cạnh nhau được khi cả bốn học trên cùng một bộ dữ
+# liệu. Vân tay dưới đây là bộ mà ba model đã chấm xong dùng, nên lệch vân tay
+# nghĩa là lượt này không so được với chúng.
+EXPECTED_DATASET="e170f014d514061882d8a30460fe6c187759328cc7fc3c7159d6c4ab1c0b4ddf"
+ACTUAL_DATASET="$("${PY}" -c 'import hashlib, pathlib; print(hashlib.sha256(pathlib.Path("resources/dataset/manifest.json").read_bytes()).hexdigest())')"
+if [ "${ACTUAL_DATASET}" != "${EXPECTED_DATASET}" ]; then
+    echo
+    echo "DỮ LIỆU ĐÃ ĐỔI KỂ TỪ LƯỢT BA MODEL"
+    echo "  chờ:  ${EXPECTED_DATASET}"
+    echo "  thấy: ${ACTUAL_DATASET}"
+    if [ -z "${SKIP_DATASET_CHECK:-}" ]; then
+        echo "Chạy tiếp thì điểm không so được với ba model kia. Vẫn muốn chạy:"
+        echo "  SKIP_DATASET_CHECK=1 bash train-server.sh"
+        exit 1
+    fi
+    echo "SKIP_DATASET_CHECK đang bật - chạy tiếp, số của lượt này đứng riêng."
+fi
 
 # ViT5 phát hành tokenizer thiếu vài token điều khiển; bản đã chuẩn hoá phải có
 # trước khi lượt huấn luyện của nó bắt đầu, nếu không mọi đích sinh ra đều lệch.
@@ -140,6 +161,7 @@ tar -czf "${BUNDLE}" -C "${ROOT}" \
            -o -path './*/adapter/*' \) | sed 's|^\./||')
 echo "MANG TỆP NÀY VỀ: ${BUNDLE}"
 ls -lh "${BUNDLE}"
+echo "Giải nén cạnh kết quả của ba model kia; mỗi model một thư mục cùng cấp."
 
 if [ ${#NOTES[@]} -gt 0 ]; then
     echo "GHI NHẬN: ${NOTES[*]}"
@@ -148,4 +170,4 @@ if [ ${#FAILED[@]} -gt 0 ]; then
     echo "THẤT BẠI: ${FAILED[*]}"
     exit 1
 fi
-echo "cả ${MODELS} đều xong"
+echo "xong: ${MODELS}"
