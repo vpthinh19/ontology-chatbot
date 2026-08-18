@@ -22,7 +22,7 @@ Lệnh này cài các thư viện cần cho huấn luyện và đánh giá.
 bash train-server.sh
 ```
 
-Lệnh này huấn luyện và chấm ba mô hình. Kết quả gồm các tệp đo và nhật ký để đối chiếu lại lượt chạy.
+Lệnh này huấn luyện và chấm bốn mô hình. Kết quả gồm các tệp đo và nhật ký để đối chiếu lại lượt chạy.
 
 ```bash
 MODELS="t5gemma2" bash train-server.sh

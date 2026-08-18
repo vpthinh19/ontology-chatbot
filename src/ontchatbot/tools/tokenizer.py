@@ -18,6 +18,13 @@ VIT5_MODEL_ID = "VietAI/vit5-base"
 VIT5_REVISION = "2209a38d735ede63e88f5aa52bcdc11a05a37b85"
 T5GEMMA_MODEL_ID = "google/t5gemma-2-270m-270m"
 T5GEMMA_REVISION = "7c38f16641f455ef0685b18431faf1b17722d5a1"
+MBART_MODEL_ID = "facebook/mbart-large-cc25"
+MBART_REVISION = "f417e5563320b2cc8aabe4329d986b238809067f"
+#: mBART marks every sequence with the code of the language it is written in,
+#: and both sides of this dataset are Vietnamese. The code is not decoration:
+#: training derives the first decoder token from it, so a wrong code trains the
+#: decoder to open every answer in another language.
+MBART_LANGUAGE_CODE = "vi_VN"
 VIT5_VOCAB_SIZE = 36096
 VIT5_SENTINEL_MAPPING = {
     "<extra_id_0>": ("{", 36095),

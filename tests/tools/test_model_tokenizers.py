@@ -12,6 +12,8 @@ from ontchatbot.settings import ARTIFACTS_DIR
 from ontchatbot.tools.tokenizer import (
     BARTPHO_MODEL_ID,
     BARTPHO_REVISION,
+    MBART_MODEL_ID,
+    MBART_REVISION,
     T5GEMMA_MODEL_ID,
     T5GEMMA_REVISION,
     VIT5_MODEL_ID,
@@ -45,6 +47,14 @@ MODEL_TOKENIZERS = {
             "models--google--t5gemma-2-270m-270m", T5GEMMA_REVISION
         ),
         "kwargs": {"fix_mistral_regex": False},
+    },
+    "mbart": {
+        "model_id": MBART_MODEL_ID,
+        "revision": MBART_REVISION,
+        "path": _snapshot("models--facebook--mbart-large-cc25", MBART_REVISION),
+        # Cách chuẩn hoá dành cho tokenizer Mistral tách khác trên bộ từ vựng
+        # này và làm hỏng phép kiểm round-trip, nên đường nạp giữ mặc định.
+        "kwargs": {},
     },
 }
 
@@ -131,3 +141,7 @@ def test_vit5_target_measurements() -> None:
 
 def test_t5gemma2_target_measurements() -> None:
     _measure_model("t5gemma2")
+
+
+def test_mbart_target_measurements() -> None:
+    _measure_model("mbart")

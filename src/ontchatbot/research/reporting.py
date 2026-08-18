@@ -205,9 +205,9 @@ def build_model_report(
     *,
     dataset_dir: Path = DATASET_DIR,
 ) -> dict[str, Any] | None:
-    """Read the locked three-model benchmark and its training logs."""
+    """Read the locked four-model benchmark and its training logs."""
 
-    names = ("bartpho", "vit5", "t5gemma2")
+    names = ("bartpho", "vit5", "t5gemma2", "mbart")
     release = load_release(dataset_dir)
     expected_records = {
         "validation": len(release["val"]),
@@ -713,7 +713,12 @@ def _write_metric_chart(
     title: str,
     groups: Mapping[str, Mapping[str, float]],
 ) -> None:
-    colors = {"bartpho": "#2563eb", "vit5": "#f59e0b", "t5gemma2": "#10b981"}
+    colors = {
+        "bartpho": "#2563eb",
+        "vit5": "#f59e0b",
+        "t5gemma2": "#10b981",
+        "mbart": "#8b5cf6",
+    }
     categories = sorted({name for values in groups.values() for name in values})
     width, height = max(1060, len(categories) * 100 + 140), 430
     margin_left, margin_top, chart_width, chart_height = 75, 90, width - 125, 250
@@ -747,7 +752,12 @@ def _write_line_chart(
     percent: bool = False,
     log_scale: bool = False,
 ) -> None:
-    colors = {"bartpho": "#2563eb", "vit5": "#f59e0b", "t5gemma2": "#10b981"}
+    colors = {
+        "bartpho": "#2563eb",
+        "vit5": "#f59e0b",
+        "t5gemma2": "#10b981",
+        "mbart": "#8b5cf6",
+    }
     width, height = 920, 430
     left, top, chart_width, chart_height = 78, 82, 790, 270
     transformed = {

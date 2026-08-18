@@ -18,7 +18,7 @@ from ontchatbot.research.training import (
     _parse_args,
 )
 
-#: Lô hiệu dụng phải như nhau ở mọi model, nếu không benchmark so ba model với
+#: Lô hiệu dụng phải như nhau ở mọi model, nếu không benchmark so bốn model với
 #: nhau là so ba phép thử khác nhau.
 EFFECTIVE_BATCH = 8
 

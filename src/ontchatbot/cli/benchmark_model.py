@@ -131,6 +131,7 @@ def _seq2seq_adapter_generator(adapter_dir, batch_size: int) -> _Seq2SeqGenerato
     from ontchatbot.research.training import (
         MODEL_SPECS,
         _configure_greedy_generation,
+        configure_decoder_start,
     )
 
     adapter_dir = Path(adapter_dir)
@@ -170,7 +171,9 @@ def _seq2seq_adapter_generator(adapter_dir, batch_size: int) -> _Seq2SeqGenerato
         adapter_dir if (adapter_dir / "tokenizer.json").is_file() else snapshot
     )
     tokenizer = AutoTokenizer.from_pretrained(
-        str(tokenizer_source), local_files_only=True
+        str(tokenizer_source),
+        local_files_only=True,
+        **spec.get("tokenizer_kwargs", {}),
     )
     dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
     base = AutoModelForSeq2SeqLM.from_pretrained(
@@ -182,6 +185,7 @@ def _seq2seq_adapter_generator(adapter_dir, batch_size: int) -> _Seq2SeqGenerato
     model = PeftModel.from_pretrained(base, adapter_dir, is_trainable=False)
     model = model.merge_and_unload()
     _configure_greedy_generation(model.generation_config)
+    configure_decoder_start(model, tokenizer, spec)
     if torch.cuda.is_available():
         model = model.to("cuda")
     print(f"nền: {family} @ {spec['revision'][:12]} · LoRA: {adapter_dir}", flush=True)

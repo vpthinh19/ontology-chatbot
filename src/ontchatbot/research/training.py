@@ -16,6 +16,9 @@ from ..tools.tokenizer import (
     BARTPHO_MODEL_ID,
     BARTPHO_REVISION,
     DEFAULT_VIT5_TOKENIZER_DIR,
+    MBART_LANGUAGE_CODE,
+    MBART_MODEL_ID,
+    MBART_REVISION,
     T5GEMMA_MODEL_ID,
     T5GEMMA_REVISION,
     VIT5_MODEL_ID,
@@ -26,7 +29,7 @@ from ..tools.tokenizer import (
 )
 from ..runtime.sparql import load_ontology
 
-#: Ba model dùng cùng một giao thức lô để benchmark so sánh trong cùng điều kiện.
+#: Bốn model dùng cùng một giao thức lô để benchmark so sánh trong cùng điều kiện.
 #:
 #: ``eval_batch_size`` phải khai tường minh vì mặc định của thư viện là 1. Nó
 #: chi phối hai chỗ: các lượt đánh giá trong khi huấn luyện, và lượt sinh chữ
@@ -78,6 +81,24 @@ MODEL_SPECS = {
         "gradient_accumulation": 1,
         "attention": "sdpa",
         "gradient_checkpointing": False,
+        "tokenizer_kwargs": {"fix_mistral_regex": False},
+    },
+    "mbart": {
+        "model_id": MBART_MODEL_ID,
+        "revision": MBART_REVISION,
+        "batch_size": 8,
+        "eval_batch_size": 16,
+        "gradient_accumulation": 1,
+        "attention": "sdpa",
+        "gradient_checkpointing": False,
+        # Cả hai phía của dữ liệu đều là tiếng Việt; mã ngôn ngữ phải khai lúc
+        # nạp thì nó mới theo tokenizer vào thư mục lưu, và đường chấm mới đọc
+        # được đúng thứ đường huấn luyện đã dùng.
+        "tokenizer_kwargs": {
+            "src_lang": MBART_LANGUAGE_CODE,
+            "tgt_lang": MBART_LANGUAGE_CODE,
+        },
+        "decoder_start_token": MBART_LANGUAGE_CODE,
     },
 }
 #: Cấu hình đã chốt bằng đo đạc, nên nó là hằng số chứ không phải tham số: một
@@ -101,6 +122,12 @@ LORA_ALPHA = 64
 LORA_DROPOUT = 0.0
 _LORA_TARGET_SPECS = {
     "bartpho": {
+        "prefixes": ("model.encoder.layers.", "model.decoder.layers."),
+        "leaves": frozenset(
+            {"q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"}
+        ),
+    },
+    "mbart": {
         "prefixes": ("model.encoder.layers.", "model.decoder.layers."),
         "leaves": frozenset(
             {"q_proj", "k_proj", "v_proj", "out_proj", "fc1", "fc2"}
@@ -243,6 +270,10 @@ def train(args: argparse.Namespace) -> dict:
             spec["model_id"],
             revision=spec["revision"],
             local_files_only=args.local_files_only,
+            # Kho phát hành thường mang thêm một bản trọng số cho khung học sâu
+            # khác, nặng ngang bản dùng thật. Tải nó là trả tiền cho một tệp
+            # không đường nạp nào đọc tới.
+            ignore_patterns=["*.h5", "*.msgpack", "*.onnx"],
         )
     )
     if args.model == "vit5":
@@ -253,15 +284,12 @@ def train(args: argparse.Namespace) -> dict:
             local_files_only=True,
         )
     else:
-        tokenizer_kwargs = (
-            {"fix_mistral_regex": False} if args.model == "t5gemma2" else {}
-        )
         tokenizer = AutoTokenizer.from_pretrained(
             snapshot,
             revision=spec["revision"],
             local_files_only=True,
             trust_remote_code=True,
-            **tokenizer_kwargs,
+            **spec.get("tokenizer_kwargs", {}),
         )
 
     release = load_release(args.dataset_dir)
@@ -323,6 +351,7 @@ def train(args: argparse.Namespace) -> dict:
     cache_config = _generation_cache_config(model.config)
     cache_config.use_cache = False
     _configure_greedy_generation(model.generation_config)
+    configure_decoder_start(model, tokenizer, spec)
     if checkpoint_gradients:
         model.gradient_checkpointing_enable(
             gradient_checkpointing_kwargs={"use_reentrant": False}
@@ -467,6 +496,7 @@ def train(args: argparse.Namespace) -> dict:
         ).to(training_args.device)
     inference_model = inference_model.merge_and_unload()
     _configure_greedy_generation(inference_model.generation_config)
+    configure_decoder_start(inference_model, tokenizer, spec)
     decoded = _generate_rows(
         inference_model,
         tokenizer,
@@ -602,18 +632,44 @@ def _fixed_pad_lengths(*datasets) -> tuple[int, int]:
 def _ensure_eos_token(
     ids: list[int], eos_token_id: int | None, max_length: int
 ) -> list[int]:
-    """Terminate target labels even when a tokenizer only inserts BOS."""
+    """Terminate target labels even when a tokenizer only inserts BOS.
+
+    A multilingual tokenizer writes the language code after the terminator, so
+    the last identifier is not always the end of sequence marker. Appending a
+    second marker there would push the language code into the middle of the
+    label, and the decoder derives its first token from that code.
+    """
 
     if eos_token_id is None:
         raise ValueError("a seq2seq target tokenizer must define eos_token_id")
     output = list(ids)
-    if output and output[-1] == eos_token_id:
+    if eos_token_id in output[-2:]:
         return output
     if len(output) >= max_length:
         output[-1] = eos_token_id
     else:
         output.append(eos_token_id)
     return output
+
+
+def configure_decoder_start(model, tokenizer, spec) -> None:
+    """Open the decoder with the language code a multilingual model expects.
+
+    Most encoder-decoder models carry one fixed start token in their config.
+    mBART carries none: it ends every sequence with a language code and moves
+    that code to the front of the decoder input, so the first token differs per
+    language. Generation reads the start token from the config, which means a
+    model left unconfigured begins from a token it was never trained to follow.
+    """
+
+    token = spec.get("decoder_start_token")
+    if token is None:
+        return
+    token_id = tokenizer.convert_tokens_to_ids(token)
+    if token_id is None or token_id == tokenizer.unk_token_id:
+        raise ValueError(f"tokenizer does not define the language code {token!r}")
+    model.config.decoder_start_token_id = token_id
+    model.generation_config.decoder_start_token_id = token_id
 
 
 def _configure_greedy_generation(config) -> None:

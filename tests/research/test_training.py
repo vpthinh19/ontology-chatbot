@@ -8,6 +8,7 @@ from ontchatbot.research.training import (
     _ensure_eos_token,
     _generation_cache_config,
     _require_training_ready,
+    configure_decoder_start,
 )
 
 
@@ -15,6 +16,52 @@ def test_target_labels_always_end_with_eos() -> None:
     assert _ensure_eos_token([2, 10], 1, 4) == [2, 10, 1]
     assert _ensure_eos_token([2, 10, 1], 1, 4) == [2, 10, 1]
     assert _ensure_eos_token([2, 10, 11, 12], 1, 4) == [2, 10, 11, 1]
+
+
+def test_a_language_code_after_the_terminator_counts_as_terminated() -> None:
+    """Nhãn của model đa ngữ kết thúc bằng cặp ``</s> <mã ngôn ngữ>``. Thêm
+    một dấu kết thúc nữa là đẩy mã ngôn ngữ vào giữa nhãn, mà chính mã đó quyết
+    định token mở đầu của bộ giải mã."""
+
+    assert _ensure_eos_token([10, 11, 1, 250024], 1, 8) == [10, 11, 1, 250024]
+
+
+def test_decoder_start_follows_the_language_code_the_model_declares() -> None:
+    tokenizer = SimpleNamespace(
+        convert_tokens_to_ids=lambda token: {"vi_VN": 250024}.get(token, 3),
+        unk_token_id=3,
+    )
+    model = SimpleNamespace(
+        config=SimpleNamespace(decoder_start_token_id=None),
+        generation_config=SimpleNamespace(decoder_start_token_id=None),
+    )
+
+    configure_decoder_start(model, tokenizer, {"decoder_start_token": "vi_VN"})
+
+    assert model.config.decoder_start_token_id == 250024
+    assert model.generation_config.decoder_start_token_id == 250024
+
+
+def test_a_model_without_a_language_code_keeps_its_own_start_token() -> None:
+    model = SimpleNamespace(
+        config=SimpleNamespace(decoder_start_token_id=2),
+        generation_config=SimpleNamespace(decoder_start_token_id=2),
+    )
+
+    configure_decoder_start(model, SimpleNamespace(), {})
+
+    assert model.config.decoder_start_token_id == 2
+
+
+def test_a_missing_language_code_stops_the_run() -> None:
+    tokenizer = SimpleNamespace(convert_tokens_to_ids=lambda token: 3, unk_token_id=3)
+    model = SimpleNamespace(
+        config=SimpleNamespace(decoder_start_token_id=None),
+        generation_config=SimpleNamespace(decoder_start_token_id=None),
+    )
+
+    with pytest.raises(ValueError):
+        configure_decoder_start(model, tokenizer, {"decoder_start_token": "xx_XX"})
 
 
 def test_structured_generation_disables_inherited_sampling_settings() -> None:
