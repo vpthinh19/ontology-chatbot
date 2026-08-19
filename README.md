@@ -595,7 +595,7 @@ Khi câu hỏi nằm ngoài phạm vi, trợ lý nói thẳng thay vì điền m
 Bốn điều dưới đây giới hạn phạm vi của mọi con số trong báo cáo.
 
 **Bộ câu hỏi đóng kín trong chính đồ thị.** Câu hỏi được sinh ra từ đồ thị rồi
-chia theo câu hỏi, nên cả 273 câu trả lời đúng khác nhau của phần đem chấm đều
+chia theo câu hỏi, nên cả 272 câu trả lời đúng khác nhau của phần đem chấm đều
 đã có mặt ở phần đem dạy. Điểm số ở mục 7 vì thế đo khả năng nhận ra một cách
 hỏi mới về việc đã học, chứ không đo khả năng xoay xở với một mục hay một dạng
 truy vấn chưa từng thấy. Cũng chưa có tập câu hỏi nào do người học thật gõ ra.
