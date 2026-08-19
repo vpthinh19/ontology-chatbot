@@ -40,11 +40,22 @@ const renderLineContent = (text) => {
             return PH;
         });
     pre = escapeHtml(pre);
-    pre = pre.replace(/(https?:\/\/[^\s<]+)/g,
-        (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`);
+    // Dấu sao đóng của phần in nghiêng hay dính vào đuôi URL trần, nên tách nó
+    // ra trước khi dựng thẻ; để dính thì nó thành một phần của đường dẫn.
+    pre = pre.replace(/(https?:\/\/[^\s<]+)/g, (m) => {
+        const duoi = m.match(/[*_]+$/);
+        const url = duoi ? m.slice(0, -duoi[0].length) : m;
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${duoi ? duoi[0] : ""}`;
+    });
+    // Trợ lý viết bằng markdown, nên phần đậm và phần tiêu đề phải thành thẻ HTML;
+    // để nguyên thì người đọc thấy dấu sao và dấu thăng nằm giữa câu.
+    pre = pre.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    pre = pre.replace(/(?<![\w*])\*([^*\n]+)\*(?![\w*])/g, "<em>$1</em>");
     let i = 0;
     return pre.replace(new RegExp(PH, "g"), () => links[i++]);
 };
+// Bậc tiêu đề markdown ở đầu dòng, trả về số dấu thăng đã cắt.
+const headingLevel = (line) => (line.match(/^(#{1,6})\s+/) || ["", ""])[1].length;
 // Render each plain-text result line. The SPARQL backend no longer emits a tree.
 const renderRichText = (text) => {
     let html = "";
@@ -52,6 +63,20 @@ const renderRichText = (text) => {
         if (/^\s*-{3,}\s*$/.test(raw)) { html += "<hr>"; continue; }
         const content = raw.replace(/\s+$/, "");
         if (!content) { html += '<div class="reply-line spacer"></div>'; continue; }
+        const level = headingLevel(content);
+        if (level) {
+            const body = renderLineContent(content.replace(/^#{1,6}\s+/, ""));
+            html += `<div class="reply-line"><strong>${body}</strong></div>`;
+            continue;
+        }
+        // Dòng gạch đầu dòng của markdown. Không bóc dấu dẫn thì người đọc thấy
+        // dấu sao nằm chình ình đầu mỗi ý, đúng thứ markdown sinh ra để giấu đi.
+        const bullet = content.match(/^(\s*)(?:[-*+\u2022]|\d+[.)])\s+(.*)$/);
+        if (bullet) {
+            const depth = Math.min(Math.floor(bullet[1].length / 2), 3);
+            html += `<div class="reply-line bullet depth-${depth}">${renderLineContent(bullet[2])}</div>`;
+            continue;
+        }
         html += `<div class="reply-line">${renderLineContent(content)}</div>`;
     }
     return html;
@@ -65,23 +90,77 @@ const renderReply = (text, textElement, botMsgDiv) => {
     document.body.classList.remove("bot-responding");
     scrollToBottom();
 };
-// Call the local FastAPI /chat endpoint and stream the reply.
+// Đọc luồng sự kiện từ /chat và hiện dần câu trả lời.
+//
+// Một lượt trả lời gồm nhiều chặng: trợ lý có thể tra cứu vài lần trước khi
+// viết. Hiện từng chặng ngay khi tới thì người dùng thấy hệ thống đang làm gì,
+// thay vì nhìn màn hình trống suốt quãng đó.
 const generateResponse = async (botMsgDiv) => {
     const textElement = botMsgDiv.querySelector(".message-text");
     controller = new AbortController();
+    const history = chatHistory.map(({ role, text }) => ({
+        role: role === "bot" ? "assistant" : "user",
+        content: text,
+    }));
     chatHistory.push({ role: "user", text: userData.message });
+    let answer = "";
+    // Một lượt đi qua ba chặng và chặng nào cũng có thể kéo dài vài giây. Không
+    // nói rõ đang ở chặng nào thì mọi quãng chờ trông giống nhau, và giống hệt
+    // hệ thống bị treo.
+    let status = "Đang suy nghĩ…";
+    const paint = () => {
+        textElement.innerHTML = answer
+            ? renderRichText(answer)
+            : `<div class="reply-line status">${escapeHtml(status)}</div>`;
+        scrollToBottom();
+    };
+    paint();
     try {
         const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: userData.message }),
+            body: JSON.stringify({ message: userData.message, history }),
             signal: controller.signal,
         });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.detail || "Server error");
-        const responseText = (data.reply || "").trim();
-        renderReply(responseText, textElement, botMsgDiv);
-        chatHistory.push({ role: "bot", text: responseText });
+        if (!response.ok) {
+            const detail = await response.json().catch(() => ({}));
+            throw new Error(detail.detail || "Server error");
+        }
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const chunks = buffer.split("\n\n");
+            buffer = chunks.pop();
+            for (const chunk of chunks) {
+                const line = chunk.split("\n").find((l) => l.startsWith("data: "));
+                if (!line) continue;
+                const event = JSON.parse(line.slice(6));
+                if (event.loai === "chu") {
+                    answer += event.noi_dung;
+                    botMsgDiv.classList.remove("loading");
+                    paint();
+                } else if (event.loai === "tra_cuu") {
+                    status = `Đang tra cứu: ${event.tu_khoa}`;
+                    paint();
+                } else if (event.loai === "tra_cuu_xong") {
+                    status = "Đang viết câu trả lời…";
+                    paint();
+                } else if (event.loai === "xong") {
+                    if (!answer) answer = event.noi_dung;
+                    paint();
+                } else if (event.loai === "loi") {
+                    throw new Error(event.noi_dung);
+                }
+            }
+        }
+        botMsgDiv.classList.remove("loading");
+        document.body.classList.remove("bot-responding");
+        scrollToBottom();
+        chatHistory.push({ role: "bot", text: answer });
     } catch (error) {
         textElement.textContent = error.name === "AbortError" ? "Đã dừng phản hồi." : error.message;
         textElement.style.color = "#d62939";

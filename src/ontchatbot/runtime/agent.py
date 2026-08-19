@@ -15,12 +15,22 @@ from dataclasses import dataclass
 from typing import Sequence
 
 from ..settings import ONTOLOGY_NS
+from .model import QueryGenerationError
 from .pipeline import OntologyChatbot
+from .render import NO_INFORMATION_REPLY
+from .sparql import SparqlError
 from .sparql import load_ontology
 
 #: Điểm cuối mặc định. Máy chủ nhận cùng giao thức với OpenAI nên thư viện
 #: ``openai-agents`` dùng được mà không cần lớp chuyển đổi nào.
 DEFAULT_BASE_URL = "https://lightning.ai/api/v1/"
+#: Mức suy luận của mô hình điều phối: để nhà cung cấp tự chọn.
+#:
+#: Hạ xuống mức thấp thì ít lượt tra hơn, nhanh hơn, và hết ký hiệu nội bộ trong
+#: câu trả lời - nhưng cứ khoảng một trong mười lượt, mô hình gọi công cụ xong
+#: rồi kết thúc mà không viết câu nào. Một câu trả lời trống là hỏng nặng hơn
+#: mấy thứ kia cộng lại, nên không ghim mức thấp.
+REASONING_EFFORT = None
 
 #: Số tên mỗi loại nêu trong khuôn nhắc.
 #:
@@ -49,17 +59,26 @@ Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "học phí m
 Không nên:  "Hãy hướng dẫn tôi cách đăng ký học phần nhé"
             "cho mình hỏi muốn nghỉ học tạm thời thì cần làm những gì ạ"
 
-Một lần gọi tra một chủ đề; câu hỏi có hai chủ đề thì gọi hai lần.
+Tham số là một DANH SÁCH từ khoá, tra hết trong một lần gọi. Người hỏi và đồ thị
+hay gọi cùng một thứ bằng hai tên khác nhau, nên gửi 2-3 cách gọi của cùng chủ đề
+để tăng khả năng trúng:
+
+    ["nghỉ học tạm thời", "bảo lưu kết quả học tập"]
+    ["điều kiện tốt nghiệp", "xét tốt nghiệp"]
+
+Câu hỏi nhiều chủ đề thì đưa hết từ khoá của mọi chủ đề vào cùng danh sách đó -
+vẫn một lần gọi.
 
 Kết quả là JSON. Cách đọc:
-- `trang_thai=co_du_lieu`: `du_lieu` là TRỌN VẸN mục khớp từ khoá; phải đọc HẾT
-  mọi bản ghi. `ma_nguon` trỏ tới trích dẫn và đường dẫn trong `nguon`.
+- `trang_thai=co_du_lieu`: `nguon` là TRỌN VẸN những gì tìm được. Mỗi mục gồm
+  trích dẫn, đường dẫn, và `du_lieu` mà nguồn đó khẳng định. Phải đọc HẾT.
 - Nếu chi tiết người dùng hỏi không xuất hiện trong bất kỳ bản ghi nào, cơ sở dữ
-  liệu không có chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề bằng từ
-  khoá khác.
-- `trang_thai=khong_co_thong_tin`: chỉ lúc này mới thử thêm tối đa một lần bằng
-  cách gọi ngắn khác, ví dụ "bảo lưu" thay cho "nghỉ học tạm thời". Vẫn không có
-  thì dừng và nói không tìm thấy."""
+  liệu không có chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề.
+- `tu_khoa_khong_thay` liệt kê những từ khoá không khớp gì. Các từ khoá còn lại
+  vẫn có dữ liệu, nên đừng tra lại cả loạt.
+- `trang_thai=khong_co_thong_tin`: không từ khoá nào khớp. Chỉ lúc này mới thử
+  thêm tối đa một lần bằng những cách gọi khác hẳn. Vẫn không có thì dừng và nói
+  không tìm thấy."""
 
 
 @dataclass(frozen=True)
@@ -171,6 +190,22 @@ vài chủ đề tra được:
 {topics}"""
 
 
+def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
+    """Tra một chủ đề và luôn trả về đúng khuôn kết quả đã hẹn.
+
+    Truy vấn sinh ra hỏng là chuyện của tầng dưới; với người gọi thì nó không
+    khác gì không tìm thấy. Trợ lý đọc trạng thái trong kết quả để quyết định
+    tra lại hay dừng, mà một ngoại lệ thì không mang trạng thái đó - nó làm hỏng
+    cả lượt chạy thay vì thành một câu trả lời trung thực.
+    """
+
+    keywords = [tu_khoa] if isinstance(tu_khoa, str) else list(tu_khoa)
+    try:
+        return chatbot.answer_many(keywords)
+    except (QueryGenerationError, SparqlError):
+        return NO_INFORMATION_REPLY
+
+
 def build_tool(chatbot: OntologyChatbot):
     """Bọc đường tra cứu ontology thành một công cụ cho mô hình gọi.
 
@@ -182,14 +217,14 @@ def build_tool(chatbot: OntologyChatbot):
     from agents import function_tool
 
     @function_tool(description_override=TOOL_DESCRIPTION)
-    def tra_cuu_hoc_vu(tu_khoa: str) -> str:
-        """Tra một chủ đề học vụ.
+    def tra_cuu_hoc_vu(tu_khoa: list[str]) -> str:
+        """Tra các chủ đề học vụ.
 
         Args:
-            tu_khoa: Cụm từ khoá ngắn nêu chủ đề, ví dụ "đăng ký học phần".
+            tu_khoa: Danh sách cụm từ khoá ngắn, ví dụ ["đăng ký học phần"].
         """
 
-        return chatbot.answer(tu_khoa)
+        return look_up(chatbot, tu_khoa)
 
     return tra_cuu_hoc_vu
 
@@ -207,8 +242,9 @@ def build_agent(
     không có lớp chuyển đổi nào ở giữa.
     """
 
-    from agents import Agent, OpenAIChatCompletionsModel, set_tracing_disabled
+    from agents import Agent, ModelSettings, OpenAIChatCompletionsModel, set_tracing_disabled
     from openai import AsyncOpenAI
+    from openai.types.shared import Reasoning
 
     # Không gửi vết chạy ra dịch vụ ngoài: câu hỏi của người dùng là dữ liệu của
     # trường, và điểm cuối này không phải OpenAI.
@@ -223,4 +259,9 @@ def build_agent(
         instructions=build_instructions(),
         tools=[build_tool(chatbot)],
         model=OpenAIChatCompletionsModel(model=model, openai_client=client),
+        model_settings=(
+            ModelSettings(reasoning=Reasoning(effort=REASONING_EFFORT))
+            if REASONING_EFFORT
+            else ModelSettings()
+        ),
     )

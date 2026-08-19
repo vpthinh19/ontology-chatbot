@@ -64,17 +64,19 @@ def test_deduplicates_citations_and_links_without_losing_row_pairing() -> None:
 
     payload = _payload(rows)
 
-    assert payload["du_lieu"] == [
-        {"thuoc_tinh": "bước", "gia_tri": "Viết đơn", "ma_nguon": 1},
-        {"thuoc_tinh": "bước", "gia_tri": "Nộp đơn", "ma_nguon": 1},
-    ]
+    # Trích dẫn xuất hiện đúng một lần, và quan hệ dữ kiện - nguồn nằm ở cấu
+    # trúc chứ không ở một mã tham chiếu mà mô hình có thể in nhầm ra màn hình.
     assert payload["nguon"] == [
         {
-            "ma_nguon": 1,
             "trich_dan": "Điều 24",
             "duong_dan": "https://example.com/quy-che",
+            "du_lieu": [
+                {"thuoc_tinh": "bước", "gia_tri": "Viết đơn"},
+                {"thuoc_tinh": "bước", "gia_tri": "Nộp đơn"},
+            ],
         }
     ]
+    assert "ma_nguon" not in json.dumps(payload, ensure_ascii=False)
 
 
 def test_a_row_without_a_source_does_not_get_a_source_reference() -> None:
@@ -89,9 +91,10 @@ def test_a_row_without_a_source_does_not_get_a_source_reference() -> None:
         ]
     )
 
-    assert payload["du_lieu"] == [
+    assert payload["du_lieu_khong_ro_nguon"] == [
         {"thuoc_tinh": "tên gọi", "gia_tri": "Ngành đào tạo"}
     ]
+    assert payload.get("nguon") == []
     assert payload["nguon"] == []
 
 

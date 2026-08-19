@@ -63,7 +63,11 @@ class CTranslate2Generator:
     def generate_many(self, texts: Sequence[str]) -> list[str]:
         """Sinh cho nhiều câu một lượt, giữ nguyên thứ tự đưa vào.
 
-        Luôn dùng ``translate_batch`` để thực hiện suy luận theo lô.
+        Mỗi câu được sinh độc lập với các câu cùng lô. Gộp thật sự thì nhanh hơn
+        khoảng hai lần, nhưng lô đệm mọi câu về cùng độ dài và phép nhân ma trận
+        cộng dồn theo thứ tự khác, nên token gần ngang điểm có thể lật: cùng một
+        cụm từ khoá cho ra truy vấn khác nhau tuỳ theo cụm nào đi kèm. Người
+        dùng không chấp nhận được việc câu trả lời đổi theo thứ họ hỏi kèm.
         """
 
         sources = [normalize_model_input(text) for text in texts]
@@ -79,6 +83,7 @@ class CTranslate2Generator:
             batch,
             beam_size=1,
             max_decoding_length=MAX_TARGET_LENGTH,
+            max_batch_size=1,
         )
         return [self._decode(result) for result in results]
 

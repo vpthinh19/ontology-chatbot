@@ -8,9 +8,9 @@
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 634,
+      "form": 624,
       "out-of-domain": 884,
-      "procedure": 1121,
+      "procedure": 1131,
       "tuition": 336
     },
     "splits": {
@@ -22,16 +22,16 @@
           "academic-rule": 1476,
           "certificate": 413,
           "document": 1003,
-          "form": 550,
+          "form": 540,
           "out-of-domain": 773,
-          "procedure": 1021,
+          "procedure": 1031,
           "tuition": 282
         }
       },
       "val": {
         "records": 400,
         "query_families": 50,
-        "targets": 271,
+        "targets": 270,
         "domains": {
           "academic-rule": 135,
           "certificate": 32,
@@ -45,7 +45,7 @@
       "test": {
         "records": 390,
         "query_families": 50,
-        "targets": 273,
+        "targets": 272,
         "domains": {
           "academic-rule": 131,
           "certificate": 31,
@@ -95,10 +95,10 @@
     },
     "input_words": {
       "min": 1,
-      "median": 10,
+      "median": 11,
       "p95": 21,
-      "max": 33,
-      "mean": 11.19
+      "max": 36,
+      "mean": 11.59
     }
   },
   "in_domain_contract": {
@@ -146,9 +146,9 @@
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 634,
+      "form": 624,
       "out-of-domain": 884,
-      "procedure": 1121,
+      "procedure": 1131,
       "tuition": 336
     },
     "catalogue_coverage_required": true,
@@ -1603,7 +1603,7 @@
           "academic-concept-facts": 94,
           "academic-performance-table": 40,
           "academic-policy-facts": 45,
-          "academic-procedure-facts": 470,
+          "academic-procedure-facts": 480,
           "academic-program-catalogue-table": 45,
           "academic-program-facts": 460,
           "academic-rule-facts": 16,
@@ -1627,8 +1627,8 @@
           "dismissal-rule-facts": 17,
           "document-part-facts": 772,
           "education-level-facts": 22,
-          "form-catalogue-entry-facts": 245,
-          "form-document-facts": 305,
+          "form-catalogue-entry-facts": 265,
+          "form-document-facts": 275,
           "grade-code-facts": 38,
           "graduation-classification-table": 44,
           "graduation-honours-penalty-rule-facts": 15,
@@ -1659,9 +1659,9 @@
           "academic-rule": 1476,
           "certificate": 413,
           "document": 1003,
-          "form": 550,
+          "form": 540,
           "out-of-domain": 773,
-          "procedure": 1021,
+          "procedure": 1031,
           "tuition": 282
         },
         "slot_values": {
@@ -2362,7 +2362,7 @@
       "val": {
         "records": 400,
         "queries": 50,
-        "targets": 271,
+        "targets": 270,
         "query_counts": {
           "academic-actor-facts": 9,
           "academic-case-facts": 7,
@@ -2393,8 +2393,8 @@
           "dismissal-rule-facts": 2,
           "document-part-facts": 34,
           "education-level-facts": 3,
-          "form-catalogue-entry-facts": 22,
-          "form-document-facts": 20,
+          "form-catalogue-entry-facts": 24,
+          "form-document-facts": 18,
           "grade-code-facts": 7,
           "graduation-classification-table": 2,
           "graduation-honours-penalty-rule-facts": 2,
@@ -2715,7 +2715,6 @@
               ":Form08EarlyGraduation",
               ":Form09TemporaryLeave",
               ":Form10Withdrawal",
-              ":Form11Resumption",
               ":Form12MajorChange",
               ":Form13UniversityTransfer",
               ":Form14StudentExchange",
@@ -2832,7 +2831,7 @@
       "test": {
         "records": 390,
         "queries": 50,
-        "targets": 273,
+        "targets": 272,
         "query_counts": {
           "academic-actor-facts": 9,
           "academic-case-facts": 4,
@@ -2863,8 +2862,8 @@
           "dismissal-rule-facts": 2,
           "document-part-facts": 36,
           "education-level-facts": 2,
-          "form-catalogue-entry-facts": 22,
-          "form-document-facts": 20,
+          "form-catalogue-entry-facts": 23,
+          "form-document-facts": 19,
           "grade-code-facts": 4,
           "graduation-classification-table": 2,
           "graduation-honours-penalty-rule-facts": 3,
@@ -3187,7 +3186,6 @@
               ":Form08EarlyGraduation",
               ":Form09TemporaryLeave",
               ":Form10Withdrawal",
-              ":Form11Resumption",
               ":Form12MajorChange",
               ":Form13UniversityTransfer",
               ":Form14StudentExchange",
@@ -3304,9 +3302,9 @@
     }
   },
   "sha256": {
-    "train.jsonl": "4822b4137b42ae8b9b3a00579b092a909af776d710088a6e9278ef25180e3317",
-    "val.jsonl": "e3fd2cf7b89ebf878dd1dcd93a40aa890663a74e9fbe309c854b1e6dbcd8d9a0",
-    "test.jsonl": "6c1c848eaf2716e3fd8514af056b099c5d36c4d02e04737579490bcb11390cd3",
+    "train.jsonl": "7e00ac32ee74d24616e1e7c58fbb1583f9349cb0260a0ffc0890e99d99c088bb",
+    "val.jsonl": "c36cdcac6ffb31e03bf83cb1876251b97572366c80f83642ae5208004be93558",
+    "test.jsonl": "64d03f0a3d73e7a5756e4effc3657df5fdd14882505f918109746a09d174f23a",
     "catalogue.jsonl": "a5ef35619f288a8c543fa08730117eaf3262ea89db7e0bad91d144c8340b7d1d",
     "coverage.json": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251",
     "ontology.ttl": "312a09d3f96a974061506a793e57055a60498a463f2b5a692e20673db0db9ba0"

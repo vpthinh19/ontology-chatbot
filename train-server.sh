@@ -3,12 +3,15 @@
 # Huấn luyện và chấm model seq2seq trên máy từ xa, rồi đóng gói đúng phần cần
 # mang về.
 #
-# Ba model kia đã chấm xong trên đúng bộ dữ liệu hiện tại, nên lượt mặc định chỉ
-# còn mbart. Gói mang về đặt cạnh kết quả cũ là đủ bốn model để dựng báo cáo.
+# Bộ câu hỏi vừa được sửa lại nên cả bốn model phải chạy lại trên cùng dữ liệu
+# mới; gói mang về chứa đủ bốn, không cần ghép với kết quả cũ.
 #
-#     bash train-server.sh                       # mbart, 8 epoch
-#     bash train-server.sh --epochs 4            # cờ nào cũng chuyển xuống lệnh train
-#     MODELS="t5gemma2 vit5 bartpho mbart" bash train-server.sh   # chạy lại cả bốn
+# Trần lượt học đặt rộng và để phép dừng sớm quyết định chỗ kết thúc: lượt chạy
+# trước chạm đúng trần nên không ai biết các model còn khá lên tới đâu.
+#
+#     bash train-server.sh              # cả bốn model, trần 16 lượt
+#     EPOCHS=8 bash train-server.sh     # hạ trần khi chỉ muốn thử nhanh
+#     MODELS="t5gemma2" bash train-server.sh      # chạy riêng một model
 #
 # Gói mang về chỉ chứa chỉ số và log, không chứa trọng số: trọng số nằm lại trên
 # máy chạy, và bảng biểu chỉ cần các tệp JSON.
@@ -20,8 +23,8 @@ set -uo pipefail
 
 cd "$(dirname "$0")"
 
-MODELS="${MODELS:-mbart}"
-EPOCHS_DEFAULT=8
+MODELS="${MODELS:-t5gemma2 mbart bartpho vit5}"
+EPOCHS_DEFAULT="${EPOCHS:-16}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 ROOT="artifacts/runs/${STAMP}"
 BENCH_BATCH="${BENCH_BATCH:-16}"

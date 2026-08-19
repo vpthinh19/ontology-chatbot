@@ -136,20 +136,36 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     # Canh nguyên tắc, không canh câu chữ: tài liệu gọi tập đó là "tập chấm".
     assert "không tham gia chọn checkpoint" in training
 
-    # Người đọc phải trả lời được: hệ thống làm gì, nhận gì, trả gì, chạy ra sao,
-    # cần máy thế nào, và nó chưa làm được gì.
-    for topic in ("Bài toán", "vào và ra", "Chạy lại", "phần cứng", "Giới hạn"):
+    # Người đọc phải trả lời được: hệ thống giải bài gì, dữ liệu đi qua những
+    # hình dạng nào, nội dung lấy từ đâu, đo bằng cách nào, và nó chưa làm được
+    # gì. Canh chủ đề chứ không canh cách đánh số hay thứ tự mục.
+    for topic in (
+        "Bài toán",
+        "Hình dạng dữ liệu",
+        "Ontology",
+        "Tập dữ liệu",
+        "Thiết lập thực nghiệm",
+        "Hạn chế",
+        "Hướng cải tiến",
+    ):
         assert topic in readme, topic
 
     # Đầu ra chỉ có hai dạng, và đó là ràng buộc quan trọng nhất của công cụ.
     assert "không có thông tin" in readme
-    # Lớp điều phối chưa tích hợp - người đọc phải biết trước khi tin vào số
-    # liệu. Canh Ý chứ không canh cụm từ: bản trước ghim đúng chữ
-    # "tool-calling", thuật ngữ mà tài liệu hướng người ngoài phải dịch ra.
-    assert "điều phối" in readme and "chưa được tích hợp" in readme
+    # Số liệu của tầng sinh truy vấn KHÔNG phải chất lượng của trợ lý hoàn
+    # chỉnh, nên README phải báo cáo riêng một phép đo chạy hết cả đường - và
+    # phải nói rõ hai con số đó chênh nhau. Canh ý chứ không canh câu chữ.
+    assert "đầu-cuối" in readme
+    assert "71,7%" in readme and "77,9%" in readme
 
     # Sơ đồ thay cho mô tả bằng lời: một cho luồng xử lý, một cho luồng dữ liệu.
-    assert readme.count("```mermaid") >= 2
+    # Ảnh dựng sẵn chứ không phải sơ đồ dựng lúc hiển thị, vì tài liệu này còn đi
+    # ra ngoài kho mã, nơi không có bộ dựng sơ đồ nào chạy.
+    images = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", readme)
+    assert len(images) >= 2, images
+    assert "```mermaid" not in readme
+    for image in images:
+        assert (ROOT / image).is_file(), image
 
     if model_report.is_file():
         documented = set(_PERCENTAGE.findall(training))

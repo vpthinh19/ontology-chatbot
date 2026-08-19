@@ -5,6 +5,8 @@ xác nhận ràng buộc an toàn của runtime: chỉ ``SELECT``, và kết qu�
 hoặc literal chứ không phải node.
 """
 
+import json
+
 import pytest
 
 from ontchatbot.runtime.render import render_rows
@@ -227,13 +229,24 @@ def test_a_query_returning_a_node_is_refused(ontology_graph) -> None:
         )
 
 
-def test_answers_render_as_plain_reader_facing_text(ontology_graph) -> None:
-    rendered = render_rows(
-        execute_select(
-            ontology_graph,
-            "SELECT ?answer WHERE { :MajorChangeProcedure :hasDeadline ?d . "
-            "?d :deadlineText ?answer . }",
+def test_answers_reach_the_agent_as_data_not_prose(ontology_graph) -> None:
+    """Công cụ trả dữ liệu cho mô hình điều phối, không trả câu chữ.
+
+    Người dùng đọc câu do mô hình viết, nên chỗ này không dựng câu. Nó dựng dữ
+    kiện kèm trạng thái tường minh để mô hình biết đã đủ dữ liệu hay chưa.
+    """
+
+    rendered = json.loads(
+        render_rows(
+            execute_select(
+                ontology_graph,
+                "SELECT ?answer WHERE { :MajorChangeProcedure :hasDeadline ?d . "
+                "?d :deadlineText ?answer . }",
+            )
         )
     )
 
-    assert rendered == "Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới."
+    assert rendered["trang_thai"] == "co_du_lieu"
+    assert rendered["du_lieu"] == [
+        {"answer": "Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới."}
+    ]

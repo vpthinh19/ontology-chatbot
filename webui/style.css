@@ -296,3 +296,31 @@ body.bot-responding .prompt-form #stop-response-btn {
         display: none;
     }
 }
+
+/* Dòng trạng thái trong lúc chờ: nhạt hơn và nhấp nháy nhẹ, để phân biệt với
+   câu trả lời thật và để thấy hệ thống còn đang chạy. */
+.reply-line.status {
+    opacity: 0.72;
+    font-style: italic;
+    animation: status-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+    0%, 100% { opacity: 0.72; }
+    50%      { opacity: 0.38; }
+}
+
+/* Dòng gạch đầu dòng: dấu chấm do CSS vẽ, phần chữ thụt vào cho thẳng lề. */
+.reply-line.bullet {
+  padding-left: 1.35em;
+  text-indent: -0.85em;
+}
+.reply-line.bullet::before {
+  content: "•";
+  display: inline-block;
+  width: 0.85em;
+  opacity: 0.75;
+}
+.reply-line.bullet.depth-1 { margin-left: 1.1em; }
+.reply-line.bullet.depth-2 { margin-left: 2.2em; }
+.reply-line.bullet.depth-3 { margin-left: 3.3em; }

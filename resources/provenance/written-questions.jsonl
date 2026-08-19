@@ -219,32 +219,32 @@
 {"anchor": "ArticulationStudyProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Điều kiện liên thông lên đại học là gì?"}
 {"anchor": "ArticulationStudyProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "lien thong len dh lam sao"}
 {"anchor": "ArticulationStudyProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "tot nghiep cd hoc lien thong dc ko"}
-{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "em nghỉ buổi học thì xin phép khoa bằng cách nào vậy ạ"}
+{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Em cần xin phép khoa ra sao khi phải nghỉ một buổi học vậy ạ?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "nghỉ buổi học nộp đơn cho ai vậy ạ"}
-{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "xin phép nghỉ học"}
+{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn báo nghỉ học thì làm thủ tục thế nào v ạ?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục xin phép nghỉ học gồm những bước thực hiện nào?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện tham dự học phần và thời hạn nộp đơn xin phép nghỉ học."}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin phép nghỉ học và nơi nộp đơn được quy định thế nào ạ."}
-{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết đơn xin phép nghỉ buổi học dùng mẫu nào và gửi đến đơn vị nào ạ."}
+{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin phép nghỉ buổi học gồm những bước nào ạ."}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Muốn nghỉ học có phép thì sinh viên cần nộp đơn ở đâu?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Nghỉ học cần đáp ứng điều kiện nào?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin nghỉ học cần làm gì?"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đơn xin vắng buổi học nộp ở đâu?"}
-{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nghi hoc mau so may"}
+{"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin phep nghi buoi hoc lam the nao"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nghi hoc thi nop don xin phep o dau vay a"}
 {"anchor": "ClassAbsenceRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin nghi hoc nop don dau"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "cho em xin miễn học miễn thi gửi hồ sơ ở đâu vậy"}
-{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "miễn học miễn thi"}
+{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "miễn học, miễn thi và cộng điểm thưởng làm thế nào v ạ?"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "xin cộng điểm thưởng nộp đâu vậy ta"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục miễn học miễn thi và cộng điểm thưởng gồm bước nào?"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ theo mẫu và nơi gửi đề nghị miễn học, miễn thi ạ."}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin miễn học, miễn thi và cộng điểm thưởng gồm những bước nào ạ."}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Hồ sơ miễn học gửi đến đâu?"}
-{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Miễn học miễn thi làm sao?"}
+{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Miễn học, miễn thi và cộng điểm thưởng cần làm thế nào?"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Muốn cộng điểm thưởng cần điều kiện gì?"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên muốn miễn học miễn thi cần chuẩn bị hồ sơ gì?"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "cong diem thuong nop phong nao"}
-{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mien hoc mien thi lam sao"}
+{"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mien hoc, mien thi va cong diem thuong lam the nao"}
 {"anchor": "CourseExemptionAndBonusProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mien hoc mien thi thi nop ho so cho phong nao a"}
 {"anchor": "CourseRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đăng ký học phần"}
 {"anchor": "CourseRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đăng ký học phần mỗi kỳ thì em phải làm những gì vậy"}
@@ -271,77 +271,77 @@
 {"anchor": "CourseRetakeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "diem hoc lai tinh lan nao"}
 {"anchor": "CourseRetakeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc lai mon chua dat ntn"}
 {"anchor": "CourseRetakeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "rot mon thi dang ky hoc lai o ky sau sao vay"}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "lỡ đăng ký rồi muốn bỏ môn thì sao ạ"}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "rút học phần đã đăng ký"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Lỡ đăng ký môn rồi, giờ em muốn rút thì cần làm gì ạ?"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Rút một học phần đã đăng ký thì làm thế nào vậy ạ?"}
 {"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục rút bớt học phần đã đăng ký trong học kỳ được thực hiện như thế nào ạ."}
 {"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết điều kiện về khối lượng học tập còn lại sau khi rút học phần ạ."}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Hủy môn đã đăng ký ở đâu?"}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Rút bớt học phần làm sao?"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên hủy môn đã đăng ký thì nộp yêu cầu ở đâu?"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Muốn rút bớt học phần thì phải nộp yêu cầu như thế nào?"}
 {"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sau khi rút môn cần giữ điều kiện gì?"}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "huy mon da dk tren web dc ko"}
-{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "rut bot hp lam sao"}
-{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "chuyển đổi tín chỉ"}
-{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "học chỗ khác muốn đổi điểm sao vậy ạ"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "huy mon da dang ky tren web lam the nao?"}
+{"anchor": "CourseWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "rut bot hoc phan thi can cac buoc gi?"}
+{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Đổi tín chỉ đã học ở nơi khác cần làm thế nào v ạ?"}
+{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Em học chỗ khác rồi, muốn quy đổi điểm thì liên hệ đâu ạ?"}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết hồ sơ đề nghị công nhận kết quả đã tích lũy ở nơi khác cần nộp cho đâu."}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ được thực hiện thế nào ạ."}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin giải thích điều kiện và cách Hội đồng chuyên môn xem xét chuyển đổi tín chỉ ạ."}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Công nhận tín chỉ cần làm gì?"}
-{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Kết quả học ở nơi khác được công nhận thế nào?"}
+{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Công nhận và chuyển đổi tín chỉ cần làm thế nào?"}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Miễn học và quy đổi điểm nộp hồ sơ ở đâu?"}
 {"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "cong nhan tin chi nop dau"}
-{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "doi diem hoc phan tu noi khac ntn"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "bị buộc thôi học xin chuyển hệ sao v ạ"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "chuyển hình thức đào tạo"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên bị buộc thôi học có thể xin chuyển sang hình thức vừa làm vừa học thế nào."}
+{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "cong nhan va chuyen doi tin chi lam the nao"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Bị buộc thôi học thì xin chuyển sang hệ khác cần điều kiện gì v ạ?"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn chuyển hình thức đào tạo thì làm thế nào ta?"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục chuyển sang chương trình vừa làm vừa học khi bị buộc thôi học gồm những bước nào ạ."}
 {"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ và nơi liên hệ của thủ tục chuyển chương trình trong trường hợp này ạ."}
 {"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học ạ."}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Bị buộc thôi học muốn chuyển chương trình làm sao?"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Có thể chuyển sang vừa làm vừa học không?"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sau khi bị buộc thôi học, cần làm thủ tục nào để chuyển chương trình?"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Điều kiện để chuyển sang hệ vừa làm vừa học là gì?"}
 {"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thủ tục chuyển chương trình khi bị buộc thôi học là gì?"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "bi buoc thoi hoc chuyen he dc ko"}
-{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin chuyen ct dao tao lam sao"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "bi buoc thoi hoc muon chuyen he thi nop ho so o dau?"}
+{"anchor": "DismissalTransferRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "thu tuc xin chuyen chuong trinh dao tao gom gi?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn ra trường sớm thì em nộp đơn cho phòng nào vậy"}
-{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn ra trường sớm thì làm sao ạ"}
-{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "tốt nghiệp sớm"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Em muốn được xét ra trường sớm thì phải đăng ký thế nào ạ?"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Xét tốt nghiệp sớm cần đáp ứng những điều kiện gì vậy ạ?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục đề nghị xét tốt nghiệp sớm gồm những bước nào?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên đủ điều kiện tốt nghiệp trước thời hạn cần gửi đề nghị ra sao."}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết nơi tiếp nhận hồ sơ xét tốt nghiệp sớm và cách liên hệ ạ."}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đề nghị xét tốt nghiệp sớm được thực hiện như thế nào ạ."}
-{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên muốn tốt nghiệp sớm cần gửi đơn ở đâu?"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xét tốt nghiệp sớm cần làm thế nào?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thủ tục ra trường sớm là gì?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Tốt nghiệp sớm cần làm gì?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xét tốt nghiệp trước hạn nộp ở đâu?"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "ra truong truoc han nop dau"}
-{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xet tot nghiep som ntn"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xet tot nghiep som lam the nao"}
 {"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin tot nghiep som thi nop don cho phong nao vay a"}
-{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "bị bệnh muốn lùi lịch thi thì em xin phép chỗ nào vậy"}
-{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "hoãn thi"}
-{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "không thi được muốn thi sau sao ạ"}
+{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Em bị bệnh muốn lùi lịch thi thì nộp đơn ở đâu ạ?"}
+{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Xin hoãn thi phải thực hiện các bước nào v ạ?"}
+{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Không dự thi được, em cần liên hệ phòng nào để xin thi sau ạ?"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục xin hoãn thi kết thúc học phần thực hiện ra sao?"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên cần làm gì để được thi vào đợt sau theo thủ tục hoãn thi."}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ xin hoãn thi gửi đến đâu và cần liên hệ đơn vị nào ạ."}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin hoãn thi kết thúc học phần vì lý do sức khỏe ạ."}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Hoãn thi cần làm gì?"}
-{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Lùi lịch thi vì sức khỏe thế nào?"}
+{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin hoãn thi cần làm thế nào?"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Muốn hoãn thi vì sức khỏe thì sinh viên nộp đơn ở đâu?"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin thi đợt sau nộp đơn ở đâu?"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "bi benh xin hoan thi thi nop don dau vay a"}
-{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoan thi lam sao"}
+{"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin hoan thi lam the nao"}
 {"anchor": "ExamPostponementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin thi dot sau nop don dau"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "lớp chưa có muốn mở thêm thì sao v"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "lớp đầy chỗ thì tụi em xin mở thêm lớp bằng cách nào"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "mở lớp học phần"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Chưa có lớp phù hợp thì tụi em cần làm gì để đề nghị mở thêm v?"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Lớp đã kín chỗ, cần nộp yêu cầu mở lớp mới ở đâu ạ?"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn đề xuất mở lớp học phần thì cần hồ sơ gì vậy ạ?"}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục đề nghị mở thêm lớp học phần gồm những bước nào?"}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên cần làm gì khi muốn đề nghị mở lớp học phần bổ sung."}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết mẫu đơn và nơi tiếp nhận đề nghị mở thêm lớp học phần ạ."}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đề nghị mở thêm lớp học phần gồm những bước nào ạ."}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đề nghị mở thêm lớp học phần được thực hiện như thế nào ạ."}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Khi lớp thiếu chỗ, sinh viên đề nghị mở thêm lớp thế nào?"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Khi thiếu chỗ học, sinh viên cần làm gì để đề nghị mở thêm lớp?"}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Mở thêm lớp học phần cần gì?"}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin mở lớp nộp đơn ở đâu?"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đề nghị mở lớp học phần làm thế nào?"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "lop day cho thi xin mo them lop sao vay a"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thủ tục đề nghị mở một lớp học phần gồm những bước nào?"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "lop het cho roi thi de nghi mo them can lam gi?"}
 {"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mo lop nop mau dau"}
-{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin mo them lop hp ntn"}
+{"anchor": "ExtraClassOpeningRequestProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin mo bo sung lop hoc phan can gi vay?"}
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "cải thiện điểm"}
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "điểm đã đạt muốn học lại cho cao hơn sao ạ"}
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết có thể học lại học phần hoặc đổi học phần tự chọn để cải thiện điểm ra sao."}
@@ -352,16 +352,16 @@
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đăng ký cải thiện điểm thế nào?"}
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "cai thien diem dk sao"}
 {"anchor": "GradeImprovementProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc lai de tang diem tinh ntn"}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đồ án tốt nghiệp"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đăng ký thực hiện đồ án tốt nghiệp làm thế nào v ạ?"}
 {"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đủ điều kiện làm ĐATN thì đăng ký sao ạ"}
 {"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện để sinh viên được đăng ký làm đồ án tốt nghiệp."}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký thực hiện đồ án tốt nghiệp theo Mẫu số 02 gồm những bước nào ạ."}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký thực hiện đồ án tốt nghiệp gồm những bước nào ạ."}
 {"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết đơn đăng ký khóa luận hoặc đồ án tốt nghiệp được nộp như thế nào ạ."}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Ai được làm đồ án tốt nghiệp?"}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Mẫu đăng ký ĐATN là mẫu nào?"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Điều kiện để được đăng ký làm đồ án tốt nghiệp là gì?"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Hồ sơ đăng ký đồ án tốt nghiệp gồm những gì?"}
 {"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đăng ký đồ án tốt nghiệp cần gì?"}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "dk do an tot nghiep ntn"}
-{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mau 02 dang ky datn"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "dang ky lam do an tot nghiep theo quy trinh nao?"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "muon dang ky datn thi lien he phong nao?"}
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn được công nhận ra trường cần làm gì ạ"}
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "xét tốt nghiệp"}
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết các đơn vị thẩm định và trình quyết định công nhận tốt nghiệp ra sao."}
@@ -372,18 +372,18 @@
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xét tốt nghiệp cần gì?"}
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "ra truong ai cong nhan"}
 {"anchor": "GraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xet tot nghiep can gi"}
-{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "chuyển ngành"}
+{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn chuyển sang ngành khác thì em cần làm gì trước ạ?"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "em muốn đổi ngành thì phải nộp đơn qua phòng nào vậy ạ"}
-{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đang học muốn đổi ngành thì sao vậy ạ"}
+{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Đang học mà muốn đổi ngành, thủ tục ra sao vậy ạ?"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục chuyển ngành trong cùng bậc học gồm những bước nào?"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện và cách nộp hồ sơ xin chuyển ngành học."}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết sinh viên liên hệ đơn vị nào khi muốn chuyển sang ngành khác ạ."}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục chuyển ngành sang một ngành đào tạo khác trong cùng bậc học ạ."}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Chuyển ngành cần làm gì?"}
-{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Có thể chuyển sang ngành khác không?"}
+{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Chuyển ngành học cần làm thế nào?"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên muốn chuyển sang ngành khác cần đáp ứng điều kiện gì?"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đổi chuyên ngành nộp hồ sơ ở đâu?"}
-{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "chuyen nganh hoc lam sao"}
+{"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "chuyen nganh hoc lam the nao"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "doi nganh nop ho so dau"}
 {"anchor": "MajorChangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "muon doi nganh thi nop don qua phong nao vay a"}
 {"anchor": "ScholarshipReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "cấp học bổng"}
@@ -396,16 +396,16 @@
 {"anchor": "ScholarshipReviewProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xét học bổng làm gì?"}
 {"anchor": "ScholarshipReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nhan hoc bong hoi ai"}
 {"anchor": "ScholarshipReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xet hoc bong ntn"}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "học song bằng"}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn học hai ngành cùng lúc làm sao v ạ"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Học song bằng thì đăng ký thế nào v ạ?"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn theo hai ngành cùng lúc cần điều kiện gì vậy ạ?"}
 {"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện và thời điểm đăng ký học chương trình thứ hai."}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết sau khi được chấp thuận, sinh viên cần bổ sung học phần và sử dụng mẫu đơn nào ạ."}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký học cùng lúc hai chương trình gồm những bước nào ạ."}
 {"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký học cùng lúc hai chương trình đào tạo được thực hiện thế nào ạ."}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Học hai chương trình đăng ký sao?"}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Mẫu đơn học chương trình thứ hai là mẫu nào?"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên đăng ký chương trình thứ hai thì nộp hồ sơ ở đâu?"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Cần nộp hồ sơ gì để học hai chương trình?"}
 {"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Điều kiện học song bằng là gì?"}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc 2 chuong trinh dk sao"}
-{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "mau don hoc song nganh"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc cung luc 2 chuong trinh can dang ky ra sao?"}
+{"anchor": "SecondProgramRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "muon hoc song nganh thi can dieu kien gi?"}
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "bị bệnh không đi học được báo ai vậy ạ"}
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "xin nghỉ ốm"}
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên bị bệnh cần gửi đơn cho giảng viên giảng dạy học phần ra sao."}
@@ -416,29 +416,29 @@
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đơn nghỉ bệnh gửi cho ai?"}
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "bi benh xin nghi ntn"}
 {"anchor": "SickLeaveProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nghi om gui don cho ai"}
-{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "chương trình trao đổi"}
-{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn đi trao đổi sinh viên thì đăng ký sao ạ"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Tham gia chương trình trao đổi sinh viên cần làm thế nào v ạ?"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn đi trao đổi sinh viên thì đăng ký với phòng nào ạ?"}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện và các bước đăng ký học ở trường đối tác theo chương trình trao đổi."}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ trao đổi sinh viên cần gửi đến Phòng Đào tạo Đại học ra sao ạ."}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký chương trình trao đổi sinh viên được thực hiện như thế nào ạ."}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Chương trình trao đổi có điều kiện gì?"}
-{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Trao đổi sinh viên đăng ký thế nào?"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đăng ký chương trình trao đổi sinh viên cần làm thế nào?"}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đi học ở trường đối tác cần làm gì?"}
-{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "dk trao doi sv ntn"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "dang ky chuong trinh trao doi sinh vien lam the nao"}
 {"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc truong doi tac can gi"}
-{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "học trở lại"}
-{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "nghỉ một thời gian giờ đi học lại sao ạ"}
+{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn quay lại học sau thời gian nghỉ thì làm thủ tục gì ạ?"}
+{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Nghỉ học một thời gian rồi, giờ em cần làm gì để xin học lại ạ?"}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết điều kiện để sinh viên hết thời gian bảo lưu quay lại tiếp tục học."}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin học trở lại sau thời gian nghỉ học tạm thời được thực hiện thế nào ạ."}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết đơn xin học trở lại cần nộp cho đơn vị nào và thực hiện ra sao ạ."}
-{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Hết bảo lưu quay lại trường thế nào?"}
+{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin học trở lại sau bảo lưu cần làm thế nào?"}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Học trở lại cần làm gì?"}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đơn nhập học lại nộp ở đâu?"}
 {"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "don hoc tro lai nop dau"}
-{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "hoc lai sau bao luu ntn"}
+{"anchor": "StudyResumptionProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin hoc tro lai sau bao luu lam the nao"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "em muốn nghỉ học hẳn thì gửi đơn qua phòng nào vậy ạ"}
-{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "không học nữa thì làm sao ạ"}
-{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "xin thôi học"}
+{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Nếu không học tiếp nữa thì em cần làm thủ tục ra sao ạ?"}
+{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Xin thôi học phải gửi hồ sơ tới đâu v ạ?"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục xin thôi học theo nguyện vọng cá nhân gồm bước nào?"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết hồ sơ và nơi liên hệ khi sinh viên muốn chấm dứt việc học tại trường."}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin thôi học theo nguyện vọng cá nhân được thực hiện như thế nào ạ."}
@@ -448,17 +448,17 @@
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Sinh viên muốn chấm dứt việc học cần nộp đơn cho ai?"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thôi học cần làm gì?"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nghi hoc han nop don dau"}
-{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "thoi hoc lam sao"}
+{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin thoi hoc lam the nao"}
 {"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin thoi hoc thi nop don qua phong nao vay a"}
-{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "bảo lưu"}
-{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "muốn tạm nghỉ học thì xin ở đâu vậy ạ"}
+{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Bảo lưu kết quả học tập thì cần làm gì vậy ạ?"}
+{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Muốn tạm nghỉ học, em phải nộp đơn ở đâu ạ?"}
 {"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên cần làm gì để tạm dừng việc học và giữ kết quả đã tích lũy."}
 {"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ nghỉ học tạm thời cần gửi đến đơn vị nào trong trường ạ."}
 {"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục nghỉ học tạm thời và bảo lưu kết quả học tập được thực hiện thế nào ạ."}
-{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Bảo lưu kết quả làm sao?"}
+{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thủ tục bảo lưu kết quả được thực hiện như thế nào?"}
 {"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Nghỉ học tạm thời cần thủ tục gì?"}
-{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Tạm dừng học mà giữ điểm thế nào?"}
-{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "bao luu ket qua ntn"}
+{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Tạm dừng học nhưng vẫn giữ kết quả cần đáp ứng điều kiện gì?"}
+{"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin nghi hoc tam thoi va bao luu ket qua lam the nao"}
 {"anchor": "TemporaryAcademicLeaveProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "tam nghi hoc nop don dau"}
 {"anchor": "TuitionPaymentProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "nộp tiền học ở quầy ngân hàng sao v ạ"}
 {"anchor": "TuitionPaymentProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đóng học phí"}
@@ -470,18 +470,18 @@
 {"anchor": "TuitionPaymentProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Đóng tiền học qua ngân hàng ra sao?"}
 {"anchor": "TuitionPaymentProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "dong tien hoc qua ngan hang ntn"}
 {"anchor": "TuitionPaymentProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "nop hoc phi bang cach nao"}
-{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "chuyển trường"}
+{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Chuyển sang trường khác thì em cần làm thủ tục gì ạ?"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "em muốn chuyển trường thì nộp hồ sơ qua phòng nào vậy"}
-{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đang học muốn qua trường khác thì sao ạ"}
+{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "Đang học muốn chuyển trường, nộp đơn ở đâu vậy ạ?"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Thủ tục chuyển trường chuẩn bị hồ sơ và thực hiện ra sao?"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Tôi muốn biết sinh viên cần chuẩn bị hồ sơ và liên hệ đơn vị nào khi xin chuyển trường."}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục chuyển trường sang một trường khác được thực hiện như thế nào ạ."}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin giải thích quy trình xin chuyển trường theo thông tin của Phòng Công tác Chính trị và Sinh viên ạ."}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Chuyển trường cần gì?"}
-{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Muốn chuyển sang trường khác thì sinh viên cần được ai đồng ý?"}
+{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin chuyển trường cần làm thế nào?"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Thủ tục chuyển trường là gì?"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "neutral", "input": "Xin chuyển sang trường khác nộp ở đâu?"}
-{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "chuyen truong lam sao"}
+{"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin chuyen truong lam the nao"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "muon chuyen truong thi nop ho so o phong nao a"}
 {"anchor": "UniversityTransferProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "xin qua truong khac nop dau"}
 {"anchor": "Accounting", "query_id": "academic-program-facts", "register": "colloquial", "input": "Kế toán"}
@@ -1680,45 +1680,45 @@
 {"anchor": "UndergraduateLevel", "query_id": "education-level-facts", "register": "neutral", "input": "Trình độ đại học"}
 {"anchor": "UndergraduateLevel", "query_id": "education-level-facts", "register": "noisy", "input": "dao tao dai hoc gom nd gi z"}
 {"anchor": "UndergraduateLevel", "query_id": "education-level-facts", "register": "noisy", "input": "quy che dh noi ve gi"}
-{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu mở lớp học phần là sao ạ"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "Đơn xin mở lớp học phần tải ở đâu v ạ?"}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin mở lớp dùng mẫu số mấy nhỉ"}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn mở lớp học phần tải chỗ nào ta"}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Mẫu số 01 là đơn gì và sinh viên có thể tải mẫu ở đâu ạ."}
-{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Đơn xin mở lớp học phần có số hiệu mẫu theo quyết định là bao nhiêu ạ."}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn xin mở lớp học phần có số hiệu mẫu nào trên website ạ."}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu số 01 là mẫu gì?"}
-{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin mở lớp học phần"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin mở lớp học phần tải ở đâu?"}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don mo lop hp so may"}
-{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau 01 mo lop hp"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin mo lop hoc phan o dau z"}
 {"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai mau xin mo lop hoc phan dau z"}
-{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "phiếu đăng ký học phần là sao ạ"}
+{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "Phiếu đăng ký/điều chỉnh học phần tải ở đâu v ạ?"}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "phiếu đăng ký học phần tải đâu ta"}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "điều chỉnh học phần dùng mẫu số mấy nhỉ"}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Mẫu Phiếu đăng ký/điều chỉnh học phần được ghi trên website với số hiệu bao nhiêu ạ."}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Phiếu đăng ký hoặc điều chỉnh học phần có số hiệu mẫu nào và tải ở đâu ạ."}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu số 02 là phiếu gì?"}
-{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Phiếu đăng ký/điều chỉnh học phần"}
-{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau 02 dk dieu chinh hp"}
+{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Phiếu đăng ký/điều chỉnh học phần có số hiệu mẫu nào trên website?"}
+{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "phieu dk dieu chinh hp co so hieu mau nao tren web?"}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "phieu dk hp so may"}
 {"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai phieu dang ky dieu chinh hp dau z"}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin nghỉ học dùng mẫu số mấy nhỉ"}
-{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn nghỉ học là sao ạ"}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "Đơn xin phép nghỉ học tải ở đâu v ạ?"}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn xin phép nghỉ học tải ở đâu ta"}
-{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Mẫu Đơn xin phép nghỉ học được ghi trên website và theo quyết định với số hiệu nào ạ."}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn xin phép nghỉ học có số hiệu mẫu nào trên website ạ."}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn xin phép nghỉ học có số hiệu mẫu nào và sinh viên tải biểu mẫu ở đâu ạ."}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu số 03 là đơn gì?"}
-{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin phép nghỉ học"}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin phép nghỉ học tải ở đâu?"}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don nghi hoc so may"}
-{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau 03 nghi hoc"}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin phep nghi hoc o dau z"}
 {"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin phep nghi hoc dau z"}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin hoãn thi dùng mẫu số mấy nhỉ"}
-{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn hoãn thi là sao ạ"}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "Đơn xin hoãn thi tải ở đâu v ạ?"}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn hoãn thi tải ở đâu ta"}
-{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Mẫu Đơn xin hoãn thi được ghi trên website và theo quyết định với số hiệu bao nhiêu ạ."}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn xin hoãn thi có số hiệu mẫu nào trên website ạ."}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn xin hoãn thi có số hiệu mẫu nào và sinh viên có thể tải ở đâu ạ."}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu số 04 là đơn gì?"}
-{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin hoãn thi"}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin hoãn thi tải ở đâu?"}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don hoan thi so may"}
-{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau 04 hoan thi"}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin hoan thi o dau z"}
 {"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin hoan thi dau z"}
 {"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "chuyển chương trình dùng mẫu số mấy nhỉ"}
 {"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn chuyển chương trình tải ở đâu ta"}
@@ -1739,15 +1739,15 @@
 {"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen ctdt tai dau"}
 {"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen chuong trinh dao tao tren trang phong dao tao tai link nao vay a"}
 {"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen ctrinh so may z"}
-{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu miễn học này nằm ở điều mấy ta"}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu miễn học này nằm ở điều mấy ta"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin cộng điểm thưởng dùng mẫu nào nhỉ?"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn miễn học miễn thi số mấy v ạ"}
-{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn này liên quan đến khoản và điều nào trong quy chế đào tạo ạ."}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn này liên quan đến khoản và điều nào trong quy chế đào tạo ạ."}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin miễn học, miễn thi và cộng điểm thưởng được ghi với tên mẫu nào ạ."}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu này số mấy và tải ở đâu?"}
-{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn miễn học miễn thi cộng điểm thưởng"}
+{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn miễn học, miễn thi và cộng điểm thưởng tải ở đâu?"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don mien hoc mien thi mau nao"}
-{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin mien hoc mien thi cong diem thuong lien quan khoan dieu nao vay"}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "noisy", "input": "don xin mien hoc mien thi cong diem thuong lien quan khoan dieu nao vay"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau cong diem thuong tai dau z"}
 {"anchor": "FormCatalogueEntry008", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu tốt nghiệp này số mấy nhỉ"}
 {"anchor": "FormCatalogueEntry008", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin xét tốt nghiệp dùng đơn nào ta"}
@@ -1761,32 +1761,32 @@
 {"anchor": "FormCatalogueEntry008", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau xet tn tai dau z"}
 {"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu nghỉ học này số mấy nhỉ?"}
 {"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin nghỉ tạm thời dùng mẫu nào v ạ"}
-{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn nghỉ tạm thời nằm điều mấy ta"}
-{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết việc xin nghỉ học tạm thời được dẫn tại khoản, điều nào ạ."}
+{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "colloquial", "input": "đơn nghỉ tạm thời nằm điều mấy ta"}
+{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết việc xin nghỉ học tạm thời được dẫn tại khoản, điều nào ạ."}
 {"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin nghỉ học tạm thời có tên mẫu và số hiệu trên trang tải là gì ạ."}
 {"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu nghỉ học tạm thời tải ở đâu?"}
-{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin nghỉ học tạm thời"}
-{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don nghi hoc tam thoi"}
-{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin nghi hoc tam thoi trong quy che o khoan dieu nao vay a"}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin nghỉ học tạm thời tải ở đâu?"}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin nghi hoc tam thoi o dau z"}
+{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "noisy", "input": "don xin nghi hoc tam thoi trong quy che o khoan dieu nao vay a"}
 {"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau nghi tam thoi so may z"}
 {"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "học lại sau nghỉ dùng đơn nào v ạ"}
 {"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu xin học trở lại số mấy nhỉ"}
-{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn học trở lại nằm điều mấy ta"}
-{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin học trở lại được dẫn chiếu tại khoản và điều nào ạ."}
+{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "colloquial", "input": "đơn học trở lại nằm điều mấy ta"}
+{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin học trở lại được dẫn chiếu tại khoản và điều nào ạ."}
 {"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin học trở lại được ghi với tên mẫu và số hiệu nào trên trang tải ạ."}
 {"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu học trở lại tải ở đâu?"}
-{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin học trở lại"}
-{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin hoc tro lai duoc dan o khoan dieu nao trong quy che vay a"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin học trở lại tải ở đâu?"}
+{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "noisy", "input": "don xin hoc tro lai duoc dan o khoan dieu nao trong quy che vay a"}
 {"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau hoc lai so may tai dau z"}
 {"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "chuyển ngành tải đơn đâu v ạ"}
-{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu chuyển ngành này điều mấy nhỉ"}
+{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu chuyển ngành này điều mấy nhỉ"}
 {"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn chuyển ngành số mấy ta"}
 {"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển ngành có tên mẫu và số hiệu trên trang tải là gì ạ."}
-{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển ngành được quy định tại khoản và điều nào ạ."}
+{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển ngành được quy định tại khoản và điều nào ạ."}
 {"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu chuyển ngành số mấy?"}
-{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin chuyển ngành"}
-{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen nganh"}
-{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen nganh theo quy che nam o khoan dieu nao vay a"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin chuyển ngành tải ở đâu?"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin chuyen nganh o dau z"}
+{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "noisy", "input": "don xin chuyen nganh theo quy che nam o khoan dieu nao vay a"}
 {"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen nganh tai dau z"}
 {"anchor": "FormCatalogueEntry012", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "chuyển ngành chương trình Minh Phú dùng đơn nào ta"}
 {"anchor": "FormCatalogueEntry012", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu CT đại chuẩn số mấy nhỉ"}
@@ -1799,24 +1799,24 @@
 {"anchor": "FormCatalogueEntry012", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen nganh chuong trinh Minh Phu ct dai chuan link nao vay a"}
 {"anchor": "FormCatalogueEntry012", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau ct dai chuan so may z"}
 {"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu chuyển trường số mấy nhỉ"}
-{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "thủ tục chuyển trường nằm điều mấy ta"}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "thủ tục chuyển trường nằm điều mấy ta"}
 {"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin chuyển trường dùng đơn nào v ạ"}
-{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết thủ tục chuyển trường được dẫn chiếu tại khoản và điều nào ạ."}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết thủ tục chuyển trường được dẫn chiếu tại khoản và điều nào ạ."}
 {"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển trường có tên mẫu và số hiệu trên trang tải là gì ạ."}
 {"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu chuyển trường tải ở đâu?"}
-{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin chuyển trường"}
-{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen truong"}
-{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen truong duoc quy dinh o khoan dieu nao vay a"}
+{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn xin chuyển trường tải ở đâu?"}
+{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin chuyen truong o dau z"}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "don xin chuyen truong duoc quy dinh o khoan dieu nao vay a"}
 {"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen truong tai dau z"}
 {"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "học hai chương trình dùng đơn nào v ạ"}
 {"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu đăng ký hai CT số mấy nhỉ"}
-{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn học cùng lúc hai chương trình ở điều mấy ta"}
-{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết mẫu đơn học cùng lúc hai chương trình mang số hiệu nào và được dẫn tại điều nào ạ."}
+{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "colloquial", "input": "đơn học cùng lúc hai chương trình ở điều mấy ta"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết Đơn đăng ký học cùng lúc hai chương trình có số hiệu mẫu nào trên website ạ."}
 {"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn đăng ký học cùng lúc hai chương trình đào tạo có thể tải ở đâu ạ."}
 {"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu học cùng lúc hai chương trình tải đâu?"}
-{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn học hai chương trình"}
-{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don dang ky hoc cung luc hai chuong trinh so may va quy dinh dieu nao"}
-{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don hoc 2 chuong trinh"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Đơn đăng ký học cùng lúc hai chương trình tải ở đâu?"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don dang ky hoc hai chuong trinh tai o dau tren web?"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau don hoc 2 chuong trinh co so hieu gi?"}
 {"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau dang ky 2 ct tai dau z"}
 {"anchor": "FormCatalogueEntry015", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "bảo lưu học phần dùng mẫu nào v ạ"}
 {"anchor": "FormCatalogueEntry015", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu bảo lưu học phần này số mấy ta"}
@@ -1865,144 +1865,144 @@
 {"anchor": "FormCatalogueEntry019", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don cap ban sao bang"}
 {"anchor": "FormCatalogueEntry019", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin cap ban sao bang co ten mau gi va tai link nao vay a"}
 {"anchor": "FormCatalogueEntry019", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau sao bang tai dau z"}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "colloquial", "input": "mở lớp học phần xin mẫu nào v ạ"}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "colloquial", "input": "ít người đăng ký thì dùng đơn gì ta"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mở lớp học phần xin mẫu nào v ạ"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "ít người đăng ký thì dùng đơn gì ta"}
 {"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "colloquial", "input": "đơn mở lớp này ở điều mấy nhỉ"}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết trường hợp nào liên quan đến việc làm đơn xin mở lớp học phần ạ."}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin mở lớp học phần là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "neutral", "input": "Mẫu mở lớp học phần số mấy?"}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "noisy", "input": "don mo lop hoc phan"}
-{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "noisy", "input": "mau mo lop so may z"}
+{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin mở lớp học phần được quy định tại điều nào ạ."}
+{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin mở lớp học phần căn cứ theo quyết định nào ạ."}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu mở lớp học phần số mấy?"}
+{"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "noisy", "input": "don xin mo lop hoc phan quy dinh tai dieu nao"}
+{"anchor": "FormCatalogueEntry001", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau mo lop so may z"}
 {"anchor": "Form01ExtraClassOpening", "query_id": "form-document-facts", "register": "noisy", "input": "truong hop it sv dang ky thi don mo lop hoc phan o khoan dieu nao vay a"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "colloquial", "input": "phiếu này số mấy ta"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "colloquial", "input": "rút môn đã đăng ký kiểu gì nhỉ"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "colloquial", "input": "đăng ký chỉnh học phần mẫu nào v ạ"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết phiếu đăng ký hoặc điều chỉnh học phần là mẫu số nào và thuộc khoản, điều nào ạ."}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết việc rút bớt học phần đã đăng ký được thực hiện như thế nào theo quy định ạ."}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "neutral", "input": "Phiếu đăng ký điều chỉnh học phần"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "neutral", "input": "Rút bớt học phần đã đăng ký làm sao?"}
+{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "phiếu này số mấy ta"}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "colloquial", "input": "Phiếu đăng ký/điều chỉnh học phần căn cứ theo điều nào v ạ?"}
+{"anchor": "FormCatalogueEntry002", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đăng ký chỉnh học phần mẫu nào v ạ"}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết phiếu đăng ký hoặc điều chỉnh học phần thuộc khoản nào ạ."}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết việc dùng phiếu rút bớt học phần đã đăng ký được quy định tại điều nào ạ."}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "neutral", "input": "Đường dẫn tải Phiếu đăng ký điều chỉnh học phần ở đâu?"}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "neutral", "input": "Phiếu đăng ký/điều chỉnh học phần thuộc khoản nào?"}
 {"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "noisy", "input": "phieu dang ky dieu chinh hoc phan quy dinh o khoan dieu nao vay a"}
-{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "noisy", "input": "rut bot hp da dk ntn z"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu đồ án tốt nghiệp số mấy nhỉ"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "colloquial", "input": "đăng ký ĐATN dùng đơn gì v ạ"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "colloquial", "input": "đủ điều kiện làm đồ án thì nộp đơn nào ta"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên đủ điều kiện thực hiện đồ án tốt nghiệp cần làm đơn ra sao ạ."}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn đăng ký thực hiện đồ án tốt nghiệp là mẫu số nào và được quy định tại điều nào ạ."}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "neutral", "input": "Đăng ký đồ án tốt nghiệp thế nào?"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn đăng ký thực hiện đồ án tốt nghiệp"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "noisy", "input": "mau datn so may z"}
-{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien du dieu kien lam do an tot nghiep can nop don nao vay a"}
+{"anchor": "Form02CourseAdjustment", "query_id": "form-document-facts", "register": "noisy", "input": "phieu dang ky/dieu chinh hoc phan quy dinh tai dieu nao"}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "colloquial", "input": "Mẫu đăng ký đồ án tốt nghiệp được quy định tại điều nào nhỉ?"}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "colloquial", "input": "Đăng ký ĐATN thì căn cứ pháp lý nào quy định mẫu đơn vậy ạ?"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đủ điều kiện làm đồ án thì nộp đơn nào ta"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết sinh viên đủ điều kiện thực hiện đồ án tốt nghiệp cần làm đơn ra sao ạ."}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết mẫu đăng ký đồ án tốt nghiệp được quy định tại điều nào ạ."}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "neutral", "input": "Mẫu đăng ký đồ án tốt nghiệp thuộc khoản nào?"}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "neutral", "input": "Quy định pháp lý về mẫu đăng ký đồ án tốt nghiệp nằm ở điều nào?"}
+{"anchor": "Form02GraduationProject", "query_id": "form-document-facts", "register": "noisy", "input": "mau dang ky datn quy dinh tai dieu nao"}
+{"anchor": "GraduationProjectRegistrationProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "sinh vien du dieu kien lam do an tot nghiep can nop don nao vay a"}
 {"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu nghỉ học ở điều mấy nhỉ"}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "colloquial", "input": "nghỉ học dùng đơn nào v ạ"}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "colloquial", "input": "thi giữa kỳ cuối kỳ liên quan gì ta"}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết quy định về việc sinh viên được dự thi giữa kỳ và cuối kỳ nằm ở đâu ạ."}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin nghỉ học là mẫu số nào và được dẫn tại khoản, điều nào ạ."}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "neutral", "input": "Mẫu nghỉ học số mấy?"}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xin nghỉ học"}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "nghỉ học dùng đơn nào v ạ"}
+{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin nghỉ học căn cứ theo điều nào v ạ?"}
+{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin nghỉ học được ban hành theo căn cứ nào ạ."}
+{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin nghỉ học thuộc khoản nào của quy định ạ."}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu nghỉ học số mấy?"}
+{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xin nghỉ học thuộc khoản nào?"}
 {"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "noisy", "input": "don xin nghi hoc quy dinh tai khoan dieu nao vay a"}
-{"anchor": "Form03ClassAbsence", "query_id": "form-document-facts", "register": "noisy", "input": "mau nghi hoc so may z"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "colloquial", "input": "xin hoãn thi gửi đơn sao ta"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "colloquial", "input": "đơn hoãn thi số mấy nhỉ"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "colloquial", "input": "ốm lúc thi dùng mẫu nào v ạ"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên nghỉ ốm trong đợt thi cần làm đơn xin hoãn thi như thế nào ạ."}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin hoãn thi là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "neutral", "input": "Hoãn thi do ốm làm sao?"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "noisy", "input": "om dot thi hoan thi ntn z"}
-{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien nghi om trong dot thi can lam don hoan thi o dau vay a"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "bị buộc thôi học thì xin chuyển sao ta"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "chuyển CT vừa làm vừa học dùng đơn gì v ạ"}
+{"anchor": "FormCatalogueEntry003", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau nghi hoc so may z"}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin hoãn thi căn cứ theo điều nào v ạ?"}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn hoãn thi số mấy nhỉ"}
+{"anchor": "FormCatalogueEntry004", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "ốm lúc thi dùng mẫu nào v ạ"}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết việc dùng đơn xin hoãn thi được quy định tại điều nào ạ."}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin hoãn thi căn cứ theo quyết định nào ạ."}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xin hoãn thi thuộc khoản nào?"}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "noisy", "input": "don xin hoan thi duoc quy dinh o dieu nao?"}
+{"anchor": "Form04ExamPostponement", "query_id": "form-document-facts", "register": "noisy", "input": "mau don hoan thi can cu theo quyet dinh nao vay a?"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn chuyển chương trình vừa làm vừa học căn cứ theo quyết định nào ta?"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "Chuyển CT vừa làm vừa học thì mẫu đơn thuộc điều nào v ạ?"}
 {"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu chuyển chương trình ở điều mấy nhỉ"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết trường hợp nào được quyền làm đơn chuyển chương trình đào tạo vừa làm vừa học ạ."}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển chương trình đào tạo vừa làm vừa học là mẫu số nào và thuộc điều nào ạ."}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "neutral", "input": "Mẫu chuyển chương trình số mấy?"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn chuyển chương trình vừa làm vừa học"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "bi buoc thoi hoc co quyen lam don chuyen chuong trinh nao vay a"}
-{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "mau chuyen ct so may z"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "miễn học đổi điểm dùng mẫu nào v ạ"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu miễn học số mấy nhỉ"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "xin miễn học cần bản sao gì ta"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết hồ sơ xin miễn học và quy đổi điểm học phần cần kèm bản sao có công chứng như thế nào ạ."}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin miễn học và quy đổi điểm học phần là mẫu số nào, thuộc khoản và điều nào ạ."}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "neutral", "input": "Miễn học quy đổi điểm làm sao?"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn miễn học quy đổi điểm"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "noisy", "input": "mau mien hoc so may z"}
-{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "noisy", "input": "xin mien hoc va quy doi diem can ban sao cong chung nao vay a"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "miễn học miễn thi dùng đơn gì v ạ"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn chuyển chương trình đào tạo vừa làm vừa học có căn cứ pháp lý nào ạ."}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn chuyển chương trình đào tạo vừa làm vừa học được quy định tại khoản nào ạ."}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn chuyển chương trình vừa làm vừa học được quy định theo quyết định nào?"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "neutral", "input": "Căn cứ pháp lý của đơn chuyển chương trình vừa làm vừa học là gì?"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "don chuyen chuong trinh vua lam vua hoc thuoc dieu nao?"}
+{"anchor": "Form05ProgramTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "mau chuyen ct can cu theo quy dinh nao z?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn miễn học và quy đổi điểm được quy định tại điều nào v ạ?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "Mẫu miễn học, quy đổi điểm căn cứ theo quyết định nào nhỉ?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "colloquial", "input": "Việc dùng đơn miễn học và quy đổi điểm thuộc khoản nào ta?"}
+{"anchor": "CreditRecognitionProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết hồ sơ xin miễn học và quy đổi điểm học phần cần kèm bản sao có công chứng như thế nào ạ."}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn xin miễn học và quy đổi điểm học phần được quy định tại điều nào ạ."}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "neutral", "input": "Quy định về đơn miễn học, quy đổi điểm nằm trong điều nào?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn miễn học quy đổi điểm có căn cứ pháp lý gì?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "noisy", "input": "mau mien hoc quy doi diem duoc quy dinh o khoan nao?"}
+{"anchor": "Form06CreditRecognition", "query_id": "form-document-facts", "register": "noisy", "input": "don mien hoc va quy doi diem theo quyet dinh nao vay a?"}
+{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "miễn học miễn thi dùng đơn gì v ạ"}
 {"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu cộng điểm thưởng ở điều mấy nhỉ"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "xin miễn thi nộp mẫu nào ta"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải làm đơn ra sao ạ."}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin miễn học, miễn thi và cộng điểm thưởng là mẫu số nào và thuộc điều nào ạ."}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "neutral", "input": "Mẫu cộng điểm thưởng số mấy?"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "noisy", "input": "don mien hoc mien thi cong diem"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "noisy", "input": "mau cong diem thuong so may z"}
-{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien muon mien hoc mien thi cong diem thuong lam don nao vay a"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu xét sớm số mấy nhỉ"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "colloquial", "input": "xin tốt nghiệp sớm làm đơn gì v ạ"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "colloquial", "input": "đủ điều kiện ra trường sớm thì viết đơn sao ta"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên đủ điều kiện tốt nghiệp sớm cần viết đơn đề nghị như thế nào ạ."}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn đề nghị xét tốt nghiệp sớm là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "neutral", "input": "Tốt nghiệp sớm dùng mẫu nào?"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xét tốt nghiệp sớm"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "noisy", "input": "du dieu kien tot nghiep som thi viet don de nghi nao vay a"}
-{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "noisy", "input": "mau tot nghiep som so may z"}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin miễn học, miễn thi và cộng điểm thưởng căn cứ theo điều nào v ạ?"}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn miễn học, miễn thi và cộng điểm thưởng thuộc điều nào ạ."}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn miễn học, miễn thi và cộng điểm thưởng căn cứ theo quyết định nào ạ."}
+{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu cộng điểm thưởng số mấy?"}
+{"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "noisy", "input": "don xin mien hoc, mien thi va cong diem thuong quy dinh tai dieu nao"}
+{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau cong diem thuong so may z"}
+{"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "sinh vien muon mien hoc mien thi cong diem thuong lam don nao vay a"}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn đề nghị xét tốt nghiệp sớm được quy định ở khoản nào nhỉ?"}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "colloquial", "input": "Xin tốt nghiệp sớm thì căn cứ pháp lý của đơn là gì v ạ?"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "colloquial", "input": "đủ điều kiện ra trường sớm thì viết đơn sao ta"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết sinh viên đủ điều kiện tốt nghiệp sớm cần viết đơn đề nghị như thế nào ạ."}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn đề nghị xét tốt nghiệp sớm được quy định tại điều nào ạ."}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xét tốt nghiệp sớm thuộc điều nào trong quy định?"}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "neutral", "input": "Quyết định nào là căn cứ cho đơn xét tốt nghiệp sớm?"}
+{"anchor": "EarlyGraduationReviewProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "du dieu kien tot nghiep som thi viet don de nghi nao vay a"}
+{"anchor": "Form08EarlyGraduation", "query_id": "form-document-facts", "register": "noisy", "input": "don de nghi xet tot nghiep som quy dinh tai dieu nao"}
 {"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu nghỉ tạm ở điều mấy nhỉ"}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "colloquial", "input": "nghỉ học tạm thời viết đơn sao ta"}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "colloquial", "input": "xin nghỉ tạm thời làm đơn gì v ạ"}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên xin nghỉ học tạm thời phải viết đơn theo mẫu nào ạ."}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin nghỉ học tạm thời là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "neutral", "input": "Nghỉ học tạm thời mẫu số mấy?"}
-{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien xin nghi hoc tam thoi phai viet don mau nao vay a"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "colloquial", "input": "muốn nghỉ hẳn thì dùng đơn nào ta"}
+{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin nghỉ học tạm thời căn cứ theo điều nào v ạ?"}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin nghỉ tạm thời làm đơn gì v ạ"}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết sinh viên xin nghỉ học tạm thời phải viết đơn theo mẫu nào ạ."}
+{"anchor": "Form09TemporaryLeave", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn xin nghỉ học tạm thời được quy định tại điều nào ạ."}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Nghỉ học tạm thời mẫu số mấy?"}
+{"anchor": "FormCatalogueEntry009", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "sinh vien xin nghi hoc tam thoi phai viet don mau nao vay a"}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin thôi học được dẫn chiếu tại điều nào ta?"}
 {"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu thôi học ở điều mấy nhỉ"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "colloquial", "input": "xin thôi học làm đơn gì v ạ"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết thủ tục xin thôi học của sinh viên sử dụng mẫu đơn nào ạ."}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin thôi học là mẫu số nào và được dẫn tại khoản, điều nào ạ."}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "neutral", "input": "Thôi học dùng mẫu số mấy?"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xin thôi học"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "noisy", "input": "mau thoi hoc so may z"}
-{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien muon xin thoi hoc thi dung mau don nao vay a"}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "colloquial", "input": "học lại sau nghỉ làm đơn gì v ạ"}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "colloquial", "input": "Xin thôi học thì căn cứ theo quy định nào v ạ?"}
+{"anchor": "StudyWithdrawalProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục xin thôi học của sinh viên sử dụng mẫu đơn nào ạ."}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn xin thôi học được quy định tại điều nào ạ."}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn xin thôi học nằm trong khoản nào của quy định?"}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "neutral", "input": "Căn cứ pháp lý áp dụng cho đơn xin thôi học là gì?"}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "noisy", "input": "don xin thoi hoc duoc quy dinh o dieu nao z?"}
+{"anchor": "Form10Withdrawal", "query_id": "form-document-facts", "register": "noisy", "input": "mau don thoi hoc can cu theo quyet dinh nao vay a?"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "học lại sau nghỉ làm đơn gì v ạ"}
 {"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu học trở lại ở điều mấy nhỉ"}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "colloquial", "input": "xin quay lại học dùng đơn nào ta"}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên muốn học trở lại sau thời gian nghỉ cần dùng mẫu đơn nào ạ."}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin học trở lại là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "neutral", "input": "Học trở lại mẫu số mấy?"}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "noisy", "input": "mau hoc tro lai so may z"}
-{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien muon hoc tro lai sau khi nghi can dung don mau nao vay a"}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "colloquial", "input": "muốn chuyển ngành làm đơn gì v ạ"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin quay lại học dùng đơn nào ta"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết sinh viên muốn học trở lại sau thời gian nghỉ cần dùng mẫu đơn nào ạ."}
+{"anchor": "Form11Resumption", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn xin học trở lại được quy định tại điều nào ạ."}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Học trở lại mẫu số mấy?"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau hoc tro lai so may z"}
+{"anchor": "FormCatalogueEntry010", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "sinh vien muon hoc tro lai sau khi nghi can dung don mau nao vay a"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "muốn chuyển ngành làm đơn gì v ạ"}
 {"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu chuyển ngành ở điều mấy nhỉ"}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "colloquial", "input": "xin đổi ngành dùng mẫu nào ta"}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên có nguyện vọng chuyển ngành cần làm đơn theo mẫu nào ạ."}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển ngành là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "neutral", "input": "Chuyển ngành mẫu số mấy?"}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "noisy", "input": "mau chuyen nganh so may z"}
-{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien muon chuyen nganh can lam don theo mau nao vay a"}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "hồ sơ chuyển trường dùng mẫu nào ta"}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "muốn chuyển trường làm đơn gì v ạ"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin đổi ngành dùng mẫu nào ta"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết sinh viên có nguyện vọng chuyển ngành cần làm đơn theo mẫu nào ạ."}
+{"anchor": "Form12MajorChange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn xin chuyển ngành được quy định tại điều nào ạ."}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Chuyển ngành mẫu số mấy?"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen nganh so may z"}
+{"anchor": "FormCatalogueEntry011", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "sinh vien muon chuyen nganh can lam don theo mau nao vay a"}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn xin chuyển trường căn cứ theo điều nào v ạ?"}
+{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "muốn chuyển trường làm đơn gì v ạ"}
 {"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu chuyển trường ở điều mấy nhỉ"}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên làm hồ sơ xin chuyển trường theo mẫu đơn nào ạ."}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển trường là mẫu số nào và được quy định tại khoản, điều nào ạ."}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "neutral", "input": "Chuyển trường mẫu số mấy?"}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "mau chuyen truong so may z"}
-{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien lam ho so xin chuyen truong theo mau don nao vay a"}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển trường được quy định theo quyết định nào ạ."}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển trường thuộc điều, khoản nào ạ."}
+{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Chuyển trường mẫu số mấy?"}
+{"anchor": "FormCatalogueEntry013", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen truong so may z"}
+{"anchor": "Form13UniversityTransfer", "query_id": "form-document-facts", "register": "noisy", "input": "don xin chuyen truong quy dinh tai dieu nao"}
 {"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu trao đổi ở điều mấy nhỉ"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "colloquial", "input": "đi trao đổi sinh viên làm đơn gì v ạ"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "colloquial", "input": "đăng ký trao đổi dùng mẫu nào ta"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký tham gia chương trình trao đổi sinh viên dùng mẫu đơn nào ạ."}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn đăng ký chương trình trao đổi sinh viên là mẫu số nào và thuộc khoản, điều nào ạ."}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "neutral", "input": "Trao đổi sinh viên mẫu số mấy?"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn đăng ký trao đổi sinh viên"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "noisy", "input": "mau trao doi sv so may z"}
-{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "noisy", "input": "thu tuc dang ky tham gia chuong trinh trao doi sinh vien dung mau nao vay a"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "colloquial", "input": "học thêm chương trình dùng đơn gì v ạ"}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn đăng ký chương trình trao đổi sinh viên căn cứ vào điều nào v ạ?"}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "colloquial", "input": "Quy định nào nêu căn cứ pháp lý cho đơn trao đổi sinh viên ta?"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "formal", "input": "Xin cho biết thủ tục đăng ký tham gia chương trình trao đổi sinh viên dùng mẫu đơn nào ạ."}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn đăng ký chương trình trao đổi sinh viên được quy định tại điều nào ạ."}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn đăng ký trao đổi sinh viên thuộc khoản nào?"}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "neutral", "input": "Căn cứ theo quyết định nào để dùng đơn đăng ký trao đổi sinh viên?"}
+{"anchor": "Form14StudentExchange", "query_id": "form-document-facts", "register": "noisy", "input": "don dang ky chuong trinh trao doi sinh vien quy dinh tai dieu nao"}
+{"anchor": "StudentExchangeProcedure", "query_id": "academic-procedure-facts", "register": "noisy", "input": "thu tuc dang ky tham gia chuong trinh trao doi sinh vien dung mau nao vay a"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "học thêm chương trình dùng đơn gì v ạ"}
 {"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu học hai chương trình ở điều mấy nhỉ"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "colloquial", "input": "đăng ký chương trình thứ hai sao ta"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết sinh viên muốn học thêm chương trình thứ hai cần đăng ký bằng mẫu đơn nào ạ."}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết đơn đăng ký học cùng lúc hai chương trình là mẫu số nào và thuộc khoản, điều nào ạ."}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "neutral", "input": "Học chương trình thứ hai mẫu nào?"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn học cùng lúc hai chương trình"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "noisy", "input": "mau hoc ct thu 2 so may z"}
-{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "noisy", "input": "sinh vien muon hoc them chuong trinh thu hai dang ky mau don nao vay a"}
+{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "colloquial", "input": "Đơn đăng ký học cùng lúc hai chương trình căn cứ theo điều nào v ạ?"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết sinh viên muốn học thêm chương trình thứ hai cần đăng ký bằng mẫu đơn nào ạ."}
+{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "formal", "input": "Xin cho biết Đơn đăng ký học cùng lúc hai chương trình được quy định tại điều nào ạ."}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Học chương trình thứ hai mẫu nào?"}
+{"anchor": "Form15SecondProgram", "query_id": "form-document-facts", "register": "neutral", "input": "Đơn đăng ký học cùng lúc hai chương trình thuộc khoản nào?"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau hoc ct thu 2 so may z"}
+{"anchor": "FormCatalogueEntry014", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "sinh vien muon hoc them chuong trinh thu hai dang ky mau don nao vay a"}
 {"anchor": "GradeI", "query_id": "grade-code-facts", "register": "colloquial", "input": "hoãn thi thì bị điểm gì nhỉ"}
 {"anchor": "GradeI", "query_id": "grade-code-facts", "register": "colloquial", "input": "điểm I ký hiệu chữ nào ta"}
 {"anchor": "GradeI", "query_id": "grade-code-facts", "register": "colloquial", "input": "điểm I là sao v ạ"}

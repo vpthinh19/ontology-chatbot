@@ -21,18 +21,18 @@
         "academic-rule": 1476,
         "certificate": 413,
         "document": 1003,
-        "form": 550,
+        "form": 540,
         "out-of-domain": 773,
-        "procedure": 1021,
+        "procedure": 1031,
         "tuition": 282
       },
-      "sha256": "4822b4137b42ae8b9b3a00579b092a909af776d710088a6e9278ef25180e3317"
+      "sha256": "7e00ac32ee74d24616e1e7c58fbb1583f9349cb0260a0ffc0890e99d99c088bb"
     },
     "val": {
       "path": "val.jsonl",
       "records": 400,
       "query_families": 50,
-      "targets": 271,
+      "targets": 270,
       "domains": {
         "academic-rule": 135,
         "certificate": 32,
@@ -42,13 +42,13 @@
         "procedure": 51,
         "tuition": 29
       },
-      "sha256": "e3fd2cf7b89ebf878dd1dcd93a40aa890663a74e9fbe309c854b1e6dbcd8d9a0"
+      "sha256": "c36cdcac6ffb31e03bf83cb1876251b97572366c80f83642ae5208004be93558"
     },
     "test": {
       "path": "test.jsonl",
       "records": 390,
       "query_families": 50,
-      "targets": 273,
+      "targets": 272,
       "domains": {
         "academic-rule": 131,
         "certificate": 31,
@@ -58,7 +58,7 @@
         "procedure": 49,
         "tuition": 25
       },
-      "sha256": "6c1c848eaf2716e3fd8514af056b099c5d36c4d02e04737579490bcb11390cd3"
+      "sha256": "64d03f0a3d73e7a5756e4effc3657df5fdd14882505f918109746a09d174f23a"
     }
   },
   "catalogue": {
@@ -78,9 +78,9 @@
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 634,
+      "form": 624,
       "out-of-domain": 884,
-      "procedure": 1121,
+      "procedure": 1131,
       "tuition": 336
     }
   },

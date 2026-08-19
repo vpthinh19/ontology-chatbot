@@ -200,6 +200,24 @@ def write_consistency_snapshot(
     _write_dataset_figures(snapshot.dataset_report, output_dir=reports_dir)
 
 
+#: Máy huấn luyện và gói mang về đặt tên khác nhau cho cùng một báo cáo, vì gói
+#: để trọng số nằm lại trên máy chạy và chỉ mang phần JSON về.
+_TRAINING_REPORT_NAMES = ("metrics.json", "training-metrics.json")
+_TEST_REPORT_NAMES = ("benchmark_metrics.json", "benchmark-test.json")
+#: Lượt sinh chữ cuối buổi huấn luyện cũng chấm tập kiểm định, nhưng bằng một
+#: đường khác với bộ chấm. Hai tập chỉ đặt cạnh nhau được khi cùng một đường
+#: chấm, nên bản chấm riêng được ưu tiên.
+_VALIDATION_REPORT_NAMES = ("benchmark_validation_metrics.json", "benchmark-val.json")
+
+
+def _report_file(directory: Path, names: Sequence[str]) -> Path | None:
+    for name in names:
+        candidate = directory / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
 def build_model_report(
     models_dir: Path,
     *,
@@ -214,24 +232,27 @@ def build_model_report(
         "benchmark": len(release["test"]),
     }
     dataset_manifest_sha256 = sha256_file(dataset_dir / "manifest.json")
-    required_files = ("metrics.json", "benchmark_metrics.json")
-    if not all(
-        (models_dir / name / filename).is_file()
-        for name in names
-        for filename in required_files
-    ):
-        return None
-    models = {}
+    sources = {}
     for name in names:
         directory = models_dir / name
-        training_report = json.loads(
-            (directory / "metrics.json").read_text(encoding="utf-8")
-        )
-        test = json.loads((directory / "benchmark_metrics.json").read_text(encoding="utf-8"))
+        training_path = _report_file(directory, _TRAINING_REPORT_NAMES)
+        test_path = _report_file(directory, _TEST_REPORT_NAMES)
+        if training_path is None or test_path is None:
+            return None
+        sources[name] = (training_path, test_path)
+    models = {}
+    for name in names:
+        training_path, test_path = sources[name]
+        training_report = json.loads(training_path.read_text(encoding="utf-8"))
+        test = json.loads(test_path.read_text(encoding="utf-8"))
         training = training_report["training"]
-        validation = training_report
+        validation_path = _report_file(models_dir / name, _VALIDATION_REPORT_NAMES)
+        validation = (
+            json.loads(validation_path.read_text(encoding="utf-8"))
+            if validation_path is not None
+            else training_report
+        )
         if not _verified_locked_benchmark(
-            directory,
             training_report,
             test,
             expected_records=expected_records,
@@ -244,12 +265,18 @@ def build_model_report(
             if "loss" in item and "epoch" in item
         ]
         validation_curve = [
-            {"epoch": item["epoch"], "value": item["eval_answer_exact_rate"]}
+            {"epoch": item["epoch"], "value": item["eval_loss"]}
             for item in training_report["training_log"]
-            if "eval_answer_exact_rate" in item and "epoch" in item
+            if "eval_loss" in item and "epoch" in item
         ]
         models[name] = {
             "model_id": training["model_id"],
+            # Bộ chấm tự khai ba chỉ số chính và khai rằng nhóm so tập kết quả
+            # chỉ để chẩn đoán. Báo cáo đi theo lời khai đó.
+            "primary": {
+                "validation": validation["primary_metrics"],
+                "test": test["primary_metrics"],
+            },
             "validation": validation["overall"],
             "test": test["overall"],
             "test_by_register": test["by_register"],
@@ -268,17 +295,16 @@ def build_model_report(
                 ),
                 "merged_artifact": training.get("merged_artifact") is True,
             },
-            "curves": {"train_loss": loss_curve, "validation_answer_exact": validation_curve},
+            "curves": {"train_loss": loss_curve, "validation_loss": validation_curve},
         }
     if len({model["test"]["count"] for model in models.values()}) != 1:
         return None
     return {
         "protocol": {
             "seed_runs_per_model": 1,
-            "accuracy_batch_size": 1,
             "decoding": "greedy",
-            "checkpoint_selection": "validation answer exact",
-            "primary_metric": "execution answer exact",
+            "checkpoint_selection": "validation loss",
+            "primary_metrics": ["node_selection", "query_shape", "rejection_decision"],
             "test_records": next(iter(models.values()))["test"]["count"],
         },
         "models": models,
@@ -286,17 +312,24 @@ def build_model_report(
 
 
 def _verified_locked_benchmark(
-    directory: Path,
     training_report: Mapping[str, Any],
     benchmark_report: Mapping[str, Any],
     *,
     expected_records: Mapping[str, int],
     dataset_manifest_sha256: str,
 ) -> bool:
+    """Chỉ nhận lượt chạy đủ điều kiện đặt cạnh các lượt khác.
+
+    Bằng chứng lấy từ bản ghi của hai bên đã chạy: cùng bộ dữ liệu, chấm trên
+    model đã gộp chứ không phải model nền, và đủ số câu của cả hai tập. Trọng số
+    nằm lại trên máy huấn luyện nên sự có mặt của chúng không nói lên điều gì ở
+    đây.
+    """
+
     training = training_report.get("training", {})
     return (
-        (directory / "model" / "config.json").is_file()
-        and training.get("dataset_manifest_sha256") == dataset_manifest_sha256
+        training.get("dataset_manifest_sha256") == dataset_manifest_sha256
+        and benchmark_report.get("run", {}).get("fine_tuned") is True
         and training.get("merged_artifact") is True
         and training_report.get("overall", {}).get("count")
         == expected_records["validation"]
@@ -320,30 +353,38 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
         log_scale=True,
     )
     _write_line_chart(
-        figures / "validation-curve.svg",
-        "Validation answer exact theo epoch",
-        {
-            name: value["curves"]["validation_answer_exact"]
-            for name, value in models.items()
-        },
-        percent=True,
+        figures / "validation-loss.svg",
+        "Validation loss theo epoch (thang log)",
+        {name: value["curves"]["validation_loss"] for name, value in models.items()},
+        log_scale=True,
     )
     _write_metric_chart(
         figures / "model-comparison.svg",
-        "Chất lượng ba mô hình trên validation và test",
+        f"Ba chỉ số chính của {len(models)} mô hình trên tập chấm",
         {
             name: {
-                "validation answer exact": value["validation"]["answer_exact_rate"],
-                "test answer exact": value["test"]["answer_exact_rate"],
-                "test system exact": value["test"]["system_answer_exact_rate"],
-                "test result F1": value["test"]["result_f1"],
+                "chọn đúng node": value["primary"]["test"]["node_selection"]["rate"],
+                "đúng dạng truy vấn": value["primary"]["test"]["query_shape"]["rate"],
+                "từ chối đúng": value["primary"]["test"]["rejection_decision"]["rate"],
+            }
+            for name, value in models.items()
+        },
+    )
+    _write_metric_chart(
+        figures / "model-comparison-validation.svg",
+        f"Ba chỉ số chính của {len(models)} mô hình trên tập kiểm định",
+        {
+            name: {
+                "chọn đúng node": value["primary"]["validation"]["node_selection"]["rate"],
+                "đúng dạng truy vấn": value["primary"]["validation"]["query_shape"]["rate"],
+                "từ chối đúng": value["primary"]["validation"]["rejection_decision"]["rate"],
             }
             for name, value in models.items()
         },
     )
     _write_metric_chart(
         figures / "test-by-register.svg",
-        "Test answer exact theo phong cách câu hỏi",
+        "Chẩn đoán: khớp tập kết quả theo phong cách câu hỏi",
         {
             name: {
                 register: metrics["answer_exact_rate"]
@@ -354,7 +395,7 @@ def write_model_reports(report: Mapping[str, Any], *, output_dir: Path) -> None:
     )
     _write_metric_chart(
         figures / "test-by-query-feature.svg",
-        "Test answer exact theo đặc trưng SPARQL",
+        "Chẩn đoán: khớp tập kết quả theo đặc trưng truy vấn",
         {
             name: {
                 feature: metrics["answer_exact_rate"]
@@ -719,7 +760,11 @@ def _write_metric_chart(
         "t5gemma2": "#10b981",
         "mbart": "#8b5cf6",
     }
-    categories = sorted({name for values in groups.values() for name in values})
+    # Giữ thứ tự người gọi đưa vào: ba chỉ số chính có thứ tự đọc riêng, còn xếp
+    # theo bảng chữ cái thì cắt rời chúng khỏi nhau.
+    categories = list(
+        dict.fromkeys(name for values in groups.values() for name in values)
+    )
     width, height = max(1060, len(categories) * 100 + 140), 430
     margin_left, margin_top, chart_width, chart_height = 75, 90, width - 125, 250
     cluster_width = chart_width / len(categories)
@@ -811,6 +856,9 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--dataset-dir", type=Path, default=DATASET_DIR)
     parser.add_argument("--ontology", type=Path, default=ONTOLOGY_PATH)
     parser.add_argument("--output-dir", type=Path, default=REPORTS_DIR)
+    parser.add_argument(
+        "--models-dir", type=Path, default=PROJECT_ROOT / "artifacts/model-benchmark"
+    )
     return parser.parse_args()
 
 
@@ -832,7 +880,7 @@ def main() -> None:
     )
     write_consistency_snapshot(snapshot, paths=paths, reports_dir=args.output_dir)
     model_report = build_model_report(
-        PROJECT_ROOT / "artifacts/model-benchmark",
+        args.models_dir,
         dataset_dir=args.dataset_dir,
     )
     if model_report is not None:

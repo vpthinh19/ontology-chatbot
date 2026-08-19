@@ -60,7 +60,11 @@ def test_ctranslate_generator_normalizes_and_greedily_decodes() -> None:
     assert tokenizer.seen[0] == "tui đi nghĩa vụ quân sự, muốn bảo lưu"
     assert translator.call == (
         [["t1", "t2"]],
-        {"beam_size": 1, "max_decoding_length": MAX_TARGET_LENGTH},
+        {
+            "beam_size": 1,
+            "max_decoding_length": MAX_TARGET_LENGTH,
+            "max_batch_size": 1,
+        },
     )
     assert query.startswith("SELECT")
 
@@ -135,3 +139,39 @@ def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
     error = next(record for record in caplog.records if record.levelno == logging.ERROR)
     assert "stage=generator" in error.getMessage()
     assert error.exc_info is not None
+
+
+def test_one_keyword_answers_the_same_whatever_it_is_sent_with() -> None:
+    """Kết quả của một cụm từ khoá không được đổi theo cụm đi kèm.
+
+    Gộp lô thật sự thì đệm mọi câu về cùng độ dài, và token gần ngang điểm lật
+    theo thứ tự cộng dồn - cùng một cụm cho ra truy vấn khác nhau tuỳ hàng xóm.
+    """
+
+    from ontchatbot.runtime.model import CTranslate2Generator
+
+    calls = []
+
+    class _Translator:
+        def translate_batch(self, batch, **kwargs):
+            calls.append(kwargs)
+            return [_Result(["x"]) for _ in batch]
+
+    class _Result:
+        def __init__(self, tokens):
+            self.hypotheses = [tokens]
+
+    class _Tokenizer:
+        def encode(self, text, add_special_tokens=True):
+            return type("E", (), {"tokens": [text]})()
+
+        def token_to_id(self, token):
+            return 1
+
+        def decode(self, ids, skip_special_tokens=True):
+            return "SELECT ?x WHERE { ?x ?y ?z }"
+
+    generator = CTranslate2Generator(_Translator(), _Tokenizer())
+    generator.generate_many(["học bổng", "học bổng khuyến khích học tập"])
+
+    assert calls[0]["max_batch_size"] == 1

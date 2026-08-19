@@ -5,19 +5,23 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from typing import Mapping
+from typing import Mapping, Sequence
 
 from rdflib import Graph
 
 from ..catalogue import QuerySpec, find_query_family, load_catalogue
 from ..settings import QUERY_CATALOGUE_PATH
-from .model import QueryGenerator
-from .render import NO_INFORMATION_REPLY, render_rows
-from .sparql import execute_select, load_ontology
+from .model import QueryGenerationError, QueryGenerator
+from .render import NO_INFORMATION_REPLY, render_batch, render_rows
+from .sparql import QueryRows, execute_select, load_ontology
 from .text import normalize_model_input
 
 
 logger = logging.getLogger(__name__)
+
+#: Chuỗi mà model sinh ra thay cho truy vấn khi câu hỏi nằm ngoài phần dữ liệu
+#: đã biết. Nó là một đích được dạy, không phải lỗi.
+MARKER = "không có thông tin"
 
 
 class OntologyChatbot:
@@ -58,7 +62,7 @@ class OntologyChatbot:
                 output,
                 (time.perf_counter() - stage_started) * 1000,
             )
-            if output == "không có thông tin":
+            if output == MARKER:
                 logger.info(
                     "request=%s reply=%r total_ms=%.1f",
                     request_id,
@@ -103,3 +107,67 @@ class OntologyChatbot:
         except Exception:
             logger.exception("request=%s stage=%s failed", request_id, stage)
             raise
+
+    def answer_many(self, questions: Sequence[str]) -> str:
+        """Tra nhiều cách gọi của cùng một chủ đề trong một lượt.
+
+        Người hỏi và ontology thường gọi một thứ bằng hai tên khác nhau, nên một
+        cụm từ khoá có thể trượt trong khi cụm khác trúng. Gửi vài cụm cùng lúc
+        làm tăng khả năng trúng mà vẫn chỉ tốn một lượt gọi.
+
+        Suy luận chạy theo lô thật: cả loạt câu đi qua model một lần. Kết quả
+        gộp lại và khử trùng, vì nhiều cụm cùng trúng một mục là chuyện thường -
+        để nguyên thì cùng một dữ kiện xuất hiện vài lần.
+        """
+
+        wanted = [q for q in dict.fromkeys(q.strip() for q in questions) if q]
+        if not wanted:
+            raise SparqlError("no keyword to look up")
+        request_id = uuid.uuid4().hex[:12]
+        started = time.perf_counter()
+        logger.info("request=%s batch=%r", request_id, wanted)
+
+        try:
+            outputs = self.generator.generate_many(wanted)
+        except QueryGenerationError:
+            outputs = []
+            for question in wanted:
+                try:
+                    outputs.append(self.generator.generate(question).strip())
+                except QueryGenerationError:
+                    outputs.append(MARKER)
+
+        rows: QueryRows = []
+        seen: set[tuple] = set()
+        missed = []
+        for question, output in zip(wanted, outputs):
+            found = self._rows_for(output.strip())
+            if not found:
+                missed.append(question)
+                continue
+            for row in found:
+                key = tuple(sorted(row.items(), key=lambda item: item[0]))
+                if key not in seen:
+                    seen.add(key)
+                    rows.append(row)
+
+        logger.info(
+            "request=%s batch rows=%d missed=%d total_ms=%.1f",
+            request_id,
+            len(rows),
+            len(missed),
+            (time.perf_counter() - started) * 1000,
+        )
+        return render_batch(rows, missed=missed)
+
+    def _rows_for(self, output: str) -> QueryRows:
+        """Chạy một truy vấn model sinh ra; mọi kiểu trượt đều trả về rỗng."""
+
+        if not output or output == MARKER:
+            return []
+        if self.catalogue and find_query_family(self.catalogue, output) is None:
+            return []
+        try:
+            return execute_select(self.graph, output)
+        except SparqlError:
+            return []

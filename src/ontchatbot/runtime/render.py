@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import json
 
+from typing import Sequence
+
 from .sparql import QueryRows
 
 _FOUND_GUIDANCE = (
     "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi "
     "không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng "
-    "chủ đề."
+    "chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà "
+    "nguồn đó khẳng định."
 )
 _NOT_FOUND_GUIDANCE = (
     "Có thể tra lại một lần với cách gọi ngắn khác; nếu vẫn không có thì dừng."
@@ -37,15 +40,39 @@ NO_INFORMATION_REPLY = _dump(
 
 
 def render_rows(rows: QueryRows) -> str:
-    """Return valid JSON, preserving rows while factoring repeated sources.
+    """Kết quả của một cụm từ khoá."""
 
-    Catalogue queries conventionally project ``nguon`` and ``duongdan`` on
-    every row. Repeating those long strings obscures the actual facts, so each
-    distinct pair is emitted once and rows refer to it by ``ma_nguon``.
+    payload = build_payload(rows)
+    return NO_INFORMATION_REPLY if payload is None else _dump(payload)
+
+
+def render_batch(rows: QueryRows, *, missed: Sequence[str] = ()) -> str:
+    """Kết quả gộp của nhiều cụm từ khoá gửi cùng một lượt.
+
+    Nêu tên những cụm không tìm thấy gì. Không nêu thì mô hình không phân biệt
+    được "chủ đề này không có dữ liệu" với "cụm đó gọi sai tên", và nó sẽ tra
+    lại cả loạt.
+    """
+
+    payload = build_payload(rows) or json.loads(NO_INFORMATION_REPLY)
+    if missed:
+        payload["tu_khoa_khong_thay"] = list(missed)
+    return _dump(payload)
+
+
+def build_payload(rows: QueryRows) -> dict | None:
+    """Trả về JSON: dữ kiện nằm trong chính nguồn đã khẳng định chúng.
+
+    Truy vấn nào cũng chiếu ra cột nguồn và cột đường dẫn trên MỌI dòng, mà một
+    trích dẫn dài vài dòng - để nguyên thì trích dẫn lấn hết phần dữ kiện.
+
+    Xếp dữ kiện vào trong nguồn của nó thì trích dẫn chỉ xuất hiện một lần, và
+    quan hệ giữa dữ kiện với nguồn nằm ở chính cấu trúc. Không có mã tham chiếu
+    nào để mô hình đọc nhầm thành thứ đáng in ra cho người dùng.
     """
 
     if not rows:
-        return NO_INFORMATION_REPLY
+        return None
 
     columns = tuple(rows[0])
     if any(tuple(row) != columns for row in rows):
@@ -59,39 +86,42 @@ def render_rows(rows: QueryRows) -> str:
             seen_rows.add(values)
             unique_rows.append(row)
 
-    factor_sources = all(column in columns for column in _SOURCE_COLUMNS)
-    source_ids = {}
-    sources = []
-    data = []
-
-    for row in unique_rows:
-        record = {
-            _JSON_KEYS.get(column, column): row[column]
-            for column in columns
-            if not factor_sources or column not in _SOURCE_COLUMNS
-        }
-        if factor_sources:
-            source_pair = (row["nguon"], row["duongdan"])
-            if any(value not in (None, "") for value in source_pair):
-                source_id = source_ids.get(source_pair)
-                if source_id is None:
-                    source_id = len(sources) + 1
-                    source_ids[source_pair] = source_id
-                    sources.append(
-                        {
-                            "ma_nguon": source_id,
-                            "trich_dan": source_pair[0],
-                            "duong_dan": source_pair[1],
-                        }
-                    )
-                record["ma_nguon"] = source_id
-        data.append(record)
-
-    return _dump(
-        {
+    citation_column, link_column = _SOURCE_COLUMNS
+    grouped = all(column in columns for column in _SOURCE_COLUMNS)
+    if not grouped:
+        return {
             "trang_thai": "co_du_lieu",
             "huong_dan": _FOUND_GUIDANCE,
-            "du_lieu": data,
-            "nguon": sources,
+            "du_lieu": [_record(row, columns, ()) for row in unique_rows],
         }
-    )
+
+    sources: dict[tuple, dict] = {}
+    loose = []
+    for row in unique_rows:
+        record = _record(row, columns, _SOURCE_COLUMNS)
+        pair = (row[citation_column], row[link_column])
+        if all(value in (None, "") for value in pair):
+            loose.append(record)
+            continue
+        group = sources.get(pair)
+        if group is None:
+            group = {"trich_dan": pair[0], "duong_dan": pair[1], "du_lieu": []}
+            sources[pair] = group
+        group["du_lieu"].append(record)
+
+    payload: dict[str, object] = {
+        "trang_thai": "co_du_lieu",
+        "huong_dan": _FOUND_GUIDANCE,
+        "nguon": list(sources.values()),
+    }
+    if loose:
+        payload["du_lieu_khong_ro_nguon"] = loose
+    return payload
+
+
+def _record(row, columns, skip) -> dict:
+    return {
+        _JSON_KEYS.get(column, column): row[column]
+        for column in columns
+        if column not in skip
+    }

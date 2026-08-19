@@ -117,7 +117,11 @@ def test_tool_teaches_the_model_to_read_the_structured_result_and_stop() -> None
     description = build_tool(_StubChatbot()).description
 
     assert "JSON" in description
-    assert "du_lieu" in description and "ma_nguon" in description
+    assert "du_lieu" in description and "nguon" in description
+    # Cách gọi nhiều từ khoá một lượt phải nằm trong mô tả, nếu không mô hình
+    # gửi từng cụm một và mất đúng phần lợi của việc đổi sang danh sách.
+    assert "DANH SÁCH" in description
+    assert "tu_khoa_khong_thay" in description
     assert "không xuất hiện" in description
     assert "ĐỪNG gọi lại" in description
 
@@ -133,3 +137,42 @@ def test_instructions_require_one_lookup_for_every_topic() -> None:
 
 def test_system_prompt_stays_below_four_hundred_words() -> None:
     assert len(build_instructions().split()) < 400
+
+
+def test_a_broken_lookup_reaches_the_assistant_as_no_information() -> None:
+    """Truy vấn hỏng và không tìm thấy là một thứ đối với người gọi.
+
+    Trợ lý đọc trạng thái trong kết quả để quyết định tra lại hay dừng. Một
+    ngoại lệ không mang trạng thái đó, nên nó làm hỏng lượt chạy giữa cuộc hội
+    thoại thay vì thành một câu trả lời trung thực.
+    """
+
+    from types import SimpleNamespace
+
+    from ontchatbot.runtime.agent import look_up
+    from ontchatbot.runtime.model import QueryGenerationError
+    from ontchatbot.runtime.render import NO_INFORMATION_REPLY
+    from ontchatbot.runtime.sparql import SparqlError
+
+    for error in (QueryGenerationError("rỗng"), SparqlError("sai cú pháp")):
+        def fail(_, error=error) -> str:
+            raise error
+
+        assert look_up(SimpleNamespace(answer_many=fail), ["học phí"]) == NO_INFORMATION_REPLY
+
+    ok = SimpleNamespace(answer_many=lambda ds: "đã tra " + " + ".join(ds))
+    assert look_up(ok, ["học phí", "học bổng"]) == "đã tra học phí + học bổng"
+    # Một chuỗi lẻ vẫn tra được: mô hình đôi khi gửi chuỗi thay vì danh sách.
+    assert look_up(ok, "học phí") == "đã tra học phí"
+
+
+def test_the_assistant_does_not_think_at_the_lowest_effort() -> None:
+    """Mức suy luận thấp đổi được tốc độ, nhưng có lúc không viết câu nào.
+
+    Đo trên 24 lượt: mức thấp cho ba lượt trả về rỗng, mức mặc định không lượt
+    nào. Một bong bóng trống là hỏng nặng hơn phần lợi nó mang lại.
+    """
+
+    from ontchatbot.runtime.agent import REASONING_EFFORT
+
+    assert REASONING_EFFORT != "low"
