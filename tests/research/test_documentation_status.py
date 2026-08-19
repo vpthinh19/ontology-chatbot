@@ -178,9 +178,8 @@ def test_readme_explains_the_research_to_new_readers() -> None:
         # phần trăm model như thể đó là kết quả hiện hành.
         assert _PERCENTAGE.findall(training) == []
     assert "NTUdocs" not in readme
-    # README không được dẫn người đọc tới rác của một lượt chạy cục bộ. Ngoại lệ
-    # duy nhất là ``artifacts/reports/``, nơi bản đối chứng nằm trong git.
-    assert re.sub(r"artifacts/reports/", "", readme).find("artifacts/") == -1
+    # README không được dẫn người đọc tới rác của một lượt chạy cục bộ.
+    assert "artifacts/" not in readme
     assert "Trạng thái hiện tại" not in readme
 
 
@@ -216,17 +215,17 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
         "docs/EVALUATION.md",
         "docs/MODEL_CARD.md",
         "docs/DEPLOYMENT.md",
-        "artifacts/reports/README.md",
+        "resources/reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)
-    provenance = _json("artifacts/reports/provenance.json")
+    provenance = _json("resources/reports/provenance.json")
     baseline = provenance["baseline_release"]
 
     assert "khả năng trả lời" in joined
     assert "khuôn truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
-    assert "artifacts/reports/provenance.json" in joined
+    assert "resources/reports/provenance.json" in joined
     assert f"baseline {baseline}" in joined
     assert provenance["model_metrics"]["status"] in joined
     assert provenance["deployment_metrics"]["status"] in joined

@@ -40,7 +40,7 @@ QUERY_CATALOGUE_PATH = ONTOLOGY_DIR / "catalogue.jsonl"
 QUERY_CATALOGUE_MANUAL_PATH = ONTOLOGY_DIR / "catalogue-manual.jsonl"
 COVERAGE_REQUIREMENTS_PATH = DATASET_DIR / "coverage.json"
 
-#: Thư mục gốc cho lượt huấn luyện, model chuyển đổi và báo cáo dẫn xuất.
+#: Thư mục gốc cho lượt huấn luyện và model chuyển đổi cục bộ.
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
 #: Báo cáo dẫn xuất được dùng làm đối chứng để phát hiện trôi lệch nguồn.
-REPORTS_DIR = ARTIFACTS_DIR / "reports"
+REPORTS_DIR = RESOURCES / "reports"

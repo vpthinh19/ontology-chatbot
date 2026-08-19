@@ -1,0 +1,664 @@
+{
+ "trong_pham_vi": [
+  {
+   "id": "question-003073",
+   "cau_hoi": "tỷ trọng điểm ngoại ngữ ra sao ạ",
+   "register": "colloquial",
+   "query_id": "language-course-assessment-table",
+   "node_dung": [
+    "ForeignLanguageCourseAssessmentTable"
+   ]
+  },
+  {
+   "id": "question-001190",
+   "cau_hoi": "có những điều gì cần biết khi học hệ thống thông tin quản lý sao giờ?",
+   "register": "colloquial",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "ManagementInformationSystems"
+   ]
+  },
+  {
+   "id": "question-002690",
+   "cau_hoi": "đường tải xuống của đơn xin bảo lưu học phần nằm ở đâu zậy?",
+   "register": "colloquial",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry015"
+   ]
+  },
+  {
+   "id": "question-002926",
+   "cau_hoi": "Đơn xin miễn học, miễn thi và cộng điểm thưởng căn cứ theo điều nào v ạ?",
+   "register": "colloquial",
+   "query_id": "form-document-facts",
+   "node_dung": [
+    "Form07ExemptionAndBonus"
+   ]
+  },
+  {
+   "id": "question-001907",
+   "cau_hoi": "môn song hành học chung kỳ được nhỉ",
+   "register": "colloquial",
+   "query_id": "course-type-facts",
+   "node_dung": [
+    "CorequisiteCourseType"
+   ]
+  },
+  {
+   "id": "question-001178",
+   "cau_hoi": "có những điều gì cần biết khi học công nghệ thông tin zậy?",
+   "register": "colloquial",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "InformationTechnology"
+   ]
+  },
+  {
+   "id": "question-002930",
+   "cau_hoi": "xin quay lại học dùng đơn nào ta",
+   "register": "colloquial",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry010"
+   ]
+  },
+  {
+   "id": "question-000711",
+   "cau_hoi": "xét học bổng khuyến khích sao vậy ta",
+   "register": "colloquial",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "ScholarshipReviewProcedure"
+   ]
+  },
+  {
+   "id": "question-003338",
+   "cau_hoi": "tiêu chí hbkkht ở đâu hông?",
+   "register": "colloquial",
+   "query_id": "official-document-facts",
+   "node_dung": [
+    "ScholarshipCriteriaGuidance"
+   ]
+  },
+  {
+   "id": "question-001792",
+   "cau_hoi": "chứng chỉ tiếng Nga này tên đầy đủ sao ta",
+   "register": "colloquial",
+   "query_id": "certificate-facts",
+   "node_dung": [
+    "TRKICertificate"
+   ]
+  },
+  {
+   "id": "question-004504",
+   "cau_hoi": "đối với đổi ngành, cần làm thủ tục gì, dùng giấy tờ nào và nộp ở đâu đây ta?",
+   "register": "colloquial",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "MajorChangeProcedure"
+   ]
+  },
+  {
+   "id": "question-002694",
+   "cau_hoi": "đường tải xuống của đơn xin cấp bản sao bằng nằm ở đâu đây ta?",
+   "register": "colloquial",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry019"
+   ]
+  },
+  {
+   "id": "question-002014",
+   "cau_hoi": "khối ngành IV là nhóm gì ạ",
+   "register": "colloquial",
+   "query_id": "discipline-group-facts",
+   "node_dung": [
+    "DisciplineGroupIV"
+   ]
+  },
+  {
+   "id": "question-003637",
+   "cau_hoi": "học bổng chia mấy mức thế",
+   "register": "colloquial",
+   "query_id": "scholarship-rate-table-standard-program",
+   "node_dung": [
+    "ScholarshipRateTableStandardProgram"
+   ]
+  },
+  {
+   "id": "question-001305",
+   "cau_hoi": "hãy tổng hợp giới hạn có mặt của điều kiện dự thi học phần lý thuyết thế ạ?",
+   "register": "colloquial",
+   "query_id": "attendance-rule-facts",
+   "node_dung": [
+    "TheoryAttendanceRule"
+   ]
+  },
+  {
+   "id": "question-002472",
+   "cau_hoi": "Mình cần tra cứu văn bản tại điểm a khoản 2 Điều 15 Quy chế 1052?",
+   "register": "formal",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation1052Article15Clause02PointA"
+   ]
+  },
+  {
+   "id": "question-003012",
+   "cau_hoi": "Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?",
+   "register": "formal",
+   "query_id": "graduation-classification-table",
+   "node_dung": [
+    "GraduationClassificationTable"
+   ]
+  },
+  {
+   "id": "question-001204",
+   "cau_hoi": "Xin xác nhận danh mục đào tạo có ghi ngành Kinh tế và quản lý tài nguyên biển ạ.",
+   "register": "formal",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "MarineResourceEconomicsAndManagement"
+   ]
+  },
+  {
+   "id": "question-002501",
+   "cau_hoi": "Mình cần tra cứu các thông tin liên quan đến Trình độ đại học?",
+   "register": "formal",
+   "query_id": "education-level-facts",
+   "node_dung": [
+    "UndergraduateLevel"
+   ]
+  },
+  {
+   "id": "question-000701",
+   "cau_hoi": "Xin cho biết điều kiện về khối lượng học tập còn lại sau khi rút học phần ạ.",
+   "register": "formal",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "CourseWithdrawalProcedure"
+   ]
+  },
+  {
+   "id": "question-001208",
+   "cau_hoi": "Xin xác nhận danh mục ngành có bao gồm Khoa học thủy sản ạ.",
+   "register": "formal",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "FisheriesScience"
+   ]
+  },
+  {
+   "id": "question-001303",
+   "cau_hoi": "Xin hỏi sinh viên sẽ nhận kết quả thế nào nếu vắng kỳ thi mà không có lý do chính đáng ạ.",
+   "register": "formal",
+   "query_id": "attendance-rule-facts",
+   "node_dung": [
+    "ExamAbsenceRule"
+   ]
+  },
+  {
+   "id": "question-002456",
+   "cau_hoi": "Cho tôi hỏi mình cần tra cứu văn bản tại khoản 2 Điều 11 Quy chế 1052.",
+   "register": "formal",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation1052Article11Clause02"
+   ]
+  },
+  {
+   "id": "question-000763",
+   "cau_hoi": "Đề nghị hướng dẫn trường đang liệt kê những chương trình đại học nào.",
+   "register": "formal",
+   "query_id": "academic-program-catalogue-table",
+   "node_dung": [
+    "AcademicProgramCatalogueTable"
+   ]
+  },
+  {
+   "id": "question-004951",
+   "cau_hoi": "Ngoại ngữ B1.2?",
+   "register": "formal",
+   "query_id": "language-course-facts",
+   "node_dung": [
+    "LanguageCourseB12"
+   ]
+  },
+  {
+   "id": "question-000095",
+   "cau_hoi": "Đề nghị hướng dẫn Sinh viên có trách nhiệm cụ thể ra sao.",
+   "register": "formal",
+   "query_id": "academic-actor-facts",
+   "node_dung": [
+    "Student"
+   ]
+  },
+  {
+   "id": "question-001538",
+   "cau_hoi": "Tôi muốn biết chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn chương trình đặc biệt được quy định ra sao.",
+   "register": "formal",
+   "query_id": "certificate-conversion-table-special-program-non-language-major-student",
+   "node_dung": [
+    "EnglishRequirementTableSpecialProgram",
+    "OtherLanguageRequirementTableSpecialProgram"
+   ]
+  },
+  {
+   "id": "question-000158",
+   "cau_hoi": "Xin giải thích trường hợp nằm viện, tai nạn được mô tả trong quy định này ạ.",
+   "register": "formal",
+   "query_id": "academic-case-facts",
+   "node_dung": [
+    "IllnessCase"
+   ]
+  },
+  {
+   "id": "question-001180",
+   "cau_hoi": "Xin cho biết có những điều gì cần biết khi học Kiểm toán.",
+   "register": "formal",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "Auditing"
+   ]
+  },
+  {
+   "id": "question-005090",
+   "cau_hoi": "Trường Đại học Nha Trang?",
+   "register": "formal",
+   "query_id": "organizational-unit-facts",
+   "node_dung": [
+    "University"
+   ]
+  },
+  {
+   "id": "question-004261",
+   "cau_hoi": "Sinh viên thế nào ạ?",
+   "register": "neutral",
+   "query_id": "academic-actor-facts",
+   "node_dung": [
+    "Student"
+   ]
+  },
+  {
+   "id": "question-001340",
+   "cau_hoi": "Nộp học phí qua VietinBank được không?",
+   "register": "neutral",
+   "query_id": "bank-facts",
+   "node_dung": [
+    "VietinBank"
+   ]
+  },
+  {
+   "id": "question-003013",
+   "cau_hoi": "Bằng tốt nghiệp được xếp hạng theo mấy mức điểm khác nhau?",
+   "register": "neutral",
+   "query_id": "graduation-classification-table",
+   "node_dung": [
+    "GraduationClassificationTable"
+   ]
+  },
+  {
+   "id": "question-000706",
+   "cau_hoi": "Thủ tục đề nghị mở một lớp học phần gồm những bước nào?",
+   "register": "neutral",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "ExtraClassOpeningRequestProcedure"
+   ]
+  },
+  {
+   "id": "question-003661",
+   "cau_hoi": "Học kỳ hè kéo dài bao lâu?",
+   "register": "neutral",
+   "query_id": "semester-type-facts",
+   "node_dung": [
+    "SummerSemester"
+   ]
+  },
+  {
+   "id": "question-002677",
+   "cau_hoi": "Mình muốn hỏi đường tải xuống của Phiếu đăng ký/điều chỉnh học phần nằm ở đâu?",
+   "register": "neutral",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry002"
+   ]
+  },
+  {
+   "id": "question-000296",
+   "cau_hoi": "Điểm trung bình chung nào ứng với loại xuất sắc và giỏi?",
+   "register": "neutral",
+   "query_id": "academic-performance-table",
+   "node_dung": [
+    "AcademicPerformanceTable"
+   ]
+  },
+  {
+   "id": "question-003340",
+   "cau_hoi": "Thông báo nộp học phí sinh viên ban hành ngày nào?",
+   "register": "neutral",
+   "query_id": "official-document-facts",
+   "node_dung": [
+    "TuitionPaymentGuidance"
+   ]
+  },
+  {
+   "id": "question-000718",
+   "cau_hoi": "đối với thanh toán học phí, cần làm thủ tục gì, dùng giấy tờ nào và nộp ở đâu?",
+   "register": "neutral",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "TuitionPaymentProcedure"
+   ]
+  },
+  {
+   "id": "question-002693",
+   "cau_hoi": "Cho hỏi đường tải xuống của phiếu điều chỉnh điểm nằm ở đâu?",
+   "register": "neutral",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry018"
+   ]
+  },
+  {
+   "id": "question-004447",
+   "cau_hoi": "đơn vị tín chỉ thế nào?",
+   "register": "neutral",
+   "query_id": "academic-concept-facts",
+   "node_dung": [
+    "CreditConcept"
+   ]
+  },
+  {
+   "id": "question-002479",
+   "cau_hoi": "Cho hỏi mình cần tra cứu văn bản tại Điều 2 Quy chế 1052?",
+   "register": "neutral",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation1052Article02"
+   ]
+  },
+  {
+   "id": "question-003547",
+   "cau_hoi": "Mức học bổng giỏi tính theo học kỳ thế nào?",
+   "register": "neutral",
+   "query_id": "scholarship-rate-facts",
+   "node_dung": [
+    "GoodSpecialScholarshipRate"
+   ]
+  },
+  {
+   "id": "question-003434",
+   "cau_hoi": "hãy tổng hợp địa chỉ và nhiệm vụ của phòng đào tạo?",
+   "register": "neutral",
+   "query_id": "organizational-unit-facts",
+   "node_dung": [
+    "AcademicManagementUnit"
+   ]
+  },
+  {
+   "id": "question-001209",
+   "cau_hoi": "Ngành Kinh tế được xếp vào khối nào của trường mình?",
+   "register": "neutral",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "Economics"
+   ]
+  },
+  {
+   "id": "question-005271",
+   "cau_hoi": "co nhung dieu gi can hieu khi nhac toi hoc theo tin chi, tien the cho xin so tong dai dien luc luon z?",
+   "register": "noisy",
+   "query_id": "academic-concept-facts",
+   "node_dung": [
+    "CreditBasedTrainingConcept"
+   ]
+  },
+  {
+   "id": "question-000297",
+   "cau_hoi": "ngưỡnghọc lực",
+   "register": "noisy",
+   "query_id": "academic-performance-table",
+   "node_dung": [
+    "AcademicPerformanceTable"
+   ]
+  },
+  {
+   "id": "question-003028",
+   "cau_hoi": "quy tac ha hang tot nghiep do bi ky luat nam o khoan dieu nao vay a",
+   "register": "noisy",
+   "query_id": "graduation-honours-penalty-rule-facts",
+   "node_dung": [
+    "DisciplineHonoursPenalty"
+   ]
+  },
+  {
+   "id": "question-001195",
+   "cau_hoi": "nganh ky thuat co dien tu",
+   "register": "noisy",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "MechatronicsEngineering"
+   ]
+  },
+  {
+   "id": "question-004586",
+   "cau_hoi": "quản lý thủy sản ra sap",
+   "register": "noisy",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "FisheriesManagement"
+   ]
+  },
+  {
+   "id": "question-004745",
+   "cau_hoi": "điều 20 quychế 1052 thế nào?",
+   "register": "noisy",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation1052Article20"
+   ]
+  },
+  {
+   "id": "question-002466",
+   "cau_hoi": "cho hoi mình cần tra cứu văn bản tại chươngi quy chế 626?",
+   "register": "noisy",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation626ChapterI"
+   ]
+  },
+  {
+   "id": "question-001356",
+   "cau_hoi": "hoc bong tinh theo hoc ky the nao vay a",
+   "register": "noisy",
+   "query_id": "billing-unit-facts",
+   "node_dung": [
+    "PerSemester"
+   ]
+  },
+  {
+   "id": "question-000708",
+   "cau_hoi": "muon dang ky datn thi lien he phong nao?",
+   "register": "noisy",
+   "query_id": "academic-procedure-facts",
+   "node_dung": [
+    "GraduationProjectRegistrationProcedure"
+   ]
+  },
+  {
+   "id": "question-004661",
+   "cau_hoi": "học phần tương đươmg ra sao?",
+   "register": "noisy",
+   "query_id": "course-type-facts",
+   "node_dung": [
+    "EquivalentCourseType"
+   ]
+  },
+  {
+   "id": "question-004953",
+   "cau_hoi": "ngoai ngu b1.2 ra sao z?",
+   "register": "noisy",
+   "query_id": "language-course-facts",
+   "node_dung": [
+    "LanguageCourseB12"
+   ]
+  },
+  {
+   "id": "question-002478",
+   "cau_hoi": "mình cần tra cứu văn bản tại khoản 2 Điều 19 Quychế 1052?",
+   "register": "noisy",
+   "query_id": "document-part-facts",
+   "node_dung": [
+    "Regulation1052Article19Clause02"
+   ]
+  },
+  {
+   "id": "question-005270",
+   "cau_hoi": "hãy tổng hợp địa chỉ và nhiệm vụ của trường đại học nha trang, tiện thể cho xin số tổng đàu điện lực luôn",
+   "register": "noisy",
+   "query_id": "organizational-unit-facts",
+   "node_dung": [
+    "University"
+   ]
+  },
+  {
+   "id": "question-001191",
+   "cau_hoi": "ky thuat tu dong hoa tim dau",
+   "register": "noisy",
+   "query_id": "academic-program-facts",
+   "node_dung": [
+    "ControlAndAutomationEngineering"
+   ]
+  },
+  {
+   "id": "question-002688",
+   "cau_hoi": "duong tai xuong cua don xin chuyen truong nam o dau z?",
+   "register": "noisy",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry013"
+   ]
+  }
+ ],
+ "ngoai_pham_vi": [
+  {
+   "id": "question-006272",
+   "cau_hoi": "Cho hỏi hủy học phần đã đăng ký có ảnh hưởng học bổng của tôi không?",
+   "register": "neutral"
+  },
+  {
+   "id": "question-006263",
+   "cau_hoi": "Đơn xin chuyển Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?",
+   "register": "formal"
+  },
+  {
+   "id": "question-006254",
+   "cau_hoi": "so dien thoai tong dai dien luc",
+   "register": "noisy"
+  },
+  {
+   "id": "question-006306",
+   "cau_hoi": "Đề nghị hướng dẫn ai ký quyết định cho Thủ tục đăng ký học cùng lúc hai chương trình.",
+   "register": "formal"
+  },
+  {
+   "id": "question-006297",
+   "cau_hoi": "Xin cho biết Trường Đại học Nha Trang hướng dẫm mua bảo hiểm y tế sinh viên ra sao z?",
+   "register": "noisy"
+  },
+  {
+   "id": "question-006259",
+   "cau_hoi": "ai ký quyết định cho lùi lịch thi nhỉ?",
+   "register": "colloquial"
+  },
+  {
+   "id": "question-006281",
+   "cau_hoi": "vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả đây ta?",
+   "register": "colloquial"
+  },
+  {
+   "id": "question-006285",
+   "cau_hoi": "Cho hỏi xin phép nghỉ học có ảnh hưởng học bổng của tôi không?",
+   "register": "neutral"
+  },
+  {
+   "id": "question-006275",
+   "cau_hoi": "Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao?",
+   "register": "formal"
+  },
+  {
+   "id": "question-006290",
+   "cau_hoi": "Xin cho biết Trường Đại học Nha Trang hướng dẫn muabảo hiểm y tế sinh viên ra sao?",
+   "register": "noisy"
+  },
+  {
+   "id": "question-006249",
+   "cau_hoi": "nói chuyện với mình đi ta?",
+   "register": "colloquial"
+  },
+  {
+   "id": "question-006279",
+   "cau_hoi": "Cho tôi hỏi vui lòng hướng dẫn thủ tục phù hợp với yêu cầu chưa mô tả.",
+   "register": "formal"
+  },
+  {
+   "id": "question-006261",
+   "cau_hoi": "ai ky quyet dinh cho cộng điểm thưởng",
+   "register": "noisy"
+  },
+  {
+   "id": "question-006248",
+   "cau_hoi": "nói chuyện với mình đi ạ?",
+   "register": "neutral"
+  },
+  {
+   "id": "question-006298",
+   "cau_hoi": "Cho hỏi đăng ký môn có ảnh hưởng học bổng của tôi không?",
+   "register": "neutral"
+  }
+ ],
+ "do_thi_khong_co": [
+  {
+   "id": "gap-001",
+   "cau_hoi": "Ngành Công nghệ thông tin yêu cầu chuẩn tiếng Anh đầu ra là bao nhiêu?"
+  },
+  {
+   "id": "gap-002",
+   "cau_hoi": "Học phí ngành Kế toán một năm là bao nhiêu tiền?"
+  },
+  {
+   "id": "gap-003",
+   "cau_hoi": "Điểm chuẩn ngành Ngôn ngữ Anh năm nay là bao nhiêu?"
+  },
+  {
+   "id": "gap-004",
+   "cau_hoi": "Trưởng phòng Đào tạo tên là gì?"
+  },
+  {
+   "id": "gap-005",
+   "cau_hoi": "Ký túc xá một tháng bao nhiêu tiền một sinh viên?"
+  },
+  {
+   "id": "gap-006",
+   "cau_hoi": "Số điện thoại của phòng Công tác sinh viên là số nào?"
+  },
+  {
+   "id": "gap-007",
+   "cau_hoi": "Ngành Quản trị kinh doanh học bao nhiêu tín chỉ thì tốt nghiệp?"
+  },
+  {
+   "id": "gap-008",
+   "cau_hoi": "Lịch thi học kỳ 1 năm nay bắt đầu ngày nào?"
+  },
+  {
+   "id": "gap-009",
+   "cau_hoi": "Sinh viên ngành Kỹ thuật ô tô có được miễn học phần tiếng Anh không?"
+  },
+  {
+   "id": "gap-010",
+   "cau_hoi": "Mức học bổng ngành Du lịch cao nhất là bao nhiêu?"
+  }
+ ]
+}

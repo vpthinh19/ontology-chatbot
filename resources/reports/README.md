@@ -21,8 +21,8 @@ Ba split JSONL hiện có 5.451, 402 và 383 dòng, tổng **6.239 câu**.
 `provenance.json` giữ `model_metrics.status = stale` và
 `deployment_metrics.status = stale` để tránh diễn giải nhầm artifact cũ. Nó
 không phải nguồn metric và không biến model cũ thành baseline. Fingerprint này
-được nhận từ **baseline v0.4.1**; `artifacts/reports/provenance.json` là nơi phân biệt
-input baseline với input hiện hành.
+được nhận từ **baseline v0.4.1**; `resources/reports/provenance.json` là nơi phân
+biệt input baseline với input hiện hành.
 
 ## Tái tạo
 

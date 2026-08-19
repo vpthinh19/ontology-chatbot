@@ -201,6 +201,8 @@ Dữ liệu được sinh từ ontology theo 50 dạng thông tin trả lời đ
 bốn cách hỏi. Đáp án đúng là truy vấn chạy được. Nội dung chưa có trong ontology
 không thuộc phạm vi phép đo ở mục 10.
 
+Ba tập dữ liệu có thể được xem trực tiếp trong `resources/dataset/` của kho mã.
+
 ![Thành phần bộ dữ liệu](docs/images/bo-du-lieu.png)
 
 | Phần dữ liệu | Số dòng | Vai trò |
@@ -421,6 +423,9 @@ dung hoặc xác nhận toàn bộ câu trả lời.
 Phép đo gồm 85 lượt trò chuyện riêng: 60 câu học vụ lấy ngẫu nhiên từ `test` và
 chia đều cho bốn cách hỏi; 15 câu được `test` đánh dấu là ontology không trả lời
 được; cùng 10 câu về nội dung còn trống.
+
+Bộ câu hỏi, kịch bản đánh giá và kết quả thô được lưu tại
+`resources/end-to-end/` để đối chiếu trực tiếp.
 
 ![Chất lượng câu trả lời end-to-end](docs/images/chat-luong-tra-loi.png)
 

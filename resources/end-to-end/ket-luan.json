@@ -1,0 +1,18 @@
+{
+ "ghi_chu": "Phân loại tay 25 câu nhóm 2 và 3. Luật: câu trả lời không được nêu như dữ kiện bất cứ điều gì dữ liệu công cụ trả về không nói. Phép đếm tự động canh cụm từ nên bị bỏ ở đây.",
+ "nhom_2_sai": {
+  "question-006298": "Ghép hai dữ kiện thành một quan hệ mà không dữ kiện nào nói: khẳng định đăng ký học phần ẢNH HƯỞNG tới học bổng, suy ra từ điều kiện 14 tín chỉ. Đồ thị không có quan hệ nhân quả đó.",
+  "question-006285": "Thêm chi tiết 'không tính điểm GDTC và GDQP'. Chi tiết này có thật trong đồ thị nhưng KHÔNG nằm trong dữ liệu công cụ trả về lượt đó - công cụ lấy về ScholarshipReviewProcedure chứ không phải ScholarshipCriteriaGuidance."
+ },
+ "nhom_2_dung_nhung_nhan_tap_cham_qua_chat": {
+  "question-006263": "Tập chấm đánh dấu câu này là không trả lời được, nhưng đồ thị CÓ Mẫu số 5 kèm đường dẫn tải. Trợ lý trả lời đúng và có nguồn."
+ },
+ "nhom_3_ghi_chu": {
+  "gap-006": "Câu viết tay đoán sai: số điện thoại phòng Công tác sinh viên CÓ trong đồ thị, nên trả lời được là đúng, không phải bịa."
+ },
+ "nhom_1_ba_cau_khong_tra_cuu": {
+  "question-000158": "'quy định này' - chỉ trỏ không có văn bản đi kèm nên không trỏ về đâu; trợ lý hỏi lại thay vì đoán.",
+  "question-005090": "'Trường Đại học Nha Trang?' - câu chỉ có tên riêng, không có câu hỏi.",
+  "question-004261": "'Sinh viên thế nào ạ?' - hỏi quá rộng; trợ lý hỏi lại cho rõ."
+ }
+}

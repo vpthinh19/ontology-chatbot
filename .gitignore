@@ -14,13 +14,9 @@ checkpoints/
 models/
 logs/
 
-# MỌI thứ sinh ra nằm dưới ``artifacts/``. Chỉ ``artifacts/reports/`` được theo
-# dõi: đó là bản đối chứng mà chuỗi kiểm nhất quán so với nguồn hiện tại, nên
-# nó PHẢI nằm trong git thì trôi lệch mới hiện ra thành một diff. Phần còn lại -
-# lượt huấn luyện, model đã convert, tokenizer - là nhị phân nặng, dựng lại
-# được, và không có hai dòng dưới thì một lệnh ``git add -A`` là chúng vào repo.
+# ``artifacts/`` chỉ chứa lượt huấn luyện, model đã chuyển đổi, tokenizer và
+# kết quả cục bộ có thể dựng lại; báo cáo được lưu trong ``resources/reports/``.
 /artifacts/*
-!/artifacts/reports/
 
 /dev/
 ontology.ipynb
@@ -28,4 +24,3 @@ ontology_old.ttl
 
 # Gói kết quả mang về từ máy thuê: nhị phân, nặng, và dựng lại được từ log.
 *.tar.gz
-

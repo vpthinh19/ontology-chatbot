@@ -6,7 +6,7 @@ Chạy thẳng, không cần tham số:
     python -m ontchatbot.cli.report_page
 
 Nó tự đọc ontology, ba tệp dataset, và mọi ``benchmark-*.json`` tìm thấy trong
-``artifacts/`` rồi ghi ra ``artifacts/reports/bao-cao.html``.
+``artifacts/`` rồi ghi ra ``resources/reports/bao-cao.html``.
 
 Thứ tự các mục theo đúng thứ tự người ngoài nhìn vào dự án: hình dạng ontology
 trước, rồi phân bố dataset, rồi model làm được gì trên dataset đó, rồi model
@@ -29,7 +29,7 @@ from rdflib import OWL, RDF, RDFS, Graph, URIRef
 DATASET = ROOT / "resources" / "dataset"
 ONTOLOGY = ROOT / "resources" / "ontology" / "ontology.ttl"
 NS = "http://www.ntu.edu.vn/ontology/academic#"
-OUT = ROOT / "artifacts" / "reports" / "bao-cao.html"
+OUT = ROOT / "resources" / "reports" / "bao-cao.html"
 
 # Ba màu đầu của bảng màu chuẩn; các nhóm nhiều hơn dùng một màu vì nhãn trục
 # mang danh tính của nhóm.
