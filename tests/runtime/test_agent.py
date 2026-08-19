@@ -9,10 +9,12 @@ lời tụt xuống mà không rõ vì sao.
 from __future__ import annotations
 
 import pytest
+from types import SimpleNamespace
 
 from ontchatbot.runtime.agent import (
     TOOL_DESCRIPTION,
     OntologyVocabulary,
+    build_agent,
     build_instructions,
     build_tool,
 )
@@ -176,3 +178,32 @@ def test_the_assistant_does_not_think_at_the_lowest_effort() -> None:
     from ontchatbot.runtime.agent import REASONING_EFFORT
 
     assert REASONING_EFFORT != "low"
+
+
+def test_every_model_request_has_an_explicit_timeout_and_one_retry(monkeypatch) -> None:
+    """Bỏ cấu hình sẽ để client quay về 600 giây và hai lần thử lại."""
+
+    import agents
+    import openai
+
+    client_options = {}
+
+    def fake_client(**kwargs):
+        client_options.update(kwargs)
+        return SimpleNamespace()
+
+    monkeypatch.setattr(openai, "AsyncOpenAI", fake_client)
+    monkeypatch.setattr(agents, "Agent", lambda **kwargs: SimpleNamespace(**kwargs))
+    monkeypatch.setattr(
+        agents,
+        "OpenAIChatCompletionsModel",
+        lambda **kwargs: SimpleNamespace(**kwargs),
+    )
+    monkeypatch.setattr(agents, "set_tracing_disabled", lambda _: None)
+    monkeypatch.setattr("ontchatbot.runtime.agent.build_instructions", lambda: "prompt")
+    monkeypatch.setattr("ontchatbot.runtime.agent.build_tool", lambda _: "tool")
+
+    build_agent(_StubChatbot(), model="mo-hinh")
+
+    assert client_options["timeout"] == 30.0
+    assert client_options["max_retries"] == 1

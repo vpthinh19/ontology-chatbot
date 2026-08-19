@@ -17,6 +17,7 @@ pytest.importorskip("fastapi")
 pytest.importorskip("agents")
 httpx = pytest.importorskip("httpx")
 
+from ontchatbot.runtime import api
 from ontchatbot.runtime.api import _conversation, create_app
 
 
@@ -32,12 +33,14 @@ def _sse(body: str) -> list[dict]:
 class _Run:
     """Một lượt chạy giả của trợ lý: phát đúng chuỗi sự kiện được dựng sẵn."""
 
-    def __init__(self, events, final_output="", error=None):
+    def __init__(self, events, final_output="", error=None, delay=0):
         self._events = events
         self.final_output = final_output
         self._error = error
+        self._delay = delay
 
     async def stream_events(self):
+        await asyncio.sleep(self._delay)
         for event in self._events:
             yield event
         if self._error is not None:
@@ -127,6 +130,21 @@ def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path) -> None:
     assert "mất kết nối" in events[-1]["noi_dung"]
 
 
+def test_a_model_turn_timeout_reaches_the_page_as_a_readable_error(
+    monkeypatch, tmp_path
+) -> None:
+    """Bỏ hạn toàn lượt sẽ trả ``xong`` sau quãng chờ thay vì kết thúc sớm."""
+
+    monkeypatch.setattr(api, "MODEL_TURN_TIMEOUT_SECONDS", 0.001, raising=False)
+    run = _Run([], final_output="quá muộn", delay=0.02)
+
+    _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
+
+    last = _sse(response.text)[-1]
+    assert last["loai"] == "loi"
+    assert "quá thời gian chờ" in last["noi_dung"]
+
+
 def test_history_comes_from_the_page_and_is_filtered(monkeypatch, tmp_path) -> None:
     """Máy chủ không giữ phiên, nên lịch sử do trang web gửi lên - và vì vậy
     phải lọc trước khi đưa vào trợ lý."""
@@ -153,6 +171,40 @@ def test_history_comes_from_the_page_and_is_filtered(monkeypatch, tmp_path) -> N
     ]
 
 
+def test_only_the_twenty_most_recent_history_messages_reach_the_agent() -> None:
+    """Bỏ giới hạn sẽ làm phép kiểm trả về cả 25 lượt thay vì 20 lượt cuối."""
+
+    history = [
+        {"role": "user", "content": f"lượt cũ {index}"}
+        for index in range(25)
+    ]
+
+    conversation = _conversation("câu mới", history)
+
+    assert conversation == [
+        {"role": "user", "content": f"lượt cũ {index}"}
+        for index in range(5, 25)
+    ] + [{"role": "user", "content": "câu mới"}]
+
+
+def test_the_page_is_told_when_old_history_is_trimmed(monkeypatch, tmp_path) -> None:
+    history = [
+        {"role": "user", "content": f"lượt {index}"}
+        for index in range(21)
+    ]
+
+    _, response, _ = _ask(
+        monkeypatch,
+        _Run([], final_output="xong"),
+        tmp_path,
+        {"message": "câu mới", "history": history},
+    )
+
+    first = _sse(response.text)[0]
+    assert first["loai"] == "canh_bao"
+    assert "lượt cũ" in first["noi_dung"]
+
+
 def test_the_page_cannot_send_an_empty_turn(tmp_path) -> None:
     async def exercise():
         transport = httpx.ASGITransport(app=create_app(object(), webui_dir=tmp_path))
@@ -160,6 +212,29 @@ def test_the_page_cannot_send_an_empty_turn(tmp_path) -> None:
             return await client.post("/chat", json={"message": "  "})
 
     assert asyncio.run(exercise()).status_code == 400
+
+
+def test_an_oversized_streamed_request_is_rejected_with_http_413(tmp_path) -> None:
+    """Bỏ bộ đếm luồng sẽ để FastAPI nhận trọn body rồi mở SSE mã 200."""
+
+    async def oversized_body():
+        yield b'{"message":"'
+        yield b"x" * (256 * 1024)
+        yield b'"}'
+
+    async def exercise():
+        transport = httpx.ASGITransport(app=create_app(object(), webui_dir=tmp_path))
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.post(
+                "/chat",
+                content=oversized_body(),
+                headers={"Content-Type": "application/json"},
+            )
+
+    response = asyncio.run(exercise())
+
+    assert response.status_code == 413
+    assert "quá lớn" in response.json()["detail"]
 
 
 def test_a_new_question_still_works_without_any_history() -> None:

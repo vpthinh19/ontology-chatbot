@@ -5,6 +5,9 @@ const promptInput = promptForm.querySelector(".prompt-input");
 const themeToggleBtn = document.querySelector("#theme-toggle-btn");
 // API Setup - local FastAPI backend
 const API_URL = "/chat";
+// Khớp với hàng rào máy chủ: giao diện vẫn giữ toàn bộ bong bóng để người dùng
+// đọc lại, nhưng chỉ gửi mười cặp tin nhắn gần nhất vào lượt kế tiếp.
+const MAX_HISTORY_MESSAGES = 20;
 let controller;
 const chatHistory = [];
 const userData = { message: "" };
@@ -98,20 +101,29 @@ const renderReply = (text, textElement, botMsgDiv) => {
 const generateResponse = async (botMsgDiv) => {
     const textElement = botMsgDiv.querySelector(".message-text");
     controller = new AbortController();
-    const history = chatHistory.map(({ role, text }) => ({
+    const historyWasTrimmed = chatHistory.length > MAX_HISTORY_MESSAGES;
+    const history = chatHistory.slice(-MAX_HISTORY_MESSAGES).map(({ role, text }) => ({
         role: role === "bot" ? "assistant" : "user",
         content: text,
     }));
     chatHistory.push({ role: "user", text: userData.message });
     let answer = "";
+    // Thông báo vận hành hiện cùng câu trả lời nhưng không nhập vào `answer`,
+    // nên nó không bị gửi lại cho mô hình như một lời nói của trợ lý.
+    let notice = historyWasTrimmed
+        ? "Cuộc trò chuyện đã dài nên mình chỉ dùng 20 tin nhắn gần nhất; các lượt cũ hơn không còn nằm trong ngữ cảnh."
+        : "";
     // Một lượt đi qua ba chặng và chặng nào cũng có thể kéo dài vài giây. Không
     // nói rõ đang ở chặng nào thì mọi quãng chờ trông giống nhau, và giống hệt
     // hệ thống bị treo.
     let status = "Đang suy nghĩ…";
     const paint = () => {
-        textElement.innerHTML = answer
+        const noticeHtml = notice
+            ? `<div class="reply-line notice">${escapeHtml(notice)}</div>`
+            : "";
+        textElement.innerHTML = noticeHtml + (answer
             ? renderRichText(answer)
-            : `<div class="reply-line status">${escapeHtml(status)}</div>`;
+            : `<div class="reply-line status">${escapeHtml(status)}</div>`);
         scrollToBottom();
     };
     paint();
@@ -148,6 +160,9 @@ const generateResponse = async (botMsgDiv) => {
                     paint();
                 } else if (event.loai === "tra_cuu_xong") {
                     status = "Đang viết câu trả lời…";
+                    paint();
+                } else if (event.loai === "canh_bao") {
+                    notice = event.noi_dung;
                     paint();
                 } else if (event.loai === "xong") {
                     if (!answer) answer = event.noi_dung;

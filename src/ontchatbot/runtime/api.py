@@ -11,6 +11,7 @@ màn hình trống suốt quãng đó.
 
 from __future__ import annotations
 
+import asyncio
 import json
 from pathlib import Path
 from typing import Any, AsyncIterator, Sequence
@@ -19,6 +20,27 @@ from ..settings import PROJECT_ROOT
 
 #: Vai được phép có trong lịch sử hội thoại do trình duyệt gửi lên.
 _ROLES = ("user", "assistant")
+#: Mười cặp tin nhắn gần nhất đủ giữ mạch cho các câu hỏi nối tiếp, đồng thời
+#: chặn chi phí và ngữ cảnh mô hình tăng mãi theo tuổi của tab trình duyệt.
+#: System prompt thuộc ``Agent.instructions``, nằm ngoài lát cắt lịch sử này.
+MAX_HISTORY_MESSAGES = 20
+#: Thông báo này đi riêng khỏi câu trả lời để người dùng biết ngữ cảnh cũ đã bị
+#: bỏ mà nội dung vận hành không bị ghi ngược vào lịch sử như lời của trợ lý.
+_HISTORY_TRIMMED_MESSAGE = (
+    "Cuộc trò chuyện đã dài nên mình chỉ dùng 20 tin nhắn gần nhất; "
+    "các lượt cũ hơn không còn nằm trong ngữ cảnh."
+)
+#: Hạn toàn lượt rộng hơn hai lần p95 10,8 giây và hơn hai lần đỉnh vận hành
+#: 20,3 giây. Nó bao trọn các vòng gọi công cụ nhưng vẫn kết thúc hữu hạn khi
+#: một luồng model không đóng hoặc nhiều lần gọi nối nhau cùng chậm.
+MODEL_TURN_TIMEOUT_SECONDS = 45.0
+_MODEL_TIMEOUT_MESSAGE = (
+    "Mô hình đã quá thời gian chờ. Bạn vui lòng thử lại, hoặc hỏi ngắn hơn."
+)
+#: 256 KiB rộng hơn nhiều so với 20 tin nhắn hội thoại học vụ thông thường,
+#: nhưng đủ nhỏ để mỗi kết nối đang đọc body có mức dùng bộ nhớ hữu hạn.
+MAX_REQUEST_BODY_BYTES = 256 * 1024
+_REQUEST_TOO_LARGE_MESSAGE = "Yêu cầu quá lớn; kích thước tối đa là 256 KiB."
 #: Mô hình phát hai luồng chữ: phần lập luận riêng của nó, và câu trả lời. Chỉ
 #: câu trả lời mới thuộc về người đọc; phần lập luận là tiếng Anh, dài gấp rưỡi,
 #: và nói về việc soạn câu chứ không nói về học vụ.
@@ -32,21 +54,30 @@ _EMPTY_ANSWER = (
 )
 
 
-def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
-    """Ghép lịch sử với lượt mới thành đầu vào cho trợ lý.
+def _bounded_history(
+    history: Sequence[Any],
+) -> tuple[list[dict[str, str]], bool]:
+    """Lọc lịch sử do trình duyệt giữ và cắt ở phía cũ nhất."""
 
-    Lịch sử do trình duyệt giữ và gửi lên, nên phải lọc: chỉ nhận đúng hai vai
-    và nội dung là chữ. Máy chủ không giữ phiên nào, nhờ vậy chạy nhiều bản sao
-    không cần chia sẻ trạng thái.
-    """
-
-    turns = []
+    turns: list[dict[str, str]] = []
     for item in history:
         if not isinstance(item, dict):
             continue
         role, content = item.get("role"), item.get("content")
         if role in _ROLES and isinstance(content, str) and content.strip():
             turns.append({"role": role, "content": content})
+    trimmed = len(turns) > MAX_HISTORY_MESSAGES
+    return turns[-MAX_HISTORY_MESSAGES:], trimmed
+
+
+def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
+    """Ghép lịch sử hợp lệ, có giới hạn với lượt mới của người dùng.
+
+    Máy chủ không giữ phiên nào, nhờ vậy chạy nhiều bản sao không cần chia sẻ
+    trạng thái. System prompt vẫn do Agent giữ và không đi qua hàm này.
+    """
+
+    turns, _ = _bounded_history(history)
     turns.append({"role": "user", "content": message})
     return turns
 
@@ -59,23 +90,32 @@ def _event(kind: str, **fields: Any) -> str:
 
 async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[str]:
     from agents import Runner
+    from openai import APITimeoutError
 
-    result = Runner.run_streamed(agent, _conversation(message, history))
+    conversation, history_trimmed = _bounded_history(history)
+    conversation.append({"role": "user", "content": message})
     try:
-        async for event in result.stream_events():
-            if event.type == "raw_response_event":
-                if getattr(event.data, "type", None) != _ANSWER_DELTA:
-                    continue
-                delta = getattr(event.data, "delta", None)
-                if isinstance(delta, str) and delta:
-                    yield _event("chu", noi_dung=delta)
-            elif event.type == "run_item_stream_event":
-                # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
-                # giữa các lần gọi công cụ trông như hệ thống đứng máy.
-                if event.name == "tool_called":
-                    yield _event("tra_cuu", tu_khoa=_tool_input(event.item))
-                elif event.name == "tool_output":
-                    yield _event("tra_cuu_xong")
+        async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
+            result = Runner.run_streamed(agent, conversation)
+            if history_trimmed:
+                yield _event("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
+            async for event in result.stream_events():
+                if event.type == "raw_response_event":
+                    if getattr(event.data, "type", None) != _ANSWER_DELTA:
+                        continue
+                    delta = getattr(event.data, "delta", None)
+                    if isinstance(delta, str) and delta:
+                        yield _event("chu", noi_dung=delta)
+                elif event.type == "run_item_stream_event":
+                    # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
+                    # giữa các lần gọi công cụ trông như hệ thống đứng máy.
+                    if event.name == "tool_called":
+                        yield _event("tra_cuu", tu_khoa=_tool_input(event.item))
+                    elif event.name == "tool_output":
+                        yield _event("tra_cuu_xong")
+    except (TimeoutError, APITimeoutError):
+        yield _event("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
+        return
     except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
         yield _event("loi", noi_dung=str(exc))
         return
@@ -108,6 +148,7 @@ def create_app(agent, webui_dir: Path | None = None):
         from fastapi import FastAPI, HTTPException
         from fastapi.responses import StreamingResponse
         from fastapi.staticfiles import StaticFiles
+        from starlette.requests import Request
     except ImportError as exc:  # pragma: no cover - requires inference extra.
         raise RuntimeError("install the inference extra to serve the API") from exc
 
@@ -117,8 +158,30 @@ def create_app(agent, webui_dir: Path | None = None):
     async def healthz() -> dict[str, str]:
         return {"status": "ok"}
 
-    @app.post("/chat")
-    async def chat(payload: dict):
+    async def chat(request):
+        content_length = request.headers.get("content-length")
+        if content_length is not None:
+            try:
+                declared_size = int(content_length)
+            except ValueError:
+                raise HTTPException(
+                    status_code=400, detail="Content-Length must be an integer"
+                ) from None
+            if declared_size > MAX_REQUEST_BODY_BYTES:
+                raise HTTPException(status_code=413, detail=_REQUEST_TOO_LARGE_MESSAGE)
+
+        body = bytearray()
+        async for chunk in request.stream():
+            if len(body) + len(chunk) > MAX_REQUEST_BODY_BYTES:
+                raise HTTPException(status_code=413, detail=_REQUEST_TOO_LARGE_MESSAGE)
+            body.extend(chunk)
+        try:
+            payload = json.loads(body)
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            raise HTTPException(status_code=400, detail="request body must be valid JSON") from None
+        if not isinstance(payload, dict):
+            raise HTTPException(status_code=400, detail="request body must be an object")
+
         message = payload.get("message")
         if not isinstance(message, str) or not message.strip():
             raise HTTPException(status_code=400, detail="message must be non-empty text")
@@ -130,6 +193,11 @@ def create_app(agent, webui_dir: Path | None = None):
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
+
+    # ``Request`` là phụ thuộc tuỳ chọn được nạp trong hàm này; gắn kiểu trước
+    # lúc đăng ký để FastAPI truyền request ASGI thay vì coi nó là query param.
+    chat.__annotations__["request"] = Request
+    app.post("/chat")(chat)
 
     static_dir = webui_dir or PROJECT_ROOT / "webui"
     if static_dir.is_dir():

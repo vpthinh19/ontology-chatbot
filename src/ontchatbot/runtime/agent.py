@@ -24,6 +24,12 @@ from .sparql import load_ontology
 #: Điểm cuối mặc định. Máy chủ nhận cùng giao thức với OpenAI nên thư viện
 #: ``openai-agents`` dùng được mà không cần lớp chuyển đổi nào.
 DEFAULT_BASE_URL = "https://lightning.ai/api/v1/"
+#: Một yêu cầu HTTP có 30 giây để hoàn tất: cao hơn gần 50% so với ngưỡng vận
+#: hành 20,3 giây nhưng vẫn đủ ngắn để lỗi mạng không giữ người dùng chờ lâu.
+MODEL_REQUEST_TIMEOUT_SECONDS = 30.0
+#: Một lần thử lại hấp thụ lỗi kết nối thoáng qua; hạn toàn lượt ở tầng API vẫn
+#: chặn tổng thời gian dù cả hai lần gọi đều chậm.
+MODEL_MAX_RETRIES = 1
 #: Mức suy luận của mô hình điều phối: để nhà cung cấp tự chọn.
 #:
 #: Hạ xuống mức thấp thì ít lượt tra hơn, nhanh hơn, và hết ký hiệu nội bộ trong
@@ -253,6 +259,8 @@ def build_agent(
     client = AsyncOpenAI(
         base_url=base_url or os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
         api_key=api_key or os.environ.get("ONTCHATBOT_LLM_API_KEY", ""),
+        timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
+        max_retries=MODEL_MAX_RETRIES,
     )
     return Agent(
         name="Trợ lý học vụ",
