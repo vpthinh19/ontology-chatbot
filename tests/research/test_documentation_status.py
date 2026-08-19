@@ -155,7 +155,7 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     # Số liệu của tầng sinh truy vấn KHÔNG phải chất lượng của trợ lý hoàn
     # chỉnh, nên README phải báo cáo riêng một phép đo chạy hết cả đường - và
     # phải nói rõ hai con số đó chênh nhau. Canh ý chứ không canh câu chữ.
-    assert "đầu-cuối" in readme
+    assert "end-to-end" in readme
     assert "71,7%" in readme and "77,9%" in readme
 
     # Sơ đồ thay cho mô tả bằng lời: một cho luồng xử lý, một cho luồng dữ liệu.
