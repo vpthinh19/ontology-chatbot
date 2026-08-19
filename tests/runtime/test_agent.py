@@ -8,15 +8,19 @@ lời tụt xuống mà không rõ vì sao.
 
 from __future__ import annotations
 
+import json
 import pytest
 from types import SimpleNamespace
 
 from ontchatbot.runtime.agent import (
+    MAX_KEYWORD_CHARACTERS,
+    MAX_KEYWORDS_PER_LOOKUP,
     TOOL_DESCRIPTION,
     OntologyVocabulary,
     build_agent,
     build_instructions,
     build_tool,
+    look_up,
 )
 
 pytest.importorskip("agents", reason="cần thư viện openai-agents")
@@ -126,6 +130,7 @@ def test_tool_teaches_the_model_to_read_the_structured_result_and_stop() -> None
     assert "tu_khoa_khong_thay" in description
     assert "không xuất hiện" in description
     assert "ĐỪNG gọi lại" in description
+    assert "tu_khoa_da_cat" in description
 
 
 def test_instructions_require_one_lookup_for_every_topic() -> None:
@@ -151,7 +156,6 @@ def test_a_broken_lookup_reaches_the_assistant_as_no_information() -> None:
 
     from types import SimpleNamespace
 
-    from ontchatbot.runtime.agent import look_up
     from ontchatbot.runtime.model import QueryGenerationError
     from ontchatbot.runtime.render import NO_INFORMATION_REPLY
     from ontchatbot.runtime.sparql import SparqlError
@@ -162,10 +166,41 @@ def test_a_broken_lookup_reaches_the_assistant_as_no_information() -> None:
 
         assert look_up(SimpleNamespace(answer_many=fail), ["học phí"]) == NO_INFORMATION_REPLY
 
-    ok = SimpleNamespace(answer_many=lambda ds: "đã tra " + " + ".join(ds))
-    assert look_up(ok, ["học phí", "học bổng"]) == "đã tra học phí + học bổng"
+    ok = SimpleNamespace(
+        answer_many=lambda ds: json.dumps({"trang_thai": "co_du_lieu", "du_lieu": ds})
+    )
+    assert json.loads(look_up(ok, ["học phí", "học bổng"]))["du_lieu"] == [
+        "học phí",
+        "học bổng",
+    ]
     # Một chuỗi lẻ vẫn tra được: mô hình đôi khi gửi chuỗi thay vì danh sách.
-    assert look_up(ok, "học phí") == "đã tra học phí"
+    assert json.loads(look_up(ok, "học phí"))["du_lieu"] == ["học phí"]
+
+
+def test_lookup_caps_keyword_count_and_length_and_reports_it_as_json() -> None:
+    """Bỏ giới hạn sẽ để quá 45 giây khi mô hình gửi một danh sách dài."""
+
+    seen = []
+
+    def answer_many(keywords):
+        seen.extend(keywords)
+        return '{"trang_thai": "khong_co_thong_tin", "du_lieu": [], "nguon": []}'
+
+    long_keyword = "x" * (MAX_KEYWORD_CHARACTERS + 1)
+    reply = look_up(
+        SimpleNamespace(answer_many=answer_many),
+        [long_keyword, *(f"từ khoá {index}" for index in range(MAX_KEYWORDS_PER_LOOKUP + 2))],
+    )
+
+    payload = json.loads(reply)
+    assert len(seen) == MAX_KEYWORDS_PER_LOOKUP
+    assert all(len(keyword) <= MAX_KEYWORD_CHARACTERS for keyword in seen)
+    assert payload["tu_khoa_da_cat"] == {
+        "so_luong_toi_da": MAX_KEYWORDS_PER_LOOKUP,
+        "do_dai_toi_da": MAX_KEYWORD_CHARACTERS,
+        "so_luong_bo_qua": 3,
+        "so_luong_rut_gon": 1,
+    }
 
 
 def test_the_assistant_does_not_think_at_the_lowest_effort() -> None:

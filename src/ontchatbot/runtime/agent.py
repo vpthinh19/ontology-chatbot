@@ -10,6 +10,7 @@ sai, còn đồ thị nhớ đúng nhưng không biết diễn đạt.
 
 from __future__ import annotations
 
+import json
 import os
 from dataclasses import dataclass
 from typing import Sequence
@@ -45,6 +46,14 @@ REASONING_EFFORT = None
 #: thêm, vì mô hình đâu cần thuộc lòng danh sách - nó chỉ cần biết phạm vi.
 NAMES_PER_KIND = 12
 
+#: Mỗi từ khoá mất khoảng 1,8 giây vì bộ sinh truy vấn cố ý chạy tuần tự. 20
+#: từ khoá tương ứng khoảng 36 giây, để lại phần thời gian của lượt 45 giây cho
+#: điều phối và viết câu trả lời thay vì làm người dùng chờ tới hạn toàn lượt.
+MAX_KEYWORDS_PER_LOOKUP = 20
+#: Công cụ chỉ cần cụm từ ngắn; 120 ký tự chặn một câu hỏi dài hoặc dữ liệu rác
+#: chiếm thời gian tiền xử lý mà vẫn rộng hơn đáng kể một tên thủ tục thông thường.
+MAX_KEYWORD_CHARACTERS = 120
+
 #: Mô tả công cụ mà mô hình đọc trước khi quyết định gọi nó.
 #:
 #: Truyền tường minh chứ không để thư viện đọc từ chú thích: thư viện chỉ lấy
@@ -74,6 +83,10 @@ hay gọi cùng một thứ bằng hai tên khác nhau, nên gửi 2-3 cách g�
 
 Câu hỏi nhiều chủ đề thì đưa hết từ khoá của mọi chủ đề vào cùng danh sách đó -
 vẫn một lần gọi.
+
+Mỗi lần gọi chỉ dùng tối đa 20 từ khoá, mỗi từ khoá tối đa 120 ký tự. Nếu công cụ
+cắt bớt, JSON có `tu_khoa_da_cat` với các giới hạn và số cụm đã bị bỏ qua hoặc
+rút ngắn.
 
 Kết quả là JSON. Cách đọc:
 - `trang_thai=co_du_lieu`: `nguon` là TRỌN VẸN những gì tìm được. Mỗi mục gồm
@@ -196,6 +209,52 @@ vài chủ đề tra được:
 {topics}"""
 
 
+def _bounded_keywords(
+    tu_khoa: Sequence[str] | str,
+) -> tuple[list[str], dict[str, int] | None]:
+    """Chuẩn hoá đầu vào công cụ và giữ thời gian một lượt có giới hạn."""
+
+    raw_keywords = [tu_khoa] if isinstance(tu_khoa, str) else list(tu_khoa)
+    shortened = 0
+    normalized: list[str] = []
+    for keyword in raw_keywords:
+        if not isinstance(keyword, str):
+            continue
+        cleaned = keyword.strip()
+        if not cleaned:
+            continue
+        if len(cleaned) > MAX_KEYWORD_CHARACTERS:
+            cleaned = cleaned[:MAX_KEYWORD_CHARACTERS].rstrip()
+            shortened += 1
+        normalized.append(cleaned)
+
+    unique = list(dict.fromkeys(normalized))
+    omitted = max(0, len(unique) - MAX_KEYWORDS_PER_LOOKUP)
+    selected = unique[:MAX_KEYWORDS_PER_LOOKUP]
+    if not (omitted or shortened):
+        return selected, None
+    return selected, {
+        "so_luong_toi_da": MAX_KEYWORDS_PER_LOOKUP,
+        "do_dai_toi_da": MAX_KEYWORD_CHARACTERS,
+        "so_luong_bo_qua": omitted,
+        "so_luong_rut_gon": shortened,
+    }
+
+
+def _with_truncation_notice(reply: str, notice: dict[str, int] | None) -> str:
+    """Chuẩn hoá thành JSON và gắn thông tin cắt bớt vào kết quả."""
+
+    try:
+        payload = json.loads(reply)
+    except (TypeError, json.JSONDecodeError):
+        payload = json.loads(NO_INFORMATION_REPLY)
+    if not isinstance(payload, dict):
+        payload = json.loads(NO_INFORMATION_REPLY)
+    if notice is not None:
+        payload["tu_khoa_da_cat"] = notice
+    return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
 def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
     """Tra một chủ đề và luôn trả về đúng khuôn kết quả đã hẹn.
 
@@ -205,11 +264,12 @@ def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
     cả lượt chạy thay vì thành một câu trả lời trung thực.
     """
 
-    keywords = [tu_khoa] if isinstance(tu_khoa, str) else list(tu_khoa)
+    keywords, notice = _bounded_keywords(tu_khoa)
     try:
-        return chatbot.answer_many(keywords)
+        reply = chatbot.answer_many(keywords)
     except (QueryGenerationError, SparqlError):
-        return NO_INFORMATION_REPLY
+        reply = NO_INFORMATION_REPLY
+    return _with_truncation_notice(reply, notice)
 
 
 def build_tool(chatbot: OntologyChatbot):

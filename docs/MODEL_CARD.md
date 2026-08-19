@@ -1,42 +1,26 @@
 # Thông tin về mô hình
 
-Tệp này trả lời mô hình trong dự án dùng để làm gì, dữ liệu nào dùng để dạy và kết quả nào cần xem. Tệp dành cho người đánh giá mô hình mà không cần mở mã nguồn.
+Tệp này trả lời các mô hình dùng để làm gì, phạm vi dữ liệu và cách đọc kết quả.
 
-## Mục đích sử dụng
+## Mô hình
 
-Mô hình nhận một câu hỏi học vụ tiếng Việt và tạo một câu SPARQL hoặc “không có thông tin”. SPARQL là ngôn ngữ dùng để hỏi dữ liệu có cấu trúc. Mô hình không tự viết câu trả lời học vụ cuối cùng.
+Dự án so sánh bốn mô hình chuỗi-chuỗi do bốn tổ chức phát triển. Mỗi mô hình nhận câu hỏi học vụ tiếng Việt và tạo một câu SPARQL hoặc “không có thông tin”. SPARQL là ngôn ngữ hỏi dữ liệu có cấu trúc.
 
-Ontology là tập dữ kiện và liên kết giúp máy tra cứu. Một node là một mục trong ontology, ví dụ một thủ tục, quy định hoặc bảng. Sau khi mô hình chọn được cách hỏi phù hợp, hệ thống lấy dữ kiện của node và nguồn của chúng.
+Mô hình không tự viết câu trả lời học vụ cuối cùng. Hệ thống dùng câu truy vấn hợp lệ để lấy dữ kiện và nguồn từ ontology.
 
-## Dữ liệu dạy và chấm
+## Dữ liệu và kết quả
 
-| Phần dữ liệu | Số dòng | Vai trò |
-|---|---:|---|
-| Tập dạy | 5.518 | Dạy mô hình đổi câu hỏi thành đầu ra có cấu trúc. |
-| Tập chỉnh | 400 | Chọn thiết lập trước khi chấm cuối. |
-| Tập chấm | 390 | Đo kết quả cuối. |
+Bộ dữ liệu có 6.308 dòng, gồm tập dạy, tập chỉnh và tập chấm. Bốn giọng hỏi là trang trọng, trung tính, thân mật và gõ vội không dấu.
 
-Bộ dữ liệu gồm 6.308 dòng và có bốn giọng hỏi: trang trọng, trung tính, thân mật và gõ vội không dấu.
-
-## Kết quả báo cáo
-
-| Chỉ số | Tập chỉnh | Tập chấm |
-|---|---:|---:|
-| Chọn đúng mục trong đồ thị | 80,2% | 76,4% |
-| Dựng đúng dạng truy vấn | 85,5% | 81,8% |
-| Từ chối đúng câu ngoài phạm vi | 96,5% | 90,8% |
-
-Các chỉ số này đo việc tạo và kiểm tra truy vấn, không đo chất lượng của câu trả lời hội thoại do một hệ thống khác có thể tạo từ dữ kiện trả về.
+Các chỉ số báo cáo là chọn đúng mục trong đồ thị, dựng đúng dạng truy vấn và từ chối đúng câu ngoài phạm vi. Cách chia dữ liệu xem [Bộ câu hỏi](DATASET.md). Định nghĩa chỉ số và kết quả xem [Cách đo kết quả](EVALUATION.md).
 
 ## Giới hạn sử dụng
 
-- Không dùng mô hình để suy đoán thông tin không có trong ontology.
-- Không dùng kết quả làm căn cứ thay thế văn bản chính thức.
-- Cần kiểm tra đường dẫn và trích dẫn nguồn khi câu trả lời ảnh hưởng đến hồ sơ, thời hạn hoặc học phí.
-- Câu hỏi gõ vội không dấu là dạng khó hơn các cách diễn đạt còn lại.
+- Không dùng kết quả để suy đoán thông tin không có trong ontology.
+- Không dùng kết quả thay thế văn bản chính thức.
+- Kiểm tra đường dẫn và trích dẫn nguồn trước khi quyết định về hồ sơ, thời hạn hoặc học phí.
 
 ## Tài liệu liên quan
 
-- [Bộ câu hỏi](DATASET.md)
-- [Cách đo kết quả](EVALUATION.md)
+- [Cách các thành phần phối hợp](ARCHITECTURE.md)
 - [Đưa vào môi trường sử dụng](DEPLOYMENT.md)
