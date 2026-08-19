@@ -8,10 +8,9 @@ trích dẫn văn bản gốc. Khi ontology không có câu trả lời, hệ th
 
 ## Tóm tắt
 
-Công trình xây dựng ontology học vụ chứa dữ kiện và nguồn, đồng thời đánh giá
-các mô hình seq2seq sinh truy vấn SPARQL từ cụm từ khoá tiếng Việt. Seq2seq nhận
-một chuỗi chữ và viết ra chuỗi khác. Bốn mô hình được tinh chỉnh (*fine-tune*)
-để viết truy vấn.
+Hệ thống gồm ontology học vụ chứa dữ kiện và nguồn, cùng các mô hình seq2seq
+sinh truy vấn SPARQL từ cụm từ khoá tiếng Việt. Seq2seq nhận một chuỗi chữ và
+viết ra chuỗi khác. Bốn mô hình được tinh chỉnh (*fine-tune*) để viết truy vấn.
 
 LLM chỉ là lớp giao tiếp: gọi công cụ tra ontology và diễn đạt dữ kiện trả về.
 Cách tách này tránh để LLM tự suy đoán từ văn bản quy chế.
@@ -113,16 +112,15 @@ dẫn và đường dẫn để đối chiếu.
 
 | Thành phần | Quy mô |
 |---|---:|
-| Phát biểu trong tệp ontology | 6.355 |
-| Phát biểu trong đồ thị lúc chạy | 7.711 |
+| Phát biểu khai báo trực tiếp | 6.355 |
+| Toàn bộ phát biểu trong đồ thị | 7.711 |
 | Lớp khái niệm | 56 |
 | Mục cụ thể (cá thể) | 686 |
 | Quan hệ giữa hai thực thể | 29 |
 | Thuộc tính mang giá trị chữ hoặc số | 55 |
 | Văn bản gốc đã số hoá | 16 |
 
-Con số lúc chạy cao hơn vì lúc nạp, hệ thống bổ sung bản ghi nguồn cho từng mục
-trả lời được.
+Phần chênh lệch gồm thông tin nguồn liên kết với từng mục trả lời được.
 
 Nội dung được bóc tách từ 16 văn bản chính thức: sáu quyết định của Hiệu trưởng,
 gồm **Quyết định 1052**, **Quyết định 317**, 626, 729, 753 và 1965; ba quy chế
@@ -208,12 +206,12 @@ không thuộc phạm vi phép đo ở mục 10.
 | Phần dữ liệu | Số dòng | Vai trò |
 |---|---:|---|
 | `train` | 5.518 | Học ánh xạ từ câu hỏi sang truy vấn hoặc từ chối |
-| `val` | 400 | Theo dõi quá trình học, chọn điểm dừng |
-| `test` | 390 | Đánh giá cuối, khi mọi lựa chọn đã cố định |
+| `val` | 400 | Đánh giá trong huấn luyện, xác định điểm dừng |
+| `test` | 390 | Đánh giá độc lập với các lựa chọn mô hình |
 | **Toàn bộ** | **6.308** | Không áp dụng |
 
-`test` chỉ được dùng khi mọi lựa chọn dựa trên `train` và `val` đã cố định, tránh
-chọn cấu hình theo chính bộ đề đánh giá.
+`test` độc lập với mọi lựa chọn dựa trên `train` và `val`, tránh chọn cấu hình
+theo chính bộ đề đánh giá.
 
 Ba tập được chia **theo câu hỏi**: không câu nào ở `val` hoặc `test` xuất hiện ở
 `train`. Tuy nhiên, ba tập dùng chung 567 câu trả lời đúng. Vì vậy, 390 câu
@@ -226,7 +224,7 @@ hỏi dài không quá 10 từ. Độ dài trung bình là 11,2 từ, ngắn nh�
 nhất 33 từ.
 
 Toàn bộ dữ liệu có **884 câu phải từ chối**, chiếm 14,0%: 773 câu `train`, 56
-câu `val` và 55 câu `test`. Ảnh hưởng của các tỷ lệ khác chưa được kiểm tra.
+câu `val` và 55 câu `test`. Chưa có số đo về ảnh hưởng của các tỷ lệ khác.
 
 Bốn phong cách câu hỏi kiểm tra khả năng giữ đúng ý định khi bề mặt câu thay đổi:
 
@@ -263,15 +261,15 @@ nguyên.
 Bốn mô hình dùng **cùng điều kiện**:
 
 - **Cùng một bộ dữ liệu**, không mô hình nào được thấy thêm hay bớt câu nào.
-- **Cùng một điểm khởi đầu ngẫu nhiên.** Công trình chưa chạy lặp để kiểm chứng
-  kết quả có trùng khít hay không.
+- **Cùng một điểm khởi đầu ngẫu nhiên.** Độ ổn định giữa các lần khởi tạo chưa
+  có số đo.
 - **Cùng cách viết câu trả lời.** Mỗi chữ chọn phương án khả dĩ nhất, không bốc
   thăm, nên cùng câu hỏi cho cùng truy vấn.
 - **Cùng một máy**: card đồ hoạ 24 GB.
 
-Mỗi lượt học là một lần đọc hết `train`. Số lượt học của từng mô hình và lượt có
-kết quả `val` tốt nhất được ghi trong bảng chi phí huấn luyện. `test` chỉ được
-dùng một lần khi mọi lựa chọn đã cố định.
+Mỗi lượt học là một lần đọc hết `train`. Bảng chi phí huấn luyện gồm số lượt học
+của từng mô hình và lượt có kết quả `val` tốt nhất. `test` là phép đánh giá độc
+lập với các lựa chọn mô hình.
 
 ### 6.3 Ba chỉ số chính
 
@@ -309,7 +307,7 @@ Kết quả trên **`test`** (390 câu, chỉ dùng một lần):
 
 Chi phí huấn luyện và chấm `test`:
 
-| Mô hình | Bộ nhớ card lúc đỉnh | Thời gian `train` | Tốc độ `test` | Số lượt chạy | Bản giữ lại |
+| Mô hình | Bộ nhớ card lúc đỉnh | Thời gian `train` | Tốc độ `test` | Số lượt chạy | Lượt `val` tốt nhất |
 |---|---:|---:|---:|---:|---:|
 | T5Gemma-2 | 9,19 GiB | 36,9 phút | 0,46 s/câu | 11 | 8 |
 | mBART | 10,46 GiB | 38,6 phút | 0,23 s/câu | 13 | 10 |
@@ -415,14 +413,14 @@ theo 50 khuôn có thể loại lỗi cấu trúc.
 Phép đo `end-to-end` đánh giá toàn bộ lớp giao tiếp dùng mô hình seq2seq tốt
 nhất, thay vì chỉ đánh giá mô hình sinh truy vấn.
 
-Một người chấm thủ công từng câu trả lời; không có người chấm thứ hai. Phép dò
-tự động chỉ đối chiếu con số từ hai chữ số trở lên và chữ viết tắt in hoa với dữ
-liệu công cụ trả về. Phép dò không đọc hiểu nội dung hoặc xác nhận toàn bộ câu
-trả lời.
+Việc xác định câu trả lời đúng hay sai cần đánh giá thủ công và không thể tự
+động hoá hoàn toàn. Phép dò tự động chỉ đối chiếu con số từ hai chữ số trở lên
+và chữ viết tắt in hoa với dữ liệu công cụ trả về; phép dò không đọc hiểu nội
+dung hoặc xác nhận toàn bộ câu trả lời.
 
 Phép đo gồm 85 lượt trò chuyện riêng: 60 câu học vụ lấy ngẫu nhiên từ `test` và
 chia đều cho bốn cách hỏi; 15 câu được `test` đánh dấu là ontology không trả lời
-được; cùng 10 câu viết thêm để nhắm vào nội dung còn trống.
+được; cùng 10 câu về nội dung còn trống.
 
 ![Chất lượng câu trả lời end-to-end](docs/images/chat-luong-tra-loi.png)
 
@@ -436,21 +434,21 @@ chia đều cho bốn cách hỏi; 15 câu được `test` đánh dấu là onto
 | Có đủ nhận diện nguồn và đường dẫn, trên toàn bộ mẫu | 62/85 (72,9%) |
 | Có đủ nhận diện nguồn và đường dẫn, trong số câu lấy được dữ liệu | 62/70 (88,6%) |
 
-Các hàng về tra cứu, node lấy về và từ chối được chấm trên từng bản ghi. Hàng
-"không nêu số hay chữ viết tắt ngoài dữ liệu vừa tra" dùng phép dò tự động trên
-cả 85 câu. Do giới hạn đã nêu, 79/85 chỉ là mức sàn về độ bám dữ liệu.
+Các tỷ lệ về tra cứu, node lấy về và từ chối được đánh giá trên từng câu trả
+lời. Hàng "không nêu số hay chữ viết tắt ngoài dữ liệu vừa tra" dùng phép dò tự
+động trên cả 85 câu. Do giới hạn đã nêu, 79/85 chỉ là mức sàn về độ bám dữ liệu.
 
 Mức 75,0% yêu cầu node đích **có mặt**; mức 36,7% còn không chấp nhận node thừa.
 Trong 60 câu học vụ, 33 câu lấy ít nhất một node thừa và 15 câu không lấy trúng
 node đích; hai nhóm có thể giao nhau. Trong 25 câu ontology không trả lời được,
-10/15 câu lấy từ `test` và 8/10 câu viết tay nói thẳng là không có, gộp lại thành
-18/25. Kết quả `end-to-end` này được báo riêng với phép đo từng phần ở mục 7.1.
+10/15 câu ở nhóm `test` và 8/10 câu ở nhóm nội dung trống nói thẳng là không có,
+gộp lại thành 18/25. Kết quả `end-to-end` đo toàn bộ lớp giao tiếp, khác với
+phép đo từng phần ở mục 7.1.
 
 Tỷ lệ trích dẫn chính là 62/85 vì cả 85 câu đều thuộc phép đo. Tỷ lệ 62/70 chỉ
 xét các câu thực sự lấy được dữ liệu nên cao hơn: 15 câu không lấy được dòng dữ
-liệu bị loại khỏi mẫu số. Nêu cả hai tỷ lệ cho thấy chất lượng trình bày khi có
-dữ liệu mà không che phần thất bại ở toàn bộ mẫu; 8/70 câu có dữ liệu vẫn thiếu
-đường dẫn.
+liệu bị loại khỏi mẫu số. Hai tỷ lệ lần lượt phản ánh kết quả trên toàn bộ mẫu
+và chất lượng trình bày khi có dữ liệu; 8/70 câu có dữ liệu vẫn thiếu đường dẫn.
 
 ### 7.6 Thời gian phản hồi
 
@@ -465,8 +463,8 @@ trả lời. `p95` là mức mà 95 trong 100 câu không lâu hơn.
 | Có tra cứu | 75 | 6,66 s | 11,06 s | 12,18 s |
 | Không tra cứu | 10 | 1,23 s | 4,67 s | 4,67 s |
 
-Phần bên trong công cụ được chạy lại với 75 lô từ khoá thật mà trợ lý đã gửi,
-trên CPU 8 nhân, không dùng GPU. Mỗi lô có trung bình 2,5 từ khoá.
+Thời gian xử lý bên trong công cụ được đo trên 75 lô từ khoá do trợ lý gửi, với
+CPU 8 nhân và không dùng GPU. Mỗi lô có trung bình 2,5 từ khoá.
 
 | Chặng bên trong công cụ | Trung vị | `p95` |
 |---|---:|---:|
@@ -476,8 +474,8 @@ trên CPU 8 nhân, không dùng GPU. Mỗi lô có trung bình 2,5 từ khoá.
 | Quy về một từ khoá | 1.774 ms | 2.302 ms |
 
 **SPARQL không phải chặng chiếm phần lớn thời gian ở trung vị:** chạy trên
-ontology mất 16 ms, còn sinh truy vấn mất 3.725 ms. Các số này là phép phát lại
-bên trong công cụ; chúng không bao gồm toàn bộ thời gian đầu-cuối của câu trả lời.
+ontology mất 16 ms, còn sinh truy vấn mất 3.725 ms. Các số này chỉ bao gồm xử lý
+bên trong công cụ, không bao gồm toàn bộ thời gian đầu-cuối của câu trả lời.
 
 ---
 
@@ -521,9 +519,8 @@ có thể chặn đầu ra không trỏ tới mục trong ontology.
 
 **Mâu thuẫn biểu mẫu ngay trong một câu trả lời.** Với câu *"xin quay lại học
 dùng đơn nào ta"*, trợ lý nói "Mẫu số 11 - Đơn xin học trở lại", nhưng đường
-dẫn đi kèm có tên tệp "Mẫu số 09 - Đơn xin học trở lại.docx". Mâu thuẫn này có
-thể khiến người dùng tải nhầm biểu mẫu. Lượt tra còn lấy thừa hai node không
-liên quan.
+dẫn đi kèm lại ghi "Mẫu số 09 - Đơn xin học trở lại". Mâu thuẫn này có thể khiến
+người dùng tải nhầm biểu mẫu. Lượt tra còn lấy thừa hai node không liên quan.
 
 **Không lấy đúng phần văn bản được hỏi.** Với câu *"cho hoi mình cần tra cứu
 văn bản tại chươngi quy chế 626?"*, đích là Chương I nhưng lượt tra chỉ lấy toàn
@@ -531,17 +528,16 @@ văn Quyết định 626. Câu trả lời nêu tên, ngày ban hành và đư�
 nội dung Chương I.
 
 **Báo nhầm sự cố kỹ thuật.** Với câu *"Điểm chuẩn ngành Ngôn ngữ Anh năm nay là
-bao nhiêu?"*, trợ lý nói không thể truy xuất do sự cố kỹ thuật. Bản ghi không có
-lỗi và không lấy được dòng dữ liệu nào, nên câu trả lời đúng phải nói ontology
-không có thông tin thay vì quy nguyên nhân cho sự cố.
+bao nhiêu?"*, trợ lý nói không thể truy xuất do sự cố kỹ thuật. Công cụ không gặp
+lỗi và không trả về dữ liệu, nên câu trả lời đúng phải nói ontology không có
+thông tin thay vì quy nguyên nhân cho sự cố.
 
 ---
 
 ## 9. Giao diện
 
-Giao diện là lớp trình bày kết quả tra cứu, không tham gia sinh SPARQL hoặc lưu
-dữ kiện. Người dùng thấy một khung chat bình thường; câu trả lời hiện dần theo
-từng chữ.
+Giao diện là lớp trình bày kết quả tra cứu, không tham gia sinh SPARQL. Người
+dùng thấy một khung chat bình thường; câu trả lời hiện dần theo từng chữ.
 
 ![Trợ lý trả lời kèm nguồn](docs/images/giao-dien.png)
 
@@ -583,15 +579,11 @@ truy vấn khác khuôn chuẩn dù trả về đúng dữ liệu. Ngược lạ
 kiểm tra con số và chữ viết tắt, không đọc hiểu nội dung; 79/85 vì vậy là mức
 sàn.
 
-**Phép đo `end-to-end` nhỏ và không tái lập nguyên vẹn.** 85 câu chưa đủ để báo
-cáo sai số hẹp. Dữ liệu công cụ của từng lượt không được lưu cùng kết quả. Chỉ
-có một người chấm, LLM có thể trả lời khác khi hỏi lại, và thời gian phản hồi chỉ
-phản ánh lần thử cuối. Có nhãn sai bất lợi cho trợ lý. Câu *"Đơn xin chuyển
-Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?"* bị `test` xếp ngoài phạm
-vi dù đồ thị có biểu mẫu và đường dẫn tải. Câu *"Số điện thoại của phòng Công tác
-sinh viên là số nào?"* cũng bị gán là không có dữ liệu dù đồ thị lưu số điện
-thoại. Vì vậy, mức 78,2% ở nhóm ngoài phạm vi tại mục 7.3 thấp hơn thực tế, và
-bộ `test` cần được rà soát.
+**Phép đo `end-to-end` có quy mô nhỏ.** Mẫu 85 câu chưa đủ để báo cáo sai số hẹp.
+Mô hình ngôn ngữ lớn không cho kết quả cố định, nên cùng một câu hỏi có thể nhận
+câu trả lời khác. Việc xác định câu trả lời đúng hay sai do con người thực hiện
+vì chưa thể tự động hoá hoàn toàn. Bộ câu hỏi ngoài phạm vi còn lẫn một số câu
+mà ontology thực ra trả lời được, nên mức 78,2% ở mục 7.3 là cận dưới.
 
 Ngoài các giới hạn của phép đo, ontology hiện chỉ phản ánh 16 văn bản và 50 dạng
 câu hỏi; câu hỏi về nội dung chưa có trong ontology phải bị từ chối. Ở lớp giao
