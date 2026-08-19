@@ -156,7 +156,10 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     # chỉnh, nên README phải báo cáo riêng một phép đo chạy hết cả đường - và
     # phải nói rõ hai con số đó chênh nhau. Canh ý chứ không canh câu chữ.
     assert "end-to-end" in readme
-    assert "71,7%" in readme and "phép đo từng phần" in readme
+    # Canh HÌNH DẠNG chứ không canh giá trị: đo lại thì con số đổi, còn yêu cầu
+    # "phải báo cáo tỷ lệ trên 60 câu học vụ và đặt cạnh phép đo từng phần" thì không.
+    assert re.search(r"\d+/60", readme), "thiếu tỷ lệ end-to-end trên 60 câu học vụ"
+    assert "phép đo từng phần" in readme
 
     # Sơ đồ thay cho mô tả bằng lời: một cho luồng xử lý, một cho luồng dữ liệu.
     # Ảnh dựng sẵn chứ không phải sơ đồ dựng lúc hiển thị, vì tài liệu này còn đi

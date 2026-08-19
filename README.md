@@ -23,10 +23,10 @@ tra trong đồ thị ở 81,8% số câu, dựng đúng khuôn truy vấn ở 8
 đúng giữa trả lời với từ chối ở 92,1%.
 
 Lớp giao tiếp dùng mô hình seq2seq tốt nhất được đánh giá `end-to-end` trên 85
-câu hỏi. Trong 60 câu học vụ, phép dò tự động ghi nhận 59 câu không nêu con số
-hay chữ viết tắt ngoài dữ liệu vừa tra; phép dò này không đọc hiểu nội dung.
-Trong 23 câu ontology không trả lời được, 21 câu được nói thẳng là không có.
-Một nửa số câu được trả lời trong vòng sáu giây rưỡi.
+câu hỏi. Phép dò tự động ghi nhận 79/85 câu không nêu số hay chữ viết tắt ngoài
+dữ liệu vừa tra; phép dò này không đọc hiểu nội dung. Trong 25 câu ontology
+không trả lời được, 18 câu được nói thẳng là không có. Một nửa số câu được trả
+lời trong vòng 6,25 giây.
 
 Các giới hạn chính:
 
@@ -422,65 +422,62 @@ trả lời.
 
 Phép đo gồm 85 lượt trò chuyện riêng: 60 câu học vụ lấy ngẫu nhiên từ `test` và
 chia đều cho bốn cách hỏi; 15 câu được `test` đánh dấu là ontology không trả lời
-được; cùng 10 câu viết thêm về nội dung còn trống.
-
-Hai trong 25 câu ở hai nhóm sau bị gắn nhãn sai: một câu về biểu mẫu chuyển
-chương trình và một câu về số điện thoại phòng ban. Ontology có cả hai, nên nhóm
-không trả lời được còn 23 câu.
+được; cùng 10 câu viết thêm để nhắm vào nội dung còn trống.
 
 ![Chất lượng câu trả lời end-to-end](docs/images/chat-luong-tra-loi.png)
 
 | Điều được đếm | Kết quả |
 |---|---|
-| Câu học vụ có tra cứu trước khi trả lời | 57/60 (95,0%) |
-| Mục cần tìm nằm trong số mục công cụ lấy về | 43/60 (71,7%) |
-| Lấy đúng mục cần tìm và không lấy thừa mục nào | 20/60 (33,3%) |
-| Câu trả lời không nêu con số hay viết tắt nào ngoài dữ liệu | 59/60 (98,3%) |
-| Câu ontology không trả lời được, được nói thẳng là không có | 21/23 (91,3%) |
+| Câu học vụ có tra cứu rồi mới trả lời | 56/60 (93,3%) |
+| Mục cần tìm nằm trong số node lấy về | 45/60 (75,0%) |
+| Lấy đúng và không lấy thừa node nào | 22/60 (36,7%) |
+| Không nêu số hay chữ viết tắt ngoài dữ liệu vừa tra | 79/85 (92,9%) |
+| Câu ontology không trả lời được, được nói thẳng là không có | 18/25 (72,0%) |
+| Có đủ nhận diện nguồn và đường dẫn, trên toàn bộ mẫu | 62/85 (72,9%) |
+| Có đủ nhận diện nguồn và đường dẫn, trong số câu lấy được dữ liệu | 62/70 (88,6%) |
 
-Bốn hàng về tra cứu, mục lấy về và từ chối được chấm thủ công. Hàng "không nêu
-con số hay viết tắt nào ngoài dữ liệu" dùng phép dò tự động. Do giới hạn đã nêu,
-59/60 chỉ là mức sàn về độ bám dữ liệu.
+Các hàng về tra cứu, node lấy về và từ chối được chấm trên từng bản ghi. Hàng
+"không nêu số hay chữ viết tắt ngoài dữ liệu vừa tra" dùng phép dò tự động trên
+cả 85 câu. Do giới hạn đã nêu, 79/85 chỉ là mức sàn về độ bám dữ liệu.
 
-Mức 71,7% yêu cầu mục cần tìm **có mặt**; mức 33,3% không chấp nhận mục thừa.
-Trong 43 câu đạt mức 71,7%, 23 câu có mục thừa. Cách đếm chặt còn 20/60, thấp hơn
-kết quả của phép đo từng phần ở mục 7.1. Ba câu cụt hoặc quá rộng không được tra cứu; trợ
-lý hỏi lại nhưng `test` tính là sai. Trong 23 câu ngoài dữ liệu, hai câu trả lời
-sai do thêm chi tiết chưa tra hoặc ghép dữ kiện thành quan hệ mới, như phân tích
-ở mục 8.2.
+Mức 75,0% yêu cầu node đích **có mặt**; mức 36,7% còn không chấp nhận node thừa.
+Trong 60 câu học vụ, 33 câu lấy ít nhất một node thừa và 15 câu không lấy trúng
+node đích; hai nhóm có thể giao nhau. Trong 25 câu ontology không trả lời được,
+10/15 câu lấy từ `test` và 8/10 câu viết tay nói thẳng là không có, gộp lại thành
+18/25. Kết quả `end-to-end` này được báo riêng với phép đo từng phần ở mục 7.1.
+
+Tỷ lệ trích dẫn chính là 62/85 vì cả 85 câu đều thuộc phép đo. Tỷ lệ 62/70 chỉ
+xét các câu thực sự lấy được dữ liệu nên cao hơn: 15 câu không lấy được dòng dữ
+liệu bị loại khỏi mẫu số. Nêu cả hai tỷ lệ cho thấy chất lượng trình bày khi có
+dữ liệu mà không che phần thất bại ở toàn bộ mẫu; 8/70 câu có dữ liệu vẫn thiếu
+đường dẫn.
 
 ### 7.6 Thời gian phản hồi
 
 ![Phân bố thời gian phản hồi](docs/images/thoi-gian-phan-hoi.png)
 
 Thời gian được đo riêng cho cùng 85 lượt, từ lúc gửi câu hỏi đến khi hoàn tất câu
-trả lời. `p95` là mức mà 95 trong 100 câu nhanh hơn.
+trả lời. `p95` là mức mà 95 trong 100 câu không lâu hơn.
 
-| | Trung vị | `p95` | Lâu nhất |
-|---|---:|---:|---:|
-| Toàn bộ 85 câu | 6,5 giây | 10,8 giây | 20,3 giây |
-| 76 lượt có tra cứu đồ thị | 6,9 giây | 11,6 giây | 20,3 giây |
-| 9 lượt không tra cứu | 1,2 giây | 3,3 giây | 3,3 giây |
+| Phạm vi | Mẫu | Trung vị | `p95` | Lâu nhất |
+|---|---:|---:|---:|---:|
+| Toàn bộ | 85 | 6,25 s | 10,96 s | 12,18 s |
+| Có tra cứu | 75 | 6,66 s | 11,06 s | 12,18 s |
+| Không tra cứu | 10 | 1,23 s | 4,67 s | 4,67 s |
 
-Chín lượt không tra cứu chủ yếu là câu ngoài phạm vi rõ ràng hoặc quá cụt. Trong
-25 câu âm tính, 19 câu vẫn gọi công cụ trước khi kết luận không có dữ liệu.
-
-Phần máy chủ được đo lại trên 76 lượt tra cứu, bằng máy để bàn tám nhân không
-dùng card đồ hoạ:
+Phần bên trong công cụ được chạy lại với 75 lô từ khoá thật mà trợ lý đã gửi,
+trên CPU 8 nhân, không dùng GPU. Mỗi lô có trung bình 2,5 từ khoá.
 
 | Chặng bên trong công cụ | Trung vị | `p95` |
 |---|---:|---:|
-| Mô hình viết truy vấn (2,4 từ khoá mỗi lượt) | 3,77 giây | 5,66 giây |
-| Chạy truy vấn trên đồ thị | 0,02 giây | 1,13 giây |
-| **Cả công cụ** | **3,83 giây** | **7,11 giây** |
-| Tính riêng cho một từ khoá | 1,83 giây | 1,92 giây |
+| Sinh truy vấn | 3.725 ms | 6.597 ms |
+| Chạy SPARQL trên ontology | 16 ms | 1.614 ms |
+| **Cả công cụ** | **3.756 ms** | **7.292 ms** |
+| Quy về một từ khoá | 1.774 ms | 2.302 ms |
 
-**Đồ thị không phải nút thắt:** truy vấn đồ thị mất hai phần trăm giây, dưới 1%
-thời gian công cụ. Viết truy vấn cho mỗi từ khoá mất khoảng 1,8 giây. Các từ khoá
-được xử lý lần lượt để kết quả không phụ thuộc từ khoá chạy cùng lúc, nên ba từ
-khoá mất gấp ba lần một từ. Trong khoảng bảy giây phản hồi, chừng bốn giây dành
-cho viết truy vấn và chừng ba giây cho hai lượt gọi mô hình qua mạng. Có 22 trong
-85 lượt gọi đầu bị giới hạn tốc độ; bảng chỉ tính lượt gọi thành công.
+**SPARQL không phải chặng chiếm phần lớn thời gian ở trung vị:** chạy trên
+ontology mất 16 ms, còn sinh truy vấn mất 3.725 ms. Các số này là phép phát lại
+bên trong công cụ; chúng không bao gồm toàn bộ thời gian đầu-cuối của câu trả lời.
 
 ---
 
@@ -522,22 +519,21 @@ có thể chặn đầu ra không trỏ tới mục trong ontology.
 
 ### 8.2 Lỗi của cả trợ lý
 
-Trong 23 câu đồ thị không trả lời được, hai câu bị trả lời sai theo hai dạng.
+**Mâu thuẫn biểu mẫu ngay trong một câu trả lời.** Với câu *"xin quay lại học
+dùng đơn nào ta"*, trợ lý nói "Mẫu số 11 - Đơn xin học trở lại", nhưng đường
+dẫn đi kèm có tên tệp "Mẫu số 09 - Đơn xin học trở lại.docx". Mâu thuẫn này có
+thể khiến người dùng tải nhầm biểu mẫu. Lượt tra còn lấy thừa hai node không
+liên quan.
 
-**Ghép dữ kiện thành quan hệ mới.** Với câu *"đăng ký môn có ảnh hưởng học bổng
-của tôi không?"*, trợ lý suy ra quan hệ nhân quả từ điều kiện đăng ký tối thiểu
-14 tín chỉ. Điều kiện 14 tín chỉ có trong dữ liệu, nhưng quan hệ giữa đăng ký môn
-và xét học bổng thì không.
+**Không lấy đúng phần văn bản được hỏi.** Với câu *"cho hoi mình cần tra cứu
+văn bản tại chươngi quy chế 626?"*, đích là Chương I nhưng lượt tra chỉ lấy toàn
+văn Quyết định 626. Câu trả lời nêu tên, ngày ban hành và đường dẫn, không đưa
+nội dung Chương I.
 
-**Thêm chi tiết ngoài kết quả tra cứu.** Khi trả lời về ảnh hưởng của việc nghỉ
-học tới học bổng, trợ lý bổ sung quy định về điểm Giáo dục thể chất và Giáo dục
-quốc phòng. Chi tiết có trong mục *tiêu chuẩn học bổng*, nhưng lượt tra cứu chỉ
-trả về *thủ tục xét học bổng*. Vì vậy, câu trả lời không có nguồn kiểm chứng cho
-chi tiết này.
-
-Rào chắn cần kiểm tra chi tiết có trong dữ liệu vừa nhận, không chỉ kiểm tra tính
-đúng nói chung. Dữ kiện đúng nhưng không truy ngược được nguồn vẫn không thể
-kiểm chứng.
+**Báo nhầm sự cố kỹ thuật.** Với câu *"Điểm chuẩn ngành Ngôn ngữ Anh năm nay là
+bao nhiêu?"*, trợ lý nói không thể truy xuất do sự cố kỹ thuật. Bản ghi không có
+lỗi và không lấy được dòng dữ liệu nào, nên câu trả lời đúng phải nói ontology
+không có thông tin thay vì quy nguyên nhân cho sự cố.
 
 ---
 
@@ -549,9 +545,10 @@ từng chữ.
 
 ![Trợ lý trả lời kèm nguồn](docs/images/giao-dien.png)
 
-Câu trả lời kèm trích dẫn và đường dẫn tới văn bản gốc. Trong 57 câu học vụ tra
-được dữ liệu, 54 câu có đủ cả hai; ba câu còn lại thiếu đường dẫn hoặc thiếu cả
-hai.
+Câu trả lời có đủ nhận diện nguồn và đường dẫn ở 62/85 câu, tương ứng 72,9% trên
+toàn bộ mẫu. Nếu chỉ xét 70 câu thực sự lấy được dữ liệu, kết quả là 62/70, tương
+ứng 88,6%; tỷ lệ này cao hơn vì không tính 15 câu không lấy được dòng dữ liệu.
+Trong 70 câu có dữ liệu, 8 câu vẫn thiếu đường dẫn.
 
 Trong lúc tra cứu, giao diện hiện đúng những cụm từ khoá mà trợ lý đang gửi cho
 công cụ:
@@ -583,13 +580,13 @@ tin cậy; khoảng cách 5,4 điểm vẫn chỉ là một quan sát.
 
 **Thước đo vừa chặt hơn, vừa lỏng hơn thực tế.** Thước "dựng đúng khuôn" tính sai
 truy vấn khác khuôn chuẩn dù trả về đúng dữ liệu. Ngược lại, phép dò tự động chỉ
-kiểm tra con số và chữ viết tắt, không đọc hiểu nội dung; 59/60 vì vậy là mức
+kiểm tra con số và chữ viết tắt, không đọc hiểu nội dung; 79/85 vì vậy là mức
 sàn.
 
 **Phép đo `end-to-end` nhỏ và không tái lập nguyên vẹn.** 85 câu chưa đủ để báo
 cáo sai số hẹp. Dữ liệu công cụ của từng lượt không được lưu cùng kết quả. Chỉ
 có một người chấm, LLM có thể trả lời khác khi hỏi lại, và thời gian phản hồi chỉ
-tính lượt thành công. Hai nhãn sai đều bất lợi cho trợ lý. Câu *"Đơn xin chuyển
+phản ánh lần thử cuối. Có nhãn sai bất lợi cho trợ lý. Câu *"Đơn xin chuyển
 Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?"* bị `test` xếp ngoài phạm
 vi dù đồ thị có biểu mẫu và đường dẫn tải. Câu *"Số điện thoại của phòng Công tác
 sinh viên là số nào?"* cũng bị gán là không có dữ liệu dù đồ thị lưu số điện
@@ -600,7 +597,7 @@ Ngoài các giới hạn của phép đo, ontology hiện chỉ phản ánh 16 v
 câu hỏi; câu hỏi về nội dung chưa có trong ontology phải bị từ chối. Ở lớp giao
 tiếp, **21,8% câu ngoài phạm vi vẫn lọt**, **chứng chỉ ngoại ngữ có mức chọn
 đúng mục thấp nhất**, và **trợ lý vẫn có thể ghép hai dữ kiện thành một quan hệ
-mới** như ở mục 8.2.
+mới**.
 
 ---
 
