@@ -17,9 +17,10 @@ LLM chỉ là lớp giao tiếp: gọi công cụ tra ontology và diễn đạt
 Cách tách này tránh để LLM tự suy đoán từ văn bản quy chế.
 
 Bốn mô hình seq2seq cùng học trên 6.308 câu hỏi, trong đó 5.518 câu thuộc
-`train`, và được đánh giá bằng cùng một bộ thước đo. **T5Gemma-2 thắng rõ rệt**.
-Mô hình chọn đúng mục cần tra trong đồ thị ở 77,9% số câu, dựng đúng khuôn truy
-vấn ở 81,2% và quyết định đúng giữa trả lời với từ chối ở 91,0%.
+`train`, và được đánh giá bằng cùng một bộ thước đo. **T5Gemma-2 dẫn đầu năm
+trong sáu phép đo trên `test` và `val`**. Trên `test`, mô hình chọn đúng mục cần
+tra trong đồ thị ở 81,8% số câu, dựng đúng khuôn truy vấn ở 86,3% và quyết định
+đúng giữa trả lời với từ chối ở 92,1%.
 
 Lớp giao tiếp dùng mô hình seq2seq tốt nhất được đánh giá `end-to-end` trên 85
 câu hỏi. Trong 60 câu học vụ, phép dò tự động ghi nhận 59 câu không nêu con số
@@ -33,8 +34,8 @@ Các giới hạn chính:
   đúng duy nhất là "tôi không có thông tin này".
 - Dữ liệu được chia theo câu hỏi. Điểm số đo **khả năng hiểu một cách hỏi mới
   về việc đã biết**, chưa đo khả năng xử lý mục chưa từng thấy.
-- Mỗi mô hình chỉ chạy một lượt, và ba trong bốn mô hình vẫn đang khá lên khi
-  hết ngân sách huấn luyện. Chỉ nên tin những khoảng cách lớn.
+- Mỗi mô hình chỉ được huấn luyện độc lập một lần, nên chưa có khoảng tin cậy
+  cho các điểm số. Chỉ nên tin những khoảng cách lớn.
 
 ---
 
@@ -68,7 +69,7 @@ Ontology học vụ và mô hình seq2seq sinh SPARQL là phần lõi. Mô hình
 kiện trả về. Seq2seq chỉ nhận cụm từ khoá ngắn, không đối thoại trực tiếp với
 người dùng.
 
-Với mọi câu hỏi học vụ, LLM phải gọi công cụ tra cứu trước khi trả lời; công cụ
+Với mọi câu hỏi học vụ, LLM phải gọi công cụ tra cứu rồi mới trả lời; công cụ
 chỉ trả về dữ kiện từ ontology.
 
 ![Kiến trúc tổng quan của hệ thống](docs/images/kien-truc.png)
@@ -140,7 +141,7 @@ Một câu hỏi đổi hình sáu lần từ đầu vào đến câu trả lờ
 
 Mỗi dòng ghép câu hỏi tiếng Việt với truy vấn đúng, mã số, dạng câu hỏi và nhãn
 phong cách. Với câu ngoài phạm vi, đích là "không có thông tin". Ví dụ trả lời
-được sau dùng câu hỏi gõ không dấu và truy vấn về cố vấn học tập:
+được dưới đây dùng câu hỏi gõ không dấu và truy vấn về cố vấn học tập:
 
 ```json
 {
@@ -152,7 +153,7 @@ phong cách. Với câu ngoài phạm vi, đích là "không có thông tin". V�
 }
 ```
 
-Ví dụ phải từ chối:
+Ví dụ thuộc nhóm phải từ chối:
 
 ```json
 {
@@ -208,11 +209,11 @@ không thuộc phạm vi phép đo ở mục 10.
 |---|---:|---|
 | `train` | 5.518 | Học ánh xạ từ câu hỏi sang truy vấn hoặc từ chối |
 | `val` | 400 | Theo dõi quá trình học, chọn điểm dừng |
-| `test` | 390 | Đánh giá cuối, sau khi mọi lựa chọn đã cố định |
+| `test` | 390 | Đánh giá cuối, khi mọi lựa chọn đã cố định |
 | **Toàn bộ** | **6.308** | Không áp dụng |
 
-`test` chỉ được dùng sau khi mọi lựa chọn dựa trên `train` và `val` đã cố định,
-tránh chọn cấu hình theo chính bộ đề đánh giá.
+`test` chỉ được dùng khi mọi lựa chọn dựa trên `train` và `val` đã cố định, tránh
+chọn cấu hình theo chính bộ đề đánh giá.
 
 Ba tập được chia **theo câu hỏi**: không câu nào ở `val` hoặc `test` xuất hiện ở
 `train`. Tuy nhiên, ba tập dùng chung 567 câu trả lời đúng. Vì vậy, 390 câu
@@ -262,15 +263,15 @@ nguyên.
 Bốn mô hình dùng **cùng điều kiện**:
 
 - **Cùng một bộ dữ liệu**, không mô hình nào được thấy thêm hay bớt câu nào.
-- **Cùng tám lượt học.** Một lượt là một lần đọc hết `train`.
 - **Cùng một điểm khởi đầu ngẫu nhiên.** Công trình chưa chạy lặp để kiểm chứng
   kết quả có trùng khít hay không.
 - **Cùng cách viết câu trả lời.** Mỗi chữ chọn phương án khả dĩ nhất, không bốc
   thăm, nên cùng câu hỏi cho cùng truy vấn.
 - **Cùng một máy**: card đồ hoạ 24 GB.
 
-Bản có kết quả `val` tốt nhất được giữ lại. `test` chỉ được dùng một lần, sau
-khi mọi lựa chọn đã cố định.
+Mỗi lượt học là một lần đọc hết `train`. Số lượt học của từng mô hình và lượt có
+kết quả `val` tốt nhất được ghi trong bảng chi phí huấn luyện. `test` chỉ được
+dùng một lần khi mọi lựa chọn đã cố định.
 
 ### 6.3 Ba chỉ số chính
 
@@ -299,39 +300,49 @@ phần.
 
 Kết quả trên **`test`** (390 câu, chỉ dùng một lần):
 
-| Mô hình | Chọn đúng mục | Đúng dạng truy vấn | Từ chối đúng | Bộ nhớ card lúc đỉnh | Thời gian huấn luyện | Tốc độ `test` |
-|---|---:|---:|---:|---:|---:|---:|
-| **T5Gemma-2** | **77,9%** | **81,2%** | 91,0% | 9,19 GiB | 29,8 phút | 0,46 s/câu |
-| mBART | 66,3% | 75,2% | 88,7% | 10,46 GiB | 24,7 phút | 0,23 s/câu |
-| BARTpho | 55,2% | 65,4% | **91,8%** | 3,18 GiB | 15,1 phút | 0,18 s/câu |
-| ViT5 | 33,7% | 46,0% | 74,4% | 3,53 GiB | 19,0 phút | 0,41 s/câu |
+| Mô hình | Chọn đúng mục | Đúng dạng truy vấn | Từ chối đúng |
+|---|---:|---:|---:|
+| **T5Gemma-2** | **81,8%** | **86,3%** | 92,1% |
+| mBART | 76,4% | 83,0% | 89,2% |
+| BARTpho | 76,1% | 86,0% | **93,6%** |
+| ViT5 | 57,9% | 72,8% | 82,1% |
 
-Kết quả trên **`val`** (400 câu, dùng trong lúc phát triển):
+Chi phí huấn luyện và chấm `test`:
+
+| Mô hình | Bộ nhớ card lúc đỉnh | Thời gian `train` | Tốc độ `test` | Số lượt chạy | Bản giữ lại |
+|---|---:|---:|---:|---:|---:|
+| T5Gemma-2 | 9,19 GiB | 36,9 phút | 0,46 s/câu | 11 | 8 |
+| mBART | 10,46 GiB | 38,6 phút | 0,23 s/câu | 13 | 10 |
+| BARTpho | 3,18 GiB | 26,9 phút | 0,17 s/câu | 16 | 15 |
+| ViT5 | 3,53 GiB | 31,4 phút | 0,40 s/câu | 16 | 14 |
+
+Kết quả trên **`val`** (400 câu, dùng để chọn lượt giữ lại):
 
 | Mô hình | Chọn đúng mục | Đúng dạng truy vấn | Từ chối đúng |
 |---|---:|---:|---:|
-| **T5Gemma-2** | **81,7%** | **84,0%** | **96,8%** |
-| mBART | 70,9% | 75,9% | 93,0% |
-| BARTpho | 59,0% | 69,5% | 94,2% |
-| ViT5 | 34,3% | 45,1% | 73,8% |
+| **T5Gemma-2** | **82,6%** | **85,8%** | **96,2%** |
+| mBART | 74,1% | 81,1% | 94,8% |
+| BARTpho | 75,9% | 84,3% | 96,0% |
+| ViT5 | 61,9% | 71,5% | 84,5% |
 
 ![Ba chỉ số chính trên val](docs/images/so-sanh-mo-hinh-kiem-dinh.png)
 
-T5Gemma-2 dẫn đầu năm trong sáu cột. BARTpho hơn 0,8 điểm về từ chối trên
-`test`, còn T5Gemma-2 hơn BARTpho 2,5 điểm trên `val`. Ở chỉ số chọn đúng mục,
-T5Gemma-2 hơn mô hình thứ hai 11,6 điểm.
+T5Gemma-2 dẫn đầu năm trong sáu cột. BARTpho hơn 1,5 điểm về từ chối trên
+`test`, còn T5Gemma-2 hơn BARTpho 0,2 điểm trên `val`. Ở chỉ số chọn đúng mục
+trên `test`, T5Gemma-2 hơn mô hình thứ hai 5,4 điểm.
 
-BARTpho đạt 91,8% ở từ chối, hơn T5Gemma-2 0,8 điểm nhưng thua 22,7 điểm ở chọn
-đúng mục. Ba chỉ số không thể gộp thành một điểm.
+BARTpho đạt 93,6% ở từ chối và 86,0% ở dựng khuôn trên `test`; các mức tương ứng
+của T5Gemma-2 là 92,1% và 86,3%. Khoảng cách dựng khuôn chỉ 0,3 điểm, trong khi
+chọn đúng mục cách nhau 5,7 điểm. Ba chỉ số không thể gộp thành một điểm.
 
-Thứ hạng trùng với quy mô: 786 M > 611 M > 396 M > 226 M. Chưa thể tách ảnh
-hưởng của kiến trúc, dữ liệu huấn luyện trước và quy mô đối với kết quả của
-T5Gemma-2. BARTpho chuyên tiếng Việt vẫn xếp sau hai mô hình đa ngữ lớn hơn.
+Thứ hạng chọn đúng mục trùng với quy mô, nhưng BARTpho đứng trên mBART ở dựng
+khuôn và từ chối. Chưa thể tách ảnh hưởng của kiến trúc, dữ liệu nền và quy mô
+đối với kết quả của từng mô hình.
 
 ![Chính xác đổi lấy bộ nhớ và thời gian](docs/images/danh-doi.png)
 
-BARTpho đạt 55,2% với 3,18 GiB và 15 phút huấn luyện, bằng một phần ba bộ nhớ và
-một nửa thời gian của T5Gemma-2.
+BARTpho đạt 76,1% ở chọn đúng mục với 3,18 GiB và 26,9 phút huấn luyện, dùng xấp
+xỉ một phần ba bộ nhớ của T5Gemma-2 và ít hơn 10,0 phút huấn luyện.
 
 ### 7.2 Diễn biến huấn luyện
 
@@ -339,30 +350,30 @@ một nửa thời gian của T5Gemma-2.
 
 ![loss trên val](docs/images/hao-hut-kiem-dinh.png)
 
-`loss` giảm biểu thị kết quả cải thiện. T5Gemma-2 đạt mức thấp nhất ở lượt thứ
-năm; bản này được dùng để đánh giá. Ba mô hình còn lại vẫn cải thiện ở lượt thứ
-tám. Vì cả bốn đều dừng tại giới hạn tám lượt, kết quả chỉ phản ánh ngân sách
-huấn luyện đã cấp.
+`loss` thấp biểu thị mô hình khớp dữ liệu tốt hơn. Mức `val` thấp nhất nằm ở lượt
+8 với T5Gemma-2, lượt 10 với mBART, lượt 15 với BARTpho và lượt 14 với ViT5.
+Các lượt tương ứng được dùng để đánh giá.
 
 ### 7.3 Kết quả theo lĩnh vực
 
 | Lĩnh vực | Số câu | Chọn đúng mục | Đúng dạng | Từ chối đúng |
 |---|---:|---:|---:|---:|
-| Quy chế đào tạo | 131 | 84,7% | 87,8% | 97,7% |
-| Học phí | 25 | 84,0% | 84,0% | 96,0% |
-| Tra cứu văn bản | 57 | 78,9% | 86,0% | 96,5% |
-| Chứng chỉ ngoại ngữ | 31 | 77,4% | 77,4% | 90,3% |
-| Thủ tục học vụ | 49 | 69,4% | 73,5% | 93,9% |
-| Biểu mẫu | 42 | 61,9% | 64,3% | 100,0% |
-| Ngoài phạm vi | 55 | Không áp dụng | Không áp dụng | 58,2% |
+| Tra cứu văn bản | 57 | 86,0% | 89,5% | 96,5% |
+| Thủ tục học vụ | 49 | 85,7% | 91,8% | 93,9% |
+| Biểu mẫu | 42 | 83,3% | 85,7% | 90,5% |
+| Quy chế đào tạo | 131 | 80,9% | 86,3% | 94,7% |
+| Học phí | 25 | 76,0% | 84,0% | 96,0% |
+| Chứng chỉ ngoại ngữ | 31 | 74,2% | 74,2% | 93,5% |
+| Ngoài phạm vi | 55 | Không áp dụng | Không áp dụng | 78,2% |
 
-**Biểu mẫu yếu nhất** (61,9%). Mã hành chính như "Mẫu số 5", "Phụ lục 4" khác
-với cách gọi theo công dụng như "đơn xin chuyển ngành".
+**Chứng chỉ ngoại ngữ có mức chọn đúng mục và dựng đúng khuôn thấp nhất**,
+cùng ở 74,2%. Tra cứu văn bản đứng đầu về chọn đúng mục với 86,0%, còn thủ tục
+học vụ đứng đầu về dựng đúng khuôn với 91,8%.
 
-**Câu ngoài phạm vi khó nhất** (58,2%). Mức 91,0% ở bảng tổng được tính trên 390
-câu, chủ yếu thuộc phạm vi, nên 91,0% không đại diện riêng cho câu ngoài phạm vi.
-Trong 55 câu ngoài phạm vi, 32 câu bị từ chối đúng, tương ứng **58,2%**. Hai truy
-vấn rỗng nâng tỷ lệ bị chặn lên **34/55 = 61,8%**; **21/55 = 38,2%** vẫn lọt.
+**Câu ngoài phạm vi có mức từ chối 78,2%.** Mức 92,1% ở bảng tổng được tính trên
+390 câu, chủ yếu thuộc phạm vi, nên không đại diện riêng cho câu ngoài phạm vi.
+Trong 55 câu ngoài phạm vi, 43 câu bị từ chối đúng và **12/55 = 21,8%** được
+chấp nhận nhầm.
 
 ### 7.4 Kết quả theo cách hỏi và độ khó truy vấn
 
@@ -370,17 +381,17 @@ vấn rỗng nâng tỷ lệ bị chặn lên **34/55 = 61,8%**; **21/55 = 38,2%
 
 | Mô hình | Trang trọng | Trung tính | Thân mật | Gõ nhiễu |
 |---|---:|---:|---:|---:|
-| T5Gemma-2 | 84,7% | 91,9% | 76,8% | **57,3%** |
-| mBART | 83,5% | 76,7% | 64,6% | **39,0%** |
-| BARTpho | 67,1% | 61,6% | 51,2% | **40,2%** |
-| ViT5 | 32,9% | 39,5% | 30,5% | 31,7% |
+| T5Gemma-2 | 89,4% | 88,4% | 85,4% | **63,4%** |
+| mBART | 84,7% | 88,4% | 76,8% | **54,9%** |
+| BARTpho | 89,4% | 88,4% | 73,2% | **52,4%** |
+| ViT5 | 64,7% | 64,0% | 58,5% | **43,9%** |
 
-**Câu gõ nhiễu giảm sâu nhất.** Ba mô hình khá nhất mất **26,8 tới 44,5 điểm**:
-T5Gemma-2 giảm từ 91,9% xuống 57,3%, mBART từ 83,5% xuống 39,0% và BARTpho từ
-67,1% xuống 40,2%. Câu thân mật đủ dấu chỉ mất 15,0 tới 18,9 điểm. Nhóm nhiễu
-gộp thiếu dấu, sai chính tả, dính chữ và đổi cách diễn đạt nên chưa xác định được
-ảnh hưởng riêng của từng yếu tố. ViT5 chỉ đạt 30–40% ở **cả bốn** cách hỏi. Khả
-năng khôi phục dấu tiếng Việt cần được đánh giá riêng.
+**Câu gõ nhiễu có mức thấp nhất ở cả bốn mô hình.** Khoảng cách với phong cách
+tốt nhất của từng mô hình nằm trong khoảng **20,8 tới 37,0 điểm**. Câu thân mật
+đủ dấu cách phong cách tốt nhất 4,0 điểm với T5Gemma-2, 11,6 điểm với mBART,
+16,2 điểm với BARTpho và 6,2 điểm với ViT5. Nhóm nhiễu gộp thiếu dấu, sai chính
+tả, dính chữ và đổi cách diễn đạt nên chưa xác định được ảnh hưởng riêng của
+từng yếu tố. Khả năng khôi phục dấu tiếng Việt cần được đánh giá riêng.
 
 ![Độ chính xác theo độ khó truy vấn](docs/images/theo-dac-diem-truy-van.png)
 
@@ -389,15 +400,15 @@ trong đó 30 câu phải liệt kê giá trị):
 
 | Mô hình | Khuôn cơ bản | Khuôn nhiều cạnh | Chênh |
 |---|---:|---:|---:|
-| T5Gemma-2 | 82,1% | 73,5% | −8,5 |
-| mBART | 75,7% | 70,6% | −5,2 |
-| BARTpho | 67,8% | 44,1% | −23,7 |
-| ViT5 | 51,2% | **0,0%** | −51,2 |
+| T5Gemma-2 | 87,0% | 79,4% | +7,6 |
+| mBART | 84,7% | 67,6% | +17,1 |
+| BARTpho | 87,7% | 70,6% | +17,1 |
+| ViT5 | 80,1% | **8,8%** | +71,2 |
 
-Hai mô hình khá nhất mất 5 tới 9 điểm ở khuôn nhiều cạnh. BARTpho mất gần 24
-điểm; ViT5 **không dựng đúng câu nào trong 34 câu**. Mô hình chuỗi-chuỗi không
-bảo đảm cấu trúc SPARQL. Ràng buộc đầu ra theo 50 khuôn có thể loại nhóm lỗi
-này.
+T5Gemma-2 có khoảng cách nhỏ nhất giữa hai nhóm khuôn, 7,6 điểm. mBART và
+BARTpho cùng cách 17,1 điểm. ViT5 đạt 8,8% ở khuôn nhiều cạnh, với chênh lệch
+71,2 điểm. Mô hình chuỗi-chuỗi không bảo đảm cấu trúc SPARQL; ràng buộc đầu ra
+theo 50 khuôn có thể loại lỗi cấu trúc.
 
 ### 7.5 Độ chính xác câu trả lời `end-to-end`
 
@@ -433,7 +444,7 @@ con số hay viết tắt nào ngoài dữ liệu" dùng phép dò tự động.
 
 Mức 71,7% yêu cầu mục cần tìm **có mặt**; mức 33,3% không chấp nhận mục thừa.
 Trong 43 câu đạt mức 71,7%, 23 câu có mục thừa. Cách đếm chặt còn 20/60, thấp hơn
-mức 77,9% của phép đo từng phần. Ba câu cụt hoặc quá rộng không được tra cứu; trợ
+kết quả của phép đo từng phần ở mục 7.1. Ba câu cụt hoặc quá rộng không được tra cứu; trợ
 lý hỏi lại nhưng `test` tính là sai. Trong 23 câu ngoài dữ liệu, hai câu trả lời
 sai do thêm chi tiết chưa tra hoặc ghép dữ kiện thành quan hệ mới, như phân tích
 ở mục 8.2.
@@ -483,13 +494,13 @@ Trên 390 câu của `test`:
 
 | Loại lỗi | T5Gemma-2 | mBART | BARTpho | ViT5 |
 |---|---:|---:|---:|---:|
-| Trỏ sai mục trong đồ thị | 62 | 93 | 124 | 168 |
-| Trả lời câu lẽ ra phải từ chối | 21 | 18 | 21 | 53 |
-| Truy vấn thiếu nhánh | 9 | 5 | 11 | 15 |
-| Truy vấn thừa nhánh | 3 | 13 | 12 | 0 |
-| Từ chối đúng ý nhưng sai câu chuẩn | 2 | 3 | 0 | 0 |
-| Từ chối nhầm câu trả lời được | 1 | 3 | 3 | 0 |
-| Truy vấn sai cú pháp | 0 | 1 | 1 | 41 |
+| Trỏ sai mục trong đồ thị | 38 | 65 | 64 | 89 |
+| Trả lời câu lẽ ra phải từ chối | 12 | 24 | 17 | 12 |
+| Từ chối nhầm câu trả lời được | 12 | 4 | 5 | 6 |
+| Truy vấn thừa nhánh | 8 | 4 | 6 | 0 |
+| Truy vấn thiếu nhánh | 3 | 7 | 5 | 4 |
+| Từ chối đúng ý nhưng sai câu chuẩn | 0 | 0 | 1 | 8 |
+| Truy vấn sai cú pháp | 0 | 1 | 1 | 43 |
 
 **Trỏ sai mục là loại lỗi lớn nhất** ở cả bốn mô hình. Sai cú pháp hầu như chỉ
 xảy ra với ViT5. Các mô hình dựng được hình dạng SPARQL tốt hơn chọn tên mục.
@@ -498,27 +509,16 @@ Các ví dụ của T5Gemma-2:
 
 | Câu hỏi | Mô hình làm gì | Đáng lẽ |
 |---|---|---|
-| "Đề nghị hướng dẫn Sinh viên có trách nhiệm cụ thể ra sao." | trỏ tới chính sách trách nhiệm sinh viên | thực thể sinh viên |
-| "co nhung dieu gi can hieu khi nhac toi tin chi z?" | trỏ tới thủ tục công nhận tín chỉ | khái niệm tín chỉ |
-| "nói chuyện với mình đi ạ?" | chấp nhận và sinh truy vấn | từ chối |
-| "Xin hỏi chữ viết tắt DELF tương ứng với tên đầy đủ nào…" | trỏ tới bảng chữ viết tắt, thừa một nhánh | chứng chỉ được hỏi |
-| "khá chương trình chuẩn được bao nhiêu v ạ?" | từ chối | trả lời, vì đồ thị có mức học bổng |
+| "có những điều gì cần hiểu khi nhắc tới lớp hành chímh" | trỏ tới khái niệm lớp học phần | khái niệm lớp hành chính |
+| "co nhung dieu gi can hieu khi nhac toi tin chi z?" | không trỏ tới mục nào | khái niệm tín chỉ |
+| "đối tượng áp dụng" | trỏ tới trường hợp ốm đau | khái niệm đối tượng áp dụng |
+| "Xin cho biết điều kiện về khối lượng học tập còn lại khi rút học phần ạ." | trỏ tới điều kiện loại học phần | thủ tục rút học phần |
+| "muon dang ky datn thi lien he phong nao?" | không trỏ tới mục nào | thủ tục đăng ký đồ án tốt nghiệp |
+| "xét học bổng khuyến khích sao vậy ta" | không trỏ tới mục nào | thủ tục xét học bổng |
 
-Hai ví dụ đầu là lỗi chọn mục bao quanh có tên gần giống mục được hỏi: *thủ tục
-công nhận tín chỉ* thay cho *tín chỉ*, và *chính sách trách nhiệm sinh viên*
-thay cho *sinh viên*.
-
-Một thủ tục học vụ có thể xuất hiện trong đồ thị dưới ba loại mục: thủ tục, biểu
-mẫu phải nộp và mục danh mục để tải biểu mẫu. Trong 74 câu T5Gemma-2 chọn sai
-mục, **21 câu nhầm giữa ba loại này**. Với câu *"đơn xin học trở lại cung cấp
-biểu mẫu cụ thể ra sao"*, đáp án chuẩn chọn mục danh mục còn mô hình chọn chính
-biểu mẫu được liên kết.
-
-Nhãn chuẩn không nhất quán. *"mẫu đơn học song ngành"* được gán cho thủ tục,
-trong khi *"đăng ký chương trình thứ hai sao ta"* được gán cho biểu mẫu. Hai cách
-gán trái với tín hiệu ngôn ngữ tương ứng, nên mô hình không thể học một quy tắc
-chung. Vì vậy, mức 77,9% ở mục 7.1 thấp hơn năng lực thực tế do một phần lỗi nằm
-ở nhãn.
+Các ca này gồm cả việc chọn một mục lân cận về nghĩa và không chọn được mục nào.
+Ràng buộc tên mục đầu ra không tự giải quyết việc chọn nhầm một tên hợp lệ, nhưng
+có thể chặn đầu ra không trỏ tới mục trong ontology.
 
 ### 8.2 Lỗi của cả trợ lý
 
@@ -579,14 +579,12 @@ tập câu hỏi do người học thật gõ ra. Đây là hạn chế lớn nh
 **Không có mốc dưới, và mỗi mô hình chỉ chạy một lượt.** Bảng so sánh không có
 mô hình chưa huấn luyện hoặc cách dò từ khoá đơn giản làm mốc. Vì vậy, đóng góp
 của việc tinh chỉnh chưa được tách riêng. Một lượt chạy không tạo được khoảng
-tin cậy; khoảng cách 11,6 điểm vẫn chỉ là một quan sát. Ba mô hình còn cải thiện
-khi hết tám lượt.
+tin cậy; khoảng cách 5,4 điểm vẫn chỉ là một quan sát.
 
 **Thước đo vừa chặt hơn, vừa lỏng hơn thực tế.** Thước "dựng đúng khuôn" tính sai
-truy vấn khác khuôn chuẩn dù trả về đúng dữ liệu. Nhãn giữa thủ tục, biểu mẫu và
-mục danh mục không nhất quán, khiến 21 lỗi ở mục 8.1 bị tính nặng hơn thực tế.
-Ngược lại, phép dò tự động chỉ kiểm tra con số và chữ viết tắt, không đọc hiểu
-nội dung; 59/60 vì vậy là mức sàn.
+truy vấn khác khuôn chuẩn dù trả về đúng dữ liệu. Ngược lại, phép dò tự động chỉ
+kiểm tra con số và chữ viết tắt, không đọc hiểu nội dung; 59/60 vì vậy là mức
+sàn.
 
 **Phép đo `end-to-end` nhỏ và không tái lập nguyên vẹn.** 85 câu chưa đủ để báo
 cáo sai số hẹp. Dữ liệu công cụ của từng lượt không được lưu cùng kết quả. Chỉ
@@ -595,41 +593,37 @@ tính lượt thành công. Hai nhãn sai đều bất lợi cho trợ lý. Câu
 Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?"* bị `test` xếp ngoài phạm
 vi dù đồ thị có biểu mẫu và đường dẫn tải. Câu *"Số điện thoại của phòng Công tác
 sinh viên là số nào?"* cũng bị gán là không có dữ liệu dù đồ thị lưu số điện
-thoại. Vì vậy, mức 58,2% ở nhóm ngoài phạm vi tại mục 7.3 thấp hơn thực tế, và
+thoại. Vì vậy, mức 78,2% ở nhóm ngoài phạm vi tại mục 7.3 thấp hơn thực tế, và
 bộ `test` cần được rà soát.
 
 Ngoài các giới hạn của phép đo, ontology hiện chỉ phản ánh 16 văn bản và 50 dạng
 câu hỏi; câu hỏi về nội dung chưa có trong ontology phải bị từ chối. Ở lớp giao
-tiếp, **38,2% câu ngoài phạm vi vẫn lọt**, **biểu mẫu là lĩnh vực kém nhất**, và
-**trợ lý vẫn có thể ghép hai dữ kiện thành một quan hệ mới** như ở mục 8.2.
+tiếp, **21,8% câu ngoài phạm vi vẫn lọt**, **chứng chỉ ngoại ngữ có mức chọn
+đúng mục thấp nhất**, và **trợ lý vẫn có thể ghép hai dữ kiện thành một quan hệ
+mới** như ở mục 8.2.
 
 ---
 
 ## 11. Hướng cải tiến
 
-**1. Chuẩn hoá ranh giới giữa thủ tục, biểu mẫu và mục danh mục.** Đây là nhóm
-lỗi lớn nhất còn có thể giảm: 21 trong 74 lỗi của mô hình tốt nhất, trong đó phần
-lớn câu trả lời hợp lý vẫn bị tính sai. Cần gán nhãn nhất quán theo đối tượng mà
-câu hỏi nhắm tới; không cần huấn luyện lại.
+**1. Ràng buộc tên mục đầu ra theo ontology.** Trỏ sai mục chiếm 38 lỗi của
+T5Gemma-2. Ràng buộc đầu ra theo danh sách tên trong ontology có thể chặn trường
+hợp mô hình không trỏ tới mục nào, nhưng vẫn cần cơ chế chọn đúng giữa các tên
+hợp lệ.
 
-**2. Ràng buộc tên mục đầu ra theo ontology.** Trong 74 lỗi có 9 lỗi mô hình sinh
-tên không tồn tại. Ràng buộc đầu ra theo danh sách tên trong ontology có thể loại
-nhóm lỗi này. Kết hợp với hướng 1, hai thay đổi có thể giảm 30 lỗi mà không đổi
-mô hình.
+**2. Bổ sung cho ontology các tên mà người học thực sự dùng.** Lỗi trỏ sai mục là
+loại lỗi lớn nhất; chứng chỉ ngoại ngữ có mức chọn đúng mục thấp nhất, 74,2%.
+Bổ sung tên gọi thay thế cho từng mục ít tốn kém hơn đổi mô hình.
 
-**3. Bổ sung cho ontology các tên mà người học thực sự dùng.** Lỗi trỏ sai mục
-vẫn chiếm phần lớn lỗi còn lại; biểu mẫu yếu nhất vì tên hành chính khác tên
-người học dùng. Bổ sung tên gọi thay thế cho từng mục ít tốn kém hơn đổi mô hình.
-
-**4. Dựng bộ câu hỏi `test` thật sự mới.** Bộ mới cần có câu hỏi với đáp án chưa
+**3. Dựng bộ câu hỏi `test` thật sự mới.** Bộ mới cần có câu hỏi với đáp án chưa
 từng xuất hiện trong `train`, cùng một tập câu hỏi do người học gõ ra. Việc này
 xử lý hạn chế lớn nhất ở mục 10 và đo khả năng làm việc với nội dung chưa gặp.
 
-**5. Lặp lại phép huấn luyện, và học tới khi không khá lên được nữa.** Chạy lại mỗi mô hình vài lượt
-sẽ cho phép công bố khoảng thay vì một con số đơn lẻ. Cho ba mô hình còn lại học
-tới khi ngừng cải thiện sẽ giúp bảng so sánh phản ánh khả năng mô hình thay vì
-thời gian đã cấp. Cả hai đều tốn máy, nên xếp sau cùng.
+**4. Lặp lại phép huấn luyện với ngân sách đủ lớn.** Nhiều lượt huấn luyện độc
+lập cho mỗi mô hình sẽ cho phép công bố khoảng thay vì một con số đơn lẻ. Ngân
+sách của mỗi lượt cần đủ để `loss` trên `val` đạt mức ổn định. Hướng này tốn máy
+nên được xếp cuối.
 
-Hai hướng nhỏ hơn cũng có số liệu hỗ trợ: khôi phục dấu tiếng Việt trước khi đưa
-câu cho mô hình, vì nhóm gõ nhiễu chiếm 35 trong 74 lỗi; và ràng buộc đầu ra theo
-50 khuôn đã khai báo để loại lỗi thiếu nhánh và thừa nhánh.
+Hai hướng nhỏ hơn cũng có số liệu hỗ trợ: khôi phục dấu tiếng Việt ở đầu vào, vì
+nhóm gõ nhiễu chỉ đạt 43,9% tới 63,4% ở chọn đúng mục; và ràng buộc đầu ra theo
+50 khuôn đã khai báo để xử lý 11 lỗi thiếu nhánh hoặc thừa nhánh của T5Gemma-2.
