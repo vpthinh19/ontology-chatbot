@@ -582,8 +582,9 @@ sàn.
 **Phép đo `end-to-end` có quy mô nhỏ.** Mẫu 85 câu chưa đủ để báo cáo sai số hẹp.
 Mô hình ngôn ngữ lớn không cho kết quả cố định, nên cùng một câu hỏi có thể nhận
 câu trả lời khác. Việc xác định câu trả lời đúng hay sai do con người thực hiện
-vì chưa thể tự động hoá hoàn toàn. Bộ câu hỏi ngoài phạm vi còn lẫn một số câu
-mà ontology thực ra trả lời được, nên mức 78,2% ở mục 7.3 là cận dưới.
+vì chưa thể tự động hoá hoàn toàn. Trong nhóm câu dùng để kiểm tra khả năng từ
+chối, một số câu hoá ra ontology vẫn trả lời được, nên tỷ lệ ghi nhận ở nhóm này
+là cận dưới.
 
 Ngoài các giới hạn của phép đo, ontology hiện chỉ phản ánh 16 văn bản và 50 dạng
 câu hỏi; câu hỏi về nội dung chưa có trong ontology phải bị từ chối. Ở lớp giao
