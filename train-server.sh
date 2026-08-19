@@ -62,17 +62,21 @@ print(f"ontology.ttl: sha256 {hashlib.sha256(ontology).hexdigest()[:16]}")
 PYEOF
 
 # Điểm của bốn model chỉ đặt cạnh nhau được khi cả bốn học trên cùng một bộ dữ
-# liệu. Vân tay dưới đây là bộ mà ba model đã chấm xong dùng, nên lệch vân tay
-# nghĩa là lượt này không so được với chúng.
-EXPECTED_DATASET="e170f014d514061882d8a30460fe6c187759328cc7fc3c7159d6c4ab1c0b4ddf"
+# liệu. Vân tay dưới đây là bộ câu hỏi hiện hành; lệch vân tay nghĩa là dữ liệu
+# đã đổi từ lượt trước, và điểm hai lượt không đặt cạnh nhau được.
+#
+# Bộ câu hỏi vừa được viết lại để mỗi câu chỉ hỏi thứ mà một mục trả lời được,
+# nên cả bốn model đều chạy lại từ đầu trên bộ mới; không còn kết quả cũ nào để
+# ghép vào.
+EXPECTED_DATASET="54f66f6093f0fb73ca8804d49fbe018e90c1730c75f2961034d265aa110cf21c"
 ACTUAL_DATASET="$("${PY}" -c 'import hashlib, pathlib; print(hashlib.sha256(pathlib.Path("resources/dataset/manifest.json").read_bytes()).hexdigest())')"
 if [ "${ACTUAL_DATASET}" != "${EXPECTED_DATASET}" ]; then
     echo
-    echo "DỮ LIỆU ĐÃ ĐỔI KỂ TỪ LƯỢT BA MODEL"
+    echo "DỮ LIỆU ĐÃ ĐỔI SO VỚI BỘ ĐƯỢC GHI TRONG KỊCH BẢN"
     echo "  chờ:  ${EXPECTED_DATASET}"
     echo "  thấy: ${ACTUAL_DATASET}"
     if [ -z "${SKIP_DATASET_CHECK:-}" ]; then
-        echo "Chạy tiếp thì điểm không so được với ba model kia. Vẫn muốn chạy:"
+        echo "Chạy tiếp thì điểm của lượt này đứng riêng. Vẫn muốn chạy:"
         echo "  SKIP_DATASET_CHECK=1 bash train-server.sh"
         exit 1
     fi
