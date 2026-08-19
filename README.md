@@ -8,19 +8,14 @@ có câu trả lời.
 
 ## Tóm tắt
 
-Chatbot học vụ thường được dựng bằng cách đưa văn bản quy chế cho một mô hình
-ngôn ngữ lớn rồi để nó tự trả lời. Cách đó cho câu văn trôi chảy nhưng không ai
-kiểm được câu trả lời đúng hay sai, và mô hình có thói quen lấp chỗ trống bằng
-suy đoán nghe rất thuyết phục.
+Chatbot học vụ thường để mô hình ngôn ngữ lớn tự trả lời từ văn bản quy chế;
+cách này khó kiểm chứng và dễ sinh suy đoán. Công trình tách dữ kiện khỏi diễn
+đạt: đồ thị tri thức giữ dữ kiện và nguồn, còn mô hình ngôn ngữ lớn chỉ diễn đạt
+những gì đồ thị trả về.
 
-Công trình này tách đôi trách nhiệm. **Đồ thị tri thức giữ dữ kiện**, mỗi dữ kiện
-gắn ngược về đúng Điều, Khoản, Điểm đã sinh ra nó. **Mô hình ngôn ngữ lớn giữ
-việc diễn đạt**, và nó chỉ được nói những gì đồ thị vừa đưa cho. Cầu nối giữa hai
-bên là một **mô hình chuỗi-chuỗi** — loại mô hình nhận vào một chuỗi chữ và viết
-ra một chuỗi chữ khác, giống như một máy dịch. Ở đây nó "dịch" cụm từ khoá tiếng
-Việt sang truy vấn SPARQL, tức là ngôn ngữ dùng để hỏi một đồ thị tri thức. Bốn
-mô hình như vậy được đem so trong công trình này, và mỗi mô hình được **tinh
-chỉnh**: lấy một mô hình đã học sẵn tiếng người, rồi dạy thêm cho nó riêng việc
+Cầu nối là mô hình chuỗi-chuỗi: mô hình nhận một chuỗi chữ và viết ra chuỗi khác.
+Nó chuyển cụm từ khoá tiếng Việt thành truy vấn SPARQL, ngôn ngữ hỏi đồ thị tri
+thức. Bốn mô hình được tinh chỉnh, tức dạy thêm một mô hình đã học ngôn ngữ để
 viết truy vấn.
 
 Bốn mô hình chuỗi-chuỗi cùng học trên một bộ dữ liệu gồm 6.308 câu hỏi, trong đó
@@ -34,7 +29,7 @@ câu học vụ, 59 câu không nêu ra một con số hay chữ viết tắt n�
 tra không có. Trong 23 câu mà đồ thị thực sự không trả lời được, 21 câu được nói
 thẳng là không có. Một nửa số câu được trả lời trong vòng sáu giây rưỡi.
 
-Ba điều cần nói ngay để không đọc quá lời:
+Các giới hạn chính:
 
 - Đồ thị hiện có 16 văn bản và 50 dạng câu hỏi. Ngoài phạm vi đó, câu trả lời
   đúng duy nhất là "tôi không có thông tin này".
@@ -48,36 +43,35 @@ Ba điều cần nói ngay để không đọc quá lời:
 
 ## 1. Bài toán
 
-Quy chế là văn bản đặt ra quy tắc đào tạo. Thủ tục học vụ là chuỗi điều kiện, hồ
-sơ và bước mà người học phải thực hiện. Quanh hai loại nội dung đó còn có biểu
-mẫu, học phí, chứng chỉ ngoại ngữ và nhiều bảng tra cứu.
+Quy chế đặt ra quy tắc đào tạo; thủ tục học vụ quy định điều kiện, hồ sơ và các
+bước thực hiện. Phạm vi còn gồm biểu mẫu, học phí, chứng chỉ ngoại ngữ và bảng
+tra cứu.
 
 Người học không hỏi theo cách văn bản viết. Họ hỏi *"nghỉ ngang một kỳ có sao
 không ạ"* chứ không hỏi *"thủ tục nghỉ học tạm thời"*. Họ gõ thiếu dấu, viết tắt,
 hỏi cụt lủn, hoặc hỏi hai chuyện trong một câu. Hệ thống phải hiểu đúng ý định,
 tìm đúng mục trong đồ thị, và chỉ lấy dữ kiện có nguồn.
 
-Hai ràng buộc chi phối toàn bộ thiết kế:
+Hệ thống tuân theo hai ràng buộc:
 
 1. **Câu trả lời trong phạm vi phải bám vào văn bản của trường.** Không được lấy
    quy định của trường khác, dù mô hình ngôn ngữ lớn có "nhớ" quy định đó.
 2. **Câu ngoài phạm vi phải bị từ chối rõ ràng.** Một câu trả lời sai về hạn nộp
    đơn gây hại hơn hẳn một câu "tôi không có thông tin này".
 
-Vì vậy đây không phải bài toán sinh văn bản. Đây là bài toán sinh truy vấn có
-ràng buộc, cộng với việc quyết định khi nào **không** nên trả lời.
+Đây là bài toán sinh truy vấn có ràng buộc và quyết định khi nào **không** trả
+lời, không phải bài toán sinh văn bản tự do.
 
 ---
 
 ## 2. Tổng quan hệ thống
 
-Người học nói chuyện với một mô hình ngôn ngữ lớn. Mô hình đó không được phép tự
-trả lời câu hỏi học vụ; muốn biết dữ kiện thì phải gọi công cụ tra cứu, và công
-cụ chỉ trả về những gì đọc được từ đồ thị.
+Người học nói chuyện với một mô hình ngôn ngữ lớn. Mô hình phải gọi công cụ tra
+cứu trước khi trả lời học vụ; công cụ chỉ trả về dữ kiện từ đồ thị.
 
 ![Luồng xử lý một câu hỏi](docs/images/luong-xu-ly.png)
 
-Ba tầng, mỗi tầng làm đúng một việc:
+Hệ thống gồm ba tầng:
 
 | Tầng | Ai làm | Trách nhiệm |
 |---|---|---|
@@ -85,30 +79,23 @@ Ba tầng, mỗi tầng làm đúng một việc:
 | Tra cứu | Mô hình chuỗi-chuỗi đã tinh chỉnh | Biến từ khoá thành truy vấn SPARQL |
 | Dữ kiện | Đồ thị tri thức | Giữ nội dung và nguồn, trả về đúng những gì được hỏi |
 
-Hai điểm trong thiết kế đáng nêu vì chúng quyết định chất lượng:
+**Công cụ nhận từ khoá thay vì cả câu hỏi.** Mô hình ngôn ngữ lớn có thể gửi vài
+cách gọi của cùng một chủ đề; đo được là thường hai tới ba cụm, giúp bao quát
+khác biệt giữa cách hỏi và tên trong đồ thị.
 
-**Công cụ nhận một danh sách từ khoá, không nhận cả câu hỏi.** Mô hình
-chuỗi-chuỗi được dạy trên những cụm ngắn, còn người học thì viết câu dài và lịch
-sự. Cho mô hình ngôn ngữ lớn gửi vài cách gọi của cùng một chủ đề trong một lần
-tra — đo được là thường hai tới ba cụm — thì việc "thử vài cách gọi" gói gọn
-trong một lượt, thay vì tra đi tra lại. Người hỏi và đồ thị hay gọi cùng một thứ
-bằng hai cái tên khác nhau, nên gửi kèm cách gọi thứ hai làm tăng khả năng trúng.
-
-**Truy vấn phải thuộc một trong 50 dạng đã khai báo.** Một câu truy vấn đúng ngữ
-pháp vẫn có thể ghép một mục với một thuộc tính mà không dạng nào cho phép; nó
-chạy trót lọt và trả về dữ liệu mà câu hỏi không hề hỏi. Truy vấn nào không khớp
-dạng nào thì bị bỏ, và công cụ coi như tra không ra.
+**Truy vấn phải thuộc một trong 50 dạng đã khai báo.** Truy vấn không khớp dạng
+nào bị loại để tránh trả về dữ liệu không đúng câu hỏi.
 
 ---
 
 ## 3. Ontology
 
-Ontology là mô hình khái niệm mô tả các thực thể học vụ, thuộc tính và quan hệ
-giữa chúng. Ở đây nó đóng vai cơ sở dữ liệu duy nhất mà mọi truy vấn đọc.
+Ontology là mô hình khái niệm mô tả thực thể, thuộc tính và quan hệ học vụ; đây
+là cơ sở dữ liệu duy nhất cho mọi truy vấn.
 
 ![Lược đồ ontology học vụ](docs/images/so-do-ontology.png)
 
-Đồ thị có **hai tầng, cả hai đều trả lời được trực tiếp**:
+Đồ thị có **hai tầng, đều trả lời được trực tiếp**:
 
 - **Tầng văn bản** giữ nguyên văn công văn, chia theo Chương → Điều → Khoản →
   Điểm, cộng Phụ lục và Bảng. Người hỏi *"điểm a khoản 2 Điều 15 nói gì"* được
@@ -117,9 +104,8 @@ giữa chúng. Ở đây nó đóng vai cơ sở dữ liệu duy nhất mà mọ
   thời hạn, biểu mẫu, ngành đào tạo, chứng chỉ. Người hỏi *"nghỉ tạm thời cần
   làm gì"* được trả lời từ tầng này.
 
-Mỗi dữ kiện ở tầng tri thức trỏ ngược về phần văn bản nhỏ nhất chứng minh nó.
-Nhờ vậy câu trả lời nào cũng kèm được trích dẫn và đường dẫn để người đọc tự đối
-chiếu.
+Mỗi dữ kiện trỏ về phần văn bản chứng minh nó, nên câu trả lời có thể kèm trích
+dẫn và đường dẫn để đối chiếu.
 
 | Thành phần | Quy mô |
 |---|---:|
@@ -131,37 +117,28 @@ chiếu.
 | Thuộc tính mang giá trị chữ hoặc số | 55 |
 | Văn bản gốc đã số hoá | 16 |
 
-Con số lúc chạy cao hơn con số trong tệp vì khi nạp, hệ thống dựng thêm cho mỗi
-mục trả lời được một bản ghi nguồn gọn — nhờ đó mọi truy vấn lấy trích dẫn theo
-cùng một cách, thay vì mỗi dạng câu hỏi tự đi tìm nguồn một kiểu.
+Con số lúc chạy cao hơn vì lúc nạp, hệ thống bổ sung bản ghi nguồn cho từng mục
+trả lời được.
 
-Nội dung được bóc tách từ 16 văn bản chính thức của nhà trường, gồm sáu quyết
-định của Hiệu trưởng — **Quyết định 1052** ban hành Quy chế đào tạo trình độ đại
-học, **Quyết định 317** ban hành Quy chế tuyển sinh, cùng các Quyết định 626,
-729, 753 và 1965 — ba quy chế kèm theo, và bảy trang thông tin chính thức về học
-phí, học bổng, tuyển sinh và cơ cấu tổ chức. Không có kho dữ liệu song song nào khác, nên
-mọi dữ kiện mà công cụ lấy ra đều mang sẵn nguồn trỏ về một trong 16 văn bản
-này. Việc trợ lý có chép lại nguồn đó vào câu trả lời hay không lại là chuyện
-khác — mục 9 nêu con số đo được.
+Nội dung được bóc tách từ 16 văn bản chính thức: sáu quyết định của Hiệu trưởng
+— **Quyết định 1052**, **Quyết định 317**, cùng 626, 729, 753 và 1965 — ba quy
+chế kèm theo, và bảy trang thông tin chính thức. Mọi dữ kiện đều mang nguồn trỏ
+về một trong 16 văn bản này; việc trợ lý ghi nguồn trong câu trả lời được đo ở
+mục 9.
 
 ---
 
 ## 4. Hình dạng dữ liệu
 
-Một câu hỏi đổi hình sáu lần trên đường đi. Biết mỗi bước nhận gì và trả gì là
-cách nhanh nhất để hiểu hệ thống, và cũng là cách nhanh nhất để tìm ra chỗ hỏng.
+Một câu hỏi đổi hình sáu lần từ đầu vào đến câu trả lời.
 
 ![Hình dạng dữ liệu qua từng bước](docs/images/hinh-dang-du-lieu.png)
 
 ### 4.1 Một dòng dữ liệu huấn luyện
 
-Mỗi dòng dữ liệu là một cặp: một câu hỏi tiếng Việt, và câu truy vấn đúng mà mô
-hình phải viết ra khi gặp câu hỏi đó. Kèm theo là mã số của dòng, tên dạng câu
-hỏi, và nhãn cho biết câu được viết theo cách nói nào. Với câu ngoài phạm vi,
-đích không phải truy vấn mà là đúng một dòng chữ: "không có thông tin".
-
-Dưới đây là một dòng thật, thuộc loại trả lời được. Câu hỏi gõ không dấu, và
-đích là câu truy vấn hỏi đồ thị về cố vấn học tập:
+Mỗi dòng ghép câu hỏi tiếng Việt với truy vấn đúng, mã số, dạng câu hỏi và nhãn
+phong cách. Với câu ngoài phạm vi, đích là "không có thông tin". Ví dụ trả lời
+được sau dùng câu hỏi gõ không dấu và truy vấn về cố vấn học tập:
 
 ```json
 {
@@ -173,7 +150,7 @@ Dưới đây là một dòng thật, thuộc loại trả lời được. Câu 
 }
 ```
 
-Và một dòng thật thuộc loại phải từ chối:
+Ví dụ phải từ chối:
 
 ```json
 {
@@ -187,16 +164,9 @@ Và một dòng thật thuộc loại phải từ chối:
 
 ### 4.2 Kết quả công cụ trả về
 
-Công cụ luôn trả về kết quả theo một khuôn cố định, kể cả khi không tìm thấy gì.
-Khuôn đó gồm bốn phần: một dòng cho biết có dữ liệu hay không, một dòng dặn mô
-hình phải dùng kết quả thế nào, danh sách các nguồn, và danh sách những cụm từ
-khoá tra không ra gì.
-
-Điểm đáng chú ý nhất trong khuôn này: **mỗi dữ kiện nằm bên trong chính cái
-nguồn đã khẳng định nó**, chứ không nằm rời ra rồi trỏ tới nguồn bằng một mã số.
-Nhờ vậy mô hình không có cách nào gán nhầm một con số cho một văn bản khác — hai
-thứ đi liền nhau trong cùng một khối. Còn danh sách cụm tra không ra thì để mô
-hình biết cụm nào trượt, khỏi tra lại cả loạt.
+Công cụ luôn trả về cùng một khuôn: trạng thái dữ liệu, hướng dẫn, danh sách
+nguồn và từ khoá không tìm thấy. Mỗi dữ kiện nằm trong nguồn đã khẳng định nó,
+nhờ vậy dữ kiện và trích dẫn không bị tách rời.
 
 ```json
 {
@@ -217,9 +187,8 @@ hình biết cụm nào trượt, khỏi tra lại cả loạt.
 }
 ```
 
-Khi không cụm từ khoá nào khớp, khuôn trả về vẫn y hệt, chỉ khác ở chỗ dòng đầu
-báo là không có thông tin và danh sách nguồn rỗng. Mô hình đọc dòng đó để quyết
-định thử thêm một lần với cách gọi khác, hay dừng lại và nói là không tìm thấy.
+Khi không từ khoá nào khớp, trạng thái là không có thông tin và danh sách nguồn
+rỗng.
 
 ---
 
@@ -227,17 +196,10 @@ báo là không có thông tin và danh sách nguồn rỗng. Mô hình đọc d
 
 ![Từ văn bản gốc tới điểm số](docs/images/luong-du-lieu.png)
 
-Dữ liệu không được viết tay từng dòng. Nó được sinh ra từ chính đồ thị, theo ba
-bước. Trước hết, người làm rút ra 50 dạng thông tin mà đồ thị trả lời được — ví
-dụ "các bước của một thủ tục", "điều kiện của một thủ tục", "biểu mẫu cần nộp".
-Với mỗi dạng, hệ thống lấy từng mục cụ thể trong đồ thị thuộc dạng ấy. Cuối
-cùng, mỗi mục sinh ra bốn câu hỏi viết theo bốn cách nói khác nhau.
-
-Cách làm này có một ưu điểm và một nhược điểm, cả hai đều đáng nói. Ưu điểm: câu
-trả lời đúng luôn là một truy vấn chạy được, và không câu nào trỏ tới thứ không
-tồn tại — không có chuyện dạy mô hình một đáp án sai. Nhược điểm: dữ liệu đóng
-kín trong chính đồ thị, nên nó chưa kiểm được mô hình xoay xở thế nào với những
-thứ nằm ngoài. Mục 10 nói kỹ về hệ quả của nhược điểm này.
+Dữ liệu được sinh từ đồ thị: xác định 50 dạng thông tin trả lời được, lấy từng
+mục thuộc dạng đó, rồi sinh bốn câu hỏi theo bốn cách nói. Câu trả lời đúng luôn
+là truy vấn chạy được, nhưng dữ liệu đóng kín trong đồ thị nên chưa kiểm được
+khả năng xử lý nội dung chưa gặp; giới hạn này được nêu tại mục 10.
 
 ![Thành phần bộ dữ liệu](docs/images/bo-du-lieu.png)
 
@@ -248,27 +210,20 @@ thứ nằm ngoài. Mục 10 nói kỹ về hệ quả của nhược điểm n�
 | Tập chấm | 390 | Đánh giá cuối, sau khi mọi lựa chọn đã cố định |
 | **Toàn bộ** | **6.308** | |
 
-Dữ liệu được chia **theo câu hỏi**: không một câu hỏi nào ở phần đem chấm hay
-phần kiểm định từng xuất hiện ở phần đem dạy. Đổi lại, ba phần dùng chung kho câu
-trả lời đúng — đồ thị chỉ trả lời được 567 thứ khác nhau, nên 390 câu đem chấm
-tất yếu rơi vào những đáp án mà 5.518 câu đem dạy đã phủ.
-
-Đây là một lựa chọn thiết kế, và nó quyết định phải đọc điểm số ra sao. Cách chia
-này đo **khả năng hiểu một cách hỏi mới về việc đã biết** — đúng tình huống thật,
-khi người học hỏi đi hỏi lại về mười sáu văn bản ấy bằng vô số cách diễn đạt.
-Cách chia còn lại, giữ hẳn một số mục không cho mô hình thấy lúc học, đo một năng
-lực khác: xoay xở với thứ chưa từng gặp. Đó là thí nghiệm riêng, và công trình
-này chưa làm.
+Dữ liệu chia **theo câu hỏi**: không câu ở phần chấm hay kiểm định xuất hiện ở
+phần dạy. Ba phần vẫn dùng chung 567 câu trả lời đúng, nên 390 câu chấm rơi vào
+những đáp án 5.518 câu dạy đã phủ. Vì thế, điểm số đo **khả năng hiểu cách hỏi
+mới về việc đã biết**, không đo khả năng xử lý mục chưa gặp; thí nghiệm sau chưa
+được thực hiện.
 
 Dữ liệu phủ **50 dạng câu hỏi** và **567 câu trả lời đúng khác nhau** — gồm 566
 câu truy vấn, cộng một câu từ chối dùng chung cho mọi câu ngoài phạm vi. Một nửa số câu hỏi
 dài từ 10 từ trở xuống, trung bình là 11,2 từ; câu ngắn nhất vỏn vẹn 1 từ, câu
 dài nhất 33 từ.
 
-Trong toàn bộ dữ liệu có **884 câu phải từ chối**, chiếm 14,0% — chia ra 773 câu
-ở phần đem dạy, 56 câu ở phần kiểm định và 55 câu ở phần đem chấm. Tỷ lệ này được chọn để mô hình có đủ ví dụ học ranh giới mà
-không biến việc từ chối thành phản xạ mặc định; công trình chưa thử các tỷ lệ
-khác nên chưa biết đây có phải mức tốt nhất không.
+Trong toàn bộ dữ liệu có **884 câu phải từ chối**, chiếm 14,0% — 773 câu dạy, 56
+câu kiểm định và 55 câu chấm. Công trình chưa thử tỷ lệ khác nên chưa biết đây
+có phải mức tốt nhất không.
 
 Bốn phong cách câu hỏi kiểm tra khả năng giữ đúng ý định khi bề mặt câu thay đổi:
 
@@ -285,15 +240,9 @@ Bốn phong cách câu hỏi kiểm tra khả năng giữ đúng ý định khi 
 
 ### 6.1 Bốn mô hình đem so
 
-Bốn mô hình chuỗi-chuỗi của bốn tổ chức, cùng giải một bài. Chúng khác nhau về
-quy mô, về ngôn ngữ được huấn luyện trước và về kiến trúc, nên bảng so sánh cho
-biết bài toán này thực sự cần gì.
-
-Vài chữ cần hiểu trước khi đọc bảng. **Tham số** là các con số bên trong mô
-hình, thứ quyết định nó cư xử ra sao; càng nhiều tham số thì mô hình càng có sức
-chứa lớn, và cũng càng tốn máy. Khi tinh chỉnh, công trình không sửa toàn bộ
-tham số của mô hình nền mà chỉ gắn thêm một **lớp mỏng** rồi chỉ dạy riêng lớp
-ấy — vừa nhanh hơn, vừa giữ nguyên được những gì mô hình đã biết.
+Bốn mô hình chuỗi-chuỗi của bốn tổ chức cùng giải một bài. **Tham số** là các giá
+trị quyết định hoạt động của mô hình; nhiều tham số thường cần nhiều tài nguyên
+hơn. Khi tinh chỉnh, chỉ một **lớp mỏng** gắn thêm được học.
 
 | Mô hình | Tổ chức | Tham số mô hình nền | Tham số thực sự được học |
 |---|---|---:|---:|
@@ -302,61 +251,40 @@ tham số của mô hình nền mà chỉ gắn thêm một **lớp mỏng** r�
 | BARTpho (`vinai/bartpho-syllable`) | VinAI | 396 M | 17,3 M |
 | ViT5 (`VietAI/vit5-base`) | VietAI | 226 M | 13,0 M |
 
-Cột cuối cho thấy phần được tinh chỉnh rất nhỏ so với mô hình nền: từ 1,9%
-(T5Gemma-2) đến 5,7% (ViT5). Trọng số nền giữ nguyên; chỉ một lớp thích ứng mỏng
-được học.
+Phần tinh chỉnh chiếm từ 1,9% (T5Gemma-2) đến 5,7% (ViT5); trọng số nền giữ
+nguyên.
 
 ### 6.2 Điều kiện chạy
 
-Bốn mô hình được đặt vào **hoàn toàn cùng một điều kiện**, để chênh lệch kết quả
-chỉ có thể đến từ bản thân mô hình:
+Bốn mô hình dùng **cùng điều kiện**:
 
 - **Cùng một bộ dữ liệu**, không mô hình nào được thấy thêm hay bớt câu nào.
-- **Cùng tám lượt học.** Một lượt học là một lần mô hình đọc hết toàn bộ phần
-  dữ liệu đem dạy.
-- **Cùng một điểm khởi đầu ngẫu nhiên.** Việc học có dùng số ngẫu nhiên; cố định
-  điểm khởi đầu này là điều kiện cần để người khác chạy lại được thí nghiệm.
-  Công trình chưa chạy lặp để kiểm chứng kết quả có trùng khít hay không.
-- **Cùng cách viết câu trả lời.** Ở mỗi chữ, mô hình luôn chọn phương án nó cho
-  là khả dĩ nhất chứ không bốc thăm, nên cùng một câu hỏi cho ra cùng một truy
-  vấn.
+- **Cùng tám lượt học.** Một lượt là một lần đọc hết phần dạy.
+- **Cùng một điểm khởi đầu ngẫu nhiên.** Công trình chưa chạy lặp để kiểm chứng
+  kết quả có trùng khít hay không.
+- **Cùng cách viết câu trả lời.** Mỗi chữ chọn phương án khả dĩ nhất, không bốc
+  thăm, nên cùng câu hỏi cho cùng truy vấn.
 - **Cùng một máy**: card đồ hoạ 24 GB.
 
-Điểm dừng không chọn theo số lượt học mà theo kết quả trên phần dữ liệu kiểm
-định: khi mô hình bắt đầu học thuộc thay vì học hiểu, kết quả trên phần này xấu
-đi, và bản tốt nhất trước đó được giữ lại. Phần dữ liệu đem chấm chỉ được chạm
-đúng một lần, sau khi mọi lựa chọn đã cố định — nếu chạm nhiều lần, nó không còn
-là phép thử độc lập nữa.
+Điểm dừng chọn theo kết quả kiểm định; bản tốt nhất được giữ lại. Phần chấm chỉ
+được dùng một lần sau khi mọi lựa chọn đã cố định.
 
 ### 6.3 Ba chỉ số chính
 
-**Chọn đúng mục trong đồ thị.** Truy vấn mà mô hình viết ra có trỏ tới đúng mục
-mà câu hỏi nhắm tới hay không. Đây là thước đo quan trọng nhất, vì trỏ sai mục
-thì mọi thứ phía sau đều sai, dù câu truy vấn có đẹp đến đâu. Cách chấm rất
-nghiêm: tập mục mà truy vấn trỏ tới phải trùng khít tập mục đúng — lấy đúng mục
-cần tìm nhưng kèm thêm một mục thừa vẫn bị tính là sai.
+**Chọn đúng mục trong đồ thị.** Truy vấn phải trỏ đúng tập mục câu hỏi nhắm tới;
+lấy đúng mục nhưng kèm mục thừa vẫn tính sai.
 
-**Dựng đúng khuôn truy vấn.** Trong 50 dạng câu hỏi đã khai báo, mỗi dạng có một
-khuôn truy vấn chuẩn với vài chỗ trống phải điền. Thước này hỏi: mô hình có nhận
-ra đúng dạng, và có điền đúng những chỗ trống ấy không — trừ chỗ trống dành cho
-tên mục, vì đó là việc của thước thứ nhất. Đây là phép so với khuôn chuẩn: một
-câu truy vấn viết cách khác mà vẫn cho ra cùng kết quả vẫn bị tính là sai. Chỉ
-tính trên câu trong phạm vi.
+**Dựng đúng khuôn truy vấn.** Trong 50 dạng, truy vấn phải khớp khuôn chuẩn và
+điền đúng chỗ trống, trừ tên mục. Truy vấn viết khác nhưng cùng kết quả vẫn tính
+sai. Chỉ tính câu trong phạm vi.
 
-**Quyết định trả lời hay từ chối.** Với câu trong phạm vi, đúng nghĩa là mô hình
-viết ra một truy vấn thuộc một trong 50 dạng đã khai báo. Với câu ngoài phạm vi,
-đúng nghĩa là mô hình viết ra **đúng** câu từ chối chuẩn. Cách chấm này chặt hơn
-hành vi thật của hệ thống một chút: một đầu ra khác câu chuẩn nhưng vẫn dẫn tới
-việc không trả lời gì thì vẫn bị tính là sai. Đây là thước duy nhất tính cả câu
-trong lẫn ngoài phạm vi.
+**Quyết định trả lời hay từ chối.** Câu trong phạm vi cần truy vấn thuộc một
+trong 50 dạng; câu ngoài phạm vi cần đúng câu từ chối chuẩn. Đầu ra khác câu
+chuẩn nhưng không trả lời vẫn tính sai. Đây là thước duy nhất tính cả hai nhóm.
 
-Ba thước được tách riêng có chủ đích. Gộp lại thành một điểm tổng thì một mô
-hình từ chối bừa vẫn có thể được điểm cao, và không ai biết nó hỏng ở khâu nào.
-
-Ngoài ba thước trên, phép đánh giá còn tính mức trùng khớp giữa bảng kết quả mà
-truy vấn của mô hình trả về và bảng kết quả đúng. Những con số đó **chỉ dùng để
-dò lỗi**, không được dùng làm kết quả chính, vì chúng cho điểm từng phần: một
-truy vấn lấy về đủ dữ liệu cần nhưng kèm nhiều dòng thừa vẫn được điểm khá cao.
+Ba thước tách riêng để phân biệt các dạng lỗi. Phép đánh giá còn tính mức trùng
+khớp giữa bảng kết quả và bảng đúng, nhưng chỉ dùng để dò lỗi vì cho điểm từng
+phần.
 
 ---
 
@@ -386,35 +314,21 @@ Kết quả trên **tập kiểm định** (400 câu, dùng trong lúc phát tri
 
 ![Ba chỉ số chính trên tập kiểm định](docs/images/so-sanh-mo-hinh-kiem-dinh.png)
 
-Ba nhận xét:
+T5Gemma-2 dẫn đầu năm trong sáu cột. Trên tập chấm, BARTpho hơn nó 0,8 điểm ở
+từ chối; trên kiểm định, T5Gemma-2 hơn BARTpho 2,5 điểm. T5Gemma-2 hơn mô hình
+thứ hai 11,6 điểm ở chọn đúng mục.
 
-**T5Gemma-2 dẫn đầu ở năm trong sáu cột của hai bảng.** Cột duy nhất nó không
-dẫn đầu là cột từ chối trên tập chấm, nơi BARTpho hơn nó 0,8 điểm — và ngay cột
-đó thì trên tập kiểm định T5Gemma-2 lại hơn BARTpho 2,5 điểm, tức thứ hạng ở cột
-này đảo qua đảo lại tuỳ tập. Ở hai cột còn lại thì khoảng cách rất rộng: hơn mô
-hình thứ hai 11,6 điểm ở việc chọn đúng mục.
+BARTpho đạt 91,8% ở từ chối, hơn T5Gemma-2 0,8 điểm, nhưng thua 22,7 điểm ở chọn
+đúng mục; không thể gộp ba chỉ số thành một điểm.
 
-**BARTpho từ chối tốt nhất nhưng vẫn thua chung cuộc.** Nó đạt 91,8% ở cột từ
-chối, hơn T5Gemma-2 0,8 điểm, trong khi thua 22,7 điểm ở cột chọn đúng mục. Đây
-chính là lý do không gộp ba chỉ số thành một điểm: chọn theo một cột thì chọn
-nhầm mô hình.
-
-**Thứ hạng trùng khít với quy mô mô hình, nên thí nghiệm này chưa tách được hai
-nguyên nhân.** Xếp theo tham số mô hình nền: 786 M > 611 M > 396 M > 226 M — đúng
-bằng thứ hạng kết quả, không sai một bậc. Vì vậy không thể kết luận T5Gemma-2
-thắng nhờ kiến trúc hay nhờ dữ liệu huấn luyện trước; nó cũng đơn giản là mô hình
-lớn nhất. Muốn tách hai nguyên nhân thì phải so các mô hình cùng cỡ.
-
-Điều bảng này **có** cho biết: BARTpho được huấn luyện trước riêng cho tiếng
-Việt, nhưng vẫn xếp sau hai mô hình đa ngữ lớn hơn. Ở bài toán sinh truy vấn,
-"chuyên tiếng Việt" không tự nó thắng — phần khó nằm ở việc chọn đúng tên mục
-trong đồ thị, không nằm ở việc hiểu tiếng Việt.
+Thứ hạng trùng khít với quy mô: 786 M > 611 M > 396 M > 226 M. Vì vậy chưa thể
+kết luận T5Gemma-2 thắng nhờ kiến trúc, dữ liệu huấn luyện trước hay đơn giản vì
+lớn nhất. BARTpho chuyên tiếng Việt vẫn xếp sau hai mô hình đa ngữ lớn hơn.
 
 ![Chính xác đổi lấy bộ nhớ và thời gian](docs/images/danh-doi.png)
 
-Nếu phần cứng eo hẹp, BARTpho cho 55,2% với 3,18 GiB và 15 phút huấn luyện —
-bằng một phần ba bộ nhớ và một nửa thời gian của T5Gemma-2. Đó là mức đánh đổi
-rõ ràng, không phải một lựa chọn tệ.
+Với phần cứng eo hẹp, BARTpho cho 55,2% với 3,18 GiB và 15 phút huấn luyện: một
+phần ba bộ nhớ và một nửa thời gian của T5Gemma-2.
 
 ### 7.2 Diễn biến huấn luyện
 
@@ -422,24 +336,15 @@ rõ ràng, không phải một lựa chọn tệ.
 
 ![Hao hụt trên tập kiểm định](docs/images/hao-hut-kiem-dinh.png)
 
-Hai đồ thị này theo dõi mức sai của mô hình sau mỗi lượt học. Đường đi xuống
-nghĩa là mô hình đang khá lên. Trục dọc co lại theo bậc để nhìn được cả đoạn tụt
-rất nhanh lúc đầu lẫn đoạn đi ngang về sau.
-
-**Chỉ T5Gemma-2 ngừng khá lên trước khi hết giờ.** Mức sai của nó trên phần kiểm
-định thấp nhất ở lượt thứ năm rồi đi ngang ở mức cao hơn suốt ba lượt cuối, nên
-bản được giữ lại là bản sau lượt thứ năm chứ không phải bản cuối. Ba mô hình còn
-lại vẫn đang khá dần lên khi hết tám lượt, nên bản được giữ là bản cuối; kết quả
-của chúng phải đọc là "đạt được trong ngần ấy thời gian học", không phải "khả
-năng tối đa".
-
-Cả bốn lượt chạy đều kết thúc vì chạm trần tám lượt đã đặt sẵn. Vì vậy chưa lượt
-nào trả lời được câu hỏi các mô hình còn khá lên tới đâu nếu được học lâu hơn.
+Đồ thị theo dõi mức sai sau mỗi lượt học; đường đi xuống biểu thị cải thiện.
+T5Gemma-2 thấp nhất ở lượt thứ năm, nên giữ bản này thay vì bản cuối. Ba mô hình
+còn lại vẫn cải thiện khi hết tám lượt, nên kết quả chỉ là mức đạt trong thời
+gian học đó. Cả bốn chạy dừng ở trần tám lượt; chưa biết chúng cải thiện tới đâu
+nếu học lâu hơn.
 
 ### 7.3 Kết quả theo lĩnh vực
 
-Bảng dưới tách kết quả của T5Gemma-2 theo lĩnh vực câu hỏi. Nó cho biết nên bổ
-sung dữ liệu ở đâu.
+Bảng tách kết quả T5Gemma-2 theo lĩnh vực câu hỏi.
 
 | Lĩnh vực | Số câu | Chọn đúng mục | Đúng dạng | Từ chối đúng |
 |---|---:|---:|---:|---:|
@@ -451,20 +356,13 @@ sung dữ liệu ở đâu.
 | Biểu mẫu | 42 | 61,9% | 64,3% | 100,0% |
 | Ngoài phạm vi | 55 | — | — | 58,2% |
 
-**Biểu mẫu là chỗ yếu nhất** (61,9%). Tên biểu mẫu trong đồ thị là mã hành chính
-— "Mẫu số 5", "Phụ lục 4" — còn người học gọi bằng công dụng — "đơn xin chuyển
-ngành". Hai cách gọi này xa nhau về mặt chữ nghĩa hơn hẳn các lĩnh vực khác.
+**Biểu mẫu yếu nhất** (61,9%) vì mã hành chính như "Mẫu số 5", "Phụ lục 4" khác
+cách gọi theo công dụng như "đơn xin chuyển ngành".
 
-**Câu ngoài phạm vi khó nhất** (58,2%). Con số này không mâu thuẫn với cột "từ
-chối đúng" 91,0% ở bảng tổng: 91,0% tính trên cả 390 câu, mà phần lớn là câu
-trong phạm vi, nơi mô hình chỉ cần không từ chối nhầm.
-
-Riêng nhóm 55 câu ngoài phạm vi thì phải phân biệt ba con số. Mô hình phát ra
-đúng nguyên văn câu từ chối chuẩn ở 32 câu — **58,2%**, đó là con số trong bảng.
-Hai câu nữa nó viết ra truy vấn, nhưng truy vấn chạy về rỗng nên hệ thống vẫn
-không đưa ra dữ kiện nào: tính theo hành vi thật thì **34/55 = 61,8% bị chặn**.
-Số câu thực sự lọt — được trả lời trong khi lẽ ra phải từ chối — là **21/55 =
-38,2%**.
+**Câu ngoài phạm vi khó nhất** (58,2%). Số này khác 91,0% ở bảng tổng vì 91,0%
+tính trên 390 câu, chủ yếu là câu trong phạm vi. Trong 55 câu ngoài phạm vi, 32
+câu từ chối đúng: **58,2%**. Hai truy vấn rỗng nữa khiến **34/55 = 61,8% bị
+chặn**; **21/55 = 38,2%** vẫn lọt.
 
 ### 7.4 Kết quả theo cách hỏi và độ khó truy vấn
 
@@ -477,29 +375,17 @@ Số câu thực sự lọt — được trả lời trong khi lẽ ra phải t�
 | BARTpho | 67,1% | 61,6% | 51,2% | **40,2%** |
 | ViT5 | 32,9% | 39,5% | 30,5% | 31,7% |
 
-**Câu gõ nhiễu là chỗ tụt sâu nhất.** Ở ba mô hình khá nhất, nhóm này kéo kết
-quả xuống **26,8 tới 44,5 điểm** so với cách hỏi mà chính mô hình đó làm tốt
-nhất: T5Gemma-2 rơi từ 91,9% xuống 57,3%, mBART rơi từ 83,5% xuống 39,0%,
-BARTpho rơi từ 67,1% xuống 40,2%. Câu thân mật nhưng đủ dấu chỉ mất 15,0 tới
-18,9 điểm, tức dễ hơn hẳn.
-
-Nhóm gõ nhiễu khác ba nhóm kia ở nhiều điểm cùng lúc — thiếu dấu, sai chính tả,
-dính chữ, và cả cách diễn đạt — nên số liệu này chưa tách được riêng phần lỗi do
-việc thiếu dấu gây ra.
-
-ViT5 là ngoại lệ, và ngoại lệ ấy nói lên điều khác: nó nằm quanh 30–40% ở **cả
-bốn** cách hỏi. Một mô hình kém đều như vậy không kém vì cách người ta hỏi; nó
-chưa học được bài toán.
-
-Hướng đáng thử trước tiên là chuẩn hoá đầu vào: khôi phục dấu tiếng Việt trước
-khi đưa câu cho mô hình. Nó rẻ hơn hẳn việc huấn luyện lại, nhưng phải có một
-phép thử riêng mới biết nó lấy lại được bao nhiêu trong khoảng tụt trên.
+**Câu gõ nhiễu tụt sâu nhất:** ba mô hình khá nhất giảm **26,8 tới 44,5 điểm**;
+T5Gemma-2 từ 91,9% xuống 57,3%, mBART từ 83,5% xuống 39,0%, BARTpho từ 67,1%
+xuống 40,2%. Câu thân mật đủ dấu chỉ mất 15,0 tới 18,9 điểm. Nhóm nhiễu đồng thời
+thiếu dấu, sai chính tả, dính chữ và đổi cách diễn đạt nên chưa tách được nguyên
+nhân. ViT5 ở 30–40% ở **cả bốn** cách hỏi, cho thấy mô hình chưa học được bài
+toán. Cần phép thử riêng cho việc khôi phục dấu tiếng Việt.
 
 ![Độ chính xác theo độ khó truy vấn](docs/images/theo-dac-diem-truy-van.png)
 
-Tập chấm có hai dạng truy vấn: khuôn cơ bản trỏ tới một mục (301 câu), và khuôn
-phải đi qua nhiều cạnh của đồ thị (34 câu, trong đó 30 câu còn phải liệt kê giá
-trị). Kết quả không giống dự đoán thông thường:
+Tập chấm có khuôn cơ bản trỏ một mục (301 câu) và khuôn nhiều cạnh (34 câu,
+trong đó 30 câu phải liệt kê giá trị):
 
 | Mô hình | Khuôn cơ bản | Khuôn nhiều cạnh | Chênh |
 |---|---:|---:|---:|
@@ -508,38 +394,24 @@ trị). Kết quả không giống dự đoán thông thường:
 | BARTpho | 67,8% | 44,1% | −23,7 |
 | ViT5 | 51,2% | **0,0%** | −51,2 |
 
-**Khuôn khó không phải bức tường chung — nó là chỗ phân loại mô hình.** Hai mô
-hình khá nhất chỉ mất 5 tới 9 điểm khi phải dựng truy vấn nhiều cạnh, tức là
-chúng thực sự học được khuôn đó. BARTpho mất gần 24 điểm, còn ViT5 **không dựng
-đúng nổi một câu nào trong 34 câu** — nó chỉ thuộc được khuôn phổ biến nhất.
-
-Đây cũng là giới hạn của cách sinh truy vấn bằng mô hình chuỗi-chuỗi: mô hình
-viết ra cả câu SPARQL như viết một câu văn, nên không có gì bảo đảm cấu trúc
-đóng mở đúng. Ép mô hình chỉ được viết ra những truy vấn khớp một trong 50 khuôn đã khai báo
-sẽ xoá hẳn nhóm lỗi này.
+Hai mô hình khá nhất chỉ mất 5 tới 9 điểm ở khuôn nhiều cạnh; BARTpho mất gần
+24 điểm, còn ViT5 **không dựng đúng câu nào trong 34 câu**. Sinh SPARQL bằng mô
+hình chuỗi-chuỗi không bảo đảm cấu trúc; ràng buộc đầu ra khớp một trong 50 khuôn
+có thể xoá nhóm lỗi này.
 
 ### 7.5 Độ chính xác câu trả lời đầu-cuối
 
-Ba thước ở trên chấm mô hình chuỗi-chuỗi khi nó được đưa sẵn câu hỏi. Trợ lý
-thật không chạy như vậy: từ khoá do mô hình ngôn ngữ lớn tự rút ra, và câu trả
-lời cuối cũng do nó viết. Phần này đo **cả hệ thống**, từ lúc người dùng gõ câu
-hỏi tới lúc đọc được câu trả lời.
-
-Phép đo gồm 85 câu, mỗi câu là một lượt trò chuyện riêng với trợ lý đang phục
-vụ. Chia ba nhóm:
+Ba thước trên chấm mô hình với câu hỏi có sẵn; phần này đo **cả hệ thống**. Phép
+đo gồm 85 lượt trò chuyện riêng, chia ba nhóm:
 
 - **60 câu học vụ mà đồ thị trả lời được**, lấy ngẫu nhiên từ phần dữ liệu đem
   chấm, chia đều cho bốn cách hỏi.
 - **15 câu mà phần dữ liệu đem chấm đánh dấu là đồ thị không trả lời được.**
-- **10 câu tự viết, nhắm đúng vào những chỗ đồ thị còn trống** — hỏi những điều
-  nghe rất hợp lý nhưng đồ thị không hề có, chẳng hạn chuẩn ngoại ngữ đầu ra
-  của riêng một ngành, hay học phí một năm của riêng một ngành.
+- **10 câu tự viết**, nhắm vào chỗ đồ thị còn trống.
 
-Soi lại từng câu thì **hai câu trong 25 câu ở hai nhóm sau bị gắn nhãn sai**:
-một câu hỏi biểu mẫu của thủ tục chuyển chương trình, và một câu hỏi số điện
-thoại của một phòng ban — đồ thị có cả hai. Chúng bị loại khỏi nhóm này thay vì
-được tính là thành công, nên nhóm câu đồ thị thực sự không trả lời được còn 23
-câu.
+**Hai câu trong 25 câu ở hai nhóm sau bị gắn nhãn sai**: một câu về biểu mẫu
+chuyển chương trình và một về số điện thoại phòng ban. Đồ thị có cả hai nên nhóm
+không trả lời được còn 23 câu.
 
 ![Chất lượng câu trả lời đầu-cuối](docs/images/chat-luong-tra-loi.png)
 
@@ -551,41 +423,24 @@ câu.
 | Câu trả lời không nêu con số hay viết tắt nào ngoài dữ liệu | 59/60 — 98,3% |
 | Câu đồ thị không trả lời được, được nói thẳng là không có | 21/23 — 91,3% |
 
-**Cách chấm.** Phần trung thực chạy tự động: mọi con số từ hai chữ số trở lên và
-mọi chữ viết tắt in hoa trong câu trả lời được dò xem có mặt trong dữ liệu công
-cụ vừa trả về hay không. Phép dò này chỉ bắt được chi tiết dạng con số và tên
-viết tắt, không kiểm được ý nghĩa, nên 59/60 là mức sàn chứ không phải bằng
-chứng câu trả lời hoàn toàn trung thực. Phần phân loại — câu trả lời có nói rõ
-là dữ liệu không có hay không — thì soi tay từng câu, do chính người viết báo
-cáo làm, không có người chấm thứ hai.
+**Cách chấm.** Phần trung thực tự động dò mọi con số từ hai chữ số trở lên và
+chữ viết tắt in hoa trong câu trả lời so với dữ liệu vừa trả về. Phép dò không
+kiểm được ý nghĩa, nên 59/60 chỉ là mức sàn. Phân loại từ chối được soi tay bởi
+chính người viết báo cáo, không có người chấm thứ hai.
 
-**Ba con số cần đọc kỹ:**
-
-*71,7% và 33,3% là hai cách đếm cùng một việc.* Con số 71,7% chỉ đòi mục cần tìm
-**có mặt** trong những mục công cụ lấy về; trong 43 câu đó, 23 câu còn lấy kèm
-mục thừa. Đếm chặt — lấy đúng và không thừa gì — thì còn 20/60. Con số chặt này
-mới so được với 77,9% ở bảng trên, vì đó cũng là cách chấm nghiêm; nó cho biết
-đo cả hệ thống thì kết quả thấp hơn đo từng phần.
-
-*Ba câu không tra cứu.* Cả ba đều cụt hoặc quá rộng — *"Sinh viên thế nào ạ?"*,
-*"Trường Đại học Nha Trang?"*, và một câu nhắc tới *"quy định này"* mà không kèm
-tên văn bản nào. Trợ lý hỏi lại cho rõ thay vì đoán. Phần dữ liệu đem chấm tính
-đây là sai vì nó chờ một truy vấn; xét theo cách một người trực tư vấn sẽ làm
-thì hỏi lại mới đúng.
-
-*Hai câu trả lời sai trong 23 câu đồ thị không có dữ liệu.* Một câu thêm một chi
-tiết có thật trong đồ thị nhưng không nằm trong dữ liệu vừa tra; một câu ghép hai
-dữ kiện thành một quan hệ mà không dữ kiện nào nói. Cả hai đều không phải bịa
-trắng trợn, và mục 8.2 phân tích kỹ vì đó mới là dạng nguy hiểm.
+71,7% và 33,3% là hai cách đếm: 71,7% chỉ đòi mục cần tìm **có mặt**; trong 43
+câu đó, 23 câu có mục thừa. Đếm chặt còn 20/60, so được với 77,9% và thấp hơn
+phép đo từng phần. Ba câu không tra cứu đều cụt hoặc quá rộng; trợ lý hỏi lại,
+dù tập chấm tính là sai. Hai câu trả lời sai trong 23 câu ngoài dữ liệu lần lượt
+thêm chi tiết không được tra và ghép hai dữ kiện thành quan hệ mới; mục 8.2 phân
+tích hai ca này.
 
 ### 7.6 Thời gian phản hồi
 
 ![Phân bố thời gian phản hồi](docs/images/thoi-gian-phan-hoi.png)
 
-Đo trên chính 85 lượt trò chuyện ở mục trên, tính từ lúc gửi câu hỏi tới lúc câu
-trả lời viết xong. Phép đo hỏi từng câu một, không gửi chồng nhau, để con số
-không bị ảnh hưởng bởi việc nhiều câu tranh nhau cùng một máy. Cột "chậm hơn 95%
-số câu" nghĩa là: 95 trong 100 câu được trả lời nhanh hơn mức đó.
+Đo trên 85 lượt ở mục trên, từ lúc gửi câu hỏi đến khi viết xong, từng câu một.
+Cột "chậm hơn 95% số câu" nghĩa là 95 trong 100 câu nhanh hơn mức đó.
 
 | | Trung vị | Chậm hơn 95% số câu | Lâu nhất |
 |---|---:|---:|---:|
@@ -593,14 +448,11 @@ số câu" nghĩa là: 95 trong 100 câu được trả lời nhanh hơn mức �
 | 76 lượt có tra cứu đồ thị | 6,9 giây | 11,6 giây | 20,3 giây |
 | 9 lượt không tra cứu | 1,2 giây | 3,3 giây | 3,3 giây |
 
-Chín lượt không tra cứu chủ yếu là câu hỏi ngoài phạm vi rõ ràng và câu quá cụt,
-trợ lý trả lời thẳng trong hơn một giây. **Phần lớn câu ngoài phạm vi vẫn được
-tra cứu trước:** trong 25 câu thuộc hai nhóm âm tính, 19 câu trợ lý gọi công cụ
-rồi mới kết luận là không có dữ liệu — đó là hành vi đúng, vì phần lớn những câu
-ấy nghe như câu học vụ bình thường.
+Chín lượt không tra cứu chủ yếu là câu ngoài phạm vi rõ ràng hoặc quá cụt. Trong
+25 câu âm tính, 19 câu vẫn gọi công cụ trước khi kết luận không có dữ liệu.
 
-Phần chạy trên máy chủ được đo riêng, bằng cách chạy lại đúng 76 lượt tra cứu
-thật ở trên, trên máy để bàn tám nhân và không dùng card đồ hoạ:
+Phần máy chủ được đo lại trên 76 lượt tra cứu, bằng máy để bàn tám nhân không
+dùng card đồ hoạ:
 
 | Chặng bên trong công cụ | Trung vị | Chậm hơn 95% số lượt |
 |---|---:|---:|
@@ -609,26 +461,13 @@ thật ở trên, trên máy để bàn tám nhân và không dùng card đồ h
 | **Cả công cụ** | **3,83 giây** | **7,11 giây** |
 | Tính riêng cho một từ khoá | 1,83 giây | 1,92 giây |
 
-**Đồ thị không phải chỗ chậm.** Việc đọc dữ liệu từ đồ thị chỉ mất hai phần trăm
-giây, chưa tới 1% thời gian của công cụ. Gần như toàn bộ thời gian nằm ở khâu mô
-hình chuỗi-chuỗi viết ra câu truy vấn: mỗi từ khoá khoảng 1,8 giây, và các từ
-khoá được xử lý lần lượt, nên tra ba từ khoá tốn gấp ba lần tra một từ.
-
-Việc xử lý lần lượt là lựa chọn có chủ đích. Nếu gộp các từ khoá lại xử lý cùng
-lúc thì kết quả của một từ khoá sẽ đổi theo những từ khoá đi kèm — hiện tượng đã
-đo được, do cách máy tính làm tròn khi xử lý nhiều câu một lượt. Câu trả lời cho
-*"học bổng"* không được phép khác đi chỉ vì người dùng hỏi kèm *"học phí"*, nên
-hệ thống chấp nhận chậm hơn để đổi lấy sự ổn định.
-
-Ghép hai phép đo lại: trong khoảng bảy giây người dùng chờ, chừng bốn giây là
-máy chủ viết truy vấn, chừng ba giây là hai lượt hỏi mô hình ngôn ngữ lớn qua
-mạng. Muốn nhanh hơn thì phải rút ngắn khâu viết truy vấn — chạy trên card đồ
-hoạ, hoặc làm cho câu truy vấn cần viết ra ngắn lại — chứ không phải tối ưu đồ
-thị.
-
-Trong lượt chạy đầu, 22 trong 85 câu bị nhà cung cấp mô hình ngôn ngữ lớn chặn
-vì gửi quá nhanh; chúng được hỏi lại và đồng hồ tính từ đầu cho lần thành công.
-Các con số trên vì thế là thời gian của một lượt hỏi trót lọt.
+**Đồ thị không phải chỗ chậm:** đọc đồ thị mất hai phần trăm giây, dưới 1% thời
+gian công cụ. Mỗi từ khoá mất khoảng 1,8 giây để viết truy vấn và được xử lý lần
+lượt, nên ba từ khoá mất gấp ba lần một từ. Xử lý cùng lúc làm kết quả thay đổi
+theo từ khoá đi kèm, nên hệ thống chọn ổn định. Trong khoảng bảy giây chờ, chừng
+bốn giây là viết truy vấn và chừng ba giây là hai lượt hỏi mô hình qua mạng.
+Trong lượt đầu, 22 trong 85 câu bị chặn vì gửi nhanh; thời gian là của lượt hỏi
+thành công.
 
 ---
 
@@ -816,8 +655,7 @@ rẻ hơn nhiều so với đổi mô hình.
 mặt khoa học, vì nó vá đúng hạn chế lớn nhất nêu ở mục 10. Cần hai thứ: một phần
 câu hỏi mà câu trả lời đúng chưa từng xuất hiện lúc dạy, và một tập câu hỏi do
 chính người học gõ ra. Chỉ khi đó mới biết hệ thống làm được gì trước những điều
-nó chưa gặp. Đi kèm là một mốc dưới — một phương pháp dò từ khoá không huấn
-luyện, chấm bằng đúng bộ chỉ số này — để biết việc tinh chỉnh đóng góp bao nhiêu.
+nó chưa gặp.
 
 **5. Chạy lại mỗi mô hình vài lượt và cho ba mô hình còn lại học tới khi hết khá
 lên.** Việc đầu cho phép công bố một khoảng thay vì một con số trần trụi; việc
