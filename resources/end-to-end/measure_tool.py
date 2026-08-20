@@ -9,12 +9,12 @@ sys.path.insert(0, "src")
 from ontchatbot.runtime.model import CTranslate2Generator
 from ontchatbot.runtime.pipeline import OntologyChatbot
 
-R = json.loads(Path(__file__).with_name("ket-qua.json").read_text())
+R = json.loads(Path(__file__).with_name("results.json").read_text())
 loat = [r["tu_khoa"] for r in R if r["so_lan_goi"] and r["tu_khoa"]]
 print(f"{len(loat)} lượt tra cứu thật, {st.mean(len(x) for x in loat):.1f} từ khoá mỗi lượt,"
       f" mỗi từ khoá {st.mean(len(k.split()) for x in loat for k in x):.1f} từ")
 
-gen = CTranslate2Generator.load(Path("artifacts/ct2/t5gemma2"), device="cpu", compute_type="int8")
+gen = CTranslate2Generator.load(Path("artifacts/serving-models/t5gemma2-int8"), device="cpu", compute_type="int8")
 bot = OntologyChatbot(gen)
 
 sinh, chay, tong = [], [], []

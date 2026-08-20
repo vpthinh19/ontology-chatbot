@@ -3,7 +3,7 @@ import json, statistics as st
 from collections import Counter
 from pathlib import Path
 
-R = json.loads((Path(__file__).parent / "ket-qua.json").read_text())
+R = json.loads((Path(__file__).parent / "results.json").read_text())
 trong = [r for r in R if r["nhom"] == "trong_pham_vi"]
 ngoai = [r for r in R if r["nhom"] == "ngoai_pham_vi"]
 gap = [r for r in R if r["nhom"] == "do_thi_khong_co"]

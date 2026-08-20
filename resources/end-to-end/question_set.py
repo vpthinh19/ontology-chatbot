@@ -3,8 +3,8 @@ import json, random
 from collections import defaultdict
 from pathlib import Path
 
-TEST = Path("artifacts/kq3/t5gemma2/benchmark-test.json")
-OUT = Path(__file__).with_name("cau-hoi.json")
+TEST = Path("artifacts/training-results/t5gemma2/benchmark-test.json")
+OUT = Path(__file__).with_name("questions.json")
 
 cases = json.loads(TEST.read_text())["cases"]
 rng = random.Random(42)

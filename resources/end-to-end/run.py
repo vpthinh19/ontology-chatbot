@@ -21,8 +21,8 @@ from ontchatbot.runtime.render import render_batch
 from ontchatbot.runtime.sparql import SparqlError
 
 HERE = Path(__file__).parent
-CAU_HOI = json.loads((HERE / "cau-hoi.json").read_text())
-KET_QUA = HERE / "ket-qua.json"
+CAU_HOI = json.loads((HERE / "questions.json").read_text())
+KET_QUA = HERE / "results.json"
 SONG_SONG = int(os.environ.get("SONG_SONG", "3"))
 
 luot = contextvars.ContextVar("luot")
@@ -132,7 +132,7 @@ async def hoi(agent, cau: dict, nhom: str, sem) -> dict:
 
 
 async def main() -> None:
-    generator = CTranslate2Generator.load(Path("artifacts/ct2/t5gemma2"), device="cpu",
+    generator = CTranslate2Generator.load(Path("artifacts/serving-models/t5gemma2-int8"), device="cpu",
                                           compute_type="int8")
     agent = build_agent(ChatbotCoVet(generator), model=os.environ["ONTCHATBOT_LLM_MODEL"])
     sem = asyncio.Semaphore(SONG_SONG)

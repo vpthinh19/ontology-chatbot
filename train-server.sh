@@ -161,7 +161,7 @@ done
 
 echo
 echo "=== GÓI LẠI ==="
-BUNDLE="artifacts/ket-qua-${STAMP}.tar.gz"
+BUNDLE="artifacts/results-${STAMP}.tar.gz"
 tar -czf "${BUNDLE}" -C "${ROOT}" \
     $(cd "${ROOT}" && find . -maxdepth 3 \
         \( -name '*.log' -o -name 'benchmark-*.json' -o -name 'training-metrics.json' \
