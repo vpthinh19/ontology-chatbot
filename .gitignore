@@ -26,6 +26,10 @@ logs/
 /artifacts/training-results/*
 !/artifacts/training-results/report/
 
+# Gói đã biên dịch sẵn: hơn một gigabyte, và biên dịch cho đúng đời card nên phải
+# dựng lại trên máy phục vụ. ``build.py`` nằm ngay cạnh dựng lại trong 76 giây.
+/artifacts/benchmarks/aoti_full/package/*.pt2
+
 # Kết quả đo thô của từng câu: vài megabyte mỗi tệp, dựng lại được bằng kịch bản
 # đo nằm ngay cạnh.
 /artifacts/benchmarks/results-gpu.json
