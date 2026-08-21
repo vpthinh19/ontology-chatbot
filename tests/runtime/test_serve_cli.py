@@ -80,3 +80,38 @@ def test_configure_logging_uses_requested_level_and_trace_fields(monkeypatch) ->
             "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
         }
     ]
+
+
+def test_serve_uses_the_compiled_packages_when_a_directory_is_given(monkeypatch) -> None:
+    """Khai thư mục gói đã biên dịch thì đường thường không được nạp."""
+
+    args = _parse_args(
+        _flags("--compiled-dir", "goi", "--compiled-tokenizer-dir", "tach-tu")
+    )
+    loaded: list = []
+    generator = SimpleNamespace()
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
+    monkeypatch.setattr(
+        "ontchatbot.cli.serve.AotiGenerator.load",
+        lambda package, tokenizer: loaded.append((package, tokenizer)) or generator,
+    )
+    monkeypatch.setattr(
+        "ontchatbot.cli.serve.CTranslate2Generator.load",
+        lambda *a, **k: pytest.fail("đường thường không được nạp khi đã khai gói"),
+    )
+    monkeypatch.setattr(
+        "ontchatbot.cli.serve.build_agent",
+        lambda chatbot, **kwargs: chatbot,
+    )
+
+    chatbot = _build_agent(args)
+    assert loaded == [(Path("goi"), Path("tach-tu"))]
+    assert chatbot.generator is generator
+
+
+def test_serve_refuses_a_compiled_package_without_its_tokenizer() -> None:
+    """Thiếu bộ tách từ thì dừng ngay, không nạp gói rồi mới hỏng."""
+
+    args = _parse_args(_flags("--compiled-dir", "goi"))
+    with pytest.raises(SystemExit):
+        _build_agent(args)

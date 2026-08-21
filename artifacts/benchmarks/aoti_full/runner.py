@@ -56,7 +56,10 @@ class AOTIGenerator:
         self.start_token_id = self.tokenizer.bos_token_id
         if self.start_token_id is None:
             self.start_token_id = 2
-        self.positions = torch.arange(MAX_NEW_TOKENS, dtype=torch.long, device="cuda")
+        # Ô vị trí cấp riêng một lần rồi ghi tại chỗ. Cắt lát từ một dãy dài cho ra
+        # con trỏ lệch tám byte ở các bước lẻ, và đồ thị đã biên dịch giả định căn
+        # mười sáu byte nên phải sao chép lại trước mỗi bước.
+        self.position = torch.zeros(1, dtype=torch.long, device="cuda")
 
     @torch.inference_mode()
     def generate(self, text: str) -> str:
@@ -88,9 +91,10 @@ class AOTIGenerator:
         token = torch.tensor([[self.start_token_id]], dtype=torch.long, device="cuda")
         generated: list[int] = []
         for step in range(MAX_NEW_TOKENS):
+            self.position.fill_(step)
             token = self.decoder(
                 token,
-                self.positions[step : step + 1],
+                self.position,
                 encoder_hidden,
                 attention_mask,
                 self_keys,

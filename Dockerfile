@@ -63,6 +63,13 @@ ENV PATH="/app/.venv/bin:$PATH" \
     ONTCHATBOT_COMPUTE_TYPE=int8 \
     ONTCHATBOT_INTER_THREADS=1
 
+# Đường chạy bằng gói đã biên dịch sẵn: nhanh hơn khoảng 1,75 lần và cho đúng
+# cùng câu truy vấn, nhưng gói phải dựng cho đúng đời card. Khai hai biến dưới
+# đây trỏ tới thư mục gói và thư mục bộ tách từ thì đường này được dùng thay cho
+# đường thường.
+# ONTCHATBOT_COMPILED_DIR=
+# ONTCHATBOT_COMPILED_TOKENIZER_DIR=
+
 USER ontchatbot
 EXPOSE 8000
 
