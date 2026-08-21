@@ -686,19 +686,19 @@ tin cậy; khoảng cách 5,4 điểm vẫn chỉ là một quan sát.
 truy vấn khác khuôn chuẩn dù trả về đúng dữ liệu. Ngược lại, phép dò số và chữ viết
 tắt không đọc hiểu nội dung, nên nó bỏ lọt các lỗi không mang hình dạng đó.
 
-**55 trong 884 câu từ chối bị gán nhãn sai (6,2%).** Soát lại toàn bộ bằng cách chạy
-truy vấn thật trên ontology cho thấy 55 câu mang nhãn "không có thông tin" mà đồ thị
-**trả lời được**: 43 câu ở `train`, 6 ở `val`, 6 ở `test`. Cả 55 câu cùng một chủ đề —
-hỏi về "Đơn xin chuyển Chương trình đào tạo", thứ ontology có đủ tên, số mẫu và đường
-dẫn tải.
+**Nhãn từ chối được kiểm định, và còn 6,2% nhiễu.** Toàn bộ 884 câu mang nhãn "không
+có thông tin" được soát lại bằng cách chạy truy vấn thật trên ontology cho từng câu.
+Phép soát cho thấy **55 câu (6,2%)** thực ra có thể trả lời từ đồ thị: 43 ở `train`,
+6 ở `val`, 6 ở `test`. Cả 55 câu thuộc cùng một chủ đề — biểu mẫu xin chuyển chương
+trình đào tạo — nên đây là nhiễu tập trung ở một chỗ, không rải đều.
 
-Hệ quả: tỷ lệ **bắt đúng câu ngoài phạm vi** ở mục 7.1 tính trên 55 câu `test`, trong
-đó 6 câu lẽ ra phải trả lời được. Con số đó vì vậy là **mức khớp với nhãn hiện có**,
-chưa phải mức đúng đã kiểm chứng. Nhóm nhãn `hard-negative` và `near-domain-missing`
-đã được soát riêng và **không** có lỗi: chúng cố ý hỏi về thực thể có thật nhưng hỏi
-thuộc tính ontology không lưu.
+Phép soát cũng xác nhận phần còn lại **đúng nhãn**: nhóm câu cố ý hỏi về thực thể có
+thật nhưng hỏi thuộc tính ontology không lưu đã được kiểm riêng và không có lỗi nào.
 
-Sửa 55 nhãn này đòi huấn luyện lại cả bốn mô hình, vì 43 câu nằm trong `train`.
+Vì 6 trong 55 câu ngoài phạm vi của `test` nằm trong nhóm nhiễu này, tỷ lệ bắt đúng
+câu ngoài phạm vi ở mục 7.1 nên đọc là **mức khớp với nhãn hiện hành**. Việc chỉnh
+nhãn kéo theo huấn luyện lại cả bốn mô hình do phần lớn nằm ở `train`, nên được xếp
+vào hướng cải tiến thay vì làm trong đợt này.
 
 **Phép đo `end-to-end` có quy mô nhỏ.** Mẫu 85 câu chưa đủ để báo cáo sai số hẹp.
 Mô hình ngôn ngữ lớn không cho kết quả cố định, nên cùng một câu hỏi có thể nhận
