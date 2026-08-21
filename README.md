@@ -544,18 +544,22 @@ trả lời. `p95` là mức mà 95 trong 100 câu không lâu hơn.
 | Có tra cứu | 75 | 6,66 s | 11,06 s | 12,18 s |
 | Không tra cứu | 10 | 1,23 s | 4,67 s | 4,67 s |
 
-Thời gian xử lý bên trong công cụ được đo trên 75 lô từ khoá do trợ lý gửi, với
-CPU 8 nhân và không dùng GPU. Mỗi lô có trung bình 2,5 từ khoá.
+Thời gian xử lý bên trong công cụ được đo trên 75 lô từ khoá do trợ lý gửi lúc
+chạy thật, mỗi lô trung bình 2,5 từ khoá. Đo trên card đồ hoạ ở độ chính xác đầy
+đủ, tức đúng cách hệ thống được triển khai.
 
 | Chặng bên trong công cụ | Trung vị | `p95` |
 |---|---:|---:|
-| Sinh truy vấn | 3.725 ms | 6.597 ms |
-| Chạy SPARQL trên ontology | 16 ms | 1.614 ms |
-| **Cả công cụ** | **3.756 ms** | **7.292 ms** |
-| Quy về một từ khoá | 1.774 ms | 2.302 ms |
+| Sinh truy vấn | 2.490 ms | 3.760 ms |
+| Chạy SPARQL trên ontology | 15 ms | 1.618 ms |
+| **Cả công cụ** | **2.538 ms** | **5.272 ms** |
+| Quy về một từ khoá | 1.220 ms | 1.280 ms |
+
+Bảng trước đó đo trên bộ xử lý trung tâm cho 3.756 ms ở trung vị; chuyển sang card
+đồ hoạ rút xuống 2.538 ms, nhanh hơn 1,48 lần với cùng điểm số.
 
 **SPARQL không phải chặng chiếm phần lớn thời gian ở trung vị:** chạy trên
-ontology mất 16 ms, còn sinh truy vấn mất 3.725 ms. Các số này chỉ bao gồm xử lý
+ontology mất 15 ms, còn sinh truy vấn mất 2.490 ms. Các số này chỉ bao gồm xử lý
 bên trong công cụ, không bao gồm toàn bộ thời gian đầu-cuối của câu trả lời.
 
 #### Chọn cách chạy mô hình sinh truy vấn

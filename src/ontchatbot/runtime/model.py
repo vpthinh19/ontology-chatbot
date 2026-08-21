@@ -37,7 +37,18 @@ class CTranslate2Generator:
         *,
         device: str = "cpu",
         compute_type: str = "int8",
+        inter_threads: int = 1,
     ) -> CTranslate2Generator:
+        """Nạp mô hình sinh truy vấn.
+
+        ``inter_threads`` là số lượt sinh chạy song song. Mặc định một lượt: một
+        người hỏi thì đặt cao hơn cũng không nhanh thêm. Khi nhiều người hỏi cùng
+        lúc, đặt bằng số người dự kiến sẽ rút ngắn thời gian chờ khoảng một phần
+        tư; các lượt vẫn tính độc lập nên câu trả lời không đổi theo số người.
+
+        Trên card đồ hoạ, ``intra_threads`` của thư viện không có tác dụng - nó
+        điều khiển luồng của bộ xử lý trung tâm.
+        """
         try:
             import ctranslate2
             from tokenizers import Tokenizer
@@ -57,6 +68,7 @@ class CTranslate2Generator:
             str(model_dir),
             device=device,
             compute_type=compute_type,
+            inter_threads=inter_threads,
         )
         return cls(translator, tokenizer)
 

@@ -33,7 +33,11 @@ def test_serve_loads_one_ctranslate2_artifact_behind_the_assistant(monkeypatch) 
         (
             "generator",
             Path("generator"),
-            {"device": "cuda", "compute_type": "int8_float16"},
+            {
+                "device": "cuda",
+                "compute_type": "int8_float16",
+                "inter_threads": 1,
+            },
         ),
     ]
     chatbot, kwargs = built[0]

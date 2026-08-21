@@ -1,0 +1,26 @@
+{
+  "thiet_bi": "cuda",
+  "kieu_tinh": "float32",
+  "so_luot": 75,
+  "tu_khoa_moi_luot": 2.48,
+  "sinh_truy_van": {
+    "trung_vi_ms": 2490.2,
+    "p95_ms": 3760.2,
+    "mau": 75
+  },
+  "chay_tren_do_thi": {
+    "trung_vi_ms": 15.0,
+    "p95_ms": 1618.4,
+    "mau": 75
+  },
+  "ca_cong_cu": {
+    "trung_vi_ms": 2538.1,
+    "p95_ms": 5272.4,
+    "mau": 75
+  },
+  "quy_ve_mot_tu_khoa": {
+    "trung_vi_ms": 1220.0,
+    "p95_ms": 1279.7,
+    "mau": 75
+  }
+}

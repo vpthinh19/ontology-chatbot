@@ -48,12 +48,20 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 # PATH đưa venv lên đầu (uvicorn, python của venv).
 # HF_HUB_OFFLINE=1 vì model đã tải sẵn, ko gọi ra internet
 # MALLOC_ARENA_MAX=2 giảm RSS ~50-100MB ở tải "1 request tại một thời điểm".
+# ONTCHATBOT_DEVICE / ONTCHATBOT_COMPUTE_TYPE chọn nơi chạy mô hình sinh truy vấn.
+# Mặc định là bộ xử lý trung tâm để ảnh chạy được trên máy không có card đồ hoạ.
+# Trên máy có card, đặt ONTCHATBOT_DEVICE=cuda và ONTCHATBOT_COMPUTE_TYPE=float32
+# rồi chạy container với quyền dùng card: cùng điểm số, nhanh hơn khoảng 1,5 lần.
+# Nén số nguyên 8 bit chỉ giữ nguyên điểm trên bộ xử lý trung tâm.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     HF_HUB_OFFLINE=1 \
     HF_HUB_DISABLE_TELEMETRY=1 \
-    MALLOC_ARENA_MAX=2
+    MALLOC_ARENA_MAX=2 \
+    ONTCHATBOT_DEVICE=cpu \
+    ONTCHATBOT_COMPUTE_TYPE=int8 \
+    ONTCHATBOT_INTER_THREADS=1
 
 USER ontchatbot
 EXPOSE 8000
@@ -63,4 +71,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
 sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)" \
     || exit 1
 
-CMD ["serve_sparql", "--model-dir", "/app/model", "--device", "cpu", "--compute-type", "int8", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["serve_sparql", "--model-dir", "/app/model", "--host", "0.0.0.0", "--port", "8000"]

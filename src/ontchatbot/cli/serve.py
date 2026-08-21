@@ -21,8 +21,25 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
         required="ONTCHATBOT_MODEL_DIR" not in os.environ,
     )
-    parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
-    parser.add_argument("--compute-type", default="int8")
+    # Card đồ hoạ ở độ chính xác đầy đủ giữ nguyên điểm và nhanh hơn bộ xử lý
+    # trung tâm; nén số nguyên 8 bit chỉ giữ được điểm khi chạy trên bộ xử lý
+    # trung tâm. Đọc từ môi trường để cùng một ảnh triển khai chạy được cả hai.
+    parser.add_argument(
+        "--device",
+        choices=("cpu", "cuda"),
+        default=os.environ.get("ONTCHATBOT_DEVICE", "cpu"),
+    )
+    parser.add_argument(
+        "--compute-type",
+        default=os.environ.get("ONTCHATBOT_COMPUTE_TYPE", "int8"),
+    )
+    # Số lượt sinh truy vấn chạy song song. Đặt bằng số người dùng đồng thời dự
+    # kiến; một người hỏi thì giá trị lớn hơn không nhanh thêm.
+    parser.add_argument(
+        "--inter-threads",
+        type=int,
+        default=int(os.environ.get("ONTCHATBOT_INTER_THREADS", "1")),
+    )
     parser.add_argument(
         "--log-level",
         choices=("debug", "info", "warning", "error"),
@@ -68,6 +85,7 @@ def _build_agent(args: argparse.Namespace):
         args.model_dir,
         device=args.device,
         compute_type=args.compute_type,
+        inter_threads=args.inter_threads,
     )
     return build_agent(
         OntologyChatbot(generator),
