@@ -38,8 +38,8 @@ from ontchatbot.settings import (
 ACADEMIC = Namespace("http://www.ntu.edu.vn/ontology/academic#")
 CHECKLIST_PATH = REJECTION_CHECKLIST_PATH
 
-#: Thuộc tính của lược đồ CŨ, đã bỏ. Đích nào còn dùng chúng là dấu hiệu lược đồ
-#: cũ sống lại.
+#: Thuộc tính không thuộc lược đồ chuẩn. Đích dùng chúng sẽ gộp các khía cạnh của
+#: một thủ tục vào những quan hệ không còn được mô hình hoá.
 RETIRED_PROPERTIES = (
     ":content",
     ":condition",
@@ -171,8 +171,8 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
 def test_validation_cli_reports_complete_canonical_chain(monkeypatch, capsys) -> None:
     """Lệnh kiểm tra phải báo chuỗi đầy đủ, đối chiếu với chính danh mục.
 
-    Bản trước chốt ``supported_entries == 2953``. Sau refactor ontology con số
-    thật là 6.073, và test chỉ nói "khác nhau" chứ không cho biết bên nào đúng.
+    Số mục được hỗ trợ được suy ra từ danh mục để báo cáo và dữ liệu luôn dùng
+    cùng một phạm vi.
     """
 
     monkeypatch.setattr(sys, "argv", ["validate_sparql_dataset"])
@@ -263,19 +263,16 @@ def test_every_target_returns_data_from_the_ontology(graph, catalogue, release) 
     assert empty == []
 
 
-# Hai phép kiểm về MỨC học phí đã gỡ cùng lúc với dữ liệu học phí (2026-08-10):
-# số tiền một sinh viên phải đóng đổi theo từng kỳ và chỉ trang sinhvien.ntu.edu.vn
-# mới có, nên ontology không giữ mức học phí nữa. Cách đóng thì vẫn giữ và vẫn
-# được canh ở tests/ontology/test_answers.py.
+# Mức học phí thay đổi theo từng kỳ và được công bố trên trang sinhvien.ntu.edu.vn,
+# nên không thuộc ontology. Cách thanh toán vẫn được mô hình hoá và kiểm tra riêng.
 
 
 def test_declared_slot_iris_exist_in_the_ontology(graph, catalogue) -> None:
     """Mọi IRI khai trong danh mục phải là node có thật.
 
-    Khai một neo không tồn tại là dạy model sinh truy vấn luôn rỗng. Bản trước
-    còn đòi neo của miền ``procedure`` phải thuộc lớp ``AcademicProcedure``;
-    miền đó gồm cả TRƯỜNG HỢP học vụ ("nhập ngũ", "lý do cá nhân") nên điều kiện
-    ấy sai - đúng chỗ đã khiến bộ sinh ghép mẫu câu bẫy với thực thể sai loại.
+    Khai một neo không tồn tại sẽ dạy model sinh truy vấn luôn rỗng. Miền
+    ``procedure`` gồm cả trường hợp học vụ ("nhập ngũ", "lý do cá nhân"), nên
+    chỉ yêu cầu IRI tồn tại thay vì buộc chúng vào lớp ``AcademicProcedure``.
     """
 
     existing = {str(node).rsplit("#", 1)[-1] for node in graph.subjects()}
@@ -292,17 +289,17 @@ def test_declared_slot_iris_exist_in_the_ontology(graph, catalogue) -> None:
 
 
 def test_targets_never_resurrect_the_retired_schema(release) -> None:
-    """Không đích nào được dùng lại thuộc tính của lược đồ cũ.
+    """Không đích nào được dùng thuộc tính ngoài lược đồ chuẩn.
 
-    Lược đồ cũ để bốn khía cạnh của cùng một thủ tục trỏ về gần như cùng một đoạn
-    văn - khiến model nhận đúng thực thể nhưng chọn sai quan hệ.
+    Các khía cạnh của một thủ tục cần quan hệ riêng để model chọn đúng quan hệ
+    sau khi nhận diện thực thể.
 
     Đích được phép trỏ thẳng vào node điều, khoản hoặc điểm: tra cứu nguyên văn
     một điều luật là năng lực có chủ đích của hệ thống.
     """
 
     # So theo toán tử trọn vẹn, không so chuỗi con: ``:conditionText`` là thuộc
-    # tính hợp lệ, mà ``:condition`` đã bỏ lại là chuỗi con của nó.
+    # tính hợp lệ, còn ``:condition`` chỉ là tiền tố của nó.
     retired = re.compile(
         r"(?<![A-Za-z0-9])(" + "|".join(re.escape(n) for n in RETIRED_PROPERTIES) + r")(?![A-Za-z0-9])"
     )
@@ -320,10 +317,8 @@ def test_targets_never_resurrect_the_retired_schema(release) -> None:
 def test_every_finite_slot_value_is_taught(graph, catalogue, release) -> None:
     """Mọi giá trị slot hữu hạn phải xuất hiện ở train.
 
-    Bản trước liệt kê tay 14 họ và chốt cứng "29 ngành, 15 chứng chỉ ngoại ngữ,
-    3 chứng chỉ tin học, 14 quy tắc quy mô lớp". Những con số đó là ảnh chụp một
-    ontology đã đổi. Ràng buộc thật thì không cần con số nào: model không thể
-    sinh ra một neo nó chưa từng thấy.
+    Phạm vi slot được lấy từ ontology và danh mục, vì model phải thấy mỗi neo
+    hữu hạn trước khi có thể sinh truy vấn dùng neo đó.
     """
 
     report = validate_release(release, graph, catalogue)
@@ -342,15 +337,11 @@ def test_every_finite_slot_value_is_taught(graph, catalogue, release) -> None:
 def test_rejection_checklist_partitions_every_declared_class(
     release, catalogue, checklist
 ) -> None:
-    """Danh sách nhóm câu từ chối phải ĐỌC từ ``coverage.json``.
+    """Danh sách nhóm câu từ chối phải đọc từ ``coverage.json``.
 
-    Bản trước chốt cứng bảy nhóm trong chính tệp test, nên khi nhóm "câu hỏi
-    pha" được chuyển sang câu trả lời được, test đỏ vì lý do sai: nó tưởng dữ
-    liệu hỏng, thật ra chính nó đang giữ một quyết định đã bị thay.
-
-    Từ phiên 2 có HAI đích từ chối: câu ngoài phạm vi nhận danh sách năng lực,
-    câu gần miền vẫn nhận ``không có thông tin``. Cả hai đều là cách xử lý một
-    câu hỏi không trả lời trực tiếp được.
+    Tệp yêu cầu là nguồn chuẩn cho các nhóm. Câu ngoài phạm vi nhận danh sách
+    năng lực, còn câu gần miền nhận ``không có thông tin``; cả hai đều xử lý câu
+    hỏi không trả lời trực tiếp được.
     """
 
     required = json.loads(
@@ -405,9 +396,8 @@ def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
 
     assert sorted(expectations) == sorted(questions)
     assert sorted(set(expectations.values()) - set(catalogue)) == []
-    # Hai câu của giảng viên phải còn trong bộ - chúng là bằng chứng người thật
-    # duy nhất mà dự án có. Canh chính CÂU HỎI, không canh nhãn: nhãn ở tệp đó do
-    # các phiên trước suy ra chứ không phải người gán, và đã đổi hai lần.
+    # Hai câu hỏi do người dùng cung cấp phải có mặt. Kiểm tra theo câu hỏi thay
+    # vì nhãn để giữ độc lập với việc phân loại chúng vào họ truy vấn.
     assert "Bạn có thể hỗ trợ thông tin gì" in expectations
     assert "Tôi cần thông tin tuyển sinh 2026 của Trường Đại học Nha Trang" in expectations
 
@@ -469,9 +459,8 @@ def test_every_evaluated_target_was_taught_first(release) -> None:
 def test_the_manifest_matches_the_files_it_describes() -> None:
     """Manifest phải khớp chính tệp nó mô tả.
 
-    Bản trước đóng băng sha256 của val/test trong tệp test. Đóng băng ở đó chỉ
-    chốt lại MỘT lần sinh; ràng buộc thật là manifest và dữ liệu không được lệch
-    nhau, và nó tự đúng qua mọi lần sinh lại.
+    Checksum được tính từ từng tệp để manifest luôn xác nhận đúng dữ liệu của
+    lần dựng hiện tại.
     """
 
     from ontchatbot.research.reporting import sha256_file

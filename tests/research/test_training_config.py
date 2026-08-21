@@ -1,8 +1,7 @@
-"""Ghim cấu hình huấn luyện vào đúng những giá trị đã đo.
+"""Ghim cấu hình huấn luyện vào các điều kiện của phép so sánh model.
 
-Mỗi con số dưới đây đến từ một phép đo, không từ một lựa chọn mặc định của thư
-viện. Đổi bất kỳ giá trị nào là đổi phép thử, nên số của lượt chạy sau không còn
-đặt cạnh lượt trước được - phép kiểm này bắt việc đó xảy ra âm thầm.
+Mỗi giá trị cố định xác định điều kiện chung của benchmark; thay đổi chúng làm
+thay đổi phép so sánh giữa các model.
 """
 
 from __future__ import annotations
@@ -41,10 +40,10 @@ def test_evaluation_batch_matches_the_scorer() -> None:
 
 
 def test_settled_configuration_is_not_a_command_line_choice() -> None:
-    """Quyết định đã đo xong thì là hằng số, không phải cờ.
+    """Cấu hình chuẩn là hằng số, không phải cờ dòng lệnh.
 
-    Một cờ cho quyết định đã chốt là một cách để vô tình chạy cấu hình chưa ai
-    đo, và để hai lượt chạy khác nhau mà không ai nhận ra.
+    Cờ dòng lệnh chỉ dành cho lựa chọn hợp lệ của một lượt chạy; các điều kiện
+    benchmark phải cố định để kết quả có thể so sánh.
     """
 
     args = _parse_args(["--model", "t5gemma2"])
@@ -56,8 +55,7 @@ def test_settled_configuration_is_not_a_command_line_choice() -> None:
 def test_defaults_match_the_measured_run() -> None:
     args = _parse_args(["--model", "t5gemma2"])
 
-    # Trần chứ không phải đích: chất lượng còn lên ở epoch 3 của lượt đo, và
-    # dừng sớm mới là thứ quyết định lượt chạy kết thúc ở đâu.
+    # Đây là trần epoch; dừng sớm quyết định thời điểm kết thúc huấn luyện.
     assert args.epochs == 8.0
     assert args.learning_rate == 1e-4
     assert args.seed == 42

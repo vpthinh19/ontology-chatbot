@@ -49,9 +49,8 @@ def test_missing_baseline_fingerprint_is_unverified() -> None:
 def test_canonical_snapshot_covers_the_complete_chain() -> None:
     snapshot = build_consistency_snapshot()
 
-    # Đối chiếu với chính danh mục khả năng trả lời, KHÔNG chốt cứng con số.
-    # Bản trước chốt 2.953; khi ontology được refactor thì con số thật thành
-    # 6.073 và test chỉ báo "khác nhau" chứ không cho biết cái nào đúng.
+    # Đối chiếu với chính danh mục khả năng trả lời; số mục được suy ra từ
+    # snapshot để phạm vi kiểm tra thay đổi cùng dữ liệu.
     entries = len(snapshot.inventory["entries"])
 
     assert entries
@@ -63,8 +62,8 @@ def test_canonical_snapshot_covers_the_complete_chain() -> None:
     assert snapshot.catalogue_validation["uncovered_entries"] == []
     assert snapshot.dataset_report["training_readiness"]["ready"] is True
     assert snapshot.dataset_report["validation"]["catalogue_coverage_required"] is True
-    # Chỉ số model là "stale" cho tới khi huấn luyện lại trên dataset mới - đó là
-    # trạng thái ĐÚNG, không phải lỗi.
+    # Chỉ số model có thể là "stale" khi fingerprint của dữ liệu khác checkpoint;
+    # trạng thái này biểu thị cần đánh giá lại, không phải lỗi snapshot.
     assert snapshot.provenance["model_metrics"]["status"] in ("current", "stale")
 
 

@@ -1,11 +1,7 @@
-"""Mỗi luật ở đây tương ứng MỘT lỗi có thật đã tìm ra khi soát dataset.
+"""Các luật kiểm tra tính chất của dataset sinh từ ontology và danh mục.
 
-Bộ test cũ vẫn xanh trong khi 45,6% câu hỏi dính chữ hoa lạc chỗ, 222 dòng mang
-nhãn giao diện của trang web làm tên thực thể, và 165 dòng dạy chatbot từ chối
-đúng câu hỏi tự nhiên nhất về biểu mẫu. Nó xanh vì nó canh **số liệu của bản phát
-hành cũ** chứ không canh **tính chất của dữ liệu**.
-
-Nguyên tắc chung: đối chiếu với artifact thật, không chốt cứng con số nào.
+Phép kiểm đối chiếu với artifact hiện tại thay vì chốt cứng quy mô phát hành, để
+phạm vi kiểm tra thay đổi cùng dữ liệu.
 """
 
 from __future__ import annotations
@@ -61,14 +57,14 @@ STATIC_SHORT_FAMILIES = {
 
 
 def _flatten(text: str, *, fold_d: bool = False) -> str:
-    """Chuẩn hoá như runtime, rồi BỎ DẤU.
+    """Chuẩn hoá như runtime, rồi bỏ dấu.
 
-    Người dùng Việt gõ chat rất hay bỏ dấu, và nhóm câu ``noisy`` cũng sinh ra
-    dạng không dấu. Hai câu chỉ khác nhau ở dấu là MỘT câu đối với model.
+    Người dùng Việt thường gõ chat không dấu, và nhóm câu ``noisy`` cũng sinh ra
+    dạng đó. Hai câu chỉ khác nhau ở dấu là một câu đối với model.
 
-    ``fold_d`` quy cả ``đ`` về ``d``. Chỉ bật khi dò RÒ RỈ, vì nhóm ``noisy``
-    làm đúng phép thay đó. KHÔNG bật khi dò mâu thuẫn đích: *"điểm d khoản 1
-    Điều 22"* và *"điểm đ khoản 1 Điều 22"* là **hai điểm luật khác nhau**, và
+    ``fold_d`` quy cả ``đ`` về ``d``. Chỉ bật khi dò rò rỉ, vì nhóm ``noisy``
+    làm đúng phép thay đó. Không bật khi dò mâu thuẫn đích: *"điểm d khoản 1
+    Điều 22"* và *"điểm đ khoản 1 Điều 22"* là hai điểm luật khác nhau, và
     ``normalize_model_input`` giữ nguyên ``đ`` nên runtime cũng phân biệt được.
     Gộp chúng lại là tự bịa ra một mâu thuẫn không có thật.
     """
@@ -228,22 +224,11 @@ def test_rejection_provenance_matches_the_question_it_claims_to_explain(
 def test_no_rejection_row_asks_a_fact_its_own_anchor_carries(
     rows, provenance, graph
 ) -> None:
-    """Câu từ chối không được hỏi thứ mà chính neo của nó trả lời được.
+    """Câu từ chối không được hỏi dữ kiện mà neo của nó trả lời được.
 
-    ĐÂY LÀ PHÉP KIỂM CANH DỮ LIỆU, KHÔNG CANH CHỮ NGHĨA. Bản trước nhận diện
-    câu hỏi chung bằng **danh sách 16 cụm từ viết cứng**; nó xanh sạch mà vẫn
-    để lọt **24 câu** hỏi ``ai ký duyệt`` / ``vì sao`` / ``sinh ra để làm gì``,
-    vì những cụm ấy không có trong danh sách. Thêm cụm vào danh sách chỉ đẩy lỗi
-    sang chỗ khác - dự án đã vấp đúng hình dạng sai lầm đó ba lần.
-
-    Cách canh đúng: mọi họ ``*-facts`` lấy TRỌN node, nên **chạy truy vấn dump
-    thật rồi hỏi dữ kiện được hỏi có nằm trong kết quả không**. Kết quả đọc lại
-    cho từng neo một, nên sửa một bước trong ``hasStep`` là kết luận đổi theo,
-    không ai phải nhớ sửa danh sách.
-
-    Phải soi KẾT QUẢ chứ không soi thuộc tính: bản trước canh "node có mang
-    ``decidedBy`` không" và bỏ lọt bảy cặp, vì mức phí 5.500đ lẫn người ký đều
-    nằm trong chữ tự do của ``stepText`` chứ không thành thuộc tính riêng.
+    Các họ ``*-facts`` trả toàn bộ node, nên phép kiểm chạy truy vấn dump và so
+    dữ kiện được hỏi với kết quả thực tế. Cách này bao phủ cả dữ kiện nằm trong
+    văn bản tự do như ``stepText``, không chỉ các thuộc tính riêng.
     """
 
     dumped = dump_literals(graph, load_catalogue(QUERY_CATALOGUE_PATH), PROCEDURE_FAMILY)
@@ -366,20 +351,13 @@ def test_declared_answer_marks_still_appear_in_some_dump(graph) -> None:
 def test_no_general_entity_question_with_a_real_name_is_rejected(
     rows, resolved, graph, provenance
 ) -> None:
-    """Tên gọi thật + khuôn hỏi-chung phải trả trọn node, không được từ chối.
+    """Tên gọi thật trong khuôn hỏi-chung phải trả toàn bộ node.
 
-    GIỮ LẠI DÙ CANH BẰNG CỤM TỪ, và biết rõ giới hạn của nó: nó bắt được lớp lỗi
-    "hỏi chung chung về một thực thể có thật" (38 câu, đã sửa xong), là lớp lỗi
-    mà phép kiểm theo neo ở trên KHÔNG thấy - vì những câu ấy do khung ý định
-    ghép sai họ đẻ ra, không do khuôn từ chối. Hai phép kiểm soi hai chỗ khác
-    nhau; đây là phép kiểm phụ, phép kiểm theo dữ liệu ở trên mới là phép chính.
-
-    **Đừng thêm cụm từ vào danh sách dưới đây khi có câu từ chối oan mới.** Đó
-    là cách vá đã hỏng ba lần. Sửa ở bộ sinh và khai vào ``ANSWERED_BY``.
-
-    Lỗi cũ lấy thực thể ngoài họ A rồi ghép vào khung của A, dù thực thể ấy có
-    họ B trả lời được. Các cụm dưới đây là khuôn hỏi trọn node, không phải câu
-    hỏi một thuộc tính vắng như lệ phí, điểm chuẩn hay người ký duyệt.
+    Phép kiểm này bao phủ câu do khung ý định ghép với thực thể thuộc họ truy vấn
+    khác; kiểm tra theo neo không bao phủ trường hợp đó. Các cụm bên dưới chỉ mô
+    tả yêu cầu trả toàn bộ node, không phải câu hỏi thuộc tính như lệ phí, điểm
+    chuẩn hoặc người ký duyệt. Việc mở rộng phạm vi trả lời được khai ở
+    ``ANSWERED_BY`` và bộ sinh.
     """
 
     owners: dict[str, set[str]] = defaultdict(set)
@@ -421,11 +399,10 @@ def test_no_general_entity_question_with_a_real_name_is_rejected(
         # Tên thật nhưng trỏ tới nhiều node ("Điều 1", "khoản 1 Điều 10") là
         # nhóm ``ambiguous`` và phải tiếp tục từ chối.
         #
-        # Hỏi SỔ KHUÔN chứ đừng dò lại tên mơ hồ trong câu hỏi: phong cách
+        # Hỏi sổ khuôn thay vì dò lại tên mơ hồ trong câu hỏi: phong cách
         # ``noisy`` xoá dấu cách nên tên neo dính vào từ đứng trước
         # ("...tải xuống củaĐơn xin chuyển Chương trình đào tạo"), phép so ranh
-        # giới từ trượt, và dòng từ chối ĐÚNG bị báo là sai. Bản trước dò bằng
-        # chữ nghĩa nên dính đúng bẫy này.
+        # giới từ trượt, nên tên mơ hồ không phải tiêu chí phân loại tin cậy.
         if provenance[row["id"]]["class"] == "ambiguous":
             continue
         if any(marker in question for marker in general_markers) and any(
@@ -495,23 +472,8 @@ def test_priority_domains_and_length_extremes_stay_balanced(splits) -> None:
     for row in rows:
         by_domain[catalogue[row["query_id"]].domain].append(row)
 
-    # ⛔ ĐÃ BỎ phép so ``priority >= reference`` (2026-08-15).
-    #
-    # Nó đếm SỐ DÒNG của procedure+form rồi đòi không nhỏ hơn academic-rule+
-    # document. Người dùng cho biết họ chưa bao giờ đặt hợp đồng này; truy
-    # ``git log -S`` thì nó vào repo từ chính dự án này ở một phiên trước.
-    #
-    # Và phép đếm thô trộn hai thứ khác nhau: ĐỘ RỘNG của ontology với NGÂN SÁCH
-    # ưu tiên. Hai vế có số loại thông tin lệch hẳn - ưu tiên 74, tham chiếu 447
-    # (phần lớn là điều khoản văn bản). Nạp thêm một quy chế là vế tham chiếu tự
-    # phình mà chẳng nói gì về việc quy trình có bị lép hay không. Đo theo mật độ
-    # thì quy trình đang dày hơn 5,47 lần trên mỗi loại thông tin: 21,77 dòng so
-    # với 3,98.
-    #
-    # Ý đồ thật - "quy trình và biểu mẫu là ca dùng trọng tâm" - vẫn còn nguyên
-    # giá trị, nhưng nó phải được đo bằng ĐỘ CHÍNH XÁC trên bộ chấm của hai miền
-    # đó, không phải bằng số dòng. Giữ một proxy sai còn tệ hơn không giữ gì: nó
-    # đỏ khi ontology lớn lên và xanh khi ai đó bơm dòng vô nghĩa vào procedure.
+    # Số dòng phản ánh độ rộng ontology, không phản ánh mức ưu tiên của miền.
+    # Chất lượng của các miền trọng tâm được đo bằng độ chính xác trên bộ chấm.
 
     answerable = {
         spec.domain
@@ -535,27 +497,11 @@ def test_priority_domains_and_length_extremes_stay_balanced(splits) -> None:
 
 
 def test_held_out_splits_stay_big_enough_to_measure(splits) -> None:
-    """Val và test phải đủ DÀY để đo, tính bằng SỐ DÒNG chứ không bằng tỷ lệ.
+    """Val và test phải đủ lớn để đo, tính bằng số dòng.
 
-    Bản trước canh hai thứ trong cùng một phép kiểm, và cả hai đều sai chỗ.
-
-    **Trần 4.600 đã BỎ (2026-08-15).** Docstring cũ ghi "đây là quyết định của
-    người dùng sau khi xem số học" - điều đó KHÔNG ĐÚNG. Truy `git log -S` thì
-    con số vào repo trong khối commit do chính dự án này tạo, và người dùng xác
-    nhận họ chưa bao giờ đặt nó: *"không có trần, vì train trên card nvidia L4
-    server nên ko phải vấn đề"*. Một con số không ai đặt mà lại chặn thiết kế là
-    thứ tệ hơn không có ngưỡng: nó khiến người sau tưởng đang tuân thủ một ràng
-    buộc thật.
-
-    **Sàn held-out đổi từ TỶ LỆ sang SỐ TUYỆT ĐỐI.** Cái quyết định sai số của
-    một phép đo là số mẫu, không phải phần trăm của tập dạy. Giữ 8% thì mỗi lần
-    train phình ra vì lý do độ phủ, hai tập held-out lại tụt xuống dưới ngưỡng dù
-    không hề bé đi - đúng chuyện vừa xảy ra: bù phong cách chỉ thêm dòng train,
-    test giữ nguyên 385 dòng mà tỷ lệ rớt từ 8,35% xuống 7,85%. Ngưỡng khi đó
-    phạt một thay đổi không làm phép đo tệ đi chút nào.
-
-    380 dòng cho sai số chuẩn khoảng ±2,5 điểm phần trăm ở mức chính xác 50%, và
-    hẹp hơn nữa khi model tốt lên. Đó là độ phân giải đủ để so hai model.
+    Sai số của phép đo phụ thuộc số mẫu, không phụ thuộc tỷ lệ so với tập train.
+    Sàn 380 dòng cho sai số chuẩn khoảng ±2,5 điểm phần trăm ở mức chính xác 50%
+    và hẹp hơn khi model chính xác hơn; độ phân giải này đủ để so sánh model.
     """
 
     for split in ("val", "test"):
@@ -674,9 +620,9 @@ def test_hard_negatives_only_use_the_entity_type_their_wording_assumes(
         if row["register"] == "noisy":
             continue
         lowered = row["input"].casefold()
-        # KHÔNG bỏ qua dòng không nhận ra tên nào. Mọi mẫu hard-negative đều có
+        # Không bỏ qua dòng không nhận ra tên nào. Mọi mẫu hard-negative đều có
         # chỗ trống, nên dòng nào cũng phải chứa một cách gọi - bỏ qua chúng
-        # chính là cách luật này từng xanh trong khi vẫn lọt câu sai loại.
+        # sẽ tạo khoảng trống trong phạm vi kiểm tra.
         if not any(text in lowered for text in procedural):
             wrong.append(row["input"])
 
@@ -685,11 +631,10 @@ def test_hard_negatives_only_use_the_entity_type_their_wording_assumes(
 
 
 def test_a_question_with_an_off_topic_tail_is_still_answered(rows) -> None:
-    """Câu hỏi trả lời được kèm một vế ngoài lề thì vẫn phải TRẢ LỜI.
+    """Câu hỏi trả lời được kèm một vế ngoài lề vẫn phải được trả lời.
 
-    Bản trước xếp những câu này vào nhóm từ chối, tức là dạy một luật rất mạnh:
-    hễ có vế thừa thì im lặng. Người dùng viết *"đăng ký học phần thế nào ạ, em
-    cảm ơn nhiều"* rơi đúng vào bẫy đó.
+    Vế ngoài lề như lời chào hoặc cảm ơn không làm thay đổi dữ kiện chính cần
+    truy xuất.
     """
 
     tails = {
@@ -762,11 +707,10 @@ def test_held_out_frames_are_not_near_duplicates_of_taught_frames() -> None:
 
 
 def test_rejection_classes_come_from_the_requirements_file() -> None:
-    """Danh sách nhóm câu từ chối phải ĐỌC từ ``coverage.json``, không chốt cứng.
+    """Danh sách nhóm câu từ chối phải đọc từ ``coverage.json``.
 
-    Bản trước chốt cứng bảy nhóm trong chính tệp test, nên khi nhóm "câu hỏi pha"
-    được chuyển sang câu trả lời được, test đỏ vì lý do sai: nó tưởng dataset
-    hỏng, thật ra chính nó đang giữ một quyết định đã bị thay.
+    Tệp yêu cầu là nguồn chuẩn cho các nhóm, nên thay đổi phân loại được áp dụng
+    nhất quán cho dataset và phép kiểm.
     """
 
     required = json.loads(
@@ -781,23 +725,11 @@ def test_rejection_classes_come_from_the_requirements_file() -> None:
 
 
 def test_every_answer_carries_a_dated_source(rows, graph) -> None:
-    """HỢP ĐỒNG NGUỒN — người dùng chốt 2026-08-14.
+    """Mỗi dữ kiện trả về phải có nguồn, ngày nguồn và đường dẫn.
 
-    *Mỗi dữ kiện trả về phải kèm tên nguồn cụ thể, ngày của nguồn, và một đường
-    dẫn. Công văn hay web chính chủ đều được, chỉ cần MỘT. Node chỉ có tên gọi
-    mà không khẳng định dữ kiện nào thì không cần nguồn.*
-
-    Phép kiểm **chạy truy vấn thật rồi soi kết quả**, không đọc khuôn. Lý do rất
-    cụ thể: luật "mọi họ phải có cột nguồn" trước đây chỉ kiểm **tên cột có mặt**,
-    nên khi đổi engine sang Oxigraph làm cột đường dẫn rỗng ở **471/521 đích**,
-    cả bộ kiểm vẫn xanh suốt nhiều tháng. ``GROUP_CONCAT`` theo chuẩn không nhận
-    ``xsd:anyURI``; rdflib dễ tính nên nối được, Oxigraph đúng chuẩn nên trả
-    unbound. Một phép kiểm đọc khuôn không thể thấy chuyện đó.
-
-    Ngoại lệ được TÍNH TỪ DỮ LIỆU, không phải danh sách viết tay: node nào chỉ
-    trả về ``tên gọi`` thì nó không khẳng định dữ kiện nào để mà dẫn nguồn -
-    "Hiệu trưởng", "Cố vấn học tập", "Bộ môn" tồn tại để dữ kiện khác trỏ vào.
-    Thêm một thuộc tính thật cho chúng là phép kiểm đòi nguồn ngay.
+    Phép kiểm chạy truy vấn thật để xác nhận các giá trị nguồn mà engine trả về,
+    bao gồm cả URL. Node chỉ trả ``tên gọi`` không khẳng định dữ kiện nên được
+    nhận diện từ kết quả truy vấn thay vì bằng danh sách ngoại lệ viết tay.
     """
 
     from ontchatbot.runtime.sparql import execute_select
@@ -817,14 +749,9 @@ def test_every_answer_carries_a_dated_source(rows, graph) -> None:
             continue
         if {str(row["thuoctinh"]) for row in answer} == {"tên gọi"}:
             continue
-        # Đòi ĐƯỜNG DẪN, không phải "tên nguồn HOẶC đường dẫn". Bản đầu của phép
-        # kiểm này viết OR và tôi thử lại trên dataset trước khi sửa: nó chỉ bắt
-        # được 12 đích, BỎ LỌT đúng 471 đích mà engine làm mất đường dẫn - tức
-        # là bỏ lọt chính cái lỗi nó sinh ra để canh. Đường dẫn là thứ người
-        # dùng cần để tự tra sâu hơn, nên nó là điều kiện cứng.
-        #
-        # Tên trích dẫn KHÔNG đòi riêng: một văn bản tự trả lời về mình thì nó
-        # LÀ nguồn, và tiêu đề với ngày ban hành đã nằm ngay trong câu trả lời.
+        # Đường dẫn là điều kiện cứng vì người dùng cần nó để tra cứu sâu hơn.
+        # Tên trích dẫn không cần tách riêng khi văn bản tự trả lời về mình, vì
+        # tiêu đề và ngày ban hành đã nằm trong câu trả lời.
         if not any(row.get("duongdan") for row in answer):
             missing_source.append(query_id)
             continue

@@ -52,20 +52,17 @@ def _row(identifier, query_id, text, target):
 
 
 def test_real_user_cases_keep_every_declared_expectation() -> None:
-    """Bộ câu người thật chỉ được PHÌNH ra, không được teo đi.
+    """Bộ câu hỏi do người dùng cung cấp phải giữ đủ mọi kỳ vọng đã khai báo.
 
-    Chín câu đầu là bằng chứng người thật duy nhất dự án có được trong nhiều
-    tháng; sáu câu thêm ngày 15/8/2026 lấy từ ``test_llm.log`` - một phiên người
-    dùng gõ tay thử model huấn luyện trên dataset cũ. Canh bằng ngưỡng SÀN chứ
-    không bằng con số cố định: thêm câu người thật là việc tốt, còn mất câu nào
-    thì phải đỏ.
+    Ngưỡng tối thiểu cho phép bổ sung trường hợp mới nhưng phát hiện việc mất
+    dữ liệu đánh giá.
     """
 
     expectations = load_user_query_expectations()
 
     assert len(expectations) >= 15
-    # ``note`` là tuỳ chọn: từ 2026-08-14 mỗi nhãn được sửa đều mang lý do đi kèm,
-    # vì nhãn ở tệp này do các phiên trước SUY RA chứ không phải người gán.
+    # ``note`` ghi lý do chọn nhãn cho các kỳ vọng cần diễn giải; trường này là
+    # tuỳ chọn để giữ tương thích với các kỳ vọng chỉ cần câu hỏi và nhãn.
     assert all(
         {"question", "expected_query_id"} <= set(item) <= {"question", "expected_query_id", "note"}
         for item in expectations

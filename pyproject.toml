@@ -19,13 +19,10 @@ inference = [
     "huggingface-hub>=1.24.0",
     "tokenizers>=0.22.2",
 ]
-# ĐÃ GỠ nhóm `flash` (2026-08-12). Nó ghim một bánh xe biên dịch sẵn vào đúng
-# một tổ hợp CUDA 13 + torch 2.13 + Python 3.12 + Linux x86-64 — lệch một thành
-# phần là hỏng ngay bước cài, và đó là rủi ro lớn nhất cho máy thuê phải tự dựng.
-# Đổi lại gần như không được gì: lợi ích của flash-attention lớn dần theo độ dài
-# câu, mà dự án chặn ở 320 token và câu thật ngắn hơn nhiều, nên phần tính toán
-# nặng không nằm ở khâu chú ý. Mã huấn luyện vẫn dùng nó NẾU máy nào tình cờ có
-# sẵn, và tự lùi về đường thường nếu không — không cần khai ở đây.
+# Không khai flash-attention ở đây: bánh xe của nó chỉ dựng sẵn cho đúng một tổ
+# hợp CUDA, torch, Python và hệ điều hành, nên khai thành phụ thuộc là buộc mọi
+# máy phải khớp đúng tổ hợp đó. Với chuỗi tối đa 320 token thì khâu chú ý không
+# phải phần tính toán nặng. Mã huấn luyện tự dùng nếu máy có sẵn.
 train = [
     "accelerate>=1.14.0",
     "bitsandbytes>=0.49.2",

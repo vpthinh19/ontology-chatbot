@@ -28,9 +28,8 @@ from ontchatbot.settings import (
 def test_public_dataset_report_matches_contract(tmp_path) -> None:
     report = build_dataset_report(load_release(), load_ontology())
 
-    # Đối chiếu với artifact thật, KHÔNG chốt cứng con số: bản trước chốt 4.454
-    # dòng / 51 họ, nên khi dataset được sinh lại nó khoá cái sai lại thay vì
-    # phát hiện ra.
+    # Đối chiếu với artifact thật; số dòng và số họ được suy ra từ dataset cùng
+    # danh mục mà báo cáo mô tả.
     release = load_release()
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
     trained = {

@@ -47,17 +47,11 @@ def _v3_example(identifier: str, query_id: str, target: str) -> dict[str, str]:
 
 
 def test_held_out_splits_carry_both_kinds_of_row() -> None:
-    """Val và test đều phải có CẢ HAI loại dòng: dump node và từ chối.
+    """Val và test đều phải có dòng dump node và dòng từ chối.
 
-    Chỉ còn hai loại. Loại thứ ba - hỏi năng lực - đã bị bỏ khỏi thiết kế ngày
-    2026-08-14: công cụ chỉ truy ra dữ kiện hoặc nói không có thông tin.
-
-    Tên hàm không được hứa những con số mà thân hàm không kiểm: một tên dạng
-    ``167_plus_28_plus_6`` khiến người đọc tin có ba phép khẳng định, trong khi
-    các con số đó chỉ tồn tại trong cái tên. Dòng khẳng định cuối
-    của bản cũ cũng đã gỡ: nó định nghĩa ``node_rows = tổng − a − b`` rồi khẳng
-    định ``node_rows + a + b == tổng``, tức hằng đúng, không bao giờ đỏ kể cả khi
-    dataset hỏng hoàn toàn.
+    Công cụ hoặc truy xuất dữ kiện hoặc trả ``không có thông tin``. Phép kiểm
+    xác nhận trực tiếp sự hiện diện của cả hai loại dòng thay vì suy ra một loại
+    từ tổng số dòng.
     """
 
     for path in (VAL_DATASET_PATH, TEST_DATASET_PATH):

@@ -158,11 +158,9 @@ def test_an_office_answers_more_than_its_name(ontology_graph) -> None:
 
 # -------------------------------------------------------------- học phí
 #
-# Không còn phép kiểm nào tra MỨC học phí: các mức đã được gỡ khỏi ontology
-# (2026-08-10). Số tiền một sinh viên phải đóng phụ thuộc khoá, ngành, chương
-# trình và học phần đã đăng ký, thay đổi từng kỳ, và chỉ trang sinhvien.ntu.edu.vn
-# mới có con số thật - ontology không đuổi kịp. Thứ giữ lại là CÁCH đóng, vốn ổn
-# định và có nguồn: xem hai phép kiểm dưới đây.
+# Mức học phí phụ thuộc khoá, ngành, chương trình và học phần đã đăng ký, thay đổi
+# từng kỳ, và trang sinhvien.ntu.edu.vn mới công bố đúng cho từng sinh viên.
+# Ontology mô hình hoá cách thanh toán, là dữ kiện ổn định có nguồn.
 def test_payment_methods_are_listed(ontology_graph) -> None:
     methods = answers(
         ontology_graph,
@@ -182,11 +180,9 @@ def test_certificate_conversion_is_returned_as_six_whole_tables(ontology_graph) 
     )
 
     assert len(tables) == 6
-    # Chọn bảng bằng CỘT của nó, không bằng thứ tự trả về. HAI bảng cùng liệt kê
-    # "Công nghệ thông tin" - bảng tiếng Anh và bảng các ngoại ngữ khác - nên
-    # phép chọn cũ lấy "cái đầu tiên khớp" vốn đã phụ thuộc thứ tự, mà truy vấn
-    # thì không có mệnh đề sắp xếp nào. Engine cũ tình cờ trả đúng thứ tự; đổi
-    # kho lưu trữ là lộ ra ngay. Dữ liệu không hề đổi: dòng kỳ vọng vẫn nguyên.
+    # Chọn bảng bằng cột đặc trưng, không bằng thứ tự trả về. Hai bảng cùng liệt
+    # kê "Công nghệ thông tin" nhưng mô tả các nhóm chứng chỉ khác nhau; truy vấn
+    # không có mệnh đề sắp xếp nên thứ tự không phải tiêu chí phân biệt.
     special_english_tables = [
         text
         for text in tables

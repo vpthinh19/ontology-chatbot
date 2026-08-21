@@ -1,12 +1,8 @@
 """Tầng văn bản phải chép đúng nguyên văn công văn.
 
-Tầng nghiệp vụ được canh bởi ``test_drafting_rules``. Tầng văn bản thì trước nay
-không có gì canh, dù nó là chứng cứ cho toàn bộ câu trả lời của chatbot: sai một
-chữ ở đây là chatbot trích dẫn sai một cách rất thuyết phục.
-
-Các kiểm tra này đối chiếu thẳng với ``references/`` — thư mục giữ bản sao công
-văn gốc. Chúng là ràng buộc thường trực, không phải kiểm tra một lần khi dựng
-ontology: bất cứ ai sửa ``ontology.ttl`` về sau đều có thể vô tình làm lệch.
+Tầng nghiệp vụ do ``test_drafting_rules`` kiểm tra. Tầng văn bản là chứng cứ cho
+câu trả lời của chatbot, nên mọi thay đổi của ``ontology.ttl`` phải đối chiếu với
+``references/``, nơi lưu bản sao công văn gốc.
 """
 
 from __future__ import annotations
@@ -21,22 +17,10 @@ from ontchatbot.settings import ONTOLOGY_NS, PROJECT_ROOT
 
 #: Công văn có bản sao dạng văn bản trong ``references/``.
 #:
-#: ``Qd317.md`` là bản OCR từ ảnh chụp công văn giấy, đã được đối chiếu lại với
-#: chính bản scan: bộ OCR có thói quen **sửa lỗi của công văn** (tự thêm "trở
-#: lên" vào chỗ bản gốc chỉ ghi "trở", tự bỏ chữ lặp "Trường Trường"). Đã hoàn
-#: nguyên về đúng mặt chữ bản gốc - ontology trích dẫn công văn thật, không
-#: trích dẫn bản đã được máy làm sạch.
-#:
-#: ``Qd753.md`` cũng là bản OCR, và Điều 10 của nó từng mất dấu ở bốn chỗ:
-#: "học phan", "dé nghị", "quản ly", "Mdu số 2". Đã mở bản scan ra đối chiếu và
-#: hoàn nguyên về đúng mặt chữ - đây là sửa lỗi CỦA MÁY, không phải sửa lỗi của
-#: công văn. Bản scan nay nằm ở ``references/Qd753.pdf`` để lần sau khỏi phải đi
-#: tìm.
-#:
-#: ``Qd1965.md`` thì bản OCR hỏng tới mức không cứu được - hai bảng vỡ nát, chữ
-#: dính vào nhau. Đã chép tay lại toàn bộ từ bản scan. Lưu ý một chỗ dễ bị
-#: "sửa hộ": Điều 2 của công văn ghi *"có hiệu lực kể ngày ký ban hành"*, thiếu
-#: chữ "từ". Đó là lỗi CỦA CÔNG VĂN và phải giữ nguyên.
+#: Các bản chép từ OCR phải khớp mặt chữ của bản scan, kể cả lỗi chính tả và chữ
+#: lặp của công văn. ``references/Qd753.pdf`` là bản scan đối chiếu cho
+#: ``Qd753.md``. Điều 2 của ``Qd1965.md`` giữ nguyên cụm *"có hiệu lực kể ngày
+#: ký ban hành"* vì đó là nguyên văn công văn.
 SOURCE_FILES = (
     "Qd1052.md",
     "Qd729.md",
@@ -63,9 +47,8 @@ TEXT_SOURCED_DOCUMENTS = (
 #: Cả 14 bảng được trả nguyên khối cho LLM. Dòng đầu xác định bảng trực tiếp,
 #: tránh phải dựng lại bảng từ node con hoặc dựa vào heading có thể lặp.
 VERBATIM_TABLE_SOURCES = {
-    # Hai bảng mức học bổng nạp 15/8/2026. Trước đó sáu mức học bổng dẫn nguồn về
-    # câu dẫn "... cụ thể như sau:" của Điều 1/Điều 2 - một câu KHÔNG chứa số tiền
-    # nào. Khai ở đây để phép kiểm đối chiếu từng ký tự với ``references/Qd317.md``.
+    # Các mức học bổng dẫn đến đúng bảng chứa số tiền. Phép kiểm đối chiếu từng ký
+    # tự với ``references/Qd317.md``.
     "ScholarshipRateTableStandardProgram": (
         "Qd317.md",
         "| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |",
@@ -248,17 +231,11 @@ def test_all_tables_are_copied_cell_for_cell_from_their_sources(ontology_graph) 
 
 
 def test_no_provision_diverges_from_its_own_subdivisions(ontology_graph) -> None:
-    """MỌI cấp văn bản: nguyên văn của con phải nằm nguyên trong nguyên văn của cha.
+    """Nguyên văn của cấp con phải nằm nguyên trong nguyên văn của cấp cha.
 
-    Giữ nội dung ở nhiều mức là có chủ đích - "Điều 24 nói gì" và "khoản 3 Điều 24
-    ghi gì" là hai câu hỏi khác nhau, và nguyên văn của cha còn mang câu dẫn mà
-    không con nào có ("... SV được xếp năm đào tạo như sau:"). Rủi ro thật không
-    phải việc lặp mà là hai mức LỆCH NHAU khi cập nhật: sửa một điểm mà quên sửa
-    khoản chứa nó thì chatbot tự mâu thuẫn, tuỳ người dùng hỏi ở cấp nào.
-
-    Bản trước chỉ canh Điều -> Khoản (111 cặp) và bỏ trống Khoản -> Điểm (108),
-    Phụ lục -> Bảng (10), Khoản -> Bảng (3). Tức là hơn nửa số cặp không ai canh,
-    trong đó có đúng cấp chi tiết nhất và hay phải sửa nhất.
+    Nội dung được giữ ở nhiều cấp vì câu hỏi có thể nhắm đến điều, khoản, điểm,
+    phụ lục hoặc bảng. Văn bản cha còn có thể chứa câu dẫn không thuộc cấp con;
+    mọi cặp ``partOf`` có nguyên văn ở cả hai đầu đều phải nhất quán.
     """
 
     official = URIRef(ONTOLOGY_NS + "officialText")
@@ -294,10 +271,10 @@ def test_no_provision_diverges_from_its_own_subdivisions(ontology_graph) -> None
 
 
 def test_no_provision_carries_two_different_texts(ontology_graph) -> None:
-    """Một phần văn bản chỉ được mang đúng một nguyên văn.
+    """Mỗi phần văn bản chỉ được mang đúng một nguyên văn.
 
-    Bản ontology trước gộp quyết định ban hành với quy chế kèm theo, nên "Điều 1"
-    mang cùng lúc hai đoạn văn của hai tài liệu khác nhau và trả lời mâu thuẫn.
+    Một node biểu diễn một phần của một tài liệu; nhiều nguyên văn trên cùng node
+    sẽ khiến truy vấn không xác định được nội dung cần trả lời.
     """
 
     official = URIRef(ONTOLOGY_NS + "officialText")
@@ -331,22 +308,12 @@ def test_every_document_part_can_be_traced_to_its_source(ontology_graph) -> None
 
 
 def test_every_number_appears_in_the_passage_it_cites(ontology_graph) -> None:
-    """Node khẳng định một CON SỐ thì nguồn nó dẫn phải chứa đúng con số đó.
+    """Node khẳng định một con số phải dẫn đến nguồn chứa đúng con số đó.
 
-    Đây là phép kiểm sinh ra từ một lỗi thật, tìm ra ngày 15/8/2026: sáu mức học
-    bổng khẳng định 5.000.000 đến 8.640.000 đồng nhưng dẫn nguồn về Điều 1 và
-    Điều 2 QĐ317 - hai câu dẫn kết thúc bằng "cụ thể như sau:" và KHÔNG chứa số
-    nào, vì cái bảng đứng sau chúng chưa bao giờ được nạp. Cả 321 phép kiểm lúc
-    đó đều xanh: trích dẫn có mặt, có ngày, có đường dẫn, chỉ là trỏ nhầm chỗ.
-
-    Vì sao canh riêng CON SỐ chứ không canh cả câu chữ: so bằng tỉ lệ từ trùng
-    nhau là cái bẫy dự án đã vấp ba lần - nó chấm ``currencyCode "VND"`` là sai
-    vì công văn viết "đồng", chấm ``performedBy Sinh viên`` là sai vì công văn
-    viết "SV". Con số thì chuẩn hoá được không mơ hồ: bỏ hết dấu chấm, dấu phẩy
-    và khoảng trắng rồi so chuỗi chữ số.
-
-    Bỏ qua số dưới hai chữ số vì chúng trùng ngẫu nhiên với mọi thứ, và chấp
-    nhận cả ``downloadUrl`` làm nguồn vì tên tệp biểu mẫu mang số hiệu của nó.
+    Số được chuẩn hoá bằng cách bỏ dấu chấm, dấu phẩy và khoảng trắng trước khi
+    so sánh, vì văn bản có thể viết đơn vị và ký hiệu khác nhau. Số dưới hai chữ
+    số dễ trùng ngẫu nhiên nên được bỏ qua; ``downloadUrl`` hợp lệ cho biểu mẫu
+    vì tên tệp mang số hiệu biểu mẫu.
     """
 
     digits = re.compile(r"[^0-9]")

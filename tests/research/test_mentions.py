@@ -37,18 +37,17 @@ def anchors() -> tuple[str, ...]:
 @pytest.mark.parametrize(
     ("anchor", "expected"),
     [
-        # TOẠ ĐỘ PHẢI KÈM TÊN VĂN BẢN. "Điều 24" trơ trọi không chỉ về đâu cả -
+        # Toạ độ phải kèm tên văn bản. "Điều 24" trơ trọi không chỉ về đâu cả -
         # mỗi quy chế đều có Điều 24 của riêng nó, nên tách khỏi văn bản thì
-        # chương/điều/khoản đều vô nghĩa. Bản trước lấy toạ độ trần làm cách gọi
-        # CHÍNH và bỏ qua ``rdfs:label`` vốn đã đầy đủ; nó chỉ chạy được vì đồ
-        # thị tình cờ có mỗi một văn bản mang số đó.
+        # chương, điều và khoản đều mơ hồ. ``rdfs:label`` cung cấp cách gọi đầy
+        # đủ để phân biệt các văn bản.
         ("Regulation1052Article24", "Điều 24 Quy chế 1052"),
         ("Regulation626Article24", "Điều 24 Quy chế 626"),
         ("Regulation1052Article24Clause03", "khoản 3 Điều 24 Quy chế 1052"),
         ("Regulation1052Article24Clause01PointA", "điểm a khoản 1 Điều 24 Quy chế 1052"),
         ("Regulation1052ChapterIV", "Chương IV Quy chế 1052"),
-        # Trước đây là "bảo lưu" trơ trọi. Đã bỏ khỏi ontology: QĐ1052 dùng từ
-        # này ở năm ngữ cảnh khác nhau, nên một mình nó không trỏ được vào đâu.
+        # QĐ1052 dùng "bảo lưu" ở nhiều ngữ cảnh, nên cần cụm đủ nghĩa để trỏ
+        # đến đúng thủ tục.
         ("TemporaryAcademicLeaveProcedure", "bảo lưu kết quả"),
         ("Form09TemporaryLeave", "Mẫu số 09"),
         ("Accounting", "Kế toán"),

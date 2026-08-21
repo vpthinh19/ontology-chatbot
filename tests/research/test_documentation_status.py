@@ -52,9 +52,8 @@ def _catalogue_sizes() -> set[int]:
     """Mọi con số hợp lệ khi tài liệu nói về quy mô danh mục truy vấn."""
 
     catalogue = load_catalogue(QUERY_CATALOGUE_PATH)
-    # Tệp khai tay đã bị XOÁ cùng họ "liệt kê năng lực" (2026-08-14) - nó chỉ
-    # chứa đúng họ đó. Giữ nhánh này để tài liệu vẫn nói đúng nếu sau có ai khai
-    # tay một họ mới, nhưng không được vỡ khi tệp không tồn tại.
+    # Danh mục thủ công là tuỳ chọn. Nhánh này tính các mục của nó khi có để tài
+    # liệu luôn phản ánh cả danh mục sinh tự động lẫn mục khai tay.
     manual = (
         sum(
             1
@@ -79,12 +78,8 @@ def _catalogue_sizes() -> set[int]:
 def test_public_docs_quote_the_real_catalogue_size() -> None:
     """Mọi con số về quy mô danh mục trong tài liệu phải khớp `catalogue.jsonl`.
 
-    Bản trước chốt thẳng chuỗi ``"364 họ truy vấn"``. Khi danh mục đổi, test vẫn
-    XANH vì tài liệu cũng chưa được sửa - tức là nó khoá cái sai lại thay vì phát
-    hiện ra, và còn làm việc sửa tài liệu cho đúng bị đỏ. Đọc thẳng từ danh mục thì
-    tài liệu và dữ liệu không thể lệch nhau mà không ai biết.
-
-    Câu nhắc tới danh mục **cũ** được bỏ qua: chúng cố ý nói về con số lịch sử.
+    Quy mô hợp lệ được suy ra từ danh mục để tài liệu và dữ liệu dùng cùng phạm
+    vi. Các câu mô tả danh mục lịch sử được bỏ qua.
     """
 
     allowed = _catalogue_sizes()

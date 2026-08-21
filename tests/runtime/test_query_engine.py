@@ -87,18 +87,11 @@ def test_multiple_columns_preserve_pairing(graph) -> None:
 
 
 def test_every_source_pair_carries_a_citation_and_a_url() -> None:
-    """Khuôn nguồn rút gọn phải giữ ĐỦ CẢ HAI vế: trích dẫn và đường dẫn.
+    """Khuôn nguồn rút gọn phải giữ cả trích dẫn và đường dẫn.
 
-    Bản trước của phép kiểm này chốt cứng rằng trang web tự trả lời về mình chỉ có
-    đường dẫn, còn trích dẫn là CHUỖI RỖNG - và coi đó là hành vi đúng. Nó không
-    đúng, chỉ là mô tả hiện trạng lúc ấy: 17 node văn bản chưa khai
-    ``citationLabel`` cho chính mình.
-
-    Chuỗi rỗng đó âm thầm gây hại. Khi một điều khoản mượn số hiệu hay ngày ban
-    hành của văn bản mẹ, dòng đó nhận trích dẫn rỗng, và cả một mệnh đề lui trong
-    truy vấn cũng không cứu được vì ``COALESCE`` chỉ lui khi biến CHƯA GÁN chứ
-    không lui khi gán chuỗi rỗng. Đã khai đủ 17 trích dẫn (15/8/2026), nên nay
-    mọi cặp nguồn đều đủ hai vế.
+    ``COALESCE`` chỉ dùng giá trị dự phòng khi biến chưa được gán, không thay thế
+    chuỗi rỗng. Vì vậy mọi cặp nguồn phải có ``citationLabel`` không rỗng và URL
+    để các điều khoản kế thừa nguồn văn bản vẫn hiển thị đủ thông tin.
     """
 
     graph = load_ontology()
@@ -131,8 +124,7 @@ def test_every_source_pair_carries_a_citation_and_a_url() -> None:
         }
     ]
 
-    # Không node văn bản nào được để trống vế trích dẫn nữa - canh cả lớp, không
-    # canh riêng một node, để lần nạp văn bản sau không lặng lẽ tái diễn.
+    # Kiểm tra toàn bộ lớp node có nguồn để mọi lần nạp văn bản đều giữ trích dẫn.
     empty = execute_select(
         graph,
         "SELECT ?x WHERE { ?x :sourceCitation ?citation . FILTER(STRLEN(?citation)=0) }",

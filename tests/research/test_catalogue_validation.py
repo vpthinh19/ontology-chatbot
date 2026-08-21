@@ -213,9 +213,8 @@ def test_static_and_finite_iri_catalogue_queries_return_literals() -> None:
             assert execute_select(graph, query, max_rows=500), (query_id, values)
 
 
-# Phép kiểm "mức học phí nào ứng với ngành nào" đã gỡ cùng dữ liệu học phí
-# (2026-08-10). Họ truy vấn ``tuition-programs-by-rate`` không còn thuộc danh
-# mục và sẽ biến mất khi dựng lại danh mục ở giai đoạn 2.
+# Mức học phí thay đổi theo từng kỳ và được công bố trên trang sinhvien.ntu.edu.vn,
+# nên không thuộc ontology. Ontology chỉ mô hình hoá cách thanh toán.
 
 
 @pytest.mark.parametrize(
@@ -379,14 +378,6 @@ def test_no_two_primary_families_answer_identically() -> None:
     assert collisions == []
 
 
-# Phép kiểm "không ô nào là một bức tường chữ" đã gỡ (2026-08-10).
-#
-# Nó dựa trên một giả định không còn đúng: rằng chỉ họ TRA NGUYÊN VĂN
-# mới trả ra đoạn dài, nên miễn riêng nhóm đó là đủ. Nay mọi họ đều có hình dạng
-# dump - trả mọi giá trị chữ của neo - nên đoạn dài xuất hiện ở khắp nơi, và ở
-# đúng những chỗ nó LÀ câu trả lời: hỏi "học phần điều kiện là gì" thì phải nhận
-# nguyên đoạn định nghĩa 549 ký tự, cắt đi là mất nghĩa.
-#
-# Thứ luật này thật sự muốn chặn - hỏi một con số mà nhận về cả trang văn bản -
-# nay bị chặn ở chỗ đúng hơn: bộ dựng ghim neo bằng SỐ cho các bảng ngưỡng, nên
-# câu hỏi dạng số không còn rơi vào họ trả nguyên văn nữa.
+# Các họ truy vấn dump trả mọi giá trị chữ của neo. Đoạn nguyên văn dài là câu trả
+# lời cần thiết cho các câu hỏi định nghĩa; các bảng ngưỡng dùng neo số để câu hỏi
+# số không chọn nhầm họ truy vấn nguyên văn.

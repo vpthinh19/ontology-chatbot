@@ -213,8 +213,7 @@ def test_only_one_synonym_group_applies_per_question() -> None:
 def test_an_opener_is_never_stacked_on_a_template_that_has_one() -> None:
     """Mẫu câu tự mang từ dẫn thì chỉ nhận đuôi, không nhận thêm đầu.
 
-    Mẫu soạn tay "cho hỏi {anchor} làm thế nào, tiện thể…" gặp tiền tố trang
-    trọng đã sinh ra "Xin cho biết cho hỏi …" trong 14 dòng của bản trước.
+    Mẫu đã có từ dẫn chỉ nhận phần đuôi để câu sinh ra không lặp tiền tố hỏi.
     """
 
     stacked = re.compile(
