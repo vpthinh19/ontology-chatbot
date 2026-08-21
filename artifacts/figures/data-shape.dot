@@ -1,0 +1,51 @@
+digraph hinh_dang {
+  pad=0.15;
+  rankdir=TB; bgcolor="white"; nodesep=0.3; ranksep=0.42;
+  node [shape=plaintext, fontname="Liberation Sans", fontsize=12];
+  edge [fontname="Liberation Sans", fontsize=11, color="#7a7a7a", penwidth=1.3];
+
+  b1 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#eef2f7" COLOR="#1f4e79">
+      <TR><TD ALIGN="LEFT"><B>1 · CÂU NGƯỜI HỌC GÕ</B> &#8212; chuỗi tự do, có thể thiếu dấu hoặc sai chính tả</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Liberation Mono" POINT-SIZE="11">ho so nguon huong dan hoc lien thong nhu the nao z?</FONT></TD></TR>
+    </TABLE>>];
+
+  b2 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#dce6f2" COLOR="#1f4e79">
+      <TR><TD ALIGN="LEFT"><B>2 · TỪ KHOÁ</B> &#8212; danh sách chuỗi ngắn, do mô hình ngôn ngữ lớn rút ra</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Liberation Mono" POINT-SIZE="11">["học liên thông", "thủ tục liên thông", "hồ sơ liên thông"]</FONT></TD></TR>
+    </TABLE>>];
+
+  b3 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#dbeeec" COLOR="#2e8b8b">
+      <TR><TD ALIGN="LEFT"><B>3 · TRUY VẤN SPARQL</B> &#8212; một chuỗi cho mỗi từ khoá, hoặc chuỗi từ chối</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Liberation Mono" POINT-SIZE="10">SELECT ?thuoctinh ?giatri ?nguon ?duongdan WHERE {<BR ALIGN="LEFT"/>  { :ArticulationStudyProcedure ?p ?giatri . FILTER(isLiteral(?giatri))<BR ALIGN="LEFT"/>    ?p rdfs:label ?thuoctinh<BR ALIGN="LEFT"/>    OPTIONAL{ :ArticulationStudyProcedure :sourceCitation ?nguon ;<BR ALIGN="LEFT"/>              :sourceLink ?duongdan } }<BR ALIGN="LEFT"/>  UNION { ... nhánh đi tiếp sang các nút con ... } }</FONT></TD></TR>
+    </TABLE>>];
+
+  b4 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" BGCOLOR="#f4faf9" COLOR="#2e8b8b">
+      <TR><TD ALIGN="LEFT" COLSPAN="4"><B>4 · BẢNG KẾT QUẢ</B> &#8212; mỗi dòng là một dữ kiện kèm nguồn của chính nó</TD></TR>
+      <TR><TD BGCOLOR="#dbeeec"><B>thuoctinh</B></TD><TD BGCOLOR="#dbeeec"><B>giatri</B></TD><TD BGCOLOR="#dbeeec"><B>nguon</B></TD><TD BGCOLOR="#dbeeec"><B>duongdan</B></TD></TR>
+      <TR><TD ALIGN="LEFT">tên gọi</TD><TD ALIGN="LEFT">Thủ tục công nhận kết quả học tập…</TD><TD ALIGN="LEFT">Điều 12 QĐ 1052</TD><TD ALIGN="LEFT">https://…</TD></TR>
+      <TR><TD ALIGN="LEFT">nội dung bước</TD><TD ALIGN="LEFT">Sau khi trúng tuyển, thực hiện…</TD><TD ALIGN="LEFT">Điều 12 QĐ 1052</TD><TD ALIGN="LEFT">https://…</TD></TR>
+      <TR><TD ALIGN="LEFT">thứ tự bước</TD><TD ALIGN="LEFT">2</TD><TD ALIGN="LEFT">Điều 12 QĐ 1052</TD><TD ALIGN="LEFT">https://…</TD></TR>
+    </TABLE>>];
+
+  b5 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#dbeeec" COLOR="#2e8b8b">
+      <TR><TD ALIGN="LEFT"><B>5 · JSON CÔNG CỤ TRẢ VỀ</B> &#8212; dữ kiện nằm bên trong chính nguồn đã khẳng định nó</TD></TR>
+      <TR><TD ALIGN="LEFT"><FONT FACE="Liberation Mono" POINT-SIZE="10">{ "trang_thai": "co_du_lieu",<BR ALIGN="LEFT"/>  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy…",<BR ALIGN="LEFT"/>  "nguon": [ { "trich_dan": "Điều 12 QĐ 1052",<BR ALIGN="LEFT"/>              "duong_dan": "https://…",<BR ALIGN="LEFT"/>              "du_lieu": [ {"thuoc_tinh": "tên gọi", "gia_tri": "…"}, … ] } ],<BR ALIGN="LEFT"/>  "tu_khoa_khong_thay": ["hồ sơ liên thông"] }</FONT></TD></TR>
+    </TABLE>>];
+
+  b6 [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="9" BGCOLOR="#eef2f7" COLOR="#1f4e79">
+      <TR><TD ALIGN="LEFT"><B>6 · CÂU TRẢ LỜI CHO NGƯỜI ĐỌC</B> &#8212; văn xuôi, mọi khẳng định đều truy ngược được về bước 4</TD></TR>
+      <TR><TD ALIGN="LEFT">Thủ tục học liên thông gồm các bước sau… <BR ALIGN="LEFT"/><I>Nguồn: Điều 12 Quyết định 1052/QĐ-ĐHNT (https://…)</I></TD></TR>
+    </TABLE>>];
+
+  b1 -> b2 [label="  mô hình ngôn ngữ lớn rút gọn  "];
+  b2 -> b3 [label="  mô hình chuỗi-chuỗi sinh truy vấn  "];
+  b3 -> b4 [label="  chạy trên đồ thị tri thức  "];
+  b4 -> b5 [label="  gộp các từ khoá, khử trùng, xếp theo nguồn  "];
+  b5 -> b6 [label="  mô hình ngôn ngữ lớn viết câu trả lời  "];
+}

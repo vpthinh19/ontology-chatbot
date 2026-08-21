@@ -1,0 +1,3312 @@
+{
+  "dataset": {
+    "records": 6308,
+    "query_families": 50,
+    "catalogue_families": 50,
+    "targets": 567,
+    "domains": {
+      "academic-rule": 1742,
+      "certificate": 476,
+      "document": 1115,
+      "form": 624,
+      "out-of-domain": 884,
+      "procedure": 1131,
+      "tuition": 336
+    },
+    "splits": {
+      "train": {
+        "records": 5518,
+        "query_families": 50,
+        "targets": 567,
+        "domains": {
+          "academic-rule": 1476,
+          "certificate": 413,
+          "document": 1003,
+          "form": 540,
+          "out-of-domain": 773,
+          "procedure": 1031,
+          "tuition": 282
+        }
+      },
+      "val": {
+        "records": 400,
+        "query_families": 50,
+        "targets": 270,
+        "domains": {
+          "academic-rule": 135,
+          "certificate": 32,
+          "document": 55,
+          "form": 42,
+          "out-of-domain": 56,
+          "procedure": 51,
+          "tuition": 29
+        }
+      },
+      "test": {
+        "records": 390,
+        "query_families": 50,
+        "targets": 272,
+        "domains": {
+          "academic-rule": 131,
+          "certificate": 31,
+          "document": 57,
+          "form": 42,
+          "out-of-domain": 55,
+          "procedure": 49,
+          "tuition": 25
+        }
+      }
+    },
+    "registers": {
+      "colloquial": 1799,
+      "formal": 1383,
+      "neutral": 1640,
+      "noisy": 1486
+    },
+    "query_features": {
+      "filter": 4765,
+      "graph_hop": 685,
+      "multi_branch": 5424,
+      "multi_column": 5424,
+      "values": 659
+    },
+    "query_features_by_split": {
+      "train": {
+        "filter": 4145,
+        "graph_hop": 618,
+        "multi_branch": 4745,
+        "multi_column": 4745,
+        "values": 600
+      },
+      "val": {
+        "filter": 315,
+        "graph_hop": 33,
+        "multi_branch": 344,
+        "multi_column": 344,
+        "values": 29
+      },
+      "test": {
+        "filter": 305,
+        "graph_hop": 34,
+        "multi_branch": 335,
+        "multi_column": 335,
+        "values": 30
+      }
+    },
+    "input_words": {
+      "min": 1,
+      "median": 11,
+      "p95": 21,
+      "max": 36,
+      "mean": 11.59
+    }
+  },
+  "in_domain_contract": {
+    "train_queries": 50,
+    "validation_queries_supported_by_train": 50,
+    "validation_queries": 50,
+    "test_queries_supported_by_train": 50,
+    "test_queries": 50
+  },
+  "coverage": {
+    "complete": true,
+    "missing_query_ids": {},
+    "missing_train_registers": {},
+    "missing_priority_registers": {},
+    "missing_numeric_cases": [],
+    "missing_rejection_coverage": {},
+    "name_coverage": {
+      "total": 791,
+      "covered": 791,
+      "missing_count": 0,
+      "missing": []
+    }
+  },
+  "training_readiness": {
+    "ready": true,
+    "finite_slots_missing_from_train": [],
+    "gaps": []
+  },
+  "ontology": {
+    "triples": 7711,
+    "classes": 56,
+    "object_properties": 29,
+    "datatype_properties": 55,
+    "named_individuals": 686,
+    "resources_missing_vietnamese_label": []
+  },
+  "validation": {
+    "records": 6308,
+    "split_counts": {
+      "train": 5518,
+      "val": 400,
+      "test": 390
+    },
+    "domains": {
+      "academic-rule": 1742,
+      "certificate": 476,
+      "document": 1115,
+      "form": 624,
+      "out-of-domain": 884,
+      "procedure": 1131,
+      "tuition": 336
+    },
+    "catalogue_coverage_required": true,
+    "families": {
+      "runtime_supported": 50,
+      "training_covered": 50
+    },
+    "slot_coverage": {
+      "academic-actor-facts": {
+        "anchor": {
+          "declared": [
+            ":AcademicAdvisor",
+            ":CourseLecturer",
+            ":GraduationCouncil",
+            ":ProfessionalCouncil",
+            ":Student",
+            ":UniversityPresident"
+          ],
+          "seen_train": [
+            ":AcademicAdvisor",
+            ":CourseLecturer",
+            ":GraduationCouncil",
+            ":ProfessionalCouncil",
+            ":Student",
+            ":UniversityPresident"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-case-facts": {
+        "anchor": {
+          "declared": [
+            ":ArmedForcesCase",
+            ":IllnessCase",
+            ":InternationalCompetitionCase",
+            ":PersonalReasonCase"
+          ],
+          "seen_train": [
+            ":ArmedForcesCase",
+            ":IllnessCase",
+            ":InternationalCompetitionCase",
+            ":PersonalReasonCase"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-concept-facts": {
+        "anchor": {
+          "declared": [
+            ":AdministrativeClassConcept",
+            ":CourseClassConcept",
+            ":CourseSyllabusConcept",
+            ":CreditBasedTrainingConcept",
+            ":CreditConcept",
+            ":GradingScaleConcept",
+            ":RegulationScopeConcept"
+          ],
+          "seen_train": [
+            ":AdministrativeClassConcept",
+            ":CourseClassConcept",
+            ":CourseSyllabusConcept",
+            ":CreditBasedTrainingConcept",
+            ":CreditConcept",
+            ":GradingScaleConcept",
+            ":RegulationScopeConcept"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-performance-table": {},
+      "academic-policy-facts": {
+        "anchor": {
+          "declared": [
+            ":AcademicDismissalPolicy",
+            ":AcademicMisconductPolicy",
+            ":AcademicWarningPolicy"
+          ],
+          "seen_train": [
+            ":AcademicDismissalPolicy",
+            ":AcademicMisconductPolicy",
+            ":AcademicWarningPolicy"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-procedure-facts": {
+        "anchor": {
+          "declared": [
+            ":ArticulationStudyProcedure",
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CourseWithdrawalProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":GraduationReviewProcedure",
+            ":MajorChangeProcedure",
+            ":ScholarshipReviewProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "seen_train": [
+            ":ArticulationStudyProcedure",
+            ":ClassAbsenceRequestProcedure",
+            ":CourseExemptionAndBonusProcedure",
+            ":CourseRegistrationProcedure",
+            ":CourseRetakeProcedure",
+            ":CourseWithdrawalProcedure",
+            ":CreditRecognitionProcedure",
+            ":DismissalTransferRequestProcedure",
+            ":EarlyGraduationReviewProcedure",
+            ":ExamPostponementProcedure",
+            ":ExtraClassOpeningRequestProcedure",
+            ":GradeImprovementProcedure",
+            ":GraduationProjectRegistrationProcedure",
+            ":GraduationReviewProcedure",
+            ":MajorChangeProcedure",
+            ":ScholarshipReviewProcedure",
+            ":SecondProgramRegistrationProcedure",
+            ":SickLeaveProcedure",
+            ":StudentExchangeProcedure",
+            ":StudyResumptionProcedure",
+            ":StudyWithdrawalProcedure",
+            ":TemporaryAcademicLeaveProcedure",
+            ":TuitionPaymentProcedure",
+            ":UniversityTransferProcedure"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-program-catalogue-table": {},
+      "academic-program-facts": {
+        "anchor": {
+          "declared": [
+            ":Accounting",
+            ":Aquaculture",
+            ":Auditing",
+            ":AutomotiveEngineering",
+            ":Biotechnology",
+            ":BusinessAdministration",
+            ":ChemicalEngineering",
+            ":CivilEngineering",
+            ":CommercialBusiness",
+            ":ComputerScience",
+            ":ControlAndAutomationEngineering",
+            ":DevelopmentEconomics",
+            ":EconomicManagement",
+            ":Economics",
+            ":ElectricalEngineering",
+            ":EnglishLanguage",
+            ":EnvironmentalEngineering",
+            ":FinanceAndBanking",
+            ":FisheriesExploitation",
+            ":FisheriesManagement",
+            ":FisheriesScience",
+            ":FoodQualityAndSafetyAssurance",
+            ":FoodTechnology",
+            ":FrenchVietnameseBilingualTourismAndTravelServiceManagement",
+            ":HotelManagement",
+            ":InformationTechnology",
+            ":Law",
+            ":ManagementInformationSystems",
+            ":ManufacturingEngineering",
+            ":MarineEngineering",
+            ":MarineResourceEconomicsAndManagement",
+            ":MaritimeScience",
+            ":Marketing",
+            ":MechanicalEngineering",
+            ":MechatronicsEngineering",
+            ":NavalArchitecture",
+            ":PowerMechanicalEngineering",
+            ":SeafoodProcessingTechnology",
+            ":ThermalEngineering",
+            ":TourismAndTravelServiceManagement",
+            ":TransportationInfrastructureEngineering"
+          ],
+          "seen_train": [
+            ":Accounting",
+            ":Aquaculture",
+            ":Auditing",
+            ":AutomotiveEngineering",
+            ":Biotechnology",
+            ":BusinessAdministration",
+            ":ChemicalEngineering",
+            ":CivilEngineering",
+            ":CommercialBusiness",
+            ":ComputerScience",
+            ":ControlAndAutomationEngineering",
+            ":DevelopmentEconomics",
+            ":EconomicManagement",
+            ":Economics",
+            ":ElectricalEngineering",
+            ":EnglishLanguage",
+            ":EnvironmentalEngineering",
+            ":FinanceAndBanking",
+            ":FisheriesExploitation",
+            ":FisheriesManagement",
+            ":FisheriesScience",
+            ":FoodQualityAndSafetyAssurance",
+            ":FoodTechnology",
+            ":FrenchVietnameseBilingualTourismAndTravelServiceManagement",
+            ":HotelManagement",
+            ":InformationTechnology",
+            ":Law",
+            ":ManagementInformationSystems",
+            ":ManufacturingEngineering",
+            ":MarineEngineering",
+            ":MarineResourceEconomicsAndManagement",
+            ":MaritimeScience",
+            ":Marketing",
+            ":MechanicalEngineering",
+            ":MechatronicsEngineering",
+            ":NavalArchitecture",
+            ":PowerMechanicalEngineering",
+            ":SeafoodProcessingTechnology",
+            ":ThermalEngineering",
+            ":TourismAndTravelServiceManagement",
+            ":TransportationInfrastructureEngineering"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":CreditWorkloadRule"
+          ],
+          "seen_train": [
+            ":CreditWorkloadRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "academic-warning-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":CreditDebtWarningRule",
+            ":CumulativeAverageWarningRule",
+            ":SemesterAverageWarningRule"
+          ],
+          "seen_train": [
+            ":CreditDebtWarningRule",
+            ":CumulativeAverageWarningRule",
+            ":SemesterAverageWarningRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "assessment-component-facts": {
+        "anchor": {
+          "declared": [
+            ":ContinuousAssessment",
+            ":FinalAssessment"
+          ],
+          "seen_train": [
+            ":ContinuousAssessment",
+            ":FinalAssessment"
+          ],
+          "missing_train": []
+        }
+      },
+      "attendance-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":ExamAbsenceRule",
+            ":PracticeAttendanceRule",
+            ":TheoryAttendanceRule"
+          ],
+          "seen_train": [
+            ":ExamAbsenceRule",
+            ":PracticeAttendanceRule",
+            ":TheoryAttendanceRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "bank-facts": {
+        "anchor": {
+          "declared": [
+            ":Agribank",
+            ":LienVietPostBank",
+            ":VietinBank"
+          ],
+          "seen_train": [
+            ":Agribank",
+            ":LienVietPostBank",
+            ":VietinBank"
+          ],
+          "missing_train": []
+        }
+      },
+      "billing-unit-facts": {
+        "anchor": {
+          "declared": [
+            ":PerSemester"
+          ],
+          "seen_train": [
+            ":PerSemester"
+          ],
+          "missing_train": []
+        }
+      },
+      "certificate-catalogue-table": {},
+      "certificate-conversion-table-english-language-major-student": {},
+      "certificate-conversion-table-moi-doi-tuong": {},
+      "certificate-conversion-table-special-program-non-language-major-student": {},
+      "certificate-conversion-table-standard-program-non-language-major-student": {},
+      "certificate-facts": {
+        "anchor": {
+          "declared": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":DELFCertificate",
+            ":HSKCertificate",
+            ":IC3Certificate",
+            ":ICDLCertificate",
+            ":IELTSCertificate",
+            ":JLPTCertificate",
+            ":JPTCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":MOSCertificate",
+            ":TCFCertificate",
+            ":TOCFLCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate",
+            ":TOPIKCertificate",
+            ":TRKICertificate"
+          ],
+          "seen_train": [
+            ":AptisGeneralCertificate",
+            ":CambridgeEnglishScaleCertificate",
+            ":DELFCertificate",
+            ":HSKCertificate",
+            ":IC3Certificate",
+            ":ICDLCertificate",
+            ":IELTSCertificate",
+            ":JLPTCertificate",
+            ":JPTCertificate",
+            ":KLPTCertificate",
+            ":LinguaskillCertificate",
+            ":MOSCertificate",
+            ":TCFCertificate",
+            ":TOCFLCertificate",
+            ":TOEFLIBTCertificate",
+            ":TOEICCertificate",
+            ":TOPIKCertificate",
+            ":TRKICertificate"
+          ],
+          "missing_train": []
+        }
+      },
+      "class-size-table": {},
+      "course-type-facts": {
+        "anchor": {
+          "declared": [
+            ":CompulsoryCourseType",
+            ":ConditionCourseType",
+            ":CorequisiteCourseType",
+            ":ElectiveCourseType",
+            ":EquivalentCourseType",
+            ":OptionalCourseType",
+            ":PrerequisiteCourseType",
+            ":PriorCourseType",
+            ":ReplacementCourseType"
+          ],
+          "seen_train": [
+            ":CompulsoryCourseType",
+            ":ConditionCourseType",
+            ":CorequisiteCourseType",
+            ":ElectiveCourseType",
+            ":EquivalentCourseType",
+            ":OptionalCourseType",
+            ":PrerequisiteCourseType",
+            ":PriorCourseType",
+            ":ReplacementCourseType"
+          ],
+          "missing_train": []
+        }
+      },
+      "credit-load-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":StandardCreditLoadRule",
+            ":WeakCreditLoadRule"
+          ],
+          "seen_train": [
+            ":StandardCreditLoadRule",
+            ":WeakCreditLoadRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "credit-transfer-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":ExchangeCreditLimitRule",
+            ":TransferValidityRule",
+            ":TransferVolumeLimitRule"
+          ],
+          "seen_train": [
+            ":ExchangeCreditLimitRule",
+            ":TransferValidityRule",
+            ":TransferVolumeLimitRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "delivery-mode-facts": {
+        "anchor": {
+          "declared": [
+            ":AsynchronousOnlineDelivery",
+            ":SynchronousOnlineDelivery"
+          ],
+          "seen_train": [
+            ":AsynchronousOnlineDelivery",
+            ":SynchronousOnlineDelivery"
+          ],
+          "missing_train": []
+        }
+      },
+      "discipline-group-facts": {
+        "anchor": {
+          "declared": [
+            ":DisciplineGroupIII",
+            ":DisciplineGroupIV",
+            ":DisciplineGroupV",
+            ":DisciplineGroupVII"
+          ],
+          "seen_train": [
+            ":DisciplineGroupIII",
+            ":DisciplineGroupIV",
+            ":DisciplineGroupV",
+            ":DisciplineGroupVII"
+          ],
+          "missing_train": []
+        }
+      },
+      "dismissal-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":ExceededDurationDismissalRule",
+            ":RepeatedWarningDismissalRule"
+          ],
+          "seen_train": [
+            ":ExceededDurationDismissalRule",
+            ":RepeatedWarningDismissalRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "document-part-facts": {
+        "anchor": {
+          "declared": [
+            ":Decision1052Article01",
+            ":Decision1052Article02",
+            ":Decision1052Article03",
+            ":Decision1965Article01",
+            ":Decision1965Article02",
+            ":Decision1965Article03",
+            ":Decision317Article01",
+            ":Decision317Article02",
+            ":Decision317Article03",
+            ":Decision626Article01",
+            ":Decision626Article02",
+            ":Decision626Article03",
+            ":Decision729AppendixII",
+            ":OrganizationStructureListing",
+            ":Regulation1052Appendix1",
+            ":Regulation1052Appendix2",
+            ":Regulation1052Appendix3",
+            ":Regulation1052Article01",
+            ":Regulation1052Article01Clause01",
+            ":Regulation1052Article01Clause02",
+            ":Regulation1052Article02",
+            ":Regulation1052Article02Clause01",
+            ":Regulation1052Article02Clause02",
+            ":Regulation1052Article02Clause03",
+            ":Regulation1052Article02Clause04",
+            ":Regulation1052Article02Clause04PointA",
+            ":Regulation1052Article02Clause04PointB",
+            ":Regulation1052Article02Clause04PointC",
+            ":Regulation1052Article02Clause04PointD",
+            ":Regulation1052Article03",
+            ":Regulation1052Article03Clause01",
+            ":Regulation1052Article03Clause02",
+            ":Regulation1052Article03Clause03",
+            ":Regulation1052Article04",
+            ":Regulation1052Article04Clause01",
+            ":Regulation1052Article04Clause01PointA",
+            ":Regulation1052Article04Clause01PointB",
+            ":Regulation1052Article04Clause01PointC",
+            ":Regulation1052Article04Clause02",
+            ":Regulation1052Article04Clause02PointA",
+            ":Regulation1052Article04Clause02PointB",
+            ":Regulation1052Article05",
+            ":Regulation1052Article05Clause01",
+            ":Regulation1052Article05Clause02",
+            ":Regulation1052Article06",
+            ":Regulation1052Article06Clause01",
+            ":Regulation1052Article06Clause02",
+            ":Regulation1052Article06Clause02PointA",
+            ":Regulation1052Article06Clause02PointB",
+            ":Regulation1052Article06Clause02PointC",
+            ":Regulation1052Article06Clause02PointD",
+            ":Regulation1052Article06Clause02PointDD",
+            ":Regulation1052Article06Clause02PointE",
+            ":Regulation1052Article06Clause02PointG",
+            ":Regulation1052Article06Clause02PointH",
+            ":Regulation1052Article06Clause02PointI",
+            ":Regulation1052Article07",
+            ":Regulation1052Article07Clause01",
+            ":Regulation1052Article07Clause02",
+            ":Regulation1052Article07Clause02PointA",
+            ":Regulation1052Article07Clause02PointB",
+            ":Regulation1052Article07Clause03",
+            ":Regulation1052Article07Clause03PointA",
+            ":Regulation1052Article07Clause03PointB",
+            ":Regulation1052Article08",
+            ":Regulation1052Article08Clause01",
+            ":Regulation1052Article08Clause01PointA",
+            ":Regulation1052Article08Clause01PointB",
+            ":Regulation1052Article08Clause01PointC",
+            ":Regulation1052Article08Clause01PointD",
+            ":Regulation1052Article08Clause01PointDD",
+            ":Regulation1052Article08Clause01PointE",
+            ":Regulation1052Article08Clause02",
+            ":Regulation1052Article08Clause02PointA",
+            ":Regulation1052Article08Clause02PointB",
+            ":Regulation1052Article08Clause02PointC",
+            ":Regulation1052Article08Clause02PointD",
+            ":Regulation1052Article08Clause02PointE",
+            ":Regulation1052Article09",
+            ":Regulation1052Article09Clause01",
+            ":Regulation1052Article09Clause01PointA",
+            ":Regulation1052Article09Clause01PointB",
+            ":Regulation1052Article09Clause02",
+            ":Regulation1052Article09Clause02PointA",
+            ":Regulation1052Article09Clause02PointB",
+            ":Regulation1052Article09Clause02PointC",
+            ":Regulation1052Article09Clause02PointD",
+            ":Regulation1052Article09Clause03",
+            ":Regulation1052Article09Clause04",
+            ":Regulation1052Article09Clause05",
+            ":Regulation1052Article10",
+            ":Regulation1052Article10Clause01",
+            ":Regulation1052Article10Clause02",
+            ":Regulation1052Article11",
+            ":Regulation1052Article11Clause01",
+            ":Regulation1052Article11Clause02",
+            ":Regulation1052Article11Clause03",
+            ":Regulation1052Article11Clause04",
+            ":Regulation1052Article12",
+            ":Regulation1052Article12Clause01",
+            ":Regulation1052Article12Clause02",
+            ":Regulation1052Article12Clause02PointA",
+            ":Regulation1052Article12Clause02PointB",
+            ":Regulation1052Article12Clause02PointC",
+            ":Regulation1052Article12Clause02PointD",
+            ":Regulation1052Article12Clause02PointDD",
+            ":Regulation1052Article12Clause02PointE",
+            ":Regulation1052Article12Clause02PointG",
+            ":Regulation1052Article12Clause02PointH",
+            ":Regulation1052Article12Clause03",
+            ":Regulation1052Article12Clause03PointA",
+            ":Regulation1052Article12Clause03PointB",
+            ":Regulation1052Article12Clause03PointC",
+            ":Regulation1052Article12Clause04",
+            ":Regulation1052Article13",
+            ":Regulation1052Article13Clause01",
+            ":Regulation1052Article13Clause02",
+            ":Regulation1052Article13Clause03",
+            ":Regulation1052Article13Clause03PointA",
+            ":Regulation1052Article13Clause03PointB",
+            ":Regulation1052Article14",
+            ":Regulation1052Article14Clause01",
+            ":Regulation1052Article14Clause02",
+            ":Regulation1052Article14Clause03",
+            ":Regulation1052Article14Clause04",
+            ":Regulation1052Article14Clause05",
+            ":Regulation1052Article15",
+            ":Regulation1052Article15Clause01",
+            ":Regulation1052Article15Clause02",
+            ":Regulation1052Article15Clause02PointA",
+            ":Regulation1052Article15Clause02PointB",
+            ":Regulation1052Article15Clause02PointC",
+            ":Regulation1052Article15Clause03",
+            ":Regulation1052Article16",
+            ":Regulation1052Article16Clause01",
+            ":Regulation1052Article16Clause02",
+            ":Regulation1052Article16Clause02PointA",
+            ":Regulation1052Article16Clause02PointB",
+            ":Regulation1052Article16Clause02PointC",
+            ":Regulation1052Article16Clause03",
+            ":Regulation1052Article17",
+            ":Regulation1052Article17Clause01",
+            ":Regulation1052Article17Clause01PointA",
+            ":Regulation1052Article17Clause01PointB",
+            ":Regulation1052Article17Clause02",
+            ":Regulation1052Article17Clause03",
+            ":Regulation1052Article17Clause04",
+            ":Regulation1052Article18",
+            ":Regulation1052Article18Clause01",
+            ":Regulation1052Article18Clause02",
+            ":Regulation1052Article18Clause03",
+            ":Regulation1052Article19",
+            ":Regulation1052Article19Clause01",
+            ":Regulation1052Article19Clause02",
+            ":Regulation1052Article19Clause03",
+            ":Regulation1052Article19Clause03PointA",
+            ":Regulation1052Article19Clause03PointB",
+            ":Regulation1052Article19Clause03PointC",
+            ":Regulation1052Article19Clause03PointD",
+            ":Regulation1052Article20",
+            ":Regulation1052Article20Clause01",
+            ":Regulation1052Article20Clause01PointA",
+            ":Regulation1052Article20Clause01PointB",
+            ":Regulation1052Article20Clause01PointC",
+            ":Regulation1052Article20Clause02",
+            ":Regulation1052Article20Clause02PointA",
+            ":Regulation1052Article20Clause02PointB",
+            ":Regulation1052Article20Clause03",
+            ":Regulation1052Article21",
+            ":Regulation1052Article21Clause01",
+            ":Regulation1052Article21Clause02",
+            ":Regulation1052Article21Clause03",
+            ":Regulation1052Article21Clause03PointA",
+            ":Regulation1052Article21Clause03PointB",
+            ":Regulation1052Article21Clause03PointC",
+            ":Regulation1052Article21Clause04",
+            ":Regulation1052Article21Clause05",
+            ":Regulation1052Article21Clause05PointA",
+            ":Regulation1052Article21Clause05PointB",
+            ":Regulation1052Article21Clause05PointC",
+            ":Regulation1052Article21Clause05PointD",
+            ":Regulation1052Article21Clause06",
+            ":Regulation1052Article21Clause07",
+            ":Regulation1052Article22",
+            ":Regulation1052Article22Clause01",
+            ":Regulation1052Article22Clause01PointA",
+            ":Regulation1052Article22Clause01PointB",
+            ":Regulation1052Article22Clause01PointC",
+            ":Regulation1052Article22Clause01PointD",
+            ":Regulation1052Article22Clause01PointDD",
+            ":Regulation1052Article22Clause01PointE",
+            ":Regulation1052Article22Clause02",
+            ":Regulation1052Article22Clause03",
+            ":Regulation1052Article22Clause04",
+            ":Regulation1052Article22Clause05",
+            ":Regulation1052Article22Clause06",
+            ":Regulation1052Article22Clause07",
+            ":Regulation1052Article22Clause08",
+            ":Regulation1052Article23",
+            ":Regulation1052Article23Clause01",
+            ":Regulation1052Article23Clause02",
+            ":Regulation1052Article23Clause03",
+            ":Regulation1052Article23Clause03PointA",
+            ":Regulation1052Article23Clause03PointB",
+            ":Regulation1052Article23Clause04",
+            ":Regulation1052Article24",
+            ":Regulation1052Article24Clause01",
+            ":Regulation1052Article24Clause01PointA",
+            ":Regulation1052Article24Clause01PointB",
+            ":Regulation1052Article24Clause01PointC",
+            ":Regulation1052Article24Clause01PointD",
+            ":Regulation1052Article24Clause02",
+            ":Regulation1052Article24Clause03",
+            ":Regulation1052Article25",
+            ":Regulation1052Article25Clause01",
+            ":Regulation1052Article25Clause01PointA",
+            ":Regulation1052Article25Clause01PointB",
+            ":Regulation1052Article25Clause01PointC",
+            ":Regulation1052Article25Clause01PointD",
+            ":Regulation1052Article25Clause02",
+            ":Regulation1052Article25Clause03",
+            ":Regulation1052Article25Clause04",
+            ":Regulation1052Article25Clause05",
+            ":Regulation1052Article26",
+            ":Regulation1052Article26Clause01",
+            ":Regulation1052Article26Clause01PointA",
+            ":Regulation1052Article26Clause01PointB",
+            ":Regulation1052Article26Clause01PointC",
+            ":Regulation1052Article26Clause01PointD",
+            ":Regulation1052Article26Clause02",
+            ":Regulation1052Article26Clause02PointA",
+            ":Regulation1052Article26Clause02PointB",
+            ":Regulation1052Article26Clause03",
+            ":Regulation1052Article27",
+            ":Regulation1052Article27Clause01",
+            ":Regulation1052Article27Clause02",
+            ":Regulation1052Article27Clause03",
+            ":Regulation1052Article27Clause03PointA",
+            ":Regulation1052Article27Clause03PointB",
+            ":Regulation1052Article27Clause04",
+            ":Regulation1052Article27Clause04PointA",
+            ":Regulation1052Article27Clause04PointB",
+            ":Regulation1052Article27Clause05",
+            ":Regulation1052Article28",
+            ":Regulation1052Article28Clause01",
+            ":Regulation1052Article28Clause01PointA",
+            ":Regulation1052Article28Clause01PointB",
+            ":Regulation1052Article28Clause02",
+            ":Regulation1052Article28Clause03",
+            ":Regulation1052Article28Clause03PointA",
+            ":Regulation1052Article28Clause03PointB",
+            ":Regulation1052Article28Clause03PointC",
+            ":Regulation1052Article28Clause03PointD",
+            ":Regulation1052Article28Clause04",
+            ":Regulation1052Article28Clause05",
+            ":Regulation1052Article28Clause06",
+            ":Regulation1052Article29",
+            ":Regulation1052Article29Clause01",
+            ":Regulation1052Article29Clause02",
+            ":Regulation1052Article29Clause03",
+            ":Regulation1052Article30",
+            ":Regulation1052Article30Clause01",
+            ":Regulation1052Article30Clause02",
+            ":Regulation1052Article31",
+            ":Regulation1052Article32",
+            ":Regulation1052Article32Clause01",
+            ":Regulation1052Article32Clause02",
+            ":Regulation1052Article32Clause03",
+            ":Regulation1052ChapterI",
+            ":Regulation1052ChapterII",
+            ":Regulation1052ChapterIII",
+            ":Regulation1052ChapterIV",
+            ":Regulation1052ChapterV",
+            ":Regulation626AppendixI",
+            ":Regulation626AppendixII",
+            ":Regulation626AppendixIII",
+            ":Regulation626AppendixIV",
+            ":Regulation626AppendixV",
+            ":Regulation626Article01",
+            ":Regulation626Article02",
+            ":Regulation626Article03",
+            ":Regulation626Article04",
+            ":Regulation626Article05",
+            ":Regulation626Article06",
+            ":Regulation626Article07",
+            ":Regulation626Article08",
+            ":Regulation626Article09",
+            ":Regulation626Article10",
+            ":Regulation626Article11",
+            ":Regulation626Article12",
+            ":Regulation626Article13",
+            ":Regulation626Article14",
+            ":Regulation626Article15",
+            ":Regulation626Article16",
+            ":Regulation626Article17",
+            ":Regulation626Article18",
+            ":Regulation626Article19",
+            ":Regulation626Article20",
+            ":Regulation626Article21",
+            ":Regulation626Article22",
+            ":Regulation626Article23",
+            ":Regulation626Article24",
+            ":Regulation626Article25",
+            ":Regulation626ChapterI",
+            ":Regulation626ChapterII",
+            ":Regulation626ChapterIII",
+            ":Regulation626ChapterIV",
+            ":Regulation753Article10",
+            ":Regulation753Article10Clause01",
+            ":Regulation753Article10Clause02",
+            ":Regulation753Article10Clause03",
+            ":ScholarshipAnnouncementSection",
+            ":ScholarshipCriteriaGeneralSection",
+            ":ScholarshipCriteriaSpecificSection",
+            ":TuitionPaymentGuidanceIntro",
+            ":TuitionPaymentGuidanceSection01",
+            ":TuitionPaymentGuidanceSection02",
+            ":TuitionPaymentGuidanceSection03",
+            ":UndergraduateFormCatalogueListing",
+            ":VNPAYPaymentGuidanceOtherBankNote",
+            ":VNPAYPaymentGuidanceVietcombankNote"
+          ],
+          "seen_train": [
+            ":Decision1052Article01",
+            ":Decision1052Article02",
+            ":Decision1052Article03",
+            ":Decision1965Article01",
+            ":Decision1965Article02",
+            ":Decision1965Article03",
+            ":Decision317Article01",
+            ":Decision317Article02",
+            ":Decision317Article03",
+            ":Decision626Article01",
+            ":Decision626Article02",
+            ":Decision626Article03",
+            ":Decision729AppendixII",
+            ":OrganizationStructureListing",
+            ":Regulation1052Appendix1",
+            ":Regulation1052Appendix2",
+            ":Regulation1052Appendix3",
+            ":Regulation1052Article01",
+            ":Regulation1052Article01Clause01",
+            ":Regulation1052Article01Clause02",
+            ":Regulation1052Article02",
+            ":Regulation1052Article02Clause01",
+            ":Regulation1052Article02Clause02",
+            ":Regulation1052Article02Clause03",
+            ":Regulation1052Article02Clause04",
+            ":Regulation1052Article02Clause04PointA",
+            ":Regulation1052Article02Clause04PointB",
+            ":Regulation1052Article02Clause04PointC",
+            ":Regulation1052Article02Clause04PointD",
+            ":Regulation1052Article03",
+            ":Regulation1052Article03Clause01",
+            ":Regulation1052Article03Clause02",
+            ":Regulation1052Article03Clause03",
+            ":Regulation1052Article04",
+            ":Regulation1052Article04Clause01",
+            ":Regulation1052Article04Clause01PointA",
+            ":Regulation1052Article04Clause01PointB",
+            ":Regulation1052Article04Clause01PointC",
+            ":Regulation1052Article04Clause02",
+            ":Regulation1052Article04Clause02PointA",
+            ":Regulation1052Article04Clause02PointB",
+            ":Regulation1052Article05",
+            ":Regulation1052Article05Clause01",
+            ":Regulation1052Article05Clause02",
+            ":Regulation1052Article06",
+            ":Regulation1052Article06Clause01",
+            ":Regulation1052Article06Clause02",
+            ":Regulation1052Article06Clause02PointA",
+            ":Regulation1052Article06Clause02PointB",
+            ":Regulation1052Article06Clause02PointC",
+            ":Regulation1052Article06Clause02PointD",
+            ":Regulation1052Article06Clause02PointDD",
+            ":Regulation1052Article06Clause02PointE",
+            ":Regulation1052Article06Clause02PointG",
+            ":Regulation1052Article06Clause02PointH",
+            ":Regulation1052Article06Clause02PointI",
+            ":Regulation1052Article07",
+            ":Regulation1052Article07Clause01",
+            ":Regulation1052Article07Clause02",
+            ":Regulation1052Article07Clause02PointA",
+            ":Regulation1052Article07Clause02PointB",
+            ":Regulation1052Article07Clause03",
+            ":Regulation1052Article07Clause03PointA",
+            ":Regulation1052Article07Clause03PointB",
+            ":Regulation1052Article08",
+            ":Regulation1052Article08Clause01",
+            ":Regulation1052Article08Clause01PointA",
+            ":Regulation1052Article08Clause01PointB",
+            ":Regulation1052Article08Clause01PointC",
+            ":Regulation1052Article08Clause01PointD",
+            ":Regulation1052Article08Clause01PointDD",
+            ":Regulation1052Article08Clause01PointE",
+            ":Regulation1052Article08Clause02",
+            ":Regulation1052Article08Clause02PointA",
+            ":Regulation1052Article08Clause02PointB",
+            ":Regulation1052Article08Clause02PointC",
+            ":Regulation1052Article08Clause02PointD",
+            ":Regulation1052Article08Clause02PointE",
+            ":Regulation1052Article09",
+            ":Regulation1052Article09Clause01",
+            ":Regulation1052Article09Clause01PointA",
+            ":Regulation1052Article09Clause01PointB",
+            ":Regulation1052Article09Clause02",
+            ":Regulation1052Article09Clause02PointA",
+            ":Regulation1052Article09Clause02PointB",
+            ":Regulation1052Article09Clause02PointC",
+            ":Regulation1052Article09Clause02PointD",
+            ":Regulation1052Article09Clause03",
+            ":Regulation1052Article09Clause04",
+            ":Regulation1052Article09Clause05",
+            ":Regulation1052Article10",
+            ":Regulation1052Article10Clause01",
+            ":Regulation1052Article10Clause02",
+            ":Regulation1052Article11",
+            ":Regulation1052Article11Clause01",
+            ":Regulation1052Article11Clause02",
+            ":Regulation1052Article11Clause03",
+            ":Regulation1052Article11Clause04",
+            ":Regulation1052Article12",
+            ":Regulation1052Article12Clause01",
+            ":Regulation1052Article12Clause02",
+            ":Regulation1052Article12Clause02PointA",
+            ":Regulation1052Article12Clause02PointB",
+            ":Regulation1052Article12Clause02PointC",
+            ":Regulation1052Article12Clause02PointD",
+            ":Regulation1052Article12Clause02PointDD",
+            ":Regulation1052Article12Clause02PointE",
+            ":Regulation1052Article12Clause02PointG",
+            ":Regulation1052Article12Clause02PointH",
+            ":Regulation1052Article12Clause03",
+            ":Regulation1052Article12Clause03PointA",
+            ":Regulation1052Article12Clause03PointB",
+            ":Regulation1052Article12Clause03PointC",
+            ":Regulation1052Article12Clause04",
+            ":Regulation1052Article13",
+            ":Regulation1052Article13Clause01",
+            ":Regulation1052Article13Clause02",
+            ":Regulation1052Article13Clause03",
+            ":Regulation1052Article13Clause03PointA",
+            ":Regulation1052Article13Clause03PointB",
+            ":Regulation1052Article14",
+            ":Regulation1052Article14Clause01",
+            ":Regulation1052Article14Clause02",
+            ":Regulation1052Article14Clause03",
+            ":Regulation1052Article14Clause04",
+            ":Regulation1052Article14Clause05",
+            ":Regulation1052Article15",
+            ":Regulation1052Article15Clause01",
+            ":Regulation1052Article15Clause02",
+            ":Regulation1052Article15Clause02PointA",
+            ":Regulation1052Article15Clause02PointB",
+            ":Regulation1052Article15Clause02PointC",
+            ":Regulation1052Article15Clause03",
+            ":Regulation1052Article16",
+            ":Regulation1052Article16Clause01",
+            ":Regulation1052Article16Clause02",
+            ":Regulation1052Article16Clause02PointA",
+            ":Regulation1052Article16Clause02PointB",
+            ":Regulation1052Article16Clause02PointC",
+            ":Regulation1052Article16Clause03",
+            ":Regulation1052Article17",
+            ":Regulation1052Article17Clause01",
+            ":Regulation1052Article17Clause01PointA",
+            ":Regulation1052Article17Clause01PointB",
+            ":Regulation1052Article17Clause02",
+            ":Regulation1052Article17Clause03",
+            ":Regulation1052Article17Clause04",
+            ":Regulation1052Article18",
+            ":Regulation1052Article18Clause01",
+            ":Regulation1052Article18Clause02",
+            ":Regulation1052Article18Clause03",
+            ":Regulation1052Article19",
+            ":Regulation1052Article19Clause01",
+            ":Regulation1052Article19Clause02",
+            ":Regulation1052Article19Clause03",
+            ":Regulation1052Article19Clause03PointA",
+            ":Regulation1052Article19Clause03PointB",
+            ":Regulation1052Article19Clause03PointC",
+            ":Regulation1052Article19Clause03PointD",
+            ":Regulation1052Article20",
+            ":Regulation1052Article20Clause01",
+            ":Regulation1052Article20Clause01PointA",
+            ":Regulation1052Article20Clause01PointB",
+            ":Regulation1052Article20Clause01PointC",
+            ":Regulation1052Article20Clause02",
+            ":Regulation1052Article20Clause02PointA",
+            ":Regulation1052Article20Clause02PointB",
+            ":Regulation1052Article20Clause03",
+            ":Regulation1052Article21",
+            ":Regulation1052Article21Clause01",
+            ":Regulation1052Article21Clause02",
+            ":Regulation1052Article21Clause03",
+            ":Regulation1052Article21Clause03PointA",
+            ":Regulation1052Article21Clause03PointB",
+            ":Regulation1052Article21Clause03PointC",
+            ":Regulation1052Article21Clause04",
+            ":Regulation1052Article21Clause05",
+            ":Regulation1052Article21Clause05PointA",
+            ":Regulation1052Article21Clause05PointB",
+            ":Regulation1052Article21Clause05PointC",
+            ":Regulation1052Article21Clause05PointD",
+            ":Regulation1052Article21Clause06",
+            ":Regulation1052Article21Clause07",
+            ":Regulation1052Article22",
+            ":Regulation1052Article22Clause01",
+            ":Regulation1052Article22Clause01PointA",
+            ":Regulation1052Article22Clause01PointB",
+            ":Regulation1052Article22Clause01PointC",
+            ":Regulation1052Article22Clause01PointD",
+            ":Regulation1052Article22Clause01PointDD",
+            ":Regulation1052Article22Clause01PointE",
+            ":Regulation1052Article22Clause02",
+            ":Regulation1052Article22Clause03",
+            ":Regulation1052Article22Clause04",
+            ":Regulation1052Article22Clause05",
+            ":Regulation1052Article22Clause06",
+            ":Regulation1052Article22Clause07",
+            ":Regulation1052Article22Clause08",
+            ":Regulation1052Article23",
+            ":Regulation1052Article23Clause01",
+            ":Regulation1052Article23Clause02",
+            ":Regulation1052Article23Clause03",
+            ":Regulation1052Article23Clause03PointA",
+            ":Regulation1052Article23Clause03PointB",
+            ":Regulation1052Article23Clause04",
+            ":Regulation1052Article24",
+            ":Regulation1052Article24Clause01",
+            ":Regulation1052Article24Clause01PointA",
+            ":Regulation1052Article24Clause01PointB",
+            ":Regulation1052Article24Clause01PointC",
+            ":Regulation1052Article24Clause01PointD",
+            ":Regulation1052Article24Clause02",
+            ":Regulation1052Article24Clause03",
+            ":Regulation1052Article25",
+            ":Regulation1052Article25Clause01",
+            ":Regulation1052Article25Clause01PointA",
+            ":Regulation1052Article25Clause01PointB",
+            ":Regulation1052Article25Clause01PointC",
+            ":Regulation1052Article25Clause01PointD",
+            ":Regulation1052Article25Clause02",
+            ":Regulation1052Article25Clause03",
+            ":Regulation1052Article25Clause04",
+            ":Regulation1052Article25Clause05",
+            ":Regulation1052Article26",
+            ":Regulation1052Article26Clause01",
+            ":Regulation1052Article26Clause01PointA",
+            ":Regulation1052Article26Clause01PointB",
+            ":Regulation1052Article26Clause01PointC",
+            ":Regulation1052Article26Clause01PointD",
+            ":Regulation1052Article26Clause02",
+            ":Regulation1052Article26Clause02PointA",
+            ":Regulation1052Article26Clause02PointB",
+            ":Regulation1052Article26Clause03",
+            ":Regulation1052Article27",
+            ":Regulation1052Article27Clause01",
+            ":Regulation1052Article27Clause02",
+            ":Regulation1052Article27Clause03",
+            ":Regulation1052Article27Clause03PointA",
+            ":Regulation1052Article27Clause03PointB",
+            ":Regulation1052Article27Clause04",
+            ":Regulation1052Article27Clause04PointA",
+            ":Regulation1052Article27Clause04PointB",
+            ":Regulation1052Article27Clause05",
+            ":Regulation1052Article28",
+            ":Regulation1052Article28Clause01",
+            ":Regulation1052Article28Clause01PointA",
+            ":Regulation1052Article28Clause01PointB",
+            ":Regulation1052Article28Clause02",
+            ":Regulation1052Article28Clause03",
+            ":Regulation1052Article28Clause03PointA",
+            ":Regulation1052Article28Clause03PointB",
+            ":Regulation1052Article28Clause03PointC",
+            ":Regulation1052Article28Clause03PointD",
+            ":Regulation1052Article28Clause04",
+            ":Regulation1052Article28Clause05",
+            ":Regulation1052Article28Clause06",
+            ":Regulation1052Article29",
+            ":Regulation1052Article29Clause01",
+            ":Regulation1052Article29Clause02",
+            ":Regulation1052Article29Clause03",
+            ":Regulation1052Article30",
+            ":Regulation1052Article30Clause01",
+            ":Regulation1052Article30Clause02",
+            ":Regulation1052Article31",
+            ":Regulation1052Article32",
+            ":Regulation1052Article32Clause01",
+            ":Regulation1052Article32Clause02",
+            ":Regulation1052Article32Clause03",
+            ":Regulation1052ChapterI",
+            ":Regulation1052ChapterII",
+            ":Regulation1052ChapterIII",
+            ":Regulation1052ChapterIV",
+            ":Regulation1052ChapterV",
+            ":Regulation626AppendixI",
+            ":Regulation626AppendixII",
+            ":Regulation626AppendixIII",
+            ":Regulation626AppendixIV",
+            ":Regulation626AppendixV",
+            ":Regulation626Article01",
+            ":Regulation626Article02",
+            ":Regulation626Article03",
+            ":Regulation626Article04",
+            ":Regulation626Article05",
+            ":Regulation626Article06",
+            ":Regulation626Article07",
+            ":Regulation626Article08",
+            ":Regulation626Article09",
+            ":Regulation626Article10",
+            ":Regulation626Article11",
+            ":Regulation626Article12",
+            ":Regulation626Article13",
+            ":Regulation626Article14",
+            ":Regulation626Article15",
+            ":Regulation626Article16",
+            ":Regulation626Article17",
+            ":Regulation626Article18",
+            ":Regulation626Article19",
+            ":Regulation626Article20",
+            ":Regulation626Article21",
+            ":Regulation626Article22",
+            ":Regulation626Article23",
+            ":Regulation626Article24",
+            ":Regulation626Article25",
+            ":Regulation626ChapterI",
+            ":Regulation626ChapterII",
+            ":Regulation626ChapterIII",
+            ":Regulation626ChapterIV",
+            ":Regulation753Article10",
+            ":Regulation753Article10Clause01",
+            ":Regulation753Article10Clause02",
+            ":Regulation753Article10Clause03",
+            ":ScholarshipAnnouncementSection",
+            ":ScholarshipCriteriaGeneralSection",
+            ":ScholarshipCriteriaSpecificSection",
+            ":TuitionPaymentGuidanceIntro",
+            ":TuitionPaymentGuidanceSection01",
+            ":TuitionPaymentGuidanceSection02",
+            ":TuitionPaymentGuidanceSection03",
+            ":UndergraduateFormCatalogueListing",
+            ":VNPAYPaymentGuidanceOtherBankNote",
+            ":VNPAYPaymentGuidanceVietcombankNote"
+          ],
+          "missing_train": []
+        }
+      },
+      "education-level-facts": {
+        "anchor": {
+          "declared": [
+            ":UndergraduateLevel"
+          ],
+          "seen_train": [
+            ":UndergraduateLevel"
+          ],
+          "missing_train": []
+        }
+      },
+      "form-catalogue-entry-facts": {
+        "anchor": {
+          "declared": [
+            ":FormCatalogueEntry001",
+            ":FormCatalogueEntry002",
+            ":FormCatalogueEntry003",
+            ":FormCatalogueEntry004",
+            ":FormCatalogueEntry005",
+            ":FormCatalogueEntry006",
+            ":FormCatalogueEntry007",
+            ":FormCatalogueEntry008",
+            ":FormCatalogueEntry009",
+            ":FormCatalogueEntry010",
+            ":FormCatalogueEntry011",
+            ":FormCatalogueEntry012",
+            ":FormCatalogueEntry013",
+            ":FormCatalogueEntry014",
+            ":FormCatalogueEntry015",
+            ":FormCatalogueEntry016",
+            ":FormCatalogueEntry017",
+            ":FormCatalogueEntry018",
+            ":FormCatalogueEntry019"
+          ],
+          "seen_train": [
+            ":FormCatalogueEntry001",
+            ":FormCatalogueEntry002",
+            ":FormCatalogueEntry003",
+            ":FormCatalogueEntry004",
+            ":FormCatalogueEntry005",
+            ":FormCatalogueEntry006",
+            ":FormCatalogueEntry007",
+            ":FormCatalogueEntry008",
+            ":FormCatalogueEntry009",
+            ":FormCatalogueEntry010",
+            ":FormCatalogueEntry011",
+            ":FormCatalogueEntry012",
+            ":FormCatalogueEntry013",
+            ":FormCatalogueEntry014",
+            ":FormCatalogueEntry015",
+            ":FormCatalogueEntry016",
+            ":FormCatalogueEntry017",
+            ":FormCatalogueEntry018",
+            ":FormCatalogueEntry019"
+          ],
+          "missing_train": []
+        }
+      },
+      "form-document-facts": {
+        "anchor": {
+          "declared": [
+            ":Form01ExtraClassOpening",
+            ":Form02CourseAdjustment",
+            ":Form02GraduationProject",
+            ":Form03ClassAbsence",
+            ":Form04ExamPostponement",
+            ":Form05ProgramTransfer",
+            ":Form06CreditRecognition",
+            ":Form07ExemptionAndBonus",
+            ":Form08EarlyGraduation",
+            ":Form09TemporaryLeave",
+            ":Form10Withdrawal",
+            ":Form11Resumption",
+            ":Form12MajorChange",
+            ":Form13UniversityTransfer",
+            ":Form14StudentExchange",
+            ":Form15SecondProgram"
+          ],
+          "seen_train": [
+            ":Form01ExtraClassOpening",
+            ":Form02CourseAdjustment",
+            ":Form02GraduationProject",
+            ":Form03ClassAbsence",
+            ":Form04ExamPostponement",
+            ":Form05ProgramTransfer",
+            ":Form06CreditRecognition",
+            ":Form07ExemptionAndBonus",
+            ":Form08EarlyGraduation",
+            ":Form09TemporaryLeave",
+            ":Form10Withdrawal",
+            ":Form11Resumption",
+            ":Form12MajorChange",
+            ":Form13UniversityTransfer",
+            ":Form14StudentExchange",
+            ":Form15SecondProgram"
+          ],
+          "missing_train": []
+        }
+      },
+      "grade-code-facts": {
+        "anchor": {
+          "declared": [
+            ":GradeI",
+            ":GradeP",
+            ":GradeR",
+            ":GradeX"
+          ],
+          "seen_train": [
+            ":GradeI",
+            ":GradeP",
+            ":GradeR",
+            ":GradeX"
+          ],
+          "missing_train": []
+        }
+      },
+      "graduation-classification-table": {},
+      "graduation-honours-penalty-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":DisciplineHonoursPenalty",
+            ":RetakeVolumeHonoursPenalty"
+          ],
+          "seen_train": [
+            ":DisciplineHonoursPenalty",
+            ":RetakeVolumeHonoursPenalty"
+          ],
+          "missing_train": []
+        }
+      },
+      "language-course-assessment-table": {},
+      "language-course-classification-table": {},
+      "language-course-facts": {
+        "anchor": {
+          "declared": [
+            ":LanguageCourseA1",
+            ":LanguageCourseA21",
+            ":LanguageCourseA22",
+            ":LanguageCourseB11",
+            ":LanguageCourseB12",
+            ":LanguageCourseB21",
+            ":LanguageCourseB22"
+          ],
+          "seen_train": [
+            ":LanguageCourseA1",
+            ":LanguageCourseA21",
+            ":LanguageCourseA22",
+            ":LanguageCourseB11",
+            ":LanguageCourseB12",
+            ":LanguageCourseB21",
+            ":LanguageCourseB22"
+          ],
+          "missing_train": []
+        }
+      },
+      "no-information": {},
+      "official-document-facts": {
+        "anchor": {
+          "declared": [
+            ":AdmissionsLookupPage",
+            ":Decision1052",
+            ":Decision1965",
+            ":Decision317",
+            ":Decision626",
+            ":Decision729",
+            ":Decision753",
+            ":OrganizationStructurePage",
+            ":Regulation1052",
+            ":Regulation626",
+            ":Regulation753",
+            ":ScholarshipAnnouncementGuidance",
+            ":ScholarshipCriteriaGuidance",
+            ":TuitionLookupPage",
+            ":TuitionPaymentGuidance",
+            ":UndergraduateFormCatalogue",
+            ":VNPAYPaymentGuidance"
+          ],
+          "seen_train": [
+            ":AdmissionsLookupPage",
+            ":Decision1052",
+            ":Decision1965",
+            ":Decision317",
+            ":Decision626",
+            ":Decision729",
+            ":Decision753",
+            ":OrganizationStructurePage",
+            ":Regulation1052",
+            ":Regulation626",
+            ":Regulation753",
+            ":ScholarshipAnnouncementGuidance",
+            ":ScholarshipCriteriaGuidance",
+            ":TuitionLookupPage",
+            ":TuitionPaymentGuidance",
+            ":UndergraduateFormCatalogue",
+            ":VNPAYPaymentGuidance"
+          ],
+          "missing_train": []
+        }
+      },
+      "online-training-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":OnlineTrainingProportionRule"
+          ],
+          "seen_train": [
+            ":OnlineTrainingProportionRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "organizational-unit-facts": {
+        "anchor": {
+          "declared": [
+            ":AcademicManagementUnit",
+            ":Department",
+            ":FacultyOrInstitute",
+            ":StudentAffairsOffice",
+            ":University"
+          ],
+          "seen_train": [
+            ":AcademicManagementUnit",
+            ":Department",
+            ":FacultyOrInstitute",
+            ":StudentAffairsOffice",
+            ":University"
+          ],
+          "missing_train": []
+        }
+      },
+      "payment-fee-by-method": {
+        "phuongthuc": {
+          "declared": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "seen_train": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "missing_train": []
+        }
+      },
+      "payment-method-facts": {
+        "anchor": {
+          "declared": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "seen_train": [
+            ":CashAtBankCounterPayment",
+            ":MobileOrInternetBankingPayment",
+            ":QRCodePayment",
+            ":VNPAYPayment"
+          ],
+          "missing_train": []
+        }
+      },
+      "scholarship-rate-facts": {
+        "anchor": {
+          "declared": [
+            ":ExcellentSpecialScholarshipRate",
+            ":ExcellentStandardScholarshipRate",
+            ":FairSpecialScholarshipRate",
+            ":FairStandardScholarshipRate",
+            ":GoodSpecialScholarshipRate",
+            ":GoodStandardScholarshipRate"
+          ],
+          "seen_train": [
+            ":ExcellentSpecialScholarshipRate",
+            ":ExcellentStandardScholarshipRate",
+            ":FairSpecialScholarshipRate",
+            ":FairStandardScholarshipRate",
+            ":GoodSpecialScholarshipRate",
+            ":GoodStandardScholarshipRate"
+          ],
+          "missing_train": []
+        }
+      },
+      "scholarship-rate-table-special-program": {},
+      "scholarship-rate-table-standard-program": {},
+      "semester-type-facts": {
+        "anchor": {
+          "declared": [
+            ":MainSemester",
+            ":SummerSemester"
+          ],
+          "seen_train": [
+            ":MainSemester",
+            ":SummerSemester"
+          ],
+          "missing_train": []
+        }
+      },
+      "study-duration-rule-facts": {
+        "anchor": {
+          "declared": [
+            ":MaximumStudyDurationRule",
+            ":PartTimeDurationRule",
+            ":StandardBachelorDurationRule"
+          ],
+          "seen_train": [
+            ":MaximumStudyDurationRule",
+            ":PartTimeDurationRule",
+            ":StandardBachelorDurationRule"
+          ],
+          "missing_train": []
+        }
+      },
+      "study-year-classification-table": {},
+      "training-mode-facts": {
+        "anchor": {
+          "declared": [
+            ":FullTimeTrainingMode",
+            ":PartTimeTrainingMode"
+          ],
+          "seen_train": [
+            ":FullTimeTrainingMode",
+            ":PartTimeTrainingMode"
+          ],
+          "missing_train": []
+        }
+      }
+    },
+    "splits": {
+      "train": {
+        "records": 5518,
+        "queries": 50,
+        "targets": 567,
+        "query_counts": {
+          "academic-actor-facts": 189,
+          "academic-case-facts": 170,
+          "academic-concept-facts": 94,
+          "academic-performance-table": 40,
+          "academic-policy-facts": 45,
+          "academic-procedure-facts": 480,
+          "academic-program-catalogue-table": 45,
+          "academic-program-facts": 460,
+          "academic-rule-facts": 16,
+          "academic-warning-rule-facts": 34,
+          "assessment-component-facts": 29,
+          "attendance-rule-facts": 27,
+          "bank-facts": 50,
+          "billing-unit-facts": 26,
+          "certificate-catalogue-table": 43,
+          "certificate-conversion-table-english-language-major-student": 44,
+          "certificate-conversion-table-moi-doi-tuong": 42,
+          "certificate-conversion-table-special-program-non-language-major-student": 43,
+          "certificate-conversion-table-standard-program-non-language-major-student": 45,
+          "certificate-facts": 196,
+          "class-size-table": 42,
+          "course-type-facts": 77,
+          "credit-load-rule-facts": 18,
+          "credit-transfer-rule-facts": 27,
+          "delivery-mode-facts": 24,
+          "discipline-group-facts": 49,
+          "dismissal-rule-facts": 17,
+          "document-part-facts": 772,
+          "education-level-facts": 22,
+          "form-catalogue-entry-facts": 265,
+          "form-document-facts": 275,
+          "grade-code-facts": 38,
+          "graduation-classification-table": 44,
+          "graduation-honours-penalty-rule-facts": 15,
+          "language-course-assessment-table": 42,
+          "language-course-classification-table": 41,
+          "language-course-facts": 67,
+          "no-information": 773,
+          "official-document-facts": 231,
+          "online-training-rule-facts": 16,
+          "organizational-unit-facts": 192,
+          "payment-fee-by-method": 18,
+          "payment-method-facts": 46,
+          "scholarship-rate-facts": 56,
+          "scholarship-rate-table-special-program": 42,
+          "scholarship-rate-table-standard-program": 44,
+          "semester-type-facts": 35,
+          "study-duration-rule-facts": 37,
+          "study-year-classification-table": 43,
+          "training-mode-facts": 32
+        },
+        "register_counts": {
+          "colloquial": 1605,
+          "formal": 1186,
+          "neutral": 1442,
+          "noisy": 1285
+        },
+        "domains": {
+          "academic-rule": 1476,
+          "certificate": 413,
+          "document": 1003,
+          "form": 540,
+          "out-of-domain": 773,
+          "procedure": 1031,
+          "tuition": 282
+        },
+        "slot_values": {
+          "academic-actor-facts": {
+            "anchor": [
+              ":AcademicAdvisor",
+              ":CourseLecturer",
+              ":GraduationCouncil",
+              ":ProfessionalCouncil",
+              ":Student",
+              ":UniversityPresident"
+            ]
+          },
+          "academic-case-facts": {
+            "anchor": [
+              ":ArmedForcesCase",
+              ":IllnessCase",
+              ":InternationalCompetitionCase",
+              ":PersonalReasonCase"
+            ]
+          },
+          "academic-concept-facts": {
+            "anchor": [
+              ":AdministrativeClassConcept",
+              ":CourseClassConcept",
+              ":CourseSyllabusConcept",
+              ":CreditBasedTrainingConcept",
+              ":CreditConcept",
+              ":GradingScaleConcept",
+              ":RegulationScopeConcept"
+            ]
+          },
+          "academic-policy-facts": {
+            "anchor": [
+              ":AcademicDismissalPolicy",
+              ":AcademicMisconductPolicy",
+              ":AcademicWarningPolicy"
+            ]
+          },
+          "academic-procedure-facts": {
+            "anchor": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CourseWithdrawalProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
+              ":ScholarshipReviewProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
+            ]
+          },
+          "academic-program-facts": {
+            "anchor": [
+              ":Accounting",
+              ":Aquaculture",
+              ":Auditing",
+              ":AutomotiveEngineering",
+              ":Biotechnology",
+              ":BusinessAdministration",
+              ":ChemicalEngineering",
+              ":CivilEngineering",
+              ":CommercialBusiness",
+              ":ComputerScience",
+              ":ControlAndAutomationEngineering",
+              ":DevelopmentEconomics",
+              ":EconomicManagement",
+              ":Economics",
+              ":ElectricalEngineering",
+              ":EnglishLanguage",
+              ":EnvironmentalEngineering",
+              ":FinanceAndBanking",
+              ":FisheriesExploitation",
+              ":FisheriesManagement",
+              ":FisheriesScience",
+              ":FoodQualityAndSafetyAssurance",
+              ":FoodTechnology",
+              ":FrenchVietnameseBilingualTourismAndTravelServiceManagement",
+              ":HotelManagement",
+              ":InformationTechnology",
+              ":Law",
+              ":ManagementInformationSystems",
+              ":ManufacturingEngineering",
+              ":MarineEngineering",
+              ":MarineResourceEconomicsAndManagement",
+              ":MaritimeScience",
+              ":Marketing",
+              ":MechanicalEngineering",
+              ":MechatronicsEngineering",
+              ":NavalArchitecture",
+              ":PowerMechanicalEngineering",
+              ":SeafoodProcessingTechnology",
+              ":ThermalEngineering",
+              ":TourismAndTravelServiceManagement",
+              ":TransportationInfrastructureEngineering"
+            ]
+          },
+          "academic-rule-facts": {
+            "anchor": [
+              ":CreditWorkloadRule"
+            ]
+          },
+          "academic-warning-rule-facts": {
+            "anchor": [
+              ":CreditDebtWarningRule",
+              ":CumulativeAverageWarningRule",
+              ":SemesterAverageWarningRule"
+            ]
+          },
+          "assessment-component-facts": {
+            "anchor": [
+              ":ContinuousAssessment",
+              ":FinalAssessment"
+            ]
+          },
+          "attendance-rule-facts": {
+            "anchor": [
+              ":ExamAbsenceRule",
+              ":PracticeAttendanceRule",
+              ":TheoryAttendanceRule"
+            ]
+          },
+          "bank-facts": {
+            "anchor": [
+              ":Agribank",
+              ":LienVietPostBank",
+              ":VietinBank"
+            ]
+          },
+          "billing-unit-facts": {
+            "anchor": [
+              ":PerSemester"
+            ]
+          },
+          "certificate-facts": {
+            "anchor": [
+              ":AptisGeneralCertificate",
+              ":CambridgeEnglishScaleCertificate",
+              ":DELFCertificate",
+              ":HSKCertificate",
+              ":IC3Certificate",
+              ":ICDLCertificate",
+              ":IELTSCertificate",
+              ":JLPTCertificate",
+              ":JPTCertificate",
+              ":KLPTCertificate",
+              ":LinguaskillCertificate",
+              ":MOSCertificate",
+              ":TCFCertificate",
+              ":TOCFLCertificate",
+              ":TOEFLIBTCertificate",
+              ":TOEICCertificate",
+              ":TOPIKCertificate",
+              ":TRKICertificate"
+            ]
+          },
+          "course-type-facts": {
+            "anchor": [
+              ":CompulsoryCourseType",
+              ":ConditionCourseType",
+              ":CorequisiteCourseType",
+              ":ElectiveCourseType",
+              ":EquivalentCourseType",
+              ":OptionalCourseType",
+              ":PrerequisiteCourseType",
+              ":PriorCourseType",
+              ":ReplacementCourseType"
+            ]
+          },
+          "credit-load-rule-facts": {
+            "anchor": [
+              ":StandardCreditLoadRule",
+              ":WeakCreditLoadRule"
+            ]
+          },
+          "credit-transfer-rule-facts": {
+            "anchor": [
+              ":ExchangeCreditLimitRule",
+              ":TransferValidityRule",
+              ":TransferVolumeLimitRule"
+            ]
+          },
+          "delivery-mode-facts": {
+            "anchor": [
+              ":AsynchronousOnlineDelivery",
+              ":SynchronousOnlineDelivery"
+            ]
+          },
+          "discipline-group-facts": {
+            "anchor": [
+              ":DisciplineGroupIII",
+              ":DisciplineGroupIV",
+              ":DisciplineGroupV",
+              ":DisciplineGroupVII"
+            ]
+          },
+          "dismissal-rule-facts": {
+            "anchor": [
+              ":ExceededDurationDismissalRule",
+              ":RepeatedWarningDismissalRule"
+            ]
+          },
+          "document-part-facts": {
+            "anchor": [
+              ":Decision1052Article01",
+              ":Decision1052Article02",
+              ":Decision1052Article03",
+              ":Decision1965Article01",
+              ":Decision1965Article02",
+              ":Decision1965Article03",
+              ":Decision317Article01",
+              ":Decision317Article02",
+              ":Decision317Article03",
+              ":Decision626Article01",
+              ":Decision626Article02",
+              ":Decision626Article03",
+              ":Decision729AppendixII",
+              ":OrganizationStructureListing",
+              ":Regulation1052Appendix1",
+              ":Regulation1052Appendix2",
+              ":Regulation1052Appendix3",
+              ":Regulation1052Article01",
+              ":Regulation1052Article01Clause01",
+              ":Regulation1052Article01Clause02",
+              ":Regulation1052Article02",
+              ":Regulation1052Article02Clause01",
+              ":Regulation1052Article02Clause02",
+              ":Regulation1052Article02Clause03",
+              ":Regulation1052Article02Clause04",
+              ":Regulation1052Article02Clause04PointA",
+              ":Regulation1052Article02Clause04PointB",
+              ":Regulation1052Article02Clause04PointC",
+              ":Regulation1052Article02Clause04PointD",
+              ":Regulation1052Article03",
+              ":Regulation1052Article03Clause01",
+              ":Regulation1052Article03Clause02",
+              ":Regulation1052Article03Clause03",
+              ":Regulation1052Article04",
+              ":Regulation1052Article04Clause01",
+              ":Regulation1052Article04Clause01PointA",
+              ":Regulation1052Article04Clause01PointB",
+              ":Regulation1052Article04Clause01PointC",
+              ":Regulation1052Article04Clause02",
+              ":Regulation1052Article04Clause02PointA",
+              ":Regulation1052Article04Clause02PointB",
+              ":Regulation1052Article05",
+              ":Regulation1052Article05Clause01",
+              ":Regulation1052Article05Clause02",
+              ":Regulation1052Article06",
+              ":Regulation1052Article06Clause01",
+              ":Regulation1052Article06Clause02",
+              ":Regulation1052Article06Clause02PointA",
+              ":Regulation1052Article06Clause02PointB",
+              ":Regulation1052Article06Clause02PointC",
+              ":Regulation1052Article06Clause02PointD",
+              ":Regulation1052Article06Clause02PointDD",
+              ":Regulation1052Article06Clause02PointE",
+              ":Regulation1052Article06Clause02PointG",
+              ":Regulation1052Article06Clause02PointH",
+              ":Regulation1052Article06Clause02PointI",
+              ":Regulation1052Article07",
+              ":Regulation1052Article07Clause01",
+              ":Regulation1052Article07Clause02",
+              ":Regulation1052Article07Clause02PointA",
+              ":Regulation1052Article07Clause02PointB",
+              ":Regulation1052Article07Clause03",
+              ":Regulation1052Article07Clause03PointA",
+              ":Regulation1052Article07Clause03PointB",
+              ":Regulation1052Article08",
+              ":Regulation1052Article08Clause01",
+              ":Regulation1052Article08Clause01PointA",
+              ":Regulation1052Article08Clause01PointB",
+              ":Regulation1052Article08Clause01PointC",
+              ":Regulation1052Article08Clause01PointD",
+              ":Regulation1052Article08Clause01PointDD",
+              ":Regulation1052Article08Clause01PointE",
+              ":Regulation1052Article08Clause02",
+              ":Regulation1052Article08Clause02PointA",
+              ":Regulation1052Article08Clause02PointB",
+              ":Regulation1052Article08Clause02PointC",
+              ":Regulation1052Article08Clause02PointD",
+              ":Regulation1052Article08Clause02PointE",
+              ":Regulation1052Article09",
+              ":Regulation1052Article09Clause01",
+              ":Regulation1052Article09Clause01PointA",
+              ":Regulation1052Article09Clause01PointB",
+              ":Regulation1052Article09Clause02",
+              ":Regulation1052Article09Clause02PointA",
+              ":Regulation1052Article09Clause02PointB",
+              ":Regulation1052Article09Clause02PointC",
+              ":Regulation1052Article09Clause02PointD",
+              ":Regulation1052Article09Clause03",
+              ":Regulation1052Article09Clause04",
+              ":Regulation1052Article09Clause05",
+              ":Regulation1052Article10",
+              ":Regulation1052Article10Clause01",
+              ":Regulation1052Article10Clause02",
+              ":Regulation1052Article11",
+              ":Regulation1052Article11Clause01",
+              ":Regulation1052Article11Clause02",
+              ":Regulation1052Article11Clause03",
+              ":Regulation1052Article11Clause04",
+              ":Regulation1052Article12",
+              ":Regulation1052Article12Clause01",
+              ":Regulation1052Article12Clause02",
+              ":Regulation1052Article12Clause02PointA",
+              ":Regulation1052Article12Clause02PointB",
+              ":Regulation1052Article12Clause02PointC",
+              ":Regulation1052Article12Clause02PointD",
+              ":Regulation1052Article12Clause02PointDD",
+              ":Regulation1052Article12Clause02PointE",
+              ":Regulation1052Article12Clause02PointG",
+              ":Regulation1052Article12Clause02PointH",
+              ":Regulation1052Article12Clause03",
+              ":Regulation1052Article12Clause03PointA",
+              ":Regulation1052Article12Clause03PointB",
+              ":Regulation1052Article12Clause03PointC",
+              ":Regulation1052Article12Clause04",
+              ":Regulation1052Article13",
+              ":Regulation1052Article13Clause01",
+              ":Regulation1052Article13Clause02",
+              ":Regulation1052Article13Clause03",
+              ":Regulation1052Article13Clause03PointA",
+              ":Regulation1052Article13Clause03PointB",
+              ":Regulation1052Article14",
+              ":Regulation1052Article14Clause01",
+              ":Regulation1052Article14Clause02",
+              ":Regulation1052Article14Clause03",
+              ":Regulation1052Article14Clause04",
+              ":Regulation1052Article14Clause05",
+              ":Regulation1052Article15",
+              ":Regulation1052Article15Clause01",
+              ":Regulation1052Article15Clause02",
+              ":Regulation1052Article15Clause02PointA",
+              ":Regulation1052Article15Clause02PointB",
+              ":Regulation1052Article15Clause02PointC",
+              ":Regulation1052Article15Clause03",
+              ":Regulation1052Article16",
+              ":Regulation1052Article16Clause01",
+              ":Regulation1052Article16Clause02",
+              ":Regulation1052Article16Clause02PointA",
+              ":Regulation1052Article16Clause02PointB",
+              ":Regulation1052Article16Clause02PointC",
+              ":Regulation1052Article16Clause03",
+              ":Regulation1052Article17",
+              ":Regulation1052Article17Clause01",
+              ":Regulation1052Article17Clause01PointA",
+              ":Regulation1052Article17Clause01PointB",
+              ":Regulation1052Article17Clause02",
+              ":Regulation1052Article17Clause03",
+              ":Regulation1052Article17Clause04",
+              ":Regulation1052Article18",
+              ":Regulation1052Article18Clause01",
+              ":Regulation1052Article18Clause02",
+              ":Regulation1052Article18Clause03",
+              ":Regulation1052Article19",
+              ":Regulation1052Article19Clause01",
+              ":Regulation1052Article19Clause02",
+              ":Regulation1052Article19Clause03",
+              ":Regulation1052Article19Clause03PointA",
+              ":Regulation1052Article19Clause03PointB",
+              ":Regulation1052Article19Clause03PointC",
+              ":Regulation1052Article19Clause03PointD",
+              ":Regulation1052Article20",
+              ":Regulation1052Article20Clause01",
+              ":Regulation1052Article20Clause01PointA",
+              ":Regulation1052Article20Clause01PointB",
+              ":Regulation1052Article20Clause01PointC",
+              ":Regulation1052Article20Clause02",
+              ":Regulation1052Article20Clause02PointA",
+              ":Regulation1052Article20Clause02PointB",
+              ":Regulation1052Article20Clause03",
+              ":Regulation1052Article21",
+              ":Regulation1052Article21Clause01",
+              ":Regulation1052Article21Clause02",
+              ":Regulation1052Article21Clause03",
+              ":Regulation1052Article21Clause03PointA",
+              ":Regulation1052Article21Clause03PointB",
+              ":Regulation1052Article21Clause03PointC",
+              ":Regulation1052Article21Clause04",
+              ":Regulation1052Article21Clause05",
+              ":Regulation1052Article21Clause05PointA",
+              ":Regulation1052Article21Clause05PointB",
+              ":Regulation1052Article21Clause05PointC",
+              ":Regulation1052Article21Clause05PointD",
+              ":Regulation1052Article21Clause06",
+              ":Regulation1052Article21Clause07",
+              ":Regulation1052Article22",
+              ":Regulation1052Article22Clause01",
+              ":Regulation1052Article22Clause01PointA",
+              ":Regulation1052Article22Clause01PointB",
+              ":Regulation1052Article22Clause01PointC",
+              ":Regulation1052Article22Clause01PointD",
+              ":Regulation1052Article22Clause01PointDD",
+              ":Regulation1052Article22Clause01PointE",
+              ":Regulation1052Article22Clause02",
+              ":Regulation1052Article22Clause03",
+              ":Regulation1052Article22Clause04",
+              ":Regulation1052Article22Clause05",
+              ":Regulation1052Article22Clause06",
+              ":Regulation1052Article22Clause07",
+              ":Regulation1052Article22Clause08",
+              ":Regulation1052Article23",
+              ":Regulation1052Article23Clause01",
+              ":Regulation1052Article23Clause02",
+              ":Regulation1052Article23Clause03",
+              ":Regulation1052Article23Clause03PointA",
+              ":Regulation1052Article23Clause03PointB",
+              ":Regulation1052Article23Clause04",
+              ":Regulation1052Article24",
+              ":Regulation1052Article24Clause01",
+              ":Regulation1052Article24Clause01PointA",
+              ":Regulation1052Article24Clause01PointB",
+              ":Regulation1052Article24Clause01PointC",
+              ":Regulation1052Article24Clause01PointD",
+              ":Regulation1052Article24Clause02",
+              ":Regulation1052Article24Clause03",
+              ":Regulation1052Article25",
+              ":Regulation1052Article25Clause01",
+              ":Regulation1052Article25Clause01PointA",
+              ":Regulation1052Article25Clause01PointB",
+              ":Regulation1052Article25Clause01PointC",
+              ":Regulation1052Article25Clause01PointD",
+              ":Regulation1052Article25Clause02",
+              ":Regulation1052Article25Clause03",
+              ":Regulation1052Article25Clause04",
+              ":Regulation1052Article25Clause05",
+              ":Regulation1052Article26",
+              ":Regulation1052Article26Clause01",
+              ":Regulation1052Article26Clause01PointA",
+              ":Regulation1052Article26Clause01PointB",
+              ":Regulation1052Article26Clause01PointC",
+              ":Regulation1052Article26Clause01PointD",
+              ":Regulation1052Article26Clause02",
+              ":Regulation1052Article26Clause02PointA",
+              ":Regulation1052Article26Clause02PointB",
+              ":Regulation1052Article26Clause03",
+              ":Regulation1052Article27",
+              ":Regulation1052Article27Clause01",
+              ":Regulation1052Article27Clause02",
+              ":Regulation1052Article27Clause03",
+              ":Regulation1052Article27Clause03PointA",
+              ":Regulation1052Article27Clause03PointB",
+              ":Regulation1052Article27Clause04",
+              ":Regulation1052Article27Clause04PointA",
+              ":Regulation1052Article27Clause04PointB",
+              ":Regulation1052Article27Clause05",
+              ":Regulation1052Article28",
+              ":Regulation1052Article28Clause01",
+              ":Regulation1052Article28Clause01PointA",
+              ":Regulation1052Article28Clause01PointB",
+              ":Regulation1052Article28Clause02",
+              ":Regulation1052Article28Clause03",
+              ":Regulation1052Article28Clause03PointA",
+              ":Regulation1052Article28Clause03PointB",
+              ":Regulation1052Article28Clause03PointC",
+              ":Regulation1052Article28Clause03PointD",
+              ":Regulation1052Article28Clause04",
+              ":Regulation1052Article28Clause05",
+              ":Regulation1052Article28Clause06",
+              ":Regulation1052Article29",
+              ":Regulation1052Article29Clause01",
+              ":Regulation1052Article29Clause02",
+              ":Regulation1052Article29Clause03",
+              ":Regulation1052Article30",
+              ":Regulation1052Article30Clause01",
+              ":Regulation1052Article30Clause02",
+              ":Regulation1052Article31",
+              ":Regulation1052Article32",
+              ":Regulation1052Article32Clause01",
+              ":Regulation1052Article32Clause02",
+              ":Regulation1052Article32Clause03",
+              ":Regulation1052ChapterI",
+              ":Regulation1052ChapterII",
+              ":Regulation1052ChapterIII",
+              ":Regulation1052ChapterIV",
+              ":Regulation1052ChapterV",
+              ":Regulation626AppendixI",
+              ":Regulation626AppendixII",
+              ":Regulation626AppendixIII",
+              ":Regulation626AppendixIV",
+              ":Regulation626AppendixV",
+              ":Regulation626Article01",
+              ":Regulation626Article02",
+              ":Regulation626Article03",
+              ":Regulation626Article04",
+              ":Regulation626Article05",
+              ":Regulation626Article06",
+              ":Regulation626Article07",
+              ":Regulation626Article08",
+              ":Regulation626Article09",
+              ":Regulation626Article10",
+              ":Regulation626Article11",
+              ":Regulation626Article12",
+              ":Regulation626Article13",
+              ":Regulation626Article14",
+              ":Regulation626Article15",
+              ":Regulation626Article16",
+              ":Regulation626Article17",
+              ":Regulation626Article18",
+              ":Regulation626Article19",
+              ":Regulation626Article20",
+              ":Regulation626Article21",
+              ":Regulation626Article22",
+              ":Regulation626Article23",
+              ":Regulation626Article24",
+              ":Regulation626Article25",
+              ":Regulation626ChapterI",
+              ":Regulation626ChapterII",
+              ":Regulation626ChapterIII",
+              ":Regulation626ChapterIV",
+              ":Regulation753Article10",
+              ":Regulation753Article10Clause01",
+              ":Regulation753Article10Clause02",
+              ":Regulation753Article10Clause03",
+              ":ScholarshipAnnouncementSection",
+              ":ScholarshipCriteriaGeneralSection",
+              ":ScholarshipCriteriaSpecificSection",
+              ":TuitionPaymentGuidanceIntro",
+              ":TuitionPaymentGuidanceSection01",
+              ":TuitionPaymentGuidanceSection02",
+              ":TuitionPaymentGuidanceSection03",
+              ":UndergraduateFormCatalogueListing",
+              ":VNPAYPaymentGuidanceOtherBankNote",
+              ":VNPAYPaymentGuidanceVietcombankNote"
+            ]
+          },
+          "education-level-facts": {
+            "anchor": [
+              ":UndergraduateLevel"
+            ]
+          },
+          "form-catalogue-entry-facts": {
+            "anchor": [
+              ":FormCatalogueEntry001",
+              ":FormCatalogueEntry002",
+              ":FormCatalogueEntry003",
+              ":FormCatalogueEntry004",
+              ":FormCatalogueEntry005",
+              ":FormCatalogueEntry006",
+              ":FormCatalogueEntry007",
+              ":FormCatalogueEntry008",
+              ":FormCatalogueEntry009",
+              ":FormCatalogueEntry010",
+              ":FormCatalogueEntry011",
+              ":FormCatalogueEntry012",
+              ":FormCatalogueEntry013",
+              ":FormCatalogueEntry014",
+              ":FormCatalogueEntry015",
+              ":FormCatalogueEntry016",
+              ":FormCatalogueEntry017",
+              ":FormCatalogueEntry018",
+              ":FormCatalogueEntry019"
+            ]
+          },
+          "form-document-facts": {
+            "anchor": [
+              ":Form01ExtraClassOpening",
+              ":Form02CourseAdjustment",
+              ":Form02GraduationProject",
+              ":Form03ClassAbsence",
+              ":Form04ExamPostponement",
+              ":Form05ProgramTransfer",
+              ":Form06CreditRecognition",
+              ":Form07ExemptionAndBonus",
+              ":Form08EarlyGraduation",
+              ":Form09TemporaryLeave",
+              ":Form10Withdrawal",
+              ":Form11Resumption",
+              ":Form12MajorChange",
+              ":Form13UniversityTransfer",
+              ":Form14StudentExchange",
+              ":Form15SecondProgram"
+            ]
+          },
+          "grade-code-facts": {
+            "anchor": [
+              ":GradeI",
+              ":GradeP",
+              ":GradeR",
+              ":GradeX"
+            ]
+          },
+          "graduation-honours-penalty-rule-facts": {
+            "anchor": [
+              ":DisciplineHonoursPenalty",
+              ":RetakeVolumeHonoursPenalty"
+            ]
+          },
+          "language-course-facts": {
+            "anchor": [
+              ":LanguageCourseA1",
+              ":LanguageCourseA21",
+              ":LanguageCourseA22",
+              ":LanguageCourseB11",
+              ":LanguageCourseB12",
+              ":LanguageCourseB21",
+              ":LanguageCourseB22"
+            ]
+          },
+          "official-document-facts": {
+            "anchor": [
+              ":AdmissionsLookupPage",
+              ":Decision1052",
+              ":Decision1965",
+              ":Decision317",
+              ":Decision626",
+              ":Decision729",
+              ":Decision753",
+              ":OrganizationStructurePage",
+              ":Regulation1052",
+              ":Regulation626",
+              ":Regulation753",
+              ":ScholarshipAnnouncementGuidance",
+              ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
+              ":TuitionPaymentGuidance",
+              ":UndergraduateFormCatalogue",
+              ":VNPAYPaymentGuidance"
+            ]
+          },
+          "online-training-rule-facts": {
+            "anchor": [
+              ":OnlineTrainingProportionRule"
+            ]
+          },
+          "organizational-unit-facts": {
+            "anchor": [
+              ":AcademicManagementUnit",
+              ":Department",
+              ":FacultyOrInstitute",
+              ":StudentAffairsOffice",
+              ":University"
+            ]
+          },
+          "payment-fee-by-method": {
+            "phuongthuc": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "payment-method-facts": {
+            "anchor": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "scholarship-rate-facts": {
+            "anchor": [
+              ":ExcellentSpecialScholarshipRate",
+              ":ExcellentStandardScholarshipRate",
+              ":FairSpecialScholarshipRate",
+              ":FairStandardScholarshipRate",
+              ":GoodSpecialScholarshipRate",
+              ":GoodStandardScholarshipRate"
+            ]
+          },
+          "semester-type-facts": {
+            "anchor": [
+              ":MainSemester",
+              ":SummerSemester"
+            ]
+          },
+          "study-duration-rule-facts": {
+            "anchor": [
+              ":MaximumStudyDurationRule",
+              ":PartTimeDurationRule",
+              ":StandardBachelorDurationRule"
+            ]
+          },
+          "training-mode-facts": {
+            "anchor": [
+              ":FullTimeTrainingMode",
+              ":PartTimeTrainingMode"
+            ]
+          }
+        }
+      },
+      "val": {
+        "records": 400,
+        "queries": 50,
+        "targets": 270,
+        "query_counts": {
+          "academic-actor-facts": 9,
+          "academic-case-facts": 7,
+          "academic-concept-facts": 10,
+          "academic-performance-table": 2,
+          "academic-policy-facts": 3,
+          "academic-procedure-facts": 27,
+          "academic-program-catalogue-table": 2,
+          "academic-program-facts": 36,
+          "academic-rule-facts": 2,
+          "academic-warning-rule-facts": 3,
+          "assessment-component-facts": 2,
+          "attendance-rule-facts": 3,
+          "bank-facts": 3,
+          "billing-unit-facts": 3,
+          "certificate-catalogue-table": 2,
+          "certificate-conversion-table-english-language-major-student": 2,
+          "certificate-conversion-table-moi-doi-tuong": 3,
+          "certificate-conversion-table-special-program-non-language-major-student": 2,
+          "certificate-conversion-table-standard-program-non-language-major-student": 2,
+          "certificate-facts": 21,
+          "class-size-table": 2,
+          "course-type-facts": 12,
+          "credit-load-rule-facts": 3,
+          "credit-transfer-rule-facts": 4,
+          "delivery-mode-facts": 2,
+          "discipline-group-facts": 7,
+          "dismissal-rule-facts": 2,
+          "document-part-facts": 34,
+          "education-level-facts": 3,
+          "form-catalogue-entry-facts": 24,
+          "form-document-facts": 18,
+          "grade-code-facts": 7,
+          "graduation-classification-table": 2,
+          "graduation-honours-penalty-rule-facts": 2,
+          "language-course-assessment-table": 2,
+          "language-course-classification-table": 2,
+          "language-course-facts": 10,
+          "no-information": 56,
+          "official-document-facts": 21,
+          "online-training-rule-facts": 2,
+          "organizational-unit-facts": 8,
+          "payment-fee-by-method": 4,
+          "payment-method-facts": 9,
+          "scholarship-rate-facts": 6,
+          "scholarship-rate-table-special-program": 2,
+          "scholarship-rate-table-standard-program": 2,
+          "semester-type-facts": 3,
+          "study-duration-rule-facts": 3,
+          "study-year-classification-table": 2,
+          "training-mode-facts": 2
+        },
+        "register_counts": {
+          "colloquial": 97,
+          "formal": 99,
+          "neutral": 99,
+          "noisy": 105
+        },
+        "domains": {
+          "academic-rule": 135,
+          "certificate": 32,
+          "document": 55,
+          "form": 42,
+          "out-of-domain": 56,
+          "procedure": 51,
+          "tuition": 29
+        },
+        "slot_values": {
+          "academic-actor-facts": {
+            "anchor": [
+              ":AcademicAdvisor",
+              ":CourseLecturer",
+              ":GraduationCouncil",
+              ":ProfessionalCouncil",
+              ":Student",
+              ":UniversityPresident"
+            ]
+          },
+          "academic-case-facts": {
+            "anchor": [
+              ":ArmedForcesCase",
+              ":IllnessCase",
+              ":InternationalCompetitionCase",
+              ":PersonalReasonCase"
+            ]
+          },
+          "academic-concept-facts": {
+            "anchor": [
+              ":AdministrativeClassConcept",
+              ":CourseClassConcept",
+              ":CourseSyllabusConcept",
+              ":CreditBasedTrainingConcept",
+              ":CreditConcept",
+              ":GradingScaleConcept",
+              ":RegulationScopeConcept"
+            ]
+          },
+          "academic-policy-facts": {
+            "anchor": [
+              ":AcademicDismissalPolicy",
+              ":AcademicMisconductPolicy",
+              ":AcademicWarningPolicy"
+            ]
+          },
+          "academic-procedure-facts": {
+            "anchor": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CourseWithdrawalProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
+              ":ScholarshipReviewProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
+            ]
+          },
+          "academic-program-facts": {
+            "anchor": [
+              ":Accounting",
+              ":Aquaculture",
+              ":Auditing",
+              ":AutomotiveEngineering",
+              ":Biotechnology",
+              ":BusinessAdministration",
+              ":ChemicalEngineering",
+              ":CommercialBusiness",
+              ":ComputerScience",
+              ":DevelopmentEconomics",
+              ":Economics",
+              ":ElectricalEngineering",
+              ":EnvironmentalEngineering",
+              ":FinanceAndBanking",
+              ":FisheriesExploitation",
+              ":FisheriesManagement",
+              ":FoodQualityAndSafetyAssurance",
+              ":FoodTechnology",
+              ":FrenchVietnameseBilingualTourismAndTravelServiceManagement",
+              ":HotelManagement",
+              ":InformationTechnology",
+              ":Law",
+              ":ManagementInformationSystems",
+              ":ManufacturingEngineering",
+              ":MarineEngineering",
+              ":MarineResourceEconomicsAndManagement",
+              ":MaritimeScience",
+              ":MechatronicsEngineering",
+              ":NavalArchitecture",
+              ":ThermalEngineering",
+              ":TourismAndTravelServiceManagement",
+              ":TransportationInfrastructureEngineering"
+            ]
+          },
+          "academic-rule-facts": {
+            "anchor": [
+              ":CreditWorkloadRule"
+            ]
+          },
+          "academic-warning-rule-facts": {
+            "anchor": [
+              ":CreditDebtWarningRule",
+              ":CumulativeAverageWarningRule",
+              ":SemesterAverageWarningRule"
+            ]
+          },
+          "assessment-component-facts": {
+            "anchor": [
+              ":ContinuousAssessment",
+              ":FinalAssessment"
+            ]
+          },
+          "attendance-rule-facts": {
+            "anchor": [
+              ":ExamAbsenceRule",
+              ":PracticeAttendanceRule",
+              ":TheoryAttendanceRule"
+            ]
+          },
+          "bank-facts": {
+            "anchor": [
+              ":Agribank",
+              ":LienVietPostBank",
+              ":VietinBank"
+            ]
+          },
+          "billing-unit-facts": {
+            "anchor": [
+              ":PerSemester"
+            ]
+          },
+          "certificate-facts": {
+            "anchor": [
+              ":AptisGeneralCertificate",
+              ":CambridgeEnglishScaleCertificate",
+              ":DELFCertificate",
+              ":HSKCertificate",
+              ":IC3Certificate",
+              ":ICDLCertificate",
+              ":IELTSCertificate",
+              ":JLPTCertificate",
+              ":JPTCertificate",
+              ":KLPTCertificate",
+              ":LinguaskillCertificate",
+              ":MOSCertificate",
+              ":TCFCertificate",
+              ":TOCFLCertificate",
+              ":TOEFLIBTCertificate",
+              ":TOEICCertificate",
+              ":TOPIKCertificate",
+              ":TRKICertificate"
+            ]
+          },
+          "course-type-facts": {
+            "anchor": [
+              ":CompulsoryCourseType",
+              ":ConditionCourseType",
+              ":CorequisiteCourseType",
+              ":ElectiveCourseType",
+              ":EquivalentCourseType",
+              ":OptionalCourseType",
+              ":PrerequisiteCourseType",
+              ":PriorCourseType",
+              ":ReplacementCourseType"
+            ]
+          },
+          "credit-load-rule-facts": {
+            "anchor": [
+              ":StandardCreditLoadRule",
+              ":WeakCreditLoadRule"
+            ]
+          },
+          "credit-transfer-rule-facts": {
+            "anchor": [
+              ":ExchangeCreditLimitRule",
+              ":TransferValidityRule",
+              ":TransferVolumeLimitRule"
+            ]
+          },
+          "delivery-mode-facts": {
+            "anchor": [
+              ":AsynchronousOnlineDelivery",
+              ":SynchronousOnlineDelivery"
+            ]
+          },
+          "discipline-group-facts": {
+            "anchor": [
+              ":DisciplineGroupIII",
+              ":DisciplineGroupIV",
+              ":DisciplineGroupV",
+              ":DisciplineGroupVII"
+            ]
+          },
+          "dismissal-rule-facts": {
+            "anchor": [
+              ":ExceededDurationDismissalRule",
+              ":RepeatedWarningDismissalRule"
+            ]
+          },
+          "document-part-facts": {
+            "anchor": [
+              ":Decision1965Article01",
+              ":Decision626Article02",
+              ":Regulation1052Article02Clause04PointA",
+              ":Regulation1052Article03Clause03",
+              ":Regulation1052Article06Clause02",
+              ":Regulation1052Article07",
+              ":Regulation1052Article08Clause01PointA",
+              ":Regulation1052Article09",
+              ":Regulation1052Article09Clause01PointA",
+              ":Regulation1052Article09Clause02",
+              ":Regulation1052Article09Clause02PointC",
+              ":Regulation1052Article12Clause02PointA",
+              ":Regulation1052Article12Clause02PointDD",
+              ":Regulation1052Article12Clause02PointG",
+              ":Regulation1052Article12Clause04",
+              ":Regulation1052Article13Clause03",
+              ":Regulation1052Article18Clause01",
+              ":Regulation1052Article21",
+              ":Regulation1052Article21Clause02",
+              ":Regulation1052Article21Clause05PointD",
+              ":Regulation1052Article22Clause01PointA",
+              ":Regulation1052Article22Clause02",
+              ":Regulation1052Article22Clause05",
+              ":Regulation1052Article23Clause03PointA",
+              ":Regulation1052Article24Clause01PointC",
+              ":Regulation1052Article32Clause01",
+              ":Regulation626AppendixII",
+              ":Regulation626AppendixIV",
+              ":Regulation626Article06",
+              ":Regulation626Article16",
+              ":Regulation753Article10Clause02",
+              ":ScholarshipCriteriaGeneralSection",
+              ":TuitionPaymentGuidanceIntro",
+              ":VNPAYPaymentGuidanceVietcombankNote"
+            ]
+          },
+          "education-level-facts": {
+            "anchor": [
+              ":UndergraduateLevel"
+            ]
+          },
+          "form-catalogue-entry-facts": {
+            "anchor": [
+              ":FormCatalogueEntry001",
+              ":FormCatalogueEntry002",
+              ":FormCatalogueEntry003",
+              ":FormCatalogueEntry004",
+              ":FormCatalogueEntry005",
+              ":FormCatalogueEntry006",
+              ":FormCatalogueEntry007",
+              ":FormCatalogueEntry008",
+              ":FormCatalogueEntry009",
+              ":FormCatalogueEntry010",
+              ":FormCatalogueEntry011",
+              ":FormCatalogueEntry012",
+              ":FormCatalogueEntry013",
+              ":FormCatalogueEntry014",
+              ":FormCatalogueEntry015",
+              ":FormCatalogueEntry016",
+              ":FormCatalogueEntry017",
+              ":FormCatalogueEntry018",
+              ":FormCatalogueEntry019"
+            ]
+          },
+          "form-document-facts": {
+            "anchor": [
+              ":Form01ExtraClassOpening",
+              ":Form02CourseAdjustment",
+              ":Form02GraduationProject",
+              ":Form03ClassAbsence",
+              ":Form04ExamPostponement",
+              ":Form05ProgramTransfer",
+              ":Form06CreditRecognition",
+              ":Form07ExemptionAndBonus",
+              ":Form08EarlyGraduation",
+              ":Form09TemporaryLeave",
+              ":Form10Withdrawal",
+              ":Form12MajorChange",
+              ":Form13UniversityTransfer",
+              ":Form14StudentExchange",
+              ":Form15SecondProgram"
+            ]
+          },
+          "grade-code-facts": {
+            "anchor": [
+              ":GradeI",
+              ":GradeP",
+              ":GradeR",
+              ":GradeX"
+            ]
+          },
+          "graduation-honours-penalty-rule-facts": {
+            "anchor": [
+              ":DisciplineHonoursPenalty",
+              ":RetakeVolumeHonoursPenalty"
+            ]
+          },
+          "language-course-facts": {
+            "anchor": [
+              ":LanguageCourseA1",
+              ":LanguageCourseA21",
+              ":LanguageCourseA22",
+              ":LanguageCourseB11",
+              ":LanguageCourseB12",
+              ":LanguageCourseB21",
+              ":LanguageCourseB22"
+            ]
+          },
+          "official-document-facts": {
+            "anchor": [
+              ":AdmissionsLookupPage",
+              ":Decision1052",
+              ":Decision1965",
+              ":Decision317",
+              ":Decision626",
+              ":Decision729",
+              ":Decision753",
+              ":OrganizationStructurePage",
+              ":Regulation1052",
+              ":Regulation626",
+              ":Regulation753",
+              ":ScholarshipAnnouncementGuidance",
+              ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
+              ":TuitionPaymentGuidance",
+              ":UndergraduateFormCatalogue",
+              ":VNPAYPaymentGuidance"
+            ]
+          },
+          "online-training-rule-facts": {
+            "anchor": [
+              ":OnlineTrainingProportionRule"
+            ]
+          },
+          "organizational-unit-facts": {
+            "anchor": [
+              ":AcademicManagementUnit",
+              ":Department",
+              ":FacultyOrInstitute",
+              ":StudentAffairsOffice",
+              ":University"
+            ]
+          },
+          "payment-fee-by-method": {
+            "phuongthuc": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "payment-method-facts": {
+            "anchor": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "scholarship-rate-facts": {
+            "anchor": [
+              ":ExcellentSpecialScholarshipRate",
+              ":ExcellentStandardScholarshipRate",
+              ":FairSpecialScholarshipRate",
+              ":FairStandardScholarshipRate",
+              ":GoodSpecialScholarshipRate",
+              ":GoodStandardScholarshipRate"
+            ]
+          },
+          "semester-type-facts": {
+            "anchor": [
+              ":MainSemester",
+              ":SummerSemester"
+            ]
+          },
+          "study-duration-rule-facts": {
+            "anchor": [
+              ":MaximumStudyDurationRule",
+              ":PartTimeDurationRule",
+              ":StandardBachelorDurationRule"
+            ]
+          },
+          "training-mode-facts": {
+            "anchor": [
+              ":FullTimeTrainingMode",
+              ":PartTimeTrainingMode"
+            ]
+          }
+        }
+      },
+      "test": {
+        "records": 390,
+        "queries": 50,
+        "targets": 272,
+        "query_counts": {
+          "academic-actor-facts": 9,
+          "academic-case-facts": 4,
+          "academic-concept-facts": 11,
+          "academic-performance-table": 2,
+          "academic-policy-facts": 3,
+          "academic-procedure-facts": 27,
+          "academic-program-catalogue-table": 2,
+          "academic-program-facts": 39,
+          "academic-rule-facts": 2,
+          "academic-warning-rule-facts": 3,
+          "assessment-component-facts": 2,
+          "attendance-rule-facts": 3,
+          "bank-facts": 4,
+          "billing-unit-facts": 2,
+          "certificate-catalogue-table": 2,
+          "certificate-conversion-table-english-language-major-student": 2,
+          "certificate-conversion-table-moi-doi-tuong": 2,
+          "certificate-conversion-table-special-program-non-language-major-student": 2,
+          "certificate-conversion-table-standard-program-non-language-major-student": 2,
+          "certificate-facts": 21,
+          "class-size-table": 2,
+          "course-type-facts": 12,
+          "credit-load-rule-facts": 2,
+          "credit-transfer-rule-facts": 3,
+          "delivery-mode-facts": 2,
+          "discipline-group-facts": 4,
+          "dismissal-rule-facts": 2,
+          "document-part-facts": 36,
+          "education-level-facts": 2,
+          "form-catalogue-entry-facts": 23,
+          "form-document-facts": 19,
+          "grade-code-facts": 4,
+          "graduation-classification-table": 2,
+          "graduation-honours-penalty-rule-facts": 3,
+          "language-course-assessment-table": 2,
+          "language-course-classification-table": 3,
+          "language-course-facts": 10,
+          "no-information": 55,
+          "official-document-facts": 21,
+          "online-training-rule-facts": 2,
+          "organizational-unit-facts": 9,
+          "payment-fee-by-method": 4,
+          "payment-method-facts": 4,
+          "scholarship-rate-facts": 6,
+          "scholarship-rate-table-special-program": 3,
+          "scholarship-rate-table-standard-program": 2,
+          "semester-type-facts": 2,
+          "study-duration-rule-facts": 3,
+          "study-year-classification-table": 2,
+          "training-mode-facts": 2
+        },
+        "register_counts": {
+          "colloquial": 97,
+          "formal": 98,
+          "neutral": 99,
+          "noisy": 96
+        },
+        "domains": {
+          "academic-rule": 131,
+          "certificate": 31,
+          "document": 57,
+          "form": 42,
+          "out-of-domain": 55,
+          "procedure": 49,
+          "tuition": 25
+        },
+        "slot_values": {
+          "academic-actor-facts": {
+            "anchor": [
+              ":AcademicAdvisor",
+              ":CourseLecturer",
+              ":GraduationCouncil",
+              ":ProfessionalCouncil",
+              ":Student",
+              ":UniversityPresident"
+            ]
+          },
+          "academic-case-facts": {
+            "anchor": [
+              ":ArmedForcesCase",
+              ":IllnessCase",
+              ":InternationalCompetitionCase",
+              ":PersonalReasonCase"
+            ]
+          },
+          "academic-concept-facts": {
+            "anchor": [
+              ":AdministrativeClassConcept",
+              ":CourseClassConcept",
+              ":CourseSyllabusConcept",
+              ":CreditBasedTrainingConcept",
+              ":CreditConcept",
+              ":GradingScaleConcept",
+              ":RegulationScopeConcept"
+            ]
+          },
+          "academic-policy-facts": {
+            "anchor": [
+              ":AcademicDismissalPolicy",
+              ":AcademicMisconductPolicy",
+              ":AcademicWarningPolicy"
+            ]
+          },
+          "academic-procedure-facts": {
+            "anchor": [
+              ":ArticulationStudyProcedure",
+              ":ClassAbsenceRequestProcedure",
+              ":CourseExemptionAndBonusProcedure",
+              ":CourseRegistrationProcedure",
+              ":CourseRetakeProcedure",
+              ":CourseWithdrawalProcedure",
+              ":CreditRecognitionProcedure",
+              ":DismissalTransferRequestProcedure",
+              ":EarlyGraduationReviewProcedure",
+              ":ExamPostponementProcedure",
+              ":ExtraClassOpeningRequestProcedure",
+              ":GradeImprovementProcedure",
+              ":GraduationProjectRegistrationProcedure",
+              ":GraduationReviewProcedure",
+              ":MajorChangeProcedure",
+              ":ScholarshipReviewProcedure",
+              ":SecondProgramRegistrationProcedure",
+              ":SickLeaveProcedure",
+              ":StudentExchangeProcedure",
+              ":StudyResumptionProcedure",
+              ":StudyWithdrawalProcedure",
+              ":TemporaryAcademicLeaveProcedure",
+              ":TuitionPaymentProcedure",
+              ":UniversityTransferProcedure"
+            ]
+          },
+          "academic-program-facts": {
+            "anchor": [
+              ":Accounting",
+              ":Aquaculture",
+              ":Auditing",
+              ":AutomotiveEngineering",
+              ":Biotechnology",
+              ":BusinessAdministration",
+              ":ChemicalEngineering",
+              ":CivilEngineering",
+              ":CommercialBusiness",
+              ":ControlAndAutomationEngineering",
+              ":EconomicManagement",
+              ":Economics",
+              ":EnvironmentalEngineering",
+              ":FinanceAndBanking",
+              ":FisheriesExploitation",
+              ":FisheriesManagement",
+              ":FisheriesScience",
+              ":FoodTechnology",
+              ":HotelManagement",
+              ":InformationTechnology",
+              ":ManagementInformationSystems",
+              ":MarineResourceEconomicsAndManagement",
+              ":MaritimeScience",
+              ":Marketing",
+              ":MechanicalEngineering",
+              ":MechatronicsEngineering",
+              ":NavalArchitecture",
+              ":PowerMechanicalEngineering",
+              ":SeafoodProcessingTechnology",
+              ":ThermalEngineering",
+              ":TourismAndTravelServiceManagement",
+              ":TransportationInfrastructureEngineering"
+            ]
+          },
+          "academic-rule-facts": {
+            "anchor": [
+              ":CreditWorkloadRule"
+            ]
+          },
+          "academic-warning-rule-facts": {
+            "anchor": [
+              ":CreditDebtWarningRule",
+              ":CumulativeAverageWarningRule",
+              ":SemesterAverageWarningRule"
+            ]
+          },
+          "assessment-component-facts": {
+            "anchor": [
+              ":ContinuousAssessment",
+              ":FinalAssessment"
+            ]
+          },
+          "attendance-rule-facts": {
+            "anchor": [
+              ":ExamAbsenceRule",
+              ":PracticeAttendanceRule",
+              ":TheoryAttendanceRule"
+            ]
+          },
+          "bank-facts": {
+            "anchor": [
+              ":Agribank",
+              ":LienVietPostBank",
+              ":VietinBank"
+            ]
+          },
+          "billing-unit-facts": {
+            "anchor": [
+              ":PerSemester"
+            ]
+          },
+          "certificate-facts": {
+            "anchor": [
+              ":AptisGeneralCertificate",
+              ":CambridgeEnglishScaleCertificate",
+              ":DELFCertificate",
+              ":HSKCertificate",
+              ":IC3Certificate",
+              ":ICDLCertificate",
+              ":IELTSCertificate",
+              ":JLPTCertificate",
+              ":JPTCertificate",
+              ":KLPTCertificate",
+              ":LinguaskillCertificate",
+              ":MOSCertificate",
+              ":TCFCertificate",
+              ":TOCFLCertificate",
+              ":TOEFLIBTCertificate",
+              ":TOEICCertificate",
+              ":TOPIKCertificate",
+              ":TRKICertificate"
+            ]
+          },
+          "course-type-facts": {
+            "anchor": [
+              ":CompulsoryCourseType",
+              ":ConditionCourseType",
+              ":CorequisiteCourseType",
+              ":ElectiveCourseType",
+              ":EquivalentCourseType",
+              ":OptionalCourseType",
+              ":PrerequisiteCourseType",
+              ":PriorCourseType",
+              ":ReplacementCourseType"
+            ]
+          },
+          "credit-load-rule-facts": {
+            "anchor": [
+              ":StandardCreditLoadRule",
+              ":WeakCreditLoadRule"
+            ]
+          },
+          "credit-transfer-rule-facts": {
+            "anchor": [
+              ":ExchangeCreditLimitRule",
+              ":TransferValidityRule",
+              ":TransferVolumeLimitRule"
+            ]
+          },
+          "delivery-mode-facts": {
+            "anchor": [
+              ":AsynchronousOnlineDelivery",
+              ":SynchronousOnlineDelivery"
+            ]
+          },
+          "discipline-group-facts": {
+            "anchor": [
+              ":DisciplineGroupIII",
+              ":DisciplineGroupIV",
+              ":DisciplineGroupV",
+              ":DisciplineGroupVII"
+            ]
+          },
+          "dismissal-rule-facts": {
+            "anchor": [
+              ":ExceededDurationDismissalRule",
+              ":RepeatedWarningDismissalRule"
+            ]
+          },
+          "document-part-facts": {
+            "anchor": [
+              ":Decision1965Article02",
+              ":Decision626Article03",
+              ":Regulation1052Article02",
+              ":Regulation1052Article03",
+              ":Regulation1052Article06Clause02PointDD",
+              ":Regulation1052Article06Clause02PointI",
+              ":Regulation1052Article09Clause01",
+              ":Regulation1052Article09Clause02PointA",
+              ":Regulation1052Article11Clause02",
+              ":Regulation1052Article13Clause03PointB",
+              ":Regulation1052Article14Clause04",
+              ":Regulation1052Article15Clause02PointA",
+              ":Regulation1052Article16Clause02PointB",
+              ":Regulation1052Article19Clause02",
+              ":Regulation1052Article19Clause03PointB",
+              ":Regulation1052Article20",
+              ":Regulation1052Article21Clause03PointA",
+              ":Regulation1052Article22",
+              ":Regulation1052Article22Clause02",
+              ":Regulation1052Article23Clause04",
+              ":Regulation1052Article24",
+              ":Regulation1052Article25Clause01PointA",
+              ":Regulation1052Article25Clause01PointD",
+              ":Regulation1052Article25Clause05",
+              ":Regulation1052Article26Clause01",
+              ":Regulation1052Article27",
+              ":Regulation1052Article27Clause04",
+              ":Regulation1052Article27Clause05",
+              ":Regulation1052Article28Clause02",
+              ":Regulation1052Article29Clause03",
+              ":Regulation626Article02",
+              ":Regulation626Article17",
+              ":Regulation626Article18",
+              ":Regulation626ChapterI",
+              ":Regulation753Article10",
+              ":TuitionPaymentGuidanceSection01"
+            ]
+          },
+          "education-level-facts": {
+            "anchor": [
+              ":UndergraduateLevel"
+            ]
+          },
+          "form-catalogue-entry-facts": {
+            "anchor": [
+              ":FormCatalogueEntry001",
+              ":FormCatalogueEntry002",
+              ":FormCatalogueEntry003",
+              ":FormCatalogueEntry004",
+              ":FormCatalogueEntry005",
+              ":FormCatalogueEntry006",
+              ":FormCatalogueEntry007",
+              ":FormCatalogueEntry008",
+              ":FormCatalogueEntry009",
+              ":FormCatalogueEntry010",
+              ":FormCatalogueEntry011",
+              ":FormCatalogueEntry012",
+              ":FormCatalogueEntry013",
+              ":FormCatalogueEntry014",
+              ":FormCatalogueEntry015",
+              ":FormCatalogueEntry016",
+              ":FormCatalogueEntry017",
+              ":FormCatalogueEntry018",
+              ":FormCatalogueEntry019"
+            ]
+          },
+          "form-document-facts": {
+            "anchor": [
+              ":Form01ExtraClassOpening",
+              ":Form02CourseAdjustment",
+              ":Form02GraduationProject",
+              ":Form03ClassAbsence",
+              ":Form04ExamPostponement",
+              ":Form05ProgramTransfer",
+              ":Form06CreditRecognition",
+              ":Form07ExemptionAndBonus",
+              ":Form08EarlyGraduation",
+              ":Form09TemporaryLeave",
+              ":Form10Withdrawal",
+              ":Form12MajorChange",
+              ":Form13UniversityTransfer",
+              ":Form14StudentExchange",
+              ":Form15SecondProgram"
+            ]
+          },
+          "grade-code-facts": {
+            "anchor": [
+              ":GradeI",
+              ":GradeP",
+              ":GradeR",
+              ":GradeX"
+            ]
+          },
+          "graduation-honours-penalty-rule-facts": {
+            "anchor": [
+              ":DisciplineHonoursPenalty",
+              ":RetakeVolumeHonoursPenalty"
+            ]
+          },
+          "language-course-facts": {
+            "anchor": [
+              ":LanguageCourseA1",
+              ":LanguageCourseA21",
+              ":LanguageCourseA22",
+              ":LanguageCourseB11",
+              ":LanguageCourseB12",
+              ":LanguageCourseB21",
+              ":LanguageCourseB22"
+            ]
+          },
+          "official-document-facts": {
+            "anchor": [
+              ":AdmissionsLookupPage",
+              ":Decision1052",
+              ":Decision1965",
+              ":Decision317",
+              ":Decision626",
+              ":Decision729",
+              ":Decision753",
+              ":OrganizationStructurePage",
+              ":Regulation1052",
+              ":Regulation626",
+              ":Regulation753",
+              ":ScholarshipAnnouncementGuidance",
+              ":ScholarshipCriteriaGuidance",
+              ":TuitionLookupPage",
+              ":TuitionPaymentGuidance",
+              ":UndergraduateFormCatalogue",
+              ":VNPAYPaymentGuidance"
+            ]
+          },
+          "online-training-rule-facts": {
+            "anchor": [
+              ":OnlineTrainingProportionRule"
+            ]
+          },
+          "organizational-unit-facts": {
+            "anchor": [
+              ":AcademicManagementUnit",
+              ":Department",
+              ":FacultyOrInstitute",
+              ":StudentAffairsOffice",
+              ":University"
+            ]
+          },
+          "payment-fee-by-method": {
+            "phuongthuc": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "payment-method-facts": {
+            "anchor": [
+              ":CashAtBankCounterPayment",
+              ":MobileOrInternetBankingPayment",
+              ":QRCodePayment",
+              ":VNPAYPayment"
+            ]
+          },
+          "scholarship-rate-facts": {
+            "anchor": [
+              ":ExcellentSpecialScholarshipRate",
+              ":ExcellentStandardScholarshipRate",
+              ":FairSpecialScholarshipRate",
+              ":FairStandardScholarshipRate",
+              ":GoodSpecialScholarshipRate",
+              ":GoodStandardScholarshipRate"
+            ]
+          },
+          "semester-type-facts": {
+            "anchor": [
+              ":MainSemester",
+              ":SummerSemester"
+            ]
+          },
+          "study-duration-rule-facts": {
+            "anchor": [
+              ":MaximumStudyDurationRule",
+              ":PartTimeDurationRule",
+              ":StandardBachelorDurationRule"
+            ]
+          },
+          "training-mode-facts": {
+            "anchor": [
+              ":FullTimeTrainingMode",
+              ":PartTimeTrainingMode"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "sha256": {
+    "train.jsonl": "3134d9e080b84735b00c7811aeaffad6a1c9c2254d8b84ddbbc3e07383a6290a",
+    "val.jsonl": "c36cdcac6ffb31e03bf83cb1876251b97572366c80f83642ae5208004be93558",
+    "test.jsonl": "64d03f0a3d73e7a5756e4effc3657df5fdd14882505f918109746a09d174f23a",
+    "catalogue.jsonl": "a5ef35619f288a8c543fa08730117eaf3262ea89db7e0bad91d144c8340b7d1d",
+    "coverage.json": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251",
+    "ontology.ttl": "312a09d3f96a974061506a793e57055a60498a463f2b5a692e20673db0db9ba0"
+  }
+}

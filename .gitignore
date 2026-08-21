@@ -14,9 +14,24 @@ checkpoints/
 models/
 logs/
 
-# ``artifacts/`` chỉ chứa lượt huấn luyện, model đã chuyển đổi, tokenizer và
-# kết quả cục bộ có thể dựng lại; báo cáo được lưu trong ``resources/reports/``.
+# ``artifacts/`` chứa trọng số model, adapter và kết quả chạy cục bộ - những thứ
+# nặng và dựng lại được, nên mặc định không theo dõi. Ngoại lệ là phần cần thiết
+# để dựng lại hình và số liệu của README: bộ dựng hình, kịch bản đo, và bản tổng
+# hợp kết quả mà bộ dựng hình đọc vào.
 /artifacts/*
+!/artifacts/README.md
+!/artifacts/figures/
+!/artifacts/benchmarks/
+!/artifacts/training-results/
+/artifacts/training-results/*
+!/artifacts/training-results/report/
+
+# Kết quả đo thô của từng câu: vài megabyte mỗi tệp, dựng lại được bằng kịch bản
+# đo nằm ngay cạnh.
+/artifacts/benchmarks/results-gpu.json
+/artifacts/benchmarks/results-bf16.json
+/artifacts/benchmarks/results-torch.json
+/artifacts/benchmarks/results-onnx.json
 
 /dev/
 ontology.ipynb

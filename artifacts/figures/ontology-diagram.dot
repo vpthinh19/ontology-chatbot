@@ -1,0 +1,52 @@
+digraph ontology {
+  pad=0.15;
+  rankdir=LR; bgcolor="white"; nodesep=0.28; ranksep=0.75; compound=true;
+  node [shape=box, style="rounded,filled", fontname="Liberation Sans", fontsize=12,
+        penwidth=1.3, margin="0.18,0.10"];
+  edge [fontname="Liberation Sans", fontsize=10, color="#7a7a7a", penwidth=1.1];
+
+  subgraph cluster_vb {
+    label="  TẦNG VĂN BẢN — nguyên văn công văn  "; labelloc=b;
+    fontname="Liberation Sans"; fontsize=13; fontcolor="#d99b30";
+    color="#d99b30"; bgcolor="#fdf8ee"; style=rounded; penwidth=1.4;
+    vb  [label="Quyết định · Quy chế · Hướng dẫn\n(16 văn bản)", fillcolor="#fbf1dd", color="#d99b30"];
+    ch  [label="Chương  (9)", fillcolor="#fbf1dd", color="#d99b30"];
+    dieu[label="Điều  (70)", fillcolor="#fbf1dd", color="#d99b30"];
+    kho [label="Khoản  (114)", fillcolor="#fbf1dd", color="#d99b30"];
+    diem[label="Điểm  (108)", fillcolor="#fbf1dd", color="#d99b30"];
+    pl  [label="Phụ lục (9) · Bảng (10)", fillcolor="#fbf1dd", color="#d99b30"];
+    vb -> ch -> dieu -> kho -> diem [label=" partOf ", dir=back];
+    vb -> pl [label=" partOf ", dir=back];
+  }
+
+  subgraph cluster_tt {
+    label="  TẦNG TRI THỨC — dữ kiện đã bóc tách  "; labelloc=t;
+    fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
+    color="#2e8b8b"; bgcolor="#f4faf9"; style=rounded; penwidth=1.4;
+    tt  [label="Thủ tục học vụ  (24)", fillcolor="#dbeeec", color="#2e8b8b"];
+    buoc[label="Bước thực hiện  (48)", fillcolor="#dbeeec", color="#2e8b8b"];
+    dk  [label="Điều kiện  (39)", fillcolor="#dbeeec", color="#2e8b8b"];
+    kq  [label="Kết quả  (11)", fillcolor="#dbeeec", color="#2e8b8b"];
+    han [label="Thời hạn  (9)", fillcolor="#dbeeec", color="#2e8b8b"];
+    bm  [label="Biểu mẫu  (19 mục · 16 tệp)", fillcolor="#dbeeec", color="#2e8b8b"];
+    nganh[label="Ngành đào tạo  (41)", fillcolor="#dbeeec", color="#2e8b8b"];
+    cc  [label="Chứng chỉ  (18 + 15 ngoại ngữ)\nvà bảng quy đổi (6)", fillcolor="#dbeeec", color="#2e8b8b"];
+    tac [label="Tác nhân học vụ  (7)\nvà đơn vị của trường  (5)", fillcolor="#dbeeec", color="#2e8b8b"];
+    tt -> buoc [label=" hasStep "];
+    tt -> dk   [label=" hasRequirement "];
+    tt -> kq   [label=" hasOutcome "];
+    tt -> han  [label=" hasDeadline "];
+    tt -> bm   [label=" requiresForm "];
+    buoc -> tac [label=" performedBy "];
+    tt -> tac  [label=" submittedTo "];
+  }
+
+  nguon [label="Mỗi dữ kiện mang\ntrích dẫn + đường dẫn\ntới văn bản gốc",
+         shape=note, fillcolor="#eef2f7", color="#1f4e79", style=filled];
+
+  tt   -> dieu [label="  basedOn  ", color="#1f4e79", penwidth=1.6, style=dashed];
+  dk   -> kho  [label="  basedOn  ", color="#1f4e79", penwidth=1.6, style=dashed];
+  cc   -> pl   [label="  basedOn  ", color="#1f4e79", penwidth=1.6, style=dashed];
+  nganh -> pl  [style=invis];
+  vb -> nguon [style=dotted, color="#1f4e79", arrowhead=none];
+}

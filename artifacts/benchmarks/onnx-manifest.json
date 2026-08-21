@@ -1,0 +1,22 @@
+{
+  "format": "float32",
+  "opset": 18,
+  "exporter": "torch.onnx.export legacy tracer (dynamo=False)",
+  "model": "artifacts/serving-models/merged-bf16",
+  "num_layers": 18,
+  "load_ns": 2266248623,
+  "export_timings_ns": {
+    "encoder_ns": 7493921541,
+    "decoder_init_ns": 13282354253,
+    "decoder_cache_ns": 13619834315
+  },
+  "eager_first_two_tokens": [
+    158591,
+    525
+  ],
+  "files": [
+    "encoder.onnx",
+    "decoder-init.onnx",
+    "decoder-cache.onnx"
+  ]
+}

@@ -1,0 +1,49 @@
+digraph luong_xu_ly {
+  pad=0.15;
+  rankdir=TB; bgcolor="white"; nodesep=0.35; ranksep=0.45; compound=true;
+  node [shape=box, style="rounded,filled", fontname="Liberation Sans", fontsize=13,
+        color="#c9c4bd", penwidth=1.3, margin="0.22,0.14"];
+  edge [fontname="Liberation Sans", fontsize=11, color="#7a7a7a", penwidth=1.2];
+
+  nguoi [label="Người học gõ câu hỏi", fillcolor="#eef2f7", color="#1f4e79"];
+  quyet [label="Câu hỏi có thuộc học vụ không?", shape=diamond,
+         fillcolor="#dce6f2", color="#1f4e79", margin="0.10,0.04"];
+  ngoai [label="Trả lời thẳng là ngoài phạm vi\n(không tra cứu)", fillcolor="#f6e7e3", color="#b3543f"];
+  rut   [label="Rút câu hỏi thành vài cụm từ khoá ngắn", fillcolor="#dce6f2", color="#1f4e79"];
+
+  subgraph cluster_tool {
+    label="  CÔNG CỤ TRA CỨU — nơi giữ dữ kiện  ";
+    labelloc=t; fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
+    color="#2e8b8b"; style="rounded"; bgcolor="#f4faf9"; penwidth=1.4;
+    chuan [label="Chuẩn hoá từng từ khoá\n(gõ nhiễu, thiếu dấu, viết tắt)", fillcolor="#dbeeec", color="#2e8b8b"];
+    sinh  [label="Mô hình chuỗi-chuỗi sinh\nmột truy vấn SPARQL cho mỗi từ khoá", fillcolor="#dbeeec", color="#2e8b8b"];
+    kiem  [label="Truy vấn có thuộc\n50 dạng đã khai báo không?", shape=diamond,
+           fillcolor="#dbeeec", color="#2e8b8b", margin="0.10,0.04"];
+    chay  [label="Chạy truy vấn trên đồ thị tri thức", fillcolor="#dbeeec", color="#2e8b8b"];
+    gop   [label="Gộp kết quả mọi từ khoá, khử trùng,\nxếp mỗi dữ kiện vào đúng nguồn của nó",
+           fillcolor="#dbeeec", color="#2e8b8b"];
+    bo    [label="Bỏ truy vấn này", fillcolor="#f6e7e3", color="#b3543f"];
+    chuan -> sinh -> kiem;
+    kiem -> chay [label="  thuộc"];
+    kiem -> bo   [label="  không thuộc"];
+    chay -> gop;
+    bo -> gop [style=dashed];
+  }
+
+  onto [label="ĐỒ THỊ TRI THỨC HỌC VỤ\n7.711 phát biểu · 686 mục · 56 lớp\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
+        shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30", penwidth=1.4];
+
+  viet [label="Viết câu trả lời — chỉ được dùng dữ kiện vừa nhận,\ngiữ nguyên trích dẫn, không thêm số hay tên riêng nào khác",
+        fillcolor="#dce6f2", color="#1f4e79"];
+  tra  [label="Câu trả lời kèm nguồn, chảy về trình duyệt theo từng chữ",
+        fillcolor="#eef2f7", color="#1f4e79"];
+
+  nguoi -> quyet;
+  quyet -> ngoai [label="  không  "];
+  quyet -> rut   [label="  có  "];
+  rut -> chuan [lhead=cluster_tool, label="  danh sách từ khoá  "];
+  gop -> viet [ltail=cluster_tool, label="  JSON: dữ kiện + nguồn + trạng thái  "];
+  chay -> onto [label="  đọc  ", constraint=false, style=dashed, dir=both];
+  viet -> tra;
+  ngoai -> tra;
+}

@@ -1,0 +1,50 @@
+digraph kien_truc {
+  graph [
+    rankdir=TB,
+    bgcolor="white",
+    pad="0.25",
+    nodesep="0.55",
+    ranksep="0.8",
+    fontname="Liberation Sans"
+  ];
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="Liberation Sans",
+    fontsize=14,
+    margin="0.18,0.12",
+    color="#355C7D",
+    penwidth=1.3
+  ];
+  edge [
+    fontname="Liberation Sans",
+    fontsize=11,
+    color="#355C7D",
+    penwidth=1.3,
+    arrowsize=0.8
+  ];
+
+  nguoi_dung [label="Người dùng", fillcolor="#F3F6F9"];
+  llm [
+    label="LLM\nLớp giao tiếp",
+    fillcolor="#FCE8C3",
+    color="#B36B00",
+    penwidth=2
+  ];
+  tool [
+    label="Công cụ tra cứu\nseq2seq sinh SPARQL",
+    fillcolor="#DDEBF7"
+  ];
+  ontology [
+    label="Ontology học vụ\nDữ kiện và nguồn",
+    fillcolor="#D9EAD3",
+    color="#38761D"
+  ];
+
+  nguoi_dung -> llm [label="Câu hỏi tự nhiên"];
+  llm -> tool [label="Từ khoá và lời gọi công cụ"];
+  tool -> ontology [label="Truy vấn SPARQL"];
+  ontology -> tool [label="Dữ kiện và nguồn"];
+  tool -> llm [label="Kết quả tra cứu"];
+  llm -> nguoi_dung [label="Câu trả lời kèm nguồn"];
+}
