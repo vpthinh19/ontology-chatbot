@@ -70,7 +70,8 @@ Ontology học vụ và mô hình seq2seq sinh SPARQL là phần lõi. Mô hình
 kiện trả về. Seq2seq chỉ nhận cụm từ khoá ngắn, không đối thoại trực tiếp với
 người dùng.
 
-Với mọi câu hỏi học vụ, LLM phải gọi công cụ tra cứu rồi mới trả lời; công cụ
+Khuôn nhắc yêu cầu LLM gọi công cụ tra cứu trước khi trả lời mọi câu hỏi học vụ;
+mức tuân thủ quan sát được là 56/60 câu, xem mục 7.5. Công cụ
 chỉ trả về dữ kiện từ ontology.
 
 ![Kiến trúc tổng quan của hệ thống](docs/images/kien-truc.png)
@@ -199,8 +200,9 @@ rỗng.
 
 ![Từ văn bản gốc tới điểm số](docs/images/luong-du-lieu.png)
 
-Dữ liệu được sinh từ ontology theo 49 khuôn truy vấn cùng một họ từ chối; mỗi mục sinh
-bốn cách hỏi. Đáp án đúng là truy vấn chạy được. Nội dung chưa có trong ontology
+Dữ liệu được sinh từ ontology theo 49 khuôn truy vấn cùng một họ từ chối, và mỗi họ
+truy vấn đều có ví dụ ở cả bốn cách hỏi. Không phải mọi đích đều đủ bốn: 259 trong
+567 đích xuất hiện ở cả bốn cách hỏi. Đáp án đúng là truy vấn chạy được. Nội dung chưa có trong ontology
 không thuộc phạm vi phép đo ở mục 10.
 
 Ba tập dữ liệu có thể được xem trực tiếp trong `resources/dataset/` của kho mã.
@@ -427,7 +429,10 @@ chấp nhận nhầm.
 
 ![Độ chính xác theo phong cách](docs/images/theo-phong-cach.png)
 
-| Mô hình | Trang trọng | Trung tính | Thân mật | Gõ nhiễu |
+Các số dưới đây là **chọn đúng mục trong đồ thị**, chỉ tính câu trong phạm vi. Mẫu số
+lần lượt là 85, 86, 82 và 82 câu.
+
+| Mô hình | Trang trọng<br><sub>85 câu</sub> | Trung tính<br><sub>86 câu</sub> | Thân mật<br><sub>82 câu</sub> | Gõ nhiễu<br><sub>82 câu</sub> |
 |---|---:|---:|---:|---:|
 | T5Gemma-2 | 89,4% | 88,4% | 85,4% | **63,4%** |
 | mBART | 84,7% | 88,4% | 76,8% | **54,9%** |
@@ -446,7 +451,9 @@ từng yếu tố. Khả năng khôi phục dấu tiếng Việt cần được 
 `test` có khuôn cơ bản trỏ một mục (301 câu) và khuôn nhiều cạnh (34 câu,
 trong đó 30 câu phải liệt kê giá trị):
 
-| Mô hình | Khuôn cơ bản | Khuôn nhiều cạnh | Chênh |
+Các số dưới đây là **dựng đúng khuôn truy vấn**, không phải chọn đúng mục.
+
+| Mô hình | Khuôn cơ bản<br><sub>301 câu</sub> | Khuôn nhiều cạnh<br><sub>34 câu</sub> | Chênh |
 |---|---:|---:|---:|
 | T5Gemma-2 | 87,0% | 79,4% | +7,6 |
 | mBART | 84,7% | 67,6% | +17,1 |
@@ -462,6 +469,12 @@ theo 49 khuôn có thể loại lỗi cấu trúc.
 
 Phép đo `end-to-end` đánh giá toàn bộ lớp giao tiếp dùng mô hình seq2seq tốt
 nhất, thay vì chỉ đánh giá mô hình sinh truy vấn.
+
+**Không so trực tiếp được với mục 7.1.** Bảng bốn mô hình chấm mô hình sinh truy vấn
+trên chính câu hỏi đầy đủ của bộ dữ liệu. Khi chạy thật, LLM rút câu hỏi thành cụm từ
+khoá ngắn rồi mới đưa cho mô hình, và một câu hỏi có thể sinh nhiều lượt tra. Vì vậy
+các tỷ lệ dưới đây đo cả bước rút từ khoá, nhiều lượt gọi và việc hợp nhất kết quả —
+đầu vào khác hẳn phân phối mà mô hình được chấm ở mục 7.1.
 
 **Cách chấm.** Từng câu trả lời được đọc và đối chiếu với đúng dữ liệu mà công cụ
 trả về trong chính lượt đó, rồi xếp vào một trong năm mức. Việc chấm do một mô
