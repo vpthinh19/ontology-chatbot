@@ -24,17 +24,17 @@ Tập chấm không dùng để chọn mô hình hoặc điều chỉnh cách d�
 | Loại truy vấn | Mẫu dữ liệu cần lấy. |
 | Đầu ra đúng | Một câu SPARQL hoặc “không có thông tin”. |
 
-SPARQL là ngôn ngữ hỏi dữ liệu có cấu trúc. Có 50 khuôn truy vấn. Mỗi khuôn giới hạn kiểu dữ liệu hệ thống được phép đọc.
+SPARQL là ngôn ngữ hỏi dữ liệu có cấu trúc. Có 49 khuôn truy vấn, cộng một họ từ chối dùng cho câu ngoài phạm vi. Mỗi khuôn giới hạn kiểu dữ liệu hệ thống được phép đọc.
 
 ## Phạm vi nội dung
 
 | Miền câu hỏi | Số câu |
 |---|---:|
 | Quy tắc học vụ | 1.742 |
-| Thủ tục | 1.121 |
+| Thủ tục | 1.131 |
 | Văn bản | 1.115 |
 | Ngoài phạm vi | 884 |
-| Biểu mẫu | 634 |
+| Biểu mẫu | 624 |
 | Chứng chỉ | 476 |
 | Học phí | 336 |
 
@@ -47,7 +47,7 @@ uv run validate_sparql_dataset
 .venv/bin/python -m pytest tests/research -q
 ```
 
-Lệnh đầu kiểm tra bộ dữ liệu có khớp ontology và 50 khuôn truy vấn. Lệnh sau chạy các phép kiểm về dữ liệu và đánh giá.
+Lệnh đầu kiểm tra bộ dữ liệu có khớp ontology và 49 khuôn truy vấn. Lệnh sau chạy các phép kiểm về dữ liệu và đánh giá.
 
 ## Tài liệu liên quan
 

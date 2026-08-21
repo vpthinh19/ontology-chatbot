@@ -15,7 +15,7 @@ flowchart LR
 
 1. Mô hình đổi câu hỏi thành SPARQL.
 2. SPARQL là ngôn ngữ hỏi dữ liệu có cấu trúc.
-3. Hệ thống chỉ nhận câu truy vấn thuộc một trong 50 khuôn và chỉ đọc dữ liệu.
+3. Hệ thống chỉ nhận câu truy vấn thuộc một trong 49 khuôn và chỉ đọc dữ liệu.
 4. Câu hợp lệ được chạy trên ontology.
 5. Kết quả gồm dữ kiện, trích dẫn và đường dẫn tới văn bản gốc.
 
