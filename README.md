@@ -130,6 +130,11 @@ Mỗi mẫu gồm câu hỏi, mã nhóm, nhãn phong cách và IRI (Internationa
 Identifier, định danh của thực thể) đích. IRI được dùng thay cho chuỗi SPARQL để
 tách dữ liệu khỏi khuôn truy vấn; mẫu ngoài phạm vi có đích rỗng.
 
+Toàn bộ dữ liệu nằm trong kho ở đúng dạng này, mỗi dòng một mẫu, mở ra xem được
+ngay: [tập dạy](resources/dataset/train.jsonl) ·
+[tập kiểm định](resources/dataset/val.jsonl) ·
+[tập chấm](resources/dataset/test.jsonl).
+
 Ví dụ trả lời được, dùng câu hỏi gõ không dấu:
 
 ```json
@@ -206,6 +211,11 @@ từ chối. Trong 566 đích, 258 đích xuất hiện ở cả bốn cách h�
 | `test` | 390 | Đánh giá độc lập |
 | **Toàn bộ** | **6.313** | - |
 
+Ba tệp này mở ra đọc được trực tiếp: [`train`](resources/dataset/train.jsonl),
+[`val`](resources/dataset/val.jsonl) và [`test`](resources/dataset/test.jsonl).
+Kèm theo là [bản kê](resources/dataset/manifest.json) ghi số dòng, số nhóm câu hỏi
+và mã băm của từng tệp, để đối chiếu khi cần chắc chắn đang xem đúng bản nào.
+
 Không câu nào ở `validation` hoặc `test` trùng nguyên văn với `train`. Tuy nhiên,
 ba phần dùng chung bộ đích; vì vậy phép đo phản ánh khả năng nhận diện cách hỏi
 mới về nội dung đã biết, không phản ánh khả năng xử lý mục chưa gặp.
@@ -271,14 +281,19 @@ Thực nghiệm bộ phân loại không chấm phép sinh chuỗi truy vấn ho
 **Chia dữ liệu.** 6.313 câu được chia thành 5.523 câu `train`, 400 câu
 `validation` và 390 câu `test`. Không có câu trùng nguyên văn giữa ba phần.
 
-**Huấn luyện và chấm nhãn.** Bốn encoder chạy 32 epoch; checkpoint cuối được dùng
-để dự đoán nhãn trên `test`. Baseline được huấn luyện trên `train` rồi áp dụng
-cùng phép chấm nhãn.
+**Huấn luyện và chấm nhãn.** Bốn mô hình học sâu chạy 32 vòng, và bản sau vòng cuối
+là bản được đem dự đoán nhãn trên `test`. Mốc so sánh học một lần trên `train` rồi
+chấm bằng đúng cách đó.
 
 **Chấm end-to-end.** End-to-end là toàn bộ luồng từ câu hỏi đến câu trả lời. Phép
-đo đưa 85 câu qua trợ lý hoàn chỉnh, gồm 60 câu trong phạm vi, 15 câu ngoài phạm
-vi và 10 câu hỏi về dữ liệu ontology chưa có. Mỗi lượt ghi câu hỏi, dữ liệu công
-cụ và câu trả lời cuối.
+đo đưa 85 câu qua trợ lý hoàn chỉnh, gồm 61 câu trong phạm vi, 14 câu ngoài phạm vi
+và 10 câu hỏi về dữ liệu ontology chưa có. Mỗi lượt ghi lại câu hỏi, dữ liệu công cụ
+trả về và câu trả lời cuối.
+
+Cả ba thứ đó đều nằm trong kho: [bộ 85 câu hỏi](resources/end-to-end/questions.json)
+và [bản ghi từng lượt](resources/end-to-end/results.json), trong đó mỗi lượt giữ
+nguyên văn dữ liệu công cụ đã trả về, nên phép đo này chấm lại được mà không cần
+chạy lại trợ lý.
 
 **Thời gian phản hồi.** Thời gian được đo từ lúc nhận câu hỏi đến khi có câu trả
 lời cuối. Trung vị và p95 được lấy theo thứ hạng; p95 là phần tử thứ
@@ -464,6 +479,11 @@ chối thì chắc chắn một trong hai bên sai. **6 trên 85 phán quyết v
 kiểu đó.** Chín trường hợp trải đều các mức đã được đọc bằng tay, và cả chín lần
 máy chấm đều đúng. Dù vậy, chưa có ai chấm song song để đối chứng, nên con số này
 nên đọc như một ước lượng.
+
+Người đọc tự kiểm được: [nhật ký chấm](resources/end-to-end/quality-log.md) xếp cả
+85 lượt theo từng mức, mỗi mục gồm câu hỏi, dữ liệu công cụ trả về, câu trả lời
+nguyên văn, đoạn mà máy dựa vào để chấm, và ba phép đếm tự động của chính lượt đó.
+Sáu phán quyết vướng mâu thuẫn được đánh dấu sẵn ngay đầu mục.
 
 Có thêm một phép dò đơn giản chạy song song, chỉ tìm xem câu trả lời có chứa cụm
 kiểu "không tìm thấy", "dữ liệu không có" hay không. Nó bắt được 7 trên 14 câu ngoài
