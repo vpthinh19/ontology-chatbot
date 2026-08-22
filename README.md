@@ -19,9 +19,9 @@ luyện, và một mốc so sánh chỉ đếm tần suất cụm ký tự. Trê
 độc lập, mô hình đa ngữ XLM-R base chọn đúng nhãn ở **85,1%** số câu, cao hơn mốc so
 sánh 4,8 điểm phần trăm.
 
-Khoảng cách giữa các mô hình tập trung ở những nhãn có rất ít câu huấn luyện: 57
-trong 344 nhãn có dưới năm câu, và ở nhóm hiếm nhất, mô hình tốt nhất giữ được 75%
-trong khi mô hình yếu nhất về 0%. Định nghĩa đầy đủ các chỉ số nằm ở mục 6.
+Bốn bộ mã hoá cách nhau dưới ba điểm phần trăm, nhỏ hơn mức dao động giữa hai lượt
+huấn luyện; phép đo vì thế xếp được chúng trên baseline nhưng không xếp được thứ tự
+giữa chúng với nhau. Định nghĩa đầy đủ các chỉ số nằm ở mục 6.
 
 Phép đo chỉ phản ánh cách hỏi mới về các nội dung đã xuất hiện trong dữ liệu huấn
 luyện; khả năng xử lý nội dung chưa từng thấy và độ biến thiên giữa nhiều lần
@@ -296,8 +296,8 @@ Kết quả trên 390 câu `test` với 344 nhãn:
 
 | Mô hình | Accuracy | Precision macro | Recall macro | F1 macro | F1 weighted |
 |---|---:|---:|---:|---:|---:|
-| **XLM-R base** | **85,1%** | **78,2%** | **83,4%** | **79,7%** | **82,6%** |
-| BamiBERT | 83,6% | 78,8% | 84,1% | 80,1% | 82,0% |
+| XLM-R base | **85,1%** | 78,2% | 83,4% | 79,7% | **82,6%** |
+| BamiBERT | 83,6% | **78,8%** | **84,1%** | **80,1%** | 82,0% |
 | ViSoBERT | 82,1% | 76,9% | 81,6% | 77,8% | 80,3% |
 | PhoBERT-v2 | 80,5% | 74,4% | 79,5% | 75,6% | 78,5% |
 | TF-IDF + LinearSVC | 80,3% | 74,4% | 79,5% | 75,6% | 78,3% |
@@ -305,8 +305,15 @@ Kết quả trên 390 câu `test` với 344 nhãn:
 XLM-R cao hơn baseline 4,8 điểm accuracy và 4,1 điểm F1 macro. Phân tích theo
 tần suất nhãn cho thấy phần lớn chênh lệch xuất hiện ở các nhãn hiếm.
 
-Khoảng cách giữa bốn bộ mã hoá nhỏ hơn độ dao động giữa hai lượt huấn luyện; xem
-mục 10 trước khi đọc thứ hạng từ hạng hai trở xuống.
+**Không mô hình nào dẫn đầu cả năm cột.** XLM-R cao nhất ở accuracy và F1 weighted;
+BamiBERT cao nhất ở ba chỉ số trung bình theo nhãn. Accuracy đếm theo câu nên nhãn
+nhiều mẫu chiếm ưu thế, còn trung bình theo nhãn cho mỗi nhãn một phiếu bằng nhau;
+hai mô hình này vì thế mạnh ở hai phía khác nhau của phân bố nhãn.
+
+Chênh lệch giữa chúng — lớn nhất 1,5 điểm — **nhỏ hơn mức dao động giữa hai lượt
+huấn luyện đo được ở mục 10**, nên bảng này không đủ để kết luận mô hình nào tốt
+hơn. XLM-R được chọn để triển khai; phép đo không chứng minh lựa chọn đó tốt hơn
+BamiBERT một cách chắc chắn.
 
 Tách theo phạm vi câu hỏi:
 
@@ -334,9 +341,10 @@ thứ hạng mô hình theo khả năng từ chối.
 | PhoBERT-v2 | 0% | 20% | 67% | 89% | 83% |
 | TF-IDF + LinearSVC | 0% | 60% | 78% | 82% | 83% |
 
-Chênh lệch lớn nhất xuất hiện ở nhóm nhãn có 1–2 mẫu huấn luyện. Ở các nhóm còn
-lại, mức chênh lệch thay đổi theo nhóm tần suất. Có 57/344 nhãn dưới năm mẫu
-huấn luyện; kết quả này, cùng các chỉ số tổng thể, là cơ sở lựa chọn XLM-R.
+Chênh lệch lớn nhất xuất hiện ở nhóm nhãn có 1–2 mẫu huấn luyện. Có 57/344 nhãn
+dưới năm mẫu huấn luyện, và hai nhóm hiếm nhất chỉ gồm 9 câu `test` cộng lại — một
+câu đổi kết quả làm tỷ lệ của nhóm dịch 20 điểm phần trăm, nên các cột bên trái
+bảng này không dùng để xếp hạng mô hình được.
 
 ### 7.2 Diễn biến huấn luyện
 
@@ -372,8 +380,8 @@ lĩnh vực cần được diễn giải thận trọng. Nhóm Quy tắc học v
 
 | Mô hình | Trang trọng | Trung tính | Thân mật | Gõ nhiễu |
 |---|---:|---:|---:|---:|
-| **XLM-R base** | **94,9%** | **91,9%** | **83,5%** | 69,8% |
-| BamiBERT | 92,9% | 91,9% | 78,4% | 70,8% |
+| XLM-R base | **94,9%** | **91,9%** | **83,5%** | 69,8% |
+| BamiBERT | 92,9% | **91,9%** | 78,4% | 70,8% |
 | ViSoBERT | 90,8% | 88,9% | 78,4% | 69,8% |
 | PhoBERT-v2 | 87,8% | 86,9% | 75,3% | **71,9%** |
 | TF-IDF + LinearSVC | 85,7% | 85,9% | 77,3% | **71,9%** |
