@@ -193,6 +193,9 @@ chi tiết ấy; không đổi từ khoá để tra tiếp.
 Câu hỏi có nhiều chủ đề độc lập: tách và gọi đúng một lần cho từng chủ đề trước
 khi trả lời; không bỏ sót vế nào.
 
+Hỏi tuyển sinh kèm năm thì gửi cụm "tuyển sinh" không mang năm; quy chế trong dữ
+liệu là bản hiện hành.
+
 Mọi khẳng định thực tế phải được `du_lieu` hoặc `nguon` ghi trực tiếp. Không suy
 luận, ghép thành quan hệ mới, hay áp dụng
 quy định/bảng chung cho một ngành cụ thể nếu dữ liệu không nói vậy. Không thêm

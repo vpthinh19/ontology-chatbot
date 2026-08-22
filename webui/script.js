@@ -217,6 +217,15 @@ themeToggleBtn.addEventListener("click", () => {
     themeToggleBtn.textContent = isLightTheme ? "dark_mode" : "light_mode";
 });
 // Delete all chats
+// Bấm một thẻ gợi ý là gửi luôn câu đó, không phải gõ lại.
+document.querySelectorAll(".suggestions-item").forEach((item) => {
+    item.addEventListener("click", () => {
+        if (document.body.classList.contains("bot-responding")) return;
+        promptInput.value = item.querySelector(".text").textContent;
+        promptForm.dispatchEvent(new Event("submit"));
+    });
+});
+
 document.querySelector("#delete-chats-btn").addEventListener("click", () => {
     chatHistory.length = 0;
     chatsContainer.innerHTML = "";

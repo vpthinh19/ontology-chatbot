@@ -65,6 +65,67 @@ body {
     color: var(--subheading-color);
 }
 
+/* Thẻ gợi ý chỉ có nghĩa lúc màn hình còn trống, nên nó biến đi cùng lời chào
+   ngay khi cuộc trò chuyện bắt đầu. Hàng thẻ trượt ngang được trên màn hình hẹp
+   thay vì bị bóp lại cho vừa. */
+.container .suggestions {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin-top: 4vh;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.suggestions .suggestions-item {
+    cursor: pointer;
+    padding: 18px;
+    width: 228px;
+    flex-shrink: 0;
+    display: flex;
+    scroll-snap-align: center;
+    flex-direction: column;
+    align-items: flex-end;
+    border-radius: 12px;
+    justify-content: space-between;
+    background: var(--secondary-color);
+    transition: 0.3s ease;
+}
+
+.suggestions .suggestions-item:hover {
+    background: var(--secondary-hover-color);
+}
+
+.suggestions .suggestions-item .text {
+    font-size: 1rem;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.suggestions .suggestions-item .icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    font-size: 1.4rem;
+    margin-top: 24px;
+    align-self: flex-end;
+    align-items: center;
+    border-radius: 50%;
+    justify-content: center;
+    color: #1d7efd;
+    background: var(--primary-color);
+}
+
+.suggestions .suggestions-item:nth-child(2) .icon { color: #28a745; }
+.suggestions .suggestions-item:nth-child(3) .icon { color: #ffc107; }
+.suggestions .suggestions-item:nth-child(4) .icon { color: #6f42c1; }
+
+body.chats-active .container .suggestions {
+    display: none;
+}
+
 body.chats-active .container .app-header {
     display: none;
 }
