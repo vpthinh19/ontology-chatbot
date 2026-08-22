@@ -9,77 +9,77 @@
       "target"
     ],
     "input": "Vietnamese natural-language question",
-    "target": "one-line canonical SPARQL SELECT or the exact rejection marker"
+    "target": "list of anchor IRIs; empty for no-information"
   },
   "files": {
     "train": {
       "path": "train.jsonl",
-      "records": 5518,
+      "records": 5523,
       "query_families": 50,
-      "targets": 567,
+      "targets": 566,
       "domains": {
         "academic-rule": 1476,
         "certificate": 413,
         "document": 1003,
-        "form": 540,
-        "out-of-domain": 773,
+        "form": 588,
+        "out-of-domain": 730,
         "procedure": 1031,
         "tuition": 282
       },
-      "sha256": "3134d9e080b84735b00c7811aeaffad6a1c9c2254d8b84ddbbc3e07383a6290a"
+      "sha256": "eae821cdcd7f6c8ff1d489f48a1fe2eb39b100d7d480a23b747fbed10e7cea00"
     },
     "val": {
       "path": "val.jsonl",
       "records": 400,
       "query_families": 50,
-      "targets": 270,
+      "targets": 269,
       "domains": {
         "academic-rule": 135,
         "certificate": 32,
         "document": 55,
-        "form": 42,
-        "out-of-domain": 56,
+        "form": 48,
+        "out-of-domain": 50,
         "procedure": 51,
         "tuition": 29
       },
-      "sha256": "c36cdcac6ffb31e03bf83cb1876251b97572366c80f83642ae5208004be93558"
+      "sha256": "e23241d88940c45a442a17234b757bf4ebec7936baf72f318dcdeff72840e653"
     },
     "test": {
       "path": "test.jsonl",
       "records": 390,
       "query_families": 50,
-      "targets": 272,
+      "targets": 271,
       "domains": {
         "academic-rule": 131,
         "certificate": 31,
         "document": 57,
-        "form": 42,
-        "out-of-domain": 55,
+        "form": 48,
+        "out-of-domain": 49,
         "procedure": 49,
         "tuition": 25
       },
-      "sha256": "64d03f0a3d73e7a5756e4effc3657df5fdd14882505f918109746a09d174f23a"
+      "sha256": "cfbc3c77d59350129f6d9a1c72c438e5bf021c28dd114696027e53305c530ddd"
     }
   },
   "catalogue": {
     "path": "catalogue.jsonl",
     "query_families": 50,
-    "sha256": "a5ef35619f288a8c543fa08730117eaf3262ea89db7e0bad91d144c8340b7d1d"
+    "sha256": "ecf93c804171dcc7e01412355140728e55fd74c4fc186346e69a273c295e019e"
   },
   "coverage": {
     "path": "coverage.json",
-    "sha256": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251"
+    "sha256": "9e54e5523d59e84d84be9fc2fb852459be5da57f6da06f7be058bbc6e2b0c94c"
   },
   "totals": {
-    "records": 6308,
+    "records": 6313,
     "query_families": 50,
-    "targets": 567,
+    "targets": 566,
     "domains": {
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 624,
-      "out-of-domain": 884,
+      "form": 684,
+      "out-of-domain": 829,
       "procedure": 1131,
       "tuition": 336
     }
@@ -101,6 +101,6 @@
   "normalization": "Unicode NFC, collapsed whitespace, conservative Vietnamese abbreviation expansion",
   "ontology": {
     "path": "../ontology/ontology.ttl",
-    "sha256": "312a09d3f96a974061506a793e57055a60498a463f2b5a692e20673db0db9ba0"
+    "sha256": "bc1e80d5f8c583e08d114342c53ca8d572c33020be5f5fc963bfbb9e4be50e10"
   }
 }

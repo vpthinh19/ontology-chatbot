@@ -4,14 +4,14 @@ Tệp này trả lời bộ dữ liệu dùng để dạy và chấm các mô h�
 
 ## Quy mô và cách chia
 
-Bộ câu hỏi có 6.308 dòng. Mỗi dòng ghép một câu hỏi tiếng Việt với đầu ra đúng mà hệ thống cần tạo.
+Bộ câu hỏi có 6.313 dòng. Mỗi dòng ghép một câu hỏi tiếng Việt với đầu ra đúng mà hệ thống cần tạo.
 
 | Tập dữ liệu | Số dòng | Mục đích |
 |---|---:|---|
-| Tập dạy | 5.518 | Dạy mô hình đổi câu hỏi thành đầu ra có cấu trúc. |
+| Tập dạy | 5.523 | Dạy mô hình đổi câu hỏi thành đầu ra có cấu trúc. |
 | Tập chỉnh | 400 | Chọn thiết lập trước khi chấm cuối. |
 | Tập chấm | 390 | Đo kết quả sau khi đã cố định các lựa chọn. |
-| Tổng | 6.308 | Toàn bộ bộ câu hỏi. |
+| Tổng | 6.313 | Toàn bộ bộ câu hỏi. |
 
 Tập chấm không dùng để chọn mô hình hoặc điều chỉnh cách dạy.
 
@@ -33,8 +33,8 @@ SPARQL là ngôn ngữ hỏi dữ liệu có cấu trúc. Có 49 khuôn truy v�
 | Quy tắc học vụ | 1.742 |
 | Thủ tục | 1.131 |
 | Văn bản | 1.115 |
-| Ngoài phạm vi | 884 |
-| Biểu mẫu | 624 |
+| Ngoài phạm vi | 829 |
+| Biểu mẫu | 684 |
 | Chứng chỉ | 476 |
 | Học phí | 336 |
 
