@@ -14,14 +14,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-
-# Chạy dịch vụ: máy chủ HTTP, lớp giao tiếp gọi mô hình ngôn ngữ lớn, và bộ chạy
-# đồ thị ONNX. KHÔNG có thư viện huấn luyện ở đây: bộ phân loại đã được đóng gói
-# thành một đồ thị ONNX kèm sẵn trọng số, nên lúc chạy chỉ cần bộ chạy đồ thị và
-# bộ tách từ. Đưa thư viện huấn luyện vào sẽ cộng thêm vài gigabyte cho ảnh triển
-# khai mà không đổi kết quả.
-#
-# ``huggingface-hub`` chỉ dùng lúc dựng ảnh để tải model đã xuất về.
 inference = [
     "fastapi[standard]>=0.140.0",
     "huggingface-hub>=1.24.0",
@@ -66,6 +58,7 @@ generate_reports = "ontchatbot.cli.report:main"
 report_page = "ontchatbot.cli.report_page:main"
 serve_sparql = "ontchatbot.cli.serve:main"
 export_classifier = "ontchatbot.cli.export_classifier:main"
+publish_classifier = "ontchatbot.cli.publish_classifier:main"
 train_classifier = "ontchatbot.cli.train_classifier:main"
 validate_sparql_dataset = "ontchatbot.cli.validate_data:main"
 

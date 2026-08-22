@@ -53,6 +53,20 @@ COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
+# Biến môi trường lúc CHẠY container:
+#
+#   ONTCHATBOT_LLM_API_KEY   BẮT BUỘC. Khoá truy cập máy chủ mô hình ngôn ngữ lớn.
+#                            Chỉ đọc từ môi trường, cố ý không có cờ dòng lệnh, để
+#                            khoá không lọt vào lịch sử lệnh hay danh sách tiến trình.
+#   ONTCHATBOT_LLM_MODEL     BẮT BUỘC. Tên mô hình điều phối.
+#   ONTCHATBOT_LLM_BASE_URL  Tuỳ chọn. Địa chỉ máy chủ mô hình; mặc định là nhà cung
+#                            cấp đã đặt trong mã.
+#   ONTCHATBOT_DEVICE        Tuỳ chọn. ``cuda`` (mặc định của ảnh) hoặc ``cpu``.
+#
+# Đường dẫn model, địa chỉ và cổng lắng nghe đã nằm trong CMD ở cuối tệp.
+# Dịch vụ kiểm hai biến bắt buộc ngay lúc khởi động và dừng hẳn nếu thiếu, nên
+# thiếu biến thì container tắt thay vì chạy rồi hỏng lúc có người hỏi.
+#
 # PATH đặt môi trường ảo lên đầu. Chế độ ngoại tuyến vì model đã nằm trong ảnh,
 # không lượt chạy nào được ra mạng. Giới hạn vùng cấp phát bộ nhớ giảm khoảng
 # 50-100 MB thường trú ở mức tải một yêu cầu tại một thời điểm.
