@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Mapping
@@ -11,6 +10,7 @@ from typing import Any, Mapping
 from rdflib import Graph
 
 from ..runtime.sparql import execute_select, validate_select
+from ..runtime.cards import CardLookup
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, QUERY_CATALOGUE_PATH
 from ..catalogue import QuerySpec, load_catalogue, match_target
@@ -32,7 +32,7 @@ class DatasetError(ValueError):
     """The dataset violates its declared contract."""
 
 
-def load_dataset(path: Path) -> list[dict[str, str]]:
+def load_dataset(path: Path) -> list[dict[str, Any]]:
     """Load one JSON Lines split."""
 
     rows = []
@@ -49,7 +49,7 @@ def load_dataset(path: Path) -> list[dict[str, str]]:
     return rows
 
 
-def load_release(directory: Path = DATASET_DIR) -> dict[str, list[dict[str, str]]]:
+def load_release(directory: Path = DATASET_DIR) -> dict[str, list[dict[str, Any]]]:
     """Load the three standard dataset files."""
 
     directory = Path(directory)
@@ -60,23 +60,26 @@ def validate_dataset(
     rows: list[dict[str, Any]],
     graph: Graph,
     catalogue: Mapping[str, QuerySpec] | None = None,
+    *,
+    _lookup: CardLookup | None = None,
 ) -> dict[str, Any]:
     """Validate one split against catalogue templates and the ontology."""
 
     catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
+    lookup = _lookup or CardLookup()
     if not rows:
         raise DatasetError("dataset split is empty")
 
     ids: set[str] = set()
     normalized_inputs: dict[str, str] = {}
     register_counts: Counter[str] = Counter()
-    target_counts: Counter[str] = Counter()
+    target_counts: Counter[tuple[str, tuple[str, ...]]] = Counter()
     query_counts: Counter[str] = Counter()
     domain_counts: Counter[str] = Counter()
     slot_values: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
     # Thousands of rows share a few hundred targets, and a target either returns
     # rows or it does not - running it again per row cannot learn anything new.
-    answering_targets: set[str] = set()
+    answering_targets: set[tuple[str, tuple[str, ...]]] = set()
 
     for index, row in enumerate(rows, 1):
         record_id = str(row.get("id", f"line-{index}"))
@@ -100,21 +103,28 @@ def validate_dataset(
             raise DatasetError(f"{record_id}: unknown query_id {query_id}")
         target = row["target"]
         _validate_target_text(target, record_id)
-        matched = match_target(spec, target)
+        label = (query_id, tuple(target))
+        try:
+            query = lookup.query(query_id, target)
+        except KeyError:
+            raise DatasetError(
+                f"{record_id}: target does not match query family {query_id}"
+            ) from None
+        matched = match_target(spec, query)
         if matched is None:
             raise DatasetError(f"{record_id}: target does not match query family {query_id}")
         for name, value in matched.items():
             slot_values[query_id][name].add(value)
 
         if spec.domain != "out-of-domain":
-            validate_select(target)
-            if target not in answering_targets:
-                if not execute_select(graph, target):
+            validate_select(query)
+            if label not in answering_targets:
+                if not execute_select(graph, query):
                     raise DatasetError(f"{record_id}: reference query returns no rows")
-                answering_targets.add(target)
+                answering_targets.add(label)
 
         register_counts[register] += 1
-        target_counts[target] += 1
+        target_counts[label] += 1
         query_counts[query_id] += 1
         domain_counts[spec.domain] += 1
 
@@ -138,14 +148,17 @@ def validate_release(
     catalogue: Mapping[str, QuerySpec] | None = None,
     *,
     require_complete_catalogue: bool = True,
+    lookup: CardLookup | None = None,
 ) -> dict[str, Any]:
     """Validate all files, train coverage, and leakage between splits."""
 
     catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
+    lookup = lookup or CardLookup()
     if set(splits) != set(REQUIRED_SPLITS):
         raise DatasetError(f"release must contain exactly {list(REQUIRED_SPLITS)}")
     reports = {
-        name: validate_dataset(rows, graph, catalogue) for name, rows in splits.items()
+        name: validate_dataset(rows, graph, catalogue, _lookup=lookup)
+        for name, rows in splits.items()
     }
 
     query_counts = {split: Counter() for split in REQUIRED_SPLITS}
@@ -167,7 +180,8 @@ def validate_release(
             spec = catalogue[query_id]
             domains[spec.domain] += 1
             if split == "train":
-                for name, value in (match_target(spec, row["target"]) or {}).items():
+                query = lookup.query(query_id, row["target"])
+                for name, value in (match_target(spec, query) or {}).items():
                     train_slots[query_id][name].add(value)
 
     # Chỉ họ primary phải có dữ liệu huấn luyện. Họ secondary chỉ hỗ trợ runtime.
@@ -271,13 +285,17 @@ def _validate_row_shape(row: dict[str, Any], record_id: str) -> None:
         raise DatasetError(
             f"{record_id}: fields must be exactly {sorted(REQUIRED_FIELDS)}, got {sorted(row)}"
         )
-    if not all(isinstance(row[field], str) and row[field] for field in REQUIRED_FIELDS):
-        raise DatasetError(f"{record_id}: every field must be a non-empty string")
+    text_fields = REQUIRED_FIELDS - {"target"}
+    if not all(isinstance(row[field], str) and row[field] for field in text_fields):
+        raise DatasetError(f"{record_id}: every text field must be a non-empty string")
+    _validate_target_text(row["target"], record_id)
 
 
-def _validate_target_text(target: str, record_id: str) -> None:
-    if "\n" in target or "\r" in target or re.search(r"\s{2,}", target):
-        raise DatasetError(f"{record_id}: target must be one canonical line")
+def _validate_target_text(target: object, record_id: str) -> None:
+    if not isinstance(target, list) or not all(
+        isinstance(value, str) and value for value in target
+    ):
+        raise DatasetError(f"{record_id}: target must be a list of non-empty IRIs")
 
 
 def _slot_coverage(

@@ -14,6 +14,7 @@ from rdflib.plugins.sparql.parserutils import CompValue
 
 from ..catalogue import QuerySpec, load_catalogue, match_target
 from ..runtime.sparql import PREFIXES, SparqlError, execute_select, validate_select
+from ..runtime.cards import CardLookup
 from ..settings import ONTOLOGY_NS, QUERY_CATALOGUE_PATH
 from .query_features import extract_query_features, query_feature_tags
 
@@ -38,18 +39,20 @@ def _anchor_kind(node: str) -> str:
 
 
 def evaluate_predictions(
-    examples: list[dict[str, str]],
+    examples: list[dict[str, Any]],
     predictions: Iterable[str],
     graph: Graph,
     *,
     include_cases: bool = False,
     catalogue: Mapping[str, QuerySpec] | None = None,
+    lookup: CardLookup | None = None,
 ) -> dict[str, Any]:
     predictions = list(predictions)
     if len(examples) != len(predictions):
         raise ValueError("examples and predictions must have the same length")
 
     catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
+    lookup = lookup or CardLookup()
     totals: Counter[str] = Counter()
     in_domain: Counter[str] = Counter()
     out_of_domain: Counter[str] = Counter()
@@ -77,7 +80,14 @@ def evaluate_predictions(
         target = example["target"]
         register = example["register"]
         query_id = example["query_id"]
-        marker_reference = target == _NO_INFORMATION
+        reference_query = (
+            target
+            if isinstance(target, str)
+            else lookup.query(query_id, target)
+        )
+        marker_reference = query_id == "no-information" and (
+            target == _NO_INFORMATION or not target
+        )
         # Hai nhóm đánh giá là truy vấn neo và câu hỏi ngoài miền; giới thiệu
         # phạm vi thuộc về lớp LLM gọi công cụ.
         evaluation_group = "out_of_domain" if marker_reference else "node_queries"
@@ -85,7 +95,9 @@ def evaluate_predictions(
         query_features = (
             {}
             if marker_reference
-            else extract_query_features(target, object_properties=object_properties)
+            else extract_query_features(
+                reference_query, object_properties=object_properties
+            )
         )
         totals["count"] += 1
         scope_counts = out_of_domain if marker_reference else in_domain
@@ -121,7 +133,7 @@ def evaluate_predictions(
         result_f1 = 0.0
         error = None
         predicted_rows = None
-        canonical_exact = prediction.strip() == target
+        canonical_exact = prediction.strip() == reference_query
         marker_exact = marker_reference and canonical_exact
         false_acceptance = False
         safe_rejection = False
@@ -155,7 +167,7 @@ def evaluate_predictions(
                 parse_ok = True
                 predicted_rows = execute_select(graph, prediction)
                 execution_ok = True
-                reference_rows = execute_select(graph, target)
+                reference_rows = execute_select(graph, reference_query)
                 answer_exact = _row_key(predicted_rows) == _row_key(reference_rows)
                 result_precision, result_recall, result_f1 = _result_scores(
                     predicted_rows,
@@ -164,7 +176,7 @@ def evaluate_predictions(
             except SparqlError as exc:
                 error = str(exc)
             error_category = _error_category(
-                target,
+                reference_query,
                 prediction,
                 parse_ok=parse_ok,
                 execution_ok=execution_ok,
@@ -174,8 +186,8 @@ def evaluate_predictions(
 
         # Ba thước chính không dựa vào tập kết quả. Một query chỉ được xem là
         # đầu ra được hệ thống chấp nhận khi nó vừa hợp cú pháp vừa khớp một họ
-        # catalogue; điều này đúng với cả causal LM và seq2seq vì cả hai cùng
-        # sinh ra đúng một chuỗi đích.
+        # catalogue; bộ phân loại chỉ được chấp nhận khi nhãn nó chọn tra ra
+        # một truy vấn thuộc đúng danh mục này.
         if parse_ok:
             predicted_query_id, predicted_slots = _match_catalogue(
                 catalogue,
@@ -190,7 +202,7 @@ def evaluate_predictions(
         if not marker_reference:
             expected_spec = catalogue.get(query_id)
             if expected_spec is not None:
-                expected_slots = match_target(expected_spec, target) or {}
+                expected_slots = match_target(expected_spec, reference_query) or {}
             non_node_slots = (
                 {
                     name
@@ -208,7 +220,11 @@ def evaluate_predictions(
             primary["query_shape"]["correct"] += int(shape_correct)
 
         if evaluation_group == "node_queries":
-            expected_nodes = _query_anchor_nodes(target, graph)
+            expected_nodes = (
+                _query_anchor_nodes(reference_query, graph)
+                if isinstance(target, str)
+                else tuple(value.lstrip(":") for value in target)
+            )
             # Nhóm theo kiểu tham chiếu neo: bảng dùng nội dung, còn điều/khoản
             # dùng toạ độ văn bản.
             if expected_nodes:
@@ -259,7 +275,7 @@ def evaluate_predictions(
                     "register": register,
                     "query_features": query_features,
                     "input": example["input"],
-                    "target": target,
+                    "target": reference_query,
                     "prediction": prediction,
                     "parse": parse_ok,
                     "execution": execution_ok,

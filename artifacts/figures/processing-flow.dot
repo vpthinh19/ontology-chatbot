@@ -16,21 +16,15 @@ digraph luong_xu_ly {
     labelloc=t; fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
     color="#2e8b8b"; style="rounded"; bgcolor="#f4faf9"; penwidth=1.4;
     chuan [label="Chuẩn hoá từng từ khoá\n(gõ nhiễu, thiếu dấu, viết tắt)", fillcolor="#dbeeec", color="#2e8b8b"];
-    sinh  [label="Mô hình chuỗi-chuỗi sinh\nmột truy vấn SPARQL cho mỗi từ khoá", fillcolor="#dbeeec", color="#2e8b8b"];
-    kiem  [label="Truy vấn có thuộc\n50 dạng đã khai báo không?", shape=diamond,
-           fillcolor="#dbeeec", color="#2e8b8b", margin="0.10,0.04"];
-    chay  [label="Chạy truy vấn trên đồ thị tri thức", fillcolor="#dbeeec", color="#2e8b8b"];
+    sinh  [label="Mô hình phân loại chọn một trong 344 nhãn\ncho mỗi từ khoá, rồi tra ra truy vấn dựng sẵn", fillcolor="#dbeeec", color="#2e8b8b"];
+    chay  [label="Chạy truy vấn trên đồ thị tri thức\n(truy vấn lấy từ danh mục nên luôn hợp lệ)",
+           fillcolor="#dbeeec", color="#2e8b8b"];
     gop   [label="Gộp kết quả mọi từ khoá, khử trùng,\nxếp mỗi dữ kiện vào đúng nguồn của nó",
            fillcolor="#dbeeec", color="#2e8b8b"];
-    bo    [label="Bỏ truy vấn này", fillcolor="#f6e7e3", color="#b3543f"];
-    chuan -> sinh -> kiem;
-    kiem -> chay [label="  thuộc"];
-    kiem -> bo   [label="  không thuộc"];
-    chay -> gop;
-    bo -> gop [style=dashed];
+    chuan -> sinh -> chay -> gop;
   }
 
-  onto [label="ĐỒ THỊ TRI THỨC HỌC VỤ\n7.711 phát biểu · 686 mục · 56 lớp\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
+  onto [label="ĐỒ THỊ TRI THỨC HỌC VỤ\n7.704 phát biểu · 685 mục · 56 lớp\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
         shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30", penwidth=1.4];
 
   viet [label="Viết câu trả lời — chỉ được dùng dữ kiện vừa nhận,\ngiữ nguyên trích dẫn, không thêm số hay tên riêng nào khác",

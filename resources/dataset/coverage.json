@@ -7,7 +7,6 @@
     "greeting-social",
     "unrelated",
     "near-domain-missing",
-    "ambiguous",
     "noisy-out-of-domain",
     "hard-negative",
     "adjacent-domain",

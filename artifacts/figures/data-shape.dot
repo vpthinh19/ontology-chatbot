@@ -44,7 +44,7 @@ digraph hinh_dang {
     </TABLE>>];
 
   b1 -> b2 [label="  mô hình ngôn ngữ lớn rút gọn  "];
-  b2 -> b3 [label="  mô hình chuỗi-chuỗi sinh truy vấn  "];
+  b2 -> b3 [label="  mô hình phân loại chọn nhãn  "];
   b3 -> b4 [label="  chạy trên đồ thị tri thức  "];
   b4 -> b5 [label="  gộp các từ khoá, khử trùng, xếp theo nguồn  "];
   b5 -> b6 [label="  mô hình ngôn ngữ lớn viết câu trả lời  "];

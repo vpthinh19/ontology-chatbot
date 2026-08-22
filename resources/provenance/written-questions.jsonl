@@ -1730,15 +1730,15 @@
 {"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen chuong trinh so may"}
 {"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau 05 chuyen CTDT"}
 {"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "tai don xin chuyen CTDT dau z"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu chuyển chương trình này số mấy nhỉ?"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin chuyển chương trình đào tạo dùng mẫu nào ta"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn chuyển CTĐT tải đâu v ạ"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết mẫu đơn chuyển chương trình đào tạo mang số hiệu nào trên trang của Phòng Đào tạo ạ."}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển Chương trình đào tạo có thể tải ở đâu và tên mẫu trên trang là gì ạ."}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu chuyển chương trình tải ở đâu?"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen ctdt tai dau"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen chuong trinh dao tao tren trang phong dao tao tai link nao vay a"}
-{"anchor": "FormCatalogueEntry006", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen ctrinh so may z"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "mẫu chuyển chương trình này số mấy nhỉ?"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin chuyển chương trình đào tạo dùng mẫu nào ta"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn chuyển CTĐT tải đâu v ạ"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết mẫu đơn chuyển chương trình đào tạo mang số hiệu nào trên trang của Phòng Đào tạo ạ."}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "formal", "input": "Xin cho biết đơn xin chuyển Chương trình đào tạo có thể tải ở đâu và tên mẫu trên trang là gì ạ."}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "neutral", "input": "Mẫu chuyển chương trình tải ở đâu?"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don chuyen ctdt tai dau"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "don xin chuyen chuong trinh dao tao tren trang phong dao tao tai link nao vay a"}
+{"anchor": "FormCatalogueEntry005", "query_id": "form-catalogue-entry-facts", "register": "noisy", "input": "mau chuyen ctrinh so may z"}
 {"anchor": "Form07ExemptionAndBonus", "query_id": "form-document-facts", "register": "colloquial", "input": "mẫu miễn học này nằm ở điều mấy ta"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "xin cộng điểm thưởng dùng mẫu nào nhỉ?"}
 {"anchor": "FormCatalogueEntry007", "query_id": "form-catalogue-entry-facts", "register": "colloquial", "input": "đơn miễn học miễn thi số mấy v ạ"}

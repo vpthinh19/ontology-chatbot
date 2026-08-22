@@ -12,6 +12,7 @@ from ontchatbot.research.benchmark import (
 )
 from ontchatbot.catalogue import QuerySpec, SlotSpec
 from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.runtime.cards import Card, CardLookup
 
 
 CATALOGUE = {
@@ -39,6 +40,37 @@ CATALOGUE = {
         "no-information", "out-of-domain", "không có thông tin", {}
     ),
 }
+
+
+def _card(query_id: str, anchors: tuple[str, ...], query: str) -> Card:
+    return Card(query_id, anchors, "test", query)
+
+
+LOOKUP = CardLookup(
+    [
+        _card(
+            "credit-load-range",
+            (f":Credits{credits}",),
+            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; "
+            ":maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= "
+            f"{credits} && {credits} <= ?maximum) }}",
+        )
+        for credits in (17, 18)
+    ]
+    + [
+        _card(
+            "procedure-instruction",
+            (procedure,),
+            f"SELECT ?answer WHERE {{ {procedure} :hasStep ?part . "
+            "?part :stepText ?answer . }",
+        )
+        for procedure in (
+            ":TemporaryAcademicLeaveProcedure",
+            ":CourseRegistrationProcedure",
+        )
+    ]
+    + [_card("no-information", (), "không có thông tin")]
+)
 
 
 def _row(identifier, query_id, text, target):
@@ -75,18 +107,18 @@ def test_accepts_held_out_numeric_target_and_marker() -> None:
             "train-1",
             "credit-load-range",
             "18 tín chỉ thuộc khoảng nào",
-            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= 18 && 18 <= ?maximum) }",
+            [":Credits18"],
         ),
-        _row("train-2", "no-information", "xin chào", "không có thông tin"),
+        _row("train-2", "no-information", "xin chào", []),
     ]
     benchmark = [
         _row(
             "test-1",
             "credit-load-range",
             "Nếu đăng ký 17 tín chỉ thì thuộc khoảng nào",
-            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= 17 && 17 <= ?maximum) }",
+            [":Credits17"],
         ),
-        _row("test-2", "no-information", "mai trời mưa không", "không có thông tin"),
+        _row("test-2", "no-information", "mai trời mưa không", []),
     ]
 
     report = validate_benchmark(
@@ -94,6 +126,7 @@ def test_accepts_held_out_numeric_target_and_marker() -> None:
         load_ontology(),
         catalogue=CATALOGUE,
         training_rows=training,
+        lookup=LOOKUP,
     )
 
     assert report["records"] == 2
@@ -102,29 +135,34 @@ def test_accepts_held_out_numeric_target_and_marker() -> None:
 
 
 def test_rejects_unknown_query_or_mismatched_target() -> None:
-    row = _row("test-1", "unknown", "một câu mới", "không có thông tin")
+    row = _row("test-1", "unknown", "một câu mới", [])
     with pytest.raises(BenchmarkError, match="unknown query_id"):
-        validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
+        validate_benchmark(
+            [row], load_ontology(), catalogue=CATALOGUE, lookup=LOOKUP
+        )
 
     row["query_id"] = "credit-load-range"
     with pytest.raises(BenchmarkError, match="does not match query family"):
-        validate_benchmark([row], load_ontology(), catalogue=CATALOGUE)
+        validate_benchmark(
+            [row], load_ontology(), catalogue=CATALOGUE, lookup=LOOKUP
+        )
 
 
 def test_rejects_finite_iri_not_seen_in_train() -> None:
-    target = (
-        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure "
-        ":hasStep ?part . ?part :stepText ?answer . }"
-    )
-    training = [_row("train-1", "procedure-instruction", "bảo lưu sao", target)]
+    training = [
+        _row(
+            "train-1",
+            "procedure-instruction",
+            "bảo lưu sao",
+            [":TemporaryAcademicLeaveProcedure"],
+        )
+    ]
     benchmark = [
         _row(
             "test-1",
             "procedure-instruction",
             "đăng ký môn như nào",
-            target.replace(
-                ":TemporaryAcademicLeaveProcedure", ":CourseRegistrationProcedure"
-            ),
+            [":CourseRegistrationProcedure"],
         )
     ]
 
@@ -134,11 +172,12 @@ def test_rejects_finite_iri_not_seen_in_train() -> None:
             load_ontology(),
             catalogue=CATALOGUE,
             training_rows=training,
+            lookup=LOOKUP,
         )
 
 
 def test_rejects_training_question_leak() -> None:
-    row = _row("test-1", "no-information", "xin chào", "không có thông tin")
+    row = _row("test-1", "no-information", "xin chào", [])
 
     with pytest.raises(BenchmarkError, match="leaks from training"):
         validate_benchmark(
@@ -146,4 +185,5 @@ def test_rejects_training_question_leak() -> None:
             load_ontology(),
             catalogue=CATALOGUE,
             training_rows=[{**row, "id": "train-1"}],
+            lookup=LOOKUP,
         )

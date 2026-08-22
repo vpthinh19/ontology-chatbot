@@ -8,13 +8,13 @@ digraph luong_du_lieu {
   vb [label="VĂN BẢN GỐC CỦA TRƯỜNG\nQuyết định · Quy chế · Hướng dẫn · trang web chính thức\n(16 văn bản: quyết định, quy chế, hướng dẫn)",
       shape=folder, style=filled, fillcolor="#fbf1dd", color="#d99b30"];
 
-  onto [label="ĐỒ THỊ TRI THỨC (Turtle)\n6.355 phát biểu · 686 mục · 56 lớp · 84 loại thuộc tính\nmỗi dữ kiện gắn ngược về Điều/Khoản/Điểm đã chứng minh nó",
+  onto [label="ĐỒ THỊ TRI THỨC (Turtle)\n6.350 phát biểu · 685 mục · 56 lớp · 84 loại thuộc tính\nmỗi dữ kiện gắn ngược về Điều/Khoản/Điểm đã chứng minh nó",
         shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30"];
 
   dm [label="DANH MỤC 50 HỌ ĐẦU RA\n49 khuôn SPARQL + 1 họ từ chối; mỗi khuôn là một dạng\nthông tin được phép đọc, kèm các chỗ trống phải điền",
       fillcolor="#f0ece6", color="#8a8175"];
 
-  cap [label="BỘ CẶP CÂU HỎI – ĐÍCH\n6.308 dòng · 566 truy vấn SPARQL + 1 câu từ chối\n4 cách diễn đạt: trang trọng · trung tính · thân mật · gõ nhiễu",
+  cap [label="BỘ CẶP CÂU HỎI – ĐÍCH\n6.308 dòng · 565 truy vấn + 1 câu từ chối\n4 cách diễn đạt: trang trọng · trung tính · thân mật · gõ nhiễu",
        fillcolor="#dbeeec", color="#2e8b8b"];
 
   chia [label="CHIA BA PHẦN KHÔNG GIAO NHAU", shape=diamond, fillcolor="#dbeeec",
@@ -23,7 +23,7 @@ digraph luong_du_lieu {
   kd   [label="Tập kiểm định\n400 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
   cham [label="Tập chấm\n390 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
 
-  train [label="HUẤN LUYỆN\nbốn mô hình chuỗi-chuỗi, cùng dữ liệu,\ncùng seed, mỗi mô hình dừng ở lượt tốt nhất", fillcolor="#dce6f2", color="#1f4e79"];
+  train [label="HUẤN LUYỆN\nbốn encoder + một baseline, cùng dữ liệu,\ncùng seed, mỗi mô hình dừng ở lượt tốt nhất", fillcolor="#dce6f2", color="#1f4e79"];
   chon  [label="CHỌN ĐIỂM DỪNG\ntheo hao hụt trên tập kiểm định", fillcolor="#dce6f2", color="#1f4e79"];
   danh  [label="ĐÁNH GIÁ CUỐI\nchạy truy vấn sinh ra trên chính đồ thị,\nso với đích và với kết quả đích trả về", fillcolor="#dce6f2", color="#1f4e79"];
   phuc  [label="ĐƯA VÀO PHỤC VỤ\nmô hình thắng cuộc thành ruột của công cụ tra cứu",

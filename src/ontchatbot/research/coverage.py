@@ -7,9 +7,10 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
+from typing import Any, Mapping
 
 from ..catalogue import QuerySpec, match_target
+from ..runtime.cards import CardLookup
 
 _REQUIRED_FIELDS = {
     "priority_domains",
@@ -91,14 +92,17 @@ def load_coverage_requirements(
 
 
 def assess_coverage(
-    splits: Mapping[str, list[Mapping[str, str]]],
+    splits: Mapping[str, list[Mapping[str, Any]]],
     catalogue: Mapping[str, QuerySpec],
     requirements: CoverageRequirements,
     rejection_checklist: Mapping[str, list[str]],
     mentions: Mapping[str, tuple[str, ...]],
+    *,
+    lookup: CardLookup | None = None,
 ) -> dict[str, object]:
     """Report whether a release meets the additional official coverage contract."""
 
+    lookup = lookup or CardLookup()
     rows_by_split = {split: splits.get(split, []) for split in _SPLITS}
     query_ids_by_split = {
         split: {row.get("query_id") for row in rows}
@@ -144,15 +148,18 @@ def assess_coverage(
     missing_numeric_cases = [
         _case_payload(case)
         for case in requirements.numeric_cases
-        if not _has_numeric_case(rows_by_split[case.split], catalogue[case.query_id], case)
+        if not _has_numeric_case(
+            rows_by_split[case.split], catalogue[case.query_id], case, lookup
+        )
     ]
     missing_rejection_coverage = _missing_rejection_coverage(
         rows_by_split,
         catalogue,
         requirements,
         rejection_checklist,
+        lookup,
     )
-    name_coverage = assess_name_coverage(splits, catalogue, mentions)
+    name_coverage = assess_name_coverage(splits, catalogue, mentions, _lookup=lookup)
     complete = not any(
         (
             missing_query_ids,
@@ -196,9 +203,11 @@ def require_complete_coverage(report: Mapping[str, object]) -> None:
 
 
 def assess_name_coverage(
-    splits: Mapping[str, list[Mapping[str, str]]],
+    splits: Mapping[str, list[Mapping[str, Any]]],
     catalogue: Mapping[str, QuerySpec],
     mentions: Mapping[str, tuple[str, ...]],
+    *,
+    _lookup: CardLookup | None = None,
 ) -> dict[str, object]:
     """Đo mọi cặp ``(node, tên gọi)`` đã xuất hiện trong dòng dạy hay chưa.
 
@@ -216,17 +225,22 @@ def assess_name_coverage(
         for value in slot.values
         for label in mentions.get(value[1:], ())
     }
+    lookup = _lookup or CardLookup()
     covered: set[tuple[str, str]] = set()
     for row in splits.get("train", []):
         query_id = row.get("query_id")
         target = row.get("target")
         question = row.get("input")
-        if not all(isinstance(value, str) for value in (query_id, target, question)):
+        if not isinstance(query_id, str) or not isinstance(question, str):
             continue
         spec = catalogue.get(query_id)
         if spec is None:
             continue
-        binding = match_target(spec, target)
+        try:
+            query = lookup.query(query_id, target)
+        except KeyError:
+            continue
+        binding = match_target(spec, query)
         if binding is None:
             continue
         folded_question = _fold_name(question)
@@ -305,7 +319,7 @@ def _parse_numeric_case(raw: object, catalogue: Mapping[str, QuerySpec]) -> Nume
 
 
 def _registers_by_query(
-    rows: list[Mapping[str, str]],
+    rows: list[Mapping[str, Any]],
 ) -> dict[str, set[str]]:
     registers: dict[str, set[str]] = defaultdict(set)
     for row in rows:
@@ -330,16 +344,21 @@ def _missing_registers(
 
 
 def _has_numeric_case(
-    rows: list[Mapping[str, str]], spec: QuerySpec, case: NumericCase
+    rows: list[Mapping[str, Any]],
+    spec: QuerySpec,
+    case: NumericCase,
+    lookup: CardLookup,
 ) -> bool:
     expected = dict(case.slots)
     for row in rows:
         if row.get("query_id") != case.query_id:
             continue
         target = row.get("target")
-        if not isinstance(target, str):
+        try:
+            query = lookup.query(case.query_id, target)
+        except KeyError:
             continue
-        matched = match_target(spec, target)
+        matched = match_target(spec, query)
         if matched is not None and all(matched.get(name) == value for name, value in expected.items()):
             return True
     return False
@@ -350,12 +369,13 @@ def _case_payload(case: NumericCase) -> dict[str, object]:
 
 
 def _missing_rejection_coverage(
-    rows_by_split: Mapping[str, list[Mapping[str, str]]],
+    rows_by_split: Mapping[str, list[Mapping[str, Any]]],
     catalogue: Mapping[str, QuerySpec],
     requirements: CoverageRequirements,
     rejection_checklist: Mapping[str, list[str]],
+    lookup: CardLookup,
 ) -> dict[str, list[dict[str, str]]]:
-    locations: dict[str, list[tuple[str, Mapping[str, str]]]] = defaultdict(list)
+    locations: dict[str, list[tuple[str, Mapping[str, Any]]]] = defaultdict(list)
     for split, rows in rows_by_split.items():
         for row in rows:
             record_id = row.get("id")
@@ -371,7 +391,7 @@ def _missing_rejection_coverage(
                 if not any(
                     location_split == split
                     and row.get("register") == register
-                    and _is_rejection_row(row, catalogue)
+                    and _is_rejection_row(row, catalogue, lookup)
                     for record_id in required_ids
                     for location_split, row in locations.get(record_id, [])
                 ):
@@ -381,15 +401,21 @@ def _missing_rejection_coverage(
     return missing
 
 
-def _is_rejection_row(row: Mapping[str, str], catalogue: Mapping[str, QuerySpec]) -> bool:
+def _is_rejection_row(
+    row: Mapping[str, Any],
+    catalogue: Mapping[str, QuerySpec],
+    lookup: CardLookup,
+) -> bool:
     query_id = row.get("query_id")
     target = row.get("target")
-    if not isinstance(query_id, str) or not isinstance(target, str):
+    if not isinstance(query_id, str):
         return False
     spec = catalogue.get(query_id)
     # Các phản hồi từ chối và phản hồi khả năng đều phủ nhóm không có đáp án trực tiếp.
-    return (
-        spec is not None
-        and spec.domain in ("out-of-domain", "assistant")
-        and match_target(spec, target) is not None
-    )
+    if spec is None or spec.domain not in ("out-of-domain", "assistant"):
+        return False
+    try:
+        query = lookup.query(query_id, target)
+    except KeyError:
+        return False
+    return match_target(spec, query) is not None

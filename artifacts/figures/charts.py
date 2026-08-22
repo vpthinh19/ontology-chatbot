@@ -200,7 +200,9 @@ def bo_du_lieu():
     a2.set_ylabel("Số dòng"); a2.set_ylim(0, 2050); a2.set_title("Cách diễn đạt câu hỏi")
     a2.tick_params(axis="x", labelrotation=15)
 
-    tu_choi = sum(1 for v in rows.values() for r in v if r["target"] == "không có thông tin")
+    # Đích của một dòng là danh sách IRI; câu phải từ chối nhận danh sách rỗng và
+    # mang mã nhóm riêng. So theo mã nhóm để không phụ thuộc cách ghi đích.
+    tu_choi = sum(1 for v in rows.values() for r in v if r["query_id"] == "no-information")
     tong = sum(len(v) for v in rows.values())
     a3.pie([tong - tu_choi, tu_choi], labels=["câu trả lời được", "câu phải từ chối"],
            colors=["#4a6fa5", "#b3543f"], autopct="%1.1f%%", startangle=90,

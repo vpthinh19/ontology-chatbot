@@ -1,4 +1,4 @@
-"""NTU ontology chatbot: Vietnamese text to direct SPARQL."""
+"""Chatbot học vụ: câu hỏi tiếng Việt chọn ra một truy vấn SPARQL dựng sẵn."""
 
 from .runtime.sparql import (
     PREFIXES,
@@ -9,7 +9,7 @@ from .runtime.sparql import (
     load_ontology,
     validate_select,
 )
-from .runtime.model import CTranslate2Generator
+from .runtime.onnx_classifier import OnnxClassifierGenerator
 from .runtime.pipeline import OntologyChatbot
 from .runtime.render import render_rows
 
@@ -17,7 +17,7 @@ __version__ = "0.4.1"
 
 __all__ = [
     "PREFIXES",
-    "CTranslate2Generator",
+    "OnnxClassifierGenerator",
     "OntologyChatbot",
     "QueryRow",
     "QueryRows",

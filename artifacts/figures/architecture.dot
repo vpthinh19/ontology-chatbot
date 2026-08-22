@@ -32,7 +32,7 @@ digraph kien_truc {
     penwidth=2
   ];
   tool [
-    label="Công cụ tra cứu\nseq2seq sinh SPARQL",
+    label="Công cụ tra cứu\nphân loại câu hỏi thành nhãn,\ntra ra truy vấn dựng sẵn",
     fillcolor="#DDEBF7"
   ];
   ontology [
@@ -43,7 +43,7 @@ digraph kien_truc {
 
   nguoi_dung -> llm [label="Câu hỏi tự nhiên"];
   llm -> tool [label="Từ khoá và lời gọi công cụ"];
-  tool -> ontology [label="Truy vấn SPARQL"];
+  tool -> ontology [label="Truy vấn dựng sẵn"];
   ontology -> tool [label="Dữ kiện và nguồn"];
   tool -> llm [label="Kết quả tra cứu"];
   llm -> nguoi_dung [label="Câu trả lời kèm nguồn"];

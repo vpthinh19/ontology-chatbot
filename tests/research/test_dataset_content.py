@@ -26,6 +26,7 @@ from ontchatbot.research.coverage import (
 from ontchatbot.research.dataset import load_release, validate_release
 from ontchatbot.research.mentions import mention_index
 from ontchatbot.runtime.sparql import SparqlError, execute_select, load_ontology
+from ontchatbot.runtime.cards import Card, CardLookup
 from ontchatbot.settings import (
     COVERAGE_REQUIREMENTS_PATH,
     DATASET_DIR,
@@ -98,8 +99,18 @@ def _coverage_fixture_catalogue() -> dict[str, QuerySpec]:
     }
 
 
+def _coverage_fixture_lookup() -> CardLookup:
+    return CardLookup(
+        [
+            Card("procedure-family", (":Procedure",), "test", "PROCEDURE :Procedure"),
+            Card("academic-performance-band", (), "test", "SCORE 4.00"),
+            Card("no-information", (), "test", "không có thông tin"),
+        ]
+    )
+
+
 def _complete_coverage_fixture() -> tuple[
-    dict[str, list[dict[str, str]]], dict[str, list[str]]
+    dict[str, list[dict[str, object]]], dict[str, list[str]]
 ]:
     splits = {split: [] for split in ("train", "val", "test")}
     checklist = {"hard-negative": []}
@@ -111,13 +122,13 @@ def _complete_coverage_fixture() -> tuple[
                         "id": f"procedure-{split}-{register}",
                         "query_id": "procedure-family",
                         "register": register,
-                        "target": "PROCEDURE :Procedure",
+                        "target": [":Procedure"],
                     },
                     {
                         "id": f"score-{split}-{register}",
                         "query_id": "academic-performance-band",
                         "register": register,
-                        "target": "SCORE 4.00",
+                        "target": [],
                     },
                 ]
             )
@@ -128,7 +139,7 @@ def _complete_coverage_fixture() -> tuple[
                     "id": record_id,
                     "query_id": "no-information",
                     "register": register,
-                    "target": "không có thông tin",
+                    "target": [],
                 }
             )
     return splits, checklist
@@ -162,6 +173,7 @@ def test_complete_coverage_fixture_is_accepted(tmp_path) -> None:
         load_coverage_requirements(coverage_path, catalogue),
         checklist,
         {},
+        lookup=_coverage_fixture_lookup(),
     )
 
     assert report["complete"] is True
@@ -247,18 +259,24 @@ def test_every_target_returns_data_from_the_ontology(graph, catalogue, release) 
     được. Đây là ràng buộc số 4 của ``docs/DATASET.md``.
     """
 
-    marker = catalogue["no-information"].target_template
+    lookup = CardLookup()
     empty = []
-    for target in sorted({row["target"] for rows in release.values() for row in rows}):
-        if target == marker:
+    labels = {
+        (row["query_id"], tuple(row["target"]))
+        for rows in release.values()
+        for row in rows
+    }
+    for query_id, target in sorted(labels):
+        if query_id == "no-information":
             continue
+        query = lookup.query(query_id, target)
         try:
-            rows = execute_select(graph, target, max_rows=500)
+            rows = execute_select(graph, query, max_rows=500)
         except SparqlError:
             # Vượt trần dòng nghĩa là CÓ dữ liệu, rất nhiều là khác.
             continue
         if not rows:
-            empty.append(target)
+            empty.append((query_id, target))
 
     assert empty == []
 
@@ -303,11 +321,14 @@ def test_targets_never_resurrect_the_retired_schema(release) -> None:
     retired = re.compile(
         r"(?<![A-Za-z0-9])(" + "|".join(re.escape(n) for n in RETIRED_PROPERTIES) + r")(?![A-Za-z0-9])"
     )
+    lookup = CardLookup()
     offending = [
         (row["query_id"], match.group(1))
         for rows in release.values()
         for row in rows
-        for match in [retired.search(row["target"])]
+        for match in [
+            retired.search(lookup.query(row["query_id"], row["target"]))
+        ]
         if match
     ]
 
@@ -355,6 +376,7 @@ def test_rejection_checklist_partitions_every_declared_class(
     assert sorted(checklist) == sorted(required)
     listed = [row_id for ids in checklist.values() for row_id in ids]
     assert len(listed) == len(set(listed))
+    lookup = CardLookup()
     for rejection_class, row_ids in checklist.items():
         assert {
             (rows_by_id[row_id][0], rows_by_id[row_id][1]["register"])
@@ -368,7 +390,12 @@ def test_rejection_checklist_partitions_every_declared_class(
             row = rows_by_id[row_id][1]
             spec = catalogue[row["query_id"]]
             assert spec.domain in handled_domains, (rejection_class, row["query_id"])
-            assert match_target(spec, row["target"]) is not None
+            assert (
+                match_target(
+                    spec, lookup.query(row["query_id"], row["target"])
+                )
+                is not None
+            )
 
 
 def test_every_real_user_question_has_a_declared_expectation(catalogue) -> None:
@@ -449,10 +476,18 @@ def test_every_evaluated_target_was_taught_first(release) -> None:
     một phần neo, vì chúng đo cách hỏi mới chứ không đo trí nhớ thêm thực thể.
     """
 
-    trained = {row["target"] for row in release["train"]}
+    trained = {
+        (row["query_id"], tuple(row["target"])) for row in release["train"]
+    }
 
     for split in ("val", "test"):
-        unseen = sorted({row["target"] for row in release[split]} - trained)
+        unseen = sorted(
+            {
+                (row["query_id"], tuple(row["target"]))
+                for row in release[split]
+            }
+            - trained
+        )
         assert unseen == [], split
 
 

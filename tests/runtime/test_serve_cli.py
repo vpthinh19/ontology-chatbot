@@ -13,14 +13,15 @@ def _flags(*extra: str) -> list[str]:
     return ["--model-dir", "generator", "--llm", "mo-hinh-lon", *extra]
 
 
-def test_serve_loads_one_ctranslate2_artifact_behind_the_assistant(monkeypatch) -> None:
-    args = _parse_args(_flags("--device", "cuda", "--compute-type", "int8_float16"))
+def test_serve_loads_one_classifier_behind_the_assistant(monkeypatch) -> None:
+    """Máy chủ dựng đúng một bộ chọn truy vấn và đưa nó cho trợ lý."""
+    args = _parse_args(_flags("--device", "cuda"))
     loaded = []
     generator = SimpleNamespace()
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
     monkeypatch.setattr(
-        "ontchatbot.cli.serve.CTranslate2Generator.load",
-        lambda path, **kwargs: loaded.append(("generator", path, kwargs)) or generator,
+        "ontchatbot.cli.serve.OnnxClassifierGenerator.load",
+        lambda path, **kwargs: loaded.append((path, kwargs)) or generator,
     )
     built = []
     monkeypatch.setattr(
@@ -29,17 +30,7 @@ def test_serve_loads_one_ctranslate2_artifact_behind_the_assistant(monkeypatch) 
     )
 
     assert _build_agent(args) == "tro-ly"
-    assert loaded == [
-        (
-            "generator",
-            Path("generator"),
-            {
-                "device": "cuda",
-                "compute_type": "int8_float16",
-                "inter_threads": 1,
-            },
-        ),
-    ]
+    assert loaded == [(Path("generator"), {"device": "cuda"})]
     chatbot, kwargs = built[0]
     assert chatbot.generator is generator
     assert kwargs["model"] == "mo-hinh-lon"
@@ -82,36 +73,12 @@ def test_configure_logging_uses_requested_level_and_trace_fields(monkeypatch) ->
     ]
 
 
-def test_serve_uses_the_compiled_packages_when_a_directory_is_given(monkeypatch) -> None:
-    """Khai thư mục gói đã biên dịch thì đường thường không được nạp."""
+def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
+    """Các cờ của bộ chạy cũ phải biến mất, không im lặng bị bỏ qua.
 
-    args = _parse_args(
-        _flags("--compiled-dir", "goi", "--compiled-tokenizer-dir", "tach-tu")
-    )
-    loaded: list = []
-    generator = SimpleNamespace()
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
-    monkeypatch.setattr(
-        "ontchatbot.cli.serve.AotiGenerator.load",
-        lambda package, tokenizer: loaded.append((package, tokenizer)) or generator,
-    )
-    monkeypatch.setattr(
-        "ontchatbot.cli.serve.CTranslate2Generator.load",
-        lambda *a, **k: pytest.fail("đường thường không được nạp khi đã khai gói"),
-    )
-    monkeypatch.setattr(
-        "ontchatbot.cli.serve.build_agent",
-        lambda chatbot, **kwargs: chatbot,
-    )
-
-    chatbot = _build_agent(args)
-    assert loaded == [(Path("goi"), Path("tach-tu"))]
-    assert chatbot.generator is generator
-
-
-def test_serve_refuses_a_compiled_package_without_its_tokenizer() -> None:
-    """Thiếu bộ tách từ thì dừng ngay, không nạp gói rồi mới hỏng."""
-
-    args = _parse_args(_flags("--compiled-dir", "goi"))
-    with pytest.raises(SystemExit):
-        _build_agent(args)
+    Một cờ bị gỡ mà vẫn nhận vào sẽ khiến lệnh triển khai cũ chạy được nhưng
+    không còn tác dụng, và không ai biết.
+    """
+    for flag in ("--compute-type", "--inter-threads", "--compiled-dir"):
+        with pytest.raises(SystemExit):
+            _parse_args(_flags(flag, "gi-do"))

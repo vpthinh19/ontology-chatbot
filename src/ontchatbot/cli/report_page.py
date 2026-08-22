@@ -23,6 +23,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from ontchatbot.settings import PROJECT_ROOT as ROOT
+from ontchatbot.runtime.cards import CardLookup
 
 from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
@@ -74,10 +75,12 @@ def ontology_shape() -> dict:
 def dataset_shape() -> dict:
     splits = {name: rows(name) for name in ("train", "val", "test")}
     allrows = [r for rs in splits.values() for r in rs]
-    marker = "không có thông tin"
-    positives = [r for r in allrows if r["target"].strip().casefold() != marker]
+    lookup = CardLookup()
+    positives = [r for r in allrows if r["query_id"] != "no-information"]
     q_len = [len(r["input"].split()) for r in allrows]
-    t_len = [len(r["target"].split()) for r in positives]
+    t_len = [
+        len(lookup.query(r["query_id"], r["target"]).split()) for r in positives
+    ]
     bands: Counter[str] = Counter()
     for n in q_len:
         bands["2-6" if n <= 6 else "7-9" if n <= 9 else "10-13" if n <= 13

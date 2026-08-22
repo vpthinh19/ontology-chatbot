@@ -156,7 +156,7 @@ def test_a_broken_lookup_reaches_the_assistant_as_no_information() -> None:
 
     from types import SimpleNamespace
 
-    from ontchatbot.runtime.model import QueryGenerationError
+    from ontchatbot.runtime.generator import QueryGenerationError
     from ontchatbot.runtime.render import NO_INFORMATION_REPLY
     from ontchatbot.runtime.sparql import SparqlError
 

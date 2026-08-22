@@ -28,7 +28,7 @@ digraph ontology {
     dk  [label="Điều kiện  (39)", fillcolor="#dbeeec", color="#2e8b8b"];
     kq  [label="Kết quả  (11)", fillcolor="#dbeeec", color="#2e8b8b"];
     han [label="Thời hạn  (9)", fillcolor="#dbeeec", color="#2e8b8b"];
-    bm  [label="Biểu mẫu  (19 mục · 16 tệp)", fillcolor="#dbeeec", color="#2e8b8b"];
+    bm  [label="Biểu mẫu  (18 mục · 16 tệp)", fillcolor="#dbeeec", color="#2e8b8b"];
     nganh[label="Ngành đào tạo  (41)", fillcolor="#dbeeec", color="#2e8b8b"];
     cc  [label="Chứng chỉ  (18 + 15 ngoại ngữ)\nvà bảng quy đổi (6)", fillcolor="#dbeeec", color="#2e8b8b"];
     tac [label="Tác nhân học vụ  (7)\nvà đơn vị của trường  (5)", fillcolor="#dbeeec", color="#2e8b8b"];

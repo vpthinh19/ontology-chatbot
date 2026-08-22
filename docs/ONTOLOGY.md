@@ -26,7 +26,7 @@ Mỗi mục giữ thông tin nguồn để người dùng đối chiếu văn b�
 
 Từ ontology, dự án sinh danh mục khả năng trả lời ở `answer_inventory.json`. Mỗi mục là một đường đi hợp lệ từ một node tới một dữ kiện đọc được.
 
-Danh mục hiện ghi nhận 4.064 khả năng trả lời được hỗ trợ. Đây là số đường đi hợp lệ trong đồ thị, không phải số câu hỏi trả lời đúng.
+Danh mục hiện ghi nhận 4.057 khả năng trả lời được hỗ trợ. Đây là số đường đi hợp lệ trong đồ thị, không phải số câu hỏi trả lời đúng.
 
 ## Cách lưu và trả kết quả
 

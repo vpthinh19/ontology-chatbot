@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping
@@ -16,6 +15,7 @@ from .dataset import ALLOWED_REGISTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
 from ..runtime.sparql import execute_select, validate_select
+from ..runtime.cards import CardLookup
 
 REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}
 
@@ -24,7 +24,7 @@ class BenchmarkError(ValueError):
     """The benchmark or prediction file violates its contract."""
 
 
-def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, str]]:
+def load_benchmark(path: Path = TEST_DATASET_PATH) -> list[dict[str, Any]]:
     return _load_jsonl(Path(path), kind="benchmark")
 
 
@@ -63,8 +63,10 @@ def validate_benchmark(
     *,
     catalogue: Mapping[str, QuerySpec] | None = None,
     training_rows: list[dict[str, Any]] | None = None,
+    lookup: CardLookup | None = None,
 ) -> dict[str, Any]:
     catalogue = catalogue or load_catalogue(QUERY_CATALOGUE_PATH)
+    lookup = lookup or CardLookup()
     if not rows:
         raise BenchmarkError("benchmark is empty")
 
@@ -80,7 +82,11 @@ def validate_benchmark(
         spec = catalogue.get(row["query_id"])
         if spec is None:
             continue
-        matched = match_target(spec, row["target"])
+        try:
+            query = lookup.query(row["query_id"], row["target"])
+        except KeyError:
+            continue
+        matched = match_target(spec, query)
         if matched is None:
             continue
         query_slots = training_slots.setdefault(row["query_id"], {})
@@ -89,7 +95,7 @@ def validate_benchmark(
     register_counts: Counter[str] = Counter()
     domain_counts: Counter[str] = Counter()
     queries: set[str] = set()
-    targets: set[str] = set()
+    targets: set[tuple[str, tuple[str, ...]]] = set()
     benchmark_slots: dict[str, dict[str, set[str]]] = {}
 
     for index, row in enumerate(rows, 1):
@@ -98,8 +104,13 @@ def validate_benchmark(
             raise BenchmarkError(
                 f"{record_id}: fields must be exactly {sorted(REQUIRED_FIELDS)}"
             )
-        if not all(isinstance(row[field], str) and row[field] for field in REQUIRED_FIELDS):
-            raise BenchmarkError(f"{record_id}: every field must be a non-empty string")
+        text_fields = REQUIRED_FIELDS - {"target"}
+        if not all(isinstance(row[field], str) and row[field] for field in text_fields):
+            raise BenchmarkError(f"{record_id}: every text field must be a non-empty string")
+        if not isinstance(row["target"], list) or not all(
+            isinstance(value, str) and value for value in row["target"]
+        ):
+            raise BenchmarkError(f"{record_id}: target must be a list of non-empty IRIs")
         if record_id in ids:
             raise BenchmarkError(f"duplicate id: {record_id}")
         ids.add(record_id)
@@ -115,13 +126,17 @@ def validate_benchmark(
             raise BenchmarkError(f"{record_id}: invalid register {register}")
 
         target = row["target"]
-        if "\n" in target or "\r" in target or re.search(r"\s{2,}", target):
-            raise BenchmarkError(f"{record_id}: target must be one canonical line")
         query_id = row["query_id"]
         spec = catalogue.get(query_id)
         if spec is None:
             raise BenchmarkError(f"{record_id}: unknown query_id {query_id}")
-        matched = match_target(spec, target)
+        try:
+            query = lookup.query(query_id, target)
+        except KeyError:
+            raise BenchmarkError(
+                f"{record_id}: target does not match query family {query_id}"
+            ) from None
+        matched = match_target(spec, query)
         if matched is None:
             raise BenchmarkError(
                 f"{record_id}: target does not match query family {query_id}"
@@ -130,13 +145,13 @@ def validate_benchmark(
         for name, value in matched.items():
             query_slots.setdefault(name, set()).add(value)
         if spec.domain != "out-of-domain":
-            validate_select(target)
-            if not execute_select(graph, target):
+            validate_select(query)
+            if not execute_select(graph, query):
                 raise BenchmarkError(f"{record_id}: reference query returns no rows")
         register_counts[register] += 1
         domain_counts[spec.domain] += 1
         queries.add(query_id)
-        targets.add(target)
+        targets.add((query_id, tuple(target)))
 
     missing_queries = sorted(queries - training_queries) if training_rows is not None else []
     if missing_queries:
@@ -180,12 +195,16 @@ def load_predictions(path: Path) -> dict[str, str]:
     return predictions
 
 
-def reference_predictions(rows: list[dict[str, str]]) -> dict[str, str]:
-    return {row["id"]: row["target"] for row in rows}
+def reference_predictions(rows: list[dict[str, Any]]) -> dict[str, str]:
+    lookup = CardLookup()
+    return {
+        row["id"]: lookup.query(row["query_id"], row["target"])
+        for row in rows
+    }
 
 
 def evaluate_benchmark(
-    rows: list[dict[str, str]],
+    rows: list[dict[str, Any]],
     predictions: Mapping[str, str],
     graph: Graph,
     *,

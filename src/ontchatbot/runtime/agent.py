@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Sequence
 
 from ..settings import ONTOLOGY_NS
-from .model import QueryGenerationError
+from .generator import QueryGenerationError
 from .pipeline import OntologyChatbot
 from .render import NO_INFORMATION_REPLY
 from .sparql import SparqlError

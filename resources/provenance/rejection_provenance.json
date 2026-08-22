@@ -59,26 +59,6 @@
     "class": "near-domain-missing",
     "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
   },
-  "question-005290": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
-  "question-005291": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-005292": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
-  "question-005293": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-005294": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -164,11 +144,6 @@
     "class": "hard-negative",
     "template": "lệ phí làm {anchor} là bao nhiêu"
   },
-  "question-005311": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005312": {
     "anchor": "SecondProgramRegistrationProcedure",
     "class": "near-domain-missing",
@@ -238,11 +213,6 @@
     "anchor": "SecondProgramRegistrationProcedure",
     "class": "near-domain-missing",
     "template": "biểu mẫu mới nhất năm 2026 của {anchor}"
-  },
-  "question-005330": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-005331": {
     "anchor": "",
@@ -328,16 +298,6 @@
     "anchor": "",
     "class": "adjacent-domain",
     "template": "Cho tôi hỏi thủ tục đăng ký ở ký túc xá của Trường Đại học Nha Trang"
-  },
-  "question-005352": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
-  "question-005353": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
   "question-005354": {
     "anchor": "GradeImprovementProcedure",
@@ -649,11 +609,6 @@
     "class": "near-domain-missing",
     "template": "{anchor} do ai ký duyệt"
   },
-  "question-005422": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005423": {
     "anchor": "",
     "class": "incomplete-request",
@@ -678,11 +633,6 @@
     "anchor": "",
     "class": "greeting-social",
     "template": "bạn có khoẻ không"
-  },
-  "question-005428": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-005429": {
     "anchor": "",
@@ -904,11 +854,6 @@
     "class": "adjacent-domain",
     "template": "Trường Đại học Nha Trang có những suất học bổng nào cho tân sinh viên"
   },
-  "question-005476": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005477": {
     "anchor": "StudyResumptionProcedure",
     "class": "near-domain-missing",
@@ -929,11 +874,6 @@
     "class": "greeting-social",
     "template": "bye nhé"
   },
-  "question-005482": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005483": {
     "anchor": "",
     "class": "incomplete-request",
@@ -948,11 +888,6 @@
     "anchor": "TuitionPaymentProcedure",
     "class": "near-domain-missing",
     "template": "{anchor} mất bao nhiêu ngày mới được duyệt"
-  },
-  "question-005487": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
   "question-005488": {
     "anchor": "CourseRetakeProcedure",
@@ -1043,11 +978,6 @@
     "anchor": "",
     "class": "unrelated",
     "template": "cách tải nhạc về điện thoại"
-  },
-  "question-005511": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-005512": {
     "anchor": "",
@@ -1174,11 +1104,6 @@
     "class": "incomplete-request",
     "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
   },
-  "question-005542": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-005543": {
     "anchor": "",
     "class": "unrelated",
@@ -1203,11 +1128,6 @@
     "anchor": "GradeImprovementProcedure",
     "class": "hard-negative",
     "template": "{anchor} có khó không"
-  },
-  "question-005548": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
   "question-005549": {
     "anchor": "",
@@ -1259,11 +1179,6 @@
     "class": "hard-negative",
     "template": "lệ phí làm {anchor} là bao nhiêu"
   },
-  "question-005560": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
   "question-005561": {
     "anchor": "",
     "class": "greeting-social",
@@ -1308,11 +1223,6 @@
     "anchor": "ExtraClassOpeningRequestProcedure",
     "class": "near-domain-missing",
     "template": "tỷ lệ hồ sơ {anchor} được chấp nhận là bao nhiêu"
-  },
-  "question-005573": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-005574": {
     "anchor": "GradeImprovementProcedure",
@@ -1524,11 +1434,6 @@
     "class": "near-domain-missing",
     "template": "{anchor} do ai ký duyệt"
   },
-  "question-005628": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
   "question-005629": {
     "anchor": "",
     "class": "unrelated",
@@ -1608,11 +1513,6 @@
     "anchor": "",
     "class": "unrelated",
     "template": "đi Đà Lạt mấy tiếng"
-  },
-  "question-005647": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-005648": {
     "anchor": "",
@@ -1738,11 +1638,6 @@
     "anchor": "CreditRecognitionProcedure",
     "class": "hard-negative",
     "template": "có bao nhiêu sinh viên đã làm {anchor}"
-  },
-  "question-005679": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-005680": {
     "anchor": "",
@@ -1879,11 +1774,6 @@
     "class": "unrelated",
     "template": "cách tải nhạc về điện thoại"
   },
-  "question-005712": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
   "question-005713": {
     "anchor": "GraduationReviewProcedure",
     "class": "hard-negative",
@@ -1969,11 +1859,6 @@
     "class": "greeting-social",
     "template": "bye nhé"
   },
-  "question-005733": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
-  },
   "question-005734": {
     "anchor": "",
     "class": "adjacent-domain",
@@ -1994,11 +1879,6 @@
     "class": "hard-negative",
     "template": "học bổng cho người làm {anchor} là bao nhiêu"
   },
-  "question-005739": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-005740": {
     "anchor": "ScholarshipReviewProcedure",
     "class": "hard-negative",
@@ -2018,11 +1898,6 @@
     "anchor": "",
     "class": "greeting-social",
     "template": "hello bạn ơi"
-  },
-  "question-005745": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-005746": {
     "anchor": "",
@@ -2214,16 +2089,6 @@
     "class": "hard-negative",
     "template": "{anchor} phải đóng thêm khoản nào không"
   },
-  "question-005790": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
-  "question-005791": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-005792": {
     "anchor": "",
     "class": "greeting-social",
@@ -2273,11 +2138,6 @@
     "anchor": "",
     "class": "incomplete-request",
     "template": "điều kiện để xử lý trường hợp này gồm những gì"
-  },
-  "question-005804": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-005805": {
     "anchor": "SickLeaveProcedure",
@@ -2333,11 +2193,6 @@
     "anchor": "DismissalTransferRequestProcedure",
     "class": "near-domain-missing",
     "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-005818": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-005819": {
     "anchor": "",
@@ -2614,20 +2469,10 @@
     "class": "adjacent-domain",
     "template": "Xin hỏi Trường Đại học Nha Trang hỗ trợ giới thiệu việc làm cho sinh viên ra sao"
   },
-  "question-005884": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-005885": {
     "anchor": "StudentExchangeProcedure",
     "class": "near-domain-missing",
     "template": "mỗi năm có bao nhiêu sinh viên làm {anchor}"
-  },
-  "question-005887": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
   "question-005888": {
     "anchor": "",
@@ -2659,11 +2504,6 @@
     "class": "incomplete-request",
     "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
   },
-  "question-005895": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005896": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -2693,11 +2533,6 @@
     "anchor": "",
     "class": "incomplete-request",
     "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
-  },
-  "question-005902": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
   },
   "question-005903": {
     "anchor": "CourseRetakeProcedure",
@@ -2769,11 +2604,6 @@
     "class": "incomplete-request",
     "template": "thời hạn giải quyết yêu cầu của tôi là bao lâu"
   },
-  "question-005918": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-005919": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -2808,11 +2638,6 @@
     "anchor": "SickLeaveProcedure",
     "class": "hard-negative",
     "template": "{anchor} có mất phí không"
-  },
-  "question-005926": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-005927": {
     "anchor": "",
@@ -2959,11 +2784,6 @@
     "class": "incomplete-request",
     "template": "điều kiện để xử lý trường hợp này gồm những gì"
   },
-  "question-005965": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
   "question-005966": {
     "anchor": "ExamPostponementProcedure",
     "class": "near-domain-missing",
@@ -2978,11 +2798,6 @@
     "anchor": "",
     "class": "unrelated",
     "template": "cách nấu phở bò"
-  },
-  "question-005971": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "trang danh mục ghi nhận {anchor} như thế nào"
   },
   "question-005972": {
     "anchor": "",
@@ -3113,11 +2928,6 @@
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "xe buyt so 4 chay tuyen nao"
-  },
-  "question-006005": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
   },
   "question-006006": {
     "anchor": "CourseRetakeProcedure",
@@ -3344,11 +3154,6 @@
     "class": "near-domain-missing",
     "template": "{anchor} do ai ký duyệt"
   },
-  "question-006059": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "hãy tổng hợp tên và đường dẫn của {anchor}"
-  },
   "question-006060": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -3474,11 +3279,6 @@
     "class": "near-domain-missing",
     "template": "lệ phí làm {anchor} là bao nhiêu"
   },
-  "question-006089": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "có những điều gì cần biết về mục tải {anchor}"
-  },
   "question-006090": {
     "anchor": "",
     "class": "adjacent-domain",
@@ -3518,11 +3318,6 @@
     "anchor": "GraduationProjectRegistrationProcedure",
     "class": "hard-negative",
     "template": "xếp hạng của {anchor} so với trường khác"
-  },
-  "question-006100": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-006101": {
     "anchor": "",
@@ -3784,11 +3579,6 @@
     "class": "noisy-out-of-domain",
     "template": "xe buyt so 4 chay tuyen nao"
   },
-  "question-006167": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
-  },
   "question-006168": {
     "anchor": "SickLeaveProcedure",
     "class": "hard-negative",
@@ -3828,11 +3618,6 @@
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "hom nay co su kien gi o thanh pho"
-  },
-  "question-006178": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "mình cần tra cứu các thông tin tải xuống của {anchor}"
   },
   "question-006179": {
     "anchor": "",
@@ -3924,26 +3709,6 @@
     "class": "near-domain-missing",
     "template": "thống kê tỷ lệ đậu của {anchor}"
   },
-  "question-006201": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
-  },
-  "question-006202": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
-  },
-  "question-006203": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
-  },
-  "question-006204": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
-  },
   "question-006205": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -4024,11 +3789,6 @@
     "class": "incomplete-request",
     "template": "trường hợp tôi vừa nói sẽ được giải quyết theo quy định nào"
   },
-  "question-006221": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
-  },
   "question-006222": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -4103,11 +3863,6 @@
     "anchor": "",
     "class": "noisy-out-of-domain",
     "template": "dien thoai nao dang giam gia"
-  },
-  "question-006238": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "cho biết đầy đủ về mục {anchor}"
   },
   "question-006239": {
     "anchor": "",
@@ -4204,26 +3959,6 @@
     "class": "near-domain-missing",
     "template": "ai ký quyết định cho {anchor}"
   },
-  "question-006263": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
-  },
-  "question-006264": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
-  },
-  "question-006265": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
-  },
-  "question-006266": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
-  },
   "question-006267": {
     "anchor": "",
     "class": "noisy-out-of-domain",
@@ -4319,11 +4054,6 @@
     "class": "unrelated",
     "template": "số điện thoại tổng đài điện lực"
   },
-  "question-006287": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
-  },
   "question-006288": {
     "anchor": "StudyResumptionProcedure",
     "class": "hard-negative",
@@ -4383,11 +4113,6 @@
     "anchor": "",
     "class": "unrelated",
     "template": "số điện thoại tổng đài điện lực"
-  },
-  "question-006301": {
-    "anchor": "",
-    "class": "ambiguous",
-    "template": "{anchor} cung cấp biểu mẫu cụ thể ra sao"
   },
   "question-006302": {
     "anchor": "GraduationReviewProcedure",

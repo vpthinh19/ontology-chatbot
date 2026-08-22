@@ -11,7 +11,7 @@ from rdflib import Graph
 
 from ..catalogue import QuerySpec, find_query_family, load_catalogue
 from ..settings import QUERY_CATALOGUE_PATH
-from .model import QueryGenerationError, QueryGenerator
+from .generator import QueryGenerationError, QueryGenerator
 from .render import NO_INFORMATION_REPLY, render_batch, render_rows
 from .sparql import QueryRows, execute_select, load_ontology
 from .text import normalize_model_input

@@ -15,6 +15,7 @@ from ontchatbot.research.coverage import (
     require_complete_coverage,
 )
 from ontchatbot.runtime.sparql import execute_select, load_ontology
+from ontchatbot.runtime.cards import Card, CardLookup
 from ontchatbot.settings import COVERAGE_REQUIREMENTS_PATH, QUERY_CATALOGUE_PATH
 
 
@@ -72,6 +73,29 @@ def _catalogue() -> dict[str, QuerySpec]:
     }
 
 
+def _lookup() -> CardLookup:
+    return CardLookup(
+        [
+            Card("procedure-family", (":Procedure",), "test", "PROCEDURE :Procedure"),
+            Card("academic-performance-band", (), "test", "SCORE 4.00"),
+            Card(
+                "certificate-level",
+                (":IELTS",),
+                "test",
+                "CERTIFICATE :IELTS SCORE 600",
+            ),
+            Card(
+                "certificate-level",
+                (":TOEIC",),
+                "test",
+                "CERTIFICATE :TOEIC SCORE 600",
+            ),
+            Card("certificate-level", (), "test", "CERTIFICATE SCORE 600"),
+            Card("no-information", (), "test", "không có thông tin"),
+        ]
+    )
+
+
 def _write_requirements(tmp_path, payload: object):
     path = tmp_path / "coverage.json"
     path.write_text(json.dumps(payload), encoding="utf-8")
@@ -125,7 +149,7 @@ def test_rejects_missing_coverage_requirement_field(tmp_path) -> None:
         )
 
 
-def _complete_splits() -> tuple[dict[str, list[dict[str, str]]], dict[str, list[str]]]:
+def _complete_splits() -> tuple[dict[str, list[dict[str, object]]], dict[str, list[str]]]:
     splits = {split: [] for split in ("train", "val", "test")}
     checklist: dict[str, list[str]] = {}
     for split, rows in splits.items():
@@ -136,19 +160,19 @@ def _complete_splits() -> tuple[dict[str, list[dict[str, str]]], dict[str, list[
                         "id": f"procedure-{split}-{register}",
                         "query_id": "procedure-family",
                         "register": register,
-                        "target": "PROCEDURE :Procedure",
+                        "target": [":Procedure"],
                     },
                     {
                         "id": f"performance-{split}-{register}",
                         "query_id": "academic-performance-band",
                         "register": register,
-                        "target": "SCORE 4.00",
+                        "target": [],
                     },
                     {
                         "id": f"certificate-{split}-{register}",
                         "query_id": "certificate-level",
                         "register": register,
-                        "target": "CERTIFICATE :IELTS SCORE 600",
+                        "target": [":IELTS"],
                     },
                 ]
             )
@@ -157,7 +181,7 @@ def _complete_splits() -> tuple[dict[str, list[dict[str, str]]], dict[str, list[
                 "id": f"marker-{split}",
                 "query_id": "no-information",
                 "register": "formal",
-                "target": "không có thông tin",
+                "target": [],
             }
         )
 
@@ -172,7 +196,7 @@ def _complete_splits() -> tuple[dict[str, list[dict[str, str]]], dict[str, list[
                         "id": record_id,
                         "query_id": "no-information",
                         "register": register,
-                        "target": "không có thông tin",
+                        "target": [],
                     }
                 )
     return splits, checklist
@@ -185,7 +209,9 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
     )
     splits, checklist = _complete_splits()
 
-    report = assess_coverage(splits, _catalogue(), requirements, checklist, {})
+    report = assess_coverage(
+        splits, _catalogue(), requirements, checklist, {}, lookup=_lookup()
+    )
 
     assert report["complete"] is True
     require_complete_coverage(report)
@@ -198,7 +224,9 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
         ]
         for split, rows in splits.items()
     }
-    report = assess_coverage(incomplete, _catalogue(), requirements, checklist, {})
+    report = assess_coverage(
+        incomplete, _catalogue(), requirements, checklist, {}, lookup=_lookup()
+    )
 
     assert report["complete"] is False
     assert report["missing_numeric_cases"] == [
@@ -208,11 +236,10 @@ def test_assesses_family_register_numeric_and_rejection_coverage(tmp_path) -> No
         require_complete_coverage(report)
 
 
-@pytest.mark.parametrize(
-    "target",
-    ["CERTIFICATE :TOEIC SCORE 600", "CERTIFICATE SCORE 600"],
-)
-def test_numeric_case_requires_its_finite_context_slot(tmp_path, target: str) -> None:
+@pytest.mark.parametrize("target", [[":TOEIC"], []])
+def test_numeric_case_requires_its_finite_context_slot(
+    tmp_path, target: list[str]
+) -> None:
     requirements = load_coverage_requirements(
         _write_requirements(
             tmp_path,
@@ -246,6 +273,7 @@ def test_numeric_case_requires_its_finite_context_slot(tmp_path, target: str) ->
         requirements,
         {},
         {},
+        lookup=_lookup(),
     )
 
     assert report["missing_numeric_cases"] == [
@@ -284,14 +312,21 @@ def test_name_coverage_reports_the_missing_node_and_label() -> None:
             {
                 "query_id": "named-family",
                 "input": "Cho hỏi thủ tục chính thức làm thế nào?",
-                "target": "PROCEDURE :Procedure",
+                "target": [":Procedure"],
             }
         ],
         "val": [],
         "test": [],
     }
 
-    report = assess_name_coverage(splits, catalogue, mentions)
+    report = assess_name_coverage(
+        splits,
+        catalogue,
+        mentions,
+        _lookup=CardLookup(
+            [Card("named-family", (":Procedure",), "test", "PROCEDURE :Procedure")]
+        ),
+    )
 
     assert report == {
         "total": 2,

@@ -1,29 +1,29 @@
 {
   "dataset": {
-    "records": 6308,
+    "records": 6313,
     "query_families": 50,
     "catalogue_families": 50,
-    "targets": 567,
+    "targets": 566,
     "domains": {
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 624,
-      "out-of-domain": 884,
+      "form": 684,
+      "out-of-domain": 829,
       "procedure": 1131,
       "tuition": 336
     },
     "splits": {
       "train": {
-        "records": 5518,
+        "records": 5523,
         "query_families": 50,
-        "targets": 567,
+        "targets": 566,
         "domains": {
           "academic-rule": 1476,
           "certificate": 413,
           "document": 1003,
-          "form": 540,
-          "out-of-domain": 773,
+          "form": 588,
+          "out-of-domain": 730,
           "procedure": 1031,
           "tuition": 282
         }
@@ -31,13 +31,13 @@
       "val": {
         "records": 400,
         "query_families": 50,
-        "targets": 270,
+        "targets": 269,
         "domains": {
           "academic-rule": 135,
           "certificate": 32,
           "document": 55,
-          "form": 42,
-          "out-of-domain": 56,
+          "form": 48,
+          "out-of-domain": 50,
           "procedure": 51,
           "tuition": 29
         }
@@ -45,51 +45,51 @@
       "test": {
         "records": 390,
         "query_families": 50,
-        "targets": 272,
+        "targets": 271,
         "domains": {
           "academic-rule": 131,
           "certificate": 31,
           "document": 57,
-          "form": 42,
-          "out-of-domain": 55,
+          "form": 48,
+          "out-of-domain": 49,
           "procedure": 49,
           "tuition": 25
         }
       }
     },
     "registers": {
-      "colloquial": 1799,
+      "colloquial": 1800,
       "formal": 1383,
       "neutral": 1640,
-      "noisy": 1486
+      "noisy": 1490
     },
     "query_features": {
-      "filter": 4765,
+      "filter": 4825,
       "graph_hop": 685,
-      "multi_branch": 5424,
-      "multi_column": 5424,
+      "multi_branch": 5484,
+      "multi_column": 5484,
       "values": 659
     },
     "query_features_by_split": {
       "train": {
-        "filter": 4145,
+        "filter": 4193,
         "graph_hop": 618,
-        "multi_branch": 4745,
-        "multi_column": 4745,
+        "multi_branch": 4793,
+        "multi_column": 4793,
         "values": 600
       },
       "val": {
-        "filter": 315,
+        "filter": 321,
         "graph_hop": 33,
-        "multi_branch": 344,
-        "multi_column": 344,
+        "multi_branch": 350,
+        "multi_column": 350,
         "values": 29
       },
       "test": {
-        "filter": 305,
+        "filter": 311,
         "graph_hop": 34,
-        "multi_branch": 335,
-        "multi_column": 335,
+        "multi_branch": 341,
+        "multi_column": 341,
         "values": 30
       }
     },
@@ -98,7 +98,7 @@
       "median": 11,
       "p95": 21,
       "max": 36,
-      "mean": 11.59
+      "mean": 11.58
     }
   },
   "in_domain_contract": {
@@ -116,8 +116,8 @@
     "missing_numeric_cases": [],
     "missing_rejection_coverage": {},
     "name_coverage": {
-      "total": 791,
-      "covered": 791,
+      "total": 790,
+      "covered": 790,
       "missing_count": 0,
       "missing": []
     }
@@ -128,17 +128,17 @@
     "gaps": []
   },
   "ontology": {
-    "triples": 7711,
+    "triples": 7704,
     "classes": 56,
     "object_properties": 29,
     "datatype_properties": 55,
-    "named_individuals": 686,
+    "named_individuals": 685,
     "resources_missing_vietnamese_label": []
   },
   "validation": {
-    "records": 6308,
+    "records": 6313,
     "split_counts": {
-      "train": 5518,
+      "train": 5523,
       "val": 400,
       "test": 390
     },
@@ -146,8 +146,8 @@
       "academic-rule": 1742,
       "certificate": 476,
       "document": 1115,
-      "form": 624,
-      "out-of-domain": 884,
+      "form": 684,
+      "out-of-domain": 829,
       "procedure": 1131,
       "tuition": 336
     },
@@ -1282,7 +1282,6 @@
             ":FormCatalogueEntry003",
             ":FormCatalogueEntry004",
             ":FormCatalogueEntry005",
-            ":FormCatalogueEntry006",
             ":FormCatalogueEntry007",
             ":FormCatalogueEntry008",
             ":FormCatalogueEntry009",
@@ -1303,7 +1302,6 @@
             ":FormCatalogueEntry003",
             ":FormCatalogueEntry004",
             ":FormCatalogueEntry005",
-            ":FormCatalogueEntry006",
             ":FormCatalogueEntry007",
             ":FormCatalogueEntry008",
             ":FormCatalogueEntry009",
@@ -1594,9 +1592,9 @@
     },
     "splits": {
       "train": {
-        "records": 5518,
+        "records": 5523,
         "queries": 50,
-        "targets": 567,
+        "targets": 566,
         "query_counts": {
           "academic-actor-facts": 189,
           "academic-case-facts": 170,
@@ -1627,15 +1625,15 @@
           "dismissal-rule-facts": 17,
           "document-part-facts": 772,
           "education-level-facts": 22,
-          "form-catalogue-entry-facts": 265,
-          "form-document-facts": 275,
+          "form-catalogue-entry-facts": 308,
+          "form-document-facts": 280,
           "grade-code-facts": 38,
           "graduation-classification-table": 44,
           "graduation-honours-penalty-rule-facts": 15,
           "language-course-assessment-table": 42,
           "language-course-classification-table": 41,
           "language-course-facts": 67,
-          "no-information": 773,
+          "no-information": 730,
           "official-document-facts": 231,
           "online-training-rule-facts": 16,
           "organizational-unit-facts": 192,
@@ -1650,17 +1648,17 @@
           "training-mode-facts": 32
         },
         "register_counts": {
-          "colloquial": 1605,
+          "colloquial": 1606,
           "formal": 1186,
           "neutral": 1442,
-          "noisy": 1285
+          "noisy": 1289
         },
         "domains": {
           "academic-rule": 1476,
           "certificate": 413,
           "document": 1003,
-          "form": 540,
-          "out-of-domain": 773,
+          "form": 588,
+          "out-of-domain": 730,
           "procedure": 1031,
           "tuition": 282
         },
@@ -2216,7 +2214,6 @@
               ":FormCatalogueEntry003",
               ":FormCatalogueEntry004",
               ":FormCatalogueEntry005",
-              ":FormCatalogueEntry006",
               ":FormCatalogueEntry007",
               ":FormCatalogueEntry008",
               ":FormCatalogueEntry009",
@@ -2362,7 +2359,7 @@
       "val": {
         "records": 400,
         "queries": 50,
-        "targets": 270,
+        "targets": 269,
         "query_counts": {
           "academic-actor-facts": 9,
           "academic-case-facts": 7,
@@ -2393,7 +2390,7 @@
           "dismissal-rule-facts": 2,
           "document-part-facts": 34,
           "education-level-facts": 3,
-          "form-catalogue-entry-facts": 24,
+          "form-catalogue-entry-facts": 30,
           "form-document-facts": 18,
           "grade-code-facts": 7,
           "graduation-classification-table": 2,
@@ -2401,7 +2398,7 @@
           "language-course-assessment-table": 2,
           "language-course-classification-table": 2,
           "language-course-facts": 10,
-          "no-information": 56,
+          "no-information": 50,
           "official-document-facts": 21,
           "online-training-rule-facts": 2,
           "organizational-unit-facts": 8,
@@ -2425,8 +2422,8 @@
           "academic-rule": 135,
           "certificate": 32,
           "document": 55,
-          "form": 42,
-          "out-of-domain": 56,
+          "form": 48,
+          "out-of-domain": 50,
           "procedure": 51,
           "tuition": 29
         },
@@ -2686,7 +2683,6 @@
               ":FormCatalogueEntry003",
               ":FormCatalogueEntry004",
               ":FormCatalogueEntry005",
-              ":FormCatalogueEntry006",
               ":FormCatalogueEntry007",
               ":FormCatalogueEntry008",
               ":FormCatalogueEntry009",
@@ -2831,7 +2827,7 @@
       "test": {
         "records": 390,
         "queries": 50,
-        "targets": 272,
+        "targets": 271,
         "query_counts": {
           "academic-actor-facts": 9,
           "academic-case-facts": 4,
@@ -2862,7 +2858,7 @@
           "dismissal-rule-facts": 2,
           "document-part-facts": 36,
           "education-level-facts": 2,
-          "form-catalogue-entry-facts": 23,
+          "form-catalogue-entry-facts": 29,
           "form-document-facts": 19,
           "grade-code-facts": 4,
           "graduation-classification-table": 2,
@@ -2870,7 +2866,7 @@
           "language-course-assessment-table": 2,
           "language-course-classification-table": 3,
           "language-course-facts": 10,
-          "no-information": 55,
+          "no-information": 49,
           "official-document-facts": 21,
           "online-training-rule-facts": 2,
           "organizational-unit-facts": 9,
@@ -2894,8 +2890,8 @@
           "academic-rule": 131,
           "certificate": 31,
           "document": 57,
-          "form": 42,
-          "out-of-domain": 55,
+          "form": 48,
+          "out-of-domain": 49,
           "procedure": 49,
           "tuition": 25
         },
@@ -3157,7 +3153,6 @@
               ":FormCatalogueEntry003",
               ":FormCatalogueEntry004",
               ":FormCatalogueEntry005",
-              ":FormCatalogueEntry006",
               ":FormCatalogueEntry007",
               ":FormCatalogueEntry008",
               ":FormCatalogueEntry009",
@@ -3302,11 +3297,11 @@
     }
   },
   "sha256": {
-    "train.jsonl": "3134d9e080b84735b00c7811aeaffad6a1c9c2254d8b84ddbbc3e07383a6290a",
-    "val.jsonl": "c36cdcac6ffb31e03bf83cb1876251b97572366c80f83642ae5208004be93558",
-    "test.jsonl": "64d03f0a3d73e7a5756e4effc3657df5fdd14882505f918109746a09d174f23a",
-    "catalogue.jsonl": "a5ef35619f288a8c543fa08730117eaf3262ea89db7e0bad91d144c8340b7d1d",
-    "coverage.json": "d46f219f062719bc38bb90f1652f6dc6d4a6179f3a2b1a56844f2c5d43d5a251",
-    "ontology.ttl": "312a09d3f96a974061506a793e57055a60498a463f2b5a692e20673db0db9ba0"
+    "train.jsonl": "eae821cdcd7f6c8ff1d489f48a1fe2eb39b100d7d480a23b747fbed10e7cea00",
+    "val.jsonl": "e23241d88940c45a442a17234b757bf4ebec7936baf72f318dcdeff72840e653",
+    "test.jsonl": "cfbc3c77d59350129f6d9a1c72c438e5bf021c28dd114696027e53305c530ddd",
+    "catalogue.jsonl": "ecf93c804171dcc7e01412355140728e55fd74c4fc186346e69a273c295e019e",
+    "coverage.json": "9e54e5523d59e84d84be9fc2fb852459be5da57f6da06f7be058bbc6e2b0c94c",
+    "ontology.ttl": "bc1e80d5f8c583e08d114342c53ca8d572c33020be5f5fc963bfbb9e4be50e10"
   }
 }

@@ -22,6 +22,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from ontchatbot.runtime.sparql import PREFIXES, load_ontology
+from ontchatbot.runtime.cards import CardLookup
 from ontchatbot.settings import DATASET_DIR, QUERY_CATALOGUE_PATH, REPORTS_DIR
 
 DATASET = DATASET_DIR
@@ -51,6 +52,7 @@ def main(destination: str | None = None) -> None:
             catalogue.setdefault(spec["query_id"], []).append(spec)
 
     report: dict[str, object] = {"tong_dong": len(rows)}
+    lookup = CardLookup()
     print(f"Đã nạp {len(rows)} dòng, {len(catalogue)} họ trong danh mục.\n")
 
     # ---------------------------------------------------------------- ĐIỀU KIỆN 1
@@ -58,18 +60,14 @@ def main(destination: str | None = None) -> None:
     dk1_bad = []
     shapes = Counter()
     for r in rows:
-        target = r["target"].strip()
-        if target == MARKER:
+        target = r["target"]
+        if r["query_id"] == "no-information" and not target:
             shapes["tu_choi"] += 1
-            if r["query_id"] != "no-information":
-                dk1_bad.append((r["id"], "đích là câu từ chối nhưng họ không phải no-information"))
-        elif target.upper().startswith("SELECT"):
+        elif r["query_id"] != "no-information" and target:
             shapes["truy_van"] += 1
-            if r["query_id"] == "no-information":
-                dk1_bad.append((r["id"], "họ no-information nhưng đích là SELECT"))
         else:
             shapes["DANG_LA"] += 1
-            dk1_bad.append((r["id"], f"dạng thứ ba: {target[:60]!r}"))
+            dk1_bad.append((r["id"], f"nhãn không khớp dạng: {target!r}"))
 
     print("== ĐK1 — chỉ hai dạng ==")
     print(f"  truy vấn thông tin : {shapes['truy_van']}")
@@ -92,22 +90,23 @@ def main(destination: str | None = None) -> None:
     hosts = Counter()
     all_links: set[str] = set()
 
-    info_rows = [r for r in rows if r["target"].strip() != MARKER]
+    info_rows = [r for r in rows if r["query_id"] != "no-information"]
     for index, r in enumerate(info_rows, 1):
-        target = r["target"].strip()
-        if target not in cache:
+        target = lookup.query(r["query_id"], r["target"])
+        key = (r["query_id"], tuple(r["target"]))
+        if key not in cache:
             try:
                 result = list(graph.query(PREFIXES + target))
             except Exception as exc:  # noqa: BLE001
-                cache[target] = {"error": str(exc)}
+                cache[key] = {"error": str(exc)}
                 continue
             names = [str(v) for v in (result[0].labels if result else [])] if result else []
             recs = [
                 {str(k): (str(v) if v is not None else "") for k, v in zip(names, row)}
                 for row in result
             ]
-            cache[target] = {"rows": recs}
-        entry = cache[target]
+            cache[key] = {"rows": recs}
+        entry = cache[key]
         if "error" in entry:
             no_rows.append((r["id"], "LỖI CHẠY: " + entry["error"][:80]))
             continue
@@ -164,14 +163,9 @@ def main(destination: str | None = None) -> None:
     # ---------------------------------------------------------------- ĐIỀU KIỆN 4
     print("\n== ĐK4 — sắc thái prompt cho mỗi loại thông tin ==")
 
-
-    def anchors(target: str) -> tuple[str, ...]:
-        return tuple(sorted(set(re.findall(r"(?<![\w:])(:[A-Z][A-Za-z0-9_]*)", target))))
-
-
     by_type: dict[tuple, list] = defaultdict(list)
     for r in info_rows:
-        by_type[(r["query_id"], anchors(r["target"]))].append(r)
+        by_type[(r["query_id"], tuple(r["target"]))].append(r)
 
     reg_hist = Counter(len({x["register"] for x in v}) for v in by_type.values())
     len_hist = Counter(len(v) for v in by_type.values())

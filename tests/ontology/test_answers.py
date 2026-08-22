@@ -206,12 +206,18 @@ def test_a_procedure_reaches_its_downloadable_form(ontology_graph) -> None:
 
 
 def test_the_form_catalogue_lists_every_entry(ontology_graph) -> None:
+    """Danh mục biểu mẫu có đúng 18 mục.
+
+    Trang nguồn liệt kê "Mẫu số 5" và "Mẫu số 5A" thành hai dòng, nhưng chúng
+    trỏ tới cùng một tờ đơn với hai tệp tải khác nhau, nên ontology gộp thành
+    một mục mang cả hai đường tải và cả hai số hiệu.
+    """
     titles = answers(
         ontology_graph,
         "SELECT ?answer WHERE { ?e a :FormCatalogueEntry ; :listedTitle ?answer . }",
     )
 
-    assert len(titles) == 19
+    assert len(titles) == 18
 
 
 # ------------------------------------------------------------ an toàn

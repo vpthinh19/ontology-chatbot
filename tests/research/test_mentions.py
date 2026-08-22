@@ -130,7 +130,7 @@ def test_article_numbers_shared_by_documents_are_qualified(graph, anchors) -> No
 def test_ambiguous_mentions_are_reported_for_the_rejection_class(graph, anchors) -> None:
     """Cách gọi mơ hồ không bị vứt đi - nó là nguyên liệu câu từ chối.
 
-    ``docs/CONCEPT.md``: câu quá mơ hồ để có một câu trả lời đúng duy nhất thì
+    Câu quá mơ hồ để có một câu trả lời đúng duy nhất thì
     phải bị từ chối. Sinh nhóm này từ đồ thị thật thì không phải bịa.
     """
 

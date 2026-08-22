@@ -14,28 +14,13 @@ checkpoints/
 models/
 logs/
 
-# ``artifacts/`` chứa trọng số model, adapter và kết quả chạy cục bộ - những thứ
-# nặng và dựng lại được, nên mặc định không theo dõi. Ngoại lệ là phần cần thiết
-# để dựng lại hình và số liệu của README: bộ dựng hình, kịch bản đo, và bản tổng
-# hợp kết quả mà bộ dựng hình đọc vào.
+# ``artifacts/`` chứa trọng số model, kết quả chạy cục bộ và bộ dựng hình. Chỉ bộ
+# dựng hình được theo dõi: nó là mã nguồn sinh ra các ảnh trong ``docs/images/``,
+# nên một bản sao mới phải dựng lại được chúng. Mọi thứ khác là kết quả chạy trên
+# máy, dựng lại được bằng ``train_classifier`` và ``benchmark_classifier``.
 /artifacts/*
 !/artifacts/README.md
 !/artifacts/figures/
-!/artifacts/benchmarks/
-!/artifacts/training-results/
-/artifacts/training-results/*
-!/artifacts/training-results/report/
-
-# Gói đã biên dịch sẵn: hơn một gigabyte, và biên dịch cho đúng đời card nên phải
-# dựng lại trên máy phục vụ. ``build.py`` nằm ngay cạnh dựng lại trong 76 giây.
-/artifacts/benchmarks/aoti_full/package/*.pt2
-
-# Kết quả đo thô của từng câu: vài megabyte mỗi tệp, dựng lại được bằng kịch bản
-# đo nằm ngay cạnh.
-/artifacts/benchmarks/results-gpu.json
-/artifacts/benchmarks/results-bf16.json
-/artifacts/benchmarks/results-torch.json
-/artifacts/benchmarks/results-onnx.json
 
 /dev/
 ontology.ipynb

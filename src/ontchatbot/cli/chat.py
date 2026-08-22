@@ -1,6 +1,6 @@
 """Trò chuyện với trợ lý học vụ ở dòng lệnh.
 
-    python -m ontchatbot.cli.chat --model-dir <thư mục model đã convert>
+    python -m ontchatbot.cli.chat --model-dir <thư mục bộ phân loại đã huấn luyện>
     python -m ontchatbot.cli.chat --model-dir <...> --hoi "bảo lưu cần làm gì"
 
 Trợ lý là một mô hình ngôn ngữ lớn gọi qua mạng; nó dùng công cụ tra cứu chạy
@@ -16,7 +16,7 @@ import os
 from pathlib import Path
 
 from ..runtime.agent import DEFAULT_BASE_URL, build_agent
-from ..runtime.model import CTranslate2Generator
+from ..runtime.onnx_classifier import OnnxClassifierGenerator
 from ..runtime.pipeline import OntologyChatbot
 
 
@@ -26,20 +26,9 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--model-dir",
         type=Path,
         default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
-        help="thư mục model sinh truy vấn đã chuyển sang định dạng chạy nhanh",
-    )
-    parser.add_argument(
-        "--adapter",
-        type=Path,
-        default=None,
-        help=(
-            "thay cho --model-dir: thư mục adapter mang về từ lượt huấn luyện. "
-            "Chậm hơn vì chạy qua thư viện huấn luyện, nhưng khỏi phải chuyển "
-            "định dạng trước khi thử"
-        ),
+        help="thư mục bộ phân loại: bộ điều hợp, lớp phân loại và bảng nhãn",
     )
     parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
-    parser.add_argument("--compute-type", default="int8")
     parser.add_argument(
         "--llm",
         default=os.environ.get("ONTCHATBOT_LLM_MODEL", ""),
@@ -75,16 +64,9 @@ def main() -> None:
             "ONTCHATBOT_LLM_MODEL"
         )
 
-    if args.adapter:
-        from .benchmark_model import _seq2seq_adapter_generator
-
-        generator = _seq2seq_adapter_generator(args.adapter, 1)
-    elif args.model_dir:
-        generator = CTranslate2Generator(
-            args.model_dir, device=args.device, compute_type=args.compute_type
-        )
-    else:
-        raise SystemExit("cần --model-dir hoặc --adapter")
+    if not args.model_dir:
+        raise SystemExit("cần --model-dir")
+    generator = OnnxClassifierGenerator.load(args.model_dir, device=args.device)
     agent = build_agent(
         _Trace(OntologyChatbot(generator)),
         model=args.llm,

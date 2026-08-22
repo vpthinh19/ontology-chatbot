@@ -6616,17 +6616,13 @@ Phiếu điều chỉnh điểm
 
 :FormCatalogueEntry005 a :FormCatalogueEntry, owl:NamedIndividual ;
     :basedOn :UndergraduateFormCatalogueListing ;
-    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
-    :listedFormNumber "5" ;
+    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf",
+        "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
+    :listedFormNumber "5",
+        "5A" ;
     :listedTitle "Đơn xin chuyển Chương trình đào tạo"@vi ;
-    rdfs:label "Mục tải: Đơn xin chuyển Chương trình đào tạo"@vi .
-
-:FormCatalogueEntry006 a :FormCatalogueEntry, owl:NamedIndividual ;
-    :basedOn :UndergraduateFormCatalogueListing ;
-    :downloadUrl "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf" ;
-    :listedFormNumber "5A" ;
-    :listedTitle "Đơn xin chuyển Chương trình đào tạo"@vi ;
-    rdfs:label "Mục tải: Mẫu số 5 - Đơn xin chuyển Chương trình đào tạo"@vi .
+    rdfs:label "Mục tải: Đơn xin chuyển Chương trình đào tạo"@vi ;
+    skos:altLabel "Mục tải: Mẫu số 5 - Đơn xin chuyển Chương trình đào tạo"@vi .
 
 :FormCatalogueEntry007 a :FormCatalogueEntry, owl:NamedIndividual ;
     :basedOn :UndergraduateFormCatalogueListing,
@@ -7663,7 +7659,6 @@ Phiếu điều chỉnh điểm
         :FormCatalogueEntry003,
         :FormCatalogueEntry004,
         :FormCatalogueEntry005,
-        :FormCatalogueEntry006,
         :FormCatalogueEntry007,
         :FormCatalogueEntry008,
         :FormCatalogueEntry009,

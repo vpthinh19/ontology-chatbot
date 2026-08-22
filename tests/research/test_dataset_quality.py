@@ -24,6 +24,7 @@ from ontchatbot.research.answer_scope import (
 )
 from ontchatbot.research.mentions import mention_index, overloaded_mentions
 from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.runtime.cards import CardLookup
 from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.settings import (
     DATASET_DIR,
@@ -134,9 +135,11 @@ def test_no_two_questions_teach_different_targets(rows) -> None:
     So sau khi BỎ DẤU, vì với người dùng thật hai dạng đó là một câu.
     """
 
-    by_text: dict[str, set[str]] = defaultdict(set)
+    by_text: dict[str, set[tuple[str, tuple[str, ...]]]] = defaultdict(set)
     for row in rows:
-        by_text[_flatten(row["input"])].add(row["target"])
+        by_text[_flatten(row["input"])].add(
+            (row["query_id"], tuple(row["target"]))
+        )
 
     conflicts = {text: sorted(t) for text, t in by_text.items() if len(t) > 1}
 
@@ -653,13 +656,13 @@ def test_a_question_with_an_off_topic_tail_is_still_answered(rows) -> None:
     marked = [
         row["input"]
         for row in rows
-        if row["target"] == MARKER
+        if row["query_id"] == "no-information"
         and any(tail.strip().strip(",") in row["input"] for tail in tails)
     ]
     answered = [
         row
         for row in rows
-        if row["target"] != MARKER
+        if row["query_id"] != "no-information"
         and any(tail.strip().strip(",") in row["input"] for tail in tails)
     ]
 
@@ -734,16 +737,18 @@ def test_every_answer_carries_a_dated_source(rows, graph) -> None:
 
     from ontchatbot.runtime.sparql import execute_select
 
+    lookup = CardLookup()
     date_marks = re.compile(r"ngày \d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2}")
     targets = {
-        row["target"]: row["query_id"]
+        (row["query_id"], tuple(row["target"]))
         for row in rows
         if row["query_id"] != "no-information"
     }
     assert targets, "không đọc được đích trả lời được nào"
 
     missing_source, missing_date = [], []
-    for target, query_id in sorted(targets.items()):
+    for query_id, target in sorted(targets):
+        target = lookup.query(query_id, target)
         answer = execute_select(graph, target)
         if not answer:
             continue

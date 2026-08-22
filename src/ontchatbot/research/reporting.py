@@ -15,6 +15,7 @@ from typing import Any, Iterable, Mapping, Sequence
 from rdflib import OWL, RDF, RDFS, Graph, URIRef
 
 from ..runtime.text import normalize_model_input
+from ..runtime.cards import CardLookup
 from ..settings import (
     DATASET_DIR,
     ONTOLOGY_NS,
@@ -48,7 +49,7 @@ def sha256_file(path: Path) -> str:
 
 
 def build_dataset_report(
-    release: Mapping[str, list[dict[str, str]]],
+    release: Mapping[str, list[dict[str, Any]]],
     graph: Graph,
     *,
     dataset_dir: Path = DATASET_DIR,
@@ -58,6 +59,7 @@ def build_dataset_report(
 
     catalogue_path = QUERY_CATALOGUE_PATH
     catalogue = load_catalogue(catalogue_path)
+    lookup = CardLookup()
     named_nodes = tuple(
         sorted(
             {
@@ -76,6 +78,7 @@ def build_dataset_report(
         graph,
         catalogue,
         require_complete_catalogue=True,
+        lookup=lookup,
     )
     coverage = assess_coverage(
         release,
@@ -83,6 +86,7 @@ def build_dataset_report(
         load_coverage_requirements(Path(dataset_dir) / "coverage.json", catalogue),
         _load_rejection_checklist(dataset_dir),
         resolved_mentions,
+        lookup=lookup,
     )
     all_rows = [row for split in REQUIRED_SPLITS for row in release[split]]
     word_lengths = [len(normalize_model_input(row["input"]).split()) for row in all_rows]
@@ -103,6 +107,7 @@ def build_dataset_report(
                 if catalogue[row["query_id"]].domain != "out-of-domain"
             ],
             object_properties,
+            lookup,
         )
         for split in REQUIRED_SPLITS
     }
@@ -112,19 +117,28 @@ def build_dataset_report(
             "records": len(all_rows),
             "query_families": len({row["query_id"] for row in all_rows}),
             "catalogue_families": len(catalogue),
-            "targets": len({row["target"] for row in all_rows}),
+            "targets": len(
+                {(row["query_id"], tuple(row["target"])) for row in all_rows}
+            ),
             "domains": validation["domains"],
             "splits": {
                 split: {
                     "records": len(release[split]),
                     "query_families": len({row["query_id"] for row in release[split]}),
-                    "targets": len({row["target"] for row in release[split]}),
+                    "targets": len(
+                        {
+                            (row["query_id"], tuple(row["target"]))
+                            for row in release[split]
+                        }
+                    ),
                     "domains": validation["splits"][split]["domains"],
                 }
                 for split in REQUIRED_SPLITS
             },
             "registers": dict(sorted(Counter(row["register"] for row in all_rows).items())),
-            "query_features": _query_feature_counts(in_domain_rows, object_properties),
+            "query_features": _query_feature_counts(
+                in_domain_rows, object_properties, lookup
+            ),
             "query_features_by_split": query_features_by_split,
             "input_words": _number_summary(word_lengths),
         },
@@ -436,7 +450,7 @@ def build_manifest(
             "format": "jsonl",
             "fields": ["id", "query_id", "register", "input", "target"],
             "input": "Vietnamese natural-language question",
-            "target": "one-line canonical SPARQL SELECT or the exact rejection marker",
+            "target": "list of anchor IRIs; empty for no-information",
         },
         "files": {
             split: {
@@ -484,7 +498,7 @@ def build_manifest(
 
 
 def build_procedure_dataset_report(
-    release: Mapping[str, list[dict[str, str]]],
+    release: Mapping[str, list[dict[str, Any]]],
     *,
     dataset_dir: Path = DATASET_DIR,
 ) -> dict[str, Any]:
@@ -505,7 +519,10 @@ def build_procedure_dataset_report(
         split: [row for row in release[split] if row["query_id"] in procedure_families]
         for split in REQUIRED_SPLITS
     }
-    train_target_counts = Counter(row["target"] for row in procedure_rows["train"])
+    train_target_counts = Counter(
+        (row["query_id"], tuple(row["target"]))
+        for row in procedure_rows["train"]
+    )
     # Họ secondary không thuộc hợp đồng huấn luyện; chỉ họ primary được yêu cầu.
     primary_procedure_families = {
         query_id
@@ -517,9 +534,17 @@ def build_procedure_dataset_report(
     split_reports: dict[str, Any] = {}
     for split in REQUIRED_SPLITS:
         rows = procedure_rows[split]
-        target_counts = Counter(row["target"] for row in rows)
+        target_counts = Counter(
+            (row["query_id"], tuple(row["target"])) for row in rows
+        )
         register_counts = Counter(
-            len({row["register"] for row in rows if row["target"] == target})
+            len(
+                {
+                    row["register"]
+                    for row in rows
+                    if (row["query_id"], tuple(row["target"])) == target
+                }
+            )
             for target in target_counts
         )
         no_information_records = sum(
@@ -568,7 +593,10 @@ def build_procedure_dataset_report(
             ),
             # Mọi đích ở val/test phải xuất hiện trong train.
             "every_evaluated_target_was_taught": all(
-                {row["target"] for row in procedure_rows[split]}
+                {
+                    (row["query_id"], tuple(row["target"]))
+                    for row in procedure_rows[split]
+                }
                 <= set(train_target_counts)
                 for split in ("val", "test")
             ),
@@ -606,13 +634,14 @@ def _ontology_summary(graph: Graph) -> dict[str, Any]:
 
 
 def _query_feature_counts(
-    rows: Iterable[Mapping[str, str]],
+    rows: Iterable[Mapping[str, Any]],
     object_properties: frozenset[str],
+    lookup: CardLookup,
 ) -> dict[str, int]:
     counts: Counter[str] = Counter()
     for row in rows:
         features = extract_query_features(
-            row["target"],
+            lookup.query(row["query_id"], row["target"]),
             object_properties=object_properties,
         )
         counts.update(query_feature_tags(features))
@@ -620,7 +649,7 @@ def _query_feature_counts(
 
 
 def _build_training_readiness(
-    release: Mapping[str, list[dict[str, str]]],
+    release: Mapping[str, list[dict[str, Any]]],
     validation: Mapping[str, Any],
     coverage: Mapping[str, object] | None = None,
 ) -> dict[str, Any]:

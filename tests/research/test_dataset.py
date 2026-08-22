@@ -11,6 +11,7 @@ from ontchatbot.research.dataset import (
     validate_release,
 )
 from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.runtime.cards import Card, CardLookup
 
 
 CATALOGUE = {
@@ -44,14 +45,42 @@ CATALOGUE = {
 REGISTERS = ("formal", "neutral", "colloquial", "noisy")
 
 
+LOOKUP = CardLookup(
+    [
+        Card(
+            "procedure-source",
+            (procedure,),
+            "test",
+            f"SELECT ?answer WHERE {{ {procedure} :basedOn ?part . "
+            "?part :officialText ?answer . }",
+        )
+        for procedure in (
+            ":TemporaryAcademicLeaveProcedure",
+            ":CourseRegistrationProcedure",
+        )
+    ]
+    + [
+        Card(
+            "credit-load-range",
+            (f":Credits{credits}",),
+            "test",
+            "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; "
+            ":maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= "
+            f"{credits} && {credits} <= ?maximum) }}",
+        )
+        for credits in range(15, 23)
+    ]
+    + [Card("no-information", (), "test", "không có thông tin")]
+)
+
+
 def _valid_release():
     procedure_targets = (
-        "SELECT ?answer WHERE { :TemporaryAcademicLeaveProcedure :basedOn ?part . ?part :officialText ?answer . }",
-        "SELECT ?answer WHERE { :CourseRegistrationProcedure :basedOn ?part . ?part :officialText ?answer . }",
+        [":TemporaryAcademicLeaveProcedure"],
+        [":CourseRegistrationProcedure"],
     )
     score_targets = tuple(
-        "SELECT ?answer WHERE { ?rule a :CreditLoadRule ; :minimumCredits ?minimum ; :maximumCredits ?maximum ; :ruleText ?answer . FILTER (?minimum <= "
-        f"{credits} && {credits} <= ?maximum) }}"
+        [f":Credits{credits}"]
         for credits in ("15", "16", "17", "18", "19", "20", "21", "22")
     )
     questions = {
@@ -90,7 +119,7 @@ def _valid_release():
     targets = {
         "procedure-source": procedure_targets * 4,
         "credit-load-range": score_targets,
-        "no-information": ("không có thông tin",) * 8,
+        "no-information": ([],) * 8,
     }
     offsets = {"train": (0, 4), "val": (4, 6), "test": (6, 8)}
     sequence = 1
@@ -111,7 +140,9 @@ def _valid_release():
 
 
 def test_accepts_dynamic_targets_and_marker() -> None:
-    report = validate_release(_valid_release(), load_ontology(), CATALOGUE)
+    report = validate_release(
+        _valid_release(), load_ontology(), CATALOGUE, lookup=LOOKUP
+    )
 
     assert report["records"] == 24
     assert report["domains"] == {
@@ -125,29 +156,22 @@ def test_accepts_dynamic_targets_and_marker() -> None:
     assert report["splits"]["train"]["targets"] > report["splits"]["train"]["queries"]
 
 
-@pytest.mark.parametrize(
-    "target",
-    (
-        "SELECT (GROUP_CONCAT(?x) AS ?answer) WHERE { ?s ?p ?x }",
-        "SELECT ?answer WHERE { ?s ?p \"1\"^^xsd:integer . }",
-        'SELECT ?answer WHERE { ?s ?p "xin chào"@vi . }',
-    ),
-)
-def test_target_text_accepts_sparql_rdf_punctuation(target: str) -> None:
+@pytest.mark.parametrize("target", ([], [":AcademicAdvisor"], [":One", ":Two"]))
+def test_target_text_accepts_iri_lists(target: list[str]) -> None:
     _validate_target_text(target, "punctuation-probe")
 
 
-def test_target_text_still_rejects_noncanonical_layout() -> None:
-    with pytest.raises(DatasetError, match="one canonical line"):
-        _validate_target_text("SELECT ?answer\nWHERE { ?s ?p ?answer }", "bad-layout")
+def test_target_text_rejects_legacy_sparql_string() -> None:
+    with pytest.raises(DatasetError, match="list of non-empty IRIs"):
+        _validate_target_text("SELECT ?answer WHERE { ?s ?p ?answer }", "bad-target")
 
 
 def test_rejects_target_that_does_not_match_query_family() -> None:
     release = _valid_release()
-    release["train"][0]["target"] = "không có thông tin"
+    release["train"][0]["target"] = []
 
     with pytest.raises(DatasetError, match="does not match query family"):
-        validate_release(release, load_ontology(), CATALOGUE)
+        validate_release(release, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
 
 def test_rejects_finite_iri_missing_from_train() -> None:
@@ -156,10 +180,10 @@ def test_rejects_finite_iri_missing_from_train() -> None:
     leave = ":TemporaryAcademicLeaveProcedure"
     for row in release["train"]:
         if row["query_id"] == "procedure-source":
-            row["target"] = row["target"].replace(course, leave)
+            row["target"] = [leave if value == course else value for value in row["target"]]
 
     with pytest.raises(DatasetError, match="finite slot values missing from train"):
-        validate_release(release, load_ontology(), CATALOGUE)
+        validate_release(release, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
 
 def test_rejects_unknown_query_id() -> None:
@@ -167,7 +191,7 @@ def test_rejects_unknown_query_id() -> None:
     release["train"][0]["query_id"] = "unknown"
 
     with pytest.raises(DatasetError, match="unknown query_id"):
-        validate_release(release, load_ontology(), CATALOGUE)
+        validate_release(release, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
 
 def test_rejects_exact_normalized_cross_split_leakage() -> None:
@@ -175,7 +199,7 @@ def test_rejects_exact_normalized_cross_split_leakage() -> None:
     release["test"][0]["input"] = release["train"][0]["input"]
 
     with pytest.raises(DatasetError, match="inputs cross splits"):
-        validate_release(release, load_ontology(), CATALOGUE)
+        validate_release(release, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
 
 def test_near_duplicate_check_is_limited_to_same_query_family() -> None:
@@ -183,13 +207,13 @@ def test_near_duplicate_check_is_limited_to_same_query_family() -> None:
     release["train"][0]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 65"
     release["test"][2]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 66"
 
-    validate_release(release, load_ontology(), CATALOGUE)
+    validate_release(release, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
     leaked = deepcopy(release)
     leaked["test"][2]["input"] = _valid_release()["test"][2]["input"]
     leaked["test"][0]["input"] = "Cho biết quy định chính xác dành cho sinh viên khoá 66"
     with pytest.raises(DatasetError, match="near-duplicate questions cross splits"):
-        validate_release(leaked, load_ontology(), CATALOGUE)
+        validate_release(leaked, load_ontology(), CATALOGUE, lookup=LOOKUP)
 
 
 def test_candidate_mode_allows_unrepresented_catalogue_families() -> None:
@@ -208,6 +232,7 @@ def test_candidate_mode_allows_unrepresented_catalogue_families() -> None:
         load_ontology(),
         catalogue,
         require_complete_catalogue=False,
+        lookup=LOOKUP,
     )
 
     assert report["catalogue_coverage_required"] is False
@@ -230,4 +255,5 @@ def test_official_mode_rejects_unrepresented_catalogue_families() -> None:
             load_ontology(),
             catalogue,
             require_complete_catalogue=True,
+            lookup=LOOKUP,
         )

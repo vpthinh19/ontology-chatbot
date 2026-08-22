@@ -1,11 +1,13 @@
 import json
+import hashlib
 from collections import Counter
 
 from ontchatbot.catalogue import QuerySpec, SlotSpec
 from ontchatbot.research.evaluation import (
-    evaluate_predictions,
+    evaluate_predictions as _evaluate_predictions,
     evaluate_query_id_expectations,
 )
+from ontchatbot.runtime.cards import Card, CardLookup
 from ontchatbot.runtime.sparql import load_ontology
 from ontchatbot.settings import TEST_DATASET_PATH, VAL_DATASET_PATH
 
@@ -13,14 +15,42 @@ from ontchatbot.settings import TEST_DATASET_PATH, VAL_DATASET_PATH
 def _example(
     target: str,
     register: str = "neutral",
-) -> dict[str, str]:
+) -> dict[str, object]:
+    marker = target == "không có thông tin"
+    anchor = ":Test" + hashlib.sha256(target.encode()).hexdigest()[:16]
     return {
         "id": "case-1",
-        "query_id": "query-0001",
+        "query_id": "no-information" if marker else "query-0001",
         "register": register,
         "input": "phòng nào xử lý bảo lưu",
-        "target": target,
+        "target": [] if marker else [anchor],
+        "_query": target,
     }
+
+
+def evaluate_predictions(examples, predictions, graph, **kwargs):
+    """Feed SPARQL-focused fixtures through the dataset's new label format."""
+
+    supplied_lookup = kwargs.pop("lookup", None)
+    cards = []
+    cleaned = []
+    for example in examples:
+        row = dict(example)
+        query = row.pop("_query", None)
+        if query is not None:
+            cards.append(
+                Card(
+                    row["query_id"],
+                    tuple(row["target"]),
+                    "test",
+                    query,
+                )
+            )
+        cleaned.append(row)
+    lookup = supplied_lookup or (CardLookup(cards) if cards else None)
+    return _evaluate_predictions(
+        cleaned, predictions, graph, lookup=lookup, **kwargs
+    )
 
 
 V3_CATALOGUE = {
@@ -36,7 +66,21 @@ V3_CATALOGUE = {
 }
 
 
-def _v3_example(identifier: str, query_id: str, target: str) -> dict[str, str]:
+V3_LOOKUP = CardLookup(
+    [
+        Card(
+            "node-facts",
+            (anchor,),
+            "test",
+            V3_CATALOGUE["node-facts"].target_template.replace("${anchor}", anchor),
+        )
+        for anchor in (":AcademicAdvisor", ":CourseLecturer")
+    ]
+    + [Card("no-information", (), "test", "không có thông tin")]
+)
+
+
+def _v3_example(identifier: str, query_id: str, target: list[str]) -> dict[str, object]:
     return {
         "id": identifier,
         "query_id": query_id,
@@ -280,8 +324,8 @@ def test_v3_metrics_are_separate_and_account_for_every_group() -> None:
         "${anchor}", ":AcademicAdvisor"
     )
     examples = [
-        _v3_example("node", "node-facts", node_target),
-        _v3_example("rejection", "no-information", "không có thông tin"),
+        _v3_example("node", "node-facts", [":AcademicAdvisor"]),
+        _v3_example("rejection", "no-information", []),
     ]
 
     report = evaluate_predictions(
@@ -289,6 +333,7 @@ def test_v3_metrics_are_separate_and_account_for_every_group() -> None:
         [node_target, "không có thông tin"],
         load_ontology(),
         catalogue=V3_CATALOGUE,
+        lookup=V3_LOOKUP,
     )
 
     assert report["primary_metrics"] == {
@@ -326,10 +371,11 @@ def test_node_metric_accepts_another_explicit_syntax_but_shape_does_not() -> Non
     )
 
     report = evaluate_predictions(
-        [_v3_example("node", "node-facts", target)],
+        [_v3_example("node", "node-facts", [":AcademicAdvisor"])],
         [equivalent],
         load_ontology(),
         catalogue=V3_CATALOGUE,
+        lookup=V3_LOOKUP,
         include_cases=True,
     )
 
@@ -345,10 +391,11 @@ def test_invalid_sparql_is_wrong_in_every_applicable_v3_metric() -> None:
     )
 
     report = evaluate_predictions(
-        [_v3_example("node", "node-facts", target)],
+        [_v3_example("node", "node-facts", [":AcademicAdvisor"])],
         ["SELECT ?answer WHERE {"],
         load_ontology(),
         catalogue=V3_CATALOGUE,
+        lookup=V3_LOOKUP,
     )
 
     assert report["primary_metrics"] == {

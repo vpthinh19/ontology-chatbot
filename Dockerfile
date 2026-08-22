@@ -6,7 +6,8 @@ FROM python:3.12-slim AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /uvx /bin/
 WORKDIR /app
 
-# UV_LINK_MODE=copy giữ venv portable khi COPY qua stage; tắt tải python (dùng python của image).
+# Sao chép thay vì liên kết cứng để môi trường ảo còn dùng được sau khi COPY sang
+# tầng runtime; dùng Python của image thay vì tải bản khác.
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=never
@@ -20,55 +21,52 @@ COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --extra inference --no-dev
 
-# Chỉ tải artifact CTranslate2 dùng khi inference. Checkpoint Transformers và
-# báo cáo benchmark cùng repository không được đưa vào runtime image.
+# Chỉ tải đồ thị ONNX của bộ phân loại được chọn. Các model còn lại và kết quả
+# benchmark nằm cùng kho phát hành nhưng không thuộc ảnh chạy.
+#
+# Đồ thị này khép kín: nó mang sẵn trọng số đã hoà bộ điều hợp, kèm bộ tách từ và
+# bảng nhãn. Không phải tải bộ mã hoá nền, và lúc chạy không ra mạng.
 ARG HF_REPO=
 ARG HF_REVISION=main
+ARG HF_MODEL_PATH=onnx-xlmr
 RUN test -n "${HF_REPO}" && \
-    /app/.venv/bin/python -c "from huggingface_hub import snapshot_download; \
+    /app/.venv/bin/python -c "import shutil; from pathlib import Path; \
+from huggingface_hub import snapshot_download; \
+root=Path('/app/hf-model'); path='${HF_MODEL_PATH}'; \
 snapshot_download(repo_id='${HF_REPO}', revision='${HF_REVISION}', \
-local_dir='/app/hf-model', allow_patterns=['ctranslate2/*'])"
+local_dir=root, allow_patterns=[path + '/*']); \
+shutil.copytree(root / path, '/app/classifier-model')"
 
 
 # ---------- runtime ----------
 FROM python:3.12-slim AS runtime
 
-# tạo user với home dir
+# Chạy dưới người dùng thường, có thư mục nhà để các thư viện ghi cache tạm.
 RUN useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
 WORKDIR /app
 
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
-COPY --from=builder --chown=ontchatbot:ontchatbot /app/hf-model/ctranslate2 /app/model
+COPY --from=builder --chown=ontchatbot:ontchatbot /app/classifier-model /app/model
 COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
-# PATH đưa venv lên đầu (uvicorn, python của venv).
-# HF_HUB_OFFLINE=1 vì model đã tải sẵn, ko gọi ra internet
-# MALLOC_ARENA_MAX=2 giảm RSS ~50-100MB ở tải "1 request tại một thời điểm".
-# ONTCHATBOT_DEVICE / ONTCHATBOT_COMPUTE_TYPE chọn nơi chạy mô hình sinh truy vấn.
-# Mặc định là bộ xử lý trung tâm để ảnh chạy được trên máy không có card đồ hoạ.
-# Trên máy có card, đặt ONTCHATBOT_DEVICE=cuda và ONTCHATBOT_COMPUTE_TYPE=float32
-# rồi chạy container với quyền dùng card: cùng điểm số, nhanh hơn khoảng 1,5 lần.
-# Nén số nguyên 8 bit chỉ giữ nguyên điểm trên bộ xử lý trung tâm.
+# PATH đặt môi trường ảo lên đầu. Chế độ ngoại tuyến vì model đã nằm trong ảnh,
+# không lượt chạy nào được ra mạng. Giới hạn vùng cấp phát bộ nhớ giảm khoảng
+# 50-100 MB thường trú ở mức tải một yêu cầu tại một thời điểm.
+#
+# Mặc định chạy trên card đồ hoạ: ảnh này dựng để triển khai trên máy chủ có card,
+# và card được cấp thẳng vào container. Chạy thử trên máy cá nhân thì cần cờ
+# ``--gpus all``; máy không có card thì đặt ONTCHATBOT_DEVICE=cpu.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     HF_HUB_OFFLINE=1 \
     HF_HUB_DISABLE_TELEMETRY=1 \
     MALLOC_ARENA_MAX=2 \
-    ONTCHATBOT_DEVICE=cpu \
-    ONTCHATBOT_COMPUTE_TYPE=int8 \
-    ONTCHATBOT_INTER_THREADS=1
-
-# Đường chạy bằng gói đã biên dịch sẵn: nhanh hơn khoảng 1,75 lần và cho đúng
-# cùng câu truy vấn, nhưng gói phải dựng cho đúng đời card. Khai hai biến dưới
-# đây trỏ tới thư mục gói và thư mục bộ tách từ thì đường này được dùng thay cho
-# đường thường.
-# ONTCHATBOT_COMPILED_DIR=
-# ONTCHATBOT_COMPILED_TOKENIZER_DIR=
+    ONTCHATBOT_DEVICE=cuda
 
 USER ontchatbot
 EXPOSE 8000
