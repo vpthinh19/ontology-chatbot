@@ -225,8 +225,11 @@ def figures(out_dir: Path, split: str = "test") -> None:
     # Ghi kèm số câu test của từng nhóm: nhóm nhỏ làm đường gãy mạnh, người đọc
     # cần thấy ngay là chênh lệch ở đó dựa trên rất ít câu.
     sizes = next(iter(payload["by_training_count"].values()))
-    ax.set_xticks(xs, [f"{b} câu\n(n={sizes[b][1]})" for b in BUCKETS])
-    ax.set_xlabel("số câu huấn luyện của nhãn đúng")
+    # Trục ngang gom nhãn theo số câu đã DẠY cho nhãn đó; con số trong ngoặc là số
+    # câu CHẤM rơi vào nhóm. Hai thứ đều đếm bằng câu nên phải nói rõ từng cái, nếu
+    # không người đọc tưởng chúng là một.
+    ax.set_xticks(xs, [f"{b} câu dạy\n({sizes[b][1]} câu chấm)" for b in BUCKETS])
+    ax.set_xlabel("nhãn được gom theo số câu đã dạy cho nhãn đó")
     ax.set_ylabel("accuracy (%)")
     ax.set_ylim(0, 100)
     ax.set_title("Nhãn càng ít câu huấn luyện, các mô hình càng khác nhau", pad=10)

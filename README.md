@@ -110,7 +110,7 @@ dẫn và đường dẫn đối chiếu.
 | Văn bản gốc đã số hoá | 16 |
 
 Phần chênh lệch 1.354 bộ ba phát sinh do đồ thị khi vận hành bổ sung cặp trích
-dẫn–đường dẫn cho các mục trả lời được.
+dẫn-đường dẫn cho các mục trả lời được.
 
 Nội dung được bóc tách từ 16 văn bản chính thức: sáu quyết định của Hiệu trưởng,
 gồm **Quyết định 1052**, **Quyết định 317**, 626, 729, 753 và 1965; ba quy chế
@@ -233,7 +233,7 @@ Bốn phong cách câu hỏi biểu diễn biến thiên bề mặt của cùng 
 ### 6.1 Năm mô hình đem so
 
 Bốn encoder được fine-tune, tức tiếp tục huấn luyện trên bài toán phân loại hiện
-tại. Baseline TF-IDF + LinearSVC kết hợp TF-IDF (*term frequency–inverse document
+tại. Baseline TF-IDF + LinearSVC kết hợp TF-IDF (*term frequency-inverse document
 frequency*, trọng số phản ánh mức đặc trưng của n-gram) với bộ phân loại tuyến
 tính biên lớn LinearSVC. Baseline không dùng biểu diễn tiền huấn luyện và khai
 thác n-gram ký tự cùng n-gram từ; đặc trưng ký tự phù hợp với câu thiếu dấu và
@@ -302,18 +302,19 @@ Kết quả trên 390 câu `test` với 344 nhãn:
 | PhoBERT-v2 | 80,5% | 74,4% | 79,5% | 75,6% | 78,5% |
 | TF-IDF + LinearSVC | 80,3% | 74,4% | 79,5% | 75,6% | 78,3% |
 
-XLM-R cao hơn baseline 4,8 điểm accuracy và 4,1 điểm F1 macro. Phân tích theo
-tần suất nhãn cho thấy phần lớn chênh lệch xuất hiện ở các nhãn hiếm.
+Bốn mô hình học sâu đều vượt mốc so sánh, và XLM-R hơn mốc đó 4,8 điểm. Phần lớn
+khoảng cách nằm ở những nhãn ít câu dạy, xem ngay mục dưới.
 
-**Không mô hình nào dẫn đầu cả năm cột.** XLM-R cao nhất ở accuracy và F1 weighted;
-BamiBERT cao nhất ở ba chỉ số trung bình theo nhãn. Accuracy đếm theo câu nên nhãn
-nhiều mẫu chiếm ưu thế, còn trung bình theo nhãn cho mỗi nhãn một phiếu bằng nhau;
-hai mô hình này vì thế mạnh ở hai phía khác nhau của phân bố nhãn.
+**Nhưng không mô hình nào dẫn đầu cả năm cột.** XLM-R hơn ở hai cột đầu và cuối,
+BamiBERT hơn ở ba cột giữa. Chuyện này không mâu thuẫn: accuracy đếm theo từng câu
+hỏi nên nhãn nào nhiều câu thì có tiếng nói lớn hơn, còn ba cột giữa lấy trung bình
+theo nhãn nên nhãn nào cũng một phiếu như nhau. Hai mô hình mạnh ở hai phía khác
+nhau của cùng một bộ dữ liệu.
 
-Chênh lệch giữa chúng - lớn nhất 1,5 điểm - **nhỏ hơn mức dao động giữa hai lượt
-huấn luyện đo được ở mục 10**, nên bảng này không đủ để kết luận mô hình nào tốt
-hơn. XLM-R được chọn để triển khai; phép đo không chứng minh lựa chọn đó tốt hơn
-BamiBERT một cách chắc chắn.
+Khoảng cách lớn nhất giữa chúng là 1,5 điểm, mà **huấn luyện lại cùng một mô hình
+trên gần như cùng dữ liệu đã làm điểm xê dịch tới 1,8 điểm** (mục 10). Nói cách
+khác, bảng này chưa đủ để nói mô hình nào hơn mô hình nào. XLM-R là mô hình được
+đem triển khai, nhưng đó là một lựa chọn, không phải một kết luận từ số liệu.
 
 Tách theo phạm vi câu hỏi:
 
@@ -325,38 +326,50 @@ Tách theo phạm vi câu hỏi:
 | PhoBERT-v2 | 81,8% <br><sub>279/341</sub> | 71,4% <br><sub>35/49</sub> | 181 s |
 | TF-IDF + LinearSVC | 82,7% <br><sub>282/341</sub> | 63,3% <br><sub>31/49</sub> | 4 s |
 
-Hai cột phản ánh hai phía của quyết định từ chối và cần được đọc riêng. Nhóm ngoài
-phạm vi chỉ có 49 câu được tạo từ bảy khuôn, nên không đủ để ước lượng chắc chắn
-thứ hạng mô hình theo khả năng từ chối.
+Hai cột này đo hai việc trái ngược nhau nên phải đọc riêng: cột trái là "trả lời
+đúng khi có thể trả lời", cột phải là "biết im lặng khi không nên trả lời". Cột phải
+chỉ dựa trên 49 câu, mà 49 câu đó lại sinh ra từ bảy khuôn câu, nên các biến thể của
+cùng một khuôn không phải bảy phép thử độc lập. Đừng xếp hạng mô hình bằng cột này.
 
-#### Kết quả theo tần suất nhãn
+#### Nhãn được dạy càng ít câu thì càng khó
+
+Không phải nhãn nào cũng được dạy như nhau. Có nhãn xuất hiện trong hai chục câu hỏi
+của tập dạy, có nhãn chỉ một hai câu. Bảng dưới chia 344 nhãn thành năm nhóm theo số
+câu đã dạy cho chúng, rồi xem mỗi mô hình trả lời đúng bao nhiêu phần trăm ở từng nhóm.
 
 ![Độ chính xác theo số câu huấn luyện](docs/images/accuracy-by-frequency.png)
 
-| Mô hình | 1–2 câu | 3–4 câu | 5–9 câu | 10–19 câu | ≥20 câu |
+| Mô hình | Nhãn được dạy 1-2 câu | 3-4 câu | 5-9 câu | 10-19 câu | Từ 20 câu trở lên |
 |---|---:|---:|---:|---:|---:|
+| *Số câu trong tập chấm rơi vào nhóm* | *4* | *5* | *85* | *152* | *144* |
 | XLM-R base | 75% | 40% | 79% | 89% | 87% |
 | BamiBERT | 50% | 40% | 76% | 90% | 83% |
 | ViSoBERT | 75% | 60% | 76% | 89% | 79% |
 | PhoBERT-v2 | 0% | 20% | 67% | 89% | 83% |
 | TF-IDF + LinearSVC | 0% | 60% | 78% | 82% | 83% |
 
-Chênh lệch lớn nhất xuất hiện ở nhóm nhãn có 1–2 mẫu huấn luyện. Có 57/344 nhãn
-dưới năm mẫu huấn luyện, và hai nhóm hiếm nhất chỉ gồm 9 câu `test` cộng lại - một
-câu đổi kết quả làm tỷ lệ của nhóm dịch 20 điểm phần trăm, nên các cột bên trái
-bảng này không dùng để xếp hạng mô hình được.
+Nhìn từ phải sang trái: nhãn nào được dạy nhiều thì cả năm mô hình đều làm tốt và
+gần bằng nhau. Càng sang trái, nhãn càng ít câu dạy, các mô hình càng tách xa nhau.
+
+Nhưng **hai cột trái không dùng để so mô hình được**. Hàng thứ hai của bảng cho biết
+vì sao: cả hai nhóm đó cộng lại chỉ có 9 câu trong tập chấm, nên một câu trả lời khác
+đi là tỷ lệ nhảy 20 điểm phần trăm. Chúng cho thấy một xu hướng, không cho thấy thứ
+hạng. Toàn bộ dữ liệu có 57 trong 344 nhãn được dạy dưới năm câu.
 
 ### 7.2 Diễn biến huấn luyện
 
-Loss là cross-entropy trung bình trên mỗi mẫu. Cross-entropy đo mức phân bố xác
-suất dự đoán lệch khỏi nhãn chuẩn; giá trị thấp hơn biểu thị mức khớp tốt hơn trên
-cùng tập dữ liệu.
+Hình dưới theo dõi "hao hụt" của mô hình qua từng vòng học. Hao hụt là một con số
+đo mức mô hình đoán lệch khỏi đáp án đúng: càng thấp thì đoán càng sát. Đường màu
+nhạt là hao hụt trên chính tập đã dạy, đường đậm là trên tập kiểm định mà mô hình
+chưa từng học. Khi đường thứ nhất tiếp tục xuống mà đường thứ hai dừng lại hoặc đi
+lên, mô hình đang học thuộc lòng thay vì học quy luật.
 
 ![Training loss và validation loss trong 32 epoch](docs/images/loss-curves.png)
 
-Bốn encoder đều chạy 32 epoch. ViSoBERT có training loss thấp nhất nhưng
-validation loss cao nhất ở epoch cuối, trong khi XLM-R có validation loss thấp
-nhất. Baseline không có vòng lặp epoch và được huấn luyện một lần.
+Đó đúng là chuyện xảy ra với ViSoBERT: sau 32 vòng nó có hao hụt trên tập dạy
+thấp nhất trong bốn mô hình, nhưng hao hụt trên tập kiểm định lại cao nhất. XLM-R
+thì ngược lại, giữ hao hụt kiểm định thấp nhất. Mốc so sánh không học theo vòng
+nên không có đường nào trong hình.
 
 ### 7.3 Kết quả theo lĩnh vực
 
@@ -372,9 +385,9 @@ Kết quả của XLM-R trên `test`:
 | Ngoài phạm vi | 77,6% | 49 |
 | Học phí | 72,0% | 25 |
 
-Nhóm Học phí có 25 câu; một lỗi làm thay đổi 4,0 điểm phần trăm, nên so sánh theo
-lĩnh vực cần được diễn giải thận trọng. Nhóm Quy tắc học vụ có 131 câu và đạt
-84,7%, gần accuracy tổng thể.
+Đừng đọc bảng này như một bảng xếp hạng lĩnh vực. Học phí đứng cuối nhưng chỉ có
+25 câu, nên sai thêm một câu là tụt 4 điểm. Chỉ Quy tắc học vụ đủ lớn để tin: 131
+câu, đạt 84,7%, tức gần đúng bằng mức chung của cả tập.
 
 ### 7.4 Kết quả theo cách hỏi
 
@@ -386,87 +399,76 @@ lĩnh vực cần được diễn giải thận trọng. Nhóm Quy tắc học v
 | PhoBERT-v2 | 87,8% | 86,9% | 75,3% | **71,9%** |
 | TF-IDF + LinearSVC | 85,7% | 85,9% | 77,3% | **71,9%** |
 
-Ở cả năm mô hình, accuracy thấp nhất ở nhóm gõ nhiễu; chênh lệch trang trọng–gõ
-nhiễu của XLM-R là 25,1 điểm phần trăm. Ở riêng nhóm gõ nhiễu, baseline đạt 71,9%,
-cao hơn cả bốn bộ mã hoá - nhóm này là chỗ mô hình được tiền huấn luyện không mang
-lại lợi thế.
+Cả năm mô hình đều tệ nhất ở nhóm gõ nhiễu, và với XLM-R khoảng cách giữa câu
+trang trọng và câu gõ vội lên tới 25 điểm. Đáng chú ý hơn: ở riêng nhóm này, mốc so
+sánh đơn giản lại nhỉnh hơn cả bốn mô hình học sâu. Việc học trước trên khối văn bản
+lớn không giúp được gì khi chữ bị viết sai và mất dấu.
 
 ### 7.5 Độ chính xác câu trả lời `end-to-end`
 
 Mục 7.1 là **phép đo từng phần**: nó chỉ chấm tầng chọn nhãn. Phép đo dưới đây chạy
 hết cả đường - rút từ khoá, tra cứu đồ thị, rồi LLM đọc dữ liệu và viết câu trả lời.
-Hai con số vì thế không so trực tiếp với nhau được, và accuracy chọn nhãn cao không
-bảo đảm câu trả lời cuối cùng đúng.
+Hai con số vì thế không so trực tiếp với nhau được, và chọn đúng nhãn không bảo đảm
+câu trả lời cuối cùng đúng.
 
-#### Bộ đo gồm hai loại câu hỏi, phải đọc riêng
+#### Bộ đo có hai loại câu hỏi, và phải đọc riêng
 
-| Loại | Số câu | Hành vi ĐÚNG là gì |
-|---|---:|---|
-| Trong phạm vi | 61 | đưa ra được thứ được hỏi |
-| Không trả lời được | 24 | **từ chối** |
+85 câu hỏi chia làm hai loại. Với **61 câu trong phạm vi**, làm tốt nghĩa là đưa ra
+được thứ người ta hỏi. Với **24 câu còn lại** - 14 câu ngoài phạm vi và 10 câu hỏi
+đúng vào chỗ ontology không lưu - làm tốt nghĩa là **từ chối**; trả lời được chúng
+tức là hệ thống đã bịa ra thứ dữ liệu không hề nói.
 
-Nhóm thứ hai gồm 14 câu ngoài phạm vi và 10 câu hỏi vào chỗ ontology không lưu. Với
-chúng, trả lời được nghĩa là hệ thống đã suy diễn ra thứ dữ liệu không nói. Nếu gộp
-cả 85 câu vào một mẫu số thì mỗi lần hệ thống từ chối đúng, tỷ lệ "đúng" lại giảm -
-chỉ số càng tốt bảng càng xấu. Vì vậy hai nhóm được báo cáo tách hẳn.
+Đây là lý do hai nhóm không được cộng chung. Gộp cả 85 câu vào một mẫu số thì mỗi
+lần hệ thống từ chối đúng một câu, tỷ lệ "đúng" lại tụt xuống - hệ thống càng cư xử
+đúng, bảng điểm càng xấu.
 
-#### Chấm bằng hai lớp độc lập
+#### 61 câu trong phạm vi
 
-Lớp thứ nhất đếm bằng máy, không cần đọc hiểu câu trả lời:
+Ba phép đếm chạy tự động, không cần ai đọc câu trả lời:
 
-| Tiêu chí | Nghĩa là gì |
-|---|---|
-| Gọi công cụ | trợ lý có tra cứu trước khi trả lời không |
-| Lấy đúng mục | trong các mục lấy về từ đồ thị, có mục mà câu hỏi nhắm tới không |
-| Bám dữ liệu | mọi con số và tên viết tắt trong câu trả lời có mặt trong dữ liệu vừa tra không |
-
-Lớp thứ hai do một mô hình ngôn ngữ lớn đọc cả câu hỏi, dữ liệu và câu trả lời, rồi
-xếp vào đúng một mức:
-
-| Mức | Nghĩa là gì |
-|---|---|
-| đúng | đưa ra được thứ được hỏi, và mọi dữ kiện nêu ra đều có trong dữ liệu |
-| thiếu | đưa ra được một phần; phần đã đưa thì đúng |
-| từ chối | không đưa ra được, và nói rõ là dữ liệu không có |
-| lạc đề | không đưa ra được, và cũng không nói là thiếu |
-| sai | có dữ kiện sai, hoặc suy ra quan hệ mà dữ liệu chỉ nêu hai dữ kiện rời |
-
-#### Kết quả trên 61 câu trong phạm vi
-
-| Phép đếm tất định | Tỷ lệ | Số câu |
+| Đếm gì | Tỷ lệ | Số câu |
 |---|---:|---:|
-| Gọi công cụ trước khi trả lời | 93,4% | 57/61 |
-| Lấy đúng mục | 78,7% | 48/61 |
-| Bám dữ liệu | 96,7% | 59/61 |
-| **Lấy đúng mục và bám dữ liệu cùng lúc** | **77,0%** | **47/61** |
+| Trợ lý có tra cứu trước khi trả lời không | 93,4% | 57/61 |
+| Trong các mục lấy về từ đồ thị, có mục mà câu hỏi nhắm tới không | 78,7% | 48/61 |
+| Mọi con số và tên viết tắt trong câu trả lời đều có trong dữ liệu vừa tra chứ | 96,7% | 59/61 |
+| **Vừa lấy đúng mục, vừa không nêu gì ngoài dữ liệu** | **77,0%** | **47/61** |
 
-| Mức do máy chấm | Tỷ lệ | Số câu |
+Ba phép đếm trên không đọc được câu trả lời có thật sự trả lời câu hỏi hay không.
+Phần đó do một mô hình ngôn ngữ lớn chấm, sau khi đọc cả câu hỏi, dữ liệu công cụ
+trả về và câu trả lời:
+
+| Mô hình chấm | Tỷ lệ | Số câu |
 |---|---:|---:|
-| **đúng** | **78,7%** | **48/61** |
-| từ chối | 18,0% | 11/61 |
-| thiếu | 3,3% | 2/61 |
-| sai, lạc đề | 0% | 0/61 |
+| **đúng** - đưa ra được thứ được hỏi, và mọi dữ kiện nêu ra đều có trong dữ liệu | **78,7%** | **48/61** |
+| *từ chối* - không đưa ra được, nhưng có nói rõ là dữ liệu không có | 18,0% | 11/61 |
+| *thiếu* - đưa ra được một phần, phần đã đưa thì đúng | 3,3% | 2/61 |
+| *sai* - nêu dữ kiện sai, hoặc nối hai dữ kiện rời thành một quan hệ dữ liệu không nói | 0% | 0/61 |
+| *lạc đề* - không đưa ra được, mà cũng không nói là thiếu | 0% | 0/61 |
 
-#### Kết quả trên 24 câu không trả lời được
+#### 24 câu lẽ ra phải từ chối
 
-| Mức do máy chấm | Tỷ lệ | Số câu |
+| Mô hình chấm | Tỷ lệ | Số câu |
 |---|---:|---:|
-| **từ chối** (đúng như mong đợi) | **87,5%** | **21/24** |
-| đúng (tức đã trả lời khi lẽ ra phải từ chối) | 12,5% | 3/24 |
+| **từ chối** - đúng như mong đợi | **87,5%** | **21/24** |
+| *đúng* - tức là đã trả lời, trong khi lẽ ra phải từ chối | 12,5% | 3/24 |
 
-Ba câu bị trả lời đều cùng một dạng: câu hỏi nhắm vào một thực thể có thật nhưng hỏi
-một thuộc tính ontology không lưu, và câu trả lời được ghép từ hai dữ kiện rời.
+Ba câu bị trả lời đều giống nhau một kiểu: người hỏi nhắc tới một thứ có thật trong
+đồ thị, nhưng hỏi một thuộc tính mà ontology không lưu, và trợ lý ghép hai dữ kiện
+rời lại thành câu trả lời.
 
-#### Độ tin cậy của phép chấm
+#### Con số này đáng tin tới đâu
 
-Người chấm là máy, không phải người. Mỗi phán quyết được đối chiếu với ba phép đếm
-tất định của cùng bản ghi, và **6/85 phán quyết mâu thuẫn** với chúng. Chín trường
-hợp trải đều các mức đã được kiểm bằng tay; cả chín đều khớp với phán quyết của máy.
-Dù vậy con số này vẫn cần đối chứng bằng chấm người trước khi dùng làm kết luận.
+Người chấm là máy chứ không phải người, nên nó được soi lại bằng chính ba phép đếm
+tự động ở trên: câu nào lấy đúng mục, có dữ liệu, không bịa số mà vẫn bị chấm là từ
+chối thì chắc chắn một trong hai bên sai. **6 trên 85 phán quyết vướng mâu thuẫn
+kiểu đó.** Chín trường hợp trải đều các mức đã được đọc bằng tay, và cả chín lần
+máy chấm đều đúng. Dù vậy, chưa có ai chấm song song để đối chứng, nên con số này
+nên đọc như một ước lượng.
 
-Một phép dò yếu hơn chạy song song, tìm cụm từ chối trong câu trả lời: nó bắt được
-7/14 câu ngoài phạm vi và 9/10 câu chạm khoảng trống. Nó chỉ nhận ra những cách nói
-đã liệt kê sẵn nên thấp hơn phép chấm đọc cả câu, vốn cho 12/14 ở cùng nhóm.
+Có thêm một phép dò đơn giản chạy song song, chỉ tìm xem câu trả lời có chứa cụm
+kiểu "không tìm thấy", "dữ liệu không có" hay không. Nó bắt được 7 trên 14 câu ngoài
+phạm vi và 9 trên 10 câu chạm khoảng trống. Nó thấp hơn phép chấm đọc cả câu, vốn
+cho 12 trên 14 ở cùng nhóm, đơn giản vì nó chỉ nhận ra những cách nói đã liệt kê sẵn.
 
 ### 7.6 Thời gian phản hồi
 
@@ -593,8 +595,8 @@ xuống 17%. Hệ quả là truy vấn ở cấp Điểm có thể trả về to
 
 **Chênh lệch nhỏ giữa các bộ mã hoá không đọc được thành khác biệt thật.** Bốn bộ
 mã hoá được huấn luyện hai lượt trên hai bản `train` chênh nhau 5 dòng, tức 0,09%.
-Mỗi mô hình đổi dự đoán ở 28–42 trong 390 câu `test` (7–11%), trong khi accuracy chỉ
-xê dịch 0,8–1,8 điểm phần trăm vì các lỗi mới và lỗi được sửa gần bù nhau. Baseline
+Mỗi mô hình đổi dự đoán ở 28-42 trong 390 câu `test` (7-11%), trong khi accuracy chỉ
+xê dịch 0,8-1,8 điểm phần trăm vì các lỗi mới và lỗi được sửa gần bù nhau. Baseline
 đếm tần suất cụm ký tự đổi 0 câu ở cùng phép thử, nên mức xê dịch này đến từ quá
 trình huấn luyện chứ không từ năm dòng dữ liệu.
 
