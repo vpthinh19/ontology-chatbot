@@ -204,7 +204,7 @@ từ chối. Trong 566 đích, 258 đích xuất hiện ở cả bốn cách h�
 | `train` | 5.523 | Học ánh xạ từ câu hỏi sang nhãn hoặc từ chối |
 | `validation` (`val`) | 400 | Theo dõi quá trình huấn luyện |
 | `test` | 390 | Đánh giá độc lập |
-| **Toàn bộ** | **6.313** | — |
+| **Toàn bộ** | **6.313** | - |
 
 Không câu nào ở `validation` hoặc `test` trùng nguyên văn với `train`. Tuy nhiên,
 ba phần dùng chung bộ đích; vì vậy phép đo phản ánh khả năng nhận diện cách hỏi
@@ -245,7 +245,7 @@ sai chính tả trong tập dữ liệu.
 | PhoBERT-v2 (`vinai/phobert-base-v2`) | VinAI | encoder tiếng Việt |
 | BamiBERT (`Qualcomm-AI-Research/BamiBERT`) | Qualcomm AI Research | encoder đa ngữ |
 | ViSoBERT (`uitnlp/visobert`) | UIT-NLP | encoder tiếng Việt cho mạng xã hội |
-| TF-IDF + LinearSVC | — | baseline tuyến tính |
+| TF-IDF + LinearSVC | - | baseline tuyến tính |
 
 ### 6.2 Điều kiện chạy
 
@@ -310,7 +310,7 @@ BamiBERT cao nhất ở ba chỉ số trung bình theo nhãn. Accuracy đếm th
 nhiều mẫu chiếm ưu thế, còn trung bình theo nhãn cho mỗi nhãn một phiếu bằng nhau;
 hai mô hình này vì thế mạnh ở hai phía khác nhau của phân bố nhãn.
 
-Chênh lệch giữa chúng — lớn nhất 1,5 điểm — **nhỏ hơn mức dao động giữa hai lượt
+Chênh lệch giữa chúng - lớn nhất 1,5 điểm - **nhỏ hơn mức dao động giữa hai lượt
 huấn luyện đo được ở mục 10**, nên bảng này không đủ để kết luận mô hình nào tốt
 hơn. XLM-R được chọn để triển khai; phép đo không chứng minh lựa chọn đó tốt hơn
 BamiBERT một cách chắc chắn.
@@ -342,7 +342,7 @@ thứ hạng mô hình theo khả năng từ chối.
 | TF-IDF + LinearSVC | 0% | 60% | 78% | 82% | 83% |
 
 Chênh lệch lớn nhất xuất hiện ở nhóm nhãn có 1–2 mẫu huấn luyện. Có 57/344 nhãn
-dưới năm mẫu huấn luyện, và hai nhóm hiếm nhất chỉ gồm 9 câu `test` cộng lại — một
+dưới năm mẫu huấn luyện, và hai nhóm hiếm nhất chỉ gồm 9 câu `test` cộng lại - một
 câu đổi kết quả làm tỷ lệ của nhóm dịch 20 điểm phần trăm, nên các cột bên trái
 bảng này không dùng để xếp hạng mô hình được.
 
@@ -388,68 +388,85 @@ lĩnh vực cần được diễn giải thận trọng. Nhóm Quy tắc học v
 
 Ở cả năm mô hình, accuracy thấp nhất ở nhóm gõ nhiễu; chênh lệch trang trọng–gõ
 nhiễu của XLM-R là 25,1 điểm phần trăm. Ở riêng nhóm gõ nhiễu, baseline đạt 71,9%,
-cao hơn cả bốn bộ mã hoá — nhóm này là chỗ mô hình được tiền huấn luyện không mang
+cao hơn cả bốn bộ mã hoá - nhóm này là chỗ mô hình được tiền huấn luyện không mang
 lại lợi thế.
 
 ### 7.5 Độ chính xác câu trả lời `end-to-end`
 
-Kết quả end-to-end không đồng nhất với §7.1: §7.1 là phép đo từng phần, chỉ đánh
-giá tầng chọn nhãn; phép đo này còn gồm rút từ khoá, tra cứu và diễn đạt của LLM.
-Vì vậy accuracy chọn nhãn không đại diện trực tiếp cho chất lượng end-to-end.
+Mục 7.1 là **phép đo từng phần**: nó chỉ chấm tầng chọn nhãn. Phép đo dưới đây chạy
+hết cả đường - rút từ khoá, tra cứu đồ thị, rồi LLM đọc dữ liệu và viết câu trả lời.
+Hai con số vì thế không so trực tiếp với nhau được, và accuracy chọn nhãn cao không
+bảo đảm câu trả lời cuối cùng đúng.
 
-Bộ đo gồm 85 câu chia làm hai loại, và **hai loại này phải đọc riêng**. Với 61 câu
-trong phạm vi, hành vi đúng là đưa ra được thứ được hỏi. Với 24 câu còn lại — 14 câu
-ngoài phạm vi và 10 câu chạm khoảng trống của ontology — hành vi đúng là **từ chối**;
-trả lời được chúng nghĩa là đã suy diễn ngoài dữ liệu. Gộp cả 85 câu vào một mẫu số
-sẽ khiến mỗi lần hệ thống từ chối đúng lại làm tỷ lệ "đúng" giảm xuống.
+#### Bộ đo gồm hai loại câu hỏi, phải đọc riêng
 
-Bốn kiểm tra tất định trên 61 câu trong phạm vi:
+| Loại | Số câu | Hành vi ĐÚNG là gì |
+|---|---:|---|
+| Trong phạm vi | 61 | đưa ra được thứ được hỏi |
+| Không trả lời được | 24 | **từ chối** |
 
-| Tiêu chí | Kết quả |
-|---|---:|
-| Gọi công cụ trước khi trả lời | 93,4% <br><sub>57/61</sub> |
-| Lấy đúng mục trong đồ thị | 78,7% <br><sub>48/61</sub> |
-| Không nêu số hoặc tên ngoài dữ liệu vừa tra | 96,7% <br><sub>59/61</sub> |
-| **Đúng mục và bám dữ liệu đồng thời** | **77,0%** <br><sub>47/61</sub> |
+Nhóm thứ hai gồm 14 câu ngoài phạm vi và 10 câu hỏi vào chỗ ontology không lưu. Với
+chúng, trả lời được nghĩa là hệ thống đã suy diễn ra thứ dữ liệu không nói. Nếu gộp
+cả 85 câu vào một mẫu số thì mỗi lần hệ thống từ chối đúng, tỷ lệ "đúng" lại giảm -
+chỉ số càng tốt bảng càng xấu. Vì vậy hai nhóm được báo cáo tách hẳn.
 
-Với câu ontology không trả lời được:
+#### Chấm bằng hai lớp độc lập
 
-| Nhóm | Nói rõ dữ liệu không có |
-|---|---:|
-| 14 câu ngoài phạm vi | 50,0% <br><sub>7/14</sub> |
-| 10 câu chạm khoảng trống ontology | 90,0% <br><sub>9/10</sub> |
+Lớp thứ nhất đếm bằng máy, không cần đọc hiểu câu trả lời:
 
-Cột này dò theo cụm từ chối trong câu trả lời nên chỉ bắt được cách nói đã liệt kê;
-phép chấm bên dưới đọc cả câu và cho 12/14 ở cùng nhóm này.
+| Tiêu chí | Nghĩa là gì |
+|---|---|
+| Gọi công cụ | trợ lý có tra cứu trước khi trả lời không |
+| Lấy đúng mục | trong các mục lấy về từ đồ thị, có mục mà câu hỏi nhắm tới không |
+| Bám dữ liệu | mọi con số và tên viết tắt trong câu trả lời có mặt trong dữ liệu vừa tra không |
 
-Chất lượng câu trả lời do một mô hình ngôn ngữ lớn chấm dựa trên câu hỏi, dữ liệu
-công cụ và câu trả lời, xếp vào năm mức:
+Lớp thứ hai do một mô hình ngôn ngữ lớn đọc cả câu hỏi, dữ liệu và câu trả lời, rồi
+xếp vào đúng một mức:
 
-| Nhóm câu hỏi | Hành vi đúng | Tỷ lệ đạt |
-|---|---|---:|
-| 61 câu trong phạm vi | đưa ra được thứ được hỏi | **78,7%** <br><sub>48/61</sub> |
-| 24 câu không trả lời được | từ chối | **87,5%** <br><sub>21/24</sub> |
+| Mức | Nghĩa là gì |
+|---|---|
+| đúng | đưa ra được thứ được hỏi, và mọi dữ kiện nêu ra đều có trong dữ liệu |
+| thiếu | đưa ra được một phần; phần đã đưa thì đúng |
+| từ chối | không đưa ra được, và nói rõ là dữ liệu không có |
+| lạc đề | không đưa ra được, và cũng không nói là thiếu |
+| sai | có dữ kiện sai, hoặc suy ra quan hệ mà dữ liệu chỉ nêu hai dữ kiện rời |
 
-Phân bố đầy đủ:
+#### Kết quả trên 61 câu trong phạm vi
 
-| Mức | Trong phạm vi<br>(61 câu) | Không trả lời được<br>(24 câu) |
+| Phép đếm tất định | Tỷ lệ | Số câu |
 |---|---:|---:|
-| đúng | 48 | 3 |
-| từ chối | 11 | 21 |
-| thiếu | 2 | 0 |
-| sai | 0 | 0 |
-| lạc đề | 0 | 0 |
+| Gọi công cụ trước khi trả lời | 93,4% | 57/61 |
+| Lấy đúng mục | 78,7% | 48/61 |
+| Bám dữ liệu | 96,7% | 59/61 |
+| **Lấy đúng mục và bám dữ liệu cùng lúc** | **77,0%** | **47/61** |
 
-Ba câu được trả lời trong nhóm lẽ ra phải từ chối đều thuộc cùng một dạng: câu hỏi
-nhắm vào một thực thể có thật nhưng hỏi một thuộc tính ontology không lưu, và câu
-trả lời được ghép từ hai dữ kiện rời.
+| Mức do máy chấm | Tỷ lệ | Số câu |
+|---|---:|---:|
+| **đúng** | **78,7%** | **48/61** |
+| từ chối | 18,0% | 11/61 |
+| thiếu | 3,3% | 2/61 |
+| sai, lạc đề | 0% | 0/61 |
 
-Phép chấm này do máy thực hiện, không phải người. Mỗi phán quyết được đối chiếu với
-ba tín hiệu tất định của cùng bản ghi — có lấy đúng mục không, công cụ trả về bao
-nhiêu dòng, có nêu số ngoài dữ liệu không; **6/85 phán quyết mâu thuẫn với các tín
-hiệu đó**. Chín trường hợp trải đều các mức đã được kiểm bằng tay và cả chín đều
-khớp với phán quyết của máy, nhưng con số vẫn cần được đối chứng bằng chấm người
-trước khi dùng làm kết luận.
+#### Kết quả trên 24 câu không trả lời được
+
+| Mức do máy chấm | Tỷ lệ | Số câu |
+|---|---:|---:|
+| **từ chối** (đúng như mong đợi) | **87,5%** | **21/24** |
+| đúng (tức đã trả lời khi lẽ ra phải từ chối) | 12,5% | 3/24 |
+
+Ba câu bị trả lời đều cùng một dạng: câu hỏi nhắm vào một thực thể có thật nhưng hỏi
+một thuộc tính ontology không lưu, và câu trả lời được ghép từ hai dữ kiện rời.
+
+#### Độ tin cậy của phép chấm
+
+Người chấm là máy, không phải người. Mỗi phán quyết được đối chiếu với ba phép đếm
+tất định của cùng bản ghi, và **6/85 phán quyết mâu thuẫn** với chúng. Chín trường
+hợp trải đều các mức đã được kiểm bằng tay; cả chín đều khớp với phán quyết của máy.
+Dù vậy con số này vẫn cần đối chứng bằng chấm người trước khi dùng làm kết luận.
+
+Một phép dò yếu hơn chạy song song, tìm cụm từ chối trong câu trả lời: nó bắt được
+7/14 câu ngoài phạm vi và 9/10 câu chạm khoảng trống. Nó chỉ nhận ra những cách nói
+đã liệt kê sẵn nên thấp hơn phép chấm đọc cả câu, vốn cho 12/14 ở cùng nhóm.
 
 ### 7.6 Thời gian phản hồi
 
@@ -518,8 +535,8 @@ theo nhóm câu hỏi. Các nhóm tách thành cụm rời nhau, nghĩa là mô 
 diễn phân tách theo nhóm chứ không chỉ ghi nhớ từng câu.
 
 Nhóm ngoài phạm vi tách thành nhiều cụm rời chứ không gộp làm một. Điều này phù hợp
-với việc dữ liệu chứa nhiều loại câu ngoài phạm vi khác nhau — lời chào, câu hỏi
-thuộc lĩnh vực khác, câu hỏi đúng chủ đề nhưng đòi dữ kiện ontology không lưu — và
+với việc dữ liệu chứa nhiều loại câu ngoài phạm vi khác nhau - lời chào, câu hỏi
+thuộc lĩnh vực khác, câu hỏi đúng chủ đề nhưng đòi dữ kiện ontology không lưu - và
 mô hình phân biệt được chúng.
 
 ### 8.2 Lỗi của cả trợ lý
@@ -528,14 +545,14 @@ Trong 85 câu end-to-end, không câu nào bị máy chấm là nêu dữ kiện
 còn lại nằm ở chỗ khác: **câu hỏi chỉ nêu chủ thể mà không nêu cần biết gì về chủ
 thể đó**. Cả bốn câu trong phạm vi mà trợ lý không tra cứu đều thuộc dạng này:
 
-> **Hỏi:** "Trường Đại học Nha Trang?" — "Sinh viên thế nào ạ?" —
+> **Hỏi:** "Trường Đại học Nha Trang?" - "Sinh viên thế nào ạ?" -
 > "Mình cần tra cứu các thông tin liên quan đến Trình độ đại học?"
 >
 > **Trả lời:** trợ lý liệt kê các nhóm chủ đề tra được rồi mời hỏi cụ thể hơn.
 
 Hành vi này hợp lý với người dùng nhưng không tạo ra câu trả lời, nên phép đo xếp
 vào mức từ chối. Câu thứ tư cùng nhóm hỏi "trường hợp nằm viện, tai nạn được mô tả
-trong quy định này" — đại từ "này" không có tiền ngữ trong lượt hỏi đơn lẻ.
+trong quy định này" - đại từ "này" không có tiền ngữ trong lượt hỏi đơn lẻ.
 
 Đây là lỗi tầng giao tiếp chứ không phải lỗi chọn truy vấn: với cả bốn câu, nhãn
 đúng vẫn tồn tại trong danh mục, chỉ là trợ lý không gửi từ khoá nào đi tra.
