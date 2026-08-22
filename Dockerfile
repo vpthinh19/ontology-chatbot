@@ -41,8 +41,17 @@ shutil.copytree(root / path, '/app/classifier-model')"
 # ---------- runtime ----------
 FROM python:3.12-slim AS runtime
 
+# Vá các gói hệ điều hành trước khi đóng ảnh. Ảnh nền được dựng theo chu kỳ riêng
+# nên nó luôn trễ hơn kho bản vá của bản phân phối vài tuần; không nâng ở đây thì
+# mỗi lượt phát hành lại kế thừa đúng những lỗ hổng đã có bản sửa. Bước quét bảo
+# mật trong quy trình dựng chặn ở mức nghiêm trọng, và nó chặn đúng những gói này.
+#
 # Chạy dưới người dùng thường, có thư mục nhà để các thư viện ghi cache tạm.
-RUN useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
+RUN set -eux; \
+    apt-get update; \
+    apt-get upgrade -y --no-install-recommends; \
+    rm -rf /var/lib/apt/lists/*; \
+    useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
 WORKDIR /app
 
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
