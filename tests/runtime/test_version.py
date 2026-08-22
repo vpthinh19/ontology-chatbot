@@ -18,8 +18,14 @@ def test_http_api_reports_the_production_release(monkeypatch, tmp_path) -> None:
     fastapi.HTTPException = RuntimeError
     staticfiles = ModuleType("fastapi.staticfiles")
     staticfiles.StaticFiles = SimpleNamespace
+    # Phải giả lập ĐỦ mọi module con mà ``create_app`` nạp. Thiếu một cái thì phép
+    # kiểm chỉ chạy được khi một phép kiểm khác đã nạp bản thật trước đó, tức là nó
+    # xanh lúc chạy cả thư mục và đỏ lúc chạy riêng tệp này.
+    responses = ModuleType("fastapi.responses")
+    responses.StreamingResponse = SimpleNamespace
     monkeypatch.setitem(sys.modules, "fastapi", fastapi)
     monkeypatch.setitem(sys.modules, "fastapi.staticfiles", staticfiles)
+    monkeypatch.setitem(sys.modules, "fastapi.responses", responses)
 
     app = create_app(SimpleNamespace(answer=lambda _: "unused"), webui_dir=tmp_path)
 
