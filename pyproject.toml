@@ -22,14 +22,21 @@ inference = [
     "tokenizers>=0.22.2",
 ]
 
-# Huấn luyện, chấm điểm, dựng biểu đồ và xuất model sang ONNX. Đây là nhóm nặng
-# nhất và chỉ cần trên máy làm thực nghiệm, không cần trên máy chạy dịch vụ.
+# Huấn luyện, chấm điểm, xuất model sang ONNX, và dựng hình cho tài liệu. Đây là
+# nhóm nặng nhất và chỉ cần trên máy làm thực nghiệm, không cần trên máy chạy dịch
+# vụ. Bộ dựng hình nằm chung ở đây vì nó đọc kết quả do chính nhóm này sinh ra;
+# tách riêng thì mỗi lần cài lại môi trường thực nghiệm là mất bộ chụp ảnh.
+#
+# ``onnxruntime`` bản CPU dùng để đối chiếu đồ thị vừa xuất với bản gốc PyTorch.
+# Nó KHÁC gói mà nhóm ``inference`` cài, và hai gói cùng cung cấp một module.
 research = [
     "huggingface-hub>=1.24.0",
     "matplotlib>=3.11.0",
     "onnx>=1.20.0",
+    "onnxruntime>=1.24.0",
     "onnxscript>=0.5.0",
     "peft>=0.20.0",
+    "playwright>=1.56.0",
     "protobuf>=6.33.0",
     "scikit-learn>=1.9.0",
     "sentencepiece>=0.2.2",
@@ -38,12 +45,6 @@ research = [
     "torch>=2.13.0",
     "transformers>=5.14.1",
     "umap-learn>=0.5.12",
-]
-
-# Dựng sơ đồ và chụp ảnh giao diện cho tài liệu.
-docs = [
-    "matplotlib>=3.11.0",
-    "playwright>=1.56.0",
 ]
 
 [build-system]
@@ -69,6 +70,17 @@ dev = [
 
 [tool.uv]
 package = true
+
+# ``inference`` và ``research`` không cài chung được: cả hai kéo về một gói
+# ``onnxruntime`` nhưng là hai bản khác nhau, bản cho card và bản cho bộ xử lý
+# trung tâm. Khai xung đột ở đây để công cụ báo ngay lúc phân giải, thay vì cài
+# đè lên nhau rồi hỏng lúc chạy.
+#
+# Máy chạy dịch vụ dùng ``--extra inference``; máy làm thực nghiệm dùng
+# ``--extra research``.
+conflicts = [
+    [{ extra = "inference" }, { extra = "research" }],
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
