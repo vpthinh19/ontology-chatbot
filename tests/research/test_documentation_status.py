@@ -124,12 +124,8 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     và trả gì thì không.
     """
 
-    training = _read("docs/TRAINING.md")
     readme = _read("README.md")
-    model_report = REPORTS_DIR / "models.json"
-
-    # Canh nguyên tắc, không canh câu chữ: tài liệu gọi tập đó là "tập chấm".
-    assert "không tham gia chọn checkpoint" in training
+    metrics_file = ROOT / "artifacts/entity-linking/benchmark-metrics.json"
 
     # Người đọc phải trả lời được: hệ thống giải bài gì, dữ liệu đi qua những
     # hình dạng nào, nội dung lấy từ đâu, đo bằng cách nào, và nó chưa làm được
@@ -151,9 +147,15 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     # chỉnh, nên README phải báo cáo riêng một phép đo chạy hết cả đường - và
     # phải nói rõ hai con số đó chênh nhau. Canh ý chứ không canh câu chữ.
     assert "end-to-end" in readme
-    # Canh HÌNH DẠNG chứ không canh giá trị: đo lại thì con số đổi, còn yêu cầu
-    # "phải báo cáo tỷ lệ trên 60 câu học vụ và đặt cạnh phép đo từng phần" thì không.
-    assert re.search(r"\d+/60", readme), "thiếu tỷ lệ end-to-end trên 60 câu học vụ"
+    # Canh HÌNH DẠNG chứ không canh giá trị: yêu cầu là "phải báo cáo tỷ lệ trên
+    # nhóm câu học vụ và đặt cạnh phép đo từng phần". Mẫu số đọc từ chính bộ câu
+    # hỏi chứ không ghi cứng - sửa một nhãn sai là nhóm đổi kích thước, và một
+    # con số ghim trong phép kiểm sẽ biến việc sửa đúng thành phép kiểm đỏ.
+    trong_pham_vi = len(json.loads(
+        (ROOT / "resources/end-to-end/questions.json").read_text(encoding="utf-8")
+    )["trong_pham_vi"])
+    assert re.search(rf"\d+/{trong_pham_vi}\b", readme), (
+        f"thiếu tỷ lệ end-to-end trên {trong_pham_vi} câu học vụ")
     assert "phép đo từng phần" in readme
 
     # Sơ đồ thay cho mô tả bằng lời: một cho luồng xử lý, một cho luồng dữ liệu.
@@ -165,13 +167,15 @@ def test_readme_explains_the_research_to_new_readers() -> None:
     for image in images:
         assert (ROOT / image).is_file(), image
 
-    if model_report.is_file():
-        documented = set(_PERCENTAGE.findall(training))
-        assert _metric_percentages(json.loads(model_report.read_text())) <= documented
-    else:
-        # Không có artifact metric thì tài liệu không được công bố một
-        # phần trăm model như thể đó là kết quả hiện hành.
-        assert _PERCENTAGE.findall(training) == []
+    # Mỗi accuracy công bố trong README phải có mặt trong artifact chỉ số. Canh
+    # chiều này vì lỗi nguy hiểm là tài liệu giữ lại một con số không còn nguồn,
+    # chứ không phải artifact có con số tài liệu chưa nhắc.
+    if metrics_file.is_file():
+        published = {
+            f"{100 * m['accuracy']:.1f}%".replace(".", ",")
+            for m in json.loads(metrics_file.read_text(encoding="utf-8"))["metrics"].values()
+        }
+        assert published <= set(_PERCENTAGE.findall(readme)), published
     assert "NTUdocs" not in readme
     # README không được dẫn người đọc tới rác của một lượt chạy cục bộ.
     assert "artifacts/" not in readme
@@ -204,12 +208,8 @@ def test_docs_connect_ontology_query_catalogue_and_dataset() -> None:
 def test_public_docs_describe_consistency_and_metric_provenance() -> None:
     files = (
         "README.md",
-        "docs/CONCEPT.md",
         "docs/ONTOLOGY.md",
         "docs/DATASET.md",
-        "docs/EVALUATION.md",
-        "docs/MODEL_CARD.md",
-        "docs/DEPLOYMENT.md",
         "resources/reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)

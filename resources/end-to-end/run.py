@@ -8,32 +8,50 @@ Không chấm bằng cảm nhận. Bốn phép đếm, tất cả kiểm đượ
 """
 from __future__ import annotations
 
-import asyncio, contextvars, json, os, re, sys, time
+import asyncio, json, os, re, sys, time
 from pathlib import Path
 
 sys.path.insert(0, str(Path("src").resolve()))
 
 from ontchatbot.research.evaluation import _query_anchor_nodes
-from ontchatbot.runtime.agent import build_agent
-from ontchatbot.runtime.model import CTranslate2Generator, QueryGenerationError
+from ontchatbot.runtime.agent import build_agent, build_instructions
+from ontchatbot.runtime.classifier import ClassifierGenerator
+from ontchatbot.runtime.generator import QueryGenerationError
 from ontchatbot.runtime.pipeline import MARKER, OntologyChatbot
 from ontchatbot.runtime.render import render_batch
 from ontchatbot.runtime.sparql import SparqlError
 
+# Đường phục vụ: bộ phân loại chọn nhãn, chạy trên card.
+# song song đặt bằng số người hỏi cùng lúc; mỗi lượt vẫn tính độc lập nên câu
+# trả lời không đổi theo số người.
+MODEL = Path(os.environ.get("ONTCHATBOT_MODEL_DIR", "artifacts/entity-linking/model-xlmr"))
+THIET_BI = os.environ.get("ONTCHATBOT_DEVICE", "cuda")
+
 HERE = Path(__file__).parent
 CAU_HOI = json.loads((HERE / "questions.json").read_text())
 KET_QUA = HERE / "results.json"
-SONG_SONG = int(os.environ.get("SONG_SONG", "3"))
-
-luot = contextvars.ContextVar("luot")
-
+# Hỏi tuần tự. Bộ chấm báo thời gian như thời gian một người chờ, mà chạy
+# song song thì các câu tranh nhau card và con số đó dài ra một cách giả tạo.
+# Vết tra cứu được ghi vào MỘT thuộc tính dùng chung trên đối tượng chatbot, nên
+# hai câu hỏi chạy chồng nhau sẽ ghi đè vết của nhau. Hỏng theo kiểu im lặng: số
+# lần gọi công cụ về 0, nhìn từ ngoài giống hệt "trợ lý không thèm tra cứu".
+SONG_SONG = int(os.environ.get("SONG_SONG", "1"))
+if SONG_SONG != 1:
+    raise SystemExit(
+        "phép đo này phải chạy tuần tự: vết tra cứu dùng chung một thuộc tính, "
+        "chạy chồng nhau sẽ đếm sai số lần gọi công cụ mà không báo lỗi"
+    )
 
 class ChatbotCoVet(OntologyChatbot):
     """Y hệt đường chạy thật, nhưng ghi lại từ khoá, truy vấn và mục lấy được."""
 
+    #: Bản ghi của câu đang hỏi. Đặt trước mỗi câu; công cụ chạy ở luồng nào
+    #: cũng đọc được, khác với biến theo ngữ cảnh vốn không sang được luồng khác.
+    vet = None
+
     def answer_many(self, questions):
         wanted = [q for q in dict.fromkeys(q.strip() for q in questions) if q]
-        vet = luot.get(None)
+        vet = self.vet
         if not wanted:
             raise SparqlError("no keyword to look up")
         try:
@@ -69,12 +87,21 @@ VIET_TAT = re.compile(r"\b[A-Z]{2,}\d*\b")
 _BO_QUA = {"II", "III", "IV", "VI", "VII", "VIII", "IX", "XI", "XII"}
 
 
+# Lời hướng dẫn hệ thống kèm sẵn một danh sách chủ đề tra được, và tên trong đó
+# là nhãn thật lấy từ ontology. Trợ lý nêu lại chúng khi câu hỏi quá chung để tra -
+# đó là mời người dùng hỏi rõ hơn, không phải khẳng định một dữ kiện. Không tính
+# danh sách này vào phần "có sẵn" thì mỗi lần mời như vậy bị đếm thành một lần bịa:
+# "Mẫu số 13" hoá ra số 13 bịa, "Minh Phú -CT đại chuẩn" hoá ra chữ CT bịa.
+CO_SAN = build_instructions()
+
+
 def khong_bam_du_lieu(tra_loi: str, du_lieu: str) -> list[str]:
     """Những số và viết tắt xuất hiện trong câu trả lời mà dữ liệu không hề nói."""
 
+    co_san = du_lieu + CO_SAN
     nen_co = {m.group() for m in SO.finditer(tra_loi)}
     nen_co |= {m.group() for m in VIET_TAT.finditer(tra_loi) if m.group() not in _BO_QUA}
-    return sorted(t for t in nen_co if t not in du_lieu)
+    return sorted(t for t in nen_co if t not in co_san)
 
 
 TU_CHOI = ("không tìm thấy", "không có thông tin", "ngoài phạm vi", "không thuộc",
@@ -88,12 +115,12 @@ def co_noi_la_thieu(tra_loi: str) -> bool:
     return any(cum in thap for cum in TU_CHOI)
 
 
-async def hoi(agent, cau: dict, nhom: str, sem) -> dict:
+async def hoi(agent, bot, cau: dict, nhom: str, sem) -> dict:
     from agents import Runner
 
     async with sem:
         vet = {"goi": [], "du_lieu": []}
-        luot.set(vet)
+        bot.vet = vet
         loi = None
         for lan in range(6):
             vet["goi"].clear(); vet["du_lieu"].clear()
@@ -118,6 +145,10 @@ async def hoi(agent, cau: dict, nhom: str, sem) -> dict:
         "tu_khoa": [k for goi in vet["goi"] for k in goi["tu_khoa"]],
         "node_lay_ve": node,
         "so_dong_du_lieu": sum(goi["so_dong"] for goi in vet["goi"]),
+        # Giữ nguyên văn dữ liệu công cụ đã trả về: phép chấm chất lượng câu trả
+        # lời phải đối chiếu câu trả lời với đúng dữ liệu của chính lượt đó, và
+        # không có nó thì lượt đo không chấm lại được.
+        "du_lieu": du_lieu,
         "bia_dat": khong_bam_du_lieu(tra_loi, du_lieu) if tra_loi else [],
         "noi_la_thieu": co_noi_la_thieu(tra_loi),
     }
@@ -132,9 +163,9 @@ async def hoi(agent, cau: dict, nhom: str, sem) -> dict:
 
 
 async def main() -> None:
-    generator = CTranslate2Generator.load(Path("artifacts/serving-models/t5gemma2-int8"), device="cpu",
-                                          compute_type="int8")
-    agent = build_agent(ChatbotCoVet(generator), model=os.environ["ONTCHATBOT_LLM_MODEL"])
+    generator = ClassifierGenerator.load(MODEL, device=THIET_BI)
+    bot = ChatbotCoVet(generator)
+    agent = build_agent(bot, model=os.environ["ONTCHATBOT_LLM_MODEL"])
     sem = asyncio.Semaphore(SONG_SONG)
     gioi_han = int(os.environ.get("GIOI_HAN", "0"))
 
@@ -148,7 +179,7 @@ async def main() -> None:
         rows = CAU_HOI[nhom]
         if gioi_han:
             rows = rows[:gioi_han]
-        viec += [hoi(agent, cau, nhom, sem) for cau in rows if cau["id"] not in cu]
+        viec += [hoi(agent, bot, cau, nhom, sem) for cau in rows if cau["id"] not in cu]
 
     bat_dau = time.perf_counter()
     ban_ghi = list(cu.values()) + list(await asyncio.gather(*viec))

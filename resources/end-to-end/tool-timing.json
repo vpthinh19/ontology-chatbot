@@ -1,26 +1,24 @@
 {
-  "thiet_bi": "cuda",
-  "kieu_tinh": "float32",
-  "so_luot": 75,
-  "tu_khoa_moi_luot": 2.48,
+  "so_luot": 76,
+  "tu_khoa_moi_luot": 2.46,
   "sinh_truy_van": {
-    "trung_vi_ms": 2490.2,
-    "p95_ms": 3760.2,
-    "mau": 75
+    "trung_vi_ms": 3.9,
+    "p95_ms": 5.7,
+    "mau": 76
   },
   "chay_tren_do_thi": {
-    "trung_vi_ms": 15.0,
-    "p95_ms": 1618.4,
-    "mau": 75
+    "trung_vi_ms": 17.5,
+    "p95_ms": 1510.6,
+    "mau": 76
   },
   "ca_cong_cu": {
-    "trung_vi_ms": 2538.1,
-    "p95_ms": 5272.4,
-    "mau": 75
+    "trung_vi_ms": 22.5,
+    "p95_ms": 1514.4,
+    "mau": 76
   },
   "quy_ve_mot_tu_khoa": {
-    "trung_vi_ms": 1220.0,
-    "p95_ms": 1279.7,
-    "mau": 75
+    "trung_vi_ms": 1.8,
+    "p95_ms": 3.5,
+    "mau": 76
   }
 }

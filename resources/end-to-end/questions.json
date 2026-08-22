@@ -540,6 +540,15 @@
    "node_dung": [
     "FormCatalogueEntry013"
    ]
+  },
+  {
+   "id": "question-006263",
+   "cau_hoi": "Đơn xin chuyển Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?",
+   "register": "formal",
+   "query_id": "form-catalogue-entry-facts",
+   "node_dung": [
+    "FormCatalogueEntry005"
+   ]
   }
  ],
  "ngoai_pham_vi": [
@@ -547,11 +556,6 @@
    "id": "question-006272",
    "cau_hoi": "Cho hỏi hủy học phần đã đăng ký có ảnh hưởng học bổng của tôi không?",
    "register": "neutral"
-  },
-  {
-   "id": "question-006263",
-   "cau_hoi": "Đơn xin chuyển Chương trình đào tạo cung cấp biểu mẫu cụ thể ra sao?",
-   "register": "formal"
   },
   {
    "id": "question-006254",
@@ -642,7 +646,7 @@
   },
   {
    "id": "gap-006",
-   "cau_hoi": "Số điện thoại của phòng Công tác sinh viên là số nào?"
+   "cau_hoi": "Phòng Công tác sinh viên làm việc từ mấy giờ đến mấy giờ?"
   },
   {
    "id": "gap-007",
