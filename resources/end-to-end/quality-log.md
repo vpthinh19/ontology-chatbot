@@ -1,11 +1,11 @@
 # Nhật ký chấm chất lượng câu trả lời
 
-85 câu · dung 49 · tu_choi 33 · lac_de 0 · thieu 3 · sai 0 · đáng ngờ 6
+85 câu · dung 51 · tu_choi 32 · lac_de 0 · thieu 2 · sai 0 · đáng ngờ 6
 
 Mỗi mục gồm câu hỏi, dữ liệu công cụ đã trả về trong chính lượt đó, câu trả
 lời nguyên văn, phán quyết của bộ chấm và các tín hiệu tất định để đối chiếu.
 
-## dung — 49 câu
+## dung — 51 câu
 
 *Đưa ra được thứ được hỏi, và mọi dữ kiện nêu ra đều có trong dữ liệu*
 
@@ -142,55 +142,6 @@ https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%AB
 
 </details>
 
-### question-002926 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 41 dòng dữ liệu · **lấy sai mục** · đích Form07ExemptionAndBonus
-
-**Câu hỏi:** Đơn xin miễn học, miễn thi và cộng điểm thưởng căn cứ theo điều nào v ạ?
-
-**Bộ chấm trích:** khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025
-
-**Câu trả lời:**
-
-```
-Đơn xin miễn học, miễn thi và cộng điểm thưởng được căn cứ theo **khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang**, ban hành kèm theo Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
-
-Theo quy định tại điều này, sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo **Mẫu số 07 (Phụ lục 4 kèm theo)** cùng với minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết.
-
-Nguồn: [Quyết định 1052/QĐ-ĐHNT](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · danh sách biểu mẫu Danh mục biểu mẫu trên trang văn bản pháp quy của Phòng Đào tạo Đại học, truy cập ngày 30/7/2026",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Mục tải: Đơn xin miễn học, miễn thi và cộng điểm thưởng"
-        },
-        {
-          "thuoc_tinh": "tên mẫu trên website",
-          "gia_tri": "Đơn xin miễn học, miễn thi và cộng điểm thưởng"
-        },
-        {
-          "thuoc_tinh": "số hiệu mẫu trên website",
-          "gia_tri": "6"
-        },
-        {
-          "thuoc_tinh": "địa chỉ tải về",
-          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%8
-… (còn 8433 ký tự)
-```
-
-</details>
-
 ### question-001907 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 1 lần · 10 dòng dữ liệu · lấy đúng mục · đích CorequisiteCourseType
@@ -246,74 +197,6 @@ Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-
           "thuoc_tinh": "đường dẫn văn bản gốc",
           "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-202
 … (còn 580 ký tự)
-```
-
-</details>
-
-### question-002930 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 36 dòng dữ liệu · **lấy sai mục** · đích FormCatalogueEntry010
-
-**Câu hỏi:** xin quay lại học dùng đơn nào ta
-
-**Bộ chấm trích:** Mẫu số 11 - Đơn xin học trở lại
-
-**Câu trả lời:**
-
-```
-Để xin quay lại học, bạn cần thực hiện như sau:
-
-*   **Biểu mẫu sử dụng:** Bạn viết đơn theo **Mẫu số 11 - Đơn xin học trở lại** (Phụ lục 4).
-*   **Quy trình nộp đơn:** Gửi đơn tới Hiệu trưởng thông qua **Phòng Công tác Chính trị và Sinh viên** để được xem xét giải quyết.
-*   **Thời hạn nộp đơn:** Bạn phải nộp đơn ít nhất **02 tuần trước khi bắt đầu học kỳ mới**.
-
-**Lưu ý quan trọng:** 
-Theo Điều 24 Quy chế đào tạo, quy định trên áp dụng cho sinh viên xin nghỉ học tạm thời. Trường hợp sinh viên đã xin thôi học vì lý do cá nhân thì muốn quay trở lại học phải thực hiện xét tuyển đầu vào như những thí sinh khác.
-
-*Nguồn: Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 (https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)*
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "danh sách đơn vị trên trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026",
-      "duong_dan": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Phòng Công tác Chính trị và Sinh viên"
-        },
-        {
-          "thuoc_tinh": "website đơn vị",
-          "gia_tri": "https://phongctsv.ntu.edu.vn"
-        },
-        {
-          "thuoc_tinh": "điện thoại",
-          "gia_tri": "0258 222 1900"
-        },
-        {
-          "thuoc_tinh": "vị trí",
-          "gia_tri": "Khu Nhà Hiệu bộ"
-        },
-        {
-          "thuoc_tinh": "hộp thư",
-          "gia_tri": "ctsv@ntu.edu.vn"
-        },
-        {
-          "thuoc_tinh": "địa chỉ",
-          "gia_tri": "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa"
-        }
-      ]
-    },
-    {
-      "trich_dan": "khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%
-… (còn 6031 ký tự)
 ```
 
 </details>
@@ -375,64 +258,6 @@ Sinh viên đủ điều kiện sẽ được cấp học bổng với mức ti�
           "thuoc_tinh": "mô tả ngắn",
           "gia_tri": "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài 
 … (còn 10470 ký tự)
-```
-
-</details>
-
-### question-003338 · trong_pham_vi
-
-> ⚠️ **Đáng ngờ:** chấm ĐÚNG nhưng phép dò thấy số ngoài dữ liệu
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 72 dòng dữ liệu · lấy đúng mục · đích ScholarshipCriteriaGuidance · **ngoài dữ liệu: HBKKHT**
-
-**Câu hỏi:** tiêu chí hbkkht ở đâu hông?
-
-**Bộ chấm trích:** Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên, và không bị kỷ luật từ mức khiển trách trở lên.
-
-**Câu trả lời:**
-
-```
-Tiêu chí xét học bổng khuyến khích học tập (HBKKHT) của Trường Đại học Nha Trang được quy định cụ thể như sau:
-
-**1. Điều kiện chung để được xét học bổng:**
-*   **Đối tượng:** Sinh viên đại học, cao đẳng chính quy còn trong thời gian đào tạo theo kế hoạch của khóa học.
-*   **Kết quả:** Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên.
-*   **Kỷ luật:** Không bị kỷ luật từ mức khiển trách trở lên.
-
-**2. Các điều kiện cụ thể:**
-*   **Số tín chỉ:** Phải đăng ký tối thiểu 14 tín chỉ trong học kỳ theo kế hoạch của chương trình đào tạo.
-*   **Điểm số:** Mọi học phần trong kỳ phải đạt từ 5,5 điểm trở lên ngay ở lần thi đầu (điểm Giáo dục thể chất và Giáo dục quốc phòng không tính vào điểm xét).
-*   **Hoãn thi và Chuyển ngành:** 
-    *   Không được hoãn thi trong kỳ (trừ trường hợp hoãn do trùng lịch thi và đã thi lại trong cùng đợt).
-    *   Học kỳ đầu tiên sau khi chuyển ngành sẽ không được xét học bổng.
-
-**3. Nguyên tắc xét:**
-*   Trường xét học bổng dựa trên điểm trung bình chung của từng học kỳ chính; kết quả học kỳ hè không được tính vào điểm xét học bổng.
-
-**Nguồn trích dẫn:** 
-- Mục tiêu chuẩn chung và điều kiện cụ thể, trang Học bổng và tiêu chuẩn học bổng của Trường Đại học Nha Trang (https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong).
-- Quy chế đào tạo trình độ đại học ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 (https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf).
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "khoản 3 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · khoản 3 Điều 19 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · mục tiêu chuẩn chung, trang Học bổng và tiêu chuẩn học bổng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Thủ tục xét và cấp học bổng khuyến khích học tập"
-        },
-        {
-          "thuoc_tinh": "mô tả ngắn",
-          "gia_tri": "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài 
-… (còn 13949 ký tự)
 ```
 
 </details>
@@ -690,49 +515,6 @@ Nguồn: [Quyết định số 317/QĐ-ĐHNT](https://ntu.edu.vn/uploads/57/Doc/
         {
           "thuoc_tinh": "đường dẫn văn bản g
 … (còn 5665 ký tự)
-```
-
-</details>
-
-### question-001204 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 11 dòng dữ liệu · lấy đúng mục · đích MarineResourceEconomicsAndManagement
-
-**Câu hỏi:** Xin xác nhận danh mục đào tạo có ghi ngành Kinh tế và quản lý tài nguyên biển ạ.
-
-**Bộ chấm trích:** 9 — Kinh tế và quản lý tài nguyên biển
-
-**Câu trả lời:**
-
-```
-Xác nhận với bạn, ngành **Kinh tế và quản lý tài nguyên biển** có trong danh mục đào tạo của trường. Ngành này thuộc **Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường**.
-
-Nguồn trích dẫn: Bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026 (https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf).
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
-      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Kinh tế và quản lý tài nguyên biển"
-        },
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công nghệ chế tạo máy\n4 — Kỹ thuật cơ điện tử\
-… (còn 3889 ký tự)
 ```
 
 </details>
@@ -1021,54 +803,6 @@ Thông tin về học phần **Ngoại ngữ B1.2** theo Quyết định 1965/Q�
 
 </details>
 
-### question-001538 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 32 dòng dữ liệu · lấy đúng mục · đích EnglishRequirementTableSpecialProgram, OtherLanguageRequirementTableSpecialProgram
-
-**Câu hỏi:** Tôi muốn biết chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn chương trình đặc biệt được quy định ra sao.
-
-**Bộ chấm trích:** | 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
-
-**Câu trả lời:**
-
-```
-Chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn (chương trình đặc biệt) được quy định như sau:
-
-*   **Khung NLNN 6 bậc / CEFR:** Bậc 4 hoặc B2
-*   **TOEIC:** $\ge$ 700
-*   **IELTS:** $\ge$ 5.5
-*   **TOEFL iBT:** $\ge$ 70
-*   **Linguaskill:** > 160
-*   **Aptis (General):** > 153
-*   **Cambridge English Scale:** $\ge$ 160
-
-**Nguồn trích dẫn:** Bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
-**Đường dẫn:** [Xem chi tiết tại đây](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "trích dẫn",
-          "gia_tri": "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
-        },
-        {
-          "thuoc_tinh": "nguyên văn bảng",
-          "gia_tri": "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | 
-… (còn 12034 ký tự)
-```
-
-</details>
-
 ### question-001340 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 1 lần · 34 dòng dữ liệu · lấy đúng mục · đích VietinBank
@@ -1348,57 +1082,6 @@ Nguồn: danh sách biểu mẫu Danh mục biểu mẫu trên trang văn bản 
 
 </details>
 
-### question-000296 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 12 dòng dữ liệu · lấy đúng mục · đích AcademicPerformanceTable
-
-**Câu hỏi:** Điểm trung bình chung nào ứng với loại xuất sắc và giỏi?
-
-**Bộ chấm trích:** Loại Xuất sắc: Điểm trung bình chung từ 9,00 đến 10. Loại Giỏi: Điểm trung bình chung từ 8,00 đến 8,99.
-
-**Câu trả lời:**
-
-```
-Dựa trên Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), điểm trung bình chung ứng với loại Xuất sắc và Giỏi được quy định như sau:
-
-*   **Loại Xuất sắc:** Điểm trung bình chung từ 9,00 đến 10.
-*   **Loại Giỏi:** Điểm trung bình chung từ 8,00 đến 8,99.
-
-Thông tin này được ghi nhận tại bảng 1 khoản 2 Điều 18 và bảng 1 khoản 2 Điều 23 của Quy chế đào tạo.
-
-Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "trích dẫn",
-          "gia_tri": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
-        },
-        {
-          "thuoc_tinh": "nguyên văn bảng",
-          "gia_tri": "| **Điểm trung bình chung** | **Mức xếp loại** |\n| :---: | :---: |\n| 9,00 ÷ 10 | Xuất sắc |\n| 8,00 ÷ 8,99 | Giỏi |\n| 7,00 ÷ 7,99 | Khá |\n| 5,00 ÷ 6,99 | Trung bình |\n| 4,00 ÷ 4,99 | Yếu |\n| 0,00 ÷ 3,99 | Kém |"
-        },
-        {
-          "thuoc_tinh": "đường dẫn văn bản gốc",
-          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
-        },
-        {
-          "thuoc_tinh": "nằm trong ph
-… (còn 1920 ký tự)
-```
-
-</details>
-
 ### question-003340 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 1 lần · 21 dòng dữ liệu · **lấy sai mục** · đích TuitionPaymentGuidance
@@ -1620,59 +1303,6 @@ Tín chỉ là đơn vị tính khối lượng học tập của người học
 
 </details>
 
-### question-002479 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 29 dòng dữ liệu · lấy đúng mục · đích Regulation1052Article02
-
-**Câu hỏi:** Cho hỏi mình cần tra cứu văn bản tại Điều 2 Quy chế 1052?
-
-**Bộ chấm trích:** Điều 2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025
-
-**Câu trả lời:**
-
-```
-Nội dung Điều 2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) về **"Chương trình đào tạo và thời gian đào tạo"** như sau:
-
-1. **Chương trình đào tạo (CTĐT):** Là một hệ thống các hoạt động giáo dục, đào tạo được thiết kế và tổ chức thực hiện để đạt được các mục tiêu đào tạo, hướng tới cấp một văn bằng cho sinh viên. CTĐT bao gồm mục tiêu, chuẩn đầu ra, khối lượng kiến thức, cấu trúc, nội dung, phương thức dạy học và đánh giá.
-2. **Cấu trúc CTĐT:** CTĐT trình độ đại học gắn với một ngành (đơn ngành) hoặc với một vài ngành (song ngành, ngành chính - ngành phụ, hai văn bằng, đa ngành, liên ngành) và được cấu trúc thành hai khối kiến thức: giáo dục tổng quát và giáo dục chuyên nghiệp.
-3. **Công bố CTĐT:** CTĐT được công bố công khai trước khi tuyển sinh và khi bắt đầu khóa học. Các điều chỉnh về CTĐT (nếu có) sẽ được Nhà trường công bố trước khi áp dụng.
-4. **Thời gian đào tạo:**
-    - **Hệ chính quy:** Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một CTĐT đại học hình thức chính quy cấp bằng cử nhân là 4 năm; chương trình chuyên sâu đặc thù cấp bằng kỹ sư (gọi tắt là chương trình cấp bằng kỹ sư) là 4,5 năm.
-    - **Hệ vừa làm vừa học:** Thời gian theo kế hoạch học tập chuẩn toàn khóa dài hơn tối thiểu 20% so với hệ chính quy của cùng chương trình đào tạo.
-    - **Thời gian tối đa:** Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian kế hoạch học tập chuẩn toàn khóa.
-    - **Quy định cụ thể:** Thời gian đào tạo và khối lượng tín chỉ của từng chương trình được quy định cụ thể trong CTĐT do Hiệu trưởng ban hành.
-
-**Nguồn:** Điều 2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
-**Chi tiết tại:** [Link văn bản](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "Điều 10 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tiêu đề của phần",
-          "gia_tri": "Xóa lớp học phần và mở thêm lớp học phần"
-        },
-        {
-          "thuoc_tinh": "số điều",
-          "gia_tri": 10
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "1. Xóa lớp học phần: Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.\n2. Mở thêm lớp học phần: Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp
-… (còn 6906 ký tự)
-```
-
-</details>
-
 ### question-003547 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 1 lần · 64 dòng dữ liệu · **lấy sai mục** · đích GoodSpecialScholarshipRate
@@ -1820,87 +1450,6 @@ Thông tin này nằm ngoài phạm vi hỗ trợ của tôi (tôi chỉ hỗ tr
 
 </details>
 
-### question-000297 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 17 dòng dữ liệu · lấy đúng mục · đích AcademicPerformanceTable
-
-**Câu hỏi:** ngưỡnghọc lực
-
-**Bộ chấm trích:** | 9,00 ÷ 10 | Xuất sắc |
-| 8,00 ÷ 8,99 | Giỏi |
-| 7,00 ÷ 7,99 | Khá |
-| 5,00 ÷ 6,99 | Trung bình |
-| 4,00 ÷ 4,99 | Yếu |
-| 0,00 ÷ 3,99 | Kém |
-
-**Câu trả lời:**
-
-```
-Dựa trên Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), ngưỡng xếp loại học lực được quy định như sau:
-
-**1. Bảng xếp loại học lực theo điểm trung bình chung:**
-| Điểm trung bình chung | Mức xếp loại |
-| :---: | :---: |
-| 9,00 ÷ 10 | Xuất sắc |
-| 8,00 ÷ 8,99 | Giỏi |
-| 7,00 ÷ 7,99 | Khá |
-| 5,00 ÷ 6,99 | Trung bình |
-| 4,00 ÷ 4,99 | Yếu |
-| 0,00 ÷ 3,99 | Kém |
-*(Nguồn: bảng 1 khoản 2 Điều 18)*
-
-**2. Quy định đối với sinh viên có học lực yếu kém:**
-Sinh viên xếp loại học lực hạng yếu kém của học kỳ liền trước sẽ có khối lượng đăng ký học tập trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) là:
-- Tối thiểu: 12 tín chỉ.
-- Tối đa: 18 tín chỉ.
-*(Nguồn: khoản 4 Điều 9)*
-
-**Đường dẫn nguồn:** https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "khoản 4 Điều 9 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "số tín chỉ tối đa",
-          "gia_tri": 18
-        },
-        {
-          "thuoc_tinh": "số tín chỉ tối thiểu",
-          "gia_tri": 12
-        },
-        {
-          "thuoc_tinh": "nội dung quy tắc",
-          "gia_tri": "Sinh viên xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký tối thiểu 12 tín chỉ và tối đa 18 tín chỉ trong một học kỳ."
-        },
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Khối lượng đăng ký của sinh viên học lực yếu kém"
-        },
-        {
-          "thuoc_tinh": "số khoản",
-          "gia_tri": 4
-        },
-        {
-          "thuoc_tinh": "số điều",
-          "gia_tri": 9
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "Khối lượng học tập của SV xếp loại học lực hạng yếu kém của học kỳ liền
-… (còn 2432 ký tự)
-```
-
-</details>
-
 ### question-003028 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 1 lần · 16 dòng dữ liệu · lấy đúng mục · đích DisciplineHonoursPenalty
@@ -1988,85 +1537,6 @@ Nguồn: bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 c
           "thuoc_tinh": "nguyên văn",
           "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công nghệ chế tạo máy\n4 — K
 … (còn 3550 ký tự)
-```
-
-</details>
-
-### question-004745 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 27 dòng dữ liệu · lấy đúng mục · đích Regulation1052Article20
-
-**Câu hỏi:** điều 20 quychế 1052 thế nào?
-
-**Bộ chấm trích:** Điều 20 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025
-
-**Câu trả lời:**
-
-```
-Điều 20 của Quy chế đào tạo trình độ đại học (ban hành kèm theo Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) có tiêu đề là **"Cảnh báo kết quả học tập và buộc thôi học"**, với nội dung cụ thể như sau:
-
-**1. Cảnh báo kết quả học tập:**
-Sau mỗi học kỳ chính, sinh viên sẽ được cảnh báo để lập phương án cải thiện học tập trong các trường hợp:
-*   **a)** Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đăng ký học trong học kỳ đó, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24.
-*   **b)** Điểm trung bình chung học kỳ: dưới 4,00 đối với học kỳ đầu khóa; dưới 4,50 đối với các học kỳ tiếp theo.
-*   **c)** Điểm trung bình tích lũy đạt dưới:
-    *   5,20 đối với sinh viên năm thứ nhất.
-    *   5,30 đối với sinh viên năm thứ hai.
-    *   5,40 đối với sinh viên năm thứ ba.
-    *   5,50 đối với sinh viên các năm tiếp theo.
-
-**2. Buộc thôi học:**
-Sinh viên bị buộc thôi học sau mỗi học kỳ chính nếu thuộc một trong hai trường hợp:
-*   **a)** Bị cảnh báo kết quả học tập 02 lần liên tiếp.
-*   **b)** Vượt quá thời gian tối đa được phép học tại Trường (quy định tại khoản 4 Điều 2 của Quy chế này).
-
-**3. Quyền lợi của sinh viên bị buộc thôi học:**
-Sinh viên thuộc diện bị buộc thôi học có quyền viết đơn (Mẫu số 05 – Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để xem xét chuyển sang chương trình đào tạo tương ứng theo hình thức vừa làm vừa học tại Trường. 
-*   Sinh viên được xem xét bảo lưu một phần kết quả học tập đối với các học phần đạt điểm từ 5,0 trở lên. 
-*   Việc bảo lưu cụ thể sẽ do Nhà trường quyết định tùy vào thời gian xin chuyển chương trình.
-
-**Nguồn trích dẫn:** Điều 20 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
-**Đường dẫn:** [Xem chi tiết tại đây](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 của Hiệu trưởng Trường Đại học Nha Trang ban hành Quy chế đào tạo trình độ đại học",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "đường dẫn văn bản gốc",
-          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
-        },
-        {
-          "thuoc_tinh": "áp dụng từ khóa",
-          "gia_tri": 64
-        },
-        {
-          "thuoc_tinh": "hiệu lực từ năm học",
-          "gia_tri": "2025-2026"
-        },
-        {
-          "thuoc_tinh": "trích yếu",
-          "gia_tri": "Ban hành Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"
-        },
-        {
-          "thuoc_tinh": "ngày ban hành",
-          "gia_tri": "2025-07-17"
-        },
-        {
-          "thuoc_tinh": "số hiệu văn bản",
-          "gia_tri": "1052/QĐ-ĐHNT"
-        },
-        {
-          "thuoc_tinh": "trích 
-… (còn 5682 ký tự)
 ```
 
 </details>
@@ -2305,52 +1775,6 @@ Việc đánh giá học phần được chia theo tỷ trọng:
           "thuoc_tinh": "nguyên văn",
           "gia_tri": "STT — Học phần — Thành phần đánh giá — Tỷ trọng\n1 — Ngoại ngữ A1 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40%\n2 — Ngoại ngữ A2.1 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40%\n3 — Ngoại ngữ A2.2 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40%\n4 — Ngoại ngữ B1.1 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40%\n5 — Ngoại ngữ B1.2 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40% — Thi kết thúc học phần phải đạt từ 5 điểm trở lên\n6 — Ngoại ngữ B2.1 — Đánh giá quá trình 20% — Thi giữa kỳ: Nghe + Nói 40% — Thi cuối kỳ: Đọc + Viết 40%\n7 — Ngoại ngữ B2.2 — Đánh giá 
 … (còn 10250 ký tự)
-```
-
-</details>
-
-### question-002478 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 29 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article19Clause02
-
-**Câu hỏi:** mình cần tra cứu văn bản tại khoản 2 Điều 19 Quychế 1052?
-
-**Bộ chấm trích:** 2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học.
-
-**Câu trả lời:**
-
-```
-Tại khoản 2 Điều 19 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) quy định như sau:
-
-"2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học."
-
-**Nguồn trích dẫn:** Điều 19 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
-**Đường dẫn văn bản:** https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "Điều 10 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tiêu đề của phần",
-          "gia_tri": "Xóa lớp học phần và mở thêm lớp học phần"
-        },
-        {
-          "thuoc_tinh": "số điều",
-          "gia_tri": 10
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "1. Xóa lớp học phần: Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.\n2. Mở thêm lớp học phần: Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp
-… (còn 6505 ký tự)
 ```
 
 </details>
@@ -2668,7 +2092,686 @@ Nguồn: [https://ntu.edu.vn/uploads/57/Doc/777/qd-317_muc-hbkkht-2024-2025-pdf.
 
 </details>
 
-## tu_choi — 33 câu
+### question-002926 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 17 dòng dữ liệu · **lấy sai mục** · đích Form07ExemptionAndBonus
+
+**Câu hỏi:** Đơn xin miễn học, miễn thi và cộng điểm thưởng căn cứ theo điều nào v ạ?
+
+**Bộ chấm trích:** khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025
+
+**Câu trả lời:**
+
+```
+Đơn xin miễn học, miễn thi và cộng điểm thưởng được căn cứ theo **khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang**, ban hành kèm theo Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+
+Theo quy định này, sinh viên có nguyện vọng được miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 – Phụ lục 4 kèm theo) cùng với minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết.
+
+Nguồn: [https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · danh sách biểu mẫu Danh mục biểu mẫu trên trang văn bản pháp quy của Phòng Đào tạo Đại học, truy cập ngày 30/7/2026",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Mục tải: Đơn xin miễn học, miễn thi và cộng điểm thưởng"
+        },
+        {
+          "thuoc_tinh": "tên mẫu trên website",
+          "gia_tri": "Đơn xin miễn học, miễn thi và cộng điểm thưởng"
+        },
+        {
+          "thuoc_tinh": "số hiệu mẫu trên website",
+          "gia_tri": "6"
+        },
+        {
+          "thuoc_tinh": "địa chỉ tải về",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%8
+… (còn 3308 ký tự)
+```
+
+</details>
+
+### question-002930 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 51 dòng dữ liệu · lấy đúng mục · đích FormCatalogueEntry010
+
+**Câu hỏi:** xin quay lại học dùng đơn nào ta
+
+**Bộ chấm trích:** Khi muốn trở lại học tiếp, cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới
+
+**Câu trả lời:**
+
+```
+Để quay lại học tiếp sau thời gian nghỉ học tạm thời, bạn cần sử dụng **Mẫu số 11 - Đơn xin học trở lại** (Phụ lục 4).
+
+**Chi tiết thủ tục:**
+1. **Bước 1:** Viết đơn xin học trở lại theo Mẫu số 11.
+2. **Bước 2:** Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét giải quyết.
+
+**Thời hạn nộp đơn:** Bạn cần nộp đơn ít nhất **02 tuần** trước khi bắt đầu học kỳ mới.
+
+**Lưu ý quan trọng:**
+* Quy định này áp dụng cho sinh viên xin nghỉ học tạm thời. Đối với trường hợp sinh viên xin thôi học vì lý do cá nhân, nếu muốn quay trở lại học thì phải thực hiện xét tuyển đầu vào như những thí sinh khác.
+
+**Nguồn trích dẫn:**
+- Khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+- Danh mục biểu mẫu trên trang văn bản pháp quy của Phòng Đào tạo Đại học (truy cập ngày 30/7/2026): [https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy](https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "danh sách đơn vị trên trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026",
+      "duong_dan": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Phòng Công tác Chính trị và Sinh viên"
+        },
+        {
+          "thuoc_tinh": "website đơn vị",
+          "gia_tri": "https://phongctsv.ntu.edu.vn"
+        },
+        {
+          "thuoc_tinh": "điện thoại",
+          "gia_tri": "0258 222 1900"
+        },
+        {
+          "thuoc_tinh": "vị trí",
+          "gia_tri": "Khu Nhà Hiệu bộ"
+        },
+        {
+          "thuoc_tinh": "hộp thư",
+          "gia_tri": "ctsv@ntu.edu.vn"
+        },
+        {
+          "thuoc_tinh": "địa chỉ",
+          "gia_tri": "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa"
+        }
+      ]
+    },
+    {
+      "trich_dan": "khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%
+… (còn 9874 ký tự)
+```
+
+</details>
+
+### question-003338 · trong_pham_vi
+
+> ⚠️ **Đáng ngờ:** chấm ĐÚNG nhưng phép dò thấy số ngoài dữ liệu
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 59 dòng dữ liệu · lấy đúng mục · đích ScholarshipCriteriaGuidance · **ngoài dữ liệu: HBKKHT**
+
+**Câu hỏi:** tiêu chí hbkkht ở đâu hông?
+
+**Bộ chấm trích:** Tiêu chí xét học bổng khuyến khích học tập (HBKKHT) của Trường Đại học Nha Trang bao gồm các điều kiện sau: ... Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên ... đăng ký tối thiểu 14 tín chỉ ... mọi học phần trong kỳ phải đạt từ 5,5 điểm trở lên ngay ở lần thi đầu
+
+**Câu trả lời:**
+
+```
+Tiêu chí xét học bổng khuyến khích học tập (HBKKHT) của Trường Đại học Nha Trang bao gồm các điều kiện sau:
+
+**1. Điều kiện chung:**
+* **Đối tượng:** Sinh viên đại học, cao đẳng chính quy còn trong thời gian đào tạo theo kế hoạch của khóa học.
+* **Kết quả:** Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên.
+* **Kỷ luật:** Không bị kỷ luật từ mức khiển trách trở lên.
+
+**2. Điều kiện cụ thể:**
+* **Số tín chỉ:** Phải đăng ký tối thiểu 14 tín chỉ trong học kỳ theo kế hoạch của chương trình đào tạo.
+* **Điểm thành phần:** Mọi học phần trong kỳ phải đạt từ 5,5 điểm trở lên ngay ở lần thi đầu (điểm Giáo dục thể chất và Giáo dục quốc phòng không tính vào điểm xét).
+* **Hoãn thi và chuyển ngành:** 
+    * Không hoãn thi trong kỳ (trừ trường hợp hoãn do trùng lịch thi và đã thi lại trong cùng đợt).
+    * Học kỳ đầu tiên sau khi chuyển ngành không được xét học bổng.
+
+**3. Lưu ý về cách xét:**
+* Nhà trường xét học bổng dựa trên điểm trung bình chung của từng học kỳ chính; không xét kết quả của học kỳ hè.
+* Mức tiền học bổng sẽ căn cứ theo xếp loại và theo chương trình (chuẩn hoặc đào tạo đặc biệt).
+
+**Nguồn trích dẫn:**
+* Mục tiêu chuẩn chung và tiêu chuẩn điều kiện cụ thể, trang *Học bổng và tiêu chuẩn học bổng của Trường Đại học Nha Trang* (truy cập ngày 10/8/2026): [https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong](https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong)
+* Khoản 3 Điều 18 và Điều 19 *Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang* (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025): [https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "khoản 3 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · khoản 3 Điều 19 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · mục tiêu chuẩn chung, trang Học bổng và tiêu chuẩn học bổng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Thủ tục xét và cấp học bổng khuyến khích học tập"
+        },
+        {
+          "thuoc_tinh": "mô tả ngắn",
+          "gia_tri": "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài 
+… (còn 11449 ký tự)
+```
+
+</details>
+
+### question-003012 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 29 dòng dữ liệu · lấy đúng mục · đích GraduationClassificationTable
+
+**Câu hỏi:** Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?
+
+**Bộ chấm trích:** Xếp loại tốt nghiệp được căn cứ vào điểm trung bình chung tích lũy của toàn khóa theo bảng sau... Lưu ý: Dữ liệu hiện có không chứa chi tiết cụ thể về quy trình cấp hoặc hình thức trình bày của "Bảng điểm toàn khóa"
+
+**Câu trả lời:**
+
+```
+Dựa trên Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), tôi xin cung cấp thông tin như sau:
+
+### 1. Về danh hiệu (xếp loại) tốt nghiệp
+Xếp loại tốt nghiệp được căn cứ vào điểm trung bình chung tích lũy của toàn khóa theo bảng sau:
+
+| Điểm trung bình chung tích lũy toàn khóa | Xếp loại |
+| :--- | :--- |
+| 9,00 ÷ 10 | Xuất sắc |
+| 8,00 ÷ 8,99 | Giỏi |
+| 7,00 ÷ 7,99 | Khá |
+| 5,50 ÷ 6,99 | Trung bình |
+
+*(Nguồn: bảng 1 khoản 2 Điều 23 Quy chế đào tạo trình độ đại học)*
+
+### 2. Quy định về đánh giá kết quả học tập (liên quan đến bảng điểm)
+*   **Thang điểm:** Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm từ 0,0 đến 10 và làm tròn đến một chữ số thập phân.
+*   **Đánh giá đạt/không đạt:** 
+    *   Điểm học phần từ 5,0 trở lên được đánh giá là đạt.
+    *   Điểm học phần dưới 5,0 được đánh giá là không đạt.
+*   **Các ký hiệu điểm đặc biệt (không tính vào điểm trung bình học tập):**
+    *   **Điểm I:** Học phần chưa hoàn thiện do được phép hoãn thi, kiểm tra.
+    *   **Điểm X:** Học phần chưa hoàn thiện do chưa đủ dữ liệu.
+    *   **Điểm R:** Học phần bảo lưu được miễn học và công nhận tín chỉ.
+    *   **Điểm P:** Áp dụng cho các học phần chỉ yêu cầu đạt (không phân mức), điểm từ 5 trở lên.
+
+*(Nguồn: khoản 1 Điều 15; điểm b, c khoản 2 Điều 16 Quy chế đào tạo trình độ đại học)*
+
+**Lưu ý:** Dữ liệu hiện có không chứa chi tiết cụ thể về quy trình cấp hoặc hình thức trình bày của "Bảng điểm toàn khóa", chỉ cung cấp quy định về cách tính điểm và xếp loại.
+
+Chi tiết xem tại: [Quy chế đào tạo trình độ đại học - QĐ 1052](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "khoản 1 Điều 15 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · điểm b khoản 2 Điều 16 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 · điểm c khoản 2 Điều 16 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf · https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "định nghĩa",
+          "gia_tri": "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập ph
+… (còn 6551 ký tự)
+```
+
+</details>
+
+### question-001204 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 10 dòng dữ liệu · lấy đúng mục · đích MarineResourceEconomicsAndManagement
+
+**Câu hỏi:** Xin xác nhận danh mục đào tạo có ghi ngành Kinh tế và quản lý tài nguyên biển ạ.
+
+**Bộ chấm trích:** 9 — Kinh tế và quản lý tài nguyên biển
+
+**Câu trả lời:**
+
+```
+Xác nhận với bạn, ngành **Kinh tế và quản lý tài nguyên biển** có trong danh mục đào tạo (thuộc Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường).
+
+Thông tin này được ghi tại: Bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026.
+Nguồn: https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
+      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Kinh tế và quản lý tài nguyên biển"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"
+        },
+        {
+          "thuoc_tinh": "nguyên văn",
+          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công nghệ chế tạo máy\n4 — Kỹ thuật cơ điện tử\
+… (còn 3700 ký tự)
+```
+
+</details>
+
+### question-002456 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 27 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article11Clause02
+
+**Câu hỏi:** Cho tôi hỏi mình cần tra cứu văn bản tại khoản 2 Điều 11 Quy chế 1052.
+
+**Bộ chấm trích:** Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác.
+
+**Câu trả lời:**
+
+```
+Theo nội dung tại khoản 2 Điều 11 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), quy định như sau:
+
+"Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác."
+
+**Nguồn:** Điều 11 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+**Đường dẫn văn bản:** [Xem chi tiết tại đây](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "áp dụng từ khóa",
+          "gia_tri": 64
+        },
+        {
+          "thuoc_tinh": "hiệu lực từ năm học",
+          "gia_tri": "2025-2026"
+        },
+        {
+          "thuoc_tinh": "trích yếu",
+          "gia_tri": "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"
+        },
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri":
+… (còn 4706 ký tự)
+```
+
+</details>
+
+### question-001538 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 12 dòng dữ liệu · lấy đúng mục · đích EnglishRequirementTableSpecialProgram, OtherLanguageRequirementTableSpecialProgram
+
+**Câu hỏi:** Tôi muốn biết chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn chương trình đặc biệt được quy định ra sao.
+
+**Bộ chấm trích:** Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160
+
+**Câu trả lời:**
+
+```
+Theo bảng chuẩn tiếng Anh chương trình đặc biệt tại bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), chuẩn tiếng Anh đầu ra của ngành Quản trị khách sạn được quy định như sau:
+
+*   **KNLNN / CEFR:** Bậc 4 hoặc B2
+*   **TOEIC:** ≥ 700
+*   **IELTS:** ≥ 5.5
+*   **TOEFL iBT:** ≥ 70
+*   **Linguaskill:** > 160
+*   **Aptis (General):** > 153
+*   **Cambridge English Scale:** ≥ 160
+
+Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "bảng 3 Phụ lục 2 mục 2.1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "nguyên văn bảng",
+          "gia_tri": "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |\n| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | 
+… (còn 3058 ký tự)
+```
+
+</details>
+
+### question-000296 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 6 dòng dữ liệu · lấy đúng mục · đích AcademicPerformanceTable
+
+**Câu hỏi:** Điểm trung bình chung nào ứng với loại xuất sắc và giỏi?
+
+**Bộ chấm trích:** Loại Xuất sắc: Điểm trung bình chung từ 9,00 ÷ 10. Loại Giỏi: Điểm trung bình chung từ 8,00 ÷ 8,99.
+
+**Câu trả lời:**
+
+```
+Dựa trên Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), mức điểm trung bình chung tương ứng với loại Xuất sắc và Giỏi như sau:
+
+*   **Loại Xuất sắc:** Điểm trung bình chung từ 9,00 ÷ 10.
+*   **Loại Giỏi:** Điểm trung bình chung từ 8,00 ÷ 8,99.
+
+**Nguồn:** Bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang tại đường dẫn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "nguyên văn bảng",
+          "gia_tri": "| **Điểm trung bình chung** | **Mức xếp loại** |\n| :---: | :---: |\n| 9,00 ÷ 10 | Xuất sắc |\n| 8,00 ÷ 8,99 | Giỏi |\n| 7,00 ÷ 7,99 | Khá |\n| 5,00 ÷ 6,99 | Trung bình |\n| 4,00 ÷ 4,99 | Yếu |\n| 0,00 ÷ 3,99 | Kém |"
+        },
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "nằm trong ph
+… (còn 359 ký tự)
+```
+
+</details>
+
+### question-002479 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 27 dòng dữ liệu · lấy đúng mục · đích Regulation1052Article02
+
+**Câu hỏi:** Cho hỏi mình cần tra cứu văn bản tại Điều 2 Quy chế 1052?
+
+**Bộ chấm trích:** Nội dung Điều 2 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) quy định về "Chương trình đào tạo và thời gian đào tạo"
+
+**Câu trả lời:**
+
+```
+Nội dung Điều 2 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) quy định về **"Chương trình đào tạo và thời gian đào tạo"** như sau:
+
+1. **Chương trình đào tạo (CTĐT):** Là một hệ thống các hoạt động giáo dục, đào tạo được thiết kế và tổ chức thực hiện để đạt được các mục tiêu đào tạo, hướng tới cấp một văn bằng cho SV. CTĐT bao gồm mục tiêu, chuẩn đầu ra, khối lượng kiến thức, cấu trúc, nội dung, phương thức dạy học và đánh giá.
+2. **Cấu trúc CTĐT:** CTĐT trình độ đại học gắn với một ngành (đơn ngành) hoặc với một vài ngành (song ngành, ngành chính - ngành phụ, hai văn bằng, đa ngành, liên ngành) và được cấu trúc thành hai khối kiến thức: giáo dục tổng quát và giáo dục chuyên nghiệp.
+3. **Công bố CTĐT:** CTĐT được công bố công khai trước khi tuyển sinh và khi bắt đầu khóa học. Các điều chỉnh về CTĐT nếu có sẽ được Nhà trường công bố trước khi áp dụng.
+4. **Thời gian đào tạo:**
+    * a) Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một CTĐT đại học hình thức chính quy cấp bằng cử nhân là 4 năm, chương trình chuyên sâu đặc thù cấp bằng kỹ sư (gọi tắt là chương trình cấp bằng kỹ sư) là 4,5 năm.
+    * b) Đối với hình thức đào tạo vừa làm vừa học, thời gian theo kế hoạch học tập chuẩn toàn khóa dài hơn tối thiểu 20% so với hệ chính quy của cùng chương trình đào tạo.
+    * c) Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian kế hoạch học tập chuẩn toàn khóa.
+    * d) Thời gian đào tạo và khối lượng tín chỉ của từng chương trình được quy định cụ thể trong CTĐT do Hiệu trưởng ban hành.
+
+**Nguồn:** Điều 2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+**Chi tiết văn bản:** [Xem tại đây](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "áp dụng từ khóa",
+          "gia_tri": 64
+        },
+        {
+          "thuoc_tinh": "hiệu lực từ năm học",
+          "gia_tri": "2025-2026"
+        },
+        {
+          "thuoc_tinh": "trích yếu",
+          "gia_tri": "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"
+        },
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri":
+… (còn 5453 ký tự)
+```
+
+</details>
+
+### question-000297 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 6 dòng dữ liệu · lấy đúng mục · đích AcademicPerformanceTable
+
+**Câu hỏi:** ngưỡnghọc lực
+
+**Bộ chấm trích:** ngưỡng học lực được quy định theo điểm trung bình chung như sau: Xuất sắc: 9,00 ÷ 10... Kém: 0,00 ÷ 3,99
+
+**Câu trả lời:**
+
+```
+Dựa trên bảng xếp loại học lực tại bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), ngưỡng học lực được quy định theo điểm trung bình chung như sau:
+
+*   **Xuất sắc:** 9,00 ÷ 10
+*   **Giỏi:** 8,00 ÷ 8,99
+*   **Khá:** 7,00 ÷ 7,99
+*   **Trung bình:** 5,00 ÷ 6,99
+*   **Yếu:** 4,00 ÷ 4,99
+*   **Kém:** 0,00 ÷ 3,99
+
+Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "bảng 1 khoản 2 Điều 18 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "nguyên văn bảng",
+          "gia_tri": "| **Điểm trung bình chung** | **Mức xếp loại** |\n| :---: | :---: |\n| 9,00 ÷ 10 | Xuất sắc |\n| 8,00 ÷ 8,99 | Giỏi |\n| 7,00 ÷ 7,99 | Khá |\n| 5,00 ÷ 6,99 | Trung bình |\n| 4,00 ÷ 4,99 | Yếu |\n| 0,00 ÷ 3,99 | Kém |"
+        },
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "nằm trong ph
+… (còn 359 ký tự)
+```
+
+</details>
+
+### question-004745 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 29 dòng dữ liệu · lấy đúng mục · đích Regulation1052Article20
+
+**Câu hỏi:** điều 20 quychế 1052 thế nào?
+
+**Bộ chấm trích:** Điều 20 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025
+
+**Câu trả lời:**
+
+```
+Điều 20 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) quy định về **"Cảnh báo kết quả học tập và buộc thôi học"** với các nội dung chi tiết sau:
+
+**1. Cảnh báo kết quả học tập:**
+Sinh viên sẽ nhận được thông tin cảnh báo sau mỗi học kỳ chính trong các trường hợp:
+*   **Số tín chỉ:** Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24.
+*   **Điểm trung bình chung học kỳ:**
+    *   Dưới 4,00 đối với học kỳ đầu khóa học.
+    *   Dưới 4,50 đối với các học kỳ tiếp theo.
+*   **Điểm trung bình tích lũy:**
+    *   Dưới 5,20 đối với sinh viên năm thứ nhất.
+    *   Dưới 5,30 đối với sinh viên năm thứ hai.
+    *   Dưới 5,40 đối với sinh viên năm thứ ba.
+    *   Dưới 5,50 đối với sinh viên các năm tiếp theo.
+
+**2. Buộc thôi học:**
+Sinh viên bị buộc thôi học sau mỗi học kỳ chính nếu:
+*   Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.
+*   Vượt quá thời gian tối đa được phép học tại Trường (quy định tại khoản 4 Điều 2 của Quy chế).
+
+**3. Quyền lợi của sinh viên bị buộc thôi học:**
+Sinh viên thuộc diện bị buộc thôi học có quyền viết đơn (Mẫu số 05 – Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để xem xét chuyển sang chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tại Trường. Việc bảo lưu kết quả học tập (cho các học phần đạt điểm từ 5,0 trở lên) sẽ được Nhà trường xem xét quyết định cho từng trường hợp cụ thể tùy thuộc vào thời gian xin chuyển.
+
+*Nguồn: Điều 20 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025. Chi tiết xem tại: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf*
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Điều 10 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tiêu đề của phần",
+          "gia_tri": "Xóa lớp học phần và mở thêm lớp học phần"
+        },
+        {
+          "thuoc_tinh": "số điều",
+          "gia_tri": 10
+        },
+        {
+          "thuoc_tinh": "nguyên văn",
+          "gia_tri": "1. Xóa lớp học phần: Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.\n2. Mở thêm lớp học phần: Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp
+… (còn 7132 ký tự)
+```
+
+</details>
+
+### question-002478 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 27 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article19Clause02
+
+**Câu hỏi:** mình cần tra cứu văn bản tại khoản 2 Điều 19 Quychế 1052?
+
+**Bộ chấm trích:** 2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học.
+
+**Câu trả lời:**
+
+```
+Tại khoản 2 Điều 19 của Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm theo Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) quy định như sau:
+
+"2. Kết quả học tập trong học kỳ III (học kỳ hè, học kỳ phụ) được gộp vào kết quả học tập trong học kỳ chính ngay trước học kỳ hè để xếp hạng trình độ năm học."
+
+**Nguồn trích dẫn:** Điều 19 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+**Đường dẫn:** https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "áp dụng từ khóa",
+          "gia_tri": 64
+        },
+        {
+          "thuoc_tinh": "hiệu lực từ năm học",
+          "gia_tri": "2025-2026"
+        },
+        {
+          "thuoc_tinh": "trích yếu",
+          "gia_tri": "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"
+        },
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri":
+… (còn 5052 ký tự)
+```
+
+</details>
+
+## tu_choi — 32 câu
 
 *KHÔNG đưa ra được thứ được hỏi, và nói rằng dữ liệu không có nó*
 
@@ -2717,97 +2820,6 @@ Dữ liệu hiện có không chứa chi tiết về các yêu cầu, nội dung
 
 </details>
 
-### question-001792 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 6 dòng dữ liệu · **lấy sai mục** · đích TRKICertificate
-
-**Câu hỏi:** chứng chỉ tiếng Nga này tên đầy đủ sao ta
-
-**Bộ chấm trích:** Dữ liệu hiện có không cung cấp tên đầy đủ (viết bằng chữ) của các tên viết tắt này.
-
-**Câu trả lời:**
-
-```
-Dựa trên dữ liệu từ bảng quy đổi ngoại ngữ tại Phụ lục 2 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), các chứng chỉ tiếng Nga được liệt kê bao gồm:
-
-*   **TEU** (tương ứng Bậc 1)
-*   **TBU** (tương ứng Bậc 2)
-*   **TRKI 1** (tương ứng Bậc 3)
-*   **TRKI 2** (tương ứng Bậc 4)
-*   **TRKI 3** (tương ứng Bậc 5)
-*   **TRKI 4** (tương ứng Bậc 6)
-
-Dữ liệu hiện có không cung cấp tên đầy đủ (viết bằng chữ) của các tên viết tắt này.
-
-Nguồn: [Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "trích dẫn",
-          "gia_tri": "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
-        },
-        {
-          "thuoc_tinh": "nguyên văn bảng",
-          "gia_tri": "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |\n| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |\n| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 |
-… (còn 933 ký tự)
-```
-
-</details>
-
-### question-002472 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 18 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article15Clause02PointA · **ngoài dữ liệu: 15**
-
-**Câu hỏi:** Mình cần tra cứu văn bản tại điểm a khoản 2 Điều 15 Quy chế 1052?
-
-**Bộ chấm trích:** Dữ liệu hiện có về Quy chế đào tạo trình độ đại học ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 không chứa thông tin chi tiết về điểm a khoản 2 Điều 15.
-
-**Câu trả lời:**
-
-```
-Dữ liệu hiện có về Quy chế đào tạo trình độ đại học ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 không chứa thông tin chi tiết về điểm a khoản 2 Điều 15.
-
-Nguồn tham khảo: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "Điều 10 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tiêu đề của phần",
-          "gia_tri": "Xóa lớp học phần và mở thêm lớp học phần"
-        },
-        {
-          "thuoc_tinh": "số điều",
-          "gia_tri": 10
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "1. Xóa lớp học phần: Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.\n2. Mở thêm lớp học phần: Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp
-… (còn 3194 ký tự)
-```
-
-</details>
-
 ### question-002501 · trong_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 0 lần · 0 dòng dữ liệu · **lấy sai mục** · đích UndergraduateLevel
@@ -2835,51 +2847,6 @@ Bạn cần mình tra cứu thông tin cụ thể nào trong các mục trên ho
 
 ```json
 (công cụ không trả về dòng nào)
-```
-
-</details>
-
-### question-002456 · trong_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 18 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article11Clause02 · **ngoài dữ liệu: 11**
-
-**Câu hỏi:** Cho tôi hỏi mình cần tra cứu văn bản tại khoản 2 Điều 11 Quy chế 1052.
-
-**Bộ chấm trích:** Dữ liệu hiện có về Quy chế 1052 (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) không chứa thông tin về khoản 2 Điều 11.
-
-**Câu trả lời:**
-
-```
-Dữ liệu hiện có về Quy chế 1052 (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025) không chứa thông tin về khoản 2 Điều 11.
-
-Hiện tại, tôi chỉ tìm thấy thông tin về Điều 10 của quy chế này liên quan đến việc "Xóa lớp học phần và mở thêm lớp học phần".
-
-Bạn có thể tham khảo toàn văn văn bản tại đường dẫn sau: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "Điều 10 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tiêu đề của phần",
-          "gia_tri": "Xóa lớp học phần và mở thêm lớp học phần"
-        },
-        {
-          "thuoc_tinh": "số điều",
-          "gia_tri": 10
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "1. Xóa lớp học phần: Nhà trường sẽ xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại Điểm b khoản 2 Điều 8. Các trường hợp đặc biệt sẽ do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ.\n2. Mở thêm lớp học phần: Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp
-… (còn 3194 ký tự)
 ```
 
 </details>
@@ -3098,73 +3065,6 @@ Dữ liệu hiện có không chứa thông tin về cơ hội việc làm hoặ
 
 </details>
 
-### question-000708 · trong_pham_vi
-
-> ⚠️ **Đáng ngờ:** chấm TỪ CHỐI nhưng lấy đúng mục và có dữ liệu
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 51 dòng dữ liệu · lấy đúng mục · đích GraduationProjectRegistrationProcedure
-
-**Câu hỏi:** muon dang ky datn thi lien he phong nao?
-
-**Bộ chấm trích:** Dữ liệu hiện có không chứa chi tiết về tên phòng ban cụ thể để nộp đơn hoặc liên hệ cho việc đăng ký đồ án tốt nghiệp.
-
-**Câu trả lời:**
-
-```
-Dựa trên dữ liệu từ Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang, về việc đăng ký đồ án tốt nghiệp (ĐATN), tôi xin thông tin đến bạn như sau:
-
-**1. Điều kiện đăng ký:**
-* Sinh viên phải được xếp hạng năm thứ 4 và đủ điều kiện thực hiện đồ án tốt nghiệp theo quy định của Trường.
-
-**2. Thủ tục thực hiện:**
-* Sinh viên đủ điều kiện cần làm đơn đăng ký thực hiện đồ án tốt nghiệp theo **Mẫu số 02 (Phụ lục 4)**.
-
-**3. Lưu ý:**
-* Sinh viên không đủ điều kiện thực hiện ĐATN phải làm các chuyên đề tốt nghiệp hoặc học các học phần tốt nghiệp tùy theo quy định của chương trình đào tạo.
-
-**Về câu hỏi liên hệ phòng nào:** 
-Dữ liệu hiện có không chứa chi tiết về tên phòng ban cụ thể để nộp đơn hoặc liên hệ cho việc đăng ký đồ án tốt nghiệp.
-
-*(Nguồn: Điều 14 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 - https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)*
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "điểm d khoản 2 Điều 9 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Đăng ký học phần - bước 4"
-        },
-        {
-          "thuoc_tinh": "nội dung bước",
-          "gia_tri": "Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo."
-        },
-        {
-          "thuoc_tinh": "thứ tự bước",
-          "gia_tri": 4
-        }
-      ]
-    },
-    {
-      "trich_dan": "điểm c khoản 2 Điều 9 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Đă
-… (còn 13210 ký tự)
-```
-
-</details>
-
 ### question-006254 · ngoai_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 0 lần · 0 dòng dữ liệu
@@ -3250,58 +3150,6 @@ Về việc ai ký quyết định, dữ liệu hiện có chỉ ghi nhận là 
         {
           "thuoc_tinh": "nộ
 … (còn 5943 ký tự)
-```
-
-</details>
-
-### question-006297 · ngoai_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 18 dòng dữ liệu
-
-**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫm mua bảo hiểm y tế sinh viên ra sao z?
-
-**Bộ chấm trích:** dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang
-
-**Câu trả lời:**
-
-```
-Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang.
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "phương thức 1 Hướng dẫn đóng học phí qua ngân hàng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026",
-      "duong_dan": "https://phongcntt.ntu.edu.vn/thong-bao/thong-bao-cach-thuc-nop-hoc-phi-sinh-vien",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "Truy cập website sinhvien.ntu.edu.vn -> học phí -> đóng học phí qua cổng thanh toán VnPay (miễn phí tài khoản Vietcombank, các ngân hàng khác phí 5.500 đồng/lần đóng). Hoặc thanh toán sử dụng app ngân hàng quét mã QR Code (miễn phí)"
-        },
-        {
-          "thuoc_tinh": "đường dẫn văn bản gốc",
-          "gia_tri": "https://phongcntt.ntu.edu.vn/thong-bao/thong-bao-cach-thuc-nop-hoc-phi-sinh-vien"
-        },
-        {
-          "thuoc_tinh": "trích dẫn",
-          "gia_tri": "phương thức 1 Hướng dẫn đóng học phí qua ngân hàng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026"
-        },
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "phương thức 1 Hướng dẫn đóng học phí"
-        },
-        {
-          "thuoc_tinh": "địa chỉ trang web",
-          "gia_tri": "http://sinhvien.ntu.edu.vn/"
-        },
-        {
-          "thuoc_tinh":
-… (còn 5328 ký tự)
 ```
 
 </details>
@@ -3488,99 +3336,6 @@ Nếu bạn có nhu cầu xin nghỉ học tạm thời, bạn cần:
 
 </details>
 
-### question-006275 · ngoai_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 36 dòng dữ liệu
-
-**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao?
-
-**Bộ chấm trích:** Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên.
-
-**Câu trả lời:**
-
-```
-Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên.
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
-      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Đảm bảo chất lượng và an toàn thực phẩm"
-        },
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"
-        },
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công ngh
-… (còn 10101 ký tự)
-```
-
-</details>
-
-### question-006290 · ngoai_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 18 dòng dữ liệu
-
-**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫn muabảo hiểm y tế sinh viên ra sao?
-
-**Bộ chấm trích:** dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang
-
-**Câu trả lời:**
-
-```
-Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang.
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "phương thức 1 Hướng dẫn đóng học phí qua ngân hàng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026",
-      "duong_dan": "https://phongcntt.ntu.edu.vn/thong-bao/thong-bao-cach-thuc-nop-hoc-phi-sinh-vien",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "nguyên văn",
-          "gia_tri": "Truy cập website sinhvien.ntu.edu.vn -> học phí -> đóng học phí qua cổng thanh toán VnPay (miễn phí tài khoản Vietcombank, các ngân hàng khác phí 5.500 đồng/lần đóng). Hoặc thanh toán sử dụng app ngân hàng quét mã QR Code (miễn phí)"
-        },
-        {
-          "thuoc_tinh": "đường dẫn văn bản gốc",
-          "gia_tri": "https://phongcntt.ntu.edu.vn/thong-bao/thong-bao-cach-thuc-nop-hoc-phi-sinh-vien"
-        },
-        {
-          "thuoc_tinh": "trích dẫn",
-          "gia_tri": "phương thức 1 Hướng dẫn đóng học phí qua ngân hàng của Trường Đại học Nha Trang, truy cập ngày 10/8/2026"
-        },
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "phương thức 1 Hướng dẫn đóng học phí"
-        },
-        {
-          "thuoc_tinh": "địa chỉ trang web",
-          "gia_tri": "http://sinhvien.ntu.edu.vn/"
-        },
-        {
-          "thuoc_tinh":
-… (còn 5328 ký tự)
-```
-
-</details>
-
 ### question-006249 · ngoai_pham_vi
 
 **Tín hiệu tất định:** gọi công cụ 0 lần · 0 dòng dữ liệu
@@ -3639,71 +3394,6 @@ Mời bạn đặt câu hỏi chi tiết hơn!
 
 ```json
 (công cụ không trả về dòng nào)
-```
-
-</details>
-
-### question-006261 · ngoai_pham_vi
-
-**Tín hiệu tất định:** gọi công cụ 1 lần · 55 dòng dữ liệu
-
-**Câu hỏi:** ai ky quyet dinh cho cộng điểm thưởng
-
-**Bộ chấm trích:** tôi không tìm thấy thông tin cụ thể về việc ai là người ký quyết định cho cộng điểm thưởng
-
-**Câu trả lời:**
-
-```
-Dựa trên dữ liệu hiện có, tôi không tìm thấy thông tin cụ thể về việc **ai là người ký quyết định** cho cộng điểm thưởng.
-
-Tuy nhiên, về quy trình xem xét giải quyết, dữ liệu cho biết:
-- Sinh viên có nguyện vọng cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 – Phụ lục 4) kèm minh chứng hợp lệ gửi về **Đơn vị quản lý đào tạo** để được xem xét giải quyết (theo khoản 6 Điều 21 Quy chế đào tạo trình độ đại học ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025).
-- Ngoài ra, có thông tin về việc gửi hồ sơ về **Phòng Đào tạo Đại học** để được xem xét giải quyết trong bước 2 của quy trình miễn học, miễn thi.
-
-Nguồn tham khảo: [Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025](https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf)
-```
-
-<details><summary>Dữ liệu công cụ</summary>
-
-```json
-{
-  "trang_thai": "co_du_lieu",
-  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
-  "nguon": [
-    {
-      "trich_dan": "danh sách đơn vị trên trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026",
-      "duong_dan": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
-      "du_lieu": [
-        {
-          "thuoc_tinh": "tên gọi",
-          "gia_tri": "Phòng Đào tạo Đại học"
-        },
-        {
-          "thuoc_tinh": "website đơn vị",
-          "gia_tri": "https://pdtdaihoc.ntu.edu.vn"
-        },
-        {
-          "thuoc_tinh": "điện thoại",
-          "gia_tri": "0258 3831148"
-        },
-        {
-          "thuoc_tinh": "vị trí",
-          "gia_tri": "Tầng 1, Tòa nhà Hiệu Bộ"
-        },
-        {
-          "thuoc_tinh": "hộp thư",
-          "gia_tri": "daotao@ntu.edu.vn"
-        },
-        {
-          "thuoc_tinh": "địa chỉ",
-          "gia_tri": "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa"
-        }
-      ]
-    },
-    {
-      "trich_dan": "khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%2
-… (còn 11846 ký tự)
 ```
 
 </details>
@@ -4188,37 +3878,22 @@ Bạn có thể tham khảo chi tiết tại các đường dẫn sau:
 
 </details>
 
-## thieu — 3 câu
+### question-001792 · trong_pham_vi
 
-*Đưa ra được một phần, phần đã đưa thì đúng*
+**Tín hiệu tất định:** gọi công cụ 1 lần · 6 dòng dữ liệu · **lấy sai mục** · đích TRKICertificate
 
-### question-003012 · trong_pham_vi
+**Câu hỏi:** chứng chỉ tiếng Nga này tên đầy đủ sao ta
 
-**Tín hiệu tất định:** gọi công cụ 1 lần · 12 dòng dữ liệu · lấy đúng mục · đích GraduationClassificationTable
-
-**Câu hỏi:** Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?
-
-**Bộ chấm trích:** Dữ liệu hiện có không chứa thông tin quy định chi tiết về nội dung hay thủ tục cấp bảng điểm toàn khóa.
+**Bộ chấm trích:** dữ liệu hiện có không cung cấp tên đầy đủ (viết chi tiết) của các tên viết tắt này.
 
 **Câu trả lời:**
 
 ```
-Dựa trên dữ liệu từ Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), tôi xin trả lời như sau:
+Dựa trên bảng quy đổi ngoại ngữ tại Phụ lục 2 Quy chế đào tạo trình độ đại học (ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025), các chứng chỉ tiếng Nga được ghi nhận bao gồm: **TEU**, **TBU** và **TRKI** (từ TRKI 1 đến TRKI 4).
 
-**1. Về danh hiệu (xếp loại) tốt nghiệp:**
-Việc xếp loại tốt nghiệp được căn cứ vào điểm trung bình chung tích lũy của toàn khóa theo bảng sau (tại bảng 1 khoản 2 Điều 23):
+Tuy nhiên, dữ liệu hiện có không cung cấp tên đầy đủ (viết chi tiết) của các tên viết tắt này.
 
-| Điểm trung bình chung tích lũy toàn khóa | Xếp loại |
-| :---: | :---: |
-| 9,00 ÷ 10 | Xuất sắc |
-| 8,00 ÷ 8,99 | Giỏi |
-| 7,00 ÷ 7,99 | Khá |
-| 5,50 ÷ 6,99 | Trung bình |
-
-**2. Về bảng điểm toàn khóa:**
-Dữ liệu hiện có không chứa thông tin quy định chi tiết về nội dung hay thủ tục cấp bảng điểm toàn khóa.
-
-*Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf*
+Nguồn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
 ```
 
 <details><summary>Dữ liệu công cụ</summary>
@@ -4229,20 +3904,332 @@ Dữ liệu hiện có không chứa thông tin quy định chi tiết về nộ
   "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
   "nguon": [
     {
-      "trich_dan": "bảng 1 Phụ lục 1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "trich_dan": "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
       "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
       "du_lieu": [
         {
           "thuoc_tinh": "trích dẫn",
-          "gia_tri": "bảng 1 Phụ lục 1 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+          "gia_tri": "bảng 5 Phụ lục 2 mục II Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
         },
         {
           "thuoc_tinh": "nguyên văn bảng",
-          "gia_tri": "| **TT** | **Học phần** | **Số lượng sinh viên** | |\n| :---: | :--- | :---: | :---: |\n| | | **Tối thiểu** | **Tối đa** |\n| 1 | Giáo dục tổng quát | 50 | 100 |\n| 2 | Lý luận chính trị | 80 | * |\n| 3 | - Ngoại ngữ B1.1, B1.2;<br>- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |\n| 4 | - Tiếng anh chuyên ngành | 50 | 60 |\n| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |\n| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |\n| 7 | Giáo dục thể chất | 60 | 80 (LT) |\n| | | 45 | 60 (TH) |\n| 8
-… (còn 2542 ký tự)
+          "gia_tri": "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |\n| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |\n| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 |
+… (còn 933 ký tự)
 ```
 
 </details>
+
+### question-002472 · trong_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 15 dòng dữ liệu · **lấy sai mục** · đích Regulation1052Article15Clause02PointA · **ngoài dữ liệu: 15**
+
+**Câu hỏi:** Mình cần tra cứu văn bản tại điểm a khoản 2 Điều 15 Quy chế 1052?
+
+**Bộ chấm trích:** Dữ liệu hiện có không chứa chi tiết nội dung của điểm a khoản 2 Điều 15.
+
+**Câu trả lời:**
+
+```
+Dữ liệu hiện có về **Quy chế đào tạo trình độ đại học ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025** chỉ cung cấp các thông tin chung như tên gọi, ngày ban hành, hiệu lực từ năm học 2025-2026 và đường dẫn văn bản.
+
+Dữ liệu hiện có không chứa chi tiết nội dung của **điểm a khoản 2 Điều 15**. Bạn có thể xem chi tiết tại đường dẫn văn bản gốc sau: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "đường dẫn văn bản gốc",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf"
+        },
+        {
+          "thuoc_tinh": "áp dụng từ khóa",
+          "gia_tri": 64
+        },
+        {
+          "thuoc_tinh": "hiệu lực từ năm học",
+          "gia_tri": "2025-2026"
+        },
+        {
+          "thuoc_tinh": "trích yếu",
+          "gia_tri": "Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang"
+        },
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri":
+… (còn 1673 ký tự)
+```
+
+</details>
+
+### question-000708 · trong_pham_vi
+
+> ⚠️ **Đáng ngờ:** chấm TỪ CHỐI nhưng lấy đúng mục và có dữ liệu
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 25 dòng dữ liệu · lấy đúng mục · đích GraduationProjectRegistrationProcedure
+
+**Câu hỏi:** muon dang ky datn thi lien he phong nao?
+
+**Bộ chấm trích:** dữ liệu hiện có không chứa chi tiết về việc cần liên hệ với phòng nào để nộp đơn hoặc đăng ký
+
+**Câu trả lời:**
+
+```
+Dựa trên quy chế đào tạo của Trường Đại học Nha Trang, về việc đăng ký đồ án tốt nghiệp (ĐATN), dữ liệu hiện có ghi nhận như sau:
+
+*   **Thủ tục:** Sinh viên đủ điều kiện thực hiện ĐATN phải làm đơn đăng ký thực hiện đồ án tốt nghiệp theo **Mẫu số 02 (Phụ lục 4)**.
+*   **Điều kiện:** Sinh viên được xếp hạng năm thứ 4 và đủ điều kiện thực hiện ĐATN theo quy định của Trường.
+
+Tuy nhiên, dữ liệu hiện có **không chứa chi tiết về việc cần liên hệ với phòng nào** để nộp đơn hoặc đăng ký.
+
+**Nguồn trích dẫn:**
+- Điều 14 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025.
+- Đường dẫn: https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "Hướng dẫn đóng học phí qua cổng thanh toán VNPAY-Vietcombank của Trường Đại học Nha Trang, truy cập ngày 10/8/2026",
+      "duong_dan": "https://daotao.ntu.edu.vn/DongHocPhi_VCB_2021.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "địa chỉ trang web",
+          "gia_tri": "https://daotao.ntu.edu.vn/DongHocPhi_VCB_2021.pdf"
+        },
+        {
+          "thuoc_tinh": "ngày truy cập",
+          "gia_tri": "2026-08-10"
+        },
+        {
+          "thuoc_tinh": "trích yếu",
+          "gia_tri": "Hướng dẫn đóng học phí qua cổng thanh toán trực tuyến VNPAY - Vietcombank"
+        },
+        {
+          "thuoc_tinh": "trích dẫn",
+          "gia_tri": "Hướng dẫn đóng học phí qua cổng thanh toán VNPAY-Vietcombank của Trường Đại học Nha Trang, truy cập ngày 10/8/2026"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Hướng dẫn đóng học phí qua cổng thanh toán VNPAY - Vietcombank"
+        }
+      ]
+    },
+    {
+      "trich_dan": "khoản 2 Điều 14 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-
+… (còn 4644 ký tự)
+```
+
+</details>
+
+### question-006297 · ngoai_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 8 dòng dữ liệu
+
+**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫm mua bảo hiểm y tế sinh viên ra sao z?
+
+**Bộ chấm trích:** Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên.
+
+**Câu trả lời:**
+
+```
+Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên.
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
+      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Đảm bảo chất lượng và an toàn thực phẩm"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"
+        },
+        {
+          "thuoc_tinh": "nguyên văn",
+          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công ngh
+… (còn 3570 ký tự)
+```
+
+</details>
+
+### question-006275 · ngoai_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 8 dòng dữ liệu
+
+**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫn mua bảo hiểm y tế sinh viên ra sao?
+
+**Bộ chấm trích:** dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên tại Trường Đại học Nha Trang
+
+**Câu trả lời:**
+
+```
+Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên tại Trường Đại học Nha Trang.
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
+      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Đảm bảo chất lượng và an toàn thực phẩm"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"
+        },
+        {
+          "thuoc_tinh": "nguyên văn",
+          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công ngh
+… (còn 3570 ký tự)
+```
+
+</details>
+
+### question-006290 · ngoai_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 8 dòng dữ liệu
+
+**Câu hỏi:** Xin cho biết Trường Đại học Nha Trang hướng dẫn muabảo hiểm y tế sinh viên ra sao?
+
+**Bộ chấm trích:** dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang
+
+**Câu trả lời:**
+
+```
+Rất tiếc, dữ liệu hiện có không chứa thông tin về hướng dẫn mua bảo hiểm y tế cho sinh viên của Trường Đại học Nha Trang.
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "bảng 1 Phụ lục II Quyết định 729/QĐ-ĐHNT ngày 28/5/2025 của Hiệu trưởng Trường Đại học Nha Trang về mức học phí năm học 2025-2026",
+      "duong_dan": "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/693/q%C4%91-729-(2025).pdf.pdf",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Đảm bảo chất lượng và an toàn thực phẩm"
+        },
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"
+        },
+        {
+          "thuoc_tinh": "nguyên văn",
+          "gia_tri": "TT — Tên ngành đào tạo\nI — Khối ngành III: Kinh doanh và quản lý, pháp luật\n1 — Kinh doanh thương mại\n2 — Marketing\n3 — Quản trị kinh doanh\n4 — Kế toán\n5 — Kiểm toán\n6 — Tài chính - Ngân hàng\n7 — Hệ thống thông tin quản lý\n8 — Luật\nII — Khối ngành IV: Khoa học sự sống, khoa học tự nhiên\n1 — Công nghệ sinh học\nIII — Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản\n1 — Công nghệ thông tin\n2 — Kỹ thuật cơ khí\n3 — Công ngh
+… (còn 3570 ký tự)
+```
+
+</details>
+
+### question-006261 · ngoai_pham_vi
+
+**Tín hiệu tất định:** gọi công cụ 1 lần · 32 dòng dữ liệu
+
+**Câu hỏi:** ai ky quyet dinh cho cộng điểm thưởng
+
+**Bộ chấm trích:** Dữ liệu hiện có không nêu rõ cụ thể cá nhân hay chức danh nào là người ký quyết định cho cộng điểm thưởng.
+
+**Câu trả lời:**
+
+```
+Dựa trên dữ liệu từ Quy chế đào tạo trình độ đại học của Trường Đại học Nha Trang, tôi xin trả lời như sau:
+
+Dữ liệu hiện có không nêu rõ cụ thể cá nhân hay chức danh nào là người ký quyết định cho cộng điểm thưởng. Tuy nhiên, về quy trình thực hiện, sinh viên có nguyện vọng cộng điểm thưởng cần:
+- Nộp đơn theo **Mẫu số 07 (Phụ lục 4)** kèm theo minh chứng hợp lệ gửi về **Đơn vị quản lý đào tạo** để được xem xét giải quyết (theo khoản 6 Điều 21).
+
+Nguồn: *khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025* (https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%20trinh%20do%20dai%20hoc%20cua%20Truong%20DHNT.pdf).
+```
+
+<details><summary>Dữ liệu công cụ</summary>
+
+```json
+{
+  "trang_thai": "co_du_lieu",
+  "huong_dan": "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi không xuất hiện, dữ liệu hiện có không chứa chi tiết đó; không tra lại cùng chủ đề. Mỗi mục trong nguon gồm trích dẫn, đường dẫn, và các dữ kiện mà nguồn đó khẳng định.",
+  "nguon": [
+    {
+      "trich_dan": "danh sách đơn vị trên trang Cơ cấu tổ chức - Khối tham mưu, quản lý của Trường Đại học Nha Trang, truy cập ngày 14/8/2026",
+      "duong_dan": "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly",
+      "du_lieu": [
+        {
+          "thuoc_tinh": "tên gọi",
+          "gia_tri": "Phòng Đào tạo Đại học"
+        },
+        {
+          "thuoc_tinh": "website đơn vị",
+          "gia_tri": "https://pdtdaihoc.ntu.edu.vn"
+        },
+        {
+          "thuoc_tinh": "điện thoại",
+          "gia_tri": "0258 3831148"
+        },
+        {
+          "thuoc_tinh": "vị trí",
+          "gia_tri": "Tầng 1, Tòa nhà Hiệu Bộ"
+        },
+        {
+          "thuoc_tinh": "hộp thư",
+          "gia_tri": "daotao@ntu.edu.vn"
+        },
+        {
+          "thuoc_tinh": "địa chỉ",
+          "gia_tri": "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa"
+        }
+      ]
+    },
+    {
+      "trich_dan": "khoản 6 Điều 21 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+      "duong_dan": "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025)%20ban%20hanh%20quy%20che%20dao%20tao%2
+… (còn 5698 ký tự)
+```
+
+</details>
+
+## thieu — 2 câu
+
+*Đưa ra được một phần, phần đã đưa thì đúng*
 
 ### question-003434 · trong_pham_vi
 

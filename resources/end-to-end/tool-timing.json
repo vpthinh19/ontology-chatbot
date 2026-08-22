@@ -1,24 +1,24 @@
 {
   "so_luot": 76,
-  "tu_khoa_moi_luot": 2.46,
+  "tu_khoa_moi_luot": 2.49,
   "sinh_truy_van": {
     "trung_vi_ms": 3.9,
-    "p95_ms": 5.7,
+    "p95_ms": 5.1,
     "mau": 76
   },
   "chay_tren_do_thi": {
-    "trung_vi_ms": 17.5,
-    "p95_ms": 1510.6,
+    "trung_vi_ms": 17.6,
+    "p95_ms": 1530.6,
     "mau": 76
   },
   "ca_cong_cu": {
-    "trung_vi_ms": 22.5,
-    "p95_ms": 1514.4,
+    "trung_vi_ms": 22.6,
+    "p95_ms": 1535.5,
     "mau": 76
   },
   "quy_ve_mot_tu_khoa": {
     "trung_vi_ms": 1.8,
-    "p95_ms": 3.5,
+    "p95_ms": 2.7,
     "mau": 76
   }
 }

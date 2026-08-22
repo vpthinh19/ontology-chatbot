@@ -16,8 +16,8 @@ hiện giao tiếp, gọi công cụ và diễn đạt dữ kiện trả về.
 
 Năm mô hình được đánh giá trên 6.313 câu hỏi: bốn bộ mã hoá văn bản đã tiền huấn
 luyện, và một mốc so sánh chỉ đếm tần suất cụm ký tự. Trên 390 câu của tập đánh giá
-độc lập, mô hình đa ngữ XLM-R base chọn đúng nhãn ở **86,9%** số câu, cao hơn mốc so
-sánh 6,6 điểm phần trăm.
+độc lập, mô hình đa ngữ XLM-R base chọn đúng nhãn ở **85,1%** số câu, cao hơn mốc so
+sánh 4,8 điểm phần trăm.
 
 Khoảng cách giữa các mô hình tập trung ở những nhãn có rất ít câu huấn luyện: 57
 trong 344 nhãn có dưới năm câu, và ở nhóm hiếm nhất, mô hình tốt nhất giữ được 75%
@@ -296,23 +296,26 @@ Kết quả trên 390 câu `test` với 344 nhãn:
 
 | Mô hình | Accuracy | Precision macro | Recall macro | F1 macro | F1 weighted |
 |---|---:|---:|---:|---:|---:|
-| **XLM-R base** | **86,9%** | **81,5%** | **85,5%** | **82,3%** | **84,9%** |
-| BamiBERT | 84,4% | 79,6% | 83,2% | 80,4% | 83,1% |
-| PhoBERT-v2 | 81,8% | 73,0% | 79,1% | 74,5% | 79,1% |
-| ViSoBERT | 80,3% | 76,2% | 81,8% | 77,5% | 78,2% |
+| **XLM-R base** | **85,1%** | **78,2%** | **83,4%** | **79,7%** | **82,6%** |
+| BamiBERT | 83,6% | 78,8% | 84,1% | 80,1% | 82,0% |
+| ViSoBERT | 82,1% | 76,9% | 81,6% | 77,8% | 80,3% |
+| PhoBERT-v2 | 80,5% | 74,4% | 79,5% | 75,6% | 78,5% |
 | TF-IDF + LinearSVC | 80,3% | 74,4% | 79,5% | 75,6% | 78,3% |
 
-XLM-R cao hơn baseline 6,6 điểm accuracy và 6,7 điểm F1 macro. Phân tích theo
+XLM-R cao hơn baseline 4,8 điểm accuracy và 4,1 điểm F1 macro. Phân tích theo
 tần suất nhãn cho thấy phần lớn chênh lệch xuất hiện ở các nhãn hiếm.
+
+Khoảng cách giữa bốn bộ mã hoá nhỏ hơn độ dao động giữa hai lượt huấn luyện; xem
+mục 10 trước khi đọc thứ hạng từ hạng hai trở xuống.
 
 Tách theo phạm vi câu hỏi:
 
 | Mô hình | Trong phạm vi<br>(341 câu) | Ngoài phạm vi<br>(49 câu) | Thời gian huấn luyện |
 |---|---:|---:|---:|
-| XLM-R base | 87,7% <br><sub>299/341</sub> | 81,6% <br><sub>40/49</sub> | 177 s |
-| BamiBERT | 85,0% <br><sub>290/341</sub> | 79,6% <br><sub>39/49</sub> | 179 s |
-| PhoBERT-v2 | 81,5% <br><sub>278/341</sub> | 83,7% <br><sub>41/49</sub> | 175 s |
-| ViSoBERT | 84,5% <br><sub>288/341</sub> | 51,0% <br><sub>25/49</sub> | 236 s |
+| XLM-R base | 86,2% <br><sub>294/341</sub> | 77,6% <br><sub>38/49</sub> | 186 s |
+| BamiBERT | 86,2% <br><sub>294/341</sub> | 65,3% <br><sub>32/49</sub> | 182 s |
+| ViSoBERT | 84,2% <br><sub>287/341</sub> | 67,3% <br><sub>33/49</sub> | 240 s |
+| PhoBERT-v2 | 81,8% <br><sub>279/341</sub> | 71,4% <br><sub>35/49</sub> | 181 s |
 | TF-IDF + LinearSVC | 82,7% <br><sub>282/341</sub> | 63,3% <br><sub>31/49</sub> | 4 s |
 
 Hai cột phản ánh hai phía của quyết định từ chối và cần được đọc riêng. Nhóm ngoài
@@ -325,10 +328,10 @@ thứ hạng mô hình theo khả năng từ chối.
 
 | Mô hình | 1–2 câu | 3–4 câu | 5–9 câu | 10–19 câu | ≥20 câu |
 |---|---:|---:|---:|---:|---:|
-| XLM-R base | 75% | 80% | 78% | 92% | 88% |
-| BamiBERT | 50% | 40% | 78% | 89% | 85% |
-| PhoBERT-v2 | 0% | 20% | 68% | 87% | 89% |
-| ViSoBERT | 75% | 60% | 76% | 88% | 76% |
+| XLM-R base | 75% | 40% | 79% | 89% | 87% |
+| BamiBERT | 50% | 40% | 76% | 90% | 83% |
+| ViSoBERT | 75% | 60% | 76% | 89% | 79% |
+| PhoBERT-v2 | 0% | 20% | 67% | 89% | 83% |
 | TF-IDF + LinearSVC | 0% | 60% | 78% | 82% | 83% |
 
 Chênh lệch lớn nhất xuất hiện ở nhóm nhãn có 1–2 mẫu huấn luyện. Ở các nhóm còn
@@ -353,31 +356,32 @@ Kết quả của XLM-R trên `test`:
 
 | Lĩnh vực | Accuracy | Số câu |
 |---|---:|---:|
-| Thủ tục học vụ | 91,8% | 49 |
-| Biểu mẫu | 91,7% | 48 |
+| Chứng chỉ ngoại ngữ | 93,5% | 31 |
+| Thủ tục học vụ | 89,8% | 49 |
 | Văn bản và điều khoản | 87,7% | 57 |
-| Chứng chỉ ngoại ngữ | 87,1% | 31 |
-| Quy tắc học vụ | 86,3% | 131 |
-| Ngoài phạm vi | 81,6% | 49 |
-| Học phí | 80,0% | 25 |
+| Biểu mẫu | 87,5% | 48 |
+| Quy tắc học vụ | 84,7% | 131 |
+| Ngoài phạm vi | 77,6% | 49 |
+| Học phí | 72,0% | 25 |
 
 Nhóm Học phí có 25 câu; một lỗi làm thay đổi 4,0 điểm phần trăm, nên so sánh theo
 lĩnh vực cần được diễn giải thận trọng. Nhóm Quy tắc học vụ có 131 câu và đạt
-86,3%, gần accuracy tổng thể.
+84,7%, gần accuracy tổng thể.
 
 ### 7.4 Kết quả theo cách hỏi
 
 | Mô hình | Trang trọng | Trung tính | Thân mật | Gõ nhiễu |
 |---|---:|---:|---:|---:|
-| **XLM-R base** | **94,9%** | **93,9%** | **85,6%** | **72,9%** |
-| BamiBERT | 92,9% | 92,9% | 81,4% | 69,8% |
-| PhoBERT-v2 | 89,8% | 86,9% | 78,4% | 71,9% |
-| ViSoBERT | 86,7% | 88,9% | 80,4% | 64,6% |
-| TF-IDF + LinearSVC | 85,7% | 85,9% | 77,3% | 71,9% |
+| **XLM-R base** | **94,9%** | **91,9%** | **83,5%** | 69,8% |
+| BamiBERT | 92,9% | 91,9% | 78,4% | 70,8% |
+| ViSoBERT | 90,8% | 88,9% | 78,4% | 69,8% |
+| PhoBERT-v2 | 87,8% | 86,9% | 75,3% | **71,9%** |
+| TF-IDF + LinearSVC | 85,7% | 85,9% | 77,3% | **71,9%** |
 
 Ở cả năm mô hình, accuracy thấp nhất ở nhóm gõ nhiễu; chênh lệch trang trọng–gõ
-nhiễu của XLM-R là 22,0 điểm phần trăm. Baseline đạt 71,9% ở nhóm gõ nhiễu, bằng
-PhoBERT và thấp hơn XLM-R 1,0 điểm.
+nhiễu của XLM-R là 25,1 điểm phần trăm. Ở riêng nhóm gõ nhiễu, baseline đạt 71,9%,
+cao hơn cả bốn bộ mã hoá — nhóm này là chỗ mô hình được tiền huấn luyện không mang
+lại lợi thế.
 
 ### 7.5 Độ chính xác câu trả lời `end-to-end`
 
@@ -396,15 +400,15 @@ Bốn kiểm tra tất định trên 61 câu trong phạm vi:
 | Tiêu chí | Kết quả |
 |---|---:|
 | Gọi công cụ trước khi trả lời | 93,4% <br><sub>57/61</sub> |
-| Lấy đúng mục trong đồ thị | 77,0% <br><sub>47/61</sub> |
-| Không nêu số hoặc tên ngoài dữ liệu vừa tra | 95,1% <br><sub>58/61</sub> |
-| **Đúng mục và bám dữ liệu đồng thời** | **75,4%** <br><sub>46/61</sub> |
+| Lấy đúng mục trong đồ thị | 78,7% <br><sub>48/61</sub> |
+| Không nêu số hoặc tên ngoài dữ liệu vừa tra | 96,7% <br><sub>59/61</sub> |
+| **Đúng mục và bám dữ liệu đồng thời** | **77,0%** <br><sub>47/61</sub> |
 
 Với câu ontology không trả lời được:
 
 | Nhóm | Nói rõ dữ liệu không có |
 |---|---:|
-| 14 câu ngoài phạm vi | 57,1% <br><sub>8/14</sub> |
+| 14 câu ngoài phạm vi | 50,0% <br><sub>7/14</sub> |
 | 10 câu chạm khoảng trống ontology | 90,0% <br><sub>9/10</sub> |
 
 Cột này dò theo cụm từ chối trong câu trả lời nên chỉ bắt được cách nói đã liệt kê;
@@ -415,16 +419,16 @@ công cụ và câu trả lời, xếp vào năm mức:
 
 | Nhóm câu hỏi | Hành vi đúng | Tỷ lệ đạt |
 |---|---|---:|
-| 61 câu trong phạm vi | đưa ra được thứ được hỏi | **75,4%** <br><sub>46/61</sub> |
+| 61 câu trong phạm vi | đưa ra được thứ được hỏi | **78,7%** <br><sub>48/61</sub> |
 | 24 câu không trả lời được | từ chối | **87,5%** <br><sub>21/24</sub> |
 
 Phân bố đầy đủ:
 
 | Mức | Trong phạm vi<br>(61 câu) | Không trả lời được<br>(24 câu) |
 |---|---:|---:|
-| đúng | 46 | 3 |
-| từ chối | 12 | 21 |
-| thiếu | 3 | 0 |
+| đúng | 48 | 3 |
+| từ chối | 11 | 21 |
+| thiếu | 2 | 0 |
 | sai | 0 | 0 |
 | lạc đề | 0 | 0 |
 
@@ -446,7 +450,7 @@ Phép đo trên 85 câu bao gồm thời gian gọi LLM qua mạng:
 | Thống kê | Giây |
 |---|---:|
 | Trung vị | **2,5** |
-| p95 | 4,7 |
+| p95 | 4,8 |
 | Dài nhất | 6,9 |
 | Ngắn nhất | 0,7 |
 
@@ -456,9 +460,9 @@ Trung vị với tra cứu là 2,6 giây, so với 1,2 giây khi không tra cứ
 
 | Giai đoạn | Trung vị | p95 |
 |---|---:|---:|
-| Chọn truy vấn | **3,9 ms** | 5,7 ms |
-| Chạy truy vấn trên đồ thị | 17,5 ms | 1.510,6 ms |
-| Toàn bộ công cụ | 22,5 ms | 1.514,4 ms |
+| Chọn truy vấn | **3,9 ms** | 5,1 ms |
+| Chạy truy vấn trên đồ thị | 17,6 ms | 1.530,6 ms |
+| Toàn bộ công cụ | 22,6 ms | 1.535,5 ms |
 
 Tầng chọn truy vấn tốn **3,9 ms**, tức khoảng 0,16% thời gian phản hồi. Toàn bộ công
 cụ, gồm cả việc chạy SPARQL trên đồ thị, chiếm chưa tới 1%. Phần còn lại là LLM đọc
@@ -480,23 +484,23 @@ Hai tầng có thể sai độc lập: tầng tra cứu chọn nhầm nhãn, ho�
 
 ![Ma trận nhầm lẫn theo nhóm câu hỏi; nhãn thanh toán được diễn giải là “Phí theo phương thức thanh toán” và “Thông tin phương thức thanh toán”](docs/images/confusion-matrix.png)
 
-XLM-R sai 51/390 câu `test`; trong số đó, 42 lỗi đổi nhóm câu hỏi và 9 lỗi chọn
+XLM-R sai 58/390 câu `test`; trong số đó, 48 lỗi đổi nhóm câu hỏi và 10 lỗi chọn
 sai thực thể trong cùng nhóm.
 
 Sáu trường hợp tiêu biểu:
 
 | Câu hỏi | Đích đúng | Mô hình chọn |
 |---|---|---|
-| điểm đã đạt muốn học lại cho cao hơn sao ạ | Học cải thiện điểm | Học lại học phần |
-| rot mon thi dang ky hoc lai o ky sau sao vay | Học lại học phần | Mục tải biểu mẫu |
 | nganh co khi goi sao | Ngành Kỹ thuật cơ khí | Bảng danh mục ngành |
-| co nhung dieu gi can hieu khi nhac toi tin chi z? | Khái niệm tín chỉ | Giảng viên học phần |
-| xin tot nghiep som thi nop don cho phong nao vay a | Thủ tục xét tốt nghiệp sớm | *từ chối* |
-| muon dang ky datn thi lien he phong nao? | Thủ tục đăng ký đồ án | *từ chối* |
+| nganh thuy san ten j | Ngành Công nghệ chế biến thuỷ sản | Ngành Nuôi trồng thuỷ sản |
+| nganh ky thuat co dien tu | Ngành Kỹ thuật cơ điện tử | Ngành Kỹ thuật điện |
+| hp ny la gi | Học phần tự chọn | Học phần điều kiện |
+| tg dt chuan toan khoa | Thời gian đào tạo chuẩn | Khoa hoặc viện đào tạo |
+| meo hoc tieng nhat nhanh? | *từ chối* | Bảng quy đổi chứng chỉ tiếng Anh |
 
-Hai nhãn “Học lại học phần” và “Học cải thiện điểm” có từ vựng chồng lấp trong
-câu hỏi, dẫn đến nhầm lẫn. Một số lỗi khác nhầm giữa thực thể và bảng chứa nó,
-hoặc từ chối câu viết tắt không dấu.
+Phần lớn ví dụ ở trên là câu gõ tắt không dấu, đúng nhóm có accuracy thấp nhất ở
+§7.4. Ba dạng lặp lại: nhầm một ngành với ngành khác cùng lĩnh vực, nhầm thực thể
+với bảng danh mục chứa nó, và nhận câu lẽ ra phải từ chối vào một bảng quy đổi.
 
 ![Không gian biểu diễn câu hỏi trên tập test, chiếu xuống hai chiều bằng UMAP](docs/images/umap.png)
 
@@ -562,8 +566,16 @@ nhãn giảm từ 566 xuống 344 và tỷ lệ nhãn có dưới năm mẫu hu�
 xuống 17%. Hệ quả là truy vấn ở cấp Điểm có thể trả về toàn bộ Điều, với trung vị
 10 dòng; trích dẫn vẫn định vị dữ kiện ở cấp Điểm.
 
-**Thiếu ước lượng biến thiên.** Mỗi mô hình được huấn luyện một lần; do đó chưa
-thể ước lượng khoảng tin cậy hoặc kiểm định các chênh lệch nhỏ.
+**Chênh lệch nhỏ giữa các bộ mã hoá không đọc được thành khác biệt thật.** Bốn bộ
+mã hoá được huấn luyện hai lượt trên hai bản `train` chênh nhau 5 dòng, tức 0,09%.
+Mỗi mô hình đổi dự đoán ở 28–42 trong 390 câu `test` (7–11%), trong khi accuracy chỉ
+xê dịch 0,8–1,8 điểm phần trăm vì các lỗi mới và lỗi được sửa gần bù nhau. Baseline
+đếm tần suất cụm ký tự đổi 0 câu ở cùng phép thử, nên mức xê dịch này đến từ quá
+trình huấn luyện chứ không từ năm dòng dữ liệu.
+
+Hệ quả: XLM-R đứng đầu và BamiBERT đứng thứ hai ở cả hai lượt, nhưng thứ tự các vị
+trí sau đó đổi chỗ giữa hai lượt. Chênh lệch cỡ hai điểm phần trăm giữa các bộ mã
+hoá nằm trong mức xê dịch này. Hai lượt chạy chưa đủ để dựng khoảng tin cậy.
 
 **Nhãn chuẩn chỉ công nhận một đáp án.** Một câu hỏi có thể được trả lời bằng
 nhiều truy vấn thu được dữ kiện tương đương, nhưng phép chấm nhãn chỉ công nhận
@@ -585,8 +597,8 @@ hợp sai nhãn.
 phần chấm chất lượng do mô hình ngôn ngữ lớn thực hiện và chưa được đối chứng với
 người chấm.
 
-Trên `test`, XLM-R không từ chối đúng 9/49 câu ngoài phạm vi, tương ứng 18,4%;
-Học phí có accuracy thấp nhất trong bảy lĩnh vực, đạt 80,0%.
+Trên `test`, XLM-R không từ chối đúng 11/49 câu ngoài phạm vi, tương ứng 22,4%;
+Học phí có accuracy thấp nhất trong bảy lĩnh vực, đạt 72,0%.
 
 ---
 
