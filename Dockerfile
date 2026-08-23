@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---------- builder ----------
-FROM python:3.12-slim AS builder
+FROM python:3.14-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /uvx /bin/
 WORKDIR /app
@@ -39,7 +39,7 @@ shutil.copytree(root / path, '/app/classifier-model')"
 
 
 # ---------- runtime ----------
-FROM python:3.12-slim AS runtime
+FROM python:3.14-slim AS runtime
 
 # Vá các gói hệ điều hành trước khi đóng ảnh. Ảnh nền được dựng theo chu kỳ riêng
 # nên nó luôn trễ hơn kho bản vá của bản phân phối vài tuần; không nâng ở đây thì
