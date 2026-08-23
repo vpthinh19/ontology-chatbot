@@ -5,6 +5,14 @@ __pycache__/
 .pytest_cache/
 *.pyc
 
+# Frontend Vite: phụ thuộc, bản build và dấu vết kiểm thử trình duyệt đều dựng lại được.
+/webui/node_modules/
+/webui/dist/
+/webui/test-results/
+/webui/playwright-report/
+/webui/.env*.local
+/test-results/
+
 .env
 .claude/
 .codex/

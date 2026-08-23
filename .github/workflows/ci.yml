@@ -20,10 +20,17 @@ env:
 
 jobs:
   test:
-    name: pytest
+    name: Backend and frontend tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: webui/package-lock.json
 
       - name: Set up uv
         uses: astral-sh/setup-uv@v7
@@ -36,6 +43,16 @@ jobs:
 
       - name: Run tests
         run: uv run pytest -q
+
+      - name: Install frontend dependencies and browser
+        working-directory: webui
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Build and test the frontend
+        working-directory: webui
+        run: npm test
 
   check-version:
     name: Detect version bump
@@ -76,6 +93,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Reclaim disk for the CUDA image
+        run: sh .github/scripts/prepare-runner-disk.sh
+
       - uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
@@ -104,10 +124,23 @@ jobs:
           load: true
           tags: ${{ env.IMAGE }}:${{ env.VERSION }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # Cache lớp cuối là đủ cho release; ``mode=max`` còn lưu toàn bộ
+          # builder CUDA và dễ chạm hạn mức cache 10 GB của repository.
+          cache-to: type=gha,mode=min
           build-args: |
             HF_REPO=${{ steps.model.outputs.repo }}
             HF_REVISION=${{ steps.model.outputs.revision }}
+
+      - name: Release BuildKit cache after loading the image
+        run: |
+          docker buildx du
+          docker buildx prune --all --force
+          docker image inspect ${{ env.IMAGE }}:${{ env.VERSION }} >/dev/null
+          docker system df
+          df -h /
+
+      - name: Verify the official CUDA runtime
+        run: sh .github/scripts/verify-cuda-runtime.sh ${{ env.IMAGE }}:${{ env.VERSION }}
 
       - name: Smoke test the runtime image
         run: |
@@ -123,12 +156,13 @@ jobs:
             --env ONTCHATBOT_DEVICE=cpu \
             --publish 127.0.0.1:8000:8000 \
             "${{ env.IMAGE }}:${{ env.VERSION }}"
+          # shellcheck disable=SC2329  # Hàm được gọi gián tiếp bởi trap EXIT.
           cleanup() {
             docker logs "$CONTAINER" || true
             docker rm --force "$CONTAINER" >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
-          for attempt in $(seq 1 60); do
+          for _ in $(seq 1 60); do
             if curl --fail --silent http://127.0.0.1:8000/healthz >/dev/null; then
               exit 0
             fi

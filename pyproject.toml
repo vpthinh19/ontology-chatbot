@@ -1,11 +1,10 @@
 [project]
 name = "ontchatbot"
-version = "2.1.0"
+version = "2.1.1"
 description = "Vietnamese academic-regulation chatbot: a classifier picks one of 344 predefined SPARQL queries over an ontology"
 readme = "README.md"
 requires-python = "==3.12.*"
 
-# Đọc và truy vấn ontology. Mọi lệnh đều cần phần này, kể cả khi không nạp model.
 dependencies = [
     "numpy>=2.5.1",
     "oxrdflib>=0.5.0",
@@ -17,18 +16,10 @@ dependencies = [
 inference = [
     "fastapi[standard]>=0.140.0",
     "huggingface-hub>=1.24.0",
-    "onnxruntime-gpu>=1.24.0",
+    "onnxruntime-gpu>=1.29.0",
     "openai-agents>=0.21.1",
     "tokenizers>=0.22.2",
 ]
-
-# Huấn luyện, chấm điểm, xuất model sang ONNX, và dựng hình cho tài liệu. Đây là
-# nhóm nặng nhất và chỉ cần trên máy làm thực nghiệm, không cần trên máy chạy dịch
-# vụ. Bộ dựng hình nằm chung ở đây vì nó đọc kết quả do chính nhóm này sinh ra;
-# tách riêng thì mỗi lần cài lại môi trường thực nghiệm là mất bộ chụp ảnh.
-#
-# ``onnxruntime`` bản CPU dùng để đối chiếu đồ thị vừa xuất với bản gốc PyTorch.
-# Nó KHÁC gói mà nhóm ``inference`` cài, và hai gói cùng cung cấp một module.
 research = [
     "huggingface-hub>=1.24.0",
     "matplotlib>=3.11.0",
@@ -71,14 +62,6 @@ dev = [
 
 [tool.uv]
 package = true
-
-# ``inference`` và ``research`` không cài chung được: cả hai kéo về một gói
-# ``onnxruntime`` nhưng là hai bản khác nhau, bản cho card và bản cho bộ xử lý
-# trung tâm. Khai xung đột ở đây để công cụ báo ngay lúc phân giải, thay vì cài
-# đè lên nhau rồi hỏng lúc chạy.
-#
-# Máy chạy dịch vụ dùng ``--extra inference``; máy làm thực nghiệm dùng
-# ``--extra research``.
 conflicts = [
     [{ extra = "inference" }, { extra = "research" }],
 ]
@@ -86,14 +69,6 @@ conflicts = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-# Chạy song song mặc định. Thời gian của bộ kiểm dồn vào một nhúm phép kiểm nặng
-# đọc trọn tập dữ liệu và chạy nó qua đồ thị; chúng độc lập với nhau nên chia ra
-# nhiều tiến trình là được ngay.
-#
-# ``loadfile`` chứ không phải cách chia mặc định: các phép nặng nằm chung tệp và
-# dùng chung phần tính sẵn ở mức phiên, mà mỗi tiến trình con giữ một bản riêng.
-# Rải chúng ra thì mỗi tiến trình lại phải tính lại từ đầu, và phần tính sẵn đó
-# thành vô nghĩa. Giữ nguyên tệp trên một tiến trình thì cả hai cùng có lợi.
 addopts = ["-n", "auto", "--dist", "loadfile"]
 
 [tool.hatch.build.targets.wheel]

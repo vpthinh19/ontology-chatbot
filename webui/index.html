@@ -1,74 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NTU Academic Chatbot</title>
-    <!-- Linking Google Fonts For Icons -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
-    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Trợ lý hỏi đáp học vụ dựa trên nguồn thông tin chính thức của Trường Đại học Nha Trang."
+    />
+    <meta name="theme-color" content="#111318" />
+    <title>Trợ lý học vụ NTU</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-</head>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="app-header">
+        <h1 class="heading">Xin chào</h1>
+        <p class="sub-heading">Mình có thể giúp gì cho bạn?</p>
+      </header>
 
-<body>
-    <div class="container">
-        <!-- App Header -->
-        <header class="app-header">
-            <h1 class="heading">Xin chào</h1>
-            <h4 class="sub-heading">Mình có thể giúp gì cho bạn?</h4>
-        </header>
-        <!-- Câu hỏi gợi ý: bấm là gửi luôn. Bốn câu này đã được kiểm là đồ thị
-             trả lời được, và trải trên bốn nhóm chủ đề khác nhau. -->
-        <ul class="suggestions">
-            <li class="suggestions-item">
-                <p class="text">Đăng ký học phần như thế nào?</p>
-                <span class="icon material-symbols-rounded">how_to_reg</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Tuyển sinh 2026 có những thông tin gì?</p>
-                <span class="icon material-symbols-rounded">campaign</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Đơn xin nghỉ học tải ở đâu?</p>
-                <span class="icon material-symbols-rounded">description</span>
-            </li>
-            <li class="suggestions-item">
-                <p class="text">Điểm để xếp loại học lực giỏi là bao nhiêu?</p>
-                <span class="icon material-symbols-rounded">grade</span>
-            </li>
-        </ul>
-        <!-- Chats -->
-        <div class="chats-container"></div>
-        <!-- Prompt Input -->
-        <div class="prompt-container">
-            <div class="prompt-wrapper">
-                <form action="#" class="prompt-form">
-                    <input type="text" placeholder="Nhập câu hỏi..." class="prompt-input" required />
-                    <div class="prompt-actions">
-                        <!-- Send Prompt and Stop Response Buttons -->
-                        <button id="stop-response-btn" type="button"
-                            class="material-symbols-rounded">stop_circle</button>
-                        <button id="send-prompt-btn" class="material-symbols-rounded">arrow_upward</button>
-                    </div>
-                </form>
-                <!-- Theme and Delete Chats Buttons -->
-                <button id="theme-toggle-btn" class="material-symbols-rounded">light_mode</button>
-                <button id="delete-chats-btn" class="material-symbols-rounded">delete</button>
+      <section class="suggestions" aria-label="Câu hỏi gợi ý">
+        <button class="suggestions-item" type="button">
+          <span class="text">Đăng ký học phần như thế nào?</span>
+          <span class="icon material-symbols-rounded" aria-hidden="true">how_to_reg</span>
+        </button>
+        <button class="suggestions-item" type="button">
+          <span class="text">Tuyển sinh 2026 có những thông tin gì?</span>
+          <span class="icon material-symbols-rounded" aria-hidden="true">campaign</span>
+        </button>
+        <button class="suggestions-item" type="button">
+          <span class="text">Đơn xin nghỉ học tải ở đâu?</span>
+          <span class="icon material-symbols-rounded" aria-hidden="true">description</span>
+        </button>
+        <button class="suggestions-item" type="button">
+          <span class="text">Điểm để xếp loại học lực giỏi là bao nhiêu?</span>
+          <span class="icon material-symbols-rounded" aria-hidden="true">grade</span>
+        </button>
+      </section>
+
+      <section class="chats-container" aria-label="Hội thoại"></section>
+      <p id="response-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+
+      <footer class="prompt-container">
+        <div class="prompt-wrapper">
+          <form class="prompt-form">
+            <label class="sr-only" for="prompt-input">Câu hỏi học vụ</label>
+            <input
+              id="prompt-input"
+              type="text"
+              placeholder="Nhập câu hỏi học vụ…"
+              class="prompt-input"
+              autocomplete="off"
+              required
+            />
+            <div class="prompt-actions">
+              <button
+                id="stop-response-btn"
+                type="button"
+                class="icon-button material-symbols-rounded"
+                aria-label="Dừng phản hồi"
+                title="Dừng phản hồi"
+              >stop_circle</button>
+              <button
+                id="send-prompt-btn"
+                type="submit"
+                class="icon-button primary material-symbols-rounded"
+                aria-label="Gửi câu hỏi"
+                title="Gửi câu hỏi"
+                disabled
+              >arrow_upward</button>
             </div>
-            <!-- Trạng thái máy chủ. Nền tảng triển khai tắt hẳn container khi
-                 không ai dùng, nên lần mở trang đầu tiên sau một quãng rảnh rơi
-                 đúng vào lúc máy chủ đang dậy. Không nói ra thì người dùng gõ
-                 xong câu hỏi, bấm gửi, rồi ngồi nhìn màn hình trống và tưởng
-                 hệ thống hỏng. -->
-            <p class="server-status" data-state="checking">
-                <span class="dot"></span>
-                <span class="label">Đang kiểm tra máy chủ…</span>
-            </p>
+          </form>
+          <button
+            id="theme-toggle-btn"
+            type="button"
+            class="icon-button material-symbols-rounded"
+            aria-label="Đổi giao diện sáng tối"
+            title="Đổi giao diện sáng tối"
+          >light_mode</button>
+          <button
+            id="delete-chats-btn"
+            type="button"
+            class="icon-button material-symbols-rounded"
+            aria-label="Xóa hội thoại"
+            title="Xóa hội thoại"
+            disabled
+          >delete</button>
         </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-
+        <p class="server-status" data-state="waking" role="status" aria-live="polite">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="label">Đang khởi động máy chủ, bạn có thể nhập câu hỏi…</span>
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="/script.js"></script>
+  </body>
 </html>

@@ -8,14 +8,19 @@ from pathlib import Path
 from ..research.export_onnx import export
 
 
-def main() -> None:
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    args = parser.parse_args()
+    parser.add_argument("--precision", choices=("fp16", "fp32"), default="fp16")
+    return parser.parse_args(argv)
 
-    target = export(args.model_dir, args.out)
-    size = target.stat().st_size / 2**20
+
+def main() -> None:
+    args = _parse_args()
+
+    target = export(args.model_dir, args.out, precision=args.precision)
+    size = sum(path.stat().st_size for path in args.out.iterdir()) / 2**20
     print(f"đã xuất {target} ({size:.0f} MB)")
 
 

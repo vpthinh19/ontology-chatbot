@@ -1,9 +1,18 @@
 # syntax=docker/dockerfile:1
 
-# ---------- builder ----------
-FROM python:3.12-slim AS builder
+# CUDA và cuDNN đến từ image runtime chính thức của NVIDIA. Image Ubuntu này
+# không kèm Python; uv cài đúng Python 3.12 một lần vào tầng dùng chung, nên cả
+# builder lẫn runtime dùng cùng một interpreter và virtualenv không có symlink
+# trỏ sang một image khác.
+FROM nvidia/cuda:13.0.2-cudnn-runtime-ubuntu24.04 AS cuda-python
 
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /uvx /bin/
+ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python
+RUN uv python install 3.12
+
+# ---------- builder ----------
+FROM cuda-python AS builder
+
 WORKDIR /app
 
 # Sao chép thay vì liên kết cứng để môi trường ảo còn dùng được sau khi COPY sang
@@ -14,12 +23,12 @@ ENV UV_LINK_MODE=copy \
 
 COPY pyproject.toml uv.lock README.md ./
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project --extra inference --no-dev
+    uv sync --frozen --python 3.12 --no-install-project --extra inference --no-dev
 
 COPY src/ ./src/
 COPY resources/ ./resources/
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --extra inference --no-dev
+    uv sync --frozen --python 3.12 --extra inference --no-dev
 
 # Chỉ tải đồ thị ONNX của bộ phân loại được chọn. Các model còn lại và kết quả
 # benchmark nằm cùng kho phát hành nhưng không thuộc ảnh chạy.
@@ -37,9 +46,8 @@ snapshot_download(repo_id='${HF_REPO}', revision='${HF_REVISION}', \
 local_dir=root, allow_patterns=[path + '/*']); \
 shutil.copytree(root / path, '/app/classifier-model')"
 
-
 # ---------- runtime ----------
-FROM python:3.12-slim AS runtime
+FROM cuda-python AS runtime
 
 # Vá các gói hệ điều hành trước khi đóng ảnh. Ảnh nền được dựng theo chu kỳ riêng
 # nên nó luôn trễ hơn kho bản vá của bản phân phối vài tuần; không nâng ở đây thì
@@ -50,15 +58,16 @@ FROM python:3.12-slim AS runtime
 RUN set -eux; \
     apt-get update; \
     apt-get upgrade -y --no-install-recommends; \
+    apt-get install -y --no-install-recommends ca-certificates; \
     rm -rf /var/lib/apt/lists/*; \
-    useradd --create-home --uid 1000 --shell /bin/bash ontchatbot
+    groupmod --new-name ontchatbot ubuntu; \
+    usermod --login ontchatbot --home /home/ontchatbot --move-home ubuntu
 WORKDIR /app
 
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/classifier-model /app/model
-COPY --chown=ontchatbot:ontchatbot webui/ /app/webui/
 
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 
@@ -71,6 +80,8 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 #   ONTCHATBOT_LLM_BASE_URL  Tuỳ chọn. Địa chỉ máy chủ mô hình; mặc định là nhà cung
 #                            cấp đã đặt trong mã.
 #   ONTCHATBOT_DEVICE        Tuỳ chọn. ``cuda`` (mặc định của ảnh) hoặc ``cpu``.
+#   ONTCHATBOT_CORS_ORIGINS  Bắt buộc khi frontend ở domain khác. Danh sách origin
+#                            cách nhau bằng dấu phẩy, ví dụ https://demo.vercel.app.
 #
 # Đường dẫn model, địa chỉ và cổng lắng nghe đã nằm trong CMD ở cuối tệp.
 # Dịch vụ kiểm hai biến bắt buộc ngay lúc khởi động và dừng hẳn nếu thiếu, nên

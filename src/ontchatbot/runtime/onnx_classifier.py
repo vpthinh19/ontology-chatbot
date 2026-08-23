@@ -51,11 +51,25 @@ class OnnxClassifierGenerator:
         if not graph_path.exists():
             raise FileNotFoundError(f"không tìm thấy đồ thị ONNX: {graph_path}")
 
-        # Rơi về bộ xử lý trung tâm khi máy không cấp card, thay vì hỏng lúc nạp.
-        wanted = ["CUDAExecutionProvider"] if device == "cuda" else []
-        providers = [p for p in wanted if p in ort.get_available_providers()]
-        providers.append("CPUExecutionProvider")
+        if device == "cuda":
+            # CUDA và cuDNN nằm trong image runtime chính thức của NVIDIA. Chuỗi
+            # rỗng yêu cầu ORT dùng đường dẫn loader hệ thống của image thay vì
+            # tìm các wheel CUDA đóng kèm trong site-packages.
+            ort.preload_dlls(directory="")
+            providers = ["CUDAExecutionProvider"]
+        else:
+            providers = ["CPUExecutionProvider"]
         session = ort.InferenceSession(str(graph_path), providers=providers)
+        if device == "cuda":
+            # Cấm Python API tạo lại cả session bằng CPU nếu provider lỗi. ORT
+            # vẫn được phép giao vài node điều phối/shape nhẹ cho CPU mặc định;
+            # graph này không khởi tạo được nếu cấm tuyệt đối các node như vậy.
+            session.disable_fallback()
+        if device == "cuda" and "CUDAExecutionProvider" not in session.get_providers():
+            raise RuntimeError(
+                "không thể kích hoạt CUDAExecutionProvider; "
+                "kiểm tra GPU passthrough và CUDA/cuDNN runtime trong image"
+            )
 
         tokenizer = Tokenizer.from_file(str(model_dir / "tokenizer.json"))
         tokenizer.enable_truncation(max_length=MAX_LENGTH)

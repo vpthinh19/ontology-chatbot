@@ -50,7 +50,7 @@ def kiem_thu_muc(model_dir: Path) -> list[Path]:
     return [model_dir / ten for ten in REQUIRED]
 
 
-def kiem_do_thi_chay_duoc(model_dir: Path) -> int:
+def kiem_do_thi_chay_duoc(model_dir: Path, *, device: str = "cuda") -> int:
     """Chạy thử một câu để không đẩy lên một đồ thị hỏng.
 
     Nạp bằng đúng lớp mà dịch vụ dùng, nên lỗi nào chặn dịch vụ khởi động thì cũng
@@ -58,7 +58,7 @@ def kiem_do_thi_chay_duoc(model_dir: Path) -> int:
     """
     from ..runtime.onnx_classifier import OnnxClassifierGenerator
 
-    generator = OnnxClassifierGenerator.load(model_dir, device="cpu")
+    generator = OnnxClassifierGenerator.load(model_dir, device=device)
     generator.generate("điều kiện xét học bổng")
     return len(generator.labels)
 
@@ -99,7 +99,9 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--path-in-repo", default=DEFAULT_PATH_IN_REPO,
                         help="thư mục đích trong kho; để rỗng là đẩy vào gốc kho")
     parser.add_argument("--revision", default="main")
-    parser.add_argument("--message", default="Publish the ONNX classifier graph")
+    parser.add_argument("--message", default="Publish the FP16 ONNX classifier graph")
+    parser.add_argument("--device", choices=("cuda", "cpu"), default="cuda",
+                        help="provider dùng để smoke test trước khi đẩy")
     parser.add_argument("--private", action="store_true",
                         help="tạo kho ở chế độ riêng tư nếu kho chưa tồn tại")
     parser.add_argument("--dry-run", action="store_true",
@@ -113,7 +115,10 @@ def main(argv: list[str] | None = None) -> None:
 
     tong = sum(tep.stat().st_size for tep in tep_local)
     print(f"{args.model_dir} · {len(tep_local)} tệp · {tong / 1e9:.2f} GB")
-    print(f"đồ thị chạy được, {kiem_do_thi_chay_duoc(args.model_dir)} nhãn\n")
+    print(
+        f"đồ thị chạy được trên {args.device}, "
+        f"{kiem_do_thi_chay_duoc(args.model_dir, device=args.device)} nhãn\n"
+    )
     for tep in tep_local:
         print(f"  {tep.name:<24} {tep.stat().st_size:>13,} B  sha256 {sha256_file(tep)[:16]}…")
 

@@ -14,12 +14,10 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import time
 import uuid
-from pathlib import Path
 from typing import Any, AsyncIterator, Sequence
-
-from ..settings import PROJECT_ROOT
 
 #: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
 #: gõ, mỗi lần trợ lý tra cứu, câu trả lời cuối, và thời gian cả lượt. Các tầng
@@ -337,13 +335,11 @@ def _flatten(value: Any) -> str:
     return str(value)
 
 
-def create_app(
-    agent, webui_dir: Path | None = None, gate: TurnGate | None = None
-):
+def create_app(agent, gate: TurnGate | None = None):
     try:
         from fastapi import FastAPI, HTTPException
+        from fastapi.middleware.cors import CORSMiddleware
         from fastapi.responses import StreamingResponse
-        from fastapi.staticfiles import StaticFiles
         from starlette.requests import Request
     except ImportError as exc:  # pragma: no cover - requires inference extra.
         raise RuntimeError("install the inference extra to serve the API") from exc
@@ -353,6 +349,19 @@ def create_app(
     from .. import __version__
 
     app = FastAPI(title="NTU Ontology Chatbot", version=__version__)
+    frontend_origins = [
+        origin.strip().rstrip("/")
+        for origin in os.environ.get("ONTCHATBOT_CORS_ORIGINS", "").split(",")
+        if origin.strip()
+    ]
+    if frontend_origins:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=frontend_origins,
+            allow_methods=["GET", "POST", "OPTIONS"],
+            allow_headers=["Content-Type"],
+            max_age=600,
+        )
     # Một cửa vào cho cả tiến trình, không phải mỗi lượt một cái: nó chỉ có nghĩa
     # khi mọi lượt cùng đi qua đúng một cái. Phép kiểm đưa cửa hẹp hơn vào đây.
     gate = gate if gate is not None else TurnGate()
@@ -402,7 +411,4 @@ def create_app(
     chat.__annotations__["request"] = Request
     app.post("/chat")(chat)
 
-    static_dir = webui_dir or PROJECT_ROOT / "webui"
-    if static_dir.is_dir():
-        app.mount("/", StaticFiles(directory=static_dir, html=True), name="webui")
     return app
