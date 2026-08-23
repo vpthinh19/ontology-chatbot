@@ -49,6 +49,51 @@ MODEL_TURN_TIMEOUT_SECONDS = 45.0
 _MODEL_TIMEOUT_MESSAGE = (
     "Mô hình đã quá thời gian chờ. Bạn vui lòng thử lại, hoặc hỏi ngắn hơn."
 )
+#: Số lượt trả lời được chạy cùng lúc. Mỗi lượt trung vị 2,5 giây, nên bốn chỗ là
+#: khoảng chín mươi tin nhắn một phút trước khi có người đầu tiên phải chờ; dưới
+#: mức đó cửa vào này không ai nhìn thấy.
+#:
+#: Cửa tính theo lượt trả lời chứ không theo request HTTP, vì một tin nhắn tiêu ít
+#: nhất hai lượt gọi mô hình - đếm request là đếm sai thứ cần giữ. Nhưng nó cũng
+#: không chặn từng lượt gọi một: chúng nằm giữa một lượt trả lời, mà chặn đúng lúc
+#: mô hình vừa tra cứu xong thì người dùng nhận nửa câu trả lời, tệ hơn là bị từ
+#: chối ngay từ đầu. Vào được thì chạy trọn vẹn.
+MAX_CONCURRENT_TURNS = 4
+#: Hàng đợi có trần, để một đợt dồn bất ngờ không thành hàng dài mà ai cũng bỏ đi
+#: trước khi tới lượt.
+MAX_QUEUED_TURNS = 20
+#: Chờ quá mức này thì nói thẳng là đang bận, thay vì để người ta ngồi nhìn màn
+#: hình trống - đằng nào họ cũng bấm lại, và lần bấm đó chiếm thêm một chỗ.
+#:
+#: Con số lấy từ hai phía. Phía dưới: hàng đầy 20 chỗ với bốn lượt song song, mỗi
+#: lượt trung vị 2,5 giây, rút cạn trong khoảng mười ba giây - ai chờ lâu hơn thế
+#: là hàng đã đầy quá thiết kế chứ không phải sắp tới lượt. Phía trên: nền tảng
+#: triển khai tự cắt một request đang mở, nên hạn này cộng với hạn chờ mô hình
+#: phải nằm gọn dưới mức đó, xem ``MAX_REQUEST_SECONDS``.
+MAX_QUEUE_WAIT_SECONDS = 15.0
+#: Mức mà nền tảng triển khai cắt một request còn đang mở. Không phải hằng số ta
+#: chọn - nó là ràng buộc từ bên ngoài, chép vào đây để phép kiểm canh được.
+#:
+#: Vượt mức này thì kết nối bị cắt giữa chừng và người dùng mất câu trả lời, lại
+#: còn mất luôn câu báo lỗi tử tế của ta. Nới hạn chờ mô hình hay hạn chờ hàng
+#: đợi thì phải nhìn lại tổng, chứ hai con số đó cộng lại mới là thứ nền tảng đo.
+MAX_REQUEST_SECONDS = 60.0
+#: Trần số bước mô hình được đi trong một lượt. Một câu hỏi bình thường đi hai
+#: bước: một để quyết định tra cứu, một để viết câu trả lời. Mặc định của thư viện
+#: là mười, nên nếu không đặt thì một câu làm mô hình loay hoay tốn gấp năm lần
+#: bình thường mà không có gì cản. Trần này nhân với số lượt chạy cùng lúc mới ra
+#: tổng số lượt gọi có thể đang bay.
+MAX_MODEL_STEPS = 4
+_BUSY_MESSAGE = (
+    "Hệ thống đang có nhiều người hỏi cùng lúc. Bạn chờ một chút rồi gửi lại nhé."
+)
+_QUEUE_TIMEOUT_MESSAGE = (
+    "Hệ thống vẫn đang bận nên chưa tới lượt bạn. Bạn thử gửi lại sau ít phút nhé."
+)
+_TOO_MANY_STEPS_MESSAGE = (
+    "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
+    "hoặc tách thành từng ý nhỏ."
+)
 #: 256 KiB rộng hơn nhiều so với 20 tin nhắn hội thoại học vụ thông thường,
 #: nhưng đủ nhỏ để mỗi kết nối đang đọc body có mức dùng bộ nhớ hữu hạn.
 MAX_REQUEST_BODY_BYTES = 256 * 1024
@@ -100,8 +145,69 @@ def _event(kind: str, **fields: Any) -> str:
     return f"data: {json.dumps({'loai': kind, **fields}, ensure_ascii=False)}\n\n"
 
 
-async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[str]:
+class TurnGate:
+    """Cửa vào giữ số lượt trả lời chạy cùng lúc trong một mức đã định.
+
+    Thả theo chỗ trống chứ không theo nhịp đồng hồ. Một lượt dài từ nửa giây tới
+    45 giây, nên nhịp thả cố định buộc phải đoán trước thời gian đó: đoán nhanh
+    thì các lượt chồng lên nhau - đúng cái cửa này sinh ra để tránh - còn đoán
+    chậm thì máy ngồi không trong lúc hàng vẫn dài. Xong một lượt là thả ngay
+    lượt kế tiếp, khỏi đoán, và khỏi chỉnh lại khi tốc độ mô hình thay đổi.
+    """
+
+    def __init__(
+        self,
+        slots: int = MAX_CONCURRENT_TURNS,
+        queue_size: int = MAX_QUEUED_TURNS,
+        max_wait_seconds: float = MAX_QUEUE_WAIT_SECONDS,
+    ) -> None:
+        self._slots = asyncio.Semaphore(slots)
+        self._queue_size = queue_size
+        self._max_wait = max_wait_seconds
+        self._waiting = 0
+
+    def join(self) -> int | None:
+        """Giữ chỗ cho một lượt vừa tới.
+
+        Trả về 0 khi vào thẳng được, vị trí trong hàng đếm từ 1 khi phải chờ, và
+        ``None`` khi hàng đã đầy.
+
+        Chỗ được giữ ngay tại đây chứ không đợi tới lúc chờ thật, vì giữa hai
+        việc đó có một sự kiện đi ra trình duyệt - tức là một lần nhường quyền
+        chạy, đủ để những lượt tới sau chen vào và làm hàng dài quá trần.
+        """
+
+        if not self._slots.locked():
+            return 0
+        if self._waiting >= self._queue_size:
+            return None
+        self._waiting += 1
+        return self._waiting
+
+    def leave(self) -> None:
+        """Trả lại chỗ trong hàng cho một lượt không còn chờ nữa."""
+
+        self._waiting -= 1
+
+    async def acquire(self, queued: bool) -> None:
+        """Chờ tới lượt; ném ``TimeoutError`` nếu chờ quá lâu.
+
+        Lượt vào thẳng không đặt hạn chờ: nó không hề chờ, và ``join`` vừa nói là
+        còn chỗ ngay trước đó mà không có lần nhường quyền chạy nào ở giữa.
+        """
+
+        async with asyncio.timeout(self._max_wait if queued else None):
+            await self._slots.acquire()
+
+    def release(self) -> None:
+        self._slots.release()
+
+
+async def _stream(
+    agent, message: str, history: Sequence[Any], gate: TurnGate
+) -> AsyncIterator[str]:
     from agents import Runner
+    from agents.exceptions import MaxTurnsExceeded
     from openai import APITimeoutError
 
     conversation, history_trimmed = _bounded_history(history)
@@ -109,17 +215,50 @@ async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[
     started = time.perf_counter()
     lookups = 0
     answer = ""
-    # Người đọc nhật ký cần phân biệt bốn kết cục, vì chúng cần bốn cách sửa:
-    # xong bình thường, quá hạn chờ model, lỗi, và người dùng đóng tab giữa
+    # Người đọc nhật ký cần phân biệt từng kết cục, vì chúng cần những cách sửa
+    # khác nhau: xong bình thường, quá hạn chờ model, chạm trần số bước, bị từ
+    # chối vì hàng đầy, chờ trong hàng quá lâu, lỗi, và người dùng đóng tab giữa
     # chừng. Kết cục cuối trước đây không để lại dấu vết nào và trông y hệt một
-    # lượt treo.
+    # lượt treo. Ba kết cục dính tới cửa vào tách riêng nhau vì chúng đòi ba
+    # phản ứng khác hẳn: nới cửa, nới hàng, hay chấp nhận là đang quá tải thật.
     outcome = "abandoned"
+    # Chỗ trong hàng và chỗ chạy đều được nhả ở ``finally``, nên phải biết mình
+    # đang giữ cái nào: một lượt bị đóng giữa chừng có thể đang giữ chỗ trong
+    # hàng mà chưa bao giờ được chạy.
+    queued = False
+    holding = False
     logger.info("turn=%s question=%r history=%d", turn, message, len(conversation))
     conversation.append({"role": "user", "content": message})
     try:
+        place = gate.join()
+        if place is None:
+            outcome = "busy"
+            yield _event("loi", noi_dung=_BUSY_MESSAGE)
+            return
+        queued = place > 0
+        if queued:
+            # Xếp hàng mà im lặng thì nhìn y hệt hệ thống treo, nên vị trí phải
+            # ra tới trình duyệt trước khi bắt đầu chờ chứ không phải sau.
+            yield _event("hang_doi", vi_tri=place)
+        try:
+            await gate.acquire(queued)
+        except TimeoutError:
+            outcome = "queue-timeout"
+            yield _event("loi", noi_dung=_QUEUE_TIMEOUT_MESSAGE)
+            return
+        finally:
+            # Nhả chỗ trong hàng ngay khi hết chờ, chờ được hay không cũng vậy.
+            # Giữ nó tới cuối lượt thì hàng trông đầy hơn thực tế và từ chối
+            # những người lẽ ra còn chỗ.
+            if queued:
+                gate.leave()
+                queued = False
+        holding = True
         try:
             async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
-                result = Runner.run_streamed(agent, conversation)
+                result = Runner.run_streamed(
+                    agent, conversation, max_turns=MAX_MODEL_STEPS
+                )
                 if history_trimmed:
                     yield _event("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
                 async for event in result.stream_events():
@@ -143,6 +282,13 @@ async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[
             outcome = "timeout"
             yield _event("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
             return
+        except MaxTurnsExceeded:
+            # Ghi ở mức cảnh báo chứ không phải lỗi: trần này do ta đặt, và nếu
+            # có câu hỏi thật cần nhiều bước hơn thì đây là chỗ nó lộ ra.
+            outcome = "too-many-steps"
+            logger.warning("turn=%s hit the ceiling of %d steps", turn, MAX_MODEL_STEPS)
+            yield _event("loi", noi_dung=_TOO_MANY_STEPS_MESSAGE)
+            return
         except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
             outcome = "error"
             logger.exception("turn=%s failed", turn)
@@ -152,8 +298,14 @@ async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[
         outcome = "ok"
         yield _event("xong", noi_dung=answer)
     finally:
-        # Trong ``finally`` để một lượt luôn đóng sổ, kể cả khi trình duyệt ngắt
-        # kết nối giữa chừng và bộ sinh này bị đóng ngay tại một ``yield``.
+        # Trong ``finally`` để một lượt luôn nhả chỗ và luôn đóng sổ, kể cả khi
+        # trình duyệt ngắt kết nối giữa chừng và bộ sinh này bị đóng ngay tại một
+        # ``yield``. Không có nhánh này thì mỗi tab đóng lúc đang xếp hàng ăn mất
+        # một chỗ vĩnh viễn, và cửa vào tự bóp nghẹt chính nó.
+        if queued:
+            gate.leave()
+        if holding:
+            gate.release()
         logger.info(
             "turn=%s outcome=%s answer=%r lookups=%d total_ms=%.1f",
             turn,
@@ -185,7 +337,9 @@ def _flatten(value: Any) -> str:
     return str(value)
 
 
-def create_app(agent, webui_dir: Path | None = None):
+def create_app(
+    agent, webui_dir: Path | None = None, gate: TurnGate | None = None
+):
     try:
         from fastapi import FastAPI, HTTPException
         from fastapi.responses import StreamingResponse
@@ -199,6 +353,9 @@ def create_app(agent, webui_dir: Path | None = None):
     from .. import __version__
 
     app = FastAPI(title="NTU Ontology Chatbot", version=__version__)
+    # Một cửa vào cho cả tiến trình, không phải mỗi lượt một cái: nó chỉ có nghĩa
+    # khi mọi lượt cùng đi qua đúng một cái. Phép kiểm đưa cửa hẹp hơn vào đây.
+    gate = gate if gate is not None else TurnGate()
 
     @app.get("/healthz")
     async def healthz() -> dict[str, str]:
@@ -235,7 +392,7 @@ def create_app(agent, webui_dir: Path | None = None):
         if not isinstance(history, list):
             raise HTTPException(status_code=400, detail="history must be a list")
         return StreamingResponse(
-            _stream(agent, message.strip(), history),
+            _stream(agent, message.strip(), history, gate),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )

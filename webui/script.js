@@ -161,6 +161,12 @@ const generateResponse = async (botMsgDiv) => {
                 } else if (event.loai === "tra_cuu_xong") {
                     status = "Đang viết câu trả lời…";
                     paint();
+                } else if (event.loai === "hang_doi") {
+                    // Đang bận thì phải nói ra. Chờ trong im lặng nhìn không
+                    // khác gì hệ thống treo, và người dùng sẽ bấm lại - mà lần
+                    // bấm đó lại chiếm thêm một chỗ trong hàng.
+                    status = `Hệ thống đang bận, bạn đứng thứ ${event.vi_tri} trong hàng chờ…`;
+                    paint();
                 } else if (event.loai === "canh_bao") {
                     notice = event.noi_dung;
                     paint();

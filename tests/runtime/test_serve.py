@@ -309,7 +309,7 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
     )
 
     async def exercise():
-        stream = api._stream(object(), "học phí", [])
+        stream = api._stream(object(), "học phí", [], api.TurnGate())
         await anext(stream)
         await stream.aclose()
 
@@ -318,3 +318,223 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
 
     assert "outcome=abandoned" in "\n".join(r.getMessage() for r in caplog.records)
 
+
+
+def _held(monkeypatch, gate, delay=0):
+    """Một lượt đang giữ chỗ chạy, dừng lại ở sự kiện cuối chứ chưa đóng."""
+
+    import agents
+
+    run = _Run([], final_output="xong", delay=delay)
+    monkeypatch.setattr(
+        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
+    )
+    return api._stream(object(), "câu đang chạy", [], gate)
+
+
+def test_a_turn_that_finds_every_slot_busy_is_told_where_it_stands(monkeypatch) -> None:
+    """Chờ trong im lặng nhìn y hệt hệ thống treo.
+
+    Người dùng không phân biệt được "đang xếp hàng" với "đã hỏng", nên họ bấm
+    lại - và lần bấm đó chiếm thêm một chỗ, làm hàng dài thêm đúng lúc đang đông.
+    """
+
+    gate = api.TurnGate(slots=1, queue_size=5)
+
+    async def exercise():
+        first = _held(monkeypatch, gate)
+        await anext(first)
+        second = api._stream(object(), "câu xếp hàng", [], gate)
+        try:
+            return json.loads((await anext(second))[len("data: ") :])
+        finally:
+            await second.aclose()
+            await first.aclose()
+
+    event = asyncio.run(exercise())
+
+    assert event["loai"] == "hang_doi"
+    assert event["vi_tri"] == 1
+
+
+def test_a_turn_arriving_at_a_full_queue_is_turned_away_politely(monkeypatch) -> None:
+    """Hàng phải có trần, nếu không một đợt dồn thành hàng ai cũng bỏ đi."""
+
+    gate = api.TurnGate(slots=1, queue_size=1)
+
+    async def exercise():
+        first = _held(monkeypatch, gate)
+        await anext(first)
+        second = api._stream(object(), "câu xếp hàng", [], gate)
+        await anext(second)
+        third = api._stream(object(), "câu bị từ chối", [], gate)
+        try:
+            return json.loads((await anext(third))[len("data: ") :])
+        finally:
+            await third.aclose()
+            await second.aclose()
+            await first.aclose()
+
+    event = asyncio.run(exercise())
+
+    assert event["loai"] == "loi"
+    assert "nhiều người hỏi cùng lúc" in event["noi_dung"]
+
+
+def test_a_turn_that_waits_too_long_is_told_instead_of_left_hanging(monkeypatch) -> None:
+    gate = api.TurnGate(slots=1, queue_size=5, max_wait_seconds=0.01)
+
+    async def exercise():
+        first = _held(monkeypatch, gate)
+        await anext(first)
+        second = api._stream(object(), "câu chờ mãi", [], gate)
+        try:
+            await anext(second)
+            return json.loads((await anext(second))[len("data: ") :])
+        finally:
+            await second.aclose()
+            await first.aclose()
+
+    event = asyncio.run(exercise())
+
+    assert event["loai"] == "loi"
+    assert "chưa tới lượt bạn" in event["noi_dung"]
+
+
+def test_closing_a_tab_while_queued_gives_the_place_back(monkeypatch) -> None:
+    """Bỏ nhánh nhả chỗ thì mỗi tab đóng lúc xếp hàng ăn mất một chỗ vĩnh viễn.
+
+    Cửa vào tự bóp nghẹt chính nó: hàng báo đầy trong khi không ai đang chờ.
+    """
+
+    gate = api.TurnGate(slots=1, queue_size=1)
+
+    async def exercise():
+        first = _held(monkeypatch, gate)
+        await anext(first)
+
+        walked_away = api._stream(object(), "câu bỏ đi", [], gate)
+        await anext(walked_away)
+        await walked_away.aclose()
+
+        after = api._stream(object(), "câu tới sau", [], gate)
+        try:
+            return json.loads((await anext(after))[len("data: ") :])
+        finally:
+            await after.aclose()
+            await first.aclose()
+
+    event = asyncio.run(exercise())
+
+    assert event["loai"] == "hang_doi", "chỗ trong hàng không được trả lại"
+
+
+def test_the_model_is_given_a_ceiling_on_how_many_steps_it_may_take(monkeypatch) -> None:
+    """Mặc định của thư viện là mười bước, mà không câu đo nào cần quá hai.
+
+    Không đặt trần thì một câu làm mô hình loay hoay tốn gấp năm lần bình thường,
+    và trần này nhân với số lượt chạy cùng lúc mới ra tổng số lượt gọi đang bay.
+    """
+
+    import agents
+
+    seen = {}
+
+    def fake(agent, conversation, **kwargs):
+        seen.update(kwargs)
+        return _Run([], final_output="xong")
+
+    monkeypatch.setattr(agents.Runner, "run_streamed", fake)
+
+    async def exercise():
+        async for _ in api._stream(object(), "học phí", [], api.TurnGate()):
+            pass
+
+    asyncio.run(exercise())
+
+    assert seen["max_turns"] == api.MAX_MODEL_STEPS
+
+
+def test_hitting_the_step_ceiling_reads_as_a_sentence_not_a_stack_trace(
+    monkeypatch, caplog
+) -> None:
+    from agents.exceptions import MaxTurnsExceeded
+
+    import agents
+
+    run = _Run([], final_output="", error=MaxTurnsExceeded("max turns exceeded"))
+    monkeypatch.setattr(
+        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
+    )
+
+    async def exercise():
+        return [
+            json.loads(chunk[len("data: ") :])
+            async for chunk in api._stream(object(), "học phí", [], api.TurnGate())
+        ]
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        events = asyncio.run(exercise())
+
+    assert events[-1]["loai"] == "loi"
+    assert "tra đi tra lại" in events[-1]["noi_dung"]
+    assert "outcome=too-many-steps" in "\n".join(r.getMessage() for r in caplog.records)
+
+
+def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> None:
+    """Lời hứa chính của cửa vào, và nó chỉ lộ ra khi nhiều lượt cùng ập tới.
+
+    Các phép kiểm trên đi từng bước một nên không chạm được vào chuyện này: cái
+    hỏng ở đây là hai lượt chen vào cùng một chỗ, mà muốn thấy thì phải thả cả
+    một đợt vào cùng lúc rồi đo đỉnh.
+    """
+
+    import agents
+
+    live = 0
+    peak = 0
+
+    class _Counting:
+        final_output = "xong"
+
+        async def stream_events(self):
+            nonlocal live, peak
+            live += 1
+            peak = max(peak, live)
+            try:
+                await asyncio.sleep(0.01)
+                yield _delta("x")
+            finally:
+                live -= 1
+
+    monkeypatch.setattr(
+        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: _Counting()
+    )
+    gate = api.TurnGate(slots=3, queue_size=50, max_wait_seconds=10)
+
+    async def one_turn():
+        async for _ in api._stream(object(), "câu hỏi", [], gate):
+            pass
+
+    async def exercise():
+        await asyncio.gather(*(one_turn() for _ in range(20)))
+
+    asyncio.run(exercise())
+
+    assert peak == 3, f"đỉnh số lượt chạy cùng lúc là {peak}, cửa vào hứa 3"
+
+
+def test_the_two_waits_together_stay_inside_what_the_platform_allows() -> None:
+    """Nền tảng cắt request đang mở, và nó đo TỔNG hai hạn chờ chứ không đo riêng.
+
+    Phép kiểm này canh quan hệ giữa hai con số, không canh giá trị của chúng.
+    Nới một trong hai mà quên cái kia thì kết nối bị cắt giữa chừng: người dùng
+    mất câu trả lời, và mất luôn câu báo lỗi tử tế mà ta đã soạn cho đúng ca đó.
+    """
+
+    worst_case = api.MAX_QUEUE_WAIT_SECONDS + api.MODEL_TURN_TIMEOUT_SECONDS
+
+    assert worst_case <= api.MAX_REQUEST_SECONDS, (
+        f"một request xấu nhất mất {worst_case:.0f}s, "
+        f"mà nền tảng cắt ở {api.MAX_REQUEST_SECONDS:.0f}s"
+    )
