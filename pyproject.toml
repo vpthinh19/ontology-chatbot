@@ -66,6 +66,7 @@ validate_sparql_dataset = "ontchatbot.cli.validate_data:main"
 [dependency-groups]
 dev = [
     "pytest>=9.1.0",
+    "pytest-xdist>=3.8.0",
 ]
 
 [tool.uv]
@@ -85,6 +86,15 @@ conflicts = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+# Chạy song song mặc định. Thời gian của bộ kiểm dồn vào một nhúm phép kiểm nặng
+# đọc trọn tập dữ liệu và chạy nó qua đồ thị; chúng độc lập với nhau nên chia ra
+# nhiều tiến trình là được ngay.
+#
+# ``loadfile`` chứ không phải cách chia mặc định: các phép nặng nằm chung tệp và
+# dùng chung phần tính sẵn ở mức phiên, mà mỗi tiến trình con giữ một bản riêng.
+# Rải chúng ra thì mỗi tiến trình lại phải tính lại từ đầu, và phần tính sẵn đó
+# thành vô nghĩa. Giữ nguyên tệp trên một tiến trình thì cả hai cùng có lợi.
+addopts = ["-n", "auto", "--dist", "loadfile"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ontchatbot"]
