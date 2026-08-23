@@ -3,10 +3,18 @@ import { defineConfig, loadEnv } from "vite";
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
-  if (command === "build" && !env.VITE_API_BASE_URL?.trim()) {
-    throw new Error(
-      "VITE_API_BASE_URL is required for a production build (for example, https://your-lightning-api.example)",
+  // Bản build thiếu một trong hai biến này thì trang lên được nhưng không gọi
+  // nổi backend, và lỗi chỉ lộ ra trong trình duyệt của người dùng. Chặn ngay ở
+  // đây để Vercel báo đỏ lúc build thay vì deploy một trang chết.
+  if (command === "build") {
+    const missing = ["VITE_API_BASE_URL", "VITE_API_KEY"].filter(
+      (name) => !env[name]?.trim(),
     );
+    if (missing.length) {
+      throw new Error(
+        `${missing.join(", ")} required for a production build; set them in the Vercel project environment`,
+      );
+    }
   }
 
   return {

@@ -15,6 +15,7 @@ export default defineConfig({
     timeout: 30_000,
     env: {
       VITE_API_BASE_URL: "https://lightning.example.test",
+      VITE_API_KEY: "test-api-key",
     },
   },
 });

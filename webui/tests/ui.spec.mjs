@@ -336,3 +336,51 @@ test("fragmented successful streams complete and become history for the next tur
     { role: "assistant", content: "Xin chào bạn" },
   ]);
 });
+
+test("every backend call carries the API key that Vercel injected", async ({ page }) => {
+  const seen = {};
+  await page.route("**/healthz", (route) => {
+    seen.health = route.request().headers()["authorization"];
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: '{"status":"ok"}',
+    });
+  });
+  await page.route("**/chat", (route) => {
+    seen.chat = route.request().headers()["authorization"];
+    return route.fulfill({
+      status: 200,
+      contentType: "text/event-stream",
+      body: 'data: {"loai":"xong","noi_dung":"Câu trả lời"}\n\n',
+    });
+  });
+
+  await page.goto("http://127.0.0.1:4173");
+  await page.locator(".prompt-input").fill("Câu hỏi");
+  await page.locator("#send-prompt-btn").click();
+  await expect(page.locator(".bot-message .message-text")).toContainText("Câu trả lời");
+
+  expect(seen.health).toBe("Bearer test-api-key");
+  expect(seen.chat).toBe("Bearer test-api-key");
+});
+
+test("a rejected key is reported plainly instead of being retried for minutes", async ({ page }) => {
+  let probes = 0;
+  await page.route("**/healthz", (route) => {
+    probes += 1;
+    return route.fulfill({ status: 401, contentType: "application/json", body: "{}" });
+  });
+
+  await page.goto("http://127.0.0.1:4173");
+
+  await expect(page.locator(".server-status")).toContainText("từ chối khoá truy cập");
+  await expect(page.locator(".server-status")).toHaveAttribute("data-state", "blocked");
+  await expect(page.locator("#send-prompt-btn")).toBeDisabled();
+
+  // Vòng đánh thức phải dừng hẳn: khoá sai thì lần probe thứ hai cũng sai, mà
+  // lịch giãn dần sẽ còn gõ cửa suốt ba phút nếu nó coi đây là lỗi tạm thời.
+  const after = probes;
+  await page.waitForTimeout(2_500);
+  expect(probes).toBe(after);
+});

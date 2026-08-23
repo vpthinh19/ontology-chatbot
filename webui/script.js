@@ -11,6 +11,19 @@ const responseAnnouncer = document.querySelector("#response-announcer");
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").trim().replace(/\/+$/, "");
 const apiUrl = (path) => `${apiBaseUrl}${path}`;
+
+// Cổng đứng trước backend đọc khoá ở header ``Authorization``. Vite dán khoá vào
+// tệp JavaScript lúc build, nên nó nằm sẵn trong bản tải về: nó chặn được người
+// chỉ dò ra URL backend, không chặn được người mở chính trang này ra đọc.
+const apiKey = (import.meta.env.VITE_API_KEY || "").trim();
+
+// Bỏ hẳn header khi không có khoá thay vì gửi ``Bearer `` rỗng: lúc chạy dev,
+// frontend trỏ thẳng vào backend trên máy và ở đó không có cổng nào để qua.
+const authHeaders = () => (apiKey ? { Authorization: `Bearer ${apiKey}` } : {});
+
+// Khoá sai thì thử lại bao nhiêu lần cũng vẫn sai, nên hai mã này phải tách khỏi
+// nhóm lỗi tạm thời để vòng đánh thức dừng ngay thay vì đợi hết ba phút.
+const isRejectedKey = (status) => status === 401 || status === 403;
 const MAX_HISTORY_MESSAGES = 20;
 const HEALTH_DEADLINE_MS = 180_000;
 const HEALTH_REQUEST_TIMEOUT_MS = 12_000;
@@ -39,6 +52,7 @@ const stateLabels = {
   ready: "Máy chủ sẵn sàng",
   offline: "Thiết bị đang mất kết nối mạng.",
   down: "Chưa kết nối được máy chủ. Hãy thử lại sau ít phút.",
+  blocked: "Máy chủ từ chối khoá truy cập của trang này.",
 };
 
 const setServerState = (state, label = stateLabels[state]) => {
@@ -63,11 +77,13 @@ const probeHealth = async () => {
   try {
     const response = await fetch(apiUrl("/healthz"), {
       cache: "no-store",
+      headers: authHeaders(),
       signal: controller.signal,
     });
-    return response.ok;
+    if (response.ok) return "ready";
+    return isRejectedKey(response.status) ? "blocked" : "waking";
   } catch {
-    return false;
+    return "waking";
   } finally {
     window.clearTimeout(timeout);
   }
@@ -91,16 +107,20 @@ const wakeServer = async () => {
       setServerState("offline");
       return false;
     }
-    const healthy = await probeHealth();
+    const outcome = await probeHealth();
     // Sự kiện offline có thể tới trong lúc fetch còn bay. Không kiểm lại ở đây
     // thì response cũ sẽ ghi đè trạng thái offline bằng ready/waking.
     if (!navigator.onLine) {
       setServerState("offline");
       return false;
     }
-    if (healthy) {
+    if (outcome === "ready") {
       setServerState("ready");
       return true;
+    }
+    if (outcome === "blocked") {
+      setServerState("blocked");
+      return false;
     }
 
     setServerState("waking");
@@ -272,11 +292,15 @@ const generateResponse = async (botMessage, userMessage) => {
   try {
     const response = await fetch(apiUrl("/chat"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...authHeaders() },
       body: JSON.stringify({ message: userMessage, history }),
       signal: controller.signal,
     });
     if (!response.ok) {
+      if (isRejectedKey(response.status)) {
+        setServerState("blocked");
+        throw new Error(stateLabels.blocked);
+      }
       const detail = await response.json().catch(() => ({}));
       const error = new Error(detail.detail || `Máy chủ trả về lỗi ${response.status}.`);
       error.mayBeCold = [502, 503, 504].includes(response.status);

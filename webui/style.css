@@ -354,10 +354,12 @@ body.bot-responding #send-prompt-btn { display: none; }
 .server-status[data-state="ready"] .dot { background: var(--success); }
 
 .server-status[data-state="offline"],
-.server-status[data-state="down"] { color: var(--danger); }
+.server-status[data-state="down"],
+.server-status[data-state="blocked"] { color: var(--danger); }
 
 .server-status[data-state="offline"] .dot,
-.server-status[data-state="down"] .dot { background: var(--danger); }
+.server-status[data-state="down"] .dot,
+.server-status[data-state="blocked"] .dot { background: var(--danger); }
 
 @keyframes pulse {
   70% { box-shadow: 0 0 0 0.45rem transparent; }

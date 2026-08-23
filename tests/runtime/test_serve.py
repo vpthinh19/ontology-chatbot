@@ -580,6 +580,29 @@ def test_the_configured_frontend_origin_can_call_the_api(monkeypatch) -> None:
     )
 
 
+def test_the_preflight_lets_the_frontend_send_its_api_key(monkeypatch) -> None:
+    """Khoá đi trong ``Authorization``; preflight chặn header đó là chat chết."""
+    monkeypatch.setenv("ONTCHATBOT_CORS_ORIGINS", "https://ontchatbot.vercel.app")
+
+    async def exercise():
+        transport = httpx.ASGITransport(app=create_app(object()))
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.options(
+                "/chat",
+                headers={
+                    "Origin": "https://ontchatbot.vercel.app",
+                    "Access-Control-Request-Method": "POST",
+                    "Access-Control-Request-Headers": "authorization, content-type",
+                },
+            )
+
+    response = asyncio.run(exercise())
+
+    assert response.status_code == 200
+    allowed = response.headers["access-control-allow-headers"].lower()
+    assert "authorization" in allowed
+
+
 def test_the_backend_root_does_not_serve_the_frontend() -> None:
     async def exercise():
         transport = httpx.ASGITransport(app=create_app(object()))

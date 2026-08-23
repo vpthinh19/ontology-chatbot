@@ -359,7 +359,11 @@ def create_app(agent, gate: TurnGate | None = None):
             CORSMiddleware,
             allow_origins=frontend_origins,
             allow_methods=["GET", "POST", "OPTIONS"],
-            allow_headers=["Content-Type"],
+            # ``Authorization`` mang khoá đi qua cổng đứng trước dịch vụ. Trình
+            # duyệt hỏi trước bằng một request ``OPTIONS`` và chỉ gửi request
+            # thật khi header đó nằm trong danh sách này, nên bỏ sót nó thì mọi
+            # lượt chat từ frontend khác domain đều chết ngay ở bước hỏi trước.
+            allow_headers=["Authorization", "Content-Type"],
             max_age=600,
         )
     # Một cửa vào cho cả tiến trình, không phải mỗi lượt một cái: nó chỉ có nghĩa
