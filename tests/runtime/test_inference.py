@@ -18,6 +18,7 @@ from ontchatbot.catalogue import load_catalogue
 from ontchatbot.settings import QUERY_CATALOGUE_PATH
 from ontchatbot.runtime.pipeline import OntologyChatbot
 from ontchatbot.runtime.render import NO_INFORMATION_REPLY
+from ontchatbot.runtime.sparql import SparqlError
 
 
 def test_chatbot_connects_generated_query_to_ontology() -> None:
@@ -80,3 +81,48 @@ def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
     error = next(record for record in caplog.records if record.levelno == logging.ERROR)
     assert "stage=generator" in error.getMessage()
     assert error.exc_info is not None
+
+
+def test_batch_lookup_logs_the_label_each_keyword_landed_on(caplog) -> None:
+    """Một từ khoá trượt và một từ khoá trúng phải phân biệt được trong nhật ký.
+
+    Số dòng lấy về không nói lên nguyên nhân. Nhãn mới nói: trúng nhãn nào, hay
+    trượt vì model bảo không có thông tin.
+    """
+
+    query = _procedure_target()
+    generator = SimpleNamespace(
+        generate_many=lambda questions: [query, "không có thông tin"]
+    )
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
+        OntologyChatbot(generator).answer_many(["bảo lưu", "thời tiết hôm nay"])
+
+    trace = "\n".join(record.getMessage() for record in caplog.records)
+    assert "keyword='bảo lưu' label=academic-procedure-facts" in trace
+    assert "keyword='thời tiết hôm nay' label=no-information rows=0" in trace
+
+
+def test_batch_lookup_labels_a_query_that_belongs_to_no_family(caplog) -> None:
+    outside = "SELECT ?x WHERE { ?x a <http://example.org/Nothing> }"
+    generator = SimpleNamespace(generate_many=lambda questions: [outside])
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
+        OntologyChatbot(generator).answer_many(["bảo lưu"])
+
+    trace = "\n".join(record.getMessage() for record in caplog.records)
+    assert "keyword='bảo lưu' label=off-catalogue rows=0" in trace
+
+
+def test_batch_lookup_rejects_a_call_with_no_usable_keyword() -> None:
+    """Danh sách toàn khoảng trắng phải thành lỗi công cụ hiểu được.
+
+    Trợ lý bắt ``SparqlError`` rồi trả lời là không tìm thấy. Một lỗi khác loại
+    thoát ra và làm hỏng cả lượt gọi công cụ.
+    """
+
+    generator = SimpleNamespace(generate_many=lambda questions: [])
+
+    with pytest.raises(SparqlError):
+        OntologyChatbot(generator).answer_many(["   ", ""])
+

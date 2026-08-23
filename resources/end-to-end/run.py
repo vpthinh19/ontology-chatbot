@@ -64,7 +64,7 @@ class ChatbotCoVet(OntologyChatbot):
             output = output.strip()
             if output and output != MARKER:
                 nodes += [n for n in _query_anchor_nodes(output, self.graph)]
-            found = self._rows_for(output)
+            _, found = self._rows_for(output)
             if not found:
                 missed.append(question)
                 continue

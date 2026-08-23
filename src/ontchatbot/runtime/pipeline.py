@@ -13,7 +13,7 @@ from ..catalogue import QuerySpec, find_query_family, load_catalogue
 from ..settings import QUERY_CATALOGUE_PATH
 from .generator import QueryGenerationError, QueryGenerator
 from .render import NO_INFORMATION_REPLY, render_batch, render_rows
-from .sparql import QueryRows, execute_select, load_ontology
+from .sparql import QueryRows, SparqlError, execute_select, load_ontology
 from .text import normalize_model_input
 
 
@@ -141,7 +141,14 @@ class OntologyChatbot:
         seen: set[tuple] = set()
         missed = []
         for question, output in zip(wanted, outputs):
-            found = self._rows_for(output.strip())
+            label, found = self._rows_for(output.strip())
+            logger.info(
+                "request=%s keyword=%r label=%s rows=%d",
+                request_id,
+                question,
+                label,
+                len(found),
+            )
             if not found:
                 missed.append(question)
                 continue
@@ -160,14 +167,23 @@ class OntologyChatbot:
         )
         return render_batch(rows, missed=missed)
 
-    def _rows_for(self, output: str) -> QueryRows:
-        """Chạy một truy vấn model sinh ra; mọi kiểu trượt đều trả về rỗng."""
+    def _rows_for(self, output: str) -> tuple[str, QueryRows]:
+        """Chạy một truy vấn model sinh ra; mọi kiểu trượt đều trả về rỗng.
+
+        Trả kèm nhãn đã chọn để lớp gọi ghi được vào nhật ký. Biết một từ khoá
+        trượt là chưa đủ để lần ra nguyên nhân: trượt vì model nói không có
+        thông tin, vì truy vấn nó viết ra không thuộc họ nào trong danh mục, vì
+        truy vấn hỏng lúc chạy, hay vì đồ thị thật sự không có dòng nào - bốn
+        chuyện khác hẳn nhau và cần bốn cách sửa khác nhau.
+        """
 
         if not output or output == MARKER:
-            return []
-        if self.catalogue and find_query_family(self.catalogue, output) is None:
-            return []
+            return "no-information", []
+        query_id = find_query_family(self.catalogue, output) if self.catalogue else None
+        if self.catalogue and query_id is None:
+            return "off-catalogue", []
         try:
-            return execute_select(self.graph, output)
+            rows = execute_select(self.graph, output)
         except SparqlError:
-            return []
+            return "query-failed", []
+        return query_id or "unchecked", rows

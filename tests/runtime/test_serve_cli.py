@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+import re
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -69,8 +71,26 @@ def test_configure_logging_uses_requested_level_and_trace_fields(monkeypatch) ->
         {
             "level": logging.WARNING,
             "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S%z",
         }
     ]
+
+
+def test_the_log_timestamp_carries_its_time_zone(monkeypatch) -> None:
+    """Mốc thời gian phải tự nói nó thuộc múi giờ nào.
+
+    Máy chủ và người đọc nhật ký thường ở hai múi giờ khác nhau. Thiếu độ lệch
+    thì cùng một dòng được hai bên đọc ra hai thời điểm cách nhau nhiều tiếng,
+    và không có gì trên màn hình để lộ chuyện đó.
+    """
+
+    calls = []
+    monkeypatch.setattr(logging, "basicConfig", lambda **kwargs: calls.append(kwargs))
+
+    _configure_logging("info")
+
+    stamped = time.strftime(calls[0]["datefmt"], time.localtime())
+    assert re.fullmatch(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d[+-]\d{4}", stamped)
 
 
 def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
@@ -82,3 +102,24 @@ def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
     for flag in ("--compute-type", "--inter-threads", "--compiled-dir"):
         with pytest.raises(SystemExit):
             _parse_args(_flags(flag, "gi-do"))
+
+
+def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
+    """Máy chủ web không được dựng khuôn nhật ký riêng.
+
+    Khuôn mặc định của nó không có mốc thời gian. Để nguyên thì nhật ký trộn hai
+    kiểu dòng, và các dòng ghi lượt truy cập mất giờ.
+    """
+
+    import ontchatbot.cli.serve as serve
+
+    seen = {}
+    fake = SimpleNamespace(run=lambda app, **kwargs: seen.update(kwargs))
+    monkeypatch.setitem(__import__("sys").modules, "uvicorn", fake)
+    monkeypatch.setattr(serve, "_build_agent", lambda args: object())
+    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+
+    serve.main()
+
+    assert seen["log_config"] is None
+

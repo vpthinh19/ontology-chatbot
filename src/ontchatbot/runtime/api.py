@@ -13,10 +13,22 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
+import time
+import uuid
 from pathlib import Path
 from typing import Any, AsyncIterator, Sequence
 
 from ..settings import PROJECT_ROOT
+
+#: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
+#: gõ, mỗi lần trợ lý tra cứu, câu trả lời cuối, và thời gian cả lượt. Các tầng
+#: dưới chỉ thấy từ khoá đã được rút gọn, nên đọc riêng chúng thì không biết
+#: người hỏi gì và trợ lý đáp gì.
+#:
+#: Đánh đổi: nhật ký chứa nội dung người dùng nhập. Đây là dịch vụ học vụ không
+#: đăng nhập, không kèm danh tính, nhưng ai đọc được terminal thì đọc được câu hỏi.
+logger = logging.getLogger(__name__)
 
 #: Vai được phép có trong lịch sử hội thoại do trình duyệt gửi lên.
 _ROLES = ("user", "assistant")
@@ -93,33 +105,63 @@ async def _stream(agent, message: str, history: Sequence[Any]) -> AsyncIterator[
     from openai import APITimeoutError
 
     conversation, history_trimmed = _bounded_history(history)
+    turn = uuid.uuid4().hex[:12]
+    started = time.perf_counter()
+    lookups = 0
+    answer = ""
+    # Người đọc nhật ký cần phân biệt bốn kết cục, vì chúng cần bốn cách sửa:
+    # xong bình thường, quá hạn chờ model, lỗi, và người dùng đóng tab giữa
+    # chừng. Kết cục cuối trước đây không để lại dấu vết nào và trông y hệt một
+    # lượt treo.
+    outcome = "abandoned"
+    logger.info("turn=%s question=%r history=%d", turn, message, len(conversation))
     conversation.append({"role": "user", "content": message})
     try:
-        async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
-            result = Runner.run_streamed(agent, conversation)
-            if history_trimmed:
-                yield _event("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
-            async for event in result.stream_events():
-                if event.type == "raw_response_event":
-                    if getattr(event.data, "type", None) != _ANSWER_DELTA:
-                        continue
-                    delta = getattr(event.data, "delta", None)
-                    if isinstance(delta, str) and delta:
-                        yield _event("chu", noi_dung=delta)
-                elif event.type == "run_item_stream_event":
-                    # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
-                    # giữa các lần gọi công cụ trông như hệ thống đứng máy.
-                    if event.name == "tool_called":
-                        yield _event("tra_cuu", tu_khoa=_tool_input(event.item))
-                    elif event.name == "tool_output":
-                        yield _event("tra_cuu_xong")
-    except (TimeoutError, APITimeoutError):
-        yield _event("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
-        return
-    except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
-        yield _event("loi", noi_dung=str(exc))
-        return
-    yield _event("xong", noi_dung=str(result.final_output or "") or _EMPTY_ANSWER)
+        try:
+            async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
+                result = Runner.run_streamed(agent, conversation)
+                if history_trimmed:
+                    yield _event("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
+                async for event in result.stream_events():
+                    if event.type == "raw_response_event":
+                        if getattr(event.data, "type", None) != _ANSWER_DELTA:
+                            continue
+                        delta = getattr(event.data, "delta", None)
+                        if isinstance(delta, str) and delta:
+                            yield _event("chu", noi_dung=delta)
+                    elif event.type == "run_item_stream_event":
+                        # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
+                        # giữa các lần gọi công cụ trông như hệ thống đứng máy.
+                        if event.name == "tool_called":
+                            keywords = _tool_input(event.item)
+                            lookups += 1
+                            logger.info("turn=%s lookup=%r", turn, keywords)
+                            yield _event("tra_cuu", tu_khoa=keywords)
+                        elif event.name == "tool_output":
+                            yield _event("tra_cuu_xong")
+        except (TimeoutError, APITimeoutError):
+            outcome = "timeout"
+            yield _event("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
+            return
+        except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
+            outcome = "error"
+            logger.exception("turn=%s failed", turn)
+            yield _event("loi", noi_dung=str(exc))
+            return
+        answer = str(result.final_output or "") or _EMPTY_ANSWER
+        outcome = "ok"
+        yield _event("xong", noi_dung=answer)
+    finally:
+        # Trong ``finally`` để một lượt luôn đóng sổ, kể cả khi trình duyệt ngắt
+        # kết nối giữa chừng và bộ sinh này bị đóng ngay tại một ``yield``.
+        logger.info(
+            "turn=%s outcome=%s answer=%r lookups=%d total_ms=%.1f",
+            turn,
+            outcome,
+            answer,
+            lookups,
+            (time.perf_counter() - started) * 1000,
+        )
 
 
 def _tool_input(item: Any) -> str:

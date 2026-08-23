@@ -83,9 +83,15 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 # Mặc định chạy trên card đồ hoạ: ảnh này dựng để triển khai trên máy chủ có card,
 # và card được cấp thẳng vào container. Chạy thử trên máy cá nhân thì cần cờ
 # ``--gpus all``; máy không có card thì đặt ONTCHATBOT_DEVICE=cpu.
+#
+# Múi giờ đặt theo nơi đặt trường, vì nhật ký được đọc bằng mắt trên terminal chứ
+# không qua công cụ nào biết quy đổi. Không đặt thì container chạy theo giờ quốc
+# tế và mọi mốc thời gian lệch bảy tiếng so với người đọc. Mốc thời gian vẫn ghi
+# kèm độ lệch, nên đổi biến này thì dòng nhật ký tự nói lên múi giờ mới.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    TZ=Asia/Ho_Chi_Minh \
     HF_HUB_OFFLINE=1 \
     HF_HUB_DISABLE_TELEMETRY=1 \
     MALLOC_ARENA_MAX=2 \

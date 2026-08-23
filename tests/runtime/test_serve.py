@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from types import SimpleNamespace
 
 import pytest
@@ -255,3 +256,65 @@ def test_a_turn_that_produces_no_words_still_says_something(monkeypatch, tmp_pat
     cuoi = _sse(response.text)[-1]
     assert cuoi["loai"] == "xong"
     assert "chưa tạo được câu trả lời" in cuoi["noi_dung"]
+
+
+def test_a_whole_turn_is_written_to_the_log(monkeypatch, tmp_path, caplog) -> None:
+    """Nhật ký phải kể trọn một lượt, vì đây là tầng duy nhất thấy trọn nó.
+
+    Các tầng dưới chỉ thấy từ khoá đã rút gọn. Không ghi ở đây thì đọc nhật ký
+    không biết người dùng hỏi gì, trợ lý đáp gì, và cả lượt mất bao lâu.
+    """
+
+    run = _Run(
+        [_tool_call('{"tu_khoa": "đăng ký học phần"}'), _delta("Bạn cần...")],
+        final_output="Bạn cần nộp đơn.",
+    )
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        _ask(monkeypatch, run, tmp_path, {"message": "đăng ký học phần thế nào"})
+
+    trace = "\n".join(record.getMessage() for record in caplog.records)
+    assert "question='đăng ký học phần thế nào'" in trace
+    assert "lookup='đăng ký học phần'" in trace
+    assert "outcome=ok" in trace
+    assert "answer='Bạn cần nộp đơn.'" in trace
+    assert "lookups=1" in trace
+    assert "total_ms=" in trace
+
+
+def test_a_turn_that_times_out_says_so_in_the_log(monkeypatch, tmp_path, caplog) -> None:
+    monkeypatch.setattr(api, "MODEL_TURN_TIMEOUT_SECONDS", 0.001, raising=False)
+    run = _Run([], final_output="quá muộn", delay=0.02)
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
+
+    assert "outcome=timeout" in "\n".join(r.getMessage() for r in caplog.records)
+
+
+def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
+    monkeypatch, caplog
+) -> None:
+    """Đóng tab giữa chừng là chuyện thường, và nó phải để lại dấu vết.
+
+    Không có dòng đóng sổ thì lượt đó nhìn y hệt một lượt treo, và người đọc
+    nhật ký đi tìm sự cố không tồn tại.
+    """
+
+    import agents
+
+    run = _Run([_delta("Đang"), _delta(" viết")], final_output="Đang viết")
+    monkeypatch.setattr(
+        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
+    )
+
+    async def exercise():
+        stream = api._stream(object(), "học phí", [])
+        await anext(stream)
+        await stream.aclose()
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        asyncio.run(exercise())
+
+    assert "outcome=abandoned" in "\n".join(r.getMessage() for r in caplog.records)
+

@@ -47,9 +47,17 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def _configure_logging(level: str) -> None:
+    """Bật nhật ký, và bắt mốc thời gian nói rõ nó thuộc múi giờ nào.
+
+    Container chạy theo múi giờ của máy chủ, thường là giờ quốc tế, còn người
+    đọc nhật ký ở múi giờ khác. Không ghi độ lệch thì hai bên đọc cùng một dòng
+    ra hai thời điểm cách nhau nhiều tiếng mà không ai nhận ra.
+    """
+
     logging.basicConfig(
         level=getattr(logging, level.upper()),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S%z",
     )
 
 
@@ -82,10 +90,15 @@ def main() -> None:
         raise RuntimeError("install the inference extra to serve the API") from exc
     args = _parse_args()
     _configure_logging(args.log_level)
+    # ``log_config=None`` để máy chủ web không dựng cấu hình nhật ký riêng của
+    # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc
+    # thời gian, nên nhật ký trộn hai kiểu dòng: dòng của dịch vụ có giờ, dòng
+    # của máy chủ web thì không. Bỏ cấu hình đó thì mọi dòng cùng một khuôn.
     uvicorn.run(
         create_app(_build_agent(args)),
         host=args.host,
         port=args.port,
+        log_config=None,
     )
 
 
