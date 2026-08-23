@@ -57,6 +57,15 @@
                 <button id="theme-toggle-btn" class="material-symbols-rounded">light_mode</button>
                 <button id="delete-chats-btn" class="material-symbols-rounded">delete</button>
             </div>
+            <!-- Trạng thái máy chủ. Nền tảng triển khai tắt hẳn container khi
+                 không ai dùng, nên lần mở trang đầu tiên sau một quãng rảnh rơi
+                 đúng vào lúc máy chủ đang dậy. Không nói ra thì người dùng gõ
+                 xong câu hỏi, bấm gửi, rồi ngồi nhìn màn hình trống và tưởng
+                 hệ thống hỏng. -->
+            <p class="server-status" data-state="checking">
+                <span class="dot"></span>
+                <span class="label">Đang kiểm tra máy chủ…</span>
+            </p>
         </div>
     </div>
     <script src="script.js"></script>

@@ -195,6 +195,13 @@ const handleFormSubmit = (e) => {
     e.preventDefault();
     const userMessage = promptInput.value.trim();
     if (!userMessage || document.body.classList.contains("bot-responding")) return;
+    // Bấm gửi lúc máy chủ chưa dậy thì hỏi lại ngay thay vì im lặng không làm
+    // gì: người dùng vừa ra tín hiệu là họ đang chờ, nên đừng bắt họ đợi hết
+    // quãng giãn cách của lần thử kế tiếp.
+    if (!document.body.classList.contains("server-ready")) {
+        checkServer();
+        return;
+    }
     userData.message = userMessage;
     promptInput.value = "";
     document.body.classList.add("chats-active", "bot-responding");
@@ -228,6 +235,10 @@ document.querySelectorAll(".suggestions-item").forEach((item) => {
     item.addEventListener("click", () => {
         if (document.body.classList.contains("bot-responding")) return;
         promptInput.value = item.querySelector(".text").textContent;
+        if (!document.body.classList.contains("server-ready")) {
+            checkServer();
+            return;
+        }
         promptForm.dispatchEvent(new Event("submit"));
     });
 });
@@ -238,3 +249,64 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
     document.body.classList.remove("chats-active", "bot-responding");
 });
 promptForm.addEventListener("submit", handleFormSubmit);
+
+// --- Trạng thái máy chủ ------------------------------------------------------
+// Nền tảng triển khai tắt hẳn container khi không ai dùng, nên mở trang sau một
+// quãng rảnh là rơi đúng vào lúc máy chủ đang dậy. Máy chủ chỉ mở cổng SAU khi
+// nạp xong mô hình, nên không có trạng thái nửa vời: hỏi được ``/healthz`` nghĩa
+// là sẵn sàng thật.
+//
+// Chính cú hỏi này LÀ cú đánh thức. Mở trang là container bắt đầu dậy, trong lúc
+// người dùng còn đang đọc giao diện và gõ câu hỏi - tới lúc bấm gửi thì phần lớn
+// trường hợp đã ấm sẵn, thay vì bắt họ chờ sau khi bấm.
+const serverStatus = document.querySelector(".server-status");
+// Giãn dần rồi giữ ở tám giây. Một lần hỏng chưa nói lên gì: lúc container đang
+// dậy, nền tảng có thể cắt chính cú hỏi này nếu nó lâu hơn hạn của nền tảng.
+const HEALTH_WAITS_MS = [1000, 2000, 4000, 8000];
+// Hai mươi lần, tức khoảng hai phút - đủ cho một lần cấp máy và kéo ảnh về.
+const HEALTH_MAX_ATTEMPTS = 20;
+
+const setServerState = (state, label) => {
+    serverStatus.dataset.state = state;
+    serverStatus.querySelector(".label").textContent = label;
+    document.body.classList.toggle("server-ready", state === "ready");
+};
+
+let healthCheckRunning = false;
+
+const checkServer = async () => {
+    // Một vòng hỏi tại một thời điểm. Bấm gửi nhiều lần lúc đang chờ mà mỗi lần
+    // mở một vòng riêng thì các vòng ghi đè trạng thái của nhau.
+    if (healthCheckRunning) return;
+    healthCheckRunning = true;
+    try {
+        for (let attempt = 0; attempt < HEALTH_MAX_ATTEMPTS; attempt++) {
+            try {
+                const response = await fetch("/healthz", { cache: "no-store" });
+                if (response.ok) {
+                    setServerState("ready", "Máy chủ sẵn sàng");
+                    return;
+                }
+            } catch (error) {
+                // Container đang dậy thì kết nối hỏng hẳn chứ không trả về mã
+                // lỗi, nên hai trường hợp đó dẫn tới cùng một chỗ.
+            }
+            setServerState("waking", "Đang khởi động máy chủ, bạn chờ một chút…");
+            const wait = HEALTH_WAITS_MS[Math.min(attempt, HEALTH_WAITS_MS.length - 1)];
+            await new Promise((resolve) => setTimeout(resolve, wait));
+        }
+        setServerState("down", "Chưa kết nối được máy chủ. Bạn thử tải lại trang.");
+    } finally {
+        healthCheckRunning = false;
+    }
+};
+
+checkServer();
+
+// Container có thể đã tụt về không trong lúc tab nằm im, nên phải hỏi lại khi
+// người dùng quay lại: chấm xanh từ nửa tiếng trước không còn nói lên điều gì.
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    if (document.body.classList.contains("bot-responding")) return;
+    checkServer();
+});

@@ -395,3 +395,61 @@ body.bot-responding .prompt-form #stop-response-btn {
 .reply-line.bullet.depth-1 { margin-left: 1.1em; }
 .reply-line.bullet.depth-2 { margin-left: 2.2em; }
 .reply-line.bullet.depth-3 { margin-left: 3.3em; }
+
+/* Trạng thái máy chủ: một chấm màu và một dòng chữ, ngay dưới ô nhập.
+   Đặt ở đây chứ không đặt trong phần đầu trang vì phần đầu trang bị ẩn đi khi
+   cuộc trò chuyện bắt đầu, mà máy chủ thì có thể nguội lại giữa chừng. */
+.prompt-container .server-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 9px;
+    font-size: 0.8rem;
+    color: var(--placeholder-color);
+}
+
+.server-status .dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--subheading-color);
+}
+
+.server-status[data-state="ready"] .dot {
+    background: #22c55e;
+}
+
+.server-status[data-state="down"] .dot {
+    background: #d62939;
+}
+
+/* Chấm nhấp nháy trong lúc chờ, để phân biệt "đang chờ" với "đã đứng hẳn" -
+   hai chuyện đó nhìn giống nhau nếu chấm chỉ đứng yên đổi màu. */
+.server-status[data-state="checking"] .dot,
+.server-status[data-state="waking"] .dot {
+    background: #f59e0b;
+    animation: server-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes server-pulse {
+    50% {
+        opacity: 0.25;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .server-status[data-state="checking"] .dot,
+    .server-status[data-state="waking"] .dot {
+        animation: none;
+    }
+}
+
+/* Nút gửi mờ đi khi máy chủ chưa sẵn sàng: trạng thái khoá phải nhìn thấy được
+   trước khi bấm, chứ không phải bấm rồi mới phát hiện không có gì xảy ra. */
+body:not(.server-ready) .prompt-form .prompt-actions #send-prompt-btn {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

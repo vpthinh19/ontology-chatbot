@@ -538,3 +538,46 @@ def test_the_two_waits_together_stay_inside_what_the_platform_allows() -> None:
         f"một request xấu nhất mất {worst_case:.0f}s, "
         f"mà nền tảng cắt ở {api.MAX_REQUEST_SECONDS:.0f}s"
     )
+
+
+def test_the_page_carries_what_the_cold_start_indicator_needs() -> None:
+    """Chấm báo trạng thái nối ba tệp lại, và không tệp nào biết hai tệp kia.
+
+    Trang khai phần tử, kiểu dáng tô màu nó theo ``data-state``, còn đoạn script
+    hỏi ``/healthz`` rồi đặt trạng thái. Đổi tên lớp ở một chỗ thì hai chỗ kia
+    vẫn chạy, vẫn không báo lỗi, và chấm đứng nguyên một màu - đúng loại hỏng mà
+    người sửa không nhận ra cho tới khi máy chủ nguội thật.
+    """
+
+    from ontchatbot.settings import PROJECT_ROOT
+
+    webui = PROJECT_ROOT / "webui"
+    page = (webui / "index.html").read_text(encoding="utf-8")
+    script = (webui / "script.js").read_text(encoding="utf-8")
+    style = (webui / "style.css").read_text(encoding="utf-8")
+
+    assert 'class="server-status"' in page
+    assert 'class="dot"' in page and 'class="label"' in page
+    assert ".server-status" in script and ".server-status" in style
+    # Máy chủ chỉ mở cổng sau khi nạp xong mô hình, nên đây là tín hiệu sẵn sàng
+    # thật; đổi đường dẫn này mà quên trang thì chấm không bao giờ xanh.
+    assert '"/healthz"' in script
+    for state in ("ready", "waking", "down"):
+        assert f'data-state="{state}"' in style, f"kiểu dáng thiếu trạng thái {state}"
+        assert f'"{state}"' in script, f"script không bao giờ đặt trạng thái {state}"
+    # Nút gửi mờ đi nhờ lớp này, và chính lớp này chặn luôn việc gửi.
+    assert "server-ready" in script and "server-ready" in style
+
+
+def test_the_health_endpoint_answers_without_touching_the_model() -> None:
+    """Chấm báo trạng thái hỏi endpoint này, nên nó phải trả lời được ngay."""
+
+    async def exercise():
+        transport = httpx.ASGITransport(app=create_app(object()))
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.get("/healthz")
+
+    response = asyncio.run(exercise())
+
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
