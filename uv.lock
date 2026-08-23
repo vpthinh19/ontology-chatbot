@@ -1193,7 +1193,7 @@ wheels = [
 
 [[package]]
 name = "ontchatbot"
-version = "2.1.1"
+version = "2.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
