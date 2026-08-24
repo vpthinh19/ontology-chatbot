@@ -6,8 +6,8 @@ ngữ truy vấn đồ thị tri thức) trong danh mục dựng sẵn. Mô hìn
 dùng kết quả tra cứu để trả lời người học, kèm trích dẫn văn bản gốc. Khi ontology
 không có câu trả lời, hệ thống được thiết kế để từ chối.
 
-Tài nguyên phát hành: [mô hình phân loại ONNX trên Hugging Face](https://huggingface.co/vpthinh19/ntu-ontology-xlmr)
-· [Docker image `vpt19/ontchatbot:latest`](https://hub.docker.com/r/vpt19/ontchatbot/tags?name=latest).
+Mô hình phân loại ONNX:
+[`vpthinh19/ntu-ontology-xlmr`](https://huggingface.co/vpthinh19/ntu-ontology-xlmr).
 
 ---
 
