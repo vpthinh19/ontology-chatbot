@@ -13,7 +13,7 @@ from .runtime.onnx_classifier import OnnxClassifierGenerator
 from .runtime.pipeline import OntologyChatbot
 from .runtime.render import render_rows
 
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 
 __all__ = [
     "PREFIXES",
