@@ -7,6 +7,14 @@ set -eu
 test -z "${CUDA_VERSION:-}"
 test ! -e /app/cuda
 test ! -d /app/.venv/lib/python3.12/site-packages/nvidia
+test ! -e /app/resources/dataset
+test ! -e /app/resources/reports
+test ! -e /app/resources/provenance
+test ! -e /app/resources/end-to-end
+test ! -e /app/resources/cases
+test -f /app/resources/ontology/ontology.ttl
+test -f /app/resources/ontology/catalogue.jsonl
+test -f /app/resources/ontology/answer_inventory.json
 ! command -v uv >/dev/null 2>&1
 python - <<"PY"
 import sys

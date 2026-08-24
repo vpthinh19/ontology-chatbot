@@ -9,7 +9,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --python /usr/local/bin/python \
       --no-install-project --extra inference --no-dev
 COPY src/ ./src/
-COPY resources/ ./resources/
+COPY resources/ontology/ ./resources/ontology/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --python /usr/local/bin/python --extra inference --no-dev
 
@@ -40,7 +40,7 @@ RUN set -eux; apt-get update; \
 WORKDIR /app
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
-COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources /app/resources
+COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources/ontology /app/resources/ontology
 COPY --from=model-fetcher --chown=ontchatbot:ontchatbot /app/model /app/model
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 ENV PATH="/app/.venv/bin:$PATH" \
