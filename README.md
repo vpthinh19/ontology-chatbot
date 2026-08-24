@@ -603,34 +603,6 @@ Khi câu hỏi nằm ngoài phạm vi, giao diện trình bày thông báo khôn
 
 ![Trợ lý từ chối câu ngoài phạm vi](docs/images/giao-dien-tu-choi.png)
 
-### Chạy frontend ở máy cá nhân
-
-Khởi động backend tại `http://127.0.0.1:8000`, sau đó chạy:
-
-```bash
-cd webui
-npm ci
-npm run dev
-```
-
-Mở `http://127.0.0.1:4173`. Vite tự chuyển `/api/healthz` và `/api/chat` tới
-backend cục bộ; frontend không cần biến môi trường.
-
-### Deploy frontend lên Vercel với Lightning TokenAuth
-
-Đặt **Root Directory** của project Vercel là `webui`. Trong **Settings →
-Environment Variables**, thêm cho cả Production và Preview:
-
-- `LIGHTNING_API_BASE_URL`: URL deployment Lightning, không có dấu `/` cuối.
-- `LIGHTNING_API_TOKEN`: token đang cấu hình cho Lightning `TokenAuth`; đánh dấu
-  là sensitive.
-
-Xóa các biến cũ `VITE_API_BASE_URL` và `VITE_API_KEY`, rồi redeploy commit mới
-nhất. Trình duyệt chỉ gọi `/api`; Vercel Function mới gắn Bearer token khi gọi
-Lightning, nên token không nằm trong bundle frontend. Backend không cần đặt
-`ONTCHATBOT_CORS_ORIGINS` cho frontend này vì request qua Lightning là kết nối
-server-to-server.
-
 ---
 
 ## 10. Hạn chế
