@@ -68,3 +68,14 @@ def test_cpu_verifier_replaces_gpu_only_scripts() -> None:
         "generator.generate",
     ):
         assert marker in text
+
+
+def test_release_workflow_measures_and_verifies_the_cpu_image() -> None:
+    text = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "prepare-runner-disk.sh" not in text
+    assert "verify-cuda-runtime.sh" not in text
+    assert "ONTCHATBOT_DEVICE" not in text
+    assert "verify-cpu-runtime.sh" in text
+    assert "docker image inspect --format '{{.Size}}'" in text
+    assert "docker history --no-trunc" in text
+    assert "cuda image" not in text.lower()
