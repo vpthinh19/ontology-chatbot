@@ -1,6 +1,6 @@
 [project]
 name = "ontchatbot"
-version = "2.1.2"
+version = "3.0.0"
 description = "Vietnamese academic-regulation chatbot: a classifier picks one of 344 predefined SPARQL queries over an ontology"
 readme = "README.md"
 requires-python = "==3.12.*"
@@ -14,11 +14,11 @@ dependencies = [
 
 [project.optional-dependencies]
 inference = [
-    "fastapi[standard]>=0.140.0",
-    "huggingface-hub>=1.24.0",
-    "onnxruntime-gpu>=1.29.0",
+    "fastapi>=0.140.0",
+    "onnxruntime>=1.29.0",
     "openai-agents>=0.21.1",
     "tokenizers>=0.22.2",
+    "uvicorn>=0.41.0",
 ]
 research = [
     "huggingface-hub>=1.24.0",
@@ -62,9 +62,6 @@ dev = [
 
 [tool.uv]
 package = true
-conflicts = [
-    [{ extra = "inference" }, { extra = "research" }],
-]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

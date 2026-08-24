@@ -1,11 +1,24 @@
 from __future__ import annotations
 
 import sys
+import tomllib
 from importlib.metadata import version
+from pathlib import Path
 from types import ModuleType, SimpleNamespace
 
 import ontchatbot
 from ontchatbot.runtime.api import create_app
+
+
+def test_cpu_release_version_and_inference_dependencies() -> None:
+    project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+    assert project["project"]["version"] == "3.0.0"
+    inference = project["project"]["optional-dependencies"]["inference"]
+    names = {item.split("[")[0].split(">=")[0] for item in inference}
+    assert names == {"fastapi", "uvicorn", "onnxruntime", "openai-agents", "tokenizers"}
+    assert "onnxruntime-gpu" not in names
+    assert not {name for name in names if name.startswith("nvidia-")}
+    assert ontchatbot.__version__ == "3.0.0"
 
 
 def test_package_version_matches_installed_release() -> None:
