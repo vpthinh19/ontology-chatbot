@@ -94,6 +94,24 @@ def test_publish_cli_does_not_accept_a_provider_selection() -> None:
         publish_classifier._parse_args(["--repo", "owner/model", "--device", "cuda"])
 
 
+def test_local_chat_does_not_accept_a_device_flag() -> None:
+    from ontchatbot.cli.chat import _parse_args
+
+    with pytest.raises(SystemExit):
+        _parse_args(["--device", "cuda"])
+
+
+def test_local_chat_traces_batched_lookups(capsys) -> None:
+    from ontchatbot.cli.chat import _Trace
+
+    trace = _Trace(
+        SimpleNamespace(answer_many=lambda questions: f"dữ kiện {', '.join(questions)}")
+    )
+
+    assert trace.answer_many(["học phí", "học bổng"]) == "dữ kiện học phí, học bổng"
+    assert "tra ['học phí', 'học bổng']" in capsys.readouterr().out
+
+
 def test_fp16_check_allows_rounding_without_allowing_the_top_label_to_change(
     monkeypatch, tmp_path
 ) -> None:

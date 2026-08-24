@@ -14,6 +14,7 @@ import argparse
 import asyncio
 import os
 from pathlib import Path
+from typing import Sequence
 
 from ..runtime.agent import DEFAULT_BASE_URL, build_agent
 from ..runtime.onnx_classifier import OnnxClassifierGenerator
@@ -54,6 +55,11 @@ class _Trace:
         print(f"    [công cụ] tra {question!r} → {len(reply)} ký tự", flush=True)
         return reply
 
+    def answer_many(self, questions: Sequence[str]) -> str:
+        reply = self._chatbot.answer_many(questions)
+        print(f"    [công cụ] tra {list(questions)!r} → {len(reply)} ký tự", flush=True)
+        return reply
+
 
 def main() -> None:
     args = _parse_args()
@@ -70,6 +76,7 @@ def main() -> None:
         _Trace(OntologyChatbot(generator)),
         model=args.llm,
         base_url=args.base_url,
+        lookup_workers=4,
     )
 
     from agents import Runner

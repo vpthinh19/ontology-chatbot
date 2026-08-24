@@ -8,34 +8,83 @@ from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.cli.serve import _build_agent, _configure_logging, _parse_args
+from ontchatbot.cli.serve import (
+    _build_agent,
+    _configure_logging,
+    _log_cpu_budget,
+    _parse_args,
+)
 
 
 def _flags(*extra: str) -> list[str]:
     return ["--model-dir", "generator", "--llm", "mo-hinh-lon", *extra]
 
 
-def test_serve_loads_one_classifier_behind_the_assistant(monkeypatch) -> None:
+def test_serve_passes_cpu_limits_to_the_classifier_and_agent(monkeypatch) -> None:
     """Máy chủ dựng đúng một bộ chọn truy vấn và đưa nó cho trợ lý."""
-    args = _parse_args(_flags())
-    loaded = []
+    args = _parse_args(_flags("--onnx-threads", "3", "--lookup-workers", "5"))
+    loaded, built = [], []
     generator = SimpleNamespace()
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
     monkeypatch.setattr(
         "ontchatbot.cli.serve.OnnxClassifierGenerator.load",
         lambda path, **kwargs: loaded.append((path, kwargs)) or generator,
     )
-    built = []
     monkeypatch.setattr(
         "ontchatbot.cli.serve.build_agent",
         lambda chatbot, **kwargs: built.append((chatbot, kwargs)) or "tro-ly",
     )
 
     assert _build_agent(args) == "tro-ly"
-    assert loaded == [(Path("generator"), {})]
+    assert loaded == [(Path("generator"), {"intra_op_threads": 3})]
     chatbot, kwargs = built[0]
     assert chatbot.generator is generator
     assert kwargs["model"] == "mo-hinh-lon"
+    assert kwargs["lookup_workers"] == 5
+
+
+def test_cpu_limits_default_to_two_by_four(monkeypatch) -> None:
+    monkeypatch.delenv("ONTCHATBOT_ONNX_THREADS", raising=False)
+    monkeypatch.delenv("ONTCHATBOT_LOOKUP_WORKERS", raising=False)
+
+    args = _parse_args(_flags())
+
+    assert (args.onnx_threads, args.lookup_workers) == (2, 4)
+
+
+def test_cpu_limits_can_come_from_the_environment(monkeypatch) -> None:
+    monkeypatch.setenv("ONTCHATBOT_ONNX_THREADS", "3")
+    monkeypatch.setenv("ONTCHATBOT_LOOKUP_WORKERS", "2")
+
+    args = _parse_args(_flags())
+
+    assert (args.onnx_threads, args.lookup_workers) == (3, 2)
+
+
+@pytest.mark.parametrize(
+    ("flag", "environment"),
+    [
+        ("--onnx-threads", "ONTCHATBOT_ONNX_THREADS"),
+        ("--lookup-workers", "ONTCHATBOT_LOOKUP_WORKERS"),
+    ],
+)
+@pytest.mark.parametrize("value", ["0", "-1", "abc"])
+def test_cpu_limits_reject_invalid_values(monkeypatch, flag, environment, value) -> None:
+    with pytest.raises(SystemExit):
+        _parse_args(_flags(flag, value))
+    monkeypatch.setenv(environment, value)
+    with pytest.raises(SystemExit):
+        _parse_args(_flags())
+
+
+def test_oversubscribed_cpu_budget_is_logged(monkeypatch, caplog) -> None:
+    monkeypatch.setattr("ontchatbot.cli.serve._visible_cpu_count", lambda: 4)
+
+    with caplog.at_level(logging.WARNING, logger="ontchatbot.cli.serve"):
+        _log_cpu_budget(onnx_threads=2, lookup_workers=4)
+
+    assert "8 native threads" in caplog.text
+    assert "4 visible CPUs" in caplog.text
 
 
 def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
@@ -99,14 +148,9 @@ def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
     Một cờ bị gỡ mà vẫn nhận vào sẽ khiến lệnh triển khai cũ chạy được nhưng
     không còn tác dụng, và không ai biết.
     """
-    for flag in ("--compute-type", "--inter-threads", "--compiled-dir"):
+    for flag in ("--compute-type", "--inter-threads", "--compiled-dir", "--device"):
         with pytest.raises(SystemExit):
             _parse_args(_flags(flag, "gi-do"))
-
-
-def test_serve_no_longer_accepts_a_device_flag() -> None:
-    with pytest.raises(SystemExit):
-        _parse_args(_flags("--device", "cuda"))
 
 
 def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
