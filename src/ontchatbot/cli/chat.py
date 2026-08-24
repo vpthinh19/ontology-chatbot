@@ -78,9 +78,9 @@ def main() -> None:
         result = await Runner.run(agent, question)
         print(f"\n{result.final_output}\n")
 
-    async def session() -> None:
+    with asyncio.Runner() as runner:
         if args.hoi:
-            await ask(args.hoi)
+            runner.run(ask(args.hoi))
             return
 
         print("Gõ câu hỏi rồi Enter. Dòng trống để thoát.\n")
@@ -92,9 +92,7 @@ def main() -> None:
                 return
             if not question:
                 return
-            await ask(question)
-
-    asyncio.run(session())
+            runner.run(ask(question))
 
 
 if __name__ == "__main__":
