@@ -236,9 +236,16 @@ def test_every_model_request_has_an_explicit_timeout_and_one_retry(monkeypatch) 
     )
     monkeypatch.setattr(agents, "set_tracing_disabled", lambda _: None)
     monkeypatch.setattr("ontchatbot.runtime.agent.build_instructions", lambda: "prompt")
-    monkeypatch.setattr("ontchatbot.runtime.agent.build_tool", lambda _: "tool")
+    tool_options = {}
+
+    def fake_build_tool(_, *, lookup_workers):
+        tool_options["lookup_workers"] = lookup_workers
+        return "tool"
+
+    monkeypatch.setattr("ontchatbot.runtime.agent.build_tool", fake_build_tool)
 
     build_agent(_StubChatbot(), model="mo-hinh")
 
     assert client_options["timeout"] == 30.0
     assert client_options["max_retries"] == 1
+    assert tool_options["lookup_workers"] == 4

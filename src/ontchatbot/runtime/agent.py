@@ -13,10 +13,12 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
+from functools import partial
 from typing import Sequence
 
 from ..settings import ONTOLOGY_NS
 from .generator import QueryGenerationError
+from .lookup_pool import AsyncLookupPool
 from .pipeline import OntologyChatbot
 from .render import NO_INFORMATION_REPLY
 from .sparql import SparqlError
@@ -275,7 +277,7 @@ def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
     return _with_truncation_notice(reply, notice)
 
 
-def build_tool(chatbot: OntologyChatbot):
+def build_tool(chatbot: OntologyChatbot, *, lookup_workers: int = 4):
     """Bọc đường tra cứu ontology thành một công cụ cho mô hình gọi.
 
     Công cụ dựng trong hàm để nó giữ được ``chatbot`` đã cấu hình sẵn; thư viện
@@ -285,15 +287,17 @@ def build_tool(chatbot: OntologyChatbot):
 
     from agents import function_tool
 
+    lookup = AsyncLookupPool(partial(look_up, chatbot), workers=lookup_workers)
+
     @function_tool(description_override=TOOL_DESCRIPTION)
-    def tra_cuu_hoc_vu(tu_khoa: list[str]) -> str:
+    async def tra_cuu_hoc_vu(tu_khoa: list[str]) -> str:
         """Tra các chủ đề học vụ.
 
         Args:
             tu_khoa: Danh sách cụm từ khoá ngắn, ví dụ ["đăng ký học phần"].
         """
 
-        return look_up(chatbot, tu_khoa)
+        return await lookup(tu_khoa)
 
     return tra_cuu_hoc_vu
 
@@ -304,6 +308,7 @@ def build_agent(
     model: str,
     base_url: str | None = None,
     api_key: str | None = None,
+    lookup_workers: int = 4,
 ):
     """Dựng trợ lý: một mô hình ngôn ngữ lớn kèm đúng một công cụ.
 
@@ -328,7 +333,7 @@ def build_agent(
     return Agent(
         name="Trợ lý học vụ",
         instructions=build_instructions(),
-        tools=[build_tool(chatbot)],
+        tools=[build_tool(chatbot, lookup_workers=lookup_workers)],
         model=OpenAIChatCompletionsModel(model=model, openai_client=client),
         model_settings=(
             ModelSettings(reasoning=Reasoning(effort=REASONING_EFFORT))
