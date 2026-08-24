@@ -23,6 +23,14 @@ class _Tokenizer:
         pass
 
 
+class _SessionOptions:
+    def __init__(self) -> None:
+        self.intra_op_num_threads = 0
+        self.inter_op_num_threads = 0
+        self.execution_mode = None
+        self.graph_optimization_level = None
+
+
 def _model_dir(tmp_path):
     (tmp_path / "classifier.onnx").touch()
     (tmp_path / "tokenizer.json").write_text("{}", encoding="utf-8")
@@ -42,97 +50,47 @@ def _replace_model_dependencies(monkeypatch, ort) -> None:
     )
 
 
-def test_cuda_libraries_are_preloaded_before_the_session_is_created(
-    monkeypatch, tmp_path
-) -> None:
-    state = SimpleNamespace(
-        preloaded=False,
-        requested_providers=None,
-        fallback_disabled=False,
-    )
+def _cpu_ort(seen):
+    def create_session(path, *, sess_options, providers):
+        seen.update(path=path, options=sess_options, providers=providers)
+        return SimpleNamespace(get_providers=lambda: providers)
 
-    def preload_dlls(*, directory: str) -> None:
-        if directory == "":
-            state.preloaded = True
-
-    def create_session(_path: str, *, providers: list[str]):
-        if not state.preloaded:
-            raise RuntimeError("CUDA libraries were not preloaded")
-        state.requested_providers = providers
-
-        def disable_fallback() -> None:
-            state.fallback_disabled = True
-
-        return SimpleNamespace(
-            get_providers=lambda: providers,
-            disable_fallback=disable_fallback,
-        )
-
-    ort = SimpleNamespace(
-        preload_dlls=preload_dlls,
-        get_available_providers=lambda: [
-            "CUDAExecutionProvider",
-            "CPUExecutionProvider",
-        ],
+    return SimpleNamespace(
+        SessionOptions=_SessionOptions,
+        ExecutionMode=SimpleNamespace(ORT_SEQUENTIAL="sequential"),
+        GraphOptimizationLevel=SimpleNamespace(ORT_ENABLE_ALL="all"),
         InferenceSession=create_session,
     )
-    _replace_model_dependencies(monkeypatch, ort)
 
-    generator = onnx_classifier.OnnxClassifierGenerator.load(
-        _model_dir(tmp_path), device="cuda"
+
+def test_load_pins_the_cpu_provider_and_two_intra_op_threads(monkeypatch, tmp_path):
+    seen = {}
+    _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
+
+    generator = onnx_classifier.OnnxClassifierGenerator.load(_model_dir(tmp_path))
+
+    assert seen["providers"] == ["CPUExecutionProvider"]
+    assert seen["options"].intra_op_num_threads == 2
+    assert seen["options"].inter_op_num_threads == 1
+    assert seen["options"].execution_mode == "sequential"
+    assert seen["options"].graph_optimization_level == "all"
+    assert generator.providers == ["CPUExecutionProvider"]
+
+
+def test_load_accepts_an_explicit_positive_thread_count(monkeypatch, tmp_path):
+    seen = {}
+    _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
+
+    onnx_classifier.OnnxClassifierGenerator.load(
+        _model_dir(tmp_path), intra_op_threads=3
     )
 
-    assert generator.providers[0] == "CUDAExecutionProvider"
-    assert state.requested_providers == ["CUDAExecutionProvider"]
-    assert state.fallback_disabled is True
+    assert seen["options"].intra_op_num_threads == 3
 
 
-def test_legacy_pruned_runtime_flag_cannot_skip_system_cuda_preload(
-    monkeypatch, tmp_path
-) -> None:
-    state = SimpleNamespace(preloaded=False)
-
-    def preload(*, directory: str) -> None:
-        assert directory == ""
-        state.preloaded = True
-
-    session = SimpleNamespace(
-        get_providers=lambda: ["CUDAExecutionProvider"],
-        disable_fallback=lambda: None,
-    )
-    ort = SimpleNamespace(
-        preload_dlls=preload,
-        InferenceSession=lambda _path, *, providers: session,
-    )
-    _replace_model_dependencies(monkeypatch, ort)
-    monkeypatch.setenv("ONTCHATBOT_PRUNED_CUDA_RUNTIME", "1")
-    monkeypatch.setenv("LD_LIBRARY_PATH", "/app/cuda/lib")
-
-    generator = onnx_classifier.OnnxClassifierGenerator.load(
-        _model_dir(tmp_path), device="cuda"
-    )
-
-    assert generator.providers[0] == "CUDAExecutionProvider"
-    assert state.preloaded is True
-
-
-def test_cuda_load_refuses_to_fall_back_entirely_to_the_cpu(
-    monkeypatch, tmp_path
-) -> None:
-    ort = SimpleNamespace(
-        preload_dlls=lambda *, directory: None,
-        get_available_providers=lambda: [
-            "CUDAExecutionProvider",
-            "CPUExecutionProvider",
-        ],
-        InferenceSession=lambda _path, *, providers: SimpleNamespace(
-            get_providers=lambda: ["CPUExecutionProvider"],
-            disable_fallback=lambda: None,
-        ),
-    )
-    _replace_model_dependencies(monkeypatch, ort)
-
-    with pytest.raises(RuntimeError, match="CUDAExecutionProvider"):
+@pytest.mark.parametrize("threads", [0, -1])
+def test_load_rejects_a_non_positive_thread_count(threads, tmp_path):
+    with pytest.raises(ValueError, match="intra_op_threads must be positive"):
         onnx_classifier.OnnxClassifierGenerator.load(
-            _model_dir(tmp_path), device="cuda"
+            _model_dir(tmp_path), intra_op_threads=threads
         )

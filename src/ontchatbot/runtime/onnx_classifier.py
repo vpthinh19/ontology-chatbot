@@ -40,7 +40,7 @@ class OnnxClassifierGenerator:
         model_dir: Path,
         *,
         graph: rdflib.Graph | None = None,
-        device: str = "cuda",
+        intra_op_threads: int = 2,
     ) -> OnnxClassifierGenerator:
         """Nạp đồ thị, bộ tách từ và bảng nhãn từ thư mục đã xuất."""
         import onnxruntime as ort
@@ -51,25 +51,19 @@ class OnnxClassifierGenerator:
         if not graph_path.exists():
             raise FileNotFoundError(f"không tìm thấy đồ thị ONNX: {graph_path}")
 
-        if device == "cuda":
-            # CUDA và cuDNN nằm trong image runtime chính thức của NVIDIA. Chuỗi
-            # rỗng yêu cầu ORT dùng đường dẫn loader hệ thống của image thay vì
-            # tìm các wheel CUDA đóng kèm trong site-packages.
-            ort.preload_dlls(directory="")
-            providers = ["CUDAExecutionProvider"]
-        else:
-            providers = ["CPUExecutionProvider"]
-        session = ort.InferenceSession(str(graph_path), providers=providers)
-        if device == "cuda":
-            # Cấm Python API tạo lại cả session bằng CPU nếu provider lỗi. ORT
-            # vẫn được phép giao vài node điều phối/shape nhẹ cho CPU mặc định;
-            # graph này không khởi tạo được nếu cấm tuyệt đối các node như vậy.
-            session.disable_fallback()
-        if device == "cuda" and "CUDAExecutionProvider" not in session.get_providers():
-            raise RuntimeError(
-                "không thể kích hoạt CUDAExecutionProvider; "
-                "kiểm tra GPU passthrough và CUDA/cuDNN runtime trong image"
-            )
+        if intra_op_threads < 1:
+            raise ValueError("intra_op_threads must be positive")
+
+        options = ort.SessionOptions()
+        options.intra_op_num_threads = intra_op_threads
+        options.inter_op_num_threads = 1
+        options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+        options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+        session = ort.InferenceSession(
+            str(graph_path),
+            sess_options=options,
+            providers=["CPUExecutionProvider"],
+        )
 
         tokenizer = Tokenizer.from_file(str(model_dir / "tokenizer.json"))
         tokenizer.enable_truncation(max_length=MAX_LENGTH)
