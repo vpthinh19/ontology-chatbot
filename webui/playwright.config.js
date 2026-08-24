@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testDir: "tests",
+  testMatch: "ui.spec.mjs",
   timeout: 15_000,
   use: {
     browserName: "chromium",
@@ -13,9 +14,5 @@ export default defineConfig({
     url: "http://127.0.0.1:4173",
     reuseExistingServer: false,
     timeout: 30_000,
-    env: {
-      VITE_API_BASE_URL: "https://lightning.example.test",
-      VITE_API_KEY: "test-api-key",
-    },
   },
 });

@@ -9,17 +9,7 @@ const deleteButton = document.querySelector("#delete-chats-btn");
 const serverStatus = document.querySelector(".server-status");
 const responseAnnouncer = document.querySelector("#response-announcer");
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").trim().replace(/\/+$/, "");
-const apiUrl = (path) => `${apiBaseUrl}${path}`;
-
-// Cổng đứng trước backend đọc khoá ở header ``Authorization``. Vite dán khoá vào
-// tệp JavaScript lúc build, nên nó nằm sẵn trong bản tải về: nó chặn được người
-// chỉ dò ra URL backend, không chặn được người mở chính trang này ra đọc.
-const apiKey = (import.meta.env.VITE_API_KEY || "").trim();
-
-// Bỏ hẳn header khi không có khoá thay vì gửi ``Bearer `` rỗng: lúc chạy dev,
-// frontend trỏ thẳng vào backend trên máy và ở đó không có cổng nào để qua.
-const authHeaders = () => (apiKey ? { Authorization: `Bearer ${apiKey}` } : {});
+const apiUrl = (path) => `/api${path}`;
 
 // Khoá sai thì thử lại bao nhiêu lần cũng vẫn sai, nên hai mã này phải tách khỏi
 // nhóm lỗi tạm thời để vòng đánh thức dừng ngay thay vì đợi hết ba phút.
@@ -77,7 +67,6 @@ const probeHealth = async () => {
   try {
     const response = await fetch(apiUrl("/healthz"), {
       cache: "no-store",
-      headers: authHeaders(),
       signal: controller.signal,
     });
     if (response.ok) return "ready";
@@ -292,7 +281,7 @@ const generateResponse = async (botMessage, userMessage) => {
   try {
     const response = await fetch(apiUrl("/chat"), {
       method: "POST",
-      headers: { "Content-Type": "application/json", ...authHeaders() },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: userMessage, history }),
       signal: controller.signal,
     });

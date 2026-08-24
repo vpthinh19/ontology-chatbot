@@ -178,24 +178,26 @@ test("delete history stays visible and is enabled only while a conversation exis
   await expect(deleteButton).toBeDisabled();
 });
 
-test("the built frontend sends health probes to the configured backend", async ({ page }) => {
-  let backendWasProbed = false;
-  await page.route("https://lightning.example.test/healthz", (route) => {
-    backendWasProbed = true;
+test("the built frontend sends health probes through the same-origin proxy", async ({ page }) => {
+  let proxyWasProbed = false;
+  let authorization;
+  await page.route("http://127.0.0.1:4173/api/healthz", (route) => {
+    proxyWasProbed = true;
+    authorization = route.request().headers()["authorization"];
     return route.fulfill({
       status: 200,
       contentType: "application/json",
       body: '{"status":"ok"}',
-      headers: { "Access-Control-Allow-Origin": "*" },
     });
   });
-  await page.route("http://127.0.0.1:4173/healthz", (route) =>
-    route.fulfill({ status: 404 }),
+  await page.route("https://lightning.example.test/healthz", (route) =>
+    route.fulfill({ status: 418 }),
   );
 
   await page.goto("http://127.0.0.1:4173");
 
-  await expect.poll(() => backendWasProbed, { timeout: 1_500 }).toBe(true);
+  await expect.poll(() => proxyWasProbed, { timeout: 1_500 }).toBe(true);
+  expect(authorization).toBeUndefined();
 });
 
 test("revalidating a stale ready tab disables send until the new probe succeeds", async ({ page }) => {
@@ -337,18 +339,24 @@ test("fragmented successful streams complete and become history for the next tur
   ]);
 });
 
-test("every backend call carries the API key that Vercel injected", async ({ page }) => {
+test("browser health and chat calls stay same-origin and carry no authorization", async ({ page }) => {
   const seen = {};
-  await page.route("**/healthz", (route) => {
-    seen.health = route.request().headers()["authorization"];
+  await page.route("**/api/healthz", (route) => {
+    seen.health = {
+      url: route.request().url(),
+      authorization: route.request().headers()["authorization"],
+    };
     return route.fulfill({
       status: 200,
       contentType: "application/json",
       body: '{"status":"ok"}',
     });
   });
-  await page.route("**/chat", (route) => {
-    seen.chat = route.request().headers()["authorization"];
+  await page.route("**/api/chat", (route) => {
+    seen.chat = {
+      url: route.request().url(),
+      authorization: route.request().headers()["authorization"],
+    };
     return route.fulfill({
       status: 200,
       contentType: "text/event-stream",
@@ -361,8 +369,14 @@ test("every backend call carries the API key that Vercel injected", async ({ pag
   await page.locator("#send-prompt-btn").click();
   await expect(page.locator(".bot-message .message-text")).toContainText("Câu trả lời");
 
-  expect(seen.health).toBe("Bearer test-api-key");
-  expect(seen.chat).toBe("Bearer test-api-key");
+  expect(seen.health).toEqual({
+    url: "http://127.0.0.1:4173/api/healthz",
+    authorization: undefined,
+  });
+  expect(seen.chat).toEqual({
+    url: "http://127.0.0.1:4173/api/chat",
+    authorization: undefined,
+  });
 });
 
 test("a rejected key is reported plainly instead of being retried for minutes", async ({ page }) => {
