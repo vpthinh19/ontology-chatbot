@@ -20,5 +20,11 @@ class AsyncLookupPool:
                 return await asyncio.shield(work)
             except asyncio.CancelledError:
                 # Native ONNX/SPARQL work cannot be stopped by task cancellation.
-                await work
+                while not work.done():
+                    try:
+                        await asyncio.shield(work)
+                    except asyncio.CancelledError:
+                        continue
+                    except Exception:
+                        break
                 raise

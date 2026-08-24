@@ -112,6 +112,40 @@ def test_cancellation_holds_the_slot_until_native_work_finishes() -> None:
     asyncio.run(exercise())
 
 
+def test_repeated_cancellation_holds_the_slot_until_native_work_finishes() -> None:
+    first_started = threading.Event()
+    first_release = threading.Event()
+    second_started = threading.Event()
+
+    def lookup(keywords):
+        if keywords == ["một"]:
+            first_started.set()
+            first_release.wait(timeout=1)
+        else:
+            second_started.set()
+        return "xong"
+
+    async def exercise():
+        pool = AsyncLookupPool(lookup, workers=1)
+        first = asyncio.create_task(pool(["một"]))
+        while not first_started.is_set():
+            await asyncio.sleep(0)
+        first.cancel()
+        await asyncio.sleep(0)
+        first.cancel()
+        second = asyncio.create_task(pool(["hai"]))
+        try:
+            await asyncio.sleep(0.02)
+            assert not second_started.is_set()
+        finally:
+            first_release.set()
+        with pytest.raises(asyncio.CancelledError):
+            await first
+        assert await asyncio.wait_for(second, timeout=0.2) == "xong"
+
+    asyncio.run(exercise())
+
+
 @pytest.mark.parametrize("workers", [0, -1])
 def test_pool_rejects_non_positive_worker_counts(workers) -> None:
     with pytest.raises(ValueError, match="workers must be positive"):

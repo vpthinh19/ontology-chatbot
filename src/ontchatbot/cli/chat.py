@@ -78,20 +78,23 @@ def main() -> None:
         result = await Runner.run(agent, question)
         print(f"\n{result.final_output}\n")
 
-    if args.hoi:
-        asyncio.run(ask(args.hoi))
-        return
+    async def session() -> None:
+        if args.hoi:
+            await ask(args.hoi)
+            return
 
-    print("Gõ câu hỏi rồi Enter. Dòng trống để thoát.\n")
-    while True:
-        try:
-            question = input("hỏi> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print()
-            return
-        if not question:
-            return
-        asyncio.run(ask(question))
+        print("Gõ câu hỏi rồi Enter. Dòng trống để thoát.\n")
+        while True:
+            try:
+                question = input("hỏi> ").strip()
+            except (EOFError, KeyboardInterrupt):
+                print()
+                return
+            if not question:
+                return
+            await ask(question)
+
+    asyncio.run(session())
 
 
 if __name__ == "__main__":
