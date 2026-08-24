@@ -17,7 +17,7 @@ def _flags(*extra: str) -> list[str]:
 
 def test_serve_loads_one_classifier_behind_the_assistant(monkeypatch) -> None:
     """Máy chủ dựng đúng một bộ chọn truy vấn và đưa nó cho trợ lý."""
-    args = _parse_args(_flags("--device", "cuda"))
+    args = _parse_args(_flags())
     loaded = []
     generator = SimpleNamespace()
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
@@ -32,7 +32,7 @@ def test_serve_loads_one_classifier_behind_the_assistant(monkeypatch) -> None:
     )
 
     assert _build_agent(args) == "tro-ly"
-    assert loaded == [(Path("generator"), {"device": "cuda"})]
+    assert loaded == [(Path("generator"), {})]
     chatbot, kwargs = built[0]
     assert chatbot.generator is generator
     assert kwargs["model"] == "mo-hinh-lon"
@@ -104,6 +104,11 @@ def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
             _parse_args(_flags(flag, "gi-do"))
 
 
+def test_serve_no_longer_accepts_a_device_flag() -> None:
+    with pytest.raises(SystemExit):
+        _parse_args(_flags("--device", "cuda"))
+
+
 def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
     """Máy chủ web không được dựng khuôn nhật ký riêng.
 
@@ -122,4 +127,3 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
     serve.main()
 
     assert seen["log_config"] is None
-

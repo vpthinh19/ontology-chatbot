@@ -22,11 +22,6 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         required="ONTCHATBOT_MODEL_DIR" not in os.environ,
     )
     parser.add_argument(
-        "--device",
-        choices=("cpu", "cuda"),
-        default=os.environ.get("ONTCHATBOT_DEVICE", "cpu"),
-    )
-    parser.add_argument(
         "--log-level",
         choices=("debug", "info", "warning", "error"),
         default="info",
@@ -75,7 +70,7 @@ def _build_agent(args: argparse.Namespace):
         )
     if not os.environ.get("ONTCHATBOT_LLM_API_KEY"):
         raise SystemExit("chưa đặt ONTCHATBOT_LLM_API_KEY")
-    generator = OnnxClassifierGenerator.load(args.model_dir, device=args.device)
+    generator = OnnxClassifierGenerator.load(args.model_dir)
     return build_agent(
         OntologyChatbot(generator),
         model=args.llm,

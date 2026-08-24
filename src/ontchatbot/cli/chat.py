@@ -28,7 +28,6 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
         help="thư mục bộ phân loại: bộ điều hợp, lớp phân loại và bảng nhãn",
     )
-    parser.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
     parser.add_argument(
         "--llm",
         default=os.environ.get("ONTCHATBOT_LLM_MODEL", ""),
@@ -66,7 +65,7 @@ def main() -> None:
 
     if not args.model_dir:
         raise SystemExit("cần --model-dir")
-    generator = OnnxClassifierGenerator.load(args.model_dir, device=args.device)
+    generator = OnnxClassifierGenerator.load(args.model_dir)
     agent = build_agent(
         _Trace(OntologyChatbot(generator)),
         model=args.llm,

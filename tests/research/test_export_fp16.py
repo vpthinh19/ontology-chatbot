@@ -87,7 +87,11 @@ def test_publish_cli_keeps_the_stable_release_path_for_fp16() -> None:
 
     assert args.model_dir == Path("artifacts/entity-linking/onnx-xlmr")
     assert args.path_in_repo == "onnx-xlmr"
-    assert args.device == "cuda"
+
+
+def test_publish_cli_does_not_accept_a_provider_selection() -> None:
+    with pytest.raises(SystemExit):
+        publish_classifier._parse_args(["--repo", "owner/model", "--device", "cuda"])
 
 
 def test_fp16_check_allows_rounding_without_allowing_the_top_label_to_change(
