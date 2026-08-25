@@ -19,6 +19,10 @@ __pycache__/
 .agents/
 .worktrees/
 
+# Tài liệu điều phối và triển khai cục bộ không thuộc public repository.
+/docs/superpowers/
+/docs/deploy-cloud-run.md
+
 checkpoints/
 models/
 logs/
