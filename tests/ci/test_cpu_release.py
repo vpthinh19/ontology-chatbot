@@ -29,8 +29,13 @@ def test_runtime_keeps_the_service_contract() -> None:
     runtime = text.split(" AS runtime", maxsplit=1)[1]
     assert "COPY --from=model-fetcher" in runtime
     assert " /app/model /app/model" in runtime
-    assert "ONTCHATBOT_ONNX_THREADS=2" in runtime
-    assert "ONTCHATBOT_LOOKUP_WORKERS=4" in runtime
+    for setting in (
+        "ONTCHATBOT_ONNX_THREADS=1",
+        "ONTCHATBOT_LOOKUP_WORKERS=8",
+        "ONTCHATBOT_TURN_SLOTS=4",
+        "ONTCHATBOT_TURN_QUEUE=8",
+    ):
+        assert setting in runtime
     assert "USER ontchatbot" in runtime
     cmd = next(
         line.removeprefix("CMD ")
@@ -43,8 +48,6 @@ def test_runtime_keeps_the_service_contract() -> None:
         "/app/model",
         "--host",
         "0.0.0.0",
-        "--port",
-        "8000",
     ]
 
 

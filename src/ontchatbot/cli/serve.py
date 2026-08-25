@@ -118,7 +118,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="địa chỉ máy chủ mô hình; hoặc đặt ONTCHATBOT_LLM_BASE_URL",
     )
     parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8000")))
     parser.add_argument(
         "--turn-slots",
         type=_positive_int,

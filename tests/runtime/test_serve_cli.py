@@ -73,6 +73,14 @@ def test_throughput_defaults_are_bounded(monkeypatch) -> None:
     assert args.sparql_cache_mib == 64
 
 
+def test_cloud_run_port_comes_from_the_environment(monkeypatch) -> None:
+    monkeypatch.setenv("PORT", "8080")
+
+    args = _parse_args(_flags())
+
+    assert args.port == 8080
+
+
 def test_cpu_limits_can_come_from_the_environment(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_ONNX_THREADS", "3")
     monkeypatch.setenv("ONTCHATBOT_LOOKUP_WORKERS", "2")

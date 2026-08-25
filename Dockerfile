@@ -46,9 +46,10 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
     TZ=Asia/Ho_Chi_Minh MALLOC_ARENA_MAX=2 \
-    ONTCHATBOT_ONNX_THREADS=2 ONTCHATBOT_LOOKUP_WORKERS=4
+    ONTCHATBOT_ONNX_THREADS=1 ONTCHATBOT_LOOKUP_WORKERS=8 \
+    ONTCHATBOT_TURN_SLOTS=4 ONTCHATBOT_TURN_QUEUE=8
 USER ontchatbot
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz',timeout=3).status==200 else 1)" || exit 1
-CMD ["serve_sparql", "--model-dir", "/app/model", "--host", "0.0.0.0", "--port", "8000"]
+    CMD python -c "import os,urllib.request,sys; port=os.environ.get('PORT','8000'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{port}/healthz',timeout=3).status==200 else 1)" || exit 1
+CMD ["serve_sparql", "--model-dir", "/app/model", "--host", "0.0.0.0"]
