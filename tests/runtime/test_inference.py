@@ -140,6 +140,37 @@ def test_execute_query_propagates_unexpected_errors(monkeypatch) -> None:
         chatbot.execute_query("SELECT ?answer WHERE { :Example :value ?answer . }")
 
 
+def test_rows_for_labels_a_failed_query(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "ontchatbot.runtime.pipeline.execute_select",
+        lambda _graph, _query: (_ for _ in ()).throw(SparqlError("invalid query")),
+    )
+    chatbot = OntologyChatbot(SimpleNamespace(), graph=Graph(), catalogue={})
+
+    label, rows = chatbot._rows_for("SELECT ?answer WHERE { :Example :value ?answer . }")
+
+    assert label == "query-failed"
+    assert rows == []
+
+
+def test_batch_logs_query_failed_for_a_failed_concrete_query(monkeypatch, caplog) -> None:
+    query = "SELECT ?answer WHERE { :Example :value ?answer . }"
+    monkeypatch.setattr(
+        "ontchatbot.runtime.pipeline.execute_select",
+        lambda _graph, _query: (_ for _ in ()).throw(SparqlError("invalid query")),
+    )
+    chatbot = OntologyChatbot(
+        SimpleNamespace(generate_many=lambda _: [query]), graph=Graph(), catalogue={}
+    )
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
+        chatbot.answer_many(["truy vấn hỏng"])
+
+    assert "keyword='truy vấn hỏng' label=query-failed rows=0" in "\n".join(
+        record.getMessage() for record in caplog.records
+    )
+
+
 def test_off_catalogue_output_never_executes_sparql(monkeypatch) -> None:
     executed = []
 

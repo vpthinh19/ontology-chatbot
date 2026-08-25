@@ -218,11 +218,16 @@ class OntologyChatbot:
             for keyword, choice in zip(prepared, choices):
                 resolution = resolutions.get(choice.query) if choice.query else None
                 row_count = len(resolution.rows) if resolution else 0
+                label = (
+                    "query-failed"
+                    if resolution and resolution.status == "query-failed"
+                    else choice.label
+                )
                 logger.info(
                     "request=%s keyword=%r label=%s rows=%d",
                     request_id,
                     keyword.original,
-                    choice.label,
+                    label,
                     row_count,
                 )
             reply = self.render_many(prepared, choices, resolutions)
@@ -260,4 +265,5 @@ class OntologyChatbot:
         if choice.query is None:
             return choice.label, []
         resolution = self.execute_query(choice.query)
-        return choice.label, thaw_rows(resolution.rows)
+        label = "query-failed" if resolution.status == "query-failed" else choice.label
+        return label, thaw_rows(resolution.rows)
