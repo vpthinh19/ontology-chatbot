@@ -5,7 +5,8 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from typing import Mapping, Sequence
+from dataclasses import dataclass
+from typing import Literal, Mapping, Sequence, TypeAlias
 
 from rdflib import Graph
 
@@ -13,7 +14,7 @@ from ..catalogue import QuerySpec, find_query_family, load_catalogue
 from ..settings import QUERY_CATALOGUE_PATH
 from .generator import QueryGenerationError, QueryGenerator
 from .render import NO_INFORMATION_REPLY, render_batch, render_rows
-from .sparql import QueryRows, SparqlError, execute_select, load_ontology
+from .sparql import Primitive, QueryRows, SparqlError, execute_select, load_ontology
 from .text import normalize_model_input
 
 
@@ -22,6 +23,40 @@ logger = logging.getLogger(__name__)
 #: Chuỗi mà model sinh ra thay cho truy vấn khi câu hỏi nằm ngoài phần dữ liệu
 #: đã biết. Nó là một đích được dạy, không phải lỗi.
 MARKER = "không có thông tin"
+
+
+@dataclass(frozen=True)
+class PreparedKeyword:
+    original: str
+    model_input: str
+
+
+@dataclass(frozen=True)
+class Classification:
+    label: str
+    query: str | None
+
+
+FrozenRow: TypeAlias = tuple[tuple[str, Primitive], ...]
+FrozenRows: TypeAlias = tuple[FrozenRow, ...]
+
+
+@dataclass(frozen=True)
+class QueryResolution:
+    status: Literal["ok", "query-failed"]
+    rows: FrozenRows
+
+
+def freeze_rows(rows: QueryRows) -> FrozenRows:
+    """Freeze SPARQL output without changing its row or column order."""
+
+    return tuple(tuple(row.items()) for row in rows)
+
+
+def thaw_rows(rows: FrozenRows) -> QueryRows:
+    """Restore frozen SPARQL output for the existing rendering boundary."""
+
+    return [dict(row) for row in rows]
 
 
 class OntologyChatbot:
@@ -42,27 +77,97 @@ class OntologyChatbot:
             load_catalogue(QUERY_CATALOGUE_PATH) if catalogue is None else catalogue
         )
 
+    def prepare_keywords(self, questions: Sequence[str]) -> tuple[PreparedKeyword, ...]:
+        """Trim and normalize unique keywords while retaining their display form."""
+
+        original_keywords = dict.fromkeys(question.strip() for question in questions)
+        prepared = tuple(
+            PreparedKeyword(original, normalize_model_input(original))
+            for original in original_keywords
+            if original
+        )
+        if not prepared:
+            raise SparqlError("no keyword to look up")
+        return prepared
+
+    def classify_many(self, model_inputs: Sequence[str]) -> tuple[Classification, ...]:
+        """Generate one concrete query per normalized keyword, with safe fallback."""
+
+        try:
+            outputs = self.generator.generate_many(model_inputs)
+        except QueryGenerationError:
+            outputs = []
+            for model_input in model_inputs:
+                try:
+                    outputs.append(self.generator.generate(model_input).strip())
+                except QueryGenerationError:
+                    outputs.append(MARKER)
+        return tuple(self._classification_for(output) for output in outputs)
+
+    def execute_query(self, query: str) -> QueryResolution:
+        """Execute a concrete query, reserving failure status for SPARQL errors."""
+
+        try:
+            return QueryResolution("ok", freeze_rows(execute_select(self.graph, query)))
+        except SparqlError:
+            return QueryResolution("query-failed", ())
+
+    def render_many(
+        self,
+        prepared: Sequence[PreparedKeyword],
+        choices: Sequence[Classification],
+        resolutions: Mapping[str, QueryResolution],
+    ) -> str:
+        """Merge query outcomes into the established batched render contract."""
+
+        rows: list[FrozenRow] = []
+        seen: set[FrozenRow] = set()
+        missed: list[str] = []
+        for keyword, choice in zip(prepared, choices):
+            if choice.query is None:
+                missed.append(keyword.original)
+                continue
+            resolution = resolutions[choice.query]
+            if resolution.status == "query-failed" or not resolution.rows:
+                missed.append(keyword.original)
+                continue
+            for row in resolution.rows:
+                if row not in seen:
+                    seen.add(row)
+                    rows.append(row)
+        return render_batch(thaw_rows(tuple(rows)), missed=missed)
+
     def answer(self, question: str) -> str:
         request_id = uuid.uuid4().hex[:12]
         request_started = time.perf_counter()
-        normalized = normalize_model_input(question)
+        prepared = self.prepare_keywords([question])
+        keyword = prepared[0]
         logger.info(
             "request=%s input=%r normalized=%r",
             request_id,
             question,
-            normalized,
+            keyword.model_input,
         )
         stage = "generator"
         try:
             stage_started = time.perf_counter()
-            output = self.generator.generate(question).strip()
+            output = self.generator.generate(keyword.model_input).strip()
             logger.info(
                 "request=%s model output=%r duration_ms=%.1f",
                 request_id,
                 output,
                 (time.perf_counter() - stage_started) * 1000,
             )
-            if output == MARKER:
+            choice = self._classification_for(output)
+            if choice.query is None:
+                if choice.label == "off-catalogue":
+                    logger.info(
+                        "request=%s off-catalogue query rejected reply=%r total_ms=%.1f",
+                        request_id,
+                        NO_INFORMATION_REPLY,
+                        (time.perf_counter() - request_started) * 1000,
+                    )
+                    return NO_INFORMATION_REPLY
                 logger.info(
                     "request=%s reply=%r total_ms=%.1f",
                     request_id,
@@ -71,28 +176,16 @@ class OntologyChatbot:
                 )
                 return NO_INFORMATION_REPLY
 
-            stage = "catalogue"
-            query_id = (
-                find_query_family(self.catalogue, output) if self.catalogue else None
-            )
-            if self.catalogue and query_id is None:
-                logger.info(
-                    "request=%s off-catalogue query rejected reply=%r total_ms=%.1f",
-                    request_id,
-                    NO_INFORMATION_REPLY,
-                    (time.perf_counter() - request_started) * 1000,
-                )
-                return NO_INFORMATION_REPLY
-
             stage = "ontology"
             stage_started = time.perf_counter()
-            rows = execute_select(self.graph, output)
+            resolution = self.execute_query(choice.query)
+            rows = thaw_rows(resolution.rows)
             logger.info(
                 "request=%s ontology rows=%d duration_ms=%.1f query_id=%s",
                 request_id,
                 len(rows),
                 (time.perf_counter() - stage_started) * 1000,
-                query_id,
+                choice.label,
             )
 
             stage = "renderer"
@@ -109,81 +202,62 @@ class OntologyChatbot:
             raise
 
     def answer_many(self, questions: Sequence[str]) -> str:
-        """Tra nhiều cách gọi của cùng một chủ đề trong một lượt.
+        """Tra nhiều cách gọi của cùng một chủ đề trong một lượt."""
 
-        Người hỏi và ontology thường gọi một thứ bằng hai tên khác nhau, nên một
-        cụm từ khoá có thể trượt trong khi cụm khác trúng. Gửi vài cụm cùng lúc
-        làm tăng khả năng trúng mà vẫn chỉ tốn một lượt gọi.
-
-        Suy luận chạy theo lô thật: cả loạt câu đi qua model một lần. Kết quả
-        gộp lại và khử trùng, vì nhiều cụm cùng trúng một mục là chuyện thường -
-        để nguyên thì cùng một dữ kiện xuất hiện vài lần.
-        """
-
-        wanted = [q for q in dict.fromkeys(q.strip() for q in questions) if q]
-        if not wanted:
-            raise SparqlError("no keyword to look up")
+        prepared = self.prepare_keywords(questions)
         request_id = uuid.uuid4().hex[:12]
         started = time.perf_counter()
-        logger.info("request=%s batch=%r", request_id, wanted)
+        logger.info(
+            "request=%s batch=%r", request_id, [item.original for item in prepared]
+        )
 
         try:
-            outputs = self.generator.generate_many(wanted)
-        except QueryGenerationError:
-            outputs = []
-            for question in wanted:
-                try:
-                    outputs.append(self.generator.generate(question).strip())
-                except QueryGenerationError:
-                    outputs.append(MARKER)
-
-        rows: QueryRows = []
-        seen: set[tuple] = set()
-        missed = []
-        for question, output in zip(wanted, outputs):
-            label, found = self._rows_for(output.strip())
-            logger.info(
-                "request=%s keyword=%r label=%s rows=%d",
-                request_id,
-                question,
-                label,
-                len(found),
-            )
-            if not found:
-                missed.append(question)
-                continue
-            for row in found:
-                key = tuple(sorted(row.items(), key=lambda item: item[0]))
-                if key not in seen:
-                    seen.add(key)
-                    rows.append(row)
+            choices = self.classify_many([item.model_input for item in prepared])
+            queries = dict.fromkeys(choice.query for choice in choices if choice.query)
+            resolutions = {query: self.execute_query(query) for query in queries}
+            for keyword, choice in zip(prepared, choices):
+                resolution = resolutions.get(choice.query) if choice.query else None
+                row_count = len(resolution.rows) if resolution else 0
+                logger.info(
+                    "request=%s keyword=%r label=%s rows=%d",
+                    request_id,
+                    keyword.original,
+                    choice.label,
+                    row_count,
+                )
+            reply = self.render_many(prepared, choices, resolutions)
+        except Exception:
+            logger.exception("request=%s stage=batch failed", request_id)
+            raise
 
         logger.info(
             "request=%s batch rows=%d missed=%d total_ms=%.1f",
             request_id,
-            len(rows),
-            len(missed),
+            sum(len(resolution.rows) for resolution in resolutions.values()),
+            sum(
+                choice.query is None
+                or resolutions[choice.query].status == "query-failed"
+                or not resolutions[choice.query].rows
+                for choice in choices
+            ),
             (time.perf_counter() - started) * 1000,
         )
-        return render_batch(rows, missed=missed)
+        return reply
 
-    def _rows_for(self, output: str) -> tuple[str, QueryRows]:
-        """Chạy một truy vấn model sinh ra; mọi kiểu trượt đều trả về rỗng.
-
-        Trả kèm nhãn đã chọn để lớp gọi ghi được vào nhật ký. Biết một từ khoá
-        trượt là chưa đủ để lần ra nguyên nhân: trượt vì model nói không có
-        thông tin, vì truy vấn nó viết ra không thuộc họ nào trong danh mục, vì
-        truy vấn hỏng lúc chạy, hay vì đồ thị thật sự không có dòng nào - bốn
-        chuyện khác hẳn nhau và cần bốn cách sửa khác nhau.
-        """
-
+    def _classification_for(self, output: str) -> Classification:
+        output = output.strip()
         if not output or output == MARKER:
-            return "no-information", []
+            return Classification("no-information", None)
         query_id = find_query_family(self.catalogue, output) if self.catalogue else None
         if self.catalogue and query_id is None:
-            return "off-catalogue", []
-        try:
-            rows = execute_select(self.graph, output)
-        except SparqlError:
-            return "query-failed", []
-        return query_id or "unchecked", rows
+            return Classification("off-catalogue", None)
+        return Classification(query_id or "unchecked", output)
+
+    def _rows_for(self, output: str) -> tuple[str, QueryRows]:
+        """Run output through the shared classification and execution rules."""
+
+        choice = self._classification_for(output)
+        if choice.query is None:
+            return choice.label, []
+        resolution = self.execute_query(choice.query)
+        return choice.label, thaw_rows(resolution.rows)
