@@ -42,7 +42,7 @@ const stateLabels = {
   ready: "Máy chủ sẵn sàng",
   offline: "Thiết bị đang mất kết nối mạng.",
   down: "Chưa kết nối được máy chủ. Hãy thử lại sau ít phút.",
-  blocked: "Máy chủ từ chối khoá truy cập của trang này.",
+  blocked: "Máy chủ từ chối xác thực dịch vụ của trang này.",
 };
 
 const setServerState = (state, label = stateLabels[state]) => {
@@ -86,7 +86,7 @@ const wakeServer = async () => {
 
   // Một trạng thái ``ready`` cũ không bảo đảm replica còn sống. Mọi vòng probe
   // mới đều đóng nút gửi cho tới khi có câu trả lời mới, tránh gửi chat đúng lúc
-  // Lightning đang scale từ 0 lên 1.
+  // Dịch vụ đang scale từ 0 lên 1.
   setServerState("waking");
   const deadline = Date.now() + HEALTH_DEADLINE_MS;
   let attempt = 0;
@@ -317,7 +317,7 @@ const generateResponse = async (botMessage, userMessage) => {
       error.streamInterrupted = true;
       throw error;
     }
-    // Chỉ ghi lượt hoàn tất vào ngữ cảnh. Nếu Lightning vừa scale về 0 hoặc
+    // Chỉ ghi lượt hoàn tất vào ngữ cảnh. Nếu backend vừa scale về 0 hoặc
     // người dùng bấm dừng, lần thử sau không bị thấy một câu hỏi "mồ côi" mà
     // trợ lý chưa từng trả lời.
     if (answer) {

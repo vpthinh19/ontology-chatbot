@@ -388,7 +388,9 @@ test("a rejected key is reported plainly instead of being retried for minutes", 
 
   await page.goto("http://127.0.0.1:4173");
 
-  await expect(page.locator(".server-status")).toContainText("từ chối khoá truy cập");
+  await expect(page.locator(".server-status")).toContainText(
+    "từ chối xác thực dịch vụ của trang này",
+  );
   await expect(page.locator(".server-status")).toHaveAttribute("data-state", "blocked");
   await expect(page.locator("#send-prompt-btn")).toBeDisabled();
 
