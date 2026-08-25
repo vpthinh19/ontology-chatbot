@@ -44,6 +44,7 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 benchmark_classifier = "ontchatbot.cli.benchmark_classifier:main"
+benchmark_runtime = "ontchatbot.cli.benchmark_runtime:main"
 chat_agent = "ontchatbot.cli.chat:main"
 check_conditions = "ontchatbot.cli.check_conditions:main"
 generate_reports = "ontchatbot.cli.report:main"
