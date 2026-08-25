@@ -187,4 +187,3 @@ mode Team, năm biến Vercel, subject production và binding
 `roles/iam.workloadIdentityUser`. Nếu Cloud Run trả `403` qua proxy, kiểm tra
 `roles/run.invoker` trên đúng service account và audience đúng bằng
 `CLOUD_RUN_SERVICE_URL`.
-
