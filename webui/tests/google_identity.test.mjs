@@ -150,3 +150,20 @@ test("a missing Vercel assertion fails before contacting Google", async () => {
   );
   assert.equal(calls, 0);
 });
+
+test("a cached Google token never authorizes a request without Vercel identity", async () => {
+  configure();
+  delete process.env.VERCEL_OIDC_TOKEN;
+  const calls = [];
+  const provider = createGoogleIdTokenProvider({
+    fetchImpl: successfulGoogleFetch(calls),
+    now: () => 1_000,
+  });
+
+  assert.equal(await provider(vercelRequest()), "google-id-token");
+  await assert.rejects(
+    provider(new Request("https://frontend.example/api/healthz")),
+    /identity is unavailable/,
+  );
+  assert.equal(calls.length, 2);
+});

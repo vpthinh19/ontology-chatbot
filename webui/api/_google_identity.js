@@ -30,12 +30,7 @@ const responseToken = async (response, field) => {
   return payload[field];
 };
 
-const mintGoogleIdToken = async (request, fetchImpl) => {
-  const subjectToken =
-    request.headers.get("x-vercel-oidc-token") ||
-    (process.env.VERCEL_OIDC_TOKEN || "").trim();
-  if (!subjectToken) throw new Error("Vercel workload identity is unavailable.");
-
+const mintGoogleIdToken = async (subjectToken, fetchImpl) => {
   const configuration = readConfiguration();
   const audience =
     `//iam.googleapis.com/projects/${configuration.projectNumber}/locations/global/` +
@@ -94,9 +89,13 @@ export const createGoogleIdTokenProvider = ({
   let inFlight;
 
   return async (request) => {
+    const subjectToken =
+      request.headers.get("x-vercel-oidc-token") ||
+      (process.env.VERCEL_OIDC_TOKEN || "").trim();
+    if (!subjectToken) throw new Error("Vercel workload identity is unavailable.");
     if (cachedToken && now() < cachedUntil) return cachedToken;
     if (!inFlight) {
-      inFlight = mintGoogleIdToken(request, fetchImpl)
+      inFlight = mintGoogleIdToken(subjectToken, fetchImpl)
         .then((token) => {
           cachedToken = token;
           cachedUntil = now() + TOKEN_CACHE_MS;
