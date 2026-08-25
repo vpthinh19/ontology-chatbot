@@ -14,11 +14,16 @@ import argparse
 import asyncio
 import os
 from pathlib import Path
-from typing import Sequence
+from typing import Mapping, Sequence
 
 from ..runtime.agent import DEFAULT_BASE_URL, build_agent
 from ..runtime.onnx_classifier import OnnxClassifierGenerator
-from ..runtime.pipeline import OntologyChatbot
+from ..runtime.pipeline import (
+    Classification,
+    OntologyChatbot,
+    PreparedKeyword,
+    QueryResolution,
+)
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -58,6 +63,29 @@ class _Trace:
     def answer_many(self, questions: Sequence[str]) -> str:
         reply = self._chatbot.answer_many(questions)
         print(f"    [công cụ] tra {list(questions)!r} → {len(reply)} ký tự", flush=True)
+        return reply
+
+    def prepare_keywords(self, questions: Sequence[str]) -> tuple[PreparedKeyword, ...]:
+        return self._chatbot.prepare_keywords(questions)
+
+    def classify_many(self, model_inputs: Sequence[str]) -> tuple[Classification, ...]:
+        return self._chatbot.classify_many(model_inputs)
+
+    def execute_query(self, query: str, *, max_rows: int) -> QueryResolution:
+        return self._chatbot.execute_query(query, max_rows=max_rows)
+
+    def render_many(
+        self,
+        prepared: Sequence[PreparedKeyword],
+        choices: Sequence[Classification],
+        resolutions: Mapping[str, QueryResolution],
+    ) -> str:
+        reply = self._chatbot.render_many(prepared, choices, resolutions)
+        print(
+            f"    [công cụ] tra {[item.original for item in prepared]!r} "
+            f"→ {len(reply)} ký tự",
+            flush=True,
+        )
         return reply
 
 
