@@ -175,6 +175,24 @@ def test_oversubscribed_cpu_budget_is_logged(monkeypatch, caplog) -> None:
     assert "4 visible CPUs" in caplog.text
 
 
+def test_default_cpu_budget_does_not_warn_with_exactly_eight_visible_cpus(
+    monkeypatch, caplog
+) -> None:
+    """A budget equal to CPU affinity is not oversubscription."""
+    monkeypatch.delenv("ONTCHATBOT_ONNX_THREADS", raising=False)
+    monkeypatch.delenv("ONTCHATBOT_LOOKUP_WORKERS", raising=False)
+    monkeypatch.setattr("ontchatbot.cli.serve._visible_cpu_count", lambda: 8)
+    args = _parse_args(_flags())
+
+    with caplog.at_level(logging.WARNING, logger="ontchatbot.cli.serve"):
+        _log_cpu_budget(
+            onnx_threads=args.onnx_threads, lookup_workers=args.lookup_workers
+        )
+
+    assert (args.onnx_threads, args.lookup_workers) == (1, 8)
+    assert not caplog.records
+
+
 def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
     """Thiếu một trong hai thứ thì dừng ngay lúc khởi động.
 
