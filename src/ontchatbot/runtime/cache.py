@@ -72,7 +72,18 @@ class CacheOutcomeRecorder:
 @dataclass(frozen=True)
 class _Published(Generic[V]):
     value: V
-    evictions: int
+    eviction_claim: _EvictionClaim
+
+
+class _EvictionClaim:
+    """One event-loop resolver may own a publication's eviction count."""
+
+    def __init__(self, evictions: int) -> None:
+        self._evictions = evictions
+
+    def take(self) -> int:
+        evictions, self._evictions = self._evictions, 0
+        return evictions
 
 
 Loader = Callable[[tuple[K, ...]], Awaitable[Mapping[K, Loaded[V]]]]
@@ -144,7 +155,7 @@ class BatchSingleFlightCache(Generic[K, V]):
                     outcome.record_hit()
                 self._completed.move_to_end(key)
                 future = loop.create_future()
-                future.set_result(_Published(completed[0], 0))
+                future.set_result(_Published(completed[0], _EvictionClaim(0)))
             elif key in self._inflight:
                 self._followers += 1
                 if outcome is not None:
@@ -170,7 +181,9 @@ class BatchSingleFlightCache(Generic[K, V]):
         )
         by_key = dict(zip(unique, published, strict=True))
         if outcome is not None:
-            outcome.record_evictions(sum(by_key[key].evictions for key in leaders))
+            outcome.record_evictions(
+                sum(by_key[key].eviction_claim.take() for key in unique)
+            )
         return [by_key[key].value for key in ordered]
 
     async def _publish(
@@ -193,18 +206,18 @@ class BatchSingleFlightCache(Generic[K, V]):
                     raise ValueError("cache weights must be non-negative")
                 results.append((key, result, weight))
 
-            published: list[tuple[K, Loaded[V], int]] = []
+            published: list[tuple[K, Loaded[V], _EvictionClaim]] = []
             for key, result, weight in results:
                 evictions = 0
                 if result.cacheable:
                     assert weight is not None
                     evictions = self._remember(key, result.value, weight=weight)
-                published.append((key, result, evictions))
+                published.append((key, result, _EvictionClaim(evictions)))
 
-            for key, result, evictions in published:
+            for key, result, eviction_claim in published:
                 future = self._inflight[key]
                 if not future.done():
-                    future.set_result(_Published(result.value, evictions))
+                    future.set_result(_Published(result.value, eviction_claim))
         except BaseException as error:
             for key in keys:
                 future = self._inflight[key]

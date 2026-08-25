@@ -125,7 +125,10 @@ def test_cancelled_leader_outcome_is_stable_while_its_load_later_evicts() -> Non
             cache.resolve(["new"], load, outcome=leader_outcome)
         )
         await entered.wait()
-        follower = asyncio.create_task(cache.resolve(["new"], load))
+        follower_outcome = CacheOutcomeRecorder()
+        follower = asyncio.create_task(
+            cache.resolve(["new"], load, outcome=follower_outcome)
+        )
         await asyncio.sleep(0)
         leader.cancel()
         with pytest.raises(asyncio.CancelledError):
@@ -138,6 +141,8 @@ def test_cancelled_leader_outcome_is_stable_while_its_load_later_evicts() -> Non
         await cache.wait_for_loaders()
         assert cache.stats.evictions == 1
         assert leader_outcome.snapshot == frozen
+        assert follower_outcome.snapshot.evictions == 1
+        assert leader_outcome.snapshot.evictions + follower_outcome.snapshot.evictions == cache.stats.evictions
         assert await cache.resolve(["new"], load) == ["new"]
 
     async def _loaded(keys, value):

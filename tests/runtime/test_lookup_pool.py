@@ -272,6 +272,17 @@ def test_cancelled_lookup_log_is_stable_while_the_shared_query_evicts(caplog) ->
     )
     assert "l3_misses=1" in cancelled
     assert "l3_evictions=0" in cancelled
+    records = [
+        record.getMessage()
+        for record in caplog.records
+        if record.name == "ontchatbot.runtime.lookup_pool"
+    ]
+    follower = next(record for record in records if "l3_followers=1" in record)
+    assert "l3_evictions=1" in follower
+    assert sum(
+        int(re.search(r"l3_evictions=(\d+)", record).group(1))
+        for record in records
+    ) == 1
 
 
 def test_closed_pool_rejection_emits_one_bounded_terminal_log(caplog) -> None:
