@@ -181,6 +181,7 @@ async def run_workload(
             outcomes.record(
                 await _one(pool, batches[job % len(batches)]), request_id=job
             )
+            await asyncio.sleep(0)
 
     await asyncio.gather(*(worker() for _ in range(concurrency)))
     return outcomes
@@ -207,6 +208,7 @@ async def _run_for_duration(
                 await _one(pool, batches[batch_index % len(batches)]),
                 request_id=request_number * concurrency + worker_number,
             )
+            await asyncio.sleep(0)
             batch_index += concurrency
             request_number += 1
 

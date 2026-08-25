@@ -194,6 +194,58 @@ class _CountingLookup:
         return "ok"
 
 
+class _ImmediateLookup:
+    """A completed cache hit that performs no native work and does not yield."""
+
+    stats = _LookupStats()
+
+    def __init__(self) -> None:
+        self.callers: set[asyncio.Task] = set()
+
+    async def __call__(self, _keywords: list[str]) -> str:
+        task = asyncio.current_task()
+        assert task is not None
+        self.callers.add(task)
+        return "ok"
+
+
+def test_round_workers_share_immediately_completed_cache_hits() -> None:
+    """A synchronous hit must not let the first fixed worker consume every job."""
+    lookup = _ImmediateLookup()
+
+    asyncio.run(
+        run_workload(
+            lookup,
+            [["học phí"]],
+            concurrency=4,
+            rounds=8,
+        )
+    )
+
+    assert len(lookup.callers) == 4
+
+
+def test_duration_workers_and_monitor_share_immediate_cache_hits(monkeypatch) -> None:
+    """Duration mode must remain fair and observable when every lookup is a hit."""
+    monkeypatch.setattr(benchmark_runtime, "TICK_SECONDS", 0.001)
+    lookup = _ImmediateLookup()
+
+    report = asyncio.run(
+        run_benchmark(
+            lookup,
+            [["học phí"]],
+            concurrency=4,
+            rounds=1,
+            warm=False,
+            duration=0.02,
+            configuration={},
+        )
+    )
+
+    assert len(lookup.callers) == 4
+    assert report["event_loop_lag_ms"]["samples"] > 1
+
+
 def test_report_contains_runtime_metrics_for_a_fake_lookup() -> None:
     """The CLI report must expose all operational metrics without an ONNX model."""
     report = asyncio.run(
