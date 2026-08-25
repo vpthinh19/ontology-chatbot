@@ -72,7 +72,7 @@ def test_batch_executes_duplicate_concrete_query_once(monkeypatch) -> None:
     query = "SELECT ?answer WHERE { :Example :value ?answer . }"
     executed = []
 
-    def execute(_graph, concrete_query):
+    def execute(_graph, concrete_query, *, max_rows=100):
         executed.append(concrete_query)
         return [{"answer": "A"}]
 
@@ -91,7 +91,7 @@ def test_batch_executes_duplicate_concrete_query_once(monkeypatch) -> None:
 def test_empty_and_failed_queries_are_distinct_before_both_render_as_missed(
     monkeypatch,
 ) -> None:
-    def execute(_graph, query):
+    def execute(_graph, query, *, max_rows=100):
         if query == "empty":
             return []
         raise SparqlError("invalid query")
@@ -130,7 +130,7 @@ def test_frozen_rows_preserve_column_order_and_primitive_types() -> None:
 
 
 def test_execute_query_propagates_unexpected_errors(monkeypatch) -> None:
-    def execute(_graph, _query):
+    def execute(_graph, _query, *, max_rows=100):
         raise RuntimeError("database disconnected")
 
     monkeypatch.setattr("ontchatbot.runtime.pipeline.execute_select", execute)
@@ -140,10 +140,28 @@ def test_execute_query_propagates_unexpected_errors(monkeypatch) -> None:
         chatbot.execute_query("SELECT ?answer WHERE { :Example :value ?answer . }")
 
 
+def test_execute_query_forwards_explicit_and_default_row_limits(monkeypatch) -> None:
+    seen = []
+
+    def execute(_graph, query, *, max_rows):
+        seen.append((query, max_rows))
+        return []
+
+    monkeypatch.setattr("ontchatbot.runtime.pipeline.execute_select", execute)
+    chatbot = OntologyChatbot(SimpleNamespace(), graph=Graph(), catalogue={})
+
+    chatbot.execute_query("explicit", max_rows=7)
+    chatbot.execute_query("default")
+
+    assert seen == [("explicit", 7), ("default", 100)]
+
+
 def test_rows_for_labels_a_failed_query(monkeypatch) -> None:
     monkeypatch.setattr(
         "ontchatbot.runtime.pipeline.execute_select",
-        lambda _graph, _query: (_ for _ in ()).throw(SparqlError("invalid query")),
+        lambda _graph, _query, *, max_rows=100: (_ for _ in ()).throw(
+            SparqlError("invalid query")
+        ),
     )
     chatbot = OntologyChatbot(SimpleNamespace(), graph=Graph(), catalogue={})
 
@@ -157,7 +175,9 @@ def test_batch_logs_query_failed_for_a_failed_concrete_query(monkeypatch, caplog
     query = "SELECT ?answer WHERE { :Example :value ?answer . }"
     monkeypatch.setattr(
         "ontchatbot.runtime.pipeline.execute_select",
-        lambda _graph, _query: (_ for _ in ()).throw(SparqlError("invalid query")),
+        lambda _graph, _query, *, max_rows=100: (_ for _ in ()).throw(
+            SparqlError("invalid query")
+        ),
     )
     chatbot = OntologyChatbot(
         SimpleNamespace(generate_many=lambda _: [query]), graph=Graph(), catalogue={}
@@ -174,7 +194,7 @@ def test_batch_logs_query_failed_for_a_failed_concrete_query(monkeypatch, caplog
 def test_off_catalogue_output_never_executes_sparql(monkeypatch) -> None:
     executed = []
 
-    def execute(_graph, query):
+    def execute(_graph, query, *, max_rows=100):
         executed.append(query)
         return []
 
@@ -197,7 +217,7 @@ def test_mixed_found_and_missed_batch_output_keeps_the_render_contract(monkeypat
     query = "SELECT ?answer WHERE { :Example :value ?answer . }"
     monkeypatch.setattr(
         "ontchatbot.runtime.pipeline.execute_select",
-        lambda _graph, _query: [{"answer": "Dữ kiện"}],
+        lambda _graph, _query, *, max_rows=100: [{"answer": "Dữ kiện"}],
     )
     chatbot = OntologyChatbot(
         SimpleNamespace(generate_many=lambda _: [query, "không có thông tin"]),

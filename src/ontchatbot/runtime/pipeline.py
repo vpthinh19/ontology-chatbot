@@ -104,11 +104,13 @@ class OntologyChatbot:
                     outputs.append(MARKER)
         return tuple(self._classification_for(output) for output in outputs)
 
-    def execute_query(self, query: str) -> QueryResolution:
+    def execute_query(self, query: str, *, max_rows: int = 100) -> QueryResolution:
         """Execute a concrete query, reserving failure status for SPARQL errors."""
 
         try:
-            return QueryResolution("ok", freeze_rows(execute_select(self.graph, query)))
+            return QueryResolution(
+                "ok", freeze_rows(execute_select(self.graph, query, max_rows=max_rows))
+            )
         except SparqlError:
             return QueryResolution("query-failed", ())
 
