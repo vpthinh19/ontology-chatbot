@@ -1,4 +1,4 @@
-import { proxyToLightning } from "./_proxy.js";
+import { proxyToBackend } from "./_proxy.js";
 
 export const GET = (request) =>
-  proxyToLightning(request, { method: "GET", path: "/healthz" });
+  proxyToBackend(request, { method: "GET", path: "/healthz" });

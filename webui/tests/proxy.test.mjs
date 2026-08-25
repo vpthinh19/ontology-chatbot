@@ -2,21 +2,16 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { afterEach, test } from "node:test";
 
-import { POST as proxyChat } from "../api/chat.js";
-import { GET as proxyHealth } from "../api/healthz.js";
-import { proxyToLightning } from "../api/_proxy.js";
+import { proxyToBackend } from "../api/_proxy.js";
 import viteConfig from "../vite.config.js";
 
 const originalEnvironment = {
-  baseUrl: process.env.LIGHTNING_API_BASE_URL,
-  token: process.env.LIGHTNING_API_TOKEN,
+  serviceUrl: process.env.CLOUD_RUN_SERVICE_URL,
 };
 
 afterEach(() => {
-  if (originalEnvironment.baseUrl === undefined) delete process.env.LIGHTNING_API_BASE_URL;
-  else process.env.LIGHTNING_API_BASE_URL = originalEnvironment.baseUrl;
-  if (originalEnvironment.token === undefined) delete process.env.LIGHTNING_API_TOKEN;
-  else process.env.LIGHTNING_API_TOKEN = originalEnvironment.token;
+  if (originalEnvironment.serviceUrl === undefined) delete process.env.CLOUD_RUN_SERVICE_URL;
+  else process.env.CLOUD_RUN_SERVICE_URL = originalEnvironment.serviceUrl;
 });
 
 const listen = (handler) =>
@@ -43,7 +38,7 @@ const readBody = (request) =>
     request.on("error", reject);
   });
 
-test("health proxy replaces client authorization and preserves the upstream response", async () => {
+test("health proxy replaces browser authorization with Google identity", async () => {
   let seenAuthorization;
   const upstream = await listen((request, response) => {
     seenAuthorization = request.headers.authorization;
@@ -55,17 +50,18 @@ test("health proxy replaces client authorization and preserves the upstream resp
     });
     response.end('{"status":"waking"}');
   });
-  process.env.LIGHTNING_API_BASE_URL = `${upstream.baseUrl}/`;
-  process.env.LIGHTNING_API_TOKEN = "server-secret";
+  process.env.CLOUD_RUN_SERVICE_URL = `${upstream.baseUrl}/`;
 
   try {
-    const response = await proxyHealth(
+    const response = await proxyToBackend(
       new Request("https://frontend.example/api/healthz", {
         headers: { Authorization: "Bearer browser-value" },
       }),
+      { method: "GET", path: "/healthz" },
+      { getIdentityToken: async () => "google-id-token" },
     );
 
-    assert.equal(seenAuthorization, "Bearer server-secret");
+    assert.equal(seenAuthorization, "Bearer google-id-token");
     assert.equal(response.status, 503);
     assert.equal(response.headers.get("content-type"), "application/json");
     assert.equal(response.headers.get("cache-control"), "no-store");
@@ -96,11 +92,10 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
     await mayFinish;
     response.end('data: {"loai":"xong","noi_dung":"Xin chào"}\n\n');
   });
-  process.env.LIGHTNING_API_BASE_URL = upstream.baseUrl;
-  process.env.LIGHTNING_API_TOKEN = "server-secret";
+  process.env.CLOUD_RUN_SERVICE_URL = upstream.baseUrl;
 
   try {
-    const response = await proxyChat(
+    const response = await proxyToBackend(
       new Request("https://frontend.example/api/chat", {
         method: "POST",
         headers: {
@@ -109,11 +104,13 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
         },
         body: '{"message":"Xin chào","history":[]}',
       }),
+      { method: "POST", path: "/chat" },
+      { getIdentityToken: async () => "google-id-token" },
     );
     const reader = response.body.getReader();
     const first = await reader.read();
 
-    assert.equal(seenAuthorization, "Bearer server-secret");
+    assert.equal(seenAuthorization, "Bearer google-id-token");
     assert.equal(seenBody, '{"message":"Xin chào","history":[]}');
     assert.equal(new TextDecoder().decode(first.value), 'data: {"loai":"chu","noi_dung":"Xin"}\n\n');
     assert.equal(first.done, false);
@@ -130,42 +127,71 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
   }
 });
 
-test("proxy rejects unsupported methods without contacting Lightning", async () => {
-  process.env.LIGHTNING_API_BASE_URL = "http://127.0.0.1:1";
-  process.env.LIGHTNING_API_TOKEN = "server-secret";
+test("proxy rejects unsupported methods before obtaining identity", async () => {
+  process.env.CLOUD_RUN_SERVICE_URL = "http://127.0.0.1:1";
+  let identityCalls = 0;
 
-  const response = await proxyToLightning(
+  const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz", { method: "POST" }),
     { method: "GET", path: "/healthz" },
+    {
+      getIdentityToken: async () => {
+        identityCalls += 1;
+        return "must-not-be-used";
+      },
+    },
   );
 
   assert.equal(response.status, 405);
   assert.equal(response.headers.get("allow"), "GET");
   assert.deepEqual(await response.json(), { detail: "Method not allowed." });
+  assert.equal(identityCalls, 0);
 });
 
 test("proxy reports missing server configuration without exposing partial values", async () => {
-  process.env.LIGHTNING_API_BASE_URL = "https://secret-host.example";
-  delete process.env.LIGHTNING_API_TOKEN;
+  delete process.env.CLOUD_RUN_SERVICE_URL;
 
-  const response = await proxyHealth(new Request("https://frontend.example/api/healthz"));
+  const response = await proxyToBackend(
+    new Request("https://frontend.example/api/healthz"),
+    { method: "GET", path: "/healthz" },
+    { getIdentityToken: async () => "must-not-be-used" },
+  );
   const text = await response.text();
 
   assert.equal(response.status, 500);
-  assert.equal(text.includes("secret-host"), false);
   assert.deepEqual(JSON.parse(text), { detail: "Proxy is not configured." });
 });
 
 test("proxy turns an upstream connection failure into a bounded 502", async () => {
   const unavailable = await listen((_request, response) => response.end());
-  process.env.LIGHTNING_API_BASE_URL = unavailable.baseUrl;
-  process.env.LIGHTNING_API_TOKEN = "server-secret";
+  process.env.CLOUD_RUN_SERVICE_URL = unavailable.baseUrl;
   await unavailable.close();
 
-  const response = await proxyHealth(new Request("https://frontend.example/api/healthz"));
+  const response = await proxyToBackend(
+    new Request("https://frontend.example/api/healthz"),
+    { method: "GET", path: "/healthz" },
+    { getIdentityToken: async () => "google-id-token" },
+  );
 
   assert.equal(response.status, 502);
   assert.deepEqual(await response.json(), { detail: "Could not reach the backend." });
+});
+
+test("proxy does not expose identity exchange failures", async () => {
+  process.env.CLOUD_RUN_SERVICE_URL = "https://private-backend.example";
+
+  const response = await proxyToBackend(
+    new Request("https://frontend.example/api/healthz"),
+    { method: "GET", path: "/healthz" },
+    {
+      getIdentityToken: async () => {
+        throw new Error("sensitive Google response");
+      },
+    },
+  );
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), { detail: "Could not authenticate to the backend." });
 });
 
 test("Vite development rewrites same-origin API paths to the local backend", () => {

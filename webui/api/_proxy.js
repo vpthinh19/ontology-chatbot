@@ -1,3 +1,5 @@
+import { getCloudRunIdentityToken } from "./_google_identity.js";
+
 const RESPONSE_HEADERS = ["content-type", "cache-control", "x-accel-buffering"];
 
 const jsonError = (status, detail, headers) =>
@@ -9,20 +11,33 @@ const jsonError = (status, detail, headers) =>
     },
   );
 
-export const proxyToLightning = async (request, { method, path }) => {
+export const proxyToBackend = async (
+  request,
+  { method, path },
+  {
+    getIdentityToken = getCloudRunIdentityToken,
+    fetchImpl = globalThis.fetch,
+  } = {},
+) => {
   if (request.method !== method) {
     return jsonError(405, "Method not allowed.", { Allow: method });
   }
 
-  const baseUrl = (process.env.LIGHTNING_API_BASE_URL || "").trim().replace(/\/+$/, "");
-  const token = (process.env.LIGHTNING_API_TOKEN || "").trim();
-  if (!baseUrl || !token) return jsonError(500, "Proxy is not configured.");
+  const baseUrl = (process.env.CLOUD_RUN_SERVICE_URL || "").trim().replace(/\/+$/, "");
+  if (!baseUrl) return jsonError(500, "Proxy is not configured.");
 
   let upstreamUrl;
   try {
     upstreamUrl = new URL(`${baseUrl}${path}`);
   } catch {
     return jsonError(500, "Proxy is not configured.");
+  }
+
+  let token;
+  try {
+    token = await getIdentityToken(request);
+  } catch {
+    return jsonError(502, "Could not authenticate to the backend.");
   }
 
   const headers = new Headers({ Authorization: `Bearer ${token}` });
@@ -33,7 +48,7 @@ export const proxyToLightning = async (request, { method, path }) => {
 
   let upstream;
   try {
-    upstream = await fetch(upstreamUrl, {
+    upstream = await fetchImpl(upstreamUrl, {
       method,
       headers,
       body: method === "GET" || method === "HEAD" ? undefined : await request.arrayBuffer(),

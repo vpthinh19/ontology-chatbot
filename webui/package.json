@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "npm run test:proxy && playwright test",
-    "test:proxy": "node --test tests/proxy.test.mjs"
+    "test:proxy": "node --test tests/google_identity.test.mjs tests/proxy.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
