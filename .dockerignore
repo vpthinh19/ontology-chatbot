@@ -26,6 +26,7 @@ logs/
 checkpoints/
 
 # Local dev clutter
+.env*
 .idea
 .vscode
 .DS_Store

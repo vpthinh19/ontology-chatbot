@@ -168,7 +168,7 @@ Function.
 Backend trực tiếp phải từ chối request không có danh tính:
 
 ```bash
-curl -i "${CLOUD_RUN_SERVICE_URL}/healthz"
+curl -i "${CLOUD_RUN_SERVICE_URL}/health"
 ```
 
 Kết quả mong đợi: `403` và không có log khởi động container mới do request bị IAM

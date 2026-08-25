@@ -342,7 +342,7 @@ def test_pool_never_runs_more_than_four_native_jobs_at_once() -> None:
     assert fake.peak == 4
 
 
-def test_a_blocked_native_job_does_not_block_healthz() -> None:
+def test_a_blocked_native_job_does_not_block_health() -> None:
     fake = _BlockingClassifier()
 
     async def exercise() -> None:
@@ -354,7 +354,7 @@ def test_a_blocked_native_job_does_not_block_healthz() -> None:
             async with httpx.AsyncClient(
                 transport=transport, base_url='http://test'
             ) as client:
-                response = await asyncio.wait_for(client.get('/healthz'), timeout=0.05)
+                response = await asyncio.wait_for(client.get('/health'), timeout=0.05)
             assert response.json() == {'status': 'ok'}
         finally:
             fake.release.set()

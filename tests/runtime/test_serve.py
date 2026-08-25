@@ -93,7 +93,7 @@ def _ask(monkeypatch, run, tmp_path, payload):
     async def exercise():
         transport = httpx.ASGITransport(app=create_app(object()))
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-            health = await client.get("/healthz")
+            health = await client.get("/health")
             response = await client.post("/chat", json=payload)
         return health, response
 
@@ -672,7 +672,7 @@ def test_the_health_endpoint_answers_without_touching_the_model() -> None:
     async def exercise():
         transport = httpx.ASGITransport(app=create_app(object()))
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
-            return await client.get("/healthz")
+            return await client.get("/health")
 
     response = asyncio.run(exercise())
 

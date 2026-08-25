@@ -51,5 +51,5 @@ ENV PATH="/app/.venv/bin:$PATH" \
 USER ontchatbot
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
-    CMD python -c "import os,urllib.request,sys; port=os.environ.get('PORT','8000'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{port}/healthz',timeout=3).status==200 else 1)" || exit 1
+    CMD python -c "import os,urllib.request,sys; port=os.environ.get('PORT','8000'); sys.exit(0 if urllib.request.urlopen(f'http://127.0.0.1:{port}/health',timeout=3).status==200 else 1)" || exit 1
 CMD ["serve_sparql", "--model-dir", "/app/model", "--host", "0.0.0.0"]

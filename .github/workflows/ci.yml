@@ -141,7 +141,7 @@ jobs:
         run: |
           CONTAINER=ontchatbot-smoke-${{ github.run_id }}
           # Dịch vụ đòi tên mô hình ngôn ngữ lớn và khoá truy cập ngay lúc khởi
-          # động, nhưng /healthz không gọi ra ngoài, nên giá trị giả là đủ và
+          # động, nhưng /health không gọi ra ngoài, nên giá trị giả là đủ và
           # phép chạy thử này không tiêu một lượt gọi nào. Nó kiểm được ảnh dựng
           # xong có nạp nổi đồ thị phân loại và ontology rồi phục vụ hay không;
           # nó KHÔNG kiểm được chất lượng câu trả lời.
@@ -157,7 +157,7 @@ jobs:
           }
           trap cleanup EXIT
           for _ in $(seq 1 60); do
-            if curl --fail --silent http://127.0.0.1:8000/healthz >/dev/null; then
+            if curl --fail --silent http://127.0.0.1:8000/health >/dev/null; then
               exit 0
             fi
             if ! docker inspect --format '{{.State.Running}}' "$CONTAINER" | grep -qx true; then

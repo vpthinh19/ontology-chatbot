@@ -385,8 +385,8 @@ def create_app(agent, gate: TurnGate | None = None):
     # khi mọi lượt cùng đi qua đúng một cái. Phép kiểm đưa cửa hẹp hơn vào đây.
     gate = gate if gate is not None else TurnGate()
 
-    @app.get("/healthz")
-    async def healthz() -> dict[str, str]:
+    @app.get("/health")
+    async def health() -> dict[str, str]:
         return {"status": "ok"}
 
     async def chat(request):

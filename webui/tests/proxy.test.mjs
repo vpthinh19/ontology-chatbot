@@ -57,7 +57,7 @@ test("health proxy replaces browser authorization with Google identity", async (
       new Request("https://frontend.example/api/healthz", {
         headers: { Authorization: "Bearer browser-value" },
       }),
-      { method: "GET", path: "/healthz" },
+      { method: "GET", path: "/health" },
       { getIdentityToken: async () => "google-id-token" },
     );
 
@@ -133,7 +133,7 @@ test("proxy rejects unsupported methods before obtaining identity", async () => 
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz", { method: "POST" }),
-    { method: "GET", path: "/healthz" },
+    { method: "GET", path: "/health" },
     {
       getIdentityToken: async () => {
         identityCalls += 1;
@@ -153,7 +153,7 @@ test("proxy reports missing server configuration without exposing partial values
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz"),
-    { method: "GET", path: "/healthz" },
+    { method: "GET", path: "/health" },
     { getIdentityToken: async () => "must-not-be-used" },
   );
   const text = await response.text();
@@ -169,7 +169,7 @@ test("proxy turns an upstream connection failure into a bounded 502", async () =
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz"),
-    { method: "GET", path: "/healthz" },
+    { method: "GET", path: "/health" },
     { getIdentityToken: async () => "google-id-token" },
   );
 
@@ -182,7 +182,7 @@ test("proxy does not expose identity exchange failures", async () => {
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz"),
-    { method: "GET", path: "/healthz" },
+    { method: "GET", path: "/health" },
     {
       getIdentityToken: async () => {
         throw new Error("sensitive Google response");
@@ -199,6 +199,6 @@ test("Vite development rewrites same-origin API paths to the local backend", () 
   const proxy = config.server.proxy["/api"];
 
   assert.equal(proxy.target, "http://127.0.0.1:8000");
-  assert.equal(proxy.rewrite("/api/healthz"), "/healthz");
+  assert.equal(proxy.rewrite("/api/healthz"), "/health");
   assert.equal(proxy.rewrite("/api/chat"), "/chat");
 });
