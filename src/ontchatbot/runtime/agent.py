@@ -13,7 +13,6 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
-from functools import partial
 from typing import Sequence
 
 from ..settings import ONTOLOGY_NS
@@ -277,7 +276,24 @@ def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
     return _with_truncation_notice(reply, notice)
 
 
-def build_tool(chatbot: OntologyChatbot, *, lookup_workers: int = 4):
+async def look_up_async(lookup, tu_khoa: Sequence[str] | str) -> str:
+    """Apply the established tool boundary before calling the shared coordinator."""
+
+    keywords, notice = _bounded_keywords(tu_khoa)
+    try:
+        reply = await lookup(keywords)
+    except (QueryGenerationError, SparqlError):
+        reply = NO_INFORMATION_REPLY
+    return _with_truncation_notice(reply, notice)
+
+
+def build_tool(
+    chatbot: OntologyChatbot,
+    *,
+    lookup_workers: int = 4,
+    classification_cache_entries: int = 4096,
+    sparql_cache_bytes: int = 64 * 1024 * 1024,
+):
     """Bọc đường tra cứu ontology thành một công cụ cho mô hình gọi.
 
     Công cụ dựng trong hàm để nó giữ được ``chatbot`` đã cấu hình sẵn; thư viện
@@ -287,7 +303,12 @@ def build_tool(chatbot: OntologyChatbot, *, lookup_workers: int = 4):
 
     from agents import function_tool
 
-    lookup = AsyncLookupPool(partial(look_up, chatbot), workers=lookup_workers)
+    lookup = AsyncLookupPool(
+        chatbot,
+        workers=lookup_workers,
+        classification_cache_entries=classification_cache_entries,
+        sparql_cache_bytes=sparql_cache_bytes,
+    )
 
     @function_tool(description_override=TOOL_DESCRIPTION)
     async def tra_cuu_hoc_vu(tu_khoa: list[str]) -> str:
@@ -297,7 +318,7 @@ def build_tool(chatbot: OntologyChatbot, *, lookup_workers: int = 4):
             tu_khoa: Danh sách cụm từ khoá ngắn, ví dụ ["đăng ký học phần"].
         """
 
-        return await lookup(tu_khoa)
+        return await look_up_async(lookup, tu_khoa)
 
     return tra_cuu_hoc_vu
 
@@ -309,6 +330,8 @@ def build_agent(
     base_url: str | None = None,
     api_key: str | None = None,
     lookup_workers: int = 4,
+    classification_cache_entries: int = 4096,
+    sparql_cache_bytes: int = 64 * 1024 * 1024,
 ):
     """Dựng trợ lý: một mô hình ngôn ngữ lớn kèm đúng một công cụ.
 
@@ -333,7 +356,14 @@ def build_agent(
     return Agent(
         name="Trợ lý học vụ",
         instructions=build_instructions(),
-        tools=[build_tool(chatbot, lookup_workers=lookup_workers)],
+        tools=[
+            build_tool(
+                chatbot,
+                lookup_workers=lookup_workers,
+                classification_cache_entries=classification_cache_entries,
+                sparql_cache_bytes=sparql_cache_bytes,
+            )
+        ],
         model=OpenAIChatCompletionsModel(model=model, openai_client=client),
         model_settings=(
             ModelSettings(reasoning=Reasoning(effort=REASONING_EFFORT))

@@ -66,6 +66,10 @@ def _tool_call(arguments: str):
     )
 
 
+def _tool_output():
+    return SimpleNamespace(type="run_item_stream_event", name="tool_output")
+
+
 def _ask(monkeypatch, run, tmp_path, payload):
     import agents
 
@@ -113,6 +117,81 @@ def test_the_page_receives_words_as_the_assistant_writes_them(monkeypatch, tmp_p
     assert "craft answer" not in response.text
     assert events[0]["tu_khoa"] == "đăng ký học phần"
     assert "".join(e["noi_dung"] for e in events if e["loai"] == "chu") == "Bạn cần..."
+
+
+def test_cached_tool_calls_keep_the_existing_sse_sequence(monkeypatch) -> None:
+    """A cache hit must not bypass the lifecycle events shown to the page."""
+
+    from agents.tool_context import ToolContext
+    from ontchatbot.runtime import agent as agent_runtime
+
+    order = []
+
+    class FakePool:
+        def __init__(self, _chatbot, **_kwargs) -> None:
+            self._cached = False
+
+        async def __call__(self, keywords) -> str:
+            if not self._cached:
+                order.append("classifier")
+                self._cached = True
+            return json.dumps({"trang_thai": "co_du_lieu", "du_lieu": keywords})
+
+    monkeypatch.setattr(agent_runtime, "AsyncLookupPool", FakePool)
+    tool = agent_runtime.build_tool(object())
+    arguments = '{"tu_khoa":["học phí"]}'
+
+    class _ToolCallingRun:
+        final_output = "xong"
+
+        async def stream_events(self):
+            for call_id in ("mot", "hai"):
+                order.append("tool_called")
+                yield _tool_call(arguments)
+                await tool.on_invoke_tool(
+                    ToolContext(
+                        None,
+                        tool_name=tool.name,
+                        tool_call_id=call_id,
+                        tool_arguments=arguments,
+                    ),
+                    arguments,
+                )
+                order.append("tool_output")
+                yield _tool_output()
+
+    import agents
+
+    monkeypatch.setattr(
+        agents.Runner,
+        "run_streamed",
+        lambda _agent, _conversation, **_kwargs: _ToolCallingRun(),
+    )
+
+    async def exercise():
+        return [
+            json.loads(event[len("data: ") :])
+            async for event in api._stream(
+                SimpleNamespace(tools=[tool]), "học phí", [], api.TurnGate()
+            )
+        ]
+
+    events = asyncio.run(exercise())
+
+    assert [event["loai"] for event in events] == [
+        "tra_cuu",
+        "tra_cuu_xong",
+        "tra_cuu",
+        "tra_cuu_xong",
+        "xong",
+    ]
+    assert order == [
+        "tool_called",
+        "classifier",
+        "tool_output",
+        "tool_called",
+        "tool_output",
+    ]
 
 
 def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path) -> None:

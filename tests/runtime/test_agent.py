@@ -8,6 +8,7 @@ lời tụt xuống mà không rõ vì sao.
 
 from __future__ import annotations
 
+import asyncio
 import json
 import pytest
 from types import SimpleNamespace
@@ -21,6 +22,7 @@ from ontchatbot.runtime.agent import (
     build_instructions,
     build_tool,
     look_up,
+    look_up_async,
 )
 
 pytest.importorskip("agents", reason="cần thư viện openai-agents")
@@ -203,6 +205,88 @@ def test_lookup_caps_keyword_count_and_length_and_reports_it_as_json() -> None:
     }
 
 
+def test_async_tool_bounds_keywords_before_shared_lookup() -> None:
+    """The shared coordinator only receives normalized, bounded keywords."""
+
+    seen = []
+
+    async def lookup(keywords):
+        seen.append(keywords)
+        return json.dumps({"trang_thai": "co_du_lieu", "du_lieu": keywords})
+
+    result = asyncio.run(
+        look_up_async(
+            lookup,
+            ["học phí", "học phí", "x" * (MAX_KEYWORD_CHARACTERS + 1)],
+        )
+    )
+
+    payload = json.loads(result)
+    assert seen == [["học phí", "x" * MAX_KEYWORD_CHARACTERS]]
+    assert payload["tu_khoa_da_cat"]["so_luong_rut_gon"] == 1
+
+
+def test_async_tool_keeps_domain_errors_as_no_information() -> None:
+    """A failing cached lookup remains a model-readable result, not a tool error."""
+
+    from ontchatbot.runtime.generator import QueryGenerationError
+    from ontchatbot.runtime.render import NO_INFORMATION_REPLY
+    from ontchatbot.runtime.sparql import SparqlError
+
+    for error in (QueryGenerationError("rỗng"), SparqlError("sai cú pháp")):
+        async def fail(_keywords, error=error):
+            raise error
+
+        assert asyncio.run(look_up_async(fail, ["học phí"])) == NO_INFORMATION_REPLY
+
+    async def unexpected(_keywords):
+        raise RuntimeError("mất kết nối")
+
+    with pytest.raises(RuntimeError, match="mất kết nối"):
+        asyncio.run(look_up_async(unexpected, ["học phí"]))
+
+
+def test_tool_creates_one_configured_shared_lookup_pool(monkeypatch) -> None:
+    """Recreating the pool per call would discard both cache layers."""
+
+    created = []
+
+    class FakePool:
+        def __init__(self, chatbot, **kwargs) -> None:
+            created.append((chatbot, kwargs))
+
+        async def __call__(self, keywords) -> str:
+            return json.dumps({"trang_thai": "co_du_lieu", "du_lieu": keywords})
+
+    monkeypatch.setattr("ontchatbot.runtime.agent.AsyncLookupPool", FakePool)
+    monkeypatch.setattr(
+        "agents.function_tool", lambda **_kwargs: lambda function: function
+    )
+
+    chatbot = _StubChatbot()
+    tool = build_tool(
+        chatbot,
+        lookup_workers=3,
+        classification_cache_entries=17,
+        sparql_cache_bytes=23,
+    )
+
+    assert created == [
+        (
+            chatbot,
+            {
+                "workers": 3,
+                "classification_cache_entries": 17,
+                "sparql_cache_bytes": 23,
+            },
+        )
+    ]
+    assert json.loads(asyncio.run(tool(["học phí"]))) == {
+        "trang_thai": "co_du_lieu",
+        "du_lieu": ["học phí"],
+    }
+
+
 def test_the_assistant_does_not_think_at_the_lowest_effort() -> None:
     """Mức suy luận thấp đổi được tốc độ, nhưng có lúc không viết câu nào.
 
@@ -238,8 +322,12 @@ def test_every_model_request_has_an_explicit_timeout_and_one_retry(monkeypatch) 
     monkeypatch.setattr("ontchatbot.runtime.agent.build_instructions", lambda: "prompt")
     tool_options = {}
 
-    def fake_build_tool(_, *, lookup_workers):
+    def fake_build_tool(
+        _, *, lookup_workers, classification_cache_entries, sparql_cache_bytes
+    ):
         tool_options["lookup_workers"] = lookup_workers
+        tool_options["classification_cache_entries"] = classification_cache_entries
+        tool_options["sparql_cache_bytes"] = sparql_cache_bytes
         return "tool"
 
     monkeypatch.setattr("ontchatbot.runtime.agent.build_tool", fake_build_tool)
@@ -248,4 +336,8 @@ def test_every_model_request_has_an_explicit_timeout_and_one_retry(monkeypatch) 
 
     assert client_options["timeout"] == 30.0
     assert client_options["max_retries"] == 1
-    assert tool_options["lookup_workers"] == 4
+    assert tool_options == {
+        "lookup_workers": 4,
+        "classification_cache_entries": 4096,
+        "sparql_cache_bytes": 64 * 1024 * 1024,
+    }
