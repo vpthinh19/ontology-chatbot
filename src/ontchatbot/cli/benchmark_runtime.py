@@ -6,7 +6,8 @@ import argparse
 import asyncio
 from collections import Counter
 from collections.abc import Awaitable, Callable, Sequence
-from dataclasses import asdict, is_dataclass
+from dataclasses import asdict, dataclass, field, is_dataclass
+import heapq
 import json
 import math
 from pathlib import Path
@@ -16,7 +17,8 @@ from typing import Any
 
 
 TICK_SECONDS = 0.01
-MAX_LOOP_LAG_SAMPLES = 10_000
+MAX_LATENCY_SAMPLES = 4096
+MAX_LOOP_LAG_SAMPLES = 4096
 Lookup = Callable[[Sequence[str]], Awaitable[str]]
 Result = tuple[bool, str | None, float]
 
@@ -49,11 +51,11 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
 
 def load_workload(path: Path) -> list[list[str]]:
-    """Load non-empty keyword lists from the established JSON workload shape."""
+    """Load non-empty, non-blank keyword lists from the established JSON shape."""
 
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ValueError(f"invalid workload: {path}") from exc
     if not isinstance(payload, list):
         raise ValueError("invalid workload: expected a JSON list")
@@ -64,9 +66,11 @@ def load_workload(path: Path) -> list[list[str]]:
             raise ValueError(f"invalid workload item {index}: expected tu_khoa")
         keywords = item["tu_khoa"]
         if not isinstance(keywords, list) or not all(
-            isinstance(keyword, str) for keyword in keywords
+            isinstance(keyword, str) and keyword.strip() for keyword in keywords
         ):
-            raise ValueError(f"invalid workload item {index}: tu_khoa must be strings")
+            raise ValueError(
+                f"invalid workload item {index}: tu_khoa must be non-blank strings"
+            )
         if keywords:
             batches.append(keywords)
     if not batches:
@@ -84,6 +88,62 @@ def summarize_ms(samples: Sequence[float]) -> dict[str, float | None]:
         f"p{percentile}": ordered[math.ceil(len(ordered) * percentile / 100) - 1]
         for percentile in (50, 95, 99)
     }
+
+
+def _sample_priority(index: int) -> int:
+    """Produce deterministic, well-distributed reservoir priorities for a stream index."""
+
+    value = (index + 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
+    value = ((value ^ (value >> 30)) * 0xBF58476D1CE4E5B9) & 0xFFFFFFFFFFFFFFFF
+    value = ((value ^ (value >> 27)) * 0x94D049BB133111EB) & 0xFFFFFFFFFFFFFFFF
+    return value ^ (value >> 31)
+
+
+class _BoundedReservoir:
+    """Keep a deterministic bounded subset while still counting every observation."""
+
+    def __init__(self, capacity: int) -> None:
+        self._capacity = capacity
+        self._heap: list[tuple[int, float]] = []
+        self.total = 0
+
+    def add(self, value: float) -> None:
+        priority = _sample_priority(self.total)
+        self.total += 1
+        item = (-priority, value)
+        if len(self._heap) < self._capacity:
+            heapq.heappush(self._heap, item)
+        elif item[0] > self._heap[0][0]:
+            heapq.heapreplace(self._heap, item)
+
+    @property
+    def samples(self) -> list[float]:
+        return [value for _priority, value in self._heap]
+
+    def __len__(self) -> int:
+        return len(self._heap)
+
+
+@dataclass
+class _OutcomeSummary:
+    latency: _BoundedReservoir = field(
+        default_factory=lambda: _BoundedReservoir(MAX_LATENCY_SAMPLES)
+    )
+    successes: int = 0
+    errors: Counter[str] = field(default_factory=Counter)
+
+    @property
+    def samples(self) -> int:
+        return self.latency.total
+
+    def record(self, result: Result) -> None:
+        success, error, elapsed_ms = result
+        self.latency.add(elapsed_ms)
+        if success:
+            self.successes += 1
+        else:
+            assert error is not None
+            self.errors[error] += 1
 
 
 def _elapsed_ms(started: float) -> float:
@@ -105,17 +165,23 @@ async def run_workload(
     *,
     concurrency: int,
     rounds: int,
-) -> list[Result]:
-    """Run a finite, semaphore-bounded collection of lookup calls."""
+    summary: _OutcomeSummary | None = None,
+) -> _OutcomeSummary:
+    """Run finite work through a fixed worker set rather than per-request tasks."""
 
-    gate = asyncio.Semaphore(concurrency)
+    outcomes = summary or _OutcomeSummary()
+    total_jobs = rounds * len(batches)
+    next_job = 0
 
-    async def one(batch: Sequence[str]) -> Result:
-        async with gate:
-            return await _one(pool, batch)
+    async def worker() -> None:
+        nonlocal next_job
+        while next_job < total_jobs:
+            job = next_job
+            next_job += 1
+            outcomes.record(await _one(pool, batches[job % len(batches)]))
 
-    jobs = [batch for _ in range(rounds) for batch in batches]
-    return await asyncio.gather(*(one(batch) for batch in jobs))
+    await asyncio.gather(*(worker() for _ in range(concurrency)))
+    return outcomes
 
 
 async def _run_for_duration(
@@ -124,26 +190,24 @@ async def _run_for_duration(
     *,
     concurrency: int,
     duration: float,
-) -> list[Result]:
-    """Use a fixed worker set so duration mode cannot create an unbounded task list."""
+    summary: _OutcomeSummary,
+) -> None:
+    """Cycle fixed workers until the deadline without retaining per-request output."""
 
     loop = asyncio.get_running_loop()
     deadline = loop.time() + duration
 
-    async def worker(worker_number: int) -> list[Result]:
-        results: list[Result] = []
+    async def worker(worker_number: int) -> None:
         batch_index = worker_number
         while loop.time() < deadline:
-            results.append(await _one(pool, batches[batch_index % len(batches)]))
+            summary.record(await _one(pool, batches[batch_index % len(batches)]))
             batch_index += concurrency
-        return results
 
-    grouped = await asyncio.gather(*(worker(index) for index in range(concurrency)))
-    return [result for results in grouped for result in results]
+    await asyncio.gather(*(worker(index) for index in range(concurrency)))
 
 
 def _read_rss_kib() -> int | None:
-    """Read Linux resident memory without introducing a process-monitor dependency."""
+    """Read Linux resident memory without a process-monitor dependency."""
 
     if sys.platform != "linux":
         return None
@@ -156,26 +220,23 @@ def _read_rss_kib() -> int | None:
     return None
 
 
-async def _sample_loop_lag(
-    stopped: asyncio.Event,
-    *,
-    max_samples: int,
-) -> tuple[list[float], list[int]]:
+async def _sample_loop_lag(stopped: asyncio.Event) -> tuple[_BoundedReservoir, int | None]:
+    """Monitor until stopped, retaining a bounded lag reservoir and RSS peak."""
+
     loop = asyncio.get_running_loop()
-    lag_samples: list[float] = []
-    rss_samples: list[int] = []
+    lag = _BoundedReservoir(MAX_LOOP_LAG_SAMPLES)
+    rss_peak: int | None = None
     expected = loop.time() + TICK_SECONDS
-    while not stopped.is_set() and len(lag_samples) < max_samples:
+    while True:
         await asyncio.sleep(max(0.0, expected - loop.time()))
         observed = loop.time()
-        if stopped.is_set():
-            break
-        lag_samples.append(max(0.0, (observed - expected) * 1000))
+        lag.add(max(0.0, (observed - expected) * 1000))
         rss = _read_rss_kib()
         if rss is not None:
-            rss_samples.append(rss)
-        expected += TICK_SECONDS
-    return lag_samples, rss_samples
+            rss_peak = rss if rss_peak is None else max(rss_peak, rss)
+        if stopped.is_set():
+            return lag, rss_peak
+        expected = observed + TICK_SECONDS
 
 
 def _stats_mapping(value: Any) -> dict[str, Any]:
@@ -195,6 +256,17 @@ def _report_stats(pool: Any) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]
     )
 
 
+def _subtract_stats(
+    current: dict[str, Any], baseline: dict[str, Any]
+) -> dict[str, Any]:
+    return {
+        key: value - baseline.get(key, 0)
+        if isinstance(value, (int, float)) and not isinstance(value, bool)
+        else value
+        for key, value in current.items()
+    }
+
+
 async def run_benchmark(
     pool: Lookup,
     batches: Sequence[Sequence[str]],
@@ -205,75 +277,85 @@ async def run_benchmark(
     duration: float | None,
     configuration: dict[str, Any],
 ) -> dict[str, Any]:
-    """Run one local benchmark pass and collect only bounded diagnostic samples."""
+    """Run one local benchmark pass with constant-memory scheduling and telemetry."""
 
     if warm:
         await run_workload(pool, batches, concurrency=concurrency, rounds=1)
+    baseline_native, baseline_cache = _report_stats(pool)
 
     started_rss = _read_rss_kib()
     stopped = asyncio.Event()
-    max_samples = (
-        min(MAX_LOOP_LAG_SAMPLES, math.ceil(duration / TICK_SECONDS))
-        if duration is not None
-        else MAX_LOOP_LAG_SAMPLES
-    )
-    monitor = asyncio.create_task(_sample_loop_lag(stopped, max_samples=max_samples))
+    monitor = asyncio.create_task(_sample_loop_lag(stopped))
+    outcomes = _OutcomeSummary()
     started = time.perf_counter()
     try:
         if duration is None:
-            results = await run_workload(
-                pool, batches, concurrency=concurrency, rounds=rounds
+            await run_workload(
+                pool,
+                batches,
+                concurrency=concurrency,
+                rounds=rounds,
+                summary=outcomes,
             )
         else:
-            results = await _run_for_duration(
-                pool, batches, concurrency=concurrency, duration=duration
+            await _run_for_duration(
+                pool,
+                batches,
+                concurrency=concurrency,
+                duration=duration,
+                summary=outcomes,
             )
     finally:
         elapsed = time.perf_counter() - started
         stopped.set()
-        lag_samples, sampled_rss = await monitor
+        lag, sampled_rss_peak = await monitor
 
     ended_rss = _read_rss_kib()
     rss_values = [
-        value for value in (started_rss, *sampled_rss, ended_rss) if value is not None
+        value
+        for value in (started_rss, sampled_rss_peak, ended_rss)
+        if value is not None
     ]
-    samples = [elapsed_ms for _success, _error, elapsed_ms in results]
-    successes = sum(success for success, _error, _elapsed in results)
-    errors = Counter(error for success, error, _elapsed in results if not success)
     native, cache = _report_stats(pool)
+    latency = summarize_ms(outcomes.latency.samples)
     return {
         "configuration": configuration,
-        "samples": len(samples),
-        "successes": successes,
-        "errors": dict(sorted(errors.items())),
-        "throughput_per_second": successes / elapsed if elapsed else 0.0,
-        "latency_ms": summarize_ms(samples),
+        "samples": outcomes.samples,
+        "successes": outcomes.successes,
+        "errors": dict(sorted(outcomes.errors.items())),
+        "throughput_per_second": outcomes.successes / elapsed if elapsed else 0.0,
+        "latency_ms": {"retained_samples": len(outcomes.latency), **latency},
         "rss_kib": {
             "start": started_rss,
             "peak": max(rss_values) if rss_values else None,
             "end": ended_rss,
         },
-        "native": native,
-        "cache": cache,
+        "native": _subtract_stats(native, baseline_native),
+        "cache": {
+            key: _subtract_stats(value, baseline_cache[key])
+            for key, value in cache.items()
+        },
         "event_loop_lag_ms": {
-            "samples": len(lag_samples),
-            "p95": summarize_ms(lag_samples)["p95"],
+            "samples": lag.total,
+            "p95": summarize_ms(lag.samples)["p95"],
         },
     }
 
 
 async def _run(args: argparse.Namespace) -> dict[str, Any]:
-    """Construct exactly one local classifier, chatbot, and shared lookup pool."""
+    """Construct exactly one graph, classifier, chatbot, and shared lookup pool."""
 
     from ..runtime.lookup_pool import AsyncLookupPool
     from ..runtime.onnx_classifier import OnnxClassifierGenerator
     from ..runtime.pipeline import OntologyChatbot
+    from ..runtime.sparql import load_ontology
 
     batches = load_workload(args.workload)
+    graph = load_ontology()
     generator = OnnxClassifierGenerator.load(
-        args.model_dir, intra_op_threads=args.onnx_threads
+        args.model_dir, graph=graph, intra_op_threads=args.onnx_threads
     )
-    chatbot = OntologyChatbot(generator)
+    chatbot = OntologyChatbot(generator, graph=graph)
     pool = AsyncLookupPool(chatbot, workers=args.lookup_workers)
     try:
         return await run_benchmark(
