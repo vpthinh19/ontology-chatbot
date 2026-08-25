@@ -4,7 +4,11 @@ import asyncio
 
 import pytest
 
-from ontchatbot.runtime.cache import BatchSingleFlightCache, CacheOutcome, Loaded
+from ontchatbot.runtime.cache import (
+    BatchSingleFlightCache,
+    CacheOutcomeRecorder,
+    Loaded,
+)
 
 
 def test_completed_values_are_lru_evicted_by_weight() -> None:
@@ -82,7 +86,7 @@ def test_each_resolve_records_its_own_singleflight_outcome() -> None:
     async def exercise() -> None:
         cache = BatchSingleFlightCache[str, str](max_weight=10, weigher=lambda *_: 1)
         entered, release = asyncio.Event(), asyncio.Event()
-        outcomes = [CacheOutcome() for _ in range(50)]
+        outcomes = [CacheOutcomeRecorder() for _ in range(50)]
 
         async def load(keys):
             entered.set()
@@ -96,10 +100,48 @@ def test_each_resolve_records_its_own_singleflight_outcome() -> None:
         await entered.wait()
         release.set()
         assert await asyncio.gather(*tasks) == [["value"]] * 50
-        assert sum(outcome.hits for outcome in outcomes) == 0
-        assert sum(outcome.misses for outcome in outcomes) == 1
-        assert sum(outcome.followers for outcome in outcomes) == 49
-        assert sum(outcome.evictions for outcome in outcomes) == 0
+        snapshots = [outcome.snapshot for outcome in outcomes]
+        assert sum(outcome.hits for outcome in snapshots) == 0
+        assert sum(outcome.misses for outcome in snapshots) == 1
+        assert sum(outcome.followers for outcome in snapshots) == 49
+        assert sum(outcome.evictions for outcome in snapshots) == 0
+
+    asyncio.run(exercise())
+
+
+def test_cancelled_leader_outcome_is_stable_while_its_load_later_evicts() -> None:
+    async def exercise() -> None:
+        cache = BatchSingleFlightCache[str, str](max_weight=1, weigher=lambda *_: 1)
+        entered, release = asyncio.Event(), asyncio.Event()
+        await cache.resolve(["old"], lambda keys: _loaded(keys, "old"))
+        leader_outcome = CacheOutcomeRecorder()
+
+        async def load(keys):
+            entered.set()
+            await release.wait()
+            return {key: Loaded("new") for key in keys}
+
+        leader = asyncio.create_task(
+            cache.resolve(["new"], load, outcome=leader_outcome)
+        )
+        await entered.wait()
+        follower = asyncio.create_task(cache.resolve(["new"], load))
+        await asyncio.sleep(0)
+        leader.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await leader
+        frozen = leader_outcome.snapshot
+        assert frozen.misses == 1
+        assert frozen.evictions == 0
+        release.set()
+        assert await follower == ["new"]
+        await cache.wait_for_loaders()
+        assert cache.stats.evictions == 1
+        assert leader_outcome.snapshot == frozen
+        assert await cache.resolve(["new"], load) == ["new"]
+
+    async def _loaded(keys, value):
+        return {key: Loaded(value) for key in keys}
 
     asyncio.run(exercise())
 

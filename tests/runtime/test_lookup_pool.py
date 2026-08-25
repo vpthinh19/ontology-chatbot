@@ -228,6 +228,72 @@ def test_expected_lookup_error_still_emits_one_bounded_terminal_log(caplog) -> N
     assert "sensitive validation detail" not in records[0]
 
 
+def test_cancelled_lookup_log_is_stable_while_the_shared_query_evicts(caplog) -> None:
+    class BlockingQuery(_FakeChatbot):
+        def __init__(self) -> None:
+            super().__init__()
+            self.queries_by_input = {"old": "old", "new": "new"}
+            self.started = threading.Event()
+            self.release = threading.Event()
+
+        def execute_query(self, query: str, *, max_rows: int) -> QueryResolution:
+            if query == "new":
+                self.started.set()
+                self.release.wait(timeout=2)
+            return super().execute_query(query, max_rows=max_rows)
+
+    fake = BlockingQuery()
+
+    async def exercise() -> None:
+        pool = AsyncLookupPool(fake, workers=1, sparql_cache_bytes=40)
+        try:
+            await pool(["old"])
+            leader = asyncio.create_task(pool(["new"]))
+            await _wait_until(fake.started.is_set)
+            follower = asyncio.create_task(pool(["new"]))
+            await _wait_until(lambda: pool.stats.queries.followers == 1)
+            leader.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await leader
+            fake.release.set()
+            assert await follower
+            assert pool.stats.queries.evictions == 1
+        finally:
+            fake.release.set()
+            await pool.aclose()
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
+        asyncio.run(exercise())
+
+    cancelled = next(
+        record.getMessage()
+        for record in caplog.records
+        if "status=cancelled" in record.getMessage()
+    )
+    assert "l3_misses=1" in cancelled
+    assert "l3_evictions=0" in cancelled
+
+
+def test_closed_pool_rejection_emits_one_bounded_terminal_log(caplog) -> None:
+    async def exercise() -> None:
+        pool = AsyncLookupPool(_FakeChatbot(), workers=1)
+        await pool.aclose()
+        with pytest.raises(RuntimeError, match="closed"):
+            await pool(["học phí"])
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
+        asyncio.run(exercise())
+
+    records = [
+        record.getMessage()
+        for record in caplog.records
+        if record.name == "ontchatbot.runtime.lookup_pool"
+    ]
+    assert len(records) == 1
+    assert "status=closed" in records[0]
+    assert "học phí" not in records[0]
+
+
 def test_pool_never_runs_more_than_four_native_jobs_at_once() -> None:
     class PeakFake(_FakeChatbot):
         def __init__(self) -> None:

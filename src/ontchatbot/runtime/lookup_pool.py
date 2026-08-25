@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from functools import partial
 from typing import ParamSpec, TypeVar
 
-from .cache import BatchSingleFlightCache, CacheOutcome, CacheStats, Loaded
+from .cache import BatchSingleFlightCache, CacheOutcomeRecorder, CacheStats, Loaded
 from .generator import QueryGenerationError
 from .pipeline import Classification, OntologyChatbot, QueryResolution
 from .sparql import SparqlError
@@ -196,17 +196,18 @@ class AsyncLookupPool:
         return await self._workers.run(self._execute_batch, keys)
 
     async def __call__(self, keywords: Sequence[str]) -> str:
-        if self._closed:
-            raise RuntimeError("lookup pool is closed")
         lookup_id = uuid.uuid4().hex[:12]
         started = time.perf_counter()
-        l1 = CacheOutcome()
-        l3 = CacheOutcome()
+        l1 = CacheOutcomeRecorder()
+        l3 = CacheOutcomeRecorder()
         prepared = ()
         resolutions: dict[str, QueryResolution] = {}
         rendered = ""
         status = "error"
         try:
+            if self._closed:
+                status = "closed"
+                raise RuntimeError("lookup pool is closed")
             prepared = self._chatbot.prepare_keywords(keywords)
             inputs = [item.model_input for item in prepared]
             choices = await self._classifications.resolve(
@@ -241,14 +242,14 @@ class AsyncLookupPool:
                 lookup_id,
                 status,
                 len(prepared),
-                l1.hits,
-                l1.misses,
-                l1.followers,
-                l1.evictions,
-                l3.hits,
-                l3.misses,
-                l3.followers,
-                l3.evictions,
+                l1.snapshot.hits,
+                l1.snapshot.misses,
+                l1.snapshot.followers,
+                l1.snapshot.evictions,
+                l3.snapshot.hits,
+                l3.snapshot.misses,
+                l3.snapshot.followers,
+                l3.snapshot.evictions,
                 native.peak,
                 sum(len(resolution.rows) for resolution in resolutions.values()),
                 len(rendered.encode("utf-8")),

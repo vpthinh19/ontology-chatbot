@@ -28,14 +28,51 @@ class CacheStats:
     current_weight: int
 
 
-@dataclass
+@dataclass(frozen=True)
 class CacheOutcome:
-    """One caller's cache decisions, independent of shared lifetime totals."""
+    """Immutable cache decisions attributable to one resolve call."""
 
     hits: int = 0
     misses: int = 0
     followers: int = 0
     evictions: int = 0
+
+
+class CacheOutcomeRecorder:
+    """Event-loop-local mutable recorder that exposes immutable snapshots."""
+
+    def __init__(self) -> None:
+        self._hits = 0
+        self._misses = 0
+        self._followers = 0
+        self._evictions = 0
+
+    @property
+    def snapshot(self) -> CacheOutcome:
+        return CacheOutcome(
+            hits=self._hits,
+            misses=self._misses,
+            followers=self._followers,
+            evictions=self._evictions,
+        )
+
+    def record_hit(self) -> None:
+        self._hits += 1
+
+    def record_miss(self) -> None:
+        self._misses += 1
+
+    def record_follower(self) -> None:
+        self._followers += 1
+
+    def record_evictions(self, count: int) -> None:
+        self._evictions += count
+
+
+@dataclass(frozen=True)
+class _Published(Generic[V]):
+    value: V
+    evictions: int
 
 
 Loader = Callable[[tuple[K, ...]], Awaitable[Mapping[K, Loaded[V]]]]
@@ -48,7 +85,7 @@ class BatchSingleFlightCache(Generic[K, V]):
         self._max_weight = max_weight
         self._weigher = weigher
         self._completed: OrderedDict[K, tuple[V, int]] = OrderedDict()
-        self._inflight: dict[K, asyncio.Future[V]] = {}
+        self._inflight: dict[K, asyncio.Future[_Published[V]]] = {}
         self._loaders: set[asyncio.Task[None]] = set()
         self._hits = self._misses = self._followers = 0
         self._loads = self._evictions = self._weight = 0
@@ -91,11 +128,11 @@ class BatchSingleFlightCache(Generic[K, V]):
         keys: Iterable[K],
         loader: Loader[K, V],
         *,
-        outcome: CacheOutcome | None = None,
+        outcome: CacheOutcomeRecorder | None = None,
     ) -> list[V]:
         ordered = list(keys)
         unique = list(dict.fromkeys(ordered))
-        pending: dict[K, asyncio.Future[V]] = {}
+        pending: dict[K, asyncio.Future[_Published[V]]] = {}
         leaders: list[K] = []
         loop = asyncio.get_running_loop()
 
@@ -104,19 +141,19 @@ class BatchSingleFlightCache(Generic[K, V]):
             if completed is not None:
                 self._hits += 1
                 if outcome is not None:
-                    outcome.hits += 1
+                    outcome.record_hit()
                 self._completed.move_to_end(key)
                 future = loop.create_future()
-                future.set_result(completed[0])
+                future.set_result(_Published(completed[0], 0))
             elif key in self._inflight:
                 self._followers += 1
                 if outcome is not None:
-                    outcome.followers += 1
+                    outcome.record_follower()
                 future = self._inflight[key]
             else:
                 self._misses += 1
                 if outcome is not None:
-                    outcome.misses += 1
+                    outcome.record_miss()
                 future = loop.create_future()
                 future.add_done_callback(_consume_exception)
                 self._inflight[key] = future
@@ -124,21 +161,22 @@ class BatchSingleFlightCache(Generic[K, V]):
             pending[key] = future
 
         if leaders:
-            task = asyncio.create_task(self._publish(tuple(leaders), loader, outcome))
+            task = asyncio.create_task(self._publish(tuple(leaders), loader))
             self._loaders.add(task)
             task.add_done_callback(self._loaders.discard)
 
-        values = await asyncio.gather(
+        published = await asyncio.gather(
             *(asyncio.shield(pending[key]) for key in unique)
         )
-        by_key = dict(zip(unique, values, strict=True))
-        return [by_key[key] for key in ordered]
+        by_key = dict(zip(unique, published, strict=True))
+        if outcome is not None:
+            outcome.record_evictions(sum(by_key[key].evictions for key in leaders))
+        return [by_key[key].value for key in ordered]
 
     async def _publish(
         self,
         keys: tuple[K, ...],
         loader: Loader[K, V],
-        outcome: CacheOutcome | None,
     ) -> None:
         self._loads += 1
         try:
@@ -155,17 +193,18 @@ class BatchSingleFlightCache(Generic[K, V]):
                     raise ValueError("cache weights must be non-negative")
                 results.append((key, result, weight))
 
+            published: list[tuple[K, Loaded[V], int]] = []
             for key, result, weight in results:
+                evictions = 0
                 if result.cacheable:
                     assert weight is not None
                     evictions = self._remember(key, result.value, weight=weight)
-                    if outcome is not None:
-                        outcome.evictions += evictions
+                published.append((key, result, evictions))
 
-            for key, result, _weight in results:
+            for key, result, evictions in published:
                 future = self._inflight[key]
                 if not future.done():
-                    future.set_result(result.value)
+                    future.set_result(_Published(result.value, evictions))
         except BaseException as error:
             for key in keys:
                 future = self._inflight[key]
