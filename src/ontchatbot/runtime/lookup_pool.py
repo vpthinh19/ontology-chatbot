@@ -13,8 +13,10 @@ from dataclasses import dataclass
 from functools import partial
 from typing import ParamSpec, TypeVar
 
-from .cache import BatchSingleFlightCache, CacheStats, Loaded
+from .cache import BatchSingleFlightCache, CacheOutcome, CacheStats, Loaded
+from .generator import QueryGenerationError
 from .pipeline import Classification, OntologyChatbot, QueryResolution
+from .sparql import SparqlError
 
 
 P = ParamSpec("P")
@@ -198,42 +200,60 @@ class AsyncLookupPool:
             raise RuntimeError("lookup pool is closed")
         lookup_id = uuid.uuid4().hex[:12]
         started = time.perf_counter()
-        before = self.stats
-        prepared = self._chatbot.prepare_keywords(keywords)
-        inputs = [item.model_input for item in prepared]
-        choices = await self._classifications.resolve(inputs, self._classify)
-        keys = list(
-            dict.fromkeys(
-                (choice.query, 100) for choice in choices if choice.query is not None
+        l1 = CacheOutcome()
+        l3 = CacheOutcome()
+        prepared = ()
+        resolutions: dict[str, QueryResolution] = {}
+        rendered = ""
+        status = "error"
+        try:
+            prepared = self._chatbot.prepare_keywords(keywords)
+            inputs = [item.model_input for item in prepared]
+            choices = await self._classifications.resolve(
+                inputs, self._classify, outcome=l1
             )
-        )
-        values = await self._queries.resolve(keys, self._execute)
-        resolutions = {
-            query: value
-            for (query, _limit), value in zip(keys, values, strict=True)
-        }
-        rendered = self._chatbot.render_many(prepared, choices, resolutions)
-        after = self.stats
-        logger.info(
-            "lookup=%s keywords=%d l1_hits=%d l1_misses=%d l1_followers=%d l1_evictions=%d "
-            "l3_hits=%d l3_misses=%d l3_followers=%d l3_evictions=%d "
-            "native_peak=%d rows=%d rendered_bytes=%d duration_ms=%.1f",
-            lookup_id,
-            len(prepared),
-            after.classifications.hits - before.classifications.hits,
-            after.classifications.misses - before.classifications.misses,
-            after.classifications.followers - before.classifications.followers,
-            after.classifications.evictions - before.classifications.evictions,
-            after.queries.hits - before.queries.hits,
-            after.queries.misses - before.queries.misses,
-            after.queries.followers - before.queries.followers,
-            after.queries.evictions - before.queries.evictions,
-            after.native.peak,
-            sum(len(resolution.rows) for resolution in resolutions.values()),
-            len(rendered.encode("utf-8")),
-            (time.perf_counter() - started) * 1000,
-        )
-        return rendered
+            keys = list(
+                dict.fromkeys(
+                    (choice.query, 100) for choice in choices if choice.query is not None
+                )
+            )
+            values = await self._queries.resolve(keys, self._execute, outcome=l3)
+            resolutions = {
+                query: value
+                for (query, _limit), value in zip(keys, values, strict=True)
+            }
+            rendered = self._chatbot.render_many(prepared, choices, resolutions)
+            status = "ok"
+            return rendered
+        except (QueryGenerationError, SparqlError):
+            status = "expected-error"
+            raise
+        except asyncio.CancelledError:
+            status = "cancelled"
+            raise
+        finally:
+            native = self._workers.stats
+            logger.info(
+                "lookup=%s status=%s keywords=%d l1_hits=%d l1_misses=%d "
+                "l1_followers=%d l1_evictions=%d l3_hits=%d l3_misses=%d "
+                "l3_followers=%d l3_evictions=%d native_peak=%d rows=%d "
+                "rendered_bytes=%d duration_ms=%.1f",
+                lookup_id,
+                status,
+                len(prepared),
+                l1.hits,
+                l1.misses,
+                l1.followers,
+                l1.evictions,
+                l3.hits,
+                l3.misses,
+                l3.followers,
+                l3.evictions,
+                native.peak,
+                sum(len(resolution.rows) for resolution in resolutions.values()),
+                len(rendered.encode("utf-8")),
+                (time.perf_counter() - started) * 1000,
+            )
 
     async def aclose(self) -> None:
         async with self._close_lock:

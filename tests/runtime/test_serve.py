@@ -31,6 +31,15 @@ def _sse(body: str) -> list[dict]:
     ]
 
 
+def _terminal_metrics(caplog) -> dict[str, str]:
+    record = next(
+        record
+        for record in caplog.records
+        if record.name == "ontchatbot.runtime.api" and "outcome=" in record.getMessage()
+    )
+    return dict(field.split("=", 1) for field in record.getMessage().split())
+
+
 class _Run:
     """Một lượt chạy giả của trợ lý: phát đúng chuỗi sự kiện được dựng sẵn."""
 
@@ -194,7 +203,7 @@ def test_cached_tool_calls_keep_the_existing_sse_sequence(monkeypatch) -> None:
     ]
 
 
-def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path) -> None:
+def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path, caplog) -> None:
     """Lỗi xảy ra sau khi luồng đã mở thì không còn mã trạng thái nào để báo.
 
     Nó phải đi ra như một sự kiện, nếu không trang web treo ở trạng thái đang
@@ -203,11 +212,16 @@ def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path) -> None:
 
     run = _Run([_delta("Đang")], error=RuntimeError("mất kết nối"))
 
-    _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
 
     events = _sse(response.text)
     assert events[-1]["loai"] == "loi"
     assert "mất kết nối" in events[-1]["noi_dung"]
+    metrics = _terminal_metrics(caplog)
+    assert metrics["sse_events"] == "2"
+    assert metrics["sse_bytes"] == str(len(response.text.encode("utf-8")))
+    assert metrics["answer_chars"] == "0"
 
 
 def test_a_model_turn_timeout_reaches_the_page_as_a_readable_error(
@@ -354,7 +368,7 @@ def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
     question = "đăng ký học phần thế nào"
     answer = "Bạn cần nộp đơn."
     with caplog.at_level(logging.DEBUG, logger="ontchatbot.runtime.api"):
-        _ask(monkeypatch, run, tmp_path, {"message": question})
+        _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": question})
 
     info = "\n".join(
         record.getMessage() for record in caplog.records if record.levelno == logging.INFO
@@ -377,6 +391,10 @@ def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
     assert '{"tu_khoa": "đăng ký học phần"}' not in info
     assert question in debug
     assert answer in debug
+    metrics = _terminal_metrics(caplog)
+    assert metrics["sse_events"] == "3"
+    assert metrics["sse_bytes"] == str(len(response.text.encode("utf-8")))
+    assert metrics["answer_chars"] == str(len(answer))
 
 
 def test_a_turn_that_times_out_says_so_in_the_log(monkeypatch, tmp_path, caplog) -> None:
@@ -407,13 +425,18 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
 
     async def exercise():
         stream = api._stream(object(), "học phí", [], api.TurnGate())
-        await anext(stream)
+        chunk = await anext(stream)
         await stream.aclose()
+        return chunk
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
-        asyncio.run(exercise())
+        chunk = asyncio.run(exercise())
 
-    assert "outcome=abandoned" in "\n".join(r.getMessage() for r in caplog.records)
+    metrics = _terminal_metrics(caplog)
+    assert metrics["outcome"] == "abandoned"
+    assert metrics["sse_events"] == "1"
+    assert metrics["sse_bytes"] == str(len(chunk.encode("utf-8")))
+    assert metrics["answer_chars"] == "0"
 
 
 

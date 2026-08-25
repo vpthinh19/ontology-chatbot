@@ -4,12 +4,14 @@ import asyncio
 from dataclasses import FrozenInstanceError
 import json
 import logging
+import re
 import threading
 import time
 
 import httpx
 import pytest
 
+from ontchatbot.runtime.agent import look_up_async
 from ontchatbot.runtime.api import create_app
 from ontchatbot.runtime.lookup_pool import AsyncLookupPool, _NativeWorkers
 from ontchatbot.runtime.pipeline import (
@@ -17,6 +19,8 @@ from ontchatbot.runtime.pipeline import (
     PreparedKeyword,
     QueryResolution,
 )
+from ontchatbot.runtime.render import NO_INFORMATION_REPLY
+from ontchatbot.runtime.sparql import SparqlError
 
 
 _ROW = ((('answer', 'dữ kiện'),),)
@@ -112,15 +116,15 @@ def test_fifty_identical_cold_lookups_compute_each_stage_once() -> None:
 def test_tool_info_log_reports_only_bounded_cache_and_render_metrics(caplog) -> None:
     fake = _FakeChatbot()
 
-    async def exercise() -> None:
+    async def exercise() -> str:
         pool = AsyncLookupPool(fake, workers=1)
         try:
-            await pool(["question only for the fake"])
+            return await pool(["question only for the fake"])
         finally:
             await pool.aclose()
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
-        asyncio.run(exercise())
+        rendered = asyncio.run(exercise())
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
     for field in (
@@ -143,6 +147,85 @@ def test_tool_info_log_reports_only_bounded_cache_and_render_metrics(caplog) -> 
     assert "question only for the fake" not in trace
     assert fake.query not in trace
     assert "dữ kiện" not in trace
+    metrics = dict(field.split("=", 1) for field in trace.split())
+    assert metrics["status"] == "ok"
+    assert metrics["l1_hits"] == "0"
+    assert metrics["l1_misses"] == "1"
+    assert metrics["l1_followers"] == "0"
+    assert metrics["l1_evictions"] == "0"
+    assert metrics["l3_hits"] == "0"
+    assert metrics["l3_misses"] == "1"
+    assert metrics["l3_followers"] == "0"
+    assert metrics["l3_evictions"] == "0"
+    assert metrics["native_peak"] == "1"
+    assert metrics["rows"] == "1"
+    assert metrics["rendered_bytes"] == str(len(rendered.encode("utf-8")))
+
+
+def test_concurrent_lookup_logs_attribute_each_cache_outcome_once(caplog) -> None:
+    fake = _BlockingClassifier()
+
+    async def exercise() -> None:
+        pool = AsyncLookupPool(fake, workers=2)
+        tasks = [asyncio.create_task(pool(["đăng ký học phần"])) for _ in range(50)]
+        try:
+            await _wait_until(fake.started.is_set)
+            await _wait_until(lambda: pool.stats.classifications.followers == 49)
+            fake.release.set()
+            await asyncio.gather(*tasks)
+        finally:
+            fake.release.set()
+            await pool.aclose()
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
+        asyncio.run(exercise())
+
+    records = [
+        record.getMessage()
+        for record in caplog.records
+        if record.name == "ontchatbot.runtime.lookup_pool"
+    ]
+    assert len(records) == 50
+    for metric, expected in (
+        ("l1_hits", 0),
+        ("l1_misses", 1),
+        ("l1_followers", 49),
+        ("l3_hits", 0),
+        ("l3_misses", 1),
+        ("l3_followers", 49),
+    ):
+        assert sum(
+            int(re.search(fr"{metric}=(\d+)", record).group(1))
+            for record in records
+        ) == expected
+
+
+def test_expected_lookup_error_still_emits_one_bounded_terminal_log(caplog) -> None:
+    class RejectedKeywords(_FakeChatbot):
+        def prepare_keywords(self, _questions):
+            raise SparqlError("sensitive validation detail")
+
+    async def exercise() -> None:
+        pool = AsyncLookupPool(RejectedKeywords(), workers=1)
+        try:
+            return await look_up_async(pool, ["học phí"])
+        finally:
+            await pool.aclose()
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
+        reply = asyncio.run(exercise())
+
+    records = [
+        record.getMessage()
+        for record in caplog.records
+        if record.name == "ontchatbot.runtime.lookup_pool"
+    ]
+    assert reply == NO_INFORMATION_REPLY
+    assert len(records) == 1
+    assert "status=expected-error" in records[0]
+    assert "duration_ms=" in records[0]
+    assert "lookup=" in records[0]
+    assert "sensitive validation detail" not in records[0]
 
 
 def test_pool_never_runs_more_than_four_native_jobs_at_once() -> None:

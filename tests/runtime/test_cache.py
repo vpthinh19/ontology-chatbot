@@ -4,7 +4,7 @@ import asyncio
 
 import pytest
 
-from ontchatbot.runtime.cache import BatchSingleFlightCache, Loaded
+from ontchatbot.runtime.cache import BatchSingleFlightCache, CacheOutcome, Loaded
 
 
 def test_completed_values_are_lru_evicted_by_weight() -> None:
@@ -76,6 +76,32 @@ def test_fifty_cold_followers_trigger_one_load() -> None:
 
     asyncio.run(exercise())
     assert calls == 1
+
+
+def test_each_resolve_records_its_own_singleflight_outcome() -> None:
+    async def exercise() -> None:
+        cache = BatchSingleFlightCache[str, str](max_weight=10, weigher=lambda *_: 1)
+        entered, release = asyncio.Event(), asyncio.Event()
+        outcomes = [CacheOutcome() for _ in range(50)]
+
+        async def load(keys):
+            entered.set()
+            await release.wait()
+            return {key: Loaded("value") for key in keys}
+
+        tasks = [
+            asyncio.create_task(cache.resolve(["same"], load, outcome=outcome))
+            for outcome in outcomes
+        ]
+        await entered.wait()
+        release.set()
+        assert await asyncio.gather(*tasks) == [["value"]] * 50
+        assert sum(outcome.hits for outcome in outcomes) == 0
+        assert sum(outcome.misses for outcome in outcomes) == 1
+        assert sum(outcome.followers for outcome in outcomes) == 49
+        assert sum(outcome.evictions for outcome in outcomes) == 0
+
+    asyncio.run(exercise())
 
 
 def test_loader_failure_is_shared_and_a_later_request_retries() -> None:

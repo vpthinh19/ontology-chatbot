@@ -28,6 +28,16 @@ class CacheStats:
     current_weight: int
 
 
+@dataclass
+class CacheOutcome:
+    """One caller's cache decisions, independent of shared lifetime totals."""
+
+    hits: int = 0
+    misses: int = 0
+    followers: int = 0
+    evictions: int = 0
+
+
 Loader = Callable[[tuple[K, ...]], Awaitable[Mapping[K, Loaded[V]]]]
 
 
@@ -54,11 +64,11 @@ class BatchSingleFlightCache(Generic[K, V]):
             current_weight=self._weight,
         )
 
-    def _remember(self, key: K, value: V, *, weight: int) -> None:
+    def _remember(self, key: K, value: V, *, weight: int) -> int:
         if weight < 0:
             raise ValueError("cache weights must be non-negative")
         if self._max_weight == 0 or weight > self._max_weight:
-            return
+            return 0
 
         previous = self._completed.pop(key, None)
         if previous is not None:
@@ -66,14 +76,23 @@ class BatchSingleFlightCache(Generic[K, V]):
         self._completed[key] = (value, weight)
         self._weight += weight
 
+        evictions = 0
         while self._weight > self._max_weight:
             _evicted_key, (_evicted_value, evicted_weight) = self._completed.popitem(
                 last=False
             )
             self._weight -= evicted_weight
             self._evictions += 1
+            evictions += 1
+        return evictions
 
-    async def resolve(self, keys: Iterable[K], loader: Loader[K, V]) -> list[V]:
+    async def resolve(
+        self,
+        keys: Iterable[K],
+        loader: Loader[K, V],
+        *,
+        outcome: CacheOutcome | None = None,
+    ) -> list[V]:
         ordered = list(keys)
         unique = list(dict.fromkeys(ordered))
         pending: dict[K, asyncio.Future[V]] = {}
@@ -84,14 +103,20 @@ class BatchSingleFlightCache(Generic[K, V]):
             completed = self._completed.get(key)
             if completed is not None:
                 self._hits += 1
+                if outcome is not None:
+                    outcome.hits += 1
                 self._completed.move_to_end(key)
                 future = loop.create_future()
                 future.set_result(completed[0])
             elif key in self._inflight:
                 self._followers += 1
+                if outcome is not None:
+                    outcome.followers += 1
                 future = self._inflight[key]
             else:
                 self._misses += 1
+                if outcome is not None:
+                    outcome.misses += 1
                 future = loop.create_future()
                 future.add_done_callback(_consume_exception)
                 self._inflight[key] = future
@@ -99,7 +124,7 @@ class BatchSingleFlightCache(Generic[K, V]):
             pending[key] = future
 
         if leaders:
-            task = asyncio.create_task(self._publish(tuple(leaders), loader))
+            task = asyncio.create_task(self._publish(tuple(leaders), loader, outcome))
             self._loaders.add(task)
             task.add_done_callback(self._loaders.discard)
 
@@ -109,7 +134,12 @@ class BatchSingleFlightCache(Generic[K, V]):
         by_key = dict(zip(unique, values, strict=True))
         return [by_key[key] for key in ordered]
 
-    async def _publish(self, keys: tuple[K, ...], loader: Loader[K, V]) -> None:
+    async def _publish(
+        self,
+        keys: tuple[K, ...],
+        loader: Loader[K, V],
+        outcome: CacheOutcome | None,
+    ) -> None:
         self._loads += 1
         try:
             loaded = await loader(keys)
@@ -128,7 +158,9 @@ class BatchSingleFlightCache(Generic[K, V]):
             for key, result, weight in results:
                 if result.cacheable:
                     assert weight is not None
-                    self._remember(key, result.value, weight=weight)
+                    evictions = self._remember(key, result.value, weight=weight)
+                    if outcome is not None:
+                        outcome.evictions += evictions
 
             for key, result, _weight in results:
                 future = self._inflight[key]
