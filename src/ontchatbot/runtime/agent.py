@@ -19,7 +19,7 @@ from ..settings import ONTOLOGY_NS
 from .generator import QueryGenerationError
 from .lookup_pool import AsyncLookupPool
 from .pipeline import OntologyChatbot
-from .render import NO_INFORMATION_REPLY
+from .render import NO_INFORMATION_REPLY, dump_payload
 from .sparql import SparqlError
 from .sparql import load_ontology
 
@@ -256,7 +256,7 @@ def _with_truncation_notice(reply: str, notice: dict[str, int] | None) -> str:
         payload = json.loads(NO_INFORMATION_REPLY)
     if notice is not None:
         payload["tu_khoa_da_cat"] = notice
-    return json.dumps(payload, ensure_ascii=False, indent=2)
+    return dump_payload(payload)
 
 
 def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:

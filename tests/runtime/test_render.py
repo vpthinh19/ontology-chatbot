@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from ontchatbot.runtime.render import render_rows
+from ontchatbot.runtime.render import NO_INFORMATION_REPLY, render_batch, render_rows
 
 
 def _payload(rows):
@@ -28,6 +28,18 @@ def test_renders_rows_as_json_records() -> None:
 
     assert payload["trang_thai"] == "co_du_lieu"
     assert payload["du_lieu"] == [{"answer": "Phòng Công tác Sinh viên"}]
+
+
+def test_tool_json_is_compact_but_semantically_identical() -> None:
+    rendered = render_rows([{"answer": "A"}])
+
+    assert "\n" not in rendered
+    assert ": " not in rendered
+    assert json.loads(rendered)["du_lieu"] == [{"answer": "A"}]
+    assert "\n" not in NO_INFORMATION_REPLY
+    assert json.loads(render_batch([], missed=["không có"]))["tu_khoa_khong_thay"] == [
+        "không có"
+    ]
 
 
 def test_keeps_all_distinct_rows_and_collapses_identical_ones() -> None:

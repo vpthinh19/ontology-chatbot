@@ -205,6 +205,19 @@ def test_lookup_caps_keyword_count_and_length_and_reports_it_as_json() -> None:
     }
 
 
+def test_truncation_notice_keeps_json_semantics_with_compact_serialization() -> None:
+    reply = look_up(
+        SimpleNamespace(
+            answer_many=lambda _keywords: '{\n  "trang_thai": "co_du_lieu",\n  "du_lieu": []\n}'
+        ),
+        ["x" * (MAX_KEYWORD_CHARACTERS + 1)],
+    )
+
+    assert "\n" not in reply
+    assert ": " not in reply
+    assert json.loads(reply)["tu_khoa_da_cat"]["so_luong_rut_gon"] == 1
+
+
 def test_async_tool_bounds_keywords_before_shared_lookup() -> None:
     """The shared coordinator only receives normalized, bounded keywords."""
 

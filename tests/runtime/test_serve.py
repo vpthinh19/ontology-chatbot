@@ -337,7 +337,9 @@ def test_a_turn_that_produces_no_words_still_says_something(monkeypatch, tmp_pat
     assert "chưa tạo được câu trả lời" in cuoi["noi_dung"]
 
 
-def test_a_whole_turn_is_written_to_the_log(monkeypatch, tmp_path, caplog) -> None:
+def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
+    monkeypatch, tmp_path, caplog
+) -> None:
     """Nhật ký phải kể trọn một lượt, vì đây là tầng duy nhất thấy trọn nó.
 
     Các tầng dưới chỉ thấy từ khoá đã rút gọn. Không ghi ở đây thì đọc nhật ký
@@ -349,16 +351,32 @@ def test_a_whole_turn_is_written_to_the_log(monkeypatch, tmp_path, caplog) -> No
         final_output="Bạn cần nộp đơn.",
     )
 
-    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
-        _ask(monkeypatch, run, tmp_path, {"message": "đăng ký học phần thế nào"})
+    question = "đăng ký học phần thế nào"
+    answer = "Bạn cần nộp đơn."
+    with caplog.at_level(logging.DEBUG, logger="ontchatbot.runtime.api"):
+        _ask(monkeypatch, run, tmp_path, {"message": question})
 
-    trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert "question='đăng ký học phần thế nào'" in trace
-    assert "lookup='đăng ký học phần'" in trace
-    assert "outcome=ok" in trace
-    assert "answer='Bạn cần nộp đơn.'" in trace
-    assert "lookups=1" in trace
-    assert "total_ms=" in trace
+    info = "\n".join(
+        record.getMessage() for record in caplog.records if record.levelno == logging.INFO
+    )
+    debug = "\n".join(
+        record.getMessage() for record in caplog.records if record.levelno == logging.DEBUG
+    )
+    for field in (
+        "outcome=ok",
+        "lookups=1",
+        "queue_ms=",
+        "sse_events=",
+        "sse_bytes=",
+        "answer_chars=",
+        "total_ms=",
+    ):
+        assert field in info
+    assert question not in info
+    assert answer not in info
+    assert '{"tu_khoa": "đăng ký học phần"}' not in info
+    assert question in debug
+    assert answer in debug
 
 
 def test_a_turn_that_times_out_says_so_in_the_log(monkeypatch, tmp_path, caplog) -> None:

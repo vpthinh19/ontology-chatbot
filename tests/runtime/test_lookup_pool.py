@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import FrozenInstanceError
 import json
+import logging
 import threading
 import time
 
@@ -106,6 +107,42 @@ def test_fifty_identical_cold_lookups_compute_each_stage_once() -> None:
     assert fake.classification_batches == [('đăng ký học phần',)]
     assert fake.executed_queries == [fake.query]
     assert fake.executed_limits == [100]
+
+
+def test_tool_info_log_reports_only_bounded_cache_and_render_metrics(caplog) -> None:
+    fake = _FakeChatbot()
+
+    async def exercise() -> None:
+        pool = AsyncLookupPool(fake, workers=1)
+        try:
+            await pool(["question only for the fake"])
+        finally:
+            await pool.aclose()
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.lookup_pool"):
+        asyncio.run(exercise())
+
+    trace = "\n".join(record.getMessage() for record in caplog.records)
+    for field in (
+        "lookup=",
+        "keywords=1",
+        "l1_hits=",
+        "l1_misses=",
+        "l1_followers=",
+        "l1_evictions=",
+        "l3_hits=",
+        "l3_misses=",
+        "l3_followers=",
+        "l3_evictions=",
+        "native_peak=",
+        "rows=",
+        "rendered_bytes=",
+        "duration_ms=",
+    ):
+        assert field in trace
+    assert "question only for the fake" not in trace
+    assert fake.query not in trace
+    assert "dữ kiện" not in trace
 
 
 def test_pool_never_runs_more_than_four_native_jobs_at_once() -> None:

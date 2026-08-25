@@ -144,7 +144,7 @@ class OntologyChatbot:
         request_started = time.perf_counter()
         prepared = self.prepare_keywords([question])
         keyword = prepared[0]
-        logger.info(
+        logger.debug(
             "request=%s input=%r normalized=%r",
             request_id,
             question,
@@ -154,28 +154,30 @@ class OntologyChatbot:
         try:
             stage_started = time.perf_counter()
             output = self.generator.generate(keyword.model_input).strip()
+            logger.debug("request=%s model output=%r", request_id, output)
             logger.info(
-                "request=%s model output=%r duration_ms=%.1f",
+                "request=%s stage=generator duration_ms=%.1f",
                 request_id,
-                output,
                 (time.perf_counter() - stage_started) * 1000,
             )
             choice = self._classification_for(output)
             if choice.query is None:
                 if choice.label == "off-catalogue":
                     logger.info(
-                        "request=%s off-catalogue query rejected reply=%r total_ms=%.1f",
+                        "request=%s off-catalogue query rejected classification=%s total_ms=%.1f",
                         request_id,
-                        NO_INFORMATION_REPLY,
+                        choice.label,
                         (time.perf_counter() - request_started) * 1000,
                     )
+                    logger.debug("request=%s reply=%r", request_id, NO_INFORMATION_REPLY)
                     return NO_INFORMATION_REPLY
                 logger.info(
-                    "request=%s reply=%r total_ms=%.1f",
+                    "request=%s classification=%s total_ms=%.1f",
                     request_id,
-                    NO_INFORMATION_REPLY,
+                    choice.label,
                     (time.perf_counter() - request_started) * 1000,
                 )
+                logger.debug("request=%s reply=%r", request_id, NO_INFORMATION_REPLY)
                 return NO_INFORMATION_REPLY
 
             stage = "ontology"
@@ -183,21 +185,22 @@ class OntologyChatbot:
             resolution = self.execute_query(choice.query)
             rows = thaw_rows(resolution.rows)
             logger.info(
-                "request=%s ontology rows=%d duration_ms=%.1f query_id=%s",
+                "request=%s classification=%s rows=%d duration_ms=%.1f",
                 request_id,
+                choice.label,
                 len(rows),
                 (time.perf_counter() - stage_started) * 1000,
-                choice.label,
             )
 
             stage = "renderer"
             reply = render_rows(rows)
             logger.info(
-                "request=%s reply=%r total_ms=%.1f",
+                "request=%s classification=%s total_ms=%.1f",
                 request_id,
-                reply,
+                choice.label,
                 (time.perf_counter() - request_started) * 1000,
             )
+            logger.debug("request=%s reply=%r", request_id, reply)
             return reply
         except Exception:
             logger.exception("request=%s stage=%s failed", request_id, stage)
@@ -209,8 +212,9 @@ class OntologyChatbot:
         prepared = self.prepare_keywords(questions)
         request_id = uuid.uuid4().hex[:12]
         started = time.perf_counter()
-        logger.info(
-            "request=%s batch=%r", request_id, [item.original for item in prepared]
+        logger.info("request=%s keywords=%d", request_id, len(prepared))
+        logger.debug(
+            "request=%s keywords=%r", request_id, [item.original for item in prepared]
         )
 
         try:
@@ -226,9 +230,8 @@ class OntologyChatbot:
                     else choice.label
                 )
                 logger.info(
-                    "request=%s keyword=%r label=%s rows=%d",
+                    "request=%s label=%s rows=%d",
                     request_id,
-                    keyword.original,
                     label,
                     row_count,
                 )
@@ -238,8 +241,9 @@ class OntologyChatbot:
             raise
 
         logger.info(
-            "request=%s batch rows=%d missed=%d total_ms=%.1f",
+            "request=%s keywords=%d rows=%d missed=%d total_ms=%.1f",
             request_id,
+            len(prepared),
             sum(len(resolution.rows) for resolution in resolutions.values()),
             sum(
                 choice.query is None
@@ -249,6 +253,7 @@ class OntologyChatbot:
             ),
             (time.perf_counter() - started) * 1000,
         )
+        logger.debug("request=%s reply=%r", request_id, reply)
         return reply
 
     def _classification_for(self, output: str) -> Classification:

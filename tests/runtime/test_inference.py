@@ -186,9 +186,9 @@ def test_batch_logs_query_failed_for_a_failed_concrete_query(monkeypatch, caplog
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
         chatbot.answer_many(["truy vấn hỏng"])
 
-    assert "keyword='truy vấn hỏng' label=query-failed rows=0" in "\n".join(
-        record.getMessage() for record in caplog.records
-    )
+    trace = "\n".join(record.getMessage() for record in caplog.records)
+    assert "label=query-failed rows=0" in trace
+    assert "truy vấn hỏng" not in trace
 
 
 def test_off_catalogue_output_never_executes_sparql(monkeypatch) -> None:
@@ -249,21 +249,29 @@ def test_chatbot_returns_no_information_for_model_marker() -> None:
     assert reply == NO_INFORMATION_REPLY
 
 
-def test_chatbot_logs_model_marker_decision(caplog) -> None:
+def test_chatbot_info_logs_bound_values_while_debug_keeps_question_and_answer(caplog) -> None:
     generator = SimpleNamespace(generate=lambda _: "không có thông tin")
 
-    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.pipeline"):
-        reply = OntologyChatbot(generator).answer("hc phí k65 cntt")
+    question = "hc phí k65 cntt"
+    with caplog.at_level(logging.DEBUG, logger="ontchatbot.runtime.pipeline"):
+        reply = OntologyChatbot(generator).answer(question)
 
-    trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert "input='hc phí k65 cntt'" in trace
-    assert "normalized='học phí khoá 65 công nghệ thông tin'" in trace
-    assert "model output='không có thông tin'" in trace
-    assert f"reply={reply!r}" in trace
-    assert "ontology rows=" not in trace
+    info = "\n".join(
+        record.getMessage() for record in caplog.records if record.levelno == logging.INFO
+    )
+    debug = "\n".join(
+        record.getMessage() for record in caplog.records if record.levelno == logging.DEBUG
+    )
+    assert "request=" in info
+    assert "classification=no-information" in info
+    assert "total_ms=" in info
+    assert question not in info
+    assert reply not in info
+    assert question in debug
+    assert reply in debug
 
 
-def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
+def test_chatbot_info_logs_status_duration_and_rows_without_query_or_reply(caplog) -> None:
     query = _procedure_target()
     generator = SimpleNamespace(generate=lambda _: query)
 
@@ -271,14 +279,11 @@ def test_chatbot_logs_generated_sparql_ontology_rows_and_reply(caplog) -> None:
         reply = OntologyChatbot(generator).answer("phòng nào xử lý bảo lưu")
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert f"model output={query!r}" in trace
-    # Khuôn dump trả cả chục dòng chứ không phải một; chốt con số cứng là chốt
-    # ảnh chụp của một lần dựng danh mục. Điều cần canh là nhật ký CÓ ghi số
-    # dòng, và ghi một số dương.
-    assert "ontology rows=" in trace
-    assert "ontology rows=0" not in trace
-    assert f"reply={reply!r}" in trace
+    assert "classification=academic-procedure-facts" in trace
+    assert "rows=" in trace
     assert "total_ms=" in trace
+    assert query not in trace
+    assert reply not in trace
 
 
 def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
@@ -294,7 +299,7 @@ def test_chatbot_logs_failing_stage_with_traceback(caplog) -> None:
     assert error.exc_info is not None
 
 
-def test_batch_lookup_logs_the_label_each_keyword_landed_on(caplog) -> None:
+def test_batch_lookup_info_logs_labels_without_keywords_or_queries(caplog) -> None:
     """Một từ khoá trượt và một từ khoá trúng phải phân biệt được trong nhật ký.
 
     Số dòng lấy về không nói lên nguyên nhân. Nhãn mới nói: trúng nhãn nào, hay
@@ -310,8 +315,11 @@ def test_batch_lookup_logs_the_label_each_keyword_landed_on(caplog) -> None:
         OntologyChatbot(generator).answer_many(["bảo lưu", "thời tiết hôm nay"])
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert "keyword='bảo lưu' label=academic-procedure-facts" in trace
-    assert "keyword='thời tiết hôm nay' label=no-information rows=0" in trace
+    assert "label=academic-procedure-facts" in trace
+    assert "label=no-information rows=0" in trace
+    assert "bảo lưu" not in trace
+    assert "thời tiết hôm nay" not in trace
+    assert query not in trace
 
 
 def test_batch_lookup_labels_a_query_that_belongs_to_no_family(caplog) -> None:
@@ -322,7 +330,8 @@ def test_batch_lookup_labels_a_query_that_belongs_to_no_family(caplog) -> None:
         OntologyChatbot(generator).answer_many(["bảo lưu"])
 
     trace = "\n".join(record.getMessage() for record in caplog.records)
-    assert "keyword='bảo lưu' label=off-catalogue rows=0" in trace
+    assert "label=off-catalogue rows=0" in trace
+    assert "bảo lưu" not in trace
 
 
 def test_batch_lookup_rejects_a_call_with_no_usable_keyword() -> None:

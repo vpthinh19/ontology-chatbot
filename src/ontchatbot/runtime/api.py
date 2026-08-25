@@ -209,6 +209,16 @@ async def _stream(
     started = time.perf_counter()
     lookups = 0
     answer = ""
+    queue_ms = 0.0
+    sse_events = 0
+    sse_bytes = 0
+
+    def emit(kind: str, **fields: Any) -> str:
+        nonlocal sse_events, sse_bytes
+        chunk = _event(kind, **fields)
+        sse_events += 1
+        sse_bytes += len(chunk.encode("utf-8"))
+        return chunk
     # Người đọc nhật ký cần phân biệt từng kết cục, vì chúng cần những cách sửa
     # khác nhau: xong bình thường, quá hạn chờ model, chạm trần số bước, bị từ
     # chối vì hàng đầy, chờ trong hàng quá lâu, lỗi, và người dùng đóng tab giữa
@@ -221,24 +231,28 @@ async def _stream(
     # hàng mà chưa bao giờ được chạy.
     queued = False
     holding = False
-    logger.info("turn=%s question=%r history=%d", turn, message, len(conversation))
+    logger.debug("turn=%s question=%r history=%d", turn, message, len(conversation))
     conversation.append({"role": "user", "content": message})
     try:
         place = gate.join()
         if place is None:
             outcome = "busy"
-            yield _event("loi", noi_dung=_BUSY_MESSAGE)
+            yield emit("loi", noi_dung=_BUSY_MESSAGE)
             return
         queued = place > 0
         if queued:
             # Xếp hàng mà im lặng thì nhìn y hệt hệ thống treo, nên vị trí phải
             # ra tới trình duyệt trước khi bắt đầu chờ chứ không phải sau.
-            yield _event("hang_doi", vi_tri=place)
+            yield emit("hang_doi", vi_tri=place)
         try:
-            await gate.acquire(queued)
+            queue_started = time.perf_counter()
+            try:
+                await gate.acquire(queued)
+            finally:
+                queue_ms = (time.perf_counter() - queue_started) * 1000
         except TimeoutError:
             outcome = "queue-timeout"
-            yield _event("loi", noi_dung=_QUEUE_TIMEOUT_MESSAGE)
+            yield emit("loi", noi_dung=_QUEUE_TIMEOUT_MESSAGE)
             return
         finally:
             # Nhả chỗ trong hàng ngay khi hết chờ, chờ được hay không cũng vậy.
@@ -254,43 +268,43 @@ async def _stream(
                     agent, conversation, max_turns=MAX_MODEL_STEPS
                 )
                 if history_trimmed:
-                    yield _event("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
+                    yield emit("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
                 async for event in result.stream_events():
                     if event.type == "raw_response_event":
                         if getattr(event.data, "type", None) != _ANSWER_DELTA:
                             continue
                         delta = getattr(event.data, "delta", None)
                         if isinstance(delta, str) and delta:
-                            yield _event("chu", noi_dung=delta)
+                            yield emit("chu", noi_dung=delta)
                     elif event.type == "run_item_stream_event":
                         # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
                         # giữa các lần gọi công cụ trông như hệ thống đứng máy.
                         if event.name == "tool_called":
                             keywords = _tool_input(event.item)
                             lookups += 1
-                            logger.info("turn=%s lookup=%r", turn, keywords)
-                            yield _event("tra_cuu", tu_khoa=keywords)
+                            logger.debug("turn=%s lookup=%r", turn, keywords)
+                            yield emit("tra_cuu", tu_khoa=keywords)
                         elif event.name == "tool_output":
-                            yield _event("tra_cuu_xong")
+                            yield emit("tra_cuu_xong")
         except (TimeoutError, APITimeoutError):
             outcome = "timeout"
-            yield _event("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
+            yield emit("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
             return
         except MaxTurnsExceeded:
             # Ghi ở mức cảnh báo chứ không phải lỗi: trần này do ta đặt, và nếu
             # có câu hỏi thật cần nhiều bước hơn thì đây là chỗ nó lộ ra.
             outcome = "too-many-steps"
             logger.warning("turn=%s hit the ceiling of %d steps", turn, MAX_MODEL_STEPS)
-            yield _event("loi", noi_dung=_TOO_MANY_STEPS_MESSAGE)
+            yield emit("loi", noi_dung=_TOO_MANY_STEPS_MESSAGE)
             return
         except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
             outcome = "error"
             logger.exception("turn=%s failed", turn)
-            yield _event("loi", noi_dung=str(exc))
+            yield emit("loi", noi_dung=str(exc))
             return
         answer = str(result.final_output or "") or _EMPTY_ANSWER
         outcome = "ok"
-        yield _event("xong", noi_dung=answer)
+        yield emit("xong", noi_dung=answer)
     finally:
         # Trong ``finally`` để một lượt luôn nhả chỗ và luôn đóng sổ, kể cả khi
         # trình duyệt ngắt kết nối giữa chừng và bộ sinh này bị đóng ngay tại một
@@ -301,13 +315,18 @@ async def _stream(
         if holding:
             gate.release()
         logger.info(
-            "turn=%s outcome=%s answer=%r lookups=%d total_ms=%.1f",
+            "turn=%s outcome=%s lookups=%d queue_ms=%.1f sse_events=%d "
+            "sse_bytes=%d answer_chars=%d total_ms=%.1f",
             turn,
             outcome,
-            answer,
             lookups,
+            queue_ms,
+            sse_events,
+            sse_bytes,
+            len(answer),
             (time.perf_counter() - started) * 1000,
         )
+        logger.debug("turn=%s answer=%r", turn, answer)
 
 
 def _tool_input(item: Any) -> str:

@@ -25,11 +25,13 @@ _JSON_KEYS = {
 _SOURCE_COLUMNS = ("nguon", "duongdan")
 
 
-def _dump(payload: dict[str, object]) -> str:
-    return json.dumps(payload, ensure_ascii=False, indent=2)
+def dump_payload(payload: dict[str, object]) -> str:
+    """Serialize the tool contract without spending tokens on JSON whitespace."""
+
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
 
-NO_INFORMATION_REPLY = _dump(
+NO_INFORMATION_REPLY = dump_payload(
     {
         "trang_thai": "khong_co_thong_tin",
         "huong_dan": _NOT_FOUND_GUIDANCE,
@@ -43,7 +45,7 @@ def render_rows(rows: QueryRows) -> str:
     """Kết quả của một cụm từ khoá."""
 
     payload = build_payload(rows)
-    return NO_INFORMATION_REPLY if payload is None else _dump(payload)
+    return NO_INFORMATION_REPLY if payload is None else dump_payload(payload)
 
 
 def render_batch(rows: QueryRows, *, missed: Sequence[str] = ()) -> str:
@@ -57,7 +59,7 @@ def render_batch(rows: QueryRows, *, missed: Sequence[str] = ()) -> str:
     payload = build_payload(rows) or json.loads(NO_INFORMATION_REPLY)
     if missed:
         payload["tu_khoa_khong_thay"] = list(missed)
-    return _dump(payload)
+    return dump_payload(payload)
 
 
 def build_payload(rows: QueryRows) -> dict | None:

@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import time
+import uuid
 from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -18,6 +20,7 @@ from .pipeline import Classification, OntologyChatbot, QueryResolution
 P = ParamSpec("P")
 T = TypeVar("T")
 QueryKey = tuple[str, int]
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -193,6 +196,9 @@ class AsyncLookupPool:
     async def __call__(self, keywords: Sequence[str]) -> str:
         if self._closed:
             raise RuntimeError("lookup pool is closed")
+        lookup_id = uuid.uuid4().hex[:12]
+        started = time.perf_counter()
+        before = self.stats
         prepared = self._chatbot.prepare_keywords(keywords)
         inputs = [item.model_input for item in prepared]
         choices = await self._classifications.resolve(inputs, self._classify)
@@ -206,7 +212,28 @@ class AsyncLookupPool:
             query: value
             for (query, _limit), value in zip(keys, values, strict=True)
         }
-        return self._chatbot.render_many(prepared, choices, resolutions)
+        rendered = self._chatbot.render_many(prepared, choices, resolutions)
+        after = self.stats
+        logger.info(
+            "lookup=%s keywords=%d l1_hits=%d l1_misses=%d l1_followers=%d l1_evictions=%d "
+            "l3_hits=%d l3_misses=%d l3_followers=%d l3_evictions=%d "
+            "native_peak=%d rows=%d rendered_bytes=%d duration_ms=%.1f",
+            lookup_id,
+            len(prepared),
+            after.classifications.hits - before.classifications.hits,
+            after.classifications.misses - before.classifications.misses,
+            after.classifications.followers - before.classifications.followers,
+            after.classifications.evictions - before.classifications.evictions,
+            after.queries.hits - before.queries.hits,
+            after.queries.misses - before.queries.misses,
+            after.queries.followers - before.queries.followers,
+            after.queries.evictions - before.queries.evictions,
+            after.native.peak,
+            sum(len(resolution.rows) for resolution in resolutions.values()),
+            len(rendered.encode("utf-8")),
+            (time.perf_counter() - started) * 1000,
+        )
+        return rendered
 
     async def aclose(self) -> None:
         async with self._close_lock:
