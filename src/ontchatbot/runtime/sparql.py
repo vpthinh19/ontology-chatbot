@@ -6,6 +6,7 @@ import re
 from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 from typing import TypeAlias
 
 from rdflib import BNode, Graph, Literal, URIRef
@@ -33,6 +34,12 @@ _FORBIDDEN_KEYWORDS = re.compile(
     r"\b(?:SERVICE|FROM|INSERT|DELETE|LOAD|CLEAR|CREATE|DROP|COPY|MOVE|ADD|WITH)\b",
     flags=re.IGNORECASE,
 )
+# RDFLib/pyparsing shares mutable grammar state between calls. Cold validation
+# can arrive on several lookup threads, but this service runs one Uvicorn process
+# and never forks after importing the module, so one process-local lock protects
+# only uncached parser work. The ``lru_cache`` wrapper remains outside this body;
+# established query texts never acquire the lock.
+_PARSE_LOCK = Lock()
 
 
 class SparqlError(ValueError):
@@ -137,7 +144,8 @@ def _parse_select(query: str) -> None:
     """
 
     try:
-        parseQuery(PREFIXES + query)
+        with _PARSE_LOCK:
+            parseQuery(PREFIXES + query)
     except Exception as exc:  # RDFLib exposes parser implementation exceptions.
         raise SparqlError(f"invalid SPARQL: {exc}") from exc
 

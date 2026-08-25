@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+import threading
+from concurrent.futures import ThreadPoolExecutor
+
 import pytest
 from rdflib import Graph, URIRef
 
+from ontchatbot.runtime import sparql
 from ontchatbot.runtime.sparql import (
     SparqlError,
     execute_select,
@@ -33,6 +37,28 @@ def graph():
         """,
         format="turtle",
     )
+
+
+def test_concurrent_cold_valid_queries_do_not_corrupt_the_shared_parser() -> None:
+    """Valid cache misses must remain valid when lookup workers parse together."""
+    worker_count = 8
+    queries = [
+        "SELECT ?answer WHERE { :ExampleRecord :text ?answer . "
+        f'FILTER ( "cold-{index}" = "cold-{index}" ) }}'
+        for index in range(64)
+    ]
+    barrier = threading.Barrier(worker_count)
+    sparql._parse_select.cache_clear()
+
+    def validate_partition(worker: int) -> list[str]:
+        barrier.wait()
+        return [validate_select(query) for query in queries[worker::worker_count]]
+
+    with ThreadPoolExecutor(max_workers=worker_count) as pool:
+        partitions = list(pool.map(validate_partition, range(worker_count)))
+
+    validated = [query for partition in partitions for query in partition]
+    assert sorted(validated) == sorted(queries)
 
 
 def test_direct_datatype_query(graph) -> None:
