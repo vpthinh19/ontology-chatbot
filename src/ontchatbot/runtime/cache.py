@@ -25,6 +25,7 @@ class CacheStats:
     followers: int
     loads: int
     evictions: int
+    entries: int
     current_weight: int
 
 
@@ -109,6 +110,7 @@ class BatchSingleFlightCache(Generic[K, V]):
             followers=self._followers,
             loads=self._loads,
             evictions=self._evictions,
+            entries=len(self._completed),
             current_weight=self._weight,
         )
 

@@ -90,10 +90,10 @@ def summarize_ms(samples: Sequence[float]) -> dict[str, float | None]:
     }
 
 
-def _sample_priority(index: int) -> int:
-    """Produce deterministic, well-distributed reservoir priorities for a stream index."""
+def _sample_priority(request_id: int) -> int:
+    """Produce a deterministic, well-distributed priority for a request identity."""
 
-    value = (index + 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
+    value = (request_id + 0x9E3779B97F4A7C15) & 0xFFFFFFFFFFFFFFFF
     value = ((value ^ (value >> 30)) * 0xBF58476D1CE4E5B9) & 0xFFFFFFFFFFFFFFFF
     value = ((value ^ (value >> 27)) * 0x94D049BB133111EB) & 0xFFFFFFFFFFFFFFFF
     return value ^ (value >> 31)
@@ -107,8 +107,8 @@ class _BoundedReservoir:
         self._heap: list[tuple[int, float]] = []
         self.total = 0
 
-    def add(self, value: float) -> None:
-        priority = _sample_priority(self.total)
+    def add(self, value: float, *, request_id: int) -> None:
+        priority = _sample_priority(request_id)
         self.total += 1
         item = (-priority, value)
         if len(self._heap) < self._capacity:
@@ -136,9 +136,9 @@ class _OutcomeSummary:
     def samples(self) -> int:
         return self.latency.total
 
-    def record(self, result: Result) -> None:
+    def record(self, result: Result, *, request_id: int) -> None:
         success, error, elapsed_ms = result
-        self.latency.add(elapsed_ms)
+        self.latency.add(elapsed_ms, request_id=request_id)
         if success:
             self.successes += 1
         else:
@@ -178,7 +178,9 @@ async def run_workload(
         while next_job < total_jobs:
             job = next_job
             next_job += 1
-            outcomes.record(await _one(pool, batches[job % len(batches)]))
+            outcomes.record(
+                await _one(pool, batches[job % len(batches)]), request_id=job
+            )
 
     await asyncio.gather(*(worker() for _ in range(concurrency)))
     return outcomes
@@ -199,9 +201,14 @@ async def _run_for_duration(
 
     async def worker(worker_number: int) -> None:
         batch_index = worker_number
+        request_number = 0
         while loop.time() < deadline:
-            summary.record(await _one(pool, batches[batch_index % len(batches)]))
+            summary.record(
+                await _one(pool, batches[batch_index % len(batches)]),
+                request_id=request_number * concurrency + worker_number,
+            )
             batch_index += concurrency
+            request_number += 1
 
     await asyncio.gather(*(worker(index) for index in range(concurrency)))
 
@@ -220,17 +227,20 @@ def _read_rss_kib() -> int | None:
     return None
 
 
-async def _sample_loop_lag(stopped: asyncio.Event) -> tuple[_BoundedReservoir, int | None]:
+async def _sample_loop_lag(
+    stopped: asyncio.Event, armed: asyncio.Event
+) -> tuple[_BoundedReservoir, int | None]:
     """Monitor until stopped, retaining a bounded lag reservoir and RSS peak."""
 
     loop = asyncio.get_running_loop()
     lag = _BoundedReservoir(MAX_LOOP_LAG_SAMPLES)
     rss_peak: int | None = None
     expected = loop.time() + TICK_SECONDS
+    armed.set()
     while True:
         await asyncio.sleep(max(0.0, expected - loop.time()))
         observed = loop.time()
-        lag.add(max(0.0, (observed - expected) * 1000))
+        lag.add(max(0.0, (observed - expected) * 1000), request_id=lag.total)
         rss = _read_rss_kib()
         if rss is not None:
             rss_peak = rss if rss_peak is None else max(rss_peak, rss)
@@ -256,14 +266,30 @@ def _report_stats(pool: Any) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]
     )
 
 
-def _subtract_stats(
-    current: dict[str, Any], baseline: dict[str, Any]
+_NATIVE_COUNTERS = ("submitted", "completed", "failed", "worker_wait_ms")
+_CACHE_COUNTERS = ("hits", "misses", "followers", "loads", "evictions")
+
+
+def _counter_deltas(
+    current: dict[str, Any], baseline: dict[str, Any], fields: Sequence[str]
 ) -> dict[str, Any]:
+    return {field: current[field] - baseline[field] for field in fields}
+
+
+def _native_stats(current: dict[str, Any], baseline: dict[str, Any]) -> dict[str, Any]:
     return {
-        key: value - baseline.get(key, 0)
-        if isinstance(value, (int, float)) and not isinstance(value, bool)
-        else value
-        for key, value in current.items()
+        **_counter_deltas(current, baseline, _NATIVE_COUNTERS),
+        "active": current["active"],
+        "lifetime_peak": current["peak"],
+        "baseline_peak": baseline["peak"],
+    }
+
+
+def _cache_stats(current: dict[str, Any], baseline: dict[str, Any]) -> dict[str, Any]:
+    return {
+        **_counter_deltas(current, baseline, _CACHE_COUNTERS),
+        "entries": current["entries"],
+        "current_weight": current["current_weight"],
     }
 
 
@@ -285,7 +311,9 @@ async def run_benchmark(
 
     started_rss = _read_rss_kib()
     stopped = asyncio.Event()
-    monitor = asyncio.create_task(_sample_loop_lag(stopped))
+    armed = asyncio.Event()
+    monitor = asyncio.create_task(_sample_loop_lag(stopped, armed))
+    await armed.wait()
     outcomes = _OutcomeSummary()
     started = time.perf_counter()
     try:
@@ -330,9 +358,9 @@ async def run_benchmark(
             "peak": max(rss_values) if rss_values else None,
             "end": ended_rss,
         },
-        "native": _subtract_stats(native, baseline_native),
+        "native": _native_stats(native, baseline_native),
         "cache": {
-            key: _subtract_stats(value, baseline_cache[key])
+            key: _cache_stats(value, baseline_cache[key])
             for key, value in cache.items()
         },
         "event_loop_lag_ms": {
