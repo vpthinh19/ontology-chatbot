@@ -7,11 +7,14 @@ import viteConfig from "../vite.config.js";
 
 const originalEnvironment = {
   serviceUrl: process.env.CLOUD_RUN_SERVICE_URL,
+  backendToken: process.env.BACKEND_API_TOKEN,
 };
 
 afterEach(() => {
   if (originalEnvironment.serviceUrl === undefined) delete process.env.CLOUD_RUN_SERVICE_URL;
   else process.env.CLOUD_RUN_SERVICE_URL = originalEnvironment.serviceUrl;
+  if (originalEnvironment.backendToken === undefined) delete process.env.BACKEND_API_TOKEN;
+  else process.env.BACKEND_API_TOKEN = originalEnvironment.backendToken;
 });
 
 const listen = (handler) =>
@@ -38,7 +41,7 @@ const readBody = (request) =>
     request.on("error", reject);
   });
 
-test("health proxy replaces browser authorization with Google identity", async () => {
+test("health proxy replaces browser authorization with the server-side token", async () => {
   let seenAuthorization;
   const upstream = await listen((request, response) => {
     seenAuthorization = request.headers.authorization;
@@ -51,6 +54,7 @@ test("health proxy replaces browser authorization with Google identity", async (
     response.end('{"status":"waking"}');
   });
   process.env.CLOUD_RUN_SERVICE_URL = `${upstream.baseUrl}/`;
+  process.env.BACKEND_API_TOKEN = "server-secret";
 
   try {
     const response = await proxyToBackend(
@@ -58,10 +62,9 @@ test("health proxy replaces browser authorization with Google identity", async (
         headers: { Authorization: "Bearer browser-value" },
       }),
       { method: "GET", path: "/health" },
-      { getIdentityToken: async () => "google-id-token" },
     );
 
-    assert.equal(seenAuthorization, "Bearer google-id-token");
+    assert.equal(seenAuthorization, "Bearer server-secret");
     assert.equal(response.status, 503);
     assert.equal(response.headers.get("content-type"), "application/json");
     assert.equal(response.headers.get("cache-control"), "no-store");
@@ -93,6 +96,7 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
     response.end('data: {"loai":"xong","noi_dung":"Xin chào"}\n\n');
   });
   process.env.CLOUD_RUN_SERVICE_URL = upstream.baseUrl;
+  process.env.BACKEND_API_TOKEN = "server-secret";
 
   try {
     const response = await proxyToBackend(
@@ -105,12 +109,11 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
         body: '{"message":"Xin chào","history":[]}',
       }),
       { method: "POST", path: "/chat" },
-      { getIdentityToken: async () => "google-id-token" },
     );
     const reader = response.body.getReader();
     const first = await reader.read();
 
-    assert.equal(seenAuthorization, "Bearer google-id-token");
+    assert.equal(seenAuthorization, "Bearer server-secret");
     assert.equal(seenBody, '{"message":"Xin chào","history":[]}');
     assert.equal(new TextDecoder().decode(first.value), 'data: {"loai":"chu","noi_dung":"Xin"}\n\n');
     assert.equal(first.done, false);
@@ -127,34 +130,27 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
   }
 });
 
-test("proxy rejects unsupported methods before obtaining identity", async () => {
+test("proxy rejects unsupported methods before contacting the backend", async () => {
   process.env.CLOUD_RUN_SERVICE_URL = "http://127.0.0.1:1";
-  let identityCalls = 0;
+  process.env.BACKEND_API_TOKEN = "server-secret";
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz", { method: "POST" }),
     { method: "GET", path: "/health" },
-    {
-      getIdentityToken: async () => {
-        identityCalls += 1;
-        return "must-not-be-used";
-      },
-    },
   );
 
   assert.equal(response.status, 405);
   assert.equal(response.headers.get("allow"), "GET");
   assert.deepEqual(await response.json(), { detail: "Method not allowed." });
-  assert.equal(identityCalls, 0);
 });
 
-test("proxy reports missing server configuration without exposing partial values", async () => {
-  delete process.env.CLOUD_RUN_SERVICE_URL;
+test("proxy reports incomplete server configuration without exposing partial values", async () => {
+  process.env.CLOUD_RUN_SERVICE_URL = "https://backend.example";
+  delete process.env.BACKEND_API_TOKEN;
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz"),
     { method: "GET", path: "/health" },
-    { getIdentityToken: async () => "must-not-be-used" },
   );
   const text = await response.text();
 
@@ -165,40 +161,25 @@ test("proxy reports missing server configuration without exposing partial values
 test("proxy turns an upstream connection failure into a bounded 502", async () => {
   const unavailable = await listen((_request, response) => response.end());
   process.env.CLOUD_RUN_SERVICE_URL = unavailable.baseUrl;
+  process.env.BACKEND_API_TOKEN = "server-secret";
   await unavailable.close();
 
   const response = await proxyToBackend(
     new Request("https://frontend.example/api/healthz"),
     { method: "GET", path: "/health" },
-    { getIdentityToken: async () => "google-id-token" },
   );
 
   assert.equal(response.status, 502);
   assert.deepEqual(await response.json(), { detail: "Could not reach the backend." });
 });
 
-test("proxy does not expose identity exchange failures", async () => {
-  process.env.CLOUD_RUN_SERVICE_URL = "https://private-backend.example";
-
-  const response = await proxyToBackend(
-    new Request("https://frontend.example/api/healthz"),
-    { method: "GET", path: "/health" },
-    {
-      getIdentityToken: async () => {
-        throw new Error("sensitive Google response");
-      },
-    },
-  );
-
-  assert.equal(response.status, 502);
-  assert.deepEqual(await response.json(), { detail: "Could not authenticate to the backend." });
-});
-
 test("Vite development rewrites same-origin API paths to the local backend", () => {
+  process.env.BACKEND_API_TOKEN = "server-secret";
   const config = viteConfig({ command: "serve", mode: "development" });
   const proxy = config.server.proxy["/api"];
 
   assert.equal(proxy.target, "http://127.0.0.1:8000");
+  assert.equal(proxy.headers.Authorization, "Bearer server-secret");
   assert.equal(proxy.rewrite("/api/healthz"), "/health");
   assert.equal(proxy.rewrite("/api/chat"), "/chat");
 });

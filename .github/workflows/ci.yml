@@ -148,6 +148,7 @@ jobs:
           docker run --detach --name "$CONTAINER" \
             --env ONTCHATBOT_LLM_MODEL=ci-smoke-test \
             --env ONTCHATBOT_LLM_API_KEY=ci-smoke-test \
+            --env ONTCHATBOT_BACKEND_TOKEN=ci-smoke-test \
             --publish 127.0.0.1:8000:8000 \
             "${{ env.IMAGE }}:${{ env.VERSION }}"
           # shellcheck disable=SC2329  # Hàm được gọi gián tiếp bởi trap EXIT.
@@ -157,7 +158,9 @@ jobs:
           }
           trap cleanup EXIT
           for _ in $(seq 1 60); do
-            if curl --fail --silent http://127.0.0.1:8000/health >/dev/null; then
+            if curl --fail --silent \
+              --header 'Authorization: Bearer ci-smoke-test' \
+              http://127.0.0.1:8000/health >/dev/null; then
               exit 0
             fi
             if ! docker inspect --format '{{.State.Running}}' "$CONTAINER" | grep -qx true; then
@@ -198,5 +201,9 @@ jobs:
             Pull:
             ```
             docker pull ${{ env.IMAGE }}:${{ env.VERSION }}
-            docker run -p 8000:8000 ${{ env.IMAGE }}:${{ env.VERSION }}
+            docker run -p 8000:8000 \
+              -e ONTCHATBOT_LLM_MODEL=<model> \
+              -e ONTCHATBOT_LLM_API_KEY=<llm-key> \
+              -e ONTCHATBOT_BACKEND_TOKEN=<random-token> \
+              ${{ env.IMAGE }}:${{ env.VERSION }}
             ```

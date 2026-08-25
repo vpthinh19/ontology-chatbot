@@ -58,7 +58,7 @@ Agent là cửa vào duy nhất của mỗi yêu cầu. Hai cache nằm bên tro
 Mỗi replica phải chạy đúng **một Uvicorn worker**. Nhiều worker sẽ nhân bản ONNX
 session, graph và các cache trong cùng replica thay vì chia sẻ chúng.
 
-Runbook production dùng Cloud Run scale-to-zero và Vercel workload identity nằm
+Runbook production dùng Cloud Run scale-to-zero và bearer token phía server nằm
 tại [`docs/deploy-cloud-run.md`](docs/deploy-cloud-run.md). Image production đặt
 turn slots/queue thành `4/8` để khớp concurrency của instance 1 vCPU; mặc định
 CLI `16/64` bên dưới vẫn dành cho benchmark và deployment tự cấu hình.

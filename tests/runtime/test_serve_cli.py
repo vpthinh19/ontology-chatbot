@@ -284,13 +284,16 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
 
     fake = SimpleNamespace(run=run)
     monkeypatch.setitem(__import__("sys").modules, "uvicorn", fake)
+    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
     monkeypatch.setattr(serve, "_build_agent", lambda args: object())
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
     configured = {}
     monkeypatch.setattr(
         serve,
         "create_app",
-        lambda agent, *, gate: configured.update(agent=agent, gate=gate) or object(),
+        lambda agent, *, gate, backend_token=None: configured.update(
+            agent=agent, gate=gate, backend_token=backend_token
+        ) or object(),
     )
     monkeypatch.setattr(serve, "_runtime_revisions", lambda: {
         "model": "release-7",
@@ -302,6 +305,7 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
         serve.main()
 
     assert seen["log_config"] is None
+    assert configured["backend_token"] == "server-secret"
     gate = configured["gate"]
     assert (gate._slots._value, gate._queue_size) == (16, 64)
     startup = "\n".join(record.getMessage() for record in caplog.records)
@@ -312,3 +316,24 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
     assert "release-7" in startup
     assert "a" * 64 in startup
     assert "b" * 64 in startup
+
+
+def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) -> None:
+    import ontchatbot.cli.serve as serve
+
+    monkeypatch.delenv("ONTCHATBOT_BACKEND_TOKEN", raising=False)
+    monkeypatch.setitem(
+        __import__("sys").modules,
+        "uvicorn",
+        SimpleNamespace(run=lambda *_args, **_kwargs: None),
+    )
+    monkeypatch.setattr(serve, "_build_agent", lambda _args: object())
+    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setattr(
+        serve,
+        "_runtime_revisions",
+        lambda: {"model": "x", "ontology": "y", "catalogue": "z"},
+    )
+
+    with pytest.raises(SystemExit, match="ONTCHATBOT_BACKEND_TOKEN"):
+        serve.main()

@@ -27,6 +27,7 @@ def test_package_version_matches_installed_release() -> None:
 
 def test_http_api_reports_the_production_release(monkeypatch, tmp_path) -> None:
     fastapi = ModuleType("fastapi")
+    fastapi.Depends = lambda dependency: dependency
     fastapi.FastAPI = _FakeFastAPI
     fastapi.HTTPException = RuntimeError
     # Phải giả lập ĐỦ mọi module con mà ``create_app`` nạp. Thiếu một cái thì phép
@@ -52,10 +53,10 @@ class _FakeFastAPI:
         self.title = title
         self.version = version
 
-    def get(self, _path: str):
+    def get(self, _path: str, **_kwargs):
         return lambda endpoint: endpoint
 
-    def post(self, _path: str):
+    def post(self, _path: str, **_kwargs):
         return lambda endpoint: endpoint
 
     def add_middleware(self, *_args, **_kwargs) -> None:

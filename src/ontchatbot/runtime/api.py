@@ -15,6 +15,7 @@ import asyncio
 import json
 import logging
 import os
+import secrets
 import time
 import uuid
 from typing import Any, AsyncIterator, Sequence
@@ -350,9 +351,14 @@ def _flatten(value: Any) -> str:
     return str(value)
 
 
-def create_app(agent, gate: TurnGate | None = None):
+def create_app(
+    agent,
+    gate: TurnGate | None = None,
+    *,
+    backend_token: str | None = None,
+):
     try:
-        from fastapi import FastAPI, HTTPException
+        from fastapi import Depends, FastAPI, HTTPException
         from fastapi.middleware.cors import CORSMiddleware
         from fastapi.responses import StreamingResponse
         from starlette.requests import Request
@@ -385,7 +391,29 @@ def create_app(agent, gate: TurnGate | None = None):
     # khi mọi lượt cùng đi qua đúng một cái. Phép kiểm đưa cửa hẹp hơn vào đây.
     gate = gate if gate is not None else TurnGate()
 
-    @app.get("/health")
+    async def require_backend_token(request: Request) -> None:
+        if backend_token is None:
+            return
+        scheme, separator, candidate = request.headers.get(
+            "authorization", ""
+        ).partition(" ")
+        authorized = (
+            separator == " "
+            and scheme.lower() == "bearer"
+            and secrets.compare_digest(
+                candidate.encode("utf-8"), backend_token.encode("utf-8")
+            )
+        )
+        if not authorized:
+            raise HTTPException(
+                status_code=401,
+                detail="Unauthorized",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+    require_backend_token.__annotations__["request"] = Request
+
+    @app.get("/health", dependencies=[Depends(require_backend_token)])
     async def health() -> dict[str, str]:
         return {"status": "ok"}
 
@@ -428,6 +456,6 @@ def create_app(agent, gate: TurnGate | None = None):
     # ``Request`` là phụ thuộc tuỳ chọn được nạp trong hàm này; gắn kiểu trước
     # lúc đăng ký để FastAPI truyền request ASGI thay vì coi nó là query param.
     chat.__annotations__["request"] = Request
-    app.post("/chat")(chat)
+    app.post("/chat", dependencies=[Depends(require_backend_token)])(chat)
 
     return app

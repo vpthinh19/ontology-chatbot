@@ -101,6 +101,36 @@ def _ask(monkeypatch, run, tmp_path, payload):
     return health, response, seen.get("conversation")
 
 
+@pytest.mark.parametrize(
+    ("method", "path"),
+    (("GET", "/health"), ("POST", "/chat")),
+)
+def test_public_routes_require_the_configured_backend_token(method, path) -> None:
+    async def exercise():
+        transport = httpx.ASGITransport(
+            app=create_app(object(), backend_token="server-secret")
+        )
+        async with httpx.AsyncClient(
+            transport=transport, base_url="http://test"
+        ) as client:
+            missing = await client.request(method, path)
+            wrong = await client.request(
+                method, path, headers={"Authorization": "Bearer wrong-secret"}
+            )
+            allowed = await client.get(
+                "/health", headers={"Authorization": "Bearer server-secret"}
+            )
+        return missing, wrong, allowed
+
+    missing, wrong, allowed = asyncio.run(exercise())
+
+    assert missing.status_code == 401
+    assert missing.headers["www-authenticate"] == "Bearer"
+    assert wrong.status_code == 401
+    assert allowed.status_code == 200
+    assert allowed.json() == {"status": "ok"}
+
+
 def test_the_page_receives_words_as_the_assistant_writes_them(monkeypatch, tmp_path) -> None:
     run = _Run(
         [

@@ -199,6 +199,9 @@ def main() -> None:
         import uvicorn
     except ImportError as exc:  # pragma: no cover - requires inference extra.
         raise RuntimeError("install the inference extra to serve the API") from exc
+    backend_token = os.environ.get("ONTCHATBOT_BACKEND_TOKEN", "").strip()
+    if not backend_token:
+        raise SystemExit("chưa đặt ONTCHATBOT_BACKEND_TOKEN")
     args = _parse_args()
     _configure_logging(args.log_level)
     _log_cpu_budget(
@@ -213,6 +216,7 @@ def main() -> None:
         create_app(
             _build_agent(args),
             gate=TurnGate(slots=args.turn_slots, queue_size=args.turn_queue),
+            backend_token=backend_token,
         ),
         host=args.host,
         port=args.port,
