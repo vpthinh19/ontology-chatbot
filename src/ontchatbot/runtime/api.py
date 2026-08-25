@@ -47,27 +47,23 @@ MODEL_TURN_TIMEOUT_SECONDS = 45.0
 _MODEL_TIMEOUT_MESSAGE = (
     "Mô hình đã quá thời gian chờ. Bạn vui lòng thử lại, hoặc hỏi ngắn hơn."
 )
-#: Số lượt trả lời được chạy cùng lúc. Mỗi lượt trung vị 2,5 giây, nên bốn chỗ là
-#: khoảng chín mươi tin nhắn một phút trước khi có người đầu tiên phải chờ; dưới
-#: mức đó cửa vào này không ai nhìn thấy.
+#: Số lượt trả lời được chạy cùng lúc. Hồ sơ khởi động có thể thu hẹp hoặc nới
+#: cửa này, nhưng mặc định luôn hữu hạn để một đợt dồn không chiếm hết tài nguyên.
 #:
 #: Cửa tính theo lượt trả lời chứ không theo request HTTP, vì một tin nhắn tiêu ít
 #: nhất hai lượt gọi mô hình - đếm request là đếm sai thứ cần giữ. Nhưng nó cũng
 #: không chặn từng lượt gọi một: chúng nằm giữa một lượt trả lời, mà chặn đúng lúc
 #: mô hình vừa tra cứu xong thì người dùng nhận nửa câu trả lời, tệ hơn là bị từ
 #: chối ngay từ đầu. Vào được thì chạy trọn vẹn.
-MAX_CONCURRENT_TURNS = 4
+MAX_CONCURRENT_TURNS = 16
 #: Hàng đợi có trần, để một đợt dồn bất ngờ không thành hàng dài mà ai cũng bỏ đi
 #: trước khi tới lượt.
-MAX_QUEUED_TURNS = 20
+MAX_QUEUED_TURNS = 64
 #: Chờ quá mức này thì nói thẳng là đang bận, thay vì để người ta ngồi nhìn màn
 #: hình trống - đằng nào họ cũng bấm lại, và lần bấm đó chiếm thêm một chỗ.
 #:
-#: Con số lấy từ hai phía. Phía dưới: hàng đầy 20 chỗ với bốn lượt song song, mỗi
-#: lượt trung vị 2,5 giây, rút cạn trong khoảng mười ba giây - ai chờ lâu hơn thế
-#: là hàng đã đầy quá thiết kế chứ không phải sắp tới lượt. Phía trên: nền tảng
-#: triển khai tự cắt một request đang mở, nên hạn này cộng với hạn chờ mô hình
-#: phải nằm gọn dưới mức đó, xem ``MAX_REQUEST_SECONDS``.
+#: Nền tảng triển khai tự cắt một request đang mở, nên hạn này cộng với hạn chờ
+#: mô hình phải nằm gọn dưới mức đó, xem ``MAX_REQUEST_SECONDS``.
 MAX_QUEUE_WAIT_SECONDS = 15.0
 #: Mức mà nền tảng triển khai cắt một request còn đang mở. Không phải hằng số ta
 #: chọn - nó là ràng buộc từ bên ngoài, chép vào đây để phép kiểm canh được.

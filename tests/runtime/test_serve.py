@@ -589,18 +589,18 @@ def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> Non
     monkeypatch.setattr(
         agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: _Counting()
     )
-    gate = api.TurnGate(slots=3, queue_size=50, max_wait_seconds=10)
+    gate = api.TurnGate(slots=16, queue_size=64, max_wait_seconds=10)
 
     async def one_turn():
         async for _ in api._stream(object(), "câu hỏi", [], gate):
             pass
 
     async def exercise():
-        await asyncio.gather(*(one_turn() for _ in range(20)))
+        await asyncio.gather(*(one_turn() for _ in range(64)))
 
     asyncio.run(exercise())
 
-    assert peak == 3, f"đỉnh số lượt chạy cùng lúc là {peak}, cửa vào hứa 3"
+    assert peak == 16, f"đỉnh số lượt chạy cùng lúc là {peak}, cửa vào hứa 16"
 
 
 def test_the_two_waits_together_stay_inside_what_the_platform_allows() -> None:
@@ -613,6 +613,12 @@ def test_the_two_waits_together_stay_inside_what_the_platform_allows() -> None:
 
     worst_case = api.MAX_QUEUE_WAIT_SECONDS + api.MODEL_TURN_TIMEOUT_SECONDS
 
+    assert (
+        api.MAX_QUEUE_WAIT_SECONDS,
+        api.MODEL_TURN_TIMEOUT_SECONDS,
+        api.MAX_REQUEST_SECONDS,
+        api.MAX_MODEL_STEPS,
+    ) == (15.0, 45.0, 60.0, 4)
     assert worst_case <= api.MAX_REQUEST_SECONDS, (
         f"một request xấu nhất mất {worst_case:.0f}s, "
         f"mà nền tảng cắt ở {api.MAX_REQUEST_SECONDS:.0f}s"

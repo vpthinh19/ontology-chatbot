@@ -3,14 +3,16 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import logging
 import os
 from pathlib import Path
 
 from ..runtime.agent import DEFAULT_BASE_URL, build_agent
-from ..runtime.api import create_app
+from ..runtime.api import TurnGate, create_app
 from ..runtime.onnx_classifier import OnnxClassifierGenerator
 from ..runtime.pipeline import OntologyChatbot
+from ..settings import ONTOLOGY_PATH, QUERY_CATALOGUE_PATH
 
 
 logger = logging.getLogger(__name__)
@@ -23,6 +25,16 @@ def _positive_int(value: str) -> int:
         raise argparse.ArgumentTypeError("must be a positive integer") from None
     if parsed < 1:
         raise argparse.ArgumentTypeError("must be a positive integer")
+    return parsed
+
+
+def _non_negative_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError("must be a non-negative integer") from None
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("must be a non-negative integer")
     return parsed
 
 
@@ -48,6 +60,38 @@ def _log_cpu_budget(*, onnx_threads: int, lookup_workers: int) -> None:
             budget,
             visible,
         )
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(128 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _runtime_revisions() -> dict[str, str]:
+    """Return diagnostic revisions without reading the large model binary."""
+
+    return {
+        "model": os.environ.get("ONTCHATBOT_MODEL_REVISION", "unknown"),
+        "ontology": _sha256(ONTOLOGY_PATH),
+        "catalogue": _sha256(QUERY_CATALOGUE_PATH),
+    }
+
+
+def _log_runtime_profile(args: argparse.Namespace, revisions: dict[str, str]) -> None:
+    logger.info(
+        "Runtime profile: turn slots=%d queue=%d classification cache entries=%d "
+        "SPARQL cache=%d MiB revisions: model=%s ontology=%s catalogue=%s",
+        args.turn_slots,
+        args.turn_queue,
+        args.classification_cache_entries,
+        args.sparql_cache_mib,
+        revisions["model"],
+        revisions["ontology"],
+        revisions["catalogue"],
+    )
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -76,14 +120,34 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument(
+        "--turn-slots",
+        type=_positive_int,
+        default=os.environ.get("ONTCHATBOT_TURN_SLOTS", "16"),
+    )
+    parser.add_argument(
+        "--turn-queue",
+        type=_positive_int,
+        default=os.environ.get("ONTCHATBOT_TURN_QUEUE", "64"),
+    )
+    parser.add_argument(
         "--onnx-threads",
         type=_positive_int,
-        default=os.environ.get("ONTCHATBOT_ONNX_THREADS", "2"),
+        default=os.environ.get("ONTCHATBOT_ONNX_THREADS", "1"),
     )
     parser.add_argument(
         "--lookup-workers",
         type=_positive_int,
-        default=os.environ.get("ONTCHATBOT_LOOKUP_WORKERS", "4"),
+        default=os.environ.get("ONTCHATBOT_LOOKUP_WORKERS", "8"),
+    )
+    parser.add_argument(
+        "--classification-cache-entries",
+        type=_non_negative_int,
+        default=os.environ.get("ONTCHATBOT_CLASSIFICATION_CACHE_ENTRIES", "4096"),
+    )
+    parser.add_argument(
+        "--sparql-cache-mib",
+        type=_non_negative_int,
+        default=os.environ.get("ONTCHATBOT_SPARQL_CACHE_MIB", "64"),
     )
     return parser.parse_args(argv)
 
@@ -125,6 +189,8 @@ def _build_agent(args: argparse.Namespace):
         model=args.llm,
         base_url=args.base_url,
         lookup_workers=args.lookup_workers,
+        classification_cache_entries=args.classification_cache_entries,
+        sparql_cache_bytes=args.sparql_cache_mib * 1024 * 1024,
     )
 
 
@@ -138,12 +204,16 @@ def main() -> None:
     _log_cpu_budget(
         onnx_threads=args.onnx_threads, lookup_workers=args.lookup_workers
     )
+    _log_runtime_profile(args, _runtime_revisions())
     # ``log_config=None`` để máy chủ web không dựng cấu hình nhật ký riêng của
     # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc
     # thời gian, nên nhật ký trộn hai kiểu dòng: dòng của dịch vụ có giờ, dòng
     # của máy chủ web thì không. Bỏ cấu hình đó thì mọi dòng cùng một khuôn.
     uvicorn.run(
-        create_app(_build_agent(args)),
+        create_app(
+            _build_agent(args),
+            gate=TurnGate(slots=args.turn_slots, queue_size=args.turn_queue),
+        ),
         host=args.host,
         port=args.port,
         log_config=None,
