@@ -7,6 +7,7 @@ const stopButton = document.querySelector("#stop-response-btn");
 const themeToggleButton = document.querySelector("#theme-toggle-btn");
 const deleteButton = document.querySelector("#delete-chats-btn");
 const serverStatus = document.querySelector(".server-status");
+const connectionCountdown = document.querySelector(".connection-countdown");
 const responseAnnouncer = document.querySelector("#response-announcer");
 
 const apiUrl = (path) => `/api${path}`;
@@ -18,10 +19,12 @@ const MAX_HISTORY_MESSAGES = 20;
 const HEALTH_DEADLINE_MS = 180_000;
 const HEALTH_REQUEST_TIMEOUT_MS = 12_000;
 const HEALTH_WAITS_MS = [1_000, 2_000, 4_000, 8_000];
+const CONNECTION_COUNTDOWN_SECONDS = 15;
 
 let responseController;
 let healthCheckPromise;
-let serverState = "waking";
+let connectionCountdownTimer;
+let serverState;
 let lastReadyAt = 0;
 const chatHistory = [];
 
@@ -38,14 +41,36 @@ const updateControls = () => {
 };
 
 const stateLabels = {
-  waking: "Đang khởi động máy chủ, bạn có thể nhập câu hỏi…",
+  waking: "Đang kết nối máy chủ",
   ready: "Máy chủ sẵn sàng",
   offline: "Thiết bị đang mất kết nối mạng.",
   down: "Chưa kết nối được máy chủ. Hãy thử lại sau ít phút.",
   blocked: "Máy chủ từ chối xác thực dịch vụ của trang này.",
 };
 
+const stopConnectionCountdown = () => {
+  window.clearInterval(connectionCountdownTimer);
+  connectionCountdownTimer = undefined;
+  connectionCountdown.textContent = "";
+};
+
+const startConnectionCountdown = () => {
+  stopConnectionCountdown();
+  let secondsRemaining = CONNECTION_COUNTDOWN_SECONDS;
+  connectionCountdown.textContent = ` (${secondsRemaining})`;
+  connectionCountdownTimer = window.setInterval(() => {
+    secondsRemaining -= 1;
+    connectionCountdown.textContent =
+      secondsRemaining >= 0 ? ` (${secondsRemaining})` : "…";
+    if (secondsRemaining < 0) {
+      window.clearInterval(connectionCountdownTimer);
+      connectionCountdownTimer = undefined;
+    }
+  }, 1_000);
+};
+
 const setServerState = (state, label = stateLabels[state]) => {
+  const previousState = serverState;
   serverState = state;
   const labelElement = serverStatus.querySelector(".label");
   // Health probe có thể thất bại nhiều lần trong ba phút. Không ghi lại đúng
@@ -53,6 +78,11 @@ const setServerState = (state, label = stateLabels[state]) => {
   if (serverStatus.dataset.state !== state || labelElement.textContent !== label) {
     serverStatus.dataset.state = state;
     labelElement.textContent = label;
+  }
+  if (state === "waking" && previousState !== "waking") {
+    startConnectionCountdown();
+  } else if (state !== "waking") {
+    stopConnectionCountdown();
   }
   if (state === "ready") lastReadyAt = Date.now();
   updateControls();
@@ -257,22 +287,33 @@ const generateResponse = async (botMessage, userMessage) => {
     const line = chunk.split("\n").find((item) => item.startsWith("data: "));
     if (!line) return;
     const event = JSON.parse(line.slice(6));
-    if (event.loai === "chu") {
-      answer += event.noi_dung;
+    const legacyTypes = {
+      chu: "text_delta",
+      tra_cuu: "lookup_started",
+      tra_cuu_xong: "lookup_finished",
+      hang_doi: "queued",
+      canh_bao: "warning",
+      xong: "completed",
+      loi: "error",
+    };
+    const eventType = event.type || legacyTypes[event.loai];
+    const content = event.content ?? event.noi_dung;
+    if (eventType === "text_delta") {
+      answer += content;
       botMessage.classList.remove("loading");
-    } else if (event.loai === "tra_cuu") {
-      progress = `Đang tra cứu: ${event.tu_khoa}`;
-    } else if (event.loai === "tra_cuu_xong") {
+    } else if (eventType === "lookup_started") {
+      progress = `Đang tra cứu: ${event.keywords ?? event.tu_khoa}`;
+    } else if (eventType === "lookup_finished") {
       progress = "Đang viết câu trả lời…";
-    } else if (event.loai === "hang_doi") {
-      progress = `Hệ thống đang bận, bạn đứng thứ ${event.vi_tri} trong hàng chờ…`;
-    } else if (event.loai === "canh_bao") {
-      notice = event.noi_dung;
-    } else if (event.loai === "xong") {
+    } else if (eventType === "queued") {
+      progress = `Hệ thống đang bận, bạn đứng thứ ${event.position ?? event.vi_tri} trong hàng chờ…`;
+    } else if (eventType === "warning") {
+      notice = content;
+    } else if (eventType === "completed") {
       completed = true;
-      if (!answer) answer = event.noi_dung;
-    } else if (event.loai === "loi") {
-      throw new Error(event.noi_dung);
+      if (!answer) answer = content;
+    } else if (eventType === "error") {
+      throw new Error(content);
     }
     paint();
   };

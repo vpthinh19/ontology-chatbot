@@ -88,6 +88,28 @@ def test_load_accepts_an_explicit_positive_thread_count(monkeypatch, tmp_path):
     assert seen["options"].intra_op_num_threads == 3
 
 
+def test_model_assets_can_load_before_the_ontology_is_available(monkeypatch, tmp_path):
+    seen = {}
+    _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
+    graphs = []
+    monkeypatch.setattr(
+        onnx_classifier,
+        "_cards_for",
+        lambda graph: graphs.append(graph) or [],
+    )
+
+    assets = onnx_classifier.OnnxClassifierGenerator.load_assets(
+        _model_dir(tmp_path), intra_op_threads=1
+    )
+
+    assert graphs == []
+    generator = onnx_classifier.OnnxClassifierGenerator.from_assets(
+        assets, graph="ontology"
+    )
+    assert graphs == ["ontology"]
+    assert generator.providers == ["CPUExecutionProvider"]
+
+
 @pytest.mark.parametrize("threads", [0, -1])
 def test_load_rejects_a_non_positive_thread_count(threads, tmp_path):
     with pytest.raises(ValueError, match="intra_op_threads must be positive"):

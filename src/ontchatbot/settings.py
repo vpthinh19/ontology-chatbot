@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+#: Điểm cuối mặc định của dịch vụ LLM tương thích giao thức OpenAI.
+DEFAULT_LLM_BASE_URL = "https://lightning.ai/api/v1/"
+
 PKG_ROOT = Path(__file__).resolve().parent
 PROJECT_ROOT = PKG_ROOT.parent.parent
 

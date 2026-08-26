@@ -1,6 +1,6 @@
 [project]
 name = "ontchatbot"
-version = "3.0.2"
+version = "3.1.0"
 description = "Vietnamese academic-regulation chatbot: a classifier picks one of 344 predefined SPARQL queries over an ontology"
 readme = "README.md"
 requires-python = "==3.12.*"
@@ -14,9 +14,9 @@ dependencies = [
 
 [project.optional-dependencies]
 inference = [
-    "fastapi>=0.140.0",
+    "httpx>=0.28.0",
     "onnxruntime>=1.29.0",
-    "openai-agents>=0.21.1",
+    "starlette>=0.47.0",
     "tokenizers>=0.22.2",
     "uvicorn>=0.41.0",
 ]

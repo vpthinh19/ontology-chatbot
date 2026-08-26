@@ -28,9 +28,9 @@ def test_load_workload_keeps_non_empty_keyword_batches(tmp_path) -> None:
     path.write_text(
         json.dumps(
             [
-                {"tu_khoa": ["bảo lưu", "nghỉ học tạm thời"]},
-                {"tu_khoa": []},
-                {"tu_khoa": ["học phí"]},
+                {"keywords": ["bảo lưu", "nghỉ học tạm thời"]},
+                {"keywords": []},
+                {"keywords": ["học phí"]},
             ]
         ),
         encoding="utf-8",
@@ -42,14 +42,24 @@ def test_load_workload_keeps_non_empty_keyword_batches(tmp_path) -> None:
     ]
 
 
+def test_load_workload_accepts_the_existing_vietnamese_resource_shape(tmp_path) -> None:
+    path = tmp_path / "workload.json"
+    path.write_text(
+        json.dumps([{"tu_khoa": ["học phí"]}]),
+        encoding="utf-8",
+    )
+
+    assert load_workload(path) == [["học phí"]]
+
+
 @pytest.mark.parametrize(
     "payload",
     [
-        {"tu_khoa": ["học phí"]},
-        [{"tu_khoa": "học phí"}],
+        {"keywords": ["học phí"]},
+        [{"keywords": "học phí"}],
         [{"khac": ["học phí"]}],
-        [{"tu_khoa": ["học phí", 3]}],
-        [{"tu_khoa": []}],
+        [{"keywords": ["học phí", 3]}],
+        [{"keywords": []}],
     ],
 )
 def test_load_workload_rejects_invalid_shapes(tmp_path, payload) -> None:
@@ -64,7 +74,7 @@ def test_load_workload_rejects_invalid_shapes(tmp_path, payload) -> None:
 def test_load_workload_rejects_blank_keywords(tmp_path) -> None:
     """A blank keyword would fail outside the measured lookup contract."""
     path = tmp_path / "workload.json"
-    path.write_text(json.dumps([{"tu_khoa": ["học phí", " "]}]), encoding="utf-8")
+    path.write_text(json.dumps([{"keywords": ["học phí", " "]}]), encoding="utf-8")
 
     with pytest.raises(ValueError, match="workload"):
         load_workload(path)
@@ -494,7 +504,7 @@ def test_runtime_setup_shares_one_graph_and_closes_the_pool_on_failure(
     from ontchatbot.runtime import lookup_pool, onnx_classifier, pipeline, sparql
 
     workload = tmp_path / "workload.json"
-    workload.write_text(json.dumps([{"tu_khoa": ["học phí"]}]), encoding="utf-8")
+    workload.write_text(json.dumps([{"keywords": ["học phí"]}]), encoding="utf-8")
     graph = object()
     received_graphs = []
 

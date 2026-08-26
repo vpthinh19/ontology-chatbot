@@ -11,32 +11,15 @@ from __future__ import annotations
 import asyncio
 import json
 import pytest
-from types import SimpleNamespace
 
 from ontchatbot.runtime.agent import (
     MAX_KEYWORD_CHARACTERS,
-    MAX_KEYWORDS_PER_LOOKUP,
     TOOL_DESCRIPTION,
+    TOOL_SCHEMA,
     OntologyVocabulary,
-    build_agent,
     build_instructions,
-    build_tool,
-    look_up,
     look_up_async,
 )
-
-pytest.importorskip("agents", reason="cần thư viện openai-agents")
-
-
-class _StubChatbot:
-    """Đứng thay đường tra cứu thật để phép kiểm không cần model lẫn đồ thị."""
-
-    def __init__(self) -> None:
-        self.asked: list[str] = []
-
-    def answer(self, question: str) -> str:
-        self.asked.append(question)
-        return f"dữ kiện của {question}"
 
 
 VOCABULARY = OntologyVocabulary(
@@ -54,7 +37,7 @@ def test_tool_tells_the_model_to_send_keywords_not_sentences() -> None:
     nên phần ví dụ từng bị cắt mất mà không có dấu hiệu nào.
     """
 
-    description = build_tool(_StubChatbot()).description
+    description = TOOL_SCHEMA["function"]["description"]
 
     assert "TỪ KHOÁ NGẮN" in description
     assert "Nên:" in description and "Không nên:" in description
@@ -64,12 +47,12 @@ def test_tool_tells_the_model_to_send_keywords_not_sentences() -> None:
 
 
 def test_tool_passes_the_keyword_through_unchanged() -> None:
-    chatbot = _StubChatbot()
-    tool = build_tool(chatbot)
+    function = TOOL_SCHEMA["function"]
+    parameters = function["parameters"]
 
-    assert tool.name == "tra_cuu_hoc_vu"
-    assert tool.params_json_schema["required"] == ["tu_khoa"]
-    assert tool.params_json_schema["properties"]["tu_khoa"]["description"]
+    assert function["name"] == "lookup_academic_information"
+    assert parameters["required"] == ["keywords"]
+    assert parameters["properties"]["keywords"]["description"]
 
 
 def test_instructions_name_what_the_assistant_can_look_up() -> None:
@@ -94,12 +77,14 @@ def test_instructions_forbid_answering_from_memory() -> None:
 
     instructions = build_instructions(VOCABULARY)
 
-    assert "tra_cuu_hoc_vu" in instructions
+    assert "lookup_academic_information" in instructions
     assert "đừng suy đoán" in instructions
     assert "đừng bịa số" in instructions
     # Quy tắc gọi công cụ phải đứng TRƯỚC danh sách chủ đề. Đảo lại thì nó bị
     # chôn giữa một khối tên dài và tỉ lệ gọi công cụ tụt hẳn.
-    assert instructions.index("GỌI `tra_cuu_hoc_vu` TRƯỚC") < instructions.index("Thủ tục:")
+    assert instructions.index("GỌI `lookup_academic_information` TRƯỚC") < (
+        instructions.index("Thủ tục:")
+    )
     # Trích dẫn và đường dẫn phải đi tới câu trả lời cuối, nếu không người đọc
     # mất đường đối chiếu với văn bản gốc.
     assert "trích dẫn" in instructions and "đường dẫn" in instructions
@@ -118,11 +103,11 @@ def test_instructions_are_built_from_the_graph_not_written_by_hand() -> None:
 
 
 def test_tool_description_is_the_shared_constant() -> None:
-    assert build_tool(_StubChatbot()).description == TOOL_DESCRIPTION.strip()
+    assert TOOL_SCHEMA["function"]["description"] == TOOL_DESCRIPTION
 
 
 def test_tool_teaches_the_model_to_read_the_structured_result_and_stop() -> None:
-    description = build_tool(_StubChatbot()).description
+    description = TOOL_SCHEMA["function"]["description"]
 
     assert "JSON" in description
     assert "du_lieu" in description and "nguon" in description
@@ -146,76 +131,6 @@ def test_instructions_require_one_lookup_for_every_topic() -> None:
 
 def test_system_prompt_stays_below_four_hundred_words() -> None:
     assert len(build_instructions().split()) < 400
-
-
-def test_a_broken_lookup_reaches_the_assistant_as_no_information() -> None:
-    """Truy vấn hỏng và không tìm thấy là một thứ đối với người gọi.
-
-    Trợ lý đọc trạng thái trong kết quả để quyết định tra lại hay dừng. Một
-    ngoại lệ không mang trạng thái đó, nên nó làm hỏng lượt chạy giữa cuộc hội
-    thoại thay vì thành một câu trả lời trung thực.
-    """
-
-    from types import SimpleNamespace
-
-    from ontchatbot.runtime.generator import QueryGenerationError
-    from ontchatbot.runtime.render import NO_INFORMATION_REPLY
-    from ontchatbot.runtime.sparql import SparqlError
-
-    for error in (QueryGenerationError("rỗng"), SparqlError("sai cú pháp")):
-        def fail(_, error=error) -> str:
-            raise error
-
-        assert look_up(SimpleNamespace(answer_many=fail), ["học phí"]) == NO_INFORMATION_REPLY
-
-    ok = SimpleNamespace(
-        answer_many=lambda ds: json.dumps({"trang_thai": "co_du_lieu", "du_lieu": ds})
-    )
-    assert json.loads(look_up(ok, ["học phí", "học bổng"]))["du_lieu"] == [
-        "học phí",
-        "học bổng",
-    ]
-    # Một chuỗi lẻ vẫn tra được: mô hình đôi khi gửi chuỗi thay vì danh sách.
-    assert json.loads(look_up(ok, "học phí"))["du_lieu"] == ["học phí"]
-
-
-def test_lookup_caps_keyword_count_and_length_and_reports_it_as_json() -> None:
-    """Bỏ giới hạn sẽ để quá 45 giây khi mô hình gửi một danh sách dài."""
-
-    seen = []
-
-    def answer_many(keywords):
-        seen.extend(keywords)
-        return '{"trang_thai": "khong_co_thong_tin", "du_lieu": [], "nguon": []}'
-
-    long_keyword = "x" * (MAX_KEYWORD_CHARACTERS + 1)
-    reply = look_up(
-        SimpleNamespace(answer_many=answer_many),
-        [long_keyword, *(f"từ khoá {index}" for index in range(MAX_KEYWORDS_PER_LOOKUP + 2))],
-    )
-
-    payload = json.loads(reply)
-    assert len(seen) == MAX_KEYWORDS_PER_LOOKUP
-    assert all(len(keyword) <= MAX_KEYWORD_CHARACTERS for keyword in seen)
-    assert payload["tu_khoa_da_cat"] == {
-        "so_luong_toi_da": MAX_KEYWORDS_PER_LOOKUP,
-        "do_dai_toi_da": MAX_KEYWORD_CHARACTERS,
-        "so_luong_bo_qua": 3,
-        "so_luong_rut_gon": 1,
-    }
-
-
-def test_truncation_notice_keeps_json_semantics_with_compact_serialization() -> None:
-    reply = look_up(
-        SimpleNamespace(
-            answer_many=lambda _keywords: '{\n  "trang_thai": "co_du_lieu",\n  "du_lieu": []\n}'
-        ),
-        ["x" * (MAX_KEYWORD_CHARACTERS + 1)],
-    )
-
-    assert "\n" not in reply
-    assert ": " not in reply
-    assert json.loads(reply)["tu_khoa_da_cat"]["so_luong_rut_gon"] == 1
 
 
 def test_async_tool_bounds_keywords_before_shared_lookup() -> None:
@@ -257,100 +172,3 @@ def test_async_tool_keeps_domain_errors_as_no_information() -> None:
 
     with pytest.raises(RuntimeError, match="mất kết nối"):
         asyncio.run(look_up_async(unexpected, ["học phí"]))
-
-
-def test_tool_creates_one_configured_shared_lookup_pool(monkeypatch) -> None:
-    """Recreating the pool per call would discard both cache layers."""
-
-    created = []
-
-    class FakePool:
-        def __init__(self, chatbot, **kwargs) -> None:
-            created.append((chatbot, kwargs))
-
-        async def __call__(self, keywords) -> str:
-            return json.dumps({"trang_thai": "co_du_lieu", "du_lieu": keywords})
-
-    monkeypatch.setattr("ontchatbot.runtime.agent.AsyncLookupPool", FakePool)
-    monkeypatch.setattr(
-        "agents.function_tool", lambda **_kwargs: lambda function: function
-    )
-
-    chatbot = _StubChatbot()
-    tool = build_tool(
-        chatbot,
-        lookup_workers=3,
-        classification_cache_entries=17,
-        sparql_cache_bytes=23,
-    )
-
-    assert created == [
-        (
-            chatbot,
-            {
-                "workers": 3,
-                "classification_cache_entries": 17,
-                "sparql_cache_bytes": 23,
-            },
-        )
-    ]
-    assert json.loads(asyncio.run(tool(["học phí"]))) == {
-        "trang_thai": "co_du_lieu",
-        "du_lieu": ["học phí"],
-    }
-
-
-def test_the_assistant_does_not_think_at_the_lowest_effort() -> None:
-    """Mức suy luận thấp đổi được tốc độ, nhưng có lúc không viết câu nào.
-
-    Đo trên 24 lượt: mức thấp cho ba lượt trả về rỗng, mức mặc định không lượt
-    nào. Một bong bóng trống là hỏng nặng hơn phần lợi nó mang lại.
-    """
-
-    from ontchatbot.runtime.agent import REASONING_EFFORT
-
-    assert REASONING_EFFORT != "low"
-
-
-def test_every_model_request_has_an_explicit_timeout_and_one_retry(monkeypatch) -> None:
-    """Bỏ cấu hình sẽ để client quay về 600 giây và hai lần thử lại."""
-
-    import agents
-    import openai
-
-    client_options = {}
-
-    def fake_client(**kwargs):
-        client_options.update(kwargs)
-        return SimpleNamespace()
-
-    monkeypatch.setattr(openai, "AsyncOpenAI", fake_client)
-    monkeypatch.setattr(agents, "Agent", lambda **kwargs: SimpleNamespace(**kwargs))
-    monkeypatch.setattr(
-        agents,
-        "OpenAIChatCompletionsModel",
-        lambda **kwargs: SimpleNamespace(**kwargs),
-    )
-    monkeypatch.setattr(agents, "set_tracing_disabled", lambda _: None)
-    monkeypatch.setattr("ontchatbot.runtime.agent.build_instructions", lambda: "prompt")
-    tool_options = {}
-
-    def fake_build_tool(
-        _, *, lookup_workers, classification_cache_entries, sparql_cache_bytes
-    ):
-        tool_options["lookup_workers"] = lookup_workers
-        tool_options["classification_cache_entries"] = classification_cache_entries
-        tool_options["sparql_cache_bytes"] = sparql_cache_bytes
-        return "tool"
-
-    monkeypatch.setattr("ontchatbot.runtime.agent.build_tool", fake_build_tool)
-
-    build_agent(_StubChatbot(), model="mo-hinh")
-
-    assert client_options["timeout"] == 30.0
-    assert client_options["max_retries"] == 1
-    assert tool_options == {
-        "lookup_workers": 4,
-        "classification_cache_entries": 4096,
-        "sparql_cache_bytes": 64 * 1024 * 1024,
-    }

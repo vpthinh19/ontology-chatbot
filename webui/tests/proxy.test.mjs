@@ -91,9 +91,9 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
       "Cache-Control": "no-cache",
       "X-Accel-Buffering": "no",
     });
-    response.write('data: {"loai":"chu","noi_dung":"Xin"}\n\n');
+    response.write('data: {"type":"text_delta","content":"Xin"}\n\n');
     await mayFinish;
-    response.end('data: {"loai":"xong","noi_dung":"Xin chào"}\n\n');
+    response.end('data: {"type":"completed","content":"Xin chào"}\n\n');
   });
   process.env.CLOUD_RUN_SERVICE_URL = upstream.baseUrl;
   process.env.BACKEND_API_TOKEN = "server-secret";
@@ -115,14 +115,17 @@ test("chat proxy forwards JSON and exposes the first SSE chunk before upstream c
 
     assert.equal(seenAuthorization, "Bearer server-secret");
     assert.equal(seenBody, '{"message":"Xin chào","history":[]}');
-    assert.equal(new TextDecoder().decode(first.value), 'data: {"loai":"chu","noi_dung":"Xin"}\n\n');
+    assert.equal(
+      new TextDecoder().decode(first.value),
+      'data: {"type":"text_delta","content":"Xin"}\n\n',
+    );
     assert.equal(first.done, false);
 
     finishStream();
     const second = await reader.read();
     assert.equal(
       new TextDecoder().decode(second.value),
-      'data: {"loai":"xong","noi_dung":"Xin chào"}\n\n',
+      'data: {"type":"completed","content":"Xin chào"}\n\n',
     );
   } finally {
     finishStream();

@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 
-from .sparql import QueryRows
+if TYPE_CHECKING:
+    from .sparql import QueryRows
 
 _FOUND_GUIDANCE = (
     "Đây là toàn bộ dữ liệu tìm thấy. Đọc hết du_lieu. Nếu chi tiết được hỏi "

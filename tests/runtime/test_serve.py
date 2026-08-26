@@ -10,15 +10,14 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from types import SimpleNamespace
 
 import pytest
 
-pytest.importorskip("fastapi")
-pytest.importorskip("agents")
+pytest.importorskip("starlette")
 httpx = pytest.importorskip("httpx")
 
 from ontchatbot.runtime import api
+from ontchatbot.runtime.agent import AgentEvent
 from ontchatbot.runtime.api import _conversation, create_app
 
 
@@ -40,6 +39,80 @@ def _terminal_metrics(caplog) -> dict[str, str]:
     return dict(field.split("=", 1) for field in record.getMessage().split())
 
 
+def test_creating_the_http_app_does_not_import_fastapi_or_pydantic() -> None:
+    import subprocess
+    import sys
+
+    script = (
+        "import sys; from ontchatbot.runtime.api import create_app; "
+        "create_app(object()); "
+        "print(int('fastapi' in sys.modules), int('pydantic' in sys.modules))"
+    )
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.stdout.strip() == "0 0"
+
+
+def test_app_closes_agent_resources_on_shutdown() -> None:
+    closed = []
+
+    class Agent:
+        async def aclose(self):
+            closed.append(True)
+
+    app = create_app(Agent())
+
+    async def run():
+        async with app.router.lifespan_context(app):
+            pass
+
+    asyncio.run(run())
+    assert closed == [True]
+
+
+def test_api_streams_the_manual_agent_events_without_a_framework_runner() -> None:
+    class Agent:
+        async def stream(self, messages):
+            assert messages == [{"role": "user", "content": "học phí"}]
+            yield AgentEvent("lookup_started", keywords=("học phí",))
+            yield AgentEvent("lookup_finished")
+            yield AgentEvent("text_delta", content="Kết quả")
+            yield AgentEvent("completed", content="Kết quả")
+
+    async def run():
+        return [
+            json.loads(chunk[len("data: ") :])
+            async for chunk in api._stream(Agent(), "học phí", [], api.TurnGate())
+        ]
+
+    assert asyncio.run(run()) == [
+        {
+            "type": "lookup_started",
+            "keywords": "học phí",
+            "loai": "tra_cuu",
+            "tu_khoa": "học phí",
+        },
+        {"type": "lookup_finished", "loai": "tra_cuu_xong"},
+        {
+            "type": "text_delta",
+            "content": "Kết quả",
+            "loai": "chu",
+            "noi_dung": "Kết quả",
+        },
+        {
+            "type": "completed",
+            "content": "Kết quả",
+            "loai": "xong",
+            "noi_dung": "Kết quả",
+        },
+    ]
+
+
 class _Run:
     """Một lượt chạy giả của trợ lý: phát đúng chuỗi sự kiện được dựng sẵn."""
 
@@ -48,57 +121,45 @@ class _Run:
         self.final_output = final_output
         self._error = error
         self._delay = delay
+        self.conversation = None
 
-    async def stream_events(self):
+    async def stream(self, conversation):
+        self.conversation = conversation
         await asyncio.sleep(self._delay)
         for event in self._events:
             yield event
         if self._error is not None:
             raise self._error
+        if not any(event.kind == "completed" for event in self._events):
+            yield AgentEvent("completed", content=self.final_output)
 
 
-def _delta(text: str, kind: str = "response.output_text.delta"):
-    return SimpleNamespace(
-        type="raw_response_event", data=SimpleNamespace(type=kind, delta=text)
-    )
-
-
-def _reasoning(text: str):
-    return _delta(text, kind="response.reasoning_summary_text.delta")
+def _delta(text: str):
+    return AgentEvent("text_delta", content=text)
 
 
 def _tool_call(arguments: str):
-    return SimpleNamespace(
-        type="run_item_stream_event",
-        name="tool_called",
-        item=SimpleNamespace(raw_item=SimpleNamespace(arguments=arguments)),
-    )
+    parsed = json.loads(arguments)
+    keywords = parsed.get("keywords", ())
+    if isinstance(keywords, str):
+        keywords = (keywords,)
+    return AgentEvent("lookup_started", keywords=tuple(keywords))
 
 
 def _tool_output():
-    return SimpleNamespace(type="run_item_stream_event", name="tool_output")
+    return AgentEvent("lookup_finished")
 
 
 def _ask(monkeypatch, run, tmp_path, payload):
-    import agents
-
-    seen = {}
-
-    def fake(agent, conversation, **kwargs):
-        seen["conversation"] = conversation
-        return run
-
-    monkeypatch.setattr(agents.Runner, "run_streamed", fake)
-
     async def exercise():
-        transport = httpx.ASGITransport(app=create_app(object()))
+        transport = httpx.ASGITransport(app=create_app(run))
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             health = await client.get("/health")
             response = await client.post("/chat", json=payload)
         return health, response
 
     health, response = asyncio.run(exercise())
-    return health, response, seen.get("conversation")
+    return health, response, run.conversation
 
 
 @pytest.mark.parametrize(
@@ -134,8 +195,7 @@ def test_public_routes_require_the_configured_backend_token(method, path) -> Non
 def test_the_page_receives_words_as_the_assistant_writes_them(monkeypatch, tmp_path) -> None:
     run = _Run(
         [
-            _reasoning("User asks about course registration. Let's craft answer."),
-            _tool_call('{"tu_khoa": "đăng ký học phần"}'),
+            _tool_call('{"keywords": "đăng ký học phần"}'),
             _delta("Bạn "),
             _delta("cần..."),
         ],
@@ -150,87 +210,16 @@ def test_the_page_receives_words_as_the_assistant_writes_them(monkeypatch, tmp_p
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/event-stream")
     events = _sse(response.text)
-    # Phần lập luận của mô hình không thuộc về người đọc: nó là tiếng Anh và nói
-    # về việc soạn câu, nên nó phải bị bỏ chứ không được chảy ra màn hình.
-    assert [event["loai"] for event in events] == ["tra_cuu", "chu", "chu", "xong"]
-    assert "craft answer" not in response.text
-    assert events[0]["tu_khoa"] == "đăng ký học phần"
-    assert "".join(e["noi_dung"] for e in events if e["loai"] == "chu") == "Bạn cần..."
-
-
-def test_cached_tool_calls_keep_the_existing_sse_sequence(monkeypatch) -> None:
-    """A cache hit must not bypass the lifecycle events shown to the page."""
-
-    from agents.tool_context import ToolContext
-    from ontchatbot.runtime import agent as agent_runtime
-
-    order = []
-
-    class FakePool:
-        def __init__(self, _chatbot, **_kwargs) -> None:
-            self._cached = False
-
-        async def __call__(self, keywords) -> str:
-            if not self._cached:
-                order.append("classifier")
-                self._cached = True
-            return json.dumps({"trang_thai": "co_du_lieu", "du_lieu": keywords})
-
-    monkeypatch.setattr(agent_runtime, "AsyncLookupPool", FakePool)
-    tool = agent_runtime.build_tool(object())
-    arguments = '{"tu_khoa":["học phí"]}'
-
-    class _ToolCallingRun:
-        final_output = "xong"
-
-        async def stream_events(self):
-            for call_id in ("mot", "hai"):
-                order.append("tool_called")
-                yield _tool_call(arguments)
-                await tool.on_invoke_tool(
-                    ToolContext(
-                        None,
-                        tool_name=tool.name,
-                        tool_call_id=call_id,
-                        tool_arguments=arguments,
-                    ),
-                    arguments,
-                )
-                order.append("tool_output")
-                yield _tool_output()
-
-    import agents
-
-    monkeypatch.setattr(
-        agents.Runner,
-        "run_streamed",
-        lambda _agent, _conversation, **_kwargs: _ToolCallingRun(),
-    )
-
-    async def exercise():
-        return [
-            json.loads(event[len("data: ") :])
-            async for event in api._stream(
-                SimpleNamespace(tools=[tool]), "học phí", [], api.TurnGate()
-            )
-        ]
-
-    events = asyncio.run(exercise())
-
-    assert [event["loai"] for event in events] == [
-        "tra_cuu",
-        "tra_cuu_xong",
-        "tra_cuu",
-        "tra_cuu_xong",
-        "xong",
+    assert [event["type"] for event in events] == [
+        "lookup_started",
+        "text_delta",
+        "text_delta",
+        "completed",
     ]
-    assert order == [
-        "tool_called",
-        "classifier",
-        "tool_output",
-        "tool_called",
-        "tool_output",
-    ]
+    assert events[0]["keywords"] == "đăng ký học phần"
+    assert "".join(
+        event["content"] for event in events if event["type"] == "text_delta"
+    ) == "Bạn cần..."
 
 
 def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path, caplog) -> None:
@@ -246,8 +235,8 @@ def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path, caplog) ->
         _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
 
     events = _sse(response.text)
-    assert events[-1]["loai"] == "loi"
-    assert "mất kết nối" in events[-1]["noi_dung"]
+    assert events[-1]["type"] == "error"
+    assert "mất kết nối" in events[-1]["content"]
     metrics = _terminal_metrics(caplog)
     assert metrics["sse_events"] == "2"
     assert metrics["sse_bytes"] == str(len(response.text.encode("utf-8")))
@@ -265,8 +254,8 @@ def test_a_model_turn_timeout_reaches_the_page_as_a_readable_error(
     _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí"})
 
     last = _sse(response.text)[-1]
-    assert last["loai"] == "loi"
-    assert "quá thời gian chờ" in last["noi_dung"]
+    assert last["type"] == "error"
+    assert "quá thời gian chờ" in last["content"]
 
 
 def test_history_comes_from_the_page_and_is_filtered(monkeypatch, tmp_path) -> None:
@@ -325,8 +314,8 @@ def test_the_page_is_told_when_old_history_is_trimmed(monkeypatch, tmp_path) -> 
     )
 
     first = _sse(response.text)[0]
-    assert first["loai"] == "canh_bao"
-    assert "lượt cũ" in first["noi_dung"]
+    assert first["type"] == "warning"
+    assert "lượt cũ" in first["content"]
 
 
 def test_the_page_cannot_send_an_empty_turn(tmp_path) -> None:
@@ -372,13 +361,13 @@ def test_a_turn_that_produces_no_words_still_says_something(monkeypatch, tmp_pat
     khoảng trống đó phải thành một câu nói rõ là chưa có câu trả lời.
     """
 
-    run = _Run([_tool_call('{"tu_khoa": "học phí"}')], final_output="")
+    run = _Run([_tool_call('{"keywords": "học phí"}')], final_output="")
 
     _, response, _ = _ask(monkeypatch, run, tmp_path, {"message": "học phí và bảo lưu"})
 
     cuoi = _sse(response.text)[-1]
-    assert cuoi["loai"] == "xong"
-    assert "chưa tạo được câu trả lời" in cuoi["noi_dung"]
+    assert cuoi["type"] == "completed"
+    assert "chưa tạo được câu trả lời" in cuoi["content"]
 
 
 def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
@@ -391,7 +380,7 @@ def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
     """
 
     run = _Run(
-        [_tool_call('{"tu_khoa": "đăng ký học phần"}'), _delta("Bạn cần...")],
+        [_tool_call('{"keywords": "đăng ký học phần"}'), _delta("Bạn cần...")],
         final_output="Bạn cần nộp đơn.",
     )
 
@@ -418,7 +407,7 @@ def test_terminal_turn_log_has_bounded_metrics_and_debug_keeps_content(
         assert field in info
     assert question not in info
     assert answer not in info
-    assert '{"tu_khoa": "đăng ký học phần"}' not in info
+    assert '{"keywords": "đăng ký học phần"}' not in info
     assert question in debug
     assert answer in debug
     metrics = _terminal_metrics(caplog)
@@ -446,15 +435,10 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
     nhật ký đi tìm sự cố không tồn tại.
     """
 
-    import agents
-
     run = _Run([_delta("Đang"), _delta(" viết")], final_output="Đang viết")
-    monkeypatch.setattr(
-        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
-    )
 
     async def exercise():
-        stream = api._stream(object(), "học phí", [], api.TurnGate())
+        stream = api._stream(run, "học phí", [], api.TurnGate())
         chunk = await anext(stream)
         await stream.aclose()
         return chunk
@@ -473,13 +457,8 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
 def _held(monkeypatch, gate, delay=0):
     """Một lượt đang giữ chỗ chạy, dừng lại ở sự kiện cuối chứ chưa đóng."""
 
-    import agents
-
     run = _Run([], final_output="xong", delay=delay)
-    monkeypatch.setattr(
-        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
-    )
-    return api._stream(object(), "câu đang chạy", [], gate)
+    return api._stream(run, "câu đang chạy", [], gate)
 
 
 def test_a_turn_that_finds_every_slot_busy_is_told_where_it_stands(monkeypatch) -> None:
@@ -503,8 +482,8 @@ def test_a_turn_that_finds_every_slot_busy_is_told_where_it_stands(monkeypatch) 
 
     event = asyncio.run(exercise())
 
-    assert event["loai"] == "hang_doi"
-    assert event["vi_tri"] == 1
+    assert event["type"] == "queued"
+    assert event["position"] == 1
 
 
 def test_a_turn_arriving_at_a_full_queue_is_turned_away_politely(monkeypatch) -> None:
@@ -527,8 +506,8 @@ def test_a_turn_arriving_at_a_full_queue_is_turned_away_politely(monkeypatch) ->
 
     event = asyncio.run(exercise())
 
-    assert event["loai"] == "loi"
-    assert "nhiều người hỏi cùng lúc" in event["noi_dung"]
+    assert event["type"] == "error"
+    assert "nhiều người hỏi cùng lúc" in event["content"]
 
 
 def test_a_turn_that_waits_too_long_is_told_instead_of_left_hanging(monkeypatch) -> None:
@@ -547,8 +526,8 @@ def test_a_turn_that_waits_too_long_is_told_instead_of_left_hanging(monkeypatch)
 
     event = asyncio.run(exercise())
 
-    assert event["loai"] == "loi"
-    assert "chưa tới lượt bạn" in event["noi_dung"]
+    assert event["type"] == "error"
+    assert "chưa tới lượt bạn" in event["content"]
 
 
 def test_closing_a_tab_while_queued_gives_the_place_back(monkeypatch) -> None:
@@ -576,58 +555,27 @@ def test_closing_a_tab_while_queued_gives_the_place_back(monkeypatch) -> None:
 
     event = asyncio.run(exercise())
 
-    assert event["loai"] == "hang_doi", "chỗ trong hàng không được trả lại"
-
-
-def test_the_model_is_given_a_ceiling_on_how_many_steps_it_may_take(monkeypatch) -> None:
-    """Mặc định của thư viện là mười bước, mà không câu đo nào cần quá hai.
-
-    Không đặt trần thì một câu làm mô hình loay hoay tốn gấp năm lần bình thường,
-    và trần này nhân với số lượt chạy cùng lúc mới ra tổng số lượt gọi đang bay.
-    """
-
-    import agents
-
-    seen = {}
-
-    def fake(agent, conversation, **kwargs):
-        seen.update(kwargs)
-        return _Run([], final_output="xong")
-
-    monkeypatch.setattr(agents.Runner, "run_streamed", fake)
-
-    async def exercise():
-        async for _ in api._stream(object(), "học phí", [], api.TurnGate()):
-            pass
-
-    asyncio.run(exercise())
-
-    assert seen["max_turns"] == api.MAX_MODEL_STEPS
+    assert event["type"] == "queued", "chỗ trong hàng không được trả lại"
 
 
 def test_hitting_the_step_ceiling_reads_as_a_sentence_not_a_stack_trace(
     monkeypatch, caplog
 ) -> None:
-    from agents.exceptions import MaxTurnsExceeded
+    from ontchatbot.runtime.agent import AgentLoopLimitError
 
-    import agents
-
-    run = _Run([], final_output="", error=MaxTurnsExceeded("max turns exceeded"))
-    monkeypatch.setattr(
-        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: run
-    )
+    run = _Run([], final_output="", error=AgentLoopLimitError("max turns exceeded"))
 
     async def exercise():
         return [
             json.loads(chunk[len("data: ") :])
-            async for chunk in api._stream(object(), "học phí", [], api.TurnGate())
+            async for chunk in api._stream(run, "học phí", [], api.TurnGate())
         ]
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
         events = asyncio.run(exercise())
 
-    assert events[-1]["loai"] == "loi"
-    assert "tra đi tra lại" in events[-1]["noi_dung"]
+    assert events[-1]["type"] == "error"
+    assert "tra đi tra lại" in events[-1]["content"]
     assert "outcome=too-many-steps" in "\n".join(r.getMessage() for r in caplog.records)
 
 
@@ -639,15 +587,13 @@ def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> Non
     một đợt vào cùng lúc rồi đo đỉnh.
     """
 
-    import agents
-
     live = 0
     peak = 0
 
     class _Counting:
         final_output = "xong"
 
-        async def stream_events(self):
+        async def stream(self, _conversation):
             nonlocal live, peak
             live += 1
             peak = max(peak, live)
@@ -657,13 +603,11 @@ def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> Non
             finally:
                 live -= 1
 
-    monkeypatch.setattr(
-        agents.Runner, "run_streamed", lambda agent, conversation, **kwargs: _Counting()
-    )
+    agent = _Counting()
     gate = api.TurnGate(slots=16, queue_size=64, max_wait_seconds=10)
 
     async def one_turn():
-        async for _ in api._stream(object(), "câu hỏi", [], gate):
+        async for _ in api._stream(agent, "câu hỏi", [], gate):
             pass
 
     async def exercise():
@@ -708,6 +652,25 @@ def test_the_health_endpoint_answers_without_touching_the_model() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_health_does_not_initialize_the_deferred_runtime() -> None:
+    built = []
+
+    class Agent:
+        async def stream(self, _conversation):
+            built.append(object())
+            yield AgentEvent("completed", content="x")
+
+    async def exercise():
+        transport = httpx.ASGITransport(app=create_app(Agent()))
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.get("/health")
+
+    response = asyncio.run(exercise())
+
+    assert response.json() == {"status": "ok"}
+    assert built == []
 
 
 def test_the_configured_frontend_origin_can_call_the_api(monkeypatch) -> None:

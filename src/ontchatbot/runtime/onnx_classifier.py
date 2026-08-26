@@ -11,6 +11,7 @@ tách từ, chạy một lượt, rồi tra nhãn ra truy vấn.
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
 
@@ -21,6 +22,14 @@ from .cards import CardLookup
 from .generator import QueryGenerationError
 
 MAX_LENGTH = 48
+
+
+@dataclass(frozen=True)
+class OnnxAssets:
+    session: object
+    tokenizer: object
+    labels: tuple[tuple[str, tuple[str, ...]], ...]
+    pad_id: int
 
 
 class OnnxClassifierGenerator:
@@ -43,6 +52,14 @@ class OnnxClassifierGenerator:
         intra_op_threads: int = 2,
     ) -> OnnxClassifierGenerator:
         """Nạp đồ thị, bộ tách từ và bảng nhãn từ thư mục đã xuất."""
+        assets = cls.load_assets(model_dir, intra_op_threads=intra_op_threads)
+        return cls.from_assets(assets, graph=graph)
+
+    @classmethod
+    def load_assets(
+        cls, model_dir: Path, *, intra_op_threads: int = 2
+    ) -> OnnxAssets:
+        """Load model files without waiting for the ontology graph."""
         import onnxruntime as ort
         from tokenizers import Tokenizer
 
@@ -78,8 +95,20 @@ class OnnxClassifierGenerator:
             parts = key.split("|")
             labels.append((parts[0], tuple(parts[1:])))
 
+        return OnnxAssets(session, tokenizer, tuple(labels), pad_id)
+
+    @classmethod
+    def from_assets(
+        cls, assets: OnnxAssets, *, graph: rdflib.Graph | None = None
+    ) -> OnnxClassifierGenerator:
         lookup = CardLookup() if graph is None else CardLookup(_cards_for(graph))
-        return cls(session, tokenizer, labels, lookup, pad_id)
+        return cls(
+            assets.session,
+            assets.tokenizer,
+            assets.labels,
+            lookup,
+            assets.pad_id,
+        )
 
     @property
     def labels(self) -> Sequence[tuple[str, tuple[str, ...]]]:

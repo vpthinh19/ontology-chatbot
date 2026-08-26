@@ -3,16 +3,13 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
+from concurrent.futures import ThreadPoolExecutor
 import logging
 import os
 from pathlib import Path
 
-from ..runtime.agent import DEFAULT_BASE_URL, build_agent
 from ..runtime.api import TurnGate, create_app
-from ..runtime.onnx_classifier import OnnxClassifierGenerator
-from ..runtime.pipeline import OntologyChatbot
-from ..settings import ONTOLOGY_PATH, QUERY_CATALOGUE_PATH
+from ..settings import DEFAULT_LLM_BASE_URL
 
 
 logger = logging.getLogger(__name__)
@@ -62,38 +59,6 @@ def _log_cpu_budget(*, onnx_threads: int, lookup_workers: int) -> None:
         )
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(128 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _runtime_revisions() -> dict[str, str]:
-    """Return diagnostic revisions without reading the large model binary."""
-
-    return {
-        "model": os.environ.get("ONTCHATBOT_MODEL_REVISION", "unknown"),
-        "ontology": _sha256(ONTOLOGY_PATH),
-        "catalogue": _sha256(QUERY_CATALOGUE_PATH),
-    }
-
-
-def _log_runtime_profile(args: argparse.Namespace, revisions: dict[str, str]) -> None:
-    logger.info(
-        "Runtime profile: turn slots=%d queue=%d classification cache entries=%d "
-        "SPARQL cache=%d MiB revisions: model=%s ontology=%s catalogue=%s",
-        args.turn_slots,
-        args.turn_queue,
-        args.classification_cache_entries,
-        args.sparql_cache_mib,
-        revisions["model"],
-        revisions["ontology"],
-        revisions["catalogue"],
-    )
-
-
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -114,7 +79,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--base-url",
-        default=os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
+        default=os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_LLM_BASE_URL),
         help="địa chỉ máy chủ mô hình; hoặc đặt ONTCHATBOT_LLM_BASE_URL",
     )
     parser.add_argument("--host", default="127.0.0.1")
@@ -167,12 +132,8 @@ def _configure_logging(level: str) -> None:
     )
 
 
-def _build_agent(args: argparse.Namespace):
-    """Dựng trợ lý: mô hình ngôn ngữ lớn điều phối, công cụ tra đồ thị.
-
-    Khoá chỉ đọc từ môi trường và không có cờ dòng lệnh tương ứng, để nó không
-    lọt vào lịch sử lệnh hay danh sách tiến trình.
-    """
+def _validate_runtime_config(args: argparse.Namespace) -> None:
+    """Kiểm tra cấu hình nhẹ trước khi mở cổng, chưa nạp model hay ontology."""
 
     if not args.llm:
         raise SystemExit(
@@ -181,14 +142,86 @@ def _build_agent(args: argparse.Namespace):
         )
     if not os.environ.get("ONTCHATBOT_LLM_API_KEY"):
         raise SystemExit("chưa đặt ONTCHATBOT_LLM_API_KEY")
-    generator = OnnxClassifierGenerator.load(
-        args.model_dir, intra_op_threads=args.onnx_threads
+
+
+def _build_agent(args: argparse.Namespace):
+    """Build the complete runtime before the server reports healthy."""
+
+    import httpx
+
+    from ..runtime.agent import (
+        MODEL_REQUEST_TIMEOUT_SECONDS,
+        AgentLoop,
+        build_instructions,
+        look_up_async,
     )
-    return build_agent(
-        OntologyChatbot(generator),
-        model=args.llm,
-        base_url=args.base_url,
-        lookup_workers=args.lookup_workers,
+    from ..runtime.api import MAX_MODEL_STEPS
+    from ..runtime.llm import LightningClient
+
+    _validate_runtime_config(args)
+    pool = _build_lookup_pool(args)
+    http = httpx.AsyncClient(
+        base_url=args.base_url.rstrip("/") + "/",
+        headers={
+            "Authorization": f"Bearer {os.environ['ONTCHATBOT_LLM_API_KEY']}",
+            "Content-Type": "application/json",
+        },
+        timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
+    )
+
+    async def lookup(keywords: list[str]) -> str:
+        return await look_up_async(pool, keywords)
+
+    async def close() -> None:
+        await http.aclose()
+        await pool.aclose()
+
+    return AgentLoop(
+        LightningClient(http, model=args.llm),
+        lookup,
+        instructions=build_instructions(),
+        max_steps=MAX_MODEL_STEPS,
+        close=close,
+    )
+
+
+def _build_lookup_pool(args: argparse.Namespace):
+    """Load both heavy asset groups concurrently before the server starts."""
+
+    from ..runtime.lookup_pool import AsyncLookupPool
+    from ..runtime.onnx_classifier import OnnxClassifierGenerator
+    from ..runtime.pipeline import OntologyChatbot
+    from ..runtime.sparql import load_ontology
+
+    with ThreadPoolExecutor(
+        max_workers=2, thread_name_prefix="runtime-init"
+    ) as workers:
+        loaders = (
+            workers.submit(load_ontology),
+            workers.submit(
+                OnnxClassifierGenerator.load_assets,
+                args.model_dir,
+                intra_op_threads=args.onnx_threads,
+            ),
+        )
+        loaded = []
+        for loader in loaders:
+            try:
+                loaded.append(loader.result())
+            except BaseException as exc:
+                loaded.append(exc)
+
+    failure = next(
+        (result for result in loaded if isinstance(result, BaseException)), None
+    )
+    if failure is not None:
+        loaded.clear()
+        raise failure
+    graph, assets = loaded
+    generator = OnnxClassifierGenerator.from_assets(assets, graph=graph)
+    return AsyncLookupPool(
+        OntologyChatbot(generator, graph=graph),
+        workers=args.lookup_workers,
         classification_cache_entries=args.classification_cache_entries,
         sparql_cache_bytes=args.sparql_cache_mib * 1024 * 1024,
     )
@@ -203,11 +236,12 @@ def main() -> None:
     if not backend_token:
         raise SystemExit("chưa đặt ONTCHATBOT_BACKEND_TOKEN")
     args = _parse_args()
+    _validate_runtime_config(args)
     _configure_logging(args.log_level)
     _log_cpu_budget(
         onnx_threads=args.onnx_threads, lookup_workers=args.lookup_workers
     )
-    _log_runtime_profile(args, _runtime_revisions())
+
     # ``log_config=None`` để máy chủ web không dựng cấu hình nhật ký riêng của
     # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc
     # thời gian, nên nhật ký trộn hai kiểu dòng: dòng của dịch vụ có giờ, dòng

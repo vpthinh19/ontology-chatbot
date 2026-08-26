@@ -43,14 +43,14 @@ def git_blob_id(path: Path) -> str:
     return hashlib.sha1(b"blob %d\0" % len(data) + data).hexdigest()
 
 
-def kiem_thu_muc(model_dir: Path) -> list[Path]:
-    thieu = [ten for ten in REQUIRED if not (model_dir / ten).is_file()]
-    if thieu:
-        raise SystemExit(f"thiếu tệp trong {model_dir}: {', '.join(thieu)}")
-    return [model_dir / ten for ten in REQUIRED]
+def validate_model_directory(model_dir: Path) -> list[Path]:
+    missing = [name for name in REQUIRED if not (model_dir / name).is_file()]
+    if missing:
+        raise SystemExit(f"thiếu tệp trong {model_dir}: {', '.join(missing)}")
+    return [model_dir / name for name in REQUIRED]
 
 
-def kiem_do_thi_chay_duoc(model_dir: Path) -> int:
+def validate_onnx_model(model_dir: Path) -> int:
     """Chạy thử một câu để không đẩy lên một đồ thị hỏng.
 
     Nạp bằng đúng lớp mà dịch vụ dùng, nên lỗi nào chặn dịch vụ khởi động thì cũng
@@ -63,33 +63,39 @@ def kiem_do_thi_chay_duoc(model_dir: Path) -> int:
     return len(generator.labels)
 
 
-def ma_bam_tren_kho(api, repo: str, revision: str) -> dict[str, tuple[str, str]]:
+def remote_hashes(api, repo: str, revision: str) -> dict[str, tuple[str, str]]:
     """Mã băm kho khai cho từng tệp: ``{đường dẫn: (kiểu, mã băm)}``."""
     info = api.model_info(repo, revision=revision, files_metadata=True)
-    ket_qua = {}
-    for tep in info.siblings:
-        if tep.lfs is not None:
-            ket_qua[tep.rfilename] = ("sha256", tep.lfs.sha256)
-        elif tep.blob_id is not None:
-            ket_qua[tep.rfilename] = ("blob", tep.blob_id)
-    return ket_qua
+    hashes = {}
+    for file_info in info.siblings:
+        if file_info.lfs is not None:
+            hashes[file_info.rfilename] = ("sha256", file_info.lfs.sha256)
+        elif file_info.blob_id is not None:
+            hashes[file_info.rfilename] = ("blob", file_info.blob_id)
+    return hashes
 
 
-def doi_chieu(tep_local: list[Path], tren_kho: dict, path_in_repo: str) -> list[str]:
+def compare_remote_files(
+    local_files: list[Path], remote_files: dict, path_in_repo: str
+) -> list[str]:
     """Trả về danh sách lệch; rỗng nghĩa là kho mang đúng nội dung vừa đẩy."""
-    lech = []
-    for tep in tep_local:
-        khoa = f"{path_in_repo}/{tep.name}" if path_in_repo else tep.name
-        if khoa not in tren_kho:
-            lech.append(f"{khoa}: kho không có tệp này")
+    mismatches = []
+    for file_path in local_files:
+        key = f"{path_in_repo}/{file_path.name}" if path_in_repo else file_path.name
+        if key not in remote_files:
+            mismatches.append(f"{key}: kho không có tệp này")
             continue
-        kieu, tren = tren_kho[khoa]
-        duoi = sha256_file(tep) if kieu == "sha256" else git_blob_id(tep)
-        dau = "khớp" if duoi == tren else "LỆCH"
-        print(f"  {dau:<6} {khoa:<34} {kieu} {tren[:16]}…")
-        if duoi != tren:
-            lech.append(f"{khoa}: kho {tren}, tại máy {duoi}")
-    return lech
+        hash_type, remote_hash = remote_files[key]
+        local_hash = (
+            sha256_file(file_path)
+            if hash_type == "sha256"
+            else git_blob_id(file_path)
+        )
+        marker = "khớp" if local_hash == remote_hash else "LỆCH"
+        print(f"  {marker:<6} {key:<34} {hash_type} {remote_hash[:16]}…")
+        if local_hash != remote_hash:
+            mismatches.append(f"{key}: kho {remote_hash}, tại máy {local_hash}")
+    return mismatches
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -109,16 +115,19 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> None:
     args = _parse_args(argv)
-    tep_local = kiem_thu_muc(args.model_dir)
+    local_files = validate_model_directory(args.model_dir)
 
-    tong = sum(tep.stat().st_size for tep in tep_local)
-    print(f"{args.model_dir} · {len(tep_local)} tệp · {tong / 1e9:.2f} GB")
+    total_bytes = sum(file_path.stat().st_size for file_path in local_files)
+    print(f"{args.model_dir} · {len(local_files)} tệp · {total_bytes / 1e9:.2f} GB")
     print(
         f"đồ thị chạy được trên CPU, "
-        f"{kiem_do_thi_chay_duoc(args.model_dir)} nhãn\n"
+        f"{validate_onnx_model(args.model_dir)} nhãn\n"
     )
-    for tep in tep_local:
-        print(f"  {tep.name:<24} {tep.stat().st_size:>13,} B  sha256 {sha256_file(tep)[:16]}…")
+    for file_path in local_files:
+        print(
+            f"  {file_path.name:<24} {file_path.stat().st_size:>13,} B  "
+            f"sha256 {sha256_file(file_path)[:16]}…"
+        )
 
     if args.dry_run:
         print("\n--dry-run: dừng trước khi đẩy")
@@ -140,10 +149,13 @@ def main(argv: list[str] | None = None) -> None:
     )
 
     print("\nđối chiếu mã băm kho khai với mã băm tính tại máy:")
-    lech = doi_chieu(tep_local, ma_bam_tren_kho(api, args.repo, args.revision),
-                     args.path_in_repo)
-    if lech:
-        print("\n".join(f"  {dong}" for dong in lech), file=sys.stderr)
+    mismatches = compare_remote_files(
+        local_files,
+        remote_hashes(api, args.repo, args.revision),
+        args.path_in_repo,
+    )
+    if mismatches:
+        print("\n".join(f"  {line}" for line in mismatches), file=sys.stderr)
         raise SystemExit("kho KHÔNG mang đúng nội dung vừa đẩy")
 
     sha = getattr(commit, "oid", None) or api.model_info(args.repo, revision=args.revision).sha

@@ -62,19 +62,19 @@ def load_workload(path: Path) -> list[list[str]]:
 
     batches: list[list[str]] = []
     for index, item in enumerate(payload):
-        if not isinstance(item, dict) or "tu_khoa" not in item:
-            raise ValueError(f"invalid workload item {index}: expected tu_khoa")
-        keywords = item["tu_khoa"]
+        if not isinstance(item, dict):
+            raise ValueError(f"invalid workload item {index}: expected keywords")
+        keywords = item.get("keywords", item.get("tu_khoa"))
         if not isinstance(keywords, list) or not all(
             isinstance(keyword, str) and keyword.strip() for keyword in keywords
         ):
             raise ValueError(
-                f"invalid workload item {index}: tu_khoa must be non-blank strings"
+                f"invalid workload item {index}: keywords must be non-blank strings"
             )
         if keywords:
             batches.append(keywords)
     if not batches:
-        raise ValueError("invalid workload: no non-empty tu_khoa lists")
+        raise ValueError("invalid workload: no non-empty keywords lists")
     return batches
 
 

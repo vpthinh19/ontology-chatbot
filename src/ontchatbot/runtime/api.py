@@ -18,6 +18,7 @@ import os
 import secrets
 import time
 import uuid
+from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator, Sequence
 
 #: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
@@ -89,14 +90,19 @@ _TOO_MANY_STEPS_MESSAGE = (
     "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
     "hoặc tách thành từng ý nhỏ."
 )
+_LEGACY_EVENT_KINDS = {
+    "text_delta": "chu",
+    "lookup_started": "tra_cuu",
+    "lookup_finished": "tra_cuu_xong",
+    "queued": "hang_doi",
+    "warning": "canh_bao",
+    "completed": "xong",
+    "error": "loi",
+}
 #: 256 KiB rộng hơn nhiều so với 20 tin nhắn hội thoại học vụ thông thường,
 #: nhưng đủ nhỏ để mỗi kết nối đang đọc body có mức dùng bộ nhớ hữu hạn.
 MAX_REQUEST_BODY_BYTES = 256 * 1024
 _REQUEST_TOO_LARGE_MESSAGE = "Yêu cầu quá lớn; kích thước tối đa là 256 KiB."
-#: Mô hình phát hai luồng chữ: phần lập luận riêng của nó, và câu trả lời. Chỉ
-#: câu trả lời mới thuộc về người đọc; phần lập luận là tiếng Anh, dài gấp rưỡi,
-#: và nói về việc soạn câu chứ không nói về học vụ.
-_ANSWER_DELTA = "response.output_text.delta"
 #: Một lượt chạy có thể kết thúc mà mô hình không viết câu nào - nó gọi công cụ
 #: rồi dừng. Người dùng không phân biệt được chuyện đó với hệ thống treo, nên
 #: khoảng trống phải thành một câu nói rõ là chưa có câu trả lời.
@@ -137,7 +143,14 @@ def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
 def _event(kind: str, **fields: Any) -> str:
     """Một sự kiện theo khuôn server-sent events."""
 
-    return f"data: {json.dumps({'loai': kind, **fields}, ensure_ascii=False)}\n\n"
+    payload = {"type": kind, **fields, "loai": _LEGACY_EVENT_KINDS[kind]}
+    if "content" in fields:
+        payload["noi_dung"] = fields["content"]
+    if "keywords" in fields:
+        payload["tu_khoa"] = fields["keywords"]
+    if "position" in fields:
+        payload["vi_tri"] = fields["position"]
+    return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 
 class TurnGate:
@@ -201,10 +214,6 @@ class TurnGate:
 async def _stream(
     agent, message: str, history: Sequence[Any], gate: TurnGate
 ) -> AsyncIterator[str]:
-    from agents import Runner
-    from agents.exceptions import MaxTurnsExceeded
-    from openai import APITimeoutError
-
     conversation, history_trimmed = _bounded_history(history)
     turn = uuid.uuid4().hex[:12]
     started = time.perf_counter()
@@ -238,13 +247,13 @@ async def _stream(
         place = gate.join()
         if place is None:
             outcome = "busy"
-            yield emit("loi", noi_dung=_BUSY_MESSAGE)
+            yield emit("error", content=_BUSY_MESSAGE)
             return
         queued = place > 0
         if queued:
             # Xếp hàng mà im lặng thì nhìn y hệt hệ thống treo, nên vị trí phải
             # ra tới trình duyệt trước khi bắt đầu chờ chứ không phải sau.
-            yield emit("hang_doi", vi_tri=place)
+            yield emit("queued", position=place)
         try:
             queue_started = time.perf_counter()
             try:
@@ -253,7 +262,7 @@ async def _stream(
                 queue_ms = (time.perf_counter() - queue_started) * 1000
         except TimeoutError:
             outcome = "queue-timeout"
-            yield emit("loi", noi_dung=_QUEUE_TIMEOUT_MESSAGE)
+            yield emit("error", content=_QUEUE_TIMEOUT_MESSAGE)
             return
         finally:
             # Nhả chỗ trong hàng ngay khi hết chờ, chờ được hay không cũng vậy.
@@ -263,49 +272,50 @@ async def _stream(
                 gate.leave()
                 queued = False
         holding = True
+        import httpx
+
+        from .agent import AgentLoopLimitError
+
         try:
             async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
-                result = Runner.run_streamed(
-                    agent, conversation, max_turns=MAX_MODEL_STEPS
-                )
                 if history_trimmed:
-                    yield emit("canh_bao", noi_dung=_HISTORY_TRIMMED_MESSAGE)
-                async for event in result.stream_events():
-                    if event.type == "raw_response_event":
-                        if getattr(event.data, "type", None) != _ANSWER_DELTA:
-                            continue
-                        delta = getattr(event.data, "delta", None)
-                        if isinstance(delta, str) and delta:
-                            yield emit("chu", noi_dung=delta)
-                    elif event.type == "run_item_stream_event":
-                        # Người dùng cần thấy trợ lý đang tra cứu, nếu không quãng chờ
-                        # giữa các lần gọi công cụ trông như hệ thống đứng máy.
-                        if event.name == "tool_called":
-                            keywords = _tool_input(event.item)
-                            lookups += 1
-                            logger.debug("turn=%s lookup=%r", turn, keywords)
-                            yield emit("tra_cuu", tu_khoa=keywords)
-                        elif event.name == "tool_output":
-                            yield emit("tra_cuu_xong")
-        except (TimeoutError, APITimeoutError):
+                    yield emit("warning", content=_HISTORY_TRIMMED_MESSAGE)
+                completed = False
+                async for event in agent.stream(conversation):
+                    if event.kind == "text_delta" and event.content:
+                        yield emit("text_delta", content=event.content)
+                    elif event.kind == "lookup_started":
+                        keywords = " · ".join(event.keywords)
+                        lookups += 1
+                        logger.debug("turn=%s lookup=%r", turn, keywords)
+                        yield emit("lookup_started", keywords=keywords)
+                    elif event.kind == "lookup_finished":
+                        yield emit("lookup_finished")
+                    elif event.kind == "completed":
+                        answer = event.content or _EMPTY_ANSWER
+                        outcome = "ok"
+                        completed = True
+                        yield emit("completed", content=answer)
+                if not completed:
+                    answer = _EMPTY_ANSWER
+                    outcome = "ok"
+                    yield emit("completed", content=answer)
+        except (TimeoutError, httpx.TimeoutException):
             outcome = "timeout"
-            yield emit("loi", noi_dung=_MODEL_TIMEOUT_MESSAGE)
+            yield emit("error", content=_MODEL_TIMEOUT_MESSAGE)
             return
-        except MaxTurnsExceeded:
+        except AgentLoopLimitError:
             # Ghi ở mức cảnh báo chứ không phải lỗi: trần này do ta đặt, và nếu
             # có câu hỏi thật cần nhiều bước hơn thì đây là chỗ nó lộ ra.
             outcome = "too-many-steps"
             logger.warning("turn=%s hit the ceiling of %d steps", turn, MAX_MODEL_STEPS)
-            yield emit("loi", noi_dung=_TOO_MANY_STEPS_MESSAGE)
+            yield emit("error", content=_TOO_MANY_STEPS_MESSAGE)
             return
         except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
             outcome = "error"
             logger.exception("turn=%s failed", turn)
-            yield emit("loi", noi_dung=str(exc))
+            yield emit("error", content=str(exc))
             return
-        answer = str(result.final_output or "") or _EMPTY_ANSWER
-        outcome = "ok"
-        yield emit("xong", noi_dung=answer)
     finally:
         # Trong ``finally`` để một lượt luôn nhả chỗ và luôn đóng sổ, kể cả khi
         # trình duyệt ngắt kết nối giữa chừng và bộ sinh này bị đóng ngay tại một
@@ -330,27 +340,6 @@ async def _stream(
         logger.debug("turn=%s answer=%r", turn, answer)
 
 
-def _tool_input(item: Any) -> str:
-    """Từ khoá mà trợ lý gửi cho công cụ, để hiện lên giao diện."""
-
-    raw = getattr(getattr(item, "raw_item", None), "arguments", None)
-    if not isinstance(raw, str):
-        return ""
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError:
-        return raw
-    return _flatten(parsed)
-
-
-def _flatten(value: Any) -> str:
-    if isinstance(value, dict):
-        return " · ".join(_flatten(item) for item in value.values())
-    if isinstance(value, (list, tuple)):
-        return " · ".join(_flatten(item) for item in value)
-    return str(value)
-
-
 def create_app(
     agent,
     gate: TurnGate | None = None,
@@ -358,18 +347,97 @@ def create_app(
     backend_token: str | None = None,
 ):
     try:
-        from fastapi import Depends, FastAPI, HTTPException
-        from fastapi.middleware.cors import CORSMiddleware
-        from fastapi.responses import StreamingResponse
+        from starlette.applications import Starlette
+        from starlette.middleware.cors import CORSMiddleware
         from starlette.requests import Request
+        from starlette.responses import JSONResponse, StreamingResponse
+        from starlette.routing import Route
     except ImportError as exc:  # pragma: no cover - requires inference extra.
         raise RuntimeError("install the inference extra to serve the API") from exc
 
-    # Lấy phiên bản từ chính gói, không chép lại con số: nâng phiên bản ở một
-    # chỗ thì API báo theo ngay, khỏi lệch âm thầm.
-    from .. import __version__
+    gate = gate if gate is not None else TurnGate()
 
-    app = FastAPI(title="NTU Ontology Chatbot", version=__version__)
+    def authorize(request: Request):
+        if backend_token is None:
+            return None
+        scheme, separator, candidate = request.headers.get(
+            "authorization", ""
+        ).partition(" ")
+        authorized = (
+            separator == " "
+            and scheme.lower() == "bearer"
+            and secrets.compare_digest(
+                candidate.encode("utf-8"), backend_token.encode("utf-8")
+            )
+        )
+        if authorized:
+            return None
+        return JSONResponse(
+            {"detail": "Unauthorized"},
+            status_code=401,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    def error(status_code: int, detail: str):
+        return JSONResponse({"detail": detail}, status_code=status_code)
+
+    async def health(request: Request):
+        denied = authorize(request)
+        return denied or JSONResponse({"status": "ok"})
+
+    async def chat(request: Request):
+        denied = authorize(request)
+        if denied is not None:
+            return denied
+        content_length = request.headers.get("content-length")
+        if content_length is not None:
+            try:
+                declared_size = int(content_length)
+            except ValueError:
+                return error(400, "Content-Length must be an integer")
+            if declared_size > MAX_REQUEST_BODY_BYTES:
+                return error(413, _REQUEST_TOO_LARGE_MESSAGE)
+
+        body = bytearray()
+        async for chunk in request.stream():
+            if len(body) + len(chunk) > MAX_REQUEST_BODY_BYTES:
+                return error(413, _REQUEST_TOO_LARGE_MESSAGE)
+            body.extend(chunk)
+        try:
+            payload = json.loads(body)
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return error(400, "request body must be valid JSON")
+        if not isinstance(payload, dict):
+            return error(400, "request body must be an object")
+
+        message = payload.get("message")
+        if not isinstance(message, str) or not message.strip():
+            return error(400, "message must be non-empty text")
+        history = payload.get("history") or []
+        if not isinstance(history, list):
+            return error(400, "history must be a list")
+        return StreamingResponse(
+            _stream(agent, message.strip(), history, gate),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
+
+    @asynccontextmanager
+    async def lifespan(_app):
+        try:
+            yield
+        finally:
+            close = getattr(agent, "aclose", None)
+            if close is not None:
+                await close()
+
+    app = Starlette(
+        routes=[
+            Route("/health", health, methods=["GET"]),
+            Route("/chat", chat, methods=["POST"]),
+        ],
+        lifespan=lifespan,
+    )
     frontend_origins = [
         origin.strip().rstrip("/")
         for origin in os.environ.get("ONTCHATBOT_CORS_ORIGINS", "").split(",")
@@ -387,75 +455,5 @@ def create_app(
             allow_headers=["Authorization", "Content-Type"],
             max_age=600,
         )
-    # Một cửa vào cho cả tiến trình, không phải mỗi lượt một cái: nó chỉ có nghĩa
-    # khi mọi lượt cùng đi qua đúng một cái. Phép kiểm đưa cửa hẹp hơn vào đây.
-    gate = gate if gate is not None else TurnGate()
-
-    async def require_backend_token(request: Request) -> None:
-        if backend_token is None:
-            return
-        scheme, separator, candidate = request.headers.get(
-            "authorization", ""
-        ).partition(" ")
-        authorized = (
-            separator == " "
-            and scheme.lower() == "bearer"
-            and secrets.compare_digest(
-                candidate.encode("utf-8"), backend_token.encode("utf-8")
-            )
-        )
-        if not authorized:
-            raise HTTPException(
-                status_code=401,
-                detail="Unauthorized",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-
-    require_backend_token.__annotations__["request"] = Request
-
-    @app.get("/health", dependencies=[Depends(require_backend_token)])
-    async def health() -> dict[str, str]:
-        return {"status": "ok"}
-
-    async def chat(request):
-        content_length = request.headers.get("content-length")
-        if content_length is not None:
-            try:
-                declared_size = int(content_length)
-            except ValueError:
-                raise HTTPException(
-                    status_code=400, detail="Content-Length must be an integer"
-                ) from None
-            if declared_size > MAX_REQUEST_BODY_BYTES:
-                raise HTTPException(status_code=413, detail=_REQUEST_TOO_LARGE_MESSAGE)
-
-        body = bytearray()
-        async for chunk in request.stream():
-            if len(body) + len(chunk) > MAX_REQUEST_BODY_BYTES:
-                raise HTTPException(status_code=413, detail=_REQUEST_TOO_LARGE_MESSAGE)
-            body.extend(chunk)
-        try:
-            payload = json.loads(body)
-        except (UnicodeDecodeError, json.JSONDecodeError):
-            raise HTTPException(status_code=400, detail="request body must be valid JSON") from None
-        if not isinstance(payload, dict):
-            raise HTTPException(status_code=400, detail="request body must be an object")
-
-        message = payload.get("message")
-        if not isinstance(message, str) or not message.strip():
-            raise HTTPException(status_code=400, detail="message must be non-empty text")
-        history = payload.get("history") or []
-        if not isinstance(history, list):
-            raise HTTPException(status_code=400, detail="history must be a list")
-        return StreamingResponse(
-            _stream(agent, message.strip(), history, gate),
-            media_type="text/event-stream",
-            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
-        )
-
-    # ``Request`` là phụ thuộc tuỳ chọn được nạp trong hàm này; gắn kiểu trước
-    # lúc đăng ký để FastAPI truyền request ASGI thay vì coi nó là query param.
-    chat.__annotations__["request"] = Request
-    app.post("/chat", dependencies=[Depends(require_backend_token)])(chat)
 
     return app

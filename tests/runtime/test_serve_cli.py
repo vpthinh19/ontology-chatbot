@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import re
+import subprocess
+import sys
+import threading
 import time
-from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -13,7 +16,6 @@ from ontchatbot.cli.serve import (
     _configure_logging,
     _log_cpu_budget,
     _parse_args,
-    _runtime_revisions,
 )
 
 
@@ -21,40 +23,131 @@ def _flags(*extra: str) -> list[str]:
     return ["--model-dir", "generator", "--llm", "mo-hinh-lon", *extra]
 
 
-def test_serve_passes_cpu_limits_to_the_classifier_and_agent(monkeypatch) -> None:
-    """Máy chủ dựng đúng một bộ chọn truy vấn và đưa nó cho trợ lý."""
+def test_importing_the_server_does_not_import_native_inference_libraries() -> None:
+    script = (
+        "import sys; import ontchatbot.cli.serve; "
+        "print(int('numpy' in sys.modules), int('rdflib' in sys.modules))"
+    )
+
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.stdout.strip() == "0 0"
+
+
+def test_eager_lookup_loads_model_assets_and_ontology_in_parallel(
+    monkeypatch,
+) -> None:
+    import ontchatbot.cli.serve as serve
+
     args = _parse_args(
         _flags(
             "--onnx-threads",
-            "3",
+            "2",
             "--lookup-workers",
-            "5",
+            "3",
             "--classification-cache-entries",
-            "6",
+            "4",
             "--sparql-cache-mib",
-            "7",
+            "5",
         )
     )
-    loaded, built = [], []
-    generator = SimpleNamespace()
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
+    started = threading.Barrier(2, timeout=1)
+    graph, assets, generator, pool = object(), object(), object(), object()
+
+    def load_ontology():
+        started.wait()
+        return graph
+
+    def load_assets(path, **kwargs):
+        assert str(path) == "generator"
+        assert kwargs == {"intra_op_threads": 2}
+        started.wait()
+        return assets
+
+    monkeypatch.setattr("ontchatbot.runtime.sparql.load_ontology", load_ontology)
     monkeypatch.setattr(
-        "ontchatbot.cli.serve.OnnxClassifierGenerator.load",
-        lambda path, **kwargs: loaded.append((path, kwargs)) or generator,
+        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.load_assets",
+        load_assets,
     )
     monkeypatch.setattr(
-        "ontchatbot.cli.serve.build_agent",
-        lambda chatbot, **kwargs: built.append((chatbot, kwargs)) or "tro-ly",
+        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.from_assets",
+        lambda candidate, *, graph: generator,
+    )
+    monkeypatch.setattr(
+        "ontchatbot.runtime.lookup_pool.AsyncLookupPool",
+        lambda chatbot, **kwargs: (
+            pool
+            if chatbot.generator is generator
+            and chatbot.graph is graph
+            and kwargs
+            == {
+                "workers": 3,
+                "classification_cache_entries": 4,
+                "sparql_cache_bytes": 5 * 1024 * 1024,
+            }
+            else pytest.fail("lookup pool received the wrong runtime configuration")
+        ),
     )
 
-    assert _build_agent(args) == "tro-ly"
-    assert loaded == [(Path("generator"), {"intra_op_threads": 3})]
-    chatbot, kwargs = built[0]
-    assert chatbot.generator is generator
-    assert kwargs["model"] == "mo-hinh-lon"
-    assert kwargs["lookup_workers"] == 5
-    assert kwargs["classification_cache_entries"] == 6
-    assert kwargs["sparql_cache_bytes"] == 7 * 1024 * 1024
+    assert serve._build_lookup_pool(args) is pool
+
+
+def test_eager_lookup_waits_for_both_loaders_when_one_fails(monkeypatch) -> None:
+    import ontchatbot.cli.serve as serve
+
+    args = _parse_args(_flags())
+    started = threading.Barrier(2, timeout=1)
+    onnx_finished = threading.Event()
+
+    def fail_ontology():
+        started.wait()
+        raise RuntimeError("ontology failed")
+
+    def load_onnx(_path, **_kwargs):
+        started.wait()
+        onnx_finished.set()
+        return object()
+
+    monkeypatch.setattr("ontchatbot.runtime.sparql.load_ontology", fail_ontology)
+    monkeypatch.setattr(
+        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.load_assets",
+        load_onnx,
+    )
+
+    with pytest.raises(RuntimeError, match="ontology failed"):
+        serve._build_lookup_pool(args)
+    assert onnx_finished.is_set()
+
+
+def test_building_the_agent_eagerly_loads_lookup_before_health(monkeypatch) -> None:
+    """A health-ready agent must already be able to run its lookup tool."""
+
+    import ontchatbot.cli.serve as serve
+
+    built = []
+
+    class Pool:
+        async def __call__(self, keywords):
+            return '{"du_lieu":[]}'
+
+        async def aclose(self):
+            pass
+
+    def build_pool(_args):
+        built.append("lookup")
+        return Pool()
+
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
+    monkeypatch.setattr(serve, "_build_lookup_pool", build_pool)
+
+    agent = _build_agent(_parse_args(_flags()))
+    assert built == ["lookup"]
+    asyncio.run(agent.aclose())
 
 
 def test_throughput_defaults_are_bounded(monkeypatch) -> None:
@@ -140,39 +233,6 @@ def test_zero_disables_completed_caches() -> None:
     assert (args.classification_cache_entries, args.sparql_cache_mib) == (0, 0)
 
 
-def test_runtime_revisions_hash_only_the_ontology_and_catalogue(
-    monkeypatch, tmp_path
-) -> None:
-    import ontchatbot.cli.serve as serve
-
-    ontology = tmp_path / "ontology.ttl"
-    catalogue = tmp_path / "catalogue.jsonl"
-    classifier = tmp_path / "classifier.onnx"
-    ontology.write_text("ontology", encoding="utf-8")
-    catalogue.write_text("catalogue", encoding="utf-8")
-    classifier.write_text("model contents must not be read", encoding="utf-8")
-    monkeypatch.setattr(serve, "ONTOLOGY_PATH", ontology)
-    monkeypatch.setattr(serve, "QUERY_CATALOGUE_PATH", catalogue)
-    monkeypatch.setenv("ONTCHATBOT_MODEL_REVISION", "release-7")
-
-    opened = []
-    original_open = Path.open
-
-    def track_open(path, *args, **kwargs):
-        opened.append(path)
-        if path == classifier:
-            raise AssertionError("the model file must never be hashed at startup")
-        return original_open(path, *args, **kwargs)
-
-    monkeypatch.setattr(serve.Path, "open", track_open)
-
-    revisions = _runtime_revisions()
-
-    assert revisions["model"] == "release-7"
-    assert len(revisions["ontology"]) == len(revisions["catalogue"]) == 64
-    assert opened == [ontology, catalogue]
-
-
 def test_oversubscribed_cpu_budget_is_logged(monkeypatch, caplog) -> None:
     monkeypatch.setattr("ontchatbot.cli.serve._visible_cpu_count", lambda: 4)
 
@@ -217,6 +277,26 @@ def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_LLM_MODEL", "mo-hinh-lon")
     with pytest.raises(SystemExit):
         _build_agent(_parse_args(["--model-dir", "generator"]))
+
+
+def test_eager_server_rejects_missing_llm_credentials_before_loading_assets(
+    monkeypatch,
+) -> None:
+    import ontchatbot.cli.serve as serve
+
+    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
+    monkeypatch.delenv("ONTCHATBOT_LLM_API_KEY", raising=False)
+    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setitem(
+        __import__("sys").modules,
+        "uvicorn",
+        SimpleNamespace(
+            run=lambda *_args, **_kwargs: pytest.fail("server must not start")
+        ),
+    )
+
+    with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_API_KEY"):
+        serve.main()
 
 
 def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:
@@ -285,6 +365,7 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
     fake = SimpleNamespace(run=run)
     monkeypatch.setitem(__import__("sys").modules, "uvicorn", fake)
     monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
     monkeypatch.setattr(serve, "_build_agent", lambda args: object())
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
     configured = {}
@@ -295,12 +376,6 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
             agent=agent, gate=gate, backend_token=backend_token
         ) or object(),
     )
-    monkeypatch.setattr(serve, "_runtime_revisions", lambda: {
-        "model": "release-7",
-        "ontology": "a" * 64,
-        "catalogue": "b" * 64,
-    })
-
     with caplog.at_level(logging.INFO, logger="ontchatbot.cli.serve"):
         serve.main()
 
@@ -308,14 +383,34 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
     assert configured["backend_token"] == "server-secret"
     gate = configured["gate"]
     assert (gate._slots._value, gate._queue_size) == (16, 64)
-    startup = "\n".join(record.getMessage() for record in caplog.records)
-    assert "turn slots=16" in startup
-    assert "queue=64" in startup
-    assert "classification cache entries=4096" in startup
-    assert "SPARQL cache=64 MiB" in startup
-    assert "release-7" in startup
-    assert "a" * 64 in startup
-    assert "b" * 64 in startup
+
+
+def test_the_web_server_builds_the_complete_runtime_before_listening(monkeypatch) -> None:
+    import ontchatbot.cli.serve as serve
+
+    built = []
+    configured = {}
+    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
+    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setattr(
+        serve, "_build_agent", lambda args: built.append(args) or "tro-ly"
+    )
+    monkeypatch.setattr(
+        serve,
+        "create_app",
+        lambda runtime, **_kwargs: configured.update(runtime=runtime) or object(),
+    )
+    monkeypatch.setitem(
+        __import__("sys").modules,
+        "uvicorn",
+        SimpleNamespace(run=lambda *_args, **_kwargs: None),
+    )
+
+    serve.main()
+
+    assert built == [_parse_args(_flags())]
+    assert configured["runtime"] == "tro-ly"
 
 
 def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) -> None:
@@ -329,11 +424,5 @@ def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) ->
     )
     monkeypatch.setattr(serve, "_build_agent", lambda _args: object())
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    monkeypatch.setattr(
-        serve,
-        "_runtime_revisions",
-        lambda: {"model": "x", "ontology": "y", "catalogue": "z"},
-    )
-
     with pytest.raises(SystemExit, match="ONTCHATBOT_BACKEND_TOKEN"):
         serve.main()

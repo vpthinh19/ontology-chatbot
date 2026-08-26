@@ -142,9 +142,9 @@ jobs:
           CONTAINER=ontchatbot-smoke-${{ github.run_id }}
           # Dịch vụ đòi tên mô hình ngôn ngữ lớn và khoá truy cập ngay lúc khởi
           # động, nhưng /health không gọi ra ngoài, nên giá trị giả là đủ và
-          # phép chạy thử này không tiêu một lượt gọi nào. Nó kiểm được ảnh dựng
-          # xong có nạp nổi đồ thị phân loại và ontology rồi phục vụ hay không;
-          # nó KHÔNG kiểm được chất lượng câu trả lời.
+          # phép chạy thử này không tiêu một lượt gọi nào. Nó kiểm ảnh có thể
+          # eager-load model/ontology rồi mới phục vụ health; bước "Verify the
+          # CPU runtime" ngay trước đó còn chạy một inference thật.
           docker run --detach --name "$CONTAINER" \
             --env ONTCHATBOT_LLM_MODEL=ci-smoke-test \
             --env ONTCHATBOT_LLM_API_KEY=ci-smoke-test \

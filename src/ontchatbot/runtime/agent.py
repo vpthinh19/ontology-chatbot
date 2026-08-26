@@ -11,35 +11,18 @@ sai, còn đồ thị nhớ đúng nhưng không biết diễn đạt.
 from __future__ import annotations
 
 import json
-import os
+from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Any, Sequence
 
-from ..settings import ONTOLOGY_NS
-from .generator import QueryGenerationError
-from .lookup_pool import AsyncLookupPool
-from .pipeline import OntologyChatbot
+from ..settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_NS
 from .render import NO_INFORMATION_REPLY, dump_payload
-from .sparql import SparqlError
-from .sparql import load_ontology
 
-#: Điểm cuối mặc định. Máy chủ nhận cùng giao thức với OpenAI nên thư viện
-#: ``openai-agents`` dùng được mà không cần lớp chuyển đổi nào.
-DEFAULT_BASE_URL = "https://lightning.ai/api/v1/"
+#: Điểm cuối mặc định dùng giao thức chat-completions tương thích OpenAI.
+DEFAULT_BASE_URL = DEFAULT_LLM_BASE_URL
 #: Một yêu cầu HTTP có 30 giây để hoàn tất: cao hơn gần 50% so với ngưỡng vận
 #: hành 20,3 giây nhưng vẫn đủ ngắn để lỗi mạng không giữ người dùng chờ lâu.
 MODEL_REQUEST_TIMEOUT_SECONDS = 30.0
-#: Một lần thử lại hấp thụ lỗi kết nối thoáng qua; hạn toàn lượt ở tầng API vẫn
-#: chặn tổng thời gian dù cả hai lần gọi đều chậm.
-MODEL_MAX_RETRIES = 1
-#: Mức suy luận của mô hình điều phối: để nhà cung cấp tự chọn.
-#:
-#: Hạ xuống mức thấp thì ít lượt tra hơn, nhanh hơn, và hết ký hiệu nội bộ trong
-#: câu trả lời - nhưng cứ khoảng một trong mười lượt, mô hình gọi công cụ xong
-#: rồi kết thúc mà không viết câu nào. Một câu trả lời trống là hỏng nặng hơn
-#: mấy thứ kia cộng lại, nên không ghim mức thấp.
-REASONING_EFFORT = None
-
 #: Số tên mỗi loại nêu trong khuôn nhắc.
 #:
 #: Khuôn nhắc chỉ cần đủ để mô hình biết công cụ tra được những GÌ, rồi tự đoán
@@ -98,7 +81,138 @@ Kết quả là JSON. Cách đọc:
   vẫn có dữ liệu, nên đừng tra lại cả loạt.
 - `trang_thai=khong_co_thong_tin`: không từ khoá nào khớp. Chỉ lúc này mới thử
   thêm tối đa một lần bằng những cách gọi khác hẳn. Vẫn không có thì dừng và nói
-  không tìm thấy."""
+không tìm thấy."""
+
+TOOL_NAME = "lookup_academic_information"
+TOOL_SCHEMA = {
+    "type": "function",
+    "function": {
+        "name": TOOL_NAME,
+        "description": TOOL_DESCRIPTION,
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "keywords": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Danh sách cụm từ khoá ngắn.",
+                }
+            },
+            "required": ["keywords"],
+            "additionalProperties": False,
+        },
+    },
+}
+
+
+@dataclass(frozen=True)
+class AgentEvent:
+    kind: str
+    content: str = ""
+    keywords: tuple[str, ...] = ()
+
+
+class AgentLoopLimitError(RuntimeError):
+    """The model kept requesting more steps than this service permits."""
+
+
+class AgentProtocolError(RuntimeError):
+    """The model emitted a tool call outside the declared contract."""
+
+
+class AgentLoop:
+    def __init__(
+        self,
+        client: Any,
+        lookup: Callable[[list[str]], Awaitable[str]],
+        *,
+        instructions: str,
+        max_steps: int = 4,
+        close: Callable[[], Awaitable[None]] | None = None,
+    ) -> None:
+        self._client = client
+        self._lookup = lookup
+        self._instructions = instructions
+        self._max_steps = max_steps
+        self._close = close
+
+    async def aclose(self) -> None:
+        if self._close is not None:
+            await self._close()
+
+    async def stream(
+        self, messages: Sequence[dict[str, Any]]
+    ) -> AsyncIterator[AgentEvent]:
+        conversation = [
+            {"role": "system", "content": self._instructions},
+            *messages,
+        ]
+        for _step in range(self._max_steps):
+            answer_parts: list[str] = []
+            calls: dict[int, dict[str, str]] = {}
+            async for delta in self._client.stream(
+                messages=conversation, tools=[TOOL_SCHEMA]
+            ):
+                if delta.content:
+                    answer_parts.append(delta.content)
+                    yield AgentEvent("text_delta", content=delta.content)
+                for fragment in delta.tool_calls:
+                    call = calls.setdefault(
+                        fragment.index,
+                        {"id": "", "name": "", "arguments": ""},
+                    )
+                    call["id"] += fragment.call_id
+                    call["name"] += fragment.name
+                    call["arguments"] += fragment.arguments
+
+            if not calls:
+                yield AgentEvent("completed", content="".join(answer_parts))
+                return
+
+            tool_calls = [
+                {
+                    "id": call["id"],
+                    "type": "function",
+                    "function": {
+                        "name": call["name"],
+                        "arguments": call["arguments"],
+                    },
+                }
+                for _, call in sorted(calls.items())
+            ]
+            conversation.append(
+                {
+                    "role": "assistant",
+                    "content": "".join(answer_parts) or None,
+                    "tool_calls": tool_calls,
+                }
+            )
+            for tool_call in tool_calls:
+                function = tool_call["function"]
+                if function["name"] != TOOL_NAME:
+                    raise AgentProtocolError(
+                        f"unknown tool requested: {function['name']}"
+                    )
+                try:
+                    arguments = json.loads(function["arguments"])
+                    keywords = arguments["keywords"]
+                except (json.JSONDecodeError, KeyError, TypeError) as exc:
+                    raise AgentProtocolError("invalid lookup arguments") from exc
+                if not isinstance(keywords, list) or not all(
+                    isinstance(keyword, str) for keyword in keywords
+                ):
+                    raise AgentProtocolError("invalid lookup keywords")
+                yield AgentEvent("lookup_started", keywords=tuple(keywords))
+                result = await self._lookup(keywords)
+                yield AgentEvent("lookup_finished")
+                conversation.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": tool_call["id"],
+                        "content": result,
+                    }
+                )
+        raise AgentLoopLimitError("maximum agent steps exceeded")
 
 
 @dataclass(frozen=True)
@@ -111,6 +225,35 @@ class OntologyVocabulary:
     programs: tuple[str, ...]
 
 
+# Snapshot generated from the packaged ontology. Only the names actually used by
+# ``build_instructions`` are retained so health startup never parses RDF data.
+DEFAULT_VOCABULARY = OntologyVocabulary(
+    procedures=(
+        "Thủ tục chuyển ngành",
+        "Thủ tục chuyển trường",
+        "Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ",
+        "Thủ tục học liên thông",
+        "Thủ tục nghỉ học tạm thời",
+    ),
+    units=(
+        "Bộ môn",
+        "Khoa hoặc viện đào tạo",
+        "Phòng Công tác Chính trị và Sinh viên",
+    ),
+    forms=(
+        "Mục tải: - Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn",
+        "Mục tải: Mẫu số 13 - Đơn đăng ký học cùng lúc hai chương trình đào tạo",
+        "Mục tải: Phiếu báo điểm bổ sung",
+    ),
+    programs=(
+        "Công nghệ chế biến thủy sản",
+        "Công nghệ chế tạo máy",
+        "Công nghệ sinh học",
+        "Công nghệ thông tin",
+    ),
+)
+
+
 def read_vocabulary(graph=None, limit: int = NAMES_PER_KIND) -> OntologyVocabulary:
     """Đọc tên các quy trình, đơn vị, biểu mẫu và ngành từ chính đồ thị.
 
@@ -119,7 +262,10 @@ def read_vocabulary(graph=None, limit: int = NAMES_PER_KIND) -> OntologyVocabula
     được dạy rằng thủ tục mới không tồn tại.
     """
 
-    graph = graph if graph is not None else load_ontology()
+    if graph is None:
+        from .sparql import load_ontology
+
+        graph = load_ontology()
 
     def labels(class_name: str) -> tuple[str, ...]:
         query = (
@@ -168,7 +314,7 @@ def build_instructions(vocabulary: OntologyVocabulary | None = None) -> str:
     hỏi trợ lý giúp được gì, và lúc trợ lý cần gợi ý hướng hỏi tiếp.
     """
 
-    vocabulary = vocabulary or read_vocabulary()
+    vocabulary = vocabulary or DEFAULT_VOCABULARY
     topics = "".join(
         (
             _line("Thủ tục", vocabulary.procedures, 5),
@@ -183,7 +329,7 @@ Bạn KHÔNG biết quy định nào của trường này. Mọi điều bạn t
 chế, thủ tục, biểu mẫu, học phí hay ngành đào tạo của trường đều là của trường
 khác.
 
-Mọi câu hỏi về học vụ: GỌI `tra_cuu_hoc_vu` TRƯỚC, rồi mới trả lời dựa trên kết
+Mọi câu hỏi về học vụ: GỌI `lookup_academic_information` TRƯỚC, rồi mới trả lời dựa trên kết
 quả trả về. Chưa gọi công cụ thì chưa được trả lời. Công cụ không có dữ kiện thì
 nói là không tìm thấy, đừng suy đoán và đừng bịa số.
 
@@ -214,11 +360,11 @@ vài chủ đề tra được:
 
 
 def _bounded_keywords(
-    tu_khoa: Sequence[str] | str,
+    keywords: Sequence[str] | str,
 ) -> tuple[list[str], dict[str, int] | None]:
     """Chuẩn hoá đầu vào công cụ và giữ thời gian một lượt có giới hạn."""
 
-    raw_keywords = [tu_khoa] if isinstance(tu_khoa, str) else list(tu_khoa)
+    raw_keywords = [keywords] if isinstance(keywords, str) else list(keywords)
     shortened = 0
     normalized: list[str] = []
     for keyword in raw_keywords:
@@ -259,115 +405,15 @@ def _with_truncation_notice(reply: str, notice: dict[str, int] | None) -> str:
     return dump_payload(payload)
 
 
-def look_up(chatbot: OntologyChatbot, tu_khoa: Sequence[str] | str) -> str:
-    """Tra một chủ đề và luôn trả về đúng khuôn kết quả đã hẹn.
-
-    Truy vấn sinh ra hỏng là chuyện của tầng dưới; với người gọi thì nó không
-    khác gì không tìm thấy. Trợ lý đọc trạng thái trong kết quả để quyết định
-    tra lại hay dừng, mà một ngoại lệ thì không mang trạng thái đó - nó làm hỏng
-    cả lượt chạy thay vì thành một câu trả lời trung thực.
-    """
-
-    keywords, notice = _bounded_keywords(tu_khoa)
-    try:
-        reply = chatbot.answer_many(keywords)
-    except (QueryGenerationError, SparqlError):
-        reply = NO_INFORMATION_REPLY
-    return _with_truncation_notice(reply, notice)
-
-
-async def look_up_async(lookup, tu_khoa: Sequence[str] | str) -> str:
+async def look_up_async(lookup, keywords: Sequence[str] | str) -> str:
     """Apply the established tool boundary before calling the shared coordinator."""
 
-    keywords, notice = _bounded_keywords(tu_khoa)
+    from .generator import QueryGenerationError
+    from .sparql import SparqlError
+
+    keywords, notice = _bounded_keywords(keywords)
     try:
         reply = await lookup(keywords)
     except (QueryGenerationError, SparqlError):
         reply = NO_INFORMATION_REPLY
     return _with_truncation_notice(reply, notice)
-
-
-def build_tool(
-    chatbot: OntologyChatbot,
-    *,
-    lookup_workers: int = 4,
-    classification_cache_entries: int = 4096,
-    sparql_cache_bytes: int = 64 * 1024 * 1024,
-):
-    """Bọc đường tra cứu ontology thành một công cụ cho mô hình gọi.
-
-    Công cụ dựng trong hàm để nó giữ được ``chatbot`` đã cấu hình sẵn; thư viện
-    đọc chú thích của hàm bên trong để sinh mô tả công cụ, nên phần hướng dẫn
-    cách gọi nằm ngay trong chú thích đó.
-    """
-
-    from agents import function_tool
-
-    lookup = AsyncLookupPool(
-        chatbot,
-        workers=lookup_workers,
-        classification_cache_entries=classification_cache_entries,
-        sparql_cache_bytes=sparql_cache_bytes,
-    )
-
-    @function_tool(description_override=TOOL_DESCRIPTION)
-    async def tra_cuu_hoc_vu(tu_khoa: list[str]) -> str:
-        """Tra các chủ đề học vụ.
-
-        Args:
-            tu_khoa: Danh sách cụm từ khoá ngắn, ví dụ ["đăng ký học phần"].
-        """
-
-        return await look_up_async(lookup, tu_khoa)
-
-    return tra_cuu_hoc_vu
-
-
-def build_agent(
-    chatbot: OntologyChatbot,
-    *,
-    model: str,
-    base_url: str | None = None,
-    api_key: str | None = None,
-    lookup_workers: int = 4,
-    classification_cache_entries: int = 4096,
-    sparql_cache_bytes: int = 64 * 1024 * 1024,
-):
-    """Dựng trợ lý: một mô hình ngôn ngữ lớn kèm đúng một công cụ.
-
-    Máy chủ mô hình nói cùng giao thức với OpenAI, nên chỉ cần trỏ địa chỉ khác;
-    không có lớp chuyển đổi nào ở giữa.
-    """
-
-    from agents import Agent, ModelSettings, OpenAIChatCompletionsModel, set_tracing_disabled
-    from openai import AsyncOpenAI
-    from openai.types.shared import Reasoning
-
-    # Không gửi vết chạy ra dịch vụ ngoài: câu hỏi của người dùng là dữ liệu của
-    # trường, và điểm cuối này không phải OpenAI.
-    set_tracing_disabled(True)
-
-    client = AsyncOpenAI(
-        base_url=base_url or os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
-        api_key=api_key or os.environ.get("ONTCHATBOT_LLM_API_KEY", ""),
-        timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
-        max_retries=MODEL_MAX_RETRIES,
-    )
-    return Agent(
-        name="Trợ lý học vụ",
-        instructions=build_instructions(),
-        tools=[
-            build_tool(
-                chatbot,
-                lookup_workers=lookup_workers,
-                classification_cache_entries=classification_cache_entries,
-                sparql_cache_bytes=sparql_cache_bytes,
-            )
-        ],
-        model=OpenAIChatCompletionsModel(model=model, openai_client=client),
-        model_settings=(
-            ModelSettings(reasoning=Reasoning(effort=REASONING_EFFORT))
-            if REASONING_EFFORT
-            else ModelSettings()
-        ),
-    )

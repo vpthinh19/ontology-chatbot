@@ -25,6 +25,7 @@ assert sys.version_info[:2] == (3, 12)
 names = {d.metadata["Name"].lower().replace("_", "-") for d in metadata.distributions()}
 assert "onnxruntime" in names
 assert "onnxruntime-gpu" not in names
+assert not {"fastapi", "pydantic", "openai", "openai-agents"} & names
 assert not {name for name in names if name.startswith("nvidia-")}
 
 from ontchatbot.runtime.onnx_classifier import OnnxClassifierGenerator

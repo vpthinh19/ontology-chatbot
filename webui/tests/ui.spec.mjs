@@ -6,11 +6,48 @@ test("the page announces a cold start before the first health probe returns", as
   await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator(".server-status")).toContainText(
-    "Đang khởi động máy chủ",
+    "Đang kết nối máy chủ (15)",
     { timeout: 500 },
   );
   await expect(page.locator(".prompt-input")).toBeEnabled();
   await expect(page.locator("#send-prompt-btn")).toBeDisabled();
+});
+
+test("the connection status counts down without showing negative time", async ({ page }) => {
+  await page.clock.install();
+  await page.route("**/healthz", () => new Promise(() => {}));
+  await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
+
+  const status = page.locator(".server-status");
+  await expect(status).toContainText("Đang kết nối máy chủ (15)");
+
+  await page.clock.runFor(1_000);
+  await expect(status).toContainText("Đang kết nối máy chủ (14)");
+
+  await page.clock.runFor(14_000);
+  await expect(status).toContainText("Đang kết nối máy chủ (0)");
+
+  await page.clock.runFor(1_000);
+  await expect(status).toContainText("Đang kết nối máy chủ…");
+  await expect(status).not.toContainText("(-");
+});
+
+test("the page accepts the previous backend SSE field names during rollout", async ({ page }) => {
+  await page.route("**/healthz", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
+  );
+  await page.route("**/chat", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "text/event-stream",
+      body: 'data: {"loai":"chu","noi_dung":"Tương thích"}\n\ndata: {"loai":"xong","noi_dung":"Tương thích"}\n\n',
+    }),
+  );
+  await page.goto("http://127.0.0.1:4173");
+  await page.locator(".prompt-input").fill("Kiểm tra");
+  await page.locator("#send-prompt-btn").click();
+
+  await expect(page.locator(".bot-message .message-text").last()).toContainText("Tương thích");
 });
 
 test("suggestions share the content column and remain comfortably readable", async ({ page }) => {
@@ -159,7 +196,7 @@ test("delete history stays visible and is enabled only while a conversation exis
     route.fulfill({
       status: 200,
       contentType: "text/event-stream",
-      body: 'data: {"loai":"xong","noi_dung":"Câu trả lời"}\n\n',
+      body: 'data: {"type":"completed","content":"Câu trả lời"}\n\n',
     }),
   );
   await page.goto("http://127.0.0.1:4173");
@@ -219,7 +256,7 @@ test("revalidating a stale ready tab disables send until the new probe succeeds"
     document.dispatchEvent(new Event("visibilitychange"));
   });
 
-  await expect(page.locator(".server-status")).toContainText("Đang khởi động", { timeout: 500 });
+  await expect(page.locator(".server-status")).toContainText("Đang kết nối", { timeout: 500 });
   await expect(page.locator("#send-prompt-btn")).toBeDisabled();
   await expect(page.locator(".prompt-input")).toHaveValue("Câu hỏi vẫn còn đây");
 });
@@ -251,7 +288,7 @@ test("a truncated chat stream is not committed as a successful answer", async ({
     route.fulfill({
       status: 200,
       contentType: "text/event-stream",
-      body: 'data: {"loai":"chu","noi_dung":"Một phần"}\n\n',
+      body: 'data: {"type":"text_delta","content":"Một phần"}\n\n',
     }),
   );
   await page.goto("http://127.0.0.1:4173");
@@ -285,16 +322,16 @@ test("fragmented successful streams complete and become history for the next tur
       const first = window.__chatBodies.length === 1;
       const chunks = first
         ? [
-            'data: {"loai":"tra_c',
-            'uu","tu_khoa":"học phí"}\n\n',
-            'data: {"loai":"chu","noi_dung":"Xin ch',
+            'data: {"type":"lookup_sta',
+            'rted","keywords":"học phí"}\n\n',
+            'data: {"type":"text_delta","content":"Xin ch',
             'ào "}\n\n',
-            'data: {"loai":"chu","noi_dung":"bạn"}\n\n',
-            'data: {"loai":"xong","noi_dung":"Xin chào bạn"}\n\n',
+            'data: {"type":"text_delta","content":"bạn"}\n\n',
+            'data: {"type":"completed","content":"Xin chào bạn"}\n\n',
           ]
         : [
-            'data: {"loai":"chu","noi_dung":"Lượt hai"}\n\n',
-            'data: {"loai":"xong","noi_dung":"Lượt hai"}\n\n',
+            'data: {"type":"text_delta","content":"Lượt hai"}\n\n',
+            'data: {"type":"completed","content":"Lượt hai"}\n\n',
           ];
       const encoder = new TextEncoder();
       return new Response(
@@ -360,7 +397,7 @@ test("browser health and chat calls stay same-origin and carry no authorization"
     return route.fulfill({
       status: 200,
       contentType: "text/event-stream",
-      body: 'data: {"loai":"xong","noi_dung":"Câu trả lời"}\n\n',
+      body: 'data: {"type":"completed","content":"Câu trả lời"}\n\n',
     });
   });
 

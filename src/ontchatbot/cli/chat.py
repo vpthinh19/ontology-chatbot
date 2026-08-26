@@ -1,12 +1,4 @@
-"""Trò chuyện với trợ lý học vụ ở dòng lệnh.
-
-    python -m ontchatbot.cli.chat --model-dir <thư mục bộ phân loại đã huấn luyện>
-    python -m ontchatbot.cli.chat --model-dir <...> --hoi "bảo lưu cần làm gì"
-
-Trợ lý là một mô hình ngôn ngữ lớn gọi qua mạng; nó dùng công cụ tra cứu chạy
-tại chỗ để lấy dữ kiện. Lệnh này cho thấy cả hai phía: câu trả lời cuối cùng, và
-những từ khoá mà mô hình đã gửi cho công cụ.
-"""
+"""Chat with the same lightweight agent loop used by the HTTP service."""
 
 from __future__ import annotations
 
@@ -14,16 +6,9 @@ import argparse
 import asyncio
 import os
 from pathlib import Path
-from typing import Mapping, Sequence
 
-from ..runtime.agent import DEFAULT_BASE_URL, build_agent
-from ..runtime.onnx_classifier import OnnxClassifierGenerator
-from ..runtime.pipeline import (
-    Classification,
-    OntologyChatbot,
-    PreparedKeyword,
-    QueryResolution,
-)
+from ..runtime.agent import DEFAULT_BASE_URL
+from .serve import _build_agent
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -44,49 +29,17 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-class _Trace:
-    """Ghi lại từ khoá mà mô hình gửi cho công cụ.
-
-    Đây là chỗ hỏng khó thấy nhất của kiến trúc này: mô hình gửi cả câu hỏi dài
-    thay vì từ khoá, công cụ tra trượt, và câu trả lời cuối vẫn trôi chảy nên
-    không ai biết. In từ khoá ra là cách rẻ nhất để nhìn thấy điều đó.
-    """
-
-    def __init__(self, chatbot: OntologyChatbot) -> None:
-        self._chatbot = chatbot
-
-    def answer(self, question: str) -> str:
-        reply = self._chatbot.answer(question)
-        print(f"    [công cụ] tra {question!r} → {len(reply)} ký tự", flush=True)
-        return reply
-
-    def answer_many(self, questions: Sequence[str]) -> str:
-        reply = self._chatbot.answer_many(questions)
-        print(f"    [công cụ] tra {list(questions)!r} → {len(reply)} ký tự", flush=True)
-        return reply
-
-    def prepare_keywords(self, questions: Sequence[str]) -> tuple[PreparedKeyword, ...]:
-        return self._chatbot.prepare_keywords(questions)
-
-    def classify_many(self, model_inputs: Sequence[str]) -> tuple[Classification, ...]:
-        return self._chatbot.classify_many(model_inputs)
-
-    def execute_query(self, query: str, *, max_rows: int) -> QueryResolution:
-        return self._chatbot.execute_query(query, max_rows=max_rows)
-
-    def render_many(
-        self,
-        prepared: Sequence[PreparedKeyword],
-        choices: Sequence[Classification],
-        resolutions: Mapping[str, QueryResolution],
-    ) -> str:
-        reply = self._chatbot.render_many(prepared, choices, resolutions)
-        print(
-            f"    [công cụ] tra {[item.original for item in prepared]!r} "
-            f"→ {len(reply)} ký tự",
-            flush=True,
-        )
-        return reply
+def _runtime_args(args: argparse.Namespace) -> argparse.Namespace:
+    return argparse.Namespace(
+        model_dir=args.model_dir,
+        llm=args.llm,
+        base_url=args.base_url
+        or os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
+        onnx_threads=1,
+        lookup_workers=4,
+        classification_cache_entries=4096,
+        sparql_cache_mib=64,
+    )
 
 
 def main() -> None:
@@ -96,22 +49,23 @@ def main() -> None:
             "chưa chỉ định mô hình ngôn ngữ lớn: dùng --llm hoặc đặt "
             "ONTCHATBOT_LLM_MODEL"
         )
-
     if not args.model_dir:
         raise SystemExit("cần --model-dir")
-    generator = OnnxClassifierGenerator.load(args.model_dir)
-    agent = build_agent(
-        _Trace(OntologyChatbot(generator)),
-        model=args.llm,
-        base_url=args.base_url,
-        lookup_workers=4,
-    )
 
-    from agents import Runner
+    agent = _build_agent(_runtime_args(args))
 
     async def ask(question: str) -> None:
-        result = await Runner.run(agent, question)
-        print(f"\n{result.final_output}\n")
+        wrote = False
+        print()
+        async for event in agent.stream([{"role": "user", "content": question}]):
+            if event.kind == "lookup_started":
+                print(f"    [công cụ] tra {list(event.keywords)!r}", flush=True)
+            elif event.kind == "text_delta":
+                wrote = True
+                print(event.content, end="", flush=True)
+            elif event.kind == "completed" and not wrote:
+                print(event.content, end="", flush=True)
+        print("\n")
 
     with asyncio.Runner() as runner:
         if args.hoi:
