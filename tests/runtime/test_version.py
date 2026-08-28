@@ -22,13 +22,13 @@ def _names(requirements: list[str]) -> set[str]:
 
 def test_cpu_release_version_and_inference_dependencies() -> None:
     project = _project()
-    assert project["version"] == "3.2.0"
+    assert project["version"] == "3.2.1"
     inference = project["optional-dependencies"]["inference"]
     names = _names(inference)
     assert names == {"httpx", "starlette", "uvicorn", "onnxruntime", "tokenizers"}
     assert "onnxruntime-gpu" not in names
     assert not {name for name in names if name.startswith("nvidia-")}
-    assert ontchatbot.__version__ == "3.2.0"
+    assert ontchatbot.__version__ == "3.2.1"
 
 
 def test_the_deployed_extra_leaves_the_offline_graph_libraries_behind() -> None:
