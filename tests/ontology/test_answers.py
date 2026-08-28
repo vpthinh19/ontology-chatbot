@@ -37,8 +37,8 @@ def test_a_procedure_answers_with_its_own_steps_in_order(ontology_graph) -> None
 def test_no_relation_points_at_a_node_that_does_not_exist(ontology_graph) -> None:
     """Tham chiếu treo là lỗi im lặng: truy vấn vẫn hợp lệ nhưng trả về rỗng.
 
-    Kiểm tra này đã bắt một quy trình trỏ tới :VNPayGatewayPayment trong khi
-    phương thức thanh toán thật tên là :VNPAYPayment.
+    Một cái tên lệch vài chữ vẫn cho truy vấn hợp lệ: ``:VNPayGatewayPayment``
+    thay cho ``:VNPAYPayment`` chỉ hiện ra thành một câu trả lời rỗng.
     """
 
     from rdflib import OWL, RDF, URIRef

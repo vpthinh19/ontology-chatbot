@@ -121,7 +121,7 @@ def test_load_rejects_a_non_positive_thread_count(threads, tmp_path):
 
 
 def test_a_baked_graph_is_loaded_instead_of_refusing_the_original(monkeypatch, tmp_path):
-    """Có đồ thị nướng sẵn thì nạp nó và tắt hẳn phần hợp nhất lúc khởi động."""
+    """Có đồ thị hợp nhất sẵn thì nạp nó và tắt hẳn phần hợp nhất lúc khởi động."""
     seen = {}
     _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
     model_dir = _model_dir(tmp_path)
@@ -135,7 +135,7 @@ def test_a_baked_graph_is_loaded_instead_of_refusing_the_original(monkeypatch, t
 
 
 def test_a_model_without_a_baked_graph_still_loads(monkeypatch, tmp_path):
-    """Model xuất trước khi có bước nướng vẫn phục vụ được, chỉ khởi động chậm hơn."""
+    """Thư mục model không có đồ thị hợp nhất sẵn thì vẫn phục vụ được, chỉ chậm hơn."""
     seen = {}
     _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
     model_dir = _model_dir(tmp_path)

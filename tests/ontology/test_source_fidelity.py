@@ -158,8 +158,8 @@ def _leaves(graph) -> list:
     """Phần văn bản không còn phần con nào.
 
     Chỉ những phần này mới là một đoạn liền mạch trong công văn. Phần có con thì
-    nguyên văn của nó được ghép lại từ các con — trong đó có bảng đã bị làm phẳng
-    thành text thuần — nên không so khớp từng chữ với nguồn được.
+    nguyên văn của nó được ghép lại từ các con, trong đó có bảng đã bị làm phẳng
+    thành text thuần, nên không so khớp từng chữ với nguồn được.
     """
 
     kids = _children(graph)

@@ -272,11 +272,10 @@ def read_vocabulary(graph=None, limit: int = NAMES_PER_KIND) -> OntologyVocabula
             f"SELECT DISTINCT ?label WHERE {{ ?node a <{ONTOLOGY_NS}{class_name}> ; "
             "<http://www.w3.org/2000/01/rdf-schema#label> ?label }"
         )
-        # Đi qua ``execute_select`` để phần chữ của literal được bóc ra theo đúng
-        # một quy tắc với mọi chỗ khác; lấy chuỗi thẳng từ node đồ thị sẽ kéo theo
-        # cả dấu nháy và thẻ ngôn ngữ.
-        # Trần chỉ để một lỗi nào đó không kéo cả đồ thị vào bộ nhớ; lớp đông
-        # nhất hiện có 41 nhãn, nên nó không cắt gì trong thực tế.
+        # Đi qua ``execute_select`` để phần chữ của literal được bóc theo đúng
+        # một quy tắc với mọi chỗ khác; đọc thẳng từ node sẽ kéo theo cả dấu nháy
+        # và thẻ ngôn ngữ. Trần đặt rộng, chỉ để chặn trường hợp một lỗi nào đó
+        # kéo cả đồ thị vào bộ nhớ.
         rows = execute_select(graph, query, max_rows=100_000)
         found = sorted(str(row["label"]) for row in rows)
         return tuple(found[:limit])

@@ -106,7 +106,7 @@ def family_names(graph: ox.Store | None = None) -> dict[str, str]:
             break
         if round_ == 0:
             # Nhãn lớp trùng nhau thì lấy thẳng tên riêng của thực thể tiêu biểu:
-            # nó ngắn hơn dạng ghép "lớp – chi tiết" và không bị cắt cụt thành
+            # nó ngắn hơn dạng ghép "lớp - chi tiết" và không bị cắt cụt thành
             # những nhãn nhìn giống hệt nhau trên biểu đồ.
             for query_id, name in list(names.items()):
                 if name in clash and anchors[query_id]:

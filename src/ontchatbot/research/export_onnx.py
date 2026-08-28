@@ -115,9 +115,8 @@ def export(model_dir: Path, out_dir: Path, *, precision: str = "fp16") -> Path:
         json.dumps({"labels": meta["labels"]}, ensure_ascii=False), encoding="utf-8")
     shutil.copy(model_dir / "tokenizer.json", out_dir / "tokenizer.json")
 
-    # Nướng sau cùng: nó là bước duy nhất chạy khi các tệp đã ra khỏi thư mục
-    # tạm, nên nó hỏng giữa chừng thì thư mục xuất vẫn đủ bộ, chỉ thiếu đồ thị
-    # nướng - và bước phát hành chặn đúng cái thiếu đó, nói đúng tên nó.
+    # Chạy sau cùng, khi các tệp đã ra khỏi thư mục tạm: hỏng ở đây thì thư mục
+    # xuất vẫn đủ bộ và chỉ thiếu đúng một tệp, mà bước phát hành gọi tên được.
     _bake_optimized_graph(target, dummy_ids.numpy(), dummy_mask.numpy())
 
     return target
@@ -132,23 +131,17 @@ def _bake_optimized_graph(model_path: Path, input_ids, attention_mask) -> Path:
 
     Bộ chạy ONNX luôn hợp nhất đồ thị trước khi phục vụ - gộp các phép nhân ma
     trận của cùng một lớp, gấp hằng số, bỏ nhánh chết. Việc ấy cho ra cùng một
-    đồ thị mỗi lần, mà nó tốn khoảng một giây trên một nhân, và tiến trình phục
-    vụ trả khoản đó lại từ đầu ở mỗi lần khởi động nguội.
+    đồ thị mỗi lần, nên làm sẵn được.
 
-    Mức hợp nhất dừng ở ``EXTENDED``. Mức cao hơn còn xếp lại bố cục trọng số
-    theo tập lệnh của chính máy đang chạy, nên đồ thị nướng trên máy xuất model
-    không dùng được ở nơi triển khai - và nó nội tuyến trọng số vào tệp đồ thị,
-    làm ảnh triển khai phình thêm hơn trăm megabyte.
+    Mức dừng ở ``EXTENDED``. Mức cao hơn xếp lại bố cục trọng số theo tập lệnh
+    của máy đang chạy, nên đồ thị dựng ở máy xuất model sẽ không dùng được ở nơi
+    triển khai, và nó nội tuyến trọng số vào tệp đồ thị.
 
-    Trọng số vẫn nằm ngoài ở ``classifier.onnx.data``, và bộ chạy tìm tệp ấy
-    theo thư mục chứa đồ thị, nên tệp nướng phải nằm cùng thư mục với bản gốc.
+    Trọng số vẫn nằm ngoài ở ``classifier.onnx.data`` và bộ chạy tìm tệp ấy theo
+    thư mục chứa đồ thị, nên tệp dựng sẵn phải nằm cùng thư mục với bản gốc.
 
-    Phép kiểm dưới đây so đồ thị đọc từ tệp với chính phiên đã sinh ra nó, và
-    đòi giống nhau TỪNG BIT. Đó là điều bước này chịu trách nhiệm: ghi ra rồi
-    đọc lại không được làm rơi gì. Việc hạ mức hợp nhất từ ``ALL`` xuống
-    ``EXTENDED`` là một thay đổi khác, nằm ở lựa chọn mức chứ không ở phép ghi,
-    nên nó không được trộn vào đây - fp16 làm vài câu sát ranh giới đổi nhãn, và
-    một ngưỡng đặt ở đây sẽ giấu mất chuyện đó thay vì phơi ra.
+    Phép so bên dưới đòi đồ thị đọc từ tệp giống phiên đã sinh ra nó từng bit:
+    ghi ra rồi đọc lại không được làm rơi gì.
     """
 
     import numpy as np
@@ -173,16 +166,16 @@ def _bake_optimized_graph(model_path: Path, input_ids, attention_mask) -> Path:
     produced = baked_session.run(["logits"], feed)[0]
     if produced.shape != expected.shape:
         raise SystemExit(
-            "đồ thị nướng sẵn không đọc lại đúng bản đã ghi: hình dạng "
+            "đồ thị hợp nhất sẵn không đọc lại đúng bản đã ghi: hình dạng "
             f"{produced.shape} thay vì {expected.shape}"
         )
     if not np.array_equal(expected, produced):
         raise SystemExit(
-            "đồ thị nướng sẵn không đọc lại đúng bản đã ghi: lệch tối đa "
+            "đồ thị hợp nhất sẵn không đọc lại đúng bản đã ghi: lệch tối đa "
             f"{float(np.abs(produced - expected).max()):.2e}"
         )
     print(
-        f"  đồ thị nướng sẵn: {baked.name}, {baked.stat().st_size / 1e6:.2f} MB, "
+        f"  đồ thị hợp nhất sẵn: {baked.name}, {baked.stat().st_size / 1e6:.2f} MB, "
         "đọc lại giống hệt từng bit"
     )
     return baked

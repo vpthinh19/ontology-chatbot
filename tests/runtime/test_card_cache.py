@@ -1,4 +1,4 @@
-"""Bảng thẻ nướng sẵn phải giống hệt bản dựng, và không bao giờ được dùng nhầm."""
+"""Tệp bảng thẻ phải cho ra đúng bảng dựng từ đồ thị, và không được dùng khi đã cũ."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ def built(store):
 
 @pytest.fixture
 def baked(tmp_path):
-    """Tệp nướng sẵn cùng hai tệp nguồn của nó, chép sang thư mục tạm."""
+    """Tệp dựng sẵn cùng hai tệp nguồn của nó, chép sang thư mục tạm."""
 
     ontology = tmp_path / "ontology.ttl"
     catalogue = tmp_path / "catalogue.jsonl"
@@ -48,7 +48,7 @@ def _loaded(baked, store):
 
 
 def test_the_baked_table_is_identical_to_the_one_built_from_the_graph(baked, store, built):
-    """Đây là điều bước nướng chịu trách nhiệm: ghi ra rồi đọc lại không rơi gì."""
+    """Ghi ra rồi đọc lại không được làm rơi hay đổi gì."""
     assert _loaded(baked, store) == built
 
 
@@ -83,13 +83,13 @@ def test_an_unusable_file_falls_back_to_building(baked, store, built, damage):
 
 
 def test_editing_the_ontology_retires_the_baked_table(baked, store, built):
-    """Sửa ontology mà quên nướng lại thì bảng cũ bị bỏ, chứ không phục vụ tiếp.
+    """Sửa ontology mà quên dựng lại thì bảng cũ bị bỏ, chứ không phục vụ tiếp.
 
     Đây là chỗ nguy hiểm nhất của mọi bộ nhớ đệm: nó vẫn đọc được, vẫn đúng định
     dạng, chỉ là nói về một ontology không còn tồn tại.
 
-    Nên phép kiểm này cấy một thẻ đánh dấu vào tệp. Không có nó thì bảng nướng
-    bằng đúng bảng dựng, và phép kiểm sẽ xanh dù tệp cũ có bị dùng nhầm hay không.
+    Phép kiểm cấy một thẻ đánh dấu vào tệp, vì nội dung tệp vốn bằng đúng bảng
+    dựng từ đồ thị - không có dấu ấy thì nó xanh dù tệp cũ có bị dùng hay không.
     """
 
     cache, ontology, catalogue = baked
@@ -99,7 +99,7 @@ def test_editing_the_ontology_retires_the_baked_table(baked, store, built):
 
     marked = _loaded(baked, store)
     assert [card.query_id for card in marked].count("dấu-đánh-riêng") == 1, (
-        "tệp nướng sẵn phải đang được dùng thật thì phép kiểm sau mới có nghĩa"
+        "tệp dựng sẵn phải đang được dùng thật thì phép kiểm sau mới có nghĩa"
     )
 
     ontology.write_text(

@@ -79,10 +79,9 @@ class OnnxClassifierGenerator:
         options.inter_op_num_threads = 1
         options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
 
-        # Bước xuất model đã hợp nhất sẵn đồ thị. Có tệp ấy thì tắt hẳn phần hợp
-        # nhất lúc khởi động: nó cho ra đúng đồ thị đang nằm trên đĩa, và làm lại
-        # tốn khoảng một giây trên mỗi lần khởi động nguội. Model xuất trước khi
-        # có tệp này vẫn nạp được, chỉ là phải tự hợp nhất như cũ.
+        # Bước xuất model đã hợp nhất sẵn đồ thị, nên tắt hẳn phần hợp nhất lúc
+        # khởi động: nó chỉ dựng lại đúng đồ thị đang nằm trên đĩa. Thư mục model
+        # không có tệp ấy thì vẫn nạp được, chỉ chậm hơn.
         baked_path = model_dir / OPTIMIZED_GRAPH_NAME
         if baked_path.exists():
             graph_path = baked_path

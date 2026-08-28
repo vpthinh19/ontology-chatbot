@@ -28,12 +28,12 @@ from pathlib import Path
 from ontchatbot.research import graph as _graph
 from ontchatbot.runtime import sparql as _sparql
 
-#: Mã băm nội dung → đồ thị đã nạp. Giữ tham chiếu thật ở đây, nhờ vậy số định
+#: Mã băm nội dung của tệp, tra ra đồ thị đã nạp. Giữ tham chiếu thật ở đây, nhờ vậy số định
 #: danh của đồ thị không bị thu hồi rồi cấp lại cho đối tượng khác.
 _GRAPHS: dict[str, object] = {}
-#: Số định danh đồ thị → mã băm nội dung của nó.
+#: Số định danh đồ thị, tra ngược ra mã băm nội dung của nó.
 _KEY_OF_GRAPH: dict[int, str] = {}
-#: (mã băm, truy vấn, trần số dòng) → các dòng lấy về.
+#: Bộ ba (mã băm, truy vấn, trần số dòng), tra ra các dòng lấy về.
 _ROWS: dict[tuple[str, str, int], list[dict]] = {}
 
 _load_ontology = _sparql.load_ontology

@@ -33,8 +33,8 @@ VOCABULARY = OntologyVocabulary(
 def test_tool_tells_the_model_to_send_keywords_not_sentences() -> None:
     """Hướng dẫn rút câu hỏi thành từ khoá phải tới được mô hình.
 
-    Thư viện chỉ lấy câu tóm tắt và đoạn đầu của chú thích làm mô tả công cụ,
-    nên phần ví dụ từng bị cắt mất mà không có dấu hiệu nào.
+    Thư viện chỉ lấy câu tóm tắt và đoạn đầu của chú thích làm mô tả công cụ, và
+    cắt phần còn lại mà không báo gì.
     """
 
     description = TOOL_SCHEMA["function"]["description"]

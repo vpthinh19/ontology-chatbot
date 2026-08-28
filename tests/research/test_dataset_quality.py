@@ -452,11 +452,9 @@ def test_rejection_rate_does_not_spike_by_question_length(splits) -> None:
 def test_release_rejection_rate_preserves_enough_no_information_training(rows) -> None:
     """Release phải giữ 12--20% câu ``no-information``.
 
-    Phép kiểm này tồn tại vì trong một lượt chỉnh số, tham số từng bị hạ từ
-    0,18 xuống 0,065, cắt hơn nửa tín hiệu dạy model từ chối, mà không phép
-    kiểm nào thấy: chỗ không ai canh là chỗ trôi. Khoảng 12--20% rộng có chủ
-    đích: nó canh việc tham số bị đổi âm thầm, không phải canh một con số cụ
-    thể của release hôm nay.
+    Tham số sinh release có thể bị chỉnh mà không ai để ý, và hạ nó xuống là cắt
+    tín hiệu dạy model từ chối. Khoảng 12--20% rộng có chủ đích: nó canh việc
+    tham số bị đổi âm thầm, không canh một con số cụ thể của release hôm nay.
     """
 
     rejection_rate = sum(
@@ -503,7 +501,7 @@ def test_held_out_splits_stay_big_enough_to_measure(splits) -> None:
     """Val và test phải đủ lớn để đo, tính bằng số dòng.
 
     Sai số của phép đo phụ thuộc số mẫu, không phụ thuộc tỷ lệ so với tập train.
-    Sàn 380 dòng cho sai số chuẩn khoảng ±2,5 điểm phần trăm ở mức chính xác 50%
+    Sàn 380 dòng cho sai số chuẩn khoảng 2,5 điểm phần trăm ở mức chính xác 50%
     và hẹp hơn khi model chính xác hơn; độ phân giải này đủ để so sánh model.
     """
 

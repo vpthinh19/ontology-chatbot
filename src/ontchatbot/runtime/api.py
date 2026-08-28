@@ -229,12 +229,12 @@ async def _stream(
         sse_events += 1
         sse_bytes += len(chunk.encode("utf-8"))
         return chunk
-    # Người đọc nhật ký cần phân biệt từng kết cục, vì chúng cần những cách sửa
+    # Người đọc nhật ký cần phân biệt từng kết cục, vì chúng đòi những cách sửa
     # khác nhau: xong bình thường, quá hạn chờ model, chạm trần số bước, bị từ
     # chối vì hàng đầy, chờ trong hàng quá lâu, lỗi, và người dùng đóng tab giữa
-    # chừng. Kết cục cuối trước đây không để lại dấu vết nào và trông y hệt một
-    # lượt treo. Ba kết cục dính tới cửa vào tách riêng nhau vì chúng đòi ba
-    # phản ứng khác hẳn: nới cửa, nới hàng, hay chấp nhận là đang quá tải thật.
+    # chừng. Kết cục cuối không ghi lại thì nó trông y hệt một lượt treo. Ba kết
+    # cục dính tới cửa vào tách riêng nhau vì chúng đòi ba phản ứng khác hẳn:
+    # nới cửa, nới hàng, hay chấp nhận là đang quá tải thật.
     outcome = "abandoned"
     # Chỗ trong hàng và chỗ chạy đều được nhả ở ``finally``, nên phải biết mình
     # đang giữ cái nào: một lượt bị đóng giữa chừng có thể đang giữ chỗ trong

@@ -1,4 +1,4 @@
-"""Ba trục ghép thành câu hỏi: cách gọi × khung ý định × phong cách."""
+"""Ba trục ghép thành câu hỏi: cách gọi, khung ý định và phong cách."""
 
 from __future__ import annotations
 
@@ -91,8 +91,7 @@ def test_every_family_has_enough_frames_to_split(frames) -> None:
 def test_noisy_questions_survive_the_runtime_normaliser() -> None:
     """Câu noisy KHÔNG được bị chuẩn hoá hoàn tác về câu sạch.
 
-    Đây là cái bẫy đã ghi trong kế hoạch. ``normalize_model_input`` bung một danh
-    sách viết tắt cố định; nếu bộ sinh noisy chỉ dùng đúng những viết tắt đó thì
+    ``normalize_model_input`` bung một danh sách viết tắt cố định; nếu bộ sinh noisy chỉ dùng đúng những viết tắt đó thì
     sau chuẩn hoá câu noisy trở lại y hệt câu sạch - nhóm "có lỗi viết" thành vô
     nghĩa, model không học được gì, mà lỗi gõ thật ngoài whitelist vẫn hỏng.
 

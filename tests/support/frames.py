@@ -1,4 +1,4 @@
-"""Ghép ba trục thành một câu hỏi: cách gọi tên × khung ý định × phong cách.
+"""Ghép ba trục thành một câu hỏi: cách gọi tên, khung ý định và phong cách.
 
 Liệt kê paraphrase tiếng Việt là việc vô hạn - riêng "như thế nào" đã có "như
 nào", "sao", "làm sao", "ra sao", "thế nào nhỉ", "sao ta"... Cách duy nhất mở
@@ -123,7 +123,7 @@ def load_frames(
 
 #: Từ dẫn mà module này KHÔNG tự sinh ra nhưng mẫu câu soạn tay có thể mở đầu
 #: bằng chúng. Thiếu chúng thì luật chống chồng bỏ lọt: "cho hoi Xin hỏi Trường
-#: Đại học Nha Trang…".
+#: Đại học Nha Trang...".
 _EXTRA_OPENERS = ("xin hỏi", "tôi cần", "tôi muốn hỏi", "mình hỏi", "em hỏi")
 
 #: Mọi từ dẫn mà một câu có thể mở đầu, dùng để KHÔNG khoác chồng.
@@ -152,8 +152,8 @@ def decorate(
     """Khoác phong cách lên một câu hỏi đã ghép xong.
 
     Câu vốn đã mở đầu bằng một từ dẫn thì chỉ nhận đuôi, không nhận thêm đầu:
-    mẫu câu soạn tay *"cho hỏi {anchor} làm thế nào, tiện thể…"* gặp tiền tố
-    trang trọng đã sinh ra *"Xin cho biết cho hỏi …"* trong 14 dòng.
+    mẫu câu soạn tay *"cho hỏi {anchor} làm thế nào, tiện thể..."* gặp tiền tố
+    trang trọng đã sinh ra *"Xin cho biết cho hỏi ..."* trong 14 dòng.
 
     ``short=True`` giữ câu ngắn: chỉ nhận đuôi, không nhận từ dẫn nào. Người thật
     gõ *"chuyển ngành"*, và khoác lên thành *"Đề nghị hướng dẫn chuyển ngành."*
@@ -177,10 +177,10 @@ def decorate(
 def _noisy(text: str, rng: random.Random) -> str:
     """Lỗi gõ thật, cố ý NẰM NGOÀI whitelist viết tắt của runtime.
 
-    Bẫy đã được ghi trong kế hoạch: nếu sinh câu noisy bằng chính các viết tắt mà
-    ``normalize_model_input`` biết bung ra, thì sau chuẩn hoá câu noisy trở lại y
-    hệt câu sạch - model không học được gì, mà lỗi chính tả thật ngoài whitelist
-    vẫn hỏng. Ba phép dưới đây đều không có trong whitelist đó.
+    Sinh câu noisy bằng chính các viết tắt mà ``normalize_model_input`` biết bung
+    ra thì sau chuẩn hoá nó trở lại y hệt câu sạch: model không học được gì, mà
+    lỗi chính tả thật ngoài whitelist vẫn hỏng. Ba phép dưới đây đều không có
+    trong whitelist đó.
     """
 
     choice = rng.random()

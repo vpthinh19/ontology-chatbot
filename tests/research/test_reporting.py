@@ -63,10 +63,9 @@ def test_public_dataset_report_matches_contract(tmp_path) -> None:
     assert report["sha256"]["coverage.json"]
 
     # Đối chiếu ARTIFACT THẬT do ``generate_reports`` ghi ra, không phải một bản
-    # tạm do chính test dựng. Hai đường ghi cũ (``write_public_reports``,
-    # ``write_manifest``) đã bị bỏ: ``write_consistency_snapshot`` ghi cả năm
-    # artifact cùng lúc từ một ảnh chụp đã kiểm chứng, còn giữ đường ghi song
-    # song là giữ một cách sinh ra manifest lệch với báo cáo.
+    # tạm do chính test dựng. ``write_consistency_snapshot`` là đường ghi duy
+    # nhất: nó ghi cả năm artifact cùng lúc từ một ảnh chụp đã kiểm chứng, và một
+    # đường ghi thứ hai sẽ là một cách nữa để manifest lệch với báo cáo.
     reports = REPORTS_DIR
     assert (reports / "dataset.json").is_file()
     assert (reports / "figures/dataset-splits.svg").is_file()

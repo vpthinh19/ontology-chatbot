@@ -808,10 +808,7 @@ version = "3.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
-    { name = "oxrdflib" },
     { name = "pyoxigraph" },
-    { name = "pyparsing" },
-    { name = "rdflib" },
 ]
 
 [package.optional-dependencies]
@@ -828,9 +825,12 @@ research = [
     { name = "onnx" },
     { name = "onnxruntime" },
     { name = "onnxscript" },
+    { name = "oxrdflib" },
     { name = "peft" },
     { name = "playwright" },
     { name = "protobuf" },
+    { name = "pyparsing" },
+    { name = "rdflib" },
     { name = "scikit-learn" },
     { name = "sentencepiece" },
     { name = "tiktoken" },
@@ -842,8 +842,11 @@ research = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "oxrdflib" },
+    { name = "pyparsing" },
     { name = "pytest" },
     { name = "pytest-xdist" },
+    { name = "rdflib" },
 ]
 
 [package.metadata]
@@ -856,13 +859,13 @@ requires-dist = [
     { name = "onnxruntime", marker = "extra == 'inference'", specifier = ">=1.29.0" },
     { name = "onnxruntime", marker = "extra == 'research'", specifier = ">=1.29.0" },
     { name = "onnxscript", marker = "extra == 'research'", specifier = ">=0.5.0" },
-    { name = "oxrdflib", specifier = ">=0.5.0" },
+    { name = "oxrdflib", marker = "extra == 'research'", specifier = ">=0.5.0" },
     { name = "peft", marker = "extra == 'research'", specifier = ">=0.20.0" },
     { name = "playwright", marker = "extra == 'research'", specifier = ">=1.56.0" },
     { name = "protobuf", marker = "extra == 'research'", specifier = ">=6.33.0" },
     { name = "pyoxigraph", specifier = ">=0.5.0" },
-    { name = "pyparsing", specifier = ">=3.2.0" },
-    { name = "rdflib", specifier = ">=7.6.0" },
+    { name = "pyparsing", marker = "extra == 'research'", specifier = ">=3.2.0" },
+    { name = "rdflib", marker = "extra == 'research'", specifier = ">=7.6.0" },
     { name = "scikit-learn", marker = "extra == 'research'", specifier = ">=1.9.0" },
     { name = "sentencepiece", marker = "extra == 'research'", specifier = ">=0.2.2" },
     { name = "starlette", marker = "extra == 'inference'", specifier = ">=0.47.0" },
@@ -878,8 +881,11 @@ provides-extras = ["inference", "research"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "oxrdflib", specifier = ">=0.5.0" },
+    { name = "pyparsing", specifier = ">=3.2.0" },
     { name = "pytest", specifier = ">=9.1.0" },
     { name = "pytest-xdist", specifier = ">=3.8.0" },
+    { name = "rdflib", specifier = ">=7.6.0" },
 ]
 
 [[package]]

@@ -178,7 +178,7 @@ def test_check_rejects_non_finite_logits(monkeypatch, tmp_path) -> None:
 
 
 def _fake_ort(state):
-    """Bộ chạy ONNX giả, đủ để canh phần đấu dây của bước nướng đồ thị."""
+    """Bộ chạy ONNX giả, đủ để canh phần đấu dây của bước hợp nhất đồ thị."""
 
     class Options:
         def __init__(self) -> None:
@@ -189,7 +189,7 @@ def _fake_ort(state):
         state.opened.append((Path(path), sess_options.graph_optimization_level))
         # Bộ chạy thật ghi đồ thị đã hợp nhất ra tệp khi được chỉ chỗ.
         if sess_options.optimized_model_filepath is not None:
-            Path(sess_options.optimized_model_filepath).write_bytes("đồ thị đã nướng".encode("utf-8"))
+            Path(sess_options.optimized_model_filepath).write_bytes("đồ thị đã dựng sẵn".encode("utf-8"))
             state.baked_to = Path(sess_options.optimized_model_filepath)
         return SimpleNamespace(
             run=lambda names, feed: [state.logits.pop(0)],
@@ -212,7 +212,7 @@ def _install_fake_ort(monkeypatch, state):
 
 
 def test_baking_writes_the_graph_next_to_the_weights(monkeypatch, tmp_path) -> None:
-    """Đồ thị nướng phải nằm cùng thư mục: trọng số ngoài tìm theo thư mục đó."""
+    """Đồ thị dựng sẵn phải nằm cùng thư mục: trọng số ngoài tìm theo thư mục đó."""
     logits = np.array([[0.25, 0.75]], dtype=np.float32)
     state = SimpleNamespace(opened=[], baked_to=None, logits=[logits, logits.copy()])
     _install_fake_ort(monkeypatch, state)
@@ -225,7 +225,7 @@ def test_baking_writes_the_graph_next_to_the_weights(monkeypatch, tmp_path) -> N
 
     assert baked == tmp_path / export_onnx.OPTIMIZED_NAME
     assert state.baked_to == baked
-    # Nướng ở mức EXTENDED; mức ALL gắn tối ưu theo phần cứng máy dựng và nội
+    # Hợp nhất ở mức EXTENDED; mức ALL gắn tối ưu theo phần cứng máy dựng và nội
     # tuyến trọng số vào tệp đồ thị. Đọc lại thì tắt hẳn phần hợp nhất.
     assert [level for _path, level in state.opened] == ["extended", "none"]
     assert [path for path, _level in state.opened] == [model, baked]
@@ -254,7 +254,7 @@ def test_baking_refuses_a_graph_that_does_not_read_back_identically(
 
 
 def test_publishing_blocks_a_model_without_the_baked_graph(tmp_path) -> None:
-    """Thiếu đồ thị nướng thì dịch vụ vẫn chạy, chỉ chậm - nên phải chặn ở đây.
+    """Thiếu đồ thị hợp nhất sẵn thì dịch vụ vẫn chạy, chỉ chậm - nên phải chặn ở đây.
 
     Đó là kiểu hỏng không ai nhìn thấy: không có lỗi, không có cảnh báo, chỉ là
     mỗi lần khởi động nguội tốn thêm chừng một giây.

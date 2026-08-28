@@ -20,7 +20,7 @@ def main(argv: list[str] | None = None) -> None:
         args.out, ontology_path=args.ontology, catalogue_path=args.catalogue
     )
     print(
-        f"bảng thẻ nướng sẵn: {args.out}, {len(cards)} thẻ, "
+        f"bảng thẻ dựng sẵn: {args.out}, {len(cards)} thẻ, "
         f"{args.out.stat().st_size / 1e6:.2f} MB, đọc lại giống hệt"
     )
 

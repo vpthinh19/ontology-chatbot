@@ -4,7 +4,7 @@ Kho trên Hugging Face là kênh triển khai: ảnh Docker tải model từ đ�
 kho lệch với model đã chấm điểm nghĩa là bản chạy thật khác bản được báo cáo, mà
 nhìn từ ngoài không thấy gì bất thường.
 
-Kích thước tệp không đủ để phát hiện chuyện đó — hai bản xuất của hai lượt huấn
+Kích thước tệp không đủ để phát hiện chuyện đó - hai bản xuất của hai lượt huấn
 luyện khác nhau có cùng kiến trúc thì bằng nhau đến từng byte về cỡ. Vì vậy sau khi
 đẩy, lệnh này đọc mã băm mà kho khai cho từng tệp rồi so với mã băm tính tại máy, và
 báo lỗi nếu lệch. Tệp lớn được kho lưu qua LFS và khai sẵn sha256; tệp nhỏ nằm thẳng
@@ -27,9 +27,8 @@ DEFAULT_PATH_IN_REPO = "onnx-xlmr"
 #: Đồ thị đã xuất phải khép kín: trọng số, bộ tách từ và bảng nhãn. Thiếu một tệp
 #: thì ảnh triển khai dựng xong vẫn hỏng lúc khởi động chứ không hỏng lúc dựng.
 #:
-#: Đồ thị nướng sẵn nằm trong danh sách này dù dịch vụ chạy được khi không có nó:
-#: thiếu nó thì dịch vụ vẫn khởi động, chỉ chậm thêm khoảng một giây ở mỗi lần
-#: khởi động nguội - một kiểu hỏng không ai nhìn thấy nếu không bị chặn ở đây.
+#: Đồ thị đã hợp nhất nằm trong danh sách dù dịch vụ vẫn chạy khi thiếu nó: lúc
+#: đó dịch vụ chỉ khởi động chậm hơn, và không ai nhìn thấy nếu không chặn ở đây.
 REQUIRED = (
     "classifier.onnx",
     "classifier.onnx.data",

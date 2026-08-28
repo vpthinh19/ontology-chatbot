@@ -346,9 +346,8 @@ def test_no_two_primary_families_answer_identically() -> None:
 
     Đây là luật đắt giá nhất trong bộ này. Answer Exact so *tập kết quả trả về*,
     không so chuỗi truy vấn - nên khi hai ý định khác nhau cùng trả một đoạn văn,
-    model chọn nhầm vẫn được chấm ĐÚNG. Đã từng có lược đồ mà phần lớn số dòng
-    nằm trong vùng mù đó, và đó là lý do benchmark báo 92% trong khi chatbot thật
-    trả lời rất tệ.
+    model chọn nhầm vẫn được chấm ĐÚNG. Một lược đồ để phần lớn số dòng rơi vào
+    vùng mù đó sẽ cho điểm benchmark cao trong khi chatbot trả lời sai.
 
     Chỉ tính họ ``primary``: họ ``secondary`` không có dữ liệu huấn luyện nên
     không thể làm model lẫn.

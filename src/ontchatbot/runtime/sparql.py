@@ -1,14 +1,13 @@
-"""Execute read-only SPARQL against the canonical ontology, for the serving path.
+"""Chạy SPARQL chỉ-đọc trên ontology chuẩn, cho đường phục vụ.
 
-Đồ thị nằm trong kho Oxigraph và mọi truy vấn đi thẳng vào đó. Module này KHÔNG
-nhập rdflib ở bất kỳ đâu, kể cả trong thân hàm: chỉ *tạo* một đồ thị rdflib đã kéo
-theo bộ phân tích SPARQL viết bằng pyparsing, mà bộ ấy dựng nguyên bộ văn phạm
-ngay lúc nạp thư viện - 1,4 giây trên một nhân của nền tảng triển khai, ở MỖI lần
-khởi động nguội, cho một việc mà Oxigraph vẫn đang tự làm.
+Đồ thị nằm trong kho Oxigraph. Module này không nhập rdflib ở bất kỳ đâu, kể cả
+trong thân hàm: tạo một đồ thị rdflib kéo theo bộ phân tích SPARQL viết bằng
+pyparsing, mà bộ ấy dựng cả bộ văn phạm ngay lúc nạp thư viện - chi phí đó rơi vào
+mỗi lần khởi động nguội, cho một việc Oxigraph vẫn tự làm.
 
-Lối rdflib mà các công cụ ngoại tuyến cần nằm ở ``research.graph``. Nó dùng lại
-``check_select_contract`` và ``from_lexical`` ở đây, nên hợp đồng câu truy vấn và
-phép đổi literal chỉ có một bản cài đặt cho cả hai lối.
+Các công cụ ngoại tuyến cần API duyệt bộ ba của rdflib thì dùng ``research.graph``.
+Nó gọi lại ``check_select_contract`` và ``from_lexical`` ở đây, nên hợp đồng câu
+truy vấn và phép đổi literal chỉ có một bản cài đặt.
 """
 from __future__ import annotations
 
@@ -103,13 +102,12 @@ def load_ontology(path: Path = ONTOLOGY_PATH) -> ox.Store:
             ox.Quad(triple.subject, triple.predicate, triple.object)
             for triple in parser
         )
-        # Đọc prefix SAU khi đã duyệt hết: bộ phân tích điền dần chúng trong lúc
-        # đọc tệp, và ``bulk_extend`` là thứ duyệt cạn bộ sinh ở trên.
+        # Prefix chỉ đầy đủ sau khi bộ sinh ở trên đã bị duyệt cạn.
         declared = parser.prefixes.get("")
     if declared != ONTOLOGY_NS:
-        # ``ValueError`` chứ không phải ``SparqlError``: đây là tệp ontology sai,
-        # không phải câu truy vấn sai, mà ``SparqlError`` thì nhiều chỗ bắt lại
-        # rồi lặng lẽ đổi thành "truy vấn không ra kết quả".
+        # ``ValueError`` chứ không phải ``SparqlError``: tệp ontology sai, không
+        # phải câu truy vấn sai. Người gọi bắt ``SparqlError`` rồi đổi thành
+        # "không có kết quả", nên lỗi này sẽ biến mất trong im lặng.
         raise ValueError(
             f"ontology khai prefix mặc định ':' là {declared!r}, chờ {ONTOLOGY_NS!r}"
         )
@@ -180,14 +178,11 @@ def _add_source_projection(store: ox.Store) -> None:
 
 
 def check_select_contract(query: str) -> str:
-    """Chốt hình dạng câu truy vấn: thuần Python, không gọi bộ phân tích nào.
+    """Chốt hình dạng câu truy vấn bằng vài phép so khớp, không phân tích cú pháp.
 
-    Tách khỏi phần phân tích cú pháp (``research.graph.validate_select``) vì hai
-    bên có giá khác hẳn nhau. Phần này là vài phép so khớp biểu thức chính quy;
-    phần kia đắt, và ``execute_select`` không cần nó - chính bước chạy đã phân
-    tích câu truy vấn rồi.
-
-    Cả hai lối đồ thị gọi hàm này, nên hợp đồng chỉ có một bản cài đặt.
+    Bước chạy tự phát hiện lỗi cú pháp, nên ``execute_select`` chỉ cần tới đây.
+    Kiểm cú pháp riêng là ``research.graph.validate_select``, dành cho SPARQL đến
+    từ ngoài danh mục.
     """
 
     if not isinstance(query, str):
@@ -255,8 +250,8 @@ def _to_primitive(term, column: str) -> Primitive:
 def from_lexical(text: str, datatype: str | None) -> Primitive:
     """Đổi phần chữ của literal thành giá trị Python theo kiểu XSD của nó.
 
-    Kiểu lạ thì giữ nguyên phần chữ: đồ thị luôn là nguồn của sự thật, và đoán
-    một phép đổi cho kiểu chưa biết chỉ tạo ra con số không ai khẳng định.
+    Kiểu lạ thì giữ nguyên phần chữ, vì đoán một phép đổi sẽ tạo ra con số mà
+    đồ thị không hề khẳng định.
     """
 
     if datatype in _TEXT_DATATYPES:

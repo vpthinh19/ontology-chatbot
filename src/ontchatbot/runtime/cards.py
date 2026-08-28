@@ -264,7 +264,7 @@ def _fingerprint(ontology_path: Path, catalogue_path: Path) -> str:
 
 
 def _read_cache(cache_path: Path, fingerprint: str) -> list[Card] | None:
-    """Đọc bảng thẻ nướng sẵn, trả ``None`` nếu không dùng được vì bất cứ lẽ gì.
+    """Đọc bảng thẻ dựng sẵn, trả ``None`` nếu không dùng được vì bất cứ lẽ gì.
 
     Mọi đường hỏng đều dẫn về ``None`` chứ không ném lỗi: tệp này là bộ nhớ đệm,
     và một bộ nhớ đệm hỏng phải làm dịch vụ chậm đi chứ không được làm nó chết.
@@ -291,15 +291,12 @@ def load_cards(
     catalogue_path: Path = QUERY_CATALOGUE_PATH,
     cache_path: Path = CARD_CACHE_PATH,
 ) -> list[Card]:
-    """Bảng thẻ cho đường phục vụ: lấy tệp nướng sẵn nếu nó còn đúng.
+    """Bảng thẻ cho đường phục vụ, lấy từ tệp dựng sẵn khi tệp ấy còn đúng.
 
-    Dựng bảng thẻ là duyệt trọn ontology cho từng thực thể có tên, và kết quả chỉ
-    phụ thuộc hai tệp - ontology và danh mục truy vấn. Việc ấy làm sẵn được lúc
-    dựng ảnh, thay vì làm lại ở mỗi lần khởi động nguội.
-
-    Vân tay là mã băm của chính hai tệp đó. Sửa ontology mà quên nướng lại thì
-    tệp cũ bị bỏ qua và bảng thẻ được dựng như chưa từng có nó - chậm hơn, nhưng
-    không bao giờ phục vụ bằng bảng thẻ của một ontology khác.
+    Kết quả chỉ phụ thuộc ontology và danh mục truy vấn, nên dựng sẵn được lúc
+    dựng ảnh. Vân tay là mã băm của chính hai tệp đó: lệch vân tay thì tệp bị bỏ
+    qua và bảng thẻ được dựng lại, nên không bao giờ phục vụ bằng bảng thẻ của
+    một ontology khác.
     """
 
     cached = _read_cache(cache_path, _fingerprint(ontology_path, catalogue_path))
@@ -316,9 +313,8 @@ def bake_cards(
 ) -> list[Card]:
     """Dựng bảng thẻ một lần và ghi ra tệp, rồi đòi đọc lại phải giống hệt.
 
-    Phép kiểm đọc-lại là thứ bước này chịu trách nhiệm: ghi ra rồi đọc vào không
-    được làm rơi hay đổi gì. Nó rẻ, và kiểu hỏng nó chặn - một thẻ mất phần chữ
-    hoặc lệch một neo - sẽ không lộ ra ở đâu khác cho tới lúc model chọn sai.
+    Một thẻ mất phần chữ hoặc lệch một neo sẽ không lộ ra ở đâu khác cho tới lúc
+    model chọn sai, nên phép so ngay sau khi ghi là chỗ duy nhất bắt được.
     """
 
     from .sparql import load_ontology
@@ -340,6 +336,6 @@ def bake_cards(
     reloaded = _read_cache(destination, payload["fingerprint"])
     if reloaded != cards:
         raise SystemExit(
-            f"bảng thẻ nướng sẵn không đọc lại đúng bản đã ghi: {destination}"
+            f"bảng thẻ dựng sẵn không đọc lại đúng bản đã ghi: {destination}"
         )
     return cards

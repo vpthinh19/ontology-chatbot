@@ -1,20 +1,12 @@
 """Đọc ontology và chạy SPARQL bằng rdflib, cho các công cụ ngoại tuyến.
 
-Đường phục vụ dùng ``runtime.sparql`` và chỉ biết kho Oxigraph. Lối rdflib nằm
-riêng ở đây vì một lý do đo được: chỉ *tạo* một đồ thị rdflib đã kéo theo bộ phân
-tích SPARQL viết bằng pyparsing, mà bộ ấy dựng nguyên bộ văn phạm ngay lúc nạp
-thư viện. Trên một nhân của nền tảng triển khai đó là 1,4 giây ở MỖI lần khởi
-động nguội, cho một việc mà Oxigraph vẫn đang tự làm. Trên máy nhiều nhân thì chỉ
-khoảng 0,1 giây, nên đo ở máy lập trình sẽ không thấy khoản này.
+Chúng cần API duyệt bộ ba của rdflib, thứ kho Oxigraph không có, và chúng chạy
+lúc dựng dữ liệu hoặc lúc chấm điểm nên chi phí nạp thư viện không đáng kể. Đường
+phục vụ thì ngược lại, và nó ở ``runtime.sparql``.
 
-Các công cụ gọi tới đây chạy lúc dựng dữ liệu và lúc chấm điểm chứ không phục vụ
-câu hỏi, nên giá nạp thư viện ở đó không đáng kể; đổi lại chúng cần API duyệt bộ
-ba của rdflib, thứ mà kho Oxigraph không có.
-
-Phần hợp đồng dùng chung - chốt hình dạng câu truy vấn, và phép đổi literal thành
-giá trị Python - lấy thẳng từ ``runtime.sparql`` chứ không chép lại. Chép lại thì
-hai bản phải giống nhau mãi mãi mà không gì canh, và một bên lệch đi thì bộ chấm
-lặng lẽ chấm trên thứ khác với thứ đang phục vụ.
+Hợp đồng câu truy vấn và phép đổi literal lấy thẳng từ đó chứ không chép lại: hai
+bản sẽ lệch nhau lúc nào không hay, và khi ấy bộ chấm chấm trên thứ khác với thứ
+đang phục vụ.
 """
 
 from __future__ import annotations
@@ -37,20 +29,19 @@ from ..runtime.sparql import load_ontology as load_store
 from ..settings import ONTOLOGY_PATH
 
 #: Bộ phân tích của rdflib dùng chung trạng thái văn phạm giữa các lần gọi, nên
-#: chỉ một luồng được vào. Các câu đã gặp không đi qua đây nhờ ``lru_cache``.
+#: chỉ một luồng được vào.
 _PARSE_LOCK = Lock()
 
 
 def load_ontology(path: Path = ONTOLOGY_PATH):
     """Ontology dưới dạng đồ thị rdflib, kèm đúng phép chiếu nguồn của bản phục vụ.
 
-    Phép chiếu nguồn chỉ có MỘT bản cài đặt, chạy trên kho Oxigraph; ở đây chỉ
-    chép sang các bộ ba mà nó sinh ra.
+    Phép chiếu chạy trên kho Oxigraph và chỉ có một bản cài đặt; ở đây chỉ chép
+    sang các bộ ba nó sinh ra.
 
-    Đồ thị rdflib vẫn đọc thẳng từ Turtle chứ không dựng lại từ kho. Truy vấn
-    không có ``ORDER BY`` trả dòng theo thứ tự nội bộ của kho, mà thứ tự ấy phụ
-    thuộc cách nạp - dựng lại từ kho sẽ đổi thứ tự dòng của mọi công cụ ngoại
-    tuyến, đổi cả các tệp kết quả đã chốt, mà không đổi lấy một dữ kiện nào.
+    Đồ thị đọc thẳng từ Turtle chứ không dựng lại từ kho: truy vấn không có
+    ``ORDER BY`` lấy thứ tự nội bộ của kho, mà thứ tự ấy phụ thuộc cách nạp, nên
+    dựng lại sẽ xáo thứ tự dòng của mọi kết quả ngoại tuyến.
     """
 
     from rdflib import Graph, Literal, URIRef
@@ -70,11 +61,10 @@ def load_ontology(path: Path = ONTOLOGY_PATH):
 
 
 def validate_select(query: str) -> str:
-    """Kiểm một câu truy vấn do model sinh, không cố sửa nó.
+    """Kiểm cú pháp một câu truy vấn do model sinh, không cố sửa nó.
 
-    Dùng cho SPARQL đến từ bên ngoài danh mục - tức đường chấm điểm ngoại tuyến.
-    ``execute_select`` KHÔNG gọi hàm này: nó chỉ cần chốt hình dạng, còn cú pháp
-    thì bước chạy tự phát hiện, nên gọi cả hai là phân tích câu truy vấn hai lần.
+    Dành cho SPARQL đến từ ngoài danh mục. ``execute_select`` không gọi hàm này:
+    bước chạy đã phân tích câu truy vấn, nên gọi cả hai là phân tích hai lần.
     """
 
     query = check_select_contract(query)
@@ -86,17 +76,14 @@ def validate_select(query: str) -> str:
 def _parse_select(query: str) -> None:
     """Phân tích cú pháp bằng bộ phân tích của rdflib.
 
-    Cố ý KHÔNG dùng ``Store.query`` của Oxigraph: hàm đó không chỉ phân tích mà
-    còn lập kế hoạch thực thi, và giá lập kế hoạch tăng vọt theo số mẫu đồ thị.
-    Một câu 4.093 ký tự vẫn lọt trần ``MAX_QUERY_CHARS`` có thể tốn gần một phút
-    ở đó, trong khi phân tích cú pháp thuần mất chưa tới 200 ms.
+    Không dùng ``Store.query`` của Oxigraph: hàm đó còn lập kế hoạch thực thi, và
+    giá lập kế hoạch tăng vọt theo số mẫu đồ thị - một câu dài vẫn lọt trần
+    ``MAX_QUERY_CHARS`` có thể tốn hàng chục giây ở đó.
 
-    Chốt ``^SELECT`` nằm trong ``check_select_contract`` và phải chạy trước bước
-    này, vì bộ phân tích nhận cả ASK, CONSTRUCT và DESCRIBE - nó chỉ trả lời "có
-    đúng cú pháp SPARQL không".
+    Bộ phân tích nhận cả ASK, CONSTRUCT và DESCRIBE, nên chốt ``^SELECT`` trong
+    ``check_select_contract`` phải chạy trước.
 
-    ``lru_cache`` không nhớ ngoại lệ, nên câu sai vẫn được phân tích lại và vẫn
-    báo lỗi mỗi lần.
+    ``lru_cache`` không nhớ ngoại lệ, nên câu sai vẫn bị báo lỗi mỗi lần.
     """
 
     from rdflib.plugins.sparql.parser import parseQuery
@@ -111,9 +98,8 @@ def _parse_select(query: str) -> None:
 def execute_select(graph, query: str, *, max_rows: int = 100) -> QueryRows:
     """Chạy một SELECT trên đồ thị rdflib, trả về đúng thứ bản phục vụ trả về.
 
-    Cùng hình dạng dữ liệu với ``runtime.sparql.execute_select``: chỉ giá trị
-    Python thuần, cùng thứ tự cột, cùng phép đổi literal. Bộ kiểm đối chiếu canh
-    điều đó bằng cách chạy trọn một tệp khẳng định qua cả hai lối.
+    Cùng hình dạng với ``runtime.sparql.execute_select``: chỉ giá trị Python
+    thuần, cùng thứ tự cột, cùng phép đổi literal.
     """
 
     from rdflib import BNode, Literal, URIRef
