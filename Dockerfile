@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.14-slim-bookworm AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /bin/uv
 WORKDIR /app
 ENV UV_LINK_MODE=copy UV_COMPILE_BYTECODE=1 UV_PYTHON_DOWNLOADS=never
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # lệch vân tay thì nó bị bỏ qua, nên nó không bao giờ là nguồn của sự thật.
 RUN /app/.venv/bin/bake_cards
 
-FROM python:3.12-slim-bookworm AS model-fetcher
+FROM python:3.14-slim-bookworm AS model-fetcher
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /bin/uv
 WORKDIR /app
 ARG HF_REPO
@@ -33,7 +33,7 @@ snapshot_download(repo_id='$HF_REPO', revision='$HF_REVISION', \
 local_dir=root, allow_patterns=[path + '/*']); \
 shutil.copytree(root / path, '/app/model')"
 
-FROM python:3.12-slim-bookworm AS runtime
+FROM python:3.14-slim-bookworm AS runtime
 RUN set -eux; apt-get update; \
     apt-get upgrade -y --no-install-recommends; \
     apt-get install -y --no-install-recommends ca-certificates; \
