@@ -8,6 +8,10 @@ requires-python = "==3.12.*"
 dependencies = [
     "numpy>=2.5.1",
     "oxrdflib>=0.5.0",
+    # Đường phục vụ nhập thẳng ``pyoxigraph``. Trước nó chỉ tới đây nhờ đi kèm
+    # ``oxrdflib``; ngày nào gói kia nới ràng buộc là ảnh triển khai dựng xong
+    # vẫn chết ngay lúc khởi động, mà không phép kiểm nào thấy trước.
+    "pyoxigraph>=0.5.0",
     "pyparsing>=3.2.0",
     "rdflib>=7.6.0",
 ]
@@ -24,7 +28,9 @@ research = [
     "huggingface-hub>=1.24.0",
     "matplotlib>=3.11.0",
     "onnx>=1.20.0",
-    "onnxruntime>=1.24.0",
+    # Cùng sàn với extra ``inference``: đồ thị nướng sẵn được ghi ở đây và đọc ở
+    # đó, nên hai bên lệch bản bộ chạy thì lỗi chỉ lộ ra trong container.
+    "onnxruntime>=1.29.0",
     "onnxscript>=0.5.0",
     "peft>=0.20.0",
     "playwright>=1.56.0",
@@ -43,6 +49,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.scripts]
+bake_cards = "ontchatbot.cli.bake_cards:main"
 benchmark_classifier = "ontchatbot.cli.benchmark_classifier:main"
 benchmark_runtime = "ontchatbot.cli.benchmark_runtime:main"
 chat_agent = "ontchatbot.cli.chat:main"

@@ -16,12 +16,15 @@ from pathlib import Path
 from typing import Sequence
 
 import numpy as np
-import rdflib
+import pyoxigraph as ox
 
 from .cards import CardLookup
 from .generator import QueryGenerationError
 
 MAX_LENGTH = 48
+#: Đồ thị đã hợp nhất sẵn lúc xuất model. Trọng số vẫn nằm ở tệp ngoài dùng chung
+#: với đồ thị gốc, nên tệp này phải ở cùng thư mục thì bộ chạy mới tìm ra.
+OPTIMIZED_GRAPH_NAME = "classifier.optimized.onnx"
 
 
 @dataclass(frozen=True)
@@ -48,7 +51,7 @@ class OnnxClassifierGenerator:
         cls,
         model_dir: Path,
         *,
-        graph: rdflib.Graph | None = None,
+        graph: ox.Store | None = None,
         intra_op_threads: int = 2,
     ) -> OnnxClassifierGenerator:
         """Nạp đồ thị, bộ tách từ và bảng nhãn từ thư mục đã xuất."""
@@ -75,7 +78,20 @@ class OnnxClassifierGenerator:
         options.intra_op_num_threads = intra_op_threads
         options.inter_op_num_threads = 1
         options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
-        options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+
+        # Bước xuất model đã hợp nhất sẵn đồ thị. Có tệp ấy thì tắt hẳn phần hợp
+        # nhất lúc khởi động: nó cho ra đúng đồ thị đang nằm trên đĩa, và làm lại
+        # tốn khoảng một giây trên mỗi lần khởi động nguội. Model xuất trước khi
+        # có tệp này vẫn nạp được, chỉ là phải tự hợp nhất như cũ.
+        baked_path = model_dir / OPTIMIZED_GRAPH_NAME
+        if baked_path.exists():
+            graph_path = baked_path
+            options.graph_optimization_level = (
+                ort.GraphOptimizationLevel.ORT_DISABLE_ALL
+            )
+        else:
+            options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+
         session = ort.InferenceSession(
             str(graph_path),
             sess_options=options,
@@ -99,7 +115,7 @@ class OnnxClassifierGenerator:
 
     @classmethod
     def from_assets(
-        cls, assets: OnnxAssets, *, graph: rdflib.Graph | None = None
+        cls, assets: OnnxAssets, *, graph: ox.Store | None = None
     ) -> OnnxClassifierGenerator:
         lookup = CardLookup() if graph is None else CardLookup(_cards_for(graph))
         return cls(
@@ -136,7 +152,7 @@ class OnnxClassifierGenerator:
         return self.generate_many([text])[0]
 
 
-def _cards_for(graph: rdflib.Graph):
-    from .cards import build_cards
+def _cards_for(graph: ox.Store):
+    from .cards import load_cards
 
-    return build_cards(graph)
+    return load_cards(graph)

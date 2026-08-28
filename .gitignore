@@ -41,3 +41,6 @@ ontology_old.ttl
 
 # Gói kết quả mang về từ máy thuê: nhị phân, nặng, và dựng lại được từ log.
 *.tar.gz
+
+# Bảng thẻ nướng sẵn: sinh lúc dựng ảnh từ ontology + danh mục.
+resources/ontology/cards.json

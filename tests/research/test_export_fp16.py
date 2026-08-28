@@ -175,3 +175,97 @@ def test_check_rejects_non_finite_logits(monkeypatch, tmp_path) -> None:
             tolerance=5e-2,
             require_same_top_label=True,
         )
+
+
+def _fake_ort(state):
+    """Bộ chạy ONNX giả, đủ để canh phần đấu dây của bước nướng đồ thị."""
+
+    class Options:
+        def __init__(self) -> None:
+            self.graph_optimization_level = None
+            self.optimized_model_filepath = None
+
+    def session(path, *, sess_options, providers):
+        state.opened.append((Path(path), sess_options.graph_optimization_level))
+        # Bộ chạy thật ghi đồ thị đã hợp nhất ra tệp khi được chỉ chỗ.
+        if sess_options.optimized_model_filepath is not None:
+            Path(sess_options.optimized_model_filepath).write_bytes("đồ thị đã nướng".encode("utf-8"))
+            state.baked_to = Path(sess_options.optimized_model_filepath)
+        return SimpleNamespace(
+            run=lambda names, feed: [state.logits.pop(0)],
+            providers=providers,
+        )
+
+    return ModuleType("onnxruntime"), session, Options
+
+
+def _install_fake_ort(monkeypatch, state):
+    module, session, options = _fake_ort(state)
+    module.SessionOptions = options
+    module.InferenceSession = session
+    module.GraphOptimizationLevel = SimpleNamespace(
+        ORT_ENABLE_EXTENDED="extended",
+        ORT_ENABLE_ALL="all",
+        ORT_DISABLE_ALL="none",
+    )
+    monkeypatch.setitem(sys.modules, "onnxruntime", module)
+
+
+def test_baking_writes_the_graph_next_to_the_weights(monkeypatch, tmp_path) -> None:
+    """Đồ thị nướng phải nằm cùng thư mục: trọng số ngoài tìm theo thư mục đó."""
+    logits = np.array([[0.25, 0.75]], dtype=np.float32)
+    state = SimpleNamespace(opened=[], baked_to=None, logits=[logits, logits.copy()])
+    _install_fake_ort(monkeypatch, state)
+    model = tmp_path / "classifier.onnx"
+    model.touch()
+
+    baked = export_onnx._bake_optimized_graph(
+        model, np.zeros((1, 4), dtype=np.int64), np.ones((1, 4), dtype=np.int64)
+    )
+
+    assert baked == tmp_path / export_onnx.OPTIMIZED_NAME
+    assert state.baked_to == baked
+    # Nướng ở mức EXTENDED; mức ALL gắn tối ưu theo phần cứng máy dựng và nội
+    # tuyến trọng số vào tệp đồ thị. Đọc lại thì tắt hẳn phần hợp nhất.
+    assert [level for _path, level in state.opened] == ["extended", "none"]
+    assert [path for path, _level in state.opened] == [model, baked]
+
+
+def test_baking_refuses_a_graph_that_does_not_read_back_identically(
+    monkeypatch, tmp_path
+) -> None:
+    """Ghi ra rồi đọc lại phải giống TỪNG BIT - đó là việc bước này chịu trách nhiệm."""
+    state = SimpleNamespace(
+        opened=[],
+        baked_to=None,
+        logits=[
+            np.array([[0.25, 0.75]], dtype=np.float32),
+            np.array([[0.25, 0.7500001]], dtype=np.float32),
+        ],
+    )
+    _install_fake_ort(monkeypatch, state)
+    model = tmp_path / "classifier.onnx"
+    model.touch()
+
+    with pytest.raises(SystemExit, match="không đọc lại đúng bản đã ghi"):
+        export_onnx._bake_optimized_graph(
+            model, np.zeros((1, 4), dtype=np.int64), np.ones((1, 4), dtype=np.int64)
+        )
+
+
+def test_publishing_blocks_a_model_without_the_baked_graph(tmp_path) -> None:
+    """Thiếu đồ thị nướng thì dịch vụ vẫn chạy, chỉ chậm - nên phải chặn ở đây.
+
+    Đó là kiểu hỏng không ai nhìn thấy: không có lỗi, không có cảnh báo, chỉ là
+    mỗi lần khởi động nguội tốn thêm chừng một giây.
+    """
+    for name in ("classifier.onnx", "classifier.onnx.data", "labels.json", "tokenizer.json"):
+        (tmp_path / name).touch()
+
+    with pytest.raises(SystemExit, match=export_onnx.OPTIMIZED_NAME):
+        publish_classifier.validate_model_directory(tmp_path)
+
+    (tmp_path / export_onnx.OPTIMIZED_NAME).touch()
+    assert len(publish_classifier.validate_model_directory(tmp_path)) == len(
+        publish_classifier.REQUIRED
+    )

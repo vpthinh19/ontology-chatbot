@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 from typing import Sequence
 
-import rdflib
+import pyoxigraph as ox
 
 from .cards import CardLookup
 from .generator import QueryGenerationError
@@ -40,7 +40,7 @@ class ClassifierGenerator:
         cls,
         model_dir: Path,
         *,
-        graph: rdflib.Graph | None = None,
+        graph: ox.Store | None = None,
         device: str = "cpu",
     ) -> ClassifierGenerator:
         """Nạp bộ điều hợp, lớp phân loại và bảng nhãn đã lưu lúc huấn luyện."""
@@ -102,7 +102,7 @@ class ClassifierGenerator:
         return self.generate_many([text])[0]
 
 
-def _cards_for(graph: rdflib.Graph):
-    from .cards import build_cards
+def _cards_for(graph: ox.Store):
+    from .cards import load_cards
 
-    return build_cards(graph)
+    return load_cards(graph)

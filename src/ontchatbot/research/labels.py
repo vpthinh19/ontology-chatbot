@@ -15,11 +15,20 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
-import rdflib
-from rdflib.namespace import OWL, RDF, RDFS
+import pyoxigraph as ox
 
 from ..settings import DATASET_DIR
-from ..runtime.cards import build_cards, load_graph, _literals, _namespace, _shorten
+from ..runtime.cards import (
+    OWL_NAMED_INDIVIDUAL,
+    RDF_TYPE,
+    RDFS_LABEL,
+    build_cards,
+    objects,
+    subjects_of_type,
+    _literals,
+    _shorten,
+)
+from ..runtime.sparql import load_ontology
 
 ARTICLE = re.compile(r"^(:.*?Article\d+)")
 SPLITS = ("train", "val", "test")
@@ -53,20 +62,23 @@ def load_splits(directory: Path = DATASET_DIR):
     return rows, labels
 
 
-def family_names(graph: rdflib.Graph | None = None) -> dict[str, str]:
+def family_names(graph: ox.Store | None = None) -> dict[str, str]:
     """Tên tiếng Việt cho từng nhóm câu hỏi, suy từ nhãn lớp trong ontology."""
-    graph = graph if graph is not None else load_graph()
-    base = _namespace(graph)
+    graph = graph if graph is not None else load_ontology()
 
     classes, own = defaultdict(list), {}
-    for subject in graph.subjects(RDF.type, OWL.NamedIndividual):
-        name = _shorten(subject, base)
-        labels = _literals(graph, subject, RDFS.label)
+    for subject in subjects_of_type(graph, OWL_NAMED_INDIVIDUAL):
+        name = _shorten(subject)
+        labels = _literals(graph, subject, RDFS_LABEL)
         if labels:
             own[name] = labels[0]
-        for term in graph.objects(subject, RDF.type):
-            if term != OWL.NamedIndividual:
-                classes[name] += _literals(graph, term, RDFS.label)
+        # Xếp lớp theo IRI: một thực thể mang nhiều lớp thì thứ tự duyệt quyết
+        # định cách phá hoà khi đếm phiếu bên dưới.
+        for term in sorted(
+            objects(graph, subject, RDF_TYPE), key=lambda node: node.value
+        ):
+            if term != OWL_NAMED_INDIVIDUAL:
+                classes[name] += _literals(graph, term, RDFS_LABEL)
 
     votes, anchors = defaultdict(Counter), defaultdict(Counter)
     for card in build_cards(graph):

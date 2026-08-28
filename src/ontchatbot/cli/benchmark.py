@@ -17,7 +17,7 @@ from ..research.benchmark import (
 from ..settings import DATASET_DIR, TEST_DATASET_PATH
 from ..research.dataset import load_release
 from ..research.evaluation import evaluate_query_id_expectations
-from ..runtime.sparql import load_ontology
+from ..research.graph import load_ontology
 
 
 def main() -> None:

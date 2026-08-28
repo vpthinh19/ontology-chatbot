@@ -23,7 +23,7 @@ from ontchatbot.research.answer_scope import (
     dump_literals,
 )
 from ontchatbot.research.mentions import mention_index, overloaded_mentions
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.runtime.cards import CardLookup
 from ontchatbot.runtime.text import normalize_model_input
 from ontchatbot.settings import (
@@ -735,7 +735,7 @@ def test_every_answer_carries_a_dated_source(rows, graph) -> None:
     nhận diện từ kết quả truy vấn thay vì bằng danh sách ngoại lệ viết tay.
     """
 
-    from ontchatbot.runtime.sparql import execute_select
+    from ontchatbot.research.graph import execute_select
 
     lookup = CardLookup()
     date_marks = re.compile(r"ngày \d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2}")

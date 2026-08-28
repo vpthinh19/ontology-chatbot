@@ -8,7 +8,7 @@ from ontchatbot.research.evaluation import (
     evaluate_query_id_expectations,
 )
 from ontchatbot.runtime.cards import Card, CardLookup
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.settings import TEST_DATASET_PATH, VAL_DATASET_PATH
 
 

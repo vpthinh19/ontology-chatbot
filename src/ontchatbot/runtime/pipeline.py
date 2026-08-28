@@ -8,7 +8,7 @@ import uuid
 from dataclasses import dataclass
 from typing import Literal, Mapping, Sequence, TypeAlias
 
-from rdflib import Graph
+import pyoxigraph as ox
 
 from ..catalogue import QuerySpec, find_query_family, load_catalogue
 from ..settings import QUERY_CATALOGUE_PATH
@@ -65,7 +65,7 @@ class OntologyChatbot:
     def __init__(
         self,
         generator: QueryGenerator,
-        graph: Graph | None = None,
+        graph: ox.Store | None = None,
         catalogue: Mapping[str, QuerySpec] | None = None,
     ) -> None:
         self.generator = generator

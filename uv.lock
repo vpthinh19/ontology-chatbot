@@ -809,6 +809,7 @@ source = { editable = "." }
 dependencies = [
     { name = "numpy" },
     { name = "oxrdflib" },
+    { name = "pyoxigraph" },
     { name = "pyparsing" },
     { name = "rdflib" },
 ]
@@ -853,12 +854,13 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.5.1" },
     { name = "onnx", marker = "extra == 'research'", specifier = ">=1.20.0" },
     { name = "onnxruntime", marker = "extra == 'inference'", specifier = ">=1.29.0" },
-    { name = "onnxruntime", marker = "extra == 'research'", specifier = ">=1.24.0" },
+    { name = "onnxruntime", marker = "extra == 'research'", specifier = ">=1.29.0" },
     { name = "onnxscript", marker = "extra == 'research'", specifier = ">=0.5.0" },
     { name = "oxrdflib", specifier = ">=0.5.0" },
     { name = "peft", marker = "extra == 'research'", specifier = ">=0.20.0" },
     { name = "playwright", marker = "extra == 'research'", specifier = ">=1.56.0" },
     { name = "protobuf", marker = "extra == 'research'", specifier = ">=6.33.0" },
+    { name = "pyoxigraph", specifier = ">=0.5.0" },
     { name = "pyparsing", specifier = ">=3.2.0" },
     { name = "rdflib", specifier = ">=7.6.0" },
     { name = "scikit-learn", marker = "extra == 'research'", specifier = ">=1.9.0" },

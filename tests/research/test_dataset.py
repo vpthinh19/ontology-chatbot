@@ -10,7 +10,7 @@ from ontchatbot.research.dataset import (
     _validate_target_text,
     validate_release,
 )
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.runtime.cards import Card, CardLookup
 
 

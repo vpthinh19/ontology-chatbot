@@ -14,7 +14,7 @@ from ontchatbot.research.coverage import (
     load_coverage_requirements,
     require_complete_coverage,
 )
-from ontchatbot.runtime.sparql import execute_select, load_ontology
+from ontchatbot.research.graph import execute_select, load_ontology
 from ontchatbot.runtime.cards import Card, CardLookup
 from ontchatbot.settings import COVERAGE_REQUIREMENTS_PATH, QUERY_CATALOGUE_PATH
 

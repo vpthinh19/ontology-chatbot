@@ -1,16 +1,23 @@
-"""Execute model-generated, read-only SPARQL on the canonical ontology."""
+"""Execute read-only SPARQL against the canonical ontology, for the serving path.
 
+Đồ thị nằm trong kho Oxigraph và mọi truy vấn đi thẳng vào đó. Module này KHÔNG
+nhập rdflib ở bất kỳ đâu, kể cả trong thân hàm: chỉ *tạo* một đồ thị rdflib đã kéo
+theo bộ phân tích SPARQL viết bằng pyparsing, mà bộ ấy dựng nguyên bộ văn phạm
+ngay lúc nạp thư viện - 1,4 giây trên một nhân của nền tảng triển khai, ở MỖI lần
+khởi động nguội, cho một việc mà Oxigraph vẫn đang tự làm.
+
+Lối rdflib mà các công cụ ngoại tuyến cần nằm ở ``research.graph``. Nó dùng lại
+``check_select_contract`` và ``from_lexical`` ở đây, nên hợp đồng câu truy vấn và
+phép đổi literal chỉ có một bản cài đặt cho cả hai lối.
+"""
 from __future__ import annotations
 
 import re
-from decimal import Decimal
-from functools import lru_cache
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from threading import Lock
 from typing import TypeAlias
 
-from rdflib import BNode, Graph, Literal, URIRef
-from rdflib.plugins.sparql.parser import parseQuery
+import pyoxigraph as ox
 
 from ..settings import ONTOLOGY_NS, ONTOLOGY_PATH
 
@@ -27,34 +34,94 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 """
 
 MAX_QUERY_CHARS = 4096
-SOURCE_CITATION = URIRef(ONTOLOGY_NS + "sourceCitation")
-SOURCE_LINK = URIRef(ONTOLOGY_NS + "sourceLink")
-SOURCE_PROJECTION_PREDICATES = frozenset((SOURCE_CITATION, SOURCE_LINK))
+SOURCE_CITATION = ox.NamedNode(ONTOLOGY_NS + "sourceCitation")
+SOURCE_LINK = ox.NamedNode(ONTOLOGY_NS + "sourceLink")
+#: Nêu bằng IRI dạng chuỗi để dùng được với cả hai lối biểu diễn đồ thị.
+SOURCE_PROJECTION_IRIS = frozenset(
+    (ONTOLOGY_NS + "sourceCitation", ONTOLOGY_NS + "sourceLink")
+)
+_BASED_ON = ox.NamedNode(ONTOLOGY_NS + "basedOn")
+_CITATION_LABEL = ox.NamedNode(ONTOLOGY_NS + "citationLabel")
+_DOCUMENT_URL = ox.NamedNode(ONTOLOGY_NS + "documentUrl")
+_WEB_PAGE_URL = ox.NamedNode(ONTOLOGY_NS + "webPageUrl")
+
 _FORBIDDEN_KEYWORDS = re.compile(
     r"\b(?:SERVICE|FROM|INSERT|DELETE|LOAD|CLEAR|CREATE|DROP|COPY|MOVE|ADD|WITH)\b",
     flags=re.IGNORECASE,
 )
-# RDFLib/pyparsing shares mutable grammar state between calls. Cold validation
-# can arrive on several lookup threads, but this service runs one Uvicorn process
-# and never forks after importing the module, so one process-local lock protects
-# only uncached parser work. The ``lru_cache`` wrapper remains outside this body;
-# established query texts never acquire the lock.
-_PARSE_LOCK = Lock()
+_XSD = "http://www.w3.org/2001/XMLSchema#"
+_RDF_LANGSTRING = "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+#: Kiểu trả về nguyên văn phần chữ của literal.
+_TEXT_DATATYPES = frozenset(
+    {None, _RDF_LANGSTRING}
+    | {
+        _XSD + name
+        for name in (
+            "string",
+            "anyURI",
+            "normalizedString",
+            "token",
+            "language",
+            "NMTOKEN",
+            "Name",
+            "NCName",
+        )
+    }
+)
+_INTEGER_DATATYPES = frozenset(
+    _XSD + name
+    for name in (
+        "integer",
+        "int",
+        "long",
+        "short",
+        "byte",
+        "nonNegativeInteger",
+        "positiveInteger",
+        "nonPositiveInteger",
+        "negativeInteger",
+        "unsignedInt",
+        "unsignedLong",
+        "unsignedShort",
+        "unsignedByte",
+    )
+)
+_FLOAT_DATATYPES = frozenset((_XSD + "double", _XSD + "float"))
 
 
 class SparqlError(ValueError):
     """The generated query violates the runtime contract or cannot execute."""
 
 
-def load_ontology(path: Path = ONTOLOGY_PATH) -> Graph:
+def load_ontology(path: Path = ONTOLOGY_PATH) -> ox.Store:
     """Load the canonical Turtle ontology and its compact source view."""
 
-    graph = Graph(store="Oxigraph").parse(Path(path), format="turtle")
-    _add_source_projection(graph)
-    return graph
+    store = ox.Store()
+    with open(path, "rb") as handle:
+        parser = ox.parse(handle, format=ox.RdfFormat.TURTLE)
+        store.bulk_extend(
+            ox.Quad(triple.subject, triple.predicate, triple.object)
+            for triple in parser
+        )
+        # Đọc prefix SAU khi đã duyệt hết: bộ phân tích điền dần chúng trong lúc
+        # đọc tệp, và ``bulk_extend`` là thứ duyệt cạn bộ sinh ở trên.
+        declared = parser.prefixes.get("")
+    if declared != ONTOLOGY_NS:
+        # ``ValueError`` chứ không phải ``SparqlError``: đây là tệp ontology sai,
+        # không phải câu truy vấn sai, mà ``SparqlError`` thì nhiều chỗ bắt lại
+        # rồi lặng lẽ đổi thành "truy vấn không ra kết quả".
+        raise ValueError(
+            f"ontology khai prefix mặc định ':' là {declared!r}, chờ {ONTOLOGY_NS!r}"
+        )
+    _add_source_projection(store)
+    return store
 
 
-def _add_source_projection(graph: Graph) -> None:
+def _objects(store: ox.Store, subject, predicate) -> list:
+    return [quad.object for quad in store.quads_for_pattern(subject, predicate, None)]
+
+
+def _add_source_projection(store: ox.Store) -> None:
     """Materialize one compact, paired source record for every answer anchor.
 
     Canonical queries emit the two project source fields rather than repeating
@@ -63,33 +130,31 @@ def _add_source_projection(graph: Graph) -> None:
     an absent member of a citation/URL pair.
     """
 
-    based_on = URIRef(ONTOLOGY_NS + "basedOn")
-    citation_label = URIRef(ONTOLOGY_NS + "citationLabel")
-    document_url = URIRef(ONTOLOGY_NS + "documentUrl")
-    web_page_url = URIRef(ONTOLOGY_NS + "webPageUrl")
-
     subjects = sorted(
-        {subject for subject in graph.subjects() if isinstance(subject, URIRef)},
-        key=str,
+        {quad.subject for quad in store if isinstance(quad.subject, ox.NamedNode)},
+        key=lambda node: node.value,
     )
     for subject in subjects:
         source_nodes = sorted(
             {
                 node
-                for node in graph.objects(subject, based_on)
-                if isinstance(node, URIRef)
+                for node in _objects(store, subject, _BASED_ON)
+                if isinstance(node, ox.NamedNode)
             },
-            key=str,
+            key=lambda node: node.value,
         ) or [subject]
         pairs: list[tuple[str, str]] = []
         for source in source_nodes:
             citations = sorted(
-                str(value) for value in graph.objects(source, citation_label)
+                value.value
+                for value in _objects(store, source, _CITATION_LABEL)
+                if isinstance(value, ox.Literal)
             )
             urls = sorted(
-                str(value)
-                for predicate in (document_url, web_page_url)
-                for value in graph.objects(source, predicate)
+                value.value
+                for predicate in (_DOCUMENT_URL, _WEB_PAGE_URL)
+                for value in _objects(store, source, predicate)
+                if isinstance(value, ox.Literal)
             )
             if citations or urls:
                 pairs.extend(
@@ -98,18 +163,32 @@ def _add_source_projection(graph: Graph) -> None:
                     for url in (urls or [""])
                 )
         if pairs:
-            graph.add(
-                (
+            store.add(
+                ox.Quad(
                     subject,
                     SOURCE_CITATION,
-                    Literal(" · ".join(citation for citation, _ in pairs)),
+                    ox.Literal(" · ".join(citation for citation, _ in pairs)),
                 )
             )
-            graph.add((subject, SOURCE_LINK, Literal(" · ".join(url for _, url in pairs))))
+            store.add(
+                ox.Quad(
+                    subject,
+                    SOURCE_LINK,
+                    ox.Literal(" · ".join(url for _, url in pairs)),
+                )
+            )
 
 
-def validate_select(query: str) -> str:
-    """Validate and return a model query without trying to repair it."""
+def check_select_contract(query: str) -> str:
+    """Chốt hình dạng câu truy vấn: thuần Python, không gọi bộ phân tích nào.
+
+    Tách khỏi phần phân tích cú pháp (``research.graph.validate_select``) vì hai
+    bên có giá khác hẳn nhau. Phần này là vài phép so khớp biểu thức chính quy;
+    phần kia đắt, và ``execute_select`` không cần nó - chính bước chạy đã phân
+    tích câu truy vấn rồi.
+
+    Cả hai lối đồ thị gọi hàm này, nên hợp đồng chỉ có một bản cài đặt.
+    """
 
     if not isinstance(query, str):
         raise SparqlError("SPARQL query must be text")
@@ -128,77 +207,78 @@ def validate_select(query: str) -> str:
     if forbidden:
         raise SparqlError(f"SPARQL keyword is not allowed: {forbidden.group(0).upper()}")
 
-    _parse_select(query)
     return query
 
 
-@lru_cache(maxsize=4096)
-def _parse_select(query: str) -> None:
-    """Parse one query text, remembering the result.
-
-    Parsing is pure - the same text always parses the same way - but it is by
-    far the most expensive step here, and callers replay a small set of texts
-    many times over: validating a dataset parses every row, and the rows share
-    a few hundred distinct targets. ``lru_cache`` does not remember raised
-    exceptions, so an invalid query is still re-parsed and still reported.
-    """
-
-    try:
-        with _PARSE_LOCK:
-            parseQuery(PREFIXES + query)
-    except Exception as exc:  # RDFLib exposes parser implementation exceptions.
-        raise SparqlError(f"invalid SPARQL: {exc}") from exc
-
-
-def execute_select(
-    graph: Graph,
-    query: str,
-    *,
-    max_rows: int = 100,
-) -> QueryRows:
+def execute_select(store: ox.Store, query: str, *, max_rows: int = 100) -> QueryRows:
     """Run a validated SELECT and return only plain Python mappings."""
 
     if max_rows < 1:
         raise ValueError("max_rows must be positive")
 
-    query = validate_select(query)
+    query = check_select_contract(query)
     try:
-        result = graph.query(PREFIXES + query)
+        solutions = store.query(PREFIXES + query)
     except Exception as exc:
         raise SparqlError(f"SPARQL execution failed: {exc}") from exc
 
-    columns = [str(variable) for variable in result.vars or ()]
+    columns = [variable.value for variable in solutions.variables]
     if not columns:
         raise SparqlError("SELECT query has no result columns")
 
     rows: QueryRows = []
-    for row_number, row in enumerate(result, start=1):
+    for row_number, solution in enumerate(solutions, start=1):
         if row_number > max_rows:
             raise SparqlError(f"SPARQL result exceeds {max_rows} rows")
         rows.append(
             {
-                column: _to_primitive(row[index], column)
+                column: _to_primitive(solution[index], column)
                 for index, column in enumerate(columns)
             }
         )
     return rows
 
 
-def _to_primitive(value: object, column: str) -> Primitive:
-    if value is None:
+def _to_primitive(term, column: str) -> Primitive:
+    if term is None:
         return None
-    if isinstance(value, (URIRef, BNode)):
+    if isinstance(term, (ox.NamedNode, ox.BlankNode)):
         raise SparqlError(
             f"result column ?{column} contains a graph node; project rdfs:label or a literal"
         )
-    if not isinstance(value, Literal):
+    if not isinstance(term, ox.Literal):
         raise SparqlError(f"result column ?{column} is not an RDF literal")
+    datatype = term.datatype.value if term.datatype is not None else None
+    return from_lexical(term.value, datatype)
 
-    converted = value.toPython()
-    if converted is None or isinstance(converted, (str, int, float, bool)):
-        return converted
-    # ``xsd:decimal`` thành ``Decimal``, không phải ``float``. Để nguyên thì nó
-    # rơi xuống ``str`` và sĩ số 20 hiện ra thành "20.0".
-    if isinstance(converted, Decimal):
-        return int(converted) if converted == converted.to_integral_value() else float(converted)
-    return str(converted)
+
+def from_lexical(text: str, datatype: str | None) -> Primitive:
+    """Đổi phần chữ của literal thành giá trị Python theo kiểu XSD của nó.
+
+    Kiểu lạ thì giữ nguyên phần chữ: đồ thị luôn là nguồn của sự thật, và đoán
+    một phép đổi cho kiểu chưa biết chỉ tạo ra con số không ai khẳng định.
+    """
+
+    if datatype in _TEXT_DATATYPES:
+        return text
+    if datatype in _INTEGER_DATATYPES:
+        try:
+            return int(text)
+        except ValueError:
+            return text
+    if datatype == _XSD + "boolean":
+        return text in ("true", "1")
+    if datatype in _FLOAT_DATATYPES:
+        try:
+            return float(text)
+        except ValueError:
+            return text
+    if datatype == _XSD + "decimal":
+        # ``xsd:decimal`` giữ nguyên số chữ số thập phân đã ghi, nên sĩ số 20
+        # được ghi là "20.0" sẽ hiện ra thành 20 chứ không phải "20.0".
+        try:
+            number = Decimal(text)
+        except InvalidOperation:
+            return text
+        return int(number) if number == number.to_integral_value() else float(number)
+    return text

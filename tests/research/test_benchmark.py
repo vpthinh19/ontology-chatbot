@@ -11,7 +11,7 @@ from ontchatbot.research.benchmark import (
     validate_benchmark,
 )
 from ontchatbot.catalogue import QuerySpec, SlotSpec
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.runtime.cards import Card, CardLookup
 
 

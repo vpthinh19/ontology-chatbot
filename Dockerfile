@@ -12,6 +12,10 @@ COPY src/ ./src/
 COPY resources/ontology/ ./resources/ontology/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --python /usr/local/bin/python --extra inference --no-dev
+# Bảng thẻ chỉ phụ thuộc ontology và danh mục truy vấn, nên dựng sẵn ở đây thay
+# vì dựng lại ở mỗi lần container thức dậy. Tệp mang vân tay của hai tệp nguồn:
+# lệch vân tay thì nó bị bỏ qua, nên nó không bao giờ là nguồn của sự thật.
+RUN /app/.venv/bin/bake_cards
 
 FROM python:3.12-slim-bookworm AS model-fetcher
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /bin/uv

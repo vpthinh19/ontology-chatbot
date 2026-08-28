@@ -3,23 +3,18 @@ from __future__ import annotations
 import threading
 from concurrent.futures import ThreadPoolExecutor
 
+import pyoxigraph
 import pytest
 from rdflib import Graph, URIRef
 
-from ontchatbot.runtime import sparql
-from ontchatbot.runtime.sparql import (
-    SparqlError,
-    execute_select,
-    load_ontology,
-    validate_select,
-)
+from ontchatbot.research.graph import execute_select as execute_on_rdflib
+from ontchatbot.research.graph import validate_select
+from ontchatbot.runtime.sparql import SparqlError, load_ontology
+from ontchatbot.runtime.sparql import execute_select as execute_on_store
 from ontchatbot.settings import ONTOLOGY_NS
 
 
-@pytest.fixture(scope="module")
-def graph():
-    return Graph(store="Oxigraph").parse(
-        data=f"""
+FIXTURE_TURTLE = f"""
             @prefix : <{ONTOLOGY_NS}> .
             @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
             @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -34,13 +29,42 @@ def graph():
             :DocumentA rdfs:label "Tài liệu A"@vi ; :url "https://example.com/a"^^xsd:anyURI .
             :DocumentB rdfs:label "Tài liệu B"@vi ; :url "https://example.com/b"^^xsd:anyURI .
             :MeasuredItem :category "A" ; :amount "600000"^^xsd:nonNegativeInteger .
-        """,
-        format="turtle",
-    )
+        """
 
 
-def test_concurrent_cold_valid_queries_do_not_corrupt_the_shared_parser() -> None:
-    """Valid cache misses must remain valid when lookup workers parse together."""
+def execute_select(graph, query: str, **kwargs):
+    """Gửi truy vấn tới bộ chạy ứng với kiểu đồ thị đang được kiểm.
+
+    Phép rẽ nhánh này nằm ở đây chứ không nằm trong mã sản phẩm: đường phục vụ
+    chỉ biết kho Oxigraph, các công cụ ngoại tuyến chỉ biết đồ thị rdflib. Chính
+    tệp kiểm này là chỗ duy nhất cần cả hai, vì việc của nó là chứng minh hai bên
+    trả về y hệt nhau.
+    """
+
+    if isinstance(graph, pyoxigraph.Store):
+        return execute_on_store(graph, query, **kwargs)
+    return execute_on_rdflib(graph, query, **kwargs)
+
+
+@pytest.fixture(scope="module", params=["oxigraph", "rdflib"])
+def graph(request):
+    """Cùng dữ liệu ấy dưới cả hai lối biểu diễn đồ thị.
+
+    Đường phục vụ đọc kho Oxigraph, các công cụ ngoại tuyến đọc đồ thị rdflib, và
+    hai bên phải trả về y hệt nhau: cùng số dòng, cùng thứ tự, cùng kiểu Python.
+    Chạy trọn bộ khẳng định của tệp này qua cả hai lối là cách canh điều đó -
+    một lối lặng lẽ đổi cách bóc literal thì phép kiểm đỏ ngay.
+    """
+
+    if request.param == "rdflib":
+        return Graph(store="Oxigraph").parse(data=FIXTURE_TURTLE, format="turtle")
+    store = pyoxigraph.Store()
+    store.load(FIXTURE_TURTLE, format=pyoxigraph.RdfFormat.TURTLE)
+    return store
+
+
+def test_concurrent_cold_valid_queries_stay_valid() -> None:
+    """Xác thực nhiều truy vấn lạ cùng lúc phải cho cùng kết quả với chạy lẻ."""
     worker_count = 8
     queries = [
         "SELECT ?answer WHERE { :ExampleRecord :text ?answer . "
@@ -48,7 +72,6 @@ def test_concurrent_cold_valid_queries_do_not_corrupt_the_shared_parser() -> Non
         for index in range(64)
     ]
     barrier = threading.Barrier(worker_count)
-    sparql._parse_select.cache_clear()
 
     def validate_partition(worker: int) -> list[str]:
         barrier.wait()
@@ -223,3 +246,80 @@ def test_result_values_never_expose_uris(graph) -> None:
 
     assert rows
     assert all(not isinstance(value, URIRef) for row in rows for value in row.values())
+
+
+def test_literal_conversion_matches_rdflib_on_every_literal_in_the_ontology() -> None:
+    """Chỗ hai lối dễ lệch nhất là bóc literal, nên kiểm vét cạn đúng chỗ đó.
+
+    rdflib đổi kiểu bằng ``toPython`` của chính nó; Oxigraph không có phép ấy nên
+    lối mới đọc kiểu XSD rồi tự đổi. Phép kiểm này lấy rdflib làm mốc và đối chiếu
+    TỪNG literal trong ontology - vét cạn mà vẫn nhanh, vì không chạy truy vấn nào.
+    """
+
+    from decimal import Decimal
+
+    from rdflib import Literal as RdflibLiteral
+
+    from ontchatbot.research.graph import load_ontology as load_rdflib_graph
+    from ontchatbot.runtime.sparql import from_lexical
+
+    def rdflib_reference(literal):
+        """Đúng phép đổi mà lối rdflib vẫn dùng trước khi có Oxigraph."""
+
+        converted = literal.toPython()
+        if converted is None or isinstance(converted, (str, int, float, bool)):
+            return converted
+        if isinstance(converted, Decimal):
+            integral = converted == converted.to_integral_value()
+            return int(converted) if integral else float(converted)
+        return str(converted)
+
+    graph = load_rdflib_graph()
+    checked = 0
+    datatypes = set()
+    for _subject, _predicate, value in graph:
+        if not isinstance(value, RdflibLiteral):
+            continue
+        checked += 1
+        datatypes.add(str(value.datatype) if value.datatype is not None else None)
+        expected = rdflib_reference(value)
+        datatype = str(value.datatype) if value.datatype is not None else None
+        actual = from_lexical(str(value), datatype)
+        assert actual == expected, (str(value), datatype, actual, expected)
+        assert type(actual) is type(expected), (str(value), datatype)
+
+    assert checked > 4000, f"chỉ soi được {checked} literal"
+    # Ontology mọc thêm một kiểu XSD lạ thì phép kiểm này phải được nhìn lại,
+    # chứ không lặng lẽ bỏ qua kiểu đó.
+    assert datatypes == {
+        None,
+        "http://www.w3.org/2001/XMLSchema#anyURI",
+        "http://www.w3.org/2001/XMLSchema#date",
+        "http://www.w3.org/2001/XMLSchema#decimal",
+        "http://www.w3.org/2001/XMLSchema#integer",
+        "http://www.w3.org/2001/XMLSchema#string",
+    }, sorted(str(item) for item in datatypes)
+
+
+def test_both_engines_agree_on_the_real_catalogue_queries() -> None:
+    """Truy vấn thật, dữ liệu thật: hai lối phải trả cùng dòng, cùng thứ tự.
+
+    Phép kiểm trên đã vét cạn phần bóc literal, nên ở đây chỉ cần canh phần còn
+    lại - số dòng, thứ tự dòng và thứ tự cột. Lấy thưa cho gọn: các câu truy vấn
+    dùng chung một nhúm khuôn, nên một mẫu thưa vẫn chạm mọi khuôn.
+    """
+
+    from ontchatbot.research.graph import load_ontology as load_rdflib_graph
+    from ontchatbot.runtime.cards import build_cards
+
+    store = load_ontology()
+    graph = load_rdflib_graph()
+    queries = [
+        card.query
+        for card in build_cards(store)
+        if card.query.strip().upper().startswith("SELECT")
+    ]
+    assert len(queries) > 300
+
+    for query in queries[::12]:
+        assert execute_on_store(store, query) == execute_on_rdflib(graph, query), query

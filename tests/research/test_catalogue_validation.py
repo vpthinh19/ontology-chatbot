@@ -16,8 +16,8 @@ from ontchatbot.research.catalogue_validation import (
     CatalogueValidationError,
     validate_catalogue,
 )
-from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.runtime.sparql import execute_select
+from ontchatbot.research.graph import load_ontology
+from ontchatbot.research.graph import execute_select
 from ontchatbot.settings import ANSWER_INVENTORY_PATH, QUERY_CATALOGUE_PATH
 
 

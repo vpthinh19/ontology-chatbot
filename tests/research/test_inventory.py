@@ -4,7 +4,7 @@ import pytest
 from rdflib import Literal, URIRef
 
 from ontchatbot.research.inventory import build_answer_inventory, resolve_answer_path
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.settings import ANSWER_INVENTORY_PATH, ONTOLOGY_NS
 
 

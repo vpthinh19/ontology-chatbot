@@ -25,6 +25,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 
+from ontchatbot.research import graph as _graph
 from ontchatbot.runtime import sparql as _sparql
 
 #: Mã băm nội dung → đồ thị đã nạp. Giữ tham chiếu thật ở đây, nhờ vậy số định
@@ -36,38 +37,74 @@ _KEY_OF_GRAPH: dict[int, str] = {}
 _ROWS: dict[tuple[str, str, int], list[dict]] = {}
 
 _load_ontology = _sparql.load_ontology
-_execute_select = _sparql.execute_select
+_load_graph = _graph.load_ontology
+_execute_on_store = _sparql.execute_select
+_execute_on_graph = _graph.execute_select
+
+
+def _remember(key: str, graph):
+    _GRAPHS[key] = graph
+    _KEY_OF_GRAPH[id(graph)] = key
+    return graph
 
 
 def _cached_load_ontology(path: Path = _sparql.ONTOLOGY_PATH):
     key = hashlib.sha256(Path(path).read_bytes()).hexdigest()
     graph = _GRAPHS.get(key)
     if graph is None:
-        graph = _GRAPHS[key] = _load_ontology(path)
-        _KEY_OF_GRAPH[id(graph)] = key
+        graph = _remember(key, _load_ontology(path))
     return graph
 
 
-def _cached_execute_select(graph, query: str, *, max_rows: int = 100):
-    key = _KEY_OF_GRAPH.get(id(graph))
-    if key is None:
-        # Đồ thị dựng tay trong một phép kiểm: không có nội dung tệp để làm khoá,
-        # nên đi thẳng. Đây là các đồ thị nhỏ, chạy lại không tốn gì.
-        return _execute_select(graph, query, max_rows=max_rows)
-    rows = _ROWS.get((key, query, max_rows))
-    if rows is None:
-        rows = _ROWS[(key, query, max_rows)] = _execute_select(
-            graph, query, max_rows=max_rows
-        )
-    # Trả bản sao: người gọi sắp xếp hoặc sửa tại chỗ thì không được đụng tới bản
-    # đang giữ, nếu không phép kiểm chạy sau nhận dữ liệu đã bị phép kiểm trước
-    # bóp méo. Các ô đều là giá trị nguyên thuỷ nên sao một tầng là đủ.
-    return [dict(row) for row in rows]
+def _cached_load_graph(path: Path = _sparql.ONTOLOGY_PATH):
+    """Cùng cách nhớ đệm, cho lối rdflib mà các công cụ ngoại tuyến dùng.
+
+    Khoá kèm tên lối đi: hai lối trả về hai kiểu đối tượng khác nhau trên cùng
+    một nội dung tệp, nên dùng chung khoá thì lối này nhận đồ thị của lối kia.
+    """
+
+    key = "rdflib:" + hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    graph = _GRAPHS.get(key)
+    if graph is None:
+        graph = _remember(key, _load_graph(path))
+    return graph
+
+
+def _caching(real):
+    """Bọc một bộ chạy truy vấn bằng lớp nhớ đệm dùng chung.
+
+    Mỗi lối đồ thị có bộ chạy riêng, nhưng khoá nhớ đệm đã kèm tên lối đi nên hai
+    bên dùng chung được một kho dòng mà không lẫn sang nhau.
+    """
+
+    def cached(graph, query: str, *, max_rows: int = 100):
+        key = _KEY_OF_GRAPH.get(id(graph))
+        if key is None:
+            # Đồ thị dựng tay trong một phép kiểm: không có nội dung tệp để làm
+            # khoá, nên đi thẳng. Đây là các đồ thị nhỏ, chạy lại không tốn gì.
+            return real(graph, query, max_rows=max_rows)
+        rows = _ROWS.get((key, query, max_rows))
+        if rows is None:
+            rows = _ROWS[(key, query, max_rows)] = real(
+                graph, query, max_rows=max_rows
+            )
+        # Trả bản sao: người gọi sắp xếp hoặc sửa tại chỗ thì không được đụng tới
+        # bản đang giữ, nếu không phép kiểm chạy sau nhận dữ liệu đã bị phép kiểm
+        # trước bóp méo. Các ô đều là giá trị nguyên thuỷ nên sao một tầng là đủ.
+        return [dict(row) for row in rows]
+
+    # Để phép kiểm canh đối chiếu được với bản gốc.
+    cached.uncached = real
+    return cached
+
+
+_cached_execute_on_store = _caching(_execute_on_store)
+_cached_execute_on_graph = _caching(_execute_on_graph)
 
 
 # Để phép kiểm canh đối chiếu được với bản gốc mà không phải nạp lại tệp này.
 _cached_load_ontology.uncached = _load_ontology
-_cached_execute_select.uncached = _execute_select
+_cached_load_graph.uncached = _load_graph
 
 # Thay ngay lúc nạp tệp này. pytest nạp ``conftest.py`` trước mọi tệp kiểm, nên
 # các ``from ... import load_ontology`` sau đó đều lấy đúng bản có nhớ đệm.
@@ -77,4 +114,6 @@ _cached_execute_select.uncached = _execute_select
 # và kiểu hỏng nó chặn thì rất khó đọc ra từ vết lỗi.
 if not hasattr(_load_ontology, "uncached"):
     _sparql.load_ontology = _cached_load_ontology
-    _sparql.execute_select = _cached_execute_select
+    _sparql.execute_select = _cached_execute_on_store
+    _graph.load_ontology = _cached_load_graph
+    _graph.execute_select = _cached_execute_on_graph

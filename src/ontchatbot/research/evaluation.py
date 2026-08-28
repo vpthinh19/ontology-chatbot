@@ -13,7 +13,8 @@ from rdflib.plugins.sparql.parser import parseQuery
 from rdflib.plugins.sparql.parserutils import CompValue
 
 from ..catalogue import QuerySpec, load_catalogue, match_target
-from ..runtime.sparql import PREFIXES, SparqlError, execute_select, validate_select
+from ..runtime.sparql import PREFIXES, SparqlError
+from .graph import execute_select, validate_select
 from ..runtime.cards import CardLookup
 from ..settings import ONTOLOGY_NS, QUERY_CATALOGUE_PATH
 from .query_features import extract_query_features, query_feature_tags

@@ -25,7 +25,8 @@ from ontchatbot.research.coverage import (
 )
 from ontchatbot.research.dataset import load_release, validate_release
 from ontchatbot.research.mentions import mention_index
-from ontchatbot.runtime.sparql import SparqlError, execute_select, load_ontology
+from ontchatbot.research.graph import execute_select, load_ontology
+from ontchatbot.runtime.sparql import SparqlError
 from ontchatbot.runtime.cards import Card, CardLookup
 from ontchatbot.settings import (
     COVERAGE_REQUIREMENTS_PATH,

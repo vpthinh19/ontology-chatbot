@@ -14,20 +14,35 @@ from __future__ import annotations
 import json
 import re
 from collections import defaultdict
+import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 from string import Template
 
-import rdflib
-from rdflib.namespace import OWL, RDF, RDFS, SKOS
+import pyoxigraph as ox
 
-from ..settings import ONTOLOGY_PATH, QUERY_CATALOGUE_PATH
+from ..settings import (
+    CARD_CACHE_PATH,
+    ONTOLOGY_NS,
+    ONTOLOGY_PATH,
+    QUERY_CATALOGUE_PATH,
+)
 
 _IRI = re.compile(r"(?<![\w:])(:[A-Z][A-Za-z0-9_]*)")
 
 REFUSAL_QUERY_ID = "no-information"
 REFUSAL_MARKER = "không có thông tin"
 REFUSAL_TEXT = "câu hỏi ngoài phạm vi dữ liệu học vụ"
+
+RDF_TYPE = ox.NamedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
+RDFS_LABEL = ox.NamedNode("http://www.w3.org/2000/01/rdf-schema#label")
+SKOS_ALT_LABEL = ox.NamedNode("http://www.w3.org/2004/02/skos/core#altLabel")
+OWL_CLASS = ox.NamedNode("http://www.w3.org/2002/07/owl#Class")
+OWL_NAMED_INDIVIDUAL = ox.NamedNode("http://www.w3.org/2002/07/owl#NamedIndividual")
+
+
+def _term(local_name: str) -> ox.NamedNode:
+    return ox.NamedNode(ONTOLOGY_NS + local_name)
 
 
 @dataclass(frozen=True)
@@ -44,102 +59,115 @@ class Card:
         return self.query_id == REFUSAL_QUERY_ID
 
 
-def load_graph(path: Path = ONTOLOGY_PATH) -> rdflib.Graph:
-    graph = rdflib.Graph()
-    graph.parse(path, format="turtle")
-    return graph
+def subjects_of_type(store: ox.Store, class_term: ox.NamedNode) -> list:
+    """Các chủ thể mang một lớp, xếp theo IRI để không phụ thuộc thứ tự duyệt."""
 
-
-def _namespace(graph: rdflib.Graph) -> str:
-    base = dict(graph.namespaces()).get("")
-    if base is None:
-        raise ValueError("ontology không khai báo prefix mặc định ':'")
-    return str(base)
-
-
-def _shorten(term, base: str) -> str:
-    text = str(term)
-    return ":" + text[len(base) :] if text.startswith(base) else text
-
-
-def _literals(graph: rdflib.Graph, subject, predicate) -> list[str]:
-    """Literal của một thuộc tính, SẮP XẾP để không phụ thuộc thứ tự duyệt.
-
-    rdflib không bảo đảm thứ tự trả về, mà phần chữ của thẻ phải giống hệt nhau
-    giữa lúc huấn luyện và lúc phục vụ thì vector mới trùng.
-    """
     return sorted(
-        str(value)
-        for value in graph.objects(subject, predicate)
-        if isinstance(value, rdflib.Literal)
+        {
+            quad.subject
+            for quad in store.quads_for_pattern(None, RDF_TYPE, class_term)
+        },
+        key=lambda node: node.value,
     )
 
 
-def entity_texts(graph: rdflib.Graph) -> dict[str, list[str]]:
-    """Các cụm chữ mô tả từng cá thể có tên, xếp từ cụ thể tới khái quát."""
-    base = _namespace(graph)
-    namespace = rdflib.Namespace(base)
-    texts: dict[str, str] = {}
+def objects(store: ox.Store, subject, predicate) -> list:
+    """Mọi đối tượng của một cặp (chủ thể, thuộc tính)."""
 
-    for subject in graph.subjects(RDF.type, OWL.NamedIndividual):
-        parts: list[str] = _literals(graph, subject, RDFS.label)[:1]
-        parts += _literals(graph, subject, SKOS.altLabel)
+    return [quad.object for quad in store.quads_for_pattern(subject, predicate, None)]
+
+
+def _shorten(term, base: str = ONTOLOGY_NS) -> str:
+    """IRI rút gọn về dạng ``:TenCucBo`` mà dataset và danh mục truy vấn dùng."""
+
+    text = term.value
+    return ":" + text[len(base) :] if text.startswith(base) else text
+
+
+def _literals(store: ox.Store, subject, predicate) -> list[str]:
+    """Literal của một thuộc tính, SẮP XẾP để không phụ thuộc thứ tự duyệt.
+
+    Kho đồ thị không bảo đảm thứ tự trả về, mà phần chữ của thẻ phải giống hệt
+    nhau giữa lúc huấn luyện và lúc phục vụ thì vector mới trùng.
+    """
+    return sorted(
+        value.value
+        for value in objects(store, subject, predicate)
+        if isinstance(value, ox.Literal)
+    )
+
+
+def entity_texts(store: ox.Store) -> dict[str, list[str]]:
+    """Các cụm chữ mô tả từng cá thể có tên, xếp từ cụ thể tới khái quát."""
+    texts: dict[str, list[str]] = {}
+
+    article_number = _term("articleNumber")
+    clause_number = _term("clauseNumber")
+    point_letter = _term("pointLetter")
+    heading_text = _term("headingText")
+    part_of = _term("partOf")
+    in_document = _term("inDocument")
+
+    for subject in subjects_of_type(store, OWL_NAMED_INDIVIDUAL):
+        parts: list[str] = _literals(store, subject, RDFS_LABEL)[:1]
+        parts += _literals(store, subject, SKOS_ALT_LABEL)
 
         for predicate, prefix in (
-            (namespace.articleNumber, "Điều"),
-            (namespace.clauseNumber, "khoản"),
-            (namespace.pointLetter, "điểm"),
+            (article_number, "Điều"),
+            (clause_number, "khoản"),
+            (point_letter, "điểm"),
         ):
-            parts += [f"{prefix} {value}" for value in _literals(graph, subject, predicate)]
+            parts += [f"{prefix} {value}" for value in _literals(store, subject, predicate)]
 
-        parts += _literals(graph, subject, namespace.headingText)
+        parts += _literals(store, subject, heading_text)
 
-        # Nhãn cha và nhãn lớp được sắp xếp: rdflib không bảo đảm thứ tự duyệt,
-        # mà phần chữ của thẻ phải giống hệt nhau giữa lúc huấn luyện và lúc
-        # phục vụ thì vector mới trùng.
+        # Nhãn cha và nhãn lớp được sắp xếp: kho đồ thị không bảo đảm thứ tự
+        # duyệt, mà phần chữ của thẻ phải giống hệt nhau giữa lúc huấn luyện và
+        # lúc phục vụ thì vector mới trùng.
         parents: set[str] = set()
-        for predicate in (namespace.partOf, namespace.inDocument):
-            for parent in graph.objects(subject, predicate):
+        for predicate in (part_of, in_document):
+            for parent in objects(store, subject, predicate):
                 parents.update(
-                    _literals(graph, parent, RDFS.label)
-                    or [_shorten(parent, base).lstrip(":")]
+                    _literals(store, parent, RDFS_LABEL)
+                    or [_shorten(parent).lstrip(":")]
                 )
         parts += sorted(parents)
 
         classes: set[str] = set()
-        for class_term in graph.objects(subject, RDF.type):
-            if class_term == OWL.NamedIndividual:
+        for class_term in objects(store, subject, RDF_TYPE):
+            if class_term == OWL_NAMED_INDIVIDUAL:
                 continue
             classes.update(
-                _literals(graph, class_term, RDFS.label)
-                or [_shorten(class_term, base).lstrip(":")]
+                _literals(store, class_term, RDFS_LABEL)
+                or [_shorten(class_term).lstrip(":")]
             )
         parts += sorted(classes)
 
         cleaned = [part.strip() for part in parts if part and part.strip()]
-        texts[_shorten(subject, base)] = list(dict.fromkeys(cleaned))
+        texts[_shorten(subject)] = list(dict.fromkeys(cleaned))
 
     return texts
 
 
-def _class_labels(graph: rdflib.Graph) -> dict[str, list[str]]:
+def _class_labels(store: ox.Store) -> dict[str, list[str]]:
     """Nhãn của các lớp, dùng để phân biệt hai truy vấn trên cùng thực thể."""
-    base = _namespace(graph)
     labels: dict[str, list[str]] = defaultdict(list)
-    for class_term in graph.subjects(RDF.type, OWL.Class):
-        name = _shorten(class_term, base)
-        labels[name] += _literals(graph, class_term, RDFS.label)
+    for class_term in subjects_of_type(store, OWL_CLASS):
+        labels[_shorten(class_term)] += _literals(store, class_term, RDFS_LABEL)
     return labels
 
 
 def build_cards(
-    graph: rdflib.Graph | None = None,
+    store: ox.Store | None = None,
     catalogue_path: Path = QUERY_CATALOGUE_PATH,
 ) -> list[Card]:
     """Bung danh mục truy vấn thành kho thẻ, kèm một thẻ từ chối."""
-    graph = graph if graph is not None else load_graph()
-    texts = entity_texts(graph)
-    class_labels = _class_labels(graph)
+    if store is None:
+        from .sparql import load_ontology
+
+        store = load_ontology()
+    texts = entity_texts(store)
+    class_labels = _class_labels(store)
 
     cards: list[Card] = []
     with open(catalogue_path, encoding="utf-8") as handle:
@@ -220,3 +248,98 @@ class CardLookup:
     def query(self, query_id: str, target) -> str:
         """Chuỗi SPARQL ứng với nhãn của một dòng dataset."""
         return self.card(query_id, target).query
+
+
+#: Đổi số này khi hình dạng tệp đổi, để tệp cũ bị bỏ qua thay vì đọc sai.
+CARD_CACHE_VERSION = 1
+
+
+def _fingerprint(ontology_path: Path, catalogue_path: Path) -> str:
+    """Mã băm của đúng hai tệp sinh ra bảng thẻ."""
+
+    digest = hashlib.sha256()
+    for path in (ontology_path, catalogue_path):
+        digest.update(Path(path).read_bytes())
+    return digest.hexdigest()
+
+
+def _read_cache(cache_path: Path, fingerprint: str) -> list[Card] | None:
+    """Đọc bảng thẻ nướng sẵn, trả ``None`` nếu không dùng được vì bất cứ lẽ gì.
+
+    Mọi đường hỏng đều dẫn về ``None`` chứ không ném lỗi: tệp này là bộ nhớ đệm,
+    và một bộ nhớ đệm hỏng phải làm dịch vụ chậm đi chứ không được làm nó chết.
+    """
+
+    try:
+        payload = json.loads(Path(cache_path).read_text(encoding="utf-8"))
+        if payload["version"] != CARD_CACHE_VERSION:
+            return None
+        if payload["fingerprint"] != fingerprint:
+            return None
+        return [
+            Card(query_id, tuple(anchors), text, query)
+            for query_id, anchors, text, query in payload["cards"]
+        ]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def load_cards(
+    store: ox.Store | None = None,
+    *,
+    ontology_path: Path = ONTOLOGY_PATH,
+    catalogue_path: Path = QUERY_CATALOGUE_PATH,
+    cache_path: Path = CARD_CACHE_PATH,
+) -> list[Card]:
+    """Bảng thẻ cho đường phục vụ: lấy tệp nướng sẵn nếu nó còn đúng.
+
+    Dựng bảng thẻ là duyệt trọn ontology cho từng thực thể có tên, và kết quả chỉ
+    phụ thuộc hai tệp - ontology và danh mục truy vấn. Việc ấy làm sẵn được lúc
+    dựng ảnh, thay vì làm lại ở mỗi lần khởi động nguội.
+
+    Vân tay là mã băm của chính hai tệp đó. Sửa ontology mà quên nướng lại thì
+    tệp cũ bị bỏ qua và bảng thẻ được dựng như chưa từng có nó - chậm hơn, nhưng
+    không bao giờ phục vụ bằng bảng thẻ của một ontology khác.
+    """
+
+    cached = _read_cache(cache_path, _fingerprint(ontology_path, catalogue_path))
+    if cached is not None:
+        return cached
+    return build_cards(store, catalogue_path)
+
+
+def bake_cards(
+    destination: Path = CARD_CACHE_PATH,
+    *,
+    ontology_path: Path = ONTOLOGY_PATH,
+    catalogue_path: Path = QUERY_CATALOGUE_PATH,
+) -> list[Card]:
+    """Dựng bảng thẻ một lần và ghi ra tệp, rồi đòi đọc lại phải giống hệt.
+
+    Phép kiểm đọc-lại là thứ bước này chịu trách nhiệm: ghi ra rồi đọc vào không
+    được làm rơi hay đổi gì. Nó rẻ, và kiểu hỏng nó chặn - một thẻ mất phần chữ
+    hoặc lệch một neo - sẽ không lộ ra ở đâu khác cho tới lúc model chọn sai.
+    """
+
+    from .sparql import load_ontology
+
+    cards = build_cards(load_ontology(ontology_path), catalogue_path)
+    payload = {
+        "version": CARD_CACHE_VERSION,
+        "fingerprint": _fingerprint(ontology_path, catalogue_path),
+        "cards": [
+            [card.query_id, list(card.anchors), card.text, card.query]
+            for card in cards
+        ],
+    }
+    destination = Path(destination)
+    destination.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8"
+    )
+
+    reloaded = _read_cache(destination, payload["fingerprint"])
+    if reloaded != cards:
+        raise SystemExit(
+            f"bảng thẻ nướng sẵn không đọc lại đúng bản đã ghi: {destination}"
+        )
+    return cards

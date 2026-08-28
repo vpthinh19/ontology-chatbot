@@ -58,7 +58,9 @@ def _cpu_ort(seen):
     return SimpleNamespace(
         SessionOptions=_SessionOptions,
         ExecutionMode=SimpleNamespace(ORT_SEQUENTIAL="sequential"),
-        GraphOptimizationLevel=SimpleNamespace(ORT_ENABLE_ALL="all"),
+        GraphOptimizationLevel=SimpleNamespace(
+            ORT_ENABLE_ALL="all", ORT_DISABLE_ALL="none"
+        ),
         InferenceSession=create_session,
     )
 
@@ -116,3 +118,29 @@ def test_load_rejects_a_non_positive_thread_count(threads, tmp_path):
         onnx_classifier.OnnxClassifierGenerator.load(
             _model_dir(tmp_path), intra_op_threads=threads
         )
+
+
+def test_a_baked_graph_is_loaded_instead_of_refusing_the_original(monkeypatch, tmp_path):
+    """Có đồ thị nướng sẵn thì nạp nó và tắt hẳn phần hợp nhất lúc khởi động."""
+    seen = {}
+    _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
+    model_dir = _model_dir(tmp_path)
+    baked = model_dir / onnx_classifier.OPTIMIZED_GRAPH_NAME
+    baked.touch()
+
+    onnx_classifier.OnnxClassifierGenerator.load(model_dir)
+
+    assert seen["path"] == str(baked)
+    assert seen["options"].graph_optimization_level == "none"
+
+
+def test_a_model_without_a_baked_graph_still_loads(monkeypatch, tmp_path):
+    """Model xuất trước khi có bước nướng vẫn phục vụ được, chỉ khởi động chậm hơn."""
+    seen = {}
+    _replace_model_dependencies(monkeypatch, _cpu_ort(seen))
+    model_dir = _model_dir(tmp_path)
+
+    onnx_classifier.OnnxClassifierGenerator.load(model_dir)
+
+    assert seen["path"] == str(model_dir / "classifier.onnx")
+    assert seen["options"].graph_optimization_level == "all"

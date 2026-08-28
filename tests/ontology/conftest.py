@@ -1,7 +1,7 @@
 import pytest
 from rdflib import Graph, Namespace
 
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.settings import ONTOLOGY_NS
 
 

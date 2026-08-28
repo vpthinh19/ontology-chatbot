@@ -39,6 +39,9 @@ DATASET_MANIFEST_PATH = DATASET_DIR / "manifest.json"
 #: Danh mục truy vấn là cấu hình runtime dùng để xác định các truy vấn hợp lệ,
 #: không phải dữ liệu huấn luyện.
 QUERY_CATALOGUE_PATH = ONTOLOGY_DIR / "catalogue.jsonl"
+#: Bảng thẻ đã dựng sẵn lúc dựng ảnh. Là bộ nhớ đệm chứ không phải nguồn: nó mang
+#: theo vân tay của hai tệp sinh ra nó, và lệch vân tay thì bị bỏ qua.
+CARD_CACHE_PATH = ONTOLOGY_DIR / "cards.json"
 #: Họ truy vấn thủ công cho các phép so sánh, tổng hợp và lựa chọn bản ghi.
 QUERY_CATALOGUE_MANUAL_PATH = ONTOLOGY_DIR / "catalogue-manual.jsonl"
 COVERAGE_REQUIREMENTS_PATH = DATASET_DIR / "coverage.json"

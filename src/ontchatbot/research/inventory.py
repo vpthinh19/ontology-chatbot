@@ -7,7 +7,8 @@ from pathlib import Path
 
 from rdflib import OWL, RDF, RDFS, SKOS, Graph, Literal, Namespace, URIRef
 
-from ..runtime.sparql import SOURCE_PROJECTION_PREDICATES, load_ontology
+from ..runtime.sparql import SOURCE_PROJECTION_IRIS
+from .graph import load_ontology
 from ..settings import ANSWER_INVENTORY_PATH, ONTOLOGY_NS
 from .answer_scope import (
     INTERNAL_CLASS_NAMES,
@@ -108,7 +109,7 @@ def build_answer_inventory(graph: Graph) -> dict[str, object]:
             for predicate, value in graph.predicate_objects(anchor)
             if isinstance(value, Literal)
             and predicate != SKOS.altLabel
-            and predicate not in SOURCE_PROJECTION_PREDICATES
+            and str(predicate) not in SOURCE_PROJECTION_IRIS
             and (predicate == RDFS.label or str(predicate).startswith(ONTOLOGY_NS))
         }
         for predicate in sorted(literal_predicates, key=str):

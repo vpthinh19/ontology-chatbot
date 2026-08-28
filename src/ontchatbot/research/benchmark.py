@@ -14,7 +14,7 @@ from ..catalogue import QuerySpec, load_catalogue, match_target
 from .dataset import ALLOWED_REGISTERS
 from .evaluation import evaluate_predictions
 from ..runtime.text import normalize_model_input
-from ..runtime.sparql import execute_select, validate_select
+from .graph import execute_select, validate_select
 from ..runtime.cards import CardLookup
 
 REQUIRED_FIELDS = {"id", "query_id", "register", "input", "target"}

@@ -12,7 +12,7 @@ from ontchatbot.research.mentions import (
     mentions,
     overloaded_mentions,
 )
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.settings import ONTOLOGY_NS, QUERY_CATALOGUE_PATH
 
 

@@ -9,7 +9,7 @@ from typing import Any, Mapping
 
 from rdflib import Graph
 
-from ..runtime.sparql import execute_select, validate_select
+from .graph import execute_select, validate_select
 from ..runtime.cards import CardLookup
 from ..runtime.text import normalize_model_input
 from ..settings import DATASET_DIR, QUERY_CATALOGUE_PATH

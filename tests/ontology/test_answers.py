@@ -10,7 +10,7 @@ import json
 import pytest
 
 from ontchatbot.runtime.render import render_rows
-from ontchatbot.runtime.sparql import execute_select
+from ontchatbot.research.graph import execute_select
 
 
 def answers(graph, query: str) -> list[str]:

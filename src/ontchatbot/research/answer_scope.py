@@ -7,7 +7,7 @@ from typing import Mapping
 from rdflib import RDF, Graph, URIRef
 
 from ..catalogue import QuerySpec
-from ..runtime.sparql import execute_select
+from .graph import execute_select
 
 
 #: Các lớp của tầng văn bản.

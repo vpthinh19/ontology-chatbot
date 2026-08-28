@@ -26,7 +26,17 @@ DEFAULT_PATH_IN_REPO = "onnx-xlmr"
 
 #: Đồ thị đã xuất phải khép kín: trọng số, bộ tách từ và bảng nhãn. Thiếu một tệp
 #: thì ảnh triển khai dựng xong vẫn hỏng lúc khởi động chứ không hỏng lúc dựng.
-REQUIRED = ("classifier.onnx", "classifier.onnx.data", "labels.json", "tokenizer.json")
+#:
+#: Đồ thị nướng sẵn nằm trong danh sách này dù dịch vụ chạy được khi không có nó:
+#: thiếu nó thì dịch vụ vẫn khởi động, chỉ chậm thêm khoảng một giây ở mỗi lần
+#: khởi động nguội - một kiểu hỏng không ai nhìn thấy nếu không bị chặn ở đây.
+REQUIRED = (
+    "classifier.onnx",
+    "classifier.onnx.data",
+    "classifier.optimized.onnx",
+    "labels.json",
+    "tokenizer.json",
+)
 
 
 def sha256_file(path: Path) -> str:

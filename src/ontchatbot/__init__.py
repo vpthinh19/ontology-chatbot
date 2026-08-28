@@ -25,7 +25,7 @@ _LAZY_EXPORTS = {
     "SparqlError": (".runtime.sparql", "SparqlError"),
     "execute_select": (".runtime.sparql", "execute_select"),
     "load_ontology": (".runtime.sparql", "load_ontology"),
-    "validate_select": (".runtime.sparql", "validate_select"),
+    "validate_select": (".research.graph", "validate_select"),
     "OnnxClassifierGenerator": (
         ".runtime.onnx_classifier",
         "OnnxClassifierGenerator",

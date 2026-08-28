@@ -7,7 +7,7 @@ from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Literal, Mapping
 
-from ..runtime.sparql import load_ontology
+from .graph import load_ontology
 from ..settings import (
     ANSWER_INVENTORY_PATH,
     DATASET_DIR,

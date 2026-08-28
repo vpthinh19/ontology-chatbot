@@ -15,7 +15,7 @@ from ontchatbot.research.reporting import (
     build_procedure_dataset_report,
     sha256_file,
 )
-from ontchatbot.runtime.sparql import load_ontology
+from ontchatbot.research.graph import load_ontology
 from ontchatbot.settings import (
     DATASET_DIR,
     ONTOLOGY_PATH,

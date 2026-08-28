@@ -21,7 +21,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from ontchatbot.runtime.sparql import PREFIXES, load_ontology
+from ontchatbot.research.graph import load_ontology
+from ontchatbot.runtime.sparql import PREFIXES
 from ontchatbot.runtime.cards import CardLookup
 from ontchatbot.settings import DATASET_DIR, QUERY_CATALOGUE_PATH, REPORTS_DIR
 
