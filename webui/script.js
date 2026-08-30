@@ -19,7 +19,11 @@ const MAX_HISTORY_MESSAGES = 20;
 const HEALTH_DEADLINE_MS = 180_000;
 const HEALTH_REQUEST_TIMEOUT_MS = 12_000;
 const HEALTH_WAITS_MS = [1_000, 2_000, 4_000, 8_000];
-const CONNECTION_COUNTDOWN_SECONDS = 15;
+const CONNECTION_COUNTDOWN_SECONDS = 5;
+// Trang chỉ tự bám theo dòng mới khi người đọc đang ở sát đáy. Rộng hơn một dòng
+// chữ để một cú chạm nhỏ hoặc nhịp nảy của trình duyệt không bị hiểu là họ muốn
+// đọc ngược lên.
+const SCROLL_STICK_THRESHOLD_PX = 64;
 
 let responseController;
 let healthCheckPromise;
@@ -169,10 +173,38 @@ const createMessageElement = (...classes) => {
   return element;
 };
 
-const scrollToBottom = () =>
-  window.requestAnimationFrame(() =>
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }),
-  );
+// Trang tự cuộn theo câu trả lời đang viết, nhưng chỉ khi người đọc chưa rời
+// đáy. Họ kéo lên để đọc lại đoạn trên là quyền của họ; kéo ngược về đáy sau mỗi
+// token thì không đọc được gì nữa, mà cũng không bấm được vào chữ nào.
+let followingBottom = true;
+
+const bottomGap = () =>
+  document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+
+window.addEventListener(
+  "scroll",
+  () => {
+    followingBottom = bottomGap() <= SCROLL_STICK_THRESHOLD_PX;
+  },
+  { passive: true },
+);
+
+const jumpToBottom = (behavior) =>
+  window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+
+// Nhảy dứt khoát về đáy và bám lại từ đó: dùng cho những mốc do người dùng tạo
+// ra, như vừa gửi một câu hỏi.
+const scrollToBottom = () => {
+  followingBottom = true;
+  window.requestAnimationFrame(() => jumpToBottom("smooth"));
+};
+
+// Bám đáy trong lúc chữ đang chảy. Cuộn tức thì chứ không mượt: một hoạt ảnh
+// cuộn bị khởi động lại mỗi khung hình thì không bao giờ chạy xong, và chính nó
+// là thứ làm trang giật.
+const followBottom = () => {
+  if (followingBottom) jumpToBottom("auto");
+};
 
 const escapeHtml = (value) =>
   String(value)
@@ -271,16 +303,47 @@ const generateResponse = async (botMessage, userMessage) => {
     : "";
   let progress = "Đang suy nghĩ…";
 
-  const paint = () => {
+  // Chữ về nhanh hơn nhiều lần nhịp vẽ của màn hình. Dựng lại cả khối trả lời
+  // sau mỗi token vừa thừa vừa chiếm luồng chính, khiến trang không kịp nhận cú
+  // cuộn hay phím gõ. Mọi token rơi vào cùng một khung hình gộp làm một lần vẽ.
+  let paintHandle;
+  let paintedHtml;
+
+  const render = () => {
     const noticeHtml = notice
       ? `<div class="reply-line notice">${escapeHtml(notice)}</div>`
       : "";
-    textElement.innerHTML =
+    const html =
       noticeHtml +
       (answer
         ? renderRichText(answer)
         : `<div class="reply-line status">${escapeHtml(progress)}</div>`);
-    scrollToBottom();
+    if (html !== paintedHtml) {
+      textElement.innerHTML = html;
+      paintedHtml = html;
+    }
+    followBottom();
+  };
+
+  const cancelPaint = () => {
+    if (paintHandle === undefined) return;
+    window.cancelAnimationFrame(paintHandle);
+    paintHandle = undefined;
+  };
+
+  const paint = () => {
+    if (paintHandle !== undefined) return;
+    paintHandle = window.requestAnimationFrame(() => {
+      paintHandle = undefined;
+      render();
+    });
+  };
+
+  // Vẽ ngay thay vì đợi khung hình kế. Dùng ở những chỗ nội dung sẽ không đổi
+  // nữa, và ở tab ẩn - nơi khung hình không bao giờ tới.
+  const renderNow = () => {
+    cancelPaint();
+    render();
   };
 
   const consumeEvent = (chunk) => {
@@ -318,7 +381,7 @@ const generateResponse = async (botMessage, userMessage) => {
     paint();
   };
 
-  paint();
+  renderNow();
   try {
     const response = await fetch(apiUrl("/chat"), {
       method: "POST",
@@ -350,6 +413,7 @@ const generateResponse = async (botMessage, userMessage) => {
       chunks.forEach(consumeEvent);
     }
     if (buffer.trim()) consumeEvent(buffer);
+    renderNow();
     if (!completed) {
       const error = new Error(
         "Kết nối tới máy chủ bị gián đoạn trước khi câu trả lời hoàn tất.",
@@ -369,6 +433,8 @@ const generateResponse = async (botMessage, userMessage) => {
       responseAnnouncer.textContent = "Đã có câu trả lời mới.";
     }
   } catch (error) {
+    // Một khung hình còn treo sẽ vẽ đè lên thông báo lỗi ngay sau đó.
+    cancelPaint();
     const aborted = error.name === "AbortError";
     textElement.textContent = aborted
       ? "Đã dừng phản hồi."
@@ -395,7 +461,7 @@ const generateResponse = async (botMessage, userMessage) => {
       responseController = undefined;
     }
     updateControls();
-    scrollToBottom();
+    followBottom();
   }
 };
 

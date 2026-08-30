@@ -6,7 +6,7 @@ test("the page announces a cold start before the first health probe returns", as
   await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
 
   await expect(page.locator(".server-status")).toContainText(
-    "Đang kết nối máy chủ (15)",
+    "Đang kết nối máy chủ (5)",
     { timeout: 500 },
   );
   await expect(page.locator(".prompt-input")).toBeEnabled();
@@ -19,12 +19,12 @@ test("the connection status counts down without showing negative time", async ({
   await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
 
   const status = page.locator(".server-status");
-  await expect(status).toContainText("Đang kết nối máy chủ (15)");
+  await expect(status).toContainText("Đang kết nối máy chủ (5)");
 
   await page.clock.runFor(1_000);
-  await expect(status).toContainText("Đang kết nối máy chủ (14)");
+  await expect(status).toContainText("Đang kết nối máy chủ (4)");
 
-  await page.clock.runFor(14_000);
+  await page.clock.runFor(4_000);
   await expect(status).toContainText("Đang kết nối máy chủ (0)");
 
   await page.clock.runFor(1_000);
@@ -130,6 +130,75 @@ test("the final chat message scrolls fully clear of the fixed composer", async (
   expect(lastMessage).not.toBeNull();
   expect(composer).not.toBeNull();
   expect(lastMessage.y + lastMessage.height).toBeLessThanOrEqual(composer.y);
+});
+
+test("a streaming answer stops dragging the page down once the reader scrolls up", async ({
+  page,
+}) => {
+  // Luồng do chính phép kiểm điều khiển: đổ chữ vào đúng lúc cần, để chỗ đứng
+  // của trang đo được chắc chắn chứ không phụ thuộc nhịp mạng.
+  await page.addInitScript(() => {
+    const nativeFetch = window.fetch.bind(window);
+    window.fetch = async (input, init) => {
+      if (!String(input).endsWith("/chat")) return nativeFetch(input, init);
+      const encoder = new TextEncoder();
+      return new Response(
+        new ReadableStream({
+          start(controller) {
+            window.__push = (count) => {
+              for (let index = 0; index < count; index += 1) {
+                controller.enqueue(
+                  encoder.encode(
+                    `data: {"type":"text_delta","content":"Dòng trả lời số ${index}\\n"}\n\n`,
+                  ),
+                );
+              }
+            };
+          },
+        }),
+        { status: 200, headers: { "Content-Type": "text/event-stream" } },
+      );
+    };
+  });
+  await page.route("**/healthz", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("http://127.0.0.1:4173");
+
+  await page.locator(".prompt-input").fill("điều kiện xét học bổng");
+  await page.locator("#send-prompt-btn").click();
+  await page.waitForFunction(() => typeof window.__push === "function");
+
+  const settle = () =>
+    page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        ),
+    );
+  const bottomGap = () =>
+    page.evaluate(
+      () =>
+        document.documentElement.scrollHeight - window.scrollY - window.innerHeight,
+    );
+
+  await page.evaluate(() => window.__push(80));
+  await settle();
+  expect(await bottomGap()).toBeLessThanOrEqual(64);
+
+  // Người đọc kéo lên xem lại đoạn trên. Chữ vẫn chảy về, nhưng trang phải đứng
+  // yên tại chỗ họ đặt nó.
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => window.__push(80));
+  await settle();
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+
+  // Quay lại đáy là bám tiếp.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await page.evaluate(() => window.__push(80));
+  await settle();
+  expect(await bottomGap()).toBeLessThanOrEqual(64);
 });
 
 test("the landing header starts directly with the greeting", async ({ page }) => {
