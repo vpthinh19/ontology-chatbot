@@ -5,8 +5,10 @@ Chạy thẳng, không cần tham số:
 
     python -m ontchatbot.cli.report_page
 
-Nó tự đọc ontology, ba tệp dataset, và mọi ``benchmark-*.json`` tìm thấy trong
-``artifacts/`` rồi ghi ra ``resources/reports/bao-cao.html``.
+Nó tự đọc ontology, ba tệp dataset, và chỉ số so sánh model mà
+``benchmark_classifier`` ghi ra, rồi dựng ``resources/reports/bao-cao.html``.
+Trang là bản xem tại máy, không thuộc kho mã: chạy lệnh là có, xoá đi cũng không
+mất gì.
 
 Thứ tự các mục theo đúng thứ tự người ngoài nhìn vào dự án: hình dạng ontology
 trước, rồi phân bố dataset, rồi model làm được gì trên dataset đó, rồi model
@@ -16,10 +18,9 @@ hỏng ở đâu. Cấu trúc web app không thuộc trang này.
 from __future__ import annotations
 
 import json
-import re
 import statistics as st
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 from ontchatbot.settings import PROJECT_ROOT as ROOT
@@ -102,35 +103,20 @@ def dataset_shape() -> dict:
     }
 
 
-def anchor_kind(node: str) -> str:
-    if "Table" in node:
-        return "bảng"
-    if re.search(r"Article\d|Clause\d|Appendix|Chapter\d|Point\d", node):
-        return "điều/khoản"
-    return "tên có nghĩa"
+#: Chỉ số so sánh các model, do ``benchmark_classifier`` ghi ra sau khi chấm.
+METRICS = ROOT / "artifacts" / "entity-linking" / "benchmark-metrics.json"
 
 
-def benchmarks() -> list[dict]:
-    found = []
-    for path in sorted((ROOT / "artifacts").glob("benchmark-*.json")):
-        report = json.loads(path.read_text(encoding="utf-8"))
-        by_kind: dict[str, list[bool]] = defaultdict(list)
-        for case in report.get("cases", []):
-            if case.get("expected_nodes"):
-                by_kind[anchor_kind(case["expected_nodes"][0])].append(
-                    case["query_shape_correct"]
-                )
-        found.append({
-            "name": path.stem.replace("benchmark-", ""),
-            "run": report.get("run", {}),
-            "primary": report["primary_metrics"],
-            "by_register": {
-                k: v["canonical_query_exact_rate"]
-                for k, v in report.get("by_register", {}).items()
-            },
-            "by_kind": {k: sum(v) / len(v) for k, v in by_kind.items() if v},
-        })
-    return found
+def classifier_metrics() -> dict | None:
+    """Kết quả chấm của các model, hoặc ``None`` nếu máy này chưa chấm lượt nào.
+
+    Trang vẫn dựng được khi thiếu: hai mục đầu chỉ cần ontology và dataset, vốn
+    luôn có trong kho mã, nên một bản sao mới vẫn xem được phần mô tả dữ liệu.
+    """
+
+    if not METRICS.is_file():
+        return None
+    return json.loads(METRICS.read_text(encoding="utf-8"))
 
 
 # ---------------------------------------------------------------- vẽ
@@ -186,7 +172,7 @@ def table(headers, body) -> str:
 def main() -> None:
     onto = ontology_shape()
     data = dataset_shape()
-    runs = benchmarks()
+    runs = classifier_metrics()
 
     vi = lambda n: f"{n:,}".replace(",", ".")
 
@@ -268,35 +254,42 @@ Câu hỏi trung vị {data['q_median']:.0f} từ (dài nhất {data['q_max']}),
     parts.append(bars(data["top_families"], color=0))
 
     if runs:
+        diem = runs["metrics"]
+        xep = sorted(diem, key=lambda m: -diem[m]["accuracy"])
         parts.append("<h2>3 · Kết quả model</h2>")
-        parts.append("<p class='note'>Ba chỉ số chính, không có điểm tổng hợp. "
-                     "Mọi model đi qua cùng một bộ chấm trên cùng ba tập.</p>")
+        parts.append(f"<p class='note'>Chọn một trong {vi(runs['labels'])} nhãn truy "
+                     f"vấn, chấm trên tập {runs['split']}. Phần lớn nhãn chỉ có vài câu "
+                     "huấn luyện nên accuracy bị các nhãn đông lấn át; F1 vĩ mô đứng "
+                     "cạnh nó vì ở đó một nhãn hai câu nặng ngang một nhãn chín "
+                     "mươi câu.</p>")
         parts.append(table(
-            ["lượt chấm", "model", "đúng node", "đúng dạng", "từ chối đúng"],
+            ["model", "accuracy", "F1 vĩ mô", "F1 trọng số"],
             [[
-                r["name"], r["run"].get("model", "?"),
-                f"{r['primary']['node_selection']['rate']:.1%}",
-                f"{r['primary']['query_shape']['rate']:.1%}",
-                f"{r['primary']['rejection_decision']['rate']:.1%}",
-            ] for r in runs],
+                m,
+                f"{diem[m]['accuracy']:.1%}",
+                f"{diem[m]['macro_f1']:.1%}",
+                f"{diem[m]['weighted_f1']:.1%}",
+            ] for m in xep],
         ))
-        last = runs[-1]
-        if last["by_kind"]:
+
+        theo_so_cau = runs["by_training_count"]
+        if theo_so_cau:
+            nhom = list(next(iter(theo_so_cau.values())))
             parts.append("<h2>4 · Model hỏng ở đâu</h2>")
-            parts.append("<p class='note'>Đúng dạng theo <b>kiểu tên node</b>. "
-                         "Bảng bị hỏi bằng nội dung; điều/khoản được hỏi bằng chính "
-                         "toạ độ của nó. Chênh lệch giữa hai nhóm là hạn chế lớn "
-                         "nhất còn lại.</p>")
-            parts.append(bars(sorted(last["by_kind"].items(), key=lambda kv: -kv[1]),
-                              color=1, pct=True))
-        if last["by_register"]:
-            parts.append("<p class='note'>Đúng dạng theo giọng nói — câu viết "
-                         "nhiễu (không dấu, sai chính tả) là chỗ yếu nhất:</p>")
-            parts.append(bars(sorted(last["by_register"].items(), key=lambda kv: -kv[1]),
-                              color=2, pct=True))
+            parts.append("<p class='note'>Accuracy theo <b>số câu đã dạy cho nhãn "
+                         "đúng</b>. Nhãn càng ít câu huấn luyện thì các model càng "
+                         "khác nhau; đuôi dài này là hạn chế lớn nhất còn lại.</p>")
+            tot = theo_so_cau[xep[0]]
+            parts.append(bars(
+                [(f"{n} câu dạy", tot[n][0] / tot[n][1]) for n in nhom if tot[n][1]],
+                color=1, pct=True,
+            ))
+            parts.append(f"<p class='note'>Cùng bảng đó cho cả {len(xep)} model — "
+                         "trong ngoặc là số câu chấm rơi vào nhóm:</p>")
             parts.append(table(
-                ["giọng nói", "đúng dạng"],
-                [[k, f"{v:.1%}"] for k, v in sorted(last["by_register"].items())],
+                ["model"] + [f"{n} câu dạy ({theo_so_cau[xep[0]][n][1]})" for n in nhom],
+                [[m] + [f"{theo_so_cau[m][n][0] / theo_so_cau[m][n][1]:.1%}"
+                        if theo_so_cau[m][n][1] else "-" for n in nhom] for m in xep],
             ))
 
     parts.append("</div>")
@@ -306,7 +299,8 @@ Câu hỏi trung vị {data['q_median']:.0f} từ (dài nhất {data['q_max']}),
     print(f"  ontology {vi(onto['triples'])} bộ ba · {onto['classes']} lớp · "
           f"{vi(onto['individuals'])} cá thể")
     print(f"  dataset  {vi(data['total'])} câu · {data['families']} họ")
-    print(f"  model    {len(runs)} lượt chấm")
+    print(f"  model    {len(runs['metrics'])} model trên tập {runs['split']}"
+          if runs else "  model    chưa chấm lượt nào trên máy này")
 
 
 if __name__ == "__main__":

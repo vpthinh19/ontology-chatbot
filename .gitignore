@@ -44,3 +44,7 @@ ontology_old.ttl
 
 # Bảng thẻ dựng sẵn: sinh lúc dựng ảnh từ ontology + danh mục.
 resources/ontology/cards.json
+
+# Trang báo cáo xem tại máy: `report_page` dựng lại từ ontology, dataset và chỉ
+# số chấm model, nên không cần giữ một bản chép trong kho.
+resources/reports/bao-cao.html
