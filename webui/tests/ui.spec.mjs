@@ -50,6 +50,26 @@ test("the page accepts the previous backend SSE field names during rollout", asy
   await expect(page.locator(".bot-message .message-text").last()).toContainText("Tương thích");
 });
 
+test("LaTeX arrows in an answer are displayed as ordinary arrows", async ({ page }) => {
+  await page.route("**/healthz", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
+  );
+  await page.route("**/chat", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "text/event-stream",
+      body: 'data: {"type":"completed","content":"Bước 1 $\\\\rightarrow$ bước 2"}\n\n',
+    }),
+  );
+  await page.goto("http://127.0.0.1:4173");
+  await page.locator(".prompt-input").fill("Kiểm tra mũi tên");
+  await page.locator("#send-prompt-btn").click();
+
+  await expect(page.locator(".bot-message .message-text").last()).toHaveText(
+    "Bước 1 → bước 2",
+  );
+});
+
 test("suggestions share the content column and remain comfortably readable", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),

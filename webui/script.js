@@ -217,7 +217,8 @@ const escapeHtml = (value) =>
 const renderLineContent = (text) => {
   const placeholder = "\uE000";
   const links = [];
-  let rendered = text.replace(
+  let rendered = text.replace(/\$\\rightarrow\$/g, "→");
+  rendered = rendered.replace(
     /\[([^\]]+)\]\((https?:\/\/(?:\([^)]*\)|[^()\s])+)\)/g,
     (_, label, url) => {
       links.push(
