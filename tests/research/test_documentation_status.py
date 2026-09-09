@@ -213,19 +213,16 @@ def test_public_docs_describe_consistency_and_metric_provenance() -> None:
         "resources/reports/README.md",
     )
     joined = "\n".join(_read(path) for path in files)
-    provenance = _json("resources/reports/provenance.json")
-    baseline = provenance["baseline_release"]
-
     assert "khả năng trả lời" in joined
     assert "khuôn truy vấn" in joined
     assert "uv run validate_sparql_dataset" in joined
     assert "uv run generate_reports" in joined
-    assert "resources/reports/provenance.json" in joined
-    assert f"baseline {baseline}" in joined
-    assert provenance["model_metrics"]["status"] in joined
-    assert provenance["deployment_metrics"]["status"] in joined
     assert "procedure-dataset.json" in joined
     assert ("models.json" in joined) == (REPORTS_DIR / "models.json").is_file()
+    # `baseline` chỉ là mô hình TF-IDF + LinearSVC. Báo cáo công khai không được
+    # biến trường legacy trong provenance cục bộ thành một phiên bản project.
+    assert "v0.4.1" not in joined
+    assert "metric lịch sử" not in joined
     assert "Claude Code" not in joined
     assert "CLAUDE.md" not in joined
     assert "ai agent" not in joined.lower()

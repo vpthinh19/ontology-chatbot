@@ -1,0 +1,30 @@
+digraph khung_du_lieu {
+  pad=0.18;
+  rankdir=TB; bgcolor="white"; nodesep=0.38; ranksep=0.5;
+  node [shape=box, style="rounded,filled", fontname="Liberation Sans", fontsize=12,
+        penwidth=1.3, margin="0.18,0.11"];
+  edge [fontname="Liberation Sans", fontsize=10, color="#7a7a7a", penwidth=1.2];
+
+  catalogue [label="HỌ TRUY VẤN\nVí dụ: thông tin đầy đủ về thủ tục",
+             fillcolor="#f0ece6", color="#8a8175"];
+  frame [label="KHUNG Ý ĐỊNH\n\"{anchor} gồm những bước nào?\"\nquy định điều người hỏi muốn biết",
+         fillcolor="#dbeeec", color="#2e8b8b"];
+  mention [label="CÁCH GỌI ĐỐI TƯỢNG\nnhãn chính, tên thay thế, viết tắt\nVí dụ: \"nghỉ học tạm thời\"",
+           fillcolor="#fbf1dd", color="#d99b30"];
+  semantic [label="CÂU ĐÃ ĐỦ NGHĨA\n\"nghỉ học tạm thời gồm những bước nào?\"",
+            fillcolor="#dbeeec", color="#2e8b8b"];
+  surface [label="BIẾN THỂ BỀ MẶT\ntrang trọng, trung tính, thân mật, gõ nhiễu\nÝ định và nhãn không đổi",
+           fillcolor="#dce6f2", color="#1f4e79"];
+  row [label="DÒNG DATASET\ninput + query_id + target + register",
+       fillcolor="#dce6f2", color="#1f4e79"];
+
+  split [label="CHIA THEO KHUNG TRƯỚC KHI CHẤM\n243 khung train | 49 khung val | 49 khung test\nmọi biến thể của một khung ở cùng một phần",
+         shape=note, fillcolor="#e9f0e9", color="#4a7a4a"];
+
+  catalogue -> frame;
+  frame -> semantic [label="  điền chỗ trống  "];
+  mention -> semantic [label="  điền vào {anchor}  "];
+  semantic -> surface;
+  surface -> row;
+  split -> frame [label="  chọn khung  ", style=dashed, dir=both];
+}

@@ -1,49 +1,48 @@
-# Dataset
+# Dataset release
 
-## Các tệp và số dòng
+Thư mục này chứa ba split JSONL chuẩn của bộ phân loại và hai artifact mô tả
+snapshot. Mô tả phương pháp đầy đủ nằm tại [`docs/DATASET.md`](../../docs/DATASET.md).
+
+## Các tệp
 
 | Tệp | Vai trò | Số dòng |
 |---|---|---:|
-| `train.jsonl` | ví dụ huấn luyện | 5.523 |
-| `val.jsonl` | kiểm định | 400 |
-| `test.jsonl` | kiểm tra cuối | 390 |
-| **Tổng** |  | **6.313** |
+| `train.jsonl` | học tham số | 5.523 |
+| `val.jsonl` | theo dõi/điều chỉnh | 400 |
+| `test.jsonl` | chấm sau khi cố định lựa chọn | 390 |
+| **Tổng** | 50 họ truy vấn, 566 đích thô | **6.313** |
 
-Số dòng được đếm trực tiếp từ ba JSONL và khớp với `reports/dataset.json`.
+`coverage.json` khai các miền, register, trường hợp số và lớp từ chối bắt buộc.
+`manifest.json` ghi số dòng, phân bố, slot và SHA-256 của dataset, ontology,
+catalogue và coverage.
 
-Các tệp hỗ trợ:
+Tài nguyên liên quan nằm ngoài thư mục này:
 
-| Tệp | Vai trò |
+| Tài nguyên | Vị trí |
 |---|---|
-| `catalogue.jsonl` | danh mục truy vấn |
-| `catalogue-manual.jsonl` | họ viết tay được trộn vào catalogue |
-| `frames.jsonl` | khung diễn đạt theo họ |
-| `coverage.json` | hợp đồng độ phủ |
-| `manifest.json` | checksum và hợp đồng split |
-| `rejections.jsonl` | khung câu ngoài phạm vi |
+| ontology | `resources/ontology/ontology.ttl` |
+| catalogue 50 họ | `resources/ontology/catalogue.jsonl` |
+| khung ý định | `resources/provenance/frames.jsonl` |
+| câu soạn riêng | `resources/provenance/written-questions.jsonl` |
+| khuôn và sổ câu từ chối | `resources/provenance/rejections.jsonl`, `rejection_provenance.json` |
 
-## Catalogue
+## Hợp đồng dữ liệu
 
-Catalogue hiện có **50 họ**. Hình dạng chính là các họ `*-facts`: neo một node,
-lấy literal trên node và node con trực tiếp, rồi trả
-`?thuoctinh ?giatri ?nguon ?duongdan`. Bảng có họ riêng trả toàn
-`verbatimTableText` của node bảng.
+Mỗi dòng có `id`, `query_id`, `register`, `input` và `target`. Nhãn thô là cặp
+`(query_id, target)`; chuỗi SPARQL được dựng từ catalogue. `no-information` có
+`target=[]`.
 
-Catalogue không còn coi từng thuộc tính nhỏ hay từng cell bảng là một mục tiêu
-truy xuất độc lập. Mỗi bảng là một node nguyên văn.
-
-## Trạng thái
-
-Ba split, frame và catalogue đã đồng bộ. Release phủ đủ 50 họ, 781/781 tên gọi
-và tám lớp câu từ chối; val/test không rò câu đã chuẩn hoá từ train. Manifest và
-report được sinh cùng chuỗi với các JSONL, rồi được kiểm checksum read-only.
+Ba split không trùng câu sau chuẩn hoá/bỏ dấu. Mọi đích của val/test đã xuất hiện
+trong train, nên benchmark đo cách hỏi mới về nội dung đã biết, không đo target
+mới. Dataset chủ yếu được soạn/tổng hợp; không phải phân bố câu hỏi người dùng
+thật.
 
 ## Kiểm tra
 
 ```bash
 uv run validate_sparql_dataset
-.venv/bin/python -m pytest tests/research -q
+uv run pytest tests/research -q
 ```
 
-Tập test không tham gia chọn checkpoint hoặc prompt. Không công bố metric model
-trước khi các lệnh kiểm tra dữ liệu xanh.
+Snapshot hiện được validator xác nhận bao phủ đủ catalogue và khớp các checksum.
+Metric model không nằm trong manifest này.

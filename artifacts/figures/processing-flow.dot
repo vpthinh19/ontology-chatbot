@@ -12,11 +12,11 @@ digraph luong_xu_ly {
   rut   [label="Rút câu hỏi thành vài cụm từ khoá ngắn", fillcolor="#dce6f2", color="#1f4e79"];
 
   subgraph cluster_tool {
-    label="  CÔNG CỤ TRA CỨU — nơi giữ dữ kiện  ";
+    label="  CÔNG CỤ TRA CỨU - nơi giữ dữ kiện  ";
     labelloc=t; fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
     color="#2e8b8b"; style="rounded"; bgcolor="#f4faf9"; penwidth=1.4;
     chuan [label="Chuẩn hoá từng từ khoá\n(gõ nhiễu, thiếu dấu, viết tắt)", fillcolor="#dbeeec", color="#2e8b8b"];
-    sinh  [label="Mô hình phân loại chọn một trong 344 nhãn\ncho mỗi từ khoá, rồi tra ra truy vấn dựng sẵn", fillcolor="#dbeeec", color="#2e8b8b"];
+    sinh  [label="Mô hình phân loại chọn một trong 344 nhãn\n343 template SPARQL + 1 template no-information", fillcolor="#dbeeec", color="#2e8b8b"];
     chay  [label="Chạy truy vấn trên đồ thị tri thức\n(truy vấn lấy từ danh mục nên luôn hợp lệ)",
            fillcolor="#dbeeec", color="#2e8b8b"];
     gop   [label="Gộp kết quả mọi từ khoá, khử trùng,\nxếp mỗi dữ kiện vào đúng nguồn của nó",
@@ -27,7 +27,7 @@ digraph luong_xu_ly {
   onto [label="ĐỒ THỊ TRI THỨC HỌC VỤ\n7.704 phát biểu · 685 mục · 56 lớp\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
         shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30", penwidth=1.4];
 
-  viet [label="Viết câu trả lời — chỉ được dùng dữ kiện vừa nhận,\ngiữ nguyên trích dẫn, không thêm số hay tên riêng nào khác",
+  viet [label="Viết câu trả lời - chỉ được dùng dữ kiện vừa nhận,\ngiữ nguyên trích dẫn, không thêm số hay tên riêng nào khác",
         fillcolor="#dce6f2", color="#1f4e79"];
   tra  [label="Câu trả lời kèm nguồn, chảy về trình duyệt theo từng chữ",
         fillcolor="#eef2f7", color="#1f4e79"];

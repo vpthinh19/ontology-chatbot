@@ -1,0 +1,24 @@
+digraph khong_gian_nhan {
+  pad=0.18;
+  rankdir=TB; bgcolor="white"; nodesep=0.45; ranksep=0.55;
+  node [shape=box, style="rounded,filled", fontname="Liberation Sans", fontsize=12,
+        penwidth=1.3, margin="0.18,0.12"];
+  edge [fontname="Liberation Sans", fontsize=10, color="#7a7a7a", penwidth=1.2];
+
+  family [label="50 HỌ TRUY VẤN\n49 loại câu có thể tra cứu\n+ 1 loại phải từ chối",
+          fillcolor="#f0ece6", color="#8a8175"];
+  raw [label="566 NHÃN THÔ\n565 cặp (họ truy vấn, đích tra cứu)\n+ 1 nhãn từ chối",
+       fillcolor="#dbeeec", color="#2e8b8b"];
+  model [label="344 NHÃN PHÂN LOẠI\n343 nhãn tra cứu + 1 nhãn từ chối\nKhoản/Điểm được gộp lên Điều chứa chúng",
+         fillcolor="#dce6f2", color="#1f4e79"];
+  query [label="344 TEMPLATE DỰNG SẴN\n343 template SPARQL + 1 template no-information\nMỗi nhãn chọn đúng một template",
+         fillcolor="#e9f0e9", color="#4a7a4a"];
+
+  inventory [label="4.080 ĐƯỜNG DỮ KIỆN TRONG ONTOLOGY\n4.057 đường được catalogue hỗ trợ\n23 đường bị loại có lý do",
+             shape=note, fillcolor="#fbf1dd", color="#d99b30"];
+
+  family -> raw [label="  ghép mỗi loại câu hỏi\nvới các đích hợp lệ  "];
+  raw -> model [label="  chuẩn hoá nhãn\ntrước khi huấn luyện  "];
+  model -> query [label="  ánh xạ một-một, tất định  "];
+  inventory -> family [label="  kiểm tra độ phủ  ", style=dashed, dir=both];
+}

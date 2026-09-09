@@ -6,21 +6,21 @@ digraph ontology {
   edge [fontname="Liberation Sans", fontsize=10, color="#7a7a7a", penwidth=1.1];
 
   subgraph cluster_vb {
-    label="  TẦNG VĂN BẢN — nguyên văn công văn  "; labelloc=b;
+    label="  TẦNG VĂN BẢN - nguyên văn công văn  "; labelloc=b;
     fontname="Liberation Sans"; fontsize=13; fontcolor="#d99b30";
     color="#d99b30"; bgcolor="#fdf8ee"; style=rounded; penwidth=1.4;
-    vb  [label="Quyết định · Quy chế · Hướng dẫn\n(16 văn bản)", fillcolor="#fbf1dd", color="#d99b30"];
+    vb  [label="Nguồn chính thức\n6 quyết định · 3 quy chế · 8 trang/hướng dẫn", fillcolor="#fbf1dd", color="#d99b30"];
     ch  [label="Chương  (9)", fillcolor="#fbf1dd", color="#d99b30"];
     dieu[label="Điều  (70)", fillcolor="#fbf1dd", color="#d99b30"];
     kho [label="Khoản  (114)", fillcolor="#fbf1dd", color="#d99b30"];
     diem[label="Điểm  (108)", fillcolor="#fbf1dd", color="#d99b30"];
-    pl  [label="Phụ lục (9) · Bảng (10)", fillcolor="#fbf1dd", color="#d99b30"];
+    pl  [label="Phụ lục (9) · Bảng văn bản (10)", fillcolor="#fbf1dd", color="#d99b30"];
     vb -> ch -> dieu -> kho -> diem [label=" partOf ", dir=back];
     vb -> pl [label=" partOf ", dir=back];
   }
 
   subgraph cluster_tt {
-    label="  TẦNG TRI THỨC — dữ kiện đã bóc tách  "; labelloc=t;
+    label="  TẦNG TRI THỨC - dữ kiện đã bóc tách  "; labelloc=t;
     fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
     color="#2e8b8b"; bgcolor="#f4faf9"; style=rounded; penwidth=1.4;
     tt  [label="Thủ tục học vụ  (24)", fillcolor="#dbeeec", color="#2e8b8b"];
@@ -28,7 +28,7 @@ digraph ontology {
     dk  [label="Điều kiện  (39)", fillcolor="#dbeeec", color="#2e8b8b"];
     kq  [label="Kết quả  (11)", fillcolor="#dbeeec", color="#2e8b8b"];
     han [label="Thời hạn  (9)", fillcolor="#dbeeec", color="#2e8b8b"];
-    bm  [label="Biểu mẫu  (18 mục · 16 tệp)", fillcolor="#dbeeec", color="#2e8b8b"];
+    bm  [label="Biểu mẫu  (16 trong văn bản · 18 mục tải)", fillcolor="#dbeeec", color="#2e8b8b"];
     nganh[label="Ngành đào tạo  (41)", fillcolor="#dbeeec", color="#2e8b8b"];
     cc  [label="Chứng chỉ  (18 + 15 ngoại ngữ)\nvà bảng quy đổi (6)", fillcolor="#dbeeec", color="#2e8b8b"];
     tac [label="Tác nhân học vụ  (7)\nvà đơn vị của trường  (5)", fillcolor="#dbeeec", color="#2e8b8b"];

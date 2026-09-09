@@ -1,42 +1,35 @@
 # Báo cáo dẫn xuất
 
-Thư mục này chỉ được dùng làm nguồn cho thống kê artifact có thể tái tạo. Không
-có báo cáo model hợp lệ trong repository và tài liệu công khai không công bố kết
-quả model cũ.
+Thư mục này chứa báo cáo thống kê dẫn xuất từ snapshot ontology, catalogue và
+dataset. Nó không phải nguồn dữ liệu gốc và không phải nơi phát hành model.
 
-## Artifact được dùng
+## Nội dung
 
-- `dataset.json`: số dòng ba split, phân bố miền/register, đặc trưng query và
-  checksum tại thời điểm report được sinh;
-- `procedure-dataset.json`: snapshot dẫn xuất về các target thủ tục;
-- `provenance.json`: fingerprint input và trạng thái vô hiệu của metric model,
-  deployment;
-- `figures/dataset-splits.svg`, `figures/registers.svg` và
-  `figures/query-features.svg`: hình dẫn xuất từ thống kê dataset.
+- `dataset.json`: 6.313 dòng (5.523 train, 400 val, 390 test), phân bố miền và
+  register, đặc trưng truy vấn, thống kê ontology, coverage và checksum;
+- `procedure-dataset.json`: snapshot dẫn xuất về các đích thủ tục;
+- `audit-bon-dieu-kien.json`: kết quả kiểm bốn điều kiện dữ liệu;
+- `provenance.json`: fingerprint dùng để đối chiếu các tệp đầu vào cục bộ;
+- `figures/`: hình SVG sinh từ `dataset.json`.
 
-Ba split JSONL hiện có 5.451, 402 và 383 dòng, tổng **6.239 câu**.
-`dataset.json` ghi cùng các số này và `training_readiness.ready = true` sau khi
-đối chiếu coverage, tên gọi, target và catalogue hiện hành.
-
-`provenance.json` giữ `model_metrics.status = stale` và
-`deployment_metrics.status = stale` để tránh diễn giải nhầm artifact cũ. Nó
-không phải nguồn metric và không biến model cũ thành baseline. Fingerprint này
-được nhận từ **baseline v0.4.1**; `resources/reports/provenance.json` là nơi phân
-biệt input baseline với input hiện hành.
+`dataset.json` ghi `training_readiness.ready=true`, coverage 50 họ đầy đủ và
+790/790 cách gọi được phủ. Các số này mô tả tính đầy đủ theo hợp đồng khai báo,
+không phải hiệu năng model. Kết quả benchmark mới nhất được báo trong README;
+mô hình phục vụ được phát hành riêng trên Hugging Face Hub và Docker Hub.
 
 ## Tái tạo
 
-Kiểm tra read-only:
+Kiểm chỉ đọc:
 
 ```bash
 uv run validate_sparql_dataset
 ```
 
-Chỉ khi input đã đồng bộ và việc ghi artifact được cho phép mới chạy:
+Chỉ chạy lệnh ghi sau khi chủ động muốn cập nhật toàn bộ artifact dẫn xuất:
 
 ```bash
 uv run generate_reports
 ```
 
-Chuỗi sinh report cũng ghi `procedure-dataset.json`, manifest và các hình từ
-cùng một snapshot để các artifact không trôi lệch nhau.
+Chuỗi sinh report cập nhật `dataset.json`, `procedure-dataset.json`, manifest,
+provenance và các hình từ cùng snapshot. Nó không huấn luyện hoặc chấm model.
