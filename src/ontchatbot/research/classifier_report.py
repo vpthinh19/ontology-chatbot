@@ -19,8 +19,9 @@ from .labels import family_names, label_key, load_splits
 
 BUCKETS = ("1-2", "3-4", "5-9", "10-19", "≥20")
 METRIC_KEYS = ("accuracy", "macro_p", "macro_r", "macro_f1", "weighted_f1")
-METRIC_TITLES = ("accuracy", "precision (macro)", "recall (macro)",
-                 "F1 (macro)", "F1 (weighted)")
+METRIC_TITLES = ("độ chính xác\nchung", "độ chính xác khi chọn nhãn\n(trung bình đều)",
+                 "độ bao phủ\n(trung bình đều)", "F1\n(trung bình đều)",
+                 "F1\n(có trọng số)")
 
 
 def available(out_dir: Path):
@@ -188,9 +189,10 @@ def figures(out_dir: Path, split: str = "test") -> None:
                          color=palette(k), label=DISPLAY[tag])
             axes[1].plot(epochs, [h["val_loss"] for h in cfg["history"]],
                          color=palette(k), label=DISPLAY[tag])
-        for ax, title in zip(axes, ("training loss", "validation loss")):
-            ax.set_xlabel("epoch")
-            ax.set_ylabel("cross-entropy loss")
+        for ax, title in zip(axes, ("Sai số trên tập huấn luyện",
+                                    "Sai số trên tập theo dõi")):
+            ax.set_xlabel("Lượt đọc tập huấn luyện")
+            ax.set_ylabel("Sai số phân loại")
             ax.set_title(title)
             ax.legend(fontsize=7)
         plt.tight_layout()
@@ -230,7 +232,7 @@ def figures(out_dir: Path, split: str = "test") -> None:
     # không người đọc tưởng chúng là một.
     ax.set_xticks(xs, [f"{b} câu dạy\n({sizes[b][1]} câu chấm)" for b in BUCKETS])
     ax.set_xlabel("nhãn được gom theo số câu đã dạy cho nhãn đó")
-    ax.set_ylabel("accuracy (%)")
+    ax.set_ylabel("Độ chính xác (%)")
     ax.set_ylim(0, 100)
     ax.set_title("Nhãn càng ít câu huấn luyện, các mô hình càng khác nhau", pad=10)
     ax.legend(fontsize=7)

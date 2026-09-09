@@ -1,24 +1,39 @@
 digraph khong_gian_nhan {
   pad=0.18;
-  rankdir=TB; bgcolor="white"; nodesep=0.45; ranksep=0.55;
+  rankdir=TB; bgcolor="white"; nodesep=0.70; ranksep=0.60;
   node [shape=box, style="rounded,filled", fontname="Liberation Sans", fontsize=12,
-        penwidth=1.3, margin="0.18,0.12"];
+        penwidth=1.3, margin="0.20,0.14"];
   edge [fontname="Liberation Sans", fontsize=10, color="#7a7a7a", penwidth=1.2];
 
-  family [label="50 HỌ TRUY VẤN\n49 loại câu có thể tra cứu\n+ 1 loại phải từ chối",
-          fillcolor="#f0ece6", color="#8a8175"];
-  raw [label="566 NHÃN THÔ\n565 cặp (họ truy vấn, đích tra cứu)\n+ 1 nhãn từ chối",
-       fillcolor="#dbeeec", color="#2e8b8b"];
-  model [label="344 NHÃN PHÂN LOẠI\n343 nhãn tra cứu + 1 nhãn từ chối\nKhoản/Điểm được gộp lên Điều chứa chúng",
+  model [label="BỘ PHÂN LOẠI\nchọn 1 trong 344 nhãn",
          fillcolor="#dce6f2", color="#1f4e79"];
-  query [label="344 TEMPLATE DỰNG SẴN\n343 template SPARQL + 1 template no-information\nMỗi nhãn chọn đúng một template",
-         fillcolor="#e9f0e9", color="#4a7a4a"];
 
-  inventory [label="4.080 ĐƯỜNG DỮ KIỆN TRONG ONTOLOGY\n4.057 đường được catalogue hỗ trợ\n23 đường bị loại có lý do",
-             shape=note, fillcolor="#fbf1dd", color="#d99b30"];
+  lookup [label="343 NHÃN TRA CỨU",
+          fillcolor="#dbeeec", color="#2e8b8b"];
+  templates [label="343 KHUÔN TRUY VẤN SPARQL\nđã xác định sẵn đích cần đọc",
+             fillcolor="#e9f0e9", color="#4a7a4a"];
+  ontology [label="ONTOLOGY\ndữ kiện + nguồn",
+            shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30"];
+  data [label="KẾT QUẢ TRA CỨU\ncác dữ kiện lấy từ ontology",
+        fillcolor="#eef2f7", color="#1f4e79"];
 
-  family -> raw [label="  ghép mỗi loại câu hỏi\nvới các đích hợp lệ  "];
-  raw -> model [label="  chuẩn hoá nhãn\ntrước khi huấn luyện  "];
-  model -> query [label="  ánh xạ một-một, tất định  "];
-  inventory -> family [label="  kiểm tra độ phủ  ", style=dashed, dir=both];
+  ood [label="1 NHÃN no-information\n(OOD)",
+       fillcolor="#f6e7e3", color="#b3543f"];
+  noinfo [label="KHUÔN no-information\nkhông chạy SPARQL",
+          fillcolor="#f6e7e3", color="#b3543f"];
+  reject [label="KẾT QUẢ TỪ CHỐI\nkho hiện tại không có thông tin phù hợp",
+          fillcolor="#eef2f7", color="#1f4e79"];
+
+  { rank=same; lookup; ood; }
+  { rank=same; templates; noinfo; }
+  { rank=same; ontology; reject; }
+
+  model -> lookup [label="  có dữ kiện phù hợp  "];
+  lookup -> templates [label="  ánh xạ một-một  "];
+  templates -> ontology [label="  thực thi  "];
+  ontology -> data [label="  trả dữ kiện  "];
+
+  model -> ood [label="  ngoài phạm vi hoặc thiếu dữ kiện  "];
+  ood -> noinfo [label="  ánh xạ một-một  "];
+  noinfo -> reject [label="  trả trạng thái  "];
 }

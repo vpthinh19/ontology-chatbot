@@ -26,17 +26,17 @@ digraph kien_truc {
 
   nguoi_dung [label="Người dùng", fillcolor="#F3F6F9"];
   llm [
-    label="LLM\nLớp giao tiếp",
+    label="Mô hình ngôn ngữ\nLớp giao tiếp",
     fillcolor="#FCE8C3",
     color="#B36B00",
     penwidth=2
   ];
   tool [
-    label="Công cụ tra cứu\nphân loại câu hỏi thành nhãn,\ntra ra truy vấn dựng sẵn",
+    label="Công cụ tra cứu\nchọn nhãn và câu truy vấn\nđã chuẩn bị sẵn",
     fillcolor="#DDEBF7"
   ];
   ontology [
-    label="Ontology học vụ\nDữ kiện và nguồn",
+    label="Ontology học vụ\nKho dữ kiện có nguồn",
     fillcolor="#D9EAD3",
     color="#38761D"
   ];

@@ -8,30 +8,30 @@ digraph luong_du_lieu {
   vb [label="NGUỒN CHÍNH THỨC CỦA TRƯỜNG\n6 quyết định · 3 quy chế · 8 trang hoặc hướng dẫn\n17 bản ghi nguồn trong ontology",
       shape=folder, style=filled, fillcolor="#fbf1dd", color="#d99b30"];
 
-  onto [label="ĐỒ THỊ TRI THỨC (Turtle)\n6.350 phát biểu · 685 mục · 56 lớp · 84 loại thuộc tính\nmỗi dữ kiện gắn ngược về Điều/Khoản/Điểm đã chứng minh nó",
+  onto [label="ONTOLOGY HỌC VỤ\n6.350 phát biểu · 685 đối tượng · 56 lớp\nmỗi dữ kiện gắn với phần văn bản được dùng làm căn cứ",
         shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30"];
 
-  dm [label="DANH MỤC 50 HỌ TRUY VẤN\n49 họ lấy dữ liệu + 1 họ từ chối\nmỗi họ quy định loại dữ kiện được đọc và chỗ cần điền",
+  dm [label="DANH MỤC HÀNH ĐỘNG\n343 hành động tra cứu + 1 hành động từ chối\nxác định dữ kiện và đối tượng cần đọc",
       fillcolor="#f0ece6", color="#8a8175"];
 
-  cap [label="TẬP CÂU HỎI - NHÃN\n6.313 dòng · 5.484 câu trả lời được · 829 câu từ chối\n4 cách diễn đạt: trang trọng · trung tính · thân mật · gõ nhiễu",
+  cap [label="BỘ DỮ LIỆU CÂU HỎI CÓ ĐÁP ÁN PHÂN LOẠI\n6.313 dòng · 5.484 câu trả lời được · 829 câu từ chối\n4 cách viết: trang trọng · trung tính · thân mật · gõ nhiễu",
        fillcolor="#dbeeec", color="#2e8b8b"];
 
-  chia [label="CHIA THEO KHUNG CÂU HỎI", shape=diamond, fillcolor="#dbeeec",
+  chia [label="CHIA THEO CÂU MẪU", shape=diamond, fillcolor="#dbeeec",
         color="#2e8b8b", margin="0.12,0.04"];
-  day  [label="Tập dạy\n5.523 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
-  kd   [label="Tập kiểm định\n400 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
-  cham [label="Tập chấm\n390 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
+  day  [label="Tập huấn luyện\n5.523 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
+  kd   [label="Tập theo dõi huấn luyện\n400 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
+  cham [label="Tập chấm cuối\n390 dòng", fillcolor="#dbeeec", color="#2e8b8b"];
 
-  train [label="HUẤN LUYỆN BỘ PHÂN LOẠI\n4 mô hình mã hoá + TF-IDF và LinearSVC\ntrain để học · val để theo dõi", fillcolor="#dce6f2", color="#1f4e79"];
-  chon  [label="CHẤM BỘ PHẬN\nđầu vào: câu hỏi hoặc từ khoá\nđầu ra: 1 trong 344 nhãn", fillcolor="#dce6f2", color="#1f4e79"];
-  danh  [label="CHẤM TOÀN HỆ THỐNG\nđầu vào: câu chat\nđầu ra: câu trả lời do LLM viết", fillcolor="#dce6f2", color="#1f4e79"];
-  phuc  [label="ĐƯA VÀO PHỤC VỤ\nXLM-R được xuất ONNX cho công cụ tra cứu",
+  train [label="HUẤN LUYỆN BỘ PHÂN LOẠI\ntập huấn luyện dùng để học\ntập theo dõi dùng để quan sát quá trình học", fillcolor="#dce6f2", color="#1f4e79"];
+  chon  [label="ĐÁNH GIÁ RIÊNG BỘ PHÂN LOẠI\nđầu vào: câu hỏi hoặc từ khoá\nđầu ra: 1 trong 344 nhãn", fillcolor="#dce6f2", color="#1f4e79"];
+  danh  [label="ĐÁNH GIÁ TOÀN HỆ THỐNG\nđầu vào: câu chat\nđầu ra: câu trả lời hoàn chỉnh", fillcolor="#dce6f2", color="#1f4e79"];
+  phuc  [label="ĐƯA MÔ HÌNH ĐÃ HUẤN LUYỆN\nVÀO CÔNG CỤ TRA CỨU",
          fillcolor="#e9f0e9", color="#4a7a4a"];
 
   vb -> onto [label="  bóc tách thủ công, mỗi dữ kiện phải chỉ ra được nguồn  "];
   onto -> dm [label="  rút ra các dạng câu hỏi trả lời được  "];
-  dm -> cap  [label="  xác định ý định và nhãn đúng  "];
+  dm -> cap  [label="  xác định nội dung cần hỏi và đáp án đúng  "];
   onto -> cap [label="  cung cấp tên và đích tra cứu  ", style=dashed];
   cap -> chia;
   chia -> day; chia -> kd; chia -> cham;
@@ -39,7 +39,7 @@ digraph luong_du_lieu {
   kd -> train;
   train -> chon;
   cham -> chon [label="  chỉ dùng để báo kết quả cuối  "];
-  chon -> phuc;
+  train -> phuc;
   phuc -> danh;
   onto -> danh [label="  tra cứu thật  ", style=dashed, constraint=false];
   { rank=same; day; kd; cham; }

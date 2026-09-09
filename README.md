@@ -14,7 +14,7 @@ Nguyên tắc cốt lõi là **LLM không phải nơi lưu quy định**. Nội 
 - [Ảnh dịch vụ trên Docker Hub](https://hub.docker.com/r/vpt19/ontchatbot)
 
 README đi theo thứ tự mà một người chưa biết dự án cần để hiểu: bài toán, luồng
-hoạt động, hình dạng dữ liệu, ontology, danh mục truy vấn, dataset, thực nghiệm,
+hoạt động, hình dạng dữ liệu, ontology, danh mục truy vấn, bộ dữ liệu, thực nghiệm,
 kết quả và giới hạn.
 
 ## 1. Bài toán nghiên cứu
@@ -56,13 +56,15 @@ thức -> ontology -> danh mục truy vấn -> nhãn phân loại -> câu trả 
 ### 2.1 Thành phần và trách nhiệm
 
 Ontology là kho dữ kiện dạng đồ thị. SPARQL là ngôn ngữ đọc kho đó, có vai trò
-tương tự SQL với cơ sở dữ liệu bảng. Bốn thành phần giữ bốn trách nhiệm:
+tương tự SQL với cơ sở dữ liệu bảng. **Khuôn truy vấn SPARQL** là câu truy vấn đã được
+chuẩn bị sẵn cho một nội dung cần tra; hệ thống chọn và thực thi nó thay vì tự
+viết truy vấn mới. Bốn thành phần giữ bốn trách nhiệm:
 
 | Thành phần | Làm gì | Không làm gì |
 |---|---|---|
 | LLM | đọc câu chat, rút cụm cần tra và diễn đạt kết quả | không phải nguồn quy định |
 | Bộ phân loại | nhận chuỗi tiếng Việt, chọn 1 trong 344 nhãn | không viết câu trả lời, không tự sinh SPARQL |
-| Danh mục truy vấn | ánh xạ 344 nhãn tới 343 template SPARQL và 1 template `no-information` | không chứa nội dung quy định |
+| Danh mục truy vấn | nối 344 nhãn với 343 khuôn truy vấn SPARQL và 1 khuôn `no-information` | không chứa nội dung quy định |
 | Ontology | cung cấp dữ kiện và nguồn | không tự hiểu câu chat |
 
 Sơ đồ sau trả lời câu hỏi **"thành phần nào chịu trách nhiệm cho việc gì?"**.
@@ -71,34 +73,37 @@ thời gian.
 
 ![Kiến trúc và trách nhiệm của các thành phần](docs/images/kien-truc.png)
 
-### 2.2 Từ 344 nhãn đến template tương ứng
+### 2.2 Từ 344 nhãn đến khuôn truy vấn tương ứng
 
 Đây là cầu nối trực tiếp giữa học máy và ontology:
 
 ```text
 câu/cụm tiếng Việt
-    -> classifier chọn 1 trong 344 nhãn
-    -> 343 nhãn tra cứu chọn 343 template SPARQL
-    -> 1 nhãn OOD chọn template no-information
+    -> bộ phân loại chọn 1 trong 344 nhãn
+    -> 343 nhãn tra cứu chọn 343 khuôn truy vấn SPARQL
+    -> 1 nhãn no-information (OOD) chọn khuôn no-information
     -> thực thi SPARQL trên ontology hoặc trả về từ chối
 ```
 
-Ánh xạ này là **một-một và tất định**: 344 nhãn nối với 343 template SPARQL và
-1 template `no-information`. Cùng một nhãn luôn dẫn đến cùng một template đã
-định nghĩa. Model không viết SPARQL; nó chỉ quyết định template nào được chọn.
+Ánh xạ này là **một-một và cố định**: 344 nhãn nối với 343 khuôn truy vấn SPARQL
+và 1 khuôn `no-information`. Cùng một nhãn luôn dẫn đến cùng một khuôn đã định
+nghĩa. Bộ phân loại không viết SPARQL; nó chỉ quyết định khuôn nào được
+chọn. **OOD** là cách viết tắt của *out-of-distribution*; trong dự án, đây là
+nhãn cho câu phải từ chối vì nằm ngoài phạm vi hoặc vì ontology hiện không có dữ
+kiện phù hợp.
 
 Ví dụ, nhãn biểu diễn nhu cầu hỏi thông tin về thủ tục nghỉ học tạm thời tương
-ứng với template đã chứa đích `:TemporaryAcademicLeaveProcedure`. Khi nhãn này
-được chọn, hệ thống thực thi template đó để lấy thuộc tính trực tiếp, bước, điều
+ứng với khuôn đã chứa đích `:TemporaryAcademicLeaveProcedure`. Khi nhãn này được
+chọn, hệ thống thực thi khuôn đó để lấy thuộc tính trực tiếp, bước, điều
 kiện, biểu mẫu và nguồn của thủ tục.
 
-Template SPARQL được thực thi trên ontology để lấy dữ kiện và nguồn. Template
+Khuôn SPARQL được thực thi trên ontology để lấy dữ kiện và nguồn. Khuôn
 `no-information` không chạy SPARQL; nó trả về quyết định từ chối.
 
 ### 2.3 Luồng thật của một lượt hỏi
 
 Sơ đồ sau trả lời câu hỏi khác: **"một câu chat thực sự đi qua hệ thống theo thứ
-tự nào?"** Đây là luồng chạy trực tuyến, không phải quy trình tạo dataset.
+tự nào?"** Đây là luồng chạy trực tuyến, không phải quy trình tạo bộ dữ liệu.
 
 ![Luồng xử lý theo thời gian của một câu hỏi](docs/images/luong-xu-ly.png)
 
@@ -107,7 +112,7 @@ Với câu "Em muốn nghỉ một học kỳ thì phải làm gì?", trình t�
 1. LLM xác định đây là câu hỏi học vụ và rút cụm như "thủ tục nghỉ học tạm thời".
 2. Công cụ chuẩn hoá cụm từ rồi đưa vào bộ phân loại.
 3. Bộ phân loại chọn một trong 344 nhãn.
-4. Nhãn chọn template SPARQL tương ứng; hệ thống thực thi template trên ontology.
+4. Nhãn chọn khuôn SPARQL tương ứng; hệ thống thực thi khuôn trên ontology.
 5. Công cụ gom dữ kiện theo đúng nguồn đã khẳng định chúng.
 6. LLM dùng dữ kiện đó để viết câu trả lời kèm trích dẫn và URL.
 
@@ -118,7 +123,7 @@ thông tin. Đây không phải khẳng định thông tin đó không tồn t�
 
 Sơ đồ dưới đây trả lời **"dữ liệu trông như thế nào ở từng bước?"** Nó minh hoạ
 sự chuyển đổi biểu diễn trong lúc hệ thống trả lời một câu, không phải kiến trúc
-thành phần và cũng không phải cách chia dataset.
+thành phần và cũng không phải cách chia bộ dữ liệu.
 
 ![Hình dạng dữ liệu từ câu hỏi đến câu trả lời](docs/images/hinh-dang-du-lieu.png)
 
@@ -126,13 +131,13 @@ thành phần và cũng không phải cách chia dataset.
 |---|---|---|
 | 1. Câu chat | chuỗi tự do | `Em muốn nghỉ một học kỳ thì làm gì?` |
 | 2. Cụm tra cứu | một hoặc vài chuỗi ngắn | `thủ tục nghỉ học tạm thời` |
-| 3. Nhãn | một trong 344 đầu ra classifier | thông tin về thủ tục nghỉ học tạm thời |
-| 4. Template SPARQL | template tương ứng một-một với nhãn | đọc thuộc tính và nút con của thủ tục |
+| 3. Nhãn | một trong 344 đầu ra của bộ phân loại | thông tin về thủ tục nghỉ học tạm thời |
+| 4. Khuôn SPARQL | khuôn tương ứng một-một với nhãn | đọc thuộc tính và nút con của thủ tục |
 | 5. Kết quả công cụ | các cặp thuộc tính - giá trị, nhóm theo trích dẫn và URL | bước, điều kiện, biểu mẫu, nơi nộp |
 | 6. Câu trả lời | văn bản tự nhiên | hướng dẫn cho người dùng kèm nguồn |
 
-Bộ phân loại **nhận một chuỗi tiếng Việt và trả một nhãn**. Trong benchmark,
-chuỗi là trường `input` của dataset; khi chạy toàn hệ thống, nó thường là cụm do
+Bộ phân loại **nhận một chuỗi tiếng Việt và trả một nhãn**. Khi chấm riêng bộ
+phân loại, chuỗi là trường `input` của bộ dữ liệu; khi chạy toàn hệ thống, nó thường là cụm do
 LLM rút từ câu chat. Bộ phân loại không viết câu trả lời.
 
 Kết quả công cụ có hai trạng thái nội dung:
@@ -157,13 +162,15 @@ hoặc `trang_thai` cho biết **"không có thông tin"** và danh sách nguồ
 ## 4. Ontology
 
 Tệp [`resources/ontology/ontology.ttl`](resources/ontology/ontology.ttl) là cơ sở
-dữ liệu nội dung duy nhất mà công cụ đọc khi chạy. Văn bản chính thức vẫn là căn
-cứ có thẩm quyền; ontology chỉ là bản biểu diễn có cấu trúc của phần nội dung đã
-được chọn vào phạm vi nghiên cứu.
+dữ liệu nội dung duy nhất mà công cụ đọc khi chạy. Đuôi `.ttl` cho biết tệp dùng
+định dạng văn bản Turtle để ghi đồ thị. Văn bản chính thức vẫn là căn cứ có thẩm
+quyền; ontology chỉ là bản biểu diễn có cấu trúc của phần nội dung đã được chọn
+vào phạm vi nghiên cứu.
 
 ### 4.1 Đọc các khái niệm cơ bản trước khi xem ví dụ
 
-Ontology dùng namespace:
+Mọi định danh trong ontology dùng chung tiền tố địa chỉ sau, thường gọi là
+*namespace*:
 
 ```text
 http://www.ntu.edu.vn/ontology/academic#
@@ -186,17 +193,18 @@ Bốn khái niệm tạo nên giải phẫu của ontology:
 |---|---|---|
 | Lớp | loại hoặc khuôn khái niệm dùng để phân nhóm | `:AcademicProcedure` là lớp thủ tục học vụ |
 | Cá thể | một đối tượng cụ thể thuộc một hoặc nhiều lớp | `:TemporaryAcademicLeaveProcedure` là một thủ tục cụ thể |
-| Object property | quan hệ nối một đối tượng với đối tượng khác | `:requiresForm` nối thủ tục với biểu mẫu |
-| Datatype property | thuộc tính nối đối tượng với giá trị chữ, số, ngày hoặc URL | `:stepText` nối một bước với nội dung chữ |
+| Quan hệ giữa hai đối tượng (*object property*) | nối một đối tượng với đối tượng khác | `:requiresForm` nối thủ tục với biểu mẫu |
+| Thuộc tính chứa giá trị (*datatype property*) | nối đối tượng với chữ, số, ngày hoặc URL | `:stepText` nối một bước với nội dung chữ |
 
-RDF lưu tri thức thành các phát biểu ba vế, thường gọi là **triple**:
+RDF lưu tri thức thành các **phát biểu ba vế** (*triple*):
 
 ```text
 chủ thể -> quan hệ/thuộc tính -> đối tượng hoặc giá trị
 ```
 
-Ví dụ `thủ tục nghỉ học tạm thời -> yêu cầu biểu mẫu -> Mẫu số 09` là một triple.
-Nhiều triple cùng nói về một IRI tạo thành mô tả có cấu trúc của đối tượng đó.
+Ví dụ `thủ tục nghỉ học tạm thời -> yêu cầu biểu mẫu -> Mẫu số 09` là một phát
+biểu ba vế. Nhiều phát biểu cùng nói về một IRI tạo thành mô tả có cấu trúc của
+đối tượng đó.
 
 ### 4.2 Một thủ tục được biểu diễn ra sao?
 
@@ -232,7 +240,7 @@ khai những gì nguồn được chọn có căn cứ để khẳng định.
 
 Sơ đồ sau trả lời **"ontology được tổ chức thành những loại đối tượng nào?"**.
 Các con số trong ngoặc là số đối tượng thuộc từng loại, không phải điểm chất
-lượng và không phải số câu hỏi dataset.
+lượng và không phải số câu hỏi trong bộ dữ liệu.
 
 ![Hai tầng văn bản và nghiệp vụ của ontology](docs/images/so-do-ontology.png)
 
@@ -257,8 +265,8 @@ Quy trình biên soạn có năm bước về bản chất:
 1. **Chọn nguồn và phạm vi:** chọn văn bản hoặc trang chính thức liên quan đến
    loại câu hỏi cần hỗ trợ; ghi số hiệu, ngày và URL.
 2. **Biểu diễn tầng văn bản:** tách nội dung theo Chương, Điều, Khoản, Điểm, phụ
-   lục và bảng. Bảng nhiều tầng hoặc có ô rỗng được giữ nguyên khối Markdown để
-   tránh làm lệch ý nghĩa hàng và cột.
+   lục và bảng. Bảng nhiều tầng hoặc có ô rỗng được giữ nguyên dưới dạng bảng
+   văn bản để tránh làm lệch ý nghĩa hàng và cột.
 3. **Trừu tượng hoá nghiệp vụ:** đọc nguồn và biểu diễn các khái niệm như thủ tục,
    bước, điều kiện, thời hạn và biểu mẫu bằng lớp, cá thể và thuộc tính chung.
 4. **Nối căn cứ:** mỗi nút nghiệp vụ mang nội dung trả lời được nối đến phần văn
@@ -303,22 +311,22 @@ không đồng nhất cho cả 17 nguồn.
 
 ### 4.6 Các con số giải phẫu có ý nghĩa gì?
 
-Các số dưới đây được đếm từ snapshot hiện hành. Chúng mô tả **quy mô và cấu
+Các số dưới đây được đếm từ phiên bản ontology hiện hành. Chúng mô tả **quy mô và cấu
 trúc**, không đo độ đúng, độ đầy đủ hay hiệu quả của hệ thống.
 
 | Thành phần | Số lượng | Nó là gì và tồn tại để làm gì? |
 |---|---:|---|
 | Lớp | 56 | bộ từ vựng về loại đối tượng, như thủ tục, điều kiện, điều khoản |
 | Cá thể có tên | 685 | các đối tượng cụ thể được truy vấn hoặc dùng làm cấu trúc nguồn |
-| Object property | 29 | các loại quan hệ nối hai đối tượng, như `hasStep`, `basedOn` |
-| Datatype property | 55 | các loại thuộc tính mang chữ, số, ngày hoặc URL |
+| Quan hệ giữa hai đối tượng | 29 | các loại quan hệ như `hasStep`, `basedOn` |
+| Thuộc tính chứa giá trị | 55 | các loại thuộc tính mang chữ, số, ngày hoặc URL |
 | `officialText` | 320 | các đoạn nguyên văn gắn với phần văn bản |
 | `verbatimTableText` | 16 | các bảng giữ nguyên cấu trúc thay vì tách thành ô độc lập |
 | `basedOn` | 368 | các liên kết từ nội dung nghiệp vụ đến căn cứ văn bản |
-| Triple viết trong `ontology.ttl` | 6.350 | toàn bộ phát biểu được khai trực tiếp trong tệp Turtle |
-| Triple khi chạy | 7.704 | đồ thị sau khi bổ sung thông tin nguồn dẫn xuất |
+| Phát biểu ba vế trong `ontology.ttl` | 6.350 | toàn bộ phát biểu được khai trực tiếp trong tệp |
+| Phát biểu ba vế khi chạy | 7.704 | đồ thị sau khi bổ sung thông tin nguồn phục vụ tra cứu |
 
-Chênh lệch 1.354 triple không phải 1.354 quy định mới. Có 677 nút được bổ sung
+Chênh lệch 1.354 phát biểu không phải 1.354 quy định mới. Có 677 nút được bổ sung
 hai thuộc tính tiện tra cứu là `sourceCitation` và `sourceLink`, nên phát sinh
 `677 x 2 = 1.354` triple khi nạp ontology.
 
@@ -331,73 +339,69 @@ Các phép kiểm tự động xác nhận những tính chất có thể kiểm
 - các nhóm nút nghiệp vụ chính có căn cứ;
 - bước, điều kiện và thứ tự không bị tách khỏi thủ tục;
 - các bảng được kiểm giữ đúng ký tự so với nguồn Markdown tương ứng;
-- mọi đích trả lời được trong dataset tạo được truy vấn có kết quả;
+- mọi đích trả lời được trong bộ dữ liệu tạo được truy vấn có kết quả;
 - danh mục bao phủ mọi đường dữ kiện đã đánh dấu là được hỗ trợ.
 
 Các phép kiểm đó **không** chứng minh tập nguồn đầy đủ, mọi diễn giải đều đúng về
 pháp lý, nguồn web còn hiệu lực hay LLM luôn trình bày trung thực. Mô hình dữ liệu
 chi tiết hơn nằm tại [`docs/ONTOLOGY.md`](docs/ONTOLOGY.md).
 
-## 5. Danh mục truy vấn: cầu nối giữa ontology và bộ phân loại
+## 5. Từ nhãn phân loại đến truy vấn SPARQL
 
-Ontology có hàng nghìn đường đi đến dữ kiện. Không thể coi mỗi triple là một loại
-câu hỏi, và cũng không nên để mô hình tự viết đường đi bất kỳ. Vì vậy dự án dùng
-[`catalogue.jsonl`](resources/ontology/catalogue.jsonl) làm hợp đồng trung gian
-giữa nhãn và template, tức khuôn truy vấn đã định nghĩa sẵn.
+Mục này trả lời một câu hỏi cụ thể: **sau khi bộ phân loại chọn nhãn, nhãn đó làm
+thế nào để lấy được dữ kiện từ ontology?**
 
-### 5.1 Bốn đơn vị thường bị nhầm với nhau
+Bốn tên gọi cần biết là:
 
-| Đơn vị | Định nghĩa | Ví dụ |
-|---|---|---|
-| Họ truy vấn | một nhóm nhu cầu có cùng loại dữ kiện cần đọc | hỏi toàn bộ thông tin của một thủ tục |
-| Nhãn thô | một họ truy vấn ghép với đích cụ thể | thông tin thủ tục + nghỉ học tạm thời |
-| Nhãn phân loại | một đầu ra của model, ánh xạ tới đúng một template | một trong 344 nhãn |
-| Đường dữ kiện | đường từ một đối tượng qua quan hệ đến giá trị trả lời được | thủ tục -> `hasStep` -> `stepText` |
+| Tên gọi | Nghĩa trong dự án |
+|---|---|
+| Nhãn phân loại | một trong 344 quyết định mà bộ phân loại có thể trả về |
+| Khuôn SPARQL | câu lệnh đọc ontology đã được chuẩn bị sẵn; mô hình không tự viết câu lệnh này |
+| Danh mục truy vấn | bảng nối cố định mỗi nhãn với khuôn tương ứng |
+| Đích tra cứu | đối tượng cụ thể trong ontology mà câu hỏi nói tới, chẳng hạn thủ tục nghỉ học tạm thời |
 
-Sơ đồ cho thấy quan hệ giữa các con số. Ba số đầu mô tả không gian quyết định
-của bộ phân loại; 4.080 là kiểm kê nội dung ontology nên không cộng vào số nhãn.
+Toàn bộ phép nối có hai nhánh:
 
-![Quan hệ giữa họ truy vấn, nhãn và đường dữ kiện](docs/images/khong-gian-nhan.png)
+![Cầu nối từ 344 nhãn đến hành động của hệ thống](docs/images/khong-gian-nhan.png)
 
-Cụ thể:
+- **343 nhãn tra cứu** nối một-một với **343 khuôn SPARQL**. Khuôn được
+  chạy trên ontology và trả về các dữ kiện cùng nguồn.
+- **1 nhãn `no-information` (OOD)** nối với khuôn **`no-information`**. Nhánh này không chạy
+  SPARQL mà yêu cầu hệ thống từ chối vì câu hỏi không có dữ kiện phù hợp trong
+  phạm vi hiện tại.
 
-1. **344 nhãn** là giao diện chính của classifier: 343 nhãn nối với 343 template
-   SPARQL, nhãn OOD còn lại nối với template `no-information`.
-2. **50 họ truy vấn** chỉ dùng để nhóm các nhãn theo loại nhu cầu: 49 họ lấy dữ
-   liệu và một họ từ chối. Chúng không phải 50 model hay 50 đầu ra runtime.
-3. Trước bước chuẩn hoá không gian nhãn, dataset có **566 nhãn thô**: 565 cặp
-   `(query_id, target)` trả lời được và 1 nhãn `no-information`.
-4. Các đích là Khoản hoặc Điểm được gộp lên Điều chứa chúng, tạo ra 344 nhãn dùng
-   cho classifier: 343 template SPARQL và 1 template `no-information` tương ứng.
-5. Riêng việc kiểm kê ontology tìm thấy **4.080 đường dữ kiện**. Danh mục hỗ trợ
-   4.057 đường; 23 đường bị loại có lý do. Đây là số khả năng đọc dữ kiện, không
-   phải số câu hỏi hay số nhãn.
+Ánh xạ được lưu trong
+[`catalogue.jsonl`](resources/ontology/catalogue.jsonl). Nó là cố định: cùng một
+nhãn luôn chọn cùng một hành động. Vì vậy bộ phân loại chỉ quyết định **tra cứu
+cái gì**; nội dung trả lời vẫn phải đến từ ontology.
 
-Ví dụ, họ `academic-procedure-facts` bao gồm 24 thủ tục hợp lệ. Mỗi thủ tục tạo
-một nhãn riêng và nhãn đó tương ứng với một template SPARQL riêng. Nhãn dành cho
-`:TemporaryAcademicLeaveProcedure` vì thế không thể dẫn sang template của thủ
-tục chuyển ngành hoặc một đối tượng ngoài catalogue.
+### 5.1 Ví dụ đầy đủ
 
-Việc gộp Khoản và Điểm làm giảm số nhãn ít mẫu, nhưng đổi lại giảm độ chính xác
-của điểm đến: câu hỏi về một Điểm có thể lấy cả Điều chứa nó. LLM sau đó phải
-chọn chi tiết liên quan trong dữ liệu trả về.
+Với cụm `thủ tục nghỉ học tạm thời`, quá trình diễn ra như sau:
 
-Trong 23 đường không đưa vào khả năng tra cứu có 16 bản `officialText` phẳng của
-bảng, 6 nhãn kỹ thuật của bản ghi ngưỡng và 1 quan hệ biểu mẫu không có căn cứ
-tương ứng. Việc một đường được hỗ trợ chỉ chứng minh công cụ **có thể đọc** nó;
-nó không chứng minh bộ phân loại sẽ luôn chọn đúng nhãn.
+1. Bộ phân loại chọn nhãn có nghĩa **lấy thông tin về thủ tục nghỉ học tạm
+   thời**.
+2. Danh mục nối nhãn đó với khuôn SPARQL dành cho đích
+   `:TemporaryAcademicLeaveProcedure`. Đây là IRI đã được giải thích ở mục 4.1.
+3. Hệ thống chạy khuôn trên ontology. Kết quả có thể gồm mô tả thủ tục, điều
+   kiện, các bước, biểu mẫu, nơi nộp và nguồn của từng dữ kiện.
+4. Kết quả được chuyển cho LLM để viết thành câu trả lời dễ đọc. LLM không được
+   bổ sung quy định không có trong kết quả truy vấn.
+
+Cầu nối này giải quyết hai rủi ro. Thứ nhất, mô hình không thể tự tạo một truy vấn
+tuỳ ý rồi đọc nhầm vùng dữ liệu. Thứ hai, mỗi nhãn có một kết quả mong đợi rõ
+ràng để kiểm thử. Tuy nhiên, ánh xạ đúng không bảo đảm bộ phân loại luôn chọn
+đúng nhãn và cũng không bảo đảm ontology đã chứa đầy đủ mọi quy định.
 
 ## 6. Tập dữ liệu
 
-Dataset là snapshot bất biến dùng cho các kết quả báo cáo trong README. Sơ đồ
-dưới đây mô tả chuỗi xây dựng tài nguyên và đánh giá ngoại tuyến. Nó không phải
-luồng chạy của một câu chat; luồng trực tuyến nằm ở mục 2.2.
+Bộ dữ liệu là phiên bản cố định dùng cho các kết quả báo cáo trong README. Nó
+được mô tả riêng với luồng chạy trực tuyến ở mục 2.3 để tránh nhầm quá trình tạo
+dữ liệu với quá trình chatbot trả lời.
 
-![Từ nguồn chính thức đến tài nguyên và phép đánh giá](docs/images/luong-du-lieu.png)
+### 6.1 Bộ dữ liệu dạy điều gì?
 
-### 6.1 Dataset dạy điều gì?
-
-Dataset không dạy nội dung quy chế và không chứa câu trả lời hoàn chỉnh. Nó dạy
+Bộ dữ liệu không dạy nội dung quy chế và không chứa câu trả lời hoàn chỉnh. Nó dạy
 bộ phân loại ánh xạ **câu/cụm tiếng Việt -> nhãn tra cứu**.
 
 Mỗi dòng JSONL là một đối tượng JSON độc lập:
@@ -416,108 +420,114 @@ Mỗi dòng JSONL là một đối tượng JSON độc lập:
 |---|---|
 | `id` | mã duy nhất của dòng |
 | `input` | chuỗi tiếng Việt đưa vào bộ phân loại |
-| `query_id` | họ truy vấn mô tả loại thông tin cần lấy |
-| `target` | danh sách IRI được điền vào khuôn; rỗng nếu phải từ chối |
-| `register` | phong cách bề mặt: `formal`, `neutral`, `colloquial` hoặc `noisy` |
+| `query_id` | mã của loại dữ kiện cần lấy; ví dụ `academic-actor-facts` nghĩa là lấy thông tin về một vai trò học vụ |
+| `target` | đối tượng cần tra trong ontology; ở ví dụ trên là `:AcademicAdvisor` (cố vấn học tập); danh sách rỗng nghĩa là phải từ chối |
+| `register` | cách viết của câu: trang trọng, trung tính, đời thường hoặc có lỗi gõ/bỏ dấu |
 
-Cặp `(query_id, target)` là nhãn thô. Dataset không lưu chuỗi SPARQL vì logic
-truy vấn thuộc về catalogue, không thuộc câu hỏi huấn luyện.
+`query_id` trả lời câu hỏi **"cần lấy loại dữ kiện nào?"**; `target` trả lời
+**"lấy dữ kiện về đối tượng nào?"**. Hai trường này xác định đáp án đúng để huấn
+luyện bộ phân loại. Bộ dữ liệu không lưu câu trả lời học vụ và không sao chép câu
+lệnh SPARQL; các câu lệnh đó thuộc danh mục truy vấn ở mục 5.
 
-### 6.2 "Khung" là gì và vì sao có khung riêng theo họ?
+### 6.2 "Khung câu hỏi" là gì?
 
-Một **khung ý định** là mẫu câu quy định người hỏi muốn biết **khía cạnh nào**.
-Nó không phải một người dùng, một đối tượng ontology hay một dòng dữ liệu hoàn
-chỉnh.
+Một **khung câu hỏi** là câu mẫu dùng để tạo nhiều câu hỏi có cùng đáp án phân
+loại. Nó có thể chứa một chỗ trống để điền tên đối tượng cần tra.
 
-Ví dụ với họ dùng lại cho nhiều thủ tục:
+Ví dụ về câu mẫu dùng lại cho nhiều thủ tục:
 
 ```text
-{anchor} gồm những bước nào?
+{tên thủ tục} gồm những bước nào?
 ```
 
-`{anchor}` là chỗ trống. Nó có thể được điền bằng "nghỉ học tạm thời", "chuyển
-ngành" hoặc tên một thủ tục khác. Khung giữ ý "hỏi các bước"; tên được điền giữ
-đối tượng cụ thể.
+`{tên thủ tục}` là chỗ trống. Nó có thể được điền bằng "nghỉ học tạm thời",
+"chuyển ngành" hoặc tên một thủ tục khác. Phần còn lại của câu xác định người
+dùng đang hỏi về các bước; nội dung điền vào chỗ trống xác định thủ tục nào cần
+tra. Trong tệp dữ liệu, chỗ trống này có mã kỹ thuật là `{anchor}`.
 
-Không phải họ nào cũng có chỗ trống. Ví dụ
-`certificate-conversion-table-english-language-major-student` luôn hỏi đúng bảng
-quy đổi ngoại ngữ thứ hai dành cho sinh viên ngành Ngôn ngữ Anh. Quy định nguồn
-chia bảng theo nhóm đối tượng, nên phạm vi "sinh viên ngành Ngôn ngữ Anh" là một
-phần của loại truy vấn và đích đã cố định là
-`:SecondLanguageConversionTableEnglishMajor`. Vì thế khung của họ này không có
-`{anchor}`. Đây **không phải khung riêng cho một sinh viên**; nó là khung cho một
-bảng chính thức có phạm vi áp dụng riêng.
+Không phải loại câu hỏi nào cũng có chỗ trống. Ví dụ, câu hỏi về bảng quy đổi
+ngoại ngữ thứ hai dành cho sinh viên ngành Ngôn ngữ Anh luôn nhắm tới đúng bảng
+đó. Nguồn chính thức chia bảng theo nhóm đối tượng, nên đối tượng cần tra đã được
+xác định sẵn và câu mẫu không cần chỗ trống. Đây **không phải khung dành riêng
+cho một sinh viên**; nó dùng cho một bảng áp dụng chung cho nhóm sinh viên Ngôn
+ngữ Anh. IRI của bảng trong ontology là
+`:SecondLanguageConversionTableEnglishMajor`.
 
 Tệp [`resources/provenance/frames.jsonl`](resources/provenance/frames.jsonl) có
-49 dòng, mỗi dòng ứng với một họ trả lời được. Tổng cộng có 341 khung:
+49 dòng, mỗi dòng ứng với một loại nội dung có thể tra cứu. Tổng cộng có 341 câu
+mẫu:
 
-- 294 khung câu đầy đủ trong trường `frames`;
-- 47 khung ngắn trong trường `short_frames` để biểu diễn truy vấn rất ngắn;
-- mỗi họ có từ 6 đến 11 khung sau khi tính cả hai loại.
+- 294 câu đầy đủ trong trường `frames`, dùng cho cách hỏi thành câu;
+- 47 câu ngắn trong trường `short_frames`, dùng cho truy vấn chỉ gồm vài từ.
 
 Sơ đồ sau chỉ mô tả **quá trình hình thành câu hỏi có nhãn**, không phải luồng xử
 lý một câu chat khi hệ thống đang chạy.
 
-![Từ khung ý định đến một dòng dataset](docs/images/khung-du-lieu.png)
+![Từ câu mẫu đến một dòng trong bộ dữ liệu](docs/images/khung-du-lieu.png)
 
-Câu trả lời được hình thành từ ba trục:
+Câu hỏi trong bộ dữ liệu được hình thành từ ba phần:
 
-1. **Ý định:** họ truy vấn và khung xác định điều cần hỏi.
-2. **Cách gọi đối tượng:** `rdfs:label`, `skos:altLabel`, tên viết tắt hoặc tọa độ
-   Điều/Khoản/Điểm từ ontology xác định đối tượng được nhắc đến.
-3. **Biến thể bề mặt:** từ dẫn, đuôi câu, cách nói tương đương, viết hoa và nhiễu
-   có kiểm soát thay đổi cách viết nhưng không đổi nhãn.
+1. **Nội dung cần hỏi:** câu mẫu xác định người dùng muốn biết điều gì, chẳng hạn
+   các bước hay điều kiện.
+2. **Tên đối tượng:** tên chính, tên thay thế, tên viết tắt hoặc số Điều/Khoản/Điểm
+   lấy từ ontology xác định người dùng hỏi về đối tượng nào.
+3. **Cách viết:** từ dẫn, đuôi câu, cách nói tương đương, viết hoa và lỗi có kiểm
+   soát tạo ra các cách diễn đạt khác nhau nhưng không làm đổi đáp án.
 
 Ba dạng nhiễu chính là bỏ dấu, viết dính từ và thay một ký tự bằng phím lân cận.
-Nhãn `register` mô tả cách dataset được thiết kế; nó không phải kết quả khảo sát
-tần suất ngôn ngữ thật của sinh viên.
+Trường `register` chỉ ghi nhóm cách viết được dùng khi thiết kế bộ dữ liệu; nó
+không phải kết quả khảo sát tần suất ngôn ngữ thật của sinh viên.
 
 ### 6.3 Câu phải từ chối được tạo để kiểm tra điều gì?
 
-Dataset có 829 câu mang nhãn `no-information`. Chúng không phải một khối "câu
+Bộ dữ liệu có 829 câu mang nhãn `no-information`. Chúng không phải một khối "câu
 ngoài chủ đề" duy nhất mà gồm bảy tình huống:
 
-| Lớp | Số câu | Rủi ro được kiểm tra |
-|---|---:|---|
-| `hard-negative` | 163 | có tên đối tượng thật nhưng hỏi thuộc tính không được lưu |
-| `near-domain-missing` | 151 | gần phạm vi học vụ nhưng thiếu dữ kiện cần trả |
-| `unrelated` | 115 | chủ đề không thuộc học vụ |
-| `noisy-out-of-domain` | 109 | câu ngoài miền kèm thiếu dấu hoặc lỗi gõ |
-| `incomplete-request` | 108 | không nêu đủ đối tượng hoặc nội dung cần hỏi |
-| `greeting-social` | 94 | giao tiếp xã hội, không phải yêu cầu dữ kiện |
-| `adjacent-domain` | 89 | nghiệp vụ lân cận nhưng ontology chưa hỗ trợ |
+| Tình huống | Mã trong dữ liệu | Số câu | Rủi ro được kiểm tra |
+|---|---|---:|---|
+| Có đối tượng thật nhưng hỏi dữ kiện không được lưu | `hard-negative` | 163 | hệ thống có bịa thuộc tính còn thiếu không? |
+| Gần phạm vi nhưng thiếu dữ kiện cần trả | `near-domain-missing` | 151 | hệ thống có nhận ra khoảng trống của ontology không? |
+| Chủ đề không phải học vụ | `unrelated` | 115 | hệ thống có từ chối câu ngoài chủ đề không? |
+| Ngoài chủ đề và có lỗi viết | `noisy-out-of-domain` | 109 | lỗi gõ có làm hệ thống trả lời nhầm không? |
+| Yêu cầu chưa đủ ý | `incomplete-request` | 108 | hệ thống có đoán khi thiếu đối tượng hoặc nội dung cần hỏi không? |
+| Chào hỏi hoặc giao tiếp xã hội | `greeting-social` | 94 | hệ thống có nhầm hội thoại với yêu cầu tra cứu không? |
+| Nghiệp vụ gần học vụ nhưng chưa được hỗ trợ | `adjacent-domain` | 89 | hệ thống có vượt ra ngoài phạm vi ontology không? |
 
 Các khuôn gốc nằm tại
 [`resources/provenance/rejections.jsonl`](resources/provenance/rejections.jsonl).
 [`rejection_checklist.json`](resources/provenance/rejection_checklist.json) định
-nghĩa bảy lớp bắt buộc; [`rejection_provenance.json`](resources/provenance/rejection_provenance.json)
+nghĩa bảy mã tình huống bắt buộc;
+[`rejection_provenance.json`](resources/provenance/rejection_provenance.json)
 nối từng dòng từ chối với lớp và khuôn của nó.
 
-Một nhóm khác tên `distraction` chỉ thêm vế ngoài lề vào câu vẫn có nhu cầu học
-vụ rõ ràng. Các câu đó vẫn phải được trả lời, không được gán nhãn từ chối chỉ vì
-có từ gây nhiễu.
+Nhóm **vế gây nhiễu** (mã `distraction`) chỉ thêm nội dung ngoài lề vào câu vẫn
+có nhu cầu học vụ rõ ràng. Các câu đó vẫn phải được trả lời, không được gán nhãn
+từ chối chỉ vì có từ gây nhiễu.
 
-### 6.4 Dataset được chia theo tiêu chí nào?
+### 6.4 Bộ dữ liệu được chia theo tiêu chí nào?
 
-Tiêu chí chính là **chia theo khung, không chia ngẫu nhiên theo dòng**:
+Ba mã `train`, `val` và `test` lần lượt chỉ phần dùng để huấn luyện, phần dùng để
+theo dõi quá trình huấn luyện và phần chỉ dùng để báo kết quả cuối.
 
-- với mỗi họ trả lời được, một khung được giữ cho `val`, một khung cho `test`,
-  các khung còn lại cho `train`;
-- tổng số khung là 243 cho `train`, 49 cho `val` và 49 cho `test`;
-- mọi biến thể sinh từ cùng một khung phải ở cùng một phần;
+Tiêu chí chính là **chia theo câu mẫu, không chia ngẫu nhiên theo dòng**:
+
+- với mỗi loại nội dung trả lời được, một câu mẫu được giữ cho `val`, một câu mẫu
+  cho `test`, các câu mẫu còn lại cho `train`;
+- tổng số câu mẫu là 243 cho `train`, 49 cho `val` và 49 cho `test`;
+- mọi biến thể sinh từ cùng một câu mẫu phải ở cùng một phần;
 - đối tượng và đích tra cứu vẫn xuất hiện trong `train`; thứ được giữ lại là cách
   diễn đạt, không phải kiến thức mới.
 
-Cách chia này nhằm trả lời câu hỏi: **khi đích cần tra đã được học, model có nhận
-ra cách hỏi khác hay không?** Nó không phải phép thử zero-shot cho thực thể hoặc
-quy định chưa từng xuất hiện.
+Cách chia này nhằm trả lời câu hỏi: **khi đích cần tra đã được học, mô hình có
+nhận ra cách hỏi khác hay không?** Nó không kiểm tra khả năng xử lý một đối tượng
+hoặc quy định chưa từng xuất hiện trong tập huấn luyện.
 
-Đối với câu từ chối, mỗi tổ hợp của 7 lớp và 4 register đều có mặt trong
+Đối với câu từ chối, mỗi tổ hợp của 7 tình huống và 4 cách viết đều có mặt trong
 `train`, `val` và `test`. Các kiểm tra còn xác nhận không có câu trùng giữa các
 phần sau khi so nguyên văn, chuẩn hoá khoảng trắng/viết tắt và bỏ dấu; cùng một
 câu đã chuẩn hoá cũng không được gán hai đích khác nhau.
 
-### 6.5 Quy mô snapshot
+### 6.5 Quy mô bộ dữ liệu
 
 ![Thành phần của bộ dữ liệu](docs/images/bo-du-lieu.png)
 
@@ -526,17 +536,18 @@ câu đã chuẩn hoá cũng không được gán hai đích khác nhau.
 | `train` | 4.793 | 730 | 5.523 | học tham số |
 | `val` | 350 | 50 | 400 | theo dõi quá trình huấn luyện |
 | `test` | 341 | 49 | 390 | báo kết quả sau khi cố định thiết lập |
-| **Toàn bộ** | **5.484** | **829** | **6.313** | snapshot bất biến |
+| **Toàn bộ** | **5.484** | **829** | **6.313** | phiên bản cố định |
 
 Các tệp chính là [`train.jsonl`](resources/dataset/train.jsonl),
 [`val.jsonl`](resources/dataset/val.jsonl) và
 [`test.jsonl`](resources/dataset/test.jsonl). Bản kê
 [`manifest.json`](resources/dataset/manifest.json) ghi số dòng, phạm vi và mã băm
-SHA-256 để nhận diện chính xác snapshot.
+SHA-256 để nhận diện chính xác phiên bản dữ liệu.
 
-Phân bố theo miền và register là quyết định thiết kế, không phải ước lượng phân
-bố sử dụng ngoài thực tế. Câu có độ dài từ 1 đến 36 từ, trung vị 11 từ và p95 là
-21 từ. Chi tiết phương pháp nằm tại [`docs/DATASET.md`](docs/DATASET.md).
+Phân bố theo chủ đề và cách viết là quyết định thiết kế, không phải ước lượng phân
+bố sử dụng ngoài thực tế. Câu có độ dài từ 1 đến 36 từ, trung vị 11 từ; 95% số
+câu dài không quá 21 từ. Chi tiết phương pháp nằm tại
+[`docs/DATASET.md`](docs/DATASET.md).
 
 ## 7. Thiết lập thực nghiệm
 
@@ -545,66 +556,82 @@ bố sử dụng ngoài thực tế. Câu có độ dài từ 1 đến 36 từ, 
 | Phép chấm | Đầu vào | Đầu ra được chấm | Câu hỏi mà phép chấm trả lời |
 |---|---|---|---|
 | Chấm bộ phận, hay **phép đo từng phần** | một câu/cụm tiếng Việt | 1 trong 344 nhãn | bộ phân loại chọn đúng hành động tra cứu không? |
-| Chấm `end-to-end` | một câu chat | câu trả lời tự do do LLM viết | toàn hệ thống có tra đúng, trả đúng và từ chối đúng không? |
+| Chấm toàn hệ thống (`end-to-end`) | một câu chat | câu trả lời tự do do LLM viết | toàn hệ thống có tra đúng, trả đúng và từ chối đúng không? |
 
 Hai tỷ lệ không thể thay thế cho nhau. Nhãn đúng chưa bảo đảm LLM sẽ gọi công
 cụ hoặc diễn đạt đúng; câu trả lời đúng đôi khi vẫn có thể xuất hiện dù đường đi
 không đúng như nhãn chuẩn.
 
+Sơ đồ sau tổng kết quá trình từ nguồn chính thức đến huấn luyện và hai phép chấm.
+Đây là quy trình tạo tài nguyên và đánh giá, không phải luồng chạy của một câu
+chat.
+
+![Từ nguồn chính thức đến tài nguyên và phép đánh giá](docs/images/luong-du-lieu.png)
+
 ### 7.2 Các mô hình phân loại
 
-Bốn encoder tiền huấn luyện được fine-tune cho cùng bài toán. Mốc so sánh duy
-nhất là **TF-IDF + LinearSVC**. Từ "baseline" trong dự án chỉ mô hình này, không
-chỉ một phiên bản phần mềm hay một trạng thái cũ của project.
+Bốn mô hình ngôn ngữ đã học trước từ kho văn bản lớn được huấn luyện tiếp cho bài
+toán phân loại của dự án. Mốc so sánh duy nhất là **TF-IDF + LinearSVC**, một
+phương pháp phân loại văn bản không dùng mô hình ngôn ngữ tiền huấn luyện. Nếu
+tài liệu kỹ thuật dùng từ *baseline*, từ đó chỉ mốc so sánh này, không chỉ một
+phiên bản cũ của dự án.
 
-| Tên báo cáo | Model ID hoặc phương pháp | Vai trò |
+| Tên báo cáo | Định danh công khai hoặc phương pháp | Vai trò |
 |---|---|---|
-| XLM-R base | `FacebookAI/xlm-roberta-base` | encoder đa ngữ |
-| BamiBERT | `Qualcomm-AI-Research/BamiBERT` | encoder đa ngữ |
-| ViSoBERT | `uitnlp/visobert` | encoder hướng tới tiếng Việt mạng xã hội |
-| PhoBERT-v2 | `vinai/phobert-base-v2` | encoder tiếng Việt |
-| TF-IDF + LinearSVC | n-gram ký tự 2-5, n-gram từ 1-2, LinearSVC | baseline tuyến tính không dùng encoder tiền huấn luyện |
+| XLM-R base | `FacebookAI/xlm-roberta-base` | mô hình đa ngữ |
+| BamiBERT | `Qualcomm-AI-Research/BamiBERT` | mô hình đa ngữ |
+| ViSoBERT | `uitnlp/visobert` | mô hình hướng tới tiếng Việt trên mạng xã hội |
+| PhoBERT-v2 | `vinai/phobert-base-v2` | mô hình tiếng Việt |
+| TF-IDF + LinearSVC | nhóm 2-5 ký tự liên tiếp và 1-2 từ liên tiếp | mốc so sánh tuyến tính |
 
-N-gram ký tự giúp baseline giữ một phần tín hiệu khi câu thiếu dấu hoặc sai
-chính tả.
+Các nhóm ký tự liên tiếp giúp mốc so sánh vẫn nhận ra một phần từ ngữ khi câu
+thiếu dấu hoặc sai chính tả.
 
 ### 7.3 Điều kiện huấn luyện và chấm bộ phận
 
-Cả năm mô hình dùng cùng `train`, `val` và `test`. Bốn encoder dùng:
+Cả năm mô hình dùng cùng ba phần dữ liệu đã giải thích ở mục 6.4. Bốn mô hình
+ngôn ngữ dùng cùng cấu hình:
 
-- LoRA hạng 16 và một lớp phân loại học mới;
-- độ dài tối đa 48 token, batch 32, learning rate `2e-4`;
-- 32 epoch, seed 1; checkpoint sau epoch cuối được chấm trên `test`.
+| Thiết lập | Giá trị | Ý nghĩa |
+|---|---:|---|
+| Phần tham số được huấn luyện | LoRA hạng 16 và lớp phân loại mới | chỉ điều chỉnh một phần tham số bổ sung thay vì thay đổi toàn bộ mô hình |
+| Độ dài đầu vào tối đa | 48 đơn vị tách từ | giới hạn lượng văn bản mô hình nhận cho mỗi câu |
+| Kích thước nhóm xử lý | 32 câu | số câu được xử lý trước mỗi lần cập nhật tham số |
+| Mức cập nhật tham số | `2e-4` | độ lớn của mỗi bước học |
+| Số lượt đọc tập huấn luyện | 32 | mỗi lượt đi qua toàn bộ phần `train` một lần |
+| Giá trị cố định ngẫu nhiên | 1 | giúp lần chạy có thể được lặp lại trong cùng điều kiện |
+| Trọng số đem chấm | sau lượt thứ 32 | không chọn lại mô hình dựa trên kết quả của tập chấm cuối |
 
 TF-IDF + LinearSVC được huấn luyện một lần trên `train`. `val` dùng để theo dõi
-quá trình học; `test` chỉ dùng để báo kết quả cuối. Do mỗi cấu hình mới có một
-seed, bảng kết quả chưa cho biết độ dao động giữa nhiều lần huấn luyện.
+quá trình học; `test` chỉ dùng để báo kết quả cuối. Vì mỗi cấu hình mới chạy với
+một giá trị ngẫu nhiên cố định, bảng kết quả chưa cho biết mức dao động giữa các
+lần huấn luyện.
 
-![Loss trên train và validation trong 32 epoch](docs/images/loss-curves.png)
+Hai biểu đồ dùng chỉ số *loss*, tức sai số mà thuật toán cố giảm trong lúc học;
+giá trị càng thấp càng tốt. Hình bên trái đo trên dữ liệu dùng để cập nhật mô
+hình, hình bên phải đo trên dữ liệu chỉ dùng để theo dõi. Sai số này mô tả quá
+trình học, không phải tỷ lệ câu trả lời đúng.
 
-Loss đo mức dự đoán lệch khỏi nhãn đúng, càng thấp càng tốt. Đường train cho biết
-model khớp dữ liệu đã học đến đâu; đường validation cho biết mức khớp trên cách
-hỏi không dùng để cập nhật tham số. Loss là tín hiệu chẩn đoán quá trình học,
-không phải tỷ lệ câu trả lời đúng.
+![Sai số trên tập huấn luyện và tập theo dõi qua 32 lượt](docs/images/loss-curves.png)
 
-Mỗi câu `test` được tính đúng khi nhãn dự đoán khớp hoàn toàn nhãn chuẩn sau gộp.
+Mỗi câu `test` được tính đúng khi nhãn dự đoán khớp hoàn toàn nhãn chuẩn.
 Các chỉ số được hiểu như sau:
 
 | Chỉ số | Cách đọc |
 |---|---|
-| Accuracy | tỷ lệ câu trong toàn bộ `test` có nhãn đúng |
-| Precision của một nhãn | trong các câu model gán nhãn đó, bao nhiêu câu thật sự thuộc nhãn |
-| Recall của một nhãn | trong các câu thật sự thuộc nhãn đó, model tìm đúng bao nhiêu |
-| F1 của một nhãn | trung bình điều hoà giữa precision và recall |
-| Macro precision/recall/F1 | tính từng nhãn rồi cho mọi nhãn trọng số bằng nhau; nhạy với nhãn ít mẫu |
-| Weighted F1 | trung bình F1 theo số câu của từng nhãn; nhãn nhiều mẫu có ảnh hưởng lớn hơn |
+| Accuracy (độ chính xác chung) | tỷ lệ câu trong toàn bộ `test` có nhãn đúng |
+| Precision (độ chính xác khi chọn một nhãn) | trong các câu mô hình gán nhãn đó, bao nhiêu câu thật sự thuộc nhãn |
+| Recall (độ bao phủ của một nhãn) | trong các câu thật sự thuộc nhãn đó, mô hình tìm đúng bao nhiêu |
+| F1 | giá trị cân bằng giữa precision và recall |
+| Macro (trung bình đều theo nhãn) | tính từng nhãn rồi cho mọi nhãn trọng số bằng nhau; nhạy với nhãn ít mẫu |
+| Weighted F1 (F1 có trọng số) | trung bình F1 theo số câu của từng nhãn; nhãn nhiều mẫu có ảnh hưởng lớn hơn |
 
-Các phân tích theo miền, register và số mẫu chỉ dùng để tìm điểm yếu; nhóm ít câu
-không đủ ổn định để xếp hạng model.
+Các phân tích theo chủ đề, cách viết và số mẫu chỉ dùng để tìm điểm yếu; nhóm ít
+câu không đủ ổn định để xếp hạng mô hình.
 
 ### 7.4 Cách chấm toàn hệ thống
 
-Bộ `end-to-end` có 85 câu độc lập với phép chấm nhãn:
+Bộ chấm toàn hệ thống có 85 câu độc lập với phép chấm nhãn:
 
 - 61 câu có dữ kiện cần trả trong ontology;
 - 14 câu ngoài phạm vi;
@@ -614,11 +641,11 @@ Hai nhóm cuối tạo thành 24 câu **phải từ chối**. Chúng được b�
 phải trả lời vì tiêu chí thành công trái ngược nhau.
 
 Câu trả lời cuối là văn bản tự do: nhiều cách diễn đạt khác nhau đều có thể đúng,
-nên không tồn tại một chuỗi tham chiếu duy nhất để so khớp chính xác. Vì vậy một
-LLM khác đóng vai trò bộ chấm. Với mỗi lượt, bộ chấm đọc đồng thời:
+nên không tồn tại một câu trả lời mẫu duy nhất để so khớp chính xác. Vì vậy một
+mô hình ngôn ngữ khác đóng vai trò bộ chấm. Với mỗi lượt, bộ chấm đọc đồng thời:
 
 1. câu hỏi;
-2. JSON dữ kiện và nguồn mà công cụ đã trả;
+2. dữ kiện có cấu trúc và nguồn mà công cụ đã trả;
 3. câu trả lời cuối của hệ thống.
 
 Đối với 61 câu có dữ kiện, nhãn chấm gồm:
@@ -634,12 +661,12 @@ LLM khác đóng vai trò bộ chấm. Với mỗi lượt, bộ chấm đọc �
 Đối với 24 câu phải từ chối, từ chối rõ ràng là kết quả đúng; đưa ra một câu trả
 lời nội dung là lỗi an toàn.
 
-LLM judge được bổ sung bằng ba kiểm tra tất định: có gọi công cụ không, dữ liệu
+Mô hình chấm được bổ sung bằng ba kiểm tra cố định: có gọi công cụ không, dữ liệu
 có chứa đúng IRI đích không, và số/tên trong câu trả lời có xuất hiện trong dữ
-liệu vừa lấy không. Kiểm tra tất định giúp phát hiện mâu thuẫn nhưng không tự đọc
+liệu vừa lấy không. Các kiểm tra này giúp phát hiện mâu thuẫn nhưng không tự đọc
 được toàn bộ ý nghĩa ngôn ngữ, nên không thay thế bộ chấm nội dung.
 
-Thời gian `end-to-end` được đo từ lúc nhận câu chat đến lúc có câu trả lời cuối,
+Thời gian toàn hệ thống được đo từ lúc nhận câu chat đến lúc có câu trả lời cuối,
 bao gồm gọi LLM qua mạng. Trung vị mô tả lượt điển hình; p95 là ngưỡng mà 95%
 lượt không vượt quá.
 
@@ -647,13 +674,13 @@ lượt không vượt quá.
 
 Các số trong mục này là kết quả mới nhất được báo cáo cho các mô hình đã công
 bố. Trọng số XLM-R phục vụ nằm trên Hugging Face Hub và được đóng vào ảnh Docker;
-repository mã nguồn không lưu các tệp model nặng.
+kho mã nguồn không lưu các tệp mô hình nặng.
 
 ### 8.1 Kết quả bộ phân loại trên 390 câu `test`
 
 ![So sánh năm mô hình trên tập test](docs/images/model-comparison.png)
 
-| Mô hình | Accuracy | Precision macro | Recall macro | F1 macro | F1 weighted |
+| Mô hình | Độ chính xác chung | Precision trung bình đều | Recall trung bình đều | F1 trung bình đều | F1 có trọng số |
 |---|---:|---:|---:|---:|---:|
 | XLM-R base | **85,1%** | 78,2% | 83,4% | 79,7% | **82,6%** |
 | BamiBERT | 83,6% | **78,8%** | **84,1%** | **80,1%** | 82,0% |
@@ -661,13 +688,14 @@ repository mã nguồn không lưu các tệp model nặng.
 | PhoBERT-v2 | 80,5% | 74,4% | 79,5% | 75,6% | 78,5% |
 | TF-IDF + LinearSVC | 80,3% | 74,4% | 79,5% | 75,6% | 78,3% |
 
-XLM-R có accuracy cao nhất và hơn TF-IDF + LinearSVC 4,8 điểm phần trăm. BamiBERT
-có macro precision, macro recall và macro F1 cao nhất. Hai kết luận không mâu
-thuẫn: accuracy cho mỗi câu một phiếu, còn macro cho mỗi nhãn một phiếu.
+XLM-R có độ chính xác chung cao nhất và hơn TF-IDF + LinearSVC 4,8 điểm phần
+trăm. BamiBERT có precision, recall và F1 trung bình đều theo nhãn cao nhất. Hai
+kết luận không mâu thuẫn: độ chính xác chung cho mỗi câu một trọng số bằng nhau,
+còn trung bình đều cho mỗi nhãn một trọng số bằng nhau.
 
 Do chỉ có một lượt chạy cho mỗi cấu hình và chưa có khoảng tin cậy, bảng đủ để
 mô tả kết quả quan sát được nhưng chưa đủ để khẳng định chênh lệch nhỏ giữa các
-encoder sẽ ổn định khi huấn luyện lại.
+mô hình sẽ ổn định khi huấn luyện lại.
 
 Tách hai quyết định trả lời và từ chối:
 
@@ -689,28 +717,28 @@ phải một ước lượng chắc chắn cho mọi câu ngoài phạm vi ngoà
 
 Có 57/344 nhãn chỉ có dưới 5 câu trong `train`. Hai nhóm ít mẫu nhất trong hình
 chỉ chứa tổng cộng 9 câu `test`, nên hình cho thấy rủi ro nhãn thưa chứ không đủ
-để xếp hạng model ở các nhóm đó.
+để xếp hạng mô hình ở các nhóm đó.
 
-Với XLM-R, accuracy giảm từ 94,9% ở câu trang trọng xuống 69,8% ở câu gõ nhiễu.
+Với XLM-R, độ chính xác giảm từ 94,9% ở câu trang trọng xuống 69,8% ở câu gõ nhiễu.
 Theo miền, giá trị cao nhất là chứng chỉ 93,5% trên 31 câu và thấp nhất là học
 phí 72,0% trên 25 câu. Các mẫu số nhỏ và khác nhau, nên đây là tín hiệu tìm lỗi,
 không phải bảng xếp hạng độ khó tuyệt đối.
 
-### 8.3 Kết quả `end-to-end`
+### 8.3 Kết quả toàn hệ thống
 
 Mục 8.1 chấm bộ phân loại. Mục này chấm toàn bộ chuỗi từ câu chat đến câu trả
 lời do LLM viết.
 
-Với 61 câu phải trả lời, các kiểm tra tất định cho kết quả:
+Với 61 câu phải trả lời, các kiểm tra tự động theo quy tắc cố định cho kết quả:
 
 | Tiêu chí | Kết quả | Ý nghĩa giới hạn |
 |---|---:|---|
 | Có gọi công cụ | 57/61, 93,4% | chỉ biết hệ thống đã tra, chưa biết tra đúng |
 | Dữ liệu lấy về có đúng IRI đích | 48/61, 78,7% | đo đúng đối tượng, chưa chấm cách diễn đạt |
 | Số và tên trong câu trả lời có mặt trong dữ liệu | 59/61, 96,7% | kiểm bám chuỗi, không hiểu mọi quan hệ ngữ nghĩa |
-| Vừa đúng đích, vừa qua kiểm tra bám dữ liệu | 47/61, 77,0% | điều kiện kết hợp tất định |
+| Vừa đúng đích, vừa qua kiểm tra bám dữ liệu | 47/61, 77,0% | phải đồng thời đạt hai điều kiện bên trên |
 
-LLM judge chấm cùng 61 câu:
+Mô hình ngôn ngữ chấm cùng 61 câu:
 
 | Nhãn chấm | Kết quả |
 |---|---:|
@@ -732,27 +760,29 @@ dữ kiện đều tồn tại rồi nối chúng thành quan hệ mà ontology 
 Vì vậy "có nguồn" không đồng nghĩa mọi kết luận trong câu trả lời đều được nguồn
 hỗ trợ.
 
-Có 6/85 phán quyết của LLM judge mâu thuẫn với ít nhất một tín hiệu tất định và
+Có 6/85 phán quyết của mô hình chấm mâu thuẫn với ít nhất một tín hiệu cố định và
 đã được đánh dấu để rà lại. Chín trường hợp trải trên các mức chấm đã được đọc
-thủ công và đều đồng ý với judge, nhưng đây chỉ là kiểm tra mẫu, không phải hai
-người chấm độc lập. Kết quả `end-to-end` vì vậy nên được đọc như ước lượng trên
-85 tình huống cố định.
+thủ công và đều đồng ý với mô hình chấm, nhưng đây chỉ là kiểm tra mẫu, không phải
+hai người chấm độc lập. Kết quả toàn hệ thống vì vậy nên được đọc như ước lượng
+trên 85 tình huống cố định.
 
 Nhật ký cho phép đối chiếu câu hỏi, dữ liệu công cụ, câu trả lời và lý do chấm tại
 [`resources/end-to-end/quality-log.md`](resources/end-to-end/quality-log.md).
 
 ### 8.4 Thời gian phản hồi
 
+Trong bảng, `ms` là mili giây; 1.000 ms bằng 1 giây.
+
 | Phạm vi đo | Trung vị | p95 | Ghi chú |
 |---|---:|---:|---|
-| Toàn bộ 85 lượt `end-to-end` | 2,5 s | 4,8 s | gồm LLM qua mạng; min 0,7 s, max 6,9 s |
+| Toàn bộ 85 lượt | 2,5 s | 4,8 s | gồm LLM qua mạng; nhỏ nhất 0,7 s, lớn nhất 6,9 s |
 | 76 lượt có tra cứu | 2,6 s | - | tính đến câu trả lời cuối |
 | Lượt không tra cứu | 1,2 s | - | không chạy công cụ |
 | Chọn nhãn/truy vấn trong công cụ | 3,9 ms | 5,1 ms | đo trên 76 lượt gọi công cụ |
-| Chạy SPARQL trên đồ thị | 17,6 ms | 1.530,6 ms | đuôi dài do một số bảng trả nhiều văn bản |
+| Chạy SPARQL trên đồ thị | 17,6 ms | 1.530,6 ms | một số truy vấn bảng chậm hơn nhiều vì trả về văn bản dài |
 | Toàn bộ công cụ | 22,6 ms | 1.535,5 ms | gồm chọn truy vấn và đọc đồ thị |
 
-Trung vị cho thấy độ trễ điển hình bị chi phối bởi LLM và mạng, không phải bộ
+Trung vị cho thấy thời gian phản hồi điển hình bị chi phối bởi LLM và mạng, không phải bộ
 phân loại. Tuy nhiên p95 của truy vấn đồ thị cao cho thấy các truy vấn trả bảng
 dài vẫn cần được tối ưu; không nên suy từ trung vị 22,6 ms rằng mọi lượt tra cứu
 đều nhanh như nhau.
@@ -761,23 +791,23 @@ dài vẫn cần được tối ưu; không nên suy từ trung vị 22,6 ms r�
 
 ### 9.1 Lỗi chọn nhãn
 
-XLM-R sai 58/390 câu `test`: 48 trường hợp chọn sai họ truy vấn và 10 trường hợp
-đúng họ nhưng sai đối tượng. Các dạng lặp lại gồm nhầm hai ngành gần tên, nhầm
-một thực thể với bảng danh mục chứa nó, và nhận một câu cần từ chối thành câu hỏi
-về bảng chứng chỉ.
-
-![Ma trận nhầm lẫn theo họ truy vấn](docs/images/confusion-matrix.png)
+XLM-R sai 58/390 câu `test`: 48 trường hợp chọn sai loại dữ kiện cần lấy và 10
+trường hợp chọn đúng loại dữ kiện nhưng sai đối tượng. Các dạng lặp lại gồm nhầm
+hai ngành gần tên, nhầm một thực thể với bảng danh mục chứa nó, và nhận một câu
+cần từ chối thành câu hỏi về bảng chứng chỉ.
 
 Ma trận nhầm lẫn cho biết nhãn đúng ở trục này bị dự đoán thành nhãn nào ở trục
 kia. Nó giúp tìm cặp hay bị nhầm, nhưng không giải thích nguyên nhân nếu chưa đọc
 lại câu hỏi tương ứng.
 
-![Biểu diễn câu test chiếu xuống hai chiều bằng UMAP](docs/images/umap.png)
+![Ma trận cho biết các loại dữ kiện thường bị nhầm với nhau](docs/images/confusion-matrix.png)
 
 UMAP chiếu vector nhiều chiều xuống hai chiều để quan sát quan hệ lân cận. Các
 cụm trong hình cho thấy một số nhóm có biểu diễn gần nhau hoặc tách nhau trong
 phép chiếu. Hình chỉ là công cụ thăm dò: phép giảm chiều làm mất thông tin, nên
-không thể dùng riêng nó để chứng minh model hiểu ngữ nghĩa hay tổng quát tốt.
+không thể dùng riêng nó để chứng minh mô hình hiểu ngữ nghĩa hay tổng quát tốt.
+
+![Biểu diễn câu test chiếu xuống hai chiều bằng UMAP](docs/images/umap.png)
 
 ### 9.2 Lỗi của toàn hệ thống
 
@@ -787,8 +817,8 @@ kê khả năng thay vì tra cứu. Đây là lỗi hoặc hành vi ở lớp đ
 một dự đoán sai đã được quan sát từ bộ phân loại.
 
 Ở nhóm phải từ chối, ba câu được trả lời do LLM nối các dữ kiện riêng lẻ thành
-một kết luận mới. Hướng khắc phục vì thế không chỉ là tăng accuracy của
-classifier mà còn phải kiểm soát quan hệ được phép phát biểu sau truy xuất.
+một kết luận mới. Hướng khắc phục vì thế không chỉ là tăng độ chính xác của bộ
+phân loại mà còn phải kiểm soát quan hệ được phép phát biểu sau truy xuất.
 
 ## 10. Giao diện
 
@@ -811,8 +841,8 @@ Khi câu hỏi không có dữ kiện phù hợp, giao diện trình bày thông
 
 ### 11.1 Có thể kết luận gì?
 
-Trong phạm vi dataset đóng, XLM-R đạt accuracy cao nhất là 85,1%; baseline
-TF-IDF + LinearSVC đạt 80,3%. Trên 85 tình huống toàn hệ thống, LLM judge chấm
+Trong phạm vi bộ dữ liệu đóng, XLM-R đạt độ chính xác chung cao nhất là 85,1%;
+mốc TF-IDF + LinearSVC đạt 80,3%. Trên 85 tình huống toàn hệ thống, mô hình chấm
 đúng 48/61 câu cần trả lời và ghi nhận từ chối đúng 21/24 câu cần từ chối.
 
 Các kết quả cho thấy chuỗi phân loại -> truy vấn dựng sẵn -> ontology -> LLM có
@@ -823,18 +853,19 @@ sát, hoặc tốt hơn các kiến trúc chưa được đem so sánh.
 ### 11.2 Ưu điểm ở cấp độ thiết kế
 
 - **Nguồn nội dung tách khỏi LLM:** quy định nằm trong ontology, không nằm trong
-  tham số model hội thoại.
-- **Không gian hành động hữu hạn:** classifier chọn nhãn; SPARQL lấy từ catalogue
-  thay vì được sinh tự do.
+  tham số của mô hình hội thoại.
+- **Không gian hành động hữu hạn:** bộ phân loại chọn nhãn; SPARQL lấy từ danh
+  mục truy vấn thay vì được sinh tự do.
 - **Có đường truy nguồn:** nội dung nghiệp vụ nối về phần văn bản và URL được
   dùng làm căn cứ.
 - **Tách được loại lỗi:** có thể phân biệt lỗi rút cụm, chọn nhãn, thiếu ontology,
   chạy truy vấn và diễn đạt cuối.
-- **Tài nguyên mở để kiểm tra:** ontology, catalogue, dataset, inventory và nhật
-  ký `end-to-end` đều có định dạng máy đọc được.
+- **Tài nguyên mở để kiểm tra:** ontology, danh mục truy vấn, bộ dữ liệu, bản kê
+  nội dung có thể trả lời và nhật ký toàn hệ thống đều có định dạng máy đọc được.
 
-Đây là đặc tính của thiết kế, không tự động chứng minh độ chính xác cao hơn RAG,
-tìm kiếm văn bản, SQL hay một hệ thống khác.
+Đây là đặc tính của thiết kế, không tự động chứng minh độ chính xác cao hơn cách
+tìm đoạn văn rồi đưa cho LLM (RAG), tìm kiếm văn bản, cơ sở dữ liệu bảng (SQL)
+hay một hệ thống khác.
 
 ### 11.3 Hạn chế
 
@@ -842,13 +873,14 @@ tìm kiếm văn bản, SQL hay một hệ thống khác.
    chưa giải quyết tổng quát hiệu lực, sửa đổi và thay thế văn bản.
 2. **Trừu tượng hoá:** tầng nghiệp vụ được biên soạn thủ công, chưa có hai chuyên
    gia độc lập và chưa đo mức đồng thuận.
-3. **Dataset:** dữ liệu chủ yếu được biên soạn/tổng hợp, register là nhãn thiết
-   kế, mọi đích `test` đã có trong `train`, và 57/344 nhãn có dưới 5 câu train.
-4. **Benchmark:** mỗi model mới có một seed; `test` có 390 câu, trong đó chỉ 49
-   câu từ chối; chưa có khoảng tin cậy.
-5. **Toàn hệ thống:** phép chấm chỉ có 85 câu, phụ thuộc một LLM judge và chưa có
-   hai người chấm độc lập. Có nguồn vẫn không chặn tuyệt đối việc LLM ghép sai
-   quan hệ.
+3. **Bộ dữ liệu:** câu hỏi chủ yếu được biên soạn hoặc tạo có kiểm soát, nhóm
+   cách viết là nhãn thiết kế, mọi đích `test` đã có trong `train`, và 57/344
+   nhãn có dưới 5 câu huấn luyện.
+4. **Phép chấm bộ phân loại:** mỗi mô hình mới chỉ chạy một lần; `test` có 390
+   câu, trong đó chỉ 49 câu từ chối; chưa có khoảng tin cậy.
+5. **Toàn hệ thống:** phép chấm chỉ có 85 câu, phụ thuộc một mô hình ngôn ngữ
+   chấm và chưa có hai người chấm độc lập. Có nguồn vẫn không chặn tuyệt đối việc
+   LLM ghép sai quan hệ.
 6. **Giá trị thực tiễn:** chưa đối chứng với RAG, tìm kiếm văn bản hoặc SQL; chưa
    đánh giá đủ câu hỏi thật, tải đồng thời, chi phí và độ ổn định dài hạn.
 
@@ -857,9 +889,9 @@ tìm kiếm văn bản, SQL hay một hệ thống khác.
 1. Rà ontology bởi ít nhất hai người có chuyên môn; ghi bất đồng và cách phân xử.
 2. Bổ sung thời gian hiệu lực, quan hệ sửa đổi/thay thế và lịch rà nguồn web.
 3. Xây tập đánh giá độc lập từ câu hỏi thực tế, đóng băng trước khi điều chỉnh
-   model và không dùng lại cho huấn luyện.
-4. Huấn luyện nhiều seed, báo trung bình, độ lệch và khoảng tin cậy thay vì một
-   điểm duy nhất.
+   mô hình và không dùng lại cho huấn luyện.
+4. Huấn luyện nhiều lần với các giá trị ngẫu nhiên khác nhau; báo trung bình, độ
+   lệch và khoảng tin cậy thay vì một điểm duy nhất.
 5. Đánh giá riêng rút cụm, chọn nhãn, lấy dữ kiện và viết câu trả lời; bổ sung
    kiểm tra quan hệ mà LLM được phép kết luận.
 6. So sánh với RAG, tìm kiếm văn bản và SQL; mở rộng `end-to-end` bằng nhiều
@@ -869,25 +901,26 @@ tìm kiếm văn bản, SQL hay một hệ thống khác.
 
 - [`docs/ONTOLOGY.md`](docs/ONTOLOGY.md): mô hình dữ liệu, nguồn và giới hạn của
   kiểm định ontology.
-- [`docs/DATASET.md`](docs/DATASET.md): nguồn gốc, khung, lớp từ chối và hợp đồng
-  chia dataset.
+- [`docs/DATASET.md`](docs/DATASET.md): nguồn gốc, câu mẫu, lớp từ chối và quy tắc
+  chia bộ dữ liệu.
 - [`docs/DEFENSE.md`](docs/DEFENSE.md): các câu hỏi phản biện khó và bằng chứng
   cần mở khi trả lời.
 - [`resources/ontology/ontology.ttl`](resources/ontology/ontology.ttl): ontology
-  được runtime đọc.
-- [`resources/ontology/catalogue.jsonl`](resources/ontology/catalogue.jsonl): 50
-  họ truy vấn và khuôn SPARQL.
+  được hệ thống đọc khi chạy.
+- [`resources/ontology/catalogue.jsonl`](resources/ontology/catalogue.jsonl):
+  danh mục nối nhãn với khuôn SPARQL.
 - [`resources/ontology/answer_inventory.json`](resources/ontology/answer_inventory.json):
-  4.080 đường dữ kiện cùng trạng thái hỗ trợ hoặc loại trừ.
+  bản kê những loại dữ kiện ontology có thể cung cấp và trạng thái hỗ trợ của
+  từng loại.
 - [`resources/dataset/manifest.json`](resources/dataset/manifest.json): quy mô,
-  hợp đồng split và mã băm dataset.
+  quy tắc chia phần và mã băm bộ dữ liệu.
 - [`resources/reports/dataset.json`](resources/reports/dataset.json): báo cáo
-  thống kê được tính từ snapshot.
+  thống kê được tính từ phiên bản dữ liệu cố định.
 - [`resources/end-to-end/questions.json`](resources/end-to-end/questions.json):
   bộ 85 câu dùng để đánh giá toàn hệ thống.
 - [`resources/end-to-end/quality-log.md`](resources/end-to-end/quality-log.md):
   câu hỏi, dữ kiện công cụ, câu trả lời và nhãn chấm từng lượt.
 
 Khi tài liệu mâu thuẫn với dữ liệu máy đọc được, số liệu phải được tính lại từ
-snapshot tương ứng. Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính
-thức là căn cứ.
+phiên bản dữ liệu tương ứng. Khi ontology mâu thuẫn với văn bản chính thức, văn
+bản chính thức là căn cứ.

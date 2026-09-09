@@ -16,15 +16,20 @@ digraph luong_xu_ly {
     labelloc=t; fontname="Liberation Sans"; fontsize=13; fontcolor="#2e8b8b";
     color="#2e8b8b"; style="rounded"; bgcolor="#f4faf9"; penwidth=1.4;
     chuan [label="Chuẩn hoá từng từ khoá\n(gõ nhiễu, thiếu dấu, viết tắt)", fillcolor="#dbeeec", color="#2e8b8b"];
-    sinh  [label="Mô hình phân loại chọn một trong 344 nhãn\n343 template SPARQL + 1 template no-information", fillcolor="#dbeeec", color="#2e8b8b"];
+    sinh  [label="Bộ phân loại chọn một trong 344 nhãn\n343 nhãn tra cứu + 1 nhãn từ chối", fillcolor="#dbeeec", color="#2e8b8b"];
     chay  [label="Chạy truy vấn trên đồ thị tri thức\n(truy vấn lấy từ danh mục nên luôn hợp lệ)",
            fillcolor="#dbeeec", color="#2e8b8b"];
+    thieu [label="Trả trạng thái không có thông tin\n(không chạy SPARQL)",
+           fillcolor="#f6e7e3", color="#b3543f"];
     gop   [label="Gộp kết quả mọi từ khoá, khử trùng,\nxếp mỗi dữ kiện vào đúng nguồn của nó",
            fillcolor="#dbeeec", color="#2e8b8b"];
-    chuan -> sinh -> chay -> gop;
+    chuan -> sinh;
+    sinh -> chay [label="  343 nhãn tra cứu  "];
+    sinh -> thieu [label="  1 nhãn từ chối  "];
+    chay -> gop;
   }
 
-  onto [label="ĐỒ THỊ TRI THỨC HỌC VỤ\n7.704 phát biểu · 685 mục · 56 lớp\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
+  onto [label="ONTOLOGY HỌC VỤ\nkho dữ kiện có cấu trúc\nmỗi dữ kiện kèm trích dẫn và đường dẫn",
         shape=cylinder, style=filled, fillcolor="#fbf1dd", color="#d99b30", penwidth=1.4];
 
   viet [label="Viết câu trả lời - chỉ được dùng dữ kiện vừa nhận,\ngiữ nguyên trích dẫn, không thêm số hay tên riêng nào khác",
@@ -36,7 +41,8 @@ digraph luong_xu_ly {
   quyet -> ngoai [label="  không  "];
   quyet -> rut   [label="  có  "];
   rut -> chuan [lhead=cluster_tool, label="  danh sách từ khoá  "];
-  gop -> viet [ltail=cluster_tool, label="  JSON: dữ kiện + nguồn + trạng thái  "];
+  gop -> viet [ltail=cluster_tool, label="  dữ kiện đã xếp theo nguồn  "];
+  thieu -> viet [ltail=cluster_tool, label="  trạng thái từ chối  "];
   chay -> onto [label="  đọc  ", constraint=false, style=dashed, dir=both];
   viet -> tra;
   ngoai -> tra;
