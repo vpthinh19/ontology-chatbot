@@ -22,7 +22,7 @@ from pathlib import Path
 
 assert sys.version_info[:2] == (3, 12)
 names = {d.metadata["Name"].lower().replace("_", "-") for d in metadata.distributions()}
-assert {"rdflib", "bm25s"} <= names
+assert {"rdflib", "bm25s", "underthesea"} <= names
 assert not {"onnxruntime", "tokenizers", "torch", "transformers"} & names
 assert not {"fastapi", "pydantic", "openai", "openai-agents"} & names
 assert not {name for name in names if name.startswith("nvidia-")}

@@ -102,6 +102,11 @@ class SearchEngine:
             index = SearchIndex.load(index_directory, analyzer)
             if index.fingerprint != fingerprint:
                 raise StaleIndexError(f"chỉ mục tại {index_directory} không khớp phiên bản ontology; hãy build lại")
+            if index.analyzer_name != analyzer.name:
+                raise StaleIndexError(
+                    f"chỉ mục tại {index_directory} dựng bằng cách tách từ {index.analyzer_name}, "
+                    f"khác {analyzer.name}; hãy build lại"
+                )
         return cls(ontology, index, top_k=top_k)
 
     def search(self, keywords: Sequence[str]) -> SearchResponse:

@@ -26,11 +26,20 @@ class SearchIndex:
     BM25_DIRECTORY = "bm25"
     MANIFEST_FILE = "manifest.json"
 
-    def __init__(self, entries: list[IndexEntry], retriever: bm25s.BM25, analyzer: TextAnalyzer, fingerprint: str) -> None:
+    def __init__(
+        self,
+        entries: list[IndexEntry],
+        retriever: bm25s.BM25,
+        analyzer: TextAnalyzer,
+        fingerprint: str,
+        analyzer_name: str | None = None,
+    ) -> None:
         self.entries = entries
         self.retriever = retriever
         self.analyzer = analyzer
         self.fingerprint = fingerprint
+        #: Cách tách từ đã dùng lúc dựng; khác cách tách lúc tìm thì điểm vô nghĩa.
+        self.analyzer_name = analyzer_name or analyzer.name
 
     @classmethod
     def build(cls, entries: list[IndexEntry], analyzer: TextAnalyzer, fingerprint: str) -> SearchIndex:
@@ -62,6 +71,7 @@ class SearchIndex:
         self.retriever.save(directory / self.BM25_DIRECTORY, show_progress=False)
         manifest = {
             "fingerprint": self.fingerprint,
+            "analyzer": self.analyzer_name,
             "entries": len(self.entries),
             "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         }
@@ -74,4 +84,4 @@ class SearchIndex:
         with open(directory / cls.ENTRIES_FILE, encoding="utf-8") as handle:
             entries = [IndexEntry.from_dict(json.loads(line)) for line in handle if line.strip()]
         retriever = bm25s.BM25.load(directory / cls.BM25_DIRECTORY, show_progress=False)
-        return cls(entries, retriever, analyzer, manifest["fingerprint"])
+        return cls(entries, retriever, analyzer, manifest["fingerprint"], manifest.get("analyzer", "unknown"))

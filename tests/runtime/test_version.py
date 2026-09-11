@@ -11,8 +11,9 @@ import ontchatbot
 OFFLINE_ONLY_LIBRARIES = {
     "matplotlib", "onnx", "onnxruntime", "peft", "scikit-learn", "tokenizers", "torch", "transformers",
 }
-#: Đường phục vụ đọc ontology bằng rdflib và xếp hạng dòng chỉ mục bằng bm25s.
-SEARCH_LIBRARIES = {"bm25s", "rdflib"}
+#: Đường phục vụ đọc ontology bằng rdflib, tách từ ghép bằng underthesea và xếp hạng
+#: dòng chỉ mục bằng bm25s.
+SEARCH_LIBRARIES = {"bm25s", "rdflib", "underthesea"}
 
 
 def _project() -> dict:

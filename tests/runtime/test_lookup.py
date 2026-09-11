@@ -36,10 +36,10 @@ def test_keywords_are_trimmed_deduplicated_and_bounded() -> None:
     assert bounded[1] == "x" * MAX_KEYWORD_CHARACTERS
     assert len(bounded) == MAX_KEYWORDS_PER_LOOKUP
     assert notice == {
-        "so_luong_toi_da": MAX_KEYWORDS_PER_LOOKUP,
-        "do_dai_toi_da": MAX_KEYWORD_CHARACTERS,
-        "so_luong_bo_qua": 5,
-        "so_luong_rut_gon": 1,
+        "limit": MAX_KEYWORDS_PER_LOOKUP,
+        "length": MAX_KEYWORD_CHARACTERS,
+        "omitted": 5,
+        "shortened": 1,
     }
 
 
@@ -51,25 +51,33 @@ def test_short_clean_keywords_carry_no_notice() -> None:
 def test_found_results_are_rendered_with_matched_rows_and_facts_inside_their_sources(engine) -> None:
     payload = json.loads(render_response(engine.search(["nghỉ học tạm thời", "bóng đá"])))
 
-    assert payload["trang_thai"] == "co_ket_qua"
-    top = payload["ket_qua"][0]
-    assert top["muc"] == "Thủ tục nghỉ học tạm thời"
-    assert top["loai"] == ["Thủ tục học vụ"]
-    assert 1 <= len(top["dong_khop"]) <= 3
-    assert all("nghỉ học tạm thời" in row.casefold() for row in top["dong_khop"])
-    article = next(group for group in top["nguon"] if group["trich_dan"] == "Điều 24 Quy chế đào tạo")
-    assert article["duong_dan"] == "https://example.edu.vn/quy-che.pdf"
-    assert {"muc": "Thủ tục nghỉ học tạm thời", "thuoc_tinh": "nộp tại",
-            "gia_tri": "Phòng Công tác Chính trị và Sinh viên"} in article["du_lieu"]
-    assert payload["tu_khoa_khong_thay"] == ["bóng đá"]
+    assert payload["status"] == "found"
+    top = payload["results"][0]
+    assert top["label"] == "Thủ tục nghỉ học tạm thời"
+    assert top["classes"] == ["Thủ tục học vụ"]
+    assert 1 <= len(top["matched"]) <= 3
+    assert all("nghỉ học tạm thời" in row.casefold() for row in top["matched"])
+    article = next(group for group in top["sources"] if group["citation"] == "Điều 24 Quy chế đào tạo")
+    assert article["url"] == "https://example.edu.vn/quy-che.pdf"
+    assert {"subject": "Thủ tục nghỉ học tạm thời", "property": "nộp tại",
+            "value": "Phòng Công tác Chính trị và Sinh viên"} in article["facts"]
+    assert payload["unmatched"] == ["bóng đá"]
 
 
-def test_no_result_is_rendered_as_no_information(engine) -> None:
-    payload = json.loads(render_response(engine.search(["bóng đá"]), {"so_luong_bo_qua": 1}))
+def test_payload_keys_are_plain_english_words() -> None:
+    """Khoá JSON đồng bộ với tên gọi trong code: tiếng Anh, không ghép chữ Việt bằng ``_``."""
 
-    assert payload["trang_thai"] == "khong_co_thong_tin"
-    assert payload["ket_qua"] == []
-    assert payload["tu_khoa_da_cat"] == {"so_luong_bo_qua": 1}
+    payload = json.loads(render_response(SearchResponse(["x"], [], ["x"]), {"omitted": 1}))
+
+    assert set(payload) == {"status", "guidance", "results", "unmatched", "truncation"}
+
+
+def test_no_result_is_rendered_as_not_found(engine) -> None:
+    payload = json.loads(render_response(engine.search(["bóng đá"]), {"omitted": 1}))
+
+    assert payload["status"] == "not_found"
+    assert payload["results"] == []
+    assert payload["truncation"] == {"omitted": 1}
 
 
 def test_the_lookup_runs_the_engine_off_the_event_loop_thread() -> None:
@@ -92,7 +100,7 @@ def test_the_lookup_runs_the_engine_off_the_event_loop_thread() -> None:
 
     assert seen["keywords"] == ["học phí"]
     assert seen["thread"] != loop_thread
-    assert json.loads(rendered)["trang_thai"] == "khong_co_thong_tin"
+    assert json.loads(rendered)["status"] == "not_found"
 
 
 def test_the_lookup_needs_at_least_one_worker() -> None:

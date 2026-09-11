@@ -10,13 +10,15 @@ readme = "README.md"
 requires-python = "==3.12.*"
 
 # Only what both the deployed service and the offline tooling need: rdflib reads
-# the ontology and runs SPARQL, bm25s ranks the index rows. pyoxigraph stays until
-# the modules of the replaced classifier runtime are removed.
+# the ontology and runs SPARQL, underthesea segments Vietnamese compound words, and
+# bm25s ranks the index rows. pyoxigraph stays until the modules of the replaced
+# classifier runtime are removed.
 dependencies = [
     "bm25s>=0.3.11",
     "numpy>=2.5.1",
     "pyoxigraph>=0.5.0",
     "rdflib>=7.6.0",
+    "underthesea>=9.5.0",
 ]
 
 # ---------------------------------------------------------------------------

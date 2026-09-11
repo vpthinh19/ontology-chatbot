@@ -24,12 +24,12 @@ def test_importing_the_server_does_not_import_the_search_libraries() -> None:
 
     script = (
         "import sys; import ontchatbot.cli.serve; "
-        "print(int('numpy' in sys.modules), int('rdflib' in sys.modules), int('bm25s' in sys.modules))"
+        "print(*(int(name in sys.modules) for name in ('numpy', 'rdflib', 'bm25s', 'underthesea')))"
     )
 
     result = subprocess.run([sys.executable, "-c", script], check=True, capture_output=True, text=True)
 
-    assert result.stdout.strip() == "0 0 0"
+    assert result.stdout.strip() == "0 0 0 0"
 
 
 def test_lookup_is_built_from_the_configured_ontology(monkeypatch, tmp_path) -> None:

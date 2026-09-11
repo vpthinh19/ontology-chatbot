@@ -60,24 +60,23 @@ Câu hỏi nhiều chủ đề thì đưa hết từ khoá của mọi chủ đ�
 vẫn một lần gọi.
 
 Mỗi lần gọi chỉ dùng tối đa {MAX_KEYWORDS_PER_LOOKUP} từ khoá, mỗi từ khoá tối đa \
-{MAX_KEYWORD_CHARACTERS} ký tự. Nếu công cụ cắt bớt, JSON có `tu_khoa_da_cat`.
+{MAX_KEYWORD_CHARACTERS} ký tự. Nếu công cụ cắt bớt, JSON có `truncation`.
 
 Kết quả là JSON. Cách đọc:
-- `trang_thai=co_ket_qua`: `ket_qua` là các mục tìm được. Mỗi mục có `muc` (tên),
-  `loai`, `dong_khop` (các dòng đã khớp với từ khoá), `nguon` và `duoc_nhac_boi`.
-- Kiểm `dong_khop` TRƯỚC. Mục nào không phải thứ người dùng hỏi thì coi như không
+- `status=found`: `results` là các mục tìm được. Mỗi mục có `label` (tên), `classes`,
+  `matched` (các dòng đã khớp với từ khoá), `sources` và `incoming`.
+- Kiểm `matched` TRƯỚC. Mục nào không phải thứ người dùng hỏi thì coi như không
   tìm thấy; đừng trả lời bằng dữ liệu của mục đó.
-- Mỗi phần tử của `nguon` gồm `trich_dan`, `duong_dan` và `du_lieu` mà nguồn đó
-  khẳng định. Phải đọc HẾT.
-- `duoc_nhac_boi` liệt kê các mục khác trỏ tới mục này cùng quan hệ, ví dụ các thủ
-  tục "nộp tại" một phòng.
-- Nếu chi tiết người dùng hỏi không xuất hiện trong `du_lieu` nào, dữ liệu hiện có
+- Mỗi phần tử của `sources` gồm `citation`, `url` và `facts` mà nguồn đó khẳng định.
+  Phải đọc HẾT.
+- `incoming` liệt kê các mục khác trỏ tới mục này cùng quan hệ, ví dụ các thủ tục
+  "nộp tại" một phòng.
+- Nếu chi tiết người dùng hỏi không xuất hiện trong `facts` nào, dữ liệu hiện có
   không chứa chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề.
-- `tu_khoa_khong_thay` liệt kê những từ khoá không khớp gì. Các từ khoá còn lại
-  vẫn có kết quả, nên đừng tra lại cả loạt.
-- `trang_thai=khong_co_thong_tin`: không từ khoá nào khớp. Chỉ lúc này mới thử
-  thêm tối đa một lần bằng những cách gọi khác hẳn. Vẫn không có thì dừng và nói
-  không tìm thấy."""
+- `unmatched` liệt kê những từ khoá không khớp gì. Các từ khoá còn lại vẫn có kết
+  quả, nên đừng tra lại cả loạt.
+- `status=not_found`: không từ khoá nào khớp. Chỉ lúc này mới thử thêm tối đa một
+  lần bằng những cách gọi khác hẳn. Vẫn không có thì dừng và nói không tìm thấy."""
 
 TOOL_NAME = "lookup_academic_information"
 TOOL_SCHEMA = {
@@ -296,10 +295,10 @@ Mọi câu hỏi về học vụ: GỌI `lookup_academic_information` TRƯỚC, 
 quả trả về. Chưa gọi công cụ thì chưa được trả lời. Công cụ không có dữ kiện thì
 nói là không tìm thấy, đừng suy đoán và đừng bịa số.
 
-Khi công cụ trả `co_ket_qua`, kiểm `dong_khop` của từng mục và chỉ dùng mục đúng thứ
-người dùng hỏi. Đọc hết `du_lieu` của mục đó rồi coi là kết quả cuối của chủ đề. Nếu
-chi tiết được hỏi không xuất hiện, nói dữ liệu hiện có không chứa chi tiết ấy;
-không đổi từ khoá để tra tiếp.
+Khi công cụ trả `found`, kiểm `matched` của từng mục và chỉ dùng mục đúng thứ người
+dùng hỏi. Đọc hết `facts` của mục đó rồi coi là kết quả cuối của chủ đề. Nếu chi
+tiết được hỏi không xuất hiện, nói dữ liệu hiện có không chứa chi tiết ấy; không
+đổi từ khoá để tra tiếp.
 
 Câu hỏi có nhiều chủ đề độc lập: đưa từ khoá của mọi chủ đề vào cùng một lần gọi,
 và khi trả lời không bỏ sót vế nào.
@@ -307,7 +306,7 @@ và khi trả lời không bỏ sót vế nào.
 Hỏi tuyển sinh kèm năm thì gửi cụm "tuyển sinh" không mang năm; quy chế trong dữ
 liệu là bản hiện hành.
 
-Mọi khẳng định thực tế phải được `du_lieu` hoặc `nguon` ghi trực tiếp. Không suy
+Mọi khẳng định thực tế phải được `facts` hoặc `sources` ghi trực tiếp. Không suy
 luận, ghép thành quan hệ mới, hay áp dụng
 quy định/bảng chung cho một ngành cụ thể nếu dữ liệu không nói vậy. Không thêm
 số hoặc tên riêng ngoài dữ liệu.

@@ -58,11 +58,11 @@ def test_tool_teaches_the_model_to_read_the_search_result() -> None:
     description = TOOL_SCHEMA["function"]["description"]
 
     assert "JSON" in description and "DANH SÁCH" in description
-    for key in ("ket_qua", "dong_khop", "nguon", "trich_dan", "du_lieu", "duoc_nhac_boi",
-                "tu_khoa_khong_thay", "tu_khoa_da_cat", "khong_co_thong_tin"):
+    for key in ("status=found", "status=not_found", "results", "matched", "sources", "citation",
+                "facts", "incoming", "unmatched", "truncation"):
         assert key in description, key
     # Kiểm dòng khớp là chốt chặn khi tìm kiếm trả về một mục không đúng ý hỏi.
-    assert "Kiểm `dong_khop` TRƯỚC" in description
+    assert "Kiểm `matched` TRƯỚC" in description
     assert "ĐỪNG gọi lại" in description
     assert f"tối đa {MAX_KEYWORDS_PER_LOOKUP} từ khoá" in description
     assert f"tối đa\n{MAX_KEYWORD_CHARACTERS} ký tự" in description or f"tối đa {MAX_KEYWORD_CHARACTERS} ký tự" in description
@@ -86,7 +86,7 @@ def test_instructions_forbid_answering_from_memory() -> None:
     assert "đừng bịa số" in instructions
     # Quy tắc gọi công cụ phải đứng TRƯỚC danh sách chủ đề.
     assert instructions.index("GỌI `lookup_academic_information` TRƯỚC") < instructions.index("Thủ tục:")
-    assert "`dong_khop`" in instructions
+    assert "`matched`" in instructions
     assert "trích dẫn" in instructions and "đường dẫn" in instructions
 
 

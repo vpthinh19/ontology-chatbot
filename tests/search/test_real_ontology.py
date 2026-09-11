@@ -35,15 +35,24 @@ def test_a_value_question_finds_every_rule_that_carries_the_value(engine) -> Non
 
 
 def test_a_relation_question_finds_nodes_through_their_object_property_rows(engine) -> None:
+    """Ra các thủ tục nộp tại phòng, hoặc chính phòng đó: hồ sơ của phòng liệt kê đủ
+    các thủ tục trỏ tới nó."""
+
     response = engine.search(["thủ tục nộp tại phòng công tác sinh viên"])
 
     assert response.results
+    through_relation = 0
     for result in response.results:
+        if result.node == ":StudentAffairsOffice":
+            assert any(relation.property_label == "nộp tại" for relation in result.profile.incoming)
+            continue
         assert any(
             hit.entry.kind is EntryKind.OBJECT_PROPERTY
             and "nộp tại | Phòng Công tác Chính trị và Sinh viên" in hit.entry.text
             for hit in result.matched
         )
+        through_relation += 1
+    assert through_relation >= 2
 
 
 def test_a_document_part_is_found_by_its_coordinates(engine) -> None:

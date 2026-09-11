@@ -73,3 +73,21 @@ def test_a_saved_index_is_rejected_once_the_ontology_changes(mini_source, mini_o
         handle.write('\n:Student <http://www.w3.org/2004/02/skos/core#altLabel> "người học"@vi .\n')
     with pytest.raises(StaleIndexError):
         SearchEngine.open(TurtleFileSource(changed_path), index_directory=index_directory)
+
+
+def test_a_saved_index_is_rejected_when_it_was_built_with_another_segmenter(mini_source, mini_ontology, tmp_path) -> None:
+    """Từ của chỉ mục và của từ khoá phải tách cùng một cách, nếu không điểm vô nghĩa."""
+
+    class WhitespaceSegmenter:
+        name = "whitespace"
+
+        def segment(self, text):
+            return text.split()
+
+    index_directory = tmp_path / "index"
+    SearchIndex.build(
+        IndexBuilder(mini_ontology).build_entries(), TextAnalyzer(WhitespaceSegmenter()), mini_source.fingerprint()
+    ).save(index_directory)
+
+    with pytest.raises(StaleIndexError, match="tách từ"):
+        SearchEngine.open(mini_source, index_directory=index_directory)
