@@ -48,5 +48,8 @@ COVERAGE_REQUIREMENTS_PATH = DATASET_DIR / "coverage.json"
 
 #: Thư mục gốc cho lượt huấn luyện và model chuyển đổi cục bộ.
 ARTIFACTS_DIR = PROJECT_ROOT / "artifacts"
+#: Chỉ mục tìm kiếm dựng sẵn từ ontology. Là bộ nhớ đệm: dịch vụ tự dựng trong bộ
+#: nhớ khi không có thư mục này.
+SEARCH_INDEX_DIR = ARTIFACTS_DIR / "search-index"
 #: Báo cáo dẫn xuất được dùng làm đối chứng để phát hiện trôi lệch nguồn.
 REPORTS_DIR = RESOURCES / "reports"

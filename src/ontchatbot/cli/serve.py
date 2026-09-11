@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import argparse
-from concurrent.futures import ThreadPoolExecutor
 import logging
 import os
 from pathlib import Path
 
 from ..runtime.api import TurnGate, create_app
-from ..settings import DEFAULT_LLM_BASE_URL
+from ..settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
 
 
 logger = logging.getLogger(__name__)
@@ -25,47 +24,13 @@ def _positive_int(value: str) -> int:
     return parsed
 
 
-def _non_negative_int(value: str) -> int:
-    try:
-        parsed = int(value)
-    except ValueError:
-        raise argparse.ArgumentTypeError("must be a non-negative integer") from None
-    if parsed < 0:
-        raise argparse.ArgumentTypeError("must be a non-negative integer")
-    return parsed
-
-
-def _visible_cpu_count() -> int:
-    affinity = getattr(os, "sched_getaffinity", None)
-    return len(affinity(0)) if affinity is not None else (os.cpu_count() or 1)
-
-
-def _log_cpu_budget(*, onnx_threads: int, lookup_workers: int) -> None:
-    visible = _visible_cpu_count()
-    budget = onnx_threads * lookup_workers
-    logger.info(
-        "CPU lookup budget: %d workers x %d ONNX threads = %d native threads; "
-        "%d visible CPUs",
-        lookup_workers,
-        onnx_threads,
-        budget,
-        visible,
-    )
-    if budget > visible:
-        logger.warning(
-            "CPU lookup budget allows %d native threads for %d visible CPUs",
-            budget,
-            visible,
-        )
-
-
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--model-dir",
+        "--ontology",
         type=Path,
-        default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
-        required="ONTCHATBOT_MODEL_DIR" not in os.environ,
+        default=os.environ.get("ONTCHATBOT_ONTOLOGY_PATH", str(ONTOLOGY_PATH)),
+        help="tệp Turtle của ontology; hoặc đặt ONTCHATBOT_ONTOLOGY_PATH",
     )
     parser.add_argument(
         "--log-level",
@@ -95,24 +60,16 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=os.environ.get("ONTCHATBOT_TURN_QUEUE", "64"),
     )
     parser.add_argument(
-        "--onnx-threads",
+        "--search-workers",
         type=_positive_int,
-        default=os.environ.get("ONTCHATBOT_ONNX_THREADS", "1"),
+        default=os.environ.get("ONTCHATBOT_SEARCH_WORKERS", "4"),
+        help="số luồng chạy tìm kiếm cùng lúc; hoặc đặt ONTCHATBOT_SEARCH_WORKERS",
     )
     parser.add_argument(
-        "--lookup-workers",
+        "--top-k",
         type=_positive_int,
-        default=os.environ.get("ONTCHATBOT_LOOKUP_WORKERS", "8"),
-    )
-    parser.add_argument(
-        "--classification-cache-entries",
-        type=_non_negative_int,
-        default=os.environ.get("ONTCHATBOT_CLASSIFICATION_CACHE_ENTRIES", "4096"),
-    )
-    parser.add_argument(
-        "--sparql-cache-mib",
-        type=_non_negative_int,
-        default=os.environ.get("ONTCHATBOT_SPARQL_CACHE_MIB", "64"),
+        default=os.environ.get("ONTCHATBOT_SEARCH_TOP_K", "3"),
+        help="số mục trả về cho mỗi lần tra; hoặc đặt ONTCHATBOT_SEARCH_TOP_K",
     )
     return parser.parse_args(argv)
 
@@ -133,7 +90,7 @@ def _configure_logging(level: str) -> None:
 
 
 def _validate_runtime_config(args: argparse.Namespace) -> None:
-    """Kiểm tra cấu hình nhẹ trước khi mở cổng, chưa nạp model hay ontology."""
+    """Kiểm tra cấu hình nhẹ trước khi mở cổng, chưa nạp ontology."""
 
     if not args.llm:
         raise SystemExit(
@@ -144,22 +101,35 @@ def _validate_runtime_config(args: argparse.Namespace) -> None:
         raise SystemExit("chưa đặt ONTCHATBOT_LLM_API_KEY")
 
 
+def _build_lookup(args: argparse.Namespace):
+    """Nạp ontology và dựng chỉ mục tìm kiếm trước khi máy chủ báo sẵn sàng."""
+
+    from ..runtime.lookup import OntologyLookup
+    from ..search import SearchEngine, TurtleFileSource
+
+    engine = SearchEngine.open(TurtleFileSource(args.ontology), top_k=args.top_k)
+    return OntologyLookup(engine, workers=args.search_workers)
+
+
+def _build_instructions(lookup) -> str:
+    """Lời nhắc hệ thống nêu các chủ đề đọc từ chính ontology đang phục vụ."""
+
+    from ..runtime.agent import build_instructions, read_vocabulary
+
+    return build_instructions(read_vocabulary(lookup.engine.ontology))
+
+
 def _build_agent(args: argparse.Namespace):
     """Build the complete runtime before the server reports healthy."""
 
     import httpx
 
-    from ..runtime.agent import (
-        MODEL_REQUEST_TIMEOUT_SECONDS,
-        AgentLoop,
-        build_instructions,
-        look_up_async,
-    )
+    from ..runtime.agent import MODEL_REQUEST_TIMEOUT_SECONDS, AgentLoop
     from ..runtime.api import MAX_MODEL_STEPS
     from ..runtime.llm import LightningClient
 
     _validate_runtime_config(args)
-    pool = _build_lookup_pool(args)
+    lookup = _build_lookup(args)
     http = httpx.AsyncClient(
         base_url=args.base_url.rstrip("/") + "/",
         headers={
@@ -169,61 +139,16 @@ def _build_agent(args: argparse.Namespace):
         timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
     )
 
-    async def lookup(keywords: list[str]) -> str:
-        return await look_up_async(pool, keywords)
-
     async def close() -> None:
         await http.aclose()
-        await pool.aclose()
+        await lookup.aclose()
 
     return AgentLoop(
         LightningClient(http, model=args.llm),
         lookup,
-        instructions=build_instructions(),
+        instructions=_build_instructions(lookup),
         max_steps=MAX_MODEL_STEPS,
         close=close,
-    )
-
-
-def _build_lookup_pool(args: argparse.Namespace):
-    """Load both heavy asset groups concurrently before the server starts."""
-
-    from ..runtime.lookup_pool import AsyncLookupPool
-    from ..runtime.onnx_classifier import OnnxClassifierGenerator
-    from ..runtime.pipeline import OntologyChatbot
-    from ..runtime.sparql import load_ontology
-
-    with ThreadPoolExecutor(
-        max_workers=2, thread_name_prefix="runtime-init"
-    ) as workers:
-        loaders = (
-            workers.submit(load_ontology),
-            workers.submit(
-                OnnxClassifierGenerator.load_assets,
-                args.model_dir,
-                intra_op_threads=args.onnx_threads,
-            ),
-        )
-        loaded = []
-        for loader in loaders:
-            try:
-                loaded.append(loader.result())
-            except BaseException as exc:
-                loaded.append(exc)
-
-    failure = next(
-        (result for result in loaded if isinstance(result, BaseException)), None
-    )
-    if failure is not None:
-        loaded.clear()
-        raise failure
-    graph, assets = loaded
-    generator = OnnxClassifierGenerator.from_assets(assets, graph=graph)
-    return AsyncLookupPool(
-        OntologyChatbot(generator, graph=graph),
-        workers=args.lookup_workers,
-        classification_cache_entries=args.classification_cache_entries,
-        sparql_cache_bytes=args.sparql_cache_mib * 1024 * 1024,
     )
 
 
@@ -238,9 +163,6 @@ def main() -> None:
     args = _parse_args()
     _validate_runtime_config(args)
     _configure_logging(args.log_level)
-    _log_cpu_budget(
-        onnx_threads=args.onnx_threads, lookup_workers=args.lookup_workers
-    )
 
     # ``log_config=None`` để máy chủ web không dựng cấu hình nhật ký riêng của
     # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc

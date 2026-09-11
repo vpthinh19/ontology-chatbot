@@ -5,123 +5,52 @@ import logging
 import re
 import subprocess
 import sys
-import threading
 import time
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.cli.serve import (
-    _build_agent,
-    _configure_logging,
-    _log_cpu_budget,
-    _parse_args,
-)
+from ontchatbot.cli.serve import _build_agent, _configure_logging, _parse_args
+from ontchatbot.settings import ONTOLOGY_PATH
 
 
 def _flags(*extra: str) -> list[str]:
-    return ["--model-dir", "generator", "--llm", "mo-hinh-lon", *extra]
+    return ["--llm", "mo-hinh-lon", *extra]
 
 
-def test_importing_the_server_does_not_import_native_inference_libraries() -> None:
+def test_importing_the_server_does_not_import_the_search_libraries() -> None:
+    """Máy chủ nhập nhanh; ontology và chỉ mục chỉ nạp khi dựng trợ lý."""
+
     script = (
         "import sys; import ontchatbot.cli.serve; "
-        "print(int('numpy' in sys.modules), int('rdflib' in sys.modules))"
+        "print(int('numpy' in sys.modules), int('rdflib' in sys.modules), int('bm25s' in sys.modules))"
     )
 
-    result = subprocess.run(
-        [sys.executable, "-c", script],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+    result = subprocess.run([sys.executable, "-c", script], check=True, capture_output=True, text=True)
 
-    assert result.stdout.strip() == "0 0"
+    assert result.stdout.strip() == "0 0 0"
 
 
-def test_eager_lookup_loads_model_assets_and_ontology_in_parallel(
-    monkeypatch,
-) -> None:
+def test_lookup_is_built_from_the_configured_ontology(monkeypatch, tmp_path) -> None:
     import ontchatbot.cli.serve as serve
 
-    args = _parse_args(
-        _flags(
-            "--onnx-threads",
-            "2",
-            "--lookup-workers",
-            "3",
-            "--classification-cache-entries",
-            "4",
-            "--sparql-cache-mib",
-            "5",
-        )
-    )
-    started = threading.Barrier(2, timeout=1)
-    graph, assets, generator, pool = object(), object(), object(), object()
+    ontology = tmp_path / "ontology.ttl"
+    args = _parse_args(_flags("--ontology", str(ontology), "--search-workers", "3", "--top-k", "5"))
+    opened = {}
 
-    def load_ontology():
-        started.wait()
-        return graph
+    def open_engine(source, *, top_k):
+        opened.update(path=source.path, top_k=top_k)
+        return "engine"
 
-    def load_assets(path, **kwargs):
-        assert str(path) == "generator"
-        assert kwargs == {"intra_op_threads": 2}
-        started.wait()
-        return assets
-
-    monkeypatch.setattr("ontchatbot.runtime.sparql.load_ontology", load_ontology)
+    monkeypatch.setattr("ontchatbot.search.SearchEngine.open", open_engine)
     monkeypatch.setattr(
-        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.load_assets",
-        load_assets,
-    )
-    monkeypatch.setattr(
-        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.from_assets",
-        lambda candidate, *, graph: generator,
-    )
-    monkeypatch.setattr(
-        "ontchatbot.runtime.lookup_pool.AsyncLookupPool",
-        lambda chatbot, **kwargs: (
-            pool
-            if chatbot.generator is generator
-            and chatbot.graph is graph
-            and kwargs
-            == {
-                "workers": 3,
-                "classification_cache_entries": 4,
-                "sparql_cache_bytes": 5 * 1024 * 1024,
-            }
-            else pytest.fail("lookup pool received the wrong runtime configuration")
-        ),
+        "ontchatbot.runtime.lookup.OntologyLookup",
+        lambda engine, *, workers: ("lookup", engine, workers),
     )
 
-    assert serve._build_lookup_pool(args) is pool
-
-
-def test_eager_lookup_waits_for_both_loaders_when_one_fails(monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
-
-    args = _parse_args(_flags())
-    started = threading.Barrier(2, timeout=1)
-    onnx_finished = threading.Event()
-
-    def fail_ontology():
-        started.wait()
-        raise RuntimeError("ontology failed")
-
-    def load_onnx(_path, **_kwargs):
-        started.wait()
-        onnx_finished.set()
-        return object()
-
-    monkeypatch.setattr("ontchatbot.runtime.sparql.load_ontology", fail_ontology)
-    monkeypatch.setattr(
-        "ontchatbot.runtime.onnx_classifier.OnnxClassifierGenerator.load_assets",
-        load_onnx,
-    )
-
-    with pytest.raises(RuntimeError, match="ontology failed"):
-        serve._build_lookup_pool(args)
-    assert onnx_finished.is_set()
+    assert serve._build_lookup(args) == ("lookup", "engine", 3)
+    assert opened == {"path": ontology, "top_k": 5}
 
 
 def test_building_the_agent_eagerly_loads_lookup_before_health(monkeypatch) -> None:
@@ -131,134 +60,71 @@ def test_building_the_agent_eagerly_loads_lookup_before_health(monkeypatch) -> N
 
     built = []
 
-    class Pool:
+    class Lookup:
         async def __call__(self, keywords):
-            return '{"du_lieu":[]}'
+            return '{"ket_qua":[]}'
 
         async def aclose(self):
-            pass
-
-    def build_pool(_args):
-        built.append("lookup")
-        return Pool()
+            built.append("closed")
 
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
-    monkeypatch.setattr(serve, "_build_lookup_pool", build_pool)
+    monkeypatch.setattr(serve, "_build_lookup", lambda _args: built.append("lookup") or Lookup())
+    monkeypatch.setattr(serve, "_build_instructions", lambda _lookup: "loi-nhac")
 
     agent = _build_agent(_parse_args(_flags()))
     assert built == ["lookup"]
     asyncio.run(agent.aclose())
+    assert built == ["lookup", "closed"]
 
 
-def test_throughput_defaults_are_bounded(monkeypatch) -> None:
-    monkeypatch.delenv("ONTCHATBOT_ONNX_THREADS", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_LOOKUP_WORKERS", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_TURN_SLOTS", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_TURN_QUEUE", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_CLASSIFICATION_CACHE_ENTRIES", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_SPARQL_CACHE_MIB", raising=False)
+def test_defaults_are_bounded_and_point_at_the_packaged_ontology(monkeypatch) -> None:
+    for name in ("ONTCHATBOT_SEARCH_WORKERS", "ONTCHATBOT_SEARCH_TOP_K", "ONTCHATBOT_TURN_SLOTS",
+                 "ONTCHATBOT_TURN_QUEUE", "ONTCHATBOT_ONTOLOGY_PATH"):
+        monkeypatch.delenv(name, raising=False)
 
     args = _parse_args(_flags())
 
-    assert (args.onnx_threads, args.lookup_workers) == (1, 8)
+    assert (args.search_workers, args.top_k) == (4, 3)
     assert (args.turn_slots, args.turn_queue) == (16, 64)
-    assert args.classification_cache_entries == 4096
-    assert args.sparql_cache_mib == 64
+    assert Path(args.ontology) == ONTOLOGY_PATH
 
 
 def test_cloud_run_port_comes_from_the_environment(monkeypatch) -> None:
     monkeypatch.setenv("PORT", "8080")
 
-    args = _parse_args(_flags())
-
-    assert args.port == 8080
+    assert _parse_args(_flags()).port == 8080
 
 
-def test_cpu_limits_can_come_from_the_environment(monkeypatch) -> None:
-    monkeypatch.setenv("ONTCHATBOT_ONNX_THREADS", "3")
-    monkeypatch.setenv("ONTCHATBOT_LOOKUP_WORKERS", "2")
+def test_limits_and_ontology_path_can_come_from_the_environment(monkeypatch) -> None:
+    monkeypatch.setenv("ONTCHATBOT_SEARCH_WORKERS", "2")
+    monkeypatch.setenv("ONTCHATBOT_SEARCH_TOP_K", "5")
     monkeypatch.setenv("ONTCHATBOT_TURN_SLOTS", "4")
     monkeypatch.setenv("ONTCHATBOT_TURN_QUEUE", "6")
-    monkeypatch.setenv("ONTCHATBOT_CLASSIFICATION_CACHE_ENTRIES", "8")
-    monkeypatch.setenv("ONTCHATBOT_SPARQL_CACHE_MIB", "10")
+    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_PATH", "/data/ontology.ttl")
 
     args = _parse_args(_flags())
 
-    assert (args.onnx_threads, args.lookup_workers) == (3, 2)
+    assert (args.search_workers, args.top_k) == (2, 5)
     assert (args.turn_slots, args.turn_queue) == (4, 6)
-    assert (args.classification_cache_entries, args.sparql_cache_mib) == (8, 10)
+    assert Path(args.ontology) == Path("/data/ontology.ttl")
 
 
 @pytest.mark.parametrize(
     ("flag", "environment"),
     [
-        ("--onnx-threads", "ONTCHATBOT_ONNX_THREADS"),
-        ("--lookup-workers", "ONTCHATBOT_LOOKUP_WORKERS"),
+        ("--search-workers", "ONTCHATBOT_SEARCH_WORKERS"),
+        ("--top-k", "ONTCHATBOT_SEARCH_TOP_K"),
         ("--turn-slots", "ONTCHATBOT_TURN_SLOTS"),
         ("--turn-queue", "ONTCHATBOT_TURN_QUEUE"),
     ],
 )
 @pytest.mark.parametrize("value", ["0", "-1", "abc"])
-def test_cpu_limits_reject_invalid_values(monkeypatch, flag, environment, value) -> None:
+def test_limits_reject_invalid_values(monkeypatch, flag, environment, value) -> None:
     with pytest.raises(SystemExit):
         _parse_args(_flags(flag, value))
     monkeypatch.setenv(environment, value)
     with pytest.raises(SystemExit):
         _parse_args(_flags())
-
-
-@pytest.mark.parametrize(
-    ("flag", "environment"),
-    [
-        ("--classification-cache-entries", "ONTCHATBOT_CLASSIFICATION_CACHE_ENTRIES"),
-        ("--sparql-cache-mib", "ONTCHATBOT_SPARQL_CACHE_MIB"),
-    ],
-)
-@pytest.mark.parametrize("value", ["-1", "abc"])
-def test_cache_budgets_reject_negative_or_non_integer_values(
-    monkeypatch, flag, environment, value
-) -> None:
-    with pytest.raises(SystemExit):
-        _parse_args(_flags(flag, value))
-    monkeypatch.setenv(environment, value)
-    with pytest.raises(SystemExit):
-        _parse_args(_flags())
-
-
-def test_zero_disables_completed_caches() -> None:
-    args = _parse_args(
-        _flags("--classification-cache-entries", "0", "--sparql-cache-mib", "0")
-    )
-
-    assert (args.classification_cache_entries, args.sparql_cache_mib) == (0, 0)
-
-
-def test_oversubscribed_cpu_budget_is_logged(monkeypatch, caplog) -> None:
-    monkeypatch.setattr("ontchatbot.cli.serve._visible_cpu_count", lambda: 4)
-
-    with caplog.at_level(logging.WARNING, logger="ontchatbot.cli.serve"):
-        _log_cpu_budget(onnx_threads=2, lookup_workers=4)
-
-    assert "8 native threads" in caplog.text
-    assert "4 visible CPUs" in caplog.text
-
-
-def test_default_cpu_budget_does_not_warn_with_exactly_eight_visible_cpus(
-    monkeypatch, caplog
-) -> None:
-    """A budget equal to CPU affinity is not oversubscription."""
-    monkeypatch.delenv("ONTCHATBOT_ONNX_THREADS", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_LOOKUP_WORKERS", raising=False)
-    monkeypatch.setattr("ontchatbot.cli.serve._visible_cpu_count", lambda: 8)
-    args = _parse_args(_flags())
-
-    with caplog.at_level(logging.WARNING, logger="ontchatbot.cli.serve"):
-        _log_cpu_budget(
-            onnx_threads=args.onnx_threads, lookup_workers=args.lookup_workers
-        )
-
-    assert (args.onnx_threads, args.lookup_workers) == (1, 8)
-    assert not caplog.records
 
 
 def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
@@ -272,31 +138,39 @@ def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
     monkeypatch.delenv("ONTCHATBOT_LLM_MODEL", raising=False)
 
     with pytest.raises(SystemExit):
-        _build_agent(_parse_args(["--model-dir", "generator"]))
+        _build_agent(_parse_args([]))
 
     monkeypatch.setenv("ONTCHATBOT_LLM_MODEL", "mo-hinh-lon")
     with pytest.raises(SystemExit):
-        _build_agent(_parse_args(["--model-dir", "generator"]))
+        _build_agent(_parse_args([]))
 
 
-def test_eager_server_rejects_missing_llm_credentials_before_loading_assets(
-    monkeypatch,
-) -> None:
+def test_server_rejects_missing_llm_credentials_before_loading_the_ontology(monkeypatch) -> None:
     import ontchatbot.cli.serve as serve
 
     monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
     monkeypatch.delenv("ONTCHATBOT_LLM_API_KEY", raising=False)
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setattr(serve, "_build_lookup", lambda _args: pytest.fail("ontology must not load"))
     monkeypatch.setitem(
-        __import__("sys").modules,
-        "uvicorn",
-        SimpleNamespace(
-            run=lambda *_args, **_kwargs: pytest.fail("server must not start")
-        ),
+        sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: pytest.fail("server must not start"))
     )
 
     with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_API_KEY"):
         serve.main()
+
+
+def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
+    """Các cờ của bộ chạy cũ phải biến mất, không im lặng bị bỏ qua.
+
+    Một cờ bị gỡ mà vẫn nhận vào sẽ khiến lệnh triển khai cũ chạy được nhưng
+    không còn tác dụng, và không ai biết.
+    """
+
+    for flag in ("--model-dir", "--onnx-threads", "--lookup-workers", "--classification-cache-entries",
+                 "--sparql-cache-mib", "--compute-type", "--device"):
+        with pytest.raises(SystemExit):
+            _parse_args(_flags(flag, "1"))
 
 
 def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:
@@ -336,18 +210,7 @@ def test_the_log_timestamp_carries_its_time_zone(monkeypatch) -> None:
     assert re.fullmatch(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d[+-]\d{4}", stamped)
 
 
-def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
-    """Các cờ của bộ chạy cũ phải biến mất, không im lặng bị bỏ qua.
-
-    Một cờ bị gỡ mà vẫn nhận vào sẽ khiến lệnh triển khai cũ chạy được nhưng
-    không còn tác dụng, và không ai biết.
-    """
-    for flag in ("--compute-type", "--inter-threads", "--compiled-dir", "--device"):
-        with pytest.raises(SystemExit):
-            _parse_args(_flags(flag, "gi-do"))
-
-
-def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> None:
+def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
     """Máy chủ web không được dựng khuôn nhật ký riêng.
 
     Khuôn mặc định của nó không có mốc thời gian. Để nguyên thì nhật ký trộn hai
@@ -357,27 +220,19 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch, caplog) -> Non
     import ontchatbot.cli.serve as serve
 
     seen = {}
-
-    def run(app, **kwargs):
-        seen["app"] = app
-        seen.update(kwargs)
-
-    fake = SimpleNamespace(run=run)
-    monkeypatch.setitem(__import__("sys").modules, "uvicorn", fake)
+    configured = {}
+    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda app, **kwargs: seen.update(kwargs)))
     monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
     monkeypatch.setattr(serve, "_build_agent", lambda args: object())
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    configured = {}
     monkeypatch.setattr(
         serve,
         "create_app",
-        lambda agent, *, gate, backend_token=None: configured.update(
-            agent=agent, gate=gate, backend_token=backend_token
-        ) or object(),
+        lambda agent, *, gate, backend_token=None: configured.update(gate=gate, backend_token=backend_token) or object(),
     )
-    with caplog.at_level(logging.INFO, logger="ontchatbot.cli.serve"):
-        serve.main()
+
+    serve.main()
 
     assert seen["log_config"] is None
     assert configured["backend_token"] == "server-secret"
@@ -393,19 +248,9 @@ def test_the_web_server_builds_the_complete_runtime_before_listening(monkeypatch
     monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
     monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    monkeypatch.setattr(
-        serve, "_build_agent", lambda args: built.append(args) or "tro-ly"
-    )
-    monkeypatch.setattr(
-        serve,
-        "create_app",
-        lambda runtime, **_kwargs: configured.update(runtime=runtime) or object(),
-    )
-    monkeypatch.setitem(
-        __import__("sys").modules,
-        "uvicorn",
-        SimpleNamespace(run=lambda *_args, **_kwargs: None),
-    )
+    monkeypatch.setattr(serve, "_build_agent", lambda args: built.append(args) or "tro-ly")
+    monkeypatch.setattr(serve, "create_app", lambda runtime, **_kwargs: configured.update(runtime=runtime) or object())
+    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
 
     serve.main()
 
@@ -417,11 +262,7 @@ def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) ->
     import ontchatbot.cli.serve as serve
 
     monkeypatch.delenv("ONTCHATBOT_BACKEND_TOKEN", raising=False)
-    monkeypatch.setitem(
-        __import__("sys").modules,
-        "uvicorn",
-        SimpleNamespace(run=lambda *_args, **_kwargs: None),
-    )
+    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
     monkeypatch.setattr(serve, "_build_agent", lambda _args: object())
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
     with pytest.raises(SystemExit, match="ONTCHATBOT_BACKEND_TOKEN"):

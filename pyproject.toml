@@ -5,17 +5,18 @@
 [project]
 name = "ontchatbot"
 version = "3.2.1"
-description = "Vietnamese academic-regulation chatbot: a classifier picks one of 344 predefined SPARQL queries over an ontology"
+description = "Vietnamese academic-regulation chatbot: an LLM answers from an ontology found through a BM25 index of labels and properties"
 readme = "README.md"
 requires-python = "==3.12.*"
 
-# Only what both the deployed service and the offline tooling need: the
-# Oxigraph store the serving path queries, and array handling for the
-# classifier. rdflib and its SPARQL parser are offline-only and live in the
-# research extra, so they never reach the container image.
+# Only what both the deployed service and the offline tooling need: rdflib reads
+# the ontology and runs SPARQL, bm25s ranks the index rows. pyoxigraph stays until
+# the modules of the replaced classifier runtime are removed.
 dependencies = [
+    "bm25s>=0.3.11",
     "numpy>=2.5.1",
     "pyoxigraph>=0.5.0",
+    "rdflib>=7.6.0",
 ]
 
 # ---------------------------------------------------------------------------
@@ -29,9 +30,7 @@ dependencies = [
 # start time.
 inference = [
     "httpx>=0.28.0",
-    "onnxruntime>=1.29.0",
     "starlette>=0.47.0",
-    "tokenizers>=0.22.2",
     "uvicorn>=0.41.0",
 ]
 
@@ -72,11 +71,11 @@ research = [
 [project.scripts]
 bake_cards = "ontchatbot.cli.bake_cards:main"
 benchmark_classifier = "ontchatbot.cli.benchmark_classifier:main"
-benchmark_runtime = "ontchatbot.cli.benchmark_runtime:main"
 chat_agent = "ontchatbot.cli.chat:main"
 check_conditions = "ontchatbot.cli.check_conditions:main"
 export_classifier = "ontchatbot.cli.export_classifier:main"
 generate_reports = "ontchatbot.cli.report:main"
+ontology_search = "ontchatbot.cli.search:main"
 publish_classifier = "ontchatbot.cli.publish_classifier:main"
 report_page = "ontchatbot.cli.report_page:main"
 serve_sparql = "ontchatbot.cli.serve:main"

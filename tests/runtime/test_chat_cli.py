@@ -12,20 +12,22 @@ from ontchatbot.runtime.agent import AgentEvent
 
 
 def _args(*, question=None) -> Namespace:
-    return Namespace(
-        llm="mô-hình", model_dir=Path("generator"), base_url=None, hoi=question
-    )
+    return Namespace(llm="mô-hình", ontology=Path("ontology.ttl"), base_url=None, hoi=question)
 
 
-def test_chat_cli_does_not_accept_a_provider_selection() -> None:
-    with pytest.raises(SystemExit):
-        _parse_args(["--model-dir", "generator", "--device", "cuda"])
+def test_chat_cli_does_not_accept_the_flags_of_the_replaced_runtime() -> None:
+    for flags in (["--model-dir", "generator"], ["--device", "cuda"]):
+        with pytest.raises(SystemExit):
+            _parse_args(flags)
 
 
 def test_runtime_args_honors_the_llm_base_url_environment(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_LLM_BASE_URL", "https://llm.example/api/v1/")
 
-    assert _runtime_args(_args()).base_url == "https://llm.example/api/v1/"
+    runtime = _runtime_args(_args())
+
+    assert runtime.base_url == "https://llm.example/api/v1/"
+    assert runtime.ontology == Path("ontology.ttl")
 
 
 def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
@@ -47,23 +49,17 @@ def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
     assert len(set(loop_ids)) == 1
 
 
-def test_interactive_chat_exits_cleanly_on_keyboard_interrupt(
-    monkeypatch, capsys
-) -> None:
+def test_interactive_chat_exits_cleanly_on_keyboard_interrupt(monkeypatch, capsys) -> None:
     monkeypatch.setattr(chat, "_parse_args", lambda: _args())
     monkeypatch.setattr(chat, "_build_agent", lambda _args: object())
-    monkeypatch.setattr(
-        "builtins.input", lambda _: (_ for _ in ()).throw(KeyboardInterrupt())
-    )
+    monkeypatch.setattr("builtins.input", lambda _: (_ for _ in ()).throw(KeyboardInterrupt()))
 
     chat.main()
 
     assert "Gõ câu hỏi rồi Enter" in capsys.readouterr().out
 
 
-def test_cli_shows_the_lookup_keywords_from_the_shared_agent_loop(
-    monkeypatch, capsys
-) -> None:
+def test_cli_shows_the_lookup_keywords_from_the_shared_agent_loop(monkeypatch, capsys) -> None:
     class Agent:
         async def stream(self, _messages):
             yield AgentEvent("lookup_started", keywords=("học phí",))

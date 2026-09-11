@@ -13,10 +13,13 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import TYPE_CHECKING, Any, Sequence
 
-from ..settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_NS
-from .render import NO_INFORMATION_REPLY, dump_payload
+from ..settings import DEFAULT_LLM_BASE_URL
+from .lookup import MAX_KEYWORD_CHARACTERS, MAX_KEYWORDS_PER_LOOKUP
+
+if TYPE_CHECKING:
+    from ..search import Ontology
 
 #: Điểm cuối mặc định dùng giao thức chat-completions tương thích OpenAI.
 DEFAULT_BASE_URL = DEFAULT_LLM_BASE_URL
@@ -30,58 +33,51 @@ MODEL_REQUEST_TIMEOUT_SECONDS = 30.0
 #: thêm, vì mô hình đâu cần thuộc lòng danh sách - nó chỉ cần biết phạm vi.
 NAMES_PER_KIND = 12
 
-#: Mỗi từ khoá mất khoảng 1,8 giây vì bộ sinh truy vấn cố ý chạy tuần tự. 20
-#: từ khoá tương ứng khoảng 36 giây, để lại phần thời gian của lượt 45 giây cho
-#: điều phối và viết câu trả lời thay vì làm người dùng chờ tới hạn toàn lượt.
-MAX_KEYWORDS_PER_LOOKUP = 20
-#: Công cụ chỉ cần cụm từ ngắn; 120 ký tự chặn một câu hỏi dài hoặc dữ liệu rác
-#: chiếm thời gian tiền xử lý mà vẫn rộng hơn đáng kể một tên thủ tục thông thường.
-MAX_KEYWORD_CHARACTERS = 120
-
 #: Mô tả công cụ mà mô hình đọc trước khi quyết định gọi nó.
 #:
 #: Truyền tường minh chứ không để thư viện đọc từ chú thích: thư viện chỉ lấy
 #: câu tóm tắt và đoạn đầu, nên phần ví dụ - thứ dạy mô hình rút câu hỏi thành
 #: từ khoá - bị bỏ mất mà không báo gì.
-#:
-#: Ví dụ đứng ở đây vì bộ sinh truy vấn được dạy trên câu hỏi ngắn: câu hỏi
-#: người dùng gõ thường dài và lịch sự, còn tên mục trong đồ thị thì ngắn.
-TOOL_DESCRIPTION = """Tra dữ kiện học vụ từ đồ thị tri thức của trường: quy chế
-đào tạo, thủ tục, biểu mẫu, học phí, chứng chỉ và ngành đào tạo.
+TOOL_DESCRIPTION = f"""Tra cứu ontology học vụ của trường: quy chế đào tạo, thủ tục,
+biểu mẫu, học phí, học bổng, chứng chỉ, ngành đào tạo và đơn vị.
 
-Truyền vào TỪ KHOÁ NGẮN, không phải câu hỏi đầy đủ. Công cụ khớp từ khoá với tên
-các mục trong đồ thị, nên câu càng dài càng dễ trượt.
+Truyền vào TỪ KHOÁ NGẮN, không phải câu hỏi đầy đủ. Công cụ tìm các từ này trong tên
+của các mục, tên thuộc tính và tên quan hệ của chúng, nên câu càng dài càng dễ lẫn.
 
-Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "học phí một tín chỉ"
+Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "điện thoại phòng đào tạo"
       "đơn xin hoãn thi" · "điều kiện tốt nghiệp" · "ngành công nghệ thông tin"
 
 Không nên:  "Hãy hướng dẫn tôi cách đăng ký học phần nhé"
             "cho mình hỏi muốn nghỉ học tạm thời thì cần làm những gì ạ"
 
-Tham số là một DANH SÁCH từ khoá, tra hết trong một lần gọi. Người hỏi và đồ thị
-hay gọi cùng một thứ bằng hai tên khác nhau, nên gửi 2-3 cách gọi của cùng chủ đề
-để tăng khả năng trúng:
+Tham số là một DANH SÁCH từ khoá, tra hết trong một lần gọi. Người hỏi và dữ liệu
+hay gọi cùng một thứ bằng hai tên khác nhau, nên gửi 2-3 cách gọi của cùng chủ đề:
 
     ["nghỉ học tạm thời", "bảo lưu kết quả học tập"]
-    ["điều kiện tốt nghiệp", "xét tốt nghiệp"]
+    ["số tín chỉ tối đa", "khối lượng đăng ký mỗi học kỳ"]
 
 Câu hỏi nhiều chủ đề thì đưa hết từ khoá của mọi chủ đề vào cùng danh sách đó -
 vẫn một lần gọi.
 
-Mỗi lần gọi chỉ dùng tối đa 20 từ khoá, mỗi từ khoá tối đa 120 ký tự. Nếu công cụ
-cắt bớt, JSON có `tu_khoa_da_cat` với các giới hạn và số cụm đã bị bỏ qua hoặc
-rút ngắn.
+Mỗi lần gọi chỉ dùng tối đa {MAX_KEYWORDS_PER_LOOKUP} từ khoá, mỗi từ khoá tối đa \
+{MAX_KEYWORD_CHARACTERS} ký tự. Nếu công cụ cắt bớt, JSON có `tu_khoa_da_cat`.
 
 Kết quả là JSON. Cách đọc:
-- `trang_thai=co_du_lieu`: `nguon` là TRỌN VẸN những gì tìm được. Mỗi mục gồm
-  trích dẫn, đường dẫn, và `du_lieu` mà nguồn đó khẳng định. Phải đọc HẾT.
-- Nếu chi tiết người dùng hỏi không xuất hiện trong bất kỳ bản ghi nào, cơ sở dữ
-  liệu không có chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề.
+- `trang_thai=co_ket_qua`: `ket_qua` là các mục tìm được. Mỗi mục có `muc` (tên),
+  `loai`, `dong_khop` (các dòng đã khớp với từ khoá), `nguon` và `duoc_nhac_boi`.
+- Kiểm `dong_khop` TRƯỚC. Mục nào không phải thứ người dùng hỏi thì coi như không
+  tìm thấy; đừng trả lời bằng dữ liệu của mục đó.
+- Mỗi phần tử của `nguon` gồm `trich_dan`, `duong_dan` và `du_lieu` mà nguồn đó
+  khẳng định. Phải đọc HẾT.
+- `duoc_nhac_boi` liệt kê các mục khác trỏ tới mục này cùng quan hệ, ví dụ các thủ
+  tục "nộp tại" một phòng.
+- Nếu chi tiết người dùng hỏi không xuất hiện trong `du_lieu` nào, dữ liệu hiện có
+  không chứa chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề.
 - `tu_khoa_khong_thay` liệt kê những từ khoá không khớp gì. Các từ khoá còn lại
-  vẫn có dữ liệu, nên đừng tra lại cả loạt.
+  vẫn có kết quả, nên đừng tra lại cả loạt.
 - `trang_thai=khong_co_thong_tin`: không từ khoá nào khớp. Chỉ lúc này mới thử
   thêm tối đa một lần bằng những cách gọi khác hẳn. Vẫn không có thì dừng và nói
-không tìm thấy."""
+  không tìm thấy."""
 
 TOOL_NAME = "lookup_academic_information"
 TOOL_SCHEMA = {
@@ -225,60 +221,16 @@ class OntologyVocabulary:
     programs: tuple[str, ...]
 
 
-# Snapshot generated from the packaged ontology. Only the names actually used by
-# ``build_instructions`` are retained so health startup never parses RDF data.
-DEFAULT_VOCABULARY = OntologyVocabulary(
-    procedures=(
-        "Thủ tục chuyển ngành",
-        "Thủ tục chuyển trường",
-        "Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ",
-        "Thủ tục học liên thông",
-        "Thủ tục nghỉ học tạm thời",
-    ),
-    units=(
-        "Bộ môn",
-        "Khoa hoặc viện đào tạo",
-        "Phòng Công tác Chính trị và Sinh viên",
-    ),
-    forms=(
-        "Mục tải: - Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn",
-        "Mục tải: Mẫu số 13 - Đơn đăng ký học cùng lúc hai chương trình đào tạo",
-        "Mục tải: Phiếu báo điểm bổ sung",
-    ),
-    programs=(
-        "Công nghệ chế biến thủy sản",
-        "Công nghệ chế tạo máy",
-        "Công nghệ sinh học",
-        "Công nghệ thông tin",
-    ),
-)
-
-
-def read_vocabulary(graph=None, limit: int = NAMES_PER_KIND) -> OntologyVocabulary:
-    """Đọc tên các quy trình, đơn vị, biểu mẫu và ngành từ chính đồ thị.
+def read_vocabulary(ontology: Ontology, limit: int = NAMES_PER_KIND) -> OntologyVocabulary:
+    """Đọc tên các thủ tục, đơn vị, biểu mẫu và ngành từ chính ontology đang phục vụ.
 
     Khuôn nhắc phải sinh ra từ dữ liệu chứ không chép tay. Danh sách chép tay
     mục dần: ontology thêm một thủ tục thì khuôn nhắc vẫn nói cái cũ, và mô hình
     được dạy rằng thủ tục mới không tồn tại.
     """
 
-    from .sparql import execute_select, load_ontology
-
-    if graph is None:
-        graph = load_ontology()
-
     def labels(class_name: str) -> tuple[str, ...]:
-        query = (
-            f"SELECT DISTINCT ?label WHERE {{ ?node a <{ONTOLOGY_NS}{class_name}> ; "
-            "<http://www.w3.org/2000/01/rdf-schema#label> ?label }"
-        )
-        # Đi qua ``execute_select`` để phần chữ của literal được bóc theo đúng
-        # một quy tắc với mọi chỗ khác; đọc thẳng từ node sẽ kéo theo cả dấu nháy
-        # và thẻ ngôn ngữ. Trần đặt rộng, chỉ để chặn trường hợp một lỗi nào đó
-        # kéo cả đồ thị vào bộ nhớ.
-        rows = execute_select(graph, query, max_rows=100_000)
-        found = sorted(str(row["label"]) for row in rows)
-        return tuple(found[:limit])
+        return tuple(ontology.label(node) for node in ontology.individuals_of_class(class_name)[:limit])
 
     return OntologyVocabulary(
         procedures=labels("AcademicProcedure"),
@@ -319,15 +271,21 @@ def build_instructions(vocabulary: OntologyVocabulary | None = None) -> str:
     hỏi trợ lý giúp được gì, và lúc trợ lý cần gợi ý hướng hỏi tiếp.
     """
 
-    vocabulary = vocabulary or DEFAULT_VOCABULARY
-    topics = "".join(
-        (
-            _line("Thủ tục", vocabulary.procedures, 5),
-            _line("Biểu mẫu", vocabulary.forms, 3),
-            _line("Ngành đào tạo", vocabulary.programs, 4),
-            _line("Đơn vị", vocabulary.units, 3),
+    topics = ""
+    if vocabulary is not None:
+        names = "".join(
+            (
+                _line("Thủ tục", vocabulary.procedures, 5),
+                _line("Biểu mẫu", vocabulary.forms, 3),
+                _line("Ngành đào tạo", vocabulary.programs, 4),
+                _line("Đơn vị", vocabulary.units, 3),
+            )
         )
-    )
+        if names:
+            topics = (
+                "\nKhi người dùng hỏi bạn giúp được gì, hoặc khi cần gợi ý hướng hỏi tiếp, "
+                f"đây là vài chủ đề tra được:\n\n{names}"
+            )
     return f"""Bạn là trợ lý học vụ của Trường Đại học Nha Trang.
 
 Bạn KHÔNG biết quy định nào của trường này. Mọi điều bạn tưởng mình nhớ về quy
@@ -338,12 +296,13 @@ Mọi câu hỏi về học vụ: GỌI `lookup_academic_information` TRƯỚC, 
 quả trả về. Chưa gọi công cụ thì chưa được trả lời. Công cụ không có dữ kiện thì
 nói là không tìm thấy, đừng suy đoán và đừng bịa số.
 
-Khi công cụ trả `co_du_lieu`, đọc hết `du_lieu` rồi coi đó là kết quả cuối của
-chủ đề. Nếu chi tiết được hỏi không xuất hiện, nói dữ liệu hiện có không chứa
-chi tiết ấy; không đổi từ khoá để tra tiếp.
+Khi công cụ trả `co_ket_qua`, kiểm `dong_khop` của từng mục và chỉ dùng mục đúng thứ
+người dùng hỏi. Đọc hết `du_lieu` của mục đó rồi coi là kết quả cuối của chủ đề. Nếu
+chi tiết được hỏi không xuất hiện, nói dữ liệu hiện có không chứa chi tiết ấy;
+không đổi từ khoá để tra tiếp.
 
-Câu hỏi có nhiều chủ đề độc lập: tách và gọi đúng một lần cho từng chủ đề trước
-khi trả lời; không bỏ sót vế nào.
+Câu hỏi có nhiều chủ đề độc lập: đưa từ khoá của mọi chủ đề vào cùng một lần gọi,
+và khi trả lời không bỏ sót vế nào.
 
 Hỏi tuyển sinh kèm năm thì gửi cụm "tuyển sinh" không mang năm; quy chế trong dữ
 liệu là bản hiện hành.
@@ -357,68 +316,4 @@ Câu hỏi không liên quan tới trường - thời tiết, nấu ăn, chuyệ
 lời thẳng là ngoài phạm vi, không gọi công cụ.
 
 Giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo.
-
-Khi người dùng hỏi bạn giúp được gì, hoặc khi cần gợi ý hướng hỏi tiếp, đây là
-vài chủ đề tra được:
-
 {topics}"""
-
-
-def _bounded_keywords(
-    keywords: Sequence[str] | str,
-) -> tuple[list[str], dict[str, int] | None]:
-    """Chuẩn hoá đầu vào công cụ và giữ thời gian một lượt có giới hạn."""
-
-    raw_keywords = [keywords] if isinstance(keywords, str) else list(keywords)
-    shortened = 0
-    normalized: list[str] = []
-    for keyword in raw_keywords:
-        if not isinstance(keyword, str):
-            continue
-        cleaned = keyword.strip()
-        if not cleaned:
-            continue
-        if len(cleaned) > MAX_KEYWORD_CHARACTERS:
-            cleaned = cleaned[:MAX_KEYWORD_CHARACTERS].rstrip()
-            shortened += 1
-        normalized.append(cleaned)
-
-    unique = list(dict.fromkeys(normalized))
-    omitted = max(0, len(unique) - MAX_KEYWORDS_PER_LOOKUP)
-    selected = unique[:MAX_KEYWORDS_PER_LOOKUP]
-    if not (omitted or shortened):
-        return selected, None
-    return selected, {
-        "so_luong_toi_da": MAX_KEYWORDS_PER_LOOKUP,
-        "do_dai_toi_da": MAX_KEYWORD_CHARACTERS,
-        "so_luong_bo_qua": omitted,
-        "so_luong_rut_gon": shortened,
-    }
-
-
-def _with_truncation_notice(reply: str, notice: dict[str, int] | None) -> str:
-    """Chuẩn hoá thành JSON và gắn thông tin cắt bớt vào kết quả."""
-
-    try:
-        payload = json.loads(reply)
-    except (TypeError, json.JSONDecodeError):
-        payload = json.loads(NO_INFORMATION_REPLY)
-    if not isinstance(payload, dict):
-        payload = json.loads(NO_INFORMATION_REPLY)
-    if notice is not None:
-        payload["tu_khoa_da_cat"] = notice
-    return dump_payload(payload)
-
-
-async def look_up_async(lookup, keywords: Sequence[str] | str) -> str:
-    """Apply the established tool boundary before calling the shared coordinator."""
-
-    from .generator import QueryGenerationError
-    from .sparql import SparqlError
-
-    keywords, notice = _bounded_keywords(keywords)
-    try:
-        reply = await lookup(keywords)
-    except (QueryGenerationError, SparqlError):
-        reply = NO_INFORMATION_REPLY
-    return _with_truncation_notice(reply, notice)

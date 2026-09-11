@@ -14,9 +14,6 @@ concurrency:
 
 env:
   IMAGE: vpt19/ontchatbot
-  # Kho phát hành giữ đồ thị ONNX của bộ phân loại; ảnh triển khai tải từ đây lúc
-  # dựng. Đẩy lên bằng lệnh `publish_classifier`, lệnh đó kiểm lại bằng mã băm.
-  HF_MODEL_REPO: vpthinh19/ntu-ontology-xlmr
 
 jobs:
   test:
@@ -101,19 +98,6 @@ jobs:
           username: vpt19
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - id: model
-        name: Resolve the released classifier graph
-        run: |
-          REPO="${{ env.HF_MODEL_REPO }}"
-          REVISION=$(curl -sf "https://huggingface.co/api/models/$REPO" | jq -r .sha)
-          if [ -z "$REVISION" ] || [ "$REVISION" = "null" ]; then
-            echo "::error::Failed to resolve HF Hub revision"
-            exit 1
-          fi
-          echo "repo=$REPO" >> "$GITHUB_OUTPUT"
-          echo "revision=$REVISION" >> "$GITHUB_OUTPUT"
-          echo "::notice::Baking classifier revision $REVISION"
-
       - name: Build image (load for scan)
         uses: docker/build-push-action@v7
         with:
@@ -122,9 +106,6 @@ jobs:
           tags: ${{ env.IMAGE }}:${{ env.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
-            HF_REPO=${{ steps.model.outputs.repo }}
-            HF_REVISION=${{ steps.model.outputs.revision }}
 
       - name: Record image size and layers
         run: |
@@ -142,9 +123,9 @@ jobs:
           CONTAINER=ontchatbot-smoke-${{ github.run_id }}
           # Dịch vụ đòi tên mô hình ngôn ngữ lớn và khoá truy cập ngay lúc khởi
           # động, nhưng /health không gọi ra ngoài, nên giá trị giả là đủ và
-          # phép chạy thử này không tiêu một lượt gọi nào. Nó kiểm ảnh có thể
-          # eager-load model/ontology rồi mới phục vụ health; bước "Verify the
-          # CPU runtime" ngay trước đó còn chạy một inference thật.
+          # phép chạy thử này không tiêu một lượt gọi nào. Nó kiểm ảnh nạp được
+          # ontology và dựng chỉ mục rồi mới phục vụ health; bước "Verify the CPU
+          # runtime" ngay trước đó còn chạy một lượt tìm kiếm thật.
           docker run --detach --name "$CONTAINER" \
             --env ONTCHATBOT_LLM_MODEL=ci-smoke-test \
             --env ONTCHATBOT_LLM_API_KEY=ci-smoke-test \
@@ -196,7 +177,6 @@ jobs:
           generate_release_notes: true
           body: |
             Docker image: `${{ env.IMAGE }}:${{ env.VERSION }}`
-            Baked classifier: [`${{ steps.model.outputs.repo }}@${{ steps.model.outputs.revision }}`](https://huggingface.co/${{ steps.model.outputs.repo }}/commit/${{ steps.model.outputs.revision }})
 
             Pull:
             ```

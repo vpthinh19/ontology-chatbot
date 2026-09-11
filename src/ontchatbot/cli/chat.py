@@ -8,16 +8,17 @@ import os
 from pathlib import Path
 
 from ..runtime.agent import DEFAULT_BASE_URL
+from ..settings import ONTOLOGY_PATH
 from .serve import _build_agent
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--model-dir",
+        "--ontology",
         type=Path,
-        default=os.environ.get("ONTCHATBOT_MODEL_DIR"),
-        help="thư mục bộ phân loại: bộ điều hợp, lớp phân loại và bảng nhãn",
+        default=os.environ.get("ONTCHATBOT_ONTOLOGY_PATH", str(ONTOLOGY_PATH)),
+        help="tệp Turtle của ontology",
     )
     parser.add_argument(
         "--llm",
@@ -31,14 +32,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def _runtime_args(args: argparse.Namespace) -> argparse.Namespace:
     return argparse.Namespace(
-        model_dir=args.model_dir,
+        ontology=args.ontology,
         llm=args.llm,
         base_url=args.base_url
         or os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
-        onnx_threads=1,
-        lookup_workers=4,
-        classification_cache_entries=4096,
-        sparql_cache_mib=64,
+        search_workers=2,
+        top_k=3,
     )
 
 
@@ -49,8 +48,6 @@ def main() -> None:
             "chưa chỉ định mô hình ngôn ngữ lớn: dùng --llm hoặc đặt "
             "ONTCHATBOT_LLM_MODEL"
         )
-    if not args.model_dir:
-        raise SystemExit("cần --model-dir")
 
     agent = _build_agent(_runtime_args(args))
 

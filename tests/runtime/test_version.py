@@ -6,10 +6,13 @@ from pathlib import Path
 
 import ontchatbot
 
-#: Libraries the offline tooling walks the graph with. Creating an rdflib graph
-#: pulls in a SPARQL parser that builds its whole grammar at import time, and
-#: that cost falls on every cold start of the service.
-OFFLINE_GRAPH_LIBRARIES = {"oxrdflib", "pyparsing", "rdflib"}
+#: Thư viện chỉ công cụ ngoại tuyến cũ dùng: huấn luyện, xuất model, chấm và vẽ.
+#: Chúng nặng hàng trăm megabyte và không được lọt vào ảnh phục vụ.
+OFFLINE_ONLY_LIBRARIES = {
+    "matplotlib", "onnx", "onnxruntime", "peft", "scikit-learn", "tokenizers", "torch", "transformers",
+}
+#: Đường phục vụ đọc ontology bằng rdflib và xếp hạng dòng chỉ mục bằng bm25s.
+SEARCH_LIBRARIES = {"bm25s", "rdflib"}
 
 
 def _project() -> dict:
@@ -20,34 +23,23 @@ def _names(requirements: list[str]) -> set[str]:
     return {item.split("[")[0].split(">=")[0] for item in requirements}
 
 
-def test_cpu_release_version_and_inference_dependencies() -> None:
+def test_release_version_and_inference_dependencies() -> None:
     project = _project()
     assert project["version"] == "3.2.1"
-    inference = project["optional-dependencies"]["inference"]
-    names = _names(inference)
-    assert names == {"httpx", "starlette", "uvicorn", "onnxruntime", "tokenizers"}
-    assert "onnxruntime-gpu" not in names
+    names = _names(project["optional-dependencies"]["inference"])
+    assert names == {"httpx", "starlette", "uvicorn"}
     assert not {name for name in names if name.startswith("nvidia-")}
     assert ontchatbot.__version__ == "3.2.1"
 
 
-def test_the_deployed_extra_leaves_the_offline_graph_libraries_behind() -> None:
-    """The container image must carry nothing that only the offline tools use.
-
-    The serving path queries the Oxigraph store directly, so these libraries are
-    dead weight in the image. Keeping them out is also what stops an import from
-    creeping back onto the serving path without anyone noticing.
-    """
+def test_the_deployed_dependencies_carry_the_search_engine_and_nothing_offline() -> None:
+    """Ảnh phục vụ mang đủ engine tìm kiếm và không mang thư viện của công cụ ngoại tuyến."""
 
     project = _project()
-    deployed = _names(project["dependencies"]) | _names(
-        project["optional-dependencies"]["inference"]
-    )
+    deployed = _names(project["dependencies"]) | _names(project["optional-dependencies"]["inference"])
 
-    assert not deployed & OFFLINE_GRAPH_LIBRARIES
-    assert OFFLINE_GRAPH_LIBRARIES <= _names(
-        project["optional-dependencies"]["research"]
-    )
+    assert SEARCH_LIBRARIES <= deployed
+    assert not deployed & OFFLINE_ONLY_LIBRARIES
 
 
 def test_package_version_matches_installed_release() -> None:
