@@ -270,11 +270,15 @@
     "VietinBank"
    ],
    "node_dung": [
-    "VietinBank"
+    "ThuTucNopHocPhi"
    ],
    "nhan_dung": [
+    "Thủ tục nộp học phí"
+   ],
+   "nhan_dung_cu": [
     "Ngân hàng VietinBank"
-   ]
+   ],
+   "ly_do_sua_dap_an": "nhãn cũ 'Ngân hàng VietinBank' là một thực thể chỉ có tên, không mang nội dung nào nên không trả lời được câu hỏi. Thủ tục nộp học phí nói thẳng: 'Nếu có tài khoản Agribank, Vietinbank hoặc Liên Việt PostBank, dùng Mobile Banking hoặc Internet Banking để đóng học phí, miễn phí.'"
   },
   {
    "id": "question-003013",
@@ -517,11 +521,15 @@
     "quy chế học bổng"
    ],
    "node_dung": [
-    "PerSemester"
+    "ThuTucXetVaCapHocBongKhuyenKhichHocTap"
    ],
    "nhan_dung": [
+    "Thủ tục xét và cấp học bổng khuyến khích học tập"
+   ],
+   "nhan_dung_cu": [
     "đồng trên học kỳ"
-   ]
+   ],
+   "ly_do_sua_dap_an": "nhãn cũ 'đồng trên học kỳ' là một đơn vị đo, chỉ có tên, không trả lời được câu hỏi. Thủ tục xét học bổng nói: 'Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè.'"
   },
   {
    "id": "question-004661",
