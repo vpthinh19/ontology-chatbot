@@ -82,18 +82,36 @@ for _lop_chung, _o_loai, _cac_lop in (
     ("QuyTac", "loaiQuyTac",
      ("QuyTacHocVu", "QuyTacBuocThoiHoc", "QuyTacCanhBaoKetQuaHocTap", "QuyTacDieuKienDuThi",
       "QuyTacGioiHanCongNhanVaChuyenDoiTinChi", "QuyTacHaHangTotNghiep",
-      "QuyTacKhoiLuongDangKyMoiHocKy", "QuyTacLePhiDongHocPhi", "QuyTacThoiGianDaoTao",
+      "QuyTacKhoiLuongDangKyMoiHocKy", "QuyTacThoiGianDaoTao",
       "QuyTacTyLeDaoTaoTrucTuyen", "ChinhSachHocVu")),
     ("KhaiNiem", "loaiKhaiNiem",
-     ("KhaiNiemHocVu", "LoaiHocPhan", "HocPhanNgoaiNgu", "HinhThucDaoTao", "LoaiHocKy",
-      "HinhThucToChucDayHoc", "ThanhPhanDanhGiaHocPhan", "DiemChu")),
+     ("KhaiNiemHocVu", "LoaiHocPhan", "HinhThucDaoTao", "LoaiHocKy",
+      "HinhThucToChucDayHoc", "ThanhPhanDanhGiaHocPhan")),
+    # Học phần ngoại ngữ là môn học thật - có số tín chỉ, sinh viên đăng ký học,
+    # nằm trong danh mục học phần - không phải một thuật ngữ được giải nghĩa.
+    ("HocPhan", "", ("HocPhanNgoaiNgu",)),
+    # Điểm chữ có ký hiệu riêng: đó là bảng mã, không phải khái niệm.
     ("DanhMuc", "loaiDanhMuc",
-     ("NganHang", "KhoiNganh", "PhuongThucDongHocPhi", "DonViTinhHocPhi", "TrinhDoDaoTao")),
+     ("NganHang", "KhoiNganh", "PhuongThucDongHocPhi", "DonViTinhHocPhi", "TrinhDoDaoTao",
+      "DiemChu")),
+    # Đơn vị trong trường vốn là lớp con của chủ thể; gộp cho nhất quán với các nhóm khác.
+    ("ChuThe", "loaiChuThe", ("ChuTheThamGia", "DonViTrongTruong")),
+    # Mức lệ phí và mức học bổng cùng là "một số tiền cho một nhóm đối tượng".
+    # Trước đây lệ phí bị xếp vào quy tắc còn học bổng đứng riêng - không nhất quán.
+    ("MucTien", "loaiMucTien", ("QuyTacLePhiDongHocPhi", "MucHocBongKhuyenKhichHocTap")),
     ("ChungChi", "loaiChungChi", ("ChungChi", "ChungChiNgoaiNgu", "ChungChiTinHoc")),
     ("Bang", "loaiBang", ("BangTrongTaiLieu", "BangQuyDoiChungChi")),
 ):
     for _lop in _cac_lop:
         GOP_LOP[_lop] = (_lop_chung, _o_loai)
+
+#: Vài cá thể lạc lớp dù cả lớp thì đúng. Khoá là tên sinh từ nhãn.
+DOI_LOP_CA_THE: dict[str, tuple[str, str, str]] = {
+    # Đây là điều khoản quy định phạm vi áp dụng, không phải một thuật ngữ.
+    "PhamViVaDoiTuongApDungCuaQuyChe": ("QuyTac", "loaiQuyTac", "QuyTacHocVu"),
+    # Quy đổi giờ của một tín chỉ là một phần của định nghĩa tín chỉ.
+    "QuyDoiGioHocCuaMotTinChi": ("KhaiNiem", "loaiKhaiNiem", "KhaiNiemHocVu"),
+}
 
 VIET_TAT_TOA_DO = [
     ("Regulation", ""), ("Decision", ""), ("Article", "_D"), ("Clause", "K"),
@@ -122,6 +140,10 @@ class BoChuyenDoi:
         self.canh_bao: list[str] = []
         self.ghi_chu: list[str] = []
         self.gop_lop_da_dung: set[str] = set()
+        #: tên sinh từ nhãn lớp -> nhãn gốc, để giá trị của ô "loại" luôn có nhãn
+        #: kể cả khi không cá thể nào còn mang lớp đó.
+        self.nhan_lop = {pascal(self.nhan(lop)): self.nhan(lop)
+                         for lop in graph.subjects(RDF.type, OWL.Class)}
         self.ten_moi: dict[URIRef, str] = {}
         self.cha: dict[URIRef, URIRef] = {}
         self._dung_ten: dict[str, URIRef] = {}
@@ -300,10 +322,16 @@ class BoChuyenDoi:
                         continue
                     ten_lop = pascal(self.nhan(lop))
                     lop_chung, o_loai = GOP_LOP.get(ten_lop, (ten_lop, None))
+                    doi = DOI_LOP_CA_THE.get(self.dat_ten(node))
+                    nhan_loai = self.nhan(lop)
+                    if doi is not None:
+                        lop_chung, o_loai, ten_lop = doi
+                        nhan_loai = self.nhan_lop.get(ten_lop)
                     mac_dinh.add((self.moi(node), RDF.type, ACADEMIC[lop_chung]))
                     if o_loai and ten_lop != lop_chung:
                         mac_dinh.add((self.moi(node), ACADEMIC[o_loai], ACADEMIC[ten_lop]))
-                        mac_dinh.add((ACADEMIC[ten_lop], RDFS.label, Literal(self.nhan(lop), lang="vi")))
+                        if nhan_loai is not None:
+                            mac_dinh.add((ACADEMIC[ten_lop], RDFS.label, Literal(nhan_loai, lang="vi")))
                         self.gop_lop_da_dung.add(ten_lop)
                 mac_dinh.add((self.moi(node), RDFS.label, Literal(self.nhan(node), lang="vi")))
                 for ten_khac in self.g.objects(node, SKOS.altLabel):
@@ -346,7 +374,10 @@ class BoChuyenDoi:
                     dem["nội dung"] += 1
                     continue
 
-                thuoc_tinh = ACADEMIC[camel(self.nhan(p))]
+                ten_moi_tt = camel(self.nhan(p))
+                if ten_moi_tt == "mucLePhi":
+                    ten_moi_tt = "soTien"
+                thuoc_tinh = ACADEMIC[ten_moi_tt]
                 gia_tri = self.moi(o) if isinstance(o, URIRef) else o
                 for t in tui or [None]:
                     self.them(ds, mac_dinh, t, self.moi(goc), thuoc_tinh, gia_tri)
@@ -388,7 +419,8 @@ def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
                         chu_the = bo.moi(muc_tieu)
                 can = (chu_the, ACADEMIC.noiDung, Literal(str(o), lang="vi"))
             else:
-                can = (bo.moi(goc), ACADEMIC[camel(bo.nhan(p))],
+                ten_tt = camel(bo.nhan(p))
+                can = (bo.moi(goc), ACADEMIC["soTien" if ten_tt == "mucLePhi" else ten_tt],
                        bo.moi(o) if isinstance(o, URIRef) else o)
             if (can[0], can[1]) in da_sua:
                 continue
