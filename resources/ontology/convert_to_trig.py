@@ -276,6 +276,16 @@ class BoChuyenDoi:
         ra.add((iri, ACADEMIC.toaDo, Literal(self.toa_do_cua(phan), lang="vi")))
         return iri
 
+    @staticmethod
+    def _gon(text: str) -> str:
+        return unicodedata.normalize("NFC", text).casefold().strip().rstrip(".")
+
+    def trung_nhan(self, node: URIRef, text: str) -> bool:
+        """Nội dung trùng y hệt nhãn thì không mang thêm thông tin nào, mà lại được
+        đóng dấu nguồn như thể văn bản viết ra câu đó."""
+
+        return self._gon(text) == self._gon(self.nhan(node))
+
     # --- phát biểu -----------------------------------------------------------
 
     def dung_ban_do_cha(self) -> None:
@@ -363,6 +373,9 @@ class BoChuyenDoi:
                     continue
 
                 if ten in VAN_BAN:
+                    if self.trung_nhan(goc, str(o)):
+                        dem["bỏ nội dung trùng nhãn"] += 1
+                        continue
                     chu_the = self.moi(goc)
                     # Điều kiện của cách giải quyết mô tả thủ tục, không mô tả trường hợp.
                     if ten == "conditionText":
@@ -392,14 +405,23 @@ class BoChuyenDoi:
 
 
 def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
+    """Đã trừ những gì cố ý bỏ: câu bị thay theo quy chế, thực thể bị xoá, và nội
+    dung trùng y hệt nhãn."""
+
     """Mọi dữ kiện cũ phải xuất hiện lại. Dựng lại kỳ vọng từ đồ thị cũ, rồi so."""
 
     co_that = {(s, p, o) for s, p, o, _ in ds.quads((None, None, None, None))}
+    _sc = json.loads(SUA_CHUA.read_text(encoding="utf-8")) if SUA_CHUA.exists() else {}
+    da_xoa = {ACADEMIC[m["thuc_the"]] for m in _sc.get("xoa", [])}
+    #: Câu mô tả được thay bằng câu gốc của quy chế và chuyển vào túi.
+    da_dat_nguon = {ACADEMIC[m["thuc_the"]] for m in _sc.get("dat_nguon", [])}
     thieu: list[str] = []
     for node in sorted(bo.g.subjects(RDF.type, OWL.NamedIndividual), key=str):
         if bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON):
             continue
         goc = bo.node_goc(node)
+        if bo.moi(goc) in da_xoa:
+            continue
         for p, o in bo.g.predicate_objects(node):
             ten = local_name(p)
             if ten in NGUON_HOC | TOA_DO | TAN_DI or p in (RDF.type, RDFS.label, SKOS.altLabel):
@@ -407,11 +429,15 @@ def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
             if ten in ("resolvedBy", "scopedToCase"):
                 continue
             if ten in MO_TA:
+                if bo.moi(goc) in da_dat_nguon:
+                    continue
                 can = (bo.moi(goc), ACADEMIC.noiDung, Literal(str(o), lang="vi"))
                 if can not in co_that:
                     thieu.append(f"{local_name(node)} · {ten} → {str(o)[:46]}")
                 continue
             if ten in VAN_BAN:
+                if bo.trung_nhan(goc, str(o)):
+                    continue
                 chu_the = bo.moi(goc)
                 if ten == "conditionText":
                     muc_tieu = bo.mot(node, "resolvedBy")
@@ -496,6 +522,22 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
                     dich = dia_chi_moi(cau["toa_do"], nguon)
             ds.graph(dich).add((chu_the, ACADEMIC.noiDung, Literal(cau["noiDung"], lang="vi")))
             dem += 1
+    for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("xoa", []):
+        chu_the = ACADEMIC[muc["thuc_the"]]
+        for tui_ in [mac_dinh.identifier, *{q[3] for q in ds.quads((chu_the, None, None, None))}]:
+            do_thi = mac_dinh if tui_ == mac_dinh.identifier else ds.graph(tui_)
+            for p_, o_ in list(do_thi.predicate_objects(chu_the)):
+                do_thi.remove((chu_the, p_, o_))
+                dem += 1
+
+    for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("dat_nguon", []):
+        chu_the = ACADEMIC[muc["thuc_the"]]
+        for cu in list(mac_dinh.objects(chu_the, ACADEMIC.noiDung)):
+            mac_dinh.remove((chu_the, ACADEMIC.noiDung, cu))
+        dich = dia_chi_moi(muc["toa_do"], ACADEMIC[muc["nguon"]])
+        ds.graph(dich).add((chu_the, ACADEMIC.noiDung, Literal(muc["noiDung"], lang="vi")))
+        dem += 1
+
     return dem, da_sua
 
 

@@ -1,5 +1,5 @@
 {
- "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai.",
+ "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc.",
  "sua": [
   {
    "thuc_the": "ThuTucChuyenNganh",
@@ -211,6 +211,25 @@
      "noiDung": "Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác."
     }
    ]
+  }
+ ],
+ "xoa": [
+  {
+   "thuc_the": "ChinhSachBuocThoiHoc",
+   "ly_do": "chỉ là câu tóm tắt không nguồn của hai quy tắc buộc thôi học, mà hai quy tắc đó đã có nội dung đầy đủ kèm điểm a và điểm b khoản 2 Điều 20"
+  },
+  {
+   "thuc_the": "ChinhSachCanhBaoKetQuaHocTap",
+   "ly_do": "chỉ là câu tóm tắt không nguồn của ba quy tắc cảnh báo, đã có đủ ở điểm a, b, c khoản 1 Điều 20"
+  }
+ ],
+ "dat_nguon": [
+  {
+   "thuc_the": "ChinhSachXuLySinhVienViPham",
+   "toa_do": "Điều 31",
+   "nguon": "Nguon1052",
+   "ly_do": "không phải câu tóm tắt của quy tắc nào khác; Điều 31 Quy chế 1052 nói đúng điều này và chỉ có một câu",
+   "noiDung": "Sinh viên có gian lận trong học tập, kiểm tra và thi học phần sẽ bị xử lý kỷ luật đối với từng học phần đã vi phạm theo các quy định của Quy chế công tác sinh viên."
   }
  ]
 }

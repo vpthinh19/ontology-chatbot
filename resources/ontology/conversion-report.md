@@ -1,22 +1,23 @@
 # Báo cáo chuyển đổi ontology sang TriG
 
 - cũ: 6350 bộ ba, 685 cá thể
-- mới: 2012 câu, trong đó 1408 nằm ngoài túi
-- nguồn thô: 14 · địa chỉ trích dẫn: 151 · túi dùng thật: 152
+- mới: 1986 câu, trong đó 1395 nằm ngoài túi
+- nguồn thô: 14 · địa chỉ trích dẫn: 151 · túi dùng thật: 153
 
 ## Đã chuyển
 
-- câu sửa lại theo quy chế: 25
+- bỏ nội dung trùng nhãn: 6
+- câu sửa lại theo quy chế: 38
 - giá trị: 118
 - mô tả không nguồn: 27
-- nội dung: 218
+- nội dung: 212
 - quan hệ: 206
 - đảo chiều trường hợp: 7
 - lớp gộp lại thành lớp chung kèm ô loại: 30
 
 ## Cần người duyệt
 
-Đã duyệt và giữ nguyên: 7 chỗ nhiều câu, 36 thực thể nhiều nguồn, 28 thực thể chỉ có danh tính (lý do ghi trong `reviewed.json`).
+Đã duyệt và giữ nguyên: 7 chỗ nhiều câu, 36 thực thể nhiều nguồn, 25 thực thể chỉ có danh tính (lý do ghi trong `reviewed.json`).
 
 ## Ghi chú (2)
 
