@@ -504,7 +504,8 @@
    ],
    "nhan_dung": [
     "Chương I Quy chế tuyển sinh đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   },
   {
    "id": "question-001356",
@@ -677,7 +678,8 @@
    ],
    "nhan_dung": [
     "điểm a khoản 2 Điều 15 Quy chế đào tạo trình độ đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   },
   {
    "id": "question-003012",
@@ -720,7 +722,8 @@
    ],
    "nhan_dung": [
     "khoản 2 Điều 11 Quy chế đào tạo trình độ đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   },
   {
    "id": "question-001538",
@@ -767,7 +770,8 @@
    ],
    "nhan_dung": [
     "Điều 2 Quy chế đào tạo trình độ đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   },
   {
    "id": "question-000297",
@@ -796,7 +800,8 @@
    ],
    "nhan_dung": [
     "Điều 20 Quy chế đào tạo trình độ đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   },
   {
    "id": "question-000708",
@@ -825,7 +830,9 @@
    ],
    "nhan_dung": [
     "khoản 2 Điều 19 Quy chế đào tạo trình độ đại học"
-   ]
+   ],
+   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
   }
- ]
+ ],
+ "ghi_chu": "Câu có ngoai_pham_vi bị loại khỏi phép đo: chúng hỏi nguyên văn điều khoản, khả năng mà kiến trúc mới cố ý bỏ. Sáu câu này sinh ra từ tập dữ liệu tổng hợp theo khuôn, không phải câu hỏi thật của sinh viên."
 }

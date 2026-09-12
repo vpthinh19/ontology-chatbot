@@ -43,7 +43,8 @@ def thu_hang(ket_qua, node_dung: list[str], nhan_dung: list[str]) -> int | None:
 
 
 def chay(engine: SearchEngine) -> dict:
-    cau_hoi = json.loads(BO_KIEM.read_text(encoding="utf-8"))["cau_hoi"]
+    cau_hoi = [c for c in json.loads(BO_KIEM.read_text(encoding="utf-8"))["cau_hoi"]
+               if not c.get("ngoai_pham_vi")]
     dat, truot, thu_hang_dat = [], [], []
     for cau in cau_hoi:
         response = engine.search(cau["tu_khoa"])
