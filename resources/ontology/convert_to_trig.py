@@ -34,6 +34,7 @@ NGUON_TTL = HERE / "ontology.ttl"
 DICH_TRIG = HERE / "ontology.trig"
 BANG_DOI = HERE / "iri-mapping.json"
 BAO_CAO = HERE / "conversion-report.md"
+SUA_CHUA = HERE / "repairs.json"
 
 NS = str(ACADEMIC)
 
@@ -317,7 +318,7 @@ class BoChuyenDoi:
         (mac_dinh if tui is None else ds.graph(tui)).add((s, p, o))
 
 
-def doi_chieu(bo: BoChuyenDoi, ds) -> list[str]:
+def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
     """Mọi dữ kiện cũ phải xuất hiện lại. Dựng lại kỳ vọng từ đồ thị cũ, rồi so."""
 
     co_that = {(s, p, o) for s, p, o, _ in ds.quads((None, None, None, None))}
@@ -342,9 +343,51 @@ def doi_chieu(bo: BoChuyenDoi, ds) -> list[str]:
             else:
                 can = (bo.moi(goc), ACADEMIC[camel(bo.nhan(p))],
                        bo.moi(o) if isinstance(o, URIRef) else o)
+            if (can[0], can[1]) in da_sua:
+                continue
             if can not in co_that:
                 thieu.append(f"{local_name(node)} · {ten} → {str(o)[:46]}")
     return thieu
+
+
+def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
+    """Thay :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc của quy chế.
+
+    Bộ chuyển đổi không đoán được câu nào bị cắt đôi và câu gốc viết thế nào, nên
+    phần này là quyết định của người, ghi trong ``repairs.json`` kèm lý do.
+    """
+
+    if not SUA_CHUA.exists():
+        return 0, set()
+    theo_toa_do = {str(o): t for t, _, o in mac_dinh.triples((None, ACADEMIC.toaDo, None))}
+    da_sua: set[tuple] = set()
+    dem = 0
+
+    for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8"))["sua"]:
+        chu_the = ACADEMIC[muc["thuc_the"]]
+        tui = theo_toa_do.get(muc["toa_do"])
+        if tui is None:
+            bo.canh_bao.append(f"sửa chữa: không thấy toạ độ {muc['toa_do']!r}")
+            continue
+        for cu in list(ds.graph(tui).objects(chu_the, ACADEMIC.noiDung)):
+            ds.graph(tui).remove((chu_the, ACADEMIC.noiDung, cu))
+        da_sua.add((chu_the, ACADEMIC.noiDung))
+
+        for cau in muc["thay_bang"]:
+            dich = tui
+            if cau.get("toa_do"):
+                dich = theo_toa_do.get(cau["toa_do"])
+                if dich is None:
+                    dich = URIRef(str(tui) + "_" + pascal(cau["toa_do"])[:12])
+                    nguon = next(iter(mac_dinh.objects(tui, ACADEMIC.thuocNguon)), None)
+                    mac_dinh.add((dich, RDF.type, ACADEMIC.DiaChiTrichDan))
+                    if nguon is not None:
+                        mac_dinh.add((dich, ACADEMIC.thuocNguon, nguon))
+                    mac_dinh.add((dich, ACADEMIC.toaDo, Literal(cau["toa_do"], lang="vi")))
+                    theo_toa_do[cau["toa_do"]] = dich
+            ds.graph(dich).add((chu_the, ACADEMIC.noiDung, Literal(cau["noiDung"], lang="vi")))
+            dem += 1
+    return dem, da_sua
 
 
 def cau_bi_che_doi(ds, mac_dinh) -> list[tuple[str, str, list[str]]]:
@@ -385,11 +428,12 @@ def main() -> None:
     mac_dinh = ds.default_graph
     bo.dung_tang_nguon(mac_dinh)
     dem = bo.chuyen_phat_bieu(ds, mac_dinh)
+    dem["câu sửa lại theo quy chế"], da_sua = ap_dung_sua_chua(bo, ds, mac_dinh)
 
     tui = {q[3] for q in ds.quads((None, None, None, None))} - {mac_dinh.identifier}
     ngoai = len(list(mac_dinh))
     tong = len(list(ds.quads((None, None, None, None))))
-    thieu = doi_chieu(bo, ds)
+    thieu = doi_chieu(bo, ds, da_sua)
     che_doi = cau_bi_che_doi(ds, mac_dinh)
     nhieu_nguon = sorted(
         (str(next(iter(mac_dinh.objects(bo.moi(node), RDFS.label)), local_name(node))),

@@ -1,11 +1,12 @@
 # Báo cáo chuyển đổi ontology sang TriG
 
 - cũ: 6350 bộ ba, 685 cá thể
-- mới: 1889 câu, trong đó 1224 nằm ngoài túi
-- nguồn thô: 14 · địa chỉ trích dẫn: 151 · túi dùng thật: 149
+- mới: 1869 câu, trong đó 1230 nằm ngoài túi
+- nguồn thô: 14 · địa chỉ trích dẫn: 151 · túi dùng thật: 151
 
 ## Đã chuyển
 
+- câu sửa lại theo quy chế: 15
 - giá trị: 118
 - nội dung: 247
 - quan hệ: 206
@@ -13,65 +14,15 @@
 
 ## Cần người duyệt
 
-### 34 chỗ một điều khoản mang nhiều câu
+### 24 chỗ một điều khoản mang nhiều câu
 
-`✂ cắt đôi` (12 chỗ) là một câu của quy chế bị cắt ở chỗ động từ — lấy lại
+`✂ cắt đôi` (0 chỗ) là một câu của quy chế bị cắt ở chỗ động từ — lấy lại
 câu gốc trong `references/` rồi nhập thành một câu. `· xem lại` là những chỗ
 có thể vốn là nhiều phát biểu thật, cần người đọc quyết.
 
-- ✂ cắt đôi — **Thủ tục chuyển ngành** · khoản 2 Điều 25
-    - Làm đơn xin chuyển ngành theo Mẫu số 12 (Phụ lục 4).
-    - Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới.
-    - Trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để xem xét quyết định.
-- ✂ cắt đôi — **Thủ tục chuyển trường** · khoản 2 Điều 26
-    - Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý; Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận, công nhận và bảo lưu các học phần được chuyển đổi tín chỉ cùng số học phần phải học bổ sung.
-    - Làm hồ sơ xin chuyển trường theo Mẫu số 13 (Phụ lục 4).
-    - Nộp hồ sơ thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang.
-- ✂ cắt đôi — **Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ** · khoản 2 Điều 21
-    - Chuẩn bị bản sao có công chứng văn bằng, chứng chỉ và bảng điểm, kèm đơn theo Mẫu số 06 (Phụ lục 4).
-    - Nộp hồ sơ cho Phòng Đào tạo Đại học để Hội đồng chuyên môn xem xét công nhận và chuyển đổi.
-- ✂ cắt đôi — **Thủ tục nghỉ học tạm thời** · khoản 3 Điều 24
-    - Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên.
-    - Viết đơn xin nghỉ học tạm thời theo Mẫu số 09 (Phụ lục 4).
-- ✂ cắt đôi — **Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học** · khoản 3 Điều 20
-    - Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét.
-    - Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt từ 5,0 trở lên khi học ở chương trình mới.
-    - Thuộc diện bị buộc thôi học theo khoản 2 Điều 20 và Trường có tổ chức chương trình đào tạo tương ứng theo hình thức vừa làm vừa học.
-    - Thủ tục cho sinh viên thuộc diện buộc thôi học xin chuyển sang chương trình đào tạo hình thức vừa làm vừa học.
-    - Viết đơn theo Mẫu số 05 (Phụ lục 4).
-- ✂ cắt đôi — **Thủ tục xin hoãn thi** · khoản 2 Điều 30
-    - Gửi đơn tới Phòng Đào tạo Đại học.
-    - Nộp đơn trước ngày thi.
-    - Thủ tục xin hoãn thi kết thúc học phần vì lý do sức khỏe.
-    - Viết đơn xin hoãn thi theo Mẫu số 04 (Phụ lục 4), kèm Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên.
-    - Ốm trong đợt thi kết thúc học phần.
-- ✂ cắt đôi — **Thủ tục xin học trở lại** · khoản 3 Điều 24
-    - Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét giải quyết.
-    - Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới.
-    - Viết đơn xin học trở lại theo Mẫu số 11 (Phụ lục 4).
-- ✂ cắt đôi — **Thủ tục xin miễn học, miễn thi và cộng điểm thưởng** · khoản 6 Điều 21
-    - Gửi hồ sơ về Phòng Đào tạo Đại học để được xem xét giải quyết.
-    - Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện.
-    - Viết đơn theo Mẫu số 07 (Phụ lục 4), kèm minh chứng hợp lệ.
-- ✂ cắt đôi — **Thủ tục xin nghỉ ốm trong quá trình học** · khoản 1 Điều 30
-    - Gửi đơn tới giảng viên giảng dạy học phần.
-    - Nộp đơn trong vòng 01 tuần kể từ ngày ốm.
-    - Thủ tục xin phép nghỉ học vì lý do sức khỏe trong quá trình học.
-    - Viết đơn xin phép nghỉ học, kèm Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên.
-    - Ốm trong quá trình học và điều trị dưới 10 ngày.
-- ✂ cắt đôi — **Thủ tục xin phép nghỉ học** · khoản 1 Điều 17
-    - Nộp trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học.
-    - Nộp đơn cho Khoa hoặc viện đào tạo.
-    - Thủ tục xin phép nghỉ buổi học có lý do chính đáng để không bị trừ điều kiện dự thi.
-    - Viết đơn xin nghỉ học theo Mẫu số 03 (Phụ lục 4), kèm minh chứng liên quan.
-- ✂ cắt đôi — **Thủ tục xin thôi học** · khoản 3 Điều 24
-    - Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên.
-    - Viết đơn xin thôi học theo Mẫu số 10 (Phụ lục 4).
-- ✂ cắt đôi — **Thủ tục đề nghị xét tốt nghiệp sớm** · khoản 2 Điều 22
-    - Gửi đơn tới Phòng Đào tạo Đại học.
-    - Thủ tục đề nghị được xét tốt nghiệp sớm hơn thời gian thiết kế của khóa học.
-    - Viết đơn đề nghị được xét tốt nghiệp theo Mẫu số 08 (Phụ lục 4).
-    - Đã đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học.
+- · xem lại — **Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ** · khoản 3 Điều 21
+    - Hội đồng chuyên môn của Nhà trường hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình.
+    - Kết quả được công nhận và chuyển đổi theo từng học phần, theo từng nhóm học phần, hoặc theo cả chương trình đào tạo.
 - · xem lại — **Thủ tục học liên thông** · khoản 2 Điều 29
     - Theo dõi thông báo tuyển sinh liên thông hằng năm của Nhà trường và đăng ký xét tuyển.
     - Đăng ký vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hằng năm.
@@ -87,6 +38,9 @@ có thể vốn là nhiều phát biểu thật, cần người đọc quyết.
 - · xem lại — **Thủ tục rút bớt học phần đã đăng ký** · khoản 2 Điều 10
     - Chỉ được chấp nhận tối đa trong tuần thứ hai của học kỳ chính, tuần thứ nhất của học kỳ phụ.
     - Quá thời hạn, học phần vẫn được giữ nguyên như đã đăng ký; sinh viên không đi học thì xem như tự ý bỏ học và phải nhận điểm 0.
+- · xem lại — **Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học** · khoản 3 Điều 20
+    - Những sinh viên thuộc diện bị buộc thôi học quy định tại khoản 2 Điều này được quyền viết đơn (Mẫu số 05 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển qua chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường.
+    - Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển chương trình đào tạo, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể.
 - · xem lại — **Thủ tục xin miễn học, miễn thi và cộng điểm thưởng** · khoản 5 Điều 21
     - Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện.
     - Đạt giải nhất, nhì, ba trong kỳ thi Olympic sinh viên cấp tỉnh trở lên hoặc Giải thưởng khoa học công nghệ dành cho sinh viên; hoặc có chứng chỉ ngoại ngữ quốc tế còn hiệu lực theo Phụ lục 2; hoặc có chứng chỉ tin học quốc tế còn hiệu lực theo Phụ lục 3.

@@ -1,0 +1,107 @@
+{
+ "ghi_chu": "Sửa chữa lúc chuyển đổi. Mỗi mục thay TOÀN BỘ :noiDung của một cặp (thực thể, toạ độ) bằng danh sách mới. Câu chữ lấy từ bản markdown của quy chế trong references/, không phải ghép hai mảnh cũ. Trường toa_do trong thay_bang đẩy câu sang một toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm.",
+ "sua": [
+  {
+   "thuc_the": "ThuTucChuyenNganh",
+   "toa_do": "khoản 2 Điều 25",
+   "ly_do": "một câu của quy chế bị cắt thành ba mảnh ở chỗ động từ",
+   "thay_bang": [
+    {"noiDung": "Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, sinh viên làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucChuyenTruong",
+   "toa_do": "khoản 2 Điều 26",
+   "ly_do": "khoản 2 liệt kê điểm a và điểm b - đây là hai phát biểu thật, cần toạ độ riêng chứ không gộp",
+   "thay_bang": [
+    {"toa_do": "điểm a khoản 2 Điều 26",
+     "noiDung": "Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang (Mẫu số 13 - Phụ lục 4 kèm theo)."},
+    {"toa_do": "điểm b khoản 2 Điều 26",
+     "noiDung": "Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý chuyển đi và Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận hoặc không tiếp nhận sinh viên; công nhận và bảo lưu các học phần mà sinh viên chuyển đến được chuyển đổi tín chỉ và số học phần phải học bổ sung, trên cơ sở so sánh chương trình ở Trường sinh viên xin chuyển đi và Trường xin chuyển đến."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi",
+   "toa_do": "khoản 2 Điều 21",
+   "ly_do": "mảnh thứ hai thực ra là nội dung của khoản 3, bị gắn nhầm vào khoản 2",
+   "thay_bang": [
+    {"noiDung": "Sinh viên có nguyện vọng miễn học và quy đổi điểm học phần phải nộp bản sao có công chứng văn bằng, chứng chỉ và bảng điểm cho Đơn vị quản lý đào tạo (Mẫu số 06 - Phụ lục 4 kèm theo)."},
+    {"toa_do": "khoản 3 Điều 21",
+     "noiDung": "Hội đồng chuyên môn của Nhà trường hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucNghiHocTamThoi",
+   "toa_do": "khoản 3 Điều 24",
+   "ly_do": "một câu của quy chế nói về ba thủ tục, bị cắt đôi ở chỗ động từ",
+   "thay_bang": [
+    {"noiDung": "Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinThoiHoc",
+   "toa_do": "khoản 3 Điều 24",
+   "ly_do": "cùng câu trên, vế xin thôi học",
+   "thay_bang": [
+    {"noiDung": "Sinh viên xin thôi học phải viết đơn (Mẫu số 10 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinHocTroLai",
+   "toa_do": "khoản 3 Điều 24",
+   "ly_do": "cùng câu trên, vế trở lại học tiếp",
+   "thay_bang": [
+    {"noiDung": "Khi muốn trở lại học tiếp, sinh viên cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới để được xem xét giải quyết."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc",
+   "toa_do": "khoản 3 Điều 20",
+   "ly_do": "khoản 3 có hai câu thật: nộp đơn, và bảo lưu kết quả cũ",
+   "thay_bang": [
+    {"noiDung": "Những sinh viên thuộc diện bị buộc thôi học quy định tại khoản 2 Điều này được quyền viết đơn (Mẫu số 05 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển qua chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường."},
+    {"noiDung": "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển chương trình đào tạo, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinHoanThi",
+   "toa_do": "khoản 2 Điều 30",
+   "ly_do": "một câu bị cắt đôi; giữ thêm câu mô tả thủ tục",
+   "thay_bang": [
+    {"noiDung": "Sinh viên xin nghỉ ốm trong đợt thi kết thúc học phần phải viết đơn xin phép hoãn thi gửi Đơn vị quản lý đào tạo trước ngày thi, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên (Mẫu số 04 - Phụ lục 4 kèm theo)."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinMienHocMienThiVaCongDiemThuong",
+   "toa_do": "khoản 6 Điều 21",
+   "ly_do": "một câu bị cắt đôi ở chỗ động từ",
+   "thay_bang": [
+    {"noiDung": "Sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 - Phụ lục 4 kèm theo) kèm theo minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinNghiOmTrongQuaTrinhHoc",
+   "toa_do": "khoản 1 Điều 30",
+   "ly_do": "một câu bị cắt đôi; bản markdown thiếu chữ 'giảng viên' do lỗi nhận dạng, đã khôi phục",
+   "thay_bang": [
+    {"noiDung": "Sinh viên xin nghỉ ốm trong quá trình học phải viết đơn xin phép gửi giảng viên giảng dạy học phần trong vòng 01 tuần kể từ ngày ốm, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinPhepNghiHoc",
+   "toa_do": "khoản 1 Điều 17",
+   "ly_do": "một câu bị cắt đôi ở chỗ động từ",
+   "thay_bang": [
+    {"noiDung": "Sinh viên nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo mẫu kèm minh chứng liên quan (Mẫu số 03 - Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa hoặc viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học."}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDeNghiXetTotNghiepSom",
+   "toa_do": "khoản 2 Điều 22",
+   "ly_do": "một câu bị cắt đôi ở chỗ động từ",
+   "thay_bang": [
+    {"noiDung": "Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, sinh viên viết đơn theo mẫu (Mẫu số 08 - Phụ lục 4 kèm theo) gửi Đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp."}
+   ]
+  }
+ ]
+}

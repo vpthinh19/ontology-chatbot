@@ -3,36 +3,17 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ns1:TD1052_D19K03 {
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:noiDung "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi,
-            "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè."@vi .
+ns1:TD1052_D24K01dD {
+    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:LyDoCaNhanKhac ;
+        ns1:noiDung "Phải đã học ít nhất 01 học kỳ tại Trường và không thuộc diện bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
+
+    ns1:LyDoCaNhanKhac ns1:noiDung "Sinh viên nghỉ học tạm thời vì lý do cá nhân khác."@vi .
 }
 
-ns1:TD1052_D02K04dC {
-    ns1:ThoiGianToiDaHoanThanhKhoaHoc ns1:noiDung "Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian theo kế hoạch học tập chuẩn toàn khóa."@vi .
-}
-
-ns1:TD1052_D20K02dA {
-    ns1:BuocThoiHocDoCanhBaoLienTiep ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi .
-}
-
-ns1:TDComputerCertificateConversionTable {
-    ns1:BangQuyDoiChungChiTinHoc ns1:noiDung """| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | 1990 - 2329 | 1350 - 1445 | 1400 - 1599 | 8 |
-| 2 | 2330 - 2669 | 1446 - 1620 | 1600 - 1799 | 9 |
-| 3 | 2670 - 3000 | 1621 - 1800 | 1800 - 2000 | 10 |"""@vi .
-}
-
-ns1:TD1052_D22K05 {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Sinh viên đủ điều kiện được Hiệu trưởng ra quyết định công nhận tốt nghiệp và cấp bằng tốt nghiệp."@vi,
-            "Trong thời hạn 03 tháng kể từ thời điểm sinh viên đáp ứng đầy đủ điều kiện tốt nghiệp và hoàn thành nghĩa vụ với Trường."@vi .
-}
-
-ns1:TD1052_D06K02dB {
-    ns1:HocPhanTuChon ns1:noiDung "Học phần chứa đựng những nội dung kiến thức cần thiết, sinh viên được tự chọn theo hướng dẫn của Trường nhằm đa dạng hóa hướng chuyên môn hoặc tự chọn tùy ý để tích lũy đủ số học phần quy định."@vi .
+ns1:TD1052_D02K04dB {
+    ns1:ThoiGianDaoTaoHinhThucVuaLamVuaHoc ns1:apDungChoHinhThucDaoTao ns1:DaoTaoVuaLamVuaHoc ;
+        ns1:noiDung "Hệ vừa làm vừa học có thời gian học chuẩn toàn khóa dài hơn hệ chính quy cùng ngành ít nhất 20%."@vi ;
+        ns1:tyLeToiThieu 20.0 .
 }
 
 ns1:TDTuitionPaymentGuidanceIntro {
@@ -76,640 +57,16 @@ ns1:TDTuitionPaymentGuidanceIntro {
             ns1:NganHangVietinbank .
 }
 
-ns1:TD1052_D06K02dC {
-    ns1:HocPhanTienQuyet ns1:noiDung "Học phần sinh viên phải tích lũy mới được học các học phần tiếp theo."@vi .
-}
-
-ns1:TDScholarshipRateTableStandardProgram {
-    ns1:BangMucHocBongChuongTrinhChuan ns1:noiDung """| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |
-| :---: | :--- | :---: |
-| 1 | Xuất sắc | 7.200.000 |
-| 2 | Giỏi | 6.000.000 |
-| 3 | Khá | 5.000.000 |"""@vi .
-
-    ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
-        ns1:donViTienTe "VND" ;
-        ns1:donViTinh ns1:DongTrenHocKy ;
-        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
-        ns1:soTien "6000000"^^xsd:nonNegativeInteger .
-
-    ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
-        ns1:donViTienTe "VND" ;
-        ns1:donViTinh ns1:DongTrenHocKy ;
-        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
-        ns1:soTien "5000000"^^xsd:nonNegativeInteger .
-
-    ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
-        ns1:donViTienTe "VND" ;
-        ns1:donViTinh ns1:DongTrenHocKy ;
-        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
-        ns1:soTien "7200000"^^xsd:nonNegativeInteger .
-}
-
-ns1:TD1052_D26K01dB {
-    ns1:ThuTucChuyenTruong ns1:noiDung "Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo cùng khóa tuyển sinh tại Trường xin chuyển đến."@vi .
-}
-
-ns1:TD1052_D11K01 {
-    ns1:ThuTucDangKyHocLaiHocPhan ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Học phần bắt buộc có điểm dưới 5,0 phải đăng ký học lại cho đến khi đạt từ 5,0 trở lên; học phần tự chọn dưới 5,0 được học lại hoặc đổi sang học phần tự chọn tương đương khác."@vi,
-            "Đăng ký học lại học phần đó ở các học kỳ tiếp theo theo quy trình đăng ký khối lượng học tập."@vi .
-}
-
-ns1:TDGraduationClassificationTable {
-    ns1:BangXepHangTotNghiep ns1:noiDung """| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |
-| :---: | :---: | :---: |
-| 1 | 9,00 ÷ 10 | Xuất sắc |
-| 2 | 8,00 ÷ 8,99 | Giỏi |
-| 3 | 7,00 ÷ 7,99 | Khá |
-| 4 | 5,50 ÷ 6,99 | Trung bình |"""@vi .
-}
-
-ns1:TD1052_D04K01 {
-    ns1:DaoTaoChinhQuy ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường; thực hành, thực tập, trải nghiệm thực tế và giảng dạy trực tuyến có thể thực hiện ngoài Trường. Thời gian giảng dạy từ 06 giờ đến 20 giờ, từ thứ 2 đến thứ 7."@vi .
-}
-
-ns1:TD1052_D20K02 {
-    ns1:ChinhSachBuocThoiHoc ns1:noiDung "Sinh viên bị buộc thôi học khi vượt quá 02 lần cảnh báo kết quả học tập liên tiếp hoặc vượt quá thời gian tối đa được phép học."@vi .
-}
-
-ns1:TD1052_D24 {
-    ns1:ThuTucNghiHocTamThoi ns1:canBieuMau ns1:MauSo09DonXinNghiHocTamThoi ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:noiDung "Thủ tục cho phép sinh viên tạm dừng việc học và bảo lưu kết quả đã tích lũy."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:thuTucTiepTheo ns1:ThuTucXinHocTroLai .
-
-    ns1:ThuTucXinThoiHoc ns1:canBieuMau ns1:MauSo10DonXinThoiHoc ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:noiDung "Thủ tục cho phép sinh viên chấm dứt việc học tại Trường theo nguyện vọng cá nhân."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
-
-    ns1:ThuTucXinHocTroLai ns1:canBieuMau ns1:MauSo11DonXinHocTroLai ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:noiDung "Thủ tục cho phép sinh viên hết thời gian nghỉ học tạm thời quay lại tiếp tục học."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
-}
-
-ns1:TDVNPAYPaymentGuidanceOtherBankNote {
-    ns1:PhiVnpayDoiVoiNganHangKhac ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
-        ns1:mucLePhi "5500"^^xsd:nonNegativeInteger ;
-        ns1:noiDung "Phí VNPAY đối với ngân hàng khác"@vi .
-}
-
-ns1:TD1052_D29K01 {
-    ns1:ThuTucHocLienThong ns1:noiDung "Đã tốt nghiệp trình độ trung cấp hoặc cao đẳng để liên thông lên đại học; người đã tốt nghiệp đại học được liên thông để nhận thêm một bằng đại học của ngành đào tạo khác."@vi .
-}
-
-ns1:TD1052_D10K02 {
-    ns1:ThuTucDeNghiMoThemLopHocPhan ns1:canBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:doAiThucHien ns1:BoMon ;
-        ns1:duocXetBoi ns1:BoMon ;
-        ns1:noiDung "Bộ môn thuộc Khoa hoặc viện đào tạo xem xét chấp thuận, sau đó Nhà trường mở thêm lớp theo đề nghị."@vi,
-            "Số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn quản lý chấp thuận."@vi,
-            "Thủ tục đề nghị Nhà trường mở thêm một lớp học phần trong thời gian đăng ký."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-}
-
-ns1:TD1052_D26 {
-    ns1:ThuTucChuyenTruong ns1:canBieuMau ns1:MauSo13DonXinChuyenTruong ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:noiDung "Thủ tục xin chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác hoặc ngược lại."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
-}
-
-ns1:TD1052_D17K04 {
-    ns1:ThuTucXinHoanThi ns1:noiDung "Sinh viên được dự thi cuối kỳ học phần đó trong thời hạn 02 học kỳ chính tiếp theo; quá thời hạn này điểm đánh giá cuối kỳ sẽ là 0."@vi .
-}
-
-ns1:TD1052_D31 {
-    ns1:ChinhSachXuLySinhVienViPham ns1:noiDung "Gian lận trong học tập, kiểm tra hoặc thi học phần bị xử lý kỷ luật riêng cho từng học phần vi phạm, theo Quy chế công tác sinh viên."@vi .
-}
-
-ns1:TD1052_D13K03dA {
-    ns1:DaoTaoTrucTuyenKhongDongBo ns1:noiDung "Sinh viên chủ động tham gia các hoạt động đào tạo trực tuyến trên cơ sở kế hoạch dạy học của giảng viên. Đây là hình thức kết hợp dạy học trực tiếp trên lớp với việc sử dụng hệ thống NTU E-learning."@vi .
-}
-
-ns1:TD1052_D08K02dC {
-    ns1:ThuTucDeNghiMoThemLopHocPhan ns1:canBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
-        ns1:duocXetBoi ns1:BoMon ;
-        ns1:noiDung "Làm đơn xin mở lớp học phần theo Mẫu số 01 và gửi Phòng Đào tạo Đại học trong thời gian đăng ký học phần."@vi,
-            "Thủ tục đề nghị Nhà trường mở thêm một lớp học phần trong thời gian đăng ký."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-
-    ns1:MauSo01DonXinMoLopHocPhan ns1:soHieuMauTheoQuyetDinh "01" .
-}
-
-ns1:TD1052_D06K02dA {
-    ns1:HocPhanBatBuoc ns1:noiDung "Học phần chứa đựng những nội dung kiến thức chính yếu của mỗi chương trình đào tạo và bắt buộc sinh viên phải tích lũy."@vi .
-}
-
-ns1:TD1052_D25K02 {
-    ns1:MucTaiDonXinChuyenNganh ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx" ;
-        ns1:noiDung "Đơn xin chuyển ngành"@vi ;
-        ns1:soHieuMauTrenWebsite "10" ;
-        ns1:ungVoiBieuMau ns1:MauSo12DonXinChuyenNganh .
-
-    ns1:ThuTucChuyenNganh ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo12DonXinChuyenNganh ;
-        ns1:noiDung "Làm đơn xin chuyển ngành theo Mẫu số 12 (Phụ lục 4)."@vi,
-            "Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới."@vi,
-            "Trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để xem xét quyết định."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
-
-    ns1:MauSo12DonXinChuyenNganh ns1:soHieuMauTheoQuyetDinh "12" .
-}
-
-ns1:TD1052_D12K01 {
-    ns1:DeCuongChiTietHocPhan ns1:noiDung "Đề cương chi tiết học phần là kế hoạch dạy học trong đó nêu rõ mục tiêu, kết quả học tập mong đợi, nội dung và kế hoạch dạy học, kiểm tra, đánh giá và các yêu cầu khác theo quy định của Trường."@vi .
-}
-
-ns1:TD1052_D26K01dA {
-    ns1:ThuTucChuyenTruong ns1:noiDung "Không đang là sinh viên năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định."@vi .
-}
-
-ns1:TD1052_D16K02dB {
-    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
-}
-
-ns1:TD1052_D17K01dA {
-    ns1:DieuKienDuThiHocPhanLyThuyet ns1:noiDung "Đối với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần."@vi ;
-        ns1:tyLeToiThieu 80.0 .
-
-    ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học; với học phần thực hành, thí nghiệm, thực tập ngoài trường phải tham dự 100% số giờ học."@vi .
-}
-
-ns1:TD1052_D17K01 {
-    ns1:ThuTucXinPhepNghiHoc ns1:canBieuMau ns1:MauSo03DonXinNghiHoc ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo03DonXinNghiHoc ;
-        ns1:noiDung "Nộp trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học."@vi,
-            "Nộp đơn cho Khoa hoặc viện đào tạo."@vi,
-            "Thủ tục xin phép nghỉ buổi học có lý do chính đáng để không bị trừ điều kiện dự thi."@vi,
-            "Viết đơn xin nghỉ học theo Mẫu số 03 (Phụ lục 4), kèm minh chứng liên quan."@vi ;
-        ns1:nopTai ns1:KhoaHoacVienDaoTao .
-
-    ns1:MauSo03DonXinNghiHoc ns1:soHieuMauTheoQuyetDinh "03" .
-}
-
-ns1:TD1052_D09 {
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Thủ tục bắt buộc mỗi học kỳ để sinh viên đăng ký các học phần sẽ học."@vi .
-}
-
-ns1:TD1052_D06K02dDD {
-    ns1:HocPhanHocTruoc ns1:noiDung "Học phần sinh viên phải học xong, có thể đạt hoặc không đạt, trước khi học các học phần tiếp theo."@vi .
-}
-
-ns1:TD1052_D02K04dB {
-    ns1:ThoiGianDaoTaoHinhThucVuaLamVuaHoc ns1:apDungChoHinhThucDaoTao ns1:DaoTaoVuaLamVuaHoc ;
-        ns1:noiDung "Hệ vừa làm vừa học có thời gian học chuẩn toàn khóa dài hơn hệ chính quy cùng ngành ít nhất 20%."@vi ;
-        ns1:tyLeToiThieu 20.0 .
-}
-
-ns1:TD1052_D22K01dC {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Điểm trung bình chung tích lũy toàn khóa học đạt từ 5,50 trở lên."@vi .
-}
-
-ns1:TD1052_D14K02 {
-    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ;
-        ns1:noiDung "Làm đơn đăng ký thực hiện đồ án tốt nghiệp theo Mẫu số 02 (Phụ lục 4)."@vi .
-
-    ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ns1:soHieuMauTheoQuyetDinh "02" .
-}
-
-ns1:TD1052_D06K02dI {
-    ns1:HocPhanThayThe ns1:noiDung "Học phần được dùng thay cho một học phần có trong chương trình đào tạo khóa trước nhưng khóa sau không còn tổ chức đào tạo, hoặc học phần tự chọn thay cho học phần tự chọn khác mà sinh viên học không đạt."@vi .
-}
-
-ns1:TD1052_D09K02dB {
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Đăng ký lớp của các học phần dự định học trong học kỳ, gồm học phần mới, học phần chưa đạt để học lại và học phần đã đạt để cải thiện điểm."@vi .
-}
-
-ns1:TD1052_D13K03dB {
-    ns1:DaoTaoTrucTuyenDongBo ns1:noiDung "Giảng viên và sinh viên cùng tham gia các hoạt động đào tạo tại cùng một thời điểm trên cùng một không gian học tập. Đây là hình thức dạy học hoàn toàn trực tuyến."@vi .
-}
-
-ns1:TD1052_D09K03 {
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLen ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình 4 năm, tối đa 32 tín chỉ đối với chương trình 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp. Không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
-        ns1:soTinChiToiDa 27 ;
-        ns1:soTinChiToiThieu 15 .
-
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ với chương trình 4 năm, tối đa 32 tín chỉ với chương trình 4,5 năm và chương trình đặc biệt."@vi .
-}
-
-ns1:TD753_D10K01 {
-    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Sau khi rút bớt, khối lượng học tập còn lại không được vi phạm giới hạn tối thiểu quy định tại khoản 3 và khoản 4 Điều 9 của Quy chế này."@vi .
-}
-
-ns1:TD1052_D20K01 {
-    ns1:ChinhSachCanhBaoKetQuaHocTap ns1:noiDung "Sau mỗi học kỳ chính, sinh viên nhận cảnh báo kết quả học tập khi thuộc một trong các trường hợp quy định."@vi .
-}
-
-ns1:TD1052_D26K01dC {
-    ns1:ThuTucChuyenTruong ns1:noiDung "Nơi chuyển đến có đủ điều kiện bảo đảm chất lượng và chưa vượt quá năng lực đào tạo đối với chương trình, ngành đào tạo đó."@vi .
-}
-
-ns1:TD1052_D21 {
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:canBieuMau ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:duocXetBoi ns1:HoiDongChuyenMon ;
-        ns1:noiDung "Thủ tục đề nghị công nhận kết quả đã tích lũy ở nơi khác và chuyển đổi sang tín chỉ của chương trình đang học."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-}
-
-ns1:TDForeignLanguageCertificateAbbreviationTable {
-    ns1: ns1:tenDayDuCuaChungChi "Тест по русскому языку как иностранному" .
-
-    ns1:DanhMucVietTatChungChiNgoaiNgu ns1:noiDung """| TT | Ngoại ngữ | Từ viết tắt | Viết đầy đủ |
-| :--- | :--- | :--- | :--- |
-| 1 | Tiếng Anh | CEFR | Common European Framework of Reference for Languages |
-| | | TOEIC | Test of English for International Communication |
-| | | TOEFL (iBT) | Test Of English as a Foreign Language (Internet Based Test) |
-| | | IELTS | International English Language Testing System |
-| 2 | Tiếng Trung | HSK | Hanyu Shuiping Kaoshi |
-| | | TOCFL | Test of Chinese as a Foreign Language |
-| 3 | Tiếng Nhật | JLPT | Japanese Language Proficiency Test |
-| | | JPT | Japanese Proficiency Test |
-| 4 | Tiếng Hàn | TOPIK | Test of Proficiency in Korean |
-| | | KLPT | Korean Language Proficiency Test |
-| 5 | Tiếng Pháp | DELF | Diplôme d'Études en Langue Française |
-| | | TCF | Test de Connaissance Français |
-| 6 | Tiếng Nga | ТРКИ | Тест по русскому языку как иностранному |"""@vi .
-
-    ns1:Delf ns1:tenDayDuCuaChungChi "Diplôme d'Études en Langue Française" .
-
-    ns1:Hsk ns1:tenDayDuCuaChungChi "Hanyu Shuiping Kaoshi" .
-
-    ns1:Ielts ns1:tenDayDuCuaChungChi "International English Language Testing System" .
-
-    ns1:Jlpt ns1:tenDayDuCuaChungChi "Japanese Language Proficiency Test" .
-
-    ns1:Jpt ns1:tenDayDuCuaChungChi "Japanese Proficiency Test" .
-
-    ns1:Klpt ns1:tenDayDuCuaChungChi "Korean Language Proficiency Test" .
-
-    ns1:Tcf ns1:tenDayDuCuaChungChi "Test de Connaissance Français" .
-
-    ns1:Tocfl ns1:tenDayDuCuaChungChi "Test of Chinese as a Foreign Language" .
-
-    ns1:ToeflIbt ns1:tenDayDuCuaChungChi "Test Of English as a Foreign Language (Internet Based Test)" .
-
-    ns1:Toeic ns1:tenDayDuCuaChungChi "Test of English for International Communication" .
-
-    ns1:Topik ns1:tenDayDuCuaChungChi "Test of Proficiency in Korean" .
-}
-
-ns1:TD1052_D28K03 {
-    ns1:MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/Uploads/38/Mẫu%20số%2013%20-Đơn%20đăng%20ký%20học%20cùng%20lúc%20hai%20chương%20trình%20đào%20tạo%20(mẫu%202).docx" ;
-        ns1:noiDung "Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
-        ns1:soHieuMauTrenWebsite "13" ;
-        ns1:ungVoiBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh .
-
-    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:canBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
-        ns1:noiDung "Sau khi có quyết định chấp thuận và được cấp mã số sinh viên riêng, bổ sung các học phần cần học vào kế hoạch học tập và đăng ký học phần bằng mã số của chương trình thứ hai."@vi,
-            "Sinh viên được cấp một mã số sinh viên riêng và được bảo lưu các học phần có nội dung, khối lượng kiến thức tương đương đã tích lũy ở chương trình thứ nhất."@vi,
-            "Thủ tục đăng ký học thêm một chương trình đào tạo thứ hai để lấy văn bằng thứ hai."@vi,
-            "Đăng ký học chương trình thứ hai vào đầu mỗi học kỳ chính theo thông báo hằng năm, dùng Mẫu số 15 (Phụ lục 4)."@vi .
-
-    ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ns1:soHieuMauTheoQuyetDinh "15" .
+ns1:TD1052_D04K02 {
+    ns1:DaoTaoVuaLamVuaHoc ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường hoặc tại cơ sở phối hợp đào tạo. Thời gian giảng dạy linh hoạt trong ngày và trong tuần."@vi .
 }
 
 ns1:TD1052_D22K01dE {
     ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Hoàn thành các nghĩa vụ khác theo quy định của Trường như trả sách thư viện, quyết toán đề tài nghiên cứu khoa học và học phí."@vi .
 }
 
-ns1:TDTuitionPaymentGuidanceSection02 {
-    ns1:MienPhiMobileBankingHoacInternetBanking ns1:apDungChoPhuongThucDong ns1:ThanhToanBangMobileBankingHoacInternetBanking ;
-        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
-        ns1:noiDung "Miễn phí Mobile Banking hoặc Internet Banking"@vi .
-
-    ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
-        ns1:hoTroPhuongThuc ns1:NopTienMatTaiQuayNganHang,
-            ns1:ThanhToanBangMaQr,
-            ns1:ThanhToanBangMobileBankingHoacInternetBanking,
-            ns1:ThanhToanQuaCongVnpay ;
-        ns1:noiDung "Nếu có tài khoản Agribank, Vietinbank hoặc Liên Việt PostBank, dùng Mobile Banking hoặc Internet Banking để đóng học phí, miễn phí."@vi,
-            "Thủ tục nộp học phí qua cổng thanh toán trực tuyến, ứng dụng ngân hàng hoặc quầy giao dịch."@vi .
-
-    ns1:ThanhToanBangMobileBankingHoacInternetBanking ns1:hoTroNganHang ns1:NganHangAgribank,
-            ns1:NganHangLienVietPostbank,
-            ns1:NganHangVietinbank .
-}
-
-ns1:TD1052_D03K01 {
-    ns1:PhuongThucToChucDaoTaoTheoTinChi ns1:noiDung "Phương thức tổ chức đào tạo theo tín chỉ là cách thức tổ chức đào tạo theo từng lớp học phần, cho phép sinh viên tích lũy tín chỉ của từng học phần và thực hiện chương trình đào tạo theo kế hoạch học tập của cá nhân, phù hợp với kế hoạch giảng dạy của Trường."@vi .
-}
-
-ns1:TDVNPAYPaymentGuidanceVietcombankNote {
-    ns1:MienPhiVnpayDoiVoiTaiKhoanVietcombank ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
-        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
-        ns1:noiDung "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi .
-}
-
-ns1:TDEnglishRequirementTableSpecialProgram {
-    ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
-| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
-| 6 | Quản trị dịch vụ du lịch và lữ hành | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |"""@vi .
-}
-
-ns1:TD1052_D06K02dG {
-    ns1:HocPhanDieuKien ns1:noiDung "Học phần mà sinh viên phải hoàn thành trước khi tốt nghiệp nhưng kết quả không dùng để tính điểm trung bình chung tích lũy."@vi .
-}
-
-ns1:TD1052_D16K02dC {
-    ns1:DiemI ns1:kyHieuDiemChu "I" ;
-        ns1:noiDung "Điểm học phần chưa hoàn thiện do được phép hoãn thi, kiểm tra."@vi .
-
-    ns1:DiemP ns1:kyHieuDiemChu "P" ;
-        ns1:noiDung "Loại đạt không phân mức, áp dụng cho học phần chỉ yêu cầu đạt và không tính vào điểm trung bình học tập. Đạt từ 5 điểm trở lên."@vi .
-
-    ns1:DiemR ns1:kyHieuDiemChu "R" ;
-        ns1:noiDung "Điểm học phần bảo lưu được miễn học và công nhận tín chỉ."@vi .
-
-    ns1:DiemX ns1:kyHieuDiemChu "X" ;
-        ns1:noiDung "Điểm học phần chưa hoàn thiện do chưa đủ dữ liệu."@vi .
-
-    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
-}
-
-ns1:TD1052_D25K01dB {
-    ns1:ThuTucChuyenNganh ns1:noiDung "Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo xin chuyển đến trong cùng khóa tuyển sinh."@vi .
-}
-
-ns1:TD1052_D23K03dB {
-    ns1:HaHangTotNghiepDoBiKyLuat ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học."@vi .
-}
-
-ns1:TD1052_D20K02dB {
-    ns1:BuocThoiHocDoQuaThoiGianDaoTao ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá thời gian tối đa được phép học tại Trường."@vi .
-}
-
-ns1:TD1052_D24K01dB {
-    ns1:DuocDieuDongDuThiGiaiDauQuocTe ns1:noiDung "Sinh viên được cơ quan có thẩm quyền điều động, đại diện quốc gia tham dự các kỳ thi, giải đấu quốc tế."@vi .
-
-    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:DuocDieuDongDuThiGiaiDauQuocTe .
-}
-
-ns1:TD1052_D08K01dA {
-    ns1:LopHanhChinh ns1:noiDung "Lớp hành chính là lớp được thành lập ổn định trong cả khóa học theo ngành, chuyên ngành hoặc chương trình đào tạo, dùng để duy trì hoạt động đoàn thể, xét kết quả rèn luyện, xét khen thưởng và phổ biến thông tin. Mỗi lớp hành chính có mã số riêng, được bố trí cố vấn học tập và cần có tối thiểu 20 sinh viên."@vi .
-}
-
-ns1:TD1052_D15K01 {
-    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
-}
-
-ns1:TD1052_D21K06 {
-    ns1:MucTaiDonXinMienHocMienThiVaCongDiemThuong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx" ;
-        ns1:noiDung "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
-        ns1:soHieuMauTrenWebsite "6" ;
-        ns1:ungVoiBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong .
-
-    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
-        ns1:noiDung "Gửi hồ sơ về Phòng Đào tạo Đại học để được xem xét giải quyết."@vi,
-            "Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện."@vi,
-            "Viết đơn theo Mẫu số 07 (Phụ lục 4), kèm minh chứng hợp lệ."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-
-    ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ns1:soHieuMauTheoQuyetDinh "07" .
-}
-
-ns1:TD1052_D28K01dB {
-    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Học lực theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai; hoặc xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh."@vi .
-}
-
-ns1:TD1052_D06K02dH {
-    ns1:HocPhanTuongDuong ns1:noiDung "Một hay một nhóm học phần thuộc chương trình đào tạo của một khóa học hoặc một ngành khác đang tổ chức đào tạo tại Trường hoặc cơ sở đào tạo khác, được phép tích lũy để thay cho học phần trong chương trình đào tạo."@vi .
-}
-
-ns1:TD1052_D23K03dA {
-    ns1:HaHangTotNghiepDoHocLaiQuaNhieu ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình."@vi ;
-        ns1:tyLeToiDa 5.0 .
-}
-
-ns1:TD1052_D28K02 {
-    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện."@vi .
-}
-
-ns1:TD1052_D22K01dDD {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Hoàn thành các học phần Giáo dục quốc phòng - An ninh, Giáo dục thể chất và các học phần điều kiện khác nếu có."@vi .
-}
-
-ns1:TD1052_D29K03 {
-    ns1:ThuTucHocLienThong ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Sau khi trúng tuyển, thực hiện chương trình đào tạo và đăng ký học tập theo kế hoạch chung như các sinh viên khác cùng hình thức đào tạo."@vi .
-}
-
-ns1:TDClassSizeTable {
-    ns1:BangSiSoLopHocPhan ns1:noiDung """| **TT** | **Học phần** | **Số lượng sinh viên** | |
-| :---: | :--- | :---: | :---: |
-| | | **Tối thiểu** | **Tối đa** |
-| 1 | Giáo dục tổng quát | 50 | 100 |
-| 2 | Lý luận chính trị | 80 | * |
-| 3 | - Ngoại ngữ B1.1, B1.2;<br>- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |
-| 4 | - Tiếng anh chuyên ngành | 50 | 60 |
-| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |
-| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |
-| 7 | Giáo dục thể chất | 60 | 80 (LT) |
-| | | 45 | 60 (TH) |
-| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |
-| | | 45 | 70 (TH) |
-| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |
-| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |
-| 11 | Thực hành tại các phòng máy tính | 25 | 30 |
-| 12 | Thực hành các học phần khác | 20 | 25 |"""@vi .
-}
-
-ns1:TDScholarshipAnnouncementSection {
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien,
-            ns1:SinhVien ;
-        ns1:noiDung "Phòng Công tác Chính trị và Sinh viên công bố danh sách dự kiến trên trang của phòng, tách riêng chương trình chuẩn và chương trình đào tạo đặc biệt. Sinh viên tự kiểm tra và gửi thắc mắc theo địa chỉ ghi trong thông báo."@vi,
-            "Sinh viên có tên trong danh sách cung cấp số tài khoản Vietinbank và chi nhánh để nhận tiền, dùng địa chỉ thư điện tử do Trường cấp."@vi,
-            "Thời hạn phản hồi ghi trong từng thông báo. Đợt học kỳ I năm học 2025-2026 nhận thắc mắc đến hết ngày 30/3/2026."@vi .
-}
-
-ns1:TD1052_D27K03 {
-    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Đã kết thúc 01 năm học tại Trường và có điểm trung bình chung tích lũy đạt từ 6,00 trở lên."@vi .
-}
-
 ns1:TD1052_D28K01dA {
     ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Đã được xếp từ trình độ năm thứ hai trở lên của chương trình thứ nhất."@vi .
-}
-
-ns1:TD1052_D11 {
-    ns1:ThuTucDangKyHocLaiHocPhan ns1:noiDung "Thủ tục đăng ký học lại học phần có điểm dưới 5,0."@vi .
-}
-
-ns1:TDTuitionPaymentGuidanceSection03 {
-    ns1:MienPhiNopTienMatTaiQuayONhaTrang ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
-        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
-        ns1:noiDung "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi .
-
-    ns1:PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
-        ns1:mucLePhi "3300"^^xsd:nonNegativeInteger,
-            "5500"^^xsd:nonNegativeInteger ;
-        ns1:noiDung "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi .
-
-    ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
-        ns1:hoTroPhuongThuc ns1:NopTienMatTaiQuayNganHang,
-            ns1:ThanhToanBangMaQr,
-            ns1:ThanhToanBangMobileBankingHoacInternetBanking,
-            ns1:ThanhToanQuaCongVnpay ;
-        ns1:noiDung "Thủ tục nộp học phí qua cổng thanh toán trực tuyến, ứng dụng ngân hàng hoặc quầy giao dịch."@vi,
-            "Đến quầy giao dịch Agribank, Vietinbank hoặc Liên Việt PostBank nộp tiền mặt và cung cấp mã sinh viên cho ngân hàng tra cứu; tuyệt đối không cung cấp số tài khoản của Trường cho ngân hàng."@vi .
-
-    ns1:NopTienMatTaiQuayNganHang ns1:hoTroNganHang ns1:NganHangAgribank,
-            ns1:NganHangLienVietPostbank,
-            ns1:NganHangVietinbank .
-}
-
-ns1:TD1052_D24K01dD {
-    ns1:LyDoCaNhanKhac ns1:noiDung "Sinh viên nghỉ học tạm thời vì lý do cá nhân khác."@vi .
-
-    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:LyDoCaNhanKhac ;
-        ns1:noiDung "Phải đã học ít nhất 01 học kỳ tại Trường và không thuộc diện bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
-}
-
-ns1:TD1052_D21K07 {
-    ns1:ThoiHanHieuLucCuaHocPhanDuocCongNhan ns1:noiDung "Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi, điểm thưởng và chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi ;
-        ns1:soNam 5.0 .
-
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Chỉ công nhận học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi .
-}
-
-ns1:TD1052_D09K02dD {
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo."@vi .
-}
-
-ns1:TD1052_D02K04dA {
-    ns1:ThoiGianDaoTaoChuanToanKhoa ns1:noiDung "Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một chương trình đại học chính quy cấp bằng cử nhân là 4 năm, chương trình chuyên sâu đặc thù cấp bằng kỹ sư là 4,5 năm."@vi .
-}
-
-ns1:TD1052_D24K01dC {
-    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
-}
-
-ns1:TD1052_D13K02 {
-    ns1:TyLeToiDaDaoTaoTrucTuyen ns1:noiDung "Nhà trường áp dụng tối đa 30% tổng khối lượng chương trình đào tạo cho hoạt động dạy học trực tuyến. Trong trường hợp thiên tai, dịch bệnh phức tạp hoặc bất khả kháng khác, Nhà trường thực hiện theo hướng dẫn của Bộ Giáo dục và Đào tạo."@vi ;
-        ns1:tyLeToiDa 30.0 .
-}
-
-ns1:TD1052_D07K02dA {
-    ns1:HocKyChinh ns1:noiDung "Học kỳ I và học kỳ II kéo dài ít nhất 19 tuần, bao gồm 14 tuần học (trong đó có 01 tuần học số), 01 tuần thi giữa kỳ, 02 tuần thi cuối kỳ, 01 tuần chấm thi giữa kỳ và 01 tuần chấm thi cuối kỳ."@vi .
-}
-
-ns1:TDForeignLanguageCourseCatalogueTable {
-    ns1:DanhMucHocPhanNgoaiNgu ns1:noiDung "Danh mục học phần"@vi,
-            """| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |
-| :---: | :--- | :---: | :--- | :--- | :--- |
-| 1 | Ngoại ngữ A1 | 4 | Bậc 1 | Học phần điều kiện (HPĐK) | HPĐK |
-| 2 | Ngoại ngữ A2.1 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |
-| 3 | Ngoại ngữ A2.2 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |
-| 4 | Ngoại ngữ B1.1 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |
-| 5 | Ngoại ngữ B1.2 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |
-| 6 | Ngoại ngữ B2.1 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |
-| 7 | Ngoại ngữ B2.2 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |"""@vi .
-
-    ns1:NgoaiNguA1 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguA21 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguA22 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguB11 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguB12 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguB21 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
-        ns1:soTinChi 4 .
-
-    ns1:NgoaiNguB22 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
-        ns1:soTinChi 4 .
-}
-
-ns1:TD1052_D20K01dB {
-    ns1:CanhBaoDoDiemTrungBinhHocKy ns1:noiDung "Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học, dưới 4,50 đối với học kỳ tiếp theo."@vi .
-}
-
-ns1:TD1052_D22 {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
-        ns1:noiDung "Quy trình xét và công nhận tốt nghiệp cho sinh viên đủ điều kiện, thực hiện sau mỗi quý."@vi .
-}
-
-ns1:TD1052_D22K03 {
-    ns1:ThuTucDeNghiXetTotNghiepSom ns1:canBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
-        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
-        ns1:noiDung "Thủ tục đề nghị được xét tốt nghiệp sớm hơn thời gian thiết kế của khóa học."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc ;
-        ns1:thuTucTiepTheo ns1:ThuTucXetVaCongNhanTotNghiep .
-
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiThucHien ns1:HoiDongXetTotNghiep ;
-        ns1:noiDung "Hội đồng xét tốt nghiệp lập danh sách những sinh viên đủ điều kiện tốt nghiệp sau mỗi quý."@vi .
-}
-
-ns1:TD1052_D26K01dD {
-    ns1:ThuTucChuyenTruong ns1:noiDung "Được sự đồng ý của Hiệu trưởng cơ sở đào tạo xin chuyển đi và cơ sở đào tạo xin chuyển đến."@vi .
-}
-
-ns1:TD1052_D14K01 {
-    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:noiDung "Sinh viên được xếp hạng năm thứ 4 và đủ điều kiện thực hiện đồ án tốt nghiệp theo quy định của Trường."@vi .
-}
-
-ns1:TD1052_D30K02 {
-    ns1:ThuTucXinHoanThi ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
-        ns1:canBieuMau ns1:MauSo04DonXinHoanThi ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo04DonXinHoanThi ;
-        ns1:noiDung "Gửi đơn tới Phòng Đào tạo Đại học."@vi,
-            "Nộp đơn trước ngày thi."@vi,
-            "Thủ tục xin hoãn thi kết thúc học phần vì lý do sức khỏe."@vi,
-            "Viết đơn xin hoãn thi theo Mẫu số 04 (Phụ lục 4), kèm Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."@vi,
-            "Ốm trong đợt thi kết thúc học phần."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-
-    ns1:MauSo04DonXinHoanThi ns1:soHieuMauTheoQuyetDinh "04" .
-
-    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
-}
-
-ns1:TDOrganizationStructureListing {
-    ns1:TruongDaiHocNhaTrang ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
-        ns1:dienThoai "0258 3831149" ;
-        ns1:hopThu "dhnt@ntu.edu.vn" ;
-        ns1:websiteDonVi "https://ntu.edu.vn" .
-
-    ns1:PhongDaoTaoDaiHoc ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
-        ns1:dienThoai "0258 3831148" ;
-        ns1:hopThu "daotao@ntu.edu.vn" ;
-        ns1:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
-        ns1:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
-
-    ns1:PhongCongTacChinhTriVaSinhVien ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
-        ns1:dienThoai "0258 222 1900" ;
-        ns1:hopThu "ctsv@ntu.edu.vn" ;
-        ns1:viTri "Khu Nhà Hiệu bộ"@vi ;
-        ns1:websiteDonVi "https://phongctsv.ntu.edu.vn" .
 }
 
 ns1:TDAcademicProgramCatalogueTable {
@@ -842,6 +199,111 @@ ns1:TDAcademicProgramCatalogueTable {
     ns1:QuanTriKinhDoanh ns1:thuocKhoiNganh ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat .
 
     ns1:TaiChinhNganHang ns1:thuocKhoiNganh ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat .
+}
+
+ns1:TD1052_D11K04 {
+    ns1:ThuTucDangKyHocCaiThienDiem ns1:noiDung "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi,
+            "Điểm tích lũy được ghi nhận theo lần học có điểm cao hơn."@vi .
+
+    ns1:ThuTucDangKyHocLaiHocPhan ns1:noiDung "Kết quả học tập tích lũy được ghi nhận cho lần học cùng học phần có điểm cao hơn."@vi .
+}
+
+ns1:TD1052_D25K03 {
+    ns1:ThuTucChuyenNganh ns1:noiDung "Sinh viên được bảo lưu điểm các học phần đã học có nội dung và khối lượng kiến thức tương đương; không được gia hạn thời gian học tập tối đa."@vi .
+}
+
+ns1:TD1052_D09K02dD {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo."@vi .
+}
+
+ns1:TD1052_D20K01dA {
+    ns1:CanhBaoDoNoTinChi ns1:noiDung "Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi .
+}
+
+ns1:TD1052_D09K03 {
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLen ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình 4 năm, tối đa 32 tín chỉ đối với chương trình 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp. Không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
+        ns1:soTinChiToiDa 27 ;
+        ns1:soTinChiToiThieu 15 .
+
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ với chương trình 4 năm, tối đa 32 tín chỉ với chương trình 4,5 năm và chương trình đặc biệt."@vi .
+}
+
+ns1:TD1052_D14K01 {
+    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:noiDung "Sinh viên được xếp hạng năm thứ 4 và đủ điều kiện thực hiện đồ án tốt nghiệp theo quy định của Trường."@vi .
+}
+
+ns1:TDTuitionPaymentGuidanceSection03 {
+    ns1:MienPhiNopTienMatTaiQuayONhaTrang ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
+        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
+        ns1:noiDung "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi .
+
+    ns1:PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
+        ns1:mucLePhi "3300"^^xsd:nonNegativeInteger,
+            "5500"^^xsd:nonNegativeInteger ;
+        ns1:noiDung "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi .
+
+    ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
+        ns1:hoTroPhuongThuc ns1:NopTienMatTaiQuayNganHang,
+            ns1:ThanhToanBangMaQr,
+            ns1:ThanhToanBangMobileBankingHoacInternetBanking,
+            ns1:ThanhToanQuaCongVnpay ;
+        ns1:noiDung "Thủ tục nộp học phí qua cổng thanh toán trực tuyến, ứng dụng ngân hàng hoặc quầy giao dịch."@vi,
+            "Đến quầy giao dịch Agribank, Vietinbank hoặc Liên Việt PostBank nộp tiền mặt và cung cấp mã sinh viên cho ngân hàng tra cứu; tuyệt đối không cung cấp số tài khoản của Trường cho ngân hàng."@vi .
+
+    ns1:NopTienMatTaiQuayNganHang ns1:hoTroNganHang ns1:NganHangAgribank,
+            ns1:NganHangLienVietPostbank,
+            ns1:NganHangVietinbank .
+}
+
+ns1:TD1052_D20K01 {
+    ns1:ChinhSachCanhBaoKetQuaHocTap ns1:noiDung "Sau mỗi học kỳ chính, sinh viên nhận cảnh báo kết quả học tập khi thuộc một trong các trường hợp quy định."@vi .
+}
+
+ns1:TD1052_D04K01 {
+    ns1:DaoTaoChinhQuy ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường; thực hành, thực tập, trải nghiệm thực tế và giảng dạy trực tuyến có thể thực hiện ngoài Trường. Thời gian giảng dạy từ 06 giờ đến 20 giờ, từ thứ 2 đến thứ 7."@vi .
+}
+
+ns1:TD1052_D23K03dB {
+    ns1:HaHangTotNghiepDoBiKyLuat ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học."@vi .
+}
+
+ns1:TD1052_D02K04dC {
+    ns1:ThoiGianToiDaHoanThanhKhoaHoc ns1:noiDung "Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian theo kế hoạch học tập chuẩn toàn khóa."@vi .
+}
+
+ns1:TD1052_D26K02_DiemAKhoan2D {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang (Mẫu số 13 - Phụ lục 4 kèm theo)."@vi .
+}
+
+ns1:TD1052_D24 {
+    ns1:ThuTucXinThoiHoc ns1:canBieuMau ns1:MauSo10DonXinThoiHoc ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Thủ tục cho phép sinh viên chấm dứt việc học tại Trường theo nguyện vọng cá nhân."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+
+    ns1:ThuTucNghiHocTamThoi ns1:canBieuMau ns1:MauSo09DonXinNghiHocTamThoi ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Thủ tục cho phép sinh viên tạm dừng việc học và bảo lưu kết quả đã tích lũy."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:thuTucTiepTheo ns1:ThuTucXinHocTroLai .
+
+    ns1:ThuTucXinHocTroLai ns1:canBieuMau ns1:MauSo11DonXinHocTroLai ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Thủ tục cho phép sinh viên hết thời gian nghỉ học tạm thời quay lại tiếp tục học."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+}
+
+ns1:TD1052_D02K04dA {
+    ns1:ThoiGianDaoTaoChuanToanKhoa ns1:noiDung "Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một chương trình đại học chính quy cấp bằng cử nhân là 4 năm, chương trình chuyên sâu đặc thù cấp bằng kỹ sư là 4,5 năm."@vi .
+}
+
+ns1:TD1052_D26K01dB {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo cùng khóa tuyển sinh tại Trường xin chuyển đến."@vi .
+}
+
+ns1:TD1052_D07K02dA {
+    ns1:HocKyChinh ns1:noiDung "Học kỳ I và học kỳ II kéo dài ít nhất 19 tuần, bao gồm 14 tuần học (trong đó có 01 tuần học số), 01 tuần thi giữa kỳ, 02 tuần thi cuối kỳ, 01 tuần chấm thi giữa kỳ và 01 tuần chấm thi cuối kỳ."@vi .
 }
 
 {
@@ -1305,6 +767,14 @@ ns1:TDAcademicProgramCatalogueTable {
     ns1:TD1052_D26K02 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 2 Điều 26"@vi .
+
+    ns1:TD1052_D26K02_DiemAKhoan2D a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "điểm a khoản 2 Điều 26"@vi .
+
+    ns1:TD1052_D26K02_DiemBKhoan2D a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "điểm b khoản 2 Điều 26"@vi .
 
     ns1:TD1052_D27 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
@@ -2355,12 +1825,6 @@ ns1:TDAcademicProgramCatalogueTable {
     ns1:ThanhToanBangMaQr a ns1:PhuongThucDongHocPhi ;
         rdfs:label "Thanh toán bằng mã QR"@vi .
 
-    ns1:ThuTucChuyenTruong a ns1:ThuTucHocVu ;
-        rdfs:label "Thủ tục chuyển trường"@vi ;
-        skos:altLabel "chuyển sang trường khác"@vi,
-            "chuyển trường"@vi,
-            "xin chuyển trường"@vi .
-
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
         skos:altLabel "chuyển đổi tín chỉ"@vi,
@@ -2418,6 +1882,12 @@ ns1:TDAcademicProgramCatalogueTable {
     ns1:ThanhToanBangMobileBankingHoacInternetBanking a ns1:PhuongThucDongHocPhi ;
         rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi .
 
+    ns1:ThuTucChuyenTruong a ns1:ThuTucHocVu ;
+        rdfs:label "Thủ tục chuyển trường"@vi ;
+        skos:altLabel "chuyển sang trường khác"@vi,
+            "chuyển trường"@vi,
+            "xin chuyển trường"@vi .
+
     ns1:KhoiNganhViiNhanVanXaHoiDuLichDichVuVaMoiTruong a ns1:KhoiNganh ;
         rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi .
 
@@ -2466,14 +1936,36 @@ ns1:TDAcademicProgramCatalogueTable {
         ns1:soHieu "1052/QĐ-ĐHNT"@vi .
 }
 
-ns1:TD1052_D27K04 {
-    ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ns1:soHieuMauTheoQuyetDinh "14" .
+ns1:TD1052_D31 {
+    ns1:ChinhSachXuLySinhVienViPham ns1:noiDung "Gian lận trong học tập, kiểm tra hoặc thi học phần bị xử lý kỷ luật riêng cho từng học phần vi phạm, theo Quy chế công tác sinh viên."@vi .
+}
 
-    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ;
-        ns1:noiDung "Theo dõi thông báo về việc đăng ký tham gia chương trình trao đổi vào đầu mỗi học kỳ."@vi,
-            "Đăng ký học theo Mẫu số 14 (Phụ lục 4) và gửi về Phòng Đào tạo Đại học."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+ns1:TD1052_D06K02dB {
+    ns1:HocPhanTuChon ns1:noiDung "Học phần chứa đựng những nội dung kiến thức cần thiết, sinh viên được tự chọn theo hướng dẫn của Trường nhằm đa dạng hóa hướng chuyên môn hoặc tự chọn tùy ý để tích lũy đủ số học phần quy định."@vi .
+}
+
+ns1:TD1052_D08K02dA {
+    ns1:LopHocPhan ns1:noiDung "Lớp học phần là lớp mà sinh viên đăng ký theo học cùng học phần trong một học kỳ. Mỗi học phần có thể có nhiều lớp học phần với mã số nhóm khác nhau. Lớp học phần được áp dụng cho hình thức đào tạo chính quy."@vi .
+}
+
+ns1:TD1052_D26K02 {
+    ns1:MucTaiDonXinChuyenTruong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
+        ns1:noiDung "Đơn xin chuyển trường"@vi ;
+        ns1:soHieuMauTrenWebsite "11" ;
+        ns1:ungVoiBieuMau ns1:MauSo13DonXinChuyenTruong .
+
+    ns1:MauSo13DonXinChuyenTruong ns1:soHieuMauTheoQuyetDinh "13" .
+
+    ns1:ThuTucChuyenTruong ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo13DonXinChuyenTruong ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+}
+
+ns1:TD1052_D19K03 {
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:noiDung "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi,
+            "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè."@vi .
 }
 
 ns1:TD1052_D29 {
@@ -2481,29 +1973,50 @@ ns1:TD1052_D29 {
         ns1:thuTucTiepTheo ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi .
 }
 
-ns1:TD1052_D20K01dC {
-    ns1:CanhBaoDoDiemTrungBinhTichLuy ns1:noiDung "Điểm trung bình tích lũy đạt dưới 5,20 đối với sinh viên năm thứ nhất, dưới 5,30 đối với năm thứ hai, dưới 5,40 đối với năm thứ ba, hoặc dưới 5,50 đối với các năm tiếp theo."@vi .
+ns1:TD1052_D26K01dC {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Nơi chuyển đến có đủ điều kiện bảo đảm chất lượng và chưa vượt quá năng lực đào tạo đối với chương trình, ngành đào tạo đó."@vi .
 }
 
-ns1:TD1052_D29K02 {
-    ns1:ThuTucHocLienThong ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Theo dõi thông báo tuyển sinh liên thông hằng năm của Nhà trường và đăng ký xét tuyển."@vi,
-            "Đăng ký vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hằng năm."@vi .
+ns1:TD1052_D18K03 {
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:noiDung "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi,
+            "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè."@vi .
 }
 
-ns1:TDScholarshipCriteriaGeneralSection {
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:noiDung "Còn trong thời gian đào tạo theo kế hoạch của khóa học."@vi,
-            "Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên, và không bị kỷ luật từ mức khiển trách trở lên."@vi,
-            "Sinh viên đủ điều kiện được cấp học bổng khuyến khích học tập của học kỳ, mức tiền theo xếp loại và theo chương trình chuẩn hay chương trình đào tạo đặc biệt."@vi,
-            "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi .
+ns1:TD1052_D08K01dA {
+    ns1:LopHanhChinh ns1:noiDung "Lớp hành chính là lớp được thành lập ổn định trong cả khóa học theo ngành, chuyên ngành hoặc chương trình đào tạo, dùng để duy trì hoạt động đoàn thể, xét kết quả rèn luyện, xét khen thưởng và phổ biến thông tin. Mỗi lớp hành chính có mã số riêng, được bố trí cố vấn học tập và cần có tối thiểu 20 sinh viên."@vi .
 }
 
-ns1:TD1052_D17K01dB {
-    ns1:DieuKienDuThiHocPhanThucHanh ns1:noiDung "Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa hoặc viện đào tạo xem xét xử lý."@vi ;
-        ns1:tyLeToiThieu 100.0 .
+ns1:TD1052_D06K02dC {
+    ns1:HocPhanTienQuyet ns1:noiDung "Học phần sinh viên phải tích lũy mới được học các học phần tiếp theo."@vi .
+}
 
-    ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học; với học phần thực hành, thí nghiệm, thực tập ngoài trường phải tham dự 100% số giờ học."@vi .
+ns1:TD753_D10K03 {
+    ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 ns1:soHieuMauTheoQuyetDinh "2" .
+
+    ns1:ThuTucRutBotHocPhanDaDangKy ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Tự rút bớt học phần trên Hệ thống quản lý đào tạo từ tài khoản cá nhân, hoặc nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo."@vi .
+}
+
+ns1:TD753_D10K02 {
+    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Chỉ được chấp nhận tối đa trong tuần thứ hai của học kỳ chính, tuần thứ nhất của học kỳ phụ."@vi,
+            "Quá thời hạn, học phần vẫn được giữ nguyên như đã đăng ký; sinh viên không đi học thì xem như tự ý bỏ học và phải nhận điểm 0."@vi .
+}
+
+ns1:TD1052_D15K01 {
+    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
+}
+
+ns1:TD1052_D26 {
+    ns1:ThuTucChuyenTruong ns1:canBieuMau ns1:MauSo13DonXinChuyenTruong ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Thủ tục xin chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác hoặc ngược lại."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+}
+
+ns1:TD1052_D11 {
+    ns1:ThuTucDangKyHocLaiHocPhan ns1:noiDung "Thủ tục đăng ký học lại học phần có điểm dưới 5,0."@vi .
 }
 
 ns1:TD1052_D09K04 {
@@ -2512,6 +2025,56 @@ ns1:TD1052_D09K04 {
         ns1:soTinChiToiThieu 12 .
 
     ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Sinh viên xếp loại học lực yếu kém của học kỳ liền trước đăng ký tối thiểu 12 tín chỉ và tối đa 18 tín chỉ."@vi .
+}
+
+ns1:TD1052_D27K02 {
+    ns1:GioiHanTinChiTichLuyTaiTruongKhac ns1:noiDung "Sinh viên tham gia chương trình trao đổi có thể đăng ký học một số học phần tại trường khác với số lượng tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi ;
+        ns1:tyLeToiDa 25.0 .
+
+    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Số tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi .
+}
+
+ns1:TD1052_D09 {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Thủ tục bắt buộc mỗi học kỳ để sinh viên đăng ký các học phần sẽ học."@vi .
+}
+
+ns1:TD1052_D17K02 {
+    ns1:HauQuaCuaViecBiCamThiHoacVangThi ns1:noiDung "Sinh viên bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 ở kỳ thi đó."@vi .
+}
+
+ns1:TD1052_D06K02dA {
+    ns1:HocPhanBatBuoc ns1:noiDung "Học phần chứa đựng những nội dung kiến thức chính yếu của mỗi chương trình đào tạo và bắt buộc sinh viên phải tích lũy."@vi .
+}
+
+ns1:TD1052_D16K01 {
+    ns1:DanhGiaCuoiKy ns1:noiDung "Thường dưới dạng bài thi viết, vấn đáp, thực hành hoặc sản phẩm tổng hợp, được tổ chức vào cuối học phần."@vi .
+
+    ns1:DanhGiaQuaTrinh ns1:noiDung "Gồm điểm chuyên cần, điểm kiểm tra, bài tập, sản phẩm học tập và điểm đánh giá giữa kỳ nếu có."@vi .
+}
+
+ns1:TD1052_D20K03 {
+    ns1:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc ns1:canBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
+        ns1:noiDung "Những sinh viên thuộc diện bị buộc thôi học quy định tại khoản 2 Điều này được quyền viết đơn (Mẫu số 05 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển qua chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường."@vi,
+            "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển chương trình đào tạo, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+
+    ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ns1:soHieuMauTheoQuyetDinh "05" .
+}
+
+ns1:TD1052_D24K01dA {
+    ns1:DuocDieuDongVaoLucLuongVuTrang ns1:noiDung "Sinh viên được điều động vào lực lượng vũ trang."@vi .
+
+    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:DuocDieuDongVaoLucLuongVuTrang .
+}
+
+ns1:TD1052_D17K01dA {
+    ns1:DieuKienDuThiHocPhanLyThuyet ns1:noiDung "Đối với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần."@vi ;
+        ns1:tyLeToiThieu 80.0 .
+
+    ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học; với học phần thực hành, thí nghiệm, thực tập ngoài trường phải tham dự 100% số giờ học."@vi .
 }
 
 ns1:TDAcademicPerformanceTable {
@@ -2525,88 +2088,12 @@ ns1:TDAcademicPerformanceTable {
 | 0,00 ÷ 3,99 | Kém |"""@vi .
 }
 
-ns1:TD1052_D25 {
-    ns1:ThuTucChuyenNganh ns1:canBieuMau ns1:MauSo12DonXinChuyenNganh ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:noiDung "Thủ tục cho phép sinh viên chuyển sang một ngành đào tạo khác trong cùng bậc học."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
-}
-
-ns1:TD1052_D01K02 {
-    ns1:PhamViVaDoiTuongApDungCuaQuyChe ns1:noiDung "Quy chế áp dụng đối với sinh viên học theo hình thức đào tạo chính quy và vừa làm vừa học; sinh viên học cùng lúc hai chương trình; sinh viên liên thông đối với người có văn bằng khác; sinh viên theo chương trình trao đổi và công nhận tín chỉ; các khoa hoặc viện đào tạo, đơn vị quản lý đào tạo, giảng viên và các đơn vị, cá nhân có liên quan."@vi .
+ns1:TD753_D10K01 {
+    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Sau khi rút bớt, khối lượng học tập còn lại không được vi phạm giới hạn tối thiểu quy định tại khoản 3 và khoản 4 Điều 9 của Quy chế này."@vi .
 }
 
 ns1:TD1052_D22K01dD {
     ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo."@vi .
-}
-
-ns1:TD1052_D28K05 {
-    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai, và chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất."@vi .
-}
-
-ns1:TD1052_D22K02 {
-    ns1:ThuTucDeNghiXetTotNghiepSom ns1:canBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
-        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
-        ns1:noiDung "Gửi đơn tới Phòng Đào tạo Đại học."@vi,
-            "Thủ tục đề nghị được xét tốt nghiệp sớm hơn thời gian thiết kế của khóa học."@vi,
-            "Viết đơn đề nghị được xét tốt nghiệp theo Mẫu số 08 (Phụ lục 4)."@vi,
-            "Đã đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc ;
-        ns1:thuTucTiepTheo ns1:ThuTucXetVaCongNhanTotNghiep .
-
-    ns1:MauSo08DonDeNghiXetTotNghiepSom ns1:soHieuMauTheoQuyetDinh "08" .
-}
-
-ns1:TD1052_D25K01dA {
-    ns1:ThuTucChuyenNganh ns1:noiDung "Không đang là sinh viên năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định."@vi .
-}
-
-ns1:TD1052_D18K03 {
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
-        ns1:noiDung "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi,
-            "Trường xét học bổng theo điểm trung bình chung của từng học kỳ chính, không xét kết quả học kỳ hè."@vi .
-}
-
-ns1:TD1052_D21K03 {
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Kết quả được công nhận và chuyển đổi theo từng học phần, theo từng nhóm học phần, hoặc theo cả chương trình đào tạo."@vi .
-}
-
-ns1:TDScholarshipCriteriaSpecificSection {
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:noiDung "Không hoãn thi trong kỳ, trừ trường hợp hoãn do trùng lịch thi và đã thi lại trong cùng đợt; học kỳ đầu sau khi chuyển ngành không được xét."@vi,
-            "Mọi học phần trong kỳ phải đạt từ 5,5 điểm trở lên ngay ở lần thi đầu; điểm Giáo dục thể chất và Giáo dục quốc phòng không tính vào điểm xét."@vi,
-            "Đăng ký tối thiểu 14 tín chỉ trong học kỳ theo kế hoạch của chương trình đào tạo."@vi .
-}
-
-ns1:TD1052_D09K02dA {
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Tìm hiểu chương trình đào tạo, kế hoạch giảng dạy trong học kỳ và kiểm tra lại kết quả học tập để lập kế hoạch học tập phù hợp."@vi .
-}
-
-ns1:TD1052_D24K01dA {
-    ns1:DuocDieuDongVaoLucLuongVuTrang ns1:noiDung "Sinh viên được điều động vào lực lượng vũ trang."@vi .
-
-    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:DuocDieuDongVaoLucLuongVuTrang .
-}
-
-ns1:TD1052_D14K03 {
-    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:noiDung "Sinh viên không đủ điều kiện thực hiện đồ án tốt nghiệp phải làm các chuyên đề tốt nghiệp hoặc học các học phần tốt nghiệp theo quy định của chương trình đào tạo."@vi .
-}
-
-ns1:TD1052_D05K02 {
-    ns1:QuyDoiGioHocCuaMotTinChi ns1:noiDung "Một tín chỉ tương đương 50 giờ học tập định mức. Đối với hoạt động trên lớp, một tín chỉ yêu cầu tối thiểu 15 giờ giảng, hoặc 30 giờ thực hành, thí nghiệm, thảo luận, hoặc 45 giờ thực tập tại cơ sở ngoài trường, làm tiểu luận, bài tập lớn, đồ án, khóa luận, chuyên đề tốt nghiệp. Một giờ giảng được tính bằng 50 phút."@vi .
-}
-
-ns1:TD1052_D25K01dD {
-    ns1:ThuTucChuyenNganh ns1:noiDung "Nhà trường có đủ điều kiện bảo đảm chất lượng và chưa vượt quá năng lực đào tạo của ngành xin chuyển đến."@vi .
-}
-
-ns1:TD753_D10 {
-    ns1:ThuTucRutBotHocPhanDaDangKy ns1:canBieuMau ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 ;
-        ns1:noiDung "Thủ tục cho phép sinh viên hủy bớt một hoặc một số học phần đã đăng ký trong học kỳ khi thấy không thể hoàn thành khối lượng đã đăng ký."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
 }
 
 ns1:TD1052_D24K02 {
@@ -2614,108 +2101,175 @@ ns1:TD1052_D24K02 {
             "Sinh viên đã thôi học, nếu muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác."@vi .
 }
 
-ns1:TD1052_D11K04 {
-    ns1:ThuTucDangKyHocCaiThienDiem ns1:noiDung "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi,
-            "Điểm tích lũy được ghi nhận theo lần học có điểm cao hơn."@vi .
-
-    ns1:ThuTucDangKyHocLaiHocPhan ns1:noiDung "Kết quả học tập tích lũy được ghi nhận cho lần học cùng học phần có điểm cao hơn."@vi .
+ns1:TD1052_D14K03 {
+    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:noiDung "Sinh viên không đủ điều kiện thực hiện đồ án tốt nghiệp phải làm các chuyên đề tốt nghiệp hoặc học các học phần tốt nghiệp theo quy định của chương trình đào tạo."@vi .
 }
 
-ns1:TD1052_D06K02dE {
-    ns1:HocPhanSongHanh ns1:noiDung "Học phần sinh viên có thể học cùng với các học phần khác trong một học kỳ."@vi .
+ns1:TDForeignLanguageCertificateAbbreviationTable {
+    ns1: ns1:tenDayDuCuaChungChi "Тест по русскому языку как иностранному" .
+
+    ns1:DanhMucVietTatChungChiNgoaiNgu ns1:noiDung """| TT | Ngoại ngữ | Từ viết tắt | Viết đầy đủ |
+| :--- | :--- | :--- | :--- |
+| 1 | Tiếng Anh | CEFR | Common European Framework of Reference for Languages |
+| | | TOEIC | Test of English for International Communication |
+| | | TOEFL (iBT) | Test Of English as a Foreign Language (Internet Based Test) |
+| | | IELTS | International English Language Testing System |
+| 2 | Tiếng Trung | HSK | Hanyu Shuiping Kaoshi |
+| | | TOCFL | Test of Chinese as a Foreign Language |
+| 3 | Tiếng Nhật | JLPT | Japanese Language Proficiency Test |
+| | | JPT | Japanese Proficiency Test |
+| 4 | Tiếng Hàn | TOPIK | Test of Proficiency in Korean |
+| | | KLPT | Korean Language Proficiency Test |
+| 5 | Tiếng Pháp | DELF | Diplôme d'Études en Langue Française |
+| | | TCF | Test de Connaissance Français |
+| 6 | Tiếng Nga | ТРКИ | Тест по русскому языку как иностранному |"""@vi .
+
+    ns1:Delf ns1:tenDayDuCuaChungChi "Diplôme d'Études en Langue Française" .
+
+    ns1:Hsk ns1:tenDayDuCuaChungChi "Hanyu Shuiping Kaoshi" .
+
+    ns1:Ielts ns1:tenDayDuCuaChungChi "International English Language Testing System" .
+
+    ns1:Jlpt ns1:tenDayDuCuaChungChi "Japanese Language Proficiency Test" .
+
+    ns1:Jpt ns1:tenDayDuCuaChungChi "Japanese Proficiency Test" .
+
+    ns1:Klpt ns1:tenDayDuCuaChungChi "Korean Language Proficiency Test" .
+
+    ns1:Tcf ns1:tenDayDuCuaChungChi "Test de Connaissance Français" .
+
+    ns1:Tocfl ns1:tenDayDuCuaChungChi "Test of Chinese as a Foreign Language" .
+
+    ns1:ToeflIbt ns1:tenDayDuCuaChungChi "Test Of English as a Foreign Language (Internet Based Test)" .
+
+    ns1:Toeic ns1:tenDayDuCuaChungChi "Test of English for International Communication" .
+
+    ns1:Topik ns1:tenDayDuCuaChungChi "Test of Proficiency in Korean" .
 }
 
-ns1:TD1052_D20K01dA {
-    ns1:CanhBaoDoNoTinChi ns1:noiDung "Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi .
+ns1:TD1052_D17K04 {
+    ns1:ThuTucXinHoanThi ns1:noiDung "Sinh viên được dự thi cuối kỳ học phần đó trong thời hạn 02 học kỳ chính tiếp theo; quá thời hạn này điểm đánh giá cuối kỳ sẽ là 0."@vi .
 }
 
-ns1:TD1052_D21K04 {
-    ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi ns1:noiDung "Khối lượng tối đa được công nhận kết quả học tập và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi ;
-        ns1:tyLeToiDa 50.0 .
-
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Khối lượng được công nhận và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi .
+ns1:TD1052_D25K01dA {
+    ns1:ThuTucChuyenNganh ns1:noiDung "Không đang là sinh viên năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định."@vi .
 }
 
-ns1:TDUndergraduateFormCatalogueListing {
-    ns1:MucTaiDonXinBaoLuuHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2014%20-%20%C4%90%C6%A1n%20xin%20b%E1%BA%A3o%20l%C6%B0u%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
-        ns1:noiDung "Đơn xin bảo lưu học phần"@vi ;
-        ns1:soHieuMauTrenWebsite "14" .
+ns1:TD1052_D14K02 {
+    ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ns1:soHieuMauTheoQuyetDinh "02" .
 
-    ns1:MucTaiDonXinCapBanSaoBang ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/%C4%90%C6%A0N%20XIN%20C%E1%BA%A4P%20B%E1%BA%A2N%20SAO%20B%E1%BA%B0NG.docx" ;
-        ns1:noiDung "Đơn xin cấp bản sao bằng"@vi .
+    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ;
+        ns1:noiDung "Làm đơn đăng ký thực hiện đồ án tốt nghiệp theo Mẫu số 02 (Phụ lục 4)."@vi .
+}
 
-    ns1:MucTaiDonXinChuyenChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf",
-            "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
-        ns1:noiDung "Đơn xin chuyển Chương trình đào tạo"@vi ;
-        ns1:soHieuMauTrenWebsite "5",
-            "5A" .
+ns1:TDOtherLanguageConversionTableStandardProgram {
+    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | > 100 | TOPIK 1 | 200 | |
+| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | > 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
+| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | > 300 | |
+| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | Đạt học phần điều kiện: Ngoại ngữ B1.1, B1.2 |
+| Bậc 5 | | | N2 | 740 | TRKI 3 | | | TOPIK 5 | > 400 | |
+| Bậc 6 | | | N1 | 880 | TRKI 4 | | | TOPIK 6 | > 450 | |"""@vi .
+}
 
-    ns1:MucTaiDonXinChuyenHocPhanThayTheTrongCtdt ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20HP%20thay%20th%E1%BA%BF.doc" ;
-        ns1:noiDung "Đơn xin chuyển học phần thay thế trong CTĐT"@vi .
+ns1:TD1052_D30K02 {
+    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
 
-    ns1:MucTaiDonXinChuyenNganhChuongTrinhMinhPhuCtDaiChuan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/20210917_Mẫu%20số%2010B%20-%20Đơn%20xin%20chuyển%20ngành%20(CT%20Minh%20Phú%20-%20NTU).docx" ;
-        ns1:noiDung "Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi ;
-        ns1:soHieuMauTrenWebsite "10B" .
+    ns1:ThuTucXinHoanThi ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
+        ns1:canBieuMau ns1:MauSo04DonXinHoanThi ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo04DonXinHoanThi ;
+        ns1:noiDung "Sinh viên xin nghỉ ốm trong đợt thi kết thúc học phần phải viết đơn xin phép hoãn thi gửi Đơn vị quản lý đào tạo trước ngày thi, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên (Mẫu số 04 - Phụ lục 4 kèm theo)."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
 
-    ns1:MucTaiDonXinChuyenTruong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
-        ns1:noiDung "Đơn xin chuyển trường"@vi ;
-        ns1:soHieuMauTrenWebsite "11" ;
-        ns1:ungVoiBieuMau ns1:MauSo13DonXinChuyenTruong .
+    ns1:MauSo04DonXinHoanThi ns1:soHieuMauTheoQuyetDinh "04" .
+}
 
-    ns1:MucTaiDonXinHoanThi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2004%20-%20%C4%90%C6%A1n%20xin%20ho%C3%A3n%20thi.docx" ;
-        ns1:noiDung "Đơn xin hoãn thi"@vi ;
-        ns1:soHieuMauTrenWebsite "4" ;
-        ns1:ungVoiBieuMau ns1:MauSo04DonXinHoanThi .
+ns1:TD1052_D13K03dA {
+    ns1:DaoTaoTrucTuyenKhongDongBo ns1:noiDung "Sinh viên chủ động tham gia các hoạt động đào tạo trực tuyến trên cơ sở kế hoạch dạy học của giảng viên. Đây là hình thức kết hợp dạy học trực tiếp trên lớp với việc sử dụng hệ thống NTU E-learning."@vi .
+}
 
-    ns1:MucTaiDonXinHocTroLai ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
-        ns1:noiDung "Đơn xin học trở lại"@vi ;
-        ns1:soHieuMauTrenWebsite "9" ;
-        ns1:ungVoiBieuMau ns1:MauSo11DonXinHocTroLai .
+ns1:TD1052_D26K02_DiemBKhoan2D {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý chuyển đi và Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận hoặc không tiếp nhận sinh viên; công nhận và bảo lưu các học phần mà sinh viên chuyển đến được chuyển đổi tín chỉ và số học phần phải học bổ sung, trên cơ sở so sánh chương trình ở Trường sinh viên xin chuyển đi và Trường xin chuyển đến."@vi .
+}
 
-    ns1:MucTaiDonXinMoLopHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2001%20-%20%C4%90%C6%A1n%20xin%20m%E1%BB%9F%20l%E1%BB%9Bp%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
-        ns1:noiDung "Đơn xin mở lớp học phần"@vi ;
-        ns1:soHieuMauTrenWebsite "1" ;
-        ns1:ungVoiBieuMau ns1:MauSo01DonXinMoLopHocPhan .
+ns1:TD1052_D06K02dDD {
+    ns1:HocPhanHocTruoc ns1:noiDung "Học phần sinh viên phải học xong, có thể đạt hoặc không đạt, trước khi học các học phần tiếp theo."@vi .
+}
 
-    ns1:MucTaiDonXinNghiHocTamThoi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
-        ns1:noiDung "Đơn xin nghỉ học tạm thời"@vi ;
-        ns1:soHieuMauTrenWebsite "8A" ;
-        ns1:ungVoiBieuMau ns1:MauSo09DonXinNghiHocTamThoi .
+ns1:TDGraduationClassificationTable {
+    ns1:BangXepHangTotNghiep ns1:noiDung """| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |
+| :---: | :---: | :---: |
+| 1 | 9,00 ÷ 10 | Xuất sắc |
+| 2 | 8,00 ÷ 8,99 | Giỏi |
+| 3 | 7,00 ÷ 7,99 | Khá |
+| 4 | 5,50 ÷ 6,99 | Trung bình |"""@vi .
+}
 
-    ns1:MucTaiDonXinPhepNghiHoc ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2003%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc.docx" ;
-        ns1:noiDung "Đơn xin phép nghỉ học"@vi ;
-        ns1:soHieuMauTrenWebsite "3" ;
-        ns1:ungVoiBieuMau ns1:MauSo03DonXinNghiHoc .
+ns1:TD1052_D22K04 {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiThucHien ns1:HieuTruong ;
+        ns1:noiDung "Các đơn vị liên quan thẩm định và trình Hiệu trưởng ký quyết định công nhận tốt nghiệp, cấp bằng cho sinh viên đủ điều kiện."@vi .
+}
 
-    ns1:MucTaiDonXinXetTotNghiep ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2007%20-%20%C4%90%C6%A1n%20%C4%91%E1%BB%81%20ngh%E1%BB%8B%20x%C3%A9t%20t%E1%BB%91t%20nghi%E1%BB%87p.docx" ;
-        ns1:noiDung "Đơn xin xét tốt nghiệp"@vi ;
-        ns1:soHieuMauTrenWebsite "7" .
+ns1:TD1052_D28K02 {
+    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện."@vi .
+}
 
-    ns1:MucTaiPhieuBaoDiemBoSung ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20b%C3%A1o%20%C4%91i%E1%BB%83m%20b%E1%BB%95%20sung.doc" ;
-        ns1:noiDung "Phiếu báo điểm bổ sung"@vi .
+ns1:TD1052_D05K01 {
+    ns1:TinChi ns1:noiDung "Tín chỉ là đơn vị tính khối lượng học tập của người học, bao gồm khối lượng kiến thức và kỹ năng mà người học cần tích lũy trong một khoảng thời gian nhất định."@vi .
+}
 
-    ns1:MucTaiPhieuDangKyDieuChinhHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2002%20-%20Phi%E1%BA%BFu%20%C4%91%C4%83ng%20k%C3%BD%2C%20%C4%91i%E1%BB%81u%20ch%E1%BB%89nh%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
-        ns1:noiDung "Phiếu đăng ký/điều chỉnh học phần"@vi ;
-        ns1:soHieuMauTrenWebsite "2" ;
-        ns1:ungVoiBieuMau ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 .
+ns1:TD1052_D22K02 {
+    ns1:ThuTucDeNghiXetTotNghiepSom ns1:canBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
+        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
+        ns1:noiDung "Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, sinh viên viết đơn theo mẫu (Mẫu số 08 - Phụ lục 4 kèm theo) gửi Đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc ;
+        ns1:thuTucTiepTheo ns1:ThuTucXetVaCongNhanTotNghiep .
 
-    ns1:MucTaiPhieuDieuChinhDiem ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20%C4%90i%E1%BB%81u%20ch%E1%BB%89nh%20%C4%90I%E1%BB%82M.DOC" ;
-        ns1:noiDung "Phiếu điều chỉnh điểm"@vi .
+    ns1:MauSo08DonDeNghiXetTotNghiepSom ns1:soHieuMauTheoQuyetDinh "08" .
+}
 
-    ns1:MucTaiDonXinChuyenNganh ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx" ;
-        ns1:noiDung "Đơn xin chuyển ngành"@vi ;
-        ns1:soHieuMauTrenWebsite "10" ;
-        ns1:ungVoiBieuMau ns1:MauSo12DonXinChuyenNganh .
+ns1:TDForeignLanguageCourseCatalogueTable {
+    ns1:DanhMucHocPhanNgoaiNgu ns1:noiDung "Danh mục học phần"@vi,
+            """| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| 1 | Ngoại ngữ A1 | 4 | Bậc 1 | Học phần điều kiện (HPĐK) | HPĐK |
+| 2 | Ngoại ngữ A2.1 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |
+| 3 | Ngoại ngữ A2.2 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |
+| 4 | Ngoại ngữ B1.1 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |
+| 5 | Ngoại ngữ B1.2 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |
+| 6 | Ngoại ngữ B2.1 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |
+| 7 | Ngoại ngữ B2.2 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |"""@vi .
 
-    ns1:MucTaiDonXinMienHocMienThiVaCongDiemThuong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx" ;
-        ns1:noiDung "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
-        ns1:soHieuMauTrenWebsite "6" ;
-        ns1:ungVoiBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong .
+    ns1:NgoaiNguA1 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
+        ns1:soTinChi 4 .
 
-    ns1:MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/Uploads/38/Mẫu%20số%2013%20-Đơn%20đăng%20ký%20học%20cùng%20lúc%20hai%20chương%20trình%20đào%20tạo%20(mẫu%202).docx" ;
-        ns1:noiDung "Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
-        ns1:soHieuMauTrenWebsite "13" ;
-        ns1:ungVoiBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh .
+    ns1:NgoaiNguA21 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
+        ns1:soTinChi 4 .
+
+    ns1:NgoaiNguA22 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
+        ns1:soTinChi 4 .
+
+    ns1:NgoaiNguB11 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
+        ns1:soTinChi 4 .
+
+    ns1:NgoaiNguB12 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
+        ns1:soTinChi 4 .
+
+    ns1:NgoaiNguB21 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi ;
+        ns1:soTinChi 4 .
+
+    ns1:NgoaiNguB22 ns1:noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi ;
+        ns1:soTinChi 4 .
+}
+
+ns1:TD1052_D23K03dA {
+    ns1:HaHangTotNghiepDoHocLaiQuaNhieu ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình."@vi ;
+        ns1:tyLeToiDa 5.0 .
 }
 
 ns1:TDScholarshipRateTableSpecialProgram {
@@ -2744,52 +2298,98 @@ ns1:TDScholarshipRateTableSpecialProgram {
         ns1:soTien "8640000"^^xsd:nonNegativeInteger .
 }
 
-ns1:TD1052_D09K02dC {
-    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Xin ý kiến tư vấn của Cố vấn học tập trước khi đăng ký các lớp học phần."@vi .
-}
-
-ns1:TD1052_D11K03 {
-    ns1:ThuTucDangKyHocCaiThienDiem ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi,
-            "Đăng ký học lại học phần hoặc đổi sang học phần khác trong nhóm tự chọn để cải thiện điểm trung bình chung tích lũy."@vi .
-}
-
-ns1:TD1052_D25K03 {
-    ns1:ThuTucChuyenNganh ns1:noiDung "Sinh viên được bảo lưu điểm các học phần đã học có nội dung và khối lượng kiến thức tương đương; không được gia hạn thời gian học tập tối đa."@vi .
-}
-
-ns1:TD1052_D08K02dA {
-    ns1:LopHocPhan ns1:noiDung "Lớp học phần là lớp mà sinh viên đăng ký theo học cùng học phần trong một học kỳ. Mỗi học phần có thể có nhiều lớp học phần với mã số nhóm khác nhau. Lớp học phần được áp dụng cho hình thức đào tạo chính quy."@vi .
-}
-
-ns1:TD1052_D25K01dC {
-    ns1:ThuTucChuyenNganh ns1:noiDung "Được sự đồng ý của Trưởng Khoa hoặc viện của ngành đang học và ngành xin chuyển đến."@vi .
-}
-
-ns1:TD753_D10K02 {
-    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Chỉ được chấp nhận tối đa trong tuần thứ hai của học kỳ chính, tuần thứ nhất của học kỳ phụ."@vi,
-            "Quá thời hạn, học phần vẫn được giữ nguyên như đã đăng ký; sinh viên không đi học thì xem như tự ý bỏ học và phải nhận điểm 0."@vi .
-}
-
-ns1:TDStudyYearClassificationTable {
-    ns1:BangXepTrinhDoNamHoc ns1:noiDung """| **TT** | **Số tín chỉ đã tích lũy** | **Xếp trình độ năm học** |
-| :---: | :--- | :--- |
-| 1 | Dưới 35 | SV năm thứ nhất |
-| 2 | Từ 35 đến dưới 70 | SV năm thứ hai |
-| 3 | Từ 70 đến dưới 105 | SV năm thứ ba |
-| 4 | Trên 105 | SV năm thứ tư |"""@vi .
-}
-
-ns1:TDOtherLanguageConversionTableStandardProgram {
-    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |
+ns1:TDSecondLanguageConversionTableEnglishMajor {
+    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | > 100 | TOPIK 1 | 200 | |
-| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | > 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
-| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | > 300 | |
-| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | Đạt học phần điều kiện: Ngoại ngữ B1.1, B1.2 |
-| Bậc 5 | | | N2 | 740 | TRKI 3 | | | TOPIK 5 | > 400 | |
+| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |
+| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |
+| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | 300 | TOPIK 3 | ≥ 300 | B1 |
+| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | 400 | TOPIK 4 | ≥ 350 | B2 |
+| Bậc 5 | HSK 5 | | N2 | 740 | TRKI 3 | | | TOPIK 5 | ≥ 400 | |
 | Bậc 6 | | | N1 | 880 | TRKI 4 | | | TOPIK 6 | > 450 | |"""@vi .
+}
+
+ns1:TD1052_D09K02dB {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Đăng ký lớp của các học phần dự định học trong học kỳ, gồm học phần mới, học phần chưa đạt để học lại và học phần đã đạt để cải thiện điểm."@vi .
+}
+
+ns1:TDScholarshipCriteriaGeneralSection {
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
+        ns1:noiDung "Còn trong thời gian đào tạo theo kế hoạch của khóa học."@vi,
+            "Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên, và không bị kỷ luật từ mức khiển trách trở lên."@vi,
+            "Sinh viên đủ điều kiện được cấp học bổng khuyến khích học tập của học kỳ, mức tiền theo xếp loại và theo chương trình chuẩn hay chương trình đào tạo đặc biệt."@vi,
+            "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi .
+}
+
+ns1:TDComputerCertificateConversionTable {
+    ns1:BangQuyDoiChungChiTinHoc ns1:noiDung """| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | 1990 - 2329 | 1350 - 1445 | 1400 - 1599 | 8 |
+| 2 | 2330 - 2669 | 1446 - 1620 | 1600 - 1799 | 9 |
+| 3 | 2670 - 3000 | 1621 - 1800 | 1800 - 2000 | 10 |"""@vi .
+}
+
+ns1:TD1052_D21K02 {
+    ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ns1:soHieuMauTheoQuyetDinh "06" .
+
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
+        ns1:noiDung "Sinh viên có nguyện vọng miễn học và quy đổi điểm học phần phải nộp bản sao có công chứng văn bằng, chứng chỉ và bảng điểm cho Đơn vị quản lý đào tạo (Mẫu số 06 - Phụ lục 4 kèm theo)."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+}
+
+ns1:TD1052_D03K01 {
+    ns1:PhuongThucToChucDaoTaoTheoTinChi ns1:noiDung "Phương thức tổ chức đào tạo theo tín chỉ là cách thức tổ chức đào tạo theo từng lớp học phần, cho phép sinh viên tích lũy tín chỉ của từng học phần và thực hiện chương trình đào tạo theo kế hoạch học tập của cá nhân, phù hợp với kế hoạch giảng dạy của Trường."@vi .
+}
+
+ns1:TD1052_D22 {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
+        ns1:noiDung "Quy trình xét và công nhận tốt nghiệp cho sinh viên đủ điều kiện, thực hiện sau mỗi quý."@vi .
+}
+
+ns1:TD1052_D28K03 {
+    ns1:MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/Uploads/38/Mẫu%20số%2013%20-Đơn%20đăng%20ký%20học%20cùng%20lúc%20hai%20chương%20trình%20đào%20tạo%20(mẫu%202).docx" ;
+        ns1:noiDung "Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
+        ns1:soHieuMauTrenWebsite "13" ;
+        ns1:ungVoiBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh .
+
+    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:canBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
+        ns1:noiDung "Sau khi có quyết định chấp thuận và được cấp mã số sinh viên riêng, bổ sung các học phần cần học vào kế hoạch học tập và đăng ký học phần bằng mã số của chương trình thứ hai."@vi,
+            "Sinh viên được cấp một mã số sinh viên riêng và được bảo lưu các học phần có nội dung, khối lượng kiến thức tương đương đã tích lũy ở chương trình thứ nhất."@vi,
+            "Thủ tục đăng ký học thêm một chương trình đào tạo thứ hai để lấy văn bằng thứ hai."@vi,
+            "Đăng ký học chương trình thứ hai vào đầu mỗi học kỳ chính theo thông báo hằng năm, dùng Mẫu số 15 (Phụ lục 4)."@vi .
+
+    ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh ns1:soHieuMauTheoQuyetDinh "15" .
+}
+
+ns1:TDScholarshipRateTableStandardProgram {
+    ns1:BangMucHocBongChuongTrinhChuan ns1:noiDung """| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |
+| :---: | :--- | :---: |
+| 1 | Xuất sắc | 7.200.000 |
+| 2 | Giỏi | 6.000.000 |
+| 3 | Khá | 5.000.000 |"""@vi .
+
+    ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
+        ns1:donViTienTe "VND" ;
+        ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
+        ns1:soTien "6000000"^^xsd:nonNegativeInteger .
+
+    ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
+        ns1:donViTienTe "VND" ;
+        ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
+        ns1:soTien "5000000"^^xsd:nonNegativeInteger .
+
+    ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
+        ns1:donViTienTe "VND" ;
+        ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
+        ns1:soTien "7200000"^^xsd:nonNegativeInteger .
 }
 
 ns1:TDForeignLanguageCourseAssessmentTable {
@@ -2840,52 +2440,60 @@ ns1:TDForeignLanguageCourseAssessmentTable {
         ns1:soTinChi 4 .
 }
 
-ns1:TDOtherLanguageRequirementTableSpecialProgram {
-    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | Công nghệ thông tin | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
-| 2 | Kế toán | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
-| 3 | Tài chính - Ngân hàng | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
-| 4 | Quản trị khách sạn | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |
-| 5 | Quản trị kinh doanh | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |
-| 6 | Quản trị dịch vụ du lịch và lữ hành | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |"""@vi .
+ns1:TDVNPAYPaymentGuidanceVietcombankNote {
+    ns1:MienPhiVnpayDoiVoiTaiKhoanVietcombank ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
+        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
+        ns1:noiDung "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi .
 }
 
-ns1:TD1052_D06K02dD {
-    ns1:HocPhanNhiemY ns1:noiDung "Học phần sinh viên có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả được ghi trong bảng điểm nhưng không tính vào trung bình chung tích lũy và không dùng để phân loại, xếp hạng học tập."@vi .
+ns1:TD1052_D17K01dB {
+    ns1:DieuKienDuThiHocPhanThucHanh ns1:noiDung "Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa hoặc viện đào tạo xem xét xử lý."@vi ;
+        ns1:tyLeToiThieu 100.0 .
+
+    ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học; với học phần thực hành, thí nghiệm, thực tập ngoài trường phải tham dự 100% số giờ học."@vi .
 }
 
-ns1:TD1052_D26K02 {
-    ns1:MucTaiDonXinChuyenTruong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
-        ns1:noiDung "Đơn xin chuyển trường"@vi ;
-        ns1:soHieuMauTrenWebsite "11" ;
-        ns1:ungVoiBieuMau ns1:MauSo13DonXinChuyenTruong .
-
-    ns1:MauSo13DonXinChuyenTruong ns1:soHieuMauTheoQuyetDinh "13" .
-
-    ns1:ThuTucChuyenTruong ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo13DonXinChuyenTruong ;
-        ns1:noiDung "Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý; Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận, công nhận và bảo lưu các học phần được chuyển đổi tín chỉ cùng số học phần phải học bổ sung."@vi,
-            "Làm hồ sơ xin chuyển trường theo Mẫu số 13 (Phụ lục 4)."@vi,
-            "Nộp hồ sơ thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+ns1:TD1052_D25K01dC {
+    ns1:ThuTucChuyenNganh ns1:noiDung "Được sự đồng ý của Trưởng Khoa hoặc viện của ngành đang học và ngành xin chuyển đến."@vi .
 }
 
-ns1:TD1052_D30K01 {
-    ns1:ThuTucXinNghiOmTrongQuaTrinhHoc ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Gửi đơn tới giảng viên giảng dạy học phần."@vi,
-            "Nộp đơn trong vòng 01 tuần kể từ ngày ốm."@vi,
-            "Thủ tục xin phép nghỉ học vì lý do sức khỏe trong quá trình học."@vi,
-            "Viết đơn xin phép nghỉ học, kèm Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."@vi,
-            "Ốm trong quá trình học và điều trị dưới 10 ngày."@vi ;
-        ns1:nopTai ns1:GiangVienGiangDayHocPhan ;
-        ns1:thuTucTiepTheo ns1:ThuTucNghiHocTamThoi .
+ns1:TDStudyYearClassificationTable {
+    ns1:BangXepTrinhDoNamHoc ns1:noiDung """| **TT** | **Số tín chỉ đã tích lũy** | **Xếp trình độ năm học** |
+| :---: | :--- | :--- |
+| 1 | Dưới 35 | SV năm thứ nhất |
+| 2 | Từ 35 đến dưới 70 | SV năm thứ hai |
+| 3 | Từ 70 đến dưới 105 | SV năm thứ ba |
+| 4 | Trên 105 | SV năm thứ tư |"""@vi .
+}
 
-    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
+ns1:TD1052_D10K02 {
+    ns1:ThuTucDeNghiMoThemLopHocPhan ns1:canBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:doAiThucHien ns1:BoMon ;
+        ns1:duocXetBoi ns1:BoMon ;
+        ns1:noiDung "Bộ môn thuộc Khoa hoặc viện đào tạo xem xét chấp thuận, sau đó Nhà trường mở thêm lớp theo đề nghị."@vi,
+            "Số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn quản lý chấp thuận."@vi,
+            "Thủ tục đề nghị Nhà trường mở thêm một lớp học phần trong thời gian đăng ký."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+}
 
-    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
-        ns1:noiDung "Ốm phải điều trị dài ngày từ 10 ngày trở lên."@vi .
+ns1:TD1052_D06K02dI {
+    ns1:HocPhanThayThe ns1:noiDung "Học phần được dùng thay cho một học phần có trong chương trình đào tạo khóa trước nhưng khóa sau không còn tổ chức đào tạo, hoặc học phần tự chọn thay cho học phần tự chọn khác mà sinh viên học không đạt."@vi .
+}
+
+ns1:TD1052_D20K02 {
+    ns1:ChinhSachBuocThoiHoc ns1:noiDung "Sinh viên bị buộc thôi học khi vượt quá 02 lần cảnh báo kết quả học tập liên tiếp hoặc vượt quá thời gian tối đa được phép học."@vi .
+}
+
+ns1:TD1052_D21K07 {
+    ns1:ThoiHanHieuLucCuaHocPhanDuocCongNhan ns1:noiDung "Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi, điểm thưởng và chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi ;
+        ns1:soNam 5.0 .
+
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Chỉ công nhận học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi .
+}
+
+ns1:TD1052_D01K02 {
+    ns1:PhamViVaDoiTuongApDungCuaQuyChe ns1:noiDung "Quy chế áp dụng đối với sinh viên học theo hình thức đào tạo chính quy và vừa làm vừa học; sinh viên học cùng lúc hai chương trình; sinh viên liên thông đối với người có văn bằng khác; sinh viên theo chương trình trao đổi và công nhận tín chỉ; các khoa hoặc viện đào tạo, đơn vị quản lý đào tạo, giảng viên và các đơn vị, cá nhân có liên quan."@vi .
 }
 
 ns1:TD1052_D27 {
@@ -2894,88 +2502,56 @@ ns1:TD1052_D27 {
         ns1:nopTai ns1:PhongDaoTaoDaiHoc .
 }
 
-ns1:TD1052_D21K02 {
-    ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ns1:soHieuMauTheoQuyetDinh "06" .
+ns1:TD1052_D20K02dB {
+    ns1:BuocThoiHocDoQuaThoiGianDaoTao ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá thời gian tối đa được phép học tại Trường."@vi .
+}
 
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
-        ns1:noiDung "Chuẩn bị bản sao có công chứng văn bằng, chứng chỉ và bảng điểm, kèm đơn theo Mẫu số 06 (Phụ lục 4)."@vi,
-            "Nộp hồ sơ cho Phòng Đào tạo Đại học để Hội đồng chuyên môn xem xét công nhận và chuyển đổi."@vi ;
+ns1:TD753_D10 {
+    ns1:ThuTucRutBotHocPhanDaDangKy ns1:canBieuMau ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 ;
+        ns1:noiDung "Thủ tục cho phép sinh viên hủy bớt một hoặc một số học phần đã đăng ký trong học kỳ khi thấy không thể hoàn thành khối lượng đã đăng ký."@vi ;
         ns1:nopTai ns1:PhongDaoTaoDaiHoc .
 }
 
-ns1:TD1052_D22K01dA {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Đến thời điểm xét tốt nghiệp không bị truy cứu trách nhiệm hình sự và không đang trong thời gian bị kỷ luật ở mức đình chỉ học tập."@vi .
+ns1:TD1052_D06K02dG {
+    ns1:HocPhanDieuKien ns1:noiDung "Học phần mà sinh viên phải hoàn thành trước khi tốt nghiệp nhưng kết quả không dùng để tính điểm trung bình chung tích lũy."@vi .
 }
 
-ns1:TD753_D10K03 {
-    ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 ns1:soHieuMauTheoQuyetDinh "2" .
+ns1:TD1052_D25K02 {
+    ns1:MucTaiDonXinChuyenNganh ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx" ;
+        ns1:noiDung "Đơn xin chuyển ngành"@vi ;
+        ns1:soHieuMauTrenWebsite "10" ;
+        ns1:ungVoiBieuMau ns1:MauSo12DonXinChuyenNganh .
 
-    ns1:ThuTucRutBotHocPhanDaDangKy ns1:doAiThucHien ns1:SinhVien ;
-        ns1:noiDung "Tự rút bớt học phần trên Hệ thống quản lý đào tạo từ tài khoản cá nhân, hoặc nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo."@vi .
-}
+    ns1:MauSo12DonXinChuyenNganh ns1:soHieuMauTheoQuyetDinh "12" .
 
-ns1:TD1052_D14 {
-    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:canBieuMau ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ;
-        ns1:noiDung "Thủ tục đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp."@vi .
-}
-
-ns1:TD1052_D22K01dB {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Tích lũy đủ số học phần và khối lượng học tập của chương trình đào tạo, đạt chuẩn đầu ra và các nội dung bắt buộc khác."@vi .
-}
-
-ns1:TD1052_D16K01 {
-    ns1:DanhGiaCuoiKy ns1:noiDung "Thường dưới dạng bài thi viết, vấn đáp, thực hành hoặc sản phẩm tổng hợp, được tổ chức vào cuối học phần."@vi .
-
-    ns1:DanhGiaQuaTrinh ns1:noiDung "Gồm điểm chuyên cần, điểm kiểm tra, bài tập, sản phẩm học tập và điểm đánh giá giữa kỳ nếu có."@vi .
-}
-
-ns1:TD1052_D04K02 {
-    ns1:DaoTaoVuaLamVuaHoc ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường hoặc tại cơ sở phối hợp đào tạo. Thời gian giảng dạy linh hoạt trong ngày và trong tuần."@vi .
-}
-
-ns1:TD1052_D21K05 {
-    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
-        ns1:noiDung "Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện."@vi,
-            "Đạt giải nhất, nhì, ba trong kỳ thi Olympic sinh viên cấp tỉnh trở lên hoặc Giải thưởng khoa học công nghệ dành cho sinh viên; hoặc có chứng chỉ ngoại ngữ quốc tế còn hiệu lực theo Phụ lục 2; hoặc có chứng chỉ tin học quốc tế còn hiệu lực theo Phụ lục 3."@vi ;
-        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
-}
-
-ns1:TD1052_D24K03 {
-    ns1:MucTaiDonXinHocTroLai ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
-        ns1:noiDung "Đơn xin học trở lại"@vi ;
-        ns1:soHieuMauTrenWebsite "9" ;
-        ns1:ungVoiBieuMau ns1:MauSo11DonXinHocTroLai .
-
-    ns1:MucTaiDonXinNghiHocTamThoi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
-        ns1:noiDung "Đơn xin nghỉ học tạm thời"@vi ;
-        ns1:soHieuMauTrenWebsite "8A" ;
-        ns1:ungVoiBieuMau ns1:MauSo09DonXinNghiHocTamThoi .
-
-    ns1:MauSo10DonXinThoiHoc ns1:soHieuMauTheoQuyetDinh "10" .
-
-    ns1:ThuTucXinHocTroLai ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo11DonXinHocTroLai ;
-        ns1:noiDung "Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét giải quyết."@vi,
-            "Nộp đơn ít nhất 02 tuần trước khi bắt đầu học kỳ mới."@vi,
-            "Viết đơn xin học trở lại theo Mẫu số 11 (Phụ lục 4)."@vi ;
+    ns1:ThuTucChuyenNganh ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo12DonXinChuyenNganh ;
+        ns1:noiDung "Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, sinh viên làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định."@vi ;
         ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+}
 
-    ns1:ThuTucXinThoiHoc ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo10DonXinThoiHoc ;
-        ns1:noiDung "Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi,
-            "Viết đơn xin thôi học theo Mẫu số 10 (Phụ lục 4)."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+ns1:TDScholarshipAnnouncementSection {
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:doAiThucHien ns1:PhongCongTacChinhTriVaSinhVien,
+            ns1:SinhVien ;
+        ns1:noiDung "Phòng Công tác Chính trị và Sinh viên công bố danh sách dự kiến trên trang của phòng, tách riêng chương trình chuẩn và chương trình đào tạo đặc biệt. Sinh viên tự kiểm tra và gửi thắc mắc theo địa chỉ ghi trong thông báo."@vi,
+            "Sinh viên có tên trong danh sách cung cấp số tài khoản Vietinbank và chi nhánh để nhận tiền, dùng địa chỉ thư điện tử do Trường cấp."@vi,
+            "Thời hạn phản hồi ghi trong từng thông báo. Đợt học kỳ I năm học 2025-2026 nhận thắc mắc đến hết ngày 30/3/2026."@vi .
+}
 
-    ns1:MauSo09DonXinNghiHocTamThoi ns1:soHieuMauTheoQuyetDinh "09" .
+ns1:TD1052_D16K02dC {
+    ns1:DiemI ns1:kyHieuDiemChu "I" ;
+        ns1:noiDung "Điểm học phần chưa hoàn thiện do được phép hoãn thi, kiểm tra."@vi .
 
-    ns1:MauSo11DonXinHocTroLai ns1:soHieuMauTheoQuyetDinh "11" .
+    ns1:DiemP ns1:kyHieuDiemChu "P" ;
+        ns1:noiDung "Loại đạt không phân mức, áp dụng cho học phần chỉ yêu cầu đạt và không tính vào điểm trung bình học tập. Đạt từ 5 điểm trở lên."@vi .
 
-    ns1:ThuTucNghiHocTamThoi ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo09DonXinNghiHocTamThoi ;
-        ns1:noiDung "Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi,
-            "Viết đơn xin nghỉ học tạm thời theo Mẫu số 09 (Phụ lục 4)."@vi ;
-        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+    ns1:DiemR ns1:kyHieuDiemChu "R" ;
+        ns1:noiDung "Điểm học phần bảo lưu được miễn học và công nhận tín chỉ."@vi .
+
+    ns1:DiemX ns1:kyHieuDiemChu "X" ;
+        ns1:noiDung "Điểm học phần chưa hoàn thiện do chưa đủ dữ liệu."@vi .
+
+    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
 }
 
 ns1:TDEnglishConversionTableStandardProgram {
@@ -2987,6 +2563,37 @@ ns1:TDEnglishConversionTableStandardProgram {
 | Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 | ≥ 153 | 160 | 160 | Đạt học phần điều kiện: Tiếng Anh B1.1, B1.2 |
 | Bậc 5 | C1 | ≥ 700 | ≥ 80 | ≥ 6.5 | ≥ 170 | | 180 | |
 | Bậc 6 | C2 | ≥ 850 | ≥ 110 | ≥ 8.5 | ≥ 190 | | ≥ 200 | |"""@vi .
+}
+
+ns1:TD1052_D29K02 {
+    ns1:ThuTucHocLienThong ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Theo dõi thông báo tuyển sinh liên thông hằng năm của Nhà trường và đăng ký xét tuyển."@vi,
+            "Đăng ký vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hằng năm."@vi .
+}
+
+ns1:TDVNPAYPaymentGuidanceOtherBankNote {
+    ns1:PhiVnpayDoiVoiNganHangKhac ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
+        ns1:mucLePhi "5500"^^xsd:nonNegativeInteger ;
+        ns1:noiDung "Phí VNPAY đối với ngân hàng khác"@vi .
+}
+
+ns1:TD1052_D06K02dE {
+    ns1:HocPhanSongHanh ns1:noiDung "Học phần sinh viên có thể học cùng với các học phần khác trong một học kỳ."@vi .
+}
+
+ns1:TD1052_D21K04 {
+    ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi ns1:noiDung "Khối lượng tối đa được công nhận kết quả học tập và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi ;
+        ns1:tyLeToiDa 50.0 .
+
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Khối lượng được công nhận và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi .
+}
+
+ns1:TD1052_D22K01dB {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Tích lũy đủ số học phần và khối lượng học tập của chương trình đào tạo, đạt chuẩn đầu ra và các nội dung bắt buộc khác."@vi .
+}
+
+ns1:TD1052_D24K01dC {
+    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
 }
 
 ns1:TDTuitionPaymentGuidanceSection01 {
@@ -3011,53 +2618,434 @@ ns1:TDTuitionPaymentGuidanceSection01 {
             "Truy cập sinhvien.ntu.edu.vn, chọn mục học phí và thanh toán qua cổng VnPay; miễn phí với tài khoản Vietcombank, các ngân hàng khác chịu phí 5.500 đồng mỗi lần. Có thể quét mã QR bằng ứng dụng ngân hàng, miễn phí."@vi .
 }
 
-ns1:TD1052_D27K02 {
-    ns1:GioiHanTinChiTichLuyTaiTruongKhac ns1:noiDung "Sinh viên tham gia chương trình trao đổi có thể đăng ký học một số học phần tại trường khác với số lượng tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi ;
-        ns1:tyLeToiDa 25.0 .
-
-    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Số tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi .
+ns1:TD1052_D29K01 {
+    ns1:ThuTucHocLienThong ns1:noiDung "Đã tốt nghiệp trình độ trung cấp hoặc cao đẳng để liên thông lên đại học; người đã tốt nghiệp đại học được liên thông để nhận thêm một bằng đại học của ngành đào tạo khác."@vi .
 }
 
-ns1:TD1052_D17K02 {
-    ns1:HauQuaCuaViecBiCamThiHoacVangThi ns1:noiDung "Sinh viên bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 ở kỳ thi đó."@vi .
+ns1:TD1052_D17K01 {
+    ns1:MauSo03DonXinNghiHoc ns1:soHieuMauTheoQuyetDinh "03" .
+
+    ns1:ThuTucXinPhepNghiHoc ns1:canBieuMau ns1:MauSo03DonXinNghiHoc ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo03DonXinNghiHoc ;
+        ns1:noiDung "Sinh viên nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo mẫu kèm minh chứng liên quan (Mẫu số 03 - Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa hoặc viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học."@vi ;
+        ns1:nopTai ns1:KhoaHoacVienDaoTao .
 }
 
-ns1:TD1052_D22K04 {
-    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiThucHien ns1:HieuTruong ;
-        ns1:noiDung "Các đơn vị liên quan thẩm định và trình Hiệu trưởng ký quyết định công nhận tốt nghiệp, cấp bằng cho sinh viên đủ điều kiện."@vi .
+ns1:TDScholarshipCriteriaSpecificSection {
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:noiDung "Không hoãn thi trong kỳ, trừ trường hợp hoãn do trùng lịch thi và đã thi lại trong cùng đợt; học kỳ đầu sau khi chuyển ngành không được xét."@vi,
+            "Mọi học phần trong kỳ phải đạt từ 5,5 điểm trở lên ngay ở lần thi đầu; điểm Giáo dục thể chất và Giáo dục quốc phòng không tính vào điểm xét."@vi,
+            "Đăng ký tối thiểu 14 tín chỉ trong học kỳ theo kế hoạch của chương trình đào tạo."@vi .
+}
+
+ns1:TDClassSizeTable {
+    ns1:BangSiSoLopHocPhan ns1:noiDung """| **TT** | **Học phần** | **Số lượng sinh viên** | |
+| :---: | :--- | :---: | :---: |
+| | | **Tối thiểu** | **Tối đa** |
+| 1 | Giáo dục tổng quát | 50 | 100 |
+| 2 | Lý luận chính trị | 80 | * |
+| 3 | - Ngoại ngữ B1.1, B1.2;<br>- HP chuyên ngữ ngành Ngôn ngữ Anh; | 40 | 50 |
+| 4 | - Tiếng anh chuyên ngành | 50 | 60 |
+| 5 | Khối kiến thức cơ sở, kiến thức ngành của Khoa Du lịch, Kinh tế, Kế toán – Tài chính và Luật | 50 | 80 |
+| 6 | Khối kỹ thuật, công nghệ | 30 | 70 |
+| 7 | Giáo dục thể chất | 60 | 80 (LT) |
+| | | 45 | 60 (TH) |
+| 8 | Giáo dục Quốc phòng – An ninh | 70 | * |
+| | | 45 | 70 (TH) |
+| 9 | Thực hành tại phòng máy CNC và công nghệ cao | 10 | 15 |
+| 10 | Thực hành tại Xưởng Cơ khí, phòng thí nghiệm Nhiệt lạnh | 15 | 20 |
+| 11 | Thực hành tại các phòng máy tính | 25 | 30 |
+| 12 | Thực hành các học phần khác | 20 | 25 |"""@vi .
+}
+
+ns1:TD1052_D21 {
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:canBieuMau ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:duocXetBoi ns1:HoiDongChuyenMon ;
+        ns1:noiDung "Thủ tục đề nghị công nhận kết quả đã tích lũy ở nơi khác và chuyển đổi sang tín chỉ của chương trình đang học."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+}
+
+ns1:TD1052_D22K05 {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Sinh viên đủ điều kiện được Hiệu trưởng ra quyết định công nhận tốt nghiệp và cấp bằng tốt nghiệp."@vi,
+            "Trong thời hạn 03 tháng kể từ thời điểm sinh viên đáp ứng đầy đủ điều kiện tốt nghiệp và hoàn thành nghĩa vụ với Trường."@vi .
+}
+
+ns1:TD1052_D27K03 {
+    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Đã kết thúc 01 năm học tại Trường và có điểm trung bình chung tích lũy đạt từ 6,00 trở lên."@vi .
+}
+
+ns1:TD1052_D13K03dB {
+    ns1:DaoTaoTrucTuyenDongBo ns1:noiDung "Giảng viên và sinh viên cùng tham gia các hoạt động đào tạo tại cùng một thời điểm trên cùng một không gian học tập. Đây là hình thức dạy học hoàn toàn trực tuyến."@vi .
+}
+
+ns1:TD1052_D21K03 {
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Hội đồng chuyên môn của Nhà trường hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình."@vi,
+            "Kết quả được công nhận và chuyển đổi theo từng học phần, theo từng nhóm học phần, hoặc theo cả chương trình đào tạo."@vi .
+}
+
+ns1:TD1052_D20K01dC {
+    ns1:CanhBaoDoDiemTrungBinhTichLuy ns1:noiDung "Điểm trung bình tích lũy đạt dưới 5,20 đối với sinh viên năm thứ nhất, dưới 5,30 đối với năm thứ hai, dưới 5,40 đối với năm thứ ba, hoặc dưới 5,50 đối với các năm tiếp theo."@vi .
+}
+
+ns1:TD1052_D20K01dB {
+    ns1:CanhBaoDoDiemTrungBinhHocKy ns1:noiDung "Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học, dưới 4,50 đối với học kỳ tiếp theo."@vi .
+}
+
+ns1:TD1052_D29K03 {
+    ns1:ThuTucHocLienThong ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Sau khi trúng tuyển, thực hiện chương trình đào tạo và đăng ký học tập theo kế hoạch chung như các sinh viên khác cùng hình thức đào tạo."@vi .
+}
+
+ns1:TD1052_D08K02dC {
+    ns1:ThuTucDeNghiMoThemLopHocPhan ns1:canBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo01DonXinMoLopHocPhan ;
+        ns1:duocXetBoi ns1:BoMon ;
+        ns1:noiDung "Làm đơn xin mở lớp học phần theo Mẫu số 01 và gửi Phòng Đào tạo Đại học trong thời gian đăng ký học phần."@vi,
+            "Thủ tục đề nghị Nhà trường mở thêm một lớp học phần trong thời gian đăng ký."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+
+    ns1:MauSo01DonXinMoLopHocPhan ns1:soHieuMauTheoQuyetDinh "01" .
+}
+
+ns1:TD1052_D05K02 {
+    ns1:QuyDoiGioHocCuaMotTinChi ns1:noiDung "Một tín chỉ tương đương 50 giờ học tập định mức. Đối với hoạt động trên lớp, một tín chỉ yêu cầu tối thiểu 15 giờ giảng, hoặc 30 giờ thực hành, thí nghiệm, thảo luận, hoặc 45 giờ thực tập tại cơ sở ngoài trường, làm tiểu luận, bài tập lớn, đồ án, khóa luận, chuyên đề tốt nghiệp. Một giờ giảng được tính bằng 50 phút."@vi .
+}
+
+ns1:TD1052_D28K01dB {
+    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Học lực theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai; hoặc xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh."@vi .
+}
+
+ns1:TD1052_D09K02dA {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Tìm hiểu chương trình đào tạo, kế hoạch giảng dạy trong học kỳ và kiểm tra lại kết quả học tập để lập kế hoạch học tập phù hợp."@vi .
+}
+
+ns1:TD1052_D11K01 {
+    ns1:ThuTucDangKyHocLaiHocPhan ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Học phần bắt buộc có điểm dưới 5,0 phải đăng ký học lại cho đến khi đạt từ 5,0 trở lên; học phần tự chọn dưới 5,0 được học lại hoặc đổi sang học phần tự chọn tương đương khác."@vi,
+            "Đăng ký học lại học phần đó ở các học kỳ tiếp theo theo quy trình đăng ký khối lượng học tập."@vi .
+}
+
+ns1:TD1052_D12K01 {
+    ns1:DeCuongChiTietHocPhan ns1:noiDung "Đề cương chi tiết học phần là kế hoạch dạy học trong đó nêu rõ mục tiêu, kết quả học tập mong đợi, nội dung và kế hoạch dạy học, kiểm tra, đánh giá và các yêu cầu khác theo quy định của Trường."@vi .
+}
+
+ns1:TD1052_D21K06 {
+    ns1:MucTaiDonXinMienHocMienThiVaCongDiemThuong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx" ;
+        ns1:noiDung "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
+        ns1:soHieuMauTrenWebsite "6" ;
+        ns1:ungVoiBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong .
+
+    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
+        ns1:noiDung "Sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 - Phụ lục 4 kèm theo) kèm theo minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+
+    ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ns1:soHieuMauTheoQuyetDinh "07" .
+}
+
+ns1:TD1052_D26K01dA {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Không đang là sinh viên năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định."@vi .
+}
+
+ns1:TD1052_D28K05 {
+    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai, và chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất."@vi .
+}
+
+ns1:TD1052_D22K01dA {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Đến thời điểm xét tốt nghiệp không bị truy cứu trách nhiệm hình sự và không đang trong thời gian bị kỷ luật ở mức đình chỉ học tập."@vi .
+}
+
+ns1:TD1052_D22K01dC {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Điểm trung bình chung tích lũy toàn khóa học đạt từ 5,50 trở lên."@vi .
+}
+
+ns1:TD1052_D22K03 {
+    ns1:ThuTucDeNghiXetTotNghiepSom ns1:canBieuMau ns1:MauSo08DonDeNghiXetTotNghiepSom ;
+        ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
+        ns1:noiDung "Thủ tục đề nghị được xét tốt nghiệp sớm hơn thời gian thiết kế của khóa học."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc ;
+        ns1:thuTucTiepTheo ns1:ThuTucXetVaCongNhanTotNghiep .
+
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiThucHien ns1:HoiDongXetTotNghiep ;
+        ns1:noiDung "Hội đồng xét tốt nghiệp lập danh sách những sinh viên đủ điều kiện tốt nghiệp sau mỗi quý."@vi .
+}
+
+ns1:TD1052_D25K01dB {
+    ns1:ThuTucChuyenNganh ns1:noiDung "Đạt điều kiện trúng tuyển của chương trình, ngành đào tạo xin chuyển đến trong cùng khóa tuyển sinh."@vi .
+}
+
+ns1:TDEnglishRequirementTableSpecialProgram {
+    ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
+| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
+| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
+| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
+| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
+| 6 | Quản trị dịch vụ du lịch và lữ hành | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |"""@vi .
+}
+
+ns1:TD1052_D20K02dA {
+    ns1:BuocThoiHocDoCanhBaoLienTiep ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi .
+}
+
+ns1:TD1052_D30K01 {
+    ns1:ThuTucXinNghiOmTrongQuaTrinhHoc ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
+        ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Sinh viên xin nghỉ ốm trong quá trình học phải viết đơn xin phép gửi giảng viên giảng dạy học phần trong vòng 01 tuần kể từ ngày ốm, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."@vi ;
+        ns1:nopTai ns1:GiangVienGiangDayHocPhan ;
+        ns1:thuTucTiepTheo ns1:ThuTucNghiHocTamThoi .
+
+    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:OmThaiSanHoacTaiNan ;
+        ns1:noiDung "Ốm phải điều trị dài ngày từ 10 ngày trở lên."@vi .
+
+    ns1:OmThaiSanHoacTaiNan ns1:noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
+}
+
+ns1:TD1052_D27K04 {
+    ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ns1:soHieuMauTheoQuyetDinh "14" .
+
+    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ;
+        ns1:noiDung "Theo dõi thông báo về việc đăng ký tham gia chương trình trao đổi vào đầu mỗi học kỳ."@vi,
+            "Đăng ký học theo Mẫu số 14 (Phụ lục 4) và gửi về Phòng Đào tạo Đại học."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+}
+
+ns1:TD1052_D25 {
+    ns1:ThuTucChuyenNganh ns1:canBieuMau ns1:MauSo12DonXinChuyenNganh ;
+        ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Thủ tục cho phép sinh viên chuyển sang một ngành đào tạo khác trong cùng bậc học."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+}
+
+ns1:TD1052_D13K02 {
+    ns1:TyLeToiDaDaoTaoTrucTuyen ns1:noiDung "Nhà trường áp dụng tối đa 30% tổng khối lượng chương trình đào tạo cho hoạt động dạy học trực tuyến. Trong trường hợp thiên tai, dịch bệnh phức tạp hoặc bất khả kháng khác, Nhà trường thực hiện theo hướng dẫn của Bộ Giáo dục và Đào tạo."@vi ;
+        ns1:tyLeToiDa 30.0 .
+}
+
+ns1:TD1052_D14 {
+    ns1:ThuTucDangKyThucHienDoAnTotNghiep ns1:canBieuMau ns1:MauSo02DonDangKyThucHienDoAnTotNghiep ;
+        ns1:noiDung "Thủ tục đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp."@vi .
+}
+
+ns1:TD1052_D06K02dH {
+    ns1:HocPhanTuongDuong ns1:noiDung "Một hay một nhóm học phần thuộc chương trình đào tạo của một khóa học hoặc một ngành khác đang tổ chức đào tạo tại Trường hoặc cơ sở đào tạo khác, được phép tích lũy để thay cho học phần trong chương trình đào tạo."@vi .
+}
+
+ns1:TD1052_D24K01dB {
+    ns1:DuocDieuDongDuThiGiaiDauQuocTe ns1:noiDung "Sinh viên được cơ quan có thẩm quyền điều động, đại diện quốc gia tham dự các kỳ thi, giải đấu quốc tế."@vi .
+
+    ns1:ThuTucNghiHocTamThoi ns1:apDungChoTruongHop ns1:DuocDieuDongDuThiGiaiDauQuocTe .
+}
+
+ns1:TD1052_D09K02dC {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Xin ý kiến tư vấn của Cố vấn học tập trước khi đăng ký các lớp học phần."@vi .
+}
+
+ns1:TDOtherLanguageRequirementTableSpecialProgram {
+    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Công nghệ thông tin | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
+| 2 | Kế toán | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
+| 3 | Tài chính - Ngân hàng | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
+| 4 | Quản trị khách sạn | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |
+| 5 | Quản trị kinh doanh | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |
+| 6 | Quản trị dịch vụ du lịch và lữ hành | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |"""@vi .
+}
+
+ns1:TDUndergraduateFormCatalogueListing {
+    ns1:MucTaiDonXinBaoLuuHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2014%20-%20%C4%90%C6%A1n%20xin%20b%E1%BA%A3o%20l%C6%B0u%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
+        ns1:noiDung "Đơn xin bảo lưu học phần"@vi ;
+        ns1:soHieuMauTrenWebsite "14" .
+
+    ns1:MucTaiDonXinCapBanSaoBang ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/%C4%90%C6%A0N%20XIN%20C%E1%BA%A4P%20B%E1%BA%A2N%20SAO%20B%E1%BA%B0NG.docx" ;
+        ns1:noiDung "Đơn xin cấp bản sao bằng"@vi .
+
+    ns1:MucTaiDonXinChuyenChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf",
+            "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
+        ns1:noiDung "Đơn xin chuyển Chương trình đào tạo"@vi ;
+        ns1:soHieuMauTrenWebsite "5",
+            "5A" .
+
+    ns1:MucTaiDonXinChuyenHocPhanThayTheTrongCtdt ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20HP%20thay%20th%E1%BA%BF.doc" ;
+        ns1:noiDung "Đơn xin chuyển học phần thay thế trong CTĐT"@vi .
+
+    ns1:MucTaiDonXinChuyenNganhChuongTrinhMinhPhuCtDaiChuan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/20210917_Mẫu%20số%2010B%20-%20Đơn%20xin%20chuyển%20ngành%20(CT%20Minh%20Phú%20-%20NTU).docx" ;
+        ns1:noiDung "Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi ;
+        ns1:soHieuMauTrenWebsite "10B" .
+
+    ns1:MucTaiDonXinHoanThi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2004%20-%20%C4%90%C6%A1n%20xin%20ho%C3%A3n%20thi.docx" ;
+        ns1:noiDung "Đơn xin hoãn thi"@vi ;
+        ns1:soHieuMauTrenWebsite "4" ;
+        ns1:ungVoiBieuMau ns1:MauSo04DonXinHoanThi .
+
+    ns1:MucTaiDonXinHocTroLai ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
+        ns1:noiDung "Đơn xin học trở lại"@vi ;
+        ns1:soHieuMauTrenWebsite "9" ;
+        ns1:ungVoiBieuMau ns1:MauSo11DonXinHocTroLai .
+
+    ns1:MucTaiDonXinMoLopHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2001%20-%20%C4%90%C6%A1n%20xin%20m%E1%BB%9F%20l%E1%BB%9Bp%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
+        ns1:noiDung "Đơn xin mở lớp học phần"@vi ;
+        ns1:soHieuMauTrenWebsite "1" ;
+        ns1:ungVoiBieuMau ns1:MauSo01DonXinMoLopHocPhan .
+
+    ns1:MucTaiDonXinNghiHocTamThoi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
+        ns1:noiDung "Đơn xin nghỉ học tạm thời"@vi ;
+        ns1:soHieuMauTrenWebsite "8A" ;
+        ns1:ungVoiBieuMau ns1:MauSo09DonXinNghiHocTamThoi .
+
+    ns1:MucTaiDonXinPhepNghiHoc ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2003%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc.docx" ;
+        ns1:noiDung "Đơn xin phép nghỉ học"@vi ;
+        ns1:soHieuMauTrenWebsite "3" ;
+        ns1:ungVoiBieuMau ns1:MauSo03DonXinNghiHoc .
+
+    ns1:MucTaiDonXinXetTotNghiep ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2007%20-%20%C4%90%C6%A1n%20%C4%91%E1%BB%81%20ngh%E1%BB%8B%20x%C3%A9t%20t%E1%BB%91t%20nghi%E1%BB%87p.docx" ;
+        ns1:noiDung "Đơn xin xét tốt nghiệp"@vi ;
+        ns1:soHieuMauTrenWebsite "7" .
+
+    ns1:MucTaiPhieuBaoDiemBoSung ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20b%C3%A1o%20%C4%91i%E1%BB%83m%20b%E1%BB%95%20sung.doc" ;
+        ns1:noiDung "Phiếu báo điểm bổ sung"@vi .
+
+    ns1:MucTaiPhieuDangKyDieuChinhHocPhan ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2002%20-%20Phi%E1%BA%BFu%20%C4%91%C4%83ng%20k%C3%BD%2C%20%C4%91i%E1%BB%81u%20ch%E1%BB%89nh%20h%E1%BB%8Dc%20ph%E1%BA%A7n.docx" ;
+        ns1:noiDung "Phiếu đăng ký/điều chỉnh học phần"@vi ;
+        ns1:soHieuMauTrenWebsite "2" ;
+        ns1:ungVoiBieuMau ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 .
+
+    ns1:MucTaiPhieuDieuChinhDiem ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/Phi%E1%BA%BFu%20%C4%90i%E1%BB%81u%20ch%E1%BB%89nh%20%C4%90I%E1%BB%82M.DOC" ;
+        ns1:noiDung "Phiếu điều chỉnh điểm"@vi .
+
+    ns1:MucTaiDonXinChuyenNganh ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2010%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh.docx" ;
+        ns1:noiDung "Đơn xin chuyển ngành"@vi ;
+        ns1:soHieuMauTrenWebsite "10" ;
+        ns1:ungVoiBieuMau ns1:MauSo12DonXinChuyenNganh .
+
+    ns1:MucTaiDonXinChuyenTruong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
+        ns1:noiDung "Đơn xin chuyển trường"@vi ;
+        ns1:soHieuMauTrenWebsite "11" ;
+        ns1:ungVoiBieuMau ns1:MauSo13DonXinChuyenTruong .
+
+    ns1:MucTaiDonXinMienHocMienThiVaCongDiemThuong ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2006%20-%20%C4%90%C6%A1n%20xin%20mi%E1%BB%85n%20h%E1%BB%8Dc%2C%20mi%E1%BB%85n%20thi%20v%C3%A0%20c%E1%BB%99ng%20%C4%91i%E1%BB%83m%20th%C6%B0%E1%BB%9Fng.docx" ;
+        ns1:noiDung "Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
+        ns1:soHieuMauTrenWebsite "6" ;
+        ns1:ungVoiBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong .
+
+    ns1:MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/Uploads/38/Mẫu%20số%2013%20-Đơn%20đăng%20ký%20học%20cùng%20lúc%20hai%20chương%20trình%20đào%20tạo%20(mẫu%202).docx" ;
+        ns1:noiDung "Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi ;
+        ns1:soHieuMauTrenWebsite "13" ;
+        ns1:ungVoiBieuMau ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh .
+}
+
+ns1:TD1052_D16K02dB {
+    ns1:ThangDiemDanhGia ns1:noiDung "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập. Điểm học phần được chấm theo thang điểm 10 từ 0,0 đến 10 và làm tròn đến một chữ số thập phân. Điểm học phần từ 5,0 trở lên được đánh giá là đạt."@vi .
+}
+
+ns1:TD1052_D26K01dD {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Được sự đồng ý của Hiệu trưởng cơ sở đào tạo xin chuyển đi và cơ sở đào tạo xin chuyển đến."@vi .
+}
+
+ns1:TDTuitionPaymentGuidanceSection02 {
+    ns1:MienPhiMobileBankingHoacInternetBanking ns1:apDungChoPhuongThucDong ns1:ThanhToanBangMobileBankingHoacInternetBanking ;
+        ns1:mucLePhi "0"^^xsd:nonNegativeInteger ;
+        ns1:noiDung "Miễn phí Mobile Banking hoặc Internet Banking"@vi .
+
+    ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
+        ns1:hoTroPhuongThuc ns1:NopTienMatTaiQuayNganHang,
+            ns1:ThanhToanBangMaQr,
+            ns1:ThanhToanBangMobileBankingHoacInternetBanking,
+            ns1:ThanhToanQuaCongVnpay ;
+        ns1:noiDung "Nếu có tài khoản Agribank, Vietinbank hoặc Liên Việt PostBank, dùng Mobile Banking hoặc Internet Banking để đóng học phí, miễn phí."@vi,
+            "Thủ tục nộp học phí qua cổng thanh toán trực tuyến, ứng dụng ngân hàng hoặc quầy giao dịch."@vi .
+
+    ns1:ThanhToanBangMobileBankingHoacInternetBanking ns1:hoTroNganHang ns1:NganHangAgribank,
+            ns1:NganHangLienVietPostbank,
+            ns1:NganHangVietinbank .
+}
+
+ns1:TD1052_D11K03 {
+    ns1:ThuTucDangKyHocCaiThienDiem ns1:doAiThucHien ns1:SinhVien ;
+        ns1:noiDung "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi,
+            "Đăng ký học lại học phần hoặc đổi sang học phần khác trong nhóm tự chọn để cải thiện điểm trung bình chung tích lũy."@vi .
+}
+
+ns1:TD1052_D06K02dD {
+    ns1:HocPhanNhiemY ns1:noiDung "Học phần sinh viên có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả được ghi trong bảng điểm nhưng không tính vào trung bình chung tích lũy và không dùng để phân loại, xếp hạng học tập."@vi .
+}
+
+ns1:TD1052_D22K01dDD {
+    ns1:ThuTucXetVaCongNhanTotNghiep ns1:noiDung "Hoàn thành các học phần Giáo dục quốc phòng - An ninh, Giáo dục thể chất và các học phần điều kiện khác nếu có."@vi .
 }
 
 ns1:TD1052_D07K02dB {
     ns1:HocKyHe ns1:noiDung "Học kỳ III là học kỳ hè kéo dài tối đa 8 tuần, gồm tối đa 07 tuần học và 01 tuần thi. Học kỳ III tổ chức học tập trung các học phần Giáo dục quốc phòng - An ninh hoặc giúp sinh viên học vượt, học lại, học cải thiện."@vi .
 }
 
-ns1:TDSecondLanguageConversionTableEnglishMajor {
-    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |
-| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |
-| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | 300 | TOPIK 3 | ≥ 300 | B1 |
-| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | 400 | TOPIK 4 | ≥ 350 | B2 |
-| Bậc 5 | HSK 5 | | N2 | 740 | TRKI 3 | | | TOPIK 5 | ≥ 400 | |
-| Bậc 6 | | | N1 | 880 | TRKI 4 | | | TOPIK 6 | > 450 | |"""@vi .
+ns1:TD1052_D25K01dD {
+    ns1:ThuTucChuyenNganh ns1:noiDung "Nhà trường có đủ điều kiện bảo đảm chất lượng và chưa vượt quá năng lực đào tạo của ngành xin chuyển đến."@vi .
 }
 
-ns1:TD1052_D20K03 {
-    ns1:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc ns1:canBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
-        ns1:doAiQuyetDinh ns1:HieuTruong ;
-        ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
-        ns1:noiDung "Gửi đơn tới Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét."@vi,
-            "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt từ 5,0 trở lên khi học ở chương trình mới."@vi,
-            "Thuộc diện bị buộc thôi học theo khoản 2 Điều 20 và Trường có tổ chức chương trình đào tạo tương ứng theo hình thức vừa làm vừa học."@vi,
-            "Thủ tục cho sinh viên thuộc diện buộc thôi học xin chuyển sang chương trình đào tạo hình thức vừa làm vừa học."@vi,
-            "Viết đơn theo Mẫu số 05 (Phụ lục 4)."@vi ;
+ns1:TD1052_D24K03 {
+    ns1:MucTaiDonXinHocTroLai ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2009%20-%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20tr%E1%BB%9F%20l%E1%BA%A1i.docx" ;
+        ns1:noiDung "Đơn xin học trở lại"@vi ;
+        ns1:soHieuMauTrenWebsite "9" ;
+        ns1:ungVoiBieuMau ns1:MauSo11DonXinHocTroLai .
+
+    ns1:MucTaiDonXinNghiHocTamThoi ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
+        ns1:noiDung "Đơn xin nghỉ học tạm thời"@vi ;
+        ns1:soHieuMauTrenWebsite "8A" ;
+        ns1:ungVoiBieuMau ns1:MauSo09DonXinNghiHocTamThoi .
+
+    ns1:MauSo10DonXinThoiHoc ns1:soHieuMauTheoQuyetDinh "10" .
+
+    ns1:ThuTucXinHocTroLai ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo11DonXinHocTroLai ;
+        ns1:noiDung "Khi muốn trở lại học tiếp, sinh viên cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới để được xem xét giải quyết."@vi ;
         ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
 
-    ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ns1:soHieuMauTheoQuyetDinh "05" .
+    ns1:ThuTucXinThoiHoc ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo10DonXinThoiHoc ;
+        ns1:noiDung "Sinh viên xin thôi học phải viết đơn (Mẫu số 10 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
+
+    ns1:MauSo09DonXinNghiHocTamThoi ns1:soHieuMauTheoQuyetDinh "09" .
+
+    ns1:MauSo11DonXinHocTroLai ns1:soHieuMauTheoQuyetDinh "11" .
+
+    ns1:ThuTucNghiHocTamThoi ns1:doAiThucHien ns1:SinhVien ;
+        ns1:dungBieuMau ns1:MauSo09DonXinNghiHocTamThoi ;
+        ns1:noiDung "Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi ;
+        ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
 }
 
-ns1:TD1052_D05K01 {
-    ns1:TinChi ns1:noiDung "Tín chỉ là đơn vị tính khối lượng học tập của người học, bao gồm khối lượng kiến thức và kỹ năng mà người học cần tích lũy trong một khoảng thời gian nhất định."@vi .
+ns1:TD1052_D21K05 {
+    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
+        ns1:noiDung "Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện."@vi,
+            "Đạt giải nhất, nhì, ba trong kỳ thi Olympic sinh viên cấp tỉnh trở lên hoặc Giải thưởng khoa học công nghệ dành cho sinh viên; hoặc có chứng chỉ ngoại ngữ quốc tế còn hiệu lực theo Phụ lục 2; hoặc có chứng chỉ tin học quốc tế còn hiệu lực theo Phụ lục 3."@vi ;
+        ns1:nopTai ns1:PhongDaoTaoDaiHoc .
+}
+
+ns1:TDOrganizationStructureListing {
+    ns1:TruongDaiHocNhaTrang ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
+        ns1:dienThoai "0258 3831149" ;
+        ns1:hopThu "dhnt@ntu.edu.vn" ;
+        ns1:websiteDonVi "https://ntu.edu.vn" .
+
+    ns1:PhongDaoTaoDaiHoc ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
+        ns1:dienThoai "0258 3831148" ;
+        ns1:hopThu "daotao@ntu.edu.vn" ;
+        ns1:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
+        ns1:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
+
+    ns1:PhongCongTacChinhTriVaSinhVien ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
+        ns1:dienThoai "0258 222 1900" ;
+        ns1:hopThu "ctsv@ntu.edu.vn" ;
+        ns1:viTri "Khu Nhà Hiệu bộ"@vi ;
+        ns1:websiteDonVi "https://phongctsv.ntu.edu.vn" .
 }
 
