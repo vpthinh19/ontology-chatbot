@@ -34,10 +34,10 @@ class IndexPolicy:
     Mọi quyết định mang tính "biên soạn" nằm ở đây, tách khỏi thuật toán.
     """
 
-    #: Địa chỉ trích dẫn là bộ máy dẫn nguồn thuần tuý: không ai hỏi "khoản 3 Điều 24"
-    #: như một thực thể. Nguồn thô thì KHÁC - "trang tra cứu học phí", "danh mục biểu
-    #: mẫu", "thông báo học bổng" đều là thứ người ta hỏi tới, nên vẫn tra cứu được.
-    source_classes: frozenset[str] = frozenset({"DiaChiTrichDan"})
+    #: Tầng nguồn có mặt để dẫn nguồn, không phải thứ người ta tra cứu. Cái gì người
+    #: ta thật sự hỏi tới - cổng thông tin sinh viên chẳng hạn - phải là thực thể tri
+    #: thức có nguồn của nó, chứ không phải bản thân cái nguồn.
+    source_classes: frozenset[str] = frozenset({"Nguon", "DiaChiTrichDan"})
     #: Tiền tố của ô nói rõ thực thể thuộc loại con nào, ví dụ ``loaiQuyTac``.
     type_property_prefix: str = "loai"
     #: Thuộc tính nối một câu với địa chỉ trích dẫn của nó. Chúng dựng nên trích dẫn

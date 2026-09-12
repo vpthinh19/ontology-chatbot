@@ -81,6 +81,13 @@ LOP_VAN_BAN = {"Chapter", "Article", "Clause", "Point", "Appendix", "DocumentSec
 LOP_TU_LAM_NGUON = {"DocumentTable", "CertificateConversionTable"}
 #: Lớp của nguồn thô.
 LOP_NGUON = {"Decision", "Regulation", "GuidanceDocument", "FormCatalogue", "OfficialDocument"}
+#: Bị xếp nhầm thành văn bản. Thật ra là hệ thống trực tuyến sinh viên dùng hằng
+#: ngày - dấu hiệu nhận ra: chúng có tên gọi phụ do người thêm để tra cứu, và
+#: chúng không cấp nội dung cho bất kỳ câu nào.
+KHONG_PHAI_NGUON = {
+    "TuitionLookupPage": "HeThongTrucTuyen",
+    "AdmissionsLookupPage": "HeThongTrucTuyen",
+}
 
 #: Lớp chỉ khác nhau ở một hai ô số hoặc không khác gì: gộp thành một lớp, phân
 #: biệt bằng một ô "loại". IRI của lớp cũ trở thành GIÁ TRỊ của ô đó, nên nhãn cũ
@@ -124,6 +131,7 @@ DOI_LOP_CA_THE: dict[str, tuple[str, str, str]] = {
 
 #: Nhãn tiếng Việt cho các lớp chung mới sinh ra khi gộp.
 _NHAN_LOP_CHUNG = {
+    "HeThongTrucTuyen": "Hệ thống trực tuyến",
     "QuyTac": "Quy tắc", "KhaiNiem": "Khái niệm", "DanhMuc": "Danh mục",
     "ChungChi": "Chứng chỉ", "Bang": "Bảng", "HocPhan": "Học phần",
     "ChuThe": "Chủ thể", "MucTien": "Mức tiền",
@@ -201,6 +209,10 @@ class BoChuyenDoi:
         if node in self.ten_moi:
             return self.ten_moi[node]
         ten = (pascal if kieu == "pascal" else camel)(self.nhan(node))
+        if not ten:
+            # Nhãn không có chữ Latin nào, ví dụ "ТРКИ". Giữ tên cũ làm địa chỉ.
+            ten = re.sub(r"[^A-Za-z0-9]", "", local_name(node)) or "Node"
+            self.ghi_chu.append(f"nhãn {self.nhan(node)!r} không sinh được tên Latin; giữ {ten}")
         if ten in self._dung_ten and self._dung_ten[ten] != node:
             duoi = re.sub(r"[^A-Za-z0-9]", "", local_name(node))[-4:]
             ten = f"{ten}_{duoi}"
@@ -241,7 +253,8 @@ class BoChuyenDoi:
     def dung_tang_nguon(self, ra: Graph) -> None:
         """Gộp cặp Quyết định/Quy chế, rồi dựng địa chỉ trích dẫn cho phần văn bản."""
 
-        van_ban = [d for d in self.g.subjects(RDF.type, OWL.NamedIndividual) if self.lop(d) & LOP_NGUON]
+        van_ban = [d for d in self.g.subjects(RDF.type, OWL.NamedIndividual)
+                   if self.lop(d) & LOP_NGUON and local_name(d) not in KHONG_PHAI_NGUON]
         # Quy chế ban hành kèm Quyết định: một bản ghi, nhãn lấy của Quy chế,
         # số hiệu và ngày lấy của Quyết định.
         ghep: dict[URIRef, URIRef] = {}
@@ -374,7 +387,8 @@ class BoChuyenDoi:
     def chuyen_phat_bieu(self, ds, mac_dinh: Graph) -> dict[str, int]:
         dem = defaultdict(int)
         ca_the = [i for i in self.g.subjects(RDF.type, OWL.NamedIndividual)
-                  if not (self.lop(i) & (LOP_VAN_BAN | LOP_NGUON))]
+                  if not (self.lop(i) & (LOP_VAN_BAN | LOP_NGUON))
+                  or local_name(i) in KHONG_PHAI_NGUON]
 
         for node in sorted(ca_the, key=str):
             goc = self.node_goc(node)
@@ -386,7 +400,7 @@ class BoChuyenDoi:
                 for lop in self.g.objects(node, RDF.type):
                     if lop == OWL.NamedIndividual:
                         continue
-                    ten_lop = pascal(self.nhan(lop))
+                    ten_lop = KHONG_PHAI_NGUON.get(local_name(node)) or pascal(self.nhan(lop))
                     lop_chung, o_loai = GOP_LOP.get(ten_lop, (ten_lop, None))
                     doi = DOI_LOP_CA_THE.get(self.dat_ten(node))
                     nhan_loai = self.nhan(lop)
@@ -473,7 +487,7 @@ def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
     da_dat_nguon = {ACADEMIC[m["thuc_the"]] for m in _sc.get("dat_nguon", [])}
     thieu: list[str] = []
     for node in sorted(bo.g.subjects(RDF.type, OWL.NamedIndividual), key=str):
-        if bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON):
+        if bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON) and local_name(node) not in KHONG_PHAI_NGUON:
             continue
         goc = bo.node_goc(node)
         if bo.moi(goc) in da_xoa:
@@ -578,6 +592,26 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
                     dich = dia_chi_moi(cau["toa_do"], nguon)
             ds.graph(dich).add((chu_the, ACADEMIC.noiDung, Literal(cau["noiDung"], lang="vi")))
             dem += 1
+    for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("ten_goi_them", []):
+        chu_the = ACADEMIC[muc["thuc_the"]]
+        if (chu_the, RDFS.label, None) not in mac_dinh:
+            bo.canh_bao.append(f"thêm tên gọi: không thấy thực thể {muc['thuc_the']!r}")
+            continue
+        for ten in muc["ten_goi_phu"]:
+            mac_dinh.add((chu_the, SKOS.altLabel, Literal(ten, lang="vi")))
+            dem += 1
+
+    for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("doi_nhan", []):
+        chu_the = ACADEMIC[muc["thuc_the"]]
+        for cu in list(mac_dinh.objects(chu_the, RDFS.label)):
+            mac_dinh.remove((chu_the, RDFS.label, cu))
+        mac_dinh.add((chu_the, RDFS.label, Literal(muc["nhan"], lang="vi")))
+        for cu in list(mac_dinh.objects(chu_the, SKOS.altLabel)):
+            mac_dinh.remove((chu_the, SKOS.altLabel, cu))
+        for ten in muc.get("ten_goi_phu", []):
+            mac_dinh.add((chu_the, SKOS.altLabel, Literal(ten, lang="vi")))
+        dem += 1
+
     for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("xoa", []):
         chu_the = ACADEMIC[muc["thuc_the"]]
         for tui_ in [mac_dinh.identifier, *{q[3] for q in ds.quads((chu_the, None, None, None))}]:
@@ -654,7 +688,7 @@ def main() -> None:
          [bo.toa_do_cua(phan) for phan in sorted(g.objects(node, ACADEMIC.basedOn), key=str)],
          (local_name(node), bo.ten_moi.get(node, local_name(node))))
         for node in g.subjects(RDF.type, OWL.NamedIndividual)
-        if not (bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON))
+        if (not (bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON)) or local_name(node) in KHONG_PHAI_NGUON)
         and len(list(g.objects(node, ACADEMIC.basedOn))) > 1)
     # Thực thể mà KHÔNG câu nào của nó nằm trong túi: chỉ có danh tính và mô tả,
     # nên trả lời được nhưng không trích dẫn được.

@@ -1,5 +1,5 @@
 {
- "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc.",
+ "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc. 'doi_nhan' đổi nhãn và tên gọi phụ của một thực thể, dùng khi tên cũ mô tả sai thứ nó trỏ tới. 'ten_goi_them' thêm tên gọi phụ; chúng nằm ngoài mọi túi nên không cần nguồn.",
  "sua": [
   {
    "thuc_the": "ThuTucChuyenNganh",
@@ -230,6 +230,204 @@
    "nguon": "Nguon1052",
    "ly_do": "không phải câu tóm tắt của quy tắc nào khác; Điều 31 Quy chế 1052 nói đúng điều này và chỉ có một câu",
    "noiDung": "Sinh viên có gian lận trong học tập, kiểm tra và thi học phần sẽ bị xử lý kỷ luật đối với từng học phần đã vi phạm theo các quy định của Quy chế công tác sinh viên."
+  }
+ ],
+ "doi_nhan": [
+  {
+   "thuc_the": "TrangTraCuuHocPhiSinhVien",
+   "ly_do": "sinhvien.ntu.edu.vn không phải trang tra cứu học phí mà là cổng thông tin sinh viên, nơi quản lý toàn bộ thông tin cá nhân; tra cứu học phí chỉ là một mục trong đó",
+   "nhan": "Cổng thông tin sinh viên",
+   "ten_goi_phu": [
+    "tra cứu học phí",
+    "xem học phí của mình",
+    "cổng thông tin sinh viên",
+    "sinhvien.ntu.edu.vn",
+    "trang sinh viên",
+    "xem điểm",
+    "thông tin cá nhân sinh viên"
+   ]
+  }
+ ],
+ "ten_goi_them": [
+  {
+   "thuc_the": "Topik",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Hàn, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Hàn",
+    "tiếng Hàn",
+    "chứng chỉ ngoại ngữ tiếng Hàn"
+   ]
+  },
+  {
+   "thuc_the": "Klpt",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Hàn, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Hàn",
+    "tiếng Hàn",
+    "chứng chỉ ngoại ngữ tiếng Hàn"
+   ]
+  },
+  {
+   "thuc_the": "Jlpt",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Nhật, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Nhật",
+    "tiếng Nhật",
+    "chứng chỉ ngoại ngữ tiếng Nhật"
+   ]
+  },
+  {
+   "thuc_the": "Jpt",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Nhật, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Nhật",
+    "tiếng Nhật",
+    "chứng chỉ ngoại ngữ tiếng Nhật"
+   ]
+  },
+  {
+   "thuc_the": "Hsk",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Trung, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Trung",
+    "tiếng Trung",
+    "chứng chỉ ngoại ngữ tiếng Trung"
+   ]
+  },
+  {
+   "thuc_the": "Tocfl",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Trung, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Trung",
+    "tiếng Trung",
+    "chứng chỉ ngoại ngữ tiếng Trung"
+   ]
+  },
+  {
+   "thuc_the": "Delf",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Pháp, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Pháp",
+    "tiếng Pháp",
+    "chứng chỉ ngoại ngữ tiếng Pháp"
+   ]
+  },
+  {
+   "thuc_the": "Tcf",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Pháp, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Pháp",
+    "tiếng Pháp",
+    "chứng chỉ ngoại ngữ tiếng Pháp"
+   ]
+  },
+  {
+   "thuc_the": "TRKICertificate",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Nga, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Nga",
+    "tiếng Nga",
+    "chứng chỉ ngoại ngữ tiếng Nga"
+   ]
+  },
+  {
+   "thuc_the": "Toeic",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "Ielts",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "ToeflIbt",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "Linguaskill",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "CambridgeEnglishScale",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "AptisGeneral",
+   "ly_do": "ô tên đầy đủ đã nói đây là chứng chỉ tiếng Anh, nhưng không chỗ nào viết bằng tiếng Việt",
+   "ten_goi_phu": [
+    "chứng chỉ tiếng Anh",
+    "tiếng Anh",
+    "chứng chỉ ngoại ngữ tiếng Anh"
+   ]
+  },
+  {
+   "thuc_the": "Mos",
+   "ly_do": "chứng chỉ tin học quốc tế, người hỏi gọi theo lĩnh vực chứ không theo tên viết tắt",
+   "ten_goi_phu": [
+    "chứng chỉ tin học",
+    "chứng chỉ tin học quốc tế",
+    "tin học"
+   ]
+  },
+  {
+   "thuc_the": "Icdl",
+   "ly_do": "chứng chỉ tin học quốc tế, người hỏi gọi theo lĩnh vực chứ không theo tên viết tắt",
+   "ten_goi_phu": [
+    "chứng chỉ tin học",
+    "chứng chỉ tin học quốc tế",
+    "tin học"
+   ]
+  },
+  {
+   "thuc_the": "Ic3",
+   "ly_do": "chứng chỉ tin học quốc tế, người hỏi gọi theo lĩnh vực chứ không theo tên viết tắt",
+   "ten_goi_phu": [
+    "chứng chỉ tin học",
+    "chứng chỉ tin học quốc tế",
+    "tin học"
+   ]
+  },
+  {
+   "thuc_the": "MucTaiDonXinHocTroLai",
+   "ly_do": "sinh viên gọi là 'quay lại học' chứ ít khi nói 'trở lại học'",
+   "ten_goi_phu": [
+    "đơn xin quay lại học",
+    "đơn quay lại học",
+    "mẫu đơn học trở lại"
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXetVaCapHocBongKhuyenKhichHocTap",
+   "ly_do": "viết tắt HBKKHT dùng phổ biến trong thông báo của trường",
+   "ten_goi_phu": [
+    "hbkkht",
+    "học bổng kkht",
+    "tiêu chí học bổng"
+   ]
   }
  ]
 }

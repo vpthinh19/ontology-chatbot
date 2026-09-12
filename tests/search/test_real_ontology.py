@@ -62,5 +62,14 @@ def test_a_citation_address_never_shows_up_as_an_answer(engine) -> None:
             assert not node.startswith(":TD"), f"{keyword} ra địa chỉ trích dẫn: {node}"
 
 
-def test_a_source_document_can_be_asked_about_directly(engine) -> None:
-    assert _nodes(engine.search(["trang tra cứu học phí"]))[0] == ":NguonTrangTraCuuHocPhiSinhVien"
+def test_a_service_students_use_is_an_entity_not_a_source(engine) -> None:
+    """sinhvien.ntu.edu.vn là cổng thông tin sinh viên dùng hằng ngày, không phải
+    một văn bản để dẫn chứng. Nó từng bị xếp nhầm vào tầng nguồn."""
+
+    assert _nodes(engine.search(["tra cứu học phí"]))[0] == ":TrangTraCuuHocPhiSinhVien"
+
+
+def test_a_certificate_is_found_by_the_language_it_certifies(engine) -> None:
+    """Tên chứng chỉ viết bằng tiếng nước ngoài; người hỏi gọi theo ngôn ngữ."""
+
+    assert _nodes(engine.search(["chứng chỉ tiếng Nga"]))[0] == ":TRKICertificate"
