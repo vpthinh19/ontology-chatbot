@@ -55,10 +55,15 @@ class SearchResponse:
 
 
 class SearchEngine:
-    """Công cụ tìm kiếm cho LLM: nhận danh sách từ khoá, trả danh sách node kèm hồ sơ.
+    """Công cụ tìm kiếm cho LLM: nhận danh sách từ khoá, trả danh sách thực thể kèm hồ sơ.
 
-    Quy tắc xếp hạng node chỉ có một: điểm của node là điểm BM25 cao nhất trong các
-    dòng trỏ về nó, xét trên mọi từ khoá. Lấy ``top_k`` node đầu.
+    Quy tắc xếp hạng chỉ có một: với mỗi từ khoá, thực thể lấy điểm BM25 của dòng
+    khớp tốt nhất của nó; điểm của thực thể là **tổng** các điểm đó. Mô hình viết
+    vài từ khoá cho cùng một câu hỏi, nên mục trả lời được nhiều góc của câu hỏi
+    đáng đứng trên mục trả lời thật tốt đúng một góc.
+
+    Cộng theo TỪNG TỪ KHOÁ, không cộng theo dòng: một thực thể có nhiều dòng không
+    vì thế mà được cộng dồn điểm.
     """
 
     def __init__(
@@ -99,6 +104,7 @@ class SearchEngine:
     def search(self, keywords: Sequence[str]) -> SearchResponse:
         cleaned = list(dict.fromkeys(keyword.strip() for keyword in keywords if keyword.strip()))
         hits_by_node: dict[str, dict[str, EntryHit]] = {}
+        best_per_keyword: dict[str, dict[str, float]] = {}
         unmatched: list[str] = []
         for keyword in cleaned:
             hits = self.index.search(keyword, limit=self.entries_per_keyword)
@@ -109,15 +115,18 @@ class SearchEngine:
                 previous = best.get(hit.entry.text)
                 if previous is None or hit.score > previous.score:
                     best[hit.entry.text] = hit
+                theo_tu_khoa = best_per_keyword.setdefault(hit.entry.node, {})
+                theo_tu_khoa[keyword] = max(theo_tu_khoa.get(keyword, 0.0), hit.score)
 
         ranked = sorted(
             hits_by_node.items(),
-            key=lambda item: (-max(hit.score for hit in item[1].values()), item[0]),
+            key=lambda item: (-sum(best_per_keyword[item[0]].values()), item[0]),
         )[: self.top_k]
 
         results = []
         for node, hits in ranked:
             matched = sorted(hits.values(), key=lambda hit: -hit.score)
             profile = self.reader.read(node)
-            results.append(SearchResult(node, profile.label, matched[0].score, matched, profile))
+            results.append(SearchResult(node, profile.label, sum(best_per_keyword[node].values()),
+                                        matched, profile))
         return SearchResponse(cleaned, results, unmatched)

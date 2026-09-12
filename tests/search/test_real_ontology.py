@@ -54,7 +54,13 @@ def test_a_table_is_an_entity_people_can_ask_about(engine) -> None:
     assert _nodes(engine.search(["xếp loại học lực"]))[0] == ":BangXepLoaiHocLuc"
 
 
-def test_the_source_layer_never_shows_up_as_an_answer(engine) -> None:
+def test_a_citation_address_never_shows_up_as_an_answer(engine) -> None:
+    """Địa chỉ trích dẫn là bộ máy; nguồn thô thì tra cứu được vì người ta hỏi tới."""
+
     for keyword in ("quy chế đào tạo", "khoản 3 điều 24", "quyết định 1052"):
         for node in _nodes(engine.search([keyword])):
-            assert not node.startswith((":Nguon", ":TD")), f"{keyword} ra tầng nguồn: {node}"
+            assert not node.startswith(":TD"), f"{keyword} ra địa chỉ trích dẫn: {node}"
+
+
+def test_a_source_document_can_be_asked_about_directly(engine) -> None:
+    assert _nodes(engine.search(["trang tra cứu học phí"]))[0] == ":NguonTrangTraCuuHocPhiSinhVien"

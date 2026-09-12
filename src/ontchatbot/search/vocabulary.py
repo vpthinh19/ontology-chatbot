@@ -34,15 +34,15 @@ class IndexPolicy:
     Mọi quyết định mang tính "biên soạn" nằm ở đây, tách khỏi thuật toán.
     """
 
-    #: Lớp của bộ máy trích dẫn: có mặt để dẫn nguồn, không phải thứ người ta hỏi tới.
-    source_classes: frozenset[str] = frozenset({"Nguon", "DiaChiTrichDan"})
+    #: Địa chỉ trích dẫn là bộ máy dẫn nguồn thuần tuý: không ai hỏi "khoản 3 Điều 24"
+    #: như một thực thể. Nguồn thô thì KHÁC - "trang tra cứu học phí", "danh mục biểu
+    #: mẫu", "thông báo học bổng" đều là thứ người ta hỏi tới, nên vẫn tra cứu được.
+    source_classes: frozenset[str] = frozenset({"DiaChiTrichDan"})
     #: Tiền tố của ô nói rõ thực thể thuộc loại con nào, ví dụ ``loaiQuyTac``.
     type_property_prefix: str = "loai"
-    #: Thuộc tính dựng nên tầng nguồn: không phải dữ kiện học vụ, không vào chỉ mục.
-    source_properties: frozenset[str] = frozenset(
-        {"thuocNguon", "toaDo", "soHieu", "banHanhNgay", "ngayThuThap",
-         "hieuLucTu", "hieuLucTuHocKy", "duongDan", "loaiNguon", "suaDoiVanBan"}
-    )
+    #: Thuộc tính nối một câu với địa chỉ trích dẫn của nó. Chúng dựng nên trích dẫn
+    #: chứ không phải dữ kiện, nên không vào hồ sơ lẫn chỉ mục.
+    source_properties: frozenset[str] = frozenset({"thuocNguon", "toaDo"})
     #: Đường dẫn tải: người hỏi cần giá trị, nhưng không ai hỏi "cái gì có đường dẫn".
     unindexed_properties: frozenset[str] = frozenset({"diaChiTaiVe", "websiteDonVi", "hopThu"})
 

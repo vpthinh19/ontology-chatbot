@@ -36,13 +36,22 @@ def test_an_object_row_carries_both_ends_of_the_relation(mini_ontology) -> None:
             in _texts(entries, EntryKind.OBJECT_PROPERTY))
 
 
-def test_the_source_layer_produces_no_rows(mini_ontology) -> None:
-    """Nguồn và địa chỉ trích dẫn là bộ máy dẫn nguồn, không ai hỏi tới chúng."""
+def test_a_citation_address_produces_no_rows(mini_ontology) -> None:
+    """Không ai hỏi "khoản 3 Điều 24" như một thực thể; đó là bộ máy dẫn nguồn."""
 
     entries = IndexBuilder(mini_ontology).build_entries()
 
-    assert not any(entry.node.startswith((":Nguon", ":TD")) for entry in entries)
+    assert not any(entry.node.startswith(":TD") for entry in entries)
     assert not any("toạ độ" in entry.text or "thuộc nguồn" in entry.text for entry in entries)
+
+
+def test_a_raw_source_is_searchable_because_people_ask_about_it(mini_ontology) -> None:
+    """"Trang tra cứu học phí", "danh mục biểu mẫu", "thông báo học bổng" đều là
+    thứ sinh viên hỏi tới, nên nguồn thô vẫn có dòng chỉ mục."""
+
+    entries = IndexBuilder(mini_ontology).build_entries()
+
+    assert "Quy chế đào tạo trình độ đại học" in _texts(entries, EntryKind.LABEL)
 
 
 def test_a_row_points_at_the_entity_it_describes(mini_ontology) -> None:
