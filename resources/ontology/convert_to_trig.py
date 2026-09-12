@@ -1,0 +1,467 @@
+"""Chuyển ontology.ttl sang kiến trúc mới: TriG, nguồn theo túi, IRI tiếng Việt.
+
+Ba việc cùng lúc, cố ý gộp vào một bước vì chúng phụ thuộc nhau:
+
+1. **Tầng nguồn thay cho cây văn bản.** Chương/Điều/Khoản/Điểm thôi làm cá thể.
+   Mỗi phần văn bản từng được dẫn trở thành một *địa chỉ trích dẫn* hai ô, trỏ về
+   một *nguồn thô*. Cặp Quyết định/Quy chế gộp làm một bản ghi.
+2. **Nguồn gắn vào câu, không gắn vào node.** Mỗi phát biểu nằm trong cái túi mang
+   tên địa chỉ trích dẫn đã khẳng định nó. Câu không có nguồn nằm ngoài mọi túi.
+3. **Bỏ node trung gian.** Bước, điều kiện, kết quả, thời hạn, hệ quả, cách giải
+   quyết đều tan thành phát biểu của chính thực thể chứa chúng.
+
+IRI đổi sang tiếng Việt không dấu, sinh máy móc từ ``rdfs:label``. Bảng đối chiếu
+cũ-mới ghi ra ``iri-mapping.json`` để bộ kiểm tra tra cứu dò lại được.
+
+    python resources/ontology/convert_to_trig.py
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import unicodedata
+from collections import defaultdict
+from pathlib import Path
+
+from rdflib import Graph, Literal, URIRef
+from rdflib.namespace import OWL, RDF, RDFS, SKOS
+
+from ontchatbot.search.vocabulary import ACADEMIC, local_name
+
+HERE = Path(__file__).parent
+NGUON_TTL = HERE / "ontology.ttl"
+DICH_TRIG = HERE / "ontology.trig"
+BANG_DOI = HERE / "iri-mapping.json"
+BAO_CAO = HERE / "conversion-report.md"
+
+NS = str(ACADEMIC)
+
+# --- thuộc tính: cái nào tan, cái nào đổi vai ---------------------------------
+
+#: Gộp hết về :noiDung. Nội dung là nội dung, không phân loại theo lớp sở hữu.
+VAN_BAN = {
+    "summaryText", "stepText", "requirementText", "ruleText", "outcomeText",
+    "deadlineText", "caseText", "consequenceText", "conditionText", "definitionText",
+    "criterionText", "assessmentText", "feePolicyText", "headingText",
+    "verbatimTableText", "listedTitle",
+}
+#: Dựng nên tầng nguồn, không còn là dữ kiện.
+NGUON_HOC = {"basedOn", "citationLabel", "documentUrl", "webPageUrl", "inDocument", "partOf"}
+#: Toạ độ trong văn bản: đi vào chuỗi :toaDo, không còn là ô riêng.
+TOA_DO = {"articleNumber", "clauseNumber", "pointLetter", "chapterNumber", "appendixNumber"}
+#: Node trung gian tan đi nên thứ tự và quan hệ chứa cũng tan theo.
+TAN_DI = {"hasStep", "hasRequirement", "hasDeadline", "hasOutcome", "hasConsequence",
+          "hasResolution", "stepOrder", "requirementOrder", "officialText", "issuedBy"}
+#: Lớp chỉ tồn tại để treo một câu; tan vào thực thể chứa nó.
+LOP_TRUNG_GIAN = {"ProcedureStep", "Requirement", "Outcome", "Deadline", "Consequence", "CaseResolution"}
+#: Lớp của tầng văn bản: thành địa chỉ trích dẫn, không còn là cá thể.
+#: Bảng KHÔNG nằm đây - chúng mang nội dung thật và có altLabel do người thêm để
+#: tra cứu, nên là thực thể tri thức dù nằm trong văn bản.
+LOP_VAN_BAN = {"Chapter", "Article", "Clause", "Point", "Appendix", "DocumentSection",
+               "DocumentPart"}
+#: Thực thể vừa mang nội dung vừa là một chỗ trong văn bản: túi của chúng là địa
+#: chỉ trích dẫn của chính chúng.
+LOP_TU_LAM_NGUON = {"DocumentTable", "CertificateConversionTable"}
+#: Lớp của nguồn thô.
+LOP_NGUON = {"Decision", "Regulation", "GuidanceDocument", "FormCatalogue", "OfficialDocument"}
+
+VIET_TAT_TOA_DO = [
+    ("Regulation", ""), ("Decision", ""), ("Article", "_D"), ("Clause", "K"),
+    ("Point", "d"), ("Appendix", "_PL"), ("Chapter", "_C"),
+]
+
+
+def bo_dau(text: str) -> str:
+    text = text.replace("đ", "d").replace("Đ", "D")
+    return "".join(c for c in unicodedata.normalize("NFD", text) if not unicodedata.combining(c))
+
+
+def pascal(nhan: str) -> str:
+    tu = re.findall(r"[A-Za-z0-9]+", bo_dau(nhan))
+    return "".join(t if t.isdigit() else t[:1].upper() + t[1:].lower() for t in tu)
+
+
+def camel(nhan: str) -> str:
+    ten = pascal(nhan)
+    return ten[:1].lower() + ten[1:]
+
+
+class BoChuyenDoi:
+    def __init__(self, graph: Graph) -> None:
+        self.g = graph
+        self.canh_bao: list[str] = []
+        self.ten_moi: dict[URIRef, str] = {}
+        self.cha: dict[URIRef, URIRef] = {}
+        self._dung_ten: dict[str, URIRef] = {}
+        self.nguon_cua_phan: dict[URIRef, URIRef] = {}   # phần văn bản -> nguồn thô gộp
+        self.dia_chi: dict[URIRef, str] = {}             # phần văn bản -> IRI địa chỉ trích dẫn
+
+    # --- tiện ích đọc --------------------------------------------------------
+
+    def nhan(self, node: URIRef) -> str:
+        return str(next(iter(sorted(self.g.objects(node, RDFS.label), key=str)), local_name(node)))
+
+    def lop(self, node: URIRef) -> set[str]:
+        return {local_name(c) for c in self.g.objects(node, RDF.type)} - {"NamedIndividual"}
+
+    def mot(self, node: URIRef, ten: str):
+        return next(iter(self.g.objects(node, ACADEMIC[ten])), None)
+
+    # --- đặt tên -------------------------------------------------------------
+
+    def dat_ten(self, node: URIRef, kieu: str = "pascal") -> str:
+        """Tên mới, sinh từ nhãn. Trùng tên thì thêm hậu tố lấy từ IRI cũ."""
+
+        if node in self.ten_moi:
+            return self.ten_moi[node]
+        ten = (pascal if kieu == "pascal" else camel)(self.nhan(node))
+        if ten in self._dung_ten and self._dung_ten[ten] != node:
+            duoi = re.sub(r"[^A-Za-z0-9]", "", local_name(node))[-4:]
+            ten = f"{ten}_{duoi}"
+            self.canh_bao.append(f"trùng tên, phải thêm hậu tố: {local_name(node)} → {ten}")
+        self._dung_ten[ten] = node
+        self.ten_moi[node] = ten
+        return ten
+
+    def moi(self, node: URIRef) -> URIRef:
+        return URIRef(NS + self.dat_ten(node))
+
+    # --- tầng nguồn ----------------------------------------------------------
+
+    def dung_tang_nguon(self, ra: Graph) -> None:
+        """Gộp cặp Quyết định/Quy chế, rồi dựng địa chỉ trích dẫn cho phần văn bản."""
+
+        van_ban = [d for d in self.g.subjects(RDF.type, OWL.NamedIndividual) if self.lop(d) & LOP_NGUON]
+        # Quy chế ban hành kèm Quyết định: một bản ghi, nhãn lấy của Quy chế,
+        # số hiệu và ngày lấy của Quyết định.
+        ghep: dict[URIRef, URIRef] = {}
+        for quy_che in van_ban:
+            quyet_dinh = self.mot(quy_che, "issuedBy")
+            if quyet_dinh is not None:
+                ghep[quyet_dinh] = quy_che
+        goc = [d for d in van_ban if d not in ghep]
+
+        for nguon in goc:
+            iri = URIRef(NS + "Nguon" + re.sub(r"\D", "", local_name(nguon)) or NS + self.dat_ten(nguon))
+            if not re.search(r"\d", local_name(nguon)):
+                iri = URIRef(NS + "Nguon" + self.dat_ten(nguon))
+            self.ten_moi[nguon] = local_name(iri)
+            kem = [d for d, q in ghep.items() if q is nguon]
+
+            ra.add((iri, RDF.type, ACADEMIC.Nguon))
+            ra.add((iri, RDFS.label, Literal(self.nhan(nguon), lang="vi")))
+            ra.add((iri, ACADEMIC.loaiNguon, ACADEMIC[pascal(self.nhan(next(iter(self.g.objects(nguon, RDF.type)))))]))
+            for tu, sang in (("documentNumber", "soHieu"), ("issueDate", "banHanhNgay"),
+                             ("retrievedDate", "ngayThuThap"), ("effectiveFromAcademicYear", "hieuLucTu"),
+                             ("effectiveFromSemester", "hieuLucTuHocKy")):
+                for nguoi_giu in (nguon, *kem):
+                    gia_tri = self.mot(nguoi_giu, tu)
+                    if gia_tri is not None:
+                        ra.add((iri, ACADEMIC[sang], gia_tri))
+                        break
+            for tu in ("documentUrl", "webPageUrl"):
+                for nguoi_giu in (nguon, *kem):
+                    gia_tri = self.mot(nguoi_giu, tu)
+                    if gia_tri is not None:
+                        ra.add((iri, ACADEMIC.duongDan, gia_tri))
+                        break
+                else:
+                    continue
+                break
+            for nguoi_giu in (nguon, *kem):
+                for sua in self.g.objects(nguoi_giu, ACADEMIC.amends):
+                    ra.add((iri, ACADEMIC.suaDoiVanBan, sua))
+            self.nguon_cua_phan[nguon] = iri
+            for d in kem:
+                self.nguon_cua_phan[d] = iri
+
+        # Mọi phần văn bản quy về nguồn thô chứa nó.
+        for phan in self.g.subjects(RDF.type, OWL.NamedIndividual):
+            if not self.lop(phan) & (LOP_VAN_BAN | LOP_TU_LAM_NGUON):
+                continue
+            tai_lieu = self.mot(phan, "inDocument")
+            if tai_lieu is None:
+                cha = self.mot(phan, "partOf")
+                while cha is not None and self.mot(cha, "inDocument") is None:
+                    cha = self.mot(cha, "partOf")
+                tai_lieu = self.mot(cha, "inDocument") if cha is not None else None
+            if tai_lieu is None:
+                self.canh_bao.append(f"phần văn bản không truy được về tài liệu: {local_name(phan)}")
+                continue
+            self.nguon_cua_phan[phan] = self.nguon_cua_phan.get(tai_lieu, tai_lieu)
+
+    def toa_do_cua(self, phan: URIRef) -> str:
+        """Chuỗi toạ độ, cắt phần tên tài liệu ra khỏi trích dẫn dựng sẵn."""
+
+        trich = self.mot(phan, "citationLabel")
+        if trich is None:
+            return self.nhan(phan)
+        text = str(trich)
+        cat = re.search(r"\s+(Quy chế|Quyết định|Hướng dẫn|Thông báo|Danh mục|trang |của Trường)", text)
+        return text[: cat.start()].strip() if cat else text
+
+    def dia_chi_trich_dan(self, ra: Graph, phan: URIRef) -> URIRef | None:
+        """IRI của địa chỉ trích dẫn; dựng một lần rồi dùng lại."""
+
+        if phan in self.dia_chi:
+            return URIRef(NS + self.dia_chi[phan])
+        nguon = self.nguon_cua_phan.get(phan)
+        if nguon is None:
+            return None
+        ten = local_name(phan)
+        for tu, sang in VIET_TAT_TOA_DO:
+            ten = ten.replace(tu, sang)
+        ten = "TD" + re.sub(r"[^A-Za-z0-9_]", "", ten)
+        if ten in self._dung_ten and self._dung_ten[ten] != phan:
+            ten += "x"
+        self._dung_ten[ten] = phan
+        self.dia_chi[phan] = ten
+        iri = URIRef(NS + ten)
+        ra.add((iri, RDF.type, ACADEMIC.DiaChiTrichDan))
+        ra.add((iri, ACADEMIC.thuocNguon, nguon))
+        ra.add((iri, ACADEMIC.toaDo, Literal(self.toa_do_cua(phan), lang="vi")))
+        return iri
+
+    # --- phát biểu -----------------------------------------------------------
+
+    def dung_ban_do_cha(self) -> None:
+        for ten in ("hasStep", "hasRequirement", "hasDeadline", "hasOutcome",
+                    "hasConsequence", "hasResolution"):
+            for cha, con in self.g.subject_objects(ACADEMIC[ten]):
+                self.cha.setdefault(con, cha)
+
+    def node_goc(self, node: URIRef) -> URIRef:
+        da_qua = {node}
+        while node in self.cha and self.cha[node] not in da_qua:
+            node = self.cha[node]
+            da_qua.add(node)
+        return node
+
+    def tui_cua(self, ra: Graph, node: URIRef) -> list[URIRef]:
+        """Các túi mà phát biểu của node thuộc về. Rỗng nghĩa là không có nguồn."""
+
+        tui = []
+        for phan in sorted(self.g.objects(node, ACADEMIC.basedOn), key=str):
+            dia_chi = self.dia_chi_trich_dan(ra, phan)
+            if dia_chi is not None:
+                tui.append(dia_chi)
+        if not tui and self.lop(node) & LOP_TU_LAM_NGUON:
+            dia_chi = self.dia_chi_trich_dan(ra, node)
+            if dia_chi is not None:
+                tui.append(dia_chi)
+        return tui
+
+    def chuyen_phat_bieu(self, ds, mac_dinh: Graph) -> dict[str, int]:
+        dem = defaultdict(int)
+        ca_the = [i for i in self.g.subjects(RDF.type, OWL.NamedIndividual)
+                  if not (self.lop(i) & (LOP_VAN_BAN | LOP_NGUON))]
+
+        for node in sorted(ca_the, key=str):
+            goc = self.node_goc(node)
+            trung_gian = bool(self.lop(node) & LOP_TRUNG_GIAN)
+            tui = self.tui_cua(ra=mac_dinh, node=node) or self.tui_cua(ra=mac_dinh, node=goc)
+
+            # Danh tính chỉ của thực thể thật, không của node trung gian.
+            if not trung_gian:
+                for lop in self.g.objects(node, RDF.type):
+                    if lop != OWL.NamedIndividual:
+                        mac_dinh.add((self.moi(node), RDF.type, ACADEMIC[pascal(self.nhan(lop))]))
+                mac_dinh.add((self.moi(node), RDFS.label, Literal(self.nhan(node), lang="vi")))
+                for ten_khac in self.g.objects(node, SKOS.altLabel):
+                    mac_dinh.add((self.moi(node), SKOS.altLabel, Literal(str(ten_khac), lang="vi")))
+
+            for p, o in sorted(self.g.predicate_objects(node), key=lambda x: (str(x[0]), str(x[1]))):
+                ten = local_name(p)
+                if ten in NGUON_HOC | TOA_DO | TAN_DI or p in (RDF.type, RDFS.label, SKOS.altLabel):
+                    continue
+                if ten in ("catalogueEntryForForm", "hasCatalogueEntry") and False:
+                    continue
+
+                # Cách giải quyết đảo chiều: thủ tục áp dụng cho trường hợp,
+                # không phải trường hợp được giải quyết bằng thủ tục.
+                if ten == "resolvedBy":
+                    for t in tui or [None]:
+                        self.them(ds, mac_dinh, t, self.moi(o), ACADEMIC.apDungChoTruongHop, self.moi(goc))
+                        dem["đảo chiều trường hợp"] += 1
+                    continue
+                if ten == "scopedToCase":
+                    for t in tui or [None]:
+                        self.them(ds, mac_dinh, t, self.moi(goc), ACADEMIC.apDungChoTruongHop, self.moi(o))
+                        dem["đảo chiều trường hợp"] += 1
+                    continue
+
+                if ten in VAN_BAN:
+                    chu_the = self.moi(goc)
+                    # Điều kiện của cách giải quyết mô tả thủ tục, không mô tả trường hợp.
+                    if ten == "conditionText":
+                        muc_tieu = self.mot(node, "resolvedBy")
+                        if muc_tieu is not None:
+                            chu_the = self.moi(muc_tieu)
+                    for t in tui or [None]:
+                        self.them(ds, mac_dinh, t, chu_the, ACADEMIC.noiDung, Literal(str(o), lang="vi"))
+                    dem["nội dung"] += 1
+                    continue
+
+                thuoc_tinh = ACADEMIC[camel(self.nhan(p))]
+                gia_tri = self.moi(o) if isinstance(o, URIRef) else o
+                for t in tui or [None]:
+                    self.them(ds, mac_dinh, t, self.moi(goc), thuoc_tinh, gia_tri)
+                dem["quan hệ" if isinstance(o, URIRef) else "giá trị"] += 1
+                if not tui:
+                    dem["không có nguồn"] += 1
+        return dem
+
+    @staticmethod
+    def them(ds, mac_dinh: Graph, tui, s, p, o) -> None:
+        (mac_dinh if tui is None else ds.graph(tui)).add((s, p, o))
+
+
+def doi_chieu(bo: BoChuyenDoi, ds) -> list[str]:
+    """Mọi dữ kiện cũ phải xuất hiện lại. Dựng lại kỳ vọng từ đồ thị cũ, rồi so."""
+
+    co_that = {(s, p, o) for s, p, o, _ in ds.quads((None, None, None, None))}
+    thieu: list[str] = []
+    for node in sorted(bo.g.subjects(RDF.type, OWL.NamedIndividual), key=str):
+        if bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON):
+            continue
+        goc = bo.node_goc(node)
+        for p, o in bo.g.predicate_objects(node):
+            ten = local_name(p)
+            if ten in NGUON_HOC | TOA_DO | TAN_DI or p in (RDF.type, RDFS.label, SKOS.altLabel):
+                continue
+            if ten in ("resolvedBy", "scopedToCase"):
+                continue
+            if ten in VAN_BAN:
+                chu_the = bo.moi(goc)
+                if ten == "conditionText":
+                    muc_tieu = bo.mot(node, "resolvedBy")
+                    if muc_tieu is not None:
+                        chu_the = bo.moi(muc_tieu)
+                can = (chu_the, ACADEMIC.noiDung, Literal(str(o), lang="vi"))
+            else:
+                can = (bo.moi(goc), ACADEMIC[camel(bo.nhan(p))],
+                       bo.moi(o) if isinstance(o, URIRef) else o)
+            if can not in co_that:
+                thieu.append(f"{local_name(node)} · {ten} → {str(o)[:46]}")
+    return thieu
+
+
+def cau_bi_che_doi(ds, mac_dinh) -> list[tuple[str, str, list[str]]]:
+    """Cặp (thực thể, điều khoản) mang nhiều hơn một :noiDung.
+
+    Gần như toàn bộ là một câu của quy chế bị AI Agent cắt ở chỗ động từ thành
+    "viết đơn" và "gửi đơn". Phải lấy lại câu gốc từ references/ rồi nhập một câu.
+    """
+
+    dong_tu_soan = re.compile(r"^(viết|làm|chuẩn bị|soạn)\b", re.I)
+    dong_tu_nop = re.compile(r"^(gửi|nộp|trình)\b", re.I)
+
+    gom = defaultdict(list)
+    for s, _, o, tui in ds.quads((None, ACADEMIC.noiDung, None, None)):
+        if tui != mac_dinh.identifier:
+            gom[(s, tui)].append(str(o))
+    ra = []
+    for (chu_the, tui), cac_cau in gom.items():
+        if len(cac_cau) < 2:
+            continue
+        nhan = next(iter(mac_dinh.objects(chu_the, RDFS.label)), local_name(chu_the))
+        toa_do = next(iter(mac_dinh.objects(tui, ACADEMIC.toaDo)), local_name(tui))
+        che_doi = (any(dong_tu_soan.match(c) for c in cac_cau)
+                   and any(dong_tu_nop.match(c) for c in cac_cau))
+        ra.append((not che_doi, str(nhan), str(toa_do), sorted(cac_cau), che_doi))
+    return sorted(ra)
+
+
+def main() -> None:
+    from rdflib import Dataset
+
+    g = Graph()
+    g.parse(NGUON_TTL, format="turtle")
+    bo = BoChuyenDoi(g)
+    bo.dung_ban_do_cha()
+
+    ds = Dataset()
+    mac_dinh = ds.default_graph
+    bo.dung_tang_nguon(mac_dinh)
+    dem = bo.chuyen_phat_bieu(ds, mac_dinh)
+
+    tui = {q[3] for q in ds.quads((None, None, None, None))} - {mac_dinh.identifier}
+    ngoai = len(list(mac_dinh))
+    tong = len(list(ds.quads((None, None, None, None))))
+    thieu = doi_chieu(bo, ds)
+    che_doi = cau_bi_che_doi(ds, mac_dinh)
+    nhieu_nguon = sorted(
+        (str(next(iter(mac_dinh.objects(bo.moi(node), RDFS.label)), local_name(node))),
+         [bo.toa_do_cua(phan) for phan in sorted(g.objects(node, ACADEMIC.basedOn), key=str)])
+        for node in g.subjects(RDF.type, OWL.NamedIndividual)
+        if not (bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON))
+        and len(list(g.objects(node, ACADEMIC.basedOn))) > 1)
+    khong_nguon = sorted(
+        str(next(iter(mac_dinh.objects(s, RDFS.label)), local_name(s)))
+        for s in {q[0] for q in ds.quads((None, None, None, mac_dinh.identifier))}
+        if (s, RDF.type, ACADEMIC.DiaChiTrichDan) not in mac_dinh
+        and (s, RDF.type, ACADEMIC.Nguon) not in mac_dinh
+        and not any(True for _ in ds.quads((s, None, None, None)) if _[3] != mac_dinh.identifier))
+
+    DICH_TRIG.write_bytes(ds.serialize(format="trig", encoding="utf-8"))
+    BANG_DOI.write_text(
+        json.dumps({local_name(k): v for k, v in sorted(bo.ten_moi.items(), key=lambda x: str(x[0]))},
+                   ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    nguon_tho = len(set(bo.nguon_cua_phan.values()))
+    dong = [
+        "# Báo cáo chuyển đổi ontology sang TriG", "",
+        f"- cũ: {len(g)} bộ ba, {len(set(g.subjects(RDF.type, OWL.NamedIndividual)))} cá thể",
+        f"- mới: {tong} câu, trong đó {ngoai} nằm ngoài túi",
+        f"- nguồn thô: {nguon_tho} · địa chỉ trích dẫn: {len(bo.dia_chi)} · túi dùng thật: {len(tui)}",
+        "",
+        "## Đã chuyển", "",
+        *[f"- {k}: {v}" for k, v in sorted(dem.items())],
+        "", "## Cần người duyệt", "",
+    ]
+    if che_doi:
+        cat = sum(1 for c in che_doi if c[4])
+        dong += [f"### {len(che_doi)} chỗ một điều khoản mang nhiều câu", "",
+                 f"`✂ cắt đôi` ({cat} chỗ) là một câu của quy chế bị cắt ở chỗ động từ — lấy lại",
+                 "câu gốc trong `references/` rồi nhập thành một câu. `· xem lại` là những chỗ",
+                 "có thể vốn là nhiều phát biểu thật, cần người đọc quyết.", ""]
+        for _, nhan, toa_do, cac_cau, la_che_doi in che_doi:
+            dau = "✂ cắt đôi" if la_che_doi else "· xem lại"
+            dong.append(f"- {dau} — **{nhan}** · {toa_do}")
+            dong += [f"    - {c}" for c in cac_cau]
+        dong.append("")
+    if nhieu_nguon:
+        dong += [f"### {len(nhieu_nguon)} thực thể dẫn từ hai nguồn trở lên", "",
+                 "Mọi phát biểu của chúng được nhân vào từng túi, vì dữ liệu cũ không nói",
+                 "dữ kiện nào thuộc nguồn nào. Cần gán lại từng câu về đúng điều khoản.", ""]
+        dong += [f"- **{nhan}** — {', '.join(toa)}" for nhan, toa in nhieu_nguon]
+        dong.append("")
+    if khong_nguon:
+        dong += [f"### {len(khong_nguon)} thực thể không có phát biểu nào kèm nguồn", "",
+                 ", ".join(khong_nguon), ""]
+    if thieu:
+        dong += [f"### {len(thieu)} dữ kiện không tìm lại được", ""] + [f"- {t}" for t in thieu[:40]] + [""]
+    if bo.canh_bao:
+        dong += [f"### {len(bo.canh_bao)} cảnh báo lúc chuyển", ""] + [f"- {c}" for c in bo.canh_bao[:40]]
+    BAO_CAO.write_text("\n".join(dong) + "\n", encoding="utf-8")
+
+    print(f"cũ  : {len(g)} bộ ba")
+    print(f"mới : {tong} câu · {ngoai} ngoài túi · {len(tui)} túi")
+    print(f"nguồn thô {nguon_tho} · địa chỉ trích dẫn {len(bo.dia_chi)}")
+    for k, v in sorted(dem.items()):
+        print(f"   {k}: {v}")
+    print(f"\nkhông tìm lại được: {len(thieu)} dữ kiện")
+    for t in thieu[:10]:
+        print(f"   ⚠ {t}")
+    print(f"một điều khoản mang nhiều câu: {len(che_doi)} chỗ "
+          f"({sum(1 for c in che_doi if c[4])} chỗ là câu bị cắt đôi)")
+    print(f"thực thể dẫn từ hai nguồn trở lên: {len(nhieu_nguon)}")
+    print(f"thực thể không có phát biểu kèm nguồn: {len(khong_nguon)}")
+    print(f"cảnh báo: {len(bo.canh_bao)}")
+    for c in bo.canh_bao[:5]:
+        print(f"   · {c}")
+
+
+if __name__ == "__main__":
+    main()
