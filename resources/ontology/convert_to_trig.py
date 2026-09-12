@@ -73,6 +73,28 @@ LOP_TU_LAM_NGUON = {"DocumentTable", "CertificateConversionTable"}
 #: Lớp của nguồn thô.
 LOP_NGUON = {"Decision", "Regulation", "GuidanceDocument", "FormCatalogue", "OfficialDocument"}
 
+#: Lớp chỉ khác nhau ở một hai ô số hoặc không khác gì: gộp thành một lớp, phân
+#: biệt bằng một ô "loại". IRI của lớp cũ trở thành GIÁ TRỊ của ô đó, nên nhãn cũ
+#: giữ nguyên và câu trả lời vẫn nói được đó là quy tắc gì, chứng chỉ loại nào.
+#: Khoá là tên lớp sinh từ nhãn tiếng Việt.
+GOP_LOP: dict[str, tuple[str, str]] = {}
+for _lop_chung, _o_loai, _cac_lop in (
+    ("QuyTac", "loaiQuyTac",
+     ("QuyTacHocVu", "QuyTacBuocThoiHoc", "QuyTacCanhBaoKetQuaHocTap", "QuyTacDieuKienDuThi",
+      "QuyTacGioiHanCongNhanVaChuyenDoiTinChi", "QuyTacHaHangTotNghiep",
+      "QuyTacKhoiLuongDangKyMoiHocKy", "QuyTacLePhiDongHocPhi", "QuyTacThoiGianDaoTao",
+      "QuyTacTyLeDaoTaoTrucTuyen", "ChinhSachHocVu")),
+    ("KhaiNiem", "loaiKhaiNiem",
+     ("KhaiNiemHocVu", "LoaiHocPhan", "HocPhanNgoaiNgu", "HinhThucDaoTao", "LoaiHocKy",
+      "HinhThucToChucDayHoc", "ThanhPhanDanhGiaHocPhan", "DiemChu")),
+    ("DanhMuc", "loaiDanhMuc",
+     ("NganHang", "KhoiNganh", "PhuongThucDongHocPhi", "DonViTinhHocPhi", "TrinhDoDaoTao")),
+    ("ChungChi", "loaiChungChi", ("ChungChi", "ChungChiNgoaiNgu", "ChungChiTinHoc")),
+    ("Bang", "loaiBang", ("BangTrongTaiLieu", "BangQuyDoiChungChi")),
+):
+    for _lop in _cac_lop:
+        GOP_LOP[_lop] = (_lop_chung, _o_loai)
+
 VIET_TAT_TOA_DO = [
     ("Regulation", ""), ("Decision", ""), ("Article", "_D"), ("Clause", "K"),
     ("Point", "d"), ("Appendix", "_PL"), ("Chapter", "_C"),
@@ -99,6 +121,7 @@ class BoChuyenDoi:
         self.g = graph
         self.canh_bao: list[str] = []
         self.ghi_chu: list[str] = []
+        self.gop_lop_da_dung: set[str] = set()
         self.ten_moi: dict[URIRef, str] = {}
         self.cha: dict[URIRef, URIRef] = {}
         self._dung_ten: dict[str, URIRef] = {}
@@ -273,8 +296,15 @@ class BoChuyenDoi:
             # Danh tính chỉ của thực thể thật, không của node trung gian.
             if not trung_gian:
                 for lop in self.g.objects(node, RDF.type):
-                    if lop != OWL.NamedIndividual:
-                        mac_dinh.add((self.moi(node), RDF.type, ACADEMIC[pascal(self.nhan(lop))]))
+                    if lop == OWL.NamedIndividual:
+                        continue
+                    ten_lop = pascal(self.nhan(lop))
+                    lop_chung, o_loai = GOP_LOP.get(ten_lop, (ten_lop, None))
+                    mac_dinh.add((self.moi(node), RDF.type, ACADEMIC[lop_chung]))
+                    if o_loai and ten_lop != lop_chung:
+                        mac_dinh.add((self.moi(node), ACADEMIC[o_loai], ACADEMIC[ten_lop]))
+                        mac_dinh.add((ACADEMIC[ten_lop], RDFS.label, Literal(self.nhan(lop), lang="vi")))
+                        self.gop_lop_da_dung.add(ten_lop)
                 mac_dinh.add((self.moi(node), RDFS.label, Literal(self.nhan(node), lang="vi")))
                 for ten_khac in self.g.objects(node, SKOS.altLabel):
                     mac_dinh.add((self.moi(node), SKOS.altLabel, Literal(str(ten_khac), lang="vi")))
@@ -508,7 +538,8 @@ def main() -> None:
         str(next(iter(mac_dinh.objects(s_, RDFS.label)), local_name(s_)))
         for s_ in ngoai_tui - co_nguon
         if (s_, RDF.type, ACADEMIC.DiaChiTrichDan) not in mac_dinh
-        and (s_, RDF.type, ACADEMIC.Nguon) not in mac_dinh)
+        and (s_, RDF.type, ACADEMIC.Nguon) not in mac_dinh
+        and local_name(s_) not in bo.gop_lop_da_dung)
     DICH_TRIG.write_bytes(ds.serialize(format="trig", encoding="utf-8"))
     BANG_DOI.write_text(
         json.dumps({local_name(k): v for k, v in sorted(bo.ten_moi.items(), key=lambda x: str(x[0]))},
@@ -523,6 +554,7 @@ def main() -> None:
         "",
         "## Đã chuyển", "",
         *[f"- {k}: {v}" for k, v in sorted(dem.items())],
+        f"- lớp gộp lại thành lớp chung kèm ô loại: {len(bo.gop_lop_da_dung)}",
         "", "## Cần người duyệt", "",
     ]
 
