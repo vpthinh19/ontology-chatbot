@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.search import SearchEngine, TurtleFileSource
+from ontchatbot.search import SearchEngine, TriGFileSource
 from ontchatbot.settings import ONTOLOGY_PATH
 
 KIEM_TRA = Path(__file__).resolve().parents[2] / "resources" / "end-to-end" / "check_retrieval.py"
@@ -34,7 +34,7 @@ def kich_ban():
 
 @pytest.fixture(scope="module")
 def ket_qua(kich_ban):
-    return kich_ban.chay(SearchEngine.open(TurtleFileSource(ONTOLOGY_PATH)))
+    return kich_ban.chay(SearchEngine.open(TriGFileSource(ONTOLOGY_PATH)))
 
 
 def test_no_question_that_used_to_be_retrieved_is_lost(kich_ban, ket_qua) -> None:

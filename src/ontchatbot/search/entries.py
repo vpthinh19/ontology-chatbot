@@ -14,27 +14,19 @@ class EntryKind(str, Enum):
 
 @dataclass(frozen=True)
 class IndexEntry:
-    """Một dòng chữ trỏ về một node.
-
-    ``node`` là node gốc mà kết quả tìm kiếm trả về. ``subject`` là individual thật
-    sự khẳng định dòng này; hai giá trị khác nhau khi dòng thuộc một thành phần,
-    ví dụ một bước của thủ tục. Mọi IRI viết gọn dạng ``:TenCucBo``.
-    """
+    """Một dòng chữ trỏ về một thực thể. IRI viết gọn dạng ``:TenCucBo``."""
 
     kind: EntryKind
     text: str
     node: str
-    subject: str
     property: str | None = None
     target: str | None = None
 
     def to_dict(self) -> dict:
-        """Dạng lưu tệp: bỏ trường rỗng, bỏ ``subject`` khi trùng ``node``."""
+        """Dạng lưu tệp: bỏ trường rỗng."""
 
         payload = {key: value for key, value in asdict(self).items() if value is not None}
         payload["kind"] = self.kind.value
-        if payload["subject"] == payload["node"]:
-            del payload["subject"]
         return payload
 
     @classmethod
@@ -43,7 +35,6 @@ class IndexEntry:
             kind=EntryKind(payload["kind"]),
             text=payload["text"],
             node=payload["node"],
-            subject=payload.get("subject", payload["node"]),
             property=payload.get("property"),
             target=payload.get("target"),
         )

@@ -12,7 +12,7 @@ def _index(ontology, fingerprint="phien-ban-1") -> SearchIndex:
 def test_rows_sharing_the_keyword_words_rank_first(mini_ontology) -> None:
     hits = _index(mini_ontology).search("điện thoại phòng công tác sinh viên")
 
-    assert hits[0].entry.text == "Phòng Công tác Chính trị và Sinh viên | điện thoại"
+    assert hits[0].entry.text == "Phòng Công tác sinh viên | điện thoại"
     assert all(hit.score > 0 for hit in hits)
     assert [hit.score for hit in hits] == sorted((hit.score for hit in hits), reverse=True)
 

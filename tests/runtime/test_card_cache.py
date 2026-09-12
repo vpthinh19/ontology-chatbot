@@ -14,7 +14,7 @@ from ontchatbot.runtime.cards import (
     load_cards,
 )
 from ontchatbot.runtime.sparql import load_ontology
-from ontchatbot.settings import ONTOLOGY_PATH, QUERY_CATALOGUE_PATH
+from ontchatbot.settings import LEGACY_ONTOLOGY_PATH, QUERY_CATALOGUE_PATH
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def baked(tmp_path):
 
     ontology = tmp_path / "ontology.ttl"
     catalogue = tmp_path / "catalogue.jsonl"
-    shutil.copy(ONTOLOGY_PATH, ontology)
+    shutil.copy(LEGACY_ONTOLOGY_PATH, ontology)
     shutil.copy(QUERY_CATALOGUE_PATH, catalogue)
     cache = tmp_path / "cards.json"
     bake_cards(cache, ontology_path=ontology, catalogue_path=catalogue)

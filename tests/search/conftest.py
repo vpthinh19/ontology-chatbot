@@ -4,14 +4,14 @@ from pathlib import Path
 
 import pytest
 
-from ontchatbot.search import Ontology, TurtleFileSource
+from ontchatbot.search import Ontology, TriGFileSource
 
-MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.ttl"
+MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.trig"
 
 
 @pytest.fixture(scope="module")
-def mini_source() -> TurtleFileSource:
-    return TurtleFileSource(MINI_ONTOLOGY)
+def mini_source() -> TriGFileSource:
+    return TriGFileSource(MINI_ONTOLOGY)
 
 
 @pytest.fixture(scope="module")

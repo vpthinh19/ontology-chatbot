@@ -2,22 +2,20 @@
 
 from __future__ import annotations
 
-from rdflib import URIRef
-
 from .entries import EntryKind, IndexEntry
 from .ontology import Ontology
 from .vocabulary import compact
 
 
 class IndexBuilder:
-    """Sinh ba loại dòng cho mỗi individual:
+    """Sinh ba loại dòng cho mỗi thực thể:
 
-    - ``label``:             "<label>" cho rdfs:label và mỗi skos:altLabel
-    - ``datatype_property``: "<label> | <nhãn datatype_property>", mỗi thuộc tính một dòng
-    - ``object_property``:   "<label> | <nhãn object_property> | <label của đích>"
+    - ``label``:             "<nhãn>" cho nhãn chính và mỗi tên gọi phụ
+    - ``datatype_property``: "<nhãn> | <tên thuộc tính>", mỗi thuộc tính một dòng
+    - ``object_property``:   "<nhãn> | <tên thuộc tính> | <nhãn của đích>"
 
-    Mọi dòng trỏ về node gốc của individual, nên tìm trúng một bước thì kết quả vẫn
-    là thủ tục chứa bước đó.
+    Giá trị không vào dòng chỉ mục: người ta hỏi "học phí ngành nào", không hỏi
+    theo con số. Nội dung đến tay mô hình ở bước đọc hồ sơ.
     """
 
     def __init__(self, ontology: Ontology) -> None:
@@ -25,51 +23,26 @@ class IndexBuilder:
 
     def build_entries(self) -> list[IndexEntry]:
         entries: dict[tuple, IndexEntry] = {}
-        for individual in self.ontology.individuals():
-            node = self.ontology.entry_node(individual)
-            for entry in (
-                *self._label_entries(individual, node),
-                *self._datatype_property_entries(individual, node),
-                *self._object_property_entries(individual, node),
-            ):
+        for node in self.ontology.individuals():
+            for entry in self._entries_for(node):
                 entries.setdefault((entry.kind, entry.text, entry.node, entry.property, entry.target), entry)
         return list(entries.values())
 
-    def _label_entries(self, individual: URIRef, node: URIRef) -> list[IndexEntry]:
-        return [
-            IndexEntry(EntryKind.LABEL, text, compact(node), compact(individual))
-            for text in self.ontology.labels(individual)
-        ]
-
-    def _datatype_property_entries(self, individual: URIRef, node: URIRef) -> list[IndexEntry]:
-        subject = self.ontology.label(individual)
-        properties = dict.fromkeys(
-            prop
-            for prop, _value in self.ontology.datatype_property_assertions(individual)
-            if self.ontology.policy.is_indexed(prop)
-        )
-        return [
-            IndexEntry(
-                EntryKind.DATATYPE_PROPERTY,
-                f"{subject} | {self.ontology.label(prop)}",
-                compact(node),
-                compact(individual),
-                property=compact(prop),
-            )
-            for prop in properties
-        ]
-
-    def _object_property_entries(self, individual: URIRef, node: URIRef) -> list[IndexEntry]:
-        subject = self.ontology.label(individual)
-        return [
-            IndexEntry(
-                EntryKind.OBJECT_PROPERTY,
-                f"{subject} | {self.ontology.label(prop)} | {self.ontology.label(target)}",
-                compact(node),
-                compact(individual),
-                property=compact(prop),
-                target=compact(target),
-            )
-            for prop, target in self.ontology.object_property_assertions(individual)
-            if self.ontology.policy.is_indexed(prop)
-        ]
+    def _entries_for(self, node: str) -> list[IndexEntry]:
+        nhan = self.ontology.label(node)
+        ra = [IndexEntry(EntryKind.LABEL, text, node) for text in self.ontology.labels(node)]
+        da_co: set[str] = set()
+        for a in self.ontology.assertions(node):
+            if not self.ontology.policy.is_indexed(a.property):
+                continue
+            ten = self.ontology.property_label(a.property)
+            if a.target is None:
+                if ten in da_co:
+                    continue
+                da_co.add(ten)
+                ra.append(IndexEntry(EntryKind.DATATYPE_PROPERTY, f"{nhan} | {ten}", node,
+                                     property=compact(a.property)))
+            else:
+                ra.append(IndexEntry(EntryKind.OBJECT_PROPERTY, f"{nhan} | {ten} | {a.value}", node,
+                                     property=compact(a.property), target=a.target))
+        return ra

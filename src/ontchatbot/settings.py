@@ -15,7 +15,10 @@ _RESOURCES_PKG = PKG_ROOT / "resources"
 RESOURCES = _RESOURCES_DEV if _RESOURCES_DEV.is_dir() else _RESOURCES_PKG
 
 ONTOLOGY_DIR = RESOURCES / "ontology"
-ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology.ttl"
+ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology.trig"
+#: Tệp của mô hình cũ. Còn đây vì bộ chuyển đổi đọc nó và vì stack phân loại cũ
+#: chưa bị xoá; phase 3 dọn xong thì bỏ luôn dòng này.
+LEGACY_ONTOLOGY_PATH = ONTOLOGY_DIR / "ontology.ttl"
 ANSWER_INVENTORY_PATH = ONTOLOGY_DIR / "answer_inventory.json"
 ONTOLOGY_NS = "http://www.ntu.edu.vn/ontology/academic#"
 

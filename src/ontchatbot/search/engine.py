@@ -4,18 +4,13 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from pathlib import Path
 
 from .analyzer import TextAnalyzer
 from .builder import IndexBuilder
 from .index import EntryHit, SearchIndex
 from .ontology import Ontology, OntologySource
 from .profile import NodeProfile, ProfileReader
-from .vocabulary import IndexPolicy, expand
-
-
-class StaleIndexError(RuntimeError):
-    """Chỉ mục đã lưu được dựng từ một phiên bản ontology khác."""
+from .vocabulary import IndexPolicy
 
 
 @dataclass
@@ -86,27 +81,19 @@ class SearchEngine:
         cls,
         source: OntologySource,
         *,
-        index_directory: Path | None = None,
         policy: IndexPolicy | None = None,
         analyzer: TextAnalyzer | None = None,
         top_k: int = 3,
     ) -> SearchEngine:
-        """Nạp ontology; dùng chỉ mục đã lưu nếu có, không thì dựng ngay trong bộ nhớ."""
+        """Nạp ontology rồi dựng chỉ mục ngay trong bộ nhớ.
 
-        analyzer = analyzer or TextAnalyzer()
+        Không có đường nạp chỉ mục đã lưu: dựng lại chỉ tốn vài phần mười giây, còn
+        ontology thì sửa bất cứ lúc nào nên tệp chỉ mục hết hạn liên tục.
+        """
+
         ontology = Ontology.from_source(source, policy)
-        fingerprint = source.fingerprint()
-        if index_directory is None:
-            index = SearchIndex.build(IndexBuilder(ontology).build_entries(), analyzer, fingerprint)
-        else:
-            index = SearchIndex.load(index_directory, analyzer)
-            if index.fingerprint != fingerprint:
-                raise StaleIndexError(f"chỉ mục tại {index_directory} không khớp phiên bản ontology; hãy build lại")
-            if index.analyzer_name != analyzer.name:
-                raise StaleIndexError(
-                    f"chỉ mục tại {index_directory} dựng bằng cách tách từ {index.analyzer_name}, "
-                    f"khác {analyzer.name}; hãy build lại"
-                )
+        index = SearchIndex.build(IndexBuilder(ontology).build_entries(),
+                                  analyzer or TextAnalyzer(), source.fingerprint())
         return cls(ontology, index, top_k=top_k)
 
     def search(self, keywords: Sequence[str]) -> SearchResponse:
@@ -131,6 +118,6 @@ class SearchEngine:
         results = []
         for node, hits in ranked:
             matched = sorted(hits.values(), key=lambda hit: -hit.score)
-            profile = self.reader.read(expand(node))
+            profile = self.reader.read(node)
             results.append(SearchResult(node, profile.label, matched[0].score, matched, profile))
         return SearchResponse(cleaned, results, unmatched)

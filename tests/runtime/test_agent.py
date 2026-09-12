@@ -18,9 +18,9 @@ from ontchatbot.runtime.agent import (
     read_vocabulary,
 )
 from ontchatbot.runtime.lookup import MAX_KEYWORD_CHARACTERS, MAX_KEYWORDS_PER_LOOKUP
-from ontchatbot.search import Ontology, TurtleFileSource
+from ontchatbot.search import Ontology, TriGFileSource
 
-MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.ttl"
+MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.trig"
 
 VOCABULARY = OntologyVocabulary(
     procedures=("Thủ tục nghỉ học tạm thời",),
@@ -112,9 +112,9 @@ def test_system_prompt_stays_below_four_hundred_words() -> None:
 def test_vocabulary_is_read_from_the_ontology_being_served() -> None:
     """Danh sách chép tay mục dần; tên trong khuôn nhắc phải đến từ dữ liệu."""
 
-    vocabulary = read_vocabulary(Ontology.from_source(TurtleFileSource(MINI_ONTOLOGY)))
+    vocabulary = read_vocabulary(Ontology.from_source(TriGFileSource(MINI_ONTOLOGY)))
 
-    assert vocabulary.procedures == ("Thủ tục nghỉ học tạm thời",)
-    assert vocabulary.units == ("Phòng Công tác Chính trị và Sinh viên",)
+    assert vocabulary.procedures == ("Thủ tục nghỉ học tạm thời", "Thủ tục xin học trở lại")
+    assert vocabulary.units == ("Phòng Công tác sinh viên",)
     assert vocabulary.forms == () and vocabulary.programs == ()
     assert "nghỉ học tạm thời" in build_instructions(vocabulary)

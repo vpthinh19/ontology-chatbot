@@ -232,10 +232,10 @@ def read_vocabulary(ontology: Ontology, limit: int = NAMES_PER_KIND) -> Ontology
         return tuple(ontology.label(node) for node in ontology.individuals_of_class(class_name)[:limit])
 
     return OntologyVocabulary(
-        procedures=labels("AcademicProcedure"),
-        units=labels("OrganizationalUnit"),
-        forms=labels("FormCatalogueEntry"),
-        programs=labels("AcademicProgram"),
+        procedures=labels("ThuTucHocVu"),
+        units=labels("DonViTrongTruong"),
+        forms=labels("MucBieuMauTrenWebsite"),
+        programs=labels("NganhDaoTao"),
     )
 
 

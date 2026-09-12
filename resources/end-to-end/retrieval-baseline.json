@@ -1,10 +1,9 @@
 {
+ "ghi_chu": "Ghi lại mốc là hành động có chủ ý, phải nêu lý do. 2026-09-12, sau khi engine chuyển sang đọc ontology.trig: 44/51 → 42/51. question-000095 ('trách nhiệm sinh viên' → Sinh viên) mất do bỏ tách từ ghép underthesea, đã đo trước và chấp nhận. question-000701 ('điều kiện rút học phần' → Thủ tục rút bớt học phần) mất do 16 thuộc tính văn bản gộp về :noiDung, nên chữ 'điều kiện' không còn xuất hiện trong dòng chỉ mục nào của thủ tục đó.",
  "tong": 51,
  "dat": [
-  "question-000095",
   "question-000296",
   "question-000297",
-  "question-000701",
   "question-000706",
   "question-000708",
   "question-000711",

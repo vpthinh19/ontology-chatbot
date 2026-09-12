@@ -18,7 +18,7 @@ from typing import TypeAlias
 
 import pyoxigraph as ox
 
-from ..settings import ONTOLOGY_NS, ONTOLOGY_PATH
+from ..settings import LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH, ONTOLOGY_NS
 
 Primitive: TypeAlias = str | int | float | bool | None
 QueryRow: TypeAlias = dict[str, Primitive]

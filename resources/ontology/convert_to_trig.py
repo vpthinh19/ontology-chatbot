@@ -24,10 +24,19 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-from rdflib import Graph, Literal, URIRef
+from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, RDFS, SKOS
 
-from ontchatbot.search.vocabulary import ACADEMIC, local_name
+from ontchatbot.settings import ONTOLOGY_NS
+
+#: Bộ chuyển đổi đọc ontology CŨ bằng rdflib nên tự khai từ vựng của mình, không
+#: mượn của gói search - gói đó nay chỉ nói tiếng của mô hình mới.
+ACADEMIC = Namespace(ONTOLOGY_NS)
+
+
+def local_name(iri) -> str:
+    text = str(iri)
+    return text.rsplit("#", 1)[-1] if "#" in text else text.rsplit("/", 1)[-1]
 
 HERE = Path(__file__).parent
 NGUON_TTL = HERE / "ontology.ttl"
@@ -113,6 +122,27 @@ DOI_LOP_CA_THE: dict[str, tuple[str, str, str]] = {
     "QuyDoiGioHocCuaMotTinChi": ("KhaiNiem", "loaiKhaiNiem", "KhaiNiemHocVu"),
 }
 
+#: Nhãn tiếng Việt cho các lớp chung mới sinh ra khi gộp.
+_NHAN_LOP_CHUNG = {
+    "QuyTac": "Quy tắc", "KhaiNiem": "Khái niệm", "DanhMuc": "Danh mục",
+    "ChungChi": "Chứng chỉ", "Bang": "Bảng", "HocPhan": "Học phần",
+    "ChuThe": "Chủ thể", "MucTien": "Mức tiền",
+    "Nguon": "Nguồn", "DiaChiTrichDan": "Địa chỉ trích dẫn",
+}
+
+#: Thuộc tính do chính bộ chuyển đổi sinh ra nên không có nhãn trong ontology cũ.
+_NHAN_THUOC_TINH_MOI = {
+    "noiDung": "nội dung",
+    "apDungChoTruongHop": "áp dụng cho trường hợp",
+    "thuocNguon": "thuộc nguồn", "toaDo": "toạ độ", "soHieu": "số hiệu",
+    "banHanhNgay": "ban hành ngày", "ngayThuThap": "ngày thu thập",
+    "hieuLucTu": "hiệu lực từ", "hieuLucTuHocKy": "hiệu lực từ học kỳ",
+    "duongDan": "đường dẫn", "loaiNguon": "loại nguồn", "suaDoiVanBan": "sửa đổi văn bản",
+    "loaiQuyTac": "loại quy tắc", "loaiKhaiNiem": "loại khái niệm",
+    "loaiDanhMuc": "loại danh mục", "loaiChungChi": "loại chứng chỉ",
+    "loaiBang": "loại bảng", "loaiChuThe": "loại chủ thể", "loaiMucTien": "loại mức tiền",
+}
+
 VIET_TAT_TOA_DO = [
     ("Regulation", ""), ("Decision", ""), ("Article", "_D"), ("Clause", "K"),
     ("Point", "d"), ("Appendix", "_PL"), ("Chapter", "_C"),
@@ -140,6 +170,8 @@ class BoChuyenDoi:
         self.canh_bao: list[str] = []
         self.ghi_chu: list[str] = []
         self.gop_lop_da_dung: set[str] = set()
+        #: lớp và thuộc tính - từ vựng, không phải thực thể tri thức
+        self.tu_vung: set[str] = set()
         #: tên sinh từ nhãn lớp -> nhãn gốc, để giá trị của ô "loại" luôn có nhãn
         #: kể cả khi không cá thể nào còn mang lớp đó.
         self.nhan_lop = {pascal(self.nhan(lop)): self.nhan(lop)
@@ -179,6 +211,30 @@ class BoChuyenDoi:
 
     def moi(self, node: URIRef) -> URIRef:
         return URIRef(NS + self.dat_ten(node))
+
+    def dung_tu_vung(self, ra: Graph) -> None:
+        """Nhãn tiếng Việt cho lớp và thuộc tính.
+
+        Thiếu chúng thì dòng chỉ mục hiện ":noiDung" thay vì "nội dung", và câu trả
+        lời cũng đọc ra tên máy thay vì tên người.
+        """
+
+        for thuoc_tinh in sorted(set(self.g.subjects(RDF.type, OWL.ObjectProperty))
+                                 | set(self.g.subjects(RDF.type, OWL.DatatypeProperty)), key=str):
+            ten = camel(self.nhan(thuoc_tinh))
+            ten = "soTien" if ten == "mucLePhi" else ten
+            ra.add((ACADEMIC[ten], RDFS.label, Literal(self.nhan(thuoc_tinh), lang="vi")))
+            self.tu_vung.add(ten)
+        for ten, nhan in _NHAN_THUOC_TINH_MOI.items():
+            ra.add((ACADEMIC[ten], RDFS.label, Literal(nhan, lang="vi")))
+            self.tu_vung.add(ten)
+        for ten, nhan in _NHAN_LOP_CHUNG.items():
+            ra.add((ACADEMIC[ten], RDFS.label, Literal(nhan, lang="vi")))
+            self.tu_vung.add(ten)
+        for lop in sorted(self.g.subjects(RDF.type, OWL.Class), key=str):
+            ten = pascal(self.nhan(lop))
+            ra.add((ACADEMIC[ten], RDFS.label, Literal(self.nhan(lop), lang="vi")))
+            self.tu_vung.add(ten)
 
     # --- tầng nguồn ----------------------------------------------------------
 
@@ -581,6 +637,7 @@ def main() -> None:
 
     ds = Dataset()
     mac_dinh = ds.default_graph
+    bo.dung_tu_vung(mac_dinh)
     bo.dung_tang_nguon(mac_dinh)
     dem = bo.chuyen_phat_bieu(ds, mac_dinh)
     dem["câu sửa lại theo quy chế"], da_sua = ap_dung_sua_chua(bo, ds, mac_dinh)
@@ -613,7 +670,7 @@ def main() -> None:
         for s_ in ngoai_tui - co_nguon
         if (s_, RDF.type, ACADEMIC.DiaChiTrichDan) not in mac_dinh
         and (s_, RDF.type, ACADEMIC.Nguon) not in mac_dinh
-        and local_name(s_) not in bo.gop_lop_da_dung)
+        and local_name(s_) not in bo.gop_lop_da_dung | bo.tu_vung)
     DICH_TRIG.write_bytes(ds.serialize(format="trig", encoding="utf-8"))
     BANG_DOI.write_text(
         json.dumps({local_name(k): v for k, v in sorted(bo.ten_moi.items(), key=lambda x: str(x[0]))},

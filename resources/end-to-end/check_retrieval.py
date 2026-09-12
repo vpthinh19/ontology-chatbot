@@ -19,7 +19,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
-from ontchatbot.search import SearchEngine, TurtleFileSource
+from ontchatbot.search import SearchEngine, TriGFileSource
 from ontchatbot.settings import ONTOLOGY_PATH
 
 HERE = Path(__file__).parent
@@ -62,7 +62,7 @@ def main() -> int:
     parser.add_argument("--ghi-moc", action="store_true", help="ghi lại mốc theo kết quả lần chạy này")
     args = parser.parse_args()
 
-    engine = SearchEngine.open(TurtleFileSource(ONTOLOGY_PATH))
+    engine = SearchEngine.open(TriGFileSource(ONTOLOGY_PATH))
     kq = chay(engine)
     dau_bang = sum(1 for v in kq["thu_hang"] if v == 1)
 
@@ -74,8 +74,10 @@ def main() -> int:
         print(f"      được : {', '.join(duoc) if duoc else '(không có kết quả)'}")
 
     if args.ghi_moc:
+        cu = json.loads(MOC.read_text(encoding="utf-8")) if MOC.exists() else {}
         MOC.write_text(
-            json.dumps({"tong": kq["tong"], "dat": sorted(kq["dat"])}, ensure_ascii=False, indent=1) + "\n",
+            json.dumps({"ghi_chu": cu.get("ghi_chu", ""), "tong": kq["tong"],
+                        "dat": sorted(kq["dat"])}, ensure_ascii=False, indent=1) + "\n",
             encoding="utf-8",
         )
         print(f"\nđã ghi mốc: {len(kq['dat'])}/{kq['tong']} câu đạt")

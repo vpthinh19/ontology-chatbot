@@ -24,7 +24,7 @@ import pyoxigraph as ox
 from ..settings import (
     CARD_CACHE_PATH,
     ONTOLOGY_NS,
-    ONTOLOGY_PATH,
+    LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH,
     QUERY_CATALOGUE_PATH,
 )
 

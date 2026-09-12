@@ -11,7 +11,7 @@ from .graph import load_ontology
 from ..settings import (
     ANSWER_INVENTORY_PATH,
     DATASET_DIR,
-    ONTOLOGY_PATH,
+    LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH,
     PROJECT_ROOT,
     QUERY_CATALOGUE_PATH,
     REPORTS_DIR,

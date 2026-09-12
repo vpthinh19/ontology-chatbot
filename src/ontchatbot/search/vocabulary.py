@@ -4,70 +4,58 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from rdflib import Namespace, URIRef
-
 from ..settings import ONTOLOGY_NS
 
-ACADEMIC = Namespace(ONTOLOGY_NS)
 
-
-def local_name(iri: URIRef | str) -> str:
-    """Phần sau dấu # của IRI, ví dụ ``submittedTo``."""
+def local_name(iri: str) -> str:
+    """Phần sau dấu # của IRI, ví dụ ``nopTai``."""
 
     text = str(iri)
     return text.rsplit("#", 1)[-1] if "#" in text else text.rsplit("/", 1)[-1]
 
 
-def compact(iri: URIRef | str) -> str:
+def compact(iri: str) -> str:
     """IRI trong namespace học vụ viết gọn thành ``:TenCucBo``; IRI khác giữ nguyên."""
 
     text = str(iri)
-    return ":" + text[len(ACADEMIC):] if text.startswith(str(ACADEMIC)) else text
+    return ":" + text[len(ONTOLOGY_NS):] if text.startswith(ONTOLOGY_NS) else text
 
 
-def expand(text: str) -> URIRef:
+def expand(text: str) -> str:
     """Ngược lại của ``compact``."""
 
-    return URIRef(str(ACADEMIC) + text[1:]) if text.startswith(":") else URIRef(text)
+    return ONTOLOGY_NS + text[1:] if text.startswith(":") else text
 
 
 @dataclass(frozen=True)
 class IndexPolicy:
-    """Quyết định thuộc tính nào vào chỉ mục, vào hồ sơ, hay dùng làm nguồn.
+    """Quyết định thuộc tính nào vào chỉ mục và thực thể nào tra cứu được.
 
-    Mọi quyết định mang tính "biên soạn" nằm ở đây, tách khỏi thuật toán. Sau này
-    có thể đọc các tập này từ chú thích trong chính ontology.
+    Mọi quyết định mang tính "biên soạn" nằm ở đây, tách khỏi thuật toán.
     """
 
-    #: object_property nối một node nghiệp vụ tới phần văn bản làm căn cứ.
-    source_property: str = "basedOn"
-    #: datatype_property chứa trích dẫn của phần văn bản làm căn cứ.
-    citation_property: str = "citationLabel"
-    #: datatype_property chứa đường dẫn của nguồn, xét theo thứ tự.
-    url_properties: tuple[str, ...] = ("documentUrl", "webPageUrl")
-    #: object_property mà đích là thành phần của chủ thể: bước, điều kiện...
-    component_properties: frozenset[str] = frozenset(
-        {"hasStep", "hasRequirement", "hasDeadline", "hasOutcome", "hasConsequence", "hasResolution"}
+    #: Lớp của bộ máy trích dẫn: có mặt để dẫn nguồn, không phải thứ người ta hỏi tới.
+    source_classes: frozenset[str] = frozenset({"Nguon", "DiaChiTrichDan"})
+    #: Tiền tố của ô nói rõ thực thể thuộc loại con nào, ví dụ ``loaiQuyTac``.
+    type_property_prefix: str = "loai"
+    #: Thuộc tính dựng nên tầng nguồn: không phải dữ kiện học vụ, không vào chỉ mục.
+    source_properties: frozenset[str] = frozenset(
+        {"thuocNguon", "toaDo", "soHieu", "banHanhNgay", "ngayThuThap",
+         "hieuLucTu", "hieuLucTuHocKy", "duongDan", "loaiNguon", "suaDoiVanBan"}
     )
-    #: datatype_property dùng để sắp thứ tự các thành phần.
-    order_properties: tuple[str, ...] = ("stepOrder", "requirementOrder")
-    #: Thuộc tính kỹ thuật: không sinh dòng chỉ mục, vì người hỏi không hỏi theo chúng.
-    unindexed_properties: frozenset[str] = frozenset(
-        {
-            "basedOn", "citationLabel", "documentUrl", "webPageUrl", "retrievedDate",
-            "partOf", "inDocument",
-            "articleNumber", "clauseNumber", "pointLetter", "chapterNumber", "appendixNumber",
-            "stepOrder", "requirementOrder",
-        }
-    )
+    #: Đường dẫn tải: người hỏi cần giá trị, nhưng không ai hỏi "cái gì có đường dẫn".
+    unindexed_properties: frozenset[str] = frozenset({"diaChiTaiVe", "websiteDonVi", "hopThu"})
 
-    def is_indexed(self, property_iri: URIRef | str) -> bool:
-        return local_name(property_iri) not in self.unindexed_properties
+    def is_source_class(self, class_iri: str) -> bool:
+        return local_name(class_iri) in self.source_classes
 
-    def is_component(self, property_iri: URIRef | str) -> bool:
-        return local_name(property_iri) in self.component_properties
+    def is_profile_fact(self, property_iri: str) -> bool:
+        """Câu đáng đưa vào hồ sơ trả cho mô hình."""
 
-    def is_profile_fact(self, property_iri: URIRef | str) -> bool:
-        """Căn cứ và trích dẫn biến thành nguồn của dữ kiện, không phải dữ kiện."""
+        return local_name(property_iri) not in self.source_properties
 
-        return local_name(property_iri) not in {self.source_property, self.citation_property}
+    def is_indexed(self, property_iri: str) -> bool:
+        """Câu đáng sinh một dòng chỉ mục để tìm kiếm."""
+
+        name = local_name(property_iri)
+        return name not in self.source_properties and name not in self.unindexed_properties

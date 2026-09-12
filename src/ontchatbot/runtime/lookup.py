@@ -30,7 +30,8 @@ NOT_FOUND = "not_found"
 _FOUND_GUIDANCE = (
     "Mỗi phần tử của results là một mục của ontology. Kiểm matched trước: nếu không "
     "đúng thứ người dùng hỏi thì coi như không tìm thấy. Dữ kiện nằm trong nguồn đã "
-    "khẳng định chúng; đọc hết facts trước khi trả lời."
+    "khẳng định chúng; đọc hết facts trước khi trả lời. Nguồn có citation là null thì "
+    "dùng được nhưng KHÔNG được trích dẫn."
 )
 _NOT_FOUND_GUIDANCE = "Không có mục nào khớp. Có thể thử lại một lần với cách gọi khác hẳn; vẫn không có thì dừng."
 
@@ -75,18 +76,15 @@ def render_response(response: SearchResponse, truncation: dict[str, int] | None 
                 "matched": [hit.entry.text for hit in result.matched[:3]],
                 "sources": [
                     {
-                        "citation": " · ".join(source.citation for source in sources) or None,
-                        "url": " · ".join(source.url for source in sources if source.url) or None,
+                        "citation": source.citation if source else None,
+                        "url": source.url if source else None,
                         "facts": [
-                            {"subject": fact.subject_label, "property": fact.property_label, "value": fact.value}
+                            {"subject": fact.subject_label, "property": fact.property_label,
+                             "value": fact.value}
                             for fact in facts
                         ],
                     }
-                    for sources, facts in result.profile.facts_by_source()
-                ],
-                "incoming": [
-                    {"subject": relation.subject_label, "property": relation.property_label}
-                    for relation in result.profile.incoming
+                    for source, facts in result.profile.groups
                 ],
             }
             for result in response.results

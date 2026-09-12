@@ -105,9 +105,9 @@ def _build_lookup(args: argparse.Namespace):
     """Nạp ontology và dựng chỉ mục tìm kiếm trước khi máy chủ báo sẵn sàng."""
 
     from ..runtime.lookup import OntologyLookup
-    from ..search import SearchEngine, TurtleFileSource
+    from ..search import SearchEngine, TriGFileSource
 
-    engine = SearchEngine.open(TurtleFileSource(args.ontology), top_k=args.top_k)
+    engine = SearchEngine.open(TriGFileSource(args.ontology), top_k=args.top_k)
     return OntologyLookup(engine, workers=args.search_workers)
 
 

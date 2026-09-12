@@ -4,7 +4,7 @@ Dựng (mỗi lần ontology đổi):
     OntologySource ─► Ontology ─► IndexBuilder ─► IndexEntry ─► SearchIndex (BM25)
 
 Tìm (mỗi lượt hỏi):
-    từ khoá ─► SearchIndex.search ─► dòng khớp ─► node ─► ProfileReader (SPARQL) ─► hồ sơ kèm nguồn
+    từ khoá ─► SearchIndex.search ─► dòng khớp ─► thực thể ─► ProfileReader ─► hồ sơ gom theo nguồn
 
 Ba loại dòng chỉ mục:
     label              "<label>"
@@ -14,16 +14,15 @@ Ba loại dòng chỉ mục:
 
 from .analyzer import TextAnalyzer
 from .builder import IndexBuilder
-from .engine import SearchEngine, SearchResponse, SearchResult, StaleIndexError
+from .engine import SearchEngine, SearchResponse, SearchResult
 from .entries import EntryKind, IndexEntry
 from .index import EntryHit, SearchIndex
-from .ontology import Ontology, OntologySource, TurtleFileSource
-from .profile import Fact, IncomingRelation, NodeProfile, ProfileReader, Source
-from .vocabulary import ACADEMIC, IndexPolicy
+from .ontology import Ontology, OntologySource, TriGFileSource
+from .profile import Fact, NodeProfile, ProfileReader, Source
+from .vocabulary import IndexPolicy, compact, expand, local_name
 
 __all__ = [
-    "ACADEMIC", "EntryHit", "EntryKind", "Fact", "IncomingRelation", "IndexBuilder", "IndexEntry",
-    "IndexPolicy", "NodeProfile", "Ontology", "OntologySource", "ProfileReader", "SearchEngine",
-    "SearchIndex", "SearchResponse", "SearchResult", "Source", "StaleIndexError", "TextAnalyzer",
-    "TurtleFileSource",
+    "EntryHit", "EntryKind", "Fact", "IndexBuilder", "IndexEntry", "IndexPolicy", "NodeProfile",
+    "Ontology", "OntologySource", "ProfileReader", "SearchEngine", "SearchIndex", "SearchResponse",
+    "SearchResult", "Source", "TextAnalyzer", "TriGFileSource", "compact", "expand", "local_name",
 ]

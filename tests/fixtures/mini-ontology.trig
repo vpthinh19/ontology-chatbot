@@ -1,0 +1,61 @@
+# Ontology nhỏ cho các phép kiểm engine: một thủ tục, một đơn vị có điện thoại,
+# hai địa chỉ trích dẫn thuộc cùng một nguồn, và một câu không có nguồn.
+
+@prefix :     <http://www.ntu.edu.vn/ontology/academic#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+# ── từ vựng ──────────────────────────────────────────────────────────
+:ThuTucHocVu   rdfs:label "Thủ tục học vụ"@vi .
+:DonViTrongTruong rdfs:label "Đơn vị trong trường"@vi .
+:ChuThe        rdfs:label "Chủ thể"@vi .
+:Nguon         rdfs:label "Nguồn"@vi .
+:DiaChiTrichDan rdfs:label "Địa chỉ trích dẫn"@vi .
+
+:noiDung       rdfs:label "nội dung"@vi .
+:nopTai        rdfs:label "nộp tại"@vi .
+:doAiThucHien  rdfs:label "do ai thực hiện"@vi .
+:dienThoai     rdfs:label "điện thoại"@vi .
+:thuTucTiepTheo rdfs:label "thủ tục tiếp theo"@vi .
+:thuocNguon    rdfs:label "thuộc nguồn"@vi .
+:toaDo         rdfs:label "toạ độ"@vi .
+:soHieu        rdfs:label "số hiệu"@vi .
+:banHanhNgay   rdfs:label "ban hành ngày"@vi .
+:duongDan      rdfs:label "đường dẫn"@vi .
+
+# ── tầng nguồn ───────────────────────────────────────────────────────
+:Nguon1052 a :Nguon ;
+    rdfs:label "Quy chế đào tạo trình độ đại học"@vi ;
+    :soHieu "1052/QĐ-ĐHNT" ;
+    :banHanhNgay "2025-07-17"^^xsd:date ;
+    :duongDan <https://example.test/qd-1052.pdf> .
+
+:TD1052_D24   a :DiaChiTrichDan ; :thuocNguon :Nguon1052 ; :toaDo "Điều 24"@vi .
+:TD1052_D24K3 a :DiaChiTrichDan ; :thuocNguon :Nguon1052 ; :toaDo "khoản 3 Điều 24"@vi .
+
+# ── danh tính ────────────────────────────────────────────────────────
+:ThuTucNghiHocTamThoi a :ThuTucHocVu ;
+    rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
+    skos:altLabel "bảo lưu kết quả học tập"@vi .
+
+:PhongCongTacSinhVien a :DonViTrongTruong ;
+    rdfs:label "Phòng Công tác sinh viên"@vi .
+
+:SinhVien a :ChuThe ; rdfs:label "Sinh viên"@vi .
+:ThuTucHocTroLai a :ThuTucHocVu ; rdfs:label "Thủ tục xin học trở lại"@vi .
+
+# Suy luận biên tập: không văn bản nào nói, nên nằm ngoài mọi túi.
+:ThuTucNghiHocTamThoi :thuTucTiepTheo :ThuTucHocTroLai .
+:PhongCongTacSinhVien :dienThoai "0258 2471 372" .
+
+# ── lời khẳng định ───────────────────────────────────────────────────
+:TD1052_D24 {
+    :ThuTucNghiHocTamThoi :noiDung "Cho phép sinh viên tạm dừng việc học."@vi ;
+                          :nopTai  :PhongCongTacSinhVien .
+}
+
+:TD1052_D24K3 {
+    :ThuTucNghiHocTamThoi :noiDung      "Sinh viên viết đơn theo Mẫu số 09 gửi Hiệu trưởng."@vi ;
+                          :doAiThucHien :SinhVien .
+}

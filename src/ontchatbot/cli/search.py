@@ -45,9 +45,9 @@ class ResponsePrinter:
 
 
 def build(arguments: argparse.Namespace) -> None:
-    from ..search import IndexBuilder, Ontology, SearchIndex, TextAnalyzer, TurtleFileSource
+    from ..search import IndexBuilder, Ontology, SearchIndex, TextAnalyzer, TriGFileSource
 
-    source = TurtleFileSource(arguments.ontology)
+    source = TriGFileSource(arguments.ontology)
     started = time.perf_counter()
     ontology = Ontology.from_source(source)
     entries = IndexBuilder(ontology).build_entries()
@@ -61,12 +61,9 @@ def build(arguments: argparse.Namespace) -> None:
 
 
 def search(arguments: argparse.Namespace) -> None:
-    from ..search import SearchEngine, TurtleFileSource
+    from ..search import SearchEngine, TriGFileSource
 
-    index_directory = arguments.index if Path(arguments.index).exists() else None
-    engine = SearchEngine.open(
-        TurtleFileSource(arguments.ontology), index_directory=index_directory, top_k=arguments.top_k
-    )
+    engine = SearchEngine.open(TriGFileSource(arguments.ontology), top_k=arguments.top_k)
     response = engine.search(arguments.keywords)
     if arguments.json:
         print(json.dumps(response.to_dict(), ensure_ascii=False, indent=2))

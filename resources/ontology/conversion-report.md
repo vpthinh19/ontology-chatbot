@@ -1,7 +1,7 @@
 # Báo cáo chuyển đổi ontology sang TriG
 
 - cũ: 6350 bộ ba, 685 cá thể
-- mới: 1986 câu, trong đó 1395 nằm ngoài túi
+- mới: 2122 câu, trong đó 1531 nằm ngoài túi
 - nguồn thô: 14 · địa chỉ trích dẫn: 151 · túi dùng thật: 153
 
 ## Đã chuyển

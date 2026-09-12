@@ -1,55 +1,66 @@
-"""Hồ sơ node: dữ kiện của node và thành phần, nguồn theo basedOn, quan hệ chiều ngược."""
+"""Hồ sơ thực thể: dữ kiện gom theo cái túi đã khẳng định chúng."""
 
 from __future__ import annotations
 
-from ontchatbot.search import ACADEMIC, ProfileReader, Source
+from ontchatbot.search import ProfileReader
 
-ARTICLE = Source("Điều 24 Quy chế đào tạo", "https://example.edu.vn/quy-che.pdf")
-CLAUSE = Source("khoản 3 Điều 24 Quy chế đào tạo", "https://example.edu.vn/quy-che.pdf")
+PROCEDURE = ":ThuTucNghiHocTamThoi"
+ARTICLE = "Điều 24 Quy chế đào tạo trình độ đại học, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
+CLAUSE = "khoản 3 Điều 24 Quy chế đào tạo trình độ đại học, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"
 
 
-def test_facts_are_grouped_by_the_source_of_the_node_that_states_them(mini_ontology) -> None:
-    profile = ProfileReader(mini_ontology).read(ACADEMIC.LeaveProcedure)
-    groups = {sources: [(fact.subject_label, fact.property_label, fact.value) for fact in facts]
-              for sources, facts in profile.facts_by_source()}
+def _groups(profile) -> dict[str | None, list[tuple[str, str, str]]]:
+    return {source.citation if source else None:
+            [(fact.subject_label, fact.property_label, fact.value) for fact in facts]
+            for source, facts in profile.groups}
+
+
+def test_facts_are_grouped_by_the_bag_that_states_them(mini_ontology) -> None:
+    profile = ProfileReader(mini_ontology).read(PROCEDURE)
+    groups = _groups(profile)
 
     assert profile.label == "Thủ tục nghỉ học tạm thời"
     assert profile.classes == ["Thủ tục học vụ"]
-    assert ("Thủ tục nghỉ học tạm thời", "nộp tại", "Phòng Công tác Chính trị và Sinh viên") in groups[(ARTICLE,)]
-    assert ("Điều kiện nghỉ học tạm thời", "nội dung điều kiện", "Đã học ít nhất một học kỳ.") in groups[(ARTICLE,)]
-    assert ("Nghỉ học tạm thời - bước 1", "nội dung bước", "Viết đơn theo Mẫu số 09.") in groups[(CLAUSE,)]
+    assert ("Thủ tục nghỉ học tạm thời", "nộp tại", "Phòng Công tác sinh viên") in groups[ARTICLE]
+    assert ("Thủ tục nghỉ học tạm thời", "nội dung",
+            "Sinh viên viết đơn theo Mẫu số 09 gửi Hiệu trưởng.") in groups[CLAUSE]
 
 
-def test_components_follow_their_order_property(mini_ontology) -> None:
-    profile = ProfileReader(mini_ontology).read(ACADEMIC.LeaveProcedure)
-    step_texts = [fact.value for fact in profile.facts if fact.property_label == "nội dung bước"]
+def test_a_citation_joins_the_coordinate_with_the_document_it_sits_in(mini_ontology) -> None:
+    """Trích dẫn ghép từ hai tầng, nên đổi số hiệu văn bản là mọi câu đổi theo."""
 
-    assert step_texts == ["Viết đơn theo Mẫu số 09.", "Gửi đơn cho Hiệu trưởng."]
+    source = ProfileReader(mini_ontology).source(":TD1052_D24K3")
 
-
-def test_source_links_and_component_links_are_not_repeated_as_facts(mini_ontology) -> None:
-    profile = ProfileReader(mini_ontology).read(ACADEMIC.LeaveProcedure)
-    properties = {fact.property_label for fact in profile.facts}
-
-    assert not properties & {"căn cứ", "trích dẫn", "có bước", "có điều kiện"}
+    assert source.citation == CLAUSE
+    assert source.url == "https://example.test/qd-1052.pdf"
 
 
-def test_a_node_without_basedon_is_its_own_source_only_when_it_carries_a_citation(mini_ontology) -> None:
-    reader = ProfileReader(mini_ontology)
+def test_statements_outside_every_bag_carry_no_citation_and_come_last(mini_ontology) -> None:
+    """Câu ta tự khẳng định nói ra được nhưng không trích dẫn được, nên xuống cuối."""
 
-    assert reader.sources(ACADEMIC.Article24) == (ARTICLE,)
-    assert reader.sources(ACADEMIC.StudentAffairsOffice) == ()
+    profile = ProfileReader(mini_ontology).read(PROCEDURE)
 
-
-def test_incoming_relations_are_reported_through_the_entry_node(mini_ontology) -> None:
-    """Hai bước cùng trỏ tới Sinh viên được báo một lần, dưới tên thủ tục chứa chúng."""
-
-    reader = ProfileReader(mini_ontology)
-    student = [(relation.subject, relation.property_label) for relation in reader.read(ACADEMIC.Student).incoming]
-    article = [(relation.subject_label, relation.property_label) for relation in reader.read(ACADEMIC.Article24).incoming]
-
-    assert student == [(":LeaveProcedure", "do ai thực hiện")]
-    assert article == [
-        ("Thủ tục nghỉ học tạm thời", "căn cứ"),
-        ("khoản 3 Điều 24 Quy chế đào tạo", "nằm trong phần"),
+    source, facts = profile.groups[-1]
+    assert source is None
+    assert ("Thủ tục nghỉ học tạm thời", "thủ tục tiếp theo", "Thủ tục xin học trở lại") in [
+        (f.subject_label, f.property_label, f.value) for f in facts
     ]
+
+
+def test_a_node_sees_what_other_nodes_say_about_it_with_their_own_source(mini_ontology) -> None:
+    """Hỏi ngược từ phòng ban phải ra thủ tục kèm nguồn của chính câu đó, không
+    phải nguồn của phòng ban."""
+
+    profile = ProfileReader(mini_ontology).read(":PhongCongTacSinhVien")
+    groups = _groups(profile)
+
+    assert ("Thủ tục nghỉ học tạm thời", "nộp tại", "Phòng Công tác sinh viên") in groups[ARTICLE]
+
+
+def test_the_source_layer_is_never_offered_as_a_fact(mini_ontology) -> None:
+    """toaDo và thuocNguon dựng nên trích dẫn; chúng không phải dữ kiện học vụ."""
+
+    profile = ProfileReader(mini_ontology).read(PROCEDURE)
+
+    ten = {fact.property_label for _, facts in profile.groups for fact in facts}
+    assert not ten & {"toạ độ", "thuộc nguồn", "số hiệu", "ban hành ngày", "đường dẫn"}

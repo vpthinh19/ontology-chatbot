@@ -26,7 +26,7 @@ from ..runtime.sparql import (
     from_lexical,
 )
 from ..runtime.sparql import load_ontology as load_store
-from ..settings import ONTOLOGY_PATH
+from ..settings import LEGACY_ONTOLOGY_PATH as ONTOLOGY_PATH
 
 #: Bộ phân tích của rdflib dùng chung trạng thái văn phạm giữa các lần gọi, nên
 #: chỉ một luồng được vào.

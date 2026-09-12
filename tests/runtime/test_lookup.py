@@ -16,14 +16,14 @@ from ontchatbot.runtime.lookup import (
     bound_keywords,
     render_response,
 )
-from ontchatbot.search import SearchEngine, SearchResponse, TurtleFileSource
+from ontchatbot.search import SearchEngine, SearchResponse, TriGFileSource
 
-MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.ttl"
+MINI_ONTOLOGY = Path(__file__).resolve().parents[1] / "fixtures" / "mini-ontology.trig"
 
 
 @pytest.fixture(scope="module")
 def engine() -> SearchEngine:
-    return SearchEngine.open(TurtleFileSource(MINI_ONTOLOGY))
+    return SearchEngine.open(TriGFileSource(MINI_ONTOLOGY))
 
 
 def test_keywords_are_trimmed_deduplicated_and_bounded() -> None:
@@ -57,10 +57,15 @@ def test_found_results_are_rendered_with_matched_rows_and_facts_inside_their_sou
     assert top["classes"] == ["Thủ tục học vụ"]
     assert 1 <= len(top["matched"]) <= 3
     assert all("nghỉ học tạm thời" in row.casefold() for row in top["matched"])
-    article = next(group for group in top["sources"] if group["citation"] == "Điều 24 Quy chế đào tạo")
-    assert article["url"] == "https://example.edu.vn/quy-che.pdf"
+    article = next(group for group in top["sources"]
+                   if group["citation"] and group["citation"].startswith("Điều 24"))
+    assert article["citation"] == ("Điều 24 Quy chế đào tạo trình độ đại học, "
+                                   "ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025")
+    assert article["url"] == "https://example.test/qd-1052.pdf"
     assert {"subject": "Thủ tục nghỉ học tạm thời", "property": "nộp tại",
-            "value": "Phòng Công tác Chính trị và Sinh viên"} in article["facts"]
+            "value": "Phòng Công tác sinh viên"} in article["facts"]
+    khong_nguon = top["sources"][-1]
+    assert khong_nguon["citation"] is None, "nhóm không có nguồn phải xuống cuối"
     assert payload["unmatched"] == ["bóng đá"]
 
 
