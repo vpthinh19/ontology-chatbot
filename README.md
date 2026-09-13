@@ -1,926 +1,846 @@
-# Chatbot hỏi đáp học vụ dựa trên ontology
+# Trợ lý hỏi đáp học vụ dựa trên ontology
 
-Đây là nguyên mẫu nghiên cứu về hỏi đáp học vụ tiếng Việt tại Trường Đại học
-Nha Trang. Người dùng đặt câu hỏi tự nhiên; hệ thống xác định nội dung cần tra,
-đọc dữ kiện từ ontology bằng truy vấn SPARQL dựng sẵn và dùng mô hình ngôn ngữ
-lớn (LLM) để trình bày câu trả lời kèm nguồn.
+Đây là nguyên mẫu nghiên cứu về hỏi đáp học vụ tiếng Việt tại Trường Đại học Nha
+Trang. Người dùng đặt câu hỏi tự nhiên; mô hình ngôn ngữ lớn (LLM) rút từ khoá,
+gọi một công cụ tìm kiếm trên ontology, rồi viết câu trả lời chỉ từ những dữ kiện
+công cụ trả về, kèm trích dẫn và đường dẫn tới văn bản gốc.
 
 Nguyên tắc cốt lõi là **LLM không phải nơi lưu quy định**. Nội dung học vụ phải
-đến từ ontology. Nếu không tìm thấy dữ kiện phù hợp, hệ thống phải trả trạng thái
-**"không có thông tin"**, không tự điền phần còn thiếu.
+đến từ ontology. Nếu không tìm thấy dữ kiện phù hợp, hệ thống phải trả lời **"không
+có thông tin"**, không tự điền phần còn thiếu.
 
 - [Dùng thử hệ thống](https://ontchatbot.vercel.app/)
-- [Mô hình XLM-R dạng ONNX trên Hugging Face Hub](https://huggingface.co/vpthinh19/ntu-ontology-xlmr)
 - [Ảnh dịch vụ trên Docker Hub](https://hub.docker.com/r/vpt19/ontchatbot)
 
-README đi theo thứ tự mà một người chưa biết dự án cần để hiểu: bài toán, luồng
-hoạt động, hình dạng dữ liệu, ontology, danh mục truy vấn, bộ dữ liệu, thực nghiệm,
-kết quả và giới hạn.
+Sơ đồ sau trả lời câu hỏi **"hệ thống gồm những khối nào và chúng tương tác ra
+sao?"**. Vùng trên là việc diễn ra ở mỗi lượt hỏi; vùng dưới là việc xây dựng và
+cập nhật tri thức mà các lượt hỏi đọc tới. Các mục sau giải thích từng khối.
 
-## 1. Bài toán nghiên cứu
+![Tổng quan hệ thống](docs/images/tong-quan.png)
 
-Thông tin học vụ nằm trong nhiều loại nguồn: quy chế, quyết định, phụ lục, bảng,
-biểu mẫu và hướng dẫn trên website. Sinh viên lại thường hỏi bằng từ ngữ đời
-thường, viết tắt hoặc thiếu dấu. Ví dụ, "nghỉ một học kỳ" và "bảo lưu kết quả"
-có thể cùng chỉ đến thủ tục nghỉ học tạm thời.
+README đi theo thứ tự mà một người chưa biết dự án cần để hiểu: bài toán, thành
+phần, luồng một lượt hỏi, hình dạng dữ liệu, ontology, thuật toán tìm kiếm, cách
+cập nhật dữ liệu, thực nghiệm, kết quả và giới hạn.
 
-Một hệ thống trả lời được câu hỏi đó phải làm ba việc khác nhau:
+## 1. Bài toán nghiên cứu là gì?
 
-1. xác định đúng loại thông tin và đối tượng người dùng muốn hỏi;
-2. lấy đúng dữ kiện cùng căn cứ từ kho nội dung;
-3. diễn đạt lại dễ hiểu mà không thêm thông tin ngoài dữ kiện đã lấy.
+Thông tin học vụ nằm rải rác trong nhiều loại nguồn: quy chế, quyết định, phụ lục,
+bảng, biểu mẫu, chương trình đào tạo và trang web của các phòng ban. Sinh viên lại
+hỏi bằng từ ngữ đời thường, viết tắt hoặc thiếu dấu. Ví dụ, "nghỉ một học kỳ" và
+"bảo lưu kết quả" cùng chỉ đến thủ tục nghỉ học tạm thời.
 
-Dự án giải bài toán theo **miền đóng**. Bộ phân loại chỉ được chọn trong những
-hành động tra cứu đã khai báo trước; nó không tự phát minh truy vấn. Phạm vi hiện
-có gồm quy tắc đào tạo, thủ tục học vụ, điều khoản văn bản, biểu mẫu, học phí và
-thanh toán, học bổng, chứng chỉ và ngành đào tạo.
+Một LLM trả lời từ trí nhớ của nó sẽ nói trôi chảy nhưng dễ sai: nó không biết quy
+chế riêng của trường, và không cho biết câu nào lấy từ đâu. Hệ thống ở đây đặt ra
+ba yêu cầu:
 
-Các dữ liệu phụ thuộc từng cá nhân hoặc từng đợt như điểm của một sinh viên, số
-tiền phải đóng của một tài khoản, chỉ tiêu và điểm chuẩn không được lưu như một
-con số chung. Hệ thống có thể chỉ người dùng đến nơi tra cứu chính thức nếu
-ontology có đường dẫn phù hợp.
+1. mỗi dữ kiện trong câu trả lời phải truy được về đúng chỗ của văn bản đã nói ra nó;
+2. khi dữ liệu không có điều được hỏi, hệ thống phải nói là không có;
+3. khi văn bản thay đổi, dữ liệu phải sửa được ngay mà không cần huấn luyện lại gì.
 
-Nghiên cứu tập trung vào hai câu hỏi:
+Phạm vi hiện có gồm quy tắc đào tạo, thủ tục học vụ, biểu mẫu, học bổng, rèn luyện
+và kỷ luật, chứng chỉ, ngành, chuyên ngành, chương trình đào tạo và các đơn vị phục
+vụ sinh viên. Những dữ liệu phụ thuộc từng người hoặc từng đợt, như điểm của một
+sinh viên, học phí của một tài khoản hay điểm chuẩn, không được lưu thành một con số
+chung; hệ thống chỉ người dùng đến nơi tra cứu chính thức.
 
-1. Bộ phân loại nhận diện hành động tra cứu từ các cách hỏi tiếng Việt khác nhau
-   chính xác đến đâu?
-2. Khi ghép bộ phân loại, ontology và LLM, toàn hệ thống lấy đúng dữ kiện và từ
-   chối đúng khi thiếu dữ liệu đến đâu?
+Nghiên cứu trả lời ba câu hỏi:
 
-Sản phẩm nghiên cứu không phải một thuật toán ontology mới hay một LLM mới. Đóng
-góp nằm ở cách tổ chức tài nguyên miền và chuỗi xử lý có thể kiểm tra: nguồn chính
-thức -> ontology -> danh mục truy vấn -> nhãn phân loại -> câu trả lời có nguồn.
+1. Tìm kiếm theo từ khoá trên ontology có đưa đúng mục cần tra lên đầu không?
+2. Khi ghép LLM với công cụ tìm kiếm, toàn hệ thống trả lời đúng và từ chối đúng đến đâu?
+3. Có giữ được nguồn của từng dữ kiện, và sửa dữ liệu mà vẫn đúng cấu trúc không?
 
-## 2. Hệ thống hoạt động như thế nào?
+Sản phẩm nghiên cứu không phải một LLM mới hay một thuật toán tìm kiếm mới. Đóng góp
+nằm ở cách tổ chức tài nguyên có thể kiểm tra: văn bản chính thức → ontology mà mỗi
+câu gắn nguồn → công cụ tìm kiếm trả dữ kiện theo nguồn → câu trả lời có trích dẫn.
 
-### 2.1 Thành phần và trách nhiệm
+## 2. Hệ thống gồm những thành phần nào?
 
-Ontology là kho dữ kiện dạng đồ thị. SPARQL là ngôn ngữ đọc kho đó, có vai trò
-tương tự SQL với cơ sở dữ liệu bảng. **Khuôn truy vấn SPARQL** là câu truy vấn đã được
-chuẩn bị sẵn cho một nội dung cần tra; hệ thống chọn và thực thi nó thay vì tự
-viết truy vấn mới. Bốn thành phần giữ bốn trách nhiệm:
+Vài tên gọi cần biết trước:
+
+| Tên gọi | Nghĩa trong dự án |
+|---|---|
+| **LLM** (*large language model*) | mô hình ngôn ngữ lớn: đọc câu hỏi và viết câu trả lời |
+| **Công cụ** (*tool*) | một hàm mà LLM được phép yêu cầu gọi; LLM gửi tham số, hệ thống chạy hàm rồi đưa kết quả lại cho LLM |
+| **Agent** | vòng lặp điều phối: gửi hội thoại cho LLM, chạy công cụ khi LLM yêu cầu, lặp lại tới khi LLM viết xong câu trả lời |
+| **Ontology** | kho dữ kiện dạng đồ thị: các mục nối với nhau bằng quan hệ có tên, mỗi câu kèm nguồn (mục 5) |
+| **API** | điểm nhận yêu cầu qua HTTP của máy chủ |
+| **SSE** (*server-sent events*) | cách máy chủ đẩy từng sự kiện nhỏ về trình duyệt trong lúc đang xử lý, để người dùng thấy câu trả lời hiện dần |
+
+Bảy thành phần giữ bảy trách nhiệm:
 
 | Thành phần | Làm gì | Không làm gì |
 |---|---|---|
-| LLM | đọc câu chat, rút cụm cần tra và diễn đạt kết quả | không phải nguồn quy định |
-| Bộ phân loại | nhận chuỗi tiếng Việt, chọn 1 trong 344 nhãn | không viết câu trả lời, không tự sinh SPARQL |
-| Danh mục truy vấn | nối 344 nhãn với 343 khuôn truy vấn SPARQL và 1 khuôn `no-information` | không chứa nội dung quy định |
-| Ontology | cung cấp dữ kiện và nguồn | không tự hiểu câu chat |
+| Giao diện chat | nhận câu hỏi, hiện trạng thái tra cứu và câu trả lời từng đoạn | không gọi LLM, không đọc ontology |
+| API server | nhận câu hỏi, xếp hàng các lượt, chạy agent, đẩy sự kiện SSE | không tự viết câu trả lời |
+| LLM agent | hiểu câu hỏi, quyết định có tra không và tra bằng từ khoá nào, viết câu trả lời từ kết quả | không phải nơi lưu quy định |
+| Công cụ tra cứu | giới hạn danh sách từ khoá, gọi search engine, viết kết quả thành JSON | không chọn câu trả lời |
+| Search engine | chấm điểm các dòng chỉ mục, chọn 3 mục, đọc dữ kiện của mục theo nguồn | không hiểu nghĩa câu hỏi |
+| Ontology và lược đồ | lưu dữ kiện cùng nguồn của từng câu; lược đồ khai báo mỗi loại mục có những ô nào | không tự trả lời |
+| Trang quản trị | thêm, sửa, xoá mục; kiểm theo lược đồ trước khi ghi | không ghi dữ liệu sai lược đồ |
 
-Sơ đồ sau trả lời câu hỏi **"thành phần nào chịu trách nhiệm cho việc gì?"**.
-Các mũi tên biểu diễn giao tiếp giữa thành phần, không phải mô tả chi tiết thứ tự
-thời gian.
+Giao diện là một trang web tĩnh. API server, agent, công cụ, search engine và trang
+quản trị chạy trong cùng một dịch vụ Python. LLM chạy ở một máy chủ bên ngoài, gọi
+qua giao thức *chat completions* tương thích OpenAI.
 
-![Kiến trúc và trách nhiệm của các thành phần](docs/images/kien-truc.png)
+## 3. Một câu hỏi đi qua hệ thống như thế nào?
 
-### 2.2 Từ 344 nhãn đến khuôn truy vấn tương ứng
+Sơ đồ sau trả lời câu hỏi **"một lượt hỏi đi qua các thành phần theo thứ tự thời
+gian nào?"**. Mũi tên liền là yêu cầu đi, mũi tên đứt là kết quả trả về. Đây là
+luồng của một lượt hỏi, không phải quy trình xây dựng dữ liệu.
 
-Đây là cầu nối trực tiếp giữa học máy và ontology:
+![Luồng một lượt hỏi](docs/images/luong-mot-luot-hoi.png)
 
-```text
-câu/cụm tiếng Việt
-    -> bộ phân loại chọn 1 trong 344 nhãn
-    -> 343 nhãn tra cứu chọn 343 khuôn truy vấn SPARQL
-    -> 1 nhãn no-information (OOD) chọn khuôn no-information
-    -> thực thi SPARQL trên ontology hoặc trả về từ chối
-```
+Với câu "Em muốn nghỉ một học kỳ thì phải làm gì?", trình tự thật là:
 
-Ánh xạ này là **một-một và cố định**: 344 nhãn nối với 343 khuôn truy vấn SPARQL
-và 1 khuôn `no-information`. Cùng một nhãn luôn dẫn đến cùng một khuôn đã định
-nghĩa. Bộ phân loại không viết SPARQL; nó chỉ quyết định khuôn nào được
-chọn. **OOD** là cách viết tắt của *out-of-distribution*; trong dự án, đây là
-nhãn cho câu phải từ chối vì nằm ngoài phạm vi hoặc vì ontology hiện không có dữ
-kiện phù hợp.
+1. Giao diện gửi câu hỏi cùng tối đa 20 tin nhắn gần nhất tới API.
+2. API mở một lượt: gửi cho LLM lời hướng dẫn, hội thoại và mô tả của công cụ
+   `lookup_academic_information`.
+3. LLM không trả lời ngay mà yêu cầu gọi công cụ với hai từ khoá:
+   `nghỉ học tạm thời` và `bảo lưu kết quả học tập`.
+4. API báo cho giao diện sự kiện `lookup_started`, rồi chạy công cụ.
+5. Search engine tìm các dòng chỉ mục khớp từ khoá, chọn 3 mục điểm cao nhất và
+   đọc toàn bộ dữ kiện của từng mục, gom theo nguồn đã khẳng định chúng.
+6. Công cụ trả JSON cho LLM; API báo `lookup_finished`.
+7. LLM viết câu trả lời chỉ từ JSON đó. Mỗi đoạn chữ vừa sinh ra được đẩy về giao
+   diện qua sự kiện `text_delta`; cuối cùng là `completed`.
 
-Ví dụ, nhãn biểu diễn nhu cầu hỏi thông tin về thủ tục nghỉ học tạm thời tương
-ứng với khuôn đã chứa đích `:TemporaryAcademicLeaveProcedure`. Khi nhãn này được
-chọn, hệ thống thực thi khuôn đó để lấy thuộc tính trực tiếp, bước, điều
-kiện, biểu mẫu và nguồn của thủ tục.
+Lượt hỏi thật này mất 2,92 giây, gọi công cụ một lần và sinh 147 sự kiện `text_delta`.
 
-Khuôn SPARQL được thực thi trên ontology để lấy dữ kiện và nguồn. Khuôn
-`no-information` không chạy SPARQL; nó trả về quyết định từ chối.
+Hệ thống từ chối theo ba cách:
 
-### 2.3 Luồng thật của một lượt hỏi
+- **Câu ngoài phạm vi học vụ** (thời tiết, chuyện phiếm): LLM trả lời thẳng là ngoài
+  phạm vi, không gọi công cụ.
+- **Không mục nào khớp từ khoá** (`status=not_found`): LLM được thử lại tối đa một lần
+  bằng cách gọi khác hẳn, sau đó phải nói không tìm thấy.
+- **Có mục khớp nhưng không chứa điều được hỏi**: lời hướng dẫn buộc LLM kiểm trường
+  `matched` và đọc hết dữ kiện; chi tiết không có trong dữ kiện thì nói dữ liệu hiện
+  có không chứa chi tiết đó.
 
-Sơ đồ sau trả lời câu hỏi khác: **"một câu chat thực sự đi qua hệ thống theo thứ
-tự nào?"** Đây là luồng chạy trực tuyến, không phải quy trình tạo bộ dữ liệu.
+Mỗi lượt có giới hạn cứng: tối đa 4 bước gọi LLM, tối đa 45 giây, và cổng vào chỉ
+cho một số lượt chạy cùng lúc (mặc định 16, hàng đợi 64), để một đợt dồn không làm
+treo dịch vụ. Câu trả lời "không có thông tin" nghĩa là dữ liệu hiện có không chứa
+nó, không phải khẳng định thông tin đó không tồn tại ngoài thực tế.
 
-![Luồng xử lý theo thời gian của một câu hỏi](docs/images/luong-xu-ly.png)
+## 4. Dữ liệu trông như thế nào ở từng bước?
 
-Với câu "Em muốn nghỉ một học kỳ thì phải làm gì?", trình tự là:
+Sơ đồ sau trả lời câu hỏi **"dữ liệu thật có hình dạng gì ở mỗi bước của lượt hỏi
+trên?"**. Mọi khối lấy từ lượt hỏi thật ở mục 3, chỉ rút gọn phần dài.
 
-1. LLM xác định đây là câu hỏi học vụ và rút cụm như "thủ tục nghỉ học tạm thời".
-2. Công cụ chuẩn hoá cụm từ rồi đưa vào bộ phân loại.
-3. Bộ phân loại chọn một trong 344 nhãn.
-4. Nhãn chọn khuôn SPARQL tương ứng; hệ thống thực thi khuôn trên ontology.
-5. Công cụ gom dữ kiện theo đúng nguồn đã khẳng định chúng.
-6. LLM dùng dữ kiện đó để viết câu trả lời kèm trích dẫn và URL.
+![Hình dạng dữ liệu từng bước](docs/images/hinh-dang-du-lieu.png)
 
-Nếu không có nhãn hoặc dữ kiện phù hợp, kết quả phải nói kho hiện có không có
-thông tin. Đây không phải khẳng định thông tin đó không tồn tại ngoài thực tế.
-
-## 3. Hình dạng dữ liệu trong một lượt hỏi
-
-Sơ đồ dưới đây trả lời **"dữ liệu trông như thế nào ở từng bước?"** Nó minh hoạ
-sự chuyển đổi biểu diễn trong lúc hệ thống trả lời một câu, không phải kiến trúc
-thành phần và cũng không phải cách chia bộ dữ liệu.
-
-![Hình dạng dữ liệu từ câu hỏi đến câu trả lời](docs/images/hinh-dang-du-lieu.png)
-
-| Bước | Hình dạng | Ví dụ rút gọn |
+| Bước | Hình dạng | Nội dung chính |
 |---|---|---|
-| 1. Câu chat | chuỗi tự do | `Em muốn nghỉ một học kỳ thì làm gì?` |
-| 2. Cụm tra cứu | một hoặc vài chuỗi ngắn | `thủ tục nghỉ học tạm thời` |
-| 3. Nhãn | một trong 344 đầu ra của bộ phân loại | thông tin về thủ tục nghỉ học tạm thời |
-| 4. Khuôn SPARQL | khuôn tương ứng một-một với nhãn | đọc thuộc tính và nút con của thủ tục |
-| 5. Kết quả công cụ | các cặp thuộc tính - giá trị, nhóm theo trích dẫn và URL | bước, điều kiện, biểu mẫu, nơi nộp |
-| 6. Câu trả lời | văn bản tự nhiên | hướng dẫn cho người dùng kèm nguồn |
+| 1. Câu hỏi | chuỗi văn bản | `Em muốn nghỉ một học kỳ thì phải làm gì?` |
+| 2. Yêu cầu tới API | JSON qua `POST /chat` | `message` và `history` |
+| 3. Lời gọi công cụ | JSON do LLM sinh | tên công cụ và danh sách `keywords` |
+| 4. Kết quả tìm kiếm | 3 mục kèm điểm | mục, điểm, các dòng đã khớp |
+| 5. Kết quả công cụ | JSON | mục, dòng khớp, dữ kiện gom theo nguồn |
+| 6. Sự kiện về giao diện | SSE | `lookup_started`, `lookup_finished`, `text_delta`, `completed` |
+| 7. Câu trả lời | Markdown | hướng dẫn kèm nguồn và đường dẫn |
 
-Bộ phân loại **nhận một chuỗi tiếng Việt và trả một nhãn**. Khi chấm riêng bộ
-phân loại, chuỗi là trường `input` của bộ dữ liệu; khi chạy toàn hệ thống, nó thường là cụm do
-LLM rút từ câu chat. Bộ phân loại không viết câu trả lời.
-
-Kết quả công cụ có hai trạng thái nội dung:
+**JSON** là định dạng văn bản ghi dữ liệu thành các cặp tên - giá trị. Kết quả
+công cụ là phần quan trọng nhất, vì đó là tất cả những gì LLM được biết về quy định:
 
 ```json
 {
-  "trang_thai": "co_du_lieu",
-  "nguon": [
+  "status": "found",
+  "guidance": "Mỗi phần tử của results là một mục của ontology. Kiểm matched trước: …",
+  "results": [
     {
-      "trich_dan": "Điều 24 Quy chế đào tạo, ban hành kèm Quyết định 1052/QĐ-ĐHNT",
-      "duong_dan": "https://...",
-      "du_lieu": [
-        {"thuoc_tinh": "biểu mẫu yêu cầu", "gia_tri": "Mẫu số 09"}
+      "label": "Thủ tục nghỉ học tạm thời",
+      "classes": ["Thủ tục học vụ"],
+      "matched": ["bảo lưu kết quả học tập", "bảo lưu kết quả", "nghỉ học tạm thời"],
+      "sources": [
+        {
+          "citation": "khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
+          "url": "https://pdtdaihoc.ntu.edu.vn/…pdf",
+          "facts": [
+            {"subject": "Thủ tục nghỉ học tạm thời", "property": "nộp tại", "value": "Phòng Công tác Chính trị và Sinh viên"},
+            {"subject": "Thủ tục nghỉ học tạm thời", "property": "cần biểu mẫu", "value": "Mẫu số 09 - Đơn xin nghỉ học tạm thời"}
+          ]
+        }
       ]
     }
   ]
 }
 ```
 
-hoặc `trang_thai` cho biết **"không có thông tin"** và danh sách nguồn rỗng.
+| Trường | Ý nghĩa |
+|---|---|
+| `status` | `found` khi có ít nhất một mục khớp, `not_found` khi không có |
+| `guidance` | lời nhắc cách đọc kết quả, lặp lại ngay trong dữ liệu |
+| `label`, `classes` | tên mục và loại của nó |
+| `matched` | các dòng chỉ mục đã khớp từ khoá; LLM dùng để loại mục không đúng ý hỏi |
+| `sources` | mỗi phần tử là một nguồn: `citation` và `url` để trích dẫn, `facts` là các dữ kiện nguồn đó khẳng định |
+| `facts[].subject` | mục nói ra dữ kiện; khác `label` nghĩa là câu của một mục khác nói tới mục này |
+| `unmatched`, `truncation` | từ khoá không khớp gì; số từ khoá bị cắt vì vượt giới hạn |
 
-## 4. Ontology
+Một nguồn có `citation` bằng `null` là dữ kiện dùng được nhưng không được trích
+dẫn. Công cụ nhận tối đa 20 từ khoá, mỗi từ khoá tối đa 120 ký tự.
 
-Tệp [`resources/ontology/ontology.ttl`](resources/ontology/ontology.ttl) là cơ sở
-dữ liệu nội dung duy nhất mà công cụ đọc khi chạy. Đuôi `.ttl` cho biết tệp dùng
-định dạng văn bản Turtle để ghi đồ thị. Văn bản chính thức vẫn là căn cứ có thẩm
-quyền; ontology chỉ là bản biểu diễn có cấu trúc của phần nội dung đã được chọn
-vào phạm vi nghiên cứu.
+Sự kiện SSE là các dòng `data:` nối nhau trong một kết nối HTTP:
 
-### 4.1 Đọc các khái niệm cơ bản trước khi xem ví dụ
+```text
+data: {"type": "lookup_started", "keywords": "nghỉ học tạm thời · bảo lưu kết quả học tập"}
+data: {"type": "lookup_finished"}
+data: {"type": "text_delta", "content": "…một đoạn của câu trả lời…"}
+data: {"type": "completed", "content": "Để nghỉ học tạm thời và bảo lưu kết quả học tập, bạn cần…"}
+```
 
-Mọi định danh trong ontology dùng chung tiền tố địa chỉ sau, thường gọi là
-*namespace*:
+Ngoài bốn loại trên còn `queued` (đang xếp hàng, kèm vị trí), `warning` (lịch sử quá
+dài đã bị cắt) và `error`.
+
+## 5. Ontology được tổ chức ra sao?
+
+Tệp [`resources/ontology/ontology.trig`](resources/ontology/ontology.trig) là cơ sở
+dữ liệu nội dung duy nhất mà dịch vụ đọc. Văn bản chính thức vẫn là căn cứ có thẩm
+quyền; ontology chỉ là bản biểu diễn có cấu trúc của phần nội dung đã chọn vào phạm vi.
+
+### 5.1 Đọc các khái niệm cơ bản trước khi xem ví dụ
+
+Mọi định danh trong ontology dùng chung một tiền tố địa chỉ, gọi là *namespace*:
 
 ```text
 http://www.ntu.edu.vn/ontology/academic#
 ```
 
-**IRI** là định danh duy nhất của một mục trong đồ thị. Ví dụ, IRI đầy đủ của thủ
-tục nghỉ học tạm thời là:
-
-```text
-http://www.ntu.edu.vn/ontology/academic#TemporaryAcademicLeaveProcedure
-```
-
-Trong tệp Turtle, tiền tố `:` thay cho phần namespace dài, nên IRI trên được viết
-gọn thành `:TemporaryAcademicLeaveProcedure`. Đây là mã dành cho máy; nhãn tiếng
-Việt trong `rdfs:label` mới là tên hiển thị cho người dùng.
-
-Bốn khái niệm tạo nên giải phẫu của ontology:
+**IRI** là định danh duy nhất của một mục. IRI đầy đủ của thủ tục nghỉ học tạm thời
+là `http://www.ntu.edu.vn/ontology/academic#ThuTucNghiHocTamThoi`; trong tệp, tiền tố
+`:` thay cho namespace nên viết gọn thành `:ThuTucNghiHocTamThoi`. Định danh sinh từ
+tên tiếng Việt bỏ dấu; tên hiển thị cho người đọc nằm trong `rdfs:label`.
 
 | Khái niệm | Bản chất | Ví dụ |
 |---|---|---|
-| Lớp | loại hoặc khuôn khái niệm dùng để phân nhóm | `:AcademicProcedure` là lớp thủ tục học vụ |
-| Cá thể | một đối tượng cụ thể thuộc một hoặc nhiều lớp | `:TemporaryAcademicLeaveProcedure` là một thủ tục cụ thể |
-| Quan hệ giữa hai đối tượng (*object property*) | nối một đối tượng với đối tượng khác | `:requiresForm` nối thủ tục với biểu mẫu |
-| Thuộc tính chứa giá trị (*datatype property*) | nối đối tượng với chữ, số, ngày hoặc URL | `:stepText` nối một bước với nội dung chữ |
+| Lớp (loại) | nhóm các mục cùng kiểu | `:ThuTucHocVu` là lớp thủ tục học vụ |
+| Cá thể (mục) | một đối tượng cụ thể thuộc một lớp | `:ThuTucNghiHocTamThoi` |
+| Quan hệ | nối mục với mục khác | `:nopTai` nối thủ tục với đơn vị tiếp nhận |
+| Thuộc tính | nối mục với chữ, số, ngày hoặc đường dẫn | `:noiDung` nối thủ tục với một câu nội dung |
 
-RDF lưu tri thức thành các **phát biểu ba vế** (*triple*):
+Mỗi dữ kiện được ghi thành một **phát biểu ba vế** (*triple*):
 
 ```text
-chủ thể -> quan hệ/thuộc tính -> đối tượng hoặc giá trị
+chủ ngữ → quan hệ hoặc thuộc tính → mục đích hoặc giá trị
 ```
 
-Ví dụ `thủ tục nghỉ học tạm thời -> yêu cầu biểu mẫu -> Mẫu số 09` là một phát
-biểu ba vế. Nhiều phát biểu cùng nói về một IRI tạo thành mô tả có cấu trúc của
-đối tượng đó.
+Ví dụ `Thủ tục nghỉ học tạm thời → nộp tại → Phòng Công tác Chính trị và Sinh viên`.
 
-### 4.2 Một thủ tục được biểu diễn ra sao?
+### 5.2 Mỗi phát biểu mang nguồn của chính nó
 
-Đoạn rút gọn sau lấy từ ontology thật:
+Một thủ tục thường được nhiều chỗ của văn bản nói tới: nơi nộp ở khoản 3 Điều 24,
+trường hợp được nghỉ ở điểm a đến d khoản 1 Điều 24. Nếu nguồn chỉ gắn cho cả mục,
+người đọc không biết câu nào lấy từ đâu. Vì vậy ontology thêm **vế thứ tư** cho mỗi
+phát biểu, gọi là *quad*. Vế thứ tư là tên của một **túi trích dẫn** (*named graph*):
+mọi phát biểu do cùng một chỗ của cùng một văn bản khẳng định thì nằm chung một túi,
+và tên túi chính là **địa chỉ trích dẫn** trỏ về nguồn. **TriG** là định dạng văn bản
+ghi được cả bốn vế.
 
-```turtle
-:TemporaryAcademicLeaveProcedure a :AcademicProcedure ;
-    :basedOn :Regulation1052Article24 ;
-    :hasRequirement :TemporaryLeavePersonalRequirement ;
-    :hasStep :TemporaryLeaveStep01, :TemporaryLeaveStep02 ;
-    :requiresForm :Form09TemporaryLeave ;
-    :submittedTo :StudentAffairsOffice ;
-    :summaryText "Thủ tục cho phép sinh viên tạm dừng việc học và bảo lưu kết quả đã tích lũy."@vi ;
-    rdfs:label "Thủ tục nghỉ học tạm thời"@vi .
+Sơ đồ sau trả lời câu hỏi **"một thủ tục thật được ghi với nguồn như thế nào?"**.
+Nó là cách tổ chức dữ liệu, không phải luồng chạy.
+
+![Túi trích dẫn](docs/images/tui-trich-dan.png)
+
+Nhờ vậy, thêm nguồn không thêm mục hay quan hệ nào: nguồn là thông tin đi kèm phát
+biểu, không phải một loại nội dung khác. Khi một văn bản mới thay đổi một chi tiết,
+chỉ phát biểu đó đổi túi hoặc được thay, các phát biểu khác của mục giữ nguyên nguồn.
+
+### 5.3 Một thủ tục được biểu diễn ra sao?
+
+Đoạn sau rút gọn từ tệp thật, xếp lại cho dễ đọc:
+
+```trig
+:ThuTucNghiHocTamThoi a :ThuTucHocVu ;
+    rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
+    skos:altLabel "bảo lưu kết quả học tập"@vi , "tạm nghỉ học"@vi .
+
+:TD1052_D24K03 {
+    :ThuTucNghiHocTamThoi :nopTai :PhongCongTacChinhTriVaSinhVien ;
+        :canBieuMau :MauSo09DonXinNghiHocTamThoi ;
+        :doAiQuyetDinh :HieuTruong ;
+        :doAiThucHien :SinhVien ;
+        :thuTucTiepTheo :ThuTucXinHocTroLai ;
+        :noiDung "Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+
+:TD1052_D24K03 a :DiaChiTrichDan ;
+    :thuocNguon :Nguon1052 ;
+    :toaDo "khoản 3 Điều 24"@vi .
+
+:Nguon1052 a :Nguon ;
+    rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang"@vi ;
+    :soHieu "1052/QĐ-ĐHNT"@vi ;
+    :banHanhNgay "2025-07-17"^^xsd:date ;
+    :loaiNguon :QuyChe ;
+    :duongDan "https://pdtdaihoc.ntu.edu.vn/…pdf"^^xsd:anyURI .
 ```
 
 Cách đọc đoạn này:
 
-- `a :AcademicProcedure`: đối tượng này thuộc lớp thủ tục học vụ;
-- `basedOn`: căn cứ gần nhất là Điều 24 của Quy chế 1052;
-- `hasRequirement`: thủ tục có một nút điều kiện riêng;
-- `hasStep`: thủ tục có hai nút bước riêng, mỗi bước còn có thứ tự và nội dung;
-- `requiresForm`: biểu mẫu được yêu cầu là Mẫu số 09;
-- `submittedTo`: đơn vị tiếp nhận là Phòng Công tác Chính trị và Sinh viên;
-- `summaryText` và `rdfs:label`: giá trị chữ dùng để mô tả và hiển thị.
+- khối đầu nằm ngoài mọi túi: loại, tên và các **tên gọi khác** (`skos:altLabel`) mà
+  người dùng hay gọi; đây là danh tính của mục, không cần trích dẫn;
+- khối `:TD1052_D24K03 { … }` là một túi: sáu phát biểu cùng do khoản 3 Điều 24 khẳng định;
+- `:TD1052_D24K03` là địa chỉ trích dẫn: toạ độ "khoản 3 Điều 24" trong nguồn `:Nguon1052`;
+- `:Nguon1052` mang số hiệu, ngày ban hành, loại và đường dẫn của văn bản.
 
-Việc tách bước, điều kiện, biểu mẫu và đơn vị thành các nút riêng giúp truy vấn
-đúng loại dữ kiện thay vì buộc LLM tự tách ý từ một đoạn văn dài. Cấu trúc này
-không có nghĩa mọi thủ tục đều phải có đủ cùng một bộ thuộc tính; ontology chỉ
-khai những gì nguồn được chọn có căn cứ để khẳng định.
+Khi đọc hồ sơ, hệ thống ghép toạ độ, tên nguồn, số hiệu và ngày thành chuỗi trích dẫn
+"khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành
+kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025".
 
-### 4.3 Hai tầng của ontology
-
-Sơ đồ sau trả lời **"ontology được tổ chức thành những loại đối tượng nào?"**.
-Các con số trong ngoặc là số đối tượng thuộc từng loại, không phải điểm chất
-lượng và không phải số câu hỏi trong bộ dữ liệu.
-
-![Hai tầng văn bản và nghiệp vụ của ontology](docs/images/so-do-ontology.png)
+### 5.4 Tầng tri thức và tầng nguồn
 
 | Tầng | Lưu gì | Dùng để làm gì |
 |---|---|---|
-| Văn bản | quyết định, quy chế, chương, điều, khoản, điểm, phụ lục, mục và bảng | giữ nguyên văn cùng vị trí trích dẫn |
-| Nghiệp vụ | thủ tục, bước, điều kiện, thời hạn, kết quả, biểu mẫu, quy tắc, chứng chỉ và ngành | biểu diễn trực tiếp điều người dùng thường muốn tra |
+| Tri thức | 16 loại mục: thủ tục, quy tắc, đơn vị, ngành, biểu mẫu… | là thứ người dùng hỏi tới và được tìm kiếm |
+| Nguồn | nguồn (văn bản, trang web) và địa chỉ trích dẫn | chỉ để dựng trích dẫn; không được tìm kiếm |
 
-Quan hệ `basedOn` nối một nút nghiệp vụ với phần văn bản được dùng làm căn cứ.
-Ví dụ, cả thủ tục có thể dựa trên Điều 24, còn điều kiện vì lý do cá nhân dẫn
-chính xác hơn đến điểm d khoản 1 Điều 24. Khi chạy, hệ thống đi theo quan hệ này
-để gắn `sourceCitation` và `sourceLink` vào kết quả.
+Có hai loại phát biểu nằm ngoài mọi túi: danh tính của mục (loại, tên, tên gọi khác)
+và vài điều dự án tự khẳng định mà không văn bản nào ghi, như việc ghép một mục tải
+trên website với biểu mẫu tương ứng trong phụ lục. Những phát biểu này hiện ra với
+`citation: null`: dùng được nhưng không được trích dẫn.
 
-`basedOn` thể hiện lựa chọn biên soạn có thể kiểm tra, không tự chứng minh lựa
-chọn đó đúng về pháp lý. Nếu ontology mâu thuẫn với văn bản chính thức, văn bản
-chính thức được ưu tiên và ontology là tài nguyên phải được sửa.
+### 5.5 Lược đồ khai báo mỗi loại mục có những ô nào
 
-### 4.4 Ontology được tạo từ nguồn như thế nào?
+**SHACL** là ngôn ngữ khai báo ràng buộc cho dữ liệu dạng đồ thị. Tệp
+[`resources/ontology/shapes.ttl`](resources/ontology/shapes.ttl) có một **shape** cho
+mỗi loại mục: loại đó có những ô nào, ô nào bắt buộc, nhận một hay nhiều giá trị, là
+chữ hay trỏ tới loại nào, có phải gắn nguồn không. Tệp viết bằng Turtle, định dạng ba
+vế cùng họ với TriG. Đoạn rút gọn cho thủ tục học vụ:
 
-Quy trình biên soạn có năm bước về bản chất:
+```turtle
+:ThuTucHocVuShape a sh:NodeShape ;
+    sh:targetClass :ThuTucHocVu ;
+    sh:closed true ;
+    sh:property
+        [ sh:path :noiDung ; sh:name "nội dung"@vi ;
+          sh:datatype rdf:langString ; sh:minCount 1 ;
+          :batBuocNguon true ] ,
+        [ sh:path :nopTai ; sh:name "nộp tại"@vi ;
+          sh:class :ChuThe ;
+          :batBuocNguon true ] .
+```
 
-1. **Chọn nguồn và phạm vi:** chọn văn bản hoặc trang chính thức liên quan đến
-   loại câu hỏi cần hỗ trợ; ghi số hiệu, ngày và URL.
-2. **Biểu diễn tầng văn bản:** tách nội dung theo Chương, Điều, Khoản, Điểm, phụ
-   lục và bảng. Bảng nhiều tầng hoặc có ô rỗng được giữ nguyên dưới dạng bảng
-   văn bản để tránh làm lệch ý nghĩa hàng và cột.
-3. **Trừu tượng hoá nghiệp vụ:** đọc nguồn và biểu diễn các khái niệm như thủ tục,
-   bước, điều kiện, thời hạn và biểu mẫu bằng lớp, cá thể và thuộc tính chung.
-4. **Nối căn cứ:** mỗi nút nghiệp vụ mang nội dung trả lời được nối đến phần văn
-   bản nhỏ nhất có thể chứng minh nó.
-5. **Kiểm định:** kiểm lược đồ, nhãn, quan hệ nguồn, thứ tự bước, ngưỡng số, bảng,
-   đích truy vấn và độ phủ của danh mục.
+`sh:closed true` cấm ô chưa khai báo; `sh:minCount 1` là ô bắt buộc; `sh:class` buộc
+giá trị trỏ tới đúng loại; `:batBuocNguon true` là quy ước riêng của dự án: câu của ô
+đó phải nằm trong một túi trích dẫn.
 
-Bước 3 là quá trình biên soạn thủ công, không phải kết quả trích xuất hoàn toàn
-tự động. Đây vừa là lý do ontology biểu diễn được quan hệ nghiệp vụ cụ thể, vừa
-là nguồn rủi ro diễn giải chủ quan cần được rà soát độc lập.
+Sơ đồ sau trả lời câu hỏi **"các loại mục nối với nhau bằng những quan hệ nào?"**. Số
+trong mỗi hộp là số mục đếm ngày 13/9/2026, mô tả quy mô chứ không đo chất lượng.
 
-### 4.5 Mười bảy bản ghi nguồn là những gì?
+![Bản đồ các loại tri thức](docs/images/ban-do-loai.png)
 
-Con số 17 là số **tài nguyên nguồn được khai trong ontology**, không phải 17 văn
-bản pháp quy cùng loại. Chúng gồm 6 quyết định, 3 quy chế ban hành kèm và 8 trang
-hoặc hướng dẫn chính thức.
+| Loại | Lớp | Số mục | Chứa gì |
+|---|---|---:|---|
+| Thủ tục học vụ | `ThuTucHocVu` | 31 | nội dung, người thực hiện, nơi nộp, biểu mẫu, trường hợp áp dụng |
+| Quy tắc | `QuyTac` | 26 | quy định học vụ: cảnh báo, buộc thôi học, khối lượng đăng ký, thời gian đào tạo |
+| Khái niệm | `KhaiNiem` | 26 | khái niệm học vụ: học kỳ, loại học phần, điểm rèn luyện |
+| Chủ thể | `ChuThe` | 46 | đơn vị trong trường và vai trò: phòng, khoa, sinh viên, hiệu trưởng |
+| Ngành đào tạo | `NganhDaoTao` | 40 | tên ngành, mã ngành, khối ngành |
+| Chuyên ngành | `ChuyenNganh` | 35 | chuyên ngành và ngành chứa nó |
+| Chương trình đào tạo | `ChuongTrinhDaoTao` | 60 | thời gian, ngôn ngữ, văn bằng, tổng tín chỉ, đơn vị quản lý |
+| Biểu mẫu theo quyết định | `BieuMauTheoQuyetDinh` | 16 | mẫu đơn trong phụ lục quy chế |
+| Mục biểu mẫu trên website | `MucBieuMauTrenWebsite` | 21 | đường tải biểu mẫu |
+| Bảng | `Bang` | 17 | bảng chép nguyên văn từng ô |
+| Chứng chỉ | `ChungChi` | 18 | chứng chỉ ngoại ngữ và tin học |
+| Danh mục | `DanhMuc` | 17 | danh mục dùng chung: khối ngành, ngân hàng, đơn vị tính |
+| Mức tiền | `MucTien` | 12 | mức học bổng, lệ phí |
+| Học phần | `HocPhan` | 7 | học phần có quy định riêng |
+| Trường hợp áp dụng | `TruongHopApDung` | 4 | trường hợp mà thủ tục áp dụng |
+| Hệ thống trực tuyến | `HeThongTrucTuyen` | 3 | cổng thông tin sinh viên và các hệ thống tương tự |
+| *Nguồn* | `Nguon` | 79 | văn bản và trang web làm căn cứ |
+| *Địa chỉ trích dẫn* | `DiaChiTrichDan` | 374 | toạ độ trong nguồn, cũng là tên túi |
 
-| Nhóm | Nguồn | Nội dung được sử dụng |
-|---|---|---|
-| Quyết định | Quyết định 1052/QĐ-ĐHNT, 17/07/2025 | ban hành quy chế đào tạo đại học |
-| Quyết định | Quyết định 1965/QĐ-ĐHNT, 19/12/2025 | sửa đổi, bổ sung phụ lục quy chế đào tạo |
-| Quyết định | Quyết định 317/QĐ-ĐHNT, 07/03/2025 | mức học bổng khuyến khích học tập |
-| Quyết định | Quyết định 626/QĐ-ĐHNT, 29/04/2026 | ban hành quy chế tuyển sinh đại học |
-| Quyết định | Quyết định 729/QĐ-ĐHNT, 28/05/2025 | học phí năm học 2025-2026 và danh mục ngành |
-| Quyết định | Quyết định 753/QĐ-ĐHNT, 13/08/2021 | phần quy định được dùng khi nội dung mới không thay thế tương ứng |
-| Quy chế | Quy chế ban hành kèm Quyết định 1052 | quy tắc đào tạo, thủ tục và phụ lục |
-| Quy chế | Quy chế ban hành kèm Quyết định 626 | tuyển sinh và phụ lục tuyển sinh |
-| Quy chế | Quy chế ban hành kèm Quyết định 753 | phần quy định cũ còn được dự án sử dụng |
-| Web/hướng dẫn | Trang thông tin tuyển sinh, lấy ngày 15/08/2026 | địa chỉ tra cứu tuyển sinh |
-| Web/hướng dẫn | Trang Cơ cấu tổ chức, lấy ngày 14/08/2026 | danh sách đơn vị của trường |
-| Web/hướng dẫn | Trang tiêu chuẩn học bổng, lấy ngày 10/08/2026 | tiêu chuẩn xét học bổng |
-| Web/hướng dẫn | Thông báo danh sách dự kiến học bổng, lấy ngày 10/08/2026 | công bố, phản hồi và nhận học bổng |
-| Web/hướng dẫn | Cổng thông tin sinh viên, lấy ngày 15/08/2026 | địa chỉ tra cứu học phí cá nhân |
-| Web/hướng dẫn | Thông báo cách nộp học phí, lấy ngày 10/08/2026 | phương thức và phí thanh toán |
-| Web/hướng dẫn | Hướng dẫn VNPAY - Vietcombank, lấy ngày 10/08/2026 | thao tác và lưu ý phí giao dịch |
-| Web/hướng dẫn | Danh mục biểu mẫu Phòng Đào tạo Đại học, lấy ngày 30/07/2026 | tên và đường tải biểu mẫu |
+### 5.6 Dữ liệu được biên soạn và đối chiếu nguồn thế nào?
 
-Ngày lấy trang web xác định phiên bản nội dung đã được dùng. Nó không chứng minh
-trang đó vẫn không đổi tại thời điểm người dùng đặt câu hỏi. Bản sao phục vụ đối
-chiếu nằm trong [`references/`](references/), nhưng mức bao phủ bản sao cục bộ
-không đồng nhất cho cả 17 nguồn.
+Quy trình biên soạn có năm bước:
 
-### 4.6 Các con số giải phẫu có ý nghĩa gì?
+1. **Chọn nguồn chính thức:** văn bản của trường hoặc trang của phòng ban; ghi số
+   hiệu, ngày ban hành, đường dẫn và ngày thu thập.
+2. **Tách thành mục và phát biểu:** mỗi câu gắn với chỗ nhỏ nhất của văn bản khẳng
+   định nó (khoản, điểm, mục của trang).
+3. **Đối chiếu từng giá trị:** so với bản chép trong [`references/`](references/) hoặc
+   trang chính thức; bảng nhiều tầng được chép nguyên văn từng ô.
+4. **Ghi vào ontology:** qua script hoặc trang quản trị; mọi lần ghi đều qua kiểm lược đồ.
+5. **Chạy lại bộ test và bộ kiểm tìm kiếm** (mục 8).
 
-Các số dưới đây được đếm từ phiên bản ontology hiện hành. Chúng mô tả **quy mô và cấu
-trúc**, không đo độ đúng, độ đầy đủ hay hiệu quả của hệ thống.
+Các quy tắc biên soạn:
 
-| Thành phần | Số lượng | Nó là gì và tồn tại để làm gì? |
+- văn bản cũ vẫn là căn cứ cho những điểm mà văn bản mới không nói tới;
+- khi hai nguồn mâu thuẫn, dùng nguồn mới hơn;
+- không lưu thông tin cá nhân của cán bộ, như số điện thoại riêng của trưởng đơn vị;
+- không lưu dữ liệu riêng của từng sinh viên và dữ liệu theo đợt (học phí từng tài
+  khoản, điểm chuẩn); chỉ lưu đường dẫn tới nơi tra cứu chính thức.
+
+79 nguồn hiện có gồm 48 văn bản chương trình đào tạo, 18 hướng dẫn và trang web
+chính thức, 7 quyết định, 4 quy chế và 2 danh mục biểu mẫu.
+
+### 5.7 Các con số giải phẫu có ý nghĩa gì?
+
+Các số đếm từ phiên bản ontology ngày 13/9/2026. Chúng mô tả quy mô, không đo độ
+đúng hay độ đầy đủ.
+
+| Thành phần | Số lượng | Nó là gì |
 |---|---:|---|
-| Lớp | 56 | bộ từ vựng về loại đối tượng, như thủ tục, điều kiện, điều khoản |
-| Cá thể có tên | 685 | các đối tượng cụ thể được truy vấn hoặc dùng làm cấu trúc nguồn |
-| Quan hệ giữa hai đối tượng | 29 | các loại quan hệ như `hasStep`, `basedOn` |
-| Thuộc tính chứa giá trị | 55 | các loại thuộc tính mang chữ, số, ngày hoặc URL |
-| `officialText` | 320 | các đoạn nguyên văn gắn với phần văn bản |
-| `verbatimTableText` | 16 | các bảng giữ nguyên cấu trúc thay vì tách thành ô độc lập |
-| `basedOn` | 368 | các liên kết từ nội dung nghiệp vụ đến căn cứ văn bản |
-| Phát biểu ba vế trong `ontology.ttl` | 6.350 | toàn bộ phát biểu được khai trực tiếp trong tệp |
-| Phát biểu ba vế khi chạy | 7.704 | đồ thị sau khi bổ sung thông tin nguồn phục vụ tra cứu |
+| Loại mục | 18 | 16 loại tri thức và 2 loại của tầng nguồn |
+| Shape trong lược đồ | 18 | một shape cho mỗi loại |
+| Phát biểu (quad) | 4.082 | toàn bộ phát biểu trong tệp |
+| Phát biểu trong túi | 1.211 | các câu mang nội dung có nguồn |
+| Phát biểu ngoài túi | 2.871 | danh tính, tầng nguồn và tên của các loại và thuộc tính |
+| Nguồn | 79 | văn bản và trang web |
+| Địa chỉ trích dẫn | 374 | số túi |
 
-Chênh lệch 1.354 phát biểu không phải 1.354 quy định mới. Có 677 nút được bổ sung
-hai thuộc tính tiện tra cứu là `sourceCitation` và `sourceLink`, nên phát sinh
-`677 x 2 = 1.354` triple khi nạp ontology.
+### 5.8 Kiểm định ontology chứng minh được gì?
 
-### 4.7 Kiểm định ontology chứng minh được gì?
+Các phép kiểm tự động trên tệp thật xác nhận:
 
-Các phép kiểm tự động xác nhận những tính chất có thể kiểm bằng mã:
+- toàn bộ dữ liệu khớp lược đồ SHACL;
+- mọi ô bắt buộc gắn nguồn đều nằm trong túi;
+- quy tắc trích dẫn: không có địa chỉ rỗng, mỗi chỗ trong nguồn chỉ có một địa chỉ,
+  một văn bản không khẳng định cùng một dữ kiện ở hai chỗ;
+- 17 bảng khớp bản chép trong `references/` đến từng ký tự;
+- các kiểu câu hỏi tiêu biểu tìm ra đúng mục.
 
-- lớp và thuộc tính được khai báo theo lược đồ;
-- cá thể có nhãn và các tên dùng để tra không xung đột theo quy tắc hiện có;
-- các nhóm nút nghiệp vụ chính có căn cứ;
-- bước, điều kiện và thứ tự không bị tách khỏi thủ tục;
-- các bảng được kiểm giữ đúng ký tự so với nguồn Markdown tương ứng;
-- mọi đích trả lời được trong bộ dữ liệu tạo được truy vấn có kết quả;
-- danh mục bao phủ mọi đường dữ kiện đã đánh dấu là được hỗ trợ.
+Các phép kiểm đó **không** chứng minh tập nguồn đầy đủ, mọi diễn giải đúng về pháp lý,
+trang web còn nguyên như lúc thu thập, hay LLM luôn trình bày trung thực. Khi ontology
+mâu thuẫn với văn bản chính thức, văn bản chính thức được ưu tiên và ontology phải được sửa.
 
-Các phép kiểm đó **không** chứng minh tập nguồn đầy đủ, mọi diễn giải đều đúng về
-pháp lý, nguồn web còn hiệu lực hay LLM luôn trình bày trung thực. Mô hình dữ liệu
-chi tiết hơn nằm tại [`docs/ONTOLOGY.md`](docs/ONTOLOGY.md).
+## 6. Công cụ tìm kiếm trên ontology hoạt động ra sao?
 
-## 5. Từ nhãn phân loại đến truy vấn SPARQL
+Mục này trả lời một câu hỏi cụ thể: **LLM gửi vài từ khoá, làm sao hệ thống biết mục
+nào của ontology cần đưa lại?**
 
-Mục này trả lời một câu hỏi cụ thể: **sau khi bộ phân loại chọn nhãn, nhãn đó làm
-thế nào để lấy được dữ kiện từ ontology?**
+Sơ đồ sau dùng đúng hai từ khoá của lượt hỏi ở mục 3 và điểm số thật. Nó mô tả thuật
+toán, không phải luồng giữa các thành phần.
 
-Bốn tên gọi cần biết là:
+![Thuật toán tìm kiếm](docs/images/thuat-toan-tim-kiem.png)
 
-| Tên gọi | Nghĩa trong dự án |
+### 6.1 Từ ontology đến chỉ mục
+
+**Chỉ mục** là danh sách các dòng chữ được chuẩn bị sẵn để tìm nhanh. Khi dịch vụ
+khởi động, mỗi mục của tầng tri thức sinh ba loại dòng:
+
+| Loại dòng | Khuôn | Ví dụ |
+|---|---|---|
+| Tên | tên chính và mỗi tên gọi khác | `bảo lưu kết quả học tập` |
+| Thuộc tính | `tên mục \| tên thuộc tính` | `Thủ tục nghỉ học tạm thời \| nội dung` |
+| Quan hệ | `tên mục \| tên quan hệ \| tên mục đích` | `Thủ tục nghỉ học tạm thời \| nộp tại \| Phòng Công tác Chính trị và Sinh viên` |
+
+Giá trị không vào chỉ mục: người ta hỏi "học phí ngành nào", không hỏi bằng con số.
+Giá trị đến tay LLM ở bước đọc hồ sơ. Tầng nguồn cũng không vào chỉ mục, và ba thuộc
+tính chỉ chứa đường dẫn hoặc hộp thư không sinh dòng. Ontology hiện tại sinh 1.766
+dòng cho 379 mục: 733 dòng tên, 518 dòng thuộc tính, 515 dòng quan hệ.
+
+### 6.2 Tách từ
+
+**Token** là đơn vị chữ nhỏ nhất đem đi so khớp. Cả dòng chỉ mục lẫn từ khoá đi qua
+cùng một bước tách: chuẩn hoá Unicode, chuyển chữ thường, tách theo âm tiết, bỏ 26 từ
+hỏi và hư từ như "là", "gì", "của", "được". Mỗi token chỉ tính một lần trong một dòng,
+vì dòng quan hệ hay lặp chữ ở hai đầu.
+
+Không có bước sửa lỗi gõ hay bung viết tắt: từ khoá do LLM viết lại đã đúng chính tả,
+còn tên viết tắt như "CNTT" được khai làm tên gọi khác của mục trong dữ liệu.
+
+### 6.3 Chấm điểm một dòng bằng BM25
+
+**BM25** là công thức xếp hạng văn bản theo mức khớp với truy vấn. Nói bằng lời, một
+dòng được điểm cao khi:
+
+- chứa các token của từ khoá (**TF**, *term frequency*; ở đây mỗi token có hoặc không);
+- các token đó hiếm trong toàn chỉ mục (**IDF**, *inverse document frequency*): chữ
+  "thủ tục" xuất hiện ở rất nhiều dòng nên ít giá trị hơn chữ "bảo lưu";
+- dòng ngắn: cùng khớp một chữ, dòng ngắn tập trung hơn dòng dài.
+
+Công thức, với `q` là từ khoá, `d` là dòng, `N` là số dòng, `n(t)` là số dòng chứa
+token `t`, `|d|` là độ dài dòng và `avgdl` là độ dài trung bình:
+
+```text
+điểm(q, d) = Σ_{t ∈ q} IDF(t) · f(t, d) · (k1 + 1) / (f(t, d) + k1 · (1 − b + b · |d| / avgdl))
+IDF(t)     = ln(1 + (N − n(t) + 0,5) / (n(t) + 0,5))
+```
+
+`f(t, d)` bằng 1 nếu dòng chứa token, bằng 0 nếu không; `k1 = 1,5` và `b = 0,75` là
+tham số mặc định của thư viện `bm25s`. Mỗi từ khoá lấy tối đa 20 dòng điểm cao nhất.
+
+### 6.4 Gộp điểm dòng thành điểm mục
+
+Một mục có nhiều dòng, và LLM thường gửi 2-3 từ khoá cho cùng một câu hỏi. Quy tắc
+gộp chỉ có một:
+
+1. với từng từ khoá, mỗi mục chỉ giữ **dòng điểm cao nhất** của nó;
+2. điểm của mục là **tổng** các điểm đó qua các từ khoá.
+
+Ở ví dụ, "Thủ tục nghỉ học tạm thời" có dòng 10,43 cho từ khoá "bảo lưu kết quả học
+tập" và dòng 6,44 cho "nghỉ học tạm thời", nên được 16,88. Dòng 9,53 của cùng mục cho
+cùng từ khoá không được cộng thêm. Cộng theo từ khoá mà không cộng theo dòng làm mục
+trả lời được nhiều ý của câu hỏi đứng trên mục khớp thật tốt một ý, trong khi một mục
+nhiều dòng không tự tăng điểm.
+
+### 6.5 Chọn 3 mục, không đặt ngưỡng
+
+Engine trả 3 mục điểm cao nhất, không đặt ngưỡng điểm tối thiểu. Trả 3 thay vì 1 để
+LLM thấy cả các ứng viên yếu hơn: nếu cả ba đều lạc đề, LLM có đủ căn cứ để từ chối
+thay vì bị buộc dùng mục đầu. Không đặt ngưỡng vì điểm BM25 không so được giữa các
+truy vấn khác nhau; việc loại mục không đúng ý hỏi giao cho LLM, qua trường `matched`.
+
+### 6.6 Đọc hồ sơ của từng mục
+
+Với mỗi mục được chọn, engine đọc mọi phát biểu mà mục là chủ ngữ, và cả các phát
+biểu của mục khác trỏ tới nó (ví dụ các thủ tục "nộp tại" một phòng). Các phát biểu
+được gom theo túi; mỗi túi thành một nguồn với chuỗi trích dẫn và đường dẫn. Nhóm
+nhiều dữ kiện nhất đứng trước; nhóm không có nguồn xếp cuối. Mục "Thủ tục nghỉ học
+tạm thời" ở ví dụ có 8 nhóm nguồn.
+
+### 6.7 Chi phí
+
+Trên máy phát triển, nạp tệp TriG và dựng chỉ mục mất khoảng 50 ms. Một lần tìm, kể
+cả đọc hồ sơ 3 mục, có trung vị 0,57 ms và p95 1,0 ms qua 285 lần chạy với từ khoá của
+bộ kiểm ở mục 8.1. Chỉ mục dựng lại trong bộ nhớ mỗi khi ontology thay đổi, nên không
+có tệp chỉ mục nào phải giữ đồng bộ.
+
+## 7. Dữ liệu được cập nhật thế nào?
+
+**CRUD** (*create, read, update, delete*) là bốn thao tác thêm, đọc, sửa, xoá. Trang
+quản trị làm cả bốn trên ontology theo ba nguyên tắc:
+
+- **sửa là sửa thật:** mục được thay bằng đúng những gì người sửa gửi lên, kể cả nguồn
+  của từng câu, vì một văn bản mới có thể thay một phần hay toàn bộ căn cứ cũ;
+- **câu mang nội dung phải gắn nguồn:** người sửa chọn nguồn và ghi vị trí trong nguồn;
+  địa chỉ trích dẫn được tạo nếu chưa có và được dọn khi không còn câu nào dùng;
+- **dữ liệu sai lược đồ không được ghi.**
+
+Form của mỗi loại mục được sinh từ chính `shapes.ttl`: ô bắt buộc có dấu `*`, ô trỏ
+tới loại khác là danh sách chọn, ô không được gắn nguồn không hiện ô nguồn. Vì form và
+bước kiểm cùng đọc một lược đồ, chúng không thể nói hai điều khác nhau.
+
+![Trang quản trị đang sửa thủ tục nghỉ học tạm thời](docs/images/quan-tri-sua-muc.png)
+
+Một lần lưu đi bốn bước:
+
+1. dựng bản ontology mới trong bộ nhớ từ bản hiện tại và nội dung gửi lên;
+2. kiểm toàn bộ bản mới bằng SHACL, cộng luật gắn nguồn;
+3. ghi tệp TriG qua tệp tạm rồi đổi tên, các phát biểu sắp theo thứ tự cố định để lịch
+   sử `git` chỉ hiện đúng dòng đã đổi;
+4. dựng lại engine tìm kiếm, nên lượt hỏi kế tiếp dùng dữ liệu mới.
+
+Bước 2 hỏng thì tệp trên đĩa giữ nguyên và lý do hiện ngay trên trang:
+
+![Trang quản trị từ chối một câu chưa gắn nguồn](docs/images/quan-tri-tu-choi.png)
+
+Trang gọi các đường API sau. Mọi đường đòi khoá dịch vụ như đường hỏi đáp, cộng khoá
+quản trị trong header `X-Admin-Token`; không đặt khoá quản trị thì dịch vụ không mở
+các đường này.
+
+| Đường | Làm gì |
 |---|---|
-| Nhãn phân loại | một trong 344 quyết định mà bộ phân loại có thể trả về |
-| Khuôn SPARQL | câu lệnh đọc ontology đã được chuẩn bị sẵn; mô hình không tự viết câu lệnh này |
-| Danh mục truy vấn | bảng nối cố định mỗi nhãn với khuôn tương ứng |
-| Đích tra cứu | đối tượng cụ thể trong ontology mà câu hỏi nói tới, chẳng hạn thủ tục nghỉ học tạm thời |
+| `GET /admin/schema` | mô tả form của mọi loại mục, đọc từ lược đồ |
+| `GET /admin/entities?class=…` | danh sách mục của một loại |
+| `POST /admin/entities` | tạo mục mới; định danh sinh từ tên |
+| `GET /admin/entities/{id}` | đọc một mục cùng các câu và nguồn của từng câu |
+| `PUT /admin/entities/{id}` | thay toàn bộ mục bằng nội dung gửi lên |
+| `DELETE /admin/entities/{id}` | xoá mục, từ chối nếu còn mục khác trỏ tới |
 
-Toàn bộ phép nối có hai nhánh:
-
-![Cầu nối từ 344 nhãn đến hành động của hệ thống](docs/images/khong-gian-nhan.png)
-
-- **343 nhãn tra cứu** nối một-một với **343 khuôn SPARQL**. Khuôn được
-  chạy trên ontology và trả về các dữ kiện cùng nguồn.
-- **1 nhãn `no-information` (OOD)** nối với khuôn **`no-information`**. Nhánh này không chạy
-  SPARQL mà yêu cầu hệ thống từ chối vì câu hỏi không có dữ kiện phù hợp trong
-  phạm vi hiện tại.
-
-Ánh xạ được lưu trong
-[`catalogue.jsonl`](resources/ontology/catalogue.jsonl). Nó là cố định: cùng một
-nhãn luôn chọn cùng một hành động. Vì vậy bộ phân loại chỉ quyết định **tra cứu
-cái gì**; nội dung trả lời vẫn phải đến từ ontology.
-
-### 5.1 Ví dụ đầy đủ
-
-Với cụm `thủ tục nghỉ học tạm thời`, quá trình diễn ra như sau:
-
-1. Bộ phân loại chọn nhãn có nghĩa **lấy thông tin về thủ tục nghỉ học tạm
-   thời**.
-2. Danh mục nối nhãn đó với khuôn SPARQL dành cho đích
-   `:TemporaryAcademicLeaveProcedure`. Đây là IRI đã được giải thích ở mục 4.1.
-3. Hệ thống chạy khuôn trên ontology. Kết quả có thể gồm mô tả thủ tục, điều
-   kiện, các bước, biểu mẫu, nơi nộp và nguồn của từng dữ kiện.
-4. Kết quả được chuyển cho LLM để viết thành câu trả lời dễ đọc. LLM không được
-   bổ sung quy định không có trong kết quả truy vấn.
-
-Cầu nối này giải quyết hai rủi ro. Thứ nhất, mô hình không thể tự tạo một truy vấn
-tuỳ ý rồi đọc nhầm vùng dữ liệu. Thứ hai, mỗi nhãn có một kết quả mong đợi rõ
-ràng để kiểm thử. Tuy nhiên, ánh xạ đúng không bảo đảm bộ phân loại luôn chọn
-đúng nhãn và cũng không bảo đảm ontology đã chứa đầy đủ mọi quy định.
-
-## 6. Tập dữ liệu
-
-Bộ dữ liệu là phiên bản cố định dùng cho các kết quả báo cáo trong README. Nó
-được mô tả riêng với luồng chạy trực tuyến ở mục 2.3 để tránh nhầm quá trình tạo
-dữ liệu với quá trình chatbot trả lời.
-
-### 6.1 Bộ dữ liệu dạy điều gì?
-
-Bộ dữ liệu không dạy nội dung quy chế và không chứa câu trả lời hoàn chỉnh. Nó dạy
-bộ phân loại ánh xạ **câu/cụm tiếng Việt -> nhãn tra cứu**.
-
-Mỗi dòng JSONL là một đối tượng JSON độc lập:
+Nội dung gửi lên và lý do từ chối có dạng:
 
 ```json
 {
-  "id": "question-000013",
-  "query_id": "academic-actor-facts",
-  "register": "noisy",
-  "input": "co van hoc tap la ai",
-  "target": [":AcademicAdvisor"]
+  "class": "ThuTucHocVu",
+  "label": "Thủ tục nghỉ học tạm thời",
+  "altLabels": ["bảo lưu kết quả học tập"],
+  "statements": [
+    {"property": "nopTai", "value": "PhongCongTacChinhTriVaSinhVien",
+     "source": "Nguon1052", "coordinate": "khoản 3 Điều 24"}
+  ]
 }
 ```
 
-| Trường | Ý nghĩa |
-|---|---|
-| `id` | mã duy nhất của dòng |
-| `input` | chuỗi tiếng Việt đưa vào bộ phân loại |
-| `query_id` | mã của loại dữ kiện cần lấy; ví dụ `academic-actor-facts` nghĩa là lấy thông tin về một vai trò học vụ |
-| `target` | đối tượng cần tra trong ontology; ở ví dụ trên là `:AcademicAdvisor` (cố vấn học tập); danh sách rỗng nghĩa là phải từ chối |
-| `register` | cách viết của câu: trang trọng, trung tính, đời thường hoặc có lỗi gõ/bỏ dấu |
-
-`query_id` trả lời câu hỏi **"cần lấy loại dữ kiện nào?"**; `target` trả lời
-**"lấy dữ kiện về đối tượng nào?"**. Hai trường này xác định đáp án đúng để huấn
-luyện bộ phân loại. Bộ dữ liệu không lưu câu trả lời học vụ và không sao chép câu
-lệnh SPARQL; các câu lệnh đó thuộc danh mục truy vấn ở mục 5.
-
-### 6.2 "Khung câu hỏi" là gì?
-
-Một **khung câu hỏi** là câu mẫu dùng để tạo nhiều câu hỏi có cùng đáp án phân
-loại. Nó có thể chứa một chỗ trống để điền tên đối tượng cần tra.
-
-Ví dụ về câu mẫu dùng lại cho nhiều thủ tục:
-
-```text
-{tên thủ tục} gồm những bước nào?
+```json
+{"detail": "Dữ liệu chưa hợp lệ.", "errors": ["Dòng 2 (nội dung): phải chọn nguồn khẳng định câu này."]}
 ```
 
-`{tên thủ tục}` là chỗ trống. Nó có thể được điền bằng "nghỉ học tạm thời",
-"chuyển ngành" hoặc tên một thủ tục khác. Phần còn lại của câu xác định người
-dùng đang hỏi về các bước; nội dung điền vào chỗ trống xác định thủ tục nào cần
-tra. Trong tệp dữ liệu, chỗ trống này có mã kỹ thuật là `{anchor}`.
+Đo trên máy phát triển: lưu lại một thủ tục không đổi gì mất 0,47 giây và giữ nguyên
+tệp đến từng byte; tạo một mục mới mất 0,32 giây.
 
-Không phải loại câu hỏi nào cũng có chỗ trống. Ví dụ, câu hỏi về bảng quy đổi
-ngoại ngữ thứ hai dành cho sinh viên ngành Ngôn ngữ Anh luôn nhắm tới đúng bảng
-đó. Nguồn chính thức chia bảng theo nhóm đối tượng, nên đối tượng cần tra đã được
-xác định sẵn và câu mẫu không cần chỗ trống. Đây **không phải khung dành riêng
-cho một sinh viên**; nó dùng cho một bảng áp dụng chung cho nhóm sinh viên Ngôn
-ngữ Anh. IRI của bảng trong ontology là
-`:SecondLanguageConversionTableEnglishMajor`.
+## 8. Thực nghiệm được thiết lập thế nào?
 
-Tệp [`resources/provenance/frames.jsonl`](resources/provenance/frames.jsonl) có
-49 dòng, mỗi dòng ứng với một loại nội dung có thể tra cứu. Tổng cộng có 341 câu
-mẫu:
+### 8.1 Bộ kiểm tìm kiếm
 
-- 294 câu đầy đủ trong trường `frames`, dùng cho cách hỏi thành câu;
-- 47 câu ngắn trong trường `short_frames`, dùng cho truy vấn chỉ gồm vài từ.
+Bộ kiểm [`retrieval.json`](resources/end-to-end/retrieval.json) đo riêng câu hỏi
+nghiên cứu thứ nhất, không cần gọi LLM. Mỗi câu có từ khoá do trợ lý đã viết trong một
+lượt chạy thật, được ghi lại và đóng băng, cùng mục đích và tên của mục đích.
 
-Sơ đồ sau chỉ mô tả **quá trình hình thành câu hỏi có nhãn**, không phải luồng xử
-lý một câu chat khi hệ thống đang chạy.
+- Bộ có 57 câu; 49 câu được chấm. 8 câu không tính: 6 câu hỏi nguyên văn một điều
+  khoản, trong khi ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc; 2 câu
+  có đáp án là chính một văn bản nguồn, trong khi nguồn dùng để trích dẫn chứ không
+  phải để tra.
+- Một câu đạt khi mục đích nằm trong 3 mục trả về, khớp theo IRI hoặc theo tên. Thứ
+  hạng của mục đích được ghi lại.
+- [`check_retrieval.py`](resources/end-to-end/check_retrieval.py) so kết quả với một mốc
+  đã ghi, nên mỗi lần sửa dữ liệu làm tụt câu nào là biết ngay.
 
-![Từ câu mẫu đến một dòng trong bộ dữ liệu](docs/images/khung-du-lieu.png)
+### 8.2 Bộ đánh giá toàn hệ thống
 
-Câu hỏi trong bộ dữ liệu được hình thành từ ba phần:
+Bộ [`questions.json`](resources/end-to-end/questions.json) có 85 câu cố định, viết theo
+nhiều cách: trang trọng, trung tính, đời thường và gõ thiếu dấu. Các câu chia ba nhóm:
 
-1. **Nội dung cần hỏi:** câu mẫu xác định người dùng muốn biết điều gì, chẳng hạn
-   các bước hay điều kiện.
-2. **Tên đối tượng:** tên chính, tên thay thế, tên viết tắt hoặc số Điều/Khoản/Điểm
-   lấy từ ontology xác định người dùng hỏi về đối tượng nào.
-3. **Cách viết:** từ dẫn, đuôi câu, cách nói tương đương, viết hoa và lỗi có kiểm
-   soát tạo ra các cách diễn đạt khác nhau nhưng không làm đổi đáp án.
+| Nhóm | Số câu | Hành vi đúng |
+|---|---:|---|
+| Có dữ kiện | 66 | trả lời đúng điều được hỏi |
+| Ngoài phạm vi | 11 | từ chối hoặc hỏi lại cho rõ |
+| Hỏi vào khoảng trống của dữ liệu | 8 | nói dữ liệu không có |
 
-Ba dạng nhiễu chính là bỏ dấu, viết dính từ và thay một ký tự bằng phím lân cận.
-Trường `register` chỉ ghi nhóm cách viết được dùng khi thiết kế bộ dữ liệu; nó
-không phải kết quả khảo sát tần suất ngôn ngữ thật của sinh viên.
+Trong 66 câu có dữ kiện, 58 câu có mục đích để chấm việc lấy đúng mục; 8 câu còn lại
+là các câu hỏi nguyên văn điều khoản và câu có đáp án là văn bản nguồn nói ở mục 8.1.
+Có 5 câu được chuyển sang nhóm có dữ kiện vì ontology hiện tại đã có câu trả lời: ba
+câu về bảo hiểm y tế, một câu về chuẩn tiếng Anh của ngành Công nghệ thông tin, một câu
+về số tín chỉ ngành Quản trị kinh doanh. Lý do chuyển ghi trong trường `chuyen_nhom`.
 
-### 6.3 Câu phải từ chối được tạo để kiểm tra điều gì?
+Điều kiện chạy:
 
-Bộ dữ liệu có 829 câu mang nhãn `no-information`. Chúng không phải một khối "câu
-ngoài chủ đề" duy nhất mà gồm bảy tình huống:
+| Thiết lập | Giá trị |
+|---|---|
+| Mô hình ngôn ngữ | `lightning-ai/gemma-4-31B-it` qua Lightning AI |
+| Ngày chạy | 13/9/2026 |
+| Số mục mỗi lần tìm | 3 |
+| Số bước LLM tối đa mỗi lượt | 4 |
+| Cách chạy | tuần tự, mỗi câu một lượt độc lập, không có lịch sử |
 
-| Tình huống | Mã trong dữ liệu | Số câu | Rủi ro được kiểm tra |
+Trợ lý được dựng đúng như khi phục vụ; chỉ công cụ tra cứu được bọc để ghi từ khoá,
+mục trả về, thời gian và nguyên văn dữ liệu của từng lần gọi. Khoá API bị giới hạn tốc
+độ (lỗi HTTP 429) thì phần chạy chờ rồi hỏi lại cả câu; thời gian ghi nhận chỉ tính lần
+hỏi cuối.
+
+Mỗi câu được chấm theo hai cách. **Kiểm tra cố định** đếm những thứ có hình dạng rõ:
+
+| Kiểm tra | Cách tính |
+|---|---|
+| Gọi công cụ | lượt có ít nhất một lần gọi công cụ trước khi trả lời |
+| Lấy đúng mục | mục đích nằm trong các mục công cụ trả về |
+| Bám dữ liệu | mọi số có từ hai chữ số và chữ viết tắt trong câu trả lời có mặt trong dữ liệu công cụ, câu hỏi hoặc lời hướng dẫn, sau khi bỏ dấu phân cách hàng nghìn |
+| Nói là không có | câu trả lời chứa một cụm từ chối như "không tìm thấy", "không có thông tin" |
+
+**Mô hình chấm** đọc cùng lúc câu hỏi, dữ liệu công cụ trả về trong chính lượt đó và
+câu trả lời, rồi xếp vào một mức kèm một trích đoạn làm bằng chứng:
+
+| Mức | Tiêu chí |
+|---|---|
+| Đúng | đưa ra được điều được hỏi, và mọi dữ kiện nêu ra có trong dữ liệu |
+| Đúng một phần | đưa ra được một phần, phần đã đưa là đúng |
+| Từ chối | không đưa ra được điều được hỏi, và nói dữ liệu không có |
+| Lạc đề | không đưa ra điều được hỏi mà cũng không nói là thiếu |
+| Sai | có dữ kiện sai, hoặc ghép thành quan hệ mà dữ liệu không nói |
+
+Phán quyết nào mâu thuẫn với kiểm tra cố định, ví dụ chấm "từ chối" dù đã lấy đúng mục
+và có dữ liệu, được đánh dấu đáng ngờ để đọc lại trong
+[`quality-log.md`](resources/end-to-end/quality-log.md).
+
+### 8.3 Bộ test tự động
+
+| Nhóm | Số test | Kiểm điều gì |
+|---|---:|---|
+| `tests/runtime` | 88 | vòng agent, công cụ tra cứu, API, lệnh dòng lệnh |
+| `tests/search` | 47 | tách từ, chỉ mục, xếp hạng, hồ sơ, trích dẫn, lược đồ và các câu hỏi tiêu biểu trên ontology thật |
+| `tests/admin` | 11 | lược đồ form, thêm, sửa, xoá, từ chối và các đường API quản trị |
+| `tests/ci` | 6 | cấu hình ảnh Docker và quy trình phát hành |
+| `tests/ontology` | 1 | 17 bảng khớp bản chép nguyên văn |
+| `webui` | 8 + 19 | proxy tới máy chủ; hành vi giao diện trong trình duyệt |
+
+## 9. Kết quả cho thấy gì?
+
+### 9.1 Tìm kiếm
+
+| Chỉ số | Kết quả |
+|---|---:|
+| Tìm ra mục đúng trong 3 mục | 48/49, 98,0% |
+| Mục đúng đứng đầu | 43/49, 87,8% |
+| Mục đúng ở hạng 2 | 3/49 |
+| Mục đúng ở hạng 3 | 2/49 |
+
+Câu trượt duy nhất hỏi đường tải đơn xin bảo lưu học phần: từ khoá đã ghi đưa lên các
+mục về nghỉ học tạm thời thay vì mục tải của đơn đó. Kết quả này chỉ đo engine với từ
+khoá cố định; nó không cho biết LLM có viết được từ khoá tốt như vậy ở câu hỏi mới hay không.
+
+### 9.2 Toàn hệ thống
+
+Kiểm tra cố định:
+
+| Chỉ số | Kết quả | Ý nghĩa giới hạn |
+|---|---:|---|
+| Gọi công cụ trước khi trả lời | 64/66, 97,0% | chỉ biết đã tra, chưa biết tra đúng |
+| Lấy đúng mục | 55/58, 94,8% | đo đúng đối tượng, chưa chấm cách diễn đạt |
+| Vừa đúng mục vừa bám dữ liệu | 54/58, 93,1% | phải đạt đồng thời hai điều kiện |
+| Câu trả lời có số hoặc viết tắt ngoài dữ liệu | 2/85 | kiểm theo chuỗi, không hiểu quan hệ |
+| Lượt lỗi | 0/85 | |
+
+Mô hình chấm:
+
+| Nhóm | Hành vi đúng | Kết quả | Còn lại |
 |---|---|---:|---|
-| Có đối tượng thật nhưng hỏi dữ kiện không được lưu | `hard-negative` | 163 | hệ thống có bịa thuộc tính còn thiếu không? |
-| Gần phạm vi nhưng thiếu dữ kiện cần trả | `near-domain-missing` | 151 | hệ thống có nhận ra khoảng trống của ontology không? |
-| Chủ đề không phải học vụ | `unrelated` | 115 | hệ thống có từ chối câu ngoài chủ đề không? |
-| Ngoài chủ đề và có lỗi viết | `noisy-out-of-domain` | 109 | lỗi gõ có làm hệ thống trả lời nhầm không? |
-| Yêu cầu chưa đủ ý | `incomplete-request` | 108 | hệ thống có đoán khi thiếu đối tượng hoặc nội dung cần hỏi không? |
-| Chào hỏi hoặc giao tiếp xã hội | `greeting-social` | 94 | hệ thống có nhầm hội thoại với yêu cầu tra cứu không? |
-| Nghiệp vụ gần học vụ nhưng chưa được hỗ trợ | `adjacent-domain` | 89 | hệ thống có vượt ra ngoài phạm vi ontology không? |
-
-Các khuôn gốc nằm tại
-[`resources/provenance/rejections.jsonl`](resources/provenance/rejections.jsonl).
-[`rejection_checklist.json`](resources/provenance/rejection_checklist.json) định
-nghĩa bảy mã tình huống bắt buộc;
-[`rejection_provenance.json`](resources/provenance/rejection_provenance.json)
-nối từng dòng từ chối với lớp và khuôn của nó.
-
-Nhóm **vế gây nhiễu** (mã `distraction`) chỉ thêm nội dung ngoài lề vào câu vẫn
-có nhu cầu học vụ rõ ràng. Các câu đó vẫn phải được trả lời, không được gán nhãn
-từ chối chỉ vì có từ gây nhiễu.
-
-### 6.4 Bộ dữ liệu được chia theo tiêu chí nào?
-
-Ba mã `train`, `val` và `test` lần lượt chỉ phần dùng để huấn luyện, phần dùng để
-theo dõi quá trình huấn luyện và phần chỉ dùng để báo kết quả cuối.
-
-Tiêu chí chính là **chia theo câu mẫu, không chia ngẫu nhiên theo dòng**:
-
-- với mỗi loại nội dung trả lời được, một câu mẫu được giữ cho `val`, một câu mẫu
-  cho `test`, các câu mẫu còn lại cho `train`;
-- tổng số câu mẫu là 243 cho `train`, 49 cho `val` và 49 cho `test`;
-- mọi biến thể sinh từ cùng một câu mẫu phải ở cùng một phần;
-- đối tượng và đích tra cứu vẫn xuất hiện trong `train`; thứ được giữ lại là cách
-  diễn đạt, không phải kiến thức mới.
-
-Cách chia này nhằm trả lời câu hỏi: **khi đích cần tra đã được học, mô hình có
-nhận ra cách hỏi khác hay không?** Nó không kiểm tra khả năng xử lý một đối tượng
-hoặc quy định chưa từng xuất hiện trong tập huấn luyện.
-
-Đối với câu từ chối, mỗi tổ hợp của 7 tình huống và 4 cách viết đều có mặt trong
-`train`, `val` và `test`. Các kiểm tra còn xác nhận không có câu trùng giữa các
-phần sau khi so nguyên văn, chuẩn hoá khoảng trắng/viết tắt và bỏ dấu; cùng một
-câu đã chuẩn hoá cũng không được gán hai đích khác nhau.
-
-### 6.5 Quy mô bộ dữ liệu
-
-![Thành phần của bộ dữ liệu](docs/images/bo-du-lieu.png)
-
-| Phần | Trả lời được | Từ chối | Tổng | Vai trò |
-|---|---:|---:|---:|---|
-| `train` | 4.793 | 730 | 5.523 | học tham số |
-| `val` | 350 | 50 | 400 | theo dõi quá trình huấn luyện |
-| `test` | 341 | 49 | 390 | báo kết quả sau khi cố định thiết lập |
-| **Toàn bộ** | **5.484** | **829** | **6.313** | phiên bản cố định |
-
-Các tệp chính là [`train.jsonl`](resources/dataset/train.jsonl),
-[`val.jsonl`](resources/dataset/val.jsonl) và
-[`test.jsonl`](resources/dataset/test.jsonl). Bản kê
-[`manifest.json`](resources/dataset/manifest.json) ghi số dòng, phạm vi và mã băm
-SHA-256 để nhận diện chính xác phiên bản dữ liệu.
-
-Phân bố theo chủ đề và cách viết là quyết định thiết kế, không phải ước lượng phân
-bố sử dụng ngoài thực tế. Câu có độ dài từ 1 đến 36 từ, trung vị 11 từ; 95% số
-câu dài không quá 21 từ. Chi tiết phương pháp nằm tại
-[`docs/DATASET.md`](docs/DATASET.md).
-
-## 7. Thiết lập thực nghiệm
-
-### 7.1 Hai phép chấm đo hai đối tượng khác nhau
-
-| Phép chấm | Đầu vào | Đầu ra được chấm | Câu hỏi mà phép chấm trả lời |
-|---|---|---|---|
-| Chấm bộ phận, hay **phép đo từng phần** | một câu/cụm tiếng Việt | 1 trong 344 nhãn | bộ phân loại chọn đúng hành động tra cứu không? |
-| Chấm toàn hệ thống (`end-to-end`) | một câu chat | câu trả lời tự do do LLM viết | toàn hệ thống có tra đúng, trả đúng và từ chối đúng không? |
-
-Hai tỷ lệ không thể thay thế cho nhau. Nhãn đúng chưa bảo đảm LLM sẽ gọi công
-cụ hoặc diễn đạt đúng; câu trả lời đúng đôi khi vẫn có thể xuất hiện dù đường đi
-không đúng như nhãn chuẩn.
-
-Sơ đồ sau tổng kết quá trình từ nguồn chính thức đến huấn luyện và hai phép chấm.
-Đây là quy trình tạo tài nguyên và đánh giá, không phải luồng chạy của một câu
-chat.
-
-![Từ nguồn chính thức đến tài nguyên và phép đánh giá](docs/images/luong-du-lieu.png)
-
-### 7.2 Các mô hình phân loại
-
-Bốn mô hình ngôn ngữ đã học trước từ kho văn bản lớn được huấn luyện tiếp cho bài
-toán phân loại của dự án. Mốc so sánh duy nhất là **TF-IDF + LinearSVC**, một
-phương pháp phân loại văn bản không dùng mô hình ngôn ngữ tiền huấn luyện. Nếu
-tài liệu kỹ thuật dùng từ *baseline*, từ đó chỉ mốc so sánh này, không chỉ một
-phiên bản cũ của dự án.
-
-| Tên báo cáo | Định danh công khai hoặc phương pháp | Vai trò |
-|---|---|---|
-| XLM-R base | `FacebookAI/xlm-roberta-base` | mô hình đa ngữ |
-| BamiBERT | `Qualcomm-AI-Research/BamiBERT` | mô hình đa ngữ |
-| ViSoBERT | `uitnlp/visobert` | mô hình hướng tới tiếng Việt trên mạng xã hội |
-| PhoBERT-v2 | `vinai/phobert-base-v2` | mô hình tiếng Việt |
-| TF-IDF + LinearSVC | nhóm 2-5 ký tự liên tiếp và 1-2 từ liên tiếp | mốc so sánh tuyến tính |
-
-Các nhóm ký tự liên tiếp giúp mốc so sánh vẫn nhận ra một phần từ ngữ khi câu
-thiếu dấu hoặc sai chính tả.
-
-### 7.3 Điều kiện huấn luyện và chấm bộ phận
-
-Cả năm mô hình dùng cùng ba phần dữ liệu đã giải thích ở mục 6.4. Bốn mô hình
-ngôn ngữ dùng cùng cấu hình:
-
-| Thiết lập | Giá trị | Ý nghĩa |
-|---|---:|---|
-| Phần tham số được huấn luyện | LoRA hạng 16 và lớp phân loại mới | chỉ điều chỉnh một phần tham số bổ sung thay vì thay đổi toàn bộ mô hình |
-| Độ dài đầu vào tối đa | 48 đơn vị tách từ | giới hạn lượng văn bản mô hình nhận cho mỗi câu |
-| Kích thước nhóm xử lý | 32 câu | số câu được xử lý trước mỗi lần cập nhật tham số |
-| Mức cập nhật tham số | `2e-4` | độ lớn của mỗi bước học |
-| Số lượt đọc tập huấn luyện | 32 | mỗi lượt đi qua toàn bộ phần `train` một lần |
-| Giá trị cố định ngẫu nhiên | 1 | giúp lần chạy có thể được lặp lại trong cùng điều kiện |
-| Trọng số đem chấm | sau lượt thứ 32 | không chọn lại mô hình dựa trên kết quả của tập chấm cuối |
-
-TF-IDF + LinearSVC được huấn luyện một lần trên `train`. `val` dùng để theo dõi
-quá trình học; `test` chỉ dùng để báo kết quả cuối. Vì mỗi cấu hình mới chạy với
-một giá trị ngẫu nhiên cố định, bảng kết quả chưa cho biết mức dao động giữa các
-lần huấn luyện.
-
-Hai biểu đồ dùng chỉ số *loss*, tức sai số mà thuật toán cố giảm trong lúc học;
-giá trị càng thấp càng tốt. Hình bên trái đo trên dữ liệu dùng để cập nhật mô
-hình, hình bên phải đo trên dữ liệu chỉ dùng để theo dõi. Sai số này mô tả quá
-trình học, không phải tỷ lệ câu trả lời đúng.
-
-![Sai số trên tập huấn luyện và tập theo dõi qua 32 lượt](docs/images/loss-curves.png)
-
-Mỗi câu `test` được tính đúng khi nhãn dự đoán khớp hoàn toàn nhãn chuẩn.
-Các chỉ số được hiểu như sau:
-
-| Chỉ số | Cách đọc |
-|---|---|
-| Accuracy (độ chính xác chung) | tỷ lệ câu trong toàn bộ `test` có nhãn đúng |
-| Precision (độ chính xác khi chọn một nhãn) | trong các câu mô hình gán nhãn đó, bao nhiêu câu thật sự thuộc nhãn |
-| Recall (độ bao phủ của một nhãn) | trong các câu thật sự thuộc nhãn đó, mô hình tìm đúng bao nhiêu |
-| F1 | giá trị cân bằng giữa precision và recall |
-| Macro (trung bình đều theo nhãn) | tính từng nhãn rồi cho mọi nhãn trọng số bằng nhau; nhạy với nhãn ít mẫu |
-| Weighted F1 (F1 có trọng số) | trung bình F1 theo số câu của từng nhãn; nhãn nhiều mẫu có ảnh hưởng lớn hơn |
-
-Các phân tích theo chủ đề, cách viết và số mẫu chỉ dùng để tìm điểm yếu; nhóm ít
-câu không đủ ổn định để xếp hạng mô hình.
-
-### 7.4 Cách chấm toàn hệ thống
-
-Bộ chấm toàn hệ thống có 85 câu độc lập với phép chấm nhãn:
-
-- 61 câu có dữ kiện cần trả trong ontology;
-- 14 câu ngoài phạm vi;
-- 10 câu hỏi đúng chủ đề nhưng nhắm vào khoảng trống của ontology.
-
-Hai nhóm cuối tạo thành 24 câu **phải từ chối**. Chúng được báo riêng với 61 câu
-phải trả lời vì tiêu chí thành công trái ngược nhau.
-
-Câu trả lời cuối là văn bản tự do: nhiều cách diễn đạt khác nhau đều có thể đúng,
-nên không tồn tại một câu trả lời mẫu duy nhất để so khớp chính xác. Vì vậy một
-mô hình ngôn ngữ khác đóng vai trò bộ chấm. Với mỗi lượt, bộ chấm đọc đồng thời:
-
-1. câu hỏi;
-2. dữ kiện có cấu trúc và nguồn mà công cụ đã trả;
-3. câu trả lời cuối của hệ thống.
-
-Đối với 61 câu có dữ kiện, nhãn chấm gồm:
-
-| Nhãn | Tiêu chí |
-|---|---|
-| `correct` | trả đúng điều được hỏi và mọi dữ kiện nêu ra được dữ liệu công cụ hỗ trợ |
-| `partial` | trả được một phần; phần đã trả có căn cứ nhưng còn thiếu ý cần thiết |
-| `refusal` | không trả lời và nói rằng không có dữ liệu hoặc không thể xác định |
-| `wrong` | nêu dữ kiện sai hoặc tạo quan hệ mà dữ liệu không khẳng định |
-| `lost` | lạc đề, không trả lời và cũng không từ chối rõ ràng |
-
-Đối với 24 câu phải từ chối, từ chối rõ ràng là kết quả đúng; đưa ra một câu trả
-lời nội dung là lỗi an toàn.
-
-Mô hình chấm được bổ sung bằng ba kiểm tra cố định: có gọi công cụ không, dữ liệu
-có chứa đúng IRI đích không, và số/tên trong câu trả lời có xuất hiện trong dữ
-liệu vừa lấy không. Các kiểm tra này giúp phát hiện mâu thuẫn nhưng không tự đọc
-được toàn bộ ý nghĩa ngôn ngữ, nên không thay thế bộ chấm nội dung.
-
-Thời gian toàn hệ thống được đo từ lúc nhận câu chat đến lúc có câu trả lời cuối,
-bao gồm gọi LLM qua mạng. Trung vị mô tả lượt điển hình; p95 là ngưỡng mà 95%
-lượt không vượt quá.
-
-## 8. Kết quả thực nghiệm
-
-Các số trong mục này là kết quả mới nhất được báo cáo cho các mô hình đã công
-bố. Trọng số XLM-R phục vụ nằm trên Hugging Face Hub và được đóng vào ảnh Docker;
-kho mã nguồn không lưu các tệp mô hình nặng.
-
-### 8.1 Kết quả bộ phân loại trên 390 câu `test`
-
-![So sánh năm mô hình trên tập test](docs/images/model-comparison.png)
-
-| Mô hình | Độ chính xác chung | Precision trung bình đều | Recall trung bình đều | F1 trung bình đều | F1 có trọng số |
-|---|---:|---:|---:|---:|---:|
-| XLM-R base | **85,1%** | 78,2% | 83,4% | 79,7% | **82,6%** |
-| BamiBERT | 83,6% | **78,8%** | **84,1%** | **80,1%** | 82,0% |
-| ViSoBERT | 82,1% | 76,9% | 81,6% | 77,8% | 80,3% |
-| PhoBERT-v2 | 80,5% | 74,4% | 79,5% | 75,6% | 78,5% |
-| TF-IDF + LinearSVC | 80,3% | 74,4% | 79,5% | 75,6% | 78,3% |
-
-XLM-R có độ chính xác chung cao nhất và hơn TF-IDF + LinearSVC 4,8 điểm phần
-trăm. BamiBERT có precision, recall và F1 trung bình đều theo nhãn cao nhất. Hai
-kết luận không mâu thuẫn: độ chính xác chung cho mỗi câu một trọng số bằng nhau,
-còn trung bình đều cho mỗi nhãn một trọng số bằng nhau.
-
-Do chỉ có một lượt chạy cho mỗi cấu hình và chưa có khoảng tin cậy, bảng đủ để
-mô tả kết quả quan sát được nhưng chưa đủ để khẳng định chênh lệch nhỏ giữa các
-mô hình sẽ ổn định khi huấn luyện lại.
-
-Tách hai quyết định trả lời và từ chối:
-
-| Mô hình | Câu trả lời được, 341 câu | Câu phải từ chối, 49 câu | Thời gian huấn luyện |
-|---|---:|---:|---:|
-| XLM-R base | 294/341, 86,2% | 38/49, 77,6% | 186 s |
-| BamiBERT | 294/341, 86,2% | 32/49, 65,3% | 182 s |
-| ViSoBERT | 287/341, 84,2% | 33/49, 67,3% | 240 s |
-| PhoBERT-v2 | 279/341, 81,8% | 35/49, 71,4% | 181 s |
-| TF-IDF + LinearSVC | 282/341, 82,7% | 31/49, 63,3% | 4 s |
-
-Cột trái đo chọn đúng nội dung khi có thể trả lời. Cột phải đo nhận đúng nhãn
-từ chối. Cột phải chỉ có 49 câu và các câu đến từ bảy lớp thiết kế, nên không
-phải một ước lượng chắc chắn cho mọi câu ngoài phạm vi ngoài thực tế.
-
-### 8.2 Kết quả thay đổi theo loại câu hỏi
-
-![Độ chính xác theo số câu huấn luyện của nhãn](docs/images/accuracy-by-frequency.png)
-
-Có 57/344 nhãn chỉ có dưới 5 câu trong `train`. Hai nhóm ít mẫu nhất trong hình
-chỉ chứa tổng cộng 9 câu `test`, nên hình cho thấy rủi ro nhãn thưa chứ không đủ
-để xếp hạng mô hình ở các nhóm đó.
-
-Với XLM-R, độ chính xác giảm từ 94,9% ở câu trang trọng xuống 69,8% ở câu gõ nhiễu.
-Theo miền, giá trị cao nhất là chứng chỉ 93,5% trên 31 câu và thấp nhất là học
-phí 72,0% trên 25 câu. Các mẫu số nhỏ và khác nhau, nên đây là tín hiệu tìm lỗi,
-không phải bảng xếp hạng độ khó tuyệt đối.
-
-### 8.3 Kết quả toàn hệ thống
-
-Mục 8.1 chấm bộ phân loại. Mục này chấm toàn bộ chuỗi từ câu chat đến câu trả
-lời do LLM viết.
-
-Với 61 câu phải trả lời, các kiểm tra tự động theo quy tắc cố định cho kết quả:
-
-| Tiêu chí | Kết quả | Ý nghĩa giới hạn |
-|---|---:|---|
-| Có gọi công cụ | 57/61, 93,4% | chỉ biết hệ thống đã tra, chưa biết tra đúng |
-| Dữ liệu lấy về có đúng IRI đích | 48/61, 78,7% | đo đúng đối tượng, chưa chấm cách diễn đạt |
-| Số và tên trong câu trả lời có mặt trong dữ liệu | 59/61, 96,7% | kiểm bám chuỗi, không hiểu mọi quan hệ ngữ nghĩa |
-| Vừa đúng đích, vừa qua kiểm tra bám dữ liệu | 47/61, 77,0% | phải đồng thời đạt hai điều kiện bên trên |
-
-Mô hình ngôn ngữ chấm cùng 61 câu:
-
-| Nhãn chấm | Kết quả |
-|---|---:|
-| Đúng hoàn toàn | 48/61, 78,7% |
-| Từ chối dù câu có dữ kiện | 11/61, 18,0% |
-| Đúng một phần | 2/61, 3,3% |
-| Sai | 0/61 |
-| Lạc đề | 0/61 |
-
-Với 24 câu phải từ chối:
-
-| Kết quả | Số câu |
-|---|---:|
-| Từ chối đúng | 21/24, 87,5% |
-| Vẫn trả lời | 3/24, 12,5% |
-
-Ba lỗi ở nhóm phải từ chối cho thấy một giới hạn quan trọng: LLM có thể nhận hai
-dữ kiện đều tồn tại rồi nối chúng thành quan hệ mà ontology không khẳng định.
-Vì vậy "có nguồn" không đồng nghĩa mọi kết luận trong câu trả lời đều được nguồn
-hỗ trợ.
-
-Có 6/85 phán quyết của mô hình chấm mâu thuẫn với ít nhất một tín hiệu cố định và
-đã được đánh dấu để rà lại. Chín trường hợp trải trên các mức chấm đã được đọc
-thủ công và đều đồng ý với mô hình chấm, nhưng đây chỉ là kiểm tra mẫu, không phải
-hai người chấm độc lập. Kết quả toàn hệ thống vì vậy nên được đọc như ước lượng
-trên 85 tình huống cố định.
-
-Nhật ký cho phép đối chiếu câu hỏi, dữ liệu công cụ, câu trả lời và lý do chấm tại
-[`resources/end-to-end/quality-log.md`](resources/end-to-end/quality-log.md).
-
-### 8.4 Thời gian phản hồi
-
-Trong bảng, `ms` là mili giây; 1.000 ms bằng 1 giây.
+| Có dữ kiện, 66 câu | đúng | 53/66, 80,3% | từ chối 11, đúng một phần 2, sai 0, lạc đề 0 |
+| — trong đó 58 câu có mục đích | đúng | 52/58, 89,7% | từ chối 4, đúng một phần 2 |
+| — trong đó 8 câu hỏi nguyên văn hoặc hỏi văn bản nguồn | | đúng 1 | từ chối 7 |
+| Ngoài phạm vi, 11 câu | từ chối | 11/11 | |
+| Khoảng trống, 8 câu | từ chối | 8/8 | |
+
+Có 4/85 phán quyết mâu thuẫn với kiểm tra cố định và được đánh dấu để đọc lại. Kết quả
+nên được đọc như ước lượng trên 85 tình huống cố định, không phải độ chính xác trên mọi
+câu hỏi thật.
+
+### 9.3 Thời gian phản hồi
 
 | Phạm vi đo | Trung vị | p95 | Ghi chú |
 |---|---:|---:|---|
-| Toàn bộ 85 lượt | 2,5 s | 4,8 s | gồm LLM qua mạng; nhỏ nhất 0,7 s, lớn nhất 6,9 s |
-| 76 lượt có tra cứu | 2,6 s | - | tính đến câu trả lời cuối |
-| Lượt không tra cứu | 1,2 s | - | không chạy công cụ |
-| Chọn nhãn/truy vấn trong công cụ | 3,9 ms | 5,1 ms | đo trên 76 lượt gọi công cụ |
-| Chạy SPARQL trên đồ thị | 17,6 ms | 1.530,6 ms | một số truy vấn bảng chậm hơn nhiều vì trả về văn bản dài |
-| Toàn bộ công cụ | 22,6 ms | 1.535,5 ms | gồm chọn truy vấn và đọc đồ thị |
+| Toàn lượt, 85 lượt | 2,0 s | 2,9 s | gồm gọi LLM qua mạng; ngắn nhất 0,8 s, dài nhất 21,9 s |
+| Lượt có tra cứu, 78 lượt | 2,1 s | 2,9 s | |
+| Lượt không tra cứu, 7 lượt | 1,1 s | — | |
+| Một lần gọi công cụ, 78 lần | 3,2 ms | 6,9 ms | tìm, đọc hồ sơ và viết JSON |
 
-Trung vị cho thấy thời gian phản hồi điển hình bị chi phối bởi LLM và mạng, không phải bộ
-phân loại. Tuy nhiên p95 của truy vấn đồ thị cao cho thấy các truy vấn trả bảng
-dài vẫn cần được tối ưu; không nên suy từ trung vị 22,6 ms rằng mọi lượt tra cứu
-đều nhanh như nhau.
+`p95` là ngưỡng mà 95% lượt không vượt quá. Thời gian toàn lượt gần như hoàn toàn nằm ở
+LLM và mạng; phần tra cứu chỉ vài mili giây. Trong các lượt có gọi công cụ, LLM gửi 2 từ
+khoá ở 41 lần, 3 từ khoá ở 25 lần, 1 từ khoá ở 11 lần và 4 từ khoá ở 1 lần.
 
-## 9. Phân tích lỗi
+### 9.4 Phân tích lỗi
 
-### 9.1 Lỗi chọn nhãn
+Trong 58 câu có mục đích, 6 câu chưa đạt mức đúng:
 
-XLM-R sai 58/390 câu `test`: 48 trường hợp chọn sai loại dữ kiện cần lấy và 10
-trường hợp chọn đúng loại dữ kiện nhưng sai đối tượng. Các dạng lặp lại gồm nhầm
-hai ngành gần tên, nhầm một thực thể với bảng danh mục chứa nó, và nhận một câu
-cần từ chối thành câu hỏi về bảng chứng chỉ.
+- **Hai câu quá chung** ("Trường Đại học Nha Trang?", "Sinh viên thế nào ạ?"): LLM hỏi
+  lại người dùng muốn biết điều gì thay vì tra. Đây là hành vi hợp lý khi câu hỏi không
+  nói rõ nhu cầu, nhưng không trả lời được như bộ đánh giá mong đợi.
+- **Một câu bị hiểu lệch** ("quản lý thủy sản ra sao"): LLM lấy đúng ngành nhưng hiểu
+  "ra sao" là hỏi cơ hội việc làm, rồi nói dữ liệu không có.
+- **Một câu chạm khoảng trống thật** ("đăng ký đồ án tốt nghiệp liên hệ phòng nào"): dữ
+  liệu có thủ tục và mẫu đơn nhưng không có nơi nộp, và LLM nói đúng như vậy.
+- **Hai câu đúng một phần:** dữ liệu trả lời được một vế, vế còn lại không có.
 
-Ma trận nhầm lẫn cho biết nhãn đúng ở trục này bị dự đoán thành nhãn nào ở trục
-kia. Nó giúp tìm cặp hay bị nhầm, nhưng không giải thích nguyên nhân nếu chưa đọc
-lại câu hỏi tương ứng.
-
-![Ma trận cho biết các loại dữ kiện thường bị nhầm với nhau](docs/images/confusion-matrix.png)
-
-UMAP chiếu vector nhiều chiều xuống hai chiều để quan sát quan hệ lân cận. Các
-cụm trong hình cho thấy một số nhóm có biểu diễn gần nhau hoặc tách nhau trong
-phép chiếu. Hình chỉ là công cụ thăm dò: phép giảm chiều làm mất thông tin, nên
-không thể dùng riêng nó để chứng minh mô hình hiểu ngữ nghĩa hay tổng quát tốt.
-
-![Biểu diễn câu test chiếu xuống hai chiều bằng UMAP](docs/images/umap.png)
-
-### 9.2 Lỗi của toàn hệ thống
-
-Bốn trong 61 câu có đích không gọi công cụ. Chúng chủ yếu là câu chỉ nêu một chủ
-thể nhưng không nói muốn biết khía cạnh nào; lớp hội thoại chọn hỏi lại hoặc liệt
-kê khả năng thay vì tra cứu. Đây là lỗi hoặc hành vi ở lớp điều phối, không phải
-một dự đoán sai đã được quan sát từ bộ phân loại.
-
-Ở nhóm phải từ chối, ba câu được trả lời do LLM nối các dữ kiện riêng lẻ thành
-một kết luận mới. Hướng khắc phục vì thế không chỉ là tăng độ chính xác của bộ
-phân loại mà còn phải kiểm soát quan hệ được phép phát biểu sau truy xuất.
+Không câu nào bị chấm sai hay lạc đề. Ở nhóm phải từ chối, kiểm tra cố định chỉ nhận ra
+7/11 câu ngoài phạm vi vì LLM từ chối bằng những cách nói không có trong danh sách cụm từ
+(ví dụ hỏi lại khi câu hỏi thiếu ý); mô hình chấm xếp cả 11 câu là từ chối.
 
 ## 10. Giao diện
 
-Giao diện triển khai tại [ontchatbot.vercel.app](https://ontchatbot.vercel.app/)
-chỉ trình bày hội thoại và trạng thái tra cứu; nó không quyết định nhãn hay nội
-dung ontology.
+Giao diện tại [ontchatbot.vercel.app](https://ontchatbot.vercel.app/) chỉ trình bày hội
+thoại và trạng thái; nó không quyết định tra gì và không đọc ontology. Trong lúc tra
+cứu, giao diện hiện các từ khoá LLM đã gửi tới công cụ, giúp phân biệt lỗi chọn từ khoá
+với lỗi dữ liệu.
 
-![Giao diện câu trả lời kèm nguồn](docs/images/giao-dien.png)
+![Giao diện đang tra cứu](docs/images/giao-dien-dang-tra-cuu.png)
 
-Trong lúc tra cứu, giao diện hiển thị các cụm từ được gửi tới công cụ. Thông tin
-này giúp phân biệt lỗi rút chủ đề với lỗi chọn nhãn.
+Câu trả lời hiện dần và kèm nguồn trích dẫn:
 
-![Giao diện đang tra cứu](docs/images/giao-dien-tra-cuu.png)
+![Giao diện câu trả lời kèm nguồn](docs/images/giao-dien-tra-loi.png)
 
-Khi câu hỏi không có dữ kiện phù hợp, giao diện trình bày thông báo từ chối.
+Khi dữ liệu không có điều được hỏi, giao diện hiện lời từ chối:
 
 ![Giao diện từ chối](docs/images/giao-dien-tu-choi.png)
 
-## 11. Kết luận, ưu điểm và Hạn chế
+## 11. Kết luận, ưu điểm và hạn chế
 
 ### 11.1 Có thể kết luận gì?
 
-Trong phạm vi bộ dữ liệu đóng, XLM-R đạt độ chính xác chung cao nhất là 85,1%;
-mốc TF-IDF + LinearSVC đạt 80,3%. Trên 85 tình huống toàn hệ thống, mô hình chấm
-đúng 48/61 câu cần trả lời và ghi nhận từ chối đúng 21/24 câu cần từ chối.
+Trên bộ kiểm cố định, tìm kiếm theo từ khoá trên ontology đưa mục đúng vào 3 mục đầu ở
+48/49 câu, đứng đầu ở 43 câu. Trên 85 tình huống toàn hệ thống, mô hình chấm xếp đúng
+52/58 câu có mục đích, không có câu sai, và từ chối đúng 19/19 câu phải từ chối. Mỗi
+lượt mất trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
 
-Các kết quả cho thấy chuỗi phân loại -> truy vấn dựng sẵn -> ontology -> LLM có
-tín hiệu khả thi cho phạm vi học vụ đã cấu trúc. Chúng không chứng minh hệ thống
-đã bao quát toàn bộ quy định, hoạt động tương tự trên câu hỏi thực tế chưa quan
-sát, hoặc tốt hơn các kiến trúc chưa được đem so sánh.
+Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi cho
+phạm vi học vụ đã cấu trúc. Chúng không chứng minh hệ thống bao quát toàn bộ quy định,
+hoạt động tương tự trên câu hỏi thật chưa quan sát, hoặc tốt hơn các cách tiếp cận
+chưa được đem so sánh.
 
 ### 11.2 Ưu điểm ở cấp độ thiết kế
 
-- **Nguồn nội dung tách khỏi LLM:** quy định nằm trong ontology, không nằm trong
-  tham số của mô hình hội thoại.
-- **Không gian hành động hữu hạn:** bộ phân loại chọn nhãn; SPARQL lấy từ danh
-  mục truy vấn thay vì được sinh tự do.
-- **Có đường truy nguồn:** nội dung nghiệp vụ nối về phần văn bản và URL được
-  dùng làm căn cứ.
-- **Tách được loại lỗi:** có thể phân biệt lỗi rút cụm, chọn nhãn, thiếu ontology,
-  chạy truy vấn và diễn đạt cuối.
-- **Tài nguyên mở để kiểm tra:** ontology, danh mục truy vấn, bộ dữ liệu, bản kê
-  nội dung có thể trả lời và nhật ký toàn hệ thống đều có định dạng máy đọc được.
-
-Đây là đặc tính của thiết kế, không tự động chứng minh độ chính xác cao hơn cách
-tìm đoạn văn rồi đưa cho LLM (RAG), tìm kiếm văn bản, cơ sở dữ liệu bảng (SQL)
-hay một hệ thống khác.
+- **Nguồn nội dung tách khỏi LLM:** quy định nằm trong ontology, không nằm trong tham
+  số của mô hình.
+- **Nguồn theo từng câu:** mỗi dữ kiện mang đúng chỗ của văn bản đã nói ra nó, và trích
+  dẫn được dựng tự động khi đọc.
+- **Sửa dữ liệu có kiểm soát:** một lược đồ duy nhất vừa sinh form vừa chặn dữ liệu
+  sai; dữ liệu mới có hiệu lực ngay ở lượt hỏi kế tiếp, không cần huấn luyện lại.
+- **Tra cứu minh bạch và rẻ:** thuật toán có một quy tắc xếp hạng, không có tham số
+  phải tinh chỉnh ngoài mặc định của BM25, chạy dưới một mili giây và giải thích được
+  bằng các dòng đã khớp.
+- **Tách được loại lỗi:** nhật ký từng lượt cho biết lỗi nằm ở từ khoá, ở dữ liệu thiếu
+  hay ở cách LLM diễn đạt.
 
 ### 11.3 Hạn chế
 
-1. **Nguồn:** 17 bản ghi chỉ là phạm vi đã chọn; trang web có thể đổi; ontology
-   chưa giải quyết tổng quát hiệu lực, sửa đổi và thay thế văn bản.
-2. **Trừu tượng hoá:** tầng nghiệp vụ được biên soạn thủ công, chưa có hai chuyên
-   gia độc lập và chưa đo mức đồng thuận.
-3. **Bộ dữ liệu:** câu hỏi chủ yếu được biên soạn hoặc tạo có kiểm soát, nhóm
-   cách viết là nhãn thiết kế, mọi đích `test` đã có trong `train`, và 57/344
-   nhãn có dưới 5 câu huấn luyện.
-4. **Phép chấm bộ phân loại:** mỗi mô hình mới chỉ chạy một lần; `test` có 390
-   câu, trong đó chỉ 49 câu từ chối; chưa có khoảng tin cậy.
-5. **Toàn hệ thống:** phép chấm chỉ có 85 câu, phụ thuộc một mô hình ngôn ngữ
-   chấm và chưa có hai người chấm độc lập. Có nguồn vẫn không chặn tuyệt đối việc
-   LLM ghép sai quan hệ.
-6. **Giá trị thực tiễn:** chưa đối chứng với RAG, tìm kiếm văn bản hoặc SQL; chưa
-   đánh giá đủ câu hỏi thật, tải đồng thời, chi phí và độ ổn định dài hạn.
+1. **Tìm theo từ vựng:** engine chỉ khớp chữ. Cách gọi không có trong tên hay tên gọi
+   khác của mục sẽ trượt, và chất lượng phụ thuộc vào từ khoá LLM viết.
+2. **Không có ngưỡng:** 3 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục
+   không đúng ý hỏi và có thể dùng nhầm mục gần đúng.
+3. **Có nguồn không bảo đảm mọi kết luận đúng:** LLM vẫn có thể ghép hai dữ kiện đúng
+   thành một quan hệ mà dữ liệu không nói.
+4. **Dữ liệu:** biên soạn và đối chiếu thủ công, chưa có hai người rà độc lập; trang web
+   có thể đổi sau ngày thu thập; một số thông báo có hạn theo học kỳ.
+5. **Đánh giá:** 85 câu và một lượt chạy; mô hình chấm là cùng mô hình với trợ lý; 5 câu
+   được chuyển nhóm theo dữ liệu hiện tại; kiểm tra từ chối bằng cụm từ bỏ sót nhiều
+   cách nói.
+6. **Trang quản trị:** bản triển khai hiện ghi vào tệp trong container nên thay đổi mất
+   khi dịch vụ khởi động lại; chỉ có một khoá quản trị chung, không phân quyền, không
+   lưu lịch sử sửa; mỗi lần ghi kiểm lại toàn bộ đồ thị nên chậm dần khi dữ liệu lớn lên.
+7. **Chưa đối chứng:** chưa so với cách tìm đoạn văn bản rồi đưa cho LLM (RAG) hay các
+   cách tiếp cận khác trên cùng bộ câu hỏi.
 
 ## 12. Hướng cải tiến
 
-1. Rà ontology bởi ít nhất hai người có chuyên môn; ghi bất đồng và cách phân xử.
-2. Bổ sung thời gian hiệu lực, quan hệ sửa đổi/thay thế và lịch rà nguồn web.
-3. Xây tập đánh giá độc lập từ câu hỏi thực tế, đóng băng trước khi điều chỉnh
-   mô hình và không dùng lại cho huấn luyện.
-4. Huấn luyện nhiều lần với các giá trị ngẫu nhiên khác nhau; báo trung bình, độ
-   lệch và khoảng tin cậy thay vì một điểm duy nhất.
-5. Đánh giá riêng rút cụm, chọn nhãn, lấy dữ kiện và viết câu trả lời; bổ sung
-   kiểm tra quan hệ mà LLM được phép kết luận.
-6. So sánh với RAG, tìm kiếm văn bản và SQL; mở rộng `end-to-end` bằng nhiều
-   người chấm, nhiều khoảng trống ontology và câu hỏi nhiều lượt.
+1. Lưu ontology trên kho bền vững có kiểm tra phiên bản khi ghi, để thay đổi từ trang
+   quản trị không mất và hai người sửa cùng lúc không ghi đè nhau.
+2. Thêm lịch sử sửa, xem khác biệt trước khi lưu và phân quyền cho trang quản trị.
+3. Biểu diễn thời gian hiệu lực của văn bản để trả lời đúng theo khoá học.
+4. Xây bộ câu hỏi thật từ người dùng, đóng băng trước khi sửa hệ thống; chạy nhiều lượt;
+   dùng mô hình chấm khác mô hình trợ lý và thêm người chấm độc lập.
+5. So sánh với RAG trên văn bản gốc trên cùng bộ câu hỏi.
+6. Gợi ý tên gọi khác cho mục từ các từ khoá thật đã trượt.
 
-## 13. Tài nguyên để kiểm tra
+## 13. Tài nguyên và cách chạy thử
 
-- [`docs/ONTOLOGY.md`](docs/ONTOLOGY.md): mô hình dữ liệu, nguồn và giới hạn của
-  kiểm định ontology.
-- [`docs/DATASET.md`](docs/DATASET.md): nguồn gốc, câu mẫu, lớp từ chối và quy tắc
-  chia bộ dữ liệu.
-- [`docs/DEFENSE.md`](docs/DEFENSE.md): các câu hỏi phản biện khó và bằng chứng
-  cần mở khi trả lời.
-- [`resources/ontology/ontology.ttl`](resources/ontology/ontology.ttl): ontology
-  được hệ thống đọc khi chạy.
-- [`resources/ontology/catalogue.jsonl`](resources/ontology/catalogue.jsonl):
-  danh mục nối nhãn với khuôn SPARQL.
-- [`resources/ontology/answer_inventory.json`](resources/ontology/answer_inventory.json):
-  bản kê những loại dữ kiện ontology có thể cung cấp và trạng thái hỗ trợ của
-  từng loại.
-- [`resources/dataset/manifest.json`](resources/dataset/manifest.json): quy mô,
-  quy tắc chia phần và mã băm bộ dữ liệu.
-- [`resources/reports/dataset.json`](resources/reports/dataset.json): báo cáo
-  thống kê được tính từ phiên bản dữ liệu cố định.
-- [`resources/end-to-end/questions.json`](resources/end-to-end/questions.json):
-  bộ 85 câu dùng để đánh giá toàn hệ thống.
-- [`resources/end-to-end/quality-log.md`](resources/end-to-end/quality-log.md):
-  câu hỏi, dữ kiện công cụ, câu trả lời và nhãn chấm từng lượt.
+### 13.1 Tài nguyên để kiểm tra
 
-Khi tài liệu mâu thuẫn với dữ liệu máy đọc được, số liệu phải được tính lại từ
-phiên bản dữ liệu tương ứng. Khi ontology mâu thuẫn với văn bản chính thức, văn
-bản chính thức là căn cứ.
+- [`resources/ontology/ontology.trig`](resources/ontology/ontology.trig): ontology mà dịch vụ đọc.
+- [`resources/ontology/shapes.ttl`](resources/ontology/shapes.ttl): lược đồ SHACL.
+- [`references/`](references/): bản chép các văn bản gốc dùng để đối chiếu.
+- [`src/ontchatbot/search/`](src/ontchatbot/search/): engine tìm kiếm.
+- [`src/ontchatbot/runtime/`](src/ontchatbot/runtime/): agent, công cụ tra cứu, API.
+- [`src/ontchatbot/admin/`](src/ontchatbot/admin/): lược đồ form và thao tác ghi.
+- [`webui/`](webui/): giao diện chat, trang quản trị và proxy.
+- [`resources/end-to-end/`](resources/end-to-end/): bộ câu hỏi, phần chạy, phần chấm,
+  kết quả từng lượt (`results.json`), phán quyết (`quality.json`) và nhật ký đọc được
+  (`quality-log.md`).
+- [`docs/diagrams/`](docs/diagrams/): mã nguồn SVG của các sơ đồ.
+
+### 13.2 Chạy thử trên máy
+
+Cần Python 3.12 với [uv](https://docs.astral.sh/uv/) và Node.js cho giao diện.
+
+```bash
+uv sync --extra inference --dev
+
+export ONTCHATBOT_LLM_MODEL=…          # tên mô hình trên máy chủ LLM
+export ONTCHATBOT_LLM_API_KEY=…        # khoá của máy chủ LLM
+export ONTCHATBOT_BACKEND_TOKEN=…      # khoá mà giao diện dùng để gọi API
+export ONTCHATBOT_ADMIN_TOKEN=…        # đặt thì mới mở trang quản trị
+
+uv run serve_chatbot                   # API tại http://127.0.0.1:8000
+
+cd webui && npm ci
+BACKEND_API_TOKEN=$ONTCHATBOT_BACKEND_TOKEN npm run dev
+# hỏi đáp: http://127.0.0.1:4173 · quản trị: http://127.0.0.1:4173/admin.html
+```
+
+Các lệnh khác:
+
+```bash
+uv run chat_agent --hoi "Em muốn nghỉ một học kỳ thì phải làm gì?"   # hỏi từ dòng lệnh
+uv run ontology_search search "nghỉ học tạm thời" "bảo lưu kết quả học tập"
+uv run pytest -q                                                    # bộ test Python
+uv run python resources/end-to-end/check_retrieval.py              # bộ kiểm tìm kiếm
+uv run python resources/end-to-end/run.py                          # chạy lại 85 câu (gọi LLM)
+uv run python resources/end-to-end/score.py                        # tổng hợp kiểm tra cố định
+uv run python resources/end-to-end/score_quality.py                # chấm bằng mô hình
+```
+
+Các biến tuỳ chọn: `ONTCHATBOT_LLM_BASE_URL` (mặc định `https://lightning.ai/api/v1/`),
+`ONTCHATBOT_ONTOLOGY_PATH`, `ONTCHATBOT_SEARCH_TOP_K`, `ONTCHATBOT_SEARCH_WORKERS`,
+`ONTCHATBOT_TURN_SLOTS`, `ONTCHATBOT_TURN_QUEUE`, `ONTCHATBOT_CORS_ORIGINS`. Khi triển
+khai giao diện trên Vercel, proxy đọc `CLOUD_RUN_SERVICE_URL` và `BACKEND_API_TOKEN`
+để khoá dịch vụ không bao giờ nằm trong trình duyệt.
+
+Khi tài liệu mâu thuẫn với dữ liệu máy đọc được, số liệu phải được tính lại từ phiên
+bản dữ liệu tương ứng. Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính
+thức là căn cứ.

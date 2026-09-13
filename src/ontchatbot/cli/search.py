@@ -1,7 +1,7 @@
 """Dựng chỉ mục tìm kiếm của ontology và tìm thử bằng dòng lệnh.
 
     ontology_search build
-    ontology_search search "điện thoại phòng đào tạo"
+    ontology_search search "vị trí phòng đào tạo"
     ontology_search search "nghỉ học tạm thời" "bảo lưu" --json
 """
 

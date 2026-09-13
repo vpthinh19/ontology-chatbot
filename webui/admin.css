@@ -137,9 +137,13 @@ button.danger { color: var(--danger); }
 
 .statements { display: grid; gap: 8px; }
 
+/* Mỗi dòng hai hàng: ô và giá trị ở trên, nguồn và vị trí ở dưới, để giá trị dài vẫn đủ chỗ. */
 .statement {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr) 260px auto;
+  grid-template-columns: 220px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "property value remove"
+    ". source source";
   gap: 8px;
   align-items: start;
   padding: 8px;
@@ -147,7 +151,11 @@ button.danger { color: var(--danger); }
   border-radius: 10px;
 }
 
-.source { display: grid; gap: 6px; }
+.statement .property { grid-area: property; }
+.statement .value { grid-area: value; }
+.statement .remove { grid-area: remove; }
+.statement .source, .statement .no-source { grid-area: source; }
+.source { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 8px; }
 .no-source { padding-top: 8px; color: var(--muted); font-size: 0.85rem; }
 .actions { display: flex; gap: 8px; margin-top: 8px; }
 .add-row { justify-self: start; }
@@ -155,5 +163,6 @@ button.danger { color: var(--danger); }
 
 @media (max-width: 1000px) {
   .layout { grid-template-columns: 1fr; }
-  .statement { grid-template-columns: 1fr; }
+  .statement { grid-template-columns: 1fr; grid-template-areas: "property" "value" "source" "remove"; }
+  .source { grid-template-columns: 1fr; }
 }
