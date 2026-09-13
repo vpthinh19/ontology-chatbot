@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="700" viewBox="0 0 1220 700" font-family="Noto Sans, DejaVu Sans, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="680" viewBox="0 0 1220 680" font-family="Noto Sans, DejaVu Sans, sans-serif">
   <defs>
     <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
@@ -15,79 +15,71 @@
     </style>
   </defs>
 
-  <rect width="1220" height="700" fill="#ffffff"/>
+  <rect width="1220" height="680" fill="#ffffff"/>
   <text x="40" y="38" style="font-size:24px; font-weight:700">Các loại mục chính và quan hệ nối chúng</text>
-  <text x="40" y="64" style="font-size:15px; fill:#444">Số mục đếm ngày 13/9/2026.</text>
+  <text x="40" y="64" style="font-size:15px; fill:#444">Sơ đồ mô tả cấu trúc: loại nào tồn tại và nối với loại nào. Không mô tả số lượng mục.</text>
 
   <!-- Cụm thủ tục -->
-  <rect x="36" y="86" width="560" height="300" rx="14" class="vung"/>
+  <rect x="36" y="86" width="560" height="286" rx="14" class="vung"/>
   <text x="56" y="114" class="tv">THỦ TỤC VÀ BIỂU MẪU</text>
 
-  <rect x="60" y="132" width="200" height="76" rx="10" class="odam"/>
-  <text x="160" y="163" class="ten">Thủ tục học vụ</text>
-  <text x="160" y="187" class="sl">31 mục</text>
+  <rect x="60" y="130" width="200" height="68" rx="10" class="odam"/>
+  <text x="160" y="170" class="ten">Thủ tục học vụ</text>
 
-  <rect x="396" y="132" width="178" height="76" rx="10" class="o"/>
-  <text x="485" y="163" class="ten">Biểu mẫu</text>
-  <text x="485" y="187" class="sl">16 mục</text>
+  <rect x="396" y="130" width="178" height="68" rx="10" class="o"/>
+  <text x="485" y="170" class="ten">Biểu mẫu</text>
 
-  <rect x="60" y="256" width="200" height="76" rx="10" class="o"/>
-  <text x="160" y="287" class="ten" style="font-size:17px">Trường hợp áp dụng</text>
-  <text x="160" y="311" class="sl">4 mục</text>
+  <rect x="60" y="252" width="200" height="68" rx="10" class="o"/>
+  <text x="160" y="292" class="ten" style="font-size:17px">Trường hợp áp dụng</text>
 
-  <rect x="396" y="256" width="178" height="76" rx="10" class="o"/>
-  <text x="485" y="287" class="ten" style="font-size:17px">Mục tải trên web</text>
-  <text x="485" y="311" class="sl">21 mục</text>
+  <rect x="396" y="252" width="178" height="68" rx="10" class="o"/>
+  <text x="485" y="292" class="ten" style="font-size:17px">Mục tải trên web</text>
 
-  <path class="mui" d="M260 170 H392"/>
-  <text x="326" y="158" class="nhan">cần biểu mẫu</text>
-  <path class="mui" d="M160 208 V252"/>
-  <text x="170" y="236" class="nhan" style="text-anchor:start">áp dụng cho</text>
-  <path class="mui" d="M485 256 V212"/>
-  <text x="495" y="238" class="nhan" style="text-anchor:start">ứng với</text>
+  <path class="mui" d="M260 164 H392"/>
+  <text x="326" y="152" class="nhan">cần biểu mẫu</text>
+  <path class="mui" d="M160 198 V248"/>
+  <text x="170" y="228" class="nhan" style="text-anchor:start">áp dụng cho</text>
+  <path class="mui" d="M485 252 V202"/>
+  <text x="495" y="232" class="nhan" style="text-anchor:start">ứng với</text>
 
   <!-- Cụm ngành -->
-  <rect x="624" y="86" width="560" height="300" rx="14" class="vung"/>
+  <rect x="624" y="86" width="560" height="286" rx="14" class="vung"/>
   <text x="644" y="114" class="tv">NGÀNH VÀ CHƯƠNG TRÌNH</text>
 
-  <rect x="648" y="132" width="184" height="76" rx="10" class="o"/>
-  <text x="740" y="163" class="ten">Chuyên ngành</text>
-  <text x="740" y="187" class="sl">35 mục</text>
+  <rect x="648" y="130" width="184" height="68" rx="10" class="o"/>
+  <text x="740" y="170" class="ten">Chuyên ngành</text>
 
-  <rect x="950" y="132" width="200" height="76" rx="10" class="odam"/>
-  <text x="1050" y="163" class="ten">Ngành đào tạo</text>
-  <text x="1050" y="187" class="sl">40 mục</text>
+  <rect x="950" y="130" width="200" height="68" rx="10" class="odam"/>
+  <text x="1050" y="170" class="ten">Ngành đào tạo</text>
 
-  <rect x="648" y="256" width="184" height="76" rx="10" class="o"/>
-  <text x="740" y="287" class="ten">Danh mục</text>
-  <text x="740" y="311" class="sl">17 mục</text>
+  <rect x="648" y="252" width="184" height="68" rx="10" class="o"/>
+  <text x="740" y="292" class="ten">Danh mục</text>
 
-  <rect x="920" y="256" width="230" height="76" rx="10" class="o"/>
-  <text x="1035" y="287" class="ten" style="font-size:17px">Chương trình đào tạo</text>
-  <text x="1035" y="311" class="sl">60 mục</text>
+  <rect x="920" y="252" width="230" height="68" rx="10" class="o"/>
+  <text x="1035" y="292" class="ten" style="font-size:17px">Chương trình đào tạo</text>
 
-  <path class="mui" d="M832 170 H946"/>
-  <text x="889" y="158" class="nhan">thuộc ngành</text>
-  <path class="mui" d="M1050 256 V212"/>
-  <text x="1060" y="238" class="nhan" style="text-anchor:start">thuộc ngành</text>
-  <path class="mui" d="M950 190 H900 V294 H836"/>
-  <text x="890" y="240" class="nhan" style="text-anchor:end">thuộc khối ngành</text>
+  <path class="mui" d="M832 164 H946"/>
+  <text x="889" y="152" class="nhan">thuộc ngành</text>
+  <path class="mui" d="M1050 252 V202"/>
+  <text x="1060" y="232" class="nhan" style="text-anchor:start">thuộc ngành</text>
+  <path class="mui" d="M950 184 H900 V290 H836"/>
+  <text x="890" y="232" class="nhan" style="text-anchor:end">thuộc khối ngành</text>
 
   <!-- Chủ thể -->
-  <rect x="430" y="440" width="360" height="86" rx="10" class="odam"/>
-  <text x="610" y="474" class="ten" style="font-size:21px">Chủ thể</text>
-  <text x="610" y="502" class="sl">46 mục — phòng, khoa, sinh viên, hiệu trưởng</text>
+  <rect x="430" y="424" width="360" height="82" rx="10" class="odam"/>
+  <text x="610" y="458" class="ten" style="font-size:21px">Chủ thể</text>
+  <text x="610" y="485" class="sl">phòng, khoa, sinh viên, hiệu trưởng</text>
 
-  <path class="mui" d="M160 332 V483 H426"/>
-  <text x="292" y="473" class="nhan">nộp tại · do ai thực hiện</text>
-  <path class="mui" d="M1035 332 V400 H700 V436"/>
-  <text x="868" y="390" class="nhan">đơn vị quản lý</text>
-  <path class="mui" d="M790 460 h40 a23 23 0 0 1 0 46 h-36"/>
-  <text x="846" y="488" class="nhan" style="text-anchor:start">thuộc đơn vị</text>
+  <path class="mui" d="M160 320 V467 H426"/>
+  <text x="292" y="457" class="nhan">nộp tại · do ai thực hiện</text>
+  <path class="mui" d="M1035 320 V386 H700 V420"/>
+  <text x="868" y="376" class="nhan">đơn vị quản lý</text>
+  <path class="mui" d="M790 444 h40 a23 23 0 0 1 0 46 h-36"/>
+  <text x="846" y="472" class="nhan" style="text-anchor:start">thuộc đơn vị</text>
 
   <!-- Các loại còn lại -->
-  <rect x="36" y="566" width="1148" height="104" rx="14" class="vung"/>
-  <text x="56" y="594" class="tv">CÁC LOẠI CÒN LẠI — tra cứu theo tên, không nối bắt buộc với loại khác</text>
-  <text x="56" y="628" style="font-size:17px">Quy tắc (26) · Khái niệm (26) · Bảng (17) · Chứng chỉ (18) · Mức tiền (12) · Học phần (7) · Hệ thống trực tuyến (3)</text>
-  <text x="56" y="656" style="font-size:15px; fill:#444">Ngoài 16 loại tri thức còn tầng nguồn: Nguồn (79) và Địa chỉ trích dẫn (374).</text>
+  <rect x="36" y="546" width="1148" height="104" rx="14" class="vung"/>
+  <text x="56" y="574" class="tv">CÁC LOẠI CÒN LẠI — tra cứu theo tên, không nối bắt buộc với loại khác</text>
+  <text x="56" y="608" style="font-size:17px">Quy tắc · Khái niệm · Bảng · Chứng chỉ · Mức tiền · Học phần · Hệ thống trực tuyến</text>
+  <text x="56" y="636" style="font-size:15px; fill:#444">Ngoài các loại tri thức trên còn tầng nguồn: Nguồn và Địa chỉ trích dẫn.</text>
 </svg>

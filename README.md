@@ -37,9 +37,10 @@ ba yêu cầu:
 2. khi dữ liệu không có điều được hỏi, hệ thống phải nói là không có;
 3. khi văn bản thay đổi, dữ liệu phải sửa được ngay mà không cần huấn luyện lại gì.
 
-Phạm vi hiện có gồm quy tắc đào tạo, thủ tục học vụ, biểu mẫu, học bổng, rèn luyện
+Phạm vi nhắm tới gồm quy tắc đào tạo, thủ tục học vụ, biểu mẫu, học bổng, rèn luyện
 và kỷ luật, chứng chỉ, ngành, chuyên ngành, chương trình đào tạo và các đơn vị phục
-vụ sinh viên. Những dữ liệu phụ thuộc từng người hoặc từng đợt, như điểm của một
+vụ sinh viên; dữ liệu hiện mới phủ một phần phạm vi này và đang được bổ sung dần.
+Những dữ liệu phụ thuộc từng người hoặc từng đợt, như điểm của một
 sinh viên, học phí của một tài khoản hay điểm chuẩn, không được lưu thành một con số
 chung; hệ thống chỉ người dùng đến nơi tra cứu chính thức.
 
@@ -279,31 +280,31 @@ vế cùng họ với TriG. Đoạn rút gọn cho thủ tục học vụ:
 giá trị trỏ tới đúng loại; `:batBuocNguon true` là quy ước riêng của dự án: câu của ô
 đó phải nằm trong một túi trích dẫn.
 
-Sơ đồ sau trả lời câu hỏi **"các loại mục nối với nhau bằng những quan hệ nào?"**. Số
-trong mỗi hộp là số mục đếm ngày 13/9/2026, mô tả quy mô chứ không đo chất lượng.
+Sơ đồ sau trả lời câu hỏi **"các loại mục nối với nhau bằng những quan hệ nào?"**. Nó
+mô tả cấu trúc — loại nào tồn tại và nối với loại nào — chứ không mô tả số lượng mục.
 
 ![Bản đồ các loại tri thức](docs/images/ban-do-loai.png)
 
-| Loại | Lớp | Số mục | Chứa gì |
-|---|---|---:|---|
-| Thủ tục học vụ | `ThuTucHocVu` | 31 | nội dung, người thực hiện, nơi nộp, biểu mẫu, trường hợp áp dụng |
-| Quy tắc | `QuyTac` | 26 | quy định học vụ: cảnh báo, buộc thôi học, khối lượng đăng ký, thời gian đào tạo |
-| Khái niệm | `KhaiNiem` | 26 | khái niệm học vụ: học kỳ, loại học phần, điểm rèn luyện |
-| Chủ thể | `ChuThe` | 46 | đơn vị trong trường và vai trò: phòng, khoa, sinh viên, hiệu trưởng |
-| Ngành đào tạo | `NganhDaoTao` | 40 | tên ngành, mã ngành, khối ngành |
-| Chuyên ngành | `ChuyenNganh` | 35 | chuyên ngành và ngành chứa nó |
-| Chương trình đào tạo | `ChuongTrinhDaoTao` | 60 | thời gian, ngôn ngữ, văn bằng, tổng tín chỉ, đơn vị quản lý |
-| Biểu mẫu theo quyết định | `BieuMauTheoQuyetDinh` | 16 | mẫu đơn trong phụ lục quy chế |
-| Mục biểu mẫu trên website | `MucBieuMauTrenWebsite` | 21 | đường tải biểu mẫu |
-| Bảng | `Bang` | 17 | bảng chép nguyên văn từng ô |
-| Chứng chỉ | `ChungChi` | 18 | chứng chỉ ngoại ngữ và tin học |
-| Danh mục | `DanhMuc` | 17 | danh mục dùng chung: khối ngành, ngân hàng, đơn vị tính |
-| Mức tiền | `MucTien` | 12 | mức học bổng, lệ phí |
-| Học phần | `HocPhan` | 7 | học phần có quy định riêng |
-| Trường hợp áp dụng | `TruongHopApDung` | 4 | trường hợp mà thủ tục áp dụng |
-| Hệ thống trực tuyến | `HeThongTrucTuyen` | 3 | cổng thông tin sinh viên và các hệ thống tương tự |
-| *Nguồn* | `Nguon` | 79 | văn bản và trang web làm căn cứ |
-| *Địa chỉ trích dẫn* | `DiaChiTrichDan` | 374 | toạ độ trong nguồn, cũng là tên túi |
+| Loại | Lớp | Chứa gì |
+|---|---|---|
+| Thủ tục học vụ | `ThuTucHocVu` | nội dung, người thực hiện, nơi nộp, biểu mẫu, trường hợp áp dụng |
+| Quy tắc | `QuyTac` | quy định học vụ: cảnh báo, buộc thôi học, khối lượng đăng ký, thời gian đào tạo |
+| Khái niệm | `KhaiNiem` | khái niệm học vụ: học kỳ, loại học phần, điểm rèn luyện |
+| Chủ thể | `ChuThe` | đơn vị trong trường và vai trò: phòng, khoa, sinh viên, hiệu trưởng |
+| Ngành đào tạo | `NganhDaoTao` | tên ngành, mã ngành, khối ngành |
+| Chuyên ngành | `ChuyenNganh` | chuyên ngành và ngành chứa nó |
+| Chương trình đào tạo | `ChuongTrinhDaoTao` | thời gian, ngôn ngữ, văn bằng, tổng tín chỉ, đơn vị quản lý |
+| Biểu mẫu theo quyết định | `BieuMauTheoQuyetDinh` | mẫu đơn trong phụ lục quy chế |
+| Mục biểu mẫu trên website | `MucBieuMauTrenWebsite` | đường tải biểu mẫu |
+| Bảng | `Bang` | bảng chép nguyên văn từng ô |
+| Chứng chỉ | `ChungChi` | chứng chỉ ngoại ngữ và tin học |
+| Danh mục | `DanhMuc` | danh mục dùng chung: khối ngành, ngân hàng, đơn vị tính |
+| Mức tiền | `MucTien` | mức học bổng, lệ phí |
+| Học phần | `HocPhan` | học phần có quy định riêng |
+| Trường hợp áp dụng | `TruongHopApDung` | trường hợp mà thủ tục áp dụng |
+| Hệ thống trực tuyến | `HeThongTrucTuyen` | cổng thông tin sinh viên và các hệ thống tương tự |
+| *Nguồn* | `Nguon` | văn bản và trang web làm căn cứ |
+| *Địa chỉ trích dẫn* | `DiaChiTrichDan` | toạ độ trong nguồn, cũng là tên túi |
 
 ### 5.6 Dữ liệu được biên soạn và đối chiếu nguồn thế nào?
 
@@ -322,17 +323,19 @@ Các quy tắc biên soạn:
 - không lưu dữ liệu riêng của từng sinh viên và dữ liệu theo đợt (học phí từng tài
   khoản, điểm chuẩn); chỉ lưu đường dẫn tới nơi tra cứu chính thức.
 
-79 nguồn hiện có gồm 48 văn bản chương trình đào tạo, 18 hướng dẫn và trang web
-chính thức, 7 quyết định, 4 quy chế và 2 danh mục biểu mẫu.
+Các nguồn hiện có gồm văn bản chương trình đào tạo, quy chế, quyết định, hướng dẫn và
+trang chính thức của các phòng ban, cùng danh mục biểu mẫu.
 
-### 5.7 Ontology hiện lớn cỡ nào?
+### 5.7 Tình trạng dữ liệu hiện tại
 
-Tính đến ngày 13/9/2026, tệp có **4.082 phát biểu**: 1.211 nằm trong túi trích dẫn —
-đây là các câu mang nội dung, đều có nguồn — và 2.871 nằm ngoài túi, gồm danh tính của
-mục, tầng nguồn, và tên của các loại và thuộc tính. Dữ liệu trải trên **18 loại mục**
-(16 loại tri thức cộng 2 loại của tầng nguồn), mỗi loại có đúng một shape trong lược
-đồ. Tầng nguồn gồm **79 nguồn** và **374 địa chỉ trích dẫn**, tức 374 túi. Các số này
-mô tả quy mô, không đo độ đúng hay độ đầy đủ.
+Ontology **đang trong quá trình xây dựng**: lược đồ và cấu trúc đã ổn định, nhưng nội
+dung mới phủ một phần phạm vi ở mục 1 và vẫn đang được bổ sung. Vì vậy README không ghi
+cứng số mục của từng loại — con số ấy sẽ sai ngay sau lần nhập dữ liệu kế tiếp.
+
+Muốn biết quy mô tại một thời điểm thì đọc thẳng từ dữ liệu, luôn đúng với tệp hiện có:
+
+- **trang quản trị** hiện số mục bên cạnh tên mỗi loại (mục 7);
+- lệnh `uv run ontology_search build` in ra số dòng chỉ mục đang có và phân loại chúng.
 
 ### 5.8 Kiểm định ontology chứng minh được gì?
 
@@ -342,7 +345,7 @@ Các phép kiểm tự động trên tệp thật xác nhận:
 - mọi ô bắt buộc gắn nguồn đều nằm trong túi;
 - quy tắc trích dẫn: không có địa chỉ rỗng, mỗi chỗ trong nguồn chỉ có một địa chỉ,
   một văn bản không khẳng định cùng một dữ kiện ở hai chỗ;
-- 17 bảng khớp bản chép trong `references/` đến từng ký tự;
+- các bảng đã nhập khớp bản chép trong `references/` đến từng ký tự;
 - các kiểu câu hỏi tiêu biểu tìm ra đúng mục.
 
 Các phép kiểm đó **không** chứng minh tập nguồn đầy đủ, mọi diễn giải đúng về pháp lý,
@@ -372,8 +375,8 @@ khởi động, mỗi mục của tầng tri thức sinh ba loại dòng:
 
 Giá trị không vào chỉ mục: người ta hỏi "học phí ngành nào", không hỏi bằng con số.
 Giá trị đến tay LLM ở bước đọc hồ sơ. Tầng nguồn cũng không vào chỉ mục, và ba thuộc
-tính chỉ chứa đường dẫn hoặc hộp thư không sinh dòng. Ontology hiện tại sinh 1.766
-dòng cho 379 mục: 733 dòng tên, 518 dòng thuộc tính, 515 dòng quan hệ.
+tính chỉ chứa đường dẫn hoặc hộp thư không sinh dòng. Số dòng chỉ mục vì thế lớn hơn số
+mục vài lần, và tăng theo dữ liệu; lệnh `ontology_search build` in ra con số hiện tại.
 
 ### 6.2 Tách từ
 
@@ -466,6 +469,12 @@ phải huấn luyện lại gì. Đo trên máy phát triển, một lần lưu 
 
 ## 8. Thực nghiệm được thiết lập thế nào?
 
+> **Kết quả ở mục 8 và 9 là sơ bộ.** Chúng đo trên phiên bản ontology ngày 13/9/2026,
+> khi dữ liệu mới phủ một phần phạm vi nêu ở mục 1 và vẫn đang được bổ sung. Vì vậy
+> chúng cho biết cách tiếp cận có chạy được trên phần dữ liệu đã có hay không, **không
+> phải** độ chính xác của một hệ thống hoàn chỉnh. Bổ sung dữ liệu sẽ làm các con số này
+> thay đổi — trích dẫn con số nào cũng phải kèm phiên bản dữ liệu đã đo.
+
 ### 8.1 Bộ kiểm tìm kiếm
 
 Bộ kiểm [`retrieval.json`](resources/end-to-end/retrieval.json) đo riêng câu hỏi
@@ -545,10 +554,13 @@ và có dữ liệu, được đánh dấu đáng ngờ để đọc lại trong
 | `tests/search` | 47 | tách từ, chỉ mục, xếp hạng, hồ sơ, trích dẫn, lược đồ và các câu hỏi tiêu biểu trên ontology thật |
 | `tests/admin` | 11 | lược đồ form, thêm, sửa, xoá, từ chối và các đường API quản trị |
 | `tests/ci` | 6 | cấu hình ảnh Docker và quy trình phát hành |
-| `tests/ontology` | 1 | 17 bảng khớp bản chép nguyên văn |
+| `tests/ontology` | 1 | các bảng khớp bản chép nguyên văn |
 | `webui` | 8 + 19 | proxy tới máy chủ; hành vi giao diện trong trình duyệt |
 
 ## 9. Kiểm thử và kết quả
+
+*Đọc kèm khung cảnh báo ở đầu mục 8: đây là số đo trên một phiên bản dữ liệu đang xây
+dựng, không phải kết quả của hệ thống hoàn chỉnh.*
 
 ### 9.1 Tìm kiếm
 
@@ -645,10 +657,10 @@ Trên bộ kiểm cố định, tìm kiếm theo từ khoá trên ontology đưa
 52/58 câu có mục đích, không có câu sai, và từ chối đúng 19/19 câu phải từ chối. Mỗi
 lượt mất trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
 
-Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi cho
-phạm vi học vụ đã cấu trúc. Chúng không chứng minh hệ thống bao quát toàn bộ quy định,
-hoạt động tương tự trên câu hỏi thật chưa quan sát, hoặc tốt hơn các cách tiếp cận
-chưa được đem so sánh.
+Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên
+phần dữ liệu đã cấu trúc. Chúng **không** chứng minh hệ thống bao quát toàn bộ quy định
+— ontology vẫn đang được xây dựng — cũng không chứng minh hệ thống hoạt động tương tự
+trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận chưa được đem so sánh.
 
 ### 11.2 Ưu điểm ở cấp độ thiết kế
 
@@ -666,33 +678,39 @@ chưa được đem so sánh.
 
 ### 11.3 Hạn chế
 
-1. **Tìm theo từ vựng:** engine chỉ khớp chữ. Cách gọi không có trong tên hay tên gọi
+1. **Ontology chưa đầy đủ:** đây là hạn chế lớn nhất hiện nay. Cấu trúc và lược đồ đã
+   ổn định, nhưng nội dung mới phủ một phần phạm vi ở mục 1 và đang được bổ sung. Câu
+   hỏi rơi vào phần chưa nhập sẽ nhận câu trả lời "không có thông tin" dù quy định có
+   tồn tại ngoài thực tế. Mọi con số ở mục 9 vì thế là kết quả sơ bộ.
+2. **Tìm theo từ vựng:** engine chỉ khớp chữ. Cách gọi không có trong tên hay tên gọi
    khác của mục sẽ trượt, và chất lượng phụ thuộc vào từ khoá LLM viết.
-2. **Không có ngưỡng:** 3 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục
+3. **Không có ngưỡng:** 3 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục
    không đúng ý hỏi và có thể dùng nhầm mục gần đúng.
-3. **Có nguồn không bảo đảm mọi kết luận đúng:** LLM vẫn có thể ghép hai dữ kiện đúng
+4. **Có nguồn không bảo đảm mọi kết luận đúng:** LLM vẫn có thể ghép hai dữ kiện đúng
    thành một quan hệ mà dữ liệu không nói.
-4. **Dữ liệu:** biên soạn và đối chiếu thủ công, chưa có hai người rà độc lập; trang web
+5. **Biên soạn dữ liệu:** đối chiếu thủ công, chưa có hai người rà độc lập; trang web
    có thể đổi sau ngày thu thập; một số thông báo có hạn theo học kỳ.
-5. **Đánh giá:** 85 câu và một lượt chạy; mô hình chấm là cùng mô hình với trợ lý; 5 câu
+6. **Đánh giá:** 85 câu và một lượt chạy; mô hình chấm là cùng mô hình với trợ lý; 5 câu
    được chuyển nhóm theo dữ liệu hiện tại; kiểm tra từ chối bằng cụm từ bỏ sót nhiều
    cách nói.
-6. **Trang quản trị:** bản triển khai hiện ghi vào tệp trong container nên thay đổi mất
+7. **Trang quản trị:** bản triển khai hiện ghi vào tệp trong container nên thay đổi mất
    khi dịch vụ khởi động lại; chỉ có một khoá quản trị chung, không phân quyền, không
    lưu lịch sử sửa; mỗi lần ghi kiểm lại toàn bộ đồ thị nên chậm dần khi dữ liệu lớn lên.
-7. **Chưa đối chứng:** chưa so với cách tìm đoạn văn bản rồi đưa cho LLM (RAG) hay các
+8. **Chưa đối chứng:** chưa so với cách tìm đoạn văn bản rồi đưa cho LLM (RAG) hay các
    cách tiếp cận khác trên cùng bộ câu hỏi.
 
 ## 12. Hướng cải tiến
 
-1. Lưu ontology trên kho bền vững có kiểm tra phiên bản khi ghi, để thay đổi từ trang
+1. Nhập tiếp cho đến khi ontology phủ hết phạm vi ở mục 1, rồi đo lại toàn bộ mục 9
+   trên phiên bản đầy đủ — đây là việc cần làm trước tiên.
+2. Lưu ontology trên kho bền vững có kiểm tra phiên bản khi ghi, để thay đổi từ trang
    quản trị không mất và hai người sửa cùng lúc không ghi đè nhau.
-2. Thêm lịch sử sửa, xem khác biệt trước khi lưu và phân quyền cho trang quản trị.
-3. Biểu diễn thời gian hiệu lực của văn bản để trả lời đúng theo khoá học.
-4. Xây bộ câu hỏi thật từ người dùng, đóng băng trước khi sửa hệ thống; chạy nhiều lượt;
+3. Thêm lịch sử sửa, xem khác biệt trước khi lưu và phân quyền cho trang quản trị.
+4. Biểu diễn thời gian hiệu lực của văn bản để trả lời đúng theo khoá học.
+5. Xây bộ câu hỏi thật từ người dùng, đóng băng trước khi sửa hệ thống; chạy nhiều lượt;
    dùng mô hình chấm khác mô hình trợ lý và thêm người chấm độc lập.
-5. So sánh với RAG trên văn bản gốc trên cùng bộ câu hỏi.
-6. Gợi ý tên gọi khác cho mục từ các từ khoá thật đã trượt.
+6. So sánh với RAG trên văn bản gốc trên cùng bộ câu hỏi.
+7. Gợi ý tên gọi khác cho mục từ các từ khoá thật đã trượt.
 
 ## 13. Tài nguyên và cách chạy thử
 
