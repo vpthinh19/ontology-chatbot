@@ -1,0 +1,530 @@
+@prefix : <http://www.ntu.edu.vn/ontology/academic#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Cấu trúc ontology.trig khai báo bằng SHACL. Mỗi loại thông tin là một NodeShape: các
+# ô nó có (sh:property), ô bắt buộc (sh:minCount 1), ô chỉ một giá trị (sh:maxCount 1),
+# ô là chữ (sh:datatype), ô trỏ tới loại khác (sh:class) hay chọn trong danh sách cố
+# định (sh:in). sh:closed cấm ô chưa khai báo. :batBuocNguon true nghĩa là câu của ô đó
+# phải nằm trong một túi trích dẫn; false là được phép không nguồn (ô loại do ta tự đặt,
+# cặp ghép mẫu đơn). Ô danh tính (nhãn, tên gọi khác) và tầng nguồn luôn nằm ngoài túi.
+
+:BangShape a sh:NodeShape ;
+	sh:targetClass :Bang ;
+	rdfs:label "Bảng"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :loaiBang ;
+		  sh:name "loại bảng"@vi ;
+		  sh:in ( :BangQuyDoiChungChi :BangTrongTaiLieu ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon false ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] .
+
+:BieuMauTheoQuyetDinhShape a sh:NodeShape ;
+	sh:targetClass :BieuMauTheoQuyetDinh ;
+	rdfs:label "Biểu mẫu theo quyết định"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :soHieuMauTheoQuyetDinh ;
+		  sh:name "số hiệu mẫu theo quyết định"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:ChuTheShape a sh:NodeShape ;
+	sh:targetClass :ChuThe ;
+	rdfs:label "Chủ thể"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :diaChi ;
+		  sh:name "địa chỉ"@vi ;
+		  sh:datatype xsd:string ;
+		  :batBuocNguon true ] ,
+		[ sh:path :dienThoai ;
+		  sh:name "điện thoại"@vi ;
+		  sh:datatype xsd:string ;
+		  :batBuocNguon true ] ,
+		[ sh:path :hopThu ;
+		  sh:name "hộp thư"@vi ;
+		  sh:datatype xsd:string ;
+		  :batBuocNguon true ] ,
+		[ sh:path :loaiChuThe ;
+		  sh:name "loại chủ thể"@vi ;
+		  sh:in ( :ChuTheThamGia :DonViTrongTruong ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon false ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  :batBuocNguon true ] ,
+		[ sh:path :thuocDonVi ;
+		  sh:name "thuộc đơn vị"@vi ;
+		  sh:class :ChuThe ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :viTri ;
+		  sh:name "vị trí"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :websiteDonVi ;
+		  sh:name "website đơn vị"@vi ;
+		  sh:datatype xsd:string ;
+		  :batBuocNguon true ] .
+
+:ChungChiShape a sh:NodeShape ;
+	sh:targetClass :ChungChi ;
+	rdfs:label "Chứng chỉ"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :loaiChungChi ;
+		  sh:name "loại chứng chỉ"@vi ;
+		  sh:in ( :ChungChiNgoaiNgu :ChungChiTinHoc ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  :batBuocNguon true ] ,
+		[ sh:path :tenDayDuCuaChungChi ;
+		  sh:name "tên đầy đủ của chứng chỉ"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:DanhMucShape a sh:NodeShape ;
+	sh:targetClass :DanhMuc ;
+	rdfs:label "Danh mục"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :hoTroNganHang ;
+		  sh:name "hỗ trợ ngân hàng"@vi ;
+		  sh:class :DanhMuc ;
+		  :batBuocNguon true ] ,
+		[ sh:path :kyHieuDiemChu ;
+		  sh:name "ký hiệu điểm chữ"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :loaiDanhMuc ;
+		  sh:name "loại danh mục"@vi ;
+		  sh:in ( :DiemChu :DonViTinh :KhoiNganh :NganHang :PhuongThucDongHocPhi :TrinhDoDaoTao ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  :batBuocNguon true ] .
+
+:DiaChiTrichDanShape a sh:NodeShape ;
+	sh:targetClass :DiaChiTrichDan ;
+	rdfs:label "Địa chỉ trích dẫn"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path :thuocNguon ;
+		  sh:name "thuộc nguồn"@vi ;
+		  sh:class :Nguon ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :toaDo ;
+		  sh:name "toạ độ"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] .
+
+:HeThongTrucTuyenShape a sh:NodeShape ;
+	sh:targetClass :HeThongTrucTuyen ;
+	rdfs:label "Hệ thống trực tuyến"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] .
+
+:HocPhanShape a sh:NodeShape ;
+	sh:targetClass :HocPhan ;
+	rdfs:label "Học phần"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soTinChi ;
+		  sh:name "số tín chỉ"@vi ;
+		  sh:datatype xsd:integer ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:KhaiNiemShape a sh:NodeShape ;
+	sh:targetClass :KhaiNiem ;
+	rdfs:label "Khái niệm"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :loaiKhaiNiem ;
+		  sh:name "loại khái niệm"@vi ;
+		  sh:in ( :HinhThucDaoTao :HinhThucToChucDayHoc :KhaiNiemHocVu :LoaiHocKy :LoaiHocPhan :ThanhPhanDanhGiaHocPhan ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon false ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] .
+
+:MucBieuMauTrenWebsiteShape a sh:NodeShape ;
+	sh:targetClass :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục biểu mẫu trên website"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :diaChiTaiVe ;
+		  sh:name "địa chỉ tải về"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soHieuMauTrenWebsite ;
+		  sh:name "số hiệu mẫu trên website"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :ungVoiBieuMau ;
+		  sh:name "ứng với biểu mẫu"@vi ;
+		  sh:class :BieuMauTheoQuyetDinh ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon false ] .
+
+:MucTienShape a sh:NodeShape ;
+	sh:targetClass :MucTien ;
+	rdfs:label "Mức tiền"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :apDungChoPhuongThucDong ;
+		  sh:name "áp dụng cho phương thức đóng"@vi ;
+		  sh:class :DanhMuc ;
+		  :batBuocNguon true ] ,
+		[ sh:path :apDungChoTrinhDo ;
+		  sh:name "áp dụng cho trình độ"@vi ;
+		  sh:class :DanhMuc ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :donViTienTe ;
+		  sh:name "đơn vị tiền tệ"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :donViTinh ;
+		  sh:name "đơn vị tính"@vi ;
+		  sh:class :DanhMuc ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :loaiMucTien ;
+		  sh:name "loại mức tiền"@vi ;
+		  sh:in ( :MucHocBongKhuyenKhichHocTap :QuyTacLePhiDongHocPhi ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soTien ;
+		  sh:name "mức lệ phí"@vi ;
+		  sh:datatype xsd:integer ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] .
+
+:NganhDaoTaoShape a sh:NodeShape ;
+	sh:targetClass :NganhDaoTao ;
+	rdfs:label "Ngành đào tạo"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :thuocKhoiNganh ;
+		  sh:name "thuộc khối ngành"@vi ;
+		  sh:class :DanhMuc ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:NguonShape a sh:NodeShape ;
+	sh:targetClass :Nguon ;
+	rdfs:label "Nguồn"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :banHanhNgay ;
+		  sh:name "ban hành ngày"@vi ;
+		  sh:datatype xsd:date ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :duongDan ;
+		  sh:name "đường dẫn"@vi ;
+		  sh:datatype xsd:anyURI ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :hieuLucTu ;
+		  sh:name "hiệu lực từ"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :hieuLucTuHocKy ;
+		  sh:name "hiệu lực từ học kỳ"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :loaiNguon ;
+		  sh:name "loại nguồn"@vi ;
+		  sh:in ( :DanhMucBieuMau :QuyChe :QuyetDinh :VanBanHuongDan ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :ngayThuThap ;
+		  sh:name "ngày thu thập"@vi ;
+		  sh:datatype xsd:date ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :soHieu ;
+		  sh:name "số hiệu"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ] ,
+		[ sh:path :suaDoiVanBan ;
+		  sh:name "sửa đổi văn bản"@vi ;
+		  sh:class :Nguon ] .
+
+:QuyTacShape a sh:NodeShape ;
+	sh:targetClass :QuyTac ;
+	rdfs:label "Quy tắc"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :apDungChoHinhThucDaoTao ;
+		  sh:name "áp dụng cho hình thức đào tạo"@vi ;
+		  sh:class :KhaiNiem ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :loaiQuyTac ;
+		  sh:name "loại quy tắc"@vi ;
+		  sh:in ( :ChinhSachHocVu :QuyTacBuocThoiHoc :QuyTacCanhBaoKetQuaHocTap :QuyTacDieuKienDuThi :QuyTacGioiHanCongNhanVaChuyenDoiTinChi :QuyTacHaHangTotNghiep :QuyTacHocVu :QuyTacKhoiLuongDangKyMoiHocKy :QuyTacThoiGianDaoTao :QuyTacTyLeDaoTaoTrucTuyen ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon false ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soNam ;
+		  sh:name "số năm"@vi ;
+		  sh:datatype xsd:decimal ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soTinChiToiDa ;
+		  sh:name "số tín chỉ tối đa"@vi ;
+		  sh:datatype xsd:integer ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :soTinChiToiThieu ;
+		  sh:name "số tín chỉ tối thiểu"@vi ;
+		  sh:datatype xsd:integer ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :tyLeToiDa ;
+		  sh:name "tỷ lệ tối đa"@vi ;
+		  sh:datatype xsd:decimal ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :tyLeToiThieu ;
+		  sh:name "tỷ lệ tối thiểu"@vi ;
+		  sh:datatype xsd:decimal ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:ThuTucHocVuShape a sh:NodeShape ;
+	sh:targetClass :ThuTucHocVu ;
+	rdfs:label "Thủ tục học vụ"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :apDungChoTruongHop ;
+		  sh:name "áp dụng cho trường hợp"@vi ;
+		  sh:class :TruongHopApDung ;
+		  :batBuocNguon true ] ,
+		[ sh:path :canBieuMau ;
+		  sh:name "cần biểu mẫu"@vi ;
+		  sh:class :BieuMauTheoQuyetDinh ;
+		  :batBuocNguon true ] ,
+		[ sh:path :doAiQuyetDinh ;
+		  sh:name "do ai quyết định"@vi ;
+		  sh:class :ChuThe ;
+		  :batBuocNguon true ] ,
+		[ sh:path :doAiThucHien ;
+		  sh:name "do ai thực hiện"@vi ;
+		  sh:class :ChuThe ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :duocXetBoi ;
+		  sh:name "được xét bởi"@vi ;
+		  sh:class :ChuThe ;
+		  :batBuocNguon true ] ,
+		[ sh:path :hoTroPhuongThuc ;
+		  sh:name "hỗ trợ phương thức"@vi ;
+		  sh:class :DanhMuc ;
+		  :batBuocNguon true ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :nopTai ;
+		  sh:name "nộp tại"@vi ;
+		  sh:class :ChuThe ;
+		  :batBuocNguon true ] ,
+		[ sh:path :thuTucTiepTheo ;
+		  sh:name "thủ tục tiếp theo"@vi ;
+		  sh:class :ThuTucHocVu ;
+		  :batBuocNguon true ] .
+
+:TruongHopApDungShape a sh:NodeShape ;
+	sh:targetClass :TruongHopApDung ;
+	rdfs:label "Trường hợp áp dụng"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :noiDung ;
+		  sh:name "nội dung"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  :batBuocNguon true ] .

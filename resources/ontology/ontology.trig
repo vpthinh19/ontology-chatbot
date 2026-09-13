@@ -496,7 +496,7 @@
 	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/Doc/809/qd-1965--19-12-2025--sua-doi--bo-sung-phu-luc-quy-che-dao-tao-trinh-do-dai-hoc-pdf.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
 	:soHieu "1965/QĐ-ĐHNT"@vi ;
-	:suaDoiVanBan :Regulation1052 ;
+	:suaDoiVanBan :Nguon1052 ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 1965/QĐ-ĐHNT"@vi .
 :Nguon317 :banHanhNgay "2025-03-07"^^xsd:date ;
@@ -1320,7 +1320,6 @@
 :doAiThucHien rdfs:label "do ai thực hiện"@vi .
 :donViTienTe rdfs:label "đơn vị tiền tệ"@vi .
 :donViTinh rdfs:label "đơn vị tính"@vi .
-:dungBieuMau rdfs:label "dùng biểu mẫu"@vi .
 :duocBanHanhKemTheo rdfs:label "được ban hành kèm theo"@vi .
 :duocGiaiQuyetBangThuTuc rdfs:label "được giải quyết bằng thủ tục"@vi .
 :duocXetBoi rdfs:label "được xét bởi"@vi .
@@ -1378,6 +1377,7 @@
 :thuTuBuoc rdfs:label "thứ tự bước"@vi .
 :thuTuDieuKien rdfs:label "thứ tự điều kiện"@vi .
 :thuTucTiepTheo rdfs:label "thủ tục tiếp theo"@vi .
+:thuocDonVi rdfs:label "thuộc đơn vị"@vi .
 :thuocKhoiNganh rdfs:label "thuộc khối ngành"@vi .
 :thuocNguon rdfs:label "thuộc nguồn"@vi .
 :thuocTaiLieu rdfs:label "thuộc tài liệu"@vi .
@@ -1483,7 +1483,6 @@
 	:ThuTucDeNghiMoThemLopHocPhan :canBieuMau :MauSo01DonXinMoLopHocPhan ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo01DonXinMoLopHocPhan ;
 		:noiDung "Khi số lượng sinh viên đăng ký ít hơn số lượng tối thiểu theo quy định, với các trường hợp đặc thù hoặc có lý do chính đáng, nhóm sinh viên làm đơn xin mở lớp học phần (Mẫu số 01 - Phụ lục 4 kèm theo) để Hiệu trưởng xem xét và quyết định, thông qua Đơn vị quản lý đào tạo."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
 }
@@ -1559,7 +1558,6 @@
 	:MauSo02DonDangKyThucHienDoAnTotNghiep :soHieuMauTheoQuyetDinh "02" .
 	:ThuTucDangKyThucHienDoAnTotNghiep :canBieuMau :MauSo02DonDangKyThucHienDoAnTotNghiep ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo02DonDangKyThucHienDoAnTotNghiep ;
 		:noiDung "Sinh viên đủ điều kiện thực hiện đồ án/khóa luận tốt nghiệp theo quy định của Trường phải làm đơn đăng ký thực hiện đồ án/khóa luận tốt nghiệp (Mẫu số 02 - Phụ lục 4 kèm theo)."@vi .
 }
 :TD1052_D14K03 {
@@ -1596,7 +1594,6 @@
 	:MauSo03DonXinNghiHoc :soHieuMauTheoQuyetDinh "03" .
 	:ThuTucXinPhepNghiHoc :canBieuMau :MauSo03DonXinNghiHoc ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo03DonXinNghiHoc ;
 		:noiDung "Sinh viên nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo mẫu kèm minh chứng liên quan (Mẫu số 03 - Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa hoặc viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học."@vi ;
 		:nopTai :KhoaHoacVienDaoTao .
 }
@@ -1647,7 +1644,6 @@
 	:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc :canBieuMau :MauSo05DonXinChuyenChuongTrinhDaoTao ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo05DonXinChuyenChuongTrinhDaoTao ;
 		:noiDung "Những sinh viên thuộc diện bị buộc thôi học quy định tại khoản 2 Điều này được quyền viết đơn (Mẫu số 05 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển qua chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường."@vi , "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển chương trình đào tạo, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
@@ -1655,7 +1651,6 @@
 	:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan :soHieuMauTheoQuyetDinh "06" .
 	:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi :canBieuMau :MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo06DonXinMienHocVaQuyDoiDiemHocPhan ;
 		:noiDung "Sinh viên có nguyện vọng miễn học và quy đổi điểm học phần phải nộp bản sao có công chứng văn bằng, chứng chỉ và bảng điểm cho Đơn vị quản lý đào tạo (Mẫu số 06 - Phụ lục 4 kèm theo)."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
 }
@@ -1677,7 +1672,6 @@
 	:MauSo07DonXinMienHocMienThiVaCongDiemThuong :soHieuMauTheoQuyetDinh "07" .
 	:ThuTucXinMienHocMienThiVaCongDiemThuong :canBieuMau :MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
 		:noiDung "Sinh viên có nguyện vọng miễn học, miễn thi và cộng điểm thưởng phải nộp đơn theo mẫu (Mẫu số 07 - Phụ lục 4 kèm theo) kèm theo minh chứng hợp lệ gửi về Đơn vị quản lý đào tạo để được xem xét giải quyết."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
 }
@@ -1709,7 +1703,6 @@
 	:MauSo08DonDeNghiXetTotNghiepSom :soHieuMauTheoQuyetDinh "08" .
 	:ThuTucDeNghiXetTotNghiepSom :canBieuMau :MauSo08DonDeNghiXetTotNghiepSom ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo08DonDeNghiXetTotNghiepSom ;
 		:noiDung "Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, sinh viên viết đơn theo mẫu (Mẫu số 08 - Phụ lục 4 kèm theo) gửi Đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc ;
 		:thuTucTiepTheo :ThuTucXetVaCongNhanTotNghiep .
@@ -1766,20 +1759,17 @@
 	:ThuTucNghiHocTamThoi :canBieuMau :MauSo09DonXinNghiHocTamThoi ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo09DonXinNghiHocTamThoi ;
 		:noiDung "Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien ;
 		:thuTucTiepTheo :ThuTucXinHocTroLai .
 	:ThuTucXinHocTroLai :canBieuMau :MauSo11DonXinHocTroLai ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo11DonXinHocTroLai ;
 		:noiDung "Khi muốn trở lại học tiếp, sinh viên cần viết đơn (Mẫu số 11 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên ít nhất 02 tuần trước khi bắt đầu học kỳ mới để được xem xét giải quyết."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 	:ThuTucXinThoiHoc :canBieuMau :MauSo10DonXinThoiHoc ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo10DonXinThoiHoc ;
 		:noiDung "Sinh viên xin thôi học phải viết đơn (Mẫu số 10 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
@@ -1800,7 +1790,6 @@
 	:ThuTucChuyenNganh :canBieuMau :MauSo12DonXinChuyenNganh ;
 		:doAiQuyetDinh :HieuTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo12DonXinChuyenNganh ;
 		:noiDung "Sinh viên có nguyện vọng và thỏa mãn các điều kiện tại khoản 1 của Điều này có thể được xem xét chuyển ngành trong cùng bậc học."@vi , "Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, sinh viên làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
@@ -1823,7 +1812,6 @@
 	:MauSo13DonXinChuyenTruong :soHieuMauTheoQuyetDinh "13" .
 	:ThuTucChuyenTruong :canBieuMau :MauSo13DonXinChuyenTruong ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo13DonXinChuyenTruong ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
 :TD1052_D27K02 {
@@ -1839,7 +1827,6 @@
 	:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien :soHieuMauTheoQuyetDinh "14" .
 	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :canBieuMau :MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo14DonDangKyChuongTrinhTraoDoiSinhVien ;
 		:nopTai :PhongDaoTaoDaiHoc .
 }
 :TD1052_D28K01dA {
@@ -1854,8 +1841,7 @@
 :TD1052_D28K03 {
 	:MauSo15DonDangKyHocCungLucHaiChuongTrinh :soHieuMauTheoQuyetDinh "15" .
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :canBieuMau :MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
-		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo15DonDangKyHocCungLucHaiChuongTrinh .
+		:doAiThucHien :SinhVien .
 }
 :TD1052_D28K05 {
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai, và chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất."@vi .
@@ -1884,7 +1870,6 @@
 	:ThuTucXinHoanThi :apDungChoTruongHop :OmThaiSanHoacTaiNan ;
 		:canBieuMau :MauSo04DonXinHoanThi ;
 		:doAiThucHien :SinhVien ;
-		:dungBieuMau :MauSo04DonXinHoanThi ;
 		:noiDung "Sinh viên xin nghỉ ốm trong đợt thi kết thúc học phần phải viết đơn xin phép hoãn thi gửi Đơn vị quản lý đào tạo trước ngày thi, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên (Mẫu số 04 - Phụ lục 4 kèm theo)."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
 }
@@ -2184,16 +2169,16 @@
 	:ThuTucXinHoanThi :nopTai :PhongDaoTaoDaiHoc .
 }
 :TDOrganizationStructureListing {
-	:PhongCongTacChinhTriVaSinhVien :diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
-		:dienThoai "0258 222 1900" ;
+	:PhongCongTacChinhTriVaSinhVien :dienThoai "0258 222 1900" ;
 		:hopThu "ctsv@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
-		:viTri "Khu Nhà Hiệu bộ"@vi ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tầng 1, Khu nhà Hiệu bộ" ;
 		:websiteDonVi "https://phongctsv.ntu.edu.vn" .
-	:PhongDaoTaoDaiHoc :diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
-		:dienThoai "0258 3831148" ;
+	:PhongDaoTaoDaiHoc :dienThoai "0258 3831148" ;
 		:hopThu "daotao@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
 		:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
 	:TruongDaiHocNhaTrang :diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;

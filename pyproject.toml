@@ -108,6 +108,7 @@ package = true
 dev = [
     "oxrdflib>=0.5.0",
     "pyparsing>=3.2.0",
+    "pyshacl>=0.40.1",
     "pytest>=9.1.0",
     "pytest-xdist>=3.8.0",
     "rdflib>=7.6.0",
