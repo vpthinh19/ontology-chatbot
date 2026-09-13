@@ -151,7 +151,7 @@ wheels = [
 
 [[package]]
 name = "ontchatbot"
-version = "4.0.0"
+version = "3.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "bm25s" },
