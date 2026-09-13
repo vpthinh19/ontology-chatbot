@@ -18,7 +18,7 @@ cập nhật tri thức mà các lượt hỏi đọc tới. Các mục sau gi�
 
 ![Tổng quan hệ thống](docs/images/tong-quan.png)
 
-README đi theo thứ tự mà một người chưa biết dự án cần để hiểu: bài toán, thành
+Các mục sau đi theo thứ tự mà một người chưa biết dự án cần để hiểu: bài toán, thành
 phần, luồng một lượt hỏi, hình dạng dữ liệu, ontology, thuật toán tìm kiếm, cách
 cập nhật dữ liệu, thực nghiệm, kết quả và giới hạn.
 
@@ -39,7 +39,7 @@ ba yêu cầu:
 
 Phạm vi nhắm tới gồm quy tắc đào tạo, thủ tục học vụ, biểu mẫu, học bổng, rèn luyện
 và kỷ luật, chứng chỉ, ngành, chuyên ngành, chương trình đào tạo và các đơn vị phục
-vụ sinh viên; dữ liệu hiện mới phủ một phần phạm vi này và đang được bổ sung dần.
+vụ sinh viên; dữ liệu hiện có phủ một phần phạm vi này (mục 5.7).
 Những dữ liệu phụ thuộc từng người hoặc từng đợt, như điểm của một
 sinh viên, học phí của một tài khoản hay điểm chuẩn, không được lưu thành một con số
 chung; hệ thống chỉ người dùng đến nơi tra cứu chính thức.
@@ -326,16 +326,13 @@ Các quy tắc biên soạn:
 Các nguồn hiện có gồm văn bản chương trình đào tạo, quy chế, quyết định, hướng dẫn và
 trang chính thức của các phòng ban, cùng danh mục biểu mẫu.
 
-### 5.7 Tình trạng dữ liệu hiện tại
+### 5.7 Phạm vi dữ liệu
 
-Ontology **đang trong quá trình xây dựng**: lược đồ và cấu trúc đã ổn định, nhưng nội
-dung mới phủ một phần phạm vi ở mục 1 và vẫn đang được bổ sung. Vì vậy README không ghi
-cứng số mục của từng loại — con số ấy sẽ sai ngay sau lần nhập dữ liệu kế tiếp.
-
-Muốn biết quy mô tại một thời điểm thì đọc thẳng từ dữ liệu, luôn đúng với tệp hiện có:
-
-- **trang quản trị** hiện số mục bên cạnh tên mỗi loại (mục 7);
-- lệnh `uv run ontology_search build` in ra số dòng chỉ mục đang có và phân loại chúng.
+Cấu trúc của ontology — các loại mục, quan hệ giữa chúng và lược đồ ràng buộc — là phần
+cố định. Khối lượng dữ liệu thì không: nó phụ thuộc số văn bản đã được biểu diễn, nên số
+mục của mỗi loại là một đại lượng thay đổi chứ không phải đặc trưng của phương pháp. Ở
+phiên bản dữ liệu dùng cho các phép đo ở mục 9, nội dung phủ một phần phạm vi nêu ở
+mục 1, và kết quả ở đó gắn với đúng phần này.
 
 ### 5.8 Kiểm định ontology chứng minh được gì?
 
@@ -345,7 +342,7 @@ Các phép kiểm tự động trên tệp thật xác nhận:
 - mọi ô bắt buộc gắn nguồn đều nằm trong túi;
 - quy tắc trích dẫn: không có địa chỉ rỗng, mỗi chỗ trong nguồn chỉ có một địa chỉ,
   một văn bản không khẳng định cùng một dữ kiện ở hai chỗ;
-- các bảng đã nhập khớp bản chép trong `references/` đến từng ký tự;
+- các bảng trong ontology khớp bản chép trong `references/` đến từng ký tự;
 - các kiểu câu hỏi tiêu biểu tìm ra đúng mục.
 
 Các phép kiểm đó **không** chứng minh tập nguồn đầy đủ, mọi diễn giải đúng về pháp lý,
@@ -376,7 +373,7 @@ khởi động, mỗi mục của tầng tri thức sinh ba loại dòng:
 Giá trị không vào chỉ mục: người ta hỏi "học phí ngành nào", không hỏi bằng con số.
 Giá trị đến tay LLM ở bước đọc hồ sơ. Tầng nguồn cũng không vào chỉ mục, và ba thuộc
 tính chỉ chứa đường dẫn hoặc hộp thư không sinh dòng. Số dòng chỉ mục vì thế lớn hơn số
-mục vài lần, và tăng theo dữ liệu; lệnh `ontology_search build` in ra con số hiện tại.
+mục vài lần và tăng theo khối lượng dữ liệu.
 
 ### 6.2 Tách từ
 
@@ -469,10 +466,10 @@ phải huấn luyện lại gì. Một lần lưu mất khoảng nửa giây.
 
 ## 8. Thực nghiệm được thiết lập thế nào?
 
-> **Kết quả ở mục 8 và 9 là sơ bộ.** Chúng đo trên một phiên bản ontology mà dữ liệu
-> mới phủ một phần phạm vi nêu ở mục 1. Vì vậy chúng cho biết cách tiếp cận có chạy được
-> trên phần dữ liệu đã có hay không, **không phải** độ chính xác của một hệ thống hoàn
-> chỉnh; bổ sung dữ liệu sẽ làm các con số này thay đổi.
+> **Phạm vi của các phép đo.** Kết quả ở mục 8 và 9 đo trên phiên bản ontology có độ phủ
+> nêu ở mục 5.7. Chúng cho biết cách tiếp cận có hoạt động trên phần nội dung đã được
+> biểu diễn hay không; chúng **không** đo độ chính xác của một hệ thống có dữ liệu phủ
+> hết phạm vi ở mục 1.
 
 ### 8.1 Bộ kiểm tìm kiếm
 
@@ -548,8 +545,7 @@ văn, và hành vi của giao diện trong trình duyệt thật.
 
 ## 9. Kiểm thử và kết quả
 
-*Đọc kèm khung cảnh báo ở đầu mục 8: đây là số đo trên một phiên bản dữ liệu đang xây
-dựng, không phải kết quả của hệ thống hoàn chỉnh.*
+*Các số dưới đây đo trên phiên bản dữ liệu và theo cách chấm mô tả ở mục 8.*
 
 ### 9.1 Tìm kiếm
 
@@ -647,9 +643,9 @@ Trên bộ kiểm cố định, tìm kiếm theo từ khoá trên ontology đưa
 lượt mất trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
 
 Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên
-phần dữ liệu đã cấu trúc. Chúng **không** chứng minh hệ thống bao quát toàn bộ quy định
-— ontology vẫn đang được xây dựng — cũng không chứng minh hệ thống hoạt động tương tự
-trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận chưa được đem so sánh.
+phần nội dung đã được biểu diễn. Chúng **không** chứng minh hệ thống bao quát toàn bộ
+quy định của trường, hoạt động tương tự trên câu hỏi thật chưa quan sát, hay tốt hơn
+các cách tiếp cận chưa được đem so sánh.
 
 ### 11.2 Ưu điểm ở cấp độ thiết kế
 
@@ -668,10 +664,10 @@ trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận 
 
 ### 11.3 Hạn chế
 
-1. **Ontology chưa đầy đủ:** đây là hạn chế lớn nhất hiện nay. Cấu trúc và lược đồ đã
-   ổn định, nhưng nội dung mới phủ một phần phạm vi ở mục 1 và đang được bổ sung. Câu
-   hỏi rơi vào phần chưa nhập sẽ nhận câu trả lời "không có thông tin" dù quy định có
-   tồn tại ngoài thực tế. Mọi con số ở mục 9 vì thế là kết quả sơ bộ.
+1. **Độ phủ của dữ liệu:** đây là hạn chế lớn nhất. Nội dung mới phủ một phần phạm vi
+   nêu ở mục 1, nên câu hỏi rơi vào phần chưa được biểu diễn sẽ nhận câu trả lời "không
+   có thông tin" dù quy định có tồn tại trong văn bản của trường. Kết quả ở mục 9 vì vậy
+   gắn với độ phủ này, không phải với toàn bộ phạm vi.
 2. **Tìm theo từ vựng:** engine chỉ khớp chữ. Cách gọi không có trong tên hay tên gọi
    khác của mục sẽ trượt, và chất lượng phụ thuộc vào từ khoá LLM viết.
 3. **Không có ngưỡng:** 3 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục
@@ -690,8 +686,8 @@ trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận 
 
 ## 12. Hướng cải tiến
 
-1. Nhập tiếp cho đến khi ontology phủ hết phạm vi ở mục 1, rồi đo lại toàn bộ mục 9
-   trên phiên bản đầy đủ — đây là việc cần làm trước tiên.
+1. Mở rộng dữ liệu cho phủ hết phạm vi ở mục 1, rồi đo lại toàn bộ mục 9 trên phiên
+   bản đó.
 2. Lưu ontology trên kho bền vững có kiểm tra phiên bản khi ghi, để thay đổi từ trang
    quản trị không mất và hai người sửa cùng lúc không ghi đè nhau.
 3. Thêm lịch sử sửa, xem khác biệt trước khi lưu và phân quyền cho trang quản trị.
