@@ -672,7 +672,7 @@ ns1:TD1052_D24K01dA {
 
     ns1:TDScholarshipAnnouncementSection a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap ;
-        ns1:toaDo "thông báo Danh sách dự kiến Học bổng khuyến khích học tập của Phòng Công tác Chính trị và Sinh viên, đăng ngày 25/3/2026"@vi .
+        ns1:toaDo "các thông báo danh sách dự kiến của từng học kỳ"@vi .
 
     ns1:TDScholarshipCriteriaGeneralSection a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
@@ -1708,7 +1708,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap a ns1:Nguon ;
         rdfs:label "Thông báo danh sách dự kiến học bổng khuyến khích học tập"@vi ;
-        ns1:banHanhNgay "2026-03-25"^^xsd:date ;
         ns1:duongDan "https://phongctsv.ntu.edu.vn/danh-muc/hoc-bong-khuyen-khich-hoc-tap"^^xsd:anyURI ;
         ns1:loaiNguon ns1:VanBanHuongDan ;
         ns1:ngayThuThap "2026-08-10"^^xsd:date .
@@ -2620,7 +2619,7 @@ ns1:TDScholarshipAnnouncementSection {
         ns1:duocXetBoi ns1:PhongCongTacChinhTriVaSinhVien ;
         ns1:noiDung "Phòng Công tác Chính trị và Sinh viên công bố danh sách dự kiến trên trang của phòng, tách riêng chương trình chuẩn và chương trình đào tạo đặc biệt. Sinh viên tự kiểm tra và gửi thắc mắc theo địa chỉ ghi trong thông báo."@vi,
             "Sinh viên có tên trong danh sách cung cấp số tài khoản Vietinbank và chi nhánh để nhận tiền, dùng địa chỉ thư điện tử do Trường cấp."@vi,
-            "Thời hạn phản hồi ghi trong từng thông báo. Đợt học kỳ I năm học 2025-2026 nhận thắc mắc đến hết ngày 30/3/2026."@vi .
+            "Thời hạn phản hồi ghi trong từng thông báo."@vi .
 }
 
 ns1:TDNguon1052DiemAKhoan3Dieu28 {

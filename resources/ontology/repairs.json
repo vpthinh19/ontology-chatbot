@@ -376,6 +376,11 @@
    "dia_chi": "TDScholarshipCriteriaSpecificSection",
    "toa_do": "mục II.2 Tiêu chuẩn và điều kiện cụ thể",
    "ly_do": "trang đánh số mục II.2"
+  },
+  {
+   "dia_chi": "TDScholarshipAnnouncementSection",
+   "toa_do": "các thông báo danh sách dự kiến của từng học kỳ",
+   "ly_do": "danh sách học bổng đổi mỗi kỳ nên trích dẫn không gắn vào một bài đăng. Đã đối chiếu hai bài (HKI 2025-2026 đăng 25/3/2026, HKII 2024-2025 đăng 6/10/2025): hướng dẫn giống hệt nhau, chỉ hạn phản hồi khác. Người dùng đồng ý (13/9/2026)"
   }
  ],
  "rut_trich_dan": [
@@ -650,6 +655,21 @@
     {"thuoc_tinh": "noiDung", "gia_tri": "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh.", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]},
     {"thuoc_tinh": "soTinChiToiThieu", "gia_tri": "15", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]},
     {"thuoc_tinh": "soTinChiToiDa", "gia_tri": "32", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXetVaCapHocBongKhuyenKhichHocTap",
+   "ly_do": "hạn phản hồi đổi theo từng đợt (30/3/2026 cho HKI 2025-2026, 10/10/2025 cho HKII 2024-2025); giữ vế lặp lại mỗi kỳ, bỏ ngày của một đợt",
+   "cau": [
+    {"thuoc_tinh": "noiDung", "gia_tri": "Thời hạn phản hồi ghi trong từng thông báo. Đợt học kỳ I năm học 2025-2026 nhận thắc mắc đến hết ngày 30/3/2026.", "xoa": true},
+    {"thuoc_tinh": "noiDung", "gia_tri": "Thời hạn phản hồi ghi trong từng thông báo.", "them": true, "trich_dan": [{"dia_chi": "TDScholarshipAnnouncementSection"}]}
+   ]
+  },
+  {
+   "thuc_the": "NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap",
+   "ly_do": "nguồn là trang danh mục học bổng, luôn hiện danh sách mới nhất; 25/3/2026 là ngày đăng của một bài, không phải ngày của trang",
+   "cau": [
+    {"thuoc_tinh": "banHanhNgay", "gia_tri": "2026-03-25", "xoa": true}
    ]
   }
  ],
