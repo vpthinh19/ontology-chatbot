@@ -10,10 +10,11 @@ from __future__ import annotations
 import re
 import unicodedata
 
+import pyoxigraph as oxi
 import pytest
 from rdflib import RDF, OWL, Literal, URIRef
 
-from ontchatbot.settings import ONTOLOGY_NS, PROJECT_ROOT
+from ontchatbot.settings import ONTOLOGY_NS, ONTOLOGY_PATH, PROJECT_ROOT
 
 #: Công văn có bản sao dạng văn bản trong ``references/``.
 #:
@@ -44,72 +45,75 @@ TEXT_SOURCED_DOCUMENTS = (
     "Decision1965",
 )
 
-#: Cả 14 bảng được trả nguyên khối cho LLM. Dòng đầu xác định bảng trực tiếp,
+#: Cả 16 bảng được trả nguyên khối cho LLM. Dòng đầu xác định bảng trực tiếp,
 #: tránh phải dựng lại bảng từ node con hoặc dựa vào heading có thể lặp.
+#: Khoá là tên thực thể trong ``ontology.trig``.
 VERBATIM_TABLE_SOURCES = {
     # Các mức học bổng dẫn đến đúng bảng chứa số tiền. Phép kiểm đối chiếu từng ký
     # tự với ``references/Qd317.md``.
-    "ScholarshipRateTableStandardProgram": (
+    "BangMucHocBongChuongTrinhChuan": (
         "Qd317.md",
         "| STT | Xếp loại học bổng | Học bổng 05 tháng / học kỳ (VNĐ) |",
     ),
-    "ScholarshipRateTableSpecialProgram": (
+    "BangMucHocBongChuongTrinhDacBiet": (
         "Qd317.md",
         "| STT | Xếp loại học bổng | Học bổng 05 tháng - chương trình đào tạo đặc biệt / học kỳ (VNĐ) |",
     ),
-    "AcademicPerformanceTable": (
+    "BangXepLoaiHocLuc": (
         "Qd1052.md",
         "| **Điểm trung bình chung** | **Mức xếp loại** |",
     ),
-    "StudyYearClassificationTable": (
+    "BangXepTrinhDoNamHoc": (
         "Qd1052.md",
         "| **TT** | **Số tín chỉ đã tích lũy** | **Xếp trình độ năm học** |",
     ),
-    "GraduationClassificationTable": (
+    "BangXepHangTotNghiep": (
         "Qd1052.md",
         "| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |",
     ),
-    "ClassSizeTable": (
+    "BangSiSoLopHocPhan": (
         "Qd1052.md",
         "| **TT** | **Học phần** | **Số lượng sinh viên** | |",
     ),
-    "EnglishConversionTableStandardProgram": (
+    # Bốn bảng Phụ lục 2 chép lại từ bản scan ngày 13/9/2026 (xem ghi chú trong
+    # ``Qd1052.md``): bản chép trước lệch dòng và sai dấu ≥.
+    "BangQuyDoiChungChiTiengAnhChuongTrinhChuan": (
         "Qd1052.md",
-        "| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |",
+        "| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 (Thang điểm 10) |",
     ),
-    "OtherLanguageConversionTableStandardProgram": (
+    "BangQuyDoiNgoaiNguKhacChuongTrinhChuan": (
         "Qd1052.md",
-        "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |",
+        "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 (Thang điểm 10) |",
     ),
-    "EnglishRequirementTableSpecialProgram": (
+    "BangChuanTiengAnhChuongTrinhDacBiet": (
         "Qd1052.md",
         "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |",
     ),
-    "OtherLanguageRequirementTableSpecialProgram": (
+    "BangChuanNgoaiNguKhacChuongTrinhDacBiet": (
         "Qd1052.md",
         "| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |",
     ),
-    "SecondLanguageConversionTableEnglishMajor": (
+    "BangQuyDoiNgoaiNguHaiNganhNgonNguAnh": (
         "Qd1052.md",
         "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |",
     ),
-    "ForeignLanguageCertificateAbbreviationTable": (
+    "DanhMucVietTatChungChiNgoaiNgu": (
         "Qd1052.md",
         "| TT | Ngoại ngữ | Từ viết tắt | Viết đầy đủ |",
     ),
-    "ComputerCertificateConversionTable": (
+    "BangQuyDoiChungChiTinHoc": (
         "Qd1052.md",
         "| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |",
     ),
-    "ForeignLanguageCourseCatalogueTable": (
+    "DanhMucHocPhanNgoaiNgu": (
         "Qd1965.md",
         "| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |",
     ),
-    "ForeignLanguageCourseAssessmentTable": (
+    "BangDanhGiaHocPhanNgoaiNgu": (
         "Qd1965.md",
         "| STT | Học phần | Thành phần đánh giá | Tỷ trọng |",
     ),
-    "AcademicProgramCatalogueTable": (
+    "DanhMucNganhDaoTaoTheoKhoiNganh": (
         "Qd729.md",
         "| **TT** | **Tên ngành đào tạo** |",
     ),
@@ -199,34 +203,39 @@ def test_every_leaf_provision_is_copied_verbatim(ontology_graph, source_text) ->
     assert drifted == []
 
 
-def test_all_tables_are_copied_cell_for_cell_from_their_sources(ontology_graph) -> None:
-    """Cả 14 bảng trả lời phải khớp nguồn từng ký tự và đúng một giá trị."""
+def test_all_tables_are_copied_cell_for_cell_from_their_sources() -> None:
+    """Cả 16 bảng trả lời phải khớp nguồn từng ký tự và đúng một giá trị.
 
-    verbatim_table = URIRef(ONTOLOGY_NS + "verbatimTableText")
-    document_table = URIRef(ONTOLOGY_NS + "DocumentTable")
-    conversion_table = URIRef(ONTOLOGY_NS + "CertificateConversionTable")
+    Kiểm trên ``ontology.trig``, nơi chatbot đọc: bảng là giá trị ``noiDung`` mở
+    đầu bằng ``|``. ``ontology.ttl`` chỉ còn là đầu vào của bộ chuyển đổi, và bảng
+    sai trong đó được sửa bằng ``repairs.json`` chứ không sửa tại chỗ.
+    """
+
+    store = oxi.Store()
+    store.load(path=str(ONTOLOGY_PATH), format=oxi.RdfFormat.TRIG)
+    noi_dung = oxi.NamedNode(ONTOLOGY_NS + "noiDung")
+
+    def tables_of(subject):
+        return {
+            quad.object.value
+            for quad in store.quads_for_pattern(subject, noi_dung, None, None)
+            if quad.object.value.startswith("|")
+        }
 
     mismatches = []
     for local_name, (source_name, header) in VERBATIM_TABLE_SOURCES.items():
-        node = URIRef(ONTOLOGY_NS + local_name)
         source = (PROJECT_ROOT / "references" / source_name).read_text(encoding="utf-8")
         expected = _markdown_table_at(source, header)
-        actual = list(ontology_graph.objects(node, verbatim_table))
-        if (
-            not any(
-                (node, RDF.type, table_class) in ontology_graph
-                for table_class in (document_table, conversion_table)
-            )
-            or len(actual) != 1
-            or str(actual[0]) != expected
-        ):
+        actual = tables_of(oxi.NamedNode(ONTOLOGY_NS + local_name))
+        if actual != {expected}:
             mismatches.append(local_name)
 
-    actual_tables = set(ontology_graph.subjects(verbatim_table, None))
-    expected_tables = {
-        URIRef(ONTOLOGY_NS + local_name) for local_name in VERBATIM_TABLE_SOURCES
+    actual_tables = {
+        quad.subject.value.rsplit("#", 1)[-1]
+        for quad in store.quads_for_pattern(None, noi_dung, None, None)
+        if quad.object.value.startswith("|")
     }
-    assert actual_tables == expected_tables
+    assert actual_tables == set(VERBATIM_TABLE_SOURCES)
     assert mismatches == []
 
 

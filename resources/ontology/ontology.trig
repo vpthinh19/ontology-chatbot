@@ -29,6 +29,8 @@ ns1:TD1052_D22K03 {
     ns1:ThuTucXetVaCongNhanTotNghiep ns1:doAiThucHien ns1:HoiDongXetTotNghiep ;
         ns1:duocXetBoi ns1:HoiDongXetTotNghiep ;
         ns1:noiDung "Hội đồng xét tốt nghiệp lập danh sách những sinh viên đủ điều kiện tốt nghiệp sau mỗi quý."@vi .
+
+    ns1:HoiDongXetTotNghiep ns1:noiDung "Sau mỗi quý, Hội đồng xét tốt nghiệp căn cứ các điều kiện công nhận tốt nghiệp quy định tại khoản 1 Điều 22 để lập danh sách những sinh viên đủ điều kiện tốt nghiệp. Hội đồng xét tốt nghiệp Trường do Hiệu trưởng hoặc Phó Hiệu trưởng được Hiệu trưởng uỷ quyền làm chủ tịch, Trưởng đơn vị quản lý đào tạo làm thư ký và các thành viên là các Trưởng Khoa/viện, Trưởng Phòng Công tác Chính trị và Sinh viên."@vi .
 }
 
 ns1:TD1052_D20K01dA {
@@ -71,12 +73,6 @@ ns1:TD1052_D24K01dA {
     ns1:BuocThucHien rdfs:label "Bước thực hiện"@vi .
 
     ns1:Chuong rdfs:label "Chương"@vi .
-
-    ns1:CoVanHocTap a ns1:ChuThe ;
-        rdfs:label "Cố vấn học tập"@vi ;
-        ns1:loaiChuThe ns1:ChuTheThamGia ;
-        skos:altLabel "cố vấn học tập"@vi,
-            "giáo viên chủ nhiệm"@vi .
 
     ns1:Diem rdfs:label "Điểm"@vi .
 
@@ -604,6 +600,26 @@ ns1:TD1052_D24K01dA {
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "điểm c khoản 3 Điều 28"@vi .
 
+    ns1:TDNguon1052GhiChuBang1PhuLuc2Muc11 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "ghi chú bảng 1 Phụ lục 2 mục 1.1"@vi .
+
+    ns1:TDNguon1052GhiChuBang2PhuLuc2Muc12 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "ghi chú bảng 2 Phụ lục 2 mục 1.2"@vi .
+
+    ns1:TDNguon1052GhiChuBang5PhuLuc2MucIi a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "ghi chú bảng 5 Phụ lục 2 mục II"@vi .
+
+    ns1:TDNguon1052GhiChuMuc2PhuLuc2 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "ghi chú mục 2 Phụ lục 2"@vi .
+
+    ns1:TDNguon1052GhiChuPhuLuc3 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "ghi chú Phụ lục 3"@vi .
+
     ns1:TDNguon1052Khoan1Dieu1 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 1 Điều 1"@vi .
@@ -632,13 +648,29 @@ ns1:TD1052_D24K01dA {
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 2 Điều 11"@vi .
 
+    ns1:TDNguon1052Khoan2Dieu12 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 2 Điều 12"@vi .
+
     ns1:TDNguon1052Khoan2Dieu9 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 2 Điều 9"@vi .
 
+    ns1:TDNguon1052Khoan3Dieu12 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 3 Điều 12"@vi .
+
+    ns1:TDNguon1052Khoan3Dieu17 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 3 Điều 17"@vi .
+
     ns1:TDNguon1052PhanMoDauDieu28 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "phần mở đầu Điều 28"@vi .
+
+    ns1:TDNguon1052PhanTrongDoPhuLuc3 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "phần Trong đó Phụ lục 3"@vi .
 
     ns1:TDNguon1314Buoc2MucIiiB a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1314 ;
@@ -984,15 +1016,6 @@ ns1:TD1052_D24K01dA {
             "chứng chỉ tiếng Anh"@vi,
             "tiếng Anh"@vi .
 
-    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet a ns1:Bang ;
-        rdfs:label "bảng chuẩn ngoại ngữ khác chương trình đặc biệt"@vi ;
-        skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi .
-
-    ns1:BangChuanTiengAnhChuongTrinhDacBiet a ns1:Bang ;
-        rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
-        skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi,
-            "yêu cầu tiếng Anh chương trình đặc biệt"@vi .
-
     ns1:BangDanhGiaHocPhanNgoaiNgu a ns1:Bang ;
         rdfs:label "bảng đánh giá học phần ngoại ngữ"@vi ;
         ns1:loaiBang ns1:BangTrongTaiLieu ;
@@ -1010,25 +1033,10 @@ ns1:TD1052_D24K01dA {
         ns1:loaiBang ns1:BangTrongTaiLieu ;
         skos:altLabel "mức tiền học bổng của chương trình đào tạo đặc biệt"@vi .
 
-    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan a ns1:Bang ;
-        rdfs:label "bảng quy đổi chứng chỉ tiếng Anh chương trình chuẩn"@vi ;
-        skos:altLabel "quy đổi IELTS TOEIC TOEFL sang điểm 10"@vi,
-            "quy đổi điểm chứng chỉ tiếng Anh quốc tế cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
-
     ns1:BangQuyDoiChungChiTinHoc a ns1:Bang ;
         rdfs:label "bảng quy đổi chứng chỉ tin học"@vi ;
         skos:altLabel "quy đổi điểm IC3 ICDL MOS"@vi,
             "điểm thưởng chứng chỉ tin học"@vi .
-
-    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh a ns1:Bang ;
-        rdfs:label "bảng quy đổi ngoại ngữ hai ngành Ngôn ngữ Anh"@vi ;
-        skos:altLabel "quy đổi HSK JLPT TOPIK cho sinh viên ngành Ngôn ngữ Anh"@vi,
-            "quy đổi chứng chỉ ngoại ngữ quốc tế cho sinh viên ngành Ngôn ngữ Anh"@vi .
-
-    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan a ns1:Bang ;
-        rdfs:label "bảng quy đổi ngoại ngữ khác chương trình chuẩn"@vi ;
-        skos:altLabel "quy đổi HSK JLPT TOPIK sang điểm 10"@vi,
-            "quy đổi chứng chỉ ngoại ngữ quốc tế khác cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
 
     ns1:BangSiSoLopHocPhan a ns1:Bang ;
         rdfs:label "bảng sĩ số lớp học phần"@vi ;
@@ -1179,12 +1187,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:DonViTinh rdfs:label "Đơn vị tính"@vi .
 
-    ns1:GiangVienGiangDayHocPhan a ns1:ChuThe ;
-        rdfs:label "Giảng viên giảng dạy học phần"@vi ;
-        ns1:loaiChuThe ns1:ChuTheThamGia ;
-        skos:altLabel "giảng viên"@vi,
-            "thầy cô dạy môn"@vi .
-
     ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi a ns1:QuyTac ;
         rdfs:label "Giới hạn khối lượng được công nhận và chuyển đổi"@vi .
 
@@ -1259,28 +1261,11 @@ ns1:TD1052_D24K01dA {
     ns1:HocPhanTuongDuong a ns1:KhaiNiem ;
         rdfs:label "Học phần tương đương"@vi .
 
-    ns1:HoiDongChuyenMon a ns1:ChuThe ;
-        rdfs:label "Hội đồng chuyên môn"@vi ;
-        ns1:loaiChuThe ns1:ChuTheThamGia ;
-        skos:altLabel "hội đồng khoa viện"@vi .
-
     ns1:Hsk a ns1:ChungChi ;
         rdfs:label "HSK"@vi ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Trung"@vi,
             "chứng chỉ tiếng Trung"@vi,
             "tiếng Trung"@vi .
-
-    ns1:Ic3 a ns1:ChungChi ;
-        rdfs:label "IC3"@vi ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
-
-    ns1:Icdl a ns1:ChungChi ;
-        rdfs:label "ICDL"@vi ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
 
     ns1:Ielts a ns1:ChungChi ;
         rdfs:label "IELTS"@vi ;
@@ -1415,12 +1400,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:MienPhiThanhToanQr a ns1:MucTien ;
         rdfs:label "Miễn phí thanh toán QR"@vi .
-
-    ns1:Mos a ns1:ChungChi ;
-        rdfs:label "MOS"@vi ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
 
     ns1:MucTaiDonXinBaoLuuHocPhan a ns1:MucBieuMauTrenWebsite ;
         rdfs:label "Mục tải: Đơn xin bảo lưu học phần"@vi .
@@ -1626,11 +1605,41 @@ ns1:TD1052_D24K01dA {
     ns1:TyLeToiDaDaoTaoTrucTuyen a ns1:QuyTac ;
         rdfs:label "Tỷ lệ tối đa đào tạo trực tuyến"@vi .
 
+    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet a ns1:Bang ;
+        rdfs:label "bảng chuẩn ngoại ngữ khác chương trình đặc biệt"@vi ;
+        skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi .
+
+    ns1:BangChuanTiengAnhChuongTrinhDacBiet a ns1:Bang ;
+        rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
+        skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi,
+            "yêu cầu tiếng Anh chương trình đặc biệt"@vi .
+
+    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan a ns1:Bang ;
+        rdfs:label "bảng quy đổi chứng chỉ tiếng Anh chương trình chuẩn"@vi ;
+        skos:altLabel "quy đổi IELTS TOEIC TOEFL sang điểm 10"@vi,
+            "quy đổi điểm chứng chỉ tiếng Anh quốc tế cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
+
+    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh a ns1:Bang ;
+        rdfs:label "bảng quy đổi ngoại ngữ hai ngành Ngôn ngữ Anh"@vi ;
+        skos:altLabel "quy đổi HSK JLPT TOPIK cho sinh viên ngành Ngôn ngữ Anh"@vi,
+            "quy đổi chứng chỉ ngoại ngữ quốc tế cho sinh viên ngành Ngôn ngữ Anh"@vi .
+
+    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan a ns1:Bang ;
+        rdfs:label "bảng quy đổi ngoại ngữ khác chương trình chuẩn"@vi ;
+        skos:altLabel "quy đổi HSK JLPT TOPIK sang điểm 10"@vi,
+            "quy đổi chứng chỉ ngoại ngữ quốc tế khác cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
+
     ns1:BoMon a ns1:ChuThe ;
         rdfs:label "Bộ môn"@vi ;
         skos:altLabel "bộ môn quản lý học phần"@vi .
 
     ns1:ChinhSachHocVu rdfs:label "Chính sách học vụ"@vi .
+
+    ns1:CoVanHocTap a ns1:ChuThe ;
+        rdfs:label "Cố vấn học tập"@vi ;
+        ns1:loaiChuThe ns1:ChuTheThamGia ;
+        skos:altLabel "cố vấn học tập"@vi,
+            "giáo viên chủ nhiệm"@vi .
 
     ns1:DanhMucBieuMau rdfs:label "Danh mục biểu mẫu"@vi .
 
@@ -1655,6 +1664,11 @@ ns1:TD1052_D24K01dA {
     ns1:HinhThucDaoTao rdfs:label "Hình thức đào tạo"@vi .
 
     ns1:HinhThucToChucDayHoc rdfs:label "Hình thức tổ chức dạy học"@vi .
+
+    ns1:HoiDongChuyenMon a ns1:ChuThe ;
+        rdfs:label "Hội đồng chuyên môn"@vi ;
+        ns1:loaiChuThe ns1:ChuTheThamGia ;
+        skos:altLabel "hội đồng khoa viện"@vi .
 
     ns1:KhoaHoacVienDaoTao a ns1:ChuThe ;
         rdfs:label "Khoa hoặc viện đào tạo"@vi ;
@@ -1771,10 +1785,24 @@ ns1:TD1052_D24K01dA {
 
     ns1:ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
 
-    ns1:HoiDongXetTotNghiep a ns1:ChuThe ;
-        rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
+    ns1:GiangVienGiangDayHocPhan a ns1:ChuThe ;
+        rdfs:label "Giảng viên giảng dạy học phần"@vi ;
         ns1:loaiChuThe ns1:ChuTheThamGia ;
-        skos:altLabel "hội đồng tốt nghiệp"@vi .
+        skos:altLabel "giảng viên"@vi,
+            "thầy cô dạy môn"@vi .
+
+    ns1:Ic3 a ns1:ChungChi ;
+        rdfs:label "IC3"@vi ;
+        skos:altLabel "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
+
+    ns1:Icdl a ns1:ChungChi ;
+        rdfs:label "ICDL"@vi ;
+        skos:altLabel "ECDL"@vi,
+            "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
 
     ns1:MauSo02DonDangKyThucHienDoAnTotNghiep a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 02 - Đơn đăng ký thực hiện đồ án tốt nghiệp"@vi .
@@ -1790,6 +1818,12 @@ ns1:TD1052_D24K01dA {
 
     ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 14 - Đơn đăng ký chương trình trao đổi sinh viên"@vi .
+
+    ns1:Mos a ns1:ChungChi ;
+        rdfs:label "MOS"@vi ;
+        skos:altLabel "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
 
     ns1:NganHang rdfs:label "Ngân hàng"@vi .
 
@@ -1868,6 +1902,11 @@ ns1:TD1052_D24K01dA {
     ns1:DonViTrongTruong rdfs:label "Đơn vị trong trường"@vi .
 
     ns1:HeThongTrucTuyen rdfs:label "Hệ thống trực tuyến"@vi .
+
+    ns1:HoiDongXetTotNghiep a ns1:ChuThe ;
+        rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
+        ns1:loaiChuThe ns1:ChuTheThamGia ;
+        skos:altLabel "hội đồng tốt nghiệp"@vi .
 
     ns1:KhoiNganh rdfs:label "Khối ngành"@vi .
 
@@ -2158,14 +2197,14 @@ ns1:TD1052_D24K01dA {
 
     ns1:ChuThe rdfs:label "Chủ thể"@vi .
 
-    ns1:SinhVien a ns1:ChuThe ;
-        rdfs:label "Sinh viên"@vi ;
-        ns1:loaiChuThe ns1:ChuTheThamGia .
-
     ns1:KhoiNganhVToanMayTinhCongNgheKyThuatSanXuatXayDungNongLamNghiepVaThuySan a ns1:DanhMuc ;
         rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi .
 
     ns1:MucTien rdfs:label "Mức tiền"@vi .
+
+    ns1:SinhVien a ns1:ChuThe ;
+        rdfs:label "Sinh viên"@vi ;
+        ns1:loaiChuThe ns1:ChuTheThamGia .
 
     ns1:Bang rdfs:label "Bảng"@vi .
 
@@ -2266,6 +2305,14 @@ ns1:TDNguon1618PhanCanCu {
     ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
 
+ns1:TDNguon1052GhiChuBang1PhuLuc2Muc11 {
+    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan ns1:noiDung "Việc quy đổi đối với mức điểm thấp hơn hoặc hình thức thi khác (nếu có) của các Chứng chỉ quốc tế sẽ do Khoa và đơn vị quản lý đào tạo xem xét quyết định và xây dựng bảng quy đổi điểm phù hợp."@vi .
+}
+
+ns1:TDNguon1052Khoan3Dieu12 {
+    ns1:SinhVien ns1:noiDung "Khi tham gia học tập, sinh viên có nhiệm vụ sau: a) Thường xuyên cập nhật và thực hiện đúng kế hoạch dạy học, kiểm tra, đánh giá theo Đề cương chi tiết học phần trên hệ thống NTU E-learning lớp học phần; b) Thực hiện đầy đủ và trung thực các nhiệm vụ học tập, kiểm tra, đánh giá theo Đề cương chi tiết học phần và hướng dẫn của giảng viên giảng dạy học phần; c) Thực hiện đầy đủ các quy định khác của Nhà trường và của giảng viên giảng dạy học phần."@vi .
+}
+
 ns1:TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc3 {
     ns1:ThuTucXinThoiHoc ns1:noiDung "Văn thư thông báo quyết định, Phòng Công tác Chính trị và Sinh viên nhập dữ liệu vào mạng quản lý đào tạo, mỗi việc trong 01 ngày."@vi .
 
@@ -2280,12 +2327,12 @@ ns1:TDEnglishRequirementTableSpecialProgram {
     ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:loaiBang ns1:BangQuyDoiChungChi ;
         ns1:noiDung """| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
-| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
-| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |
-| 6 | Quản trị dịch vụ du lịch và lữ hành | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | > 160 | > 153 | ≥ 160 |"""@vi .
+| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |
+| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |
+| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |
+| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |
+| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |
+| 6 | Quản trị dịch vụ du lịch và lữ hành | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |"""@vi .
 }
 
 ns1:TD1052_D06K02dDD {
@@ -2372,6 +2419,10 @@ ns1:TD1052_D01K02 {
 ns1:TD1052_D24K02 {
     ns1:ThuTucXinThoiHoc ns1:noiDung "Những sinh viên này muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác."@vi,
             "Sinh viên được xin thôi học vì lý do cá nhân, trừ trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
+}
+
+ns1:TDNguon1052GhiChuBang2PhuLuc2Muc12 {
+    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:noiDung "Việc quy đổi đối với mức điểm thấp hơn hoặc hình thức thi khác (nếu có) của các Chứng chỉ quốc tế sẽ do Khoa và đơn vị quản lý đào tạo xem xét quyết định và xây dựng bảng quy đổi điểm phù hợp."@vi .
 }
 
 ns1:TD1052_D29K02 {
@@ -2476,12 +2527,12 @@ ns1:TDSecondLanguageConversionTableEnglishMajor {
     ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:loaiBang ns1:BangQuyDoiChungChi ;
         ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |
-| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |
-| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | 300 | TOPIK 3 | ≥ 300 | B1 |
-| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | 400 | TOPIK 4 | ≥ 350 | B2 |
-| Bậc 5 | HSK 5 | | N2 | 740 | TRKI 3 | | | TOPIK 5 | ≥ 400 | |
-| Bậc 6 | | | N1 | 880 | TRKI 4 | | | TOPIK 6 | > 450 | |"""@vi .
+| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | ≥ 100 | TOPIK 1 | ≥ 200 | A1 |
+| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | ≥ 200 | TOPIK 2 | ≥ 250 | A2 |
+| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | ≥ 300 | B1 |
+| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | B1 |
+| Bậc 5 | HSK 5 | - | N2 | 740 | TRKI 3 | - | - | TOPIK 5 | ≥ 400 | B2 |
+| Bậc 6 | - | - | N1 | 880 | TRKI 4 | - | - | TOPIK 6 | ≥ 450 | B2 |"""@vi .
 }
 
 ns1:TDForeignLanguageCourseAssessmentTable {
@@ -2647,6 +2698,12 @@ ns1:TDTuitionPaymentGuidanceSection02 {
     ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
         ns1:hoTroPhuongThuc ns1:ThanhToanBangMobileBankingHoacInternetBanking ;
         ns1:noiDung "Nếu có tài khoản Agribank, Vietinbank hoặc Liên Việt PostBank, dùng Mobile Banking hoặc Internet Banking để đóng học phí, miễn phí."@vi .
+}
+
+ns1:TDNguon1052GhiChuMuc2PhuLuc2 {
+    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet ns1:noiDung "Chứng chỉ ngoại ngữ quốc tế đối với chương trình đặc biệt được quy đổi đồng thời thành điểm 10 và đạt chuẩn đầu ra."@vi .
+
+    ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:noiDung "Chứng chỉ ngoại ngữ quốc tế đối với chương trình đặc biệt được quy đổi đồng thời thành điểm 10 và đạt chuẩn đầu ra."@vi .
 }
 
 ns1:TDTuitionPaymentGuidanceSection01 {
@@ -2816,6 +2873,10 @@ ns1:TDNguon1052Khoan1Dieu1 {
     ns1:TrinhDoDaiHoc ns1:loaiDanhMuc ns1:TrinhDoDaoTao .
 }
 
+ns1:TDNguon1052Khoan2Dieu12 {
+    ns1:GiangVienGiangDayHocPhan ns1:noiDung "Khi giảng dạy học phần, giảng viên thực hiện các nhiệm vụ sau: a) Trước khi bắt đầu lên lớp, hoàn thiện Đề cương chi tiết học phần, bài giảng và các học liệu cần thiết để đưa lên hệ thống NTU E-learning của lớp học phần; b) Công bố và hướng dẫn sinh viên thực hiện kế hoạch dạy học theo Đề cương chi tiết học phần ngay từ buổi lên lớp đầu tiên; c) Tổ chức dạy học theo Đề cương chi tiết học phần trong đó kết hợp dạy học trên lớp và trên hệ thống NTU E-learning lớp học phần; d) Thực hiện kiểm tra, đánh giá sinh viên theo nội dung và kế hoạch trong Đề cương chi tiết học phần, đáp ứng chuẩn đầu ra của học phần và đảm bảo tính công khai, minh bạch, tính giá trị và độ tin cậy; đ) Hướng dẫn và hỗ trợ sinh viên học tập, nghiên cứu ngoài giờ lên lớp theo phương thức trực tiếp và trực tuyến; e) Trường hợp không đảm bảo kế hoạch như dự kiến, giảng viên điều chỉnh kế hoạch dạy học, sắp xếp lịch dạy học bù, cập nhật Đề cương chi tiết học phần trên hệ thống NTU E-learning lớp học phần và thông báo ngay tới sinh viên; g) Thông báo triển khai tất cả hoạt động dạy học, kiểm tra, đánh giá trên hệ thống NTU E-learning lớp học phần; h) Thu nhận thông tin phản hồi từ sinh viên để liên tục hoàn thiện nội dung, phương pháp giảng dạy, kiểm tra, đánh giá học phần."@vi .
+}
+
 ns1:TD1052_D21K06 {
     ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
         ns1:doAiThucHien ns1:SinhVien ;
@@ -2842,6 +2903,17 @@ ns1:TD1052_D21K04 {
         ns1:tyLeToiDa 50.0 .
 
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Khối lượng được công nhận và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi .
+}
+
+ns1:TDNguon1052GhiChuPhuLuc3 {
+    ns1:Ic3 ns1:noiDung "IC3 là chứng chỉ quốc tế về sử dụng máy tính và Internet do tổ chức Certiport của Mỹ cấp."@vi ;
+        ns1:tenDayDuCuaChungChi "Internet and Computing Core Certification" .
+
+    ns1:Icdl ns1:noiDung "ICDL là bộ chứng chỉ kỹ năng sử dụng công nghệ thông tin quốc tế - tên gọi trên phạm vi quốc tế của bộ chứng chỉ chuẩn Châu Âu ECDL (European Computer Driving Licence), sau khi ECDL được phổ biến và công nhận rộng rãi ở các nước Châu Âu."@vi ;
+        ns1:tenDayDuCuaChungChi "International Computer Driving Licence" .
+
+    ns1:Mos ns1:noiDung "MOS là bài thi đánh giá kỹ năng tin học văn phòng được sử dụng rộng rãi trên thế giới. Đây là chứng chỉ do Microsoft cấp nhằm công nhận mức độ hiểu biết và khả năng sử dụng của cá nhân đối với các ứng dụng văn phòng của Microsoft như: Word, Excel, Powerpoint, Access, Outlook."@vi ;
+        ns1:tenDayDuCuaChungChi "Microsoft Office Specialist" .
 }
 
 ns1:TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 {
@@ -2875,6 +2947,8 @@ ns1:TDGraduationClassificationTable {
 }
 
 ns1:TD1052_D09K02dC {
+    ns1:CoVanHocTap ns1:noiDung "Để chuẩn bị đăng ký học tập cho một học kỳ, sinh viên xin ý kiến tư vấn của Cố vấn học tập và đăng ký học các lớp học phần tổ chức trong học kỳ tùy theo khả năng và tiến độ học tập."@vi .
+
     ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Xin ý kiến tư vấn của Cố vấn học tập trước khi đăng ký các lớp học phần."@vi .
 }
 
@@ -2883,7 +2957,17 @@ ns1:TD1052_D07K02dA {
         ns1:noiDung "Học kỳ I và học kỳ II kéo dài ít nhất 19 tuần, bao gồm 14 tuần học (trong đó có 01 tuần học số), 01 tuần thi giữa kỳ, 02 tuần thi cuối kỳ, 01 tuần chấm thi giữa kỳ và 01 tuần chấm thi cuối kỳ."@vi .
 }
 
+ns1:TDNguon1052GhiChuBang5PhuLuc2MucIi {
+    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:noiDung "Việc quy đổi đối với mức điểm thấp hơn hoặc hình thức thi khác (nếu có) của các Chứng chỉ quốc tế sẽ do Khoa và đơn vị quản lý đào tạo xem xét quyết định và xây dựng bảng quy đổi điểm phù hợp."@vi .
+}
+
+ns1:TDNguon1052Khoan3Dieu17 {
+    ns1:GiangVienGiangDayHocPhan ns1:noiDung "Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do giảng viên giảng dạy học phần tổ chức."@vi .
+}
+
 ns1:TD1052_D21K03 {
+    ns1:HoiDongChuyenMon ns1:noiDung "Hội đồng chuyên môn của Nhà trường là Hội đồng Khoa/viện hoặc Hội đồng được Hiệu trưởng thành lập nếu thấy cần thiết."@vi .
+
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:duocXetBoi ns1:HoiDongChuyenMon ;
         ns1:noiDung "Hội đồng chuyên môn của Nhà trường hoặc Đơn vị quản lý đào tạo phối hợp với Khoa/viện xem xét công nhận, chuyển đổi tín chỉ trên cơ sở đối sánh chuẩn đầu ra, nội dung và khối lượng học tập, cách thức đánh giá học phần và các điều kiện bảo đảm chất lượng thực hiện chương trình."@vi,
             "Kết quả được công nhận và chuyển đổi theo từng học phần, theo từng nhóm học phần, hoặc theo cả chương trình đào tạo."@vi .
@@ -2906,14 +2990,14 @@ ns1:TD1052_D02K04dA {
 
 ns1:TDOtherLanguageConversionTableStandardProgram {
     ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:loaiBang ns1:BangQuyDoiChungChi ;
-        ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |
+        ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 (Thang điểm 10) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | > 100 | TOPIK 1 | 200 | |
-| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | > 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
-| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | > 300 | |
-| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | Đạt học phần điều kiện: Ngoại ngữ B1.1, B1.2 |
-| Bậc 5 | | | N2 | 740 | TRKI 3 | | | TOPIK 5 | > 400 | |
-| Bậc 6 | | | N1 | 880 | TRKI 4 | | | TOPIK 6 | > 450 | |"""@vi .
+| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | ≥ 100 | TOPIK 1 | ≥ 200 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
+| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | ≥ 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
+| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | ≥ 300 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |
+| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |
+| Bậc 5 | - | - | N2 | 740 | TRKI 3 | - | - | TOPIK 5 | ≥ 400 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |
+| Bậc 6 | - | - | N1 | 880 | TRKI 4 | - | - | TOPIK 6 | ≥ 450 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |"""@vi .
 }
 
 ns1:TD1052_D24K03 {
@@ -2979,19 +3063,19 @@ ns1:TD1052_D05K02 {
 ns1:TDEnglishConversionTableStandardProgram {
     ns1:AptisGeneral ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
 
-    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan ns1:loaiBang ns1:BangQuyDoiChungChi ;
-        ns1:noiDung """| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Bậc 1 | A1 | | | | | | | |
-| Bậc 2 | A2 | 300 | ≥ 30 | | | ≥ 100 | ≥ 100 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
-| Bậc 3 | B1 | 400 <br> ≥ 500 | ≥ 40 <br> ≥ 65 | ≥ 4.0 <br> ≥ 5.0 | ≥ 140 | ≥ 120 <br> 131 | > 130 <br> ≥ 151 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
-| Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 | ≥ 153 | 160 | 160 | Đạt học phần điều kiện: Tiếng Anh B1.1, B1.2 |
-| Bậc 5 | C1 | ≥ 700 | ≥ 80 | ≥ 6.5 | ≥ 170 | | 180 | |
-| Bậc 6 | C2 | ≥ 850 | ≥ 110 | ≥ 8.5 | ≥ 190 | | ≥ 200 | |"""@vi .
-
     ns1:CambridgeEnglishScale ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
 
     ns1:Linguaskill ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
+
+    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 (Thang điểm 10) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Bậc 1 | A1 | ≥ 300 | ≥ 30 | ≥ 3.0 | ≥ 100 | ≥ 100 | ≥ 100 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
+| Bậc 2 | A2 | ≥ 400 | ≥ 40 | ≥ 4.0 | ≥ 120 | ≥ 120 | ≥ 130 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
+| Bậc 3 | B1 | ≥ 500 | ≥ 65 | ≥ 5.0 | ≥ 140 | ≥ 131 | ≥ 151 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
+| Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 | ≥ 160 | ≥ 153 | ≥ 160 | Tiếng Anh B1.1, Tiếng Anh B1.2 |
+| Bậc 5 | C1 | ≥ 700 | ≥ 80 | ≥ 6.5 | ≥ 180 | ≥ 170 | ≥ 180 | Tiếng Anh B1.1, Tiếng Anh B1.2 |
+| Bậc 6 | C2 | ≥ 850 | ≥ 110 | ≥ 8.5 | | ≥ 190 | ≥ 200 | Tiếng Anh B1.1, Tiếng Anh B1.2 |"""@vi .
 }
 
 ns1:TDAcademicProgramCatalogueTable {
@@ -3392,7 +3476,8 @@ ns1:TDNguon1052Khoan1Dieu21 {
 }
 
 ns1:TD1052_D10K02 {
-    ns1:BoMon ns1:loaiChuThe ns1:DonViTrongTruong .
+    ns1:BoMon ns1:loaiChuThe ns1:DonViTrongTruong ;
+        ns1:noiDung "Bộ môn thuộc Khoa, Viện đào tạo. Trong thời gian đăng ký học phần, Nhà trường mở thêm lớp học phần theo đề nghị khi số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp và được Bộ môn quản lý chấp thuận."@vi .
 
     ns1:ThuTucDeNghiMoThemLopHocPhan ns1:duocXetBoi ns1:BoMon ;
         ns1:noiDung "Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp thuận, Nhà trường sẽ mở thêm lớp học phần theo đề nghị."@vi .
@@ -3534,12 +3619,22 @@ ns1:TDNguon1052Khoan1Dieu27 {
     ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Trao đổi sinh viên là việc Nhà trường hợp tác với các trường khác để tiếp nhận sinh viên của nhau đến học tập ở trường đối tác nhằm công nhận kết quả học tập và tín chỉ lẫn nhau (sau đây gọi là chương trình trao đổi sinh viên)."@vi .
 }
 
+ns1:TDNguon1052PhanTrongDoPhuLuc3 {
+    ns1:Ic3 ns1:noiDung "Tổng điểm ở cột điểm IC3 là tổng điểm của 3 mô-đun IC3."@vi .
+
+    ns1:Icdl ns1:noiDung "Tổng điểm ở cột điểm ICDL là tổng điểm của 5 mô-đun."@vi .
+
+    ns1:Mos ns1:noiDung "Tổng điểm ở cột điểm MOS là tổng điểm của 2 trong 3 mô-đun."@vi .
+}
+
 ns1:TDNguon1052Khoan1Dieu9 {
     ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi sinh viên trước khi bắt đầu một học kỳ mới."@vi .
 }
 
 ns1:TD1052_D08K01dA {
     ns1:LopHanhChinh ns1:noiDung "Lớp hành chính là lớp được thành lập ổn định trong cả khóa học theo ngành, chuyên ngành hoặc chương trình đào tạo, dùng để duy trì hoạt động đoàn thể, xét kết quả rèn luyện, xét khen thưởng và phổ biến thông tin. Mỗi lớp hành chính có mã số riêng, được bố trí cố vấn học tập và cần có tối thiểu 20 sinh viên."@vi .
+
+    ns1:CoVanHocTap ns1:noiDung "Mỗi lớp hành chính được bố trí cố vấn học tập để hỗ trợ, giúp đỡ sinh viên trong suốt quá trình học tập."@vi .
 }
 
 ns1:TDNguon1619Dieu1 {

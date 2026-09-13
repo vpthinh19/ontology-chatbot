@@ -24,14 +24,9 @@
   "ThuTucXetVaCapHocBongKhuyenKhichHocTap|các thông báo danh sách dự kiến của từng học kỳ": "mỗi thông báo nêu ba việc: công bố danh sách, cung cấp số tài khoản, thời hạn phản hồi"
  },
  "khong_nguon": {
-  "ly_do": "Thực thể không có câu nào kèm nguồn: chỉ có danh tính, làm đích của quan hệ, và ô loại thuộc nhóm do ta tự đặt ('Chủ thể tham gia'). Văn bản nhắc tới họ trong nhiều điều khoản nhưng không tự khẳng định điều gì về chính họ, nên chưa có câu nào để trích dẫn. Rà lại ngày 13/9/2026: các chủ thể có định nghĩa trong văn bản (cố vấn học tập, hai hội đồng) sẽ được thêm nội dung kèm nguồn.",
+  "ly_do": "Thực thể không có câu nào kèm nguồn: chỉ có danh tính, làm đích của quan hệ, và ô loại thuộc nhóm do ta tự đặt ('Chủ thể tham gia'). Rà lại ngày 13/9/2026: cố vấn học tập (điểm a khoản 1 Điều 8, điểm c khoản 2 Điều 9), giảng viên và sinh viên (khoản 2, khoản 3 Điều 12), hai hội đồng (khoản 3 Điều 21, khoản 3 Điều 22) đã có câu kèm nguồn. Còn Hiệu trưởng: Quy chế 1052 nhắc tới trong nhiều điều khoản với vai trò người quyết định, nhưng không khẳng định điều gì về chính chức danh này.",
   "thuc_the": [
-   "Cố vấn học tập",
-   "Giảng viên giảng dạy học phần",
-   "Hiệu trưởng",
-   "Hội đồng chuyên môn",
-   "Hội đồng xét tốt nghiệp",
-   "Sinh viên"
+   "Hiệu trưởng"
   ]
  }
 }
