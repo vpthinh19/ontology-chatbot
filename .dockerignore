@@ -19,11 +19,14 @@ __pycache__
 .coverage
 htmlcov
 
-# Test + training artifacts (the model is pulled from HF Hub while building)
+# Tests, evaluation runs, reference copies, the web UI and local scratch are not
+# part of the service image
 tests/
-artifacts/
 logs/
-checkpoints/
+dev/
+references/
+resources/end-to-end/
+webui/
 
 # Local dev clutter
 .env*

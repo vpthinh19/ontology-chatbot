@@ -38,4 +38,4 @@ USER ontchatbot
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD python -c "import os,urllib.request,sys; port=os.environ.get('PORT','8000'); token=os.environ.get('ONTCHATBOT_BACKEND_TOKEN',''); request=urllib.request.Request(f'http://127.0.0.1:{port}/health',headers={'Authorization':f'Bearer {token}'}); sys.exit(0 if urllib.request.urlopen(request,timeout=3).status==200 else 1)" || exit 1
-CMD ["serve_sparql", "--host", "0.0.0.0"]
+CMD ["serve_chatbot", "--host", "0.0.0.0"]

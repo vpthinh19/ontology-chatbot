@@ -4,21 +4,17 @@
 
 [project]
 name = "ontchatbot"
-version = "3.2.1"
-description = "Vietnamese academic-regulation chatbot: an LLM answers from an ontology found through a BM25 index of labels and properties"
+version = "4.0.0"
+description = "Vietnamese academic-affairs chatbot: an LLM answers from a sourced ontology found through a BM25 index of labels and properties"
 readme = "README.md"
 requires-python = "==3.12.*"
 
-# Only what both the deployed service and the offline tooling need: rdflib reads
-# the ontology and runs SPARQL, underthesea segments Vietnamese compound words, and
-# bm25s ranks the index rows. pyoxigraph stays until the modules of the replaced
-# classifier runtime are removed.
+# What both the service and the offline tools need: pyoxigraph stores and reads
+# the TriG ontology, and bm25s ranks the index rows.
 dependencies = [
     "bm25s>=0.3.11",
     "numpy>=2.5.1",
     "pyoxigraph>=0.5.0",
-    "rdflib>=7.6.0",
-    "underthesea>=9.5.0",
 ]
 
 # ---------------------------------------------------------------------------
@@ -38,53 +34,14 @@ inference = [
     "uvicorn>=0.41.0",
 ]
 
-# Training, model export, scoring and report building. Never enters the
-# container image.
-#
-# rdflib is here rather than in the core dependencies because only the offline
-# tooling walks the graph triple by triple; oxrdflib backs it with the same
-# Oxigraph store, and pyparsing is what its SPARQL parser is built on.
-#
-# The onnxruntime floor matches the inference extra: the pre-fused classifier
-# graph is written by the runtime here and read by the runtime there.
-research = [
-    "huggingface-hub>=1.24.0",
-    "matplotlib>=3.11.0",
-    "onnx>=1.20.0",
-    "onnxruntime>=1.29.0",
-    "onnxscript>=0.5.0",
-    "oxrdflib>=0.5.0",
-    "peft>=0.20.0",
-    "playwright>=1.56.0",
-    "protobuf>=6.33.0",
-    "pyparsing>=3.2.0",
-    "rdflib>=7.6.0",
-    "scikit-learn>=1.9.0",
-    "sentencepiece>=0.2.2",
-    "tiktoken>=0.13.0",
-    "tokenizers>=0.22.2",
-    "torch>=2.13.0",
-    "transformers>=5.14.1",
-    "umap-learn>=0.5.12",
-]
-
 # ---------------------------------------------------------------------------
 # Command-line entry points
 # ---------------------------------------------------------------------------
 
 [project.scripts]
-bake_cards = "ontchatbot.cli.bake_cards:main"
-benchmark_classifier = "ontchatbot.cli.benchmark_classifier:main"
 chat_agent = "ontchatbot.cli.chat:main"
-check_conditions = "ontchatbot.cli.check_conditions:main"
-export_classifier = "ontchatbot.cli.export_classifier:main"
-generate_reports = "ontchatbot.cli.report:main"
 ontology_search = "ontchatbot.cli.search:main"
-publish_classifier = "ontchatbot.cli.publish_classifier:main"
-report_page = "ontchatbot.cli.report_page:main"
-serve_sparql = "ontchatbot.cli.serve:main"
-train_classifier = "ontchatbot.cli.train_classifier:main"
-validate_sparql_dataset = "ontchatbot.cli.validate_data:main"
+serve_chatbot = "ontchatbot.cli.serve:main"
 
 # ---------------------------------------------------------------------------
 # Build
@@ -104,16 +61,13 @@ package = true
 # Development
 # ---------------------------------------------------------------------------
 
-# The suite covers the offline tooling as well as the service, so it needs the
-# graph libraries even when the heavyweight research extra is not installed.
+# The suite checks the whole ontology against its SHACL shapes, so it needs
+# pyshacl even when the service extra is not installed.
 [dependency-groups]
 dev = [
-    "oxrdflib>=0.5.0",
-    "pyparsing>=3.2.0",
     "pyshacl>=0.40.1",
     "pytest>=9.1.0",
     "pytest-xdist>=3.8.0",
-    "rdflib>=7.6.0",
 ]
 
 [tool.pytest.ini_options]

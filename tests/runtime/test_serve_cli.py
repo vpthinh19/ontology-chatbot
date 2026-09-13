@@ -24,7 +24,7 @@ def test_importing_the_server_does_not_import_the_search_libraries() -> None:
 
     script = (
         "import sys; import ontchatbot.cli.serve; "
-        "print(*(int(name in sys.modules) for name in ('numpy', 'rdflib', 'bm25s', 'underthesea')))"
+        "print(*(int(name in sys.modules) for name in ('numpy', 'pyoxigraph', 'bm25s', 'pyshacl')))"
     )
 
     result = subprocess.run([sys.executable, "-c", script], check=True, capture_output=True, text=True)
@@ -35,7 +35,7 @@ def test_importing_the_server_does_not_import_the_search_libraries() -> None:
 def test_lookup_is_built_from_the_configured_ontology(monkeypatch, tmp_path) -> None:
     import ontchatbot.cli.serve as serve
 
-    ontology = tmp_path / "ontology.ttl"
+    ontology = tmp_path / "ontology.trig"
     args = _parse_args(_flags("--ontology", str(ontology), "--search-workers", "3", "--top-k", "5"))
     opened = {}
 
@@ -100,13 +100,13 @@ def test_limits_and_ontology_path_can_come_from_the_environment(monkeypatch) -> 
     monkeypatch.setenv("ONTCHATBOT_SEARCH_TOP_K", "5")
     monkeypatch.setenv("ONTCHATBOT_TURN_SLOTS", "4")
     monkeypatch.setenv("ONTCHATBOT_TURN_QUEUE", "6")
-    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_PATH", "/data/ontology.ttl")
+    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_PATH", "/data/ontology.trig")
 
     args = _parse_args(_flags())
 
     assert (args.search_workers, args.top_k) == (2, 5)
     assert (args.turn_slots, args.turn_queue) == (4, 6)
-    assert Path(args.ontology) == Path("/data/ontology.ttl")
+    assert Path(args.ontology) == Path("/data/ontology.trig")
 
 
 @pytest.mark.parametrize(
@@ -158,19 +158,6 @@ def test_server_rejects_missing_llm_credentials_before_loading_the_ontology(monk
 
     with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_API_KEY"):
         serve.main()
-
-
-def test_serve_no_longer_takes_the_flags_of_the_replaced_runtime() -> None:
-    """Các cờ của bộ chạy cũ phải biến mất, không im lặng bị bỏ qua.
-
-    Một cờ bị gỡ mà vẫn nhận vào sẽ khiến lệnh triển khai cũ chạy được nhưng
-    không còn tác dụng, và không ai biết.
-    """
-
-    for flag in ("--model-dir", "--onnx-threads", "--lookup-workers", "--classification-cache-entries",
-                 "--sparql-cache-mib", "--compute-type", "--device"):
-        with pytest.raises(SystemExit):
-            _parse_args(_flags(flag, "1"))
 
 
 def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:

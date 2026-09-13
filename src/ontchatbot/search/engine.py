@@ -1,4 +1,4 @@
-"""Engine: từ khoá → dòng khớp (BM25) → node → hồ sơ đọc bằng SPARQL."""
+"""Engine: từ khoá → dòng khớp (BM25) → mục → hồ sơ gom theo nguồn."""
 
 from __future__ import annotations
 

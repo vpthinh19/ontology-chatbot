@@ -1,9 +1,0 @@
-flowchart LR
-    U["Người dùng"] --> L["LLM lớn"]
-    L -->|"gọi công cụ"| T["Công cụ ontology"]
-    T --> C["Danh mục truy vấn"]
-    T --> O["Ontology"]
-    O --> N["Trọn node + nguồn"]
-    N --> T
-    T --> L
-    L --> A["Câu trả lời bám nguồn"]

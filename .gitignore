@@ -23,28 +23,9 @@ __pycache__/
 /docs/superpowers/
 /docs/deploy-cloud-run.md
 
-checkpoints/
-models/
 logs/
 
-# ``artifacts/`` chứa trọng số model, kết quả chạy cục bộ và bộ dựng hình. Chỉ bộ
-# dựng hình được theo dõi: nó là mã nguồn sinh ra các ảnh trong ``docs/images/``,
-# nên một bản sao mới phải dựng lại được chúng. Mọi thứ khác là kết quả chạy trên
-# máy, dựng lại được bằng ``train_classifier`` và ``benchmark_classifier``.
-/artifacts/*
-!/artifacts/README.md
-!/artifacts/figures/
+# Chỉ mục tìm kiếm lưu ra đĩa bởi `ontology_search build`: dựng lại được từ ontology.
+/build/
 
 /dev/
-ontology.ipynb
-ontology_old.ttl
-
-# Gói kết quả mang về từ máy thuê: nhị phân, nặng, và dựng lại được từ log.
-*.tar.gz
-
-# Bảng thẻ dựng sẵn: sinh lúc dựng ảnh từ ontology + danh mục.
-resources/ontology/cards.json
-
-# Trang báo cáo xem tại máy: `report_page` dựng lại từ ontology, dataset và chỉ
-# số chấm model, nên không cần giữ một bản chép trong kho.
-resources/reports/bao-cao.html

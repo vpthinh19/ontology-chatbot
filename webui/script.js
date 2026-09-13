@@ -351,26 +351,16 @@ const generateResponse = async (botMessage, userMessage) => {
     const line = chunk.split("\n").find((item) => item.startsWith("data: "));
     if (!line) return;
     const event = JSON.parse(line.slice(6));
-    const legacyTypes = {
-      chu: "text_delta",
-      tra_cuu: "lookup_started",
-      tra_cuu_xong: "lookup_finished",
-      hang_doi: "queued",
-      canh_bao: "warning",
-      xong: "completed",
-      loi: "error",
-    };
-    const eventType = event.type || legacyTypes[event.loai];
-    const content = event.content ?? event.noi_dung;
+    const { type: eventType, content } = event;
     if (eventType === "text_delta") {
       answer += content;
       botMessage.classList.remove("loading");
     } else if (eventType === "lookup_started") {
-      progress = `Đang tra cứu: ${event.keywords ?? event.tu_khoa}`;
+      progress = `Đang tra cứu: ${event.keywords}`;
     } else if (eventType === "lookup_finished") {
       progress = "Đang viết câu trả lời…";
     } else if (eventType === "queued") {
-      progress = `Hệ thống đang bận, bạn đứng thứ ${event.position ?? event.vi_tri} trong hàng chờ…`;
+      progress = `Hệ thống đang bận, bạn đứng thứ ${event.position} trong hàng chờ…`;
     } else if (eventType === "warning") {
       notice = content;
     } else if (eventType === "completed") {

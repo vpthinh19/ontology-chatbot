@@ -18,7 +18,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--ontology",
         type=Path,
         default=os.environ.get("ONTCHATBOT_ONTOLOGY_PATH", str(ONTOLOGY_PATH)),
-        help="tệp Turtle của ontology",
+        help="tệp TriG của ontology",
     )
     parser.add_argument(
         "--llm",

@@ -90,15 +90,6 @@ _TOO_MANY_STEPS_MESSAGE = (
     "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
     "hoặc tách thành từng ý nhỏ."
 )
-_LEGACY_EVENT_KINDS = {
-    "text_delta": "chu",
-    "lookup_started": "tra_cuu",
-    "lookup_finished": "tra_cuu_xong",
-    "queued": "hang_doi",
-    "warning": "canh_bao",
-    "completed": "xong",
-    "error": "loi",
-}
 #: 256 KiB rộng hơn nhiều so với 20 tin nhắn hội thoại học vụ thông thường,
 #: nhưng đủ nhỏ để mỗi kết nối đang đọc body có mức dùng bộ nhớ hữu hạn.
 MAX_REQUEST_BODY_BYTES = 256 * 1024
@@ -143,13 +134,7 @@ def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
 def _event(kind: str, **fields: Any) -> str:
     """Một sự kiện theo khuôn server-sent events."""
 
-    payload = {"type": kind, **fields, "loai": _LEGACY_EVENT_KINDS[kind]}
-    if "content" in fields:
-        payload["noi_dung"] = fields["content"]
-    if "keywords" in fields:
-        payload["tu_khoa"] = fields["keywords"]
-    if "position" in fields:
-        payload["vi_tri"] = fields["position"]
+    payload = {"type": kind, **fields}
     return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 

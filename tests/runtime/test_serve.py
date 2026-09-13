@@ -91,25 +91,10 @@ def test_api_streams_the_manual_agent_events_without_a_framework_runner() -> Non
         ]
 
     assert asyncio.run(run()) == [
-        {
-            "type": "lookup_started",
-            "keywords": "học phí",
-            "loai": "tra_cuu",
-            "tu_khoa": "học phí",
-        },
-        {"type": "lookup_finished", "loai": "tra_cuu_xong"},
-        {
-            "type": "text_delta",
-            "content": "Kết quả",
-            "loai": "chu",
-            "noi_dung": "Kết quả",
-        },
-        {
-            "type": "completed",
-            "content": "Kết quả",
-            "loai": "xong",
-            "noi_dung": "Kết quả",
-        },
+        {"type": "lookup_started", "keywords": "học phí"},
+        {"type": "lookup_finished"},
+        {"type": "text_delta", "content": "Kết quả"},
+        {"type": "completed", "content": "Kết quả"},
     ]
 
 

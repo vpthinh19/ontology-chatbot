@@ -32,24 +32,6 @@ test("the connection status counts down without showing negative time", async ({
   await expect(status).not.toContainText("(-");
 });
 
-test("the page accepts the previous backend SSE field names during rollout", async ({ page }) => {
-  await page.route("**/healthz", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
-  );
-  await page.route("**/chat", (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: "text/event-stream",
-      body: 'data: {"loai":"chu","noi_dung":"Tương thích"}\n\ndata: {"loai":"xong","noi_dung":"Tương thích"}\n\n',
-    }),
-  );
-  await page.goto("http://127.0.0.1:4173");
-  await page.locator(".prompt-input").fill("Kiểm tra");
-  await page.locator("#send-prompt-btn").click();
-
-  await expect(page.locator(".bot-message .message-text").last()).toContainText("Tương thích");
-});
-
 test("LaTeX arrows in an answer are displayed as ordinary arrows", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),

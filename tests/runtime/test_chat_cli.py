@@ -12,13 +12,7 @@ from ontchatbot.runtime.agent import AgentEvent
 
 
 def _args(*, question=None) -> Namespace:
-    return Namespace(llm="mô-hình", ontology=Path("ontology.ttl"), base_url=None, hoi=question)
-
-
-def test_chat_cli_does_not_accept_the_flags_of_the_replaced_runtime() -> None:
-    for flags in (["--model-dir", "generator"], ["--device", "cuda"]):
-        with pytest.raises(SystemExit):
-            _parse_args(flags)
+    return Namespace(llm="mô-hình", ontology=Path("ontology.trig"), base_url=None, hoi=question)
 
 
 def test_runtime_args_honors_the_llm_base_url_environment(monkeypatch) -> None:
@@ -27,7 +21,7 @@ def test_runtime_args_honors_the_llm_base_url_environment(monkeypatch) -> None:
     runtime = _runtime_args(_args())
 
     assert runtime.base_url == "https://llm.example/api/v1/"
-    assert runtime.ontology == Path("ontology.ttl")
+    assert runtime.ontology == Path("ontology.trig")
 
 
 def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
