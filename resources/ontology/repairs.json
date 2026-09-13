@@ -1,5 +1,5 @@
 {
- "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc. 'doi_nhan' đổi nhãn và tên gọi phụ của một thực thể, dùng khi tên cũ mô tả sai thứ nó trỏ tới. 'ten_goi_them' thêm tên gọi phụ; chúng nằm ngoài mọi túi nên không cần nguồn.",
+ "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc. 'doi_nhan' đổi nhãn và tên gọi phụ của một thực thể, dùng khi tên cũ mô tả sai thứ nó trỏ tới; có 'iri_moi' thì đổi luôn IRI, và việc đổi IRI chạy TRƯỚC mọi mục khác nên các mục khác dùng tên mới. 'ten_goi_them' thêm tên gọi phụ; chúng nằm ngoài mọi túi nên không cần nguồn. Ba mục sau sửa việc dữ liệu cũ chỉ ghi nguồn cho cả thực thể, khiến mọi câu bị chép vào mọi trích dẫn của thực thể: 'doi_toa_do' viết lại toạ độ của một địa chỉ (hai địa chỉ cùng nguồn cùng toạ độ được gộp); 'rut_trich_dan' gỡ thực thể (hoặc chỉ vài thuộc tính của nó) khỏi một trích dẫn không nói gì về nó, và câu gỡ ra phải còn ở chỗ khác; 'dat_lai_cau' đặt từng câu (thuộc tính + giá trị) vào đúng các trích dẫn liệt kê, danh sách rỗng là câu ta tự khẳng định nên nằm ngoài mọi túi, 'xoa' bỏ hẳn câu sai. Trích dẫn ghi {nguon, toa_do} hoặc {dia_chi}; toạ độ chưa có phải ghi 'tao_moi'. Mục nào không áp được thì bộ chuyển đổi dừng hẳn. Địa chỉ không còn câu nào bị bỏ tự động.",
  "sua": [
   {
    "thuc_the": "ThuTucChuyenNganh",
@@ -211,6 +211,105 @@
      "noiDung": "Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác."
     }
    ]
+  },
+  {
+   "thuc_the": "ThangDiemDanhGia",
+   "toa_do": "khoản 1 Điều 15",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "một đoạn ghép ba câu từ ba chỗ bị gắn nguyên vào cả ba trích dẫn; mỗi trích dẫn chỉ giữ câu của chính nó",
+   "thay_bang": [
+    {
+     "noiDung": "Nhà trường sử dụng thang điểm 10 để đánh giá kết quả học tập."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThangDiemDanhGia",
+   "toa_do": "điểm b khoản 2 Điều 16",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "như trên, câu thứ hai của đoạn ghép",
+   "thay_bang": [
+    {
+     "noiDung": "Điểm đánh giá học phần được chấm theo thang điểm 10 (từ 0,0 đến 10), làm tròn đến một chữ số thập phân."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThangDiemDanhGia",
+   "toa_do": "điểm c khoản 2 Điều 16",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "như trên, câu thứ ba của đoạn ghép; giữ luôn vế 'loại đạt có phân mức' vì mức 5,0 chỉ áp dụng cho loại đó",
+   "thay_bang": [
+    {
+     "noiDung": "Loại đạt có phân mức, áp dụng cho các học phần được tính vào điểm trung bình học tập: điểm học phần từ 5,0 điểm trở lên được đánh giá là đạt, điểm học phần dưới 5,0 điểm được đánh giá là không đạt."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinPhepNghiHoc",
+   "toa_do": "điểm a khoản 1 Điều 17",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "một câu ghép điểm a (học phần lý thuyết) với điểm b (học phần thực hành) bị gắn nguyên vào cả hai điểm",
+   "thay_bang": [
+    {
+     "noiDung": "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinPhepNghiHoc",
+   "toa_do": "điểm b khoản 1 Điều 17",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "như trên, vế học phần thực hành",
+   "thay_bang": [
+    {
+     "noiDung": "Với học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học; trường hợp nghỉ có lý do chính đáng do Khoa hoặc viện đào tạo xem xét xử lý."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDeNghiMoThemLopHocPhan",
+   "toa_do": "điểm c khoản 2 Điều 8",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "câu cũ lấy 'trong thời gian đăng ký học phần' từ khoản 2 Điều 10 và bỏ mất điều kiện 'trường hợp đặc thù hoặc có lý do chính đáng' của chính điểm c",
+   "thay_bang": [
+    {
+     "noiDung": "Khi số lượng sinh viên đăng ký ít hơn số lượng tối thiểu theo quy định, với các trường hợp đặc thù hoặc có lý do chính đáng, nhóm sinh viên làm đơn xin mở lớp học phần (Mẫu số 01 - Phụ lục 4 kèm theo) để Hiệu trưởng xem xét và quyết định, thông qua Đơn vị quản lý đào tạo."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDangKyThucHienDoAnTotNghiep",
+   "toa_do": "khoản 1 Điều 14",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "câu cũ ghép vế 'đủ điều kiện thực hiện đồ án' của khoản 2 vào khoản 1, làm khoản 1 đọc thành điều kiện trong khi khoản 1 nói năm thứ 4 phải làm đồ án hoặc chuyên đề",
+   "thay_bang": [
+    {
+     "noiDung": "Sinh viên được xếp hạng năm thứ 4 phải thực hiện đồ án/khóa luận tốt nghiệp hoặc các chuyên đề tốt nghiệp để hoàn thành khóa học."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDangKyThucHienDoAnTotNghiep",
+   "toa_do": "khoản 2 Điều 14",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "trả điều kiện 'đủ điều kiện thực hiện đồ án theo quy định của Trường' về đúng khoản nói ra nó",
+   "thay_bang": [
+    {
+     "noiDung": "Sinh viên đủ điều kiện thực hiện đồ án/khóa luận tốt nghiệp theo quy định của Trường phải làm đơn đăng ký thực hiện đồ án/khóa luận tốt nghiệp (Mẫu số 02 - Phụ lục 4 kèm theo)."
+    }
+   ]
+  },
+  {
+   "thuc_the": "ThuTucNghiHocTamThoi",
+   "toa_do": "điểm c khoản 1 Điều 24",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "điểm c cho nghỉ học tạm thời khi ốm, thai sản hoặc tai nạn nhưng kèm điều kiện phải điều trị thời gian dài và có giấy chứng nhận; điều kiện đó chưa nằm ở đâu cả. Như điểm d, điều kiện treo trên thủ tục, còn trường hợp giữ mô tả chung vì Điều 30 cũng dùng nó",
+   "thay_bang": [
+    {
+     "noiDung": "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài, có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế."
+    }
+   ]
   }
  ],
  "xoa": [
@@ -230,12 +329,306 @@
    "nguon": "Nguon1052",
    "ly_do": "không phải câu tóm tắt của quy tắc nào khác; Điều 31 Quy chế 1052 nói đúng điều này và chỉ có một câu",
    "noiDung": "Sinh viên có gian lận trong học tập, kiểm tra và thi học phần sẽ bị xử lý kỷ luật đối với từng học phần đã vi phạm theo các quy định của Quy chế công tác sinh viên."
+  },
+  {
+   "thuc_the": "CongThongTinSinhVien",
+   "toa_do": "bước 1",
+   "nguon": "NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank",
+   "ly_do": "cổng chỉ còn trích yếu và ngày truy cập, là ô của một nguồn (xem dat_lai_cau); đây là câu văn bản thật sự nói về nó",
+   "noiDung": "Sinh viên đăng nhập vào trang https://sinhvien.ntu.edu.vn bằng tài khoản mã sinh viên (không vào trang https://qldt.ntu.edu.vn) và chọn ô Học phí."
+  },
+  {
+   "thuc_the": "TrangThongTinTuyenSinh",
+   "toa_do": "Phụ lục V",
+   "nguon": "Nguon626",
+   "ly_do": "như trên; Phụ lục V Quy chế 626 liệt kê các trang thông tin điện tử của Trường, mục 1 là trang này",
+   "noiDung": "Trang thông tin tuyển sinh của Trường Đại học Nha Trang có địa chỉ http://tuyensinh.ntu.edu.vn."
+  }
+ ],
+ "doi_toa_do": [
+  {
+   "dia_chi": "TDVNPAYPaymentGuidanceOtherBankNote",
+   "toa_do": "lưu ý ở bước 2",
+   "ly_do": "hai lưu ý về phí (tài khoản Vietcombank và ngân hàng khác) nằm chung đoạn 'Lưu ý' ở bước 2 của tài liệu; toạ độ cũ 'lưu ý về lệ phí giao dịch,' đọc lửng và bị dựng thành hai địa chỉ trùng nhau"
+  },
+  {
+   "dia_chi": "TDVNPAYPaymentGuidanceVietcombankNote",
+   "toa_do": "lưu ý ở bước 2",
+   "ly_do": "như trên; hai địa chỉ cùng một chỗ được gộp làm một"
+  },
+  {
+   "dia_chi": "TDScholarshipCriteriaGeneralSection",
+   "toa_do": "mục II.1 Tiêu chuẩn chung",
+   "ly_do": "trang đánh số mục II.1; toạ độ cũ 'mục tiêu chuẩn chung,' đọc lửng"
+  },
+  {
+   "dia_chi": "TDScholarshipCriteriaSpecificSection",
+   "toa_do": "mục II.2 Tiêu chuẩn và điều kiện cụ thể",
+   "ly_do": "trang đánh số mục II.2"
+  }
+ ],
+ "rut_trich_dan": [
+  {
+   "nguon": "Nguon1965",
+   "toa_do": "bảng khoản 1.3 Điều 1",
+   "thuoc_tinh": ["noiDung"],
+   "thuc_the": ["NgoaiNguA1", "NgoaiNguA21", "NgoaiNguA22", "NgoaiNguB11", "NgoaiNguB12", "NgoaiNguB21", "NgoaiNguB22"],
+   "ly_do": "bảng 1.3 là danh mục học phần (tín chỉ, bậc năng lực, loại học phần theo khoá), không có tỷ trọng điểm; tỷ trọng nằm ở bảng 1.4"
+  },
+  {
+   "nguon": "Nguon1965",
+   "toa_do": "bảng khoản 1.4 Điều 1",
+   "thuoc_tinh": ["soTinChi"],
+   "thuc_the": ["NgoaiNguA1", "NgoaiNguA21", "NgoaiNguA22", "NgoaiNguB11", "NgoaiNguB12", "NgoaiNguB21", "NgoaiNguB22"],
+   "ly_do": "bảng 1.4 chỉ có thành phần đánh giá và tỷ trọng, không có cột tín chỉ"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 2 Điều 25",
+   "thuc_the": ["MucTaiDonXinChuyenNganh"],
+   "ly_do": "đường dẫn tải, số thứ tự và tên mục là của trang danh mục biểu mẫu; quy chế không nhắc tới website"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 2 Điều 26",
+   "thuc_the": ["MucTaiDonXinChuyenTruong"],
+   "ly_do": "như trên"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 3 Điều 24",
+   "thuc_the": ["MucTaiDonXinHocTroLai", "MucTaiDonXinNghiHocTamThoi"],
+   "ly_do": "như trên"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 6 Điều 21",
+   "thuc_the": ["MucTaiDonXinMienHocMienThiVaCongDiemThuong"],
+   "ly_do": "như trên"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 3 Điều 28",
+   "thuc_the": ["MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao"],
+   "ly_do": "như trên"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 1 Điều 30",
+   "thuoc_tinh": ["noiDung"],
+   "thuc_the": ["OmThaiSanHoacTaiNan"],
+   "ly_do": "khoản 1 Điều 30 chỉ nói về ốm, không nhắc thai sản hay tai nạn; mô tả trường hợp này là của điểm c khoản 1 Điều 24"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 2 Điều 30",
+   "thuoc_tinh": ["noiDung"],
+   "thuc_the": ["OmThaiSanHoacTaiNan"],
+   "ly_do": "như trên"
+  },
+  {
+   "nguon": "Nguon1052",
+   "toa_do": "khoản 3 Điều 19",
+   "thuoc_tinh": ["noiDung"],
+   "thuc_the": ["ThuTucXetVaCapHocBongKhuyenKhichHocTap"],
+   "ly_do": "câu 'xét theo điểm trung bình chung từng học kỳ chính, không xét học kỳ hè' là của khoản 3 Điều 18; khoản 3 Điều 19 nói việc xếp loại học lực làm căn cứ xét học bổng"
+  },
+  {
+   "nguon": "NguonHuongDanDongHocPhiQuaNganHang",
+   "toa_do": "phần mở đầu",
+   "thuc_the": ["MienPhiMobileBankingHoacInternetBanking", "MienPhiNopTienMatTaiQuayONhaTrang", "MienPhiThanhToanQr", "MienPhiVnpayDoiVoiTaiKhoanVietcombank", "NopTienMatTaiQuayNganHang", "PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan", "PhiVnpayDoiVoiNganHangKhac", "ThanhToanBangMobileBankingHoacInternetBanking", "ThuTucNopHocPhi"],
+   "ly_do": "phần mở đầu chỉ có một câu 'Nhà trường thông báo các phương thức đóng học phí qua ngân hàng như sau:', không nêu lệ phí, ngân hàng hay phương thức nào (đã đối chiếu trang web thật ngày 13/9/2026); mọi câu này đã có ở đúng phương thức nói ra nó"
+  }
+ ],
+ "dat_lai_cau": [
+  {
+   "thuc_the": "ThuTucNghiHocTamThoi",
+   "ly_do": "khoản 3 Điều 24 nói các việc này ('viết đơn (Mẫu số 09) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên'); dữ liệu cũ gắn chúng cho cả Điều 24 nên bị nhân đôi hoặc dẫn quá rộng",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo09DonXinNghiHocTamThoi", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "thuTucTiepTheo", "gia_tri": "ThuTucXinHocTroLai", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}], "ly_do": "khoản 3 nói luôn việc viết đơn Mẫu số 11 khi muốn trở lại học tiếp"},
+    {"thuoc_tinh": "apDungChoTruongHop", "gia_tri": "OmThaiSanHoacTaiNan", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "điểm c khoản 1 Điều 24"}], "ly_do": "điểm c khoản 1 Điều 24 là chỗ quy chế liệt kê trường hợp này cho nghỉ học tạm thời; khoản 1 Điều 30 thêm ngưỡng 10 ngày, và ngưỡng đó vẫn nằm ở nội dung của thủ tục trong khoản 1 Điều 30"}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinThoiHoc",
+   "ly_do": "cùng câu ở khoản 3 Điều 24, vế xin thôi học (Mẫu số 10)",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo10DonXinThoiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinHocTroLai",
+   "ly_do": "cùng câu ở khoản 3 Điều 24, vế trở lại học tiếp (Mẫu số 11)",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo11DonXinHocTroLai", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 24"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucChuyenNganh",
+   "ly_do": "khoản 2 Điều 25: 'làm đơn xin chuyển ngành (Mẫu số 12) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định'",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo12DonXinChuyenNganh", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 25"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 25"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 25"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucChuyenTruong",
+   "ly_do": "điểm a khoản 2 Điều 26 nêu hồ sơ (Mẫu số 13) nộp thông qua Phòng Công tác Chính trị và Sinh viên; điểm b nêu Hiệu trưởng quyết định",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo13DonXinChuyenTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 26"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 26"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "điểm b khoản 2 Điều 26"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDangKyChuongTrinhTraoDoiSinhVien",
+   "ly_do": "khoản 4 Điều 27: 'đăng ký học theo mẫu (Mẫu số 14) gửi về Đơn vị quản lý đào tạo'",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo14DonDangKyChuongTrinhTraoDoiSinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 4 Điều 27"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 4 Điều 27"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi",
+   "ly_do": "Điều 21 nói ba việc ở ba khoản: khoản 1 Hiệu trưởng xem xét công nhận, khoản 2 nộp hồ sơ (Mẫu số 06) cho Đơn vị quản lý đào tạo, khoản 3 Hội đồng chuyên môn xem xét",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo06DonXinMienHocVaQuyDoiDiemHocPhan", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 21"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 21"}]},
+    {"thuoc_tinh": "duocXetBoi", "gia_tri": "HoiDongChuyenMon", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 21"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 1 Điều 21", "tao_moi": true}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXetVaCongNhanTotNghiep",
+   "ly_do": "khoản 3 Điều 22 nêu Hội đồng xét tốt nghiệp lập danh sách; khoản 5 nêu Hiệu trưởng ra quyết định công nhận tốt nghiệp",
+   "cau": [
+    {"thuoc_tinh": "duocXetBoi", "gia_tri": "HoiDongXetTotNghiep", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 22"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 5 Điều 22"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDangKyThucHienDoAnTotNghiep",
+   "ly_do": "khoản 2 Điều 14 là chỗ nêu Mẫu số 02",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo02DonDangKyThucHienDoAnTotNghiep", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 14"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucHocLienThong",
+   "ly_do": "Điều 29 có ba khoản; mỗi câu về đúng khoản nói ra nó",
+   "cau": [
+    {"thuoc_tinh": "thuTucTiepTheo", "gia_tri": "ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 29"}], "ly_do": "khoản 3 nói người học liên thông được xem xét miễn học và bảo lưu học phần đã tích lũy"},
+    {"thuoc_tinh": "doAiThucHien", "gia_tri": "SinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 29"}], "ly_do": "khoản 2 và khoản 3 đều nói 'người học'; giữ ở khoản 2, chỗ nói việc đăng ký"}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucRutBotHocPhanDaDangKy",
+   "ly_do": "khoản 3 Điều 10 Quy chế 753: 'nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo (Mẫu số 2 - Phiếu đăng ký/điều chỉnh học phần)'",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753", "trich_dan": [{"nguon": "Nguon753", "toa_do": "khoản 3 Điều 10"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon753", "toa_do": "khoản 3 Điều 10"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDeNghiMoThemLopHocPhan",
+   "ly_do": "điểm c khoản 2 Điều 8 nêu đơn Mẫu số 01, Hiệu trưởng quyết định, thông qua Đơn vị quản lý đào tạo; khoản 2 Điều 10 chỉ nêu Bộ môn chấp thuận",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo01DonXinMoLopHocPhan", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "điểm c khoản 2 Điều 8"}]},
+    {"thuoc_tinh": "doAiQuyetDinh", "gia_tri": "HieuTruong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "điểm c khoản 2 Điều 8"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "điểm c khoản 2 Điều 8"}]},
+    {"thuoc_tinh": "duocXetBoi", "gia_tri": "BoMon", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 10"}]},
+    {"thuoc_tinh": "doAiThucHien", "gia_tri": "BoMon", "xoa": true, "ly_do": "Bộ môn chấp thuận đề nghị chứ không làm thủ tục; người làm là nhóm sinh viên (điểm c khoản 2 Điều 8, đã có), còn việc Bộ môn chấp thuận đã nằm ở duocXetBoi"}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDeNghiXetTotNghiepSom",
+   "ly_do": "khoản 2 Điều 22 nêu đơn Mẫu số 08 gửi Đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp; khoản 3 nêu Hội đồng xét tốt nghiệp",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo08DonDeNghiXetTotNghiepSom", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 22"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 22"}]},
+    {"thuoc_tinh": "thuTucTiepTheo", "gia_tri": "ThuTucXetVaCongNhanTotNghiep", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 22"}]},
+    {"thuoc_tinh": "duocXetBoi", "gia_tri": "HoiDongXetTotNghiep", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 22"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXinMienHocMienThiVaCongDiemThuong",
+   "ly_do": "khoản 5 Điều 21 chỉ liệt kê các trường hợp được miễn; đơn Mẫu số 07 và nơi nộp nằm ở khoản 6",
+   "cau": [
+    {"thuoc_tinh": "canBieuMau", "gia_tri": "MauSo07DonXinMienHocMienThiVaCongDiemThuong", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 6 Điều 21"}]},
+    {"thuoc_tinh": "nopTai", "gia_tri": "PhongDaoTaoDaiHoc", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 6 Điều 21"}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucDangKyKhoiLuongHocTap",
+   "ly_do": "câu dẫn của khoản 2 Điều 9 ('mỗi SV cần:') nói người làm cho cả bốn điểm a-d; chép vào từng điểm là bốn trích dẫn cho một điều",
+   "cau": [
+    {"thuoc_tinh": "doAiThucHien", "gia_tri": "SinhVien", "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 2 Điều 9", "tao_moi": true}]}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucXetVaCapHocBongKhuyenKhichHocTap",
+   "ly_do": "Quy chế 1052 chỉ nói 'Trường' xét học bổng, trang tiêu chuẩn cũng không nhắc tới phòng nào; chỗ nói ra Phòng Công tác Chính trị và Sinh viên là thông báo danh sách dự kiến do chính phòng công bố",
+   "cau": [
+    {"thuoc_tinh": "doAiThucHien", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"dia_chi": "TDScholarshipAnnouncementSection"}]},
+    {"thuoc_tinh": "duocXetBoi", "gia_tri": "PhongCongTacChinhTriVaSinhVien", "trich_dan": [{"dia_chi": "TDScholarshipAnnouncementSection"}]},
+    {"thuoc_tinh": "noiDung", "gia_tri": "Sinh viên đủ điều kiện được cấp học bổng khuyến khích học tập của học kỳ, mức tiền theo xếp loại và theo chương trình chuẩn hay chương trình đào tạo đặc biệt.", "trich_dan": [], "ly_do": "trang tiêu chuẩn không có câu này: mức tiền chia theo chương trình chuẩn và đặc biệt là của Quyết định 317. Câu do ta tổng hợp nên nằm ngoài mọi túi, nói được nhưng không trích dẫn được"}
+   ]
+  },
+  {
+   "thuc_the": "ThuTucNopHocPhi",
+   "ly_do": "mỗi phương thức chỉ được nêu ở mục của chính nó; dữ liệu cũ chép cả bốn phương thức vào cả bốn phần của trang, nên 'nộp tiền mặt tại quầy' bị dẫn sang phương thức 1",
+   "cau": [
+    {"thuoc_tinh": "hoTroPhuongThuc", "gia_tri": "ThanhToanQuaCongVnpay", "trich_dan": [{"nguon": "NguonHuongDanDongHocPhiQuaNganHang", "toa_do": "phương thức 1"}]},
+    {"thuoc_tinh": "hoTroPhuongThuc", "gia_tri": "ThanhToanBangMaQr", "trich_dan": [{"nguon": "NguonHuongDanDongHocPhiQuaNganHang", "toa_do": "phương thức 1"}]},
+    {"thuoc_tinh": "hoTroPhuongThuc", "gia_tri": "ThanhToanBangMobileBankingHoacInternetBanking", "trich_dan": [{"nguon": "NguonHuongDanDongHocPhiQuaNganHang", "toa_do": "phương thức 2"}]},
+    {"thuoc_tinh": "hoTroPhuongThuc", "gia_tri": "NopTienMatTaiQuayNganHang", "trich_dan": [{"nguon": "NguonHuongDanDongHocPhiQuaNganHang", "toa_do": "phương thức 3"}]},
+    {"thuoc_tinh": "doAiThucHien", "gia_tri": "SinhVien", "trich_dan": [{"nguon": "NguonHuongDanDongHocPhiQuaNganHang", "toa_do": "phương thức 2"}], "ly_do": "phương thức 2 là chỗ trang viết rõ 'sinh viên'"}
+   ]
+  },
+  {
+   "thuc_the": "MucTaiDonXinChuyenNganh",
+   "ly_do": "cặp mục tải trên website - mẫu đơn theo quy chế là ta ghép theo tên: trang danh mục không nêu số mẫu theo quy chế, quy chế không nhắc tới website, và hai nơi đánh số khác nhau (mục số 10 ứng với Mẫu số 12). Câu ta tự khẳng định nên nằm ngoài mọi túi",
+   "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo12DonXinChuyenNganh", "trich_dan": []}]
+  },
+  {"thuc_the": "MucTaiDonXinChuyenTruong", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo13DonXinChuyenTruong", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinHocTroLai", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo11DonXinHocTroLai", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinNghiHocTamThoi", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo09DonXinNghiHocTamThoi", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinMienHocMienThiVaCongDiemThuong", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo07DonXinMienHocMienThiVaCongDiemThuong", "trich_dan": []}]},
+  {"thuc_the": "MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo15DonDangKyHocCungLucHaiChuongTrinh", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinHoanThi", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo04DonXinHoanThi", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinMoLopHocPhan", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo01DonXinMoLopHocPhan", "trich_dan": []}]},
+  {"thuc_the": "MucTaiDonXinPhepNghiHoc", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo03DonXinNghiHoc", "trich_dan": []}]},
+  {"thuc_the": "MucTaiPhieuDangKyDieuChinhHocPhan", "ly_do": "như trên", "cau": [{"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753", "trich_dan": []}]},
+  {
+   "thuc_the": "CongThongTinSinhVien",
+   "ly_do": "trích yếu và ngày truy cập là ô của một nguồn, sót lại từ hồi cổng này bị xếp nhầm vào tầng nguồn; với một hệ thống sinh viên dùng thì chúng không nói gì. Câu văn bản thật sự nói về cổng nằm ở dat_nguon",
+   "cau": [
+    {"thuoc_tinh": "trichYeu", "gia_tri": "Cổng thông tin sinh viên - mục học phí", "xoa": true},
+    {"thuoc_tinh": "ngayTruyCap", "gia_tri": "2026-08-15", "xoa": true}
+   ]
+  },
+  {
+   "thuc_the": "TrangThongTinTuyenSinh",
+   "ly_do": "như trên",
+   "cau": [
+    {"thuoc_tinh": "trichYeu", "gia_tri": "Trang thông tin tuyển sinh Trường Đại học Nha Trang", "xoa": true},
+    {"thuoc_tinh": "ngayTruyCap", "gia_tri": "2026-08-15", "xoa": true}
+   ]
   }
  ],
  "doi_nhan": [
   {
    "thuc_the": "TrangTraCuuHocPhiSinhVien",
-   "ly_do": "sinhvien.ntu.edu.vn không phải trang tra cứu học phí mà là cổng thông tin sinh viên, nơi quản lý toàn bộ thông tin cá nhân; tra cứu học phí chỉ là một mục trong đó",
+   "iri_moi": "CongThongTinSinhVien",
+   "ly_do": "sinhvien.ntu.edu.vn không phải trang tra cứu học phí mà là cổng thông tin sinh viên, nơi quản lý toàn bộ thông tin cá nhân; tra cứu học phí chỉ là một mục trong đó. IRI đổi theo, vì tên cũ gọi đúng cái trang không tồn tại",
    "nhan": "Cổng thông tin sinh viên",
    "ten_goi_phu": [
     "tra cứu học phí",

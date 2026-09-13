@@ -321,7 +321,9 @@ class BoChuyenDoi:
             return self.nhan(phan)
         text = str(trich)
         cat = re.search(r"\s+(Quy chế|Quyết định|Hướng dẫn|Thông báo|Danh mục|trang |của Trường)", text)
-        return text[: cat.start()].strip() if cat else text
+        # Nhãn dựng sẵn có chỗ cắt ngay sau dấu phẩy ("mục tiêu chuẩn chung, trang ..."),
+        # để lại toạ độ đọc lửng.
+        return (text[: cat.start()] if cat else text).strip().rstrip(",;")
 
     def dia_chi_trich_dan(self, ra: Graph, phan: URIRef) -> URIRef | None:
         """IRI của địa chỉ trích dẫn; dựng một lần rồi dùng lại."""
@@ -474,9 +476,9 @@ class BoChuyenDoi:
         (mac_dinh if tui is None else ds.graph(tui)).add((s, p, o))
 
 
-def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
-    """Đã trừ những gì cố ý bỏ: câu bị thay theo quy chế, thực thể bị xoá, và nội
-    dung trùng y hệt nhãn."""
+def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset(), da_bo: set = frozenset()) -> list[str]:
+    """Đã trừ những gì cố ý bỏ: câu bị thay theo quy chế, câu sai bị xoá trong
+    ``dat_lai_cau``, thực thể bị xoá, và nội dung trùng y hệt nhãn."""
 
     """Mọi dữ kiện cũ phải xuất hiện lại. Dựng lại kỳ vọng từ đồ thị cũ, rồi so."""
 
@@ -518,7 +520,7 @@ def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset()) -> list[str]:
                 ten_tt = camel(bo.nhan(p))
                 can = (bo.moi(goc), ACADEMIC["soTien" if ten_tt == "mucLePhi" else ten_tt],
                        bo.moi(o) if isinstance(o, URIRef) else o)
-            if (can[0], can[1]) in da_sua:
+            if (can[0], can[1]) in da_sua or can in da_bo:
                 continue
             if can not in co_that:
                 thieu.append(f"{local_name(node)} · {ten} → {str(o)[:46]}")
@@ -541,7 +543,9 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
     for tui_, _, toa_ in mac_dinh.triples((None, ACADEMIC.toaDo, None)):
         nguon_ = next(iter(mac_dinh.objects(tui_, ACADEMIC.thuocNguon)), None)
         theo_cap[(str(toa_), str(nguon_))] = tui_
-        if str(toa_) in theo_toa_do:
+        # Cùng toạ độ trong CÙNG một nguồn là địa chỉ dựng trùng, được gộp ở bước sau;
+        # chỉ khác nguồn mới là cái bẫy cho mục sửa chữa.
+        if str(toa_) in theo_toa_do and mac_dinh.value(theo_toa_do[str(toa_)], ACADEMIC.thuocNguon) != nguon_:
             bo.ghi_chu.append(f"toạ độ {str(toa_)!r} có ở nhiều nguồn — mục sửa chữa nào chạm tới nó phải nêu nguon_hien_tai")
         theo_toa_do.setdefault(str(toa_), tui_)
     da_sua: set[tuple] = set()
@@ -553,10 +557,7 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
         khoa = (toa_do, str(nguon_goc))
         if khoa in theo_cap:
             return theo_cap[khoa]
-        iri = URIRef(NS + "TD" + pascal(str(nguon_goc).rsplit("#", 1)[-1] + " " + toa_do)[:28])
-        mac_dinh.add((iri, RDF.type, ACADEMIC.DiaChiTrichDan))
-        mac_dinh.add((iri, ACADEMIC.thuocNguon, nguon_goc))
-        mac_dinh.add((iri, ACADEMIC.toaDo, Literal(toa_do, lang="vi")))
+        iri = dung_dia_chi(mac_dinh, nguon_goc, toa_do)
         theo_cap[khoa] = iri
         theo_toa_do.setdefault(toa_do, iri)
         return iri
@@ -602,7 +603,7 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
             dem += 1
 
     for muc in json.loads(SUA_CHUA.read_text(encoding="utf-8")).get("doi_nhan", []):
-        chu_the = ACADEMIC[muc["thuc_the"]]
+        chu_the = ACADEMIC[muc.get("iri_moi", muc["thuc_the"])]
         for cu in list(mac_dinh.objects(chu_the, RDFS.label)):
             mac_dinh.remove((chu_the, RDFS.label, cu))
         mac_dinh.add((chu_the, RDFS.label, Literal(muc["nhan"], lang="vi")))
@@ -629,6 +630,269 @@ def ap_dung_sua_chua(bo: "BoChuyenDoi", ds, mac_dinh: Graph) -> tuple[int, set]:
         dem += 1
 
     return dem, da_sua
+
+
+def ten_do_thi(do_thi) -> URIRef:
+    """Tên của một túi. Tuỳ cách gọi, rdflib trả về tên hoặc chính đồ thị."""
+
+    return do_thi if isinstance(do_thi, URIRef) else do_thi.identifier
+
+
+def tim_dia_chi(mac_dinh: Graph, nguon: URIRef, toa_do: str) -> URIRef | None:
+    for dia_chi in mac_dinh.subjects(ACADEMIC.toaDo, Literal(toa_do, lang="vi")):
+        if (dia_chi, ACADEMIC.thuocNguon, nguon) in mac_dinh:
+            return dia_chi
+    return None
+
+
+def dung_dia_chi(mac_dinh: Graph, nguon: URIRef, toa_do: str) -> URIRef:
+    """Địa chỉ trích dẫn của một chỗ trong văn bản; chưa có thì dựng, tên không trùng.
+
+    Tên từng bị cắt ở 28 ký tự, nên hai toạ độ dưới một nguồn có tên dài sẽ ra cùng
+    một IRI và dồn câu của hai chỗ vào một túi.
+    """
+
+    co_san = tim_dia_chi(mac_dinh, nguon, toa_do)
+    if co_san is not None:
+        return co_san
+    # Tên nguồn giữ nguyên chữ hoa; qua pascal() nó thành "Nguonhuongdandonghocphi...".
+    goc = "TD" + local_name(nguon) + pascal(toa_do)
+    iri, hau_to = URIRef(NS + goc), 2
+    while (iri, None, None) in mac_dinh:
+        iri, hau_to = URIRef(f"{NS}{goc}{hau_to}"), hau_to + 1
+    mac_dinh.add((iri, RDF.type, ACADEMIC.DiaChiTrichDan))
+    mac_dinh.add((iri, ACADEMIC.thuocNguon, nguon))
+    mac_dinh.add((iri, ACADEMIC.toaDo, Literal(toa_do, lang="vi")))
+    return iri
+
+
+def ten_dia_chi(mac_dinh: Graph, dia_chi: URIRef) -> str:
+    nguon = mac_dinh.value(dia_chi, ACADEMIC.thuocNguon)
+    return f"{mac_dinh.value(dia_chi, ACADEMIC.toaDo)} ({local_name(nguon) if nguon else '?'})"
+
+
+def doc_trich_dan(mac_dinh: Graph, muc: dict, loi: list[str], noi: str) -> URIRef | None:
+    """Một trích dẫn trong repairs.json: ``{"dia_chi"}`` hoặc ``{"nguon", "toa_do"}``.
+
+    Toạ độ chưa có chỉ được dựng khi mục ghi rõ ``"tao_moi": true``, để một lỗi gõ
+    không lặng lẽ sinh ra một địa chỉ mới.
+    """
+
+    if "dia_chi" in muc:
+        iri = ACADEMIC[muc["dia_chi"]]
+        if (iri, RDF.type, ACADEMIC.DiaChiTrichDan) not in mac_dinh:
+            loi.append(f"{noi}: không có địa chỉ trích dẫn {muc['dia_chi']}")
+            return None
+        return iri
+    nguon = ACADEMIC[muc["nguon"]]
+    if (nguon, RDF.type, ACADEMIC.Nguon) not in mac_dinh:
+        loi.append(f"{noi}: không có nguồn {muc['nguon']}")
+        return None
+    co_san = tim_dia_chi(mac_dinh, nguon, muc["toa_do"])
+    if co_san is None and not muc.get("tao_moi"):
+        loi.append(f"{noi}: {muc['nguon']} chưa có toạ độ {muc['toa_do']!r} "
+                   "(ghi \"tao_moi\": true nếu cố ý dựng mới)")
+        return None
+    return co_san or dung_dia_chi(mac_dinh, nguon, muc["toa_do"])
+
+
+def doi_iri(bo: "BoChuyenDoi", ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
+    """Đổi IRI khi tên cũ gọi sai thứ nó trỏ tới.
+
+    Chạy trước mọi sửa chữa khác, nên các mục khác trong repairs.json dùng tên MỚI.
+    """
+
+    dem = 0
+    for muc in sua_chua.get("doi_nhan", []):
+        if "iri_moi" not in muc:
+            continue
+        cu, moi = ACADEMIC[muc["thuc_the"]], ACADEMIC[muc["iri_moi"]]
+        if next(iter(ds.quads((moi, None, None, None))), None) is not None:
+            loi.append(f"doi_nhan: IRI mới {muc['iri_moi']} đã có người dùng")
+            continue
+        cau = [q for q in ds.quads((None, None, None, None)) if cu in (q[0], q[2])]
+        if not cau:
+            loi.append(f"doi_nhan: không thấy thực thể {muc['thuc_the']}")
+            continue
+        for s, p, o, tui in cau:
+            do_thi = ds.graph(ten_do_thi(tui))
+            do_thi.remove((s, p, o))
+            do_thi.add((moi if s == cu else s, p, moi if o == cu else o))
+            dem += 1
+        for node, ten in list(bo.ten_moi.items()):
+            if ten == muc["thuc_the"]:
+                bo.ten_moi[node] = muc["iri_moi"]
+    return dem
+
+
+def doi_toa_do(mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
+    """Viết lại toạ độ đọc lửng hoặc không khớp cách văn bản tự đánh số."""
+
+    dem = 0
+    for muc in sua_chua.get("doi_toa_do", []):
+        dia_chi = ACADEMIC[muc["dia_chi"]]
+        cu = list(mac_dinh.objects(dia_chi, ACADEMIC.toaDo))
+        if not cu:
+            loi.append(f"doi_toa_do: không có địa chỉ trích dẫn {muc['dia_chi']}")
+            continue
+        for toa_do in cu:
+            mac_dinh.remove((dia_chi, ACADEMIC.toaDo, toa_do))
+        mac_dinh.add((dia_chi, ACADEMIC.toaDo, Literal(muc["toa_do"], lang="vi")))
+        dem += 1
+    return dem
+
+
+def gop_dia_chi_trung(ds, mac_dinh: Graph) -> list[str]:
+    """Hai địa chỉ cùng nguồn, cùng toạ độ là một chỗ trong văn bản bị dựng hai lần."""
+
+    theo_cho = defaultdict(list)
+    for dia_chi, _, toa_do in mac_dinh.triples((None, ACADEMIC.toaDo, None)):
+        theo_cho[(mac_dinh.value(dia_chi, ACADEMIC.thuocNguon), str(toa_do))].append(dia_chi)
+    ra = []
+    for cac_dia_chi in theo_cho.values():
+        if len(cac_dia_chi) < 2:
+            continue
+        giu, *bo_di = sorted(cac_dia_chi, key=str)
+        for dia_chi in bo_di:
+            for cau in list(ds.graph(dia_chi)):
+                ds.graph(giu).add(cau)
+            ds.remove_graph(ds.graph(dia_chi))
+            ra.append(f"{ten_dia_chi(mac_dinh, dia_chi)}: {local_name(dia_chi)} gộp vào {local_name(giu)}")
+            for p, o in list(mac_dinh.predicate_objects(dia_chi)):
+                mac_dinh.remove((dia_chi, p, o))
+    return sorted(ra)
+
+
+def _khop(gia_tri_that, gia_tri: str) -> bool:
+    if isinstance(gia_tri_that, URIRef):
+        return local_name(gia_tri_that) == gia_tri
+    return str(gia_tri_that) == gia_tri
+
+
+def rut_trich_dan(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
+    """Gỡ thực thể khỏi một trích dẫn không nói gì về nó.
+
+    Chỉ gỡ, không xoá: câu gỡ ra phải còn ở một chỗ khác. Câu chỉ nằm ở chỗ sai là
+    câu cần đặt lại (``dat_lai_cau``), không phải câu thừa.
+    """
+
+    dem = 0
+    for muc in sua_chua.get("rut_trich_dan", []):
+        noi = f"rut_trich_dan {muc.get('toa_do', muc.get('dia_chi'))}"
+        tui = doc_trich_dan(mac_dinh, muc, loi, noi)
+        if tui is None:
+            continue
+        chi_thuoc_tinh = {ACADEMIC[t] for t in muc.get("thuoc_tinh", [])}
+        cac_thuc_the = muc["thuc_the"] if isinstance(muc["thuc_the"], list) else [muc["thuc_the"]]
+        for ten in cac_thuc_the:
+            chu_the = ACADEMIC[ten]
+            cau = [(p, o) for p, o in ds.graph(tui).predicate_objects(chu_the)
+                   if not chi_thuoc_tinh or p in chi_thuoc_tinh]
+            if not cau:
+                loi.append(f"{noi}: {ten} không có câu nào ở đây")
+                continue
+            for p, o in cau:
+                if not any(ten_do_thi(g) != tui for *_, g in ds.quads((chu_the, p, o, None))):
+                    loi.append(f"{noi}: {ten} · {local_name(p)} chỉ nằm ở đây, gỡ ra là mất")
+                    continue
+                ds.graph(tui).remove((chu_the, p, o))
+                dem += 1
+    return dem
+
+
+def dat_lai_cau(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> tuple[int, set]:
+    """Đặt từng câu vào đúng chỗ văn bản nói ra nó.
+
+    Dữ liệu cũ chỉ ghi nguồn cho cả thực thể, nên bộ chuyển đổi chép mọi câu vào mọi
+    túi của thực thể. Mỗi mục ở đây gỡ một câu khỏi mọi túi rồi đặt lại vào đúng các
+    trích dẫn liệt kê. Danh sách rỗng nghĩa là câu ta tự khẳng định, nằm ngoài mọi
+    túi; ``"xoa": true`` bỏ hẳn một câu sai.
+    """
+
+    dem, da_bo = 0, set()
+    for nhom in sua_chua.get("dat_lai_cau", []):
+        chu_the = ACADEMIC[nhom["thuc_the"]]
+        for cau in nhom["cau"]:
+            noi = f"dat_lai_cau {nhom['thuc_the']} · {cau['thuoc_tinh']} · {cau['gia_tri'][:40]}"
+            if ("xoa" in cau) == ("trich_dan" in cau):
+                loi.append(f"{noi}: cần đúng một trong hai trường xoa và trich_dan")
+                continue
+            thuoc_tinh = ACADEMIC[cau["thuoc_tinh"]]
+            khop = [(o, ten_do_thi(g)) for _, _, o, g in ds.quads((chu_the, thuoc_tinh, None, None))
+                    if _khop(o, cau["gia_tri"])]
+            if len({o for o, _ in khop}) != 1:
+                loi.append(f"{noi}: thấy {len({o for o, _ in khop})} giá trị khớp, cần đúng 1")
+                continue
+            dich = [doc_trich_dan(mac_dinh, td, loi, noi) for td in cau.get("trich_dan", [])]
+            if None in dich:
+                continue
+            o = khop[0][0]
+            for _, tui in khop:
+                ds.graph(tui).remove((chu_the, thuoc_tinh, o))
+            if cau.get("xoa"):
+                da_bo.add((chu_the, thuoc_tinh, o))
+            elif not dich:
+                mac_dinh.add((chu_the, thuoc_tinh, o))
+            for tui in dich:
+                ds.graph(tui).add((chu_the, thuoc_tinh, o))
+            dem += 1
+    return dem, da_bo
+
+
+def bo_dia_chi_rong(ds, mac_dinh: Graph) -> list[str]:
+    """Địa chỉ không còn câu nào: thực thể dẫn tới nó đã bị xoá, hoặc mọi câu đã về
+    đúng chỗ. Để lại thì trang quản trị sẽ bày ra những trích dẫn không chứng nhận gì."""
+
+    co_cau = {ten_do_thi(g) for *_, g in ds.quads((None, None, None, None))}
+    ra = []
+    for dia_chi in sorted(set(mac_dinh.subjects(RDF.type, ACADEMIC.DiaChiTrichDan)), key=str):
+        if dia_chi in co_cau:
+            continue
+        ra.append(ten_dia_chi(mac_dinh, dia_chi))
+        for p, o in list(mac_dinh.predicate_objects(dia_chi)):
+            mac_dinh.remove((dia_chi, p, o))
+    for do_thi in list(ds.graphs()):
+        if do_thi.identifier != mac_dinh.identifier and len(do_thi) == 0:
+            ds.remove_graph(do_thi)
+    return sorted(ra)
+
+
+def cau_nhieu_trich_dan(ds, mac_dinh: Graph) -> tuple[list, list]:
+    """Câu nằm ở hơn một túi, tách làm hai loại.
+
+    Cùng một văn bản nói một điều ở hai chỗ gần như luôn là câu bị chép sang chỗ
+    không nói ra nó. Hai văn bản khác nhau cùng nêu thì có thể đúng, nhưng phải có
+    người đọc cả hai rồi ghi lý do.
+    """
+
+    theo_cau = defaultdict(list)
+    for s, p, o, tui in ds.quads((None, None, None, None)):
+        if ten_do_thi(tui) != mac_dinh.identifier:
+            theo_cau[(s, p, o)].append(ten_do_thi(tui))
+    cung_van_ban, khac_van_ban = [], []
+    for (s, p, o), cac_tui in theo_cau.items():
+        if len(cac_tui) < 2:
+            continue
+        khoa = f"{local_name(s)}|{local_name(p)}|{local_name(o) if isinstance(o, URIRef) else o}"
+        dong = (khoa, sorted(ten_dia_chi(mac_dinh, t) for t in cac_tui))
+        nguon = [mac_dinh.value(t, ACADEMIC.thuocNguon) for t in cac_tui]
+        (cung_van_ban if len(set(nguon)) < len(nguon) else khac_van_ban).append(dong)
+    return sorted(cung_van_ban), sorted(khac_van_ban)
+
+
+def dieu_co_cho_min_hon(mac_dinh: Graph) -> list[str]:
+    """Trích dẫn cả một điều trong khi đã có địa chỉ mịn hơn của chính điều đó: dấu
+    hiệu câu được gán theo nguồn của cả thực thể chứ không theo khoản nói ra nó."""
+
+    theo_nguon = defaultdict(set)
+    for dia_chi, _, toa_do in mac_dinh.triples((None, ACADEMIC.toaDo, None)):
+        theo_nguon[mac_dinh.value(dia_chi, ACADEMIC.thuocNguon)].add(str(toa_do))
+    return sorted(
+        f"{toa_do} ({local_name(nguon)})"
+        for nguon, cac_toa_do in theo_nguon.items()
+        for toa_do in cac_toa_do
+        if re.fullmatch(r"Điều \d+", toa_do) and any(t.endswith(" " + toa_do) for t in cac_toa_do)
+    )
 
 
 def cau_bi_che_doi(ds, mac_dinh) -> list[tuple[str, str, list[str]]]:
@@ -662,7 +926,16 @@ def doc_da_duyet() -> dict:
 
 
 def main() -> None:
+    import os
+    import sys
+
     from rdflib import Dataset
+
+    # rdflib xếp các túi theo thứ tự băm của Python, vốn đổi sau mỗi lần chạy: nội
+    # dung vẫn y hệt nhưng tệp TriG xáo cả nghìn dòng, che mất thay đổi dữ liệu thật
+    # trong git diff. Cố định hạt giống băm thì đầu ra giống nhau từng byte.
+    if os.environ.get("PYTHONHASHSEED") != "0":
+        os.execve(sys.executable, [sys.executable, *sys.argv], {**os.environ, "PYTHONHASHSEED": "0"})
 
     g = Graph()
     g.parse(NGUON_TTL, format="turtle")
@@ -674,22 +947,27 @@ def main() -> None:
     bo.dung_tu_vung(mac_dinh)
     bo.dung_tang_nguon(mac_dinh)
     dem = bo.chuyen_phat_bieu(ds, mac_dinh)
+    sua_chua = json.loads(SUA_CHUA.read_text(encoding="utf-8")) if SUA_CHUA.exists() else {}
+    loi: list[str] = []
+    dem["câu đổi sang IRI mới"] = doi_iri(bo, ds, mac_dinh, sua_chua, loi)
     dem["câu sửa lại theo quy chế"], da_sua = ap_dung_sua_chua(bo, ds, mac_dinh)
+    dem["toạ độ viết lại"] = doi_toa_do(mac_dinh, sua_chua, loi)
+    gop = gop_dia_chi_trung(ds, mac_dinh)
+    dem["câu gỡ khỏi trích dẫn không nói ra nó"] = rut_trich_dan(ds, mac_dinh, sua_chua, loi)
+    dem["câu đặt lại đúng chỗ trích dẫn"], da_bo = dat_lai_cau(ds, mac_dinh, sua_chua, loi)
+    rong = bo_dia_chi_rong(ds, mac_dinh)
+    if loi:
+        raise SystemExit("repairs.json có mục không áp được, chưa ghi tệp nào:\n"
+                         + "\n".join(f"  - {x}" for x in loi))
 
     tui = {q[3] for q in ds.quads((None, None, None, None))} - {mac_dinh.identifier}
     ngoai = len(list(mac_dinh))
     tong = len(list(ds.quads((None, None, None, None))))
-    thieu = doi_chieu(bo, ds, da_sua)
+    thieu = doi_chieu(bo, ds, da_sua, da_bo)
     che_doi = cau_bi_che_doi(ds, mac_dinh)
-    # Khoá đối chiếu gồm cả tên cũ lẫn tên mới: node trung gian tan đi nên không
-    # phải lúc nào cũng có tên mới, và tên mới còn phụ thuộc thứ tự sinh.
-    nhieu_nguon = sorted(
-        (str(next(iter(mac_dinh.objects(bo.moi(node), RDFS.label)), local_name(node))),
-         [bo.toa_do_cua(phan) for phan in sorted(g.objects(node, ACADEMIC.basedOn), key=str)],
-         (local_name(node), bo.ten_moi.get(node, local_name(node))))
-        for node in g.subjects(RDF.type, OWL.NamedIndividual)
-        if (not (bo.lop(node) & (LOP_VAN_BAN | LOP_NGUON)) or local_name(node) in KHONG_PHAI_NGUON)
-        and len(list(g.objects(node, ACADEMIC.basedOn))) > 1)
+    cung_van_ban, khac_van_ban = cau_nhieu_trich_dan(ds, mac_dinh)
+    dieu_tho = dieu_co_cho_min_hon(mac_dinh)
+    so_dia_chi = len(set(mac_dinh.subjects(RDF.type, ACADEMIC.DiaChiTrichDan)))
     # Thực thể mà KHÔNG câu nào của nó nằm trong túi: chỉ có danh tính và mô tả,
     # nên trả lời được nhưng không trích dẫn được.
     def ten_tui(tui_):
@@ -715,11 +993,13 @@ def main() -> None:
         "# Báo cáo chuyển đổi ontology sang TriG", "",
         f"- cũ: {len(g)} bộ ba, {len(set(g.subjects(RDF.type, OWL.NamedIndividual)))} cá thể",
         f"- mới: {tong} câu, trong đó {ngoai} nằm ngoài túi",
-        f"- nguồn thô: {nguon_tho} · địa chỉ trích dẫn: {len(bo.dia_chi)} · túi dùng thật: {len(tui)}",
+        f"- nguồn thô: {nguon_tho} · địa chỉ trích dẫn: {so_dia_chi} · túi dùng thật: {len(tui)}",
         "",
         "## Đã chuyển", "",
         *[f"- {k}: {v}" for k, v in sorted(dem.items())],
         f"- lớp gộp lại thành lớp chung kèm ô loại: {len(bo.gop_lop_da_dung)}",
+        f"- địa chỉ trích dẫn gộp vì trùng chỗ: {len(gop)}",
+        f"- địa chỉ trích dẫn rỗng đã bỏ: {len(rong)}",
         "", "## Cần người duyệt", "",
     ]
 
@@ -727,12 +1007,15 @@ def main() -> None:
     da_duyet_cau = duyet.get("nhieu_cau_mot_dieu_khoan", {})
     da_duyet_nguon = duyet.get("nhieu_nguon", {})
     che_doi_moi = [c for c in che_doi if f"{local_name(c[5])}|{c[2]}" not in da_duyet_cau]
-    nhieu_nguon_moi = [x for x in nhieu_nguon if not (set(x[2]) & set(da_duyet_nguon))]
+    khac_van_ban_moi = [x for x in khac_van_ban if x[0] not in da_duyet_nguon]
+    # Mục đã duyệt mà không còn khớp gì: dữ liệu đã đổi nên lý do cũ không còn đúng.
+    thua = (sorted(set(da_duyet_cau) - {f"{local_name(c[5])}|{c[2]}" for c in che_doi})
+            + sorted(set(da_duyet_nguon) - {khoa for khoa, _ in khac_van_ban}))
     dong += [f"Đã duyệt và giữ nguyên: {len(che_doi) - len(che_doi_moi)} chỗ nhiều câu, "
-             f"{len(nhieu_nguon) - len(nhieu_nguon_moi)} thực thể nhiều nguồn, "
+             f"{len(khac_van_ban) - len(khac_van_ban_moi)} câu hai văn bản cùng nói, "
              f"{len(khong_nguon) - len([x for x in khong_nguon if x not in set(duyet.get('khong_nguon', {}).get('thuc_the', []))])} "
              f"thực thể chỉ có danh tính (lý do ghi trong `reviewed.json`).", ""]
-    che_doi, nhieu_nguon = che_doi_moi, nhieu_nguon_moi
+    che_doi = che_doi_moi
     if che_doi:
         cat = sum(1 for c in che_doi if c[4])
         dong += [f"### {len(che_doi)} chỗ một điều khoản mang nhiều câu", "",
@@ -744,11 +1027,25 @@ def main() -> None:
             dong.append(f"- {dau} — **{nhan}** · {toa_do}")
             dong += [f"    - {c}" for c in cac_cau]
         dong.append("")
-    if nhieu_nguon:
-        dong += [f"### {len(nhieu_nguon)} thực thể dẫn từ hai nguồn trở lên", "",
-                 "Mọi phát biểu của chúng được nhân vào từng túi, vì dữ liệu cũ không nói",
-                 "dữ kiện nào thuộc nguồn nào. Cần gán lại từng câu về đúng điều khoản.", ""]
-        dong += [f"- **{nhan}** — {', '.join(toa)}" for nhan, toa, _ in nhieu_nguon]
+    if cung_van_ban:
+        dong += [f"### {len(cung_van_ban)} câu nằm ở hai chỗ của cùng một văn bản", "",
+                 "Gần như luôn là câu bị chép sang chỗ không nói ra nó, nên không duyệt được:",
+                 "đọc văn bản gốc rồi đặt lại về một chỗ bằng `dat_lai_cau` hoặc `rut_trich_dan`.", ""]
+        dong += [f"- `{khoa}` — {'; '.join(cho)}" for khoa, cho in cung_van_ban]
+        dong.append("")
+    if khac_van_ban_moi:
+        dong += [f"### {len(khac_van_ban_moi)} câu dẫn từ hai văn bản, chưa ghi lý do", "",
+                 "Đọc cả hai văn bản. Nếu cả hai thật sự nói ra câu này thì ghi lý do vào",
+                 "`reviewed.json` với khoá bên dưới; nếu không thì gỡ ở chỗ không nói ra nó.", ""]
+        dong += [f"- `{khoa}` — {'; '.join(cho)}" for khoa, cho in khac_van_ban_moi]
+        dong.append("")
+    if dieu_tho:
+        dong += [f"### {len(dieu_tho)} trích dẫn cả một điều trong khi đã có địa chỉ mịn hơn", "",
+                 ", ".join(dieu_tho), ""]
+    if thua:
+        dong += [f"### {len(thua)} mục trong `reviewed.json` không còn khớp gì", "",
+                 "Dữ liệu đã đổi nên lý do ghi ở đó không còn đúng; xoá mục đi.", ""]
+        dong += [f"- `{khoa}`" for khoa in thua]
         dong.append("")
     khong_nguon_moi = [x for x in khong_nguon if x not in set(duyet.get("khong_nguon", {}).get("thuc_the", []))]
     if khong_nguon_moi:
@@ -758,13 +1055,16 @@ def main() -> None:
         dong += [f"### {len(thieu)} dữ kiện không tìm lại được", ""] + [f"- {t}" for t in thieu[:40]] + [""]
     if bo.canh_bao:
         dong += [f"### {len(bo.canh_bao)} cảnh báo lúc chuyển", ""] + [f"- {c}" for c in bo.canh_bao[:40]] + [""]
+    if gop or rong:
+        dong += ["## Địa chỉ trích dẫn đã dọn", ""]
+        dong += [f"- gộp: {x}" for x in gop] + [f"- bỏ vì không còn câu nào: {x}" for x in rong] + [""]
     if bo.ghi_chu:
         dong += [f"## Ghi chú ({len(bo.ghi_chu)})", ""] + [f"- {c}" for c in bo.ghi_chu[:40]]
     BAO_CAO.write_text("\n".join(dong) + "\n", encoding="utf-8")
 
     print(f"cũ  : {len(g)} bộ ba")
     print(f"mới : {tong} câu · {ngoai} ngoài túi · {len(tui)} túi")
-    print(f"nguồn thô {nguon_tho} · địa chỉ trích dẫn {len(bo.dia_chi)}")
+    print(f"nguồn thô {nguon_tho} · địa chỉ trích dẫn {so_dia_chi}")
     for k, v in sorted(dem.items()):
         print(f"   {k}: {v}")
     print(f"\nkhông tìm lại được: {len(thieu)} dữ kiện")
@@ -772,7 +1072,11 @@ def main() -> None:
         print(f"   ⚠ {t}")
     print(f"một điều khoản mang nhiều câu: {len(che_doi)} chỗ "
           f"({sum(1 for c in che_doi if c[4])} chỗ là câu bị cắt đôi)")
-    print(f"thực thể dẫn từ hai nguồn trở lên: {len(nhieu_nguon)}")
+    print(f"câu nằm ở hai chỗ của cùng một văn bản: {len(cung_van_ban)}")
+    print(f"câu dẫn từ hai văn bản chưa ghi lý do: {len(khac_van_ban_moi)}")
+    print(f"trích dẫn cả điều dù có địa chỉ mịn hơn: {len(dieu_tho)}")
+    print(f"mục duyệt không còn khớp: {len(thua)}")
+    print(f"địa chỉ gộp: {len(gop)} · địa chỉ rỗng đã bỏ: {len(rong)}")
     print(f"thực thể không có phát biểu kèm nguồn: {len(khong_nguon_moi)}")
     print(f"cảnh báo: {len(bo.canh_bao)} · ghi chú: {len(bo.ghi_chu)}")
     for c in bo.canh_bao[:5]:

@@ -66,7 +66,7 @@ def test_a_service_students_use_is_an_entity_not_a_source(engine) -> None:
     """sinhvien.ntu.edu.vn là cổng thông tin sinh viên dùng hằng ngày, không phải
     một văn bản để dẫn chứng. Nó từng bị xếp nhầm vào tầng nguồn."""
 
-    assert _nodes(engine.search(["tra cứu học phí"]))[0] == ":TrangTraCuuHocPhiSinhVien"
+    assert _nodes(engine.search(["tra cứu học phí"]))[0] == ":CongThongTinSinhVien"
 
 
 def test_a_certificate_is_found_by_the_language_it_certifies(engine) -> None:
