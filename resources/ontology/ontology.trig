@@ -1295,8 +1295,12 @@ ns1:TD1052_D24K01dA {
     ns1:KhoaHocThuySan a ns1:NganhDaoTao ;
         rdfs:label "Khoa học thủy sản"@vi .
 
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLen a ns1:QuyTac ;
-        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên"@vi ;
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet a ns1:QuyTac ;
+        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4,5 năm và chương trình đặc biệt"@vi ;
+        ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy .
+
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam a ns1:QuyTac ;
+        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4 năm"@vi ;
         ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy .
 
     ns1:KhoiLuongDangKyCuaSinhVienHocLucYeuKem a ns1:QuyTac ;
@@ -1405,6 +1409,7 @@ ns1:TD1052_D24K01dA {
 
     ns1:MucTaiDonXinChuyenChuongTrinhDaoTao a ns1:MucBieuMauTrenWebsite ;
         rdfs:label "Mục tải: Đơn xin chuyển Chương trình đào tạo"@vi ;
+        ns1:ungVoiBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTao ;
         skos:altLabel "Mục tải: Mẫu số 5 - Đơn xin chuyển Chương trình đào tạo"@vi .
 
     ns1:MucTaiDonXinChuyenHocPhanThayTheTrongCtdt a ns1:MucBieuMauTrenWebsite ;
@@ -1794,9 +1799,6 @@ ns1:TD1052_D24K01dA {
     ns1:MauSo02DonDangKyThucHienDoAnTotNghiep a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 02 - Đơn đăng ký thực hiện đồ án tốt nghiệp"@vi .
 
-    ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc a ns1:BieuMauTheoQuyetDinh ;
-        rdfs:label "Mẫu số 05 - Đơn xin chuyển chương trình đào tạo vừa làm vừa học"@vi .
-
     ns1:MauSo06DonXinMienHocVaQuyDoiDiemHocPhan a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 06 - Đơn xin miễn học và quy đổi điểm học phần"@vi .
 
@@ -1927,8 +1929,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:QuyTacHaHangTotNghiep rdfs:label "Quy tắc hạ hạng tốt nghiệp"@vi .
 
-    ns1:QuyTacKhoiLuongDangKyMoiHocKy rdfs:label "Quy tắc khối lượng đăng ký mỗi học kỳ"@vi .
-
     ns1:ThanhPhanDanhGiaHocPhan rdfs:label "Thành phần đánh giá học phần"@vi .
 
     ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap a ns1:ThuTucHocVu ;
@@ -1951,6 +1951,9 @@ ns1:TD1052_D24K01dA {
 
     ns1:MauSo04DonXinHoanThi a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 04 - Đơn xin hoãn thi"@vi .
+
+    ns1:MauSo05DonXinChuyenChuongTrinhDaoTao a ns1:BieuMauTheoQuyetDinh ;
+        rdfs:label "Mẫu số 05 - Đơn xin chuyển chương trình đào tạo"@vi .
 
     ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 07 - Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi .
@@ -2012,6 +2015,8 @@ ns1:TD1052_D24K01dA {
     ns1:QuyTacDieuKienDuThi rdfs:label "Quy tắc điều kiện dự thi"@vi .
 
     ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi rdfs:label "Quy tắc giới hạn công nhận và chuyển đổi tín chỉ"@vi .
+
+    ns1:QuyTacKhoiLuongDangKyMoiHocKy rdfs:label "Quy tắc khối lượng đăng ký mỗi học kỳ"@vi .
 
     ns1:QuyTacThoiGianDaoTao rdfs:label "Quy tắc thời gian đào tạo"@vi .
 
@@ -3024,8 +3029,7 @@ ns1:TDUndergraduateFormCatalogueListing {
     ns1:MucTaiDonXinChuyenChuongTrinhDaoTao ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/245-Bieu%20mau%20-%20Mau%205A%20-%20Don%20xin%20chuyen%20CTDT%20(CTDT%20dac%20biet%20sang%20CTDT%20chuan%20hoac%20nguoc%20lai).pdf",
             "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2005%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ch%C6%B0%C6%A1ng%20tr%C3%ACnh%20%C4%91%C3%A0o%20t%E1%BA%A1o.docx" ;
         ns1:noiDung "Đơn xin chuyển Chương trình đào tạo"@vi ;
-        ns1:soHieuMauTrenWebsite "5",
-            "5A" .
+        ns1:soHieuMauTrenWebsite "5A" .
 
     ns1:MucTaiDonXinChuyenHocPhanThayTheTrongCtdt ns1:diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20HP%20thay%20th%E1%BA%BF.doc" ;
         ns1:noiDung "Đơn xin chuyển học phần thay thế trong CTĐT"@vi .
@@ -3292,15 +3296,15 @@ ns1:TD753_D10K01 {
 }
 
 ns1:TD1052_D20K03 {
-    ns1:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc ns1:canBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
+    ns1:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc ns1:canBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTao ;
         ns1:doAiQuyetDinh ns1:HieuTruong ;
         ns1:doAiThucHien ns1:SinhVien ;
-        ns1:dungBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ;
+        ns1:dungBieuMau ns1:MauSo05DonXinChuyenChuongTrinhDaoTao ;
         ns1:noiDung "Những sinh viên thuộc diện bị buộc thôi học quy định tại khoản 2 Điều này được quyền viết đơn (Mẫu số 05 - Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển qua chương trình đào tạo theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường."@vi,
             "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới. Tùy thuộc vào thời gian xin chuyển chương trình đào tạo, Nhà trường xem xét quyết định cho bảo lưu kết quả học tập đối với từng trường hợp cụ thể."@vi ;
         ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
 
-    ns1:MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc ns1:soHieuMauTheoQuyetDinh "05" .
+    ns1:MauSo05DonXinChuyenChuongTrinhDaoTao ns1:soHieuMauTheoQuyetDinh "05" .
 }
 
 ns1:TD1052_D08K01dA {
@@ -3308,7 +3312,11 @@ ns1:TD1052_D08K01dA {
 }
 
 ns1:TD1052_D09K03 {
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLen ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình 4 năm, tối đa 32 tín chỉ đối với chương trình 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp. Không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
+        ns1:soTinChiToiDa 32 ;
+        ns1:soTinChiToiThieu 15 .
+
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
         ns1:soTinChiToiDa 27 ;
         ns1:soTinChiToiThieu 15 .
 

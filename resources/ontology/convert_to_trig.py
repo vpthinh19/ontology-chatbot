@@ -707,6 +707,9 @@ def doi_iri(bo: "BoChuyenDoi", ds, mac_dinh: Graph, sua_chua: dict, loi: list[st
         if "iri_moi" not in muc:
             continue
         cu, moi = ACADEMIC[muc["thuc_the"]], ACADEMIC[muc["iri_moi"]]
+        if muc["iri_moi"] != pascal(muc["nhan"]):
+            loi.append(f"doi_nhan: IRI mới phải sinh từ nhãn mới, tức {pascal(muc['nhan'])}")
+            continue
         if next(iter(ds.quads((moi, None, None, None))), None) is not None:
             loi.append(f"doi_nhan: IRI mới {muc['iri_moi']} đã có người dùng")
             continue
@@ -800,13 +803,61 @@ def rut_trich_dan(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
     return dem
 
 
+def tao_gia_tri(ds, thuoc_tinh: URIRef, gia_tri: str, loi: list[str], noi: str):
+    """Giá trị cho một câu thêm mới.
+
+    Tên một thực thể đã có thì là liên kết. Còn lại là chữ, mượn kiểu của các câu sẵn
+    có cùng thuộc tính (số nguyên, chữ tiếng Việt...), để câu mới không lệch kiểu với
+    câu cũ và vẫn so khớp được khi tìm.
+    """
+
+    if re.fullmatch(r"[A-Za-z0-9_]+", gia_tri):
+        iri = ACADEMIC[gia_tri]
+        if next(iter(ds.quads((iri, None, None, None))), None) is not None:
+            return iri
+    mau = next((o for _, _, o, _ in ds.quads((None, thuoc_tinh, None, None)) if isinstance(o, Literal)), None)
+    if mau is None:
+        loi.append(f"{noi}: {gia_tri!r} không phải thực thể, và chưa câu nào dùng "
+                   f"{local_name(thuoc_tinh)} để mượn kiểu giá trị")
+        return None
+    return Literal(gia_tri, lang=mau.language, datatype=mau.datatype)
+
+
+def tao_thuc_the(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
+    """Dựng thực thể mới, ví dụ khi một quy tắc gộp hai mức phải tách làm hai.
+
+    Chỉ dựng danh tính; các câu của nó ghi trong ``dat_lai_cau`` với ``"them": true``.
+    Tên phải đúng là tên sinh từ nhãn, như mọi thực thể khác.
+    """
+
+    dem = 0
+    for muc in sua_chua.get("tao_thuc_the", []):
+        noi = f"tao_thuc_the {muc['thuc_the']}"
+        chu_the, lop = ACADEMIC[muc["thuc_the"]], ACADEMIC[muc["lop"]]
+        if muc["thuc_the"] != pascal(muc["nhan"]):
+            loi.append(f"{noi}: tên phải sinh từ nhãn, tức {pascal(muc['nhan'])}")
+            continue
+        if next(iter(ds.quads((chu_the, None, None, None))), None) is not None:
+            loi.append(f"{noi}: thực thể này đã có")
+            continue
+        if (None, RDF.type, lop) not in mac_dinh:
+            loi.append(f"{noi}: không có lớp {muc['lop']}")
+            continue
+        mac_dinh.add((chu_the, RDF.type, lop))
+        mac_dinh.add((chu_the, RDFS.label, Literal(muc["nhan"], lang="vi")))
+        for ten in muc.get("ten_goi_phu", []):
+            mac_dinh.add((chu_the, SKOS.altLabel, Literal(ten, lang="vi")))
+        dem += 1
+    return dem
+
+
 def dat_lai_cau(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> tuple[int, set]:
     """Đặt từng câu vào đúng chỗ văn bản nói ra nó.
 
     Dữ liệu cũ chỉ ghi nguồn cho cả thực thể, nên bộ chuyển đổi chép mọi câu vào mọi
     túi của thực thể. Mỗi mục ở đây gỡ một câu khỏi mọi túi rồi đặt lại vào đúng các
     trích dẫn liệt kê. Danh sách rỗng nghĩa là câu ta tự khẳng định, nằm ngoài mọi
-    túi; ``"xoa": true`` bỏ hẳn một câu sai.
+    túi; ``"xoa": true`` bỏ hẳn một câu sai; ``"them": true`` thêm một câu chưa có.
     """
 
     dem, da_bo = 0, set()
@@ -820,13 +871,16 @@ def dat_lai_cau(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> tuple[in
             thuoc_tinh = ACADEMIC[cau["thuoc_tinh"]]
             khop = [(o, ten_do_thi(g)) for _, _, o, g in ds.quads((chu_the, thuoc_tinh, None, None))
                     if _khop(o, cau["gia_tri"])]
-            if len({o for o, _ in khop}) != 1:
-                loi.append(f"{noi}: thấy {len({o for o, _ in khop})} giá trị khớp, cần đúng 1")
+            can_co = 0 if cau.get("them") else 1
+            if len({o for o, _ in khop}) != can_co:
+                loi.append(f"{noi}: thấy {len({o for o, _ in khop})} giá trị khớp, cần đúng {can_co}")
                 continue
             dich = [doc_trich_dan(mac_dinh, td, loi, noi) for td in cau.get("trich_dan", [])]
             if None in dich:
                 continue
-            o = khop[0][0]
+            o = khop[0][0] if khop else tao_gia_tri(ds, thuoc_tinh, cau["gia_tri"], loi, noi)
+            if o is None:
+                continue
             for _, tui in khop:
                 ds.graph(tui).remove((chu_the, thuoc_tinh, o))
             if cau.get("xoa"):
@@ -954,6 +1008,7 @@ def main() -> None:
     dem["toạ độ viết lại"] = doi_toa_do(mac_dinh, sua_chua, loi)
     gop = gop_dia_chi_trung(ds, mac_dinh)
     dem["câu gỡ khỏi trích dẫn không nói ra nó"] = rut_trich_dan(ds, mac_dinh, sua_chua, loi)
+    dem["thực thể dựng mới"] = tao_thuc_the(ds, mac_dinh, sua_chua, loi)
     dem["câu đặt lại đúng chỗ trích dẫn"], da_bo = dat_lai_cau(ds, mac_dinh, sua_chua, loi)
     rong = bo_dia_chi_rong(ds, mac_dinh)
     if loi:

@@ -1,5 +1,5 @@
 {
- "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc. 'doi_nhan' đổi nhãn và tên gọi phụ của một thực thể, dùng khi tên cũ mô tả sai thứ nó trỏ tới; có 'iri_moi' thì đổi luôn IRI, và việc đổi IRI chạy TRƯỚC mọi mục khác nên các mục khác dùng tên mới. 'ten_goi_them' thêm tên gọi phụ; chúng nằm ngoài mọi túi nên không cần nguồn. Ba mục sau sửa việc dữ liệu cũ chỉ ghi nguồn cho cả thực thể, khiến mọi câu bị chép vào mọi trích dẫn của thực thể: 'doi_toa_do' viết lại toạ độ của một địa chỉ (hai địa chỉ cùng nguồn cùng toạ độ được gộp); 'rut_trich_dan' gỡ thực thể (hoặc chỉ vài thuộc tính của nó) khỏi một trích dẫn không nói gì về nó, và câu gỡ ra phải còn ở chỗ khác; 'dat_lai_cau' đặt từng câu (thuộc tính + giá trị) vào đúng các trích dẫn liệt kê, danh sách rỗng là câu ta tự khẳng định nên nằm ngoài mọi túi, 'xoa' bỏ hẳn câu sai. Trích dẫn ghi {nguon, toa_do} hoặc {dia_chi}; toạ độ chưa có phải ghi 'tao_moi'. Mục nào không áp được thì bộ chuyển đổi dừng hẳn. Địa chỉ không còn câu nào bị bỏ tự động.",
+ "ghi_chu": "Sửa chữa lúc chuyển đổi, mỗi mục kèm lý do. 'thay_bang' thay toàn bộ :noiDung của một cặp (thực thể, toạ độ) bằng câu gốc đọc từ references/. Trường toa_do trong thay_bang đẩy câu sang toạ độ mịn hơn khi văn bản thật sự liệt kê nhiều điểm; trường nguon đổi luôn văn bản. Khi một chuỗi toạ độ có ở nhiều nguồn (hai quy chế 1052 và 753 trùng nhãn), phải nêu nguon_hien_tai. 'xoa' bỏ hẳn một thực thể. 'dat_nguon' đưa câu mô tả không nguồn của một thực thể vào túi của một điều khoản, kèm câu gốc. 'doi_nhan' đổi nhãn và tên gọi phụ của một thực thể, dùng khi tên cũ mô tả sai thứ nó trỏ tới; có 'iri_moi' thì đổi luôn IRI, và việc đổi IRI chạy TRƯỚC mọi mục khác nên các mục khác dùng tên mới. 'ten_goi_them' thêm tên gọi phụ; chúng nằm ngoài mọi túi nên không cần nguồn. Ba mục sau sửa việc dữ liệu cũ chỉ ghi nguồn cho cả thực thể, khiến mọi câu bị chép vào mọi trích dẫn của thực thể: 'doi_toa_do' viết lại toạ độ của một địa chỉ (hai địa chỉ cùng nguồn cùng toạ độ được gộp); 'rut_trich_dan' gỡ thực thể (hoặc chỉ vài thuộc tính của nó) khỏi một trích dẫn không nói gì về nó, và câu gỡ ra phải còn ở chỗ khác; 'dat_lai_cau' đặt từng câu (thuộc tính + giá trị) vào đúng các trích dẫn liệt kê, danh sách rỗng là câu ta tự khẳng định nên nằm ngoài mọi túi, 'xoa' bỏ hẳn câu sai, 'them' thêm một câu chưa có (giá trị là tên thực thể thì thành liên kết, còn lại mượn kiểu của câu cùng thuộc tính). 'tao_thuc_the' dựng danh tính cho thực thể mới (tên phải sinh từ nhãn), các câu của nó ghi ở dat_lai_cau với 'them'. Trích dẫn ghi {nguon, toa_do} hoặc {dia_chi}; toạ độ chưa có phải ghi 'tao_moi'. Mục nào không áp được thì bộ chuyển đổi dừng hẳn. Địa chỉ không còn câu nào bị bỏ tự động.",
  "sua": [
   {
    "thuc_the": "ThuTucChuyenNganh",
@@ -308,6 +308,17 @@
    "thay_bang": [
     {
      "noiDung": "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài, có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế."
+    }
+   ]
+  },
+  {
+   "thuc_the": "KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam",
+   "toa_do": "khoản 3 Điều 9",
+   "nguon_hien_tai": "Nguon1052",
+   "ly_do": "quy tắc chỉ còn nói chương trình 4 năm; mức 32 tín chỉ sang quy tắc tách ra (tao_thuc_the)",
+   "thay_bang": [
+    {
+     "noiDung": "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."
     }
    ]
   }
@@ -622,9 +633,47 @@
     {"thuoc_tinh": "trichYeu", "gia_tri": "Trang thông tin tuyển sinh Trường Đại học Nha Trang", "xoa": true},
     {"thuoc_tinh": "ngayTruyCap", "gia_tri": "2026-08-15", "xoa": true}
    ]
+  },
+  {
+   "thuc_the": "MucTaiDonXinChuyenChuongTrinhDaoTao",
+   "ly_do": "người dùng xác nhận (13/9/2026): trên website đơn này là mẫu 5A, công văn gọi là Mẫu số 05 - hai số chỉ một đơn. Số '5' đọc từ tên tệp docx cũ là số theo công văn, không phải số trên website",
+   "cau": [
+    {"thuoc_tinh": "soHieuMauTrenWebsite", "gia_tri": "5", "xoa": true},
+    {"thuoc_tinh": "ungVoiBieuMau", "gia_tri": "MauSo05DonXinChuyenChuongTrinhDaoTao", "them": true, "trich_dan": [], "ly_do": "cặp ghép theo xác nhận của người dùng; không văn bản nào nói ra nên nằm ngoài mọi túi, như các cặp mục tải - mẫu đơn khác"}
+   ]
+  },
+  {
+   "thuc_the": "KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet",
+   "ly_do": "quy tắc tách ra từ khoản 3 Điều 9 (xem tao_thuc_the); câu và các con số đọc từ chính khoản đó",
+   "cau": [
+    {"thuoc_tinh": "loaiQuyTac", "gia_tri": "QuyTacKhoiLuongDangKyMoiHocKy", "them": true, "trich_dan": []},
+    {"thuoc_tinh": "noiDung", "gia_tri": "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh.", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]},
+    {"thuoc_tinh": "soTinChiToiThieu", "gia_tri": "15", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]},
+    {"thuoc_tinh": "soTinChiToiDa", "gia_tri": "32", "them": true, "trich_dan": [{"nguon": "Nguon1052", "toa_do": "khoản 3 Điều 9"}]}
+   ]
+  }
+ ],
+ "tao_thuc_the": [
+  {
+   "thuc_the": "KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet",
+   "lop": "QuyTac",
+   "nhan": "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4,5 năm và chương trình đặc biệt",
+   "ly_do": "khoản 3 Điều 9 đặt hai mức tối đa: 27 tín chỉ cho chương trình 4 năm, 32 tín chỉ cho chương trình 4,5 năm và chương trình đặc biệt. Gộp một quy tắc thì ô 'số tín chỉ tối đa' chỉ ghi được 27, sai với nhóm sau. Người dùng đồng ý tách (13/9/2026)"
   }
  ],
  "doi_nhan": [
+  {
+   "thuc_the": "MauSo05DonXinChuyenChuongTrinhDaoTaoVuaLamVuaHoc",
+   "iri_moi": "MauSo05DonXinChuyenChuongTrinhDaoTao",
+   "ly_do": "người dùng xác nhận (13/9/2026) tên thật của Mẫu số 05 là 'Đơn xin chuyển chương trình đào tạo'. Vế 'vừa làm vừa học' do dữ liệu cũ tự thêm, trong khi cùng đơn này còn dùng để chuyển giữa chương trình chuẩn và đặc biệt (tệp 5A trên website)",
+   "nhan": "Mẫu số 05 - Đơn xin chuyển chương trình đào tạo"
+  },
+  {
+   "thuc_the": "KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLen",
+   "iri_moi": "KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam",
+   "ly_do": "tách làm hai quy tắc theo hai mức tối đa của khoản 3 Điều 9 (xem tao_thuc_the); quy tắc này giữ mức 27 tín chỉ của chương trình 4 năm",
+   "nhan": "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4 năm"
+  },
   {
    "thuc_the": "TrangTraCuuHocPhiSinhVien",
    "iri_moi": "CongThongTinSinhVien",
