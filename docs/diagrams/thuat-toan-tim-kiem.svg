@@ -41,23 +41,32 @@
   <text x="500" y="192" class="loai">label</text>
   <rect x="676" y="176" width="126" height="24" rx="5" class="chon"/>
   <text x="739" y="193" class="diem" font-weight="700">6,44</text>
+  <text x="911" y="193" class="diem">—</text>
+  <text x="1083" y="193" class="diem">—</text>
 
   <text x="56" y="222" class="ma">"Thủ tục nghỉ học tạm thời"</text>
   <text x="500" y="222" class="loai">label</text>
   <text x="739" y="223" class="diem">5,69</text>
+  <text x="911" y="223" class="diem">—</text>
+  <text x="1083" y="223" class="diem">—</text>
 
   <text x="56" y="252" class="ma">"bảo lưu kết quả học tập"</text>
   <text x="500" y="252" class="loai">label</text>
   <rect x="848" y="236" width="126" height="24" rx="5" class="chon"/>
+  <text x="739" y="253" class="diem">—</text>
   <text x="911" y="253" class="diem" font-weight="700">10,43</text>
+  <text x="1083" y="253" class="diem">—</text>
 
   <text x="56" y="282" class="ma">"bảo lưu kết quả"</text>
   <text x="500" y="282" class="loai">label</text>
+  <text x="739" y="283" class="diem">—</text>
   <text x="911" y="283" class="diem">9,53</text>
+  <text x="1083" y="283" class="diem">—</text>
 
   <text x="56" y="312" class="ma">"tạm nghỉ học"</text>
   <text x="500" y="312" class="loai">label</text>
   <text x="739" y="313" class="diem">5,18</text>
+  <text x="911" y="313" class="diem">—</text>
   <rect x="1020" y="296" width="126" height="24" rx="5" class="chon"/>
   <text x="1083" y="313" class="diem" font-weight="700">2,73</text>
 
@@ -109,5 +118,5 @@
   <!-- Chú giải -->
   <rect x="40" y="686" width="1140" height="52" rx="10" class="o"/>
   <rect x="60" y="700" width="26" height="22" rx="5" class="chon"/>
-  <text x="98" y="717" class="ghi">Ô tô đậm = dòng cao nhất của mục cho từ khoá đó; chỉ ô này được cộng. Dấu — nghĩa là không dòng nào của mục khớp từ khoá.</text>
+  <text x="98" y="717" class="ghi">Ô tô đậm = dòng cao nhất của mục cho từ khoá ở cột đó; chỉ ô này được cộng. Dấu — nghĩa là dòng không khớp từ khoá ở cột đó.</text>
 </svg>

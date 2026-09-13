@@ -17,7 +17,7 @@
 
   <rect width="1220" height="680" fill="#ffffff"/>
   <text x="40" y="38" style="font-size:24px; font-weight:700">Các loại mục chính và quan hệ nối chúng</text>
-  <text x="40" y="64" style="font-size:15px; fill:#444">Sơ đồ mô tả cấu trúc: loại nào tồn tại và nối với loại nào. Không mô tả số lượng mục.</text>
+  <text x="40" y="64" style="font-size:15px; fill:#444">Sơ đồ mô tả cấu trúc: loại nào tồn tại và nối với loại nào.</text>
 
   <!-- Cụm thủ tục -->
   <rect x="36" y="86" width="560" height="286" rx="14" class="vung"/>

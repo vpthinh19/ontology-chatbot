@@ -169,10 +169,11 @@ tên tiếng Việt bỏ dấu; tên hiển thị cho người đọc nằm tron
 
 | Khái niệm | Bản chất | Ví dụ |
 |---|---|---|
-| Lớp (loại) | nhóm các mục cùng kiểu | `:ThuTucHocVu` là lớp thủ tục học vụ |
-| Cá thể (mục) | một đối tượng cụ thể thuộc một lớp | `:ThuTucNghiHocTamThoi` |
-| Quan hệ | nối mục với mục khác | `:nopTai` nối thủ tục với đơn vị tiếp nhận |
-| Thuộc tính | nối mục với chữ, số, ngày hoặc đường dẫn | `:noiDung` nối thủ tục với một câu nội dung |
+| Lớp (*class*) | nhóm các mục cùng kiểu | `:ThuTucHocVu` là lớp thủ tục học vụ |
+| Cá thể (*individual*), trong tài liệu gọi tắt là **mục** | một đối tượng cụ thể thuộc một lớp | `:ThuTucNghiHocTamThoi` |
+| **Nhãn** (*label*) | tên hiển thị của mục; mỗi mục có một tên chính và có thể có nhiều tên gọi khác | `rdfs:label "Thủ tục nghỉ học tạm thời"`, `skos:altLabel "bảo lưu kết quả học tập"` |
+| **Quan hệ** (*object property*) | nối mục với một mục khác | `:nopTai` nối thủ tục với đơn vị tiếp nhận |
+| **Thuộc tính dữ liệu** (*datatype property*) | nối mục với chữ, số, ngày hoặc đường dẫn | `:noiDung` nối thủ tục với một câu nội dung |
 
 Mỗi dữ kiện được ghi thành một **phát biểu ba vế** (*triple*):
 
@@ -281,7 +282,7 @@ giá trị trỏ tới đúng loại; `:batBuocNguon true` là quy ước riêng
 đó phải nằm trong một túi trích dẫn.
 
 Sơ đồ sau trả lời câu hỏi **"các loại mục nối với nhau bằng những quan hệ nào?"**. Nó
-mô tả cấu trúc — loại nào tồn tại và nối với loại nào — chứ không mô tả số lượng mục.
+mô tả cấu trúc: loại nào tồn tại và nối với loại nào.
 
 ![Bản đồ các loại tri thức](docs/images/ban-do-loai.png)
 
