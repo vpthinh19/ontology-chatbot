@@ -27,22 +27,3 @@ Học bổng khuyến khích học tập được cấp theo từng học kì v�
 Quỹ HBKK học tập được trích từ nguồn học phí theo quy định hiện hành của Nhà nước. Việc xét học bổng được thống nhất xét theo khóa học và ngành học hoặc lớp chuyên ngành.
 6. Học bổng trợ cấp xã hội
 Học bổng trợ cấp xã hội (sinh viên mồ côi cả cha lẫn mẹ không nơi nương tựa. sinh viên là người dân tộc ít người sống ở vùng cao. Sinh viên là người tàn tật theo quy định của Nhà nước. Sinh viên có hoàn cảnh khó khăn đặc biệt về kinh tế, vượt khó trong học tập mà gia đình thuộc diện xóa đói giảm nghèo có giấy chứng nhận là hộ đói nghèo do Sở Lao động Thương binh Xã hội cấp), mức học bổng: 200.000đ/1 tháng/1 người (mức học bổng sẽ thay đổi khi có văn bản quy định mới ban hành)
---- GHI CHÚ NGUỒN, 2026-08-15 ---
-
-Nội dung trên do NGƯỜI DÙNG mở trang ở đầu tệp bằng trình duyệt rồi chép về.
-
-Một ghi chú cũ đề ngày 10/8 từng viết "ĐỪNG NẠP NỘI DUNG TRÊN VÀO ONTOLOGY", lý
-do nêu là mở URL đó không còn thấy phần tiêu chuẩn học bổng. Kết luận ấy SAI, và
-sai vì cách kiểm: nó tải HTML thô. Đo lại ngày 15/8 thì `curl` vẫn cho 0 kết quả
-khi tìm "khiển trách", "tín chỉ", "Tiêu chuẩn chung" — nhưng trình duyệt thật
-hiển thị bình thường. Trang dựng nội dung bằng JavaScript nên tải thô chỉ ra vỏ.
-
-Bài học: đừng tuyên bố một trang đã chết chỉ vì một lượt tải thô không thấy chữ.
-Trang động phải mở bằng trình duyệt, hoặc hỏi người mở được.
-
-Vì vậy `ScholarshipCriteriaGuidance` và hai mục con của nó là NGUỒN HỢP LỆ; bảy
-node dẫn về chúng giữ nguyên.
-
-Riêng câu "sinh viên không phải nộp đơn" thì gỡ khỏi đồ thị — không phải vì
-nguồn hỏng mà vì KHÔNG đoạn nào ở trên nói ra điều đó. Người dùng xác nhận nó
-đúng trong thực tế và đồng ý gỡ (15/8/2026).
