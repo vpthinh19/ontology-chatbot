@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1380" viewBox="0 0 1600 1380" font-family="Noto Sans, sans-serif">
+  <defs>
+    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/>
+    </marker>
+    <style>
+      .so-buoc { fill: #1f6fb8; stroke: #9ec5ff; stroke-width: 2; }
+      .chu-so { fill: #ffffff; font-size: 18px; font-weight: 700; text-anchor: middle; }
+      .ten { fill: #ffffff; font-size: 17px; font-weight: 700; }
+      .phu { fill: #bcd4f5; font-size: 13.5px; }
+      .khung { fill: #07192f; stroke: #2c4d77; stroke-width: 1.5; }
+      .ma { font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace; font-size: 14px; fill: #dbe8ff; white-space: pre; }
+      .k { fill: #8fc1ff; }
+      .c { fill: #ffe08a; }
+      .m { fill: #7f9bbf; }
+      .van { font-size: 15px; fill: #ffffff; }
+      .di { stroke: #ffffff; stroke-width: 2; fill: none; marker-end: url(#mui); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1380" rx="30" fill="#0a2342"/>
+
+  <!-- ① -->
+  <circle cx="70" cy="76" r="22" class="so-buoc"/><text x="70" y="83" class="chu-so">1</text>
+  <text x="108" y="72" class="ten">Câu hỏi của người dùng</text>
+  <text x="108" y="94" class="phu">chuỗi văn bản</text>
+  <rect x="380" y="40" width="1180" height="76" rx="12" class="khung"/>
+  <text x="404" y="84" class="van">Em muốn nghỉ một học kỳ thì phải làm gì?</text>
+  <path class="di" d="M70 98 V142"/>
+
+  <!-- ② -->
+  <circle cx="70" cy="168" r="22" class="so-buoc"/><text x="70" y="175" class="chu-so">2</text>
+  <text x="108" y="164" class="ten">Giao diện gửi tới API</text>
+  <text x="108" y="186" class="phu">HTTP POST · JSON</text>
+  <rect x="380" y="144" width="1180" height="96" rx="12" class="khung"/>
+  <text x="404" y="180" class="ma"><tspan class="m">POST /chat</tspan></text>
+  <text x="404" y="210" class="ma">{<tspan class="k">"message"</tspan>: <tspan class="c">"Em muốn nghỉ một học kỳ thì phải làm gì?"</tspan>, <tspan class="k">"history"</tspan>: []}</text>
+  <path class="di" d="M70 190 V266"/>
+
+  <!-- ③ -->
+  <circle cx="70" cy="292" r="22" class="so-buoc"/><text x="70" y="299" class="chu-so">3</text>
+  <text x="108" y="288" class="ten">LLM yêu cầu gọi công cụ</text>
+  <text x="108" y="310" class="phu">tool call · JSON</text>
+  <rect x="380" y="268" width="1180" height="96" rx="12" class="khung"/>
+  <text x="404" y="304" class="ma">{<tspan class="k">"name"</tspan>: <tspan class="c">"lookup_academic_information"</tspan>,</text>
+  <text x="404" y="334" class="ma"> <tspan class="k">"arguments"</tspan>: {<tspan class="k">"keywords"</tspan>: [<tspan class="c">"nghỉ học tạm thời"</tspan>, <tspan class="c">"bảo lưu kết quả học tập"</tspan>]}}</text>
+  <path class="di" d="M70 314 V390"/>
+
+  <!-- ④ -->
+  <circle cx="70" cy="416" r="22" class="so-buoc"/><text x="70" y="423" class="chu-so">4</text>
+  <text x="108" y="412" class="ten">Engine chấm điểm, chọn mục</text>
+  <text x="108" y="434" class="phu">3 mục điểm cao nhất (xem hình 6)</text>
+  <rect x="380" y="392" width="1180" height="120" rx="12" class="khung"/>
+  <text x="404" y="428" class="ma">16,88  <tspan class="c">Thủ tục nghỉ học tạm thời</tspan>                <tspan class="m">khớp “bảo lưu kết quả học tập”, “nghỉ học tạm thời”</tspan></text>
+  <text x="404" y="458" class="ma"> 5,97  <tspan class="c">Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ</tspan></text>
+  <text x="404" y="488" class="ma"> 5,09  <tspan class="c">Mục tải: Đơn xin nghỉ học tạm thời</tspan></text>
+  <path class="di" d="M70 438 V538"/>
+
+  <!-- ⑤ -->
+  <circle cx="70" cy="564" r="22" class="so-buoc"/><text x="70" y="571" class="chu-so">5</text>
+  <text x="108" y="560" class="ten">Công cụ trả kết quả cho LLM</text>
+  <text x="108" y="582" class="phu">JSON, đã rút gọn</text>
+  <text x="108" y="604" class="phu">dữ kiện gom theo nguồn</text>
+  <rect x="380" y="540" width="1180" height="392" rx="12" class="khung"/>
+  <text x="404" y="572" class="ma">{<tspan class="k">"status"</tspan>: <tspan class="c">"found"</tspan>,</text>
+  <text x="404" y="596" class="ma"> <tspan class="k">"guidance"</tspan>: <tspan class="c">"Mỗi phần tử của results là một mục của ontology. Kiểm matched trước: …"</tspan>,</text>
+  <text x="404" y="620" class="ma"> <tspan class="k">"results"</tspan>: [</text>
+  <text x="404" y="644" class="ma">  {<tspan class="k">"label"</tspan>: <tspan class="c">"Thủ tục nghỉ học tạm thời"</tspan>, <tspan class="k">"classes"</tspan>: [<tspan class="c">"Thủ tục học vụ"</tspan>],</text>
+  <text x="404" y="668" class="ma">   <tspan class="k">"matched"</tspan>: [<tspan class="c">"bảo lưu kết quả học tập"</tspan>, <tspan class="c">"bảo lưu kết quả"</tspan>, <tspan class="c">"nghỉ học tạm thời"</tspan>],</text>
+  <text x="404" y="692" class="ma">   <tspan class="k">"sources"</tspan>: [</text>
+  <text x="404" y="716" class="ma">    {<tspan class="k">"citation"</tspan>: <tspan class="c">"khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang,</tspan></text>
+  <text x="404" y="740" class="ma">                 <tspan class="c">ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025"</tspan>,</text>
+  <text x="404" y="764" class="ma">     <tspan class="k">"url"</tspan>: <tspan class="c">"https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052…pdf"</tspan>,</text>
+  <text x="404" y="788" class="ma">     <tspan class="k">"facts"</tspan>: [</text>
+  <text x="404" y="812" class="ma">      {<tspan class="k">"subject"</tspan>: <tspan class="c">"Thủ tục nghỉ học tạm thời"</tspan>, <tspan class="k">"property"</tspan>: <tspan class="c">"nộp tại"</tspan>, <tspan class="k">"value"</tspan>: <tspan class="c">"Phòng Công tác Chính trị và Sinh viên"</tspan>},</text>
+  <text x="404" y="836" class="ma">      {<tspan class="k">"subject"</tspan>: <tspan class="c">"Thủ tục nghỉ học tạm thời"</tspan>, <tspan class="k">"property"</tspan>: <tspan class="c">"cần biểu mẫu"</tspan>, <tspan class="k">"value"</tspan>: <tspan class="c">"Mẫu số 09 - Đơn xin nghỉ học tạm thời"</tspan>},</text>
+  <text x="404" y="860" class="ma">      <tspan class="m">… 4 dữ kiện nữa của cùng khoản 3 Điều 24</tspan>]},</text>
+  <text x="404" y="884" class="ma">    <tspan class="m">… 7 nguồn nữa, mỗi nguồn một trích dẫn và danh sách dữ kiện của nó</tspan>]},</text>
+  <text x="404" y="908" class="ma">  {<tspan class="k">"label"</tspan>: <tspan class="c">"Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ"</tspan>, <tspan class="m">…</tspan>}, {<tspan class="k">"label"</tspan>: <tspan class="c">"Mục tải: Đơn xin nghỉ học tạm thời"</tspan>, <tspan class="m">…</tspan>}]}</text>
+  <path class="di" d="M70 610 V958"/>
+
+  <!-- ⑥ -->
+  <circle cx="70" cy="984" r="22" class="so-buoc"/><text x="70" y="991" class="chu-so">6</text>
+  <text x="108" y="980" class="ten">API đẩy sự kiện về giao diện</text>
+  <text x="108" y="1002" class="phu">server-sent events (SSE)</text>
+  <rect x="380" y="960" width="1180" height="150" rx="12" class="khung"/>
+  <text x="404" y="994" class="ma">data: {<tspan class="k">"type"</tspan>: <tspan class="c">"lookup_started"</tspan>, <tspan class="k">"keywords"</tspan>: <tspan class="c">"nghỉ học tạm thời · bảo lưu kết quả học tập"</tspan>}</text>
+  <text x="404" y="1022" class="ma">data: {<tspan class="k">"type"</tspan>: <tspan class="c">"lookup_finished"</tspan>}</text>
+  <text x="404" y="1050" class="ma">data: {<tspan class="k">"type"</tspan>: <tspan class="c">"text_delta"</tspan>, <tspan class="k">"content"</tspan>: <tspan class="c">"…một đoạn của câu trả lời…"</tspan>}   <tspan class="m">← 147 sự kiện như vậy</tspan></text>
+  <text x="404" y="1078" class="ma">data: {<tspan class="k">"type"</tspan>: <tspan class="c">"completed"</tspan>, <tspan class="k">"content"</tspan>: <tspan class="c">"Để nghỉ học tạm thời và bảo lưu kết quả học tập, bạn cần…"</tspan>}</text>
+  <path class="di" d="M70 1006 V1136"/>
+
+  <!-- ⑦ -->
+  <circle cx="70" cy="1162" r="22" class="so-buoc"/><text x="70" y="1169" class="chu-so">7</text>
+  <text x="108" y="1158" class="ten">Câu trả lời người dùng thấy</text>
+  <text x="108" y="1180" class="phu">Markdown kèm nguồn</text>
+  <text x="108" y="1202" class="phu">2,92 giây · 1 lần gọi công cụ</text>
+  <rect x="380" y="1138" width="1180" height="212" rx="12" class="khung" style="fill: #0f2c4d"/>
+  <text x="404" y="1172" class="van">Để nghỉ học tạm thời và bảo lưu kết quả học tập, bạn cần thực hiện theo hướng dẫn sau:</text>
+  <text x="404" y="1202" class="van"><tspan font-weight="700">1. Điều kiện áp dụng:</tspan> ốm, thai sản hoặc tai nạn phải điều trị thời gian dài · được điều động vào lực lượng vũ trang · …</text>
+  <text x="404" y="1232" class="van"><tspan font-weight="700">2. Hồ sơ và thủ tục:</tspan> Mẫu số 09 - Đơn xin nghỉ học tạm thời · nộp tại Phòng Công tác Chính trị và Sinh viên ·</text>
+  <text x="404" y="1258" class="van">Hiệu trưởng ký quyết định trong 01 ngày · …</text>
+  <text x="404" y="1288" class="van"><tspan font-weight="700">3. Nguồn tham khảo:</tspan> Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm</text>
+  <text x="404" y="1314" class="van">Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025 <tspan fill="#8fc1ff" text-decoration="underline">(Chi tiết tại đây)</tspan> · Quy trình xét chuyển Ngành… <tspan fill="#8fc1ff" text-decoration="underline">(Chi tiết tại đây)</tspan></text>
+</svg>

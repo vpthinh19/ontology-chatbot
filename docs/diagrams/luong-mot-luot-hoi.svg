@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" font-family="Noto Sans, sans-serif">
+  <defs>
+    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="muixanh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8fc1ff"/>
+    </marker>
+    <style>
+      .khoi { fill: #12467d; stroke: #3a78bd; stroke-width: 1.5; }
+      .nhom { fill: #0e3963; stroke: #3a78bd; stroke-width: 1.5; }
+      .ten { fill: #ffffff; font-size: 17px; font-weight: 700; text-anchor: middle; }
+      .phu { fill: #bcd4f5; font-size: 13px; text-anchor: middle; }
+      .nhan { fill: #e3edff; font-size: 13.5px; text-anchor: middle; }
+      .nhan-ve { fill: #b7d6ff; font-size: 13.5px; text-anchor: middle; }
+      .di { stroke: #ffffff; stroke-width: 2; fill: none; marker-end: url(#mui); }
+      .ve { stroke: #8fc1ff; stroke-width: 2; fill: none; stroke-dasharray: 7 5; marker-end: url(#muixanh); }
+      .doi { stroke: #5c7fae; stroke-width: 1.5; stroke-dasharray: 6 6; }
+      .vien { fill: none; stroke: #6f93c4; stroke-width: 1.5; stroke-dasharray: 8 6; }
+      .ghi { fill: #8fb8ef; font-size: 14px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1060" rx="30" fill="#0a2342"/>
+
+  <!-- Đường đời của sáu thành phần -->
+  <rect x="15" y="56" width="210" height="70" rx="14" class="khoi"/>
+  <text x="120" y="88" class="ten">Người dùng</text>
+  <line x1="120" y1="126" x2="120" y2="950" class="doi"/>
+
+  <rect x="265" y="56" width="210" height="70" rx="14" class="khoi"/>
+  <text x="370" y="88" class="ten">Giao diện chat</text>
+  <text x="370" y="110" class="phu">trình duyệt</text>
+  <line x1="370" y1="126" x2="370" y2="950" class="doi"/>
+
+  <rect x="525" y="56" width="210" height="70" rx="14" class="khoi"/>
+  <text x="630" y="88" class="ten">API server</text>
+  <text x="630" y="110" class="phu">chạy vòng agent</text>
+  <line x1="630" y1="126" x2="630" y2="950" class="doi"/>
+
+  <rect x="795" y="56" width="210" height="70" rx="14" class="khoi" style="stroke: #7fb2ff; stroke-width: 2.5"/>
+  <text x="900" y="88" class="ten">LLM</text>
+  <text x="900" y="110" class="phu">mô hình ngôn ngữ lớn</text>
+  <line x1="900" y1="126" x2="900" y2="950" class="doi"/>
+
+  <rect x="1055" y="56" width="210" height="70" rx="14" class="khoi"/>
+  <text x="1160" y="88" class="ten">Công cụ tra cứu</text>
+  <text x="1160" y="110" class="phu">tool</text>
+  <line x1="1160" y1="126" x2="1160" y2="950" class="doi"/>
+
+  <rect x="1335" y="56" width="210" height="70" rx="14" class="khoi" style="stroke: #7fb2ff; stroke-width: 2.5"/>
+  <text x="1440" y="88" class="ten">Search engine</text>
+  <text x="1440" y="110" class="phu">trên ontology đã nạp</text>
+  <line x1="1440" y1="126" x2="1440" y2="950" class="doi"/>
+
+  <!-- Vòng agent -->
+  <rect x="585" y="312" width="995" height="488" rx="16" class="vien"/>
+  <text x="1570" y="822" class="ghi" style="text-anchor: end">vòng agent: lặp khi mô hình cần tra thêm · tối đa 4 bước mỗi lượt</text>
+
+  <!-- Thông điệp theo thời gian -->
+  <path class="di" d="M120 185 H366"/>
+  <text x="245" y="177" class="nhan">câu hỏi</text>
+
+  <path class="di" d="M370 235 H626"/>
+  <text x="500" y="227" class="nhan">POST /chat · câu hỏi + lịch sử</text>
+
+  <path class="di" d="M630 285 H896"/>
+  <text x="765" y="277" class="nhan">hướng dẫn + hội thoại + mô tả công cụ</text>
+
+  <path class="ve" d="M900 345 H634"/>
+  <text x="765" y="337" class="nhan-ve">yêu cầu gọi công cụ · danh sách từ khoá</text>
+
+  <path class="ve" d="M630 395 H374"/>
+  <text x="500" y="387" class="nhan-ve">sự kiện lookup_started</text>
+
+  <path class="di" d="M630 445 H1156"/>
+  <text x="1030" y="437" class="nhan">lookup(từ khoá)</text>
+
+  <path class="di" d="M1160 495 H1436"/>
+  <text x="1298" y="487" class="nhan">search(từ khoá)</text>
+
+  <rect x="1335" y="512" width="210" height="92" rx="12" class="nhom"/>
+  <text x="1440" y="540" class="nhan" style="fill: #ffffff">chấm điểm chỉ mục BM25</text>
+  <text x="1440" y="563" class="nhan" style="fill: #ffffff">lấy 3 mục cao nhất</text>
+  <text x="1440" y="586" class="nhan" style="fill: #ffffff">gom dữ kiện theo nguồn</text>
+
+  <path class="ve" d="M1440 635 H1164"/>
+  <text x="1298" y="627" class="nhan-ve">3 mục + dữ kiện + trích dẫn</text>
+
+  <path class="ve" d="M1160 685 H634"/>
+  <text x="1030" y="677" class="nhan-ve">JSON kết quả</text>
+
+  <path class="ve" d="M630 725 H374"/>
+  <text x="500" y="717" class="nhan-ve">sự kiện lookup_finished</text>
+
+  <path class="di" d="M630 765 H896"/>
+  <text x="765" y="757" class="nhan">JSON kết quả công cụ</text>
+
+  <path class="ve" d="M900 835 H634"/>
+  <text x="765" y="827" class="nhan-ve">câu trả lời, từng đoạn</text>
+
+  <path class="ve" d="M630 875 H374"/>
+  <text x="500" y="867" class="nhan-ve">sự kiện text_delta … completed</text>
+
+  <path class="ve" d="M370 915 H124"/>
+  <text x="245" y="907" class="nhan-ve">câu trả lời kèm trích dẫn</text>
+
+  <!-- Chú thích -->
+  <path class="di" d="M60 996 H110"/>
+  <text x="122" y="1001" class="ghi">yêu cầu</text>
+  <path class="ve" d="M210 996 H260"/>
+  <text x="272" y="1001" class="ghi">kết quả trả về</text>
+  <text x="1560" y="990" class="ghi" style="text-anchor: end">Câu ngoài phạm vi: mô hình trả lời thẳng, không gọi công cụ.</text>
+  <text x="1560" y="1014" class="ghi" style="text-anchor: end">Không mục nào khớp: thử lại tối đa một lần bằng cách gọi khác hẳn.</text>
+</svg>

@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" font-family="Noto Sans, sans-serif">
+  <defs>
+    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/>
+    </marker>
+    <style>
+      .khoi { fill: #12467d; stroke: #3a78bd; stroke-width: 1.5; }
+      .rieng { fill: #132f4f; stroke: #5c7fae; stroke-width: 1.5; }
+      .nguon { fill: #0e3963; stroke: #8fc1ff; stroke-width: 2; stroke-dasharray: 9 6; }
+      .ten { fill: #ffffff; font-size: 16px; font-weight: 700; text-anchor: middle; }
+      .so { fill: #bcd4f5; font-size: 13px; text-anchor: middle; }
+      .nhan { fill: #e3edff; font-size: 13px; }
+      .giua { text-anchor: middle; }
+      .phai { text-anchor: end; }
+      .di { stroke: #ffffff; stroke-width: 1.8; fill: none; marker-end: url(#mui); }
+      .tieu { fill: #8fb8ef; font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+      .ghi { fill: #bcd4f5; font-size: 14px; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1120" rx="30" fill="#0a2342"/>
+  <text x="40" y="52" class="tieu">TẦNG TRI THỨC · 16 LOẠI (số mục đếm ngày 13/9/2026)</text>
+
+  <!-- Hộp các loại -->
+  <rect x="700" y="90" width="220" height="64" rx="14" class="khoi"/>
+  <text x="810" y="118" class="ten">Chủ thể</text><text x="810" y="140" class="so">46 mục · đơn vị, vai trò</text>
+
+  <rect x="80" y="250" width="220" height="64" rx="14" class="khoi"/>
+  <text x="190" y="278" class="ten">Chương trình đào tạo</text><text x="190" y="300" class="so">60 mục</text>
+
+  <rect x="380" y="420" width="220" height="64" rx="14" class="khoi"/>
+  <text x="490" y="448" class="ten">Ngành đào tạo</text><text x="490" y="470" class="so">40 mục</text>
+
+  <rect x="80" y="580" width="220" height="64" rx="14" class="khoi"/>
+  <text x="190" y="608" class="ten">Chuyên ngành</text><text x="190" y="630" class="so">35 mục</text>
+
+  <rect x="700" y="420" width="220" height="64" rx="14" class="khoi" style="stroke: #7fb2ff; stroke-width: 2.5"/>
+  <text x="810" y="448" class="ten">Thủ tục học vụ</text><text x="810" y="470" class="so">31 mục</text>
+
+  <rect x="1040" y="420" width="220" height="64" rx="14" class="khoi"/>
+  <text x="1150" y="448" class="ten">Biểu mẫu theo quyết định</text><text x="1150" y="470" class="so">16 mục</text>
+
+  <rect x="1360" y="420" width="220" height="64" rx="14" class="khoi"/>
+  <text x="1470" y="448" class="ten">Mục biểu mẫu trên web</text><text x="1470" y="470" class="so">21 mục · đường tải</text>
+
+  <rect x="700" y="720" width="220" height="64" rx="14" class="khoi"/>
+  <text x="810" y="748" class="ten">Trường hợp áp dụng</text><text x="810" y="770" class="so">4 mục</text>
+
+  <rect x="380" y="720" width="220" height="64" rx="14" class="khoi"/>
+  <text x="490" y="748" class="ten">Danh mục</text><text x="490" y="770" class="so">17 mục</text>
+
+  <rect x="80" y="880" width="220" height="64" rx="14" class="khoi"/>
+  <text x="190" y="908" class="ten">Mức tiền</text><text x="190" y="930" class="so">12 mục</text>
+
+  <rect x="1040" y="720" width="220" height="64" rx="14" class="khoi"/>
+  <text x="1150" y="748" class="ten">Quy tắc</text><text x="1150" y="770" class="so">26 mục</text>
+
+  <rect x="1360" y="720" width="220" height="64" rx="14" class="khoi"/>
+  <text x="1470" y="748" class="ten">Khái niệm</text><text x="1470" y="770" class="so">26 mục</text>
+
+  <!-- Loại đứng riêng -->
+  <text x="700" y="868" class="ghi">Đứng riêng: chỉ mang nội dung và nguồn, không trỏ tới loại khác</text>
+  <rect x="700" y="884" width="190" height="60" rx="12" class="rieng"/>
+  <text x="795" y="910" class="ten" style="font-size: 15px">Bảng</text><text x="795" y="930" class="so">17 mục · bảng nguyên văn</text>
+  <rect x="905" y="884" width="190" height="60" rx="12" class="rieng"/>
+  <text x="1000" y="910" class="ten" style="font-size: 15px">Chứng chỉ</text><text x="1000" y="930" class="so">18 mục</text>
+  <rect x="1110" y="884" width="190" height="60" rx="12" class="rieng"/>
+  <text x="1205" y="910" class="ten" style="font-size: 15px">Học phần</text><text x="1205" y="930" class="so">7 mục</text>
+  <rect x="1315" y="884" width="265" height="60" rx="12" class="rieng"/>
+  <text x="1447" y="910" class="ten" style="font-size: 15px">Hệ thống trực tuyến</text><text x="1447" y="930" class="so">3 mục · cổng sinh viên…</text>
+
+  <!-- Quan hệ -->
+  <path class="di" d="M810 420 V158"/>
+  <text x="822" y="262" class="nhan">do ai thực hiện</text>
+  <text x="822" y="282" class="nhan">do ai quyết định</text>
+  <text x="822" y="302" class="nhan">nộp tại · được xét bởi</text>
+
+  <path class="di" d="M920 452 H1036"/>
+  <text x="978" y="442" class="nhan giua">cần biểu mẫu</text>
+
+  <path class="di" d="M1360 452 H1264"/>
+  <text x="1312" y="442" class="nhan giua">ứng với</text>
+
+  <path class="di" d="M810 484 V716"/>
+  <text x="822" y="605" class="nhan">áp dụng cho trường hợp</text>
+
+  <path class="di" d="M750 484 L566 716"/>
+  <text x="680" y="548" class="nhan phai">hỗ trợ phương thức</text>
+
+  <path class="di" d="M700 436 C636 400 636 504 700 470"/>
+  <text x="668" y="392" class="nhan giua">thủ tục tiếp theo</text>
+
+  <path class="di" d="M920 108 C990 72 990 172 920 138"/>
+  <text x="992" y="128" class="nhan">thuộc đơn vị</text>
+
+  <path class="di" d="M490 484 V716"/>
+  <text x="480" y="640" class="nhan phai">thuộc khối ngành</text>
+
+  <path class="di" d="M300 300 L386 424"/>
+  <text x="345" y="392" class="nhan phai">thuộc ngành</text>
+
+  <path class="di" d="M300 600 L386 480"/>
+  <text x="318" y="548" class="nhan phai">thuộc ngành</text>
+
+  <path class="di" d="M300 264 C450 160 560 130 696 124"/>
+  <text x="470" y="146" class="nhan giua">đơn vị quản lý</text>
+
+  <path class="di" d="M300 900 L420 788"/>
+  <text x="380" y="850" class="nhan">phương thức đóng ·</text>
+  <text x="380" y="868" class="nhan">trình độ · đơn vị tính</text>
+
+  <path class="di" d="M380 736 C320 708 320 792 380 766"/>
+  <text x="318" y="712" class="nhan phai">hỗ trợ ngân hàng</text>
+
+  <path class="di" d="M1260 752 H1356"/>
+  <text x="1308" y="688" class="nhan giua">áp dụng cho</text>
+  <text x="1308" y="706" class="nhan giua">hình thức đào tạo</text>
+
+  <!-- Tầng nguồn -->
+  <line x1="40" y1="986" x2="1560" y2="986" stroke="#5c7fae" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="40" y="1018" class="tieu">TẦNG NGUỒN</text>
+  <rect x="380" y="1000" width="260" height="64" rx="14" class="nguon"/>
+  <text x="510" y="1028" class="ten">Địa chỉ trích dẫn</text><text x="510" y="1050" class="so">374 túi · toạ độ trong nguồn</text>
+  <rect x="760" y="1000" width="240" height="64" rx="14" class="nguon"/>
+  <text x="880" y="1028" class="ten">Nguồn</text><text x="880" y="1050" class="so">79 văn bản và trang web</text>
+  <path class="di" d="M640 1032 H756"/>
+  <text x="698" y="1022" class="nhan giua">thuộc nguồn</text>
+  <path class="di" d="M1000 1016 C1070 990 1070 1076 1000 1050"/>
+  <text x="1072" y="1038" class="nhan">sửa đổi văn bản</text>
+  <text x="1560" y="1026" class="ghi phai">Mọi câu mang nội dung của tầng trên nằm trong một túi;</text>
+  <text x="1560" y="1048" class="ghi phai">tên túi là một địa chỉ trích dẫn trỏ về nguồn.</text>
+</svg>
