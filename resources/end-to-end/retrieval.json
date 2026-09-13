@@ -9,7 +9,7 @@
     "quy định điểm ngoại ngữ"
    ],
    "node_dung": [
-    "ForeignLanguageCourseAssessmentTable"
+    "BangDanhGiaHocPhanNgoaiNgu"
    ],
    "nhan_dung": [
     "bảng đánh giá học phần ngoại ngữ"
@@ -23,7 +23,7 @@
     "ngành hệ thống thông tin quản lý"
    ],
    "node_dung": [
-    "ManagementInformationSystems"
+    "HeThongThongTinQuanLy"
    ],
    "nhan_dung": [
     "Hệ thống thông tin quản lý"
@@ -38,7 +38,7 @@
     "đơn xin nghỉ học tạm thời"
    ],
    "node_dung": [
-    "FormCatalogueEntry015"
+    "MucTaiDonXinBaoLuuHocPhan"
    ],
    "nhan_dung": [
     "Mục tải: Đơn xin bảo lưu học phần"
@@ -52,7 +52,7 @@
     "học song hành"
    ],
    "node_dung": [
-    "CorequisiteCourseType"
+    "HocPhanSongHanh"
    ],
    "nhan_dung": [
     "Học phần song hành"
@@ -66,7 +66,7 @@
     "Công nghệ thông tin"
    ],
    "node_dung": [
-    "InformationTechnology"
+    "CongNgheThongTin"
    ],
    "nhan_dung": [
     "Công nghệ thông tin"
@@ -80,7 +80,7 @@
     "học bổng khuyến khích học tập"
    ],
    "node_dung": [
-    "ScholarshipReviewProcedure"
+    "ThuTucXetVaCapHocBongKhuyenKhichHocTap"
    ],
    "nhan_dung": [
     "Thủ tục xét và cấp học bổng khuyến khích học tập"
@@ -95,7 +95,7 @@
     "đơn xin chuyển ngành"
    ],
    "node_dung": [
-    "MajorChangeProcedure"
+    "ThuTucChuyenNganh"
    ],
    "nhan_dung": [
     "Thủ tục chuyển ngành"
@@ -109,7 +109,7 @@
     "cấp bản sao văn bằng"
    ],
    "node_dung": [
-    "FormCatalogueEntry019"
+    "MucTaiDonXinCapBanSaoBang"
    ],
    "nhan_dung": [
     "Mục tải: Đơn xin cấp bản sao bằng"
@@ -123,7 +123,7 @@
     "nhóm ngành IV"
    ],
    "node_dung": [
-    "DisciplineGroupIV"
+    "KhoiNganhIvKhoaHocSuSongKhoaHocTuNhien"
    ],
    "nhan_dung": [
     "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên"
@@ -137,7 +137,7 @@
     "mức học bổng"
    ],
    "node_dung": [
-    "ScholarshipRateTableStandardProgram"
+    "BangMucHocBongChuongTrinhChuan"
    ],
    "nhan_dung": [
     "bảng mức học bổng chương trình chuẩn"
@@ -152,7 +152,7 @@
     "điều kiện dự thi"
    ],
    "node_dung": [
-    "TheoryAttendanceRule"
+    "DieuKienDuThiHocPhanLyThuyet"
    ],
    "nhan_dung": [
     "Điều kiện dự thi học phần lý thuyết"
@@ -167,7 +167,7 @@
     "điều kiện rút học phần"
    ],
    "node_dung": [
-    "CourseWithdrawalProcedure"
+    "ThuTucRutBotHocPhanDaDangKy"
    ],
    "nhan_dung": [
     "Thủ tục rút bớt học phần đã đăng ký"
@@ -181,7 +181,7 @@
     "danh mục ngành đào tạo"
    ],
    "node_dung": [
-    "FisheriesScience"
+    "KhoaHocThuySan"
    ],
    "nhan_dung": [
     "Khoa học thủy sản"
@@ -196,7 +196,7 @@
     "kết quả vắng thi"
    ],
    "node_dung": [
-    "ExamAbsenceRule"
+    "HauQuaCuaViecBiCamThiHoacVangThi"
    ],
    "nhan_dung": [
     "Hậu quả của việc bị cấm thi hoặc vắng thi"
@@ -211,7 +211,7 @@
     "danh sách ngành học"
    ],
    "node_dung": [
-    "AcademicProgramCatalogueTable"
+    "DanhMucNganhDaoTaoTheoKhoiNganh"
    ],
    "nhan_dung": [
     "danh mục ngành đào tạo theo khối ngành"
@@ -226,7 +226,7 @@
     "trình độ B1.2"
    ],
    "node_dung": [
-    "LanguageCourseB12"
+    "NgoaiNguB12"
    ],
    "nhan_dung": [
     "Ngoại ngữ B1.2"
@@ -241,7 +241,7 @@
     "quy định đối với sinh viên"
    ],
    "node_dung": [
-    "Student"
+    "SinhVien"
    ],
    "nhan_dung": [
     "Sinh viên"
@@ -255,7 +255,7 @@
     "Kiểm toán"
    ],
    "node_dung": [
-    "Auditing"
+    "KiemToan"
    ],
    "nhan_dung": [
     "Kiểm toán"
@@ -289,7 +289,7 @@
     "điểm tốt nghiệp"
    ],
    "node_dung": [
-    "GraduationClassificationTable"
+    "BangXepHangTotNghiep"
    ],
    "nhan_dung": [
     "bảng xếp hạng tốt nghiệp"
@@ -304,7 +304,7 @@
     "yêu cầu mở lớp học phần"
    ],
    "node_dung": [
-    "ExtraClassOpeningRequestProcedure"
+    "ThuTucDeNghiMoThemLopHocPhan"
    ],
    "nhan_dung": [
     "Thủ tục đề nghị mở thêm lớp học phần"
@@ -318,7 +318,7 @@
     "thời gian học kỳ hè"
    ],
    "node_dung": [
-    "SummerSemester"
+    "HocKyHe"
    ],
    "nhan_dung": [
     "Học kỳ hè"
@@ -332,7 +332,7 @@
     "đăng ký điều chỉnh học phần"
    ],
    "node_dung": [
-    "FormCatalogueEntry002"
+    "MucTaiPhieuDangKyDieuChinhHocPhan"
    ],
    "nhan_dung": [
     "Mục tải: Phiếu đăng ký/điều chỉnh học phần"
@@ -346,12 +346,12 @@
     "nộp học phí sinh viên"
    ],
    "node_dung": [
-    "TuitionPaymentGuidance"
+    "NguonHuongDanDongHocPhiQuaNganHang"
    ],
    "nhan_dung": [
     "Hướng dẫn đóng học phí qua ngân hàng"
    ],
-   "ngoai_pham_vi": "đáp án là một văn bản nguồn; nguồn có mặt để dẫn chứng chứ không phải để tra cứu. Câu hỏi thật sự được trả lời bởi thực thể tri thức dẫn nguồn đó."
+   "ngoai_pham_vi": "đáp án là chính văn bản nguồn; nguồn dùng để trích dẫn, không phải một mục để tra"
   },
   {
    "id": "question-000718",
@@ -362,7 +362,7 @@
     "thủ tục đóng học phí"
    ],
    "node_dung": [
-    "TuitionPaymentProcedure"
+    "ThuTucNopHocPhi"
    ],
    "nhan_dung": [
     "Thủ tục nộp học phí"
@@ -376,7 +376,7 @@
     "đơn điều chỉnh điểm"
    ],
    "node_dung": [
-    "FormCatalogueEntry018"
+    "MucTaiPhieuDieuChinhDiem"
    ],
    "nhan_dung": [
     "Mục tải: Phiếu điều chỉnh điểm"
@@ -390,7 +390,7 @@
     "tín chỉ"
    ],
    "node_dung": [
-    "CreditConcept"
+    "TinChi"
    ],
    "nhan_dung": [
     "Tín chỉ"
@@ -405,7 +405,7 @@
     "chế độ học bổng"
    ],
    "node_dung": [
-    "GoodSpecialScholarshipRate"
+    "HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhDacBiet"
    ],
    "nhan_dung": [
     "Học bổng khuyến khích học tập loại giỏi, chương trình đặc biệt"
@@ -420,7 +420,7 @@
     "nhiệm vụ Phòng Đào tạo"
    ],
    "node_dung": [
-    "AcademicManagementUnit"
+    "PhongDaoTaoDaiHoc"
    ],
    "nhan_dung": [
     "Phòng Đào tạo Đại học"
@@ -434,7 +434,7 @@
     "khoa Kinh tế"
    ],
    "node_dung": [
-    "Economics"
+    "KinhTe"
    ],
    "nhan_dung": [
     "Kinh tế"
@@ -448,7 +448,7 @@
     "đào tạo tín chỉ"
    ],
    "node_dung": [
-    "CreditBasedTrainingConcept"
+    "PhuongThucToChucDaoTaoTheoTinChi"
    ],
    "nhan_dung": [
     "Phương thức tổ chức đào tạo theo tín chỉ"
@@ -463,7 +463,7 @@
     "xếp loại tốt nghiệp kỷ luật"
    ],
    "node_dung": [
-    "DisciplineHonoursPenalty"
+    "HaHangTotNghiepDoBiKyLuat"
    ],
    "nhan_dung": [
     "Hạ hạng tốt nghiệp do bị kỷ luật"
@@ -477,7 +477,7 @@
     "kỹ thuật cơ điện tử"
    ],
    "node_dung": [
-    "MechatronicsEngineering"
+    "KyThuatCoDienTu"
    ],
    "nhan_dung": [
     "Kỹ thuật cơ điện tử"
@@ -491,7 +491,7 @@
     "ngành quản lý thủy sản"
    ],
    "node_dung": [
-    "FisheriesManagement"
+    "QuanLyThuySan"
    ],
    "nhan_dung": [
     "Quản lý thủy sản"
@@ -510,7 +510,7 @@
    "nhan_dung": [
     "Chương I Quy chế tuyển sinh đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   },
   {
    "id": "question-001356",
@@ -540,7 +540,7 @@
     "chuyển đổi tín chỉ"
    ],
    "node_dung": [
-    "EquivalentCourseType"
+    "HocPhanTuongDuong"
    ],
    "nhan_dung": [
     "Học phần tương đương"
@@ -555,7 +555,7 @@
     "chứng chỉ ngoại ngữ B1.2"
    ],
    "node_dung": [
-    "LanguageCourseB12"
+    "NgoaiNguB12"
    ],
    "nhan_dung": [
     "Ngoại ngữ B1.2"
@@ -570,7 +570,7 @@
     "giới thiệu Trường Đại học Nha Trang"
    ],
    "node_dung": [
-    "University"
+    "TruongDaiHocNhaTrang"
    ],
    "nhan_dung": [
     "Trường Đại học Nha Trang"
@@ -584,7 +584,7 @@
     "tự động hóa"
    ],
    "node_dung": [
-    "ControlAndAutomationEngineering"
+    "KyThuatDieuKhienVaTuDongHoa"
    ],
    "nhan_dung": [
     "Kỹ thuật điều khiển và tự động hóa"
@@ -598,7 +598,7 @@
     "thủ tục chuyển trường"
    ],
    "node_dung": [
-    "FormCatalogueEntry013"
+    "MucTaiDonXinChuyenTruong"
    ],
    "nhan_dung": [
     "Mục tải: Đơn xin chuyển trường"
@@ -612,7 +612,7 @@
     "biểu mẫu chuyển chương trình đào tạo"
    ],
    "node_dung": [
-    "FormCatalogueEntry005"
+    "MucTaiDonXinChuyenChuongTrinhDaoTao"
    ],
    "nhan_dung": [
     "Mục tải: Đơn xin chuyển Chương trình đào tạo"
@@ -626,7 +626,7 @@
     "miễn học miễn thi cộng điểm thưởng"
    ],
    "node_dung": [
-    "Form07ExemptionAndBonus"
+    "MauSo07DonXinMienHocMienThiVaCongDiemThuong"
    ],
    "nhan_dung": [
     "Mẫu số 07 - Đơn xin miễn học, miễn thi và cộng điểm thưởng"
@@ -641,7 +641,7 @@
     "hết thời gian nghỉ học tạm thời"
    ],
    "node_dung": [
-    "FormCatalogueEntry010"
+    "MucTaiDonXinHocTroLai"
    ],
    "nhan_dung": [
     "Mục tải: Đơn xin học trở lại"
@@ -656,12 +656,12 @@
     "tiêu chí học bổng khuyến khích học tập"
    ],
    "node_dung": [
-    "ScholarshipCriteriaGuidance"
+    "NguonTieuChuanXetHocBongKhuyenKhichHocTap"
    ],
    "nhan_dung": [
     "Tiêu chuẩn xét học bổng khuyến khích học tập"
    ],
-   "ngoai_pham_vi": "đáp án là một văn bản nguồn; nguồn có mặt để dẫn chứng chứ không phải để tra cứu. Câu hỏi thật sự được trả lời bởi thực thể tri thức dẫn nguồn đó."
+   "ngoai_pham_vi": "đáp án là chính văn bản nguồn; nguồn dùng để trích dẫn, không phải một mục để tra"
   },
   {
    "id": "question-001792",
@@ -689,7 +689,7 @@
    "nhan_dung": [
     "điểm a khoản 2 Điều 15 Quy chế đào tạo trình độ đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   },
   {
    "id": "question-003012",
@@ -700,7 +700,7 @@
     "xếp loại tốt nghiệp"
    ],
    "node_dung": [
-    "GraduationClassificationTable"
+    "BangXepHangTotNghiep"
    ],
    "nhan_dung": [
     "bảng xếp hạng tốt nghiệp"
@@ -714,7 +714,7 @@
     "danh mục đào tạo"
    ],
    "node_dung": [
-    "MarineResourceEconomicsAndManagement"
+    "KinhTeVaQuanLyTaiNguyenBien"
    ],
    "nhan_dung": [
     "Kinh tế và quản lý tài nguyên biển"
@@ -733,7 +733,7 @@
    "nhan_dung": [
     "khoản 2 Điều 11 Quy chế đào tạo trình độ đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   },
   {
    "id": "question-001538",
@@ -744,8 +744,8 @@
     "ngoại ngữ đầu ra Quản trị khách sạn"
    ],
    "node_dung": [
-    "EnglishRequirementTableSpecialProgram",
-    "OtherLanguageRequirementTableSpecialProgram"
+    "BangChuanTiengAnhChuongTrinhDacBiet",
+    "BangChuanNgoaiNguKhacChuongTrinhDacBiet"
    ],
    "nhan_dung": [
     "bảng chuẩn tiếng Anh chương trình đặc biệt",
@@ -762,7 +762,7 @@
     "loại giỏi"
    ],
    "node_dung": [
-    "AcademicPerformanceTable"
+    "BangXepLoaiHocLuc"
    ],
    "nhan_dung": [
     "bảng xếp loại học lực"
@@ -781,7 +781,7 @@
    "nhan_dung": [
     "Điều 2 Quy chế đào tạo trình độ đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   },
   {
    "id": "question-000297",
@@ -792,7 +792,7 @@
     "điều kiện học lực"
    ],
    "node_dung": [
-    "AcademicPerformanceTable"
+    "BangXepLoaiHocLuc"
    ],
    "nhan_dung": [
     "bảng xếp loại học lực"
@@ -811,7 +811,7 @@
    "nhan_dung": [
     "Điều 20 Quy chế đào tạo trình độ đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   },
   {
    "id": "question-000708",
@@ -822,7 +822,7 @@
     "khóa luận tốt nghiệp"
    ],
    "node_dung": [
-    "GraduationProjectRegistrationProcedure"
+    "ThuTucDangKyThucHienDoAnTotNghiep"
    ],
    "nhan_dung": [
     "Thủ tục đăng ký thực hiện đồ án tốt nghiệp"
@@ -841,8 +841,8 @@
    "nhan_dung": [
     "khoản 2 Điều 19 Quy chế đào tạo trình độ đại học"
    ],
-   "ngoai_pham_vi": "tra cứu nguyên văn điều khoản — khả năng đã bỏ theo kiến trúc mới"
+   "ngoai_pham_vi": "hỏi nguyên văn một điều khoản; ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc qua đường dẫn nguồn"
   }
  ],
- "ghi_chu": "Câu có ngoai_pham_vi bị loại khỏi phép đo: chúng hỏi nguyên văn điều khoản, khả năng mà kiến trúc mới cố ý bỏ. Sáu câu này sinh ra từ tập dữ liệu tổng hợp theo khuôn, không phải câu hỏi thật của sinh viên."
+ "ghi_chu": "Câu có ngoai_pham_vi không tính vào phép đo: sáu câu hỏi nguyên văn một điều khoản (ontology không lưu nguyên văn văn bản) và hai câu có đáp án là chính văn bản nguồn."
 }

@@ -59,7 +59,7 @@ def test_tool_teaches_the_model_to_read_the_search_result() -> None:
 
     assert "JSON" in description and "DANH SÁCH" in description
     for key in ("status=found", "status=not_found", "results", "matched", "sources", "citation",
-                "facts", "incoming", "unmatched", "truncation"):
+                "facts", "subject", "unmatched", "truncation"):
         assert key in description, key
     # Kiểm dòng khớp là chốt chặn khi tìm kiếm trả về một mục không đúng ý hỏi.
     assert "Kiểm `matched` TRƯỚC" in description

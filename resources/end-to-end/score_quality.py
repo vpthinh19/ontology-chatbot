@@ -23,7 +23,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, "src")
-from ontchatbot.runtime.agent import DEFAULT_BASE_URL, build_instructions
+from ontchatbot.runtime.agent import DEFAULT_BASE_URL, build_instructions, read_vocabulary
+from ontchatbot.search import Ontology, TriGFileSource
+from ontchatbot.settings import ONTOLOGY_PATH
 
 HERE = Path(__file__).parent
 KET_QUA = HERE / "results.json"
@@ -35,7 +37,7 @@ SONG_SONG = int(os.environ.get("SONG_SONG", "2"))
 # Bộ chấm phải thấy danh sách đó, nếu không mỗi lần trợ lý mời người dùng hỏi rõ
 # hơn bằng cách nêu vài chủ đề sẽ bị đọc thành bịa đặt - "Mẫu số 13" thành số 13
 # bịa ra. Xem cùng phép dò tương ứng ở `run.py`.
-CO_SAN = build_instructions()
+CO_SAN = build_instructions(read_vocabulary(Ontology.from_source(TriGFileSource(ONTOLOGY_PATH))))
 CO_SAN = CO_SAN[CO_SAN.index("vài chủ đề tra được:") + len("vài chủ đề tra được:"):].strip()
 
 # Phân mức theo MỘT câu hỏi: trợ lý có trả lời được thứ được hỏi không, và nếu
@@ -114,12 +116,13 @@ async def cham(client, ban_ghi: dict, sem) -> dict:
         )
         for lan in range(5):
             try:
-                phan_hoi = await client.chat.completions.create(
-                    model=os.environ["ONTCHATBOT_LLM_MODEL"],
-                    messages=[{"role": "user", "content": loi_nhac}],
-                    temperature=0,
-                )
-                chu = (phan_hoi.choices[0].message.content or "").strip()
+                phan_hoi = await client.post("chat/completions", json={
+                    "model": os.environ["ONTCHATBOT_LLM_MODEL"],
+                    "messages": [{"role": "user", "content": loi_nhac}],
+                    "temperature": 0,
+                })
+                phan_hoi.raise_for_status()
+                chu = (phan_hoi.json()["choices"][0]["message"]["content"] or "").strip()
                 chu = chu[chu.index("{") : chu.rindex("}") + 1]
                 phan = json.loads(chu)
                 if phan.get("muc") in MUC:
@@ -174,7 +177,7 @@ def viet_nhat_ky(phan: list[dict], theo_ban_ghi: dict, nghi_ngo: dict) -> None:
                 f"gọi công cụ {r.get('so_lan_goi', 0)} lần",
                 f"{r.get('so_dong_du_lieu', 0)} dòng dữ liệu",
             ]
-            if "lay_dung_muc" in r:
+            if r.get("lay_dung_muc") is not None:
                 tin_hieu.append("lấy đúng mục" if r["lay_dung_muc"] else "**lấy sai mục**")
                 tin_hieu.append(f"đích {', '.join(r.get('node_dung') or []) or '—'}")
             if r.get("bia_dat"):
@@ -189,11 +192,12 @@ def viet_nhat_ky(phan: list[dict], theo_ban_ghi: dict, nghi_ngo: dict) -> None:
 
 
 async def main() -> None:
-    from openai import AsyncOpenAI
+    import httpx
 
-    client = AsyncOpenAI(
-        api_key=os.environ["ONTCHATBOT_LLM_API_KEY"],
-        base_url=os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
+    client = httpx.AsyncClient(
+        base_url=os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL).rstrip("/") + "/",
+        headers={"Authorization": f"Bearer {os.environ['ONTCHATBOT_LLM_API_KEY']}"},
+        timeout=120,
     )
     ban_ghi = json.loads(KET_QUA.read_text())
     if any("du_lieu" not in r for r in ban_ghi):
@@ -209,6 +213,7 @@ async def main() -> None:
 
     sem = asyncio.Semaphore(SONG_SONG)
     moi = await asyncio.gather(*(cham(client, r, sem) for r in ban_ghi if r["id"] not in cu))
+    await client.aclose()
     theo_id = {**cu, **{p["id"]: p for p in moi}}
     phan = [theo_id[r["id"]] for r in ban_ghi]
     DAU_RA.write_text(json.dumps(phan, ensure_ascii=False, indent=1), encoding="utf-8")

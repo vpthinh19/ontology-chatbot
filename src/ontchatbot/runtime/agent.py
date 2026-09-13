@@ -44,7 +44,7 @@ biểu mẫu, học phí, học bổng, chứng chỉ, ngành đào tạo và đ
 Truyền vào TỪ KHOÁ NGẮN, không phải câu hỏi đầy đủ. Công cụ tìm các từ này trong tên
 của các mục, tên thuộc tính và tên quan hệ của chúng, nên câu càng dài càng dễ lẫn.
 
-Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "điện thoại phòng đào tạo"
+Nên:  "đăng ký học phần" · "nghỉ học tạm thời" · "vị trí phòng đào tạo"
       "đơn xin hoãn thi" · "điều kiện tốt nghiệp" · "ngành công nghệ thông tin"
 
 Không nên:  "Hãy hướng dẫn tôi cách đăng ký học phần nhé"
@@ -64,13 +64,12 @@ Mỗi lần gọi chỉ dùng tối đa {MAX_KEYWORDS_PER_LOOKUP} từ khoá, m�
 
 Kết quả là JSON. Cách đọc:
 - `status=found`: `results` là các mục tìm được. Mỗi mục có `label` (tên), `classes`,
-  `matched` (các dòng đã khớp với từ khoá), `sources` và `incoming`.
+  `matched` (các dòng đã khớp với từ khoá) và `sources`.
 - Kiểm `matched` TRƯỚC. Mục nào không phải thứ người dùng hỏi thì coi như không
   tìm thấy; đừng trả lời bằng dữ liệu của mục đó.
 - Mỗi phần tử của `sources` gồm `citation`, `url` và `facts` mà nguồn đó khẳng định.
-  Phải đọc HẾT.
-- `incoming` liệt kê các mục khác trỏ tới mục này cùng quan hệ, ví dụ các thủ tục
-  "nộp tại" một phòng.
+  Phải đọc HẾT. Mỗi fact có `subject`, `property`, `value`; `subject` khác `label`
+  của mục là câu của một mục khác nói tới mục này, ví dụ các thủ tục "nộp tại" một phòng.
 - Nếu chi tiết người dùng hỏi không xuất hiện trong `facts` nào, dữ liệu hiện có
   không chứa chi tiết đó. Nói rõ điều này và ĐỪNG gọi lại cùng chủ đề.
 - `unmatched` liệt kê những từ khoá không khớp gì. Các từ khoá còn lại vẫn có kết
