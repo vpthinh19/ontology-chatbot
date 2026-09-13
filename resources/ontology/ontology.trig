@@ -102,8 +102,6 @@
 	rdfs:label "Chương trình đào tạo Công nghệ thông tin - Chương trình chuẩn"@vi .
 :ChuongTrinhDaoTaoCongNgheThucPham a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Công nghệ thực phẩm"@vi .
-:ChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPohe a :ChuongTrinhDaoTao ;
-	rdfs:label "Chương trình đào tạo đặc biệt ngành Quản trị khách sạn - POHE"@vi .
 :ChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 :ChuongTrinhDaoTaoHeThongNhungVaIot a :ChuongTrinhDaoTao ;
@@ -170,8 +168,6 @@
 	rdfs:label "Chương trình đào tạo Quản lý thủy sản"@vi .
 :ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Quản trị dịch vụ du lịch và lữ hành"@vi .
-:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBiet a :ChuongTrinhDaoTao ;
-	rdfs:label "Chương trình đào tạo Quản trị dịch vụ du lịch và lữ hành (chương trình đặc biệt)"@vi .
 :ChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuan a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Quản trị khách sạn - Chương trình chuẩn"@vi .
 :ChuongTrinhDaoTaoQuanTriKinhDoanh a :ChuongTrinhDaoTao ;
@@ -462,7 +458,7 @@
 :KhoaCongNgheSinhHoc a :ChuThe ;
 	rdfs:label "Khoa Công nghệ Sinh học"@vi .
 :KhoaCongNgheThongTin a :ChuThe ;
-	rdfs:label "Khoa Công nghệ Thông tin"@vi .
+	rdfs:label "Khoa Công nghệ thông tin"@vi .
 :KhoaCongNgheThucPham a :ChuThe ;
 	rdfs:label "Khoa Công nghệ Thực phẩm"@vi .
 :KhoaDienVaDienTu a :ChuThe ;
@@ -1183,13 +1179,15 @@
 :QuanTriDichVuDuLichVaLuHanh a :NganhDaoTao ;
 	rdfs:label "Quản trị dịch vụ du lịch và lữ hành"@vi .
 :QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet a :ChuongTrinhDaoTao ;
-	rdfs:label "Quản trị dịch vụ du lịch và lữ hành (chương trình đào tạo đặc biệt)"@vi .
+	rdfs:label "Quản trị dịch vụ du lịch và lữ hành (chương trình đào tạo đặc biệt)"@vi ;
+	skos:altLabel "Chương trình đào tạo Quản trị dịch vụ du lịch và lữ hành (chương trình đặc biệt)"@vi .
 :QuanTriDichVuDuLichVaLuHanhChuongTrinhSongNguPhapViet a :ChuongTrinhDaoTao ;
 	rdfs:label "Quản trị dịch vụ du lịch và lữ hành (chương trình song ngữ Pháp - Việt)"@vi .
 :QuanTriKhachSan a :NganhDaoTao ;
 	rdfs:label "Quản trị khách sạn"@vi .
 :QuanTriKhachSanChuongTrinhDaoTaoDacBiet a :ChuongTrinhDaoTao ;
-	rdfs:label "Quản trị khách sạn (chương trình đào tạo đặc biệt)"@vi .
+	rdfs:label "Quản trị khách sạn (chương trình đào tạo đặc biệt)"@vi ;
+	skos:altLabel "Chương trình đào tạo đặc biệt ngành Quản trị khách sạn - POHE"@vi .
 :QuanTriKhachSanChuongTrinhVinNtu a :ChuongTrinhDaoTao ;
 	rdfs:label "Quản trị khách sạn (chương trình Vin - NTU)"@vi .
 :QuanTriKinhDoanh a :NganhDaoTao ;
@@ -2492,7 +2490,8 @@
 	rdfs:label "Trung tâm Hỗ trợ việc làm và Khởi nghiệp"@vi ;
 	skos:altLabel "Trung tâm việc làm"@vi , "Trung tâm Đổi mới sáng tạo"@vi .
 :TrungTamTheDucVaTheThao a :ChuThe ;
-	rdfs:label "Trung tâm Thể dục và Thể thao"@vi .
+	rdfs:label "Trung tâm Thể dục và Thể thao"@vi ;
+	skos:altLabel "Trung tâm Thể dục thể thao"@vi .
 :TrungTamThiNghiemThucHanh a :ChuThe ;
 	rdfs:label "Trung tâm Thí nghiệm thực hành"@vi .
 :TrungTamThongTinVaTuLieu a :ChuThe ;
@@ -3688,7 +3687,6 @@
 	:KhoaCongNgheSinhHoc :dienThoai "02583.831149" ;
 		:hopThu "khoacnsh@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
-		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 2 - Viện khai thác, 09 Nguyễn Đình Chiểu" ;
 		:websiteDonVi "https://khoacnsh.ntu.edu.vn" .
 }
@@ -3929,13 +3927,13 @@
 	:ChuongTrinhDaoTaoCongNgheThucPham :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucIThongTinChungVeChuongTrinh {
-	:ChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPohe :donViQuanLy :KhoaDuLich ;
+	:QuanTriKhachSanChuongTrinhDaoTaoDacBiet :donViQuanLy :KhoaDuLich ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriKhachSan ;
 		:vanBangTotNghiep "Cử nhân Quản trị khách sạn"@vi .
 }
 :TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPohe :tongSoTinChi 120 .
+	:QuanTriKhachSanChuongTrinhDaoTaoDacBiet :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPhamMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham :donViQuanLy :KhoaCongNgheThucPham ;
@@ -3992,7 +3990,7 @@
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KhoaHocHangHai ;
-		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải, chuyên ngành Khoa học Hàng hải"@vi .
+		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải; Chuyên ngành: Khoa học Hàng hải"@vi .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocHangHaiMucViCauTrucChuongTrinhDaoTaoDongTongCong {
 	:ChuongTrinhDaoTaoKhoaHocHangHai :tongSoTinChi 130 .
@@ -4232,7 +4230,7 @@
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KhoaHocHangHai ;
-		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải, chuyên ngành Quản lý hàng hải và Logistics"@vi .
+		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải; Chuyên ngành: Quản lý hàng hải và Logistics"@vi .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogisticsMucViCauTrucChuongTrinhDaoTaoDongTongCong {
 	:ChuongTrinhDaoTaoQuanLyHangHaiVaLogistics :tongSoTinChi 130 .
@@ -4258,14 +4256,14 @@
 	:ChuongTrinhDaoTaoQuanLyThuySan :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucIThongTinChungVeChuongTrinh {
-	:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBiet :donViQuanLy :KhoaDuLich ;
+	:QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet :donViQuanLy :KhoaDuLich ;
 		:ngonNguDaoTao "Tiếng Việt & Tiếng Anh"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriDichVuDuLichVaLuHanh ;
 		:vanBangTotNghiep "Cử nhân Quản trị Dịch vụ Du lịch và Lữ hành"@vi .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBiet :tongSoTinChi 120 .
+	:QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh :donViQuanLy :KhoaDuLich ;
@@ -4347,8 +4345,7 @@
 	:ChuongTrinhDaoTaoThietKeVaCheTaoSo :tongSoTinChi 130 .
 }
 :TDOrganizationStructureListing {
-	:PhongBaoDamChatLuongVaKhaoThi :dienThoai "0934793435" ;
-		:hopThu "qlcl@ntu.edu.vn" ;
+	:PhongBaoDamChatLuongVaKhaoThi :hopThu "qlcl@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 2, Tòa Nhà Hành chính" ;
