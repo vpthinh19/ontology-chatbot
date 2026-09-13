@@ -16,6 +16,9 @@
 	a :Bang ;
 	rdfs:label "bảng đánh giá học phần ngoại ngữ"@vi ;
 	skos:altLabel "thành phần đánh giá học phần ngoại ngữ"@vi , "tỷ trọng điểm của học phần ngoại ngữ"@vi .
+:BangKhungXuLyKyLuatNguoiHoc a :Bang ;
+	rdfs:label "bảng khung xử lý kỷ luật người học"@vi ;
+	skos:altLabel "hình thức kỷ luật sinh viên"@vi , "khung xử lý kỷ luật"@vi , "văn hóa học đường"@vi , "xử lý vi phạm văn hóa học đường"@vi .
 :BangMucHocBongChuongTrinhChuan :loaiBang :BangTrongTaiLieu ;
 	a :Bang ;
 	rdfs:label "bảng mức học bổng chương trình chuẩn"@vi ;
@@ -148,6 +151,10 @@
 	rdfs:label "Điểm P"@vi .
 :DiemR a :DanhMuc ;
 	rdfs:label "Điểm R"@vi .
+:DiemRenLuyen :loaiKhaiNiem :KhaiNiemHocVu ;
+	a :KhaiNiem ;
+	rdfs:label "Điểm rèn luyện"@vi ;
+	skos:altLabel "kết quả rèn luyện"@vi , "ĐRL"@vi , "điểm RL"@vi .
 :DiemX a :DanhMuc ;
 	rdfs:label "Điểm X"@vi .
 :Dieu rdfs:label "Điều"@vi .
@@ -177,6 +184,10 @@
 	rdfs:label "Giới hạn khối lượng được công nhận và chuyển đổi"@vi .
 :GioiHanTinChiTichLuyTaiTruongKhac a :QuyTac ;
 	rdfs:label "Giới hạn tín chỉ tích lũy tại trường khác"@vi .
+:GioiHanXepLoaiRenLuyenKhiBiKyLuat :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Giới hạn xếp loại rèn luyện khi bị kỷ luật"@vi ;
+	skos:altLabel "bị kỷ luật thì điểm rèn luyện"@vi .
 :HaHangTotNghiepDoBiKyLuat a :QuyTac ;
 	rdfs:label "Hạ hạng tốt nghiệp do bị kỷ luật"@vi .
 :HaHangTotNghiepDoHocLaiQuaNhieu a :QuyTac ;
@@ -399,6 +410,9 @@
 	skos:altLabel "chứng chỉ tin học quốc tế"@vi , "chứng chỉ tin học"@vi , "tin học"@vi .
 :MucBieuMauTrenWebsite rdfs:label "Mục biểu mẫu trên website"@vi .
 :MucHocBongKhuyenKhichHocTap rdfs:label "Mức học bổng khuyến khích học tập"@vi .
+:MucTaiDonXacNhanDangHoc a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xác nhận đang học"@vi ;
+	skos:altLabel "mẫu giấy xác nhận sinh viên"@vi .
 :MucTaiDonXinBaoLuuHocPhan a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin bảo lưu học phần"@vi .
 :MucTaiDonXinCapBanSaoBang a :MucBieuMauTrenWebsite ;
@@ -438,9 +452,15 @@
 	rdfs:label "Mục tải: Đơn xin phép nghỉ học"@vi .
 :MucTaiDonXinXetTotNghiep a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin xét tốt nghiệp"@vi .
+:MucTaiMauPhieuDanhGiaDiemRenLuyen a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Mẫu phiếu đánh giá điểm rèn luyện"@vi ;
+	skos:altLabel "phiếu rèn luyện"@vi , "phiếu đánh giá rèn luyện"@vi .
 :MucTaiMauSo13DonDangKyHocCungLucHaiChuongTrinhDaoTao :ungVoiBieuMau :MauSo15DonDangKyHocCungLucHaiChuongTrinh ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Mẫu số 13 - Đơn đăng ký học cùng lúc hai chương trình đào tạo"@vi .
+:MucTaiMauVayVon a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Mẫu vay vốn"@vi ;
+	skos:altLabel "mẫu đơn vay vốn"@vi .
 :MucTaiPhieuBaoDiemBoSung a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Phiếu báo điểm bổ sung"@vi .
 :MucTaiPhieuDangKyDieuChinhHocPhan :ungVoiBieuMau :MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 ;
@@ -481,12 +501,25 @@
 	:soHieu "1052/QĐ-ĐHNT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang"@vi .
+:Nguon1231 :banHanhNgay "2015-12-30"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/van-ban-truong/QC%20REN%20LUYEN.pdf"^^xsd:anyURI ;
+	:hieuLucTu "2015-2016"@vi ;
+	:loaiNguon :QuyChe ;
+	:soHieu "1231/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quy chế đánh giá kết quả rèn luyện của sinh viên đào tạo theo học chế tín chỉ hệ chính quy"@vi .
 :Nguon1314 :banHanhNgay "2025-08-28"^^xsd:date ;
 	:duongDan "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/779/quy-trinh-thu-hoc-phi-cua-truong-dai-hoc-nha-trang-pdf.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
 	:soHieu "1314/QĐ-ĐHNT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quy trình thu học phí của Trường Đại học Nha Trang"@vi .
+:Nguon1351 :banHanhNgay "2025-09-03"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2025/269-Q%C4%90%201351_Q%C4%90%20V%C4%83n%20h%C3%B3a%20h%E1%BB%8Dc%20%C4%91%C6%B0%E1%BB%9Dng%202025.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:soHieu "1351/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quy định Văn hóa học đường của Trường Đại học Nha Trang"@vi .
 :Nguon1618 :banHanhNgay "2025-10-21"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2025/269-Q%C4%90%201618-HB%20KKHT%20CT%20chu%E1%BA%A9n%20HKII%2024-25.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
@@ -579,6 +612,18 @@
 	:ngayThuThap "2026-08-10"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo danh sách dự kiến học bổng khuyến khích học tập"@vi .
+:NguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027 :duongDan "https://sinhvien.ntu.edu.vn/"^^xsd:anyURI ;
+	:hieuLucTu "2026-2027"@vi ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Thông báo Đóng tiền BHYT, BHTT sinh viên năm học 2026-2027"@vi .
+:NguonThongBaoNopHoSoChinhSachHkI20262027 :duongDan "https://sinhvien.ntu.edu.vn/"^^xsd:anyURI ;
+	:hieuLucTu "2026-2027"@vi ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Thông báo nộp hồ sơ chính sách HKI 2026-2027"@vi .
 :NguonTieuChuanXetHocBongKhuyenKhichHocTap :duongDan "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -631,6 +676,10 @@
 	rdfs:label "Phạm vi và đối tượng áp dụng của quy chế"@vi ;
 	skos:altLabel "đối tượng áp dụng của quy chế"@vi .
 :PhanCuaTaiLieu rdfs:label "Phần của tài liệu"@vi .
+:PhanLoaiKetQuaRenLuyen :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Phân loại kết quả rèn luyện"@vi ;
+	skos:altLabel "xếp loại rèn luyện"@vi , "xếp loại điểm rèn luyện"@vi .
 :PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan a :MucTien ;
 	rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi .
 :PhiVnpayDoiVoiNganHangKhac a :MucTien ;
@@ -693,6 +742,10 @@
 :SinhVien :loaiChuThe :ChuTheThamGia ;
 	a :ChuThe ;
 	rdfs:label "Sinh viên"@vi .
+:SuDungKetQuaRenLuyen :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Sử dụng kết quả rèn luyện"@vi ;
+	skos:altLabel "điểm rèn luyện dùng để làm gì"@vi .
 :TD1052_D01K02 :thuocNguon :Nguon1052 ;
 	:toaDo "khoản 2 Điều 1"@vi ;
 	a :DiaChiTrichDan .
@@ -1125,6 +1178,45 @@
 :TDNguon1052PhanTrongDoPhuLuc3 :thuocNguon :Nguon1052 ;
 	:toaDo "phần Trong đó Phụ lục 3"@vi ;
 	a :DiaChiTrichDan .
+:TDNguon1231Dieu13 :thuocNguon :Nguon1231 ;
+	:toaDo "Điều 13"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Dieu15 :thuocNguon :Nguon1231 ;
+	:toaDo "Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Dieu9 :thuocNguon :Nguon1231 ;
+	:toaDo "Điều 9"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan1DenKhoan3Dieu14 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 1 đến khoản 3 Điều 14"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan1DenKhoan4Dieu10 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 1 đến khoản 4 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan1Dieu11 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 1 Điều 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan1Dieu3VaKhoan2CacDieu4DenDieu8 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 1 Điều 3 và khoản 2 các Điều 4 đến Điều 8"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan2Dieu11 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 2 Điều 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan2Dieu3 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 2 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan3Dieu11 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 3 Điều 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan4Dieu11 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 4 Điều 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan4Dieu14 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 4 Điều 14"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1231Khoan5Dieu11 :thuocNguon :Nguon1231 ;
+	:toaDo "khoản 5 Điều 11"@vi ;
+	a :DiaChiTrichDan .
 :TDNguon1314Buoc2MucIiiB :thuocNguon :Nguon1314 ;
 	:toaDo "bước 2 mục III.B"@vi ;
 	a :DiaChiTrichDan .
@@ -1145,6 +1237,12 @@
 	a :DiaChiTrichDan .
 :TDNguon1314Buoc8MucIiiB :thuocNguon :Nguon1314 ;
 	:toaDo "bước 8 mục III.B"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1351BangPhuLuc :thuocNguon :Nguon1351 ;
+	:toaDo "bảng Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1351TieuDePhuLucVaDieu2 :thuocNguon :Nguon1351 ;
+	:toaDo "tiêu đề Phụ lục và Điều 2"@vi ;
 	a :DiaChiTrichDan .
 :TDNguon1618Dieu1 :thuocNguon :Nguon1618 ;
 	:toaDo "Điều 1"@vi ;
@@ -1184,6 +1282,21 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "ghi chú bước 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027ToanThongBao :thuocNguon :NguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027 ;
+	:toaDo "toàn thông báo"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoNopHoSoChinhSachHkI20262027ToanThongBao :thuocNguon :NguonThongBaoNopHoSoChinhSachHkI20262027 ;
+	:toaDo "toàn thông báo"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 18"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc1 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc2 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 2"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 5"@vi ;
@@ -1281,6 +1394,9 @@
 :TaiChinhNganHang a :NganhDaoTao ;
 	rdfs:label "Tài chính - Ngân hàng"@vi .
 :TaiLieuChinhThuc rdfs:label "Tài liệu chính thức"@vi .
+:TamNgungHocVaBuocThoiHocDoRenLuyenYeuKem a :QuyTac ;
+	rdfs:label "Tạm ngừng học và buộc thôi học do rèn luyện yếu kém"@vi ;
+	skos:altLabel "rèn luyện yếu kém"@vi , "điểm rèn luyện yếu"@vi .
 :Tcf a :ChungChi ;
 	rdfs:label "TCF"@vi ;
 	skos:altLabel "chứng chỉ ngoại ngữ tiếng Pháp"@vi , "chứng chỉ tiếng Pháp"@vi , "tiếng Pháp"@vi .
@@ -1335,12 +1451,18 @@
 :ThuTucDangKyThucHienDoAnTotNghiep a :ThuTucHocVu ;
 	rdfs:label "Thủ tục đăng ký thực hiện đồ án tốt nghiệp"@vi ;
 	skos:altLabel "khóa luận tốt nghiệp"@vi , "làm đồ án tốt nghiệp"@vi , "ĐATN"@vi , "đăng ký khóa luận"@vi , "đăng ký đồ án tốt nghiệp"@vi .
+:ThuTucDanhGiaKetQuaRenLuyen a :ThuTucHocVu ;
+	rdfs:label "Thủ tục đánh giá kết quả rèn luyện"@vi ;
+	skos:altLabel "chấm điểm rèn luyện"@vi , "khiếu nại điểm rèn luyện"@vi , "tự đánh giá rèn luyện"@vi , "đánh giá điểm rèn luyện"@vi .
 :ThuTucDeNghiMoThemLopHocPhan a :ThuTucHocVu ;
 	rdfs:label "Thủ tục đề nghị mở thêm lớp học phần"@vi ;
 	skos:altLabel "mở lớp"@vi , "mở thêm lớp học phần"@vi , "xin mở lớp"@vi , "đề nghị mở lớp học phần"@vi .
 :ThuTucDeNghiXetTotNghiepSom a :ThuTucHocVu ;
 	rdfs:label "Thủ tục đề nghị xét tốt nghiệp sớm"@vi ;
 	skos:altLabel "ra trường sớm"@vi , "tốt nghiệp sớm"@vi , "xét tốt nghiệp trước thời hạn"@vi .
+:ThuTucDongBaoHiemYTeBaoHiemThanThe a :ThuTucHocVu ;
+	rdfs:label "Thủ tục đóng bảo hiểm y tế, bảo hiểm thân thể"@vi ;
+	skos:altLabel "BHTT"@vi , "BHYT"@vi , "bảo hiểm thân thể"@vi , "bảo hiểm y tế sinh viên"@vi , "đóng bảo hiểm"@vi .
 :ThuTucHocLienThong a :ThuTucHocVu ;
 	rdfs:label "Thủ tục học liên thông"@vi ;
 	skos:altLabel "học liên thông"@vi , "học lên đại học"@vi , "liên thông lên đại học"@vi , "liên thông"@vi .
@@ -1351,6 +1473,9 @@
 :ThuTucNghiHocTamThoi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
 	skos:altLabel "bảo lưu kết quả học tập"@vi , "bảo lưu kết quả"@vi , "nghỉ học tạm thời"@vi , "tạm dừng học"@vi , "tạm nghỉ học"@vi .
+:ThuTucNopHoSoCheDoChinhSach a :ThuTucHocVu ;
+	rdfs:label "Thủ tục nộp hồ sơ chế độ chính sách"@vi ;
+	skos:altLabel "HTCPHT"@vi , "MGHP"@vi , "TCXH"@vi , "học bổng sinh viên khuyết tật"@vi , "hồ sơ chính sách"@vi , "hỗ trợ chi phí học tập"@vi , "miễn giảm học phí"@vi , "trợ cấp xã hội"@vi .
 :ThuTucNopHocPhi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nộp học phí"@vi ;
 	skos:altLabel "nộp học phí"@vi , "nộp tiền học"@vi , "thanh toán học phí"@vi , "đóng học phí"@vi , "đóng tiền học"@vi .
@@ -2239,6 +2364,48 @@
 	:Icdl :noiDung "Tổng điểm ở cột điểm ICDL là tổng điểm của 5 mô-đun."@vi .
 	:Mos :noiDung "Tổng điểm ở cột điểm MOS là tổng điểm của 2 trong 3 mô-đun."@vi .
 }
+:TDNguon1231Dieu13 {
+	:DiemRenLuyen :noiDung "Việc đánh giá kết quả rèn luyện của từng sinh viên được tiến hành theo từng học kỳ, năm học và toàn khoá học. Điểm rèn luyện của học kỳ là tổng điểm đạt được của 5 nội dung đánh giá chi tiết của Trường. Điểm rèn luyện của năm học là trung bình cộng của điểm rèn luyện các học kỳ của năm học đó. Điểm rèn luyện của khóa học là trung bình cộng của điểm rèn luyện các học kỳ của khóa học."@vi .
+}
+:TDNguon1231Dieu15 {
+	:ThuTucDanhGiaKetQuaRenLuyen :noiDung "Trong thời gian 20 ngày kể từ ngày thông báo kết quả rèn luyện để sinh viên phản hồi, sinh viên có quyền khiếu nại lên khoa/viện, các phòng chức năng hoặc Hiệu trưởng nếu thấy việc đánh giá kết quả rèn luyện chưa chính xác. Khi nhận được đơn khiếu nại, Nhà trường có trách nhiệm giải quyết, trả lời theo quy định hiện hành."@vi .
+}
+:TDNguon1231Dieu9 {
+	:PhanLoaiKetQuaRenLuyen :noiDung "Kết quả rèn luyện được phân thành các loại: từ 90 đến 100 điểm: loại xuất sắc; từ 80 đến dưới 90 điểm: loại tốt; từ 65 đến dưới 80 điểm: loại khá; từ 50 đến dưới 65 điểm: loại trung bình; từ 35 đến dưới 50 điểm: loại yếu; dưới 35 điểm: loại kém."@vi .
+}
+:TDNguon1231Khoan1DenKhoan3Dieu14 {
+	:SuDungKetQuaRenLuyen :noiDung "Kết quả phân loại rèn luyện của sinh viên từng học kỳ, năm học, toàn khóa học được lưu trong hồ sơ quản lý sinh viên của Trường, được sử dụng để xét học bổng, khen thưởng, kỷ luật, ngừng học, thôi học và các ưu tiên khác theo quy định. Kết quả rèn luyện toàn khóa học của sinh viên làm căn cứ để xét làm đồ án tốt nghiệp, xét tốt nghiệp. Kết quả đánh giá rèn luyện được ghi chung vào bảng điểm kết quả học tập từng học kỳ, toàn khóa học."@vi .
+}
+:TDNguon1231Khoan1DenKhoan4Dieu10 {
+	:GioiHanXepLoaiRenLuyenKhiBiKyLuat :noiDung "Trong thời gian sinh viên bị kỷ luật ở mức khiển trách, khi đánh giá kết quả rèn luyện không được vượt quá loại khá; bị kỷ luật ở mức cảnh cáo không được vượt quá loại trung bình. Sinh viên bị kỷ luật mức đình chỉ học tập không được đánh giá rèn luyện trong thời gian bị đình chỉ; bị kỷ luật mức buộc thôi học không được đánh giá rèn luyện."@vi .
+}
+:TDNguon1231Khoan1Dieu11 {
+	:ThuTucDanhGiaKetQuaRenLuyen :doAiThucHien :SinhVien ;
+		:noiDung "Từng sinh viên căn cứ vào kết quả rèn luyện của học kỳ chính liền trước, tự đánh giá theo mức điểm chi tiết vào phiếu đánh giá rèn luyện do Trường quy định trong tuần đầu tiên các học kỳ."@vi .
+}
+:TDNguon1231Khoan1Dieu3VaKhoan2CacDieu4DenDieu8 {
+	:DiemRenLuyen :noiDung "Đánh giá kết quả rèn luyện là đánh giá phẩm chất chính trị, đạo đức, lối sống của từng sinh viên trên các mặt: ý thức học tập (khung điểm từ 0 đến 20); ý thức và kết quả chấp hành nội quy, quy chế trong Nhà trường (từ 0 đến 25); ý thức và kết quả tham gia các hoạt động chính trị, xã hội, văn hoá, văn nghệ, thể thao, phòng chống tội phạm và các tệ nạn xã hội (từ 0 đến 20); phẩm chất công dân và quan hệ với cộng đồng (từ 0 đến 25); ý thức và kết quả tham gia công tác phụ trách lớp, các đoàn thể, tổ chức trong Nhà trường hoặc sinh viên đạt được thành tích đặc biệt trong học tập, rèn luyện (từ 0 đến 10)."@vi .
+}
+:TDNguon1231Khoan2Dieu11 {
+	:ThuTucDanhGiaKetQuaRenLuyen :noiDung "Tổ chức họp lớp có cố vấn học tập tham gia, tiến hành xem xét và thông qua mức điểm của từng sinh viên trên cơ sở phải được quá nửa ý kiến đồng ý của tập thể đơn vị lớp và phải có biên bản kèm theo, hoàn thành trong tuần 2, 3 đầu các học kỳ. Cố vấn học tập xác nhận kết quả họp lớp và chuyển kết quả lên Hội đồng đánh giá kết quả rèn luyện của sinh viên cấp khoa/viện."@vi .
+}
+:TDNguon1231Khoan2Dieu3 {
+	:DiemRenLuyen :noiDung "Điểm rèn luyện được đánh giá bằng thang điểm 100."@vi .
+}
+:TDNguon1231Khoan3Dieu11 {
+	:ThuTucDanhGiaKetQuaRenLuyen :noiDung "Hội đồng cấp khoa/viện họp xét, thống nhất báo cáo trưởng khoa/viện thông qua và trình kết quả đánh giá kết quả rèn luyện của sinh viên lên Hội đồng cấp Trường, hoàn thành trong tuần 4, 5 đầu các học kỳ."@vi .
+}
+:TDNguon1231Khoan4Dieu11 {
+	:ThuTucDanhGiaKetQuaRenLuyen :doAiQuyetDinh :HieuTruong ;
+		:noiDung "Hội đồng cấp Trường họp xét, thống nhất trình Hiệu trưởng xem xét và quyết định công nhận kết quả trong tuần thứ 8 và thông báo công khai cho sinh viên kết quả đánh giá rèn luyện trong thời gian 20 ngày kể từ ngày thông báo để sinh viên phản hồi."@vi .
+}
+:TDNguon1231Khoan4Dieu14 {
+	:TamNgungHocVaBuocThoiHocDoRenLuyenYeuKem :loaiQuyTac :QuyTacBuocThoiHoc ;
+		:noiDung "Sinh viên bị xếp loại rèn luyện yếu, kém trong 2 học kỳ liên tiếp thì phải tạm ngừng học ít nhất một học kỳ ở học kỳ tiếp theo và nếu bị xếp loại rèn luyện yếu, kém 2 học kỳ liên tiếp lần thứ hai thì sẽ bị buộc thôi học."@vi .
+}
+:TDNguon1231Khoan5Dieu11 {
+	:ThuTucDanhGiaKetQuaRenLuyen :noiDung "Hết thời hạn thông báo, trong thời hạn 1 tuần hội đồng các cấp điều chỉnh kết quả rèn luyện (nếu có) trình Hiệu trưởng ký quyết định ban hành."@vi .
+}
 :TDNguon1314Buoc2MucIiiB {
 	:ThuTucNopHocPhi :noiDung "Căn cứ vào mức thu học phí của năm học, Phòng Kế hoạch - Tài chính phối hợp với Phòng Hạ tầng và Công nghệ thông tin cập nhật dữ liệu mức học phí phải nộp của người học lên hệ thống quản lý đào tạo, đồng thời thông báo thời hạn đóng học phí trong kỳ cũng như cách thức đóng học phí qua các ngân hàng trên hệ thống website dành cho người học."@vi .
 }
@@ -2259,6 +2426,13 @@
 }
 :TDNguon1314Buoc8MucIiiB {
 	:ThuTucNopHocPhi :noiDung "Trong vòng 02 ngày sau khi nhận được danh sách người học nợ học phí từ Phòng Kế hoạch - Tài chính, các đơn vị: Phòng Đào tạo đại học, Phòng Đào tạo Sau đại học, Trung tâm Đào tạo và Bồi dưỡng thực hiện xóa đăng ký học phần trong kỳ đối với người học chưa hoàn thành nghĩa vụ học phí đúng hạn theo quy định."@vi .
+}
+:TDNguon1351BangPhuLuc {
+	:BangKhungXuLyKyLuatNguoiHoc :loaiBang :BangTrongTaiLieu ;
+		:noiDung "| STT | Nội dung vi phạm | Nhắc nhở | Khiển trách | Cảnh cáo | Đình chỉ học tập có thời hạn | Buộc thôi học | Ghi chú |\n| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :--- |\n| 1 | Trang phục; Thẻ sinh viên, học viên | Lần 1 | Lần 2 | Lần 3 | Lần 4 | | Người học vi phạm bị xử lý kỷ luật phải viết bản kiểm điểm và trừ điểm rèn luyện theo mức tương ứng: nhắc nhở (5đ); khiển trách (10đ); cảnh cáo (20đ). |\n| 2 | Giao tiếp ứng xử | | | | | | |\n| 2.1 | Có thái độ, hành vi vô lễ với viên chức, người lao động Nhà trường. | | | | | | Tùy theo mức độ, Hội đồng khen thưởng, kỷ luật sẽ họp và quyết định xử lý từ khiển trách đến buộc thôi học. |\n| 2.2 | Đăng tin, chia sẻ và bình luận thiếu tính xây dựng về Trường; phán xét, nhận định không đúng sự thật theo chiều hướng tiêu cực đối với viên chức và người lao động. | | Lần 1 | Lần 2 | Lần 3 | | Trường hợp nghiêm trọng xử lý buộc thôi học. |\n| 2.3 | Đăng tải, chia sẻ bài viết, hình ảnh có nội dung xâm hại an ninh Quốc gia, chống phá Đảng và Nhà nước, xuyên tạc vu khống, xúc phạm uy tín của tổ chức, danh dự và nhân phẩm cá nhân trên mạng Internet. | | | Lần 1 | Lần 2 | | Trường hợp nghiêm trọng xử lý buộc thôi học, chuyển cho cơ quan có thẩm quyền xem xét và xử lý theo quy định của pháp luật. |\n| 3 | Giữ gìn vệ sinh, cảnh quan, môi trường | | | | | | |\n| 3.1 | Xả rác bừa bãi, viết, vẽ lên bàn, tường trong các phòng học, phòng họp, phòng ở ký túc xá và các khu vực khác trong khuôn viên Trường. | Lần 1 | Lần 2 | Lần 3 | Lần 4 | | |\n| 3.2 | Hút thuốc lá trong phòng học, phòng họp, phòng thí nghiệm, thực hành, thực tập và những nơi có biển cấm hút thuốc theo quy định. | Lần 1 | Lần 2 | Lần 3 | Lần 4 | Lần 5 | |\n| 3.3 | Tự ý tổ chức uống rượu, bia trong khuôn viên Trường; say rượu, bia khi đến lớp học. | Lần 1 | Lần 2 | Lần 3 | Lần 4 | Lần 5 | |\n| 4 | Bảo vệ tài sản | | | | | | |\n| 4.1 | Hủy hoại, phá phách làm hư hỏng các trang thiết bị và các tài sản khác của Nhà trường. | | | | | | Tùy theo mức độ, Hội đồng khen thưởng, kỷ luật sẽ họp và quyết định xử lý từ khiển trách đến buộc thôi học và phải bồi thường thiệt hại. |\n| 5 | An ninh trật tự | | | | | | |\n| 5.1 | Đánh nhau, gây rối trật tự, an ninh trong Trường, nơi công cộng. | | | Lần 1 | Lần 2 | Lần 3 | Trường hợp nghiêm trọng, chuyển cho cơ quan chức năng xử lý theo quy định của pháp luật. |\n| 5.2 | Tham gia đánh bạc dưới mọi hình thức. | | | | | | Tùy theo mức độ, Hội đồng khen thưởng, kỷ luật sẽ họp và quyết định xử lý từ khiển trách đến buộc thôi học. Nếu nghiêm trọng, giao cho cơ quan chức năng xử lý theo quy định pháp luật. |\n| 5.3 | Lừa đảo, trộm cắp tài sản, chứa chấp, tiêu thụ tài sản do lấy cắp mà có. | | | | | | Tùy theo mức độ, Hội đồng khen thưởng, kỷ luật sẽ họp và quyết định xử lý từ khiển trách đến buộc thôi học. Nếu nghiêm trọng, giao cho cơ quan chức năng xử lý theo quy định pháp luật. |\n| 5.4 | Mua bán, tàng trữ, sử dụng, tổ chức sử dụng, vận chuyển chất ma tuý và các chất gây nghiện khác. | | | | | Lần 1 | Chuyển cho cơ quan chức năng xử lý theo quy định pháp luật. |\n| 5.5 | Mua bán, môi giới mại dâm. | | | | | Lần 1 | Chuyển cho cơ quan chức năng xử lý theo quy định pháp luật. |\n| 5.6 | Chứa chấp, buôn bán vũ khí, chất nổ và hàng cấm theo quy định của Nhà nước. | | | | | Lần 1 | Chuyển cho cơ quan chức năng xử lý theo quy định pháp luật. |\n| 5.7 | Kích động, lôi kéo người khác biểu tình, chống đối, viết - rải truyền đơn, áp phích trái pháp luật. | | | | Lần 1 | Lần 2 | Trường hợp nghiêm trọng, chuyển cho cơ quan chức năng xử lý theo quy định của pháp luật. |\n| 5.8 | Tàng trữ, lưu hành văn hoá phẩm đồi trụy; tham gia các hoạt động mê tín dị đoan, hoạt động tôn giáo trái phép bị cơ quan có thẩm quyền lập biên bản. | | | Lần 1 | Lần 2 | Lần 3 | Trường hợp nghiêm trọng giao cơ quan chức năng xử lý theo quy định pháp luật. |\n| 6 | An toàn giao thông | | | | | | |\n| 6.1 | Vi phạm các quy định về an toàn giao thông (Khi có công văn đề nghị xử lý của Cảnh sát giao thông). | | Lần 1 | Lần 2 | Lần 3 | | Trường hợp nghiêm trọng xử lý buộc thôi học. |\n| 6.2 | Để xe máy, xe đạp, ô tô không đúng nơi quy định. | Lần 1 | Lần 2 | Lần 3 | | | |\n| 7 | Vi phạm nội quy, quy định về học tập, thi, kiểm tra | | | | | | Xử lý theo quy chế đào tạo. |\n| 8 | Vi phạm khác | | | | | | Tùy theo mức độ, Hội đồng khen thưởng, kỷ luật sẽ xem xét nhắc nhở, xử lý kỷ luật từ khiển trách đến buộc thôi học. Nếu nghiêm trọng, giao cho cơ quan chức năng xử lý theo quy định pháp luật. |"@vi .
+}
+:TDNguon1351TieuDePhuLucVaDieu2 {
+	:BangKhungXuLyKyLuatNguoiHoc :noiDung "Số lần vi phạm và hình thức xử lý kỷ luật tính trong một học kỳ. Quy định Văn hóa học đường ban hành kèm Quyết định 1351/QĐ-ĐHNT thay thế Quyết định số 387/QĐ-ĐHNT ngày 11/4/2018 (Quy định Văn hóa học đường) và Quyết định số 1322/QĐ-ĐHNT ngày 07/12/2021 (Quy tắc ứng xử trên môi trường mạng/không gian mạng của sinh viên)."@vi .
 }
 :TDNguon1618Dieu1 {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :doAiQuyetDinh :HieuTruong .
@@ -2310,6 +2484,27 @@
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 {
 	:ThuTucNghiHocTamThoi :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 	:ThuTucXinThoiHoc :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
+}
+:TDNguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027ToanThongBao {
+	:ThuTucDongBaoHiemYTeBaoHiemThanThe :doAiThucHien :SinhVien ;
+		:noiDung "Sinh viên nghiêm chỉnh thực hiện việc đóng BHYT bắt buộc theo đúng thời gian quy định trong thông báo. Sinh viên có nhu cầu tham gia Bảo hiểm thân thể (tự nguyện) đóng tiền tại Phòng CTSV, mức phí 150.000đ/1 năm."@vi .
+}
+:TDNguonThongBaoNopHoSoChinhSachHkI20262027ToanThongBao {
+	:ThuTucNopHoSoCheDoChinhSach :doAiThucHien :SinhVien ;
+		:noiDung "Học kỳ I năm học 2026-2027: hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật nộp đến hết ngày 21/09/2026; hồ sơ trợ cấp xã hội nộp đến hết ngày 30/09/2026."@vi , "Phòng CTSV thông báo về việc nộp hồ sơ chế độ chính sách bao gồm: miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật và trợ cấp xã hội. Hồ sơ nộp trực tiếp tại P.CTSV - P.114."@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 {
+	:MucTaiDonXacNhanDangHoc :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/18_%20XAC%20NHAN%20SVDHNT.doc" ;
+		:noiDung "Đơn xác nhận đang học: mục 18 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc1 {
+	:MucTaiMauVayVon :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/1_%20%C4%91%C6%A1n%20vay%20v%E1%BB%91n.doc" ;
+		:noiDung "Mẫu vay vốn: mục 1 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc2 {
+	:MucTaiMauPhieuDanhGiaDiemRenLuyen :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/2_%20Phieu%20ren%20luyen.doc" ;
+		:noiDung "Mẫu phiếu đánh giá điểm rèn luyện: mục 2 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
 }
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 {
 	:ThuTucXinGiayXacNhanDangHoc :noiDung "Danh mục biểu mẫu của Phòng Công tác Chính trị và Sinh viên có mục \"Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo\"."@vi .

@@ -117,6 +117,10 @@ VERBATIM_TABLE_SOURCES = {
         "Qd729.md",
         "| **TT** | **Tên ngành đào tạo** |",
     ),
+    "BangKhungXuLyKyLuatNguoiHoc": (
+        "Qd1351.md",
+        "| STT | Nội dung vi phạm | Nhắc nhở | Khiển trách | Cảnh cáo | Đình chỉ học tập có thời hạn | Buộc thôi học | Ghi chú |",
+    ),
 }
 
 
