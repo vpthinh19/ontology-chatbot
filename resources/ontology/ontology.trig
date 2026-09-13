@@ -98,6 +98,8 @@
 	rdfs:label "Chương trình đào tạo Công nghệ chế tạo máy"@vi .
 :ChuongTrinhDaoTaoCongNgheSinhHoc a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Công nghệ sinh học"@vi .
+:ChuongTrinhDaoTaoCongNgheTaiChinh a :ChuongTrinhDaoTao ;
+	rdfs:label "Chương trình đào tạo Công nghệ tài chính"@vi .
 :ChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Công nghệ thông tin - Chương trình chuẩn"@vi .
 :ChuongTrinhDaoTaoCongNgheThucPham a :ChuongTrinhDaoTao ;
@@ -193,8 +195,6 @@
 	rdfs:label "Chuyên ngành Công nghệ phần mềm"@vi .
 :ChuyenNganhCongNgheSauThuHoach a :ChuyenNganh ;
 	rdfs:label "Chuyên ngành Công nghệ sau thu hoạch"@vi .
-:ChuyenNganhCongNgheTaiChinh a :ChuyenNganh ;
-	rdfs:label "Chuyên ngành Công nghệ tài chính"@vi .
 :ChuyenNganhCongNgheThucPham a :ChuyenNganh ;
 	rdfs:label "Chuyên ngành Công nghệ thực phẩm"@vi .
 :ChuyenNganhDienLanh a :ChuyenNganh ;
@@ -268,6 +268,9 @@
 	rdfs:label "Công nghệ sinh học"@vi .
 :CongNgheSinhHocChuongTrinhMinhPhuNtu a :ChuongTrinhDaoTao ;
 	rdfs:label "Công nghệ sinh học (chương trình Minh Phú - NTU)"@vi .
+:CongNgheTaiChinh a :NganhDaoTao ;
+	rdfs:label "Công nghệ tài chính"@vi ;
+	skos:altLabel "Fintech"@vi .
 :CongNgheThongTin a :NganhDaoTao ;
 	rdfs:label "Công nghệ thông tin"@vi .
 :CongNgheThongTinChuongTrinhDaoTaoDacBiet a :ChuongTrinhDaoTao ;
@@ -852,6 +855,11 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang Biểu mẫu - Phòng Công tác Chính trị và Sinh viên"@vi .
+:NguonTrangChuKhoaCongNgheSinhHoc :duongDan "https://khoacnsh.ntu.edu.vn"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang chủ Khoa Công nghệ Sinh học"@vi .
 :NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh :duongDan "https://phongkhtc.ntu.edu.vn/gioi-thieu/chuc-nang-nhiem-vu"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -902,6 +910,11 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Văn bản chương trình đào tạo Công nghệ sinh học"@vi .
+:NguonVanBanChuongTrinhDaoTaoCongNgheTaiChinh :duongDan "https://ctdt.ntu.edu.vn/ctdt/209.pdf"^^xsd:anyURI ;
+	:loaiNguon :VanBanChuongTrinhDaoTao ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Văn bản chương trình đào tạo Công nghệ tài chính"@vi .
 :NguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan :duongDan "https://ctdt.ntu.edu.vn/ctdt/210.pdf"^^xsd:anyURI ;
 	:loaiNguon :VanBanChuongTrinhDaoTao ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -1931,6 +1944,9 @@
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 5"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang :thuocNguon :NguonTrangChuKhoaCongNgheSinhHoc ;
+	:toaDo "tên đơn vị ở đầu trang"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan :thuocNguon :NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh ;
 	:toaDo "điểm a mục 1 Công tác tài chính và kế toán"@vi ;
 	a :DiaChiTrichDan .
@@ -2019,6 +2035,12 @@
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheSinhHoc ;
+	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheTaiChinh ;
+	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheTaiChinh ;
 	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan ;
@@ -3540,7 +3562,6 @@
 	:KinhDoanhThuongMai :maNganh "7340121" .
 }
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIiChuongTrinhChuanDongTt23 {
-	:ChuyenNganhCongNgheTaiChinh :thuocNganh :TaiChinhNganHang .
 	:ChuyenNganhTaiChinhNganHang :thuocNganh :TaiChinhNganHang .
 	:TaiChinhNganHang :maNganh "7340201" .
 }
@@ -3677,6 +3698,9 @@
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 {
 	:ThuTucXinGiayXacNhanDangHoc :noiDung "Danh mục biểu mẫu của Phòng Công tác Chính trị và Sinh viên có mục \"Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo\"."@vi .
 }
+:TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang {
+	:KhoaCongNgheSinhHoc :thuocDonVi :TruongThuySanVaKhoaHocSuSong .
+}
 :TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan {
 	:PhongKeHoachTaiChinh :noiDung "Tham mưu Hiệu trưởng ban hành và quản lý mức thu học phí, phí, giá dịch vụ giáo dục theo quy định."@vi .
 }
@@ -3684,31 +3708,27 @@
 	:PhongCongTacChinhTriVaSinhVien :noiDung "Chức năng, nhiệm vụ: Quản lý hồ sơ học sinh sinh viên. Công tác chế độ, chính sách. Khen thưởng, kỉ luật và học vụ. Tổ chức lễ tốt nghiệp đại học chính quy, thạc sĩ, tiến sĩ; lễ khai giảng, bế giảng. Theo dõi tình hình ngoại trú, phối hợp với địa phương giải quyết các vấn đề liên quan đến sinh viên ngoại trú. Tiếp nhận, xử lý và giải đáp các thắc mắc của người học, phụ huynh và các bên liên quan."@vi .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaCongNgheSinhHoc {
-	:KhoaCongNgheSinhHoc :dienThoai "02583.831149" ;
-		:hopThu "khoacnsh@ntu.edu.vn" ;
+	:KhoaCongNgheSinhHoc :hopThu "khoacnsh@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:viTri "Tầng 2 - Viện khai thác, 09 Nguyễn Đình Chiểu" ;
 		:websiteDonVi "https://khoacnsh.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaCongNgheThongTin {
-	:KhoaCongNgheThongTin :dienThoai "02582471367" ;
-		:hopThu "kcntt@ntu.edu.vn" ;
+	:KhoaCongNgheThongTin :hopThu "kcntt@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 7, Nhà Đa Năng. 02 Tôn Thất Tùng" ;
 		:websiteDonVi "https://khoacntt.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaDuLich {
-	:KhoaDuLich :dienThoai "02586.262.356" ;
-		:hopThu "khoadulich@ntu.edu.vn" ;
+	:KhoaDuLich :hopThu "khoadulich@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 6 - Tòa nhà Đa năng, 02 Tôn Thất Tùng" ;
 		:websiteDonVi "https://khoadulich.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaKhoaHocXaHoiVaNhanVan {
-	:KhoaKhoaHocXaHoiVaNhanVan :dienThoai "0258 247 1392" ;
-		:hopThu "khct@ntu.edu.vn" ;
+	:KhoaKhoaHocXaHoiVaNhanVan :hopThu "khct@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 7, tòa nhà Đa Năng, 02 Tôn Thất Tùng, trường Đại học Nha Trang" ;
@@ -3722,8 +3742,7 @@
 		:websiteDonVi "https://khoann.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamTrungTamGiaoDucQuocPhongVaAnNinh {
-	:TrungTamGiaoDucQuocPhongVaAnNinh :dienThoai "02582461323" ;
-		:hopThu "ttgdqp@ntu.edu.vn" ;
+	:TrungTamGiaoDucQuocPhongVaAnNinh :hopThu "ttgdqp@ntu.edu.vn" ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tòa nhà TV2 (Thư viện cũ), trường Đại học Nha Trang" ;
 		:websiteDonVi "https://trungtamqpan.ntu.edu.vn" .
@@ -3748,8 +3767,7 @@
 	:KhoaTaiChinhVaNganHang :loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongKinhTeVaKinhDoanh ;
 		:websiteDonVi "https://khoatcnh.ntu.edu.vn" .
-	:TruongKinhTeVaKinhDoanh :dienThoai "02582471380" ;
-		:hopThu "seb@ntu.edu.vn" ;
+	:TruongKinhTeVaKinhDoanh :hopThu "seb@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Nhà Đa Năng - 02 Tôn Thất Tùng" ;
@@ -3805,19 +3823,16 @@
 		:websiteDonVi "https://flss.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDichVuUngDungKhcnVaPhucVuDanhSachDonViTren {
-	:TrungTamDaoTaoVaBoiDuong :dienThoai "02582220913" ;
-		:hopThu "ttdtbd@ntu.edu.vn" ;
+	:TrungTamDaoTaoVaBoiDuong :hopThu "ttdtbd@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tòa nhà A3, 02 Nguyễn Đình Chiểu, Trường đại học Nha Trang" ;
 		:websiteDonVi "https://trungtamdtbd.ntu.edu.vn" .
-	:TrungTamHoTroViecLamVaKhoiNghiep :dienThoai "02586280441" ;
-		:hopThu "ttdmst@ntu.edu.vn" ;
+	:TrungTamHoTroViecLamVaKhoiNghiep :hopThu "ttdmst@ntu.edu.vn" ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 2, tòa nhà A3, 02 Nguyễn Đình Chiểu" ;
 		:websiteDonVi "https://trungtamdmst.ntu.edu.vn" .
 	:TrungTamThongTinVaTuLieu :diaChi "02 Nguyễn Đình Chiểu, Nha Trang, Khánh Hoà" ;
-		:dienThoai "02582471443" ;
 		:hopThu "tv@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
@@ -3905,6 +3920,17 @@
 }
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucViCauTrucChuongTrinhDaoTaoDongTongCong {
 	:ChuongTrinhDaoTaoCongNgheSinhHoc :tongSoTinChi 130 .
+}
+:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucIThongTinChungVeChuongTrinh {
+	:ChuongTrinhDaoTaoCongNgheTaiChinh :donViQuanLy :KhoaTaiChinhVaNganHang ;
+		:ngonNguDaoTao "Tiếng Việt"@vi ;
+		:thoiGianDaoTao "3,5 năm"@vi ;
+		:thuocNganh :CongNgheTaiChinh ;
+		:vanBangTotNghiep "Cử nhân Công nghệ tài chính"@vi .
+	:CongNgheTaiChinh :maNganh "7340205" .
+}
+:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
+	:ChuongTrinhDaoTaoCongNgheTaiChinh :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan :donViQuanLy :KhoaCongNgheThongTin ;
@@ -4350,38 +4376,32 @@
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 2, Tòa Nhà Hành chính" ;
 		:websiteDonVi "https://phongdbcl.ntu.edu.vn" .
-	:PhongCongTacChinhTriVaSinhVien :dienThoai "0258 222 1900" ;
-		:hopThu "ctsv@ntu.edu.vn" ;
+	:PhongCongTacChinhTriVaSinhVien :hopThu "ctsv@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, Khu nhà Hiệu bộ" ;
 		:websiteDonVi "https://phongctsv.ntu.edu.vn" .
-	:PhongDaoTaoDaiHoc :dienThoai "0258 3831148" ;
-		:hopThu "daotao@ntu.edu.vn" ;
+	:PhongDaoTaoDaiHoc :hopThu "daotao@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
 		:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
-	:PhongHaTangVaCongNgheThongTin :dienThoai "02582461303" ;
-		:hopThu "htcntt@ntu.edu.vn" ;
+	:PhongHaTangVaCongNgheThongTin :hopThu "htcntt@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Phòng 03, Tòa nhà A8, Trường Đại học Nha Trang" ;
 		:websiteDonVi "https://phongcntt.ntu.edu.vn" .
-	:PhongHopTacQuocTe :dienThoai "02582471303" ;
-		:hopThu "dea@ntu.edu.vn" ;
+	:PhongHopTacQuocTe :hopThu "dea@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, tòa nhà Hiệu bộ" ;
 		:websiteDonVi "https://phonghtdn.ntu.edu.vn" .
-	:PhongKeHoachTaiChinh :dienThoai "02583831150" ;
-		:hopThu "khtc@ntu.edu.vn" ;
+	:PhongKeHoachTaiChinh :hopThu "khtc@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tòa nhà A8, Trường Đại học Nha Trang" ;
 		:websiteDonVi "https://phongkhtc.ntu.edu.vn" .
-	:PhongKhoaHocCongNghe :dienThoai "02582220747" ;
-		:hopThu "khcn@ntu.edu.vn" ;
+	:PhongKhoaHocCongNghe :hopThu "khcn@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, Khu nhà Hiệu Bộ" ;

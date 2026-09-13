@@ -421,6 +421,9 @@
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
 		  sh:minCount 1 ;
 		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
 		[ sh:path :maNganh ;
 		  sh:name "mã ngành"@vi ;
 		  sh:datatype xsd:string ;

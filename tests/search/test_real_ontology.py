@@ -22,7 +22,7 @@ def test_a_procedure_is_found_by_its_name(engine) -> None:
 
 
 def test_an_attribute_is_found_through_its_datatype_property_row(engine) -> None:
-    response = engine.search(["điện thoại phòng đào tạo"])
+    response = engine.search(["vị trí phòng đào tạo"])
 
     assert response.results[0].node == ":PhongDaoTaoDaiHoc"
     assert response.results[0].matched[0].entry.kind is EntryKind.DATATYPE_PROPERTY
