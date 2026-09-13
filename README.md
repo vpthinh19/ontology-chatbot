@@ -209,7 +209,7 @@ chỉ phát biểu đó đổi túi hoặc được thay, các phát biểu khá
 ```trig
 :ThuTucNghiHocTamThoi a :ThuTucHocVu ;
     rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
-    skos:altLabel "bảo lưu kết quả học tập"@vi , "tạm nghỉ học"@vi .
+    skos:altLabel "nghỉ học tạm thời"@vi , "bảo lưu kết quả học tập"@vi , "tạm nghỉ học"@vi .
 
 :TD1052_D24K03 {
     :ThuTucNghiHocTamThoi :nopTai :PhongCongTacChinhTriVaSinhVien ;
@@ -248,7 +248,7 @@ kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025".
 
 | Tầng | Lưu gì | Dùng để làm gì |
 |---|---|---|
-| Tri thức | 16 loại mục: thủ tục, quy tắc, đơn vị, ngành, biểu mẫu… | là thứ người dùng hỏi tới và được tìm kiếm |
+| Tri thức | các loại mục: thủ tục, quy tắc, đơn vị, ngành, biểu mẫu… | là thứ người dùng hỏi tới và được tìm kiếm |
 | Nguồn | nguồn (văn bản, trang web) và địa chỉ trích dẫn | chỉ để dựng trích dẫn; không được tìm kiếm |
 
 Có hai loại phát biểu nằm ngoài mọi túi: danh tính của mục (loại, tên, tên gọi khác)
@@ -364,7 +364,7 @@ dòng (6.3), rồi cộng thành điểm của mục và lấy ba mục cao nh�
 đơn vị nhỏ nhất đem đi so khớp. Chỉ mục không phải một kho dữ liệu thứ hai: mỗi dòng sinh
 ra từ một loại phát biểu của ontology và mang theo định danh để quay về đúng mục đó.
 
-Ontology có hai loại thuộc tính, và tên của ba loại dòng đặt theo chính chúng:
+Ba loại dòng đặt tên theo đúng loại phát biểu đã sinh ra chúng:
 
 | Loại phát biểu trong ontology | Loại dòng sinh ra | Khuôn của dòng |
 |---|---|---|
@@ -530,7 +530,7 @@ Bộ kiểm thứ nhất — [`resources/end-to-end/retrieval.json`](resources/e
 }
 ```
 
-`tu_khoa` là từ khoá lấy từ một lượt chạy thật của trợ lý rồi cố định lại, nên phép đo
+`tu_khoa` là từ khoá lấy từ một lượt chạy của trợ lý rồi cố định lại, nên phép đo
 phản ánh engine chứ không lẫn biến động của LLM. `node_dung` là định danh của mục mà câu
 hỏi nhắm tới trong ontology, `nhan_dung` là tên hiển thị của mục đó — có cả hai để đối
 chiếu được theo định danh lẫn theo tên.
