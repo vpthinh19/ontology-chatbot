@@ -568,6 +568,11 @@
 	a :Nguon ;
 	rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang năm 2021"@vi .
 :Nguon rdfs:label "Nguồn"@vi .
+:NguonCongThongTinSinhVien :duongDan "https://sinhvien.ntu.edu.vn/"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Cổng thông tin sinh viên (sinhvien.ntu.edu.vn)"@vi .
 :NguonDangKyGiayXacNhanVayVonOnline :banHanhNgay "2024-01-09"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
@@ -612,18 +617,6 @@
 	:ngayThuThap "2026-08-10"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo danh sách dự kiến học bổng khuyến khích học tập"@vi .
-:NguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027 :duongDan "https://sinhvien.ntu.edu.vn/"^^xsd:anyURI ;
-	:hieuLucTu "2026-2027"@vi ;
-	:loaiNguon :VanBanHuongDan ;
-	:ngayThuThap "2026-09-13"^^xsd:date ;
-	a :Nguon ;
-	rdfs:label "Thông báo Đóng tiền BHYT, BHTT sinh viên năm học 2026-2027"@vi .
-:NguonThongBaoNopHoSoChinhSachHkI20262027 :duongDan "https://sinhvien.ntu.edu.vn/"^^xsd:anyURI ;
-	:hieuLucTu "2026-2027"@vi ;
-	:loaiNguon :VanBanHuongDan ;
-	:ngayThuThap "2026-09-13"^^xsd:date ;
-	a :Nguon ;
-	rdfs:label "Thông báo nộp hồ sơ chính sách HKI 2026-2027"@vi .
 :NguonTieuChuanXetHocBongKhuyenKhichHocTap :duongDan "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -1256,6 +1249,12 @@
 :TDNguon1619PhanCanCu :thuocNguon :Nguon1619 ;
 	:toaDo "phần căn cứ"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonCongThongTinSinhVienThongBaoDongTienBhytBhttSinhVienNamHoc20262027 :thuocNguon :NguonCongThongTinSinhVien ;
+	:toaDo "thông báo Đóng tiền BHYT, BHTT sinh viên năm học 2026-2027"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonCongThongTinSinhVienThongBaoNopHoSoChinhSachHki20262027 :thuocNguon :NguonCongThongTinSinhVien ;
+	:toaDo "thông báo nộp hồ sơ chính sách HKI 2026-2027"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonDangKyGiayXacNhanVayVonOnlineToanMuc :thuocNguon :NguonDangKyGiayXacNhanVayVonOnline ;
 	:toaDo "toàn mục"@vi ;
 	a :DiaChiTrichDan .
@@ -1282,12 +1281,6 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "ghi chú bước 1"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027ToanThongBao :thuocNguon :NguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027 ;
-	:toaDo "toàn thông báo"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonThongBaoNopHoSoChinhSachHkI20262027ToanThongBao :thuocNguon :NguonThongBaoNopHoSoChinhSachHkI20262027 ;
-	:toaDo "toàn thông báo"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 18"@vi ;
@@ -1544,7 +1537,7 @@
 	skos:altLabel "Trung tâm GDQP-AN"@vi .
 :TrungTamHoTroViecLamVaKhoiNghiep a :ChuThe ;
 	rdfs:label "Trung tâm Hỗ trợ việc làm và Khởi nghiệp"@vi ;
-	skos:altLabel "Trung tâm việc làm"@vi .
+	skos:altLabel "Trung tâm việc làm"@vi , "Trung tâm Đổi mới sáng tạo"@vi .
 :TrungTamThiNghiemThucHanh a :ChuThe ;
 	rdfs:label "Trung tâm Thí nghiệm thực hành"@vi .
 :TrungTamThongTinVaTuLieu a :ChuThe ;
@@ -2446,6 +2439,16 @@
 :TDNguon1619PhanCanCu {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
+:TDNguonCongThongTinSinhVienThongBaoDongTienBhytBhttSinhVienNamHoc20262027 {
+	:ThuTucDongBaoHiemYTeBaoHiemThanThe :doAiThucHien :SinhVien ;
+		:noiDung "Sinh viên nghiêm chỉnh thực hiện việc đóng BHYT bắt buộc theo đúng thời gian quy định trong thông báo. Sinh viên có nhu cầu tham gia Bảo hiểm thân thể (tự nguyện) đóng tiền tại Phòng CTSV, mức phí 150.000đ/1 năm."@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
+}
+:TDNguonCongThongTinSinhVienThongBaoNopHoSoChinhSachHki20262027 {
+	:ThuTucNopHoSoCheDoChinhSach :doAiThucHien :SinhVien ;
+		:noiDung "Học kỳ I năm học 2026-2027: hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật nộp đến hết ngày 21/09/2026; hồ sơ trợ cấp xã hội nộp đến hết ngày 30/09/2026."@vi , "Phòng CTSV thông báo về việc nộp hồ sơ chế độ chính sách bao gồm: miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật và trợ cấp xã hội. Hồ sơ nộp trực tiếp tại P.CTSV - P.114."@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
+}
 :TDNguonDangKyGiayXacNhanVayVonOnlineToanMuc {
 	:ThuTucDangKyGiayXacNhanVayVon :doAiThucHien :SinhVien ;
 		:noiDung "Sau khi đăng ký online thành công, giấy xác nhận vay vốn sẽ được in từ phần mềm quản lý sinh viên theo Mẫu 01/TDSV. Sinh viên nhận lại bản cứng Giấy xác nhận vay vốn đã có ký tên và đóng dấu. Địa điểm nhận giấy: Phòng CTCTSV (P.114). Thời gian: 04 ngày sau khi đăng ký (không tính thứ Bảy và Chủ nhật)."@vi .
@@ -2485,15 +2488,6 @@
 	:ThuTucNghiHocTamThoi :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 	:ThuTucXinThoiHoc :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 }
-:TDNguonThongBaoDongTienBhytBhttSinhVienNamHoc20262027ToanThongBao {
-	:ThuTucDongBaoHiemYTeBaoHiemThanThe :doAiThucHien :SinhVien ;
-		:noiDung "Sinh viên nghiêm chỉnh thực hiện việc đóng BHYT bắt buộc theo đúng thời gian quy định trong thông báo. Sinh viên có nhu cầu tham gia Bảo hiểm thân thể (tự nguyện) đóng tiền tại Phòng CTSV, mức phí 150.000đ/1 năm."@vi .
-}
-:TDNguonThongBaoNopHoSoChinhSachHkI20262027ToanThongBao {
-	:ThuTucNopHoSoCheDoChinhSach :doAiThucHien :SinhVien ;
-		:noiDung "Học kỳ I năm học 2026-2027: hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật nộp đến hết ngày 21/09/2026; hồ sơ trợ cấp xã hội nộp đến hết ngày 30/09/2026."@vi , "Phòng CTSV thông báo về việc nộp hồ sơ chế độ chính sách bao gồm: miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật và trợ cấp xã hội. Hồ sơ nộp trực tiếp tại P.CTSV - P.114."@vi ;
-		:nopTai :PhongCongTacChinhTriVaSinhVien .
-}
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 {
 	:MucTaiDonXacNhanDangHoc :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/18_%20XAC%20NHAN%20SVDHNT.doc" ;
 		:noiDung "Đơn xác nhận đang học: mục 18 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
@@ -2522,6 +2516,11 @@
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tòa nhà A3, 02 Nguyễn Đình Chiểu, Trường đại học Nha Trang" ;
 		:websiteDonVi "https://trungtamdtbd.ntu.edu.vn" .
+	:TrungTamHoTroViecLamVaKhoiNghiep :dienThoai "02586280441" ;
+		:hopThu "ttdmst@ntu.edu.vn" ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tầng 2, tòa nhà A3, 02 Nguyễn Đình Chiểu" ;
+		:websiteDonVi "https://trungtamdmst.ntu.edu.vn" .
 	:TrungTamThongTinVaTuLieu :diaChi "02 Nguyễn Đình Chiểu, Nha Trang, Khánh Hoà" ;
 		:dienThoai "02582471443" ;
 		:hopThu "tv@ntu.edu.vn" ;
@@ -2559,7 +2558,7 @@
 	:ThuTucXinHoanThi :nopTai :PhongDaoTaoDaiHoc .
 }
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc3CacDonViChucNang {
-	:PhongKeHoachTaiChinh :noiDung "Phòng Kế hoạch - Tài chính: Đóng học phí, đóng bảo hiểm y tế, bảo hiểm thân thể, lĩnh tiền học bổng."@vi .
+	:PhongKeHoachTaiChinh :noiDung "Phòng Kế hoạch - Tài chính: Đóng học phí, lĩnh tiền học bổng."@vi .
 }
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc4CacDonViChucNang {
 	:PhongKhoaHocCongNghe :noiDung "Phòng Khoa học công nghệ: Sinh viên muốn tham gia nghiên cứu khoa học."@vi .
