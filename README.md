@@ -2,7 +2,8 @@
 
 Đây là nguyên mẫu nghiên cứu về hỏi đáp học vụ tiếng Việt tại Trường Đại học Nha
 Trang. Người dùng đặt câu hỏi tự nhiên; mô hình ngôn ngữ lớn (LLM) rút từ khoá,
-gọi một công cụ tìm kiếm trên ontology, rồi viết câu trả lời chỉ từ những dữ kiện
+gọi một công cụ tìm kiếm trên **ontology** — kho dữ kiện dạng đồ thị, trong đó mỗi câu
+được gắn đúng chỗ của văn bản đã nói ra nó — rồi viết câu trả lời chỉ từ những dữ kiện
 công cụ trả về, kèm trích dẫn và đường dẫn tới văn bản gốc.
 
 Nguyên tắc cốt lõi là **LLM không phải nơi lưu quy định**. Nội dung học vụ phải
@@ -39,10 +40,10 @@ ba yêu cầu:
 
 Phạm vi nhắm tới gồm quy tắc đào tạo, thủ tục học vụ, biểu mẫu, học bổng, rèn luyện
 và kỷ luật, chứng chỉ, ngành, chuyên ngành, chương trình đào tạo và các đơn vị phục
-vụ sinh viên; dữ liệu hiện có phủ một phần phạm vi này (mục 5.7).
-Những dữ liệu phụ thuộc từng người hoặc từng đợt, như điểm của một
-sinh viên, học phí của một tài khoản hay điểm chuẩn, không được lưu thành một con số
-chung; hệ thống chỉ người dùng đến nơi tra cứu chính thức.
+vụ sinh viên; dữ liệu hiện có phủ một phần phạm vi này (mục 5.7). Những dữ liệu phụ
+thuộc từng người hoặc từng đợt, như điểm của một sinh viên, học phí của một tài khoản
+hay điểm chuẩn, không được lưu thành một con số chung; hệ thống chỉ người dùng đến nơi
+tra cứu chính thức.
 
 Nghiên cứu trả lời ba câu hỏi:
 
@@ -64,6 +65,8 @@ Vài tên gọi cần biết trước:
 | **Công cụ** (*tool*) | một hàm mà LLM được phép yêu cầu gọi; LLM gửi tham số, hệ thống chạy hàm rồi đưa kết quả lại cho LLM |
 | **Agent** | vòng lặp điều phối: gửi hội thoại cho LLM, chạy công cụ khi LLM yêu cầu, lặp lại tới khi LLM viết xong câu trả lời |
 | **Ontology** | kho dữ kiện dạng đồ thị: các mục nối với nhau bằng quan hệ có tên, mỗi câu kèm nguồn (mục 5) |
+| **Dòng chỉ mục** | một dòng chữ dựng sẵn từ ontology để so khớp với từ khoá; cách dựng ở mục 6.1 |
+| **JSON** | định dạng văn bản ghi dữ liệu thành các cặp tên - giá trị; mọi dữ liệu trao đổi giữa các thành phần đều ở dạng này |
 | **API** | điểm nhận yêu cầu qua HTTP của máy chủ |
 | **SSE** (*server-sent events*) | cách máy chủ đẩy từng sự kiện nhỏ về trình duyệt trong lúc đang xử lý, để người dùng thấy câu trả lời hiện dần |
 
@@ -125,8 +128,8 @@ nó, không phải khẳng định thông tin đó không tồn tại ngoài th�
 
 ## 4. Dữ liệu trông như thế nào ở từng bước?
 
-**JSON** là định dạng văn bản ghi dữ liệu thành các cặp tên - giá trị. Sơ đồ sau đi
-theo đúng lượt hỏi ở mục 3, từ câu hỏi tới câu trả lời, chỉ rút gọn phần dài.
+Sơ đồ sau đi theo đúng lượt hỏi ở mục 3, từ câu hỏi tới câu trả lời, chỉ rút gọn phần
+dài.
 
 ![Hình dạng dữ liệu từng bước](docs/images/hinh-dang-du-lieu.png)
 
@@ -231,6 +234,17 @@ chỉ phát biểu đó đổi túi hoặc được thay, các phát biểu khá
     :loaiNguon :QuyChe ;
     :duongDan "https://pdtdaihoc.ntu.edu.vn/…pdf"^^xsd:anyURI .
 ```
+
+Các ký hiệu của TriG dùng trong đoạn:
+
+| Ký hiệu | Nghĩa |
+|---|---|
+| `a` | "là một": khai báo mục thuộc lớp nào |
+| `;` `,` `.` | dấu `;` nối phát biểu tiếp theo cùng chủ ngữ, `,` nối giá trị tiếp theo cùng quan hệ, `.` kết thúc |
+| `{ … }` | khối bao các phát biểu thuộc cùng một túi trích dẫn |
+| `@vi` | chuỗi đứng trước là tiếng Việt |
+| `^^xsd:date` | giá trị đứng trước là một ngày |
+| `rdfs:` `skos:` `xsd:` | tiền tố của ba bộ từ vựng chuẩn: RDFS cho nhãn, SKOS cho tên gọi khác, XSD cho kiểu dữ liệu |
 
 Cách đọc đoạn này:
 
@@ -481,9 +495,9 @@ JSON ở mục 4. Mục "Thủ tục nghỉ học tạm thời" ở ví dụ có
 
 ### 6.7 Chi phí
 
-Trên một máy tính cá nhân, nạp tệp TriG và dựng chỉ mục mất khoảng 50 ms. Một lần tìm,
-kể cả đọc hồ sơ 3 mục, có trung vị 0,57 ms và p95 1,0 ms đo trên các từ khoá của bộ kiểm
-ở mục 8.1. Chỉ mục dựng lại trong bộ nhớ mỗi khi ontology thay đổi, nên không
+Trên một máy tính cá nhân, nạp tệp TriG và dựng chỉ mục mất khoảng 45 ms. Một lần tìm,
+kể cả đọc hồ sơ 3 mục, có trung vị 0,41 ms và p95 0,68 ms — `p95` là ngưỡng mà 95% lần
+chạy không vượt quá — đo trên các từ khoá của bộ kiểm ở mục 8.1. Chỉ mục dựng lại trong bộ nhớ mỗi khi ontology thay đổi, nên không
 có tệp chỉ mục nào phải giữ đồng bộ.
 
 ## 7. Dữ liệu được cập nhật thế nào?
@@ -494,8 +508,8 @@ cần biết TriG hay SHACL.
 
 Form của mỗi loại mục được sinh ra từ chính lược đồ: ô bắt buộc có dấu `*`, ô trỏ tới
 loại khác hiện thành danh sách chọn, ô phải gắn nguồn có thêm chỗ chọn văn bản và ghi
-vị trí trong văn bản đó. Vì form và bước kiểm tra cùng đọc một lược đồ, chúng không thể
-nói hai điều khác nhau.
+vị trí trong văn bản đó. Form và bước kiểm tra cùng đọc một lược đồ, nên ràng buộc hiện trên màn hình và ràng
+buộc chặn lúc ghi luôn lấy từ một nguồn khai báo duy nhất.
 
 ![Trang quản trị đang sửa thủ tục nghỉ học tạm thời](docs/images/quan-tri-sua-muc.png)
 
@@ -609,8 +623,8 @@ và có dữ liệu — được đánh dấu là đáng ngờ và đọc lại 
 
 ### 8.3 Kiểm tra tự động
 
-Ngoài hai bộ kiểm trên, mọi khẳng định về hành vi của hệ thống đều được một bộ test tự
-động kiểm lại mỗi lần sửa mã hoặc sửa dữ liệu: vòng agent và các đường API, cách tách từ
+Ngoài hai bộ kiểm trên, các khẳng định về hành vi của hệ thống đều nằm trong một bộ test
+tự động chạy được lại bất cứ lúc nào: vòng agent và các đường API, cách tách từ
 và xếp hạng của search engine, thao tác thêm sửa xoá của trang quản trị cùng các trường
 hợp phải bị từ chối, việc dữ liệu khớp lược đồ SHACL, việc các bảng khớp bản chép nguyên
 văn, và hành vi của giao diện trong trình duyệt.
@@ -670,7 +684,7 @@ câu hỏi thật.
 | Lượt không tra cứu, 7 lượt | 1,1 s | — | |
 | Một lần gọi công cụ, 78 lần | 3,2 ms | 6,9 ms | tìm, đọc hồ sơ và viết JSON |
 
-`p95` là ngưỡng mà 95% lượt không vượt quá. Thời gian toàn lượt gần như hoàn toàn nằm ở
+Thời gian toàn lượt gần như hoàn toàn nằm ở
 LLM và mạng; phần tra cứu chỉ vài mili giây. Trong các lượt có gọi công cụ, LLM gửi 2 từ
 khoá ở 41 lần, 3 từ khoá ở 25 lần, 1 từ khoá ở 11 lần và 4 từ khoá ở 1 lần.
 
@@ -683,8 +697,8 @@ Trong 58 câu có mục cần tra, 6 câu chưa đạt mức đúng:
   nói rõ nhu cầu, nhưng không trả lời được như bộ đánh giá mong đợi.
 - **Một câu bị hiểu lệch** ("quản lý thủy sản ra sao"): LLM lấy đúng ngành nhưng hiểu
   "ra sao" là hỏi cơ hội việc làm, rồi nói dữ liệu không có.
-- **Một câu rơi vào khoảng trống của dữ liệu** ("đăng ký đồ án tốt nghiệp liên hệ phòng nào"): dữ
-  liệu có thủ tục và mẫu đơn nhưng không có nơi nộp, và LLM nói đúng như vậy.
+- **Một câu rơi vào khoảng trống của dữ liệu** ("đăng ký đồ án tốt nghiệp liên hệ phòng
+  nào"): dữ liệu có thủ tục và mẫu đơn nhưng không có nơi nộp, và LLM nói đúng như vậy.
 - **Hai câu đúng một phần:** dữ liệu trả lời được một vế, vế còn lại không có.
 
 Không câu nào bị chấm sai hay lạc đề. Ở nhóm phải từ chối, kiểm tra cố định chỉ nhận ra
@@ -714,8 +728,9 @@ Khi dữ liệu không có điều được hỏi, giao diện hiện lời từ
 
 Trên bộ kiểm cố định, tìm kiếm theo từ khoá trên ontology đưa mục đúng vào 3 mục đầu ở
 48/49 câu, đứng đầu ở 43 câu. Trên 85 tình huống toàn hệ thống, mô hình chấm xếp đúng
-52/58 câu có mục cần tra, không có câu sai, và từ chối đúng 19/19 câu phải từ chối. Mỗi
-lượt mất trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
+52/58 câu có mục cần tra vào mức đúng; 4 câu còn lại bị từ chối và 2 câu đúng một phần,
+không câu nào rơi vào mức sai hay lạc đề. Nhóm phải từ chối đạt 19/19. Mỗi lượt mất
+trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
 
 Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên
 phần nội dung đã được biểu diễn. Chúng **không** chứng minh hệ thống bao quát toàn bộ
@@ -730,18 +745,18 @@ các cách tiếp cận chưa được đem so sánh.
   dẫn được dựng tự động khi đọc.
 - **Sửa dữ liệu có kiểm soát:** một lược đồ duy nhất vừa sinh form vừa chặn dữ liệu
   sai; dữ liệu mới có hiệu lực ngay ở lượt hỏi kế tiếp, không cần huấn luyện lại.
-- **Tra cứu minh bạch và rẻ:** thuật toán có một quy tắc xếp hạng, không có tham số
-  phải tinh chỉnh ngoài mặc định của BM25, chạy dưới một mili giây và giải thích được
-  bằng các dòng đã khớp.
+- **Tra cứu giải thích được và tốn ít tài nguyên:** thuật toán có một quy tắc xếp hạng,
+  không có tham số phải tinh chỉnh ngoài mặc định của BM25, chạy trong khoảng một mili
+  giây, và mỗi điểm số quy được về các dòng chỉ mục đã khớp.
 - **Tách được loại lỗi:** vì từ khoá và dữ kiện của mỗi lượt đều xem lại được, một câu
   trả lời sai quy được về đúng nguyên nhân: từ khoá chọn hỏng, dữ liệu còn thiếu, hay
   LLM diễn đạt sai từ dữ liệu đúng.
 
 ### 11.3 Hạn chế
 
-1. **Độ phủ của dữ liệu:** nội dung mới phủ một phần phạm vi
-   nêu ở mục 1, nên câu hỏi rơi vào phần chưa được biểu diễn sẽ nhận câu trả lời "không
-   có thông tin" dù quy định có tồn tại trong văn bản của trường. Kết quả ở mục 9 vì vậy
+1. **Độ phủ của dữ liệu:** nội dung mới phủ một phần phạm vi nêu ở mục 1, nên câu hỏi
+   rơi vào phần chưa được biểu diễn sẽ nhận câu trả lời "không có thông tin" dù quy định
+   có tồn tại trong văn bản của trường. Kết quả ở mục 9 vì vậy
    gắn với độ phủ này, không phải với toàn bộ phạm vi.
 2. **Tìm theo từ vựng:** engine chỉ khớp chữ. Cách gọi không có trong tên hay tên gọi
    khác của mục sẽ trượt, và chất lượng phụ thuộc vào từ khoá LLM viết.
@@ -756,8 +771,9 @@ các cách tiếp cận chưa được đem so sánh.
 7. **Trang quản trị:** bản triển khai hiện ghi vào tệp trong container nên thay đổi mất
    khi dịch vụ khởi động lại; chỉ có một khoá quản trị chung, không phân quyền, không
    lưu lịch sử sửa; mỗi lần ghi kiểm lại toàn bộ đồ thị nên chậm dần khi dữ liệu lớn lên.
-8. **Chưa đối chứng:** chưa so với cách tìm đoạn văn bản rồi đưa cho LLM (RAG) hay các
-   cách tiếp cận khác trên cùng bộ câu hỏi.
+8. **Chưa đối chứng:** chưa so với **RAG** (*retrieval-augmented generation*) — cách cắt
+   văn bản gốc thành đoạn, tìm đoạn gần nghĩa rồi đưa cho LLM — hay các cách tiếp cận
+   khác trên cùng bộ câu hỏi.
 
 ## 12. Hướng cải tiến
 
@@ -823,6 +839,21 @@ Các biến tuỳ chọn: `ONTCHATBOT_LLM_BASE_URL` (mặc định `https://ligh
 `ONTCHATBOT_TURN_SLOTS`, `ONTCHATBOT_TURN_QUEUE`, `ONTCHATBOT_CORS_ORIGINS`. Khi triển
 khai giao diện trên Vercel, proxy đọc `CLOUD_RUN_SERVICE_URL` và `BACKEND_API_TOKEN`
 để khoá dịch vụ không bao giờ nằm trong trình duyệt.
+
+### 13.3 Tài liệu tham khảo
+
+- Robertson, S. và Zaragoza, H. (2009). *The Probabilistic Relevance Framework: BM25 and
+  Beyond.* Foundations and Trends in Information Retrieval, 3(4), 333–389. — công thức
+  xếp hạng dùng ở mục 6.3.
+- W3C (2014). *RDF 1.1 TriG.* https://www.w3.org/TR/trig/ — định dạng ghi bốn vế ở mục 5.2.
+- W3C (2014). *RDF 1.1 Concepts and Abstract Syntax.* https://www.w3.org/TR/rdf11-concepts/
+  — phát biểu ba vế, IRI và named graph.
+- W3C (2017). *Shapes Constraint Language (SHACL).* https://www.w3.org/TR/shacl/ — ngôn
+  ngữ ràng buộc dùng ở mục 5.5.
+- W3C (2009). *SKOS Simple Knowledge Organization System Reference.*
+  https://www.w3.org/TR/skos-reference/ — `skos:altLabel` cho tên gọi khác.
+- Lù, X. H. (2024). *BM25S: Orders of magnitude faster lexical search via eager sparse
+  scoring.* https://github.com/xhluca/bm25s — thư viện cài đặt BM25 mà dịch vụ dùng.
 
 Khi tài liệu mâu thuẫn với dữ liệu máy đọc được, số liệu phải được tính lại từ phiên
 bản dữ liệu tương ứng. Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính
