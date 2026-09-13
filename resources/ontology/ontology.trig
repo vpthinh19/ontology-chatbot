@@ -84,6 +84,7 @@
 :ChungChiNgoaiNgu rdfs:label "Chứng chỉ ngoại ngữ"@vi .
 :ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
 :Chuong rdfs:label "Chương"@vi .
+:CoSoVatChat rdfs:label "Cơ sở vật chất"@vi .
 :CoVanHocTap :loaiChuThe :ChuTheThamGia ;
 	a :ChuThe ;
 	rdfs:label "Cố vấn học tập"@vi ;
@@ -100,7 +101,7 @@
 	rdfs:label "Công nghệ thực phẩm"@vi .
 :CongThongTinSinhVien a :HeThongTrucTuyen ;
 	rdfs:label "Cổng thông tin sinh viên"@vi ;
-	skos:altLabel "cổng thông tin sinh viên"@vi , "sinhvien.ntu.edu.vn"@vi , "thông tin cá nhân sinh viên"@vi , "tra cứu học phí"@vi , "trang sinh viên"@vi , "xem học phí của mình"@vi , "xem điểm"@vi .
+	skos:altLabel "cổng sinh viên"@vi , "cổng thông tin sinh viên"@vi , "portal sinh viên"@vi , "sinhvien.ntu.edu.vn"@vi , "thông tin cá nhân sinh viên"@vi , "tra cứu học phí"@vi , "trang sinh viên"@vi , "xem học phí của mình"@vi , "xem điểm"@vi .
 :DamBaoChatLuongVaAnToanThucPham a :NganhDaoTao ;
 	rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 :DanhGiaCuoiKy a :KhaiNiem ;
@@ -165,6 +166,9 @@
 :DuocDieuDongVaoLucLuongVuTrang a :TruongHopApDung ;
 	rdfs:label "Được điều động vào lực lượng vũ trang"@vi ;
 	skos:altLabel "lực lượng vũ trang"@vi , "nghĩa vụ quân sự"@vi , "nhập ngũ"@vi , "đi bộ đội"@vi .
+:EmailSinhVien a :HeThongTrucTuyen ;
+	rdfs:label "Email sinh viên"@vi ;
+	skos:altLabel "email ntu.edu.vn"@vi , "mail sinh viên"@vi , "thư điện tử sinh viên"@vi .
 :GiangVienGiangDayHocPhan :loaiChuThe :ChuTheThamGia ;
 	a :ChuThe ;
 	rdfs:label "Giảng viên giảng dạy học phần"@vi ;
@@ -263,7 +267,7 @@
 	rdfs:label "Khai thác thủy sản"@vi .
 :KhoaHoacVienDaoTao a :ChuThe ;
 	rdfs:label "Khoa hoặc viện đào tạo"@vi ;
-	skos:altLabel "khoa viện"@vi , "khoa"@vi , "viện đào tạo"@vi .
+	skos:altLabel "khoa quản lý ngành"@vi , "khoa viện"@vi , "khoa"@vi , "viện đào tạo"@vi , "đơn vị quản lý ngành"@vi .
 :KhoaHocHangHai a :NganhDaoTao ;
 	rdfs:label "Khoa học hàng hải"@vi .
 :KhoaHocMayTinh a :NganhDaoTao ;
@@ -327,6 +331,9 @@
 	rdfs:label "Kỹ thuật xây dựng"@vi .
 :KyThuatXayDungCongTrinhGiaoThong a :NganhDaoTao ;
 	rdfs:label "Kỹ thuật xây dựng công trình giao thông"@vi .
+:KyTucXa a :KhaiNiem ;
+	rdfs:label "Ký túc xá"@vi ;
+	skos:altLabel "KTX"@vi , "chỗ ở nội trú"@vi , "ký túc xá sinh viên"@vi .
 :Linguaskill a :ChungChi ;
 	rdfs:label "Linguaskill"@vi ;
 	skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi , "chứng chỉ tiếng Anh"@vi , "tiếng Anh"@vi .
@@ -528,11 +535,28 @@
 	a :Nguon ;
 	rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang năm 2021"@vi .
 :Nguon rdfs:label "Nguồn"@vi .
+:NguonDangKyGiayXacNhanVayVonOnline :banHanhNgay "2024-01-09"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Đăng ký giấy xác nhận vay vốn online"@vi .
 :NguonDanhMucBieuMauDaoTaoDaiHoc :duongDan "https://pdtdaihoc.ntu.edu.vn/van-ban-phap-quy"^^xsd:anyURI ;
 	:loaiNguon :DanhMucBieuMau ;
 	:ngayThuThap "2026-07-30"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Danh mục biểu mẫu đào tạo đại học"@vi .
+:NguonHuongDanDangNhapWebsiteSinhVienElearningThuVien :duongDan "https://phongcntt.ntu.edu.vn/uploads/4/files/2.DangNhap.pdf"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Hướng dẫn đăng nhập website Sinh viên, Elearning, Thư viện"@vi .
+:NguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVien :banHanhNgay "2024-10-11"^^xsd:date ;
+	:duongDan "https://phongcntt.ntu.edu.vn/thong-bao/huong-dan-dang-nhap-website-sinh-vien-va-su-dung-email-sinh-vien"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Hướng dẫn đăng nhập website sinh viên và sử dụng Email sinh viên"@vi .
 :NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank :duongDan "https://daotao.ntu.edu.vn/DongHocPhi_VCB_2021.pdf"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -560,11 +584,36 @@
 	:ngayThuThap "2026-08-10"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Tiêu chuẩn xét học bổng khuyến khích học tập"@vi .
+:NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien :duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/bieu-mau"^^xsd:anyURI ;
+	:loaiNguon :DanhMucBieuMau ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Biểu mẫu - Phòng Công tác Chính trị và Sinh viên"@vi .
+:NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh :duongDan "https://phongkhtc.ntu.edu.vn/gioi-thieu/chuc-nang-nhiem-vu"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Chức năng - Nhiệm vụ của phòng Kế hoạch tài chính"@vi .
+:NguonTrangChucNangNhiemVuPhongCongTacSinhVien :duongDan "https://phongctsv.ntu.edu.vn/gioi-thieu/chuc-nang-nhiem-vu"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Chức năng nhiệm vụ - Phòng Công tác Sinh viên"@vi .
+:NguonTrangCoCauToChucKhoiDichVuUngDungKhcnVaPhucVu :duongDan "https://ntu.edu.vn/co-cau-to-chuc/khoi-dich-vu-ung-dung-khcn-va-phuc-vu"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Cơ cấu tổ chức - Khối dịch vụ, ứng dụng KHCN và phục vụ"@vi .
 :NguonTrangCoCauToChucKhoiThamMuuQuanLy :duongDan "https://ntu.edu.vn/co-cau-to-chuc/khoi-tham-muu-quan-ly"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-14"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang Cơ cấu tổ chức - Khối tham mưu, quản lý"@vi .
+:NguonTrangCoSoVatChatTruongDaiHocNhaTrang :duongDan "https://ntu.edu.vn/gioi-thieu/co-so-vat-chat"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-13"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Cơ sở vật chất Trường Đại học Nha Trang"@vi .
 :NguonTrangLienHeTruongDaiHocNhaTrang :duongDan "https://ntu.edu.vn/lien-he"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -586,12 +635,27 @@
 	rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi .
 :PhiVnpayDoiVoiNganHangKhac a :MucTien ;
 	rdfs:label "Phí VNPAY đối với ngân hàng khác"@vi .
+:PhongBaoDamChatLuongVaKhaoThi a :ChuThe ;
+	rdfs:label "Phòng Bảo đảm Chất lượng và Khảo thí"@vi ;
+	skos:altLabel "Phòng Quản lý chất lượng"@vi , "Phòng Đảm bảo chất lượng và Khảo thí"@vi .
 :PhongCongTacChinhTriVaSinhVien a :ChuThe ;
 	rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
 	skos:altLabel "phòng CTCT&SV"@vi , "phòng CTSV"@vi , "phòng công tác chính trị và sinh viên"@vi , "phòng công tác sinh viên"@vi .
 :PhongDaoTaoDaiHoc a :ChuThe ;
 	rdfs:label "Phòng Đào tạo Đại học"@vi ;
 	skos:altLabel "phòng ĐT"@vi , "phòng đào tạo đại học"@vi , "phòng đào tạo"@vi , "đơn vị quản lý đào tạo"@vi .
+:PhongHaTangVaCongNgheThongTin a :ChuThe ;
+	rdfs:label "Phòng Hạ tầng và Công nghệ Thông tin"@vi ;
+	skos:altLabel "Phòng CNTT"@vi , "phòng IT"@vi .
+:PhongHopTacQuocTe a :ChuThe ;
+	rdfs:label "Phòng Hợp tác quốc tế"@vi ;
+	skos:altLabel "Phòng Hợp tác đối ngoại"@vi .
+:PhongKeHoachTaiChinh a :ChuThe ;
+	rdfs:label "Phòng Kế hoạch - Tài chính"@vi ;
+	skos:altLabel "Phòng KHTC"@vi , "Phòng Kế hoạch Tài chính"@vi , "Phòng Tài chính"@vi , "phòng học phí"@vi .
+:PhongKhoaHocCongNghe a :ChuThe ;
+	rdfs:label "Phòng Khoa học công nghệ"@vi ;
+	skos:altLabel "Phòng Khoa học và Công nghệ"@vi .
 :PhuLuc rdfs:label "Phụ lục"@vi .
 :PhuongThucDongHocPhi rdfs:label "Phương thức đóng học phí"@vi .
 :PhuongThucToChucDaoTaoTheoTinChi :loaiKhaiNiem :KhaiNiemHocVu ;
@@ -1094,6 +1158,18 @@
 :TDNguon1619PhanCanCu :thuocNguon :Nguon1619 ;
 	:toaDo "phần căn cứ"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonDangKyGiayXacNhanVayVonOnlineToanMuc :thuocNguon :NguonDangKyGiayXacNhanVayVonOnline ;
+	:toaDo "toàn mục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonHuongDanDangNhapWebsiteSinhVienElearningThuVienPhanDangNhap :thuocNguon :NguonHuongDanDangNhapWebsiteSinhVienElearningThuVien ;
+	:toaDo "phần đăng nhập"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVienGachDauDong2 :thuocNguon :NguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVien ;
+	:toaDo "gạch đầu dòng 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVienGhiChu :thuocNguon :NguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVien ;
+	:toaDo "ghi chú"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 :thuocNguon :NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank ;
 	:toaDo "bước 1"@vi ;
 	a :DiaChiTrichDan .
@@ -1109,11 +1185,50 @@
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "ghi chú bước 1"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan :thuocNguon :NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh ;
+	:toaDo "điểm a mục 1 Công tác tài chính và kế toán"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangChucNangNhiemVuPhongCongTacSinhVienMucIChucNangNhiemVu :thuocNguon :NguonTrangChucNangNhiemVuPhongCongTacSinhVien ;
+	:toaDo "mục I Chức năng, nhiệm vụ"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangCoCauToChucKhoiDichVuUngDungKhcnVaPhucVuDanhSachDonViTren :thuocNguon :NguonTrangCoCauToChucKhoiDichVuUngDungKhcnVaPhucVu ;
+	:toaDo "danh sách đơn vị trên"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangCoSoVatChatTruongDaiHocNhaTrangMuc4HeThongKyTucXa :thuocNguon :NguonTrangCoSoVatChatTruongDaiHocNhaTrang ;
+	:toaDo "mục 4 Hệ thống ký túc xá"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc10CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 10 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc1CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
 	:toaDo "mục 1 Các đơn vị chức năng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc2CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
 	:toaDo "mục 2 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc3CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 3 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc4CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 4 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc5CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 5 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc6CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 6 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc7CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 7 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc8CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 8 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc9CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
+	:toaDo "mục 9 Các đơn vị chức năng"@vi ;
 	a :DiaChiTrichDan .
 :TDOrganizationStructureListing :thuocNguon :NguonTrangCoCauToChucKhoiThamMuuQuanLy ;
 	:toaDo "danh sách đơn vị trên"@vi ;
@@ -1202,6 +1317,9 @@
 :ThuTucDangKyChuongTrinhTraoDoiSinhVien a :ThuTucHocVu ;
 	rdfs:label "Thủ tục đăng ký chương trình trao đổi sinh viên"@vi ;
 	skos:altLabel "chương trình trao đổi"@vi , "học ở trường đối tác"@vi , "trao đổi sinh viên"@vi , "đi trao đổi"@vi .
+:ThuTucDangKyGiayXacNhanVayVon a :ThuTucHocVu ;
+	rdfs:label "Thủ tục đăng ký giấy xác nhận vay vốn"@vi ;
+	skos:altLabel "giấy xác nhận vay vốn"@vi , "vay vốn sinh viên"@vi , "xác nhận vay vốn"@vi .
 :ThuTucDangKyHocCaiThienDiem a :ThuTucHocVu ;
 	rdfs:label "Thủ tục đăng ký học cải thiện điểm"@vi ;
 	skos:altLabel "cải thiện điểm"@vi , "học cải thiện điểm"@vi , "học cải thiện"@vi , "đăng ký cải thiện điểm"@vi .
@@ -1227,12 +1345,18 @@
 	rdfs:label "Thủ tục học liên thông"@vi ;
 	skos:altLabel "học liên thông"@vi , "học lên đại học"@vi , "liên thông lên đại học"@vi , "liên thông"@vi .
 :ThuTucHocVu rdfs:label "Thủ tục học vụ"@vi .
+:ThuTucInTheSinhVien a :ThuTucHocVu ;
+	rdfs:label "Thủ tục in thẻ sinh viên"@vi ;
+	skos:altLabel "cấp thẻ sinh viên"@vi , "làm thẻ sinh viên"@vi , "thẻ sinh viên"@vi .
 :ThuTucNghiHocTamThoi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
 	skos:altLabel "bảo lưu kết quả học tập"@vi , "bảo lưu kết quả"@vi , "nghỉ học tạm thời"@vi , "tạm dừng học"@vi , "tạm nghỉ học"@vi .
 :ThuTucNopHocPhi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nộp học phí"@vi ;
 	skos:altLabel "nộp học phí"@vi , "nộp tiền học"@vi , "thanh toán học phí"@vi , "đóng học phí"@vi , "đóng tiền học"@vi .
+:ThuTucPhucKhaoBaiThi a :ThuTucHocVu ;
+	rdfs:label "Thủ tục phúc khảo bài thi"@vi ;
+	skos:altLabel "chấm lại bài thi"@vi , "phúc khảo"@vi , "xin phúc khảo"@vi .
 :ThuTucRutBotHocPhanDaDangKy a :ThuTucHocVu ;
 	rdfs:label "Thủ tục rút bớt học phần đã đăng ký"@vi ;
 	skos:altLabel "hủy học phần đã đăng ký"@vi , "rút bớt học phần"@vi , "rút học phần đã đăng ký"@vi , "xin rút bớt học phần"@vi .
@@ -1245,6 +1369,9 @@
 :ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học"@vi ;
 	skos:altLabel "chuyển hình thức đào tạo khi bị buộc thôi học"@vi , "chuyển sang vừa làm vừa học"@vi , "xin chuyển chương trình đào tạo"@vi .
+:ThuTucXinGiayXacNhanDangHoc a :ThuTucHocVu ;
+	rdfs:label "Thủ tục xin giấy xác nhận đang học"@vi ;
+	skos:altLabel "giấy chứng nhận sinh viên"@vi , "giấy xác nhận sinh viên"@vi , "giấy xác nhận đang học"@vi .
 :ThuTucXinHoanThi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xin hoãn thi"@vi ;
 	skos:altLabel "hoãn thi"@vi , "lùi lịch thi"@vi , "thi sau"@vi , "xin hoãn thi"@vi , "xin thi đợt sau"@vi .
@@ -1285,6 +1412,19 @@
 :TrinhDoDaiHoc a :DanhMuc ;
 	rdfs:label "Trình độ đại học"@vi .
 :TrinhDoDaoTao rdfs:label "Trình độ đào tạo"@vi .
+:TrungTamDaoTaoVaBoiDuong a :ChuThe ;
+	rdfs:label "Trung tâm Đào tạo và Bồi dưỡng"@vi .
+:TrungTamGiaoDucQuocPhongVaAnNinh a :ChuThe ;
+	rdfs:label "Trung tâm Giáo dục quốc phòng và An ninh"@vi ;
+	skos:altLabel "Trung tâm GDQP-AN"@vi .
+:TrungTamHoTroViecLamVaKhoiNghiep a :ChuThe ;
+	rdfs:label "Trung tâm Hỗ trợ việc làm và Khởi nghiệp"@vi ;
+	skos:altLabel "Trung tâm việc làm"@vi .
+:TrungTamThiNghiemThucHanh a :ChuThe ;
+	rdfs:label "Trung tâm Thí nghiệm thực hành"@vi .
+:TrungTamThongTinVaTuLieu a :ChuThe ;
+	rdfs:label "Trung tâm Thông tin và Tư liệu"@vi ;
+	skos:altLabel "Thư viện"@vi , "thư viện trường"@vi .
 :TruongDaiHocNhaTrang :loaiChuThe :ChuTheThamGia ;
 	a :ChuThe ;
 	rdfs:label "Trường Đại học Nha Trang"@vi .
@@ -2132,6 +2272,20 @@
 :TDNguon1619PhanCanCu {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
+:TDNguonDangKyGiayXacNhanVayVonOnlineToanMuc {
+	:ThuTucDangKyGiayXacNhanVayVon :doAiThucHien :SinhVien ;
+		:noiDung "Sau khi đăng ký online thành công, giấy xác nhận vay vốn sẽ được in từ phần mềm quản lý sinh viên theo Mẫu 01/TDSV. Sinh viên nhận lại bản cứng Giấy xác nhận vay vốn đã có ký tên và đóng dấu. Địa điểm nhận giấy: Phòng CTCTSV (P.114). Thời gian: 04 ngày sau khi đăng ký (không tính thứ Bảy và Chủ nhật)."@vi .
+}
+:TDNguonHuongDanDangNhapWebsiteSinhVienElearningThuVienPhanDangNhap {
+	:CongThongTinSinhVien :noiDung "Đăng nhập website Sinh viên, Elearning, Thư viện bằng mã số sinh viên và mật khẩu. Tài khoản: Mã số sinh viên được in trên giấy báo nhập học hoặc biên lai thu học phí. Mật khẩu: là số CCCD/CMND/NGAYSINH của sinh viên khi đăng ký xét tuyển vào Trường Đại học Nha Trang."@vi .
+}
+:TDNguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVienGachDauDong2 {
+	:EmailSinhVien :noiDung "Sau khi đăng nhập website, sinh viên chú ý vào mục \"Thông tin sinh viên\" để xem tên ngành học, tên lớp học và địa chỉ email tên miền ntu.edu.vn."@vi .
+}
+:TDNguonHuongDanDangNhapWebsiteSinhVienVaSuDungEmailSinhVienGhiChu {
+	:CongThongTinSinhVien :noiDung "Sinh viên được yêu cầu đổi mật khẩu, không sử dụng mật khẩu mặc định của nhà trường (cả 2 loại mật khẩu: mật khẩu email và mật khẩu website sinh viên)."@vi .
+	:EmailSinhVien :noiDung "Sinh viên được yêu cầu đổi mật khẩu, không sử dụng mật khẩu mặc định của nhà trường (cả 2 loại mật khẩu: mật khẩu email và mật khẩu website sinh viên)."@vi .
+}
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 {
 	:CongThongTinSinhVien :noiDung "Sinh viên đăng nhập vào trang https://sinhvien.ntu.edu.vn bằng tài khoản mã sinh viên (không vào trang https://qldt.ntu.edu.vn) và chọn ô Học phí."@vi .
 }
@@ -2157,18 +2311,89 @@
 	:ThuTucNghiHocTamThoi :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 	:ThuTucXinThoiHoc :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 }
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 {
+	:ThuTucXinGiayXacNhanDangHoc :noiDung "Danh mục biểu mẫu của Phòng Công tác Chính trị và Sinh viên có mục \"Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo\"."@vi .
+}
+:TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan {
+	:PhongKeHoachTaiChinh :noiDung "Tham mưu Hiệu trưởng ban hành và quản lý mức thu học phí, phí, giá dịch vụ giáo dục theo quy định."@vi .
+}
+:TDNguonTrangChucNangNhiemVuPhongCongTacSinhVienMucIChucNangNhiemVu {
+	:PhongCongTacChinhTriVaSinhVien :noiDung "Chức năng, nhiệm vụ: Quản lý hồ sơ học sinh sinh viên. Công tác chế độ, chính sách. Khen thưởng, kỉ luật và học vụ. Tổ chức lễ tốt nghiệp đại học chính quy, thạc sĩ, tiến sĩ; lễ khai giảng, bế giảng. Theo dõi tình hình ngoại trú, phối hợp với địa phương giải quyết các vấn đề liên quan đến sinh viên ngoại trú. Tiếp nhận, xử lý và giải đáp các thắc mắc của người học, phụ huynh và các bên liên quan."@vi .
+}
+:TDNguonTrangCoCauToChucKhoiDichVuUngDungKhcnVaPhucVuDanhSachDonViTren {
+	:TrungTamDaoTaoVaBoiDuong :dienThoai "02582220913" ;
+		:hopThu "ttdtbd@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tòa nhà A3, 02 Nguyễn Đình Chiểu, Trường đại học Nha Trang" ;
+		:websiteDonVi "https://trungtamdtbd.ntu.edu.vn" .
+	:TrungTamThongTinVaTuLieu :diaChi "02 Nguyễn Đình Chiểu, Nha Trang, Khánh Hoà" ;
+		:dienThoai "02582471443" ;
+		:hopThu "tv@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:websiteDonVi "https://thuvien.ntu.edu.vn" .
+}
+:TDNguonTrangCoSoVatChatTruongDaiHocNhaTrangMuc4HeThongKyTucXa {
+	:KyTucXa :loaiKhaiNiem :CoSoVatChat ;
+		:noiDung "Hệ thống Ký túc xá bao gồm 8 tòa nhà (K1-K8), được thiết kế xây dựng đặt trong Khuôn viên Trường. Nhà trường có 405 phòng ở nội trú với sức chứa hơn 2.682 chỗ. Có Ký túc xá Sau Đại học và Ký túc xá dành cho sinh viên xuất sắc; tất cả các ký túc xá đều được trang bị tốt và nằm bên trong khuôn viên chính."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc10CacDonViChucNang {
+	:KhoaHoacVienDaoTao :noiDung "Khoa - Viện: Sinh viên cần làm đơn phúc khảo bài thi: nộp đơn tại Khoa/Viện quản lý ngành học. Xin cấp giấy chứng nhận là sinh viên đang học tại trường, liên hệ thư ký văn phòng khoa/viện quản lý ngành học."@vi .
+	:ThuTucPhucKhaoBaiThi :doAiThucHien :SinhVien ;
+		:noiDung "Sinh viên cần làm đơn phúc khảo bài thi: nộp đơn tại Khoa/Viện quản lý ngành học."@vi ;
+		:nopTai :KhoaHoacVienDaoTao .
+	:ThuTucXinGiayXacNhanDangHoc :doAiThucHien :SinhVien ;
+		:noiDung "Xin cấp giấy chứng nhận là sinh viên đang học tại trường, liên hệ thư ký văn phòng khoa/viện quản lý ngành học."@vi ;
+		:nopTai :KhoaHoacVienDaoTao .
+}
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc1CacDonViChucNang {
+	:PhongCongTacChinhTriVaSinhVien :noiDung "Phòng Công tác Chính trị và sinh viên: Sinh viên cần bổ sung hồ sơ, in thẻ sinh viên, tạm dừng học tập, xin vào học lại, chuyển ngành, chuyển bậc, nộp hồ sơ xét học bổng chế độ chính sách xã hội, thắc mắc về học bổng khuyến khích học tập, khen thưởng, kỷ luật, đăng ký học thi bằng lái xe, mượn áo cử nhân chụp ảnh."@vi .
 	:ThuTucChuyenNganh :nopTai :PhongCongTacChinhTriVaSinhVien .
+	:ThuTucInTheSinhVien :doAiThucHien :SinhVien ;
+		:noiDung "Sinh viên cần in thẻ sinh viên liên hệ Phòng Công tác Chính trị và Sinh viên."@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
 	:ThuTucNghiHocTamThoi :nopTai :PhongCongTacChinhTriVaSinhVien .
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Sinh viên có thắc mắc về học bổng khuyến khích học tập liên hệ Phòng Công tác Chính trị và Sinh viên."@vi .
 	:ThuTucXinHocTroLai :nopTai :PhongCongTacChinhTriVaSinhVien .
 }
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc2CacDonViChucNang {
+	:PhongDaoTaoDaiHoc :noiDung "Phòng Đào tạo Đại học: Sinh viên cần đăng ký và hủy học phần, cần in bảng điểm, làm giấy hoãn thi, làm giấy vào thi do hoãn thi, làm đơn chuyển đổi mã học phần, nhận bằng tốt nghiệp, đăng ký mua hồ sơ học Văn bằng 2, học liên thông lên đại học hệ chính quy. Các thông tin liên quan đến công tác tuyển sinh."@vi .
 	:ThuTucHocLienThong :nopTai :PhongDaoTaoDaiHoc .
 	:ThuTucRutBotHocPhanDaDangKy :nopTai :PhongDaoTaoDaiHoc .
 	:ThuTucXinHoanThi :nopTai :PhongDaoTaoDaiHoc .
 }
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc3CacDonViChucNang {
+	:PhongKeHoachTaiChinh :noiDung "Phòng Kế hoạch - Tài chính: Đóng học phí, đóng bảo hiểm y tế, bảo hiểm thân thể, lĩnh tiền học bổng."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc4CacDonViChucNang {
+	:PhongKhoaHocCongNghe :noiDung "Phòng Khoa học công nghệ: Sinh viên muốn tham gia nghiên cứu khoa học."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc5CacDonViChucNang {
+	:PhongHopTacQuocTe :noiDung "Phòng Hợp tác quốc tế: Sinh viên muốn tìm thông tin du học, tham gia trao đổi sinh viên quốc tế."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc6CacDonViChucNang {
+	:PhongHaTangVaCongNgheThongTin :noiDung "Phòng Hạ tầng và Công nghệ Thông tin: Hỗ trợ các vấn đề liên quan đến tài khoản, thư điện thử của sinh viên."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc7CacDonViChucNang {
+	:TrungTamThiNghiemThucHanh :loaiChuThe :DonViTrongTruong ;
+		:noiDung "Trung tâm Thí nghiệm thực hành: Triển khai thí nghiệm, thực hành trong Trường."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc8CacDonViChucNang {
+	:TrungTamGiaoDucQuocPhongVaAnNinh :loaiChuThe :DonViTrongTruong ;
+		:noiDung "Trung tâm Giáo dục quốc phòng và An ninh: Đăng ký hay hủy học phần Giáo dục thể chất, Giáo dục quốc phòng – An ninh."@vi .
+}
+:TDNguonTrangLienHeTruongDaiHocNhaTrangMuc9CacDonViChucNang {
+	:TrungTamHoTroViecLamVaKhoiNghiep :loaiChuThe :DonViTrongTruong ;
+		:noiDung "Trung tâm Hỗ trợ việc làm và Khởi nghiệp: Sinh viên muốn học các lớp kỹ năng mềm, cần việc làm ngắn hạn, cần thông tin việc làm, thông tin tuyển dụng."@vi .
+}
 :TDOrganizationStructureListing {
+	:PhongBaoDamChatLuongVaKhaoThi :dienThoai "0934793435" ;
+		:hopThu "qlcl@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tầng 2, Tòa Nhà Hành chính" ;
+		:websiteDonVi "https://phongdbcl.ntu.edu.vn" .
 	:PhongCongTacChinhTriVaSinhVien :dienThoai "0258 222 1900" ;
 		:hopThu "ctsv@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
@@ -2181,6 +2406,30 @@
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
 		:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
+	:PhongHaTangVaCongNgheThongTin :dienThoai "02582461303" ;
+		:hopThu "htcntt@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Phòng 03, Tòa nhà A8, Trường Đại học Nha Trang" ;
+		:websiteDonVi "https://phongcntt.ntu.edu.vn" .
+	:PhongHopTacQuocTe :dienThoai "02582471303" ;
+		:hopThu "dea@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tầng 1, tòa nhà Hiệu bộ" ;
+		:websiteDonVi "https://phonghtdn.ntu.edu.vn" .
+	:PhongKeHoachTaiChinh :dienThoai "02583831150" ;
+		:hopThu "khtc@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tòa nhà A8, Trường Đại học Nha Trang" ;
+		:websiteDonVi "https://phongkhtc.ntu.edu.vn" .
+	:PhongKhoaHocCongNghe :dienThoai "02582220747" ;
+		:hopThu "khcn@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tầng 1, Khu nhà Hiệu Bộ" ;
+		:websiteDonVi "https://phongkhcn.ntu.edu.vn" .
 	:TruongDaiHocNhaTrang :diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
 		:dienThoai "0258 3831149" ;
 		:hopThu "dhnt@ntu.edu.vn" ;

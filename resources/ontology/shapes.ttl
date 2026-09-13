@@ -247,7 +247,7 @@
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
 		[ sh:path :loaiKhaiNiem ;
 		  sh:name "loại khái niệm"@vi ;
-		  sh:in ( :HinhThucDaoTao :HinhThucToChucDayHoc :KhaiNiemHocVu :LoaiHocKy :LoaiHocPhan :ThanhPhanDanhGiaHocPhan ) ;
+		  sh:in ( :CoSoVatChat :HinhThucDaoTao :HinhThucToChucDayHoc :KhaiNiemHocVu :LoaiHocKy :LoaiHocPhan :ThanhPhanDanhGiaHocPhan ) ;
 		  sh:minCount 1 ;
 		  sh:maxCount 1 ;
 		  :batBuocNguon false ] ,

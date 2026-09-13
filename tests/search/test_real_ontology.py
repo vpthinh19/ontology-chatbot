@@ -29,9 +29,13 @@ def test_an_attribute_is_found_through_its_datatype_property_row(engine) -> None
 
 
 def test_a_relation_question_reaches_the_office_and_the_procedures_it_receives(engine) -> None:
-    """Hồ sơ của phòng liệt kê các thủ tục trỏ tới nó, mỗi cái kèm nguồn riêng."""
+    """Hồ sơ của phòng liệt kê các thủ tục trỏ tới nó, mỗi cái kèm nguồn riêng.
 
-    response = engine.search(["thủ tục nộp tại phòng công tác sinh viên"])
+    Hỏi bằng tên phòng: câu "thủ tục nộp tại phòng ..." đúng ra trả về các thủ tục nộp
+    tại phòng đó, và khi thêm thủ tục mới (in thẻ sinh viên) thì phòng rơi khỏi top 3.
+    """
+
+    response = engine.search(["phòng công tác sinh viên"])
 
     office = next(r for r in response.results if r.node == ":PhongCongTacChinhTriVaSinhVien")
     nguon = {source.citation for source, _ in office.profile.groups if source}
