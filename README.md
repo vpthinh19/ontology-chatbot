@@ -91,14 +91,14 @@ luồng của một lượt hỏi, không phải quy trình xây dựng dữ li�
 
 ![Luồng một lượt hỏi](docs/images/luong-mot-luot-hoi.png)
 
-Với câu "em muốn xin nghỉ học", trình tự thật là:
+Với câu "em muốn xin nghỉ học", trình tự như sau:
 
 1. Giao diện gửi câu hỏi cùng tối đa 20 tin nhắn gần nhất tới API.
 2. API mở một lượt: gửi cho LLM lời hướng dẫn, hội thoại và mô tả của công cụ
    `lookup_academic_information`.
 3. LLM không trả lời ngay mà yêu cầu gọi công cụ với ba từ khoá: `nghỉ học tạm thời`,
-   `bảo lưu kết quả học tập` và `xin nghỉ học`. Đây là chỗ LLM có ích nhất: nó dịch lời
-   nói thường ngày sang đúng thuật ngữ của quy chế.
+   `bảo lưu kết quả học tập` và `xin nghỉ học`. Không từ khoá nào sao chép nguyên câu hỏi:
+   LLM chuyển lời nói thường ngày sang thuật ngữ mà quy chế dùng.
 4. API báo cho giao diện sự kiện `lookup_started`, rồi chạy công cụ.
 5. Search engine tìm các dòng chỉ mục khớp từ khoá, chọn 3 mục điểm cao nhất và
    đọc toàn bộ dữ kiện của từng mục, gom theo nguồn đã khẳng định chúng.
@@ -106,7 +106,7 @@ Với câu "em muốn xin nghỉ học", trình tự thật là:
 7. LLM viết câu trả lời chỉ từ JSON đó. Mỗi đoạn chữ vừa sinh ra được đẩy về giao
    diện qua sự kiện `text_delta`; cuối cùng là `completed`.
 
-Lượt hỏi thật này mất 3,28 giây, gọi công cụ một lần và sinh 212 sự kiện `text_delta`.
+Lượt hỏi này mất 3,28 giây, gọi công cụ một lần và sinh 212 sự kiện `text_delta`.
 
 Hệ thống từ chối theo ba cách:
 
@@ -130,8 +130,8 @@ theo đúng lượt hỏi ở mục 3, từ câu hỏi tới câu trả lời, c
 
 ![Hình dạng dữ liệu từng bước](docs/images/hinh-dang-du-lieu.png)
 
-Trong đó **kết quả công cụ** (bước 4) là phần quan trọng nhất, vì đó là tất cả những
-gì LLM được biết về quy định khi viết câu trả lời:
+Bước 4 — **kết quả công cụ** — là toàn bộ dữ liệu LLM có về quy định khi viết câu trả
+lời, nên các trường của nó quyết định LLM viết được gì:
 
 | Trường | Ý nghĩa |
 |---|---|
@@ -192,7 +192,7 @@ mọi phát biểu do cùng một chỗ của cùng một văn bản khẳng đ�
 và tên túi chính là **địa chỉ trích dẫn** trỏ về nguồn. **TriG** là định dạng văn bản
 ghi được cả bốn vế.
 
-Sơ đồ sau trả lời câu hỏi **"một thủ tục thật được ghi với nguồn như thế nào?"**.
+Sơ đồ sau trả lời câu hỏi **"một thủ tục được ghi kèm nguồn như thế nào?"**.
 Nó là cách tổ chức dữ liệu, không phải luồng chạy.
 
 ![Túi trích dẫn](docs/images/tui-trich-dan.png)
@@ -203,7 +203,7 @@ chỉ phát biểu đó đổi túi hoặc được thay, các phát biểu khá
 
 ### 5.3 Một thủ tục được biểu diễn ra sao?
 
-Đoạn sau rút gọn từ tệp thật, xếp lại cho dễ đọc:
+Đoạn sau rút gọn từ tệp ontology, xếp lại cho dễ đọc:
 
 ```trig
 :ThuTucNghiHocTamThoi a :ThuTucHocVu ;
@@ -336,7 +336,7 @@ mục 1, và kết quả ở đó gắn với đúng phần này.
 
 ### 5.8 Kiểm định ontology chứng minh được gì?
 
-Các phép kiểm tự động trên tệp thật xác nhận:
+Các phép kiểm tự động chạy trên toàn bộ tệp ontology xác nhận:
 
 - toàn bộ dữ liệu khớp lược đồ SHACL;
 - mọi ô bắt buộc gắn nguồn đều nằm trong túi;
@@ -351,36 +351,64 @@ mâu thuẫn với văn bản chính thức, văn bản chính thức được �
 
 ## 6. Công cụ tìm kiếm trên ontology hoạt động ra sao?
 
-Mục này trả lời một câu hỏi cụ thể: **LLM gửi vài từ khoá, làm sao hệ thống biết mục
-nào của ontology cần đưa lại?**
+Câu hỏi cần trả lời: **LLM gửi vài từ khoá, làm sao hệ thống biết mục nào của ontology
+cần đưa lại?**
 
-Sơ đồ sau dùng đúng ba từ khoá của lượt hỏi ở mục 3 và điểm số thật. Nó mô tả thuật
-toán, không phải luồng giữa các thành phần.
+Thuật toán gồm bốn bước: dựng chỉ mục từ ontology (6.1), tách từ (6.2), chấm điểm từng
+dòng (6.3), rồi cộng thành điểm của mục và lấy ba mục cao nhất (6.4–6.5).
 
-![Thuật toán tìm kiếm](docs/images/thuat-toan-tim-kiem.png)
+### 6.1 Từ phát biểu của ontology thành dòng chỉ mục
 
-### 6.1 Từ ontology đến chỉ mục
+**Chỉ mục** là danh sách các dòng chữ chuẩn bị sẵn để so khớp nhanh; **dòng chỉ mục** là
+đơn vị nhỏ nhất đem đi so khớp. Chỉ mục không phải một kho dữ liệu thứ hai: mỗi dòng sinh
+ra từ một loại phát biểu của ontology và mang theo định danh để quay về đúng mục đó.
 
-**Chỉ mục** là danh sách các dòng chữ được chuẩn bị sẵn để tìm nhanh. Khi dịch vụ
-khởi động, mỗi mục của tầng tri thức sinh ba loại dòng:
+Ontology có hai loại thuộc tính, và tên của ba loại dòng đặt theo chính chúng:
 
-| Loại dòng | Khuôn | Ví dụ |
+| Loại phát biểu trong ontology | Loại dòng sinh ra | Khuôn của dòng |
 |---|---|---|
-| Tên | tên chính và mỗi tên gọi khác | `bảo lưu kết quả học tập` |
-| Thuộc tính | `tên mục \| tên thuộc tính` | `Thủ tục nghỉ học tạm thời \| nội dung` |
-| Quan hệ | `tên mục \| tên quan hệ \| tên mục đích` | `Thủ tục nghỉ học tạm thời \| nộp tại \| Phòng Công tác Chính trị và Sinh viên` |
+| `rdfs:label`, `skos:altLabel` | `label` | chính tên đó, mỗi tên một dòng |
+| datatype property — trỏ tới chữ, số hoặc ngày (`:noiDung`) | `datatype_property` | `tên mục \| tên thuộc tính` |
+| object property — trỏ tới một mục khác (`:nopTai`) | `object_property` | `tên mục \| tên quan hệ \| tên mục đích` |
 
-Giá trị không vào chỉ mục: người ta hỏi "học phí ngành nào", không hỏi bằng con số.
-Giá trị đến tay LLM ở bước đọc hồ sơ. Tầng nguồn cũng không vào chỉ mục, và ba thuộc
-tính chỉ chứa đường dẫn hoặc hộp thư không sinh dòng. Số dòng chỉ mục vì thế lớn hơn số
-mục vài lần và tăng theo khối lượng dữ liệu.
+![Từ ontology đến dòng chỉ mục](docs/images/tu-ontology-den-chi-muc.png)
+
+Một dòng có hình dạng như sau. Chỉ `text` đem đi so khớp; ba trường còn lại để quay về
+ontology sau khi đã chọn được mục:
+
+```json
+{
+  "kind": "object_property",
+  "text": "Thủ tục nghỉ học tạm thời | nộp tại | Phòng Công tác Chính trị và Sinh viên",
+  "node": ":ThuTucNghiHocTamThoi",
+  "property": ":nopTai",
+  "target": ":PhongCongTacChinhTriVaSinhVien"
+}
+```
+
+Hai điều không vào chỉ mục. Thứ nhất là **giá trị** của datatype property: người dùng
+hỏi "học phí ngành nào", không hỏi bằng chính con số, nên dòng chỉ giữ tên thuộc tính;
+giá trị đến tay LLM ở bước đọc hồ sơ (6.6). Thứ hai là toàn bộ **tầng nguồn**: `Nguon`
+và `DiaChiTrichDan` dùng để dựng trích dẫn, không phải để tra. Ba thuộc tính chỉ chứa
+đường dẫn hoặc hộp thư cũng không sinh dòng.
 
 ### 6.2 Tách từ
 
 **Token** là đơn vị chữ nhỏ nhất đem đi so khớp. Cả dòng chỉ mục lẫn từ khoá đi qua
-cùng một bước tách: chuẩn hoá Unicode, chuyển chữ thường, tách theo âm tiết, bỏ 26 từ
-hỏi và hư từ như "là", "gì", "của", "được". Mỗi token chỉ tính một lần trong một dòng,
-vì dòng quan hệ hay lặp chữ ở hai đầu.
+cùng một bước tách: chuẩn hoá Unicode, chuyển chữ thường, tách theo âm tiết, bỏ 26 hư từ
+và từ hỏi như "là", "gì", "của", "và", "tại". Mỗi token chỉ tính một lần trong một dòng,
+vì dòng `object_property` hay lặp chữ ở hai đầu.
+
+```text
+dòng   "Thủ tục nghỉ học tạm thời | nộp tại | Phòng Công tác Chính trị và Sinh viên"
+     → [thủ, tục, nghỉ, học, tạm, thời, nộp, phòng, công, tác, chính, trị, sinh, viên]
+
+từ khoá "nghỉ học tạm thời"
+     → [nghỉ, học, tạm, thời]
+```
+
+Ở ví dụ trên, "tại" và "và" bị bỏ vì nằm trong danh sách hư từ, còn dấu `|` chỉ là ký
+hiệu ngăn cách nên không sinh token nào.
 
 Không có bước sửa lỗi gõ hay bung viết tắt: từ khoá do LLM viết lại đã đúng chính tả,
 còn tên viết tắt như "CNTT" được khai làm tên gọi khác của mục trong dữ liệu.
@@ -408,32 +436,47 @@ tham số mặc định của thư viện `bm25s`. Mỗi từ khoá lấy tối 
 
 ### 6.4 Gộp điểm dòng thành điểm mục
 
-Một mục có nhiều dòng, và LLM thường gửi 2-3 từ khoá cho cùng một câu hỏi. Quy tắc
-gộp chỉ có một:
+Đến đây mỗi *dòng* có điểm, nhưng thứ cần xếp hạng là *mục*. Một mục thường có hàng chục
+dòng, và LLM thường gửi 2–3 từ khoá cho cùng một câu hỏi. Quy tắc gộp chỉ có một:
 
-1. với từng từ khoá, mỗi mục chỉ giữ **dòng điểm cao nhất** của nó;
-2. điểm của mục là **tổng** các điểm đó qua các từ khoá.
+1. với từng từ khoá, mỗi mục chỉ giữ **dòng điểm cao nhất** của mục đó;
+2. điểm của mục là **tổng** các điểm vừa giữ, cộng qua các từ khoá.
 
-Ở ví dụ, "Thủ tục nghỉ học tạm thời" được 6,44 cho từ khoá "nghỉ học tạm thời", 10,43
-cho "bảo lưu kết quả học tập" và 2,74 cho "xin nghỉ học", tổng 19,61. Dòng 9,53 của
-cùng mục cho cùng từ khoá "bảo lưu kết quả học tập" không được cộng thêm. Cộng theo từ
-khoá mà không cộng theo dòng làm mục trả lời được nhiều ý của câu hỏi đứng trên mục
-khớp thật tốt một ý, trong khi một mục nhiều dòng không tự tăng điểm.
+Sơ đồ sau áp dụng quy tắc này cho ba từ khoá và ba mục của ví dụ ở mục 3. Mỗi khung là
+một mục; ô tô đậm là dòng được cộng:
+
+![Chấm điểm và cộng thành điểm của mục](docs/images/thuat-toan-tim-kiem.png)
+
+Hai chi tiết đọc được từ sơ đồ. Ở mục 1, từ khoá "bảo lưu kết quả học tập" khớp hai dòng
+(10,43 và 9,53) nhưng chỉ dòng 10,43 được cộng, nhờ vậy một mục có nhiều tên gọi gần
+giống nhau không tự tăng điểm. Ở mục 2 và mục 3, từ khoá đó không khớp dòng nào nên đóng
+góp 0, và đây là chỗ tạo ra khoảng cách hơn gấp đôi so với mục 1: quy tắc cộng đưa mục
+trả lời được nhiều ý của câu hỏi lên trên mục chỉ khớp một ý.
 
 ### 6.5 Chọn 3 mục, không đặt ngưỡng
 
-Engine trả 3 mục điểm cao nhất, không đặt ngưỡng điểm tối thiểu. Trả 3 thay vì 1 để
-LLM thấy cả các ứng viên yếu hơn: nếu cả ba đều lạc đề, LLM có đủ căn cứ để từ chối
-thay vì bị buộc dùng mục đầu. Không đặt ngưỡng vì điểm BM25 không so được giữa các
-truy vấn khác nhau; việc loại mục không đúng ý hỏi giao cho LLM, qua trường `matched`.
+Engine trả 3 mục điểm cao nhất và không đặt ngưỡng điểm tối thiểu.
+
+Trả 3 thay vì 1 để LLM thấy cả những ứng viên yếu hơn: nếu cả ba đều lạc đề, LLM có căn
+cứ để từ chối thay vì buộc phải dùng mục đầu. Không đặt ngưỡng vì điểm BM25 phụ thuộc độ
+hiếm của token trong chỉ mục, nên hai truy vấn khác nhau cho hai thang điểm khác nhau và
+một ngưỡng cố định sẽ cắt sai ở truy vấn này hoặc truy vấn kia.
+
+Việc loại mục không đúng ý hỏi vì vậy thuộc về LLM, và trường `matched` của kết quả công
+cụ (mục 4) là dữ liệu để làm việc đó: nó liệt kê đúng những dòng đã khớp từ khoá, nên LLM
+đối chiếu được mục trả về với điều người dùng hỏi.
 
 ### 6.6 Đọc hồ sơ của từng mục
 
-Với mỗi mục được chọn, engine đọc mọi phát biểu mà mục là chủ ngữ, và cả các phát
-biểu của mục khác trỏ tới nó (ví dụ các thủ tục "nộp tại" một phòng). Các phát biểu
-được gom theo túi; mỗi túi thành một nguồn với chuỗi trích dẫn và đường dẫn. Nhóm
-nhiều dữ kiện nhất đứng trước; nhóm không có nguồn xếp cuối. Mục "Thủ tục nghỉ học
-tạm thời" ở ví dụ có 12 nhóm nguồn.
+Ba bước trên mới chọn ra *mục nào*; bước này lấy *nội dung* của chúng. Với mỗi mục được
+chọn, engine đọc mọi phát biểu mà mục là chủ ngữ, và cả phát biểu của mục khác trỏ tới nó
+(ví dụ các thủ tục cùng "nộp tại" một phòng). Đây là chỗ giá trị của datatype property —
+thứ đã bị giữ ngoài chỉ mục ở 6.1 — đến tay LLM.
+
+Các phát biểu được gom theo túi trích dẫn (mục 5.2): mỗi túi thành một nguồn, với chuỗi
+trích dẫn và đường dẫn dựng từ địa chỉ trích dẫn của túi đó. Nhóm nhiều dữ kiện nhất đứng
+trước, nhóm không có nguồn xếp cuối. Kết quả của bước này chính là mảng `sources` trong
+JSON ở mục 4. Mục "Thủ tục nghỉ học tạm thời" ở ví dụ có 12 nhóm nguồn.
 
 ### 6.7 Chi phí
 
@@ -473,31 +516,59 @@ phải huấn luyện lại gì. Một lần lưu mất khoảng nửa giây.
 
 ### 8.1 Bộ kiểm tìm kiếm
 
-Bộ kiểm thứ nhất đo riêng câu hỏi nghiên cứu thứ nhất và không cần gọi LLM: mỗi câu đi
-kèm một bộ từ khoá cố định cùng mục mà câu đó nhắm tới. Từ khoá được lấy từ một lượt
-chạy thật của trợ lý rồi đóng băng, để phép đo chỉ phản ánh engine chứ không lẫn biến
-động của LLM.
+Bộ kiểm thứ nhất — [`resources/end-to-end/retrieval.json`](resources/end-to-end/retrieval.json)
+— đo riêng câu hỏi nghiên cứu thứ nhất và không cần gọi LLM. Mỗi câu là một bản ghi:
+
+```json
+{
+  "id": "question-003073",
+  "cau_hoi": "tỷ trọng điểm ngoại ngữ ra sao ạ",
+  "tu_khoa": ["tỷ trọng điểm ngoại ngữ", "điểm ngoại ngữ", "quy định điểm ngoại ngữ"],
+  "node_dung": ["BangDanhGiaHocPhanNgoaiNgu"],
+  "nhan_dung": ["bảng đánh giá học phần ngoại ngữ"]
+}
+```
+
+`tu_khoa` là từ khoá lấy từ một lượt chạy thật của trợ lý rồi cố định lại, nên phép đo
+phản ánh engine chứ không lẫn biến động của LLM. `node_dung` là định danh của mục mà câu
+hỏi nhắm tới trong ontology, `nhan_dung` là tên hiển thị của mục đó — có cả hai để đối
+chiếu được theo định danh lẫn theo tên.
 
 - Bộ có 57 câu, trong đó 49 câu được chấm. 8 câu không tính: 6 câu hỏi nguyên văn một
   điều khoản, trong khi ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc;
   2 câu có đáp án là chính một văn bản nguồn, trong khi nguồn dùng để trích dẫn chứ
   không phải để tra.
-- Một câu đạt khi mục cần tra nằm trong 3 mục trả về, khớp theo định danh hoặc theo tên.
-  Thứ hạng của mục đó cũng được ghi lại.
+- Một câu đạt khi mục cần tra nằm trong 3 mục trả về. Thứ hạng của mục đó cũng được
+  ghi lại, để phân biệt "đứng đầu" với "có mặt nhưng xếp sau".
 
 ### 8.2 Bộ đánh giá toàn hệ thống
 
-Bộ kiểm thứ hai có 85 câu cố định, viết theo nhiều cách: trang trọng, trung tính, đời
-thường và gõ thiếu dấu. Các câu chia ba nhóm:
+Bộ kiểm thứ hai — [`resources/end-to-end/questions.json`](resources/end-to-end/questions.json)
+— có 85 câu cố định, chia sẵn thành ba nhóm theo hành vi đúng mà hệ thống phải thể hiện:
 
-| Nhóm | Số câu | Hành vi đúng |
+| Nhóm trong tệp | Số câu | Hành vi đúng |
 |---|---:|---|
-| Có dữ kiện | 66 | trả lời đúng điều được hỏi |
-| Ngoài phạm vi | 11 | từ chối hoặc hỏi lại cho rõ |
-| Hỏi vào khoảng trống của dữ liệu | 8 | nói dữ liệu không có |
+| `trong_pham_vi` — có dữ kiện | 66 | trả lời đúng điều được hỏi |
+| `ngoai_pham_vi` — ngoài phạm vi học vụ | 11 | từ chối hoặc hỏi lại cho rõ |
+| `do_thi_khong_co` — hỏi vào khoảng trống của dữ liệu | 8 | nói dữ liệu không có |
 
-Trong 66 câu có dữ kiện, 58 câu có mục cần tra để chấm việc lấy đúng mục; 8 câu còn lại
-là các câu hỏi nguyên văn điều khoản và câu có đáp án là văn bản nguồn nói ở mục 8.1.
+Câu thuộc nhóm có dữ kiện mang theo mục cần tra; hai nhóm còn lại không, vì ở đó không
+có mục nào là đáp án đúng:
+
+```json
+{ "id": "question-003073", "cau_hoi": "tỷ trọng điểm ngoại ngữ ra sao ạ",
+  "register": "colloquial",
+  "node_dung": ["BangDanhGiaHocPhanNgoaiNgu"],
+  "nhan_dung": ["bảng đánh giá học phần ngoại ngữ"] }
+
+{ "id": "question-006272", "register": "neutral",
+  "cau_hoi": "Cho hỏi hủy học phần đã đăng ký có ảnh hưởng học bổng của tôi không?" }
+```
+
+`register` ghi cách viết của câu hỏi — trang trọng, trung tính, đời thường hoặc gõ thiếu
+dấu — để bộ kiểm không chỉ gồm câu hỏi viết chuẩn. Trong 66 câu có dữ kiện, 58 câu có
+`node_dung` để chấm việc lấy đúng mục; 8 câu còn lại là các câu hỏi nguyên văn điều khoản
+và câu có đáp án là văn bản nguồn nói ở mục 8.1.
 
 Điều kiện chạy:
 
@@ -541,11 +612,14 @@ Ngoài hai bộ kiểm trên, mọi khẳng định về hành vi của hệ th�
 động kiểm lại mỗi lần sửa mã hoặc sửa dữ liệu: vòng agent và các đường API, cách tách từ
 và xếp hạng của search engine, thao tác thêm sửa xoá của trang quản trị cùng các trường
 hợp phải bị từ chối, việc dữ liệu khớp lược đồ SHACL, việc các bảng khớp bản chép nguyên
-văn, và hành vi của giao diện trong trình duyệt thật.
+văn, và hành vi của giao diện trong trình duyệt.
 
 ## 9. Kiểm thử và kết quả
 
-*Các số dưới đây đo trên phiên bản dữ liệu và theo cách chấm mô tả ở mục 8.*
+*Các số dưới đây đo trên phiên bản dữ liệu và theo cách chấm mô tả ở mục 8. Kết quả của
+từng câu — từ khoá đã gửi, mục công cụ trả về, câu trả lời và phán quyết — lưu trong
+[`resources/end-to-end/`](resources/end-to-end/), nên mọi con số tổng hợp ở đây đều lần
+ngược được về câu sinh ra nó.*
 
 ### 9.1 Tìm kiếm
 
@@ -608,7 +682,7 @@ Trong 58 câu có mục cần tra, 6 câu chưa đạt mức đúng:
   nói rõ nhu cầu, nhưng không trả lời được như bộ đánh giá mong đợi.
 - **Một câu bị hiểu lệch** ("quản lý thủy sản ra sao"): LLM lấy đúng ngành nhưng hiểu
   "ra sao" là hỏi cơ hội việc làm, rồi nói dữ liệu không có.
-- **Một câu chạm khoảng trống thật** ("đăng ký đồ án tốt nghiệp liên hệ phòng nào"): dữ
+- **Một câu rơi vào khoảng trống của dữ liệu** ("đăng ký đồ án tốt nghiệp liên hệ phòng nào"): dữ
   liệu có thủ tục và mẫu đơn nhưng không có nơi nộp, và LLM nói đúng như vậy.
 - **Hai câu đúng một phần:** dữ liệu trả lời được một vế, vế còn lại không có.
 
@@ -664,7 +738,7 @@ các cách tiếp cận chưa được đem so sánh.
 
 ### 11.3 Hạn chế
 
-1. **Độ phủ của dữ liệu:** đây là hạn chế lớn nhất. Nội dung mới phủ một phần phạm vi
+1. **Độ phủ của dữ liệu:** nội dung mới phủ một phần phạm vi
    nêu ở mục 1, nên câu hỏi rơi vào phần chưa được biểu diễn sẽ nhận câu trả lời "không
    có thông tin" dù quy định có tồn tại trong văn bản của trường. Kết quả ở mục 9 vì vậy
    gắn với độ phủ này, không phải với toàn bộ phạm vi.

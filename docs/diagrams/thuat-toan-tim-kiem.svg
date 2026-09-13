@@ -1,69 +1,113 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="780" viewBox="0 0 1220 780" font-family="Noto Sans, DejaVu Sans, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="760" viewBox="0 0 1220 760" font-family="Noto Sans, DejaVu Sans, sans-serif">
   <defs>
-    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
-    </marker>
     <style>
-      .o    { fill: #ffffff; stroke: #000000; stroke-width: 2.5; }
-      .odam { fill: #e9e9e9; stroke: #000000; stroke-width: 3; }
-      .tieu { fill: #000000; font-size: 19px; font-weight: 700; }
-      .tt   { fill: #000000; font-size: 17px; }
-      .ma   { fill: #111111; font-size: 16px; font-family: "DejaVu Sans Mono", monospace; }
-      .mui  { stroke: #000000; stroke-width: 2.5; fill: none; marker-end: url(#mui); }
-      .diem { fill: #000000; font-size: 18px; font-weight: 700; text-anchor: end; }
+      .o     { fill: #ffffff; stroke: #000000; stroke-width: 2.5; }
+      .cot   { fill: #f4f4f4; stroke: none; }
+      .chon  { fill: #d9d9d9; stroke: #000000; stroke-width: 1.6; }
+      .kw    { fill: #000000; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .ma    { fill: #111111; font-size: 14px; font-family: "DejaVu Sans Mono", monospace; }
+      .loai  { fill: #666666; font-size: 12.5px; font-family: "DejaVu Sans Mono", monospace; }
+      .diem  { fill: #000000; font-size: 15px; text-anchor: middle; font-variant-numeric: tabular-nums; }
+      .dammuc{ fill: #000000; font-size: 16px; font-weight: 700; }
+      .tong  { fill: #000000; font-size: 15px; font-weight: 700; text-anchor: end; }
+      .ghi   { fill: #444444; font-size: 14px; }
     </style>
   </defs>
 
-  <rect width="1220" height="780" fill="#ffffff"/>
-  <text x="40" y="40" style="font-size:24px; font-weight:700">Từ vài từ khoá đến 3 mục: thuật toán tìm kiếm</text>
-  <text x="40" y="66" style="font-size:15px; fill:#444">Điểm số thật của câu hỏi "em muốn xin nghỉ học".</text>
+  <rect width="1220" height="760" fill="#ffffff"/>
+  <text x="40" y="36" style="font-size:24px; font-weight:700">Chấm điểm từng dòng, rồi cộng thành điểm của mục</text>
+  <text x="40" y="60" class="ghi">Mỗi từ khoá chấm điểm mọi dòng chỉ mục. Với một mục, mỗi từ khoá chỉ đóng góp DÒNG CAO NHẤT của mục đó.</text>
 
-  <!-- B1 -->
-  <rect x="40" y="84" width="1140" height="76" rx="10" class="o"/>
-  <text x="60" y="112" class="tieu">1 · LLM gửi 3 từ khoá</text>
-  <text x="60" y="142" class="ma">"nghỉ học tạm thời"   ·   "bảo lưu kết quả học tập"   ·   "xin nghỉ học"</text>
-  <path class="mui" d="M610 160 V182"/>
+  <!-- Cột từ khoá -->
+  <rect x="656" y="72" width="166" height="640" rx="6" class="cot"/>
+  <rect x="828" y="72" width="166" height="640" rx="6" class="cot"/>
+  <rect x="1000" y="72" width="166" height="640" rx="6" class="cot"/>
 
-  <!-- B2 -->
-  <rect x="40" y="184" width="1140" height="76" rx="10" class="o"/>
-  <text x="60" y="212" class="tieu">2 · Tách thành token theo âm tiết, bỏ hư từ</text>
-  <text x="60" y="242" class="ma">[nghỉ · học · tạm · thời]   [bảo · lưu · kết · quả · học · tập]   [xin · nghỉ · học]</text>
-  <path class="mui" d="M610 260 V282"/>
+  <text x="739" y="94" class="kw">"nghỉ học</text>
+  <text x="739" y="112" class="kw">tạm thời"</text>
+  <text x="911" y="94" class="kw">"bảo lưu kết</text>
+  <text x="911" y="112" class="kw">quả học tập"</text>
+  <text x="1083" y="94" class="kw">"xin nghỉ</text>
+  <text x="1083" y="112" class="kw">học"</text>
+  <text x="56" y="106" style="font-size:15px; font-weight:700">Dòng chỉ mục của từng mục</text>
 
-  <!-- B3 -->
-  <rect x="40" y="284" width="1140" height="192" rx="10" class="odam"/>
-  <text x="60" y="312" class="tieu">3 · BM25 chấm điểm từng dòng chỉ mục; mỗi từ khoá chỉ giữ DÒNG CAO NHẤT của mỗi mục</text>
-  <text x="60" y="344" class="tt">Với mục <tspan font-weight="700">Thủ tục nghỉ học tạm thời</tspan>:</text>
+  <line x1="40" y1="124" x2="1180" y2="124" stroke="#000" stroke-width="2"/>
 
-  <rect x="60" y="358" width="900" height="34" rx="6" class="o"/>
-  <text x="76" y="382" class="ma">"nghỉ học tạm thời"        → dòng tên  "nghỉ học tạm thời"</text>
-  <text x="1140" y="382" class="diem">6,44</text>
+  <!-- ================= MỤC 1 ================= -->
+  <rect x="40" y="136" width="1140" height="226" rx="10" class="o"/>
+  <text x="56" y="162" class="dammuc">MỤC 1 · Thủ tục nghỉ học tạm thời</text>
 
-  <rect x="60" y="398" width="900" height="34" rx="6" class="o"/>
-  <text x="76" y="422" class="ma">"bảo lưu kết quả học tập"  → dòng tên  "bảo lưu kết quả học tập"</text>
-  <text x="1140" y="422" class="diem">10,43</text>
+  <text x="56" y="192" class="ma">"nghỉ học tạm thời"</text>
+  <text x="500" y="192" class="loai">label</text>
+  <rect x="676" y="176" width="126" height="24" rx="5" class="chon"/>
+  <text x="739" y="193" class="diem" font-weight="700">6,44</text>
 
-  <rect x="60" y="438" width="900" height="34" rx="6" class="o"/>
-  <text x="76" y="462" class="ma">"xin nghỉ học"             → dòng tên  "Thủ tục nghỉ học tạm thời"</text>
-  <text x="1140" y="462" class="diem">2,74</text>
+  <text x="56" y="222" class="ma">"Thủ tục nghỉ học tạm thời"</text>
+  <text x="500" y="222" class="loai">label</text>
+  <text x="739" y="223" class="diem">5,69</text>
 
-  <path class="mui" d="M610 476 V498"/>
+  <text x="56" y="252" class="ma">"bảo lưu kết quả học tập"</text>
+  <text x="500" y="252" class="loai">label</text>
+  <rect x="848" y="236" width="126" height="24" rx="5" class="chon"/>
+  <text x="911" y="253" class="diem" font-weight="700">10,43</text>
 
-  <!-- B4 -->
-  <rect x="40" y="500" width="1140" height="80" rx="10" class="odam"/>
-  <text x="60" y="528" class="tieu">4 · Cộng các điểm đó lại thành điểm của mục</text>
-  <text x="60" y="562" class="ma">6,44  +  10,43  +  2,74  =  19,61</text>
-  <text x="1160" y="562" style="font-size:15px; fill:#444; text-anchor:end">dòng "bảo lưu kết quả" 9,53 KHÔNG được cộng thêm</text>
-  <path class="mui" d="M610 580 V602"/>
+  <text x="56" y="282" class="ma">"bảo lưu kết quả"</text>
+  <text x="500" y="282" class="loai">label</text>
+  <text x="911" y="283" class="diem">9,53</text>
 
-  <!-- B5 -->
-  <rect x="40" y="604" width="1140" height="80" rx="10" class="o"/>
-  <text x="60" y="632" class="tieu">5 · Lấy 3 mục điểm cao nhất, không đặt ngưỡng</text>
-  <text x="60" y="664" class="ma">19,61 Thủ tục nghỉ học tạm thời  ·  8,19 Mục tải: Đơn xin…  ·  7,78 Mẫu số 09</text>
-  <path class="mui" d="M610 684 V706"/>
+  <text x="56" y="312" class="ma">"tạm nghỉ học"</text>
+  <text x="500" y="312" class="loai">label</text>
+  <text x="739" y="313" class="diem">5,18</text>
+  <rect x="1020" y="296" width="126" height="24" rx="5" class="chon"/>
+  <text x="1083" y="313" class="diem" font-weight="700">2,73</text>
 
-  <!-- B6 -->
-  <rect x="40" y="708" width="1140" height="62" rx="10" class="o"/>
-  <text x="60" y="736" class="tieu">6 · Đọc hồ sơ từng mục, gom dữ kiện theo túi trích dẫn</text>
-  <text x="60" y="760" class="tt">Mục đầu có 12 nhóm nguồn. Toàn bộ bước 1–6 mất 3,84 ms.</text>
+  <line x1="56" y1="326" x2="1164" y2="326" stroke="#999" stroke-width="1.2"/>
+  <text x="1164" y="350" class="tong">Điểm mục = 6,44 + 10,43 + 2,73 = 19,60</text>
+
+  <!-- ================= MỤC 2 ================= -->
+  <rect x="40" y="376" width="1140" height="166" rx="10" class="o"/>
+  <text x="56" y="402" class="dammuc">MỤC 2 · Mục tải: Đơn xin nghỉ học tạm thời</text>
+
+  <text x="56" y="432" class="ma">"Mục tải: Đơn xin nghỉ học tạm thời"</text>
+  <text x="500" y="432" class="loai">label</text>
+  <rect x="676" y="416" width="126" height="24" rx="5" class="chon"/>
+  <text x="739" y="433" class="diem" font-weight="700">5,09</text>
+  <text x="911" y="433" class="diem">—</text>
+  <rect x="1020" y="416" width="126" height="24" rx="5" class="chon"/>
+  <text x="1083" y="433" class="diem" font-weight="700">3,09</text>
+
+  <text x="56" y="462" class="ma">"Mục tải: … | nội dung"</text>
+  <text x="500" y="462" class="loai">datatype_property</text>
+  <text x="739" y="463" class="diem">4,61</text>
+  <text x="911" y="463" class="diem">—</text>
+  <text x="1083" y="463" class="diem">2,80</text>
+
+  <text x="56" y="492" class="ma">"Mục tải: … | ứng với biểu mẫu | Mẫu số 09…"</text>
+  <text x="500" y="492" class="loai">object_property</text>
+  <text x="739" y="493" class="diem">4,04</text>
+  <text x="911" y="493" class="diem">—</text>
+  <text x="1083" y="493" class="diem">—</text>
+
+  <line x1="56" y1="506" x2="1164" y2="506" stroke="#999" stroke-width="1.2"/>
+  <text x="1164" y="530" class="tong">Điểm mục = 5,09 + 0 + 3,09 = 8,18</text>
+
+  <!-- ================= MỤC 3 ================= -->
+  <rect x="40" y="556" width="1140" height="106" rx="10" class="o"/>
+  <text x="56" y="582" class="dammuc">MỤC 3 · Mẫu số 09 - Đơn xin nghỉ học tạm thời</text>
+
+  <text x="56" y="612" class="ma">"Mẫu số 09 - Đơn xin nghỉ học tạm thời"</text>
+  <text x="500" y="612" class="loai">label</text>
+  <rect x="676" y="596" width="126" height="24" rx="5" class="chon"/>
+  <text x="739" y="613" class="diem" font-weight="700">4,84</text>
+  <text x="911" y="613" class="diem">—</text>
+  <rect x="1020" y="596" width="126" height="24" rx="5" class="chon"/>
+  <text x="1083" y="613" class="diem" font-weight="700">2,94</text>
+
+  <line x1="56" y1="626" x2="1164" y2="626" stroke="#999" stroke-width="1.2"/>
+  <text x="1164" y="650" class="tong">Điểm mục = 4,84 + 0 + 2,94 = 7,78</text>
+
+  <!-- Chú giải -->
+  <rect x="40" y="686" width="1140" height="52" rx="10" class="o"/>
+  <rect x="60" y="700" width="26" height="22" rx="5" class="chon"/>
+  <text x="98" y="717" class="ghi">Ô tô đậm = dòng cao nhất của mục cho từ khoá đó; chỉ ô này được cộng. Dấu — nghĩa là không dòng nào của mục khớp từ khoá.</text>
 </svg>
