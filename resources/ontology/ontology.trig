@@ -3287,13 +3287,13 @@ ns1:TD1052_D28K05 {
 }
 
 ns1:TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
-    ns1:ThuTucXinThoiHoc ns1:noiDung "Sinh viên hoàn thiện đơn trong 02 tuần đầu tiên của học kỳ, các khoa cho ý kiến đề nghị, Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
+    ns1:ThuTucXinThoiHoc ns1:noiDung "Sinh viên hoàn thiện đơn, các khoa cho ý kiến đề nghị trong 02 tuần đầu tiên của học kỳ; Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 
     ns1:ThuTucChuyenNganh ns1:noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 
-    ns1:ThuTucChuyenTruong ns1:noiDung "Sinh viên hoàn thiện đơn trong 02 tuần đầu tiên của học kỳ, các khoa cho ý kiến đề nghị, Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
+    ns1:ThuTucChuyenTruong ns1:noiDung "Sinh viên hoàn thiện đơn, các khoa cho ý kiến đề nghị trong 02 tuần đầu tiên của học kỳ; Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 
-    ns1:ThuTucNghiHocTamThoi ns1:noiDung "Sinh viên hoàn thiện đơn trong 02 tuần đầu tiên của học kỳ, các khoa cho ý kiến đề nghị, Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
+    ns1:ThuTucNghiHocTamThoi ns1:noiDung "Sinh viên hoàn thiện đơn, các khoa cho ý kiến đề nghị trong 02 tuần đầu tiên của học kỳ; Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 }
 
 ns1:TD1052_D16K02dB {
