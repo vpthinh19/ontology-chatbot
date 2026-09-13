@@ -131,6 +131,12 @@ class AgentLoop:
         self._max_steps = max_steps
         self._close = close
 
+    @property
+    def lookup(self) -> Callable[[list[str]], Awaitable[str]]:
+        """Công cụ tra cứu; trang quản trị thay engine của nó sau mỗi lần ghi."""
+
+        return self._lookup
+
     async def aclose(self) -> None:
         if self._close is not None:
             await self._close()

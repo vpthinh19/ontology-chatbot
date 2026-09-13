@@ -30,7 +30,7 @@ export const proxyToBackend = async (
   }
 
   const headers = new Headers({ Authorization: `Bearer ${token}` });
-  for (const name of ["accept", "content-type"]) {
+  for (const name of ["accept", "content-type", "x-admin-token"]) {
     const value = request.headers.get(name);
     if (value) headers.set(name, value);
   }

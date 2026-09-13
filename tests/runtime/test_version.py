@@ -28,7 +28,7 @@ def test_release_version_and_inference_dependencies() -> None:
     project = _project()
     assert project["version"] == "3.2.1"
     names = _names(project["optional-dependencies"]["inference"])
-    assert names == {"httpx", "starlette", "uvicorn"}
+    assert names == {"httpx", "pyshacl", "starlette", "uvicorn"}
     assert not {name for name in names if name.startswith("nvidia-")}
     assert ontchatbot.__version__ == "3.2.1"
 

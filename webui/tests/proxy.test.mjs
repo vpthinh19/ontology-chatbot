@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { afterEach, test } from "node:test";
 
 import { proxyToBackend } from "../api/_proxy.js";
+import { GET as adminGet } from "../api/admin.js";
 import viteConfig from "../vite.config.js";
 
 const originalEnvironment = {
@@ -174,6 +175,44 @@ test("proxy turns an upstream connection failure into a bounded 502", async () =
 
   assert.equal(response.status, 502);
   assert.deepEqual(await response.json(), { detail: "Could not reach the backend." });
+});
+
+test("admin proxy forwards the admin key, the route and its query to /admin", async () => {
+  let seen;
+  const upstream = await listen((request, response) => {
+    seen = {
+      url: request.url,
+      adminKey: request.headers["x-admin-token"],
+      authorization: request.headers.authorization,
+    };
+    response.writeHead(200, { "Content-Type": "application/json" });
+    response.end("{}");
+  });
+  process.env.CLOUD_RUN_SERVICE_URL = upstream.baseUrl;
+  process.env.BACKEND_API_TOKEN = "server-secret";
+
+  try {
+    const response = await adminGet(
+      new Request("https://frontend.example/api/admin?path=entities&class=Nguon", {
+        headers: { "X-Admin-Token": "admin-key" },
+      }),
+    );
+
+    assert.equal(response.status, 200);
+    assert.deepEqual(seen, {
+      url: "/admin/entities?class=Nguon",
+      adminKey: "admin-key",
+      authorization: "Bearer server-secret",
+    });
+  } finally {
+    await upstream.close();
+  }
+});
+
+test("admin proxy refuses a route that could leave /admin", async () => {
+  const response = await adminGet(new Request("https://frontend.example/api/admin?path=../chat"));
+
+  assert.equal(response.status, 400);
 });
 
 test("Vite development rewrites same-origin API paths to the local backend", () => {

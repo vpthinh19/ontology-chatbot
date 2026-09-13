@@ -4,12 +4,18 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "regions": ["sin1"],
+  "rewrites": [
+    { "source": "/api/admin/:path*", "destination": "/api/admin?path=:path*" }
+  ],
   "functions": {
     "api/healthz.js": {
       "maxDuration": 30
     },
     "api/chat.js": {
       "maxDuration": 300
+    },
+    "api/admin.js": {
+      "maxDuration": 60
     }
   }
 }

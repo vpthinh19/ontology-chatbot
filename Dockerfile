@@ -31,7 +31,7 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
     TZ=Asia/Ho_Chi_Minh MALLOC_ARENA_MAX=2 \
-    ONTCHATBOT_ONTOLOGY_PATH=/app/resources/ontology/ontology.ttl \
+    ONTCHATBOT_ONTOLOGY_PATH=/app/resources/ontology/ontology.trig \
     ONTCHATBOT_SEARCH_WORKERS=4 \
     ONTCHATBOT_TURN_SLOTS=4 ONTCHATBOT_TURN_QUEUE=8
 USER ontchatbot

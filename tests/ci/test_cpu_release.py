@@ -30,7 +30,7 @@ def test_runtime_keeps_the_service_contract() -> None:
     runtime = text.split(" AS runtime", maxsplit=1)[1]
     assert "/app/model" not in runtime
     for setting in (
-        "ONTCHATBOT_ONTOLOGY_PATH=/app/resources/ontology/ontology.ttl",
+        "ONTCHATBOT_ONTOLOGY_PATH=/app/resources/ontology/ontology.trig",
         "ONTCHATBOT_SEARCH_WORKERS=4",
         "ONTCHATBOT_TURN_SLOTS=4",
         "ONTCHATBOT_TURN_QUEUE=8",

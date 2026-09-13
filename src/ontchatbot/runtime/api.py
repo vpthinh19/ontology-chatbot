@@ -345,6 +345,8 @@ def create_app(
     gate: TurnGate | None = None,
     *,
     backend_token: str | None = None,
+    admin=None,
+    admin_token: str | None = None,
 ):
     try:
         from starlette.applications import Starlette
@@ -431,13 +433,16 @@ def create_app(
             if close is not None:
                 await close()
 
-    app = Starlette(
-        routes=[
-            Route("/health", health, methods=["GET"]),
-            Route("/chat", chat, methods=["POST"]),
-        ],
-        lifespan=lifespan,
-    )
+    routes = [
+        Route("/health", health, methods=["GET"]),
+        Route("/chat", chat, methods=["POST"]),
+    ]
+    # Trang quản trị ghi được vào ontology, nên chỉ mở khi có khoá quản trị riêng.
+    if admin is not None and admin_token:
+        from ..admin.http import admin_routes
+
+        routes.extend(admin_routes(admin, admin_token, authorize))
+    app = Starlette(routes=routes, lifespan=lifespan)
     frontend_origins = [
         origin.strip().rstrip("/")
         for origin in os.environ.get("ONTCHATBOT_CORS_ORIGINS", "").split(",")
@@ -447,12 +452,12 @@ def create_app(
         app.add_middleware(
             CORSMiddleware,
             allow_origins=frontend_origins,
-            allow_methods=["GET", "POST", "OPTIONS"],
+            allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             # ``Authorization`` mang khoá đi qua cổng đứng trước dịch vụ. Trình
             # duyệt hỏi trước bằng một request ``OPTIONS`` và chỉ gửi request
             # thật khi header đó nằm trong danh sách này, nên bỏ sót nó thì mọi
             # lượt chat từ frontend khác domain đều chết ngay ở bước hỏi trước.
-            allow_headers=["Authorization", "Content-Type"],
+            allow_headers=["Authorization", "Content-Type", "X-Admin-Token"],
             max_age=600,
         )
 

@@ -29,9 +29,11 @@ dependencies = [
 
 # Everything the deployed service needs, and nothing more: this is what enters
 # the container image, so every package added here costs image size and cold
-# start time.
+# start time. pyshacl checks every admin edit against shapes.ttl before it is
+# written.
 inference = [
     "httpx>=0.28.0",
+    "pyshacl>=0.40.1",
     "starlette>=0.47.0",
     "uvicorn>=0.41.0",
 ]

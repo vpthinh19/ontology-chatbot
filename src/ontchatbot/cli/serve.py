@@ -30,7 +30,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--ontology",
         type=Path,
         default=os.environ.get("ONTCHATBOT_ONTOLOGY_PATH", str(ONTOLOGY_PATH)),
-        help="tệp Turtle của ontology; hoặc đặt ONTCHATBOT_ONTOLOGY_PATH",
+        help="tệp TriG của ontology; hoặc đặt ONTCHATBOT_ONTOLOGY_PATH",
     )
     parser.add_argument(
         "--log-level",
@@ -119,6 +119,26 @@ def _build_instructions(lookup) -> str:
     return build_instructions(read_vocabulary(lookup.engine.ontology))
 
 
+def _build_admin(args: argparse.Namespace, agent):
+    """Mở trang quản trị khi có ONTCHATBOT_ADMIN_TOKEN; mỗi lần ghi, engine nạp lại tệp."""
+
+    token = os.environ.get("ONTCHATBOT_ADMIN_TOKEN", "").strip()
+    if not token:
+        return None, None
+
+    from ..admin import AdminStore, Schema
+    from ..search import SearchEngine, TriGFileSource
+
+    shapes = Path(args.ontology).with_name("shapes.ttl")
+
+    def reload(path: Path) -> None:
+        agent.lookup.engine = SearchEngine.open(TriGFileSource(path), top_k=args.top_k)
+        logger.info("ontology reloaded after an admin edit path=%s", path)
+
+    store = AdminStore(args.ontology, Schema.from_file(shapes), shapes_path=shapes, on_change=reload)
+    return store, token
+
+
 def _build_agent(args: argparse.Namespace):
     """Build the complete runtime before the server reports healthy."""
 
@@ -168,11 +188,15 @@ def main() -> None:
     # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc
     # thời gian, nên nhật ký trộn hai kiểu dòng: dòng của dịch vụ có giờ, dòng
     # của máy chủ web thì không. Bỏ cấu hình đó thì mọi dòng cùng một khuôn.
+    agent = _build_agent(args)
+    admin, admin_token = _build_admin(args, agent)
+    admin_options = {"admin": admin, "admin_token": admin_token} if admin is not None else {}
     uvicorn.run(
         create_app(
-            _build_agent(args),
+            agent,
             gate=TurnGate(slots=args.turn_slots, queue_size=args.turn_queue),
             backend_token=backend_token,
+            **admin_options,
         ),
         host=args.host,
         port=args.port,

@@ -838,6 +838,7 @@ dependencies = [
 [package.optional-dependencies]
 inference = [
     { name = "httpx" },
+    { name = "pyshacl" },
     { name = "starlette" },
     { name = "uvicorn" },
 ]
@@ -888,6 +889,7 @@ requires-dist = [
     { name = "protobuf", marker = "extra == 'research'", specifier = ">=6.33.0" },
     { name = "pyoxigraph", specifier = ">=0.5.0" },
     { name = "pyparsing", marker = "extra == 'research'", specifier = ">=3.2.0" },
+    { name = "pyshacl", marker = "extra == 'inference'", specifier = ">=0.40.1" },
     { name = "rdflib", specifier = ">=7.6.0" },
     { name = "rdflib", marker = "extra == 'research'", specifier = ">=7.6.0" },
     { name = "scikit-learn", marker = "extra == 'research'", specifier = ">=1.9.0" },

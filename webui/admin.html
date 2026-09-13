@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Quản trị ontology · Trợ lý học vụ NTU</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <header class="bar">
+      <h1>Quản trị ontology</h1>
+      <form id="token-form">
+        <label class="sr-only" for="token">Khoá quản trị</label>
+        <input id="token" type="password" placeholder="Khoá quản trị" autocomplete="off" />
+        <button type="submit">Dùng khoá</button>
+      </form>
+      <a href="/">Về trang hỏi đáp</a>
+    </header>
+
+    <div id="status" role="status" hidden></div>
+
+    <main class="layout">
+      <nav id="classes" aria-label="Loại thông tin"></nav>
+
+      <section id="list-panel" aria-labelledby="list-title" hidden>
+        <h2 id="list-title"></h2>
+        <div class="list-head">
+          <input id="filter" type="search" placeholder="Lọc theo tên…" aria-label="Lọc theo tên" />
+          <button id="new-btn" type="button">Thêm</button>
+        </div>
+        <ul id="items"></ul>
+      </section>
+
+      <section id="editor" aria-label="Sửa mục" hidden></section>
+    </main>
+
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>
