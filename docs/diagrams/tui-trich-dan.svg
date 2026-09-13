@@ -1,114 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" font-family="Noto Sans, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="640" viewBox="0 0 1220 640" font-family="Noto Sans, DejaVu Sans, sans-serif">
   <defs>
-    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#ffffff"/>
-    </marker>
-    <marker id="muixanh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#8fc1ff"/>
+    <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
     </marker>
     <style>
-      .khoi { fill: #12467d; stroke: #3a78bd; stroke-width: 1.5; }
-      .tui { fill: #0e3963; stroke: #8fc1ff; stroke-width: 2; stroke-dasharray: 9 6; }
-      .ngoai { fill: #132f4f; stroke: #5c7fae; stroke-width: 1.5; }
-      .vien { fill: #1f6fb8; stroke: #9ec5ff; stroke-width: 2; }
-      .tieu { fill: #8fb8ef; font-size: 16px; font-weight: 700; letter-spacing: 1px; }
-      .ten { fill: #ffffff; font-size: 17px; font-weight: 700; }
-      .giua { text-anchor: middle; }
-      .phu { fill: #bcd4f5; font-size: 13.5px; }
-      .tt { fill: #9ec5ff; font-size: 15px; font-weight: 700; }
-      .gt { fill: #ffffff; font-size: 15px; }
-      .ma { font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace; }
-      .nhan { fill: #e3edff; font-size: 13.5px; }
-      .di { stroke: #ffffff; stroke-width: 2; fill: none; marker-end: url(#mui); }
-      .ve { stroke: #8fc1ff; stroke-width: 2; fill: none; stroke-dasharray: 7 5; marker-end: url(#muixanh); }
+      .o    { fill: #ffffff; stroke: #000000; stroke-width: 2.5; }
+      .odam { fill: #e9e9e9; stroke: #000000; stroke-width: 3; }
+      .tui  { fill: #ffffff; stroke: #000000; stroke-width: 3; stroke-dasharray: 10 6; }
+      .tieu { fill: #000000; font-size: 19px; font-weight: 700; }
+      .tt   { fill: #000000; font-size: 17px; }
+      .ma   { fill: #111111; font-size: 16px; font-family: "DejaVu Sans Mono", monospace; }
+      .mui  { stroke: #000000; stroke-width: 2.5; fill: none; marker-end: url(#mui); }
+      .nhan { fill: #000000; font-size: 16px; }
     </style>
   </defs>
 
-  <rect width="1600" height="1000" rx="30" fill="#0a2342"/>
+  <rect width="1220" height="640" fill="#ffffff"/>
+  <text x="40" y="40" style="font-size:24px; font-weight:700">Mỗi phát biểu mang nguồn của chính nó: vế thứ tư là tên túi trích dẫn</text>
 
-  <!-- ① Triple -->
-  <text x="40" y="56" class="tieu">① PHÁT BIỂU BA VẾ (TRIPLE)</text>
-  <rect x="40" y="72" width="290" height="48" rx="24" class="khoi"/>
-  <text x="185" y="102" class="ten giua" style="font-size: 16px">Thủ tục nghỉ học tạm thời</text>
-  <path class="di" d="M330 96 H556"/>
-  <text x="443" y="86" class="nhan giua">nộp tại</text>
-  <rect x="560" y="72" width="350" height="48" rx="24" class="khoi"/>
-  <text x="735" y="102" class="ten giua" style="font-size: 16px">Phòng Công tác Chính trị và Sinh viên</text>
-  <text x="950" y="102" class="phu">chủ ngữ → thuộc tính → giá trị</text>
+  <!-- Danh tính: ngoài túi -->
+  <rect x="40" y="64" width="700" height="104" rx="10" class="o"/>
+  <text x="60" y="92" class="tieu">Danh tính của mục — nằm NGOÀI mọi túi, không cần trích dẫn</text>
+  <text x="60" y="122" class="ma">:ThuTucNghiHocTamThoi  a  :ThuTucHocVu</text>
+  <text x="60" y="148" class="ma">   rdfs:label "Thủ tục nghỉ học tạm thời"</text>
 
-  <!-- ② Quad -->
-  <text x="40" y="170" class="tieu">② THÊM VẾ THỨ TƯ: TÚI TRÍCH DẪN (QUAD)</text>
-  <rect x="40" y="186" width="290" height="48" rx="24" class="khoi"/>
-  <text x="185" y="216" class="ten giua" style="font-size: 16px">Thủ tục nghỉ học tạm thời</text>
-  <path class="di" d="M330 210 H556"/>
-  <text x="443" y="200" class="nhan giua">nộp tại</text>
-  <rect x="560" y="186" width="350" height="48" rx="24" class="khoi"/>
-  <text x="735" y="216" class="ten giua" style="font-size: 16px">Phòng Công tác Chính trị và Sinh viên</text>
-  <path class="ve" d="M910 210 H966"/>
-  <rect x="970" y="186" width="250" height="48" rx="24" class="vien"/>
-  <text x="1095" y="216" class="ten giua ma" style="font-size: 15px">:TD1052_D24K03</text>
-  <text x="1250" y="206" class="phu">Tên túi là địa chỉ trích dẫn của câu:</text>
-  <text x="1250" y="226" class="phu">thêm nguồn không thêm mục hay quan hệ nào.</text>
+  <!-- Túi -->
+  <rect x="40" y="200" width="700" height="240" rx="14" class="tui"/>
+  <text x="60" y="232" class="tieu">TÚI TRÍCH DẪN  :TD1052_D24K03</text>
+  <text x="60" y="258" class="nhan">mọi phát biểu do cùng một chỗ của cùng một văn bản khẳng định</text>
 
-  <!-- Túi 1 -->
-  <rect x="40" y="282" width="780" height="352" rx="18" class="tui"/>
-  <text x="66" y="316" class="ten">Túi <tspan class="ma">:TD1052_D24K03</tspan></text>
-  <text x="66" y="340" class="phu">cùng chủ ngữ: Thủ tục nghỉ học tạm thời</text>
-  <text x="66" y="382" class="tt">nộp tại</text><text x="266" y="382" class="gt">→  Phòng Công tác Chính trị và Sinh viên</text>
-  <text x="66" y="420" class="tt">cần biểu mẫu</text><text x="266" y="420" class="gt">→  Mẫu số 09 - Đơn xin nghỉ học tạm thời</text>
-  <text x="66" y="458" class="tt">do ai quyết định</text><text x="266" y="458" class="gt">→  Hiệu trưởng</text>
-  <text x="66" y="496" class="tt">do ai thực hiện</text><text x="266" y="496" class="gt">→  Sinh viên</text>
-  <text x="66" y="534" class="tt">thủ tục tiếp theo</text><text x="266" y="534" class="gt">→  Thủ tục xin học trở lại</text>
-  <text x="66" y="572" class="tt">nội dung</text><text x="266" y="572" class="gt">→  “Sinh viên xin nghỉ học tạm thời phải viết đơn (Mẫu số 09 -</text>
-  <text x="292" y="598" class="gt">Phụ lục 4 kèm theo) gửi Hiệu trưởng thông qua Phòng…”</text>
+  <rect x="60" y="276" width="660" height="42" rx="8" class="o"/>
+  <text x="76" y="303" class="ma">:ThuTucNghiHocTamThoi  :nopTai  :PhongCTCTvaSV</text>
+  <rect x="60" y="328" width="660" height="42" rx="8" class="o"/>
+  <text x="76" y="355" class="ma">:ThuTucNghiHocTamThoi  :canBieuMau  :MauSo09</text>
+  <rect x="60" y="380" width="660" height="42" rx="8" class="o"/>
+  <text x="76" y="407" class="ma">:ThuTucNghiHocTamThoi  :doAiQuyetDinh  :HieuTruong</text>
 
-  <!-- Túi 2 -->
-  <rect x="40" y="662" width="780" height="160" rx="18" class="tui"/>
-  <text x="66" y="696" class="ten">Túi <tspan class="ma">:TD1052_D24K01dC</tspan></text>
-  <text x="66" y="720" class="phu">cùng chủ ngữ, nhưng do một chỗ khác của văn bản khẳng định</text>
-  <text x="66" y="760" class="tt">áp dụng cho trường hợp</text><text x="300" y="760" class="gt">→  Ốm, thai sản hoặc tai nạn</text>
-  <text x="66" y="798" class="tt">nội dung</text><text x="300" y="798" class="gt">→  “Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài…”</text>
+  <text x="60" y="482" class="tt">Ba phát biểu trên là ba <tspan font-weight="700">quad</tspan>: chủ ngữ · quan hệ · giá trị · <tspan font-weight="700">tên túi</tspan>.</text>
+  <text x="60" y="510" class="tt">Thêm nguồn không thêm mục hay quan hệ nào vào tầng tri thức.</text>
 
-  <!-- Ngoài túi -->
-  <rect x="40" y="850" width="780" height="120" rx="18" class="ngoai"/>
-  <text x="66" y="884" class="ten">Ngoài mọi túi: danh tính, không trích dẫn</text>
-  <text x="66" y="918" class="tt">loại</text><text x="130" y="918" class="gt">→  Thủ tục học vụ</text>
-  <text x="380" y="918" class="tt">nhãn</text><text x="444" y="918" class="gt">→  Thủ tục nghỉ học tạm thời</text>
-  <text x="66" y="950" class="tt">tên gọi khác</text><text x="200" y="950" class="gt">→  bảo lưu kết quả học tập · tạm nghỉ học · tạm dừng học …</text>
+  <!-- Địa chỉ trích dẫn -->
+  <rect x="800" y="200" width="380" height="128" rx="10" class="odam"/>
+  <text x="820" y="230" class="tieu">Địa chỉ trích dẫn</text>
+  <text x="820" y="260" class="ma">:TD1052_D24K03</text>
+  <text x="820" y="288" class="ma">  :toaDo "khoản 3 Điều 24"</text>
+  <text x="820" y="314" class="ma">  :thuocNguon :Nguon1052</text>
 
-  <!-- Chuỗi trích dẫn -->
-  <path class="ve" d="M820 310 H896"/>
-  <text x="858" y="300" class="nhan giua">tên túi</text>
-  <rect x="900" y="282" width="310" height="120" rx="16" class="khoi"/>
-  <text x="1055" y="314" class="ten giua">Địa chỉ trích dẫn</text>
-  <text x="1055" y="342" class="gt giua ma" style="font-size: 14px">:TD1052_D24K03</text>
-  <text x="1055" y="374" class="phu giua">toạ độ: khoản 3 Điều 24</text>
+  <!-- Nguồn -->
+  <rect x="800" y="382" width="380" height="152" rx="10" class="odam"/>
+  <text x="820" y="412" class="tieu">Nguồn</text>
+  <text x="820" y="442" class="ma">:Nguon1052</text>
+  <text x="820" y="468" class="ma">  :soHieu "1052/QĐ-ĐHNT"</text>
+  <text x="820" y="494" class="ma">  :banHanhNgay "2025-07-17"</text>
+  <text x="820" y="520" class="ma">  :duongDan "https://…pdf"</text>
 
-  <path class="ve" d="M820 690 H896"/>
-  <text x="858" y="680" class="nhan giua">tên túi</text>
-  <rect x="900" y="662" width="310" height="110" rx="16" class="khoi"/>
-  <text x="1055" y="694" class="ten giua">Địa chỉ trích dẫn</text>
-  <text x="1055" y="720" class="gt giua ma" style="font-size: 14px">:TD1052_D24K01dC</text>
-  <text x="1055" y="750" class="phu giua">toạ độ: điểm c khoản 1 Điều 24</text>
+  <path class="mui" d="M744 300 H796"/>
+  <text x="770" y="288" class="nhan" style="text-anchor:middle">tên túi</text>
+  <path class="mui" d="M990 328 V378"/>
 
-  <rect x="1250" y="440" width="310" height="200" rx="16" class="khoi" style="stroke: #7fb2ff; stroke-width: 2.5"/>
-  <text x="1405" y="474" class="ten giua">Nguồn <tspan class="ma" style="font-size: 15px">:Nguon1052</tspan></text>
-  <text x="1405" y="504" class="gt giua" style="font-size: 14px">Quy chế đào tạo trình độ đại học</text>
-  <text x="1405" y="524" class="gt giua" style="font-size: 14px">Trường Đại học Nha Trang</text>
-  <text x="1405" y="556" class="phu giua">số hiệu 1052/QĐ-ĐHNT</text>
-  <text x="1405" y="578" class="phu giua">ban hành ngày 17/7/2025 · loại: Quy chế</text>
-  <text x="1405" y="600" class="phu giua">đường dẫn: tệp PDF chính thức</text>
-  <text x="1405" y="622" class="phu giua">hiệu lực từ năm học 2025-2026</text>
-
-  <path class="di" d="M1055 402 V540 H1246"/>
-  <text x="1066" y="470" class="nhan">thuộc nguồn</text>
-  <path class="di" d="M1210 717 H1330 V644"/>
-  <text x="1216" y="740" class="nhan">thuộc nguồn</text>
-
-  <rect x="900" y="830" width="660" height="140" rx="16" class="vien"/>
-  <text x="926" y="862" class="ten">Trích dẫn ghép lại khi đọc hồ sơ</text>
-  <text x="926" y="894" class="gt" style="font-size: 14px">“khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang,</text>
-  <text x="926" y="916" class="gt" style="font-size: 14px">ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025”</text>
-  <text x="926" y="948" class="phu">= toạ độ + tên nguồn + số hiệu + ngày, kèm đường dẫn của nguồn</text>
-  <path class="di" d="M1500 640 V826"/>
+  <path class="mui" d="M990 534 V556"/>
+  <rect x="800" y="560" width="380" height="56" rx="10" class="o"/>
+  <text x="990" y="594" style="font-size:16px; text-anchor:middle">→ chuỗi trích dẫn hiện cho người dùng</text>
 </svg>

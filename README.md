@@ -26,8 +26,8 @@ cập nhật dữ liệu, thực nghiệm, kết quả và giới hạn.
 
 Thông tin học vụ nằm rải rác trong nhiều loại nguồn: quy chế, quyết định, phụ lục,
 bảng, biểu mẫu, chương trình đào tạo và trang web của các phòng ban. Sinh viên lại
-hỏi bằng từ ngữ đời thường, viết tắt hoặc thiếu dấu. Ví dụ, "nghỉ một học kỳ" và
-"bảo lưu kết quả" cùng chỉ đến thủ tục nghỉ học tạm thời.
+hỏi bằng từ ngữ đời thường, viết tắt hoặc thiếu dấu. Ví dụ, "xin nghỉ học" và "bảo lưu
+kết quả" cùng chỉ đến thủ tục nghỉ học tạm thời.
 
 Một LLM trả lời từ trí nhớ của nó sẽ nói trôi chảy nhưng dễ sai: nó không biết quy
 chế riêng của trường, và không cho biết câu nào lấy từ đâu. Hệ thống ở đây đặt ra
@@ -90,13 +90,14 @@ luồng của một lượt hỏi, không phải quy trình xây dựng dữ li�
 
 ![Luồng một lượt hỏi](docs/images/luong-mot-luot-hoi.png)
 
-Với câu "Em muốn nghỉ một học kỳ thì phải làm gì?", trình tự thật là:
+Với câu "em muốn xin nghỉ học", trình tự thật là:
 
 1. Giao diện gửi câu hỏi cùng tối đa 20 tin nhắn gần nhất tới API.
 2. API mở một lượt: gửi cho LLM lời hướng dẫn, hội thoại và mô tả của công cụ
    `lookup_academic_information`.
-3. LLM không trả lời ngay mà yêu cầu gọi công cụ với hai từ khoá:
-   `nghỉ học tạm thời` và `bảo lưu kết quả học tập`.
+3. LLM không trả lời ngay mà yêu cầu gọi công cụ với ba từ khoá: `nghỉ học tạm thời`,
+   `bảo lưu kết quả học tập` và `xin nghỉ học`. Đây là chỗ LLM có ích nhất: nó dịch lời
+   nói thường ngày sang đúng thuật ngữ của quy chế.
 4. API báo cho giao diện sự kiện `lookup_started`, rồi chạy công cụ.
 5. Search engine tìm các dòng chỉ mục khớp từ khoá, chọn 3 mục điểm cao nhất và
    đọc toàn bộ dữ kiện của từng mục, gom theo nguồn đã khẳng định chúng.
@@ -104,7 +105,7 @@ Với câu "Em muốn nghỉ một học kỳ thì phải làm gì?", trình t�
 7. LLM viết câu trả lời chỉ từ JSON đó. Mỗi đoạn chữ vừa sinh ra được đẩy về giao
    diện qua sự kiện `text_delta`; cuối cùng là `completed`.
 
-Lượt hỏi thật này mất 2,92 giây, gọi công cụ một lần và sinh 147 sự kiện `text_delta`.
+Lượt hỏi thật này mất 3,28 giây, gọi công cụ một lần và sinh 212 sự kiện `text_delta`.
 
 Hệ thống từ chối theo ba cách:
 
@@ -123,47 +124,13 @@ nó, không phải khẳng định thông tin đó không tồn tại ngoài th�
 
 ## 4. Dữ liệu trông như thế nào ở từng bước?
 
-Sơ đồ sau trả lời câu hỏi **"dữ liệu thật có hình dạng gì ở mỗi bước của lượt hỏi
-trên?"**. Mọi khối lấy từ lượt hỏi thật ở mục 3, chỉ rút gọn phần dài.
+**JSON** là định dạng văn bản ghi dữ liệu thành các cặp tên - giá trị. Sơ đồ sau đi
+theo đúng lượt hỏi ở mục 3, từ câu hỏi tới câu trả lời, chỉ rút gọn phần dài.
 
 ![Hình dạng dữ liệu từng bước](docs/images/hinh-dang-du-lieu.png)
 
-| Bước | Hình dạng | Nội dung chính |
-|---|---|---|
-| 1. Câu hỏi | chuỗi văn bản | `Em muốn nghỉ một học kỳ thì phải làm gì?` |
-| 2. Yêu cầu tới API | JSON qua `POST /chat` | `message` và `history` |
-| 3. Lời gọi công cụ | JSON do LLM sinh | tên công cụ và danh sách `keywords` |
-| 4. Kết quả tìm kiếm | 3 mục kèm điểm | mục, điểm, các dòng đã khớp |
-| 5. Kết quả công cụ | JSON | mục, dòng khớp, dữ kiện gom theo nguồn |
-| 6. Sự kiện về giao diện | SSE | `lookup_started`, `lookup_finished`, `text_delta`, `completed` |
-| 7. Câu trả lời | Markdown | hướng dẫn kèm nguồn và đường dẫn |
-
-**JSON** là định dạng văn bản ghi dữ liệu thành các cặp tên - giá trị. Kết quả
-công cụ là phần quan trọng nhất, vì đó là tất cả những gì LLM được biết về quy định:
-
-```json
-{
-  "status": "found",
-  "guidance": "Mỗi phần tử của results là một mục của ontology. Kiểm matched trước: …",
-  "results": [
-    {
-      "label": "Thủ tục nghỉ học tạm thời",
-      "classes": ["Thủ tục học vụ"],
-      "matched": ["bảo lưu kết quả học tập", "bảo lưu kết quả", "nghỉ học tạm thời"],
-      "sources": [
-        {
-          "citation": "khoản 3 Điều 24 Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang, ban hành kèm Quyết định 1052/QĐ-ĐHNT ngày 17/7/2025",
-          "url": "https://pdtdaihoc.ntu.edu.vn/…pdf",
-          "facts": [
-            {"subject": "Thủ tục nghỉ học tạm thời", "property": "nộp tại", "value": "Phòng Công tác Chính trị và Sinh viên"},
-            {"subject": "Thủ tục nghỉ học tạm thời", "property": "cần biểu mẫu", "value": "Mẫu số 09 - Đơn xin nghỉ học tạm thời"}
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+Trong đó **kết quả công cụ** (bước 4) là phần quan trọng nhất, vì đó là tất cả những
+gì LLM được biết về quy định khi viết câu trả lời:
 
 | Trường | Ý nghĩa |
 |---|---|
@@ -175,20 +142,10 @@ công cụ là phần quan trọng nhất, vì đó là tất cả những gì L
 | `facts[].subject` | mục nói ra dữ kiện; khác `label` nghĩa là câu của một mục khác nói tới mục này |
 | `unmatched`, `truncation` | từ khoá không khớp gì; số từ khoá bị cắt vì vượt giới hạn |
 
-Một nguồn có `citation` bằng `null` là dữ kiện dùng được nhưng không được trích
-dẫn. Công cụ nhận tối đa 20 từ khoá, mỗi từ khoá tối đa 120 ký tự.
-
-Sự kiện SSE là các dòng `data:` nối nhau trong một kết nối HTTP:
-
-```text
-data: {"type": "lookup_started", "keywords": "nghỉ học tạm thời · bảo lưu kết quả học tập"}
-data: {"type": "lookup_finished"}
-data: {"type": "text_delta", "content": "…một đoạn của câu trả lời…"}
-data: {"type": "completed", "content": "Để nghỉ học tạm thời và bảo lưu kết quả học tập, bạn cần…"}
-```
-
-Ngoài bốn loại trên còn `queued` (đang xếp hàng, kèm vị trí), `warning` (lịch sử quá
-dài đã bị cắt) và `error`.
+Một nguồn có `citation` bằng `null` là dữ kiện dùng được nhưng không được trích dẫn.
+Công cụ nhận tối đa 20 từ khoá, mỗi từ khoá tối đa 120 ký tự. Ngoài bốn loại sự kiện
+SSE trong hình còn `queued` (đang xếp hàng, kèm vị trí), `warning` (lịch sử quá dài đã
+bị cắt) và `error`.
 
 ## 5. Ontology được tổ chức ra sao?
 
@@ -350,16 +307,12 @@ trong mỗi hộp là số mục đếm ngày 13/9/2026, mô tả quy mô chứ 
 
 ### 5.6 Dữ liệu được biên soạn và đối chiếu nguồn thế nào?
 
-Quy trình biên soạn có năm bước:
-
-1. **Chọn nguồn chính thức:** văn bản của trường hoặc trang của phòng ban; ghi số
-   hiệu, ngày ban hành, đường dẫn và ngày thu thập.
-2. **Tách thành mục và phát biểu:** mỗi câu gắn với chỗ nhỏ nhất của văn bản khẳng
-   định nó (khoản, điểm, mục của trang).
-3. **Đối chiếu từng giá trị:** so với bản chép trong [`references/`](references/) hoặc
-   trang chính thức; bảng nhiều tầng được chép nguyên văn từng ô.
-4. **Ghi vào ontology:** qua script hoặc trang quản trị; mọi lần ghi đều qua kiểm lược đồ.
-5. **Chạy lại bộ test và bộ kiểm tìm kiếm** (mục 8).
+Mỗi mục đi qua bốn việc: chọn nguồn chính thức rồi ghi số hiệu, ngày ban hành và đường
+dẫn; tách nội dung thành từng phát biểu, mỗi phát biểu gắn với chỗ nhỏ nhất của văn bản
+khẳng định nó (khoản, điểm, mục của trang); đối chiếu từng giá trị với bản chép trong
+[`references/`](references/) hoặc trang chính thức, riêng bảng nhiều tầng được chép
+nguyên văn từng ô; cuối cùng ghi vào ontology qua bước kiểm lược đồ rồi chạy lại bộ
+test và bộ kiểm tìm kiếm (mục 8).
 
 Các quy tắc biên soạn:
 
@@ -372,20 +325,14 @@ Các quy tắc biên soạn:
 79 nguồn hiện có gồm 48 văn bản chương trình đào tạo, 18 hướng dẫn và trang web
 chính thức, 7 quyết định, 4 quy chế và 2 danh mục biểu mẫu.
 
-### 5.7 Các con số giải phẫu có ý nghĩa gì?
+### 5.7 Ontology hiện lớn cỡ nào?
 
-Các số đếm từ phiên bản ontology ngày 13/9/2026. Chúng mô tả quy mô, không đo độ
-đúng hay độ đầy đủ.
-
-| Thành phần | Số lượng | Nó là gì |
-|---|---:|---|
-| Loại mục | 18 | 16 loại tri thức và 2 loại của tầng nguồn |
-| Shape trong lược đồ | 18 | một shape cho mỗi loại |
-| Phát biểu (quad) | 4.082 | toàn bộ phát biểu trong tệp |
-| Phát biểu trong túi | 1.211 | các câu mang nội dung có nguồn |
-| Phát biểu ngoài túi | 2.871 | danh tính, tầng nguồn và tên của các loại và thuộc tính |
-| Nguồn | 79 | văn bản và trang web |
-| Địa chỉ trích dẫn | 374 | số túi |
+Tính đến ngày 13/9/2026, tệp có **4.082 phát biểu**: 1.211 nằm trong túi trích dẫn —
+đây là các câu mang nội dung, đều có nguồn — và 2.871 nằm ngoài túi, gồm danh tính của
+mục, tầng nguồn, và tên của các loại và thuộc tính. Dữ liệu trải trên **18 loại mục**
+(16 loại tri thức cộng 2 loại của tầng nguồn), mỗi loại có đúng một shape trong lược
+đồ. Tầng nguồn gồm **79 nguồn** và **374 địa chỉ trích dẫn**, tức 374 túi. Các số này
+mô tả quy mô, không đo độ đúng hay độ đầy đủ.
 
 ### 5.8 Kiểm định ontology chứng minh được gì?
 
@@ -407,7 +354,7 @@ mâu thuẫn với văn bản chính thức, văn bản chính thức được �
 Mục này trả lời một câu hỏi cụ thể: **LLM gửi vài từ khoá, làm sao hệ thống biết mục
 nào của ontology cần đưa lại?**
 
-Sơ đồ sau dùng đúng hai từ khoá của lượt hỏi ở mục 3 và điểm số thật. Nó mô tả thuật
+Sơ đồ sau dùng đúng ba từ khoá của lượt hỏi ở mục 3 và điểm số thật. Nó mô tả thuật
 toán, không phải luồng giữa các thành phần.
 
 ![Thuật toán tìm kiếm](docs/images/thuat-toan-tim-kiem.png)
@@ -467,11 +414,11 @@ gộp chỉ có một:
 1. với từng từ khoá, mỗi mục chỉ giữ **dòng điểm cao nhất** của nó;
 2. điểm của mục là **tổng** các điểm đó qua các từ khoá.
 
-Ở ví dụ, "Thủ tục nghỉ học tạm thời" có dòng 10,43 cho từ khoá "bảo lưu kết quả học
-tập" và dòng 6,44 cho "nghỉ học tạm thời", nên được 16,88. Dòng 9,53 của cùng mục cho
-cùng từ khoá không được cộng thêm. Cộng theo từ khoá mà không cộng theo dòng làm mục
-trả lời được nhiều ý của câu hỏi đứng trên mục khớp thật tốt một ý, trong khi một mục
-nhiều dòng không tự tăng điểm.
+Ở ví dụ, "Thủ tục nghỉ học tạm thời" được 6,44 cho từ khoá "nghỉ học tạm thời", 10,43
+cho "bảo lưu kết quả học tập" và 2,74 cho "xin nghỉ học", tổng 19,61. Dòng 9,53 của
+cùng mục cho cùng từ khoá "bảo lưu kết quả học tập" không được cộng thêm. Cộng theo từ
+khoá mà không cộng theo dòng làm mục trả lời được nhiều ý của câu hỏi đứng trên mục
+khớp thật tốt một ý, trong khi một mục nhiều dòng không tự tăng điểm.
 
 ### 6.5 Chọn 3 mục, không đặt ngưỡng
 
@@ -486,7 +433,7 @@ Với mỗi mục được chọn, engine đọc mọi phát biểu mà mục l�
 biểu của mục khác trỏ tới nó (ví dụ các thủ tục "nộp tại" một phòng). Các phát biểu
 được gom theo túi; mỗi túi thành một nguồn với chuỗi trích dẫn và đường dẫn. Nhóm
 nhiều dữ kiện nhất đứng trước; nhóm không có nguồn xếp cuối. Mục "Thủ tục nghỉ học
-tạm thời" ở ví dụ có 8 nhóm nguồn.
+tạm thời" ở ví dụ có 12 nhóm nguồn.
 
 ### 6.7 Chi phí
 
@@ -498,65 +445,24 @@ có tệp chỉ mục nào phải giữ đồng bộ.
 ## 7. Dữ liệu được cập nhật thế nào?
 
 **CRUD** (*create, read, update, delete*) là bốn thao tác thêm, đọc, sửa, xoá. Trang
-quản trị làm cả bốn trên ontology theo ba nguyên tắc:
+quản trị làm cả bốn trên ontology, để người biên soạn cập nhật quy định mới mà không
+cần biết TriG hay SHACL.
 
-- **sửa là sửa thật:** mục được thay bằng đúng những gì người sửa gửi lên, kể cả nguồn
-  của từng câu, vì một văn bản mới có thể thay một phần hay toàn bộ căn cứ cũ;
-- **câu mang nội dung phải gắn nguồn:** người sửa chọn nguồn và ghi vị trí trong nguồn;
-  địa chỉ trích dẫn được tạo nếu chưa có và được dọn khi không còn câu nào dùng;
-- **dữ liệu sai lược đồ không được ghi.**
-
-Form của mỗi loại mục được sinh từ chính `shapes.ttl`: ô bắt buộc có dấu `*`, ô trỏ
-tới loại khác là danh sách chọn, ô không được gắn nguồn không hiện ô nguồn. Vì form và
-bước kiểm cùng đọc một lược đồ, chúng không thể nói hai điều khác nhau.
+Form của mỗi loại mục được sinh ra từ chính lược đồ: ô bắt buộc có dấu `*`, ô trỏ tới
+loại khác hiện thành danh sách chọn, ô phải gắn nguồn có thêm chỗ chọn văn bản và ghi
+vị trí trong văn bản đó. Vì form và bước kiểm tra cùng đọc một lược đồ, chúng không thể
+nói hai điều khác nhau.
 
 ![Trang quản trị đang sửa thủ tục nghỉ học tạm thời](docs/images/quan-tri-sua-muc.png)
 
-Một lần lưu đi bốn bước:
-
-1. dựng bản ontology mới trong bộ nhớ từ bản hiện tại và nội dung gửi lên;
-2. kiểm toàn bộ bản mới bằng SHACL, cộng luật gắn nguồn;
-3. ghi tệp TriG qua tệp tạm rồi đổi tên, các phát biểu sắp theo thứ tự cố định để lịch
-   sử `git` chỉ hiện đúng dòng đã đổi;
-4. dựng lại engine tìm kiếm, nên lượt hỏi kế tiếp dùng dữ liệu mới.
-
-Bước 2 hỏng thì tệp trên đĩa giữ nguyên và lý do hiện ngay trên trang:
+Mỗi lần lưu, hệ thống dựng thử bản ontology mới rồi kiểm toàn bộ bằng SHACL trước khi
+ghi. Nếu sai lược đồ — ví dụ một câu mang nội dung nhưng chưa chọn nguồn — dữ liệu cũ
+giữ nguyên và lý do hiện ngay trên trang:
 
 ![Trang quản trị từ chối một câu chưa gắn nguồn](docs/images/quan-tri-tu-choi.png)
 
-Trang gọi các đường API sau. Mọi đường đòi khoá dịch vụ như đường hỏi đáp, cộng khoá
-quản trị trong header `X-Admin-Token`; không đặt khoá quản trị thì dịch vụ không mở
-các đường này.
-
-| Đường | Làm gì |
-|---|---|
-| `GET /admin/schema` | mô tả form của mọi loại mục, đọc từ lược đồ |
-| `GET /admin/entities?class=…` | danh sách mục của một loại |
-| `POST /admin/entities` | tạo mục mới; định danh sinh từ tên |
-| `GET /admin/entities/{id}` | đọc một mục cùng các câu và nguồn của từng câu |
-| `PUT /admin/entities/{id}` | thay toàn bộ mục bằng nội dung gửi lên |
-| `DELETE /admin/entities/{id}` | xoá mục, từ chối nếu còn mục khác trỏ tới |
-
-Nội dung gửi lên và lý do từ chối có dạng:
-
-```json
-{
-  "class": "ThuTucHocVu",
-  "label": "Thủ tục nghỉ học tạm thời",
-  "altLabels": ["bảo lưu kết quả học tập"],
-  "statements": [
-    {"property": "nopTai", "value": "PhongCongTacChinhTriVaSinhVien",
-     "source": "Nguon1052", "coordinate": "khoản 3 Điều 24"}
-  ]
-}
-```
-
-```json
-{"detail": "Dữ liệu chưa hợp lệ.", "errors": ["Dòng 2 (nội dung): phải chọn nguồn khẳng định câu này."]}
-```
-
-Đo trên máy phát triển: lưu lại một thủ tục không đổi gì mất 0,47 giây và giữ nguyên
-tệp đến từng byte; tạo một mục mới mất 0,32 giây.
+Ghi xong, engine tìm kiếm được dựng lại nên lượt hỏi kế tiếp đã dùng dữ liệu mới, không
+phải huấn luyện lại gì. Đo trên máy phát triển, một lần lưu mất khoảng 0,5 giây.
 
 ## 8. Thực nghiệm được thiết lập thế nào?
 
@@ -642,7 +548,7 @@ và có dữ liệu, được đánh dấu đáng ngờ để đọc lại trong
 | `tests/ontology` | 1 | 17 bảng khớp bản chép nguyên văn |
 | `webui` | 8 + 19 | proxy tới máy chủ; hành vi giao diện trong trình duyệt |
 
-## 9. Kết quả cho thấy gì?
+## 9. Kiểm thử và kết quả
 
 ### 9.1 Tìm kiếm
 
@@ -826,7 +732,7 @@ BACKEND_API_TOKEN=$ONTCHATBOT_BACKEND_TOKEN npm run dev
 Các lệnh khác:
 
 ```bash
-uv run chat_agent --hoi "Em muốn nghỉ một học kỳ thì phải làm gì?"   # hỏi từ dòng lệnh
+uv run chat_agent --hoi "em muốn xin nghỉ học"                      # hỏi từ dòng lệnh
 uv run ontology_search search "nghỉ học tạm thời" "bảo lưu kết quả học tập"
 uv run pytest -q                                                    # bộ test Python
 uv run python resources/end-to-end/check_retrieval.py              # bộ kiểm tìm kiếm
