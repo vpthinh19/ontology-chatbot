@@ -8,6 +8,7 @@
  },
  "nhieu_cau_mot_dieu_khoan": {
   "ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi|khoản 3 Điều 21": "khoản 3 có hai câu thật: ai xét, và xét theo đơn vị nào",
+  "ThuTucChuyenNganh|khoản 2 Điều 25": "khoản 2 có hai câu thật: ai được xem xét chuyển ngành, và thời hạn cùng cách nộp đơn",
   "ThuTucRutBotHocPhanDaDangKy|khoản 2 Điều 10": "khoản 2 Quy chế 753 có hai câu: thời hạn rút, và hậu quả khi quá hạn",
   "ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc|khoản 3 Điều 20": "khoản 3 có hai câu: nộp đơn, và bảo lưu kết quả cũ",
   "ThuTucXinThoiHoc|khoản 2 Điều 24": "khoản 2 có hai câu: điều kiện thôi học, và việc quay lại phải xét tuyển như thí sinh mới",
@@ -16,40 +17,14 @@
   "ThuTucXetVaCapHocBongKhuyenKhichHocTap|các thông báo danh sách dự kiến của từng học kỳ": "mỗi thông báo nêu ba việc: công bố danh sách, cung cấp số tài khoản, thời hạn phản hồi"
  },
  "khong_nguon": {
-  "ly_do": "Chỉ có danh tính và làm đích của quan hệ, không tự khẳng định điều gì - chủ thể (Sinh viên, Hiệu trưởng), ngân hàng, chứng chỉ, khối ngành, phương thức thanh toán. Không cần nguồn vì không có phát biểu nào để chứng nhận. Ba chính sách trong danh sách thì chỉ còn câu mô tả không nguồn, đúng bản chất.",
+  "ly_do": "Thực thể không có câu nào kèm nguồn: chỉ có danh tính, làm đích của quan hệ, và ô loại thuộc nhóm do ta tự đặt ('Chủ thể tham gia'). Văn bản nhắc tới họ trong nhiều điều khoản nhưng không tự khẳng định điều gì về chính họ, nên chưa có câu nào để trích dẫn. Rà lại ngày 13/9/2026: các chủ thể có định nghĩa trong văn bản (cố vấn học tập, hai hội đồng) sẽ được thêm nội dung kèm nguồn.",
   "thuc_the": [
-   "Aptis (General)",
-   "Bộ môn",
-   "Cambridge English Scale",
-   "Chính sách buộc thôi học",
-   "Chính sách cảnh báo kết quả học tập",
-   "Chính sách xử lý sinh viên vi phạm",
    "Cố vấn học tập",
    "Giảng viên giảng dạy học phần",
    "Hiệu trưởng",
    "Hội đồng chuyên môn",
    "Hội đồng xét tốt nghiệp",
-   "IC3",
-   "ICDL",
-   "Khoa hoặc viện đào tạo",
-   "Khối ngành III: Kinh doanh và quản lý",
-   "Khối ngành III: Kinh doanh và quản lý, pháp luật",
-   "Khối ngành IV: Khoa học sự sống",
-   "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên",
-   "Khối ngành V: Toán",
-   "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản",
-   "Khối ngành VII: Nhân văn",
-   "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường",
-   "Linguaskill",
-   "MOS",
-   "Ngân hàng Agribank",
-   "Ngân hàng Liên Việt PostBank",
-   "Ngân hàng VietinBank",
-   "Sinh viên",
-   "Thanh toán bằng mã QR",
-   "Thanh toán qua cổng VNPAY",
-   "Trình độ đại học",
-   "đồng trên học kỳ"
+   "Sinh viên"
   ]
  }
 }

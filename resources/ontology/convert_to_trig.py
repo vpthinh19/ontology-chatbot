@@ -504,7 +504,7 @@ def doi_chieu(bo: BoChuyenDoi, ds, da_sua: set = frozenset(), da_bo: set = froze
                 if bo.moi(goc) in da_dat_nguon:
                     continue
                 can = (bo.moi(goc), ACADEMIC.noiDung, Literal(str(o), lang="vi"))
-                if can not in co_that:
+                if can not in co_that and can not in da_bo:
                     thieu.append(f"{local_name(node)} · {ten} → {str(o)[:46]}")
                 continue
             if ten in VAN_BAN:
@@ -725,6 +725,12 @@ def doi_iri(bo: "BoChuyenDoi", ds, mac_dinh: Graph, sua_chua: dict, loi: list[st
         for node, ten in list(bo.ten_moi.items()):
             if ten == muc["thuc_the"]:
                 bo.ten_moi[node] = muc["iri_moi"]
+        # Giá trị của ô "loại" là từ vựng chứ không phải thực thể; đổi tên thì báo cáo
+        # vẫn phải nhận ra nó là từ vựng.
+        for tap in (bo.tu_vung, bo.gop_lop_da_dung):
+            if muc["thuc_the"] in tap:
+                tap.discard(muc["thuc_the"])
+                tap.add(muc["iri_moi"])
     return dem
 
 

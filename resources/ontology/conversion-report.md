@@ -1,16 +1,16 @@
 # Báo cáo chuyển đổi ontology sang TriG
 
 - cũ: 6350 bộ ba, 685 cá thể
-- mới: 2055 câu, trong đó 1570 nằm ngoài túi
-- nguồn thô: 12 · địa chỉ trích dẫn: 145 · túi dùng thật: 145
+- mới: 2057 câu, trong đó 1469 nằm ngoài túi
+- nguồn thô: 12 · địa chỉ trích dẫn: 151 · túi dùng thật: 151
 
 ## Đã chuyển
 
 - bỏ nội dung trùng nhãn: 6
 - câu gỡ khỏi trích dẫn không nói ra nó: 64
-- câu sửa lại theo quy chế: 113
-- câu đặt lại đúng chỗ trích dẫn: 73
-- câu đổi sang IRI mới: 18
+- câu sửa lại theo quy chế: 127
+- câu đặt lại đúng chỗ trích dẫn: 185
+- câu đổi sang IRI mới: 20
 - giá trị: 122
 - mô tả không nguồn: 27
 - nội dung: 212
@@ -24,7 +24,7 @@
 
 ## Cần người duyệt
 
-Đã duyệt và giữ nguyên: 7 chỗ nhiều câu, 4 câu hai văn bản cùng nói, 25 thực thể chỉ có danh tính (lý do ghi trong `reviewed.json`).
+Đã duyệt và giữ nguyên: 8 chỗ nhiều câu, 4 câu hai văn bản cùng nói, 6 thực thể chỉ có danh tính (lý do ghi trong `reviewed.json`).
 
 ## Địa chỉ trích dẫn đã dọn
 

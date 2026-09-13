@@ -32,7 +32,8 @@ ns1:TD1052_D22K03 {
 }
 
 ns1:TD1052_D20K01dA {
-    ns1:CanhBaoDoNoTinChi ns1:noiDung "Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi .
+    ns1:CanhBaoDoNoTinChi ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap ;
+        ns1:noiDung "Tổng số tín chỉ không đạt trong học kỳ vượt quá 50% khối lượng đã đăng ký trong học kỳ, hoặc tổng số tín chỉ nợ đọng từ đầu khóa học vượt quá 24."@vi .
 }
 
 ns1:TD1052_D25K01dB {
@@ -61,24 +62,9 @@ ns1:TD1052_D24K01dA {
 }
 
 {
-    ns1:AptisGeneral a ns1:ChungChi ;
-        rdfs:label "Aptis (General)"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
-        skos:altLabel "Aptis General"@vi,
-            "chứng chỉ ngoại ngữ tiếng Anh"@vi,
-            "chứng chỉ tiếng Anh"@vi,
-            "tiếng Anh"@vi .
-
     ns1:BangPhanLoaiTheoNguong rdfs:label "Bảng phân loại theo ngưỡng"@vi .
 
     ns1:BuocThucHien rdfs:label "Bước thực hiện"@vi .
-
-    ns1:CambridgeEnglishScale a ns1:ChungChi ;
-        rdfs:label "Cambridge English Scale"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
-        skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
-            "chứng chỉ tiếng Anh"@vi,
-            "tiếng Anh"@vi .
 
     ns1:Chuong rdfs:label "Chương"@vi .
 
@@ -100,37 +86,9 @@ ns1:TD1052_D24K01dA {
 
     ns1:HuongXuLyCuaTruongHop rdfs:label "Hướng xử lý của trường hợp"@vi .
 
-    ns1:Ic3 a ns1:ChungChi ;
-        rdfs:label "IC3"@vi ;
-        ns1:loaiChungChi ns1:ChungChiTinHoc ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
-
-    ns1:Icdl a ns1:ChungChi ;
-        rdfs:label "ICDL"@vi ;
-        ns1:loaiChungChi ns1:ChungChiTinHoc ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
-
     ns1:KetQuaXuLy rdfs:label "Kết quả xử lý"@vi .
 
     ns1:Khoan rdfs:label "Khoản"@vi .
-
-    ns1:Linguaskill a ns1:ChungChi ;
-        rdfs:label "Linguaskill"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
-        skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
-            "chứng chỉ tiếng Anh"@vi,
-            "tiếng Anh"@vi .
-
-    ns1:Mos a ns1:ChungChi ;
-        rdfs:label "MOS"@vi ;
-        ns1:loaiChungChi ns1:ChungChiTinHoc ;
-        skos:altLabel "chứng chỉ tin học"@vi,
-            "chứng chỉ tin học quốc tế"@vi,
-            "tin học"@vi .
 
     ns1:MucVanBan rdfs:label "Mục văn bản"@vi .
 
@@ -642,9 +600,29 @@ ns1:TD1052_D24K01dA {
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "điểm c khoản 3 Điều 28"@vi .
 
+    ns1:TDNguon1052Khoan1Dieu1 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 1 Điều 1"@vi .
+
     ns1:TDNguon1052Khoan1Dieu21 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 1 Điều 21"@vi .
+
+    ns1:TDNguon1052Khoan1Dieu24 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 1 Điều 24"@vi .
+
+    ns1:TDNguon1052Khoan1Dieu26 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 1 Điều 26"@vi .
+
+    ns1:TDNguon1052Khoan1Dieu27 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 1 Điều 27"@vi .
+
+    ns1:TDNguon1052Khoan1Dieu9 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "khoản 1 Điều 9"@vi .
 
     ns1:TDNguon1052Khoan2Dieu11 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
@@ -653,6 +631,10 @@ ns1:TD1052_D24K01dA {
     ns1:TDNguon1052Khoan2Dieu9 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:Nguon1052 ;
         ns1:toaDo "khoản 2 Điều 9"@vi .
+
+    ns1:TDNguon1052PhanMoDauDieu28 a ns1:DiaChiTrichDan ;
+        ns1:thuocNguon ns1:Nguon1052 ;
+        ns1:toaDo "phần mở đầu Điều 28"@vi .
 
     ns1:TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 a ns1:DiaChiTrichDan ;
         ns1:thuocNguon ns1:NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank ;
@@ -923,14 +905,19 @@ ns1:TD1052_D24K01dA {
 
     ns1:websiteDonVi rdfs:label "website đơn vị"@vi .
 
+    ns1:AptisGeneral a ns1:ChungChi ;
+        rdfs:label "Aptis (General)"@vi ;
+        skos:altLabel "Aptis General"@vi,
+            "chứng chỉ ngoại ngữ tiếng Anh"@vi,
+            "chứng chỉ tiếng Anh"@vi,
+            "tiếng Anh"@vi .
+
     ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet a ns1:Bang ;
         rdfs:label "bảng chuẩn ngoại ngữ khác chương trình đặc biệt"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi .
 
     ns1:BangChuanTiengAnhChuongTrinhDacBiet a ns1:Bang ;
         rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi,
             "yêu cầu tiếng Anh chương trình đặc biệt"@vi .
 
@@ -953,25 +940,21 @@ ns1:TD1052_D24K01dA {
 
     ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan a ns1:Bang ;
         rdfs:label "bảng quy đổi chứng chỉ tiếng Anh chương trình chuẩn"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "quy đổi IELTS TOEIC TOEFL sang điểm 10"@vi,
             "quy đổi điểm chứng chỉ tiếng Anh quốc tế cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
 
     ns1:BangQuyDoiChungChiTinHoc a ns1:Bang ;
         rdfs:label "bảng quy đổi chứng chỉ tin học"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "quy đổi điểm IC3 ICDL MOS"@vi,
             "điểm thưởng chứng chỉ tin học"@vi .
 
     ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh a ns1:Bang ;
         rdfs:label "bảng quy đổi ngoại ngữ hai ngành Ngôn ngữ Anh"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "quy đổi HSK JLPT TOPIK cho sinh viên ngành Ngôn ngữ Anh"@vi,
             "quy đổi chứng chỉ ngoại ngữ quốc tế cho sinh viên ngành Ngôn ngữ Anh"@vi .
 
     ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan a ns1:Bang ;
         rdfs:label "bảng quy đổi ngoại ngữ khác chương trình chuẩn"@vi ;
-        ns1:loaiBang ns1:BangQuyDoiChungChi ;
         skos:altLabel "quy đổi HSK JLPT TOPIK sang điểm 10"@vi,
             "quy đổi chứng chỉ ngoại ngữ quốc tế khác cho sinh viên không chuyên ngữ chương trình chuẩn"@vi .
 
@@ -1001,30 +984,26 @@ ns1:TD1052_D24K01dA {
         skos:altLabel "trình độ năm học của sinh viên"@vi,
             "xếp trình độ năm học theo số tín chỉ tích lũy"@vi .
 
-    ns1:BoMon a ns1:ChuThe ;
-        rdfs:label "Bộ môn"@vi ;
-        ns1:loaiChuThe ns1:DonViTrongTruong ;
-        skos:altLabel "bộ môn quản lý học phần"@vi .
-
     ns1:BuocThoiHocDoCanhBaoLienTiep a ns1:QuyTac ;
-        rdfs:label "Buộc thôi học do cảnh báo liên tiếp"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacBuocThoiHoc .
+        rdfs:label "Buộc thôi học do cảnh báo liên tiếp"@vi .
 
     ns1:BuocThoiHocDoQuaThoiGianDaoTao a ns1:QuyTac ;
-        rdfs:label "Buộc thôi học do quá thời gian đào tạo"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacBuocThoiHoc .
+        rdfs:label "Buộc thôi học do quá thời gian đào tạo"@vi .
+
+    ns1:CambridgeEnglishScale a ns1:ChungChi ;
+        rdfs:label "Cambridge English Scale"@vi ;
+        skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
+            "chứng chỉ tiếng Anh"@vi,
+            "tiếng Anh"@vi .
 
     ns1:CanhBaoDoDiemTrungBinhHocKy a ns1:QuyTac ;
-        rdfs:label "Cảnh báo do điểm trung bình học kỳ"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap .
+        rdfs:label "Cảnh báo do điểm trung bình học kỳ"@vi .
 
     ns1:CanhBaoDoDiemTrungBinhTichLuy a ns1:QuyTac ;
-        rdfs:label "Cảnh báo do điểm trung bình tích lũy"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap .
+        rdfs:label "Cảnh báo do điểm trung bình tích lũy"@vi .
 
     ns1:CanhBaoDoNoTinChi a ns1:QuyTac ;
-        rdfs:label "Cảnh báo do nợ tín chỉ"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap .
+        rdfs:label "Cảnh báo do nợ tín chỉ"@vi .
 
     ns1:ChinhSachXuLySinhVienViPham a ns1:QuyTac ;
         rdfs:label "Chính sách xử lý sinh viên vi phạm"@vi ;
@@ -1062,12 +1041,10 @@ ns1:TD1052_D24K01dA {
         rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 
     ns1:DanhGiaCuoiKy a ns1:KhaiNiem ;
-        rdfs:label "Đánh giá cuối kỳ"@vi ;
-        ns1:loaiKhaiNiem ns1:ThanhPhanDanhGiaHocPhan .
+        rdfs:label "Đánh giá cuối kỳ"@vi .
 
     ns1:DanhGiaQuaTrinh a ns1:KhaiNiem ;
-        rdfs:label "Đánh giá quá trình"@vi ;
-        ns1:loaiKhaiNiem ns1:ThanhPhanDanhGiaHocPhan .
+        rdfs:label "Đánh giá quá trình"@vi .
 
     ns1:DanhMucHocPhanNgoaiNgu a ns1:Bang ;
         rdfs:label "danh mục học phần ngoại ngữ"@vi ;
@@ -1089,17 +1066,14 @@ ns1:TD1052_D24K01dA {
 
     ns1:DaoTaoChinhQuy a ns1:KhaiNiem ;
         rdfs:label "Đào tạo chính quy"@vi ;
-        ns1:loaiKhaiNiem ns1:HinhThucDaoTao ;
         skos:altLabel "chính quy"@vi,
             "hệ chính quy"@vi .
 
     ns1:DaoTaoTrucTuyenDongBo a ns1:KhaiNiem ;
-        rdfs:label "Đào tạo trực tuyến đồng bộ"@vi ;
-        ns1:loaiKhaiNiem ns1:HinhThucToChucDayHoc .
+        rdfs:label "Đào tạo trực tuyến đồng bộ"@vi .
 
     ns1:DaoTaoTrucTuyenKhongDongBo a ns1:KhaiNiem ;
-        rdfs:label "Đào tạo trực tuyến không đồng bộ"@vi ;
-        ns1:loaiKhaiNiem ns1:HinhThucToChucDayHoc .
+        rdfs:label "Đào tạo trực tuyến không đồng bộ"@vi .
 
     ns1:DeCuongChiTietHocPhan a ns1:KhaiNiem ;
         rdfs:label "Đề cương chi tiết học phần"@vi ;
@@ -1109,34 +1083,29 @@ ns1:TD1052_D24K01dA {
 
     ns1:Delf a ns1:ChungChi ;
         rdfs:label "DELF"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Pháp"@vi,
             "chứng chỉ tiếng Pháp"@vi,
             "tiếng Pháp"@vi .
 
     ns1:DiemI a ns1:DanhMuc ;
-        rdfs:label "Điểm I"@vi ;
-        ns1:loaiDanhMuc ns1:DiemChu .
+        rdfs:label "Điểm I"@vi .
 
     ns1:DiemP a ns1:DanhMuc ;
-        rdfs:label "Điểm P"@vi ;
-        ns1:loaiDanhMuc ns1:DiemChu .
+        rdfs:label "Điểm P"@vi .
 
     ns1:DiemR a ns1:DanhMuc ;
-        rdfs:label "Điểm R"@vi ;
-        ns1:loaiDanhMuc ns1:DiemChu .
+        rdfs:label "Điểm R"@vi .
 
     ns1:DiemX a ns1:DanhMuc ;
-        rdfs:label "Điểm X"@vi ;
-        ns1:loaiDanhMuc ns1:DiemChu .
+        rdfs:label "Điểm X"@vi .
 
     ns1:DieuKienDuThiHocPhanLyThuyet a ns1:QuyTac ;
-        rdfs:label "Điều kiện dự thi học phần lý thuyết"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi .
+        rdfs:label "Điều kiện dự thi học phần lý thuyết"@vi .
 
     ns1:DieuKienDuThiHocPhanThucHanh a ns1:QuyTac ;
-        rdfs:label "Điều kiện dự thi học phần thực hành"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi .
+        rdfs:label "Điều kiện dự thi học phần thực hành"@vi .
+
+    ns1:DonViTinh rdfs:label "Đơn vị tính"@vi .
 
     ns1:GiangVienGiangDayHocPhan a ns1:ChuThe ;
         rdfs:label "Giảng viên giảng dạy học phần"@vi ;
@@ -1145,100 +1114,78 @@ ns1:TD1052_D24K01dA {
             "thầy cô dạy môn"@vi .
 
     ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi a ns1:QuyTac ;
-        rdfs:label "Giới hạn khối lượng được công nhận và chuyển đổi"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi .
+        rdfs:label "Giới hạn khối lượng được công nhận và chuyển đổi"@vi .
 
     ns1:GioiHanTinChiTichLuyTaiTruongKhac a ns1:QuyTac ;
-        rdfs:label "Giới hạn tín chỉ tích lũy tại trường khác"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi .
+        rdfs:label "Giới hạn tín chỉ tích lũy tại trường khác"@vi .
 
     ns1:HaHangTotNghiepDoBiKyLuat a ns1:QuyTac ;
-        rdfs:label "Hạ hạng tốt nghiệp do bị kỷ luật"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacHaHangTotNghiep .
+        rdfs:label "Hạ hạng tốt nghiệp do bị kỷ luật"@vi .
 
     ns1:HaHangTotNghiepDoHocLaiQuaNhieu a ns1:QuyTac ;
-        rdfs:label "Hạ hạng tốt nghiệp do học lại quá nhiều"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacHaHangTotNghiep .
+        rdfs:label "Hạ hạng tốt nghiệp do học lại quá nhiều"@vi .
 
     ns1:HauQuaCuaViecBiCamThiHoacVangThi a ns1:QuyTac ;
-        rdfs:label "Hậu quả của việc bị cấm thi hoặc vắng thi"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi .
+        rdfs:label "Hậu quả của việc bị cấm thi hoặc vắng thi"@vi .
 
     ns1:HeThongThongTinQuanLy a ns1:NganhDaoTao ;
         rdfs:label "Hệ thống thông tin quản lý"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhChuan a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại giỏi, chương trình chuẩn"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại giỏi, chương trình chuẩn"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhDacBiet a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại giỏi, chương trình đặc biệt"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại giỏi, chương trình đặc biệt"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhChuan a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại khá, chương trình chuẩn"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại khá, chương trình chuẩn"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhDacBiet a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại khá, chương trình đặc biệt"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại khá, chương trình đặc biệt"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhChuan a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại xuất sắc, chương trình chuẩn"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại xuất sắc, chương trình chuẩn"@vi .
 
     ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhDacBiet a ns1:MucTien ;
-        rdfs:label "Học bổng khuyến khích học tập loại xuất sắc, chương trình đặc biệt"@vi ;
-        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap .
+        rdfs:label "Học bổng khuyến khích học tập loại xuất sắc, chương trình đặc biệt"@vi .
 
     ns1:HocKyChinh a ns1:KhaiNiem ;
         rdfs:label "Học kỳ chính"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocKy ;
         skos:altLabel "học kỳ I"@vi,
             "học kỳ II"@vi .
 
     ns1:HocKyHe a ns1:KhaiNiem ;
         rdfs:label "Học kỳ hè"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocKy ;
         skos:altLabel "học kỳ III"@vi,
             "học kỳ phụ"@vi,
             "kỳ hè"@vi .
 
     ns1:HocPhanBatBuoc a ns1:KhaiNiem ;
-        rdfs:label "Học phần bắt buộc"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần bắt buộc"@vi .
 
     ns1:HocPhanDieuKien a ns1:KhaiNiem ;
-        rdfs:label "Học phần điều kiện"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần điều kiện"@vi .
 
     ns1:HocPhanHocTruoc a ns1:KhaiNiem ;
-        rdfs:label "Học phần học trước"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần học trước"@vi .
 
     ns1:HocPhanNhiemY a ns1:KhaiNiem ;
-        rdfs:label "Học phần nhiệm ý"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần nhiệm ý"@vi .
 
     ns1:HocPhanSongHanh a ns1:KhaiNiem ;
-        rdfs:label "Học phần song hành"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần song hành"@vi .
 
     ns1:HocPhanThayThe a ns1:KhaiNiem ;
-        rdfs:label "Học phần thay thế"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần thay thế"@vi .
 
     ns1:HocPhanTienQuyet a ns1:KhaiNiem ;
-        rdfs:label "Học phần tiên quyết"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần tiên quyết"@vi .
 
     ns1:HocPhanTuChon a ns1:KhaiNiem ;
-        rdfs:label "Học phần tự chọn"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần tự chọn"@vi .
 
     ns1:HocPhanTuongDuong a ns1:KhaiNiem ;
-        rdfs:label "Học phần tương đương"@vi ;
-        ns1:loaiKhaiNiem ns1:LoaiHocPhan .
+        rdfs:label "Học phần tương đương"@vi .
 
     ns1:HoiDongChuyenMon a ns1:ChuThe ;
         rdfs:label "Hội đồng chuyên môn"@vi ;
@@ -1247,28 +1194,36 @@ ns1:TD1052_D24K01dA {
 
     ns1:Hsk a ns1:ChungChi ;
         rdfs:label "HSK"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Trung"@vi,
             "chứng chỉ tiếng Trung"@vi,
             "tiếng Trung"@vi .
 
+    ns1:Ic3 a ns1:ChungChi ;
+        rdfs:label "IC3"@vi ;
+        skos:altLabel "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
+
+    ns1:Icdl a ns1:ChungChi ;
+        rdfs:label "ICDL"@vi ;
+        skos:altLabel "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
+
     ns1:Ielts a ns1:ChungChi ;
         rdfs:label "IELTS"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
             "chứng chỉ tiếng Anh"@vi,
             "tiếng Anh"@vi .
 
     ns1:Jlpt a ns1:ChungChi ;
         rdfs:label "JLPT"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Nhật"@vi,
             "chứng chỉ tiếng Nhật"@vi,
             "tiếng Nhật"@vi .
 
     ns1:Jpt a ns1:ChungChi ;
         rdfs:label "JPT"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Nhật"@vi,
             "chứng chỉ tiếng Nhật"@vi,
             "tiếng Nhật"@vi .
@@ -1278,13 +1233,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:KhaiThacThuySan a ns1:NganhDaoTao ;
         rdfs:label "Khai thác thủy sản"@vi .
-
-    ns1:KhoaHoacVienDaoTao a ns1:ChuThe ;
-        rdfs:label "Khoa hoặc viện đào tạo"@vi ;
-        ns1:loaiChuThe ns1:DonViTrongTruong ;
-        skos:altLabel "khoa"@vi,
-            "khoa viện"@vi,
-            "viện đào tạo"@vi .
 
     ns1:KhoaHocHangHai a ns1:NganhDaoTao ;
         rdfs:label "Khoa học hàng hải"@vi .
@@ -1296,20 +1244,13 @@ ns1:TD1052_D24K01dA {
         rdfs:label "Khoa học thủy sản"@vi .
 
     ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet a ns1:QuyTac ;
-        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4,5 năm và chương trình đặc biệt"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy .
+        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4,5 năm và chương trình đặc biệt"@vi .
 
     ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam a ns1:QuyTac ;
-        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4 năm"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy .
+        rdfs:label "Khối lượng đăng ký của sinh viên học lực trung bình trở lên, chương trình 4 năm"@vi .
 
     ns1:KhoiLuongDangKyCuaSinhVienHocLucYeuKem a ns1:QuyTac ;
-        rdfs:label "Khối lượng đăng ký của sinh viên học lực yếu kém"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy .
-
-    ns1:KhoiNganhIvKhoaHocSuSongKhoaHocTuNhien a ns1:DanhMuc ;
-        rdfs:label "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên"@vi ;
-        ns1:loaiDanhMuc ns1:KhoiNganh .
+        rdfs:label "Khối lượng đăng ký của sinh viên học lực yếu kém"@vi .
 
     ns1:KiemToan a ns1:NganhDaoTao ;
         rdfs:label "Kiểm toán"@vi .
@@ -1328,7 +1269,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:Klpt a ns1:ChungChi ;
         rdfs:label "KLPT"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Hàn"@vi,
             "chứng chỉ tiếng Hàn"@vi,
             "tiếng Hàn"@vi .
@@ -1372,6 +1312,12 @@ ns1:TD1052_D24K01dA {
     ns1:KyThuatXayDungCongTrinhGiaoThong a ns1:NganhDaoTao ;
         rdfs:label "Kỹ thuật xây dựng công trình giao thông"@vi .
 
+    ns1:Linguaskill a ns1:ChungChi ;
+        rdfs:label "Linguaskill"@vi ;
+        skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
+            "chứng chỉ tiếng Anh"@vi,
+            "tiếng Anh"@vi .
+
     ns1:LopHanhChinh a ns1:KhaiNiem ;
         rdfs:label "Lớp hành chính"@vi ;
         ns1:loaiKhaiNiem ns1:KhaiNiemHocVu ;
@@ -1390,16 +1336,19 @@ ns1:TD1052_D24K01dA {
         rdfs:label "Marketing"@vi .
 
     ns1:MienPhiMobileBankingHoacInternetBanking a ns1:MucTien ;
-        rdfs:label "Miễn phí Mobile Banking hoặc Internet Banking"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
+        rdfs:label "Miễn phí Mobile Banking hoặc Internet Banking"@vi .
 
     ns1:MienPhiNopTienMatTaiQuayONhaTrang a ns1:MucTien ;
-        rdfs:label "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
+        rdfs:label "Miễn phí nộp tiền mặt tại quầy ở Nha Trang"@vi .
 
     ns1:MienPhiThanhToanQr a ns1:MucTien ;
-        rdfs:label "Miễn phí thanh toán QR"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
+        rdfs:label "Miễn phí thanh toán QR"@vi .
+
+    ns1:Mos a ns1:ChungChi ;
+        rdfs:label "MOS"@vi ;
+        skos:altLabel "chứng chỉ tin học"@vi,
+            "chứng chỉ tin học quốc tế"@vi,
+            "tin học"@vi .
 
     ns1:MucTaiDonXinBaoLuuHocPhan a ns1:MucBieuMauTrenWebsite ;
         rdfs:label "Mục tải: Đơn xin bảo lưu học phần"@vi .
@@ -1482,8 +1431,7 @@ ns1:TD1052_D24K01dA {
         skos:altLabel "đối tượng áp dụng của quy chế"@vi .
 
     ns1:PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan a ns1:MucTien ;
-        rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
+        rdfs:label "Phí nộp tiền mặt tại huyện trong Khánh Hòa hoặc ngoại tỉnh là 3.300 hoặc 5.500 đồng mỗi lần"@vi .
 
     ns1:PhuongThucToChucDaoTaoTheoTinChi a ns1:KhaiNiem ;
         rdfs:label "Phương thức tổ chức đào tạo theo tín chỉ"@vi ;
@@ -1513,9 +1461,10 @@ ns1:TD1052_D24K01dA {
         rdfs:label "Quy đổi giờ học của một tín chỉ"@vi ;
         ns1:loaiKhaiNiem ns1:KhaiNiemHocVu .
 
+    ns1:QuyTacTyLeDaoTaoTrucTuyen rdfs:label "Quy tắc tỷ lệ đào tạo trực tuyến"@vi .
+
     ns1:TRKICertificate a ns1:ChungChi ;
         rdfs:label "ТРКИ"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "TPKN"@vi,
             "TRKI"@vi,
             "chứng chỉ ngoại ngữ tiếng Nga"@vi,
@@ -1527,39 +1476,32 @@ ns1:TD1052_D24K01dA {
 
     ns1:Tcf a ns1:ChungChi ;
         rdfs:label "TCF"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Pháp"@vi,
             "chứng chỉ tiếng Pháp"@vi,
             "tiếng Pháp"@vi .
 
     ns1:ThoiGianDaoTaoChuanToanKhoa a ns1:QuyTac ;
-        rdfs:label "Thời gian đào tạo chuẩn toàn khóa"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao .
+        rdfs:label "Thời gian đào tạo chuẩn toàn khóa"@vi .
 
     ns1:ThoiGianDaoTaoHinhThucVuaLamVuaHoc a ns1:QuyTac ;
-        rdfs:label "Thời gian đào tạo hình thức vừa làm vừa học"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao .
+        rdfs:label "Thời gian đào tạo hình thức vừa làm vừa học"@vi .
 
     ns1:ThoiGianToiDaHoanThanhKhoaHoc a ns1:QuyTac ;
         rdfs:label "Thời gian tối đa hoàn thành khóa học"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao ;
         skos:altLabel "học tối đa bao lâu"@vi,
             "thời gian tối đa"@vi .
 
     ns1:ThoiHanHieuLucCuaHocPhanDuocCongNhan a ns1:QuyTac ;
-        rdfs:label "Thời hạn hiệu lực của học phần được công nhận"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi .
+        rdfs:label "Thời hạn hiệu lực của học phần được công nhận"@vi .
 
     ns1:ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học"@vi ;
-        ns1:noiDung "Thủ tục cho sinh viên thuộc diện buộc thôi học xin chuyển sang chương trình đào tạo hình thức vừa làm vừa học."@vi ;
         skos:altLabel "chuyển hình thức đào tạo khi bị buộc thôi học"@vi,
             "chuyển sang vừa làm vừa học"@vi,
             "xin chuyển chương trình đào tạo"@vi .
 
     ns1:ThuTucXinNghiOmTrongQuaTrinhHoc a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin nghỉ ốm trong quá trình học"@vi ;
-        ns1:noiDung "Thủ tục xin phép nghỉ học vì lý do sức khỏe trong quá trình học."@vi ;
         skos:altLabel "nghỉ bệnh"@vi,
             "nghỉ ốm"@vi,
             "xin nghỉ ốm"@vi,
@@ -1572,14 +1514,12 @@ ns1:TD1052_D24K01dA {
 
     ns1:Tocfl a ns1:ChungChi ;
         rdfs:label "TOCFL"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Trung"@vi,
             "chứng chỉ tiếng Trung"@vi,
             "tiếng Trung"@vi .
 
     ns1:ToeflIbt a ns1:ChungChi ;
         rdfs:label "TOEFL (iBT)"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "TOEFL iBT"@vi,
             "chứng chỉ ngoại ngữ tiếng Anh"@vi,
             "chứng chỉ tiếng Anh"@vi,
@@ -1587,14 +1527,12 @@ ns1:TD1052_D24K01dA {
 
     ns1:Toeic a ns1:ChungChi ;
         rdfs:label "TOEIC"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Anh"@vi,
             "chứng chỉ tiếng Anh"@vi,
             "tiếng Anh"@vi .
 
     ns1:Topik a ns1:ChungChi ;
         rdfs:label "TOPIK"@vi ;
-        ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
         skos:altLabel "chứng chỉ ngoại ngữ tiếng Hàn"@vi,
             "chứng chỉ tiếng Hàn"@vi,
             "tiếng Hàn"@vi .
@@ -1607,14 +1545,18 @@ ns1:TD1052_D24K01dA {
             "trang tuyển sinh của trường"@vi,
             "điểm chuẩn"@vi .
 
+    ns1:TrinhDoDaoTao rdfs:label "Trình độ đào tạo"@vi .
+
     ns1:TruongDaiHocNhaTrang a ns1:ChuThe ;
         rdfs:label "Trường Đại học Nha Trang"@vi ;
-        ns1:loaiChuThe ns1:ChuTheThamGia,
-            ns1:DonViTrongTruong .
+        ns1:loaiChuThe ns1:ChuTheThamGia .
 
     ns1:TyLeToiDaDaoTaoTrucTuyen a ns1:QuyTac ;
-        rdfs:label "Tỷ lệ tối đa đào tạo trực tuyến"@vi ;
-        ns1:loaiQuyTac ns1:QuyTacTyLeDaoTaoTrucTuyen .
+        rdfs:label "Tỷ lệ tối đa đào tạo trực tuyến"@vi .
+
+    ns1:BoMon a ns1:ChuThe ;
+        rdfs:label "Bộ môn"@vi ;
+        skos:altLabel "bộ môn quản lý học phần"@vi .
 
     ns1:ChinhSachHocVu rdfs:label "Chính sách học vụ"@vi .
 
@@ -1622,12 +1564,9 @@ ns1:TD1052_D24K01dA {
 
     ns1:DaoTaoVuaLamVuaHoc a ns1:KhaiNiem ;
         rdfs:label "Đào tạo vừa làm vừa học"@vi ;
-        ns1:loaiKhaiNiem ns1:HinhThucDaoTao ;
         skos:altLabel "hệ vừa học vừa làm"@vi,
             "tại chức"@vi,
             "vừa làm vừa học"@vi .
-
-    ns1:DonViTinhHocPhi rdfs:label "Đơn vị tính học phí"@vi .
 
     ns1:DuocDieuDongDuThiGiaiDauQuocTe a ns1:TruongHopApDung ;
         rdfs:label "Được điều động dự thi, giải đấu quốc tế"@vi ;
@@ -1641,6 +1580,21 @@ ns1:TD1052_D24K01dA {
             "nhập ngũ"@vi,
             "đi bộ đội"@vi .
 
+    ns1:HinhThucDaoTao rdfs:label "Hình thức đào tạo"@vi .
+
+    ns1:HinhThucToChucDayHoc rdfs:label "Hình thức tổ chức dạy học"@vi .
+
+    ns1:KhoaHoacVienDaoTao a ns1:ChuThe ;
+        rdfs:label "Khoa hoặc viện đào tạo"@vi ;
+        skos:altLabel "khoa"@vi,
+            "khoa viện"@vi,
+            "viện đào tạo"@vi .
+
+    ns1:KhoiNganhIvKhoaHocSuSongKhoaHocTuNhien a ns1:DanhMuc ;
+        rdfs:label "Khối ngành IV: Khoa học sự sống, khoa học tự nhiên"@vi .
+
+    ns1:LoaiHocKy rdfs:label "Loại học kỳ"@vi .
+
     ns1:LyDoCaNhanKhac a ns1:TruongHopApDung ;
         rdfs:label "Lý do cá nhân khác"@vi ;
         skos:altLabel "lý do riêng"@vi,
@@ -1648,20 +1602,7 @@ ns1:TD1052_D24K01dA {
             "việc gia đình"@vi .
 
     ns1:MienPhiVnpayDoiVoiTaiKhoanVietcombank a ns1:MucTien ;
-        rdfs:label "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
-
-    ns1:NganHangAgribank a ns1:DanhMuc ;
-        rdfs:label "Ngân hàng Agribank"@vi ;
-        ns1:loaiDanhMuc ns1:NganHang .
-
-    ns1:NganHangLienVietPostbank a ns1:DanhMuc ;
-        rdfs:label "Ngân hàng Liên Việt PostBank"@vi ;
-        ns1:loaiDanhMuc ns1:NganHang .
-
-    ns1:NganHangVietinbank a ns1:DanhMuc ;
-        rdfs:label "Ngân hàng VietinBank"@vi ;
-        ns1:loaiDanhMuc ns1:NganHang .
+        rdfs:label "Miễn phí VNPAY đối với tài khoản Vietcombank"@vi .
 
     ns1:NgoaiNguA1 a ns1:HocPhan ;
         rdfs:label "Ngoại ngữ A1"@vi .
@@ -1719,20 +1660,18 @@ ns1:TD1052_D24K01dA {
         ns1:ngayThuThap "2026-08-14"^^xsd:date .
 
     ns1:PhiVnpayDoiVoiNganHangKhac a ns1:MucTien ;
-        rdfs:label "Phí VNPAY đối với ngân hàng khác"@vi ;
-        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi .
+        rdfs:label "Phí VNPAY đối với ngân hàng khác"@vi .
+
+    ns1:QuyTacBuocThoiHoc rdfs:label "Quy tắc buộc thôi học"@vi .
+
+    ns1:QuyTacHaHangTotNghiep rdfs:label "Quy tắc hạ hạng tốt nghiệp"@vi .
 
     ns1:QuyTacHocVu rdfs:label "Quy tắc học vụ"@vi .
 
-    ns1:QuyTacTyLeDaoTaoTrucTuyen rdfs:label "Quy tắc tỷ lệ đào tạo trực tuyến"@vi .
-
-    ns1:ThanhToanBangMaQr a ns1:DanhMuc ;
-        rdfs:label "Thanh toán bằng mã QR"@vi ;
-        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
+    ns1:ThanhPhanDanhGiaHocPhan rdfs:label "Thành phần đánh giá học phần"@vi .
 
     ns1:ThuTucDangKyHocCaiThienDiem a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đăng ký học cải thiện điểm"@vi ;
-        ns1:noiDung "Thủ tục đăng ký học lại một học phần đã đạt để cải thiện điểm trung bình tích lũy."@vi ;
         skos:altLabel "cải thiện điểm"@vi,
             "học cải thiện"@vi,
             "học cải thiện điểm"@vi,
@@ -1740,7 +1679,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucDeNghiMoThemLopHocPhan a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đề nghị mở thêm lớp học phần"@vi ;
-        ns1:noiDung "Thủ tục đề nghị Nhà trường mở thêm một lớp học phần trong thời gian đăng ký."@vi ;
         skos:altLabel "mở lớp"@vi,
             "mở thêm lớp học phần"@vi,
             "xin mở lớp"@vi,
@@ -1748,14 +1686,12 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucDeNghiXetTotNghiepSom a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đề nghị xét tốt nghiệp sớm"@vi ;
-        ns1:noiDung "Thủ tục đề nghị được xét tốt nghiệp sớm hơn thời gian thiết kế của khóa học."@vi ;
         skos:altLabel "ra trường sớm"@vi,
             "tốt nghiệp sớm"@vi,
             "xét tốt nghiệp trước thời hạn"@vi .
 
     ns1:ThuTucXinHoanThi a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin hoãn thi"@vi ;
-        ns1:noiDung "Thủ tục xin hoãn thi kết thúc học phần vì lý do sức khỏe."@vi ;
         skos:altLabel "hoãn thi"@vi,
             "lùi lịch thi"@vi,
             "thi sau"@vi,
@@ -1764,7 +1700,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucXinHocTroLai a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin học trở lại"@vi ;
-        ns1:noiDung "Thủ tục cho phép sinh viên hết thời gian nghỉ học tạm thời quay lại tiếp tục học."@vi ;
         skos:altLabel "học trở lại"@vi,
             "nhập học lại"@vi,
             "quay lại học"@vi,
@@ -1773,7 +1708,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucXinMienHocMienThiVaCongDiemThuong a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin miễn học, miễn thi và cộng điểm thưởng"@vi ;
-        ns1:noiDung "Thủ tục đề nghị miễn học, miễn thi kết thúc học phần và cộng điểm thưởng khi có thành tích hoặc chứng chỉ đủ điều kiện."@vi ;
         skos:altLabel "cộng điểm thưởng"@vi,
             "miễn học miễn thi"@vi,
             "miễn học miễn thi và cộng điểm thưởng"@vi,
@@ -1781,14 +1715,13 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucXinThoiHoc a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin thôi học"@vi ;
-        ns1:noiDung "Thủ tục cho phép sinh viên chấm dứt việc học tại Trường theo nguyện vọng cá nhân."@vi ;
         skos:altLabel "bỏ học"@vi,
             "dừng học vĩnh viễn"@vi,
             "nghỉ học hẳn"@vi,
             "rút hồ sơ"@vi,
             "xin thôi học"@vi .
 
-    ns1:TrinhDoDaoTao rdfs:label "Trình độ đào tạo"@vi .
+    ns1:ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
 
     ns1:HoiDongXetTotNghiep a ns1:ChuThe ;
         rdfs:label "Hội đồng xét tốt nghiệp"@vi ;
@@ -1810,19 +1743,41 @@ ns1:TD1052_D24K01dA {
     ns1:MauSo14DonDangKyChuongTrinhTraoDoiSinhVien a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 14 - Đơn đăng ký chương trình trao đổi sinh viên"@vi .
 
+    ns1:NganHang rdfs:label "Ngân hàng"@vi .
+
+    ns1:NganHangAgribank a ns1:DanhMuc ;
+        rdfs:label "Ngân hàng Agribank"@vi .
+
+    ns1:NganHangLienVietPostbank a ns1:DanhMuc ;
+        rdfs:label "Ngân hàng Liên Việt PostBank"@vi .
+
+    ns1:NganHangVietinbank a ns1:DanhMuc ;
+        rdfs:label "Ngân hàng VietinBank"@vi .
+
+    ns1:QuyTacCanhBaoKetQuaHocTap rdfs:label "Quy tắc cảnh báo kết quả học tập"@vi .
+
+    ns1:QuyTacDieuKienDuThi rdfs:label "Quy tắc điều kiện dự thi"@vi .
+
+    ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi rdfs:label "Quy tắc giới hạn công nhận và chuyển đổi tín chỉ"@vi .
+
+    ns1:QuyTacKhoiLuongDangKyMoiHocKy rdfs:label "Quy tắc khối lượng đăng ký mỗi học kỳ"@vi .
+
+    ns1:QuyTacThoiGianDaoTao rdfs:label "Quy tắc thời gian đào tạo"@vi .
+
     ns1:ThangDiemDanhGia a ns1:KhaiNiem ;
         rdfs:label "Thang điểm đánh giá"@vi ;
         ns1:loaiKhaiNiem ns1:KhaiNiemHocVu ;
         skos:altLabel "thang điểm"@vi,
             "thang điểm 10"@vi .
 
+    ns1:ThanhToanBangMaQr a ns1:DanhMuc ;
+        rdfs:label "Thanh toán bằng mã QR"@vi .
+
     ns1:ThanhToanBangMobileBankingHoacInternetBanking a ns1:DanhMuc ;
-        rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi ;
-        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
+        rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi .
 
     ns1:ThuTucDangKyHocLaiHocPhan a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đăng ký học lại học phần"@vi ;
-        ns1:noiDung "Thủ tục đăng ký học lại học phần có điểm dưới 5,0."@vi ;
         skos:altLabel "học lại"@vi,
             "học lại học phần"@vi,
             "học lại môn"@vi,
@@ -1831,7 +1786,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucDangKyThucHienDoAnTotNghiep a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đăng ký thực hiện đồ án tốt nghiệp"@vi ;
-        ns1:noiDung "Thủ tục đăng ký thực hiện đồ án hoặc khóa luận tốt nghiệp."@vi ;
         skos:altLabel "khóa luận tốt nghiệp"@vi,
             "làm đồ án tốt nghiệp"@vi,
             "ĐATN"@vi,
@@ -1840,7 +1794,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucHocLienThong a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục học liên thông"@vi ;
-        ns1:noiDung "Thủ tục xét tuyển và học liên thông lên trình độ đại học."@vi ;
         skos:altLabel "học liên thông"@vi,
             "học lên đại học"@vi,
             "liên thông"@vi,
@@ -1857,7 +1810,6 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucRutBotHocPhanDaDangKy a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục rút bớt học phần đã đăng ký"@vi ;
-        ns1:noiDung "Thủ tục cho phép sinh viên hủy bớt một hoặc một số học phần đã đăng ký trong học kỳ khi thấy không thể hoàn thành khối lượng đã đăng ký."@vi ;
         skos:altLabel "hủy học phần đã đăng ký"@vi,
             "rút bớt học phần"@vi,
             "rút học phần đã đăng ký"@vi,
@@ -1865,19 +1817,18 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucXinPhepNghiHoc a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xin phép nghỉ học"@vi ;
-        ns1:noiDung "Thủ tục xin phép nghỉ buổi học có lý do chính đáng để không bị trừ điều kiện dự thi."@vi ;
         skos:altLabel "xin phép nghỉ buổi học"@vi,
             "xin phép nghỉ học"@vi,
             "xin vắng buổi học"@vi,
             "đơn xin phép nghỉ buổi học"@vi .
 
+    ns1:DiemChu rdfs:label "Điểm chữ"@vi .
+
+    ns1:DonViTrongTruong rdfs:label "Đơn vị trong trường"@vi .
+
     ns1:HeThongTrucTuyen rdfs:label "Hệ thống trực tuyến"@vi .
 
-    ns1:HinhThucDaoTao rdfs:label "Hình thức đào tạo"@vi .
-
-    ns1:HinhThucToChucDayHoc rdfs:label "Hình thức tổ chức dạy học"@vi .
-
-    ns1:LoaiHocKy rdfs:label "Loại học kỳ"@vi .
+    ns1:KhoiNganh rdfs:label "Khối ngành"@vi .
 
     ns1:MauSo2PhieuDangKyDieuChinhHocPhanTheoQuyetDinh753 a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 2 - Phiếu đăng ký/điều chỉnh học phần theo Quyết định 753"@vi .
@@ -1911,8 +1862,7 @@ ns1:TD1052_D24K01dA {
         ns1:ngayThuThap "2026-08-10"^^xsd:date .
 
     ns1:NopTienMatTaiQuayNganHang a ns1:DanhMuc ;
-        rdfs:label "Nộp tiền mặt tại quầy ngân hàng"@vi ;
-        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
+        rdfs:label "Nộp tiền mặt tại quầy ngân hàng"@vi .
 
     ns1:OmThaiSanHoacTaiNan a ns1:TruongHopApDung ;
         rdfs:label "Ốm, thai sản hoặc tai nạn"@vi ;
@@ -1924,23 +1874,7 @@ ns1:TD1052_D24K01dA {
             "điều trị bệnh"@vi,
             "ốm đau"@vi .
 
-    ns1:QuyTacBuocThoiHoc rdfs:label "Quy tắc buộc thôi học"@vi .
-
-    ns1:QuyTacHaHangTotNghiep rdfs:label "Quy tắc hạ hạng tốt nghiệp"@vi .
-
-    ns1:ThanhPhanDanhGiaHocPhan rdfs:label "Thành phần đánh giá học phần"@vi .
-
-    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap a ns1:ThuTucHocVu ;
-        rdfs:label "Thủ tục xét và cấp học bổng khuyến khích học tập"@vi ;
-        ns1:noiDung "Sinh viên đủ điều kiện được cấp học bổng khuyến khích học tập của học kỳ, mức tiền theo xếp loại và theo chương trình chuẩn hay chương trình đào tạo đặc biệt."@vi,
-            "Trường tự xét học bổng khuyến khích học tập sau mỗi học kỳ chính dựa trên kết quả học tập và rèn luyện; người có tên trong danh sách phải cung cấp số tài khoản để nhận tiền."@vi ;
-        skos:altLabel "cấp học bổng"@vi,
-            "hbkkht"@vi,
-            "học bổng kkht"@vi,
-            "nhận tiền học bổng"@vi,
-            "tiêu chí học bổng"@vi,
-            "xét cấp học bổng khuyến khích học tập"@vi,
-            "xét học bổng"@vi .
+    ns1:PhuongThucDongHocPhi rdfs:label "Phương thức đóng học phí"@vi .
 
     ns1:MauSo01DonXinMoLopHocPhan a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 01 - Đơn xin mở lớp học phần"@vi .
@@ -1972,25 +1906,9 @@ ns1:TD1052_D24K01dA {
     ns1:MauSo15DonDangKyHocCungLucHaiChuongTrinh a ns1:BieuMauTheoQuyetDinh ;
         rdfs:label "Mẫu số 15 - Đơn đăng ký học cùng lúc hai chương trình"@vi .
 
-    ns1:ThanhToanQuaCongVnpay a ns1:DanhMuc ;
-        rdfs:label "Thanh toán qua cổng VNPAY"@vi ;
-        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
+    ns1:BangQuyDoiChungChi rdfs:label "Bảng quy đổi chứng chỉ"@vi .
 
-    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien a ns1:ThuTucHocVu ;
-        rdfs:label "Thủ tục đăng ký chương trình trao đổi sinh viên"@vi ;
-        ns1:noiDung "Thủ tục đăng ký tham gia chương trình trao đổi sinh viên với trường đối tác để công nhận tín chỉ lẫn nhau."@vi ;
-        skos:altLabel "chương trình trao đổi"@vi,
-            "học ở trường đối tác"@vi,
-            "trao đổi sinh viên"@vi,
-            "đi trao đổi"@vi .
-
-    ns1:ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
-
-    ns1:DongTrenHocKy a ns1:DanhMuc ;
-        rdfs:label "đồng trên học kỳ"@vi ;
-        ns1:loaiDanhMuc ns1:DonViTinhHocPhi .
-
-    ns1:NganHang rdfs:label "Ngân hàng"@vi .
+    ns1:MucHocBongKhuyenKhichHocTap rdfs:label "Mức học bổng khuyến khích học tập"@vi .
 
     ns1:Nguon753 a ns1:Nguon ;
         rdfs:label "Quy chế đào tạo trình độ đại học Trường Đại học Nha Trang năm 2021"@vi ;
@@ -2009,21 +1927,15 @@ ns1:TD1052_D24K01dA {
 
     ns1:QuyChe rdfs:label "Quy chế"@vi .
 
-    ns1:QuyTacCanhBaoKetQuaHocTap rdfs:label "Quy tắc cảnh báo kết quả học tập"@vi .
-
-    ns1:QuyTacDieuKienDuThi rdfs:label "Quy tắc điều kiện dự thi"@vi .
-
-    ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi rdfs:label "Quy tắc giới hạn công nhận và chuyển đổi tín chỉ"@vi .
-
-    ns1:QuyTacKhoiLuongDangKyMoiHocKy rdfs:label "Quy tắc khối lượng đăng ký mỗi học kỳ"@vi .
-
-    ns1:QuyTacThoiGianDaoTao rdfs:label "Quy tắc thời gian đào tạo"@vi .
+    ns1:QuyTacLePhiDongHocPhi rdfs:label "Quy tắc lệ phí đóng học phí"@vi .
 
     ns1:QuyetDinh rdfs:label "Quyết định"@vi .
 
+    ns1:ThanhToanQuaCongVnpay a ns1:DanhMuc ;
+        rdfs:label "Thanh toán qua cổng VNPAY"@vi .
+
     ns1:ThuTucChuyenNganh a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục chuyển ngành"@vi ;
-        ns1:noiDung "Thủ tục cho phép sinh viên chuyển sang một ngành đào tạo khác trong cùng bậc học."@vi ;
         skos:altLabel "chuyển ngành"@vi,
             "chuyển ngành học"@vi,
             "chuyển sang ngành khác"@vi,
@@ -2032,27 +1944,50 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ"@vi ;
-        ns1:noiDung "Thủ tục đề nghị công nhận kết quả đã tích lũy ở nơi khác và chuyển đổi sang tín chỉ của chương trình đang học."@vi ;
         skos:altLabel "chuyển đổi tín chỉ"@vi,
             "công nhận kết quả học tập"@vi,
             "công nhận tín chỉ"@vi,
             "miễn học và quy đổi điểm"@vi,
             "quy đổi điểm học phần"@vi .
 
+    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien a ns1:ThuTucHocVu ;
+        rdfs:label "Thủ tục đăng ký chương trình trao đổi sinh viên"@vi ;
+        skos:altLabel "chương trình trao đổi"@vi,
+            "học ở trường đối tác"@vi,
+            "trao đổi sinh viên"@vi,
+            "đi trao đổi"@vi .
+
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap a ns1:ThuTucHocVu ;
+        rdfs:label "Thủ tục xét và cấp học bổng khuyến khích học tập"@vi ;
+        skos:altLabel "cấp học bổng"@vi,
+            "hbkkht"@vi,
+            "học bổng kkht"@vi,
+            "nhận tiền học bổng"@vi,
+            "tiêu chí học bổng"@vi,
+            "xét cấp học bổng khuyến khích học tập"@vi,
+            "xét học bổng"@vi .
+
+    ns1:DongTrenHocKy a ns1:DanhMuc ;
+        rdfs:label "đồng trên học kỳ"@vi .
+
     ns1:TrinhDoDaiHoc a ns1:DanhMuc ;
-        rdfs:label "Trình độ đại học"@vi ;
-        ns1:loaiDanhMuc ns1:TrinhDoDaoTao .
+        rdfs:label "Trình độ đại học"@vi .
+
+    ns1:PhongDaoTaoDaiHoc a ns1:ChuThe ;
+        rdfs:label "Phòng Đào tạo Đại học"@vi ;
+        skos:altLabel "phòng ĐT"@vi,
+            "phòng đào tạo"@vi,
+            "phòng đào tạo đại học"@vi,
+            "đơn vị quản lý đào tạo"@vi .
 
     ns1:ThuTucChuyenTruong a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục chuyển trường"@vi ;
-        ns1:noiDung "Thủ tục xin chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác hoặc ngược lại."@vi ;
         skos:altLabel "chuyển sang trường khác"@vi,
             "chuyển trường"@vi,
             "xin chuyển trường"@vi .
 
     ns1:ThuTucDangKyKhoiLuongHocTap a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đăng ký khối lượng học tập"@vi ;
-        ns1:noiDung "Thủ tục bắt buộc mỗi học kỳ để sinh viên đăng ký các học phần sẽ học."@vi ;
         skos:altLabel "chọn môn học"@vi,
             "đăng ký học phần"@vi,
             "đăng ký khối lượng học tập"@vi,
@@ -2062,75 +1997,49 @@ ns1:TD1052_D24K01dA {
 
     ns1:ThuTucNghiHocTamThoi a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục nghỉ học tạm thời"@vi ;
-        ns1:noiDung "Thủ tục cho phép sinh viên tạm dừng việc học và bảo lưu kết quả đã tích lũy."@vi ;
         skos:altLabel "bảo lưu kết quả"@vi,
             "bảo lưu kết quả học tập"@vi,
             "nghỉ học tạm thời"@vi,
             "tạm dừng học"@vi,
             "tạm nghỉ học"@vi .
 
-    ns1:DiemChu rdfs:label "Điểm chữ"@vi .
-
-    ns1:KhoiNganh rdfs:label "Khối ngành"@vi .
+    ns1:TruongHopApDung rdfs:label "Trường hợp áp dụng"@vi .
 
     ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat a ns1:DanhMuc ;
-        rdfs:label "Khối ngành III: Kinh doanh và quản lý, pháp luật"@vi ;
-        ns1:loaiDanhMuc ns1:KhoiNganh .
+        rdfs:label "Khối ngành III: Kinh doanh và quản lý, pháp luật"@vi .
 
-    ns1:PhongDaoTaoDaiHoc a ns1:ChuThe ;
-        rdfs:label "Phòng Đào tạo Đại học"@vi ;
-        ns1:loaiChuThe ns1:DonViTrongTruong ;
-        skos:altLabel "phòng ĐT"@vi,
-            "phòng đào tạo"@vi,
-            "phòng đào tạo đại học"@vi,
-            "đơn vị quản lý đào tạo"@vi .
+    ns1:LoaiHocPhan rdfs:label "Loại học phần"@vi .
 
-    ns1:PhuongThucDongHocPhi rdfs:label "Phương thức đóng học phí"@vi .
+    ns1:PhongCongTacChinhTriVaSinhVien a ns1:ChuThe ;
+        rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
+        skos:altLabel "phòng CTCT&SV"@vi,
+            "phòng CTSV"@vi,
+            "phòng công tác chính trị và sinh viên"@vi,
+            "phòng công tác sinh viên"@vi .
 
     ns1:ThuTucDangKyHocCungLucHaiChuongTrinh a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục đăng ký học cùng lúc hai chương trình"@vi ;
-        ns1:noiDung "Thủ tục đăng ký học thêm một chương trình đào tạo thứ hai để lấy văn bằng thứ hai."@vi ;
         skos:altLabel "học cùng lúc hai chương trình"@vi,
             "học hai ngành"@vi,
             "học song bằng"@vi,
             "học song ngành"@vi,
             "văn bằng thứ hai"@vi .
 
-    ns1:TruongHopApDung rdfs:label "Trường hợp áp dụng"@vi .
-
-    ns1:KhoiNganhViiNhanVanXaHoiDuLichDichVuVaMoiTruong a ns1:DanhMuc ;
-        rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi ;
-        ns1:loaiDanhMuc ns1:KhoiNganh .
-
-    ns1:PhongCongTacChinhTriVaSinhVien a ns1:ChuThe ;
-        rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
-        ns1:loaiChuThe ns1:DonViTrongTruong ;
-        skos:altLabel "phòng CTCT&SV"@vi,
-            "phòng CTSV"@vi,
-            "phòng công tác chính trị và sinh viên"@vi,
-            "phòng công tác sinh viên"@vi .
-
-    ns1:DonViTrongTruong rdfs:label "Đơn vị trong trường"@vi .
-
     ns1:HieuTruong a ns1:ChuThe ;
         rdfs:label "Hiệu trưởng"@vi ;
         ns1:loaiChuThe ns1:ChuTheThamGia ;
         skos:altLabel "hiệu trưởng nhà trường"@vi .
 
+    ns1:KhoiNganhViiNhanVanXaHoiDuLichDichVuVaMoiTruong a ns1:DanhMuc ;
+        rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi .
+
     ns1:ThuTucXetVaCongNhanTotNghiep a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục xét và công nhận tốt nghiệp"@vi ;
-        ns1:noiDung "Quy trình xét và công nhận tốt nghiệp cho sinh viên đủ điều kiện, thực hiện sau mỗi quý."@vi ;
         skos:altLabel "công nhận tốt nghiệp"@vi,
             "ra trường"@vi,
             "xét tốt nghiệp"@vi .
 
     ns1:VanBanHuongDan rdfs:label "Văn bản hướng dẫn"@vi .
-
-    ns1:BangQuyDoiChungChi rdfs:label "Bảng quy đổi chứng chỉ"@vi .
-
-    ns1:MucHocBongKhuyenKhichHocTap rdfs:label "Mức học bổng khuyến khích học tập"@vi .
-
-    ns1:QuyTacLePhiDongHocPhi rdfs:label "Quy tắc lệ phí đóng học phí"@vi .
 
     ns1:ChuTheThamGia rdfs:label "Chủ thể tham gia"@vi .
 
@@ -2138,25 +2047,22 @@ ns1:TD1052_D24K01dA {
 
     ns1:KhaiNiemHocVu rdfs:label "Khái niệm học vụ"@vi .
 
-    ns1:LoaiHocPhan rdfs:label "Loại học phần"@vi .
+    ns1:ChungChiNgoaiNgu rdfs:label "Chứng chỉ ngoại ngữ"@vi .
 
     ns1:BangTrongTaiLieu rdfs:label "Bảng trong tài liệu"@vi .
 
     ns1:ChuThe rdfs:label "Chủ thể"@vi .
 
-    ns1:KhoiNganhVToanMayTinhCongNgheKyThuatSanXuatXayDungNongLamNghiepVaThuySan a ns1:DanhMuc ;
-        rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi ;
-        ns1:loaiDanhMuc ns1:KhoiNganh .
-
     ns1:SinhVien a ns1:ChuThe ;
         rdfs:label "Sinh viên"@vi ;
         ns1:loaiChuThe ns1:ChuTheThamGia .
 
+    ns1:KhoiNganhVToanMayTinhCongNgheKyThuatSanXuatXayDungNongLamNghiepVaThuySan a ns1:DanhMuc ;
+        rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi .
+
     ns1:MucTien rdfs:label "Mức tiền"@vi .
 
     ns1:Nguon rdfs:label "Nguồn"@vi .
-
-    ns1:ChungChiNgoaiNgu rdfs:label "Chứng chỉ ngoại ngữ"@vi .
 
     ns1:Bang rdfs:label "Bảng"@vi .
 
@@ -2205,7 +2111,8 @@ ns1:TD1052_D27K04 {
 }
 
 ns1:TD1052_D13K03dB {
-    ns1:DaoTaoTrucTuyenDongBo ns1:noiDung "Giảng viên và sinh viên cùng tham gia các hoạt động đào tạo tại cùng một thời điểm trên cùng một không gian học tập. Đây là hình thức dạy học hoàn toàn trực tuyến."@vi .
+    ns1:DaoTaoTrucTuyenDongBo ns1:loaiKhaiNiem ns1:HinhThucToChucDayHoc ;
+        ns1:noiDung "Giảng viên và sinh viên cùng tham gia các hoạt động đào tạo tại cùng một thời điểm trên cùng một không gian học tập. Đây là hình thức dạy học hoàn toàn trực tuyến."@vi .
 }
 
 ns1:TDNguon1052DiemBKhoan2Dieu26 {
@@ -2242,7 +2149,8 @@ ns1:TD1052_D27K03 {
 }
 
 ns1:TD1052_D20K01dB {
-    ns1:CanhBaoDoDiemTrungBinhHocKy ns1:noiDung "Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học, dưới 4,50 đối với học kỳ tiếp theo."@vi .
+    ns1:CanhBaoDoDiemTrungBinhHocKy ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap ;
+        ns1:noiDung "Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học, dưới 4,50 đối với học kỳ tiếp theo."@vi .
 }
 
 ns1:TD1052_D25K01dA {
@@ -2250,7 +2158,8 @@ ns1:TD1052_D25K01dA {
 }
 
 ns1:TDEnglishRequirementTableSpecialProgram {
-    ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |
+    ns1:BangChuanTiengAnhChuongTrinhDacBiet ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
 | 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | 140 | > 131 | ≥ 151 |
@@ -2261,7 +2170,8 @@ ns1:TDEnglishRequirementTableSpecialProgram {
 }
 
 ns1:TD1052_D06K02dDD {
-    ns1:HocPhanHocTruoc ns1:noiDung "Học phần sinh viên phải học xong, có thể đạt hoặc không đạt, trước khi học các học phần tiếp theo."@vi .
+    ns1:HocPhanHocTruoc ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần sinh viên phải học xong, có thể đạt hoặc không đạt, trước khi học các học phần tiếp theo."@vi .
 }
 
 ns1:TD1052_D22K01dD {
@@ -2285,29 +2195,41 @@ ns1:TDForeignLanguageCertificateAbbreviationTable {
 | | | TCF | Test de Connaissance Français |
 | 6 | Tiếng Nga | ТРКИ | Тест по русскому языку как иностранному |"""@vi .
 
-    ns1:Delf ns1:tenDayDuCuaChungChi "Diplôme d'Études en Langue Française" .
+    ns1:Delf ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Diplôme d'Études en Langue Française" .
 
-    ns1:Hsk ns1:tenDayDuCuaChungChi "Hanyu Shuiping Kaoshi" .
+    ns1:Hsk ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Hanyu Shuiping Kaoshi" .
 
-    ns1:Ielts ns1:tenDayDuCuaChungChi "International English Language Testing System" .
+    ns1:Ielts ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "International English Language Testing System" .
 
-    ns1:Jlpt ns1:tenDayDuCuaChungChi "Japanese Language Proficiency Test" .
+    ns1:Jlpt ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Japanese Language Proficiency Test" .
 
-    ns1:Jpt ns1:tenDayDuCuaChungChi "Japanese Proficiency Test" .
+    ns1:Jpt ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Japanese Proficiency Test" .
 
-    ns1:Klpt ns1:tenDayDuCuaChungChi "Korean Language Proficiency Test" .
+    ns1:Klpt ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Korean Language Proficiency Test" .
 
-    ns1:TRKICertificate ns1:tenDayDuCuaChungChi "Тест по русскому языку как иностранному" .
+    ns1:TRKICertificate ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Тест по русскому языку как иностранному" .
 
-    ns1:Tcf ns1:tenDayDuCuaChungChi "Test de Connaissance Français" .
+    ns1:Tcf ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Test de Connaissance Français" .
 
-    ns1:Tocfl ns1:tenDayDuCuaChungChi "Test of Chinese as a Foreign Language" .
+    ns1:Tocfl ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Test of Chinese as a Foreign Language" .
 
-    ns1:ToeflIbt ns1:tenDayDuCuaChungChi "Test Of English as a Foreign Language (Internet Based Test)" .
+    ns1:ToeflIbt ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Test Of English as a Foreign Language (Internet Based Test)" .
 
-    ns1:Toeic ns1:tenDayDuCuaChungChi "Test of English for International Communication" .
+    ns1:Toeic ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Test of English for International Communication" .
 
-    ns1:Topik ns1:tenDayDuCuaChungChi "Test of Proficiency in Korean" .
+    ns1:Topik ns1:loaiChungChi ns1:ChungChiNgoaiNgu ;
+        ns1:tenDayDuCuaChungChi "Test of Proficiency in Korean" .
 }
 
 ns1:TDNguon1052Khoan2Dieu11 {
@@ -2315,12 +2237,14 @@ ns1:TDNguon1052Khoan2Dieu11 {
 }
 
 ns1:TD1052_D01K02 {
+    ns1:KhoaHoacVienDaoTao ns1:loaiChuThe ns1:DonViTrongTruong .
+
     ns1:PhamViVaDoiTuongApDungCuaQuyChe ns1:noiDung "Quy chế áp dụng đối với sinh viên học theo hình thức đào tạo chính quy và vừa làm vừa học; sinh viên học cùng lúc hai chương trình; sinh viên liên thông đối với người có văn bằng khác; sinh viên theo chương trình trao đổi và công nhận tín chỉ; các khoa hoặc viện đào tạo, đơn vị quản lý đào tạo, giảng viên và các đơn vị, cá nhân có liên quan."@vi .
 }
 
 ns1:TD1052_D24K02 {
-    ns1:ThuTucXinThoiHoc ns1:noiDung "Không thuộc trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi,
-            "Sinh viên đã thôi học, nếu muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác."@vi .
+    ns1:ThuTucXinThoiHoc ns1:noiDung "Những sinh viên này muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác."@vi,
+            "Sinh viên được xin thôi học vì lý do cá nhân, trừ trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
 }
 
 ns1:TD1052_D29K02 {
@@ -2338,26 +2262,37 @@ ns1:TDScholarshipRateTableSpecialProgram {
     ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhDacBiet ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "7200000"^^xsd:nonNegativeInteger .
 
     ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhDacBiet ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "6000000"^^xsd:nonNegativeInteger .
 
     ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhDacBiet ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo đặc biệt, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "8640000"^^xsd:nonNegativeInteger .
+
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:noiDung "Học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy - chương trình đào tạo đặc biệt có kết quả học tập và rèn luyện đạt từ mức khá được cấp theo ba mức riêng ứng với xếp loại xuất sắc, giỏi, khá."@vi .
+}
+
+ns1:TDNguon1052PhanMoDauDieu28 {
+    ns1:ThuTucDangKyHocCungLucHaiChuongTrinh ns1:noiDung "Sinh viên đều có quyền đăng ký học một chương trình đào tạo khác để lấy thêm văn bằng thứ hai trong quá trình học tập bằng hình thức tích lũy tín chỉ theo chương trình đào tạo thứ hai."@vi .
 }
 
 ns1:TD1052_D16K01 {
-    ns1:DanhGiaCuoiKy ns1:noiDung "Thường dưới dạng bài thi viết, vấn đáp, thực hành hoặc sản phẩm tổng hợp, được tổ chức vào cuối học phần."@vi .
+    ns1:DanhGiaCuoiKy ns1:loaiKhaiNiem ns1:ThanhPhanDanhGiaHocPhan ;
+        ns1:noiDung "Thường dưới dạng bài thi viết, vấn đáp, thực hành hoặc sản phẩm tổng hợp, được tổ chức vào cuối học phần."@vi .
 
-    ns1:DanhGiaQuaTrinh ns1:noiDung "Gồm điểm chuyên cần, điểm kiểm tra, bài tập, sản phẩm học tập và điểm đánh giá giữa kỳ nếu có."@vi .
+    ns1:DanhGiaQuaTrinh ns1:loaiKhaiNiem ns1:ThanhPhanDanhGiaHocPhan ;
+        ns1:noiDung "Gồm điểm chuyên cần, điểm kiểm tra, bài tập, sản phẩm học tập và điểm đánh giá giữa kỳ nếu có."@vi .
 }
 
 ns1:TDNguon1052DiemCKhoan3Dieu28 {
@@ -2390,16 +2325,19 @@ ns1:TD1052_D17K01 {
 }
 
 ns1:TD1052_D23K03dA {
-    ns1:HaHangTotNghiepDoHocLaiQuaNhieu ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình."@vi ;
+    ns1:HaHangTotNghiepDoHocLaiQuaNhieu ns1:loaiQuyTac ns1:QuyTacHaHangTotNghiep ;
+        ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình."@vi ;
         ns1:tyLeToiDa 5.0 .
 }
 
 ns1:TD1052_D06K02dG {
-    ns1:HocPhanDieuKien ns1:noiDung "Học phần mà sinh viên phải hoàn thành trước khi tốt nghiệp nhưng kết quả không dùng để tính điểm trung bình chung tích lũy."@vi .
+    ns1:HocPhanDieuKien ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần mà sinh viên phải hoàn thành trước khi tốt nghiệp nhưng kết quả không dùng để tính điểm trung bình chung tích lũy."@vi .
 }
 
 ns1:TDSecondLanguageConversionTableEnglishMajor {
-    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |
+    ns1:BangQuyDoiNgoaiNguHaiNganhNgonNguAnh ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 cho các cấp độ HP |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | 100 | TOPIK 1 | 200 | A1 |
 | Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | 200 | TOPIK 2 | ≥ 250 | A2 |
@@ -2450,7 +2388,8 @@ ns1:TDForeignLanguageCourseAssessmentTable {
 }
 
 ns1:TD1052_D20K02dB {
-    ns1:BuocThoiHocDoQuaThoiGianDaoTao ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá thời gian tối đa được phép học tại Trường."@vi .
+    ns1:BuocThoiHocDoQuaThoiGianDaoTao ns1:loaiQuyTac ns1:QuyTacBuocThoiHoc ;
+        ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá thời gian tối đa được phép học tại Trường."@vi .
 }
 
 ns1:TD1052_D22K04 {
@@ -2459,7 +2398,8 @@ ns1:TD1052_D22K04 {
 }
 
 ns1:TD1052_D09K04 {
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucYeuKem ns1:noiDung "Sinh viên xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký tối thiểu 12 tín chỉ và tối đa 18 tín chỉ trong một học kỳ."@vi ;
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucYeuKem ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy ;
+        ns1:noiDung "Sinh viên xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký tối thiểu 12 tín chỉ và tối đa 18 tín chỉ trong một học kỳ."@vi ;
         ns1:soTinChiToiDa 18 ;
         ns1:soTinChiToiThieu 12 .
 
@@ -2475,7 +2415,8 @@ ns1:TD1052_D28K03 {
 }
 
 ns1:TD1052_D06K02dH {
-    ns1:HocPhanTuongDuong ns1:noiDung "Một hay một nhóm học phần thuộc chương trình đào tạo của một khóa học hoặc một ngành khác đang tổ chức đào tạo tại Trường hoặc cơ sở đào tạo khác, được phép tích lũy để thay cho học phần trong chương trình đào tạo."@vi .
+    ns1:HocPhanTuongDuong ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Một hay một nhóm học phần thuộc chương trình đào tạo của một khóa học hoặc một ngành khác đang tổ chức đào tạo tại Trường hoặc cơ sở đào tạo khác, được phép tích lũy để thay cho học phần trong chương trình đào tạo."@vi .
 }
 
 ns1:TD1052_D09K02dB {
@@ -2498,11 +2439,13 @@ ns1:TD1052_D22K02 {
 }
 
 ns1:TD1052_D13K03dA {
-    ns1:DaoTaoTrucTuyenKhongDongBo ns1:noiDung "Sinh viên chủ động tham gia các hoạt động đào tạo trực tuyến trên cơ sở kế hoạch dạy học của giảng viên. Đây là hình thức kết hợp dạy học trực tiếp trên lớp với việc sử dụng hệ thống NTU E-learning."@vi .
+    ns1:DaoTaoTrucTuyenKhongDongBo ns1:loaiKhaiNiem ns1:HinhThucToChucDayHoc ;
+        ns1:noiDung "Sinh viên chủ động tham gia các hoạt động đào tạo trực tuyến trên cơ sở kế hoạch dạy học của giảng viên. Đây là hình thức kết hợp dạy học trực tiếp trên lớp với việc sử dụng hệ thống NTU E-learning."@vi .
 }
 
 ns1:TD1052_D04K01 {
-    ns1:DaoTaoChinhQuy ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường; thực hành, thực tập, trải nghiệm thực tế và giảng dạy trực tuyến có thể thực hiện ngoài Trường. Thời gian giảng dạy từ 06 giờ đến 20 giờ, từ thứ 2 đến thứ 7."@vi .
+    ns1:DaoTaoChinhQuy ns1:loaiKhaiNiem ns1:HinhThucDaoTao ;
+        ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường; thực hành, thực tập, trải nghiệm thực tế và giảng dạy trực tuyến có thể thực hiện ngoài Trường. Thời gian giảng dạy từ 06 giờ đến 20 giờ, từ thứ 2 đến thứ 7."@vi .
 }
 
 ns1:TD1052_D22K01dA {
@@ -2536,32 +2479,51 @@ ns1:TDScholarshipCriteriaSpecificSection {
             "Đăng ký tối thiểu 14 tín chỉ trong học kỳ theo kế hoạch của chương trình đào tạo."@vi .
 }
 
+ns1:TDNguon1052Khoan1Dieu26 {
+    ns1:ThuTucChuyenTruong ns1:noiDung "Sinh viên được xét chuyển từ Trường Đại học Nha Trang đến cơ sở đào tạo khác và ngược lại (gọi tắt là chuyển trường) khi có đủ các điều kiện quy định tại khoản này."@vi .
+}
+
 ns1:TDTuitionPaymentGuidanceSection02 {
     ns1:MienPhiMobileBankingHoacInternetBanking ns1:apDungChoPhuongThucDong ns1:ThanhToanBangMobileBankingHoacInternetBanking ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "0"^^xsd:nonNegativeInteger .
 
     ns1:ThuTucNopHocPhi ns1:doAiThucHien ns1:SinhVien ;
         ns1:hoTroPhuongThuc ns1:ThanhToanBangMobileBankingHoacInternetBanking ;
         ns1:noiDung "Nếu có tài khoản Agribank, Vietinbank hoặc Liên Việt PostBank, dùng Mobile Banking hoặc Internet Banking để đóng học phí, miễn phí."@vi .
 
+    ns1:NganHangAgribank ns1:loaiDanhMuc ns1:NganHang .
+
+    ns1:NganHangLienVietPostbank ns1:loaiDanhMuc ns1:NganHang .
+
+    ns1:NganHangVietinbank ns1:loaiDanhMuc ns1:NganHang .
+
     ns1:ThanhToanBangMobileBankingHoacInternetBanking ns1:hoTroNganHang ns1:NganHangAgribank,
             ns1:NganHangLienVietPostbank,
-            ns1:NganHangVietinbank .
+            ns1:NganHangVietinbank ;
+        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
 }
 
 ns1:TDTuitionPaymentGuidanceSection01 {
     ns1:MienPhiThanhToanQr ns1:apDungChoPhuongThucDong ns1:ThanhToanBangMaQr ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "0"^^xsd:nonNegativeInteger .
 
     ns1:MienPhiVnpayDoiVoiTaiKhoanVietcombank ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "0"^^xsd:nonNegativeInteger .
 
     ns1:PhiVnpayDoiVoiNganHangKhac ns1:apDungChoPhuongThucDong ns1:ThanhToanQuaCongVnpay ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "5500"^^xsd:nonNegativeInteger .
 
     ns1:ThuTucNopHocPhi ns1:hoTroPhuongThuc ns1:ThanhToanBangMaQr,
             ns1:ThanhToanQuaCongVnpay ;
         ns1:noiDung "Truy cập sinhvien.ntu.edu.vn, chọn mục học phí và thanh toán qua cổng VnPay; miễn phí với tài khoản Vietcombank, các ngân hàng khác chịu phí 5.500 đồng mỗi lần. Có thể quét mã QR bằng ứng dụng ngân hàng, miễn phí."@vi .
+
+    ns1:ThanhToanBangMaQr ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
+
+    ns1:ThanhToanQuaCongVnpay ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
 }
 
 ns1:TDClassSizeTable {
@@ -2585,7 +2547,8 @@ ns1:TDClassSizeTable {
 }
 
 ns1:TD1052_D17K01dA {
-    ns1:DieuKienDuThiHocPhanLyThuyet ns1:noiDung "Đối với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần."@vi ;
+    ns1:DieuKienDuThiHocPhanLyThuyet ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi ;
+        ns1:noiDung "Đối với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần."@vi ;
         ns1:tyLeToiThieu 80.0 .
 
     ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần."@vi .
@@ -2596,7 +2559,8 @@ ns1:TD1052_D26K01dA {
 }
 
 ns1:TD1052_D07K02dB {
-    ns1:HocKyHe ns1:noiDung "Học kỳ III là học kỳ hè kéo dài tối đa 8 tuần, gồm tối đa 07 tuần học và 01 tuần thi. Học kỳ III tổ chức học tập trung các học phần Giáo dục quốc phòng - An ninh hoặc giúp sinh viên học vượt, học lại, học cải thiện."@vi .
+    ns1:HocKyHe ns1:loaiKhaiNiem ns1:LoaiHocKy ;
+        ns1:noiDung "Học kỳ III là học kỳ hè kéo dài tối đa 8 tuần, gồm tối đa 07 tuần học và 01 tuần thi. Học kỳ III tổ chức học tập trung các học phần Giáo dục quốc phòng - An ninh hoặc giúp sinh viên học vượt, học lại, học cải thiện."@vi .
 }
 
 ns1:TDNguon1052DiemBKhoan4Dieu27 {
@@ -2605,6 +2569,10 @@ ns1:TDNguon1052DiemBKhoan4Dieu27 {
 
 ns1:TDNguon1052Khoan2Dieu9 {
     ns1:ThuTucDangKyKhoiLuongHocTap ns1:doAiThucHien ns1:SinhVien .
+}
+
+ns1:TDNguon1052Khoan1Dieu24 {
+    ns1:ThuTucNghiHocTamThoi ns1:noiDung "Sinh viên được xin nghỉ học tạm thời và bảo lưu kết quả đã học trong các trường hợp quy định tại khoản này."@vi .
 }
 
 ns1:TD1052_D11K04 {
@@ -2627,11 +2595,13 @@ ns1:TDNguon1052DiemAKhoan3Dieu28 {
 }
 
 ns1:TD1052_D02K04dC {
-    ns1:ThoiGianToiDaHoanThanhKhoaHoc ns1:noiDung "Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian theo kế hoạch học tập chuẩn toàn khóa."@vi .
+    ns1:ThoiGianToiDaHoanThanhKhoaHoc ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao ;
+        ns1:noiDung "Thời gian tối đa hoàn thành toàn khóa học không quá 2 lần thời gian theo kế hoạch học tập chuẩn toàn khóa."@vi .
 }
 
 ns1:TD1052_D17K02 {
-    ns1:HauQuaCuaViecBiCamThiHoacVangThi ns1:noiDung "Sinh viên bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 ở kỳ thi đó."@vi .
+    ns1:HauQuaCuaViecBiCamThiHoacVangThi ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi ;
+        ns1:noiDung "Sinh viên bị cấm thi hoặc vắng thi không có lý do chính đáng trong kỳ thi nào sẽ nhận điểm 0 ở kỳ thi đó."@vi .
 }
 
 ns1:TD1052_D31 {
@@ -2640,15 +2610,19 @@ ns1:TD1052_D31 {
 
 ns1:TD1052_D16K02dC {
     ns1:DiemI ns1:kyHieuDiemChu "I" ;
+        ns1:loaiDanhMuc ns1:DiemChu ;
         ns1:noiDung "Điểm học phần chưa hoàn thiện do được phép hoãn thi, kiểm tra."@vi .
 
     ns1:DiemP ns1:kyHieuDiemChu "P" ;
+        ns1:loaiDanhMuc ns1:DiemChu ;
         ns1:noiDung "Loại đạt không phân mức, áp dụng cho học phần chỉ yêu cầu đạt và không tính vào điểm trung bình học tập. Đạt từ 5 điểm trở lên."@vi .
 
     ns1:DiemR ns1:kyHieuDiemChu "R" ;
+        ns1:loaiDanhMuc ns1:DiemChu ;
         ns1:noiDung "Điểm học phần bảo lưu được miễn học và công nhận tín chỉ."@vi .
 
     ns1:DiemX ns1:kyHieuDiemChu "X" ;
+        ns1:loaiDanhMuc ns1:DiemChu ;
         ns1:noiDung "Điểm học phần chưa hoàn thiện do chưa đủ dữ liệu."@vi .
 
     ns1:ThangDiemDanhGia ns1:noiDung "Loại đạt có phân mức, áp dụng cho các học phần được tính vào điểm trung bình học tập: điểm học phần từ 5,0 điểm trở lên được đánh giá là đạt, điểm học phần dưới 5,0 điểm được đánh giá là không đạt."@vi .
@@ -2675,6 +2649,10 @@ ns1:TD1052_D24K01dD {
         ns1:noiDung "Phải đã học ít nhất 01 học kỳ tại Trường và không thuộc diện bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
 }
 
+ns1:TDNguon1052Khoan1Dieu1 {
+    ns1:TrinhDoDaiHoc ns1:loaiDanhMuc ns1:TrinhDoDaoTao .
+}
+
 ns1:TD1052_D21K06 {
     ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:canBieuMau ns1:MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
         ns1:doAiThucHien ns1:SinhVien ;
@@ -2686,7 +2664,8 @@ ns1:TD1052_D21K06 {
 }
 
 ns1:TD1052_D13K02 {
-    ns1:TyLeToiDaDaoTaoTrucTuyen ns1:noiDung "Nhà trường áp dụng tối đa 30% tổng khối lượng chương trình đào tạo cho hoạt động dạy học trực tuyến. Trong trường hợp thiên tai, dịch bệnh phức tạp hoặc bất khả kháng khác, Nhà trường thực hiện theo hướng dẫn của Bộ Giáo dục và Đào tạo."@vi ;
+    ns1:TyLeToiDaDaoTaoTrucTuyen ns1:loaiQuyTac ns1:QuyTacTyLeDaoTaoTrucTuyen ;
+        ns1:noiDung "Nhà trường áp dụng tối đa 30% tổng khối lượng chương trình đào tạo cho hoạt động dạy học trực tuyến. Trong trường hợp thiên tai, dịch bệnh phức tạp hoặc bất khả kháng khác, Nhà trường thực hiện theo hướng dẫn của Bộ Giáo dục và Đào tạo."@vi ;
         ns1:tyLeToiDa 30.0 .
 }
 
@@ -2695,7 +2674,8 @@ ns1:TD1052_D28K01dB {
 }
 
 ns1:TD1052_D21K04 {
-    ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi ns1:noiDung "Khối lượng tối đa được công nhận kết quả học tập và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi ;
+    ns1:GioiHanKhoiLuongDuocCongNhanVaChuyenDoi ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi ;
+        ns1:noiDung "Khối lượng tối đa được công nhận kết quả học tập và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi ;
         ns1:tyLeToiDa 50.0 .
 
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Khối lượng được công nhận và chuyển đổi không vượt quá 50% khối lượng học tập tối thiểu của chương trình đào tạo."@vi .
@@ -2706,7 +2686,8 @@ ns1:TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 {
 }
 
 ns1:TDOtherLanguageRequirementTableSpecialProgram {
-    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet ns1:noiDung """| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |
+    ns1:BangChuanNgoaiNguKhacChuongTrinhDacBiet ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Công nghệ thông tin | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
 | 2 | Kế toán | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |
@@ -2735,7 +2716,8 @@ ns1:TD1052_D09K02dC {
 }
 
 ns1:TD1052_D07K02dA {
-    ns1:HocKyChinh ns1:noiDung "Học kỳ I và học kỳ II kéo dài ít nhất 19 tuần, bao gồm 14 tuần học (trong đó có 01 tuần học số), 01 tuần thi giữa kỳ, 02 tuần thi cuối kỳ, 01 tuần chấm thi giữa kỳ và 01 tuần chấm thi cuối kỳ."@vi .
+    ns1:HocKyChinh ns1:loaiKhaiNiem ns1:LoaiHocKy ;
+        ns1:noiDung "Học kỳ I và học kỳ II kéo dài ít nhất 19 tuần, bao gồm 14 tuần học (trong đó có 01 tuần học số), 01 tuần thi giữa kỳ, 02 tuần thi cuối kỳ, 01 tuần chấm thi giữa kỳ và 01 tuần chấm thi cuối kỳ."@vi .
 }
 
 ns1:TD1052_D21K03 {
@@ -2751,11 +2733,13 @@ ns1:TD1052_D24K01dB {
 }
 
 ns1:TD1052_D02K04dA {
-    ns1:ThoiGianDaoTaoChuanToanKhoa ns1:noiDung "Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một chương trình đại học chính quy cấp bằng cử nhân là 4 năm, chương trình chuyên sâu đặc thù cấp bằng kỹ sư là 4,5 năm."@vi .
+    ns1:ThoiGianDaoTaoChuanToanKhoa ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao ;
+        ns1:noiDung "Thời gian theo kế hoạch học tập chuẩn toàn khóa cho một chương trình đại học chính quy cấp bằng cử nhân là 4 năm, chương trình chuyên sâu đặc thù cấp bằng kỹ sư là 4,5 năm."@vi .
 }
 
 ns1:TDOtherLanguageConversionTableStandardProgram {
-    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |
+    ns1:BangQuyDoiNgoaiNguKhacChuongTrinhChuan ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | > 100 | TOPIK 1 | 200 | |
 | Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | > 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |
@@ -2814,7 +2798,8 @@ ns1:TD753_D10K03 {
 }
 
 ns1:TD1052_D17K01dB {
-    ns1:DieuKienDuThiHocPhanThucHanh ns1:noiDung "Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa hoặc viện đào tạo xem xét xử lý."@vi ;
+    ns1:DieuKienDuThiHocPhanThucHanh ns1:loaiQuyTac ns1:QuyTacDieuKienDuThi ;
+        ns1:noiDung "Đối với các học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học. Trường hợp nghỉ có lý do chính đáng sẽ do Khoa hoặc viện đào tạo xem xét xử lý."@vi ;
         ns1:tyLeToiThieu 100.0 .
 
     ns1:ThuTucXinPhepNghiHoc ns1:noiDung "Với học phần thực hành, thí nghiệm, thực tập ngoài trường, sinh viên phải tham dự 100% số giờ học; trường hợp nghỉ có lý do chính đáng do Khoa hoặc viện đào tạo xem xét xử lý."@vi .
@@ -2825,7 +2810,10 @@ ns1:TD1052_D05K02 {
 }
 
 ns1:TDEnglishConversionTableStandardProgram {
-    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan ns1:noiDung """| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |
+    ns1:AptisGeneral ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
+
+    ns1:BangQuyDoiChungChiTiengAnhChuongTrinhChuan ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| Khung NLNN 6 bậc | CEFR | TOEIC | TOEFL (iBT) | IELTS | Linguaskill | Aptis (General) | Cambridge English Scale | Quy đổi thành điểm 10 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | Bậc 1 | A1 | | | | | | | |
 | Bậc 2 | A2 | 300 | ≥ 30 | | | ≥ 100 | ≥ 100 | Đạt học phần điều kiện: Tiếng Anh A1, A2.1, A2.2 |
@@ -2833,6 +2821,10 @@ ns1:TDEnglishConversionTableStandardProgram {
 | Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 | ≥ 153 | 160 | 160 | Đạt học phần điều kiện: Tiếng Anh B1.1, B1.2 |
 | Bậc 5 | C1 | ≥ 700 | ≥ 80 | ≥ 6.5 | ≥ 170 | | 180 | |
 | Bậc 6 | C2 | ≥ 850 | ≥ 110 | ≥ 8.5 | ≥ 190 | | ≥ 200 | |"""@vi .
+
+    ns1:CambridgeEnglishScale ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
+
+    ns1:Linguaskill ns1:loaiChungChi ns1:ChungChiNgoaiNgu .
 }
 
 ns1:TDAcademicProgramCatalogueTable {
@@ -2965,6 +2957,14 @@ ns1:TDAcademicProgramCatalogueTable {
     ns1:QuanTriKinhDoanh ns1:thuocKhoiNganh ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat .
 
     ns1:TaiChinhNganHang ns1:thuocKhoiNganh ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat .
+
+    ns1:KhoiNganhIvKhoaHocSuSongKhoaHocTuNhien ns1:loaiDanhMuc ns1:KhoiNganh .
+
+    ns1:KhoiNganhIiiKinhDoanhVaQuanLyPhapLuat ns1:loaiDanhMuc ns1:KhoiNganh .
+
+    ns1:KhoiNganhViiNhanVanXaHoiDuLichDichVuVaMoiTruong ns1:loaiDanhMuc ns1:KhoiNganh .
+
+    ns1:KhoiNganhVToanMayTinhCongNgheKyThuatSanXuatXayDungNongLamNghiepVaThuySan ns1:loaiDanhMuc ns1:KhoiNganh .
 }
 
 ns1:TDScholarshipCriteriaGeneralSection {
@@ -2981,12 +2981,14 @@ ns1:TDOrganizationStructureListing {
     ns1:PhongCongTacChinhTriVaSinhVien ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
         ns1:dienThoai "0258 222 1900" ;
         ns1:hopThu "ctsv@ntu.edu.vn" ;
+        ns1:loaiChuThe ns1:DonViTrongTruong ;
         ns1:viTri "Khu Nhà Hiệu bộ"@vi ;
         ns1:websiteDonVi "https://phongctsv.ntu.edu.vn" .
 
     ns1:PhongDaoTaoDaiHoc ns1:diaChi "02 Nguyễn Đình Chiểu, phường Bắc Nha Trang, Khánh Hòa" ;
         ns1:dienThoai "0258 3831148" ;
         ns1:hopThu "daotao@ntu.edu.vn" ;
+        ns1:loaiChuThe ns1:DonViTrongTruong ;
         ns1:viTri "Tầng 1, Tòa nhà Hiệu Bộ" ;
         ns1:websiteDonVi "https://pdtdaihoc.ntu.edu.vn" .
 }
@@ -3089,7 +3091,8 @@ ns1:TDUndergraduateFormCatalogueListing {
 }
 
 ns1:TD1052_D21K07 {
-    ns1:ThoiHanHieuLucCuaHocPhanDuocCongNhan ns1:noiDung "Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi, điểm thưởng và chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi ;
+    ns1:ThoiHanHieuLucCuaHocPhanDuocCongNhan ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi ;
+        ns1:noiDung "Nhà trường chỉ cho phép công nhận kết quả học tập, miễn học, miễn thi, điểm thưởng và chuyển đổi tín chỉ của học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi ;
         ns1:soNam 5.0 .
 
     ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:noiDung "Chỉ công nhận học phần được tích lũy trong vòng 5 năm tính đến ngày xem xét."@vi .
@@ -3104,7 +3107,8 @@ ns1:TD1052_D28K01dA {
 }
 
 ns1:TD1052_D20K02dA {
-    ns1:BuocThoiHocDoCanhBaoLienTiep ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi .
+    ns1:BuocThoiHocDoCanhBaoLienTiep ns1:loaiQuyTac ns1:QuyTacBuocThoiHoc ;
+        ns1:noiDung "Sinh viên bị buộc thôi học nếu vượt quá 02 lần cảnh báo kết quả học tập liên tiếp."@vi .
 }
 
 ns1:TD1052_D28K05 {
@@ -3122,7 +3126,8 @@ ns1:TD1052_D25K02 {
         ns1:doAiQuyetDinh ns1:HieuTruong ;
         ns1:doAiThucHien ns1:SinhVien ;
         ns1:dungBieuMau ns1:MauSo12DonXinChuyenNganh ;
-        ns1:noiDung "Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, sinh viên làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định."@vi ;
+        ns1:noiDung "Sinh viên có nguyện vọng và thỏa mãn các điều kiện tại khoản 1 của Điều này có thể được xem xét chuyển ngành trong cùng bậc học."@vi,
+            "Ít nhất 02 tuần trước khi bắt đầu học kỳ mới, sinh viên làm đơn xin chuyển ngành (Mẫu số 12 - Phụ lục 4 kèm theo) để trình Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên xem xét quyết định."@vi ;
         ns1:nopTai ns1:PhongCongTacChinhTriVaSinhVien .
 }
 
@@ -3148,20 +3153,27 @@ ns1:TDScholarshipRateTableStandardProgram {
     ns1:HocBongKhuyenKhichHocTapLoaiGioiChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "6000000"^^xsd:nonNegativeInteger .
 
     ns1:HocBongKhuyenKhichHocTapLoaiKhaChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "5000000"^^xsd:nonNegativeInteger .
 
     ns1:HocBongKhuyenKhichHocTapLoaiXuatSacChuongTrinhChuan ns1:apDungChoTrinhDo ns1:TrinhDoDaiHoc ;
         ns1:donViTienTe "VND" ;
         ns1:donViTinh ns1:DongTrenHocKy ;
+        ns1:loaiMucTien ns1:MucHocBongKhuyenKhichHocTap ;
         ns1:noiDung "Chương trình đào tạo chuẩn, cấp 05 tháng trên một học kỳ"@vi ;
         ns1:soTien "7200000"^^xsd:nonNegativeInteger .
+
+    ns1:ThuTucXetVaCapHocBongKhuyenKhichHocTap ns1:noiDung "Học bổng khuyến khích học tập cho sinh viên đại học hệ đào tạo chính quy có kết quả học tập và rèn luyện đạt từ mức khá trở lên được cấp theo ba mức ứng với xếp loại xuất sắc, giỏi, khá."@vi .
+
+    ns1:DongTrenHocKy ns1:loaiDanhMuc ns1:DonViTinh .
 }
 
 ns1:TD1052_D05K01 {
@@ -3180,27 +3192,34 @@ ns1:TDAcademicPerformanceTable {
 }
 
 ns1:TD1052_D06K02dI {
-    ns1:HocPhanThayThe ns1:noiDung "Học phần được dùng thay cho một học phần có trong chương trình đào tạo khóa trước nhưng khóa sau không còn tổ chức đào tạo, hoặc học phần tự chọn thay cho học phần tự chọn khác mà sinh viên học không đạt."@vi .
+    ns1:HocPhanThayThe ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần được dùng thay cho một học phần có trong chương trình đào tạo khóa trước nhưng khóa sau không còn tổ chức đào tạo, hoặc học phần tự chọn thay cho học phần tự chọn khác mà sinh viên học không đạt."@vi .
 }
 
 ns1:TD1052_D06K02dA {
-    ns1:HocPhanBatBuoc ns1:noiDung "Học phần chứa đựng những nội dung kiến thức chính yếu của mỗi chương trình đào tạo và bắt buộc sinh viên phải tích lũy."@vi .
+    ns1:HocPhanBatBuoc ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần chứa đựng những nội dung kiến thức chính yếu của mỗi chương trình đào tạo và bắt buộc sinh viên phải tích lũy."@vi .
 }
 
 ns1:TDNguon1052Khoan1Dieu21 {
-    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:doAiQuyetDinh ns1:HieuTruong .
+    ns1:ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi ns1:doAiQuyetDinh ns1:HieuTruong ;
+        ns1:noiDung "Kết quả học tập của sinh viên đã tích lũy từ một trình độ đào tạo khác, một ngành đào tạo hoặc chương trình đào tạo khác, một khóa học khác, hoặc một cuộc thi và hoạt động học thuật, hoặc từ một trường khác được Hiệu trưởng Trường Đại học Nha Trang xem xét công nhận bảo lưu và chuyển đổi sang tín chỉ của những học phần trong chương trình đào tạo theo học."@vi .
 }
 
 ns1:TD1052_D10K02 {
+    ns1:BoMon ns1:loaiChuThe ns1:DonViTrongTruong .
+
     ns1:ThuTucDeNghiMoThemLopHocPhan ns1:duocXetBoi ns1:BoMon ;
         ns1:noiDung "Trong thời gian đăng ký học phần, nếu số lượng sinh viên đăng ký đạt đủ điều kiện mở lớp theo quy định và được Bộ môn (thuộc Khoa, Viện đào tạo) quản lý chấp thuận, Nhà trường sẽ mở thêm lớp học phần theo đề nghị."@vi .
 }
 
 ns1:TDTuitionPaymentGuidanceSection03 {
     ns1:MienPhiNopTienMatTaiQuayONhaTrang ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "0"^^xsd:nonNegativeInteger .
 
     ns1:PhiNopTienMatTaiHuyenTrongKhanhHoaHoacNgoaiTinhLa3300Hoac5500DongMoiLan ns1:apDungChoPhuongThucDong ns1:NopTienMatTaiQuayNganHang ;
+        ns1:loaiMucTien ns1:QuyTacLePhiDongHocPhi ;
         ns1:soTien "3300"^^xsd:nonNegativeInteger,
             "5500"^^xsd:nonNegativeInteger .
 
@@ -3209,7 +3228,8 @@ ns1:TDTuitionPaymentGuidanceSection03 {
 
     ns1:NopTienMatTaiQuayNganHang ns1:hoTroNganHang ns1:NganHangAgribank,
             ns1:NganHangLienVietPostbank,
-            ns1:NganHangVietinbank .
+            ns1:NganHangVietinbank ;
+        ns1:loaiDanhMuc ns1:PhuongThucDongHocPhi .
 }
 
 ns1:TD1052_D25K01dD {
@@ -3217,11 +3237,13 @@ ns1:TD1052_D25K01dD {
 }
 
 ns1:TD1052_D04K02 {
-    ns1:DaoTaoVuaLamVuaHoc ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường hoặc tại cơ sở phối hợp đào tạo. Thời gian giảng dạy linh hoạt trong ngày và trong tuần."@vi .
+    ns1:DaoTaoVuaLamVuaHoc ns1:loaiKhaiNiem ns1:HinhThucDaoTao ;
+        ns1:noiDung "Hoạt động giảng dạy được thực hiện tại Trường hoặc tại cơ sở phối hợp đào tạo. Thời gian giảng dạy linh hoạt trong ngày và trong tuần."@vi .
 }
 
 ns1:TD1052_D06K02dC {
-    ns1:HocPhanTienQuyet ns1:noiDung "Học phần sinh viên phải tích lũy mới được học các học phần tiếp theo."@vi .
+    ns1:HocPhanTienQuyet ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần sinh viên phải tích lũy mới được học các học phần tiếp theo."@vi .
 }
 
 ns1:TD1052_D22K01dE {
@@ -3230,16 +3252,18 @@ ns1:TD1052_D22K01dE {
 
 ns1:TD1052_D02K04dB {
     ns1:ThoiGianDaoTaoHinhThucVuaLamVuaHoc ns1:apDungChoHinhThucDaoTao ns1:DaoTaoVuaLamVuaHoc ;
+        ns1:loaiQuyTac ns1:QuyTacThoiGianDaoTao ;
         ns1:noiDung "Hệ vừa làm vừa học có thời gian học chuẩn toàn khóa dài hơn hệ chính quy cùng ngành ít nhất 20%."@vi ;
         ns1:tyLeToiThieu 20.0 .
 }
 
 ns1:TD1052_D06K02dD {
-    ns1:HocPhanNhiemY ns1:noiDung "Học phần sinh viên có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả được ghi trong bảng điểm nhưng không tính vào trung bình chung tích lũy và không dùng để phân loại, xếp hạng học tập."@vi .
+    ns1:HocPhanNhiemY ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần sinh viên có thể tự do đăng ký học theo nhu cầu cá nhân. Kết quả được ghi trong bảng điểm nhưng không tính vào trung bình chung tích lũy và không dùng để phân loại, xếp hạng học tập."@vi .
 }
 
 ns1:TD1052_D21K05 {
-    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:noiDung "Đạt giải nhất, nhì, ba trong kỳ thi Olympic sinh viên cấp tỉnh trở lên hoặc Giải thưởng khoa học công nghệ dành cho sinh viên; hoặc có chứng chỉ ngoại ngữ quốc tế còn hiệu lực theo Phụ lục 2; hoặc có chứng chỉ tin học quốc tế còn hiệu lực theo Phụ lục 3."@vi .
+    ns1:ThuTucXinMienHocMienThiVaCongDiemThuong ns1:noiDung "Sinh viên được xem xét miễn học, miễn thi kết thúc học phần liên quan và cho điểm thưởng trong các trường hợp: đạt giải thưởng nhất, nhì, ba trong các kỳ thi Olympic sinh viên cấp tỉnh và tương đương trở lên; đạt giải thưởng nhất, nhì, ba trong đợt xét Giải thưởng khoa học và công nghệ dành cho sinh viên; có chứng chỉ ngoại ngữ quốc tế còn hiệu lực, đáp ứng các mức yêu cầu theo quy định chi tiết tại Phụ lục 2; có chứng chỉ tin học quốc tế còn hiệu lực, đáp ứng các mức yêu cầu theo quy định chi tiết tại Phụ lục 3."@vi .
 }
 
 ns1:TD1052_D15K01 {
@@ -3255,7 +3279,7 @@ ns1:TD1052_D26K01dC {
 }
 
 ns1:TD1052_D17K04 {
-    ns1:ThuTucXinHoanThi ns1:noiDung "Sinh viên được dự thi cuối kỳ học phần đó trong thời hạn 02 học kỳ chính tiếp theo; quá thời hạn này điểm đánh giá cuối kỳ sẽ là 0."@vi .
+    ns1:ThuTucXinHoanThi ns1:noiDung "Sinh viên đủ điều kiện dự thi nhưng không thể dự thi cuối kỳ do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được phép hoãn thi và được dự thi cuối kỳ học phần đó trong thời hạn 2 học kỳ chính tiếp theo để hoàn thành điểm, quá thời hạn trên điểm đánh giá cuối kỳ sẽ là điểm 0 (không). Sinh viên làm đơn xin hoãn thi theo mẫu (Mẫu số 04 - Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo để được giải quyết."@vi .
 }
 
 ns1:TD1052_D22K01dC {
@@ -3263,7 +3287,8 @@ ns1:TD1052_D22K01dC {
 }
 
 ns1:TD1052_D27K02 {
-    ns1:GioiHanTinChiTichLuyTaiTruongKhac ns1:noiDung "Sinh viên tham gia chương trình trao đổi có thể đăng ký học một số học phần tại trường khác với số lượng tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi ;
+    ns1:GioiHanTinChiTichLuyTaiTruongKhac ns1:loaiQuyTac ns1:QuyTacGioiHanCongNhanVaChuyenDoiTinChi ;
+        ns1:noiDung "Sinh viên tham gia chương trình trao đổi có thể đăng ký học một số học phần tại trường khác với số lượng tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi ;
         ns1:tyLeToiDa 25.0 .
 
     ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Số tín chỉ tích lũy tại trường khác không vượt quá 25% tổng khối lượng của chương trình đào tạo."@vi .
@@ -3279,19 +3304,27 @@ ns1:TD1052_D22K01dDD {
 }
 
 ns1:TDComputerCertificateConversionTable {
-    ns1:BangQuyDoiChungChiTinHoc ns1:noiDung """| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |
+    ns1:BangQuyDoiChungChiTinHoc ns1:loaiBang ns1:BangQuyDoiChungChi ;
+        ns1:noiDung """| TT | Điểm IC3 | Điểm ICDL | Điểm MOS | Điểm quy đổi / Điểm thưởng |
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | 1990 - 2329 | 1350 - 1445 | 1400 - 1599 | 8 |
 | 2 | 2330 - 2669 | 1446 - 1620 | 1600 - 1799 | 9 |
 | 3 | 2670 - 3000 | 1621 - 1800 | 1800 - 2000 | 10 |"""@vi .
+
+    ns1:Ic3 ns1:loaiChungChi ns1:ChungChiTinHoc .
+
+    ns1:Icdl ns1:loaiChungChi ns1:ChungChiTinHoc .
+
+    ns1:Mos ns1:loaiChungChi ns1:ChungChiTinHoc .
 }
 
 ns1:TD1052_D23K03dB {
-    ns1:HaHangTotNghiepDoBiKyLuat ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học."@vi .
+    ns1:HaHangTotNghiepDoBiKyLuat ns1:loaiQuyTac ns1:QuyTacHaHangTotNghiep ;
+        ns1:noiDung "Hạng tốt nghiệp của sinh viên có điểm trung bình chung tích lũy loại xuất sắc và giỏi bị giảm đi một mức nếu sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học."@vi .
 }
 
 ns1:TD753_D10K01 {
-    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Sau khi rút bớt, khối lượng học tập còn lại không được vi phạm giới hạn tối thiểu quy định tại khoản 3 và khoản 4 Điều 9 của Quy chế này."@vi .
+    ns1:ThuTucRutBotHocPhanDaDangKy ns1:noiDung "Sau thời gian đăng ký học, nếu sinh viên xét thấy không thể hoàn thành khối lượng học tập đã đăng ký thì có thể làm đơn xin rút bớt (hủy) một hoặc một số học phần đã đăng ký với điều kiện không vi phạm giới hạn tối thiểu quy định tại khoản 3, khoản 4 Điều 9 của Quy chế này."@vi .
 }
 
 ns1:TD1052_D20K03 {
@@ -3306,16 +3339,26 @@ ns1:TD1052_D20K03 {
     ns1:MauSo05DonXinChuyenChuongTrinhDaoTao ns1:soHieuMauTheoQuyetDinh "05" .
 }
 
+ns1:TDNguon1052Khoan1Dieu27 {
+    ns1:ThuTucDangKyChuongTrinhTraoDoiSinhVien ns1:noiDung "Trao đổi sinh viên là việc Nhà trường hợp tác với các trường khác để tiếp nhận sinh viên của nhau đến học tập ở trường đối tác nhằm công nhận kết quả học tập và tín chỉ lẫn nhau (sau đây gọi là chương trình trao đổi sinh viên)."@vi .
+}
+
+ns1:TDNguon1052Khoan1Dieu9 {
+    ns1:ThuTucDangKyKhoiLuongHocTap ns1:noiDung "Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi sinh viên trước khi bắt đầu một học kỳ mới."@vi .
+}
+
 ns1:TD1052_D08K01dA {
     ns1:LopHanhChinh ns1:noiDung "Lớp hành chính là lớp được thành lập ổn định trong cả khóa học theo ngành, chuyên ngành hoặc chương trình đào tạo, dùng để duy trì hoạt động đoàn thể, xét kết quả rèn luyện, xét khen thưởng và phổ biến thông tin. Mỗi lớp hành chính có mã số riêng, được bố trí cố vấn học tập và cần có tối thiểu 20 sinh viên."@vi .
 }
 
 ns1:TD1052_D09K03 {
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh45NamVaChuongTrinhDacBiet ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy ;
+        ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
         ns1:soTinChiToiDa 32 ;
         ns1:soTinChiToiThieu 15 .
 
-    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
+    ns1:KhoiLuongDangKyCuaSinhVienHocLucTrungBinhTroLenChuongTrinh4Nam ns1:loaiQuyTac ns1:QuyTacKhoiLuongDangKyMoiHocKy ;
+        ns1:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
         ns1:soTinChiToiDa 27 ;
         ns1:soTinChiToiThieu 15 .
 
@@ -3323,7 +3366,7 @@ ns1:TD1052_D09K03 {
 }
 
 ns1:TD1052_D29K01 {
-    ns1:ThuTucHocLienThong ns1:noiDung "Đã tốt nghiệp trình độ trung cấp hoặc cao đẳng để liên thông lên đại học; người đã tốt nghiệp đại học được liên thông để nhận thêm một bằng đại học của ngành đào tạo khác."@vi .
+    ns1:ThuTucHocLienThong ns1:noiDung "Người đã tốt nghiệp trình độ trung cấp, trình độ cao đẳng được xét tuyển và học liên thông lên trình độ đại học. Người đã tốt nghiệp đại học được xét tuyển và học liên thông để nhận thêm một bằng tốt nghiệp đại học của một ngành đào tạo khác."@vi .
 }
 
 ns1:TDVNPAYPaymentGuidanceOtherBankNote {
@@ -3335,7 +3378,8 @@ ns1:TDVNPAYPaymentGuidanceOtherBankNote {
 }
 
 ns1:TD1052_D20K01dC {
-    ns1:CanhBaoDoDiemTrungBinhTichLuy ns1:noiDung "Điểm trung bình tích lũy đạt dưới 5,20 đối với sinh viên năm thứ nhất, dưới 5,30 đối với năm thứ hai, dưới 5,40 đối với năm thứ ba, hoặc dưới 5,50 đối với các năm tiếp theo."@vi .
+    ns1:CanhBaoDoDiemTrungBinhTichLuy ns1:loaiQuyTac ns1:QuyTacCanhBaoKetQuaHocTap ;
+        ns1:noiDung "Điểm trung bình tích lũy đạt dưới 5,20 đối với sinh viên năm thứ nhất, dưới 5,30 đối với năm thứ hai, dưới 5,40 đối với năm thứ ba, hoặc dưới 5,50 đối với các năm tiếp theo."@vi .
 }
 
 ns1:TD1052_D12K01 {
@@ -3348,7 +3392,8 @@ ns1:TD753_D10K02 {
 }
 
 ns1:TD1052_D06K02dB {
-    ns1:HocPhanTuChon ns1:noiDung "Học phần chứa đựng những nội dung kiến thức cần thiết, sinh viên được tự chọn theo hướng dẫn của Trường nhằm đa dạng hóa hướng chuyên môn hoặc tự chọn tùy ý để tích lũy đủ số học phần quy định."@vi .
+    ns1:HocPhanTuChon ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần chứa đựng những nội dung kiến thức cần thiết, sinh viên được tự chọn theo hướng dẫn của Trường nhằm đa dạng hóa hướng chuyên môn hoặc tự chọn tùy ý để tích lũy đủ số học phần quy định."@vi .
 }
 
 ns1:TD1052_D18K03 {
@@ -3356,6 +3401,7 @@ ns1:TD1052_D18K03 {
 }
 
 ns1:TD1052_D06K02dE {
-    ns1:HocPhanSongHanh ns1:noiDung "Học phần sinh viên có thể học cùng với các học phần khác trong một học kỳ."@vi .
+    ns1:HocPhanSongHanh ns1:loaiKhaiNiem ns1:LoaiHocPhan ;
+        ns1:noiDung "Học phần sinh viên có thể học cùng với các học phần khác trong một học kỳ."@vi .
 }
 
