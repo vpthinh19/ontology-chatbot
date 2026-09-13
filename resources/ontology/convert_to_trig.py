@@ -1003,6 +1003,12 @@ def main() -> None:
     if os.environ.get("PYTHONHASHSEED") != "0":
         os.execve(sys.executable, [sys.executable, *sys.argv], {**os.environ, "PYTHONHASHSEED": "0"})
 
+    # Chốt ngày 13/9/2026: ontology.trig là nguồn duy nhất, sửa thẳng trên tệp đó và
+    # kiểm bằng shapes.ttl. Chạy lại bộ chuyển đổi sẽ xoá mọi sửa đổi từ sau ngày chốt.
+    if "--ghi-de" not in sys.argv:
+        sys.exit("Bộ chuyển đổi đã chốt: ontology.trig là nguồn duy nhất. "
+                 "Chỉ chạy với --ghi-de khi thật sự muốn dựng lại từ ontology.ttl.")
+
     g = Graph()
     g.parse(NGUON_TTL, format="turtle")
     bo = BoChuyenDoi(g)
