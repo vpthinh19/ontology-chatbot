@@ -4,7 +4,14 @@
   "MienPhiVnpayDoiVoiTaiKhoanVietcombank|apDungChoPhuongThucDong|ThanhToanQuaCongVnpay": "hai văn bản độc lập cùng nêu: phương thức 1 của trang hướng dẫn đóng học phí qua ngân hàng ('miễn phí tài khoản Vietcombank'), và lưu ý ở bước 2 của tài liệu hướng dẫn VNPAY - Vietcombank ('chọn nút Nộp học phí qua Vietcombank để được miễn lệ phí giao dịch')",
   "MienPhiVnpayDoiVoiTaiKhoanVietcombank|soTien|0": "như trên",
   "PhiVnpayDoiVoiNganHangKhac|apDungChoPhuongThucDong|ThanhToanQuaCongVnpay": "hai văn bản độc lập cùng nêu: phương thức 1 của trang hướng dẫn đóng học phí qua ngân hàng ('các ngân hàng khác phí 5.500 đồng/lần đóng'), và lưu ý ở bước 2 của tài liệu hướng dẫn VNPAY - Vietcombank ('sinh viên sẽ đóng thêm 5.500 đồng phí giao dịch')",
-  "PhiVnpayDoiVoiNganHangKhac|soTien|5500": "như trên"
+  "PhiVnpayDoiVoiNganHangKhac|soTien|5500": "như trên",
+  "ThuTucNghiHocTamThoi|nopTai|PhongCongTacChinhTriVaSinhVien": "khoản 3 Điều 24 Quy chế 1052 ('gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên') và trang Liên hệ của Trường (mục 1: sinh viên cần 'tạm dừng học tập' đến phòng này) cùng nêu",
+  "ThuTucXinHocTroLai|nopTai|PhongCongTacChinhTriVaSinhVien": "khoản 3 Điều 24 Quy chế 1052 và trang Liên hệ (mục 1: 'xin vào học lại') cùng nêu",
+  "ThuTucChuyenNganh|nopTai|PhongCongTacChinhTriVaSinhVien": "khoản 2 Điều 25 Quy chế 1052 và trang Liên hệ (mục 1: 'chuyển ngành') cùng nêu",
+  "ThuTucXinHoanThi|nopTai|PhongDaoTaoDaiHoc": "khoản 2 Điều 30 Quy chế 1052 ('gửi Đơn vị quản lý đào tạo') và trang Liên hệ (mục 2: 'làm giấy hoãn thi') cùng nêu",
+  "ThuTucRutBotHocPhanDaDangKy|nopTai|PhongDaoTaoDaiHoc": "khoản 3 Điều 10 Quy chế 753 ('tại Đơn vị quản lý đào tạo') và trang Liên hệ (mục 2: 'hủy học phần') cùng nêu",
+  "ThuTucXetVaCapHocBongKhuyenKhichHocTap|doAiQuyetDinh|HieuTruong": "Quyết định 1618 (sinh viên chương trình đào tạo đặc biệt) và 1619 (1.051 sinh viên) là hai văn bản riêng, cùng do Hiệu trưởng ký, Điều 1 của mỗi quyết định cấp học bổng cho một nhóm sinh viên, nên dẫn cả hai",
+  "ThuTucXetVaCapHocBongKhuyenKhichHocTap|noiDung|Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên.": "như trên: phần căn cứ của cả hai quyết định ghi 'Xét kết quả học tập và rèn luyện của sinh viên HKII năm học 2024-2025; Theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên'"
  },
  "nhieu_cau_mot_dieu_khoan": {
   "ThuTucCongNhanKetQuaHocTapVaChuyenDoiTinChi|khoản 3 Điều 21": "khoản 3 có hai câu thật: ai xét, và xét theo đơn vị nào",

@@ -840,8 +840,14 @@ def tao_thuc_the(ds, mac_dinh: Graph, sua_chua: dict, loi: list[str]) -> int:
     for muc in sua_chua.get("tao_thuc_the", []):
         noi = f"tao_thuc_the {muc['thuc_the']}"
         chu_the, lop = ACADEMIC[muc["thuc_the"]], ACADEMIC[muc["lop"]]
-        if muc["thuc_the"] != pascal(muc["nhan"]):
-            loi.append(f"{noi}: tên phải sinh từ nhãn, tức {pascal(muc['nhan'])}")
+        mong_doi = pascal(muc["nhan"])
+        if muc["lop"] == "Nguon":
+            # Nguồn theo lệ có sẵn: Nguon + số hiệu văn bản; trang web không số hiệu
+            # thì Nguon + tên sinh từ nhãn.
+            so = re.sub(r"\D", "", muc.get("so_hieu", "").split("/")[0])
+            mong_doi = "Nguon" + (so or pascal(muc["nhan"]))
+        if muc["thuc_the"] != mong_doi:
+            loi.append(f"{noi}: tên phải là {mong_doi}")
             continue
         if next(iter(ds.quads((chu_the, None, None, None))), None) is not None:
             loi.append(f"{noi}: thực thể này đã có")
