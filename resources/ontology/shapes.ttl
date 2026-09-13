@@ -137,6 +137,78 @@
 		  sh:maxCount 1 ;
 		  :batBuocNguon true ] .
 
+:ChuongTrinhDaoTaoShape a sh:NodeShape ;
+	sh:targetClass :ChuongTrinhDaoTao ;
+	rdfs:label "Chương trình đào tạo"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :donViQuanLy ;
+		  sh:name "đơn vị quản lý"@vi ;
+		  sh:class :ChuThe ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :maNganh ;
+		  sh:name "mã ngành"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :ngonNguDaoTao ;
+		  sh:name "ngôn ngữ đào tạo"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :thoiGianDaoTao ;
+		  sh:name "thời gian đào tạo"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :thuocNganh ;
+		  sh:name "thuộc ngành"@vi ;
+		  sh:class :NganhDaoTao ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :tongSoTinChi ;
+		  sh:name "tổng số tín chỉ"@vi ;
+		  sh:datatype xsd:integer ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
+		[ sh:path :vanBangTotNghiep ;
+		  sh:name "văn bằng tốt nghiệp"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
+:ChuyenNganhShape a sh:NodeShape ;
+	sh:targetClass :ChuyenNganh ;
+	rdfs:label "Chuyên ngành"@vi ;
+	sh:closed true ;
+	sh:ignoredProperties ( rdf:type ) ;
+	sh:property
+		[ sh:path rdfs:label ;
+		  sh:name "nhãn"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ] ,
+		[ sh:path skos:altLabel ;
+		  sh:name "tên gọi khác"@vi ;
+		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :thuocNganh ;
+		  sh:name "thuộc ngành"@vi ;
+		  sh:class :NganhDaoTao ;
+		  sh:minCount 1 ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] .
+
 :DanhMucShape a sh:NodeShape ;
 	sh:targetClass :DanhMuc ;
 	rdfs:label "Danh mục"@vi ;
@@ -349,6 +421,11 @@
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
 		  sh:minCount 1 ;
 		  sh:maxCount 1 ] ,
+		[ sh:path :maNganh ;
+		  sh:name "mã ngành"@vi ;
+		  sh:datatype xsd:string ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
 		[ sh:path :thuocKhoiNganh ;
 		  sh:name "thuộc khối ngành"@vi ;
 		  sh:class :DanhMuc ;
@@ -385,7 +462,7 @@
 		  sh:maxCount 1 ] ,
 		[ sh:path :loaiNguon ;
 		  sh:name "loại nguồn"@vi ;
-		  sh:in ( :DanhMucBieuMau :QuyChe :QuyetDinh :VanBanHuongDan ) ;
+		  sh:in ( :DanhMucBieuMau :QuyChe :QuyetDinh :VanBanChuongTrinhDaoTao :VanBanHuongDan ) ;
 		  sh:minCount 1 ;
 		  sh:maxCount 1 ] ,
 		[ sh:path :ngayThuThap ;
