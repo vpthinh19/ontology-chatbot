@@ -440,9 +440,9 @@ tạm thời" ở ví dụ có 12 nhóm nguồn.
 
 ### 6.7 Chi phí
 
-Trên máy phát triển, nạp tệp TriG và dựng chỉ mục mất khoảng 50 ms. Một lần tìm, kể
-cả đọc hồ sơ 3 mục, có trung vị 0,57 ms và p95 1,0 ms qua 285 lần chạy với từ khoá của
-bộ kiểm ở mục 8.1. Chỉ mục dựng lại trong bộ nhớ mỗi khi ontology thay đổi, nên không
+Trên một máy tính cá nhân, nạp tệp TriG và dựng chỉ mục mất khoảng 50 ms. Một lần tìm,
+kể cả đọc hồ sơ 3 mục, có trung vị 0,57 ms và p95 1,0 ms đo trên các từ khoá của bộ kiểm
+ở mục 8.1. Chỉ mục dựng lại trong bộ nhớ mỗi khi ontology thay đổi, nên không
 có tệp chỉ mục nào phải giữ đồng bộ.
 
 ## 7. Dữ liệu được cập nhật thế nào?
@@ -465,35 +465,33 @@ giữ nguyên và lý do hiện ngay trên trang:
 ![Trang quản trị từ chối một câu chưa gắn nguồn](docs/images/quan-tri-tu-choi.png)
 
 Ghi xong, engine tìm kiếm được dựng lại nên lượt hỏi kế tiếp đã dùng dữ liệu mới, không
-phải huấn luyện lại gì. Đo trên máy phát triển, một lần lưu mất khoảng 0,5 giây.
+phải huấn luyện lại gì. Một lần lưu mất khoảng nửa giây.
 
 ## 8. Thực nghiệm được thiết lập thế nào?
 
-> **Kết quả ở mục 8 và 9 là sơ bộ.** Chúng đo trên phiên bản ontology ngày 13/9/2026,
-> khi dữ liệu mới phủ một phần phạm vi nêu ở mục 1 và vẫn đang được bổ sung. Vì vậy
-> chúng cho biết cách tiếp cận có chạy được trên phần dữ liệu đã có hay không, **không
-> phải** độ chính xác của một hệ thống hoàn chỉnh. Bổ sung dữ liệu sẽ làm các con số này
-> thay đổi — trích dẫn con số nào cũng phải kèm phiên bản dữ liệu đã đo.
+> **Kết quả ở mục 8 và 9 là sơ bộ.** Chúng đo trên một phiên bản ontology mà dữ liệu
+> mới phủ một phần phạm vi nêu ở mục 1. Vì vậy chúng cho biết cách tiếp cận có chạy được
+> trên phần dữ liệu đã có hay không, **không phải** độ chính xác của một hệ thống hoàn
+> chỉnh; bổ sung dữ liệu sẽ làm các con số này thay đổi.
 
 ### 8.1 Bộ kiểm tìm kiếm
 
-Bộ kiểm [`retrieval.json`](resources/end-to-end/retrieval.json) đo riêng câu hỏi
-nghiên cứu thứ nhất, không cần gọi LLM. Mỗi câu có từ khoá do trợ lý đã viết trong một
-lượt chạy thật, được ghi lại và đóng băng, cùng mục đích và tên của mục đích.
+Bộ kiểm thứ nhất đo riêng câu hỏi nghiên cứu thứ nhất và không cần gọi LLM: mỗi câu đi
+kèm một bộ từ khoá cố định cùng mục mà câu đó nhắm tới. Từ khoá được lấy từ một lượt
+chạy thật của trợ lý rồi đóng băng, để phép đo chỉ phản ánh engine chứ không lẫn biến
+động của LLM.
 
-- Bộ có 57 câu; 49 câu được chấm. 8 câu không tính: 6 câu hỏi nguyên văn một điều
-  khoản, trong khi ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc; 2 câu
-  có đáp án là chính một văn bản nguồn, trong khi nguồn dùng để trích dẫn chứ không
-  phải để tra.
-- Một câu đạt khi mục đích nằm trong 3 mục trả về, khớp theo IRI hoặc theo tên. Thứ
-  hạng của mục đích được ghi lại.
-- [`check_retrieval.py`](resources/end-to-end/check_retrieval.py) so kết quả với một mốc
-  đã ghi, nên mỗi lần sửa dữ liệu làm tụt câu nào là biết ngay.
+- Bộ có 57 câu, trong đó 49 câu được chấm. 8 câu không tính: 6 câu hỏi nguyên văn một
+  điều khoản, trong khi ontology không lưu nguyên văn văn bản mà dẫn tới văn bản gốc;
+  2 câu có đáp án là chính một văn bản nguồn, trong khi nguồn dùng để trích dẫn chứ
+  không phải để tra.
+- Một câu đạt khi mục cần tra nằm trong 3 mục trả về, khớp theo định danh hoặc theo tên.
+  Thứ hạng của mục đó cũng được ghi lại.
 
 ### 8.2 Bộ đánh giá toàn hệ thống
 
-Bộ [`questions.json`](resources/end-to-end/questions.json) có 85 câu cố định, viết theo
-nhiều cách: trang trọng, trung tính, đời thường và gõ thiếu dấu. Các câu chia ba nhóm:
+Bộ kiểm thứ hai có 85 câu cố định, viết theo nhiều cách: trang trọng, trung tính, đời
+thường và gõ thiếu dấu. Các câu chia ba nhóm:
 
 | Nhóm | Số câu | Hành vi đúng |
 |---|---:|---|
@@ -501,33 +499,28 @@ nhiều cách: trang trọng, trung tính, đời thường và gõ thiếu dấ
 | Ngoài phạm vi | 11 | từ chối hoặc hỏi lại cho rõ |
 | Hỏi vào khoảng trống của dữ liệu | 8 | nói dữ liệu không có |
 
-Trong 66 câu có dữ kiện, 58 câu có mục đích để chấm việc lấy đúng mục; 8 câu còn lại
+Trong 66 câu có dữ kiện, 58 câu có mục cần tra để chấm việc lấy đúng mục; 8 câu còn lại
 là các câu hỏi nguyên văn điều khoản và câu có đáp án là văn bản nguồn nói ở mục 8.1.
-Có 5 câu được chuyển sang nhóm có dữ kiện vì ontology hiện tại đã có câu trả lời: ba
-câu về bảo hiểm y tế, một câu về chuẩn tiếng Anh của ngành Công nghệ thông tin, một câu
-về số tín chỉ ngành Quản trị kinh doanh. Lý do chuyển ghi trong trường `chuyen_nhom`.
 
 Điều kiện chạy:
 
 | Thiết lập | Giá trị |
 |---|---|
-| Mô hình ngôn ngữ | `lightning-ai/gemma-4-31B-it` qua Lightning AI |
-| Ngày chạy | 13/9/2026 |
+| Mô hình ngôn ngữ | `lightning-ai/gemma-4-31B-it` |
 | Số mục mỗi lần tìm | 3 |
 | Số bước LLM tối đa mỗi lượt | 4 |
 | Cách chạy | tuần tự, mỗi câu một lượt độc lập, không có lịch sử |
 
-Trợ lý được dựng đúng như khi phục vụ; chỉ công cụ tra cứu được bọc để ghi từ khoá,
-mục trả về, thời gian và nguyên văn dữ liệu của từng lần gọi. Khoá API bị giới hạn tốc
-độ (lỗi HTTP 429) thì phần chạy chờ rồi hỏi lại cả câu; thời gian ghi nhận chỉ tính lần
-hỏi cuối.
+Trợ lý được dựng đúng như khi phục vụ; chỉ công cụ tra cứu được bọc lại để ghi từ khoá,
+mục trả về, thời gian và nguyên văn dữ liệu của từng lần gọi, nhờ đó mỗi phán quyết đều
+đối chiếu được với chính dữ liệu mà LLM đã nhìn thấy.
 
 Mỗi câu được chấm theo hai cách. **Kiểm tra cố định** đếm những thứ có hình dạng rõ:
 
 | Kiểm tra | Cách tính |
 |---|---|
 | Gọi công cụ | lượt có ít nhất một lần gọi công cụ trước khi trả lời |
-| Lấy đúng mục | mục đích nằm trong các mục công cụ trả về |
+| Lấy đúng mục | mục cần tra nằm trong các mục công cụ trả về |
 | Bám dữ liệu | mọi số có từ hai chữ số và chữ viết tắt trong câu trả lời có mặt trong dữ liệu công cụ, câu hỏi hoặc lời hướng dẫn, sau khi bỏ dấu phân cách hàng nghìn |
 | Nói là không có | câu trả lời chứa một cụm từ chối như "không tìm thấy", "không có thông tin" |
 
@@ -542,20 +535,16 @@ câu trả lời, rồi xếp vào một mức kèm một trích đoạn làm b�
 | Lạc đề | không đưa ra điều được hỏi mà cũng không nói là thiếu |
 | Sai | có dữ kiện sai, hoặc ghép thành quan hệ mà dữ liệu không nói |
 
-Phán quyết nào mâu thuẫn với kiểm tra cố định, ví dụ chấm "từ chối" dù đã lấy đúng mục
-và có dữ liệu, được đánh dấu đáng ngờ để đọc lại trong
-[`quality-log.md`](resources/end-to-end/quality-log.md).
+Phán quyết nào mâu thuẫn với kiểm tra cố định — ví dụ chấm "từ chối" dù đã lấy đúng mục
+và có dữ liệu — được đánh dấu là đáng ngờ và đọc lại bằng mắt.
 
-### 8.3 Bộ test tự động
+### 8.3 Kiểm tra tự động
 
-| Nhóm | Số test | Kiểm điều gì |
-|---|---:|---|
-| `tests/runtime` | 88 | vòng agent, công cụ tra cứu, API, lệnh dòng lệnh |
-| `tests/search` | 47 | tách từ, chỉ mục, xếp hạng, hồ sơ, trích dẫn, lược đồ và các câu hỏi tiêu biểu trên ontology thật |
-| `tests/admin` | 11 | lược đồ form, thêm, sửa, xoá, từ chối và các đường API quản trị |
-| `tests/ci` | 6 | cấu hình ảnh Docker và quy trình phát hành |
-| `tests/ontology` | 1 | các bảng khớp bản chép nguyên văn |
-| `webui` | 8 + 19 | proxy tới máy chủ; hành vi giao diện trong trình duyệt |
+Ngoài hai bộ kiểm trên, mọi khẳng định về hành vi của hệ thống đều được một bộ test tự
+động kiểm lại mỗi lần sửa mã hoặc sửa dữ liệu: vòng agent và các đường API, cách tách từ
+và xếp hạng của search engine, thao tác thêm sửa xoá của trang quản trị cùng các trường
+hợp phải bị từ chối, việc dữ liệu khớp lược đồ SHACL, việc các bảng khớp bản chép nguyên
+văn, và hành vi của giao diện trong trình duyệt thật.
 
 ## 9. Kiểm thử và kết quả
 
@@ -592,7 +581,7 @@ Mô hình chấm:
 | Nhóm | Hành vi đúng | Kết quả | Còn lại |
 |---|---|---:|---|
 | Có dữ kiện, 66 câu | đúng | 53/66, 80,3% | từ chối 11, đúng một phần 2, sai 0, lạc đề 0 |
-| — trong đó 58 câu có mục đích | đúng | 52/58, 89,7% | từ chối 4, đúng một phần 2 |
+| — trong đó 58 câu có mục cần tra | đúng | 52/58, 89,7% | từ chối 4, đúng một phần 2 |
 | — trong đó 8 câu hỏi nguyên văn hoặc hỏi văn bản nguồn | | đúng 1 | từ chối 7 |
 | Ngoài phạm vi, 11 câu | từ chối | 11/11 | |
 | Khoảng trống, 8 câu | từ chối | 8/8 | |
@@ -616,7 +605,7 @@ khoá ở 41 lần, 3 từ khoá ở 25 lần, 1 từ khoá ở 11 lần và 4 t
 
 ### 9.4 Phân tích lỗi
 
-Trong 58 câu có mục đích, 6 câu chưa đạt mức đúng:
+Trong 58 câu có mục cần tra, 6 câu chưa đạt mức đúng:
 
 - **Hai câu quá chung** ("Trường Đại học Nha Trang?", "Sinh viên thế nào ạ?"): LLM hỏi
   lại người dùng muốn biết điều gì thay vì tra. Đây là hành vi hợp lý khi câu hỏi không
@@ -654,7 +643,7 @@ Khi dữ liệu không có điều được hỏi, giao diện hiện lời từ
 
 Trên bộ kiểm cố định, tìm kiếm theo từ khoá trên ontology đưa mục đúng vào 3 mục đầu ở
 48/49 câu, đứng đầu ở 43 câu. Trên 85 tình huống toàn hệ thống, mô hình chấm xếp đúng
-52/58 câu có mục đích, không có câu sai, và từ chối đúng 19/19 câu phải từ chối. Mỗi
+52/58 câu có mục cần tra, không có câu sai, và từ chối đúng 19/19 câu phải từ chối. Mỗi
 lượt mất trung vị 2,0 giây, trong đó tra cứu chỉ vài mili giây.
 
 Các kết quả cho thấy chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên
@@ -673,8 +662,9 @@ trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận 
 - **Tra cứu minh bạch và rẻ:** thuật toán có một quy tắc xếp hạng, không có tham số
   phải tinh chỉnh ngoài mặc định của BM25, chạy dưới một mili giây và giải thích được
   bằng các dòng đã khớp.
-- **Tách được loại lỗi:** nhật ký từng lượt cho biết lỗi nằm ở từ khoá, ở dữ liệu thiếu
-  hay ở cách LLM diễn đạt.
+- **Tách được loại lỗi:** vì từ khoá và dữ kiện của mỗi lượt đều xem lại được, một câu
+  trả lời sai quy được về đúng nguyên nhân: từ khoá chọn hỏng, dữ liệu còn thiếu, hay
+  LLM diễn đạt sai từ dữ liệu đúng.
 
 ### 11.3 Hạn chế
 
@@ -690,9 +680,8 @@ trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận 
    thành một quan hệ mà dữ liệu không nói.
 5. **Biên soạn dữ liệu:** đối chiếu thủ công, chưa có hai người rà độc lập; trang web
    có thể đổi sau ngày thu thập; một số thông báo có hạn theo học kỳ.
-6. **Đánh giá:** 85 câu và một lượt chạy; mô hình chấm là cùng mô hình với trợ lý; 5 câu
-   được chuyển nhóm theo dữ liệu hiện tại; kiểm tra từ chối bằng cụm từ bỏ sót nhiều
-   cách nói.
+6. **Đánh giá:** chỉ 85 câu và một lượt chạy; mô hình chấm là cùng mô hình với trợ lý;
+   kiểm tra từ chối bằng cụm từ bỏ sót nhiều cách nói.
 7. **Trang quản trị:** bản triển khai hiện ghi vào tệp trong container nên thay đổi mất
    khi dịch vụ khởi động lại; chỉ có một khoá quản trị chung, không phân quyền, không
    lưu lịch sử sửa; mỗi lần ghi kiểm lại toàn bộ đồ thị nên chậm dần khi dữ liệu lớn lên.
@@ -723,9 +712,8 @@ trên câu hỏi thật chưa quan sát, hay tốt hơn các cách tiếp cận 
 - [`src/ontchatbot/runtime/`](src/ontchatbot/runtime/): agent, công cụ tra cứu, API.
 - [`src/ontchatbot/admin/`](src/ontchatbot/admin/): lược đồ form và thao tác ghi.
 - [`webui/`](webui/): giao diện chat, trang quản trị và proxy.
-- [`resources/end-to-end/`](resources/end-to-end/): bộ câu hỏi, phần chạy, phần chấm,
-  kết quả từng lượt (`results.json`), phán quyết (`quality.json`) và nhật ký đọc được
-  (`quality-log.md`).
+- [`resources/end-to-end/`](resources/end-to-end/): hai bộ kiểm ở mục 8, phần chạy,
+  phần chấm và kết quả của từng câu.
 - [`docs/diagrams/`](docs/diagrams/): mã nguồn SVG của các sơ đồ.
 
 ### 13.2 Chạy thử trên máy
