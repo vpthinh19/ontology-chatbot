@@ -2107,7 +2107,8 @@ ns1:TD1052_D24K01dA {
             "văn bằng thứ hai"@vi .
 
     ns1:KhoiNganhViiNhanVanXaHoiDuLichDichVuVaMoiTruong a ns1:DanhMuc ;
-        rdfs:label "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi .
+        rdfs:label "Khối ngành VII: Nhân văn, khoa học xã hội và hành vi, báo chí và thông tin, dịch vụ xã hội, du lịch, khách sạn, thể dục thể thao, dịch vụ vận tải, môi trường và bảo vệ môi trường"@vi ;
+        skos:altLabel "Khối ngành VII: Nhân văn, xã hội, du lịch, dịch vụ và môi trường"@vi .
 
     ns1:ThuTucChuyenNganh a ns1:ThuTucHocVu ;
         rdfs:label "Thủ tục chuyển ngành"@vi ;
@@ -2198,7 +2199,8 @@ ns1:TD1052_D24K01dA {
     ns1:ChuThe rdfs:label "Chủ thể"@vi .
 
     ns1:KhoiNganhVToanMayTinhCongNgheKyThuatSanXuatXayDungNongLamNghiepVaThuySan a ns1:DanhMuc ;
-        rdfs:label "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi .
+        rdfs:label "Khối ngành V: Toán và thống kê, máy tính và công nghệ thông tin, công nghệ kỹ thuật, kỹ thuật, sản xuất và chế biến, kiến trúc và xây dựng, nông lâm nghiệp và thủy sản"@vi ;
+        skos:altLabel "Khối ngành V: Toán, máy tính, công nghệ, kỹ thuật, sản xuất, xây dựng, nông lâm nghiệp và thủy sản"@vi .
 
     ns1:MucTien rdfs:label "Mức tiền"@vi .
 
