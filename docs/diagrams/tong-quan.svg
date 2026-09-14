@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="700" viewBox="0 0 1220 700" font-family="Noto Sans, DejaVu Sans, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="760" viewBox="0 0 1220 760" font-family="Noto Sans, DejaVu Sans, sans-serif">
   <defs>
     <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
@@ -9,85 +9,95 @@
       .ten   { fill: #000000; font-size: 20px; font-weight: 700; text-anchor: middle; }
       .phu   { fill: #444444; font-size: 15px; text-anchor: middle; }
       .nhan  { fill: #000000; font-size: 15px; text-anchor: middle; }
-      .duong { stroke: #000000; stroke-width: 2.5; fill: none; marker-end: url(#mui); }
+      .di    { stroke: #000000; stroke-width: 2.5; fill: none; marker-end: url(#mui); }
+      .ve    { stroke: #000000; stroke-width: 2.5; fill: none; marker-end: url(#mui); stroke-dasharray: 7 5; }
       .vung  { fill: none; stroke: #999999; stroke-width: 1.5; stroke-dasharray: 9 7; }
       .tenvung { fill: #000000; font-size: 19px; font-weight: 700; letter-spacing: 0.5px; }
     </style>
   </defs>
 
-  <rect width="1220" height="700" fill="#ffffff"/>
+  <rect width="1220" height="760" fill="#ffffff"/>
 
   <text x="40" y="42" style="font-size:26px; font-weight:700; fill:#000000">Trợ lý học vụ NTU — hỏi đáp trên ontology có trích dẫn</text>
 
   <!-- ① Trả lời câu hỏi -->
-  <rect x="40" y="64" width="1140" height="216" rx="14" class="vung"/>
+  <rect x="40" y="64" width="1140" height="300" rx="14" class="vung"/>
   <text x="60" y="94" class="tenvung">① TRẢ LỜI CÂU HỎI — mỗi lượt hỏi</text>
+  <text x="1160" y="94" style="font-size:15px; fill:#444444; text-anchor:end">nét liền: yêu cầu · nét đứt: kết quả trả về</text>
 
   <g>
-    <rect x="60"  y="112" width="185" height="92" rx="10" class="khoi"/>
-    <text x="152" y="152" class="ten">Người dùng</text>
-    <text x="152" y="176" class="phu">đặt câu hỏi</text>
+    <rect x="60"  y="116" width="185" height="92" rx="10" class="khoi"/>
+    <text x="152" y="156" class="ten">Người dùng</text>
+    <text x="152" y="180" class="phu">đặt câu hỏi</text>
 
-    <rect x="288" y="112" width="185" height="92" rx="10" class="khoi"/>
-    <text x="380" y="152" class="ten">Giao diện chat</text>
-    <text x="380" y="176" class="phu">trình duyệt</text>
+    <rect x="288" y="116" width="185" height="92" rx="10" class="khoi"/>
+    <text x="380" y="156" class="ten">Giao diện chat</text>
+    <text x="380" y="180" class="phu">trình duyệt</text>
 
-    <rect x="516" y="112" width="185" height="92" rx="10" class="dam"/>
-    <text x="608" y="152" class="ten">API + Agent</text>
-    <text x="608" y="176" class="phu">điều phối lượt hỏi</text>
+    <rect x="516" y="116" width="185" height="92" rx="10" class="khoi"/>
+    <text x="608" y="156" class="ten">API + Agent</text>
+    <text x="608" y="180" class="phu">điều phối lượt hỏi</text>
 
-    <rect x="744" y="112" width="185" height="92" rx="10" class="khoi"/>
-    <text x="836" y="152" class="ten">Công cụ tra cứu</text>
-    <text x="836" y="176" class="phu">tool của LLM</text>
+    <rect x="744" y="116" width="185" height="92" rx="10" class="khoi"/>
+    <text x="836" y="156" class="ten">Công cụ tra cứu</text>
+    <text x="836" y="180" class="phu">tool của LLM</text>
 
-    <rect x="972" y="112" width="185" height="92" rx="10" class="khoi"/>
-    <text x="1064" y="152" class="ten">Search engine</text>
-    <text x="1064" y="176" class="phu">BM25 trên ontology</text>
+    <rect x="972" y="116" width="185" height="92" rx="10" class="khoi"/>
+    <text x="1064" y="156" class="ten">Search engine</text>
+    <text x="1064" y="180" class="phu">BM25 trên ontology</text>
+
+    <rect x="486" y="258" width="245" height="86" rx="10" class="dam"/>
+    <text x="608" y="294" class="ten">LLM</text>
+    <text x="608" y="319" class="phu">chọn từ khoá · viết câu trả lời</text>
   </g>
 
-  <path class="duong" d="M245 140 H284"/>
-  <path class="duong" d="M473 140 H512"/>
-  <path class="duong" d="M701 140 H740"/>
-  <text x="721" y="105" class="nhan">từ khoá</text>
-  <path class="duong" d="M929 140 H968"/>
-
-  <!-- luồng về -->
-  <path class="duong" d="M1064 204 V232 H152 V208"/>
-  <text x="600" y="252" class="nhan">câu trả lời kèm trích dẫn · hiện dần trên giao diện</text>
+  <!-- chiều đi -->
+  <path class="di" d="M245 144 H284"/>
+  <path class="di" d="M473 144 H512"/>
+  <path class="di" d="M701 144 H740"/>
+  <path class="di" d="M929 144 H968"/>
+  <!-- chiều về -->
+  <path class="ve" d="M288 182 H249"/>
+  <path class="ve" d="M516 182 H477"/>
+  <path class="ve" d="M744 182 H705"/>
+  <path class="ve" d="M972 182 H933"/>
+  <!-- agent và LLM -->
+  <path class="di" d="M588 208 V254"/>
+  <path class="ve" d="M628 258 V212"/>
 
   <!-- Ontology -->
-  <rect x="790" y="340" width="370" height="112" rx="12" class="dam"/>
-  <text x="975" y="382" class="ten" style="font-size:24px">ONTOLOGY — tệp TriG</text>
-  <text x="975" y="410" class="phu" style="font-size:16px">mỗi phát biểu gắn nguồn trích dẫn</text>
-  <text x="975" y="432" class="phu" style="font-size:16px">kèm lược đồ SHACL</text>
+  <rect x="790" y="410" width="370" height="112" rx="12" class="dam"/>
+  <text x="975" y="452" class="ten" style="font-size:24px">ONTOLOGY — tệp TriG</text>
+  <text x="975" y="480" class="phu" style="font-size:16px">mỗi phát biểu gắn nguồn trích dẫn</text>
+  <text x="975" y="502" class="phu" style="font-size:16px">kèm lược đồ SHACL</text>
 
-  <path class="duong" d="M1064 280 V336"/>
-  <text x="1080" y="314" class="nhan" style="text-anchor:start">đọc</text>
+  <path class="di" d="M1064 208 V406"/>
+  <text x="1080" y="392" class="nhan" style="text-anchor:start">đọc</text>
 
-  <path class="duong" d="M886 540 V456"/>
-  <text x="870" y="502" class="nhan" style="text-anchor:end">ghi khi hợp lệ</text>
+  <path class="di" d="M886 622 V526"/>
+  <text x="870" y="562" class="nhan" style="text-anchor:end">ghi khi hợp lệ</text>
 
   <!-- ② Xây dựng tri thức -->
-  <rect x="40" y="512" width="1140" height="150" rx="14" class="vung"/>
-  <text x="60" y="542" class="tenvung">② XÂY DỰNG VÀ CẬP NHẬT TRI THỨC</text>
+  <rect x="40" y="582" width="1140" height="156" rx="14" class="vung"/>
+  <text x="60" y="612" class="tenvung">② XÂY DỰNG VÀ CẬP NHẬT TRI THỨC</text>
 
-  <rect x="60"  y="556" width="200" height="86" rx="10" class="khoi"/>
-  <text x="160" y="594" class="ten" style="font-size:19px">Văn bản chính thức</text>
-  <text x="160" y="617" class="phu">quy chế · quyết định</text>
+  <rect x="60"  y="630" width="200" height="86" rx="10" class="khoi"/>
+  <text x="160" y="668" class="ten" style="font-size:19px">Văn bản chính thức</text>
+  <text x="160" y="691" class="phu">quy chế · quyết định</text>
 
-  <rect x="300" y="556" width="200" height="86" rx="10" class="khoi"/>
-  <text x="400" y="594" class="ten" style="font-size:19px">Người biên soạn</text>
-  <text x="400" y="617" class="phu">đối chiếu nguồn</text>
+  <rect x="300" y="630" width="200" height="86" rx="10" class="khoi"/>
+  <text x="400" y="668" class="ten" style="font-size:19px">Người biên soạn</text>
+  <text x="400" y="691" class="phu">đối chiếu nguồn</text>
 
-  <rect x="540" y="556" width="200" height="86" rx="10" class="khoi"/>
-  <text x="640" y="594" class="ten" style="font-size:19px">Trang quản trị</text>
-  <text x="640" y="617" class="phu">thêm · sửa · xoá</text>
+  <rect x="540" y="630" width="200" height="86" rx="10" class="khoi"/>
+  <text x="640" y="668" class="ten" style="font-size:19px">Trang quản trị</text>
+  <text x="640" y="691" class="phu">thêm · sửa · xoá</text>
 
-  <rect x="786" y="556" width="200" height="86" rx="10" class="khoi"/>
-  <text x="886" y="594" class="ten" style="font-size:19px">Kiểm tra SHACL</text>
-  <text x="886" y="617" class="phu">sai lược đồ thì chặn</text>
+  <rect x="786" y="630" width="200" height="86" rx="10" class="khoi"/>
+  <text x="886" y="668" class="ten" style="font-size:19px">Xác thực lược đồ</text>
+  <text x="886" y="691" class="phu">SHACL · sai thì không ghi</text>
 
-  <path class="duong" d="M260 599 H296"/>
-  <path class="duong" d="M500 599 H536"/>
-  <path class="duong" d="M740 599 H782"/>
+  <path class="di" d="M260 673 H296"/>
+  <path class="di" d="M500 673 H536"/>
+  <path class="di" d="M740 673 H782"/>
 </svg>

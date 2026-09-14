@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="640" viewBox="0 0 1220 640" font-family="Noto Sans, DejaVu Sans, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="750" viewBox="0 0 1220 750" font-family="Noto Sans, DejaVu Sans, sans-serif">
   <defs>
     <marker id="mui" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
@@ -15,9 +15,9 @@
     </style>
   </defs>
 
-  <rect width="1220" height="640" fill="#ffffff"/>
+  <rect width="1220" height="750" fill="#ffffff"/>
   <text x="40" y="40" style="font-size:24px; font-weight:700">Một lượt hỏi đi qua các thành phần theo thứ tự thời gian</text>
-  <text x="1180" y="40" style="font-size:15px; fill:#444; text-anchor:end">nét liền: yêu cầu đi · nét đứt: kết quả về</text>
+  <text x="1180" y="40" style="font-size:15px; fill:#444; text-anchor:end">nét liền: yêu cầu · nét đứt: kết quả trả về</text>
 
   <!-- Lanes -->
   <g>
@@ -33,41 +33,49 @@
     <text x="1086" y="94" class="ten">Search engine</text>
   </g>
 
-  <line class="doi" x1="135"  y1="116" x2="135"  y2="604"/>
-  <line class="doi" x1="373"  y1="116" x2="373"  y2="604"/>
-  <line class="doi" x1="611"  y1="116" x2="611"  y2="604"/>
-  <line class="doi" x1="849"  y1="116" x2="849"  y2="604"/>
-  <line class="doi" x1="1086" y1="116" x2="1086" y2="604"/>
+  <line class="doi" x1="135"  y1="116" x2="135"  y2="720"/>
+  <line class="doi" x1="373"  y1="116" x2="373"  y2="720"/>
+  <line class="doi" x1="611"  y1="116" x2="611"  y2="720"/>
+  <line class="doi" x1="849"  y1="116" x2="849"  y2="720"/>
+  <line class="doi" x1="1086" y1="116" x2="1086" y2="720"/>
 
   <!-- 1 -->
   <path class="di" d="M135 172 H369"/>
-  <text x="252" y="162" class="nhan"><tspan class="so">1 </tspan>câu hỏi + lịch sử</text>
+  <text x="254" y="162" class="nhan"><tspan class="so">1 </tspan>câu hỏi + lịch sử</text>
 
   <!-- 2 -->
-  <path class="di" d="M373 232 H607"/>
-  <text x="490" y="222" class="nhan"><tspan class="so">2 </tspan>hội thoại + mô tả công cụ</text>
+  <path class="di" d="M373 230 H607"/>
+  <text x="492" y="220" class="nhan"><tspan class="so">2 </tspan>hội thoại + mô tả công cụ</text>
 
   <!-- 3 -->
-  <path class="ve" d="M611 292 H377"/>
-  <text x="494" y="282" class="nhan"><tspan class="so">3 </tspan>xin gọi công cụ · 3 từ khoá</text>
+  <path class="ve" d="M611 288 H377"/>
+  <text x="494" y="278" class="nhan"><tspan class="so">3 </tspan>gọi công cụ · 3 từ khoá</text>
 
   <!-- 4 -->
-  <path class="di" d="M373 352 H845"/>
-  <text x="609" y="342" class="nhan"><tspan class="so">4 </tspan>chạy công cụ</text>
+  <path class="di" d="M373 346 H845"/>
+  <text x="730" y="336" class="nhan"><tspan class="so">4 </tspan>chạy công cụ</text>
 
   <!-- 5 -->
-  <path class="di" d="M849 412 H1082"/>
-  <text x="966" y="402" class="nhan"><tspan class="so">5 </tspan>từ khoá</text>
+  <path class="di" d="M849 404 H1082"/>
+  <text x="966" y="394" class="nhan"><tspan class="so">5 </tspan>từ khoá</text>
 
   <!-- 6 -->
-  <path class="ve" d="M1086 472 H853"/>
-  <text x="970" y="462" class="nhan"><tspan class="so">6 </tspan>3 mục + dữ kiện theo nguồn</text>
+  <path class="ve" d="M1086 462 H853"/>
+  <text x="968" y="452" class="nhan"><tspan class="so">6 </tspan>3 mục + dữ kiện theo nguồn</text>
 
   <!-- 7 -->
-  <path class="ve" d="M849 532 H615"/>
-  <text x="732" y="522" class="nhan"><tspan class="so">7 </tspan>JSON kết quả</text>
+  <path class="ve" d="M849 520 H377"/>
+  <text x="730" y="510" class="nhan"><tspan class="so">7 </tspan>JSON kết quả</text>
 
   <!-- 8 -->
-  <path class="ve" d="M611 592 H139"/>
-  <text x="375" y="582" class="nhan"><tspan class="so">8 </tspan>câu trả lời hiện dần từng đoạn (SSE)</text>
+  <path class="di" d="M373 578 H607"/>
+  <text x="492" y="568" class="nhan"><tspan class="so">8 </tspan>hội thoại + JSON kết quả</text>
+
+  <!-- 9 -->
+  <path class="ve" d="M611 636 H377"/>
+  <text x="494" y="626" class="nhan"><tspan class="so">9 </tspan>câu trả lời từng đoạn</text>
+
+  <!-- 10 -->
+  <path class="ve" d="M373 694 H139"/>
+  <text x="256" y="684" class="nhan"><tspan class="so">10 </tspan>hiện dần qua SSE</text>
 </svg>
