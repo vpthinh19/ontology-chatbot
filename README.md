@@ -657,41 +657,63 @@ Thao tác thêm và sửa đi qua bốn bước:
 
 **Cách làm**
 
-1. Hỏi chatbot 85 câu soạn sẵn theo cách sinh viên hỏi; mỗi câu là một lượt riêng.
-2. Lưu câu trả lời cùng dữ liệu chatbot đã tra được.
-3. Chấm từng câu trả lời bằng một mô hình ngôn ngữ (cùng mô hình của chatbot, nhiệt độ 0). Mô hình
-   chấm đọc câu hỏi, dữ liệu đã tra được và câu trả lời, rồi chọn một mức kèm trích đoạn làm bằng chứng.
+1. Hỏi chatbot 85 câu soạn sẵn theo cách sinh viên hỏi, gồm cả lối viết trang trọng, đời thường và
+   gõ thiếu dấu; mỗi câu là một lượt riêng.
+2. Lưu câu trả lời, dữ liệu chatbot đã tra được và thời gian của từng lượt.
+3. Chấm từng câu trả lời, rồi kiểm tra chéo bằng code.
 
 Thiết lập: mô hình `lightning-ai/gemma-4-31B-it`; 3 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
+
+**Nhóm câu hỏi**
+
+Câu trả lời đúng phụ thuộc vào việc dữ liệu có đáp án hay không. Ontology có bảng tỷ trọng điểm ngoại
+ngữ, nên câu hỏi về tỷ trọng phải được trả lời. Ontology không lưu học phí, nên câu hỏi về học phí phải
+nhận "không có thông tin"; đưa ra một con số là bịa. Vì vậy mỗi câu thuộc một nhóm:
+
+| Nhóm | Loại câu hỏi | Ví dụ | Hành vi đúng | Số câu |
+|---|---|---|---|---:|
+| A | ontology có đáp án | "tỷ trọng điểm ngoại ngữ ra sao ạ" | trả lời đúng | 58 |
+| B | đòi nguyên văn một điều khoản hoặc thông tin về chính văn bản; ontology không lưu nguyên văn | "điều 20 quychế 1052 thế nào?" | không bịa nội dung văn bản | 8 |
+| C | thuộc học vụ nhưng ontology không có đáp án | "Học phí ngành Kế toán một năm là bao nhiêu tiền?" | nói không có thông tin | 14 |
+| D | không thuộc học vụ, hoặc không nói muốn hỏi gì | "nói chuyện với mình đi ạ?" | từ chối hoặc hỏi lại | 5 |
+
+**Cách chấm**
+
+*Mô hình chấm.* Một mô hình ngôn ngữ (cùng mô hình của chatbot, nhiệt độ 0) đọc câu hỏi, dữ liệu đã tra
+được và câu trả lời, rồi chọn một mức kèm trích đoạn làm bằng chứng:
 
 | Mức | Nghĩa |
 |---|---|
 | Đúng | nêu được điều được hỏi; mọi thông tin đều có trong dữ liệu |
 | Đúng một phần | nêu được một phần điều được hỏi |
-| Từ chối | không nêu được, và nói dữ liệu không có |
+| Từ chối | không nêu được, và nói dữ liệu không có (kể cả hỏi lại khi câu hỏi quá chung) |
 | Lạc đề | không nêu được, và không nói là thiếu |
 | Sai | có thông tin ngoài dữ liệu, hoặc tự ghép quan hệ mà dữ liệu không nói; mức này thay mọi mức khác |
 
-**Nhóm câu hỏi và kết quả**
+Một câu **đạt** khi: nhóm A được chấm Đúng; nhóm B không bị chấm Sai hoặc Lạc đề; nhóm C và D được
+chấm Từ chối.
 
-Câu trả lời đúng phụ thuộc vào việc dữ liệu có đáp án hay không. Ontology có bảng tỷ trọng điểm ngoại
-ngữ, nên câu hỏi về tỷ trọng phải được trả lời. Ontology không lưu học phí, nên câu hỏi về học phí phải
-nhận "không có thông tin"; đưa ra một con số là bịa. Vì vậy mỗi câu thuộc một nhóm, và mỗi nhóm có tiêu
-chí đạt riêng:
+*Kiểm tra chéo bằng code*, không dùng mô hình:
 
-| Nhóm | Loại câu hỏi | Ví dụ | Đạt khi | Kết quả |
-|---|---|---|---|---:|
-| A | ontology có đáp án | "tỷ trọng điểm ngoại ngữ ra sao ạ" | Đúng | **52/58** |
-| B | đòi nguyên văn một điều khoản hoặc thông tin về chính văn bản; ontology không lưu nguyên văn | "điều 20 quychế 1052 thế nào?" | không Sai, không Lạc đề | **8/8** |
-| C | thuộc học vụ nhưng ontology không có đáp án | "Học phí ngành Kế toán một năm là bao nhiêu tiền?" | Từ chối | **14/14** |
-| D | không thuộc học vụ, hoặc không nói muốn hỏi gì | "nói chuyện với mình đi ạ?" | Từ chối, kể cả hỏi lại | **5/5** |
+| Chỉ tiêu | Cách tính |
+|---|---|
+| Tra đúng mục | nhóm A: mục chứa đáp án nằm trong các mục chatbot đã tra |
+| Bám dữ liệu | mọi con số từ hai chữ số và chữ viết tắt trong câu trả lời có trong dữ liệu đã tra, câu hỏi hoặc lời hướng dẫn |
 
-- **Tổng: 79/85 câu đạt.** Không câu nào bị chấm Sai hoặc Lạc đề.
-- Nhóm B: 7 câu nói không có; 1 câu trả lời bằng thông tin có trong dữ liệu.
-- Nhóm A theo cách viết: trang trọng 13/15, trung tính 12/13, đời thường 14/14, gõ lỗi (thiếu dấu,
-  sai chính tả, viết tắt) 11/14; 2 câu không gán cách viết đều đạt.
+Câu nào có kết quả code mâu thuẫn với mô hình chấm — ví dụ mô hình chấm Từ chối nhưng code thấy chatbot
+đã tra đúng mục — được đọc lại bằng mắt.
 
-**Sáu câu nhóm A chưa đạt**
+**Kết quả**
+
+| Nhóm | Đạt | Ghi chú |
+|---|---:|---|
+| A. Ontology có đáp án | **52/58** | 2 câu Đúng một phần, 4 câu Từ chối |
+| B. Hỏi nguyên văn văn bản | **8/8** | 7 câu nói không có; 1 câu trả lời bằng thông tin có trong dữ liệu |
+| C. Học vụ, ontology không có đáp án | **14/14** | |
+| D. Ngoài học vụ hoặc không rõ yêu cầu | **5/5** | |
+| **Tổng** | **79/85** | không câu nào bị chấm Sai hoặc Lạc đề; 85/85 lượt hoàn thành, không lỗi |
+
+Sáu câu nhóm A chưa đạt:
 
 | Nguyên nhân | Câu hỏi |
 |---|---|
@@ -700,20 +722,15 @@ chí đạt riêng:
 | Ontology thiếu chi tiết được hỏi | "muon dang ky datn thi lien he phong nao?" — không ghi nơi nộp; chatbot nói đúng như vậy |
 | Chỉ trả lời được một vế | "Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?", "hãy tổng hợp địa chỉ và nhiệm vụ của trường…" |
 
-**Kiểm tra chéo bằng code** (không dùng mô hình):
+Kiểm tra chéo bằng code:
 
-| Chỉ tiêu | Cách tính | Kết quả |
-|---|---|---:|
-| Tra đúng mục | nhóm A: mục chứa đáp án nằm trong các mục chatbot đã tra | 55/58 |
-| Bám dữ liệu | mọi con số từ hai chữ số và chữ viết tắt trong câu trả lời có trong dữ liệu đã tra, câu hỏi hoặc lời hướng dẫn | 83/85 |
-| Lượt lỗi | lượt không hoàn thành | 0/85 |
+- Tra đúng mục: 55/58 câu nhóm A.
+- Bám dữ liệu: 83/85 câu. Hai câu còn lại chứa "HBKHT" và "PDF" — chữ viết tắt chatbot tự dùng, không
+  phải thông tin học vụ.
+- Bốn câu mâu thuẫn với mô hình chấm: hai câu vừa nêu, câu "quản lý thủy sản" và câu "đăng ký đồ án" ở
+  bảng trên. Đọc lại cả bốn, mức chấm giữ nguyên.
 
-- Hai câu không bám dữ liệu chứa "HBKHT" và "PDF": chữ viết tắt chatbot tự dùng, không phải thông tin
-  học vụ.
-- Bốn câu có kết quả chấm mâu thuẫn với code (hai câu trên, câu "quản lý thủy sản" và câu "đăng ký đồ
-  án"); đọc lại cả bốn, mức chấm giữ nguyên.
-
-**Thời gian phản hồi**
+Thời gian phản hồi:
 
 | Phép đo | Trung vị | p95 |
 |---|---:|---:|
