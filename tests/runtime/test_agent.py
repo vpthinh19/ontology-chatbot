@@ -98,6 +98,25 @@ def test_instructions_keep_multi_topic_and_no_inference_rules() -> None:
     assert "bảng chung cho một ngành cụ thể" in instructions
 
 
+def test_instructions_name_missing_parts_and_do_not_read_silence_as_no() -> None:
+    """Vế thiếu dữ liệu phải được nói ra; dữ liệu im lặng không phải là câu trả lời "không"."""
+
+    instructions = build_instructions(VOCABULARY)
+
+    assert "vế nào được hỏi mà không có trong `facts`" in instructions
+    assert "Hỏi thủ tục nào thì trả lời thủ tục đó" in instructions
+    assert "không kết luận là việc đó không cần" in instructions
+
+
+def test_tool_keeps_programme_qualifiers_in_keywords() -> None:
+    """Bỏ "chương trình đặc biệt" khỏi từ khoá thì kết quả rơi về tên ngành."""
+
+    description = TOOL_SCHEMA["function"]["description"]
+
+    assert "Bung chữ viết tắt" in description
+    assert "chương\ntrình đặc biệt" in description or "chương trình đặc biệt" in description
+
+
 def test_instructions_without_vocabulary_have_no_topic_list() -> None:
     instructions = build_instructions()
 
