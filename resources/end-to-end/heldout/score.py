@@ -50,6 +50,17 @@ def bang(tieu_de: str, khoa) -> None:
 
 print(f"{len(CAU_HOI)} câu · {len(LUOT)} lượt · {len(DIEM)} câu trả lời đã chấm")
 bang("Toàn bộ", lambda d: "tất cả")
+
+
+def sinh_vien_nhan_du(d: dict) -> bool:
+    """Góc nhìn của sinh viên: văn bản có đáp án mà ontology thiếu thì chatbot từ chối đúng vẫn là chưa trả lời."""
+
+    q = CAU_HOI[d["id"]]
+    return d["dat"] and (q["loai"] != "co_dap_an" or q["ontology"] == "co")
+
+
+print(f"  {'sinh viên nhận đủ thông tin đúng':<34} {len(CAU_HOI):>3} câu | đạt "
+      f"{ty_le([{**d, 'dat': sinh_vien_nhan_du(d)} for d in DIEM])}")
 bang("Theo hành vi đúng", lambda d: TEN[CAU_HOI[d["id"]]["hanh_vi_dung"]])
 bang("Theo chủ đề", lambda d: CAU_HOI[d["id"]]["chu_de"])
 
@@ -70,6 +81,20 @@ for d in DIEM:
 on_dinh = collections.Counter("đạt mọi lượt" if all(v) else "không lượt nào đạt" if not any(v) else "dao động"
                               for v in theo_cau.values())
 print(f"Độ ổn định giữa các lượt: {dict(on_dinh)}")
+
+NGUOI = HERE / "human-check-grades.json"
+if NGUOI.is_file():
+    theo_claude = {(d["id"], d["luot"]): d for d in DIEM}
+    nguoi = json.loads(NGUOI.read_text(encoding="utf-8"))
+    DAT = {"Đúng", "Từ chối đúng"}
+    cap = [(theo_claude[(h["id"], h["luot"])]["muc"] in DAT, h["muc"] in DAT) for h in nguoi]
+    n = len(cap)
+    trung_muc = sum(h["muc"] == theo_claude[(h["id"], h["luot"])]["muc"] for h in nguoi)
+    po = sum(a == b for a, b in cap) / n
+    pa, pb = sum(a for a, _ in cap) / n, sum(b for _, b in cap) / n
+    pe = pa * pb + (1 - pa) * (1 - pb)
+    print(f"Chấm lại bởi người ({n} câu trả lời): trùng mức {trung_muc}/{n} · trùng đạt/không đạt "
+          f"{sum(a == b for a, b in cap)}/{n} · kappa {(po - pe) / (1 - pe):.2f}")
 
 luot_giay = [r["giay"] for rows in KET_QUA.values() for r in rows if not r["loi"]]
 cong_cu_ms = [ms for rows in KET_QUA.values() for r in rows for ms in r["ms_cong_cu"]]
