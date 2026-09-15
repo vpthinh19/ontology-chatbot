@@ -1,0 +1,1633 @@
+[
+ {
+  "id": "Q001",
+  "sinh_boi": "gpt-5.6-terra#0",
+  "chu_de": "A1",
+  "cau_hoi": "Em học lực trung bình trở lên ở chương trình 4 năm, kỳ tới đăng ký 28 tín chỉ được không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Tối đa 27 tín chỉ cho chương trình đào tạo 4 năm",
+   "Không tính tín chỉ Giáo dục thể chất và Giáo dục Quốc phòng – An ninh"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 3 Điều 9",
+  "trich_nguyen_van": [
+   "tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp *(không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh)*."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Giới hạn áp dụng cho sinh viên có học lực trung bình trở lên ở học kỳ liền trước.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q002",
+  "sinh_boi": "gpt-5.6-terra#1",
+  "chu_de": "A1",
+  "cau_hoi": "Em rớt một môn bắt buộc dưới 5 thì phải đk học lại thế nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải đăng ký học lại ở các học kỳ tiếp theo",
+   "Học lại cho đến khi điểm bằng hoặc lớn hơn 5,0"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 1 Điều 11",
+  "trich_nguyen_van": [
+   "Sinh viên có học phần bắt buộc bị điểm dưới 5,0 phải đăng ký học lại học phần đó ở các học kỳ tiếp theo cho đến khi đạt điểm bằng hoặc lớn hơn 5,0."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Quy định riêng cho học phần bắt buộc.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q003",
+  "sinh_boi": "gpt-5.6-terra#2",
+  "chu_de": "A1",
+  "cau_hoi": "Lop hp tu chon em da dang ky bi xoa vi it nguoi, em lam gi bay gio?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Được phép đăng ký thay thế",
+   "Có thể chọn học phần khác trong nhóm tự chọn hoặc học phần cùng mã được mở cùng học kỳ"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 1 Điều 10",
+  "trich_nguyen_van": [
+   "Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ."
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Áp dụng khi lớp bị xóa vì không đủ điều kiện mở lớp.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q004",
+  "sinh_boi": "gpt-5.6-terra#3",
+  "chu_de": "A1",
+  "cau_hoi": "Khi học lại đúng môn để kéo điểm, trường ghi nhận điểm lần nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Ghi nhận kết quả của lần học cùng học phần có điểm cao hơn"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 4 Điều 11",
+  "trich_nguyen_van": [
+   "Kết quả học tập tích lũy được ghi nhận cho lần học cùng học phần có điểm cao hơn."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Quy định về kết quả tích lũy khi học lại hoặc học cải thiện.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q005",
+  "sinh_boi": "gpt-5.6-terra#4",
+  "chu_de": "A1",
+  "cau_hoi": "Em lỡ đăng ký nhầm môn, giờ tự hủy học phần đó trên hệ thống được không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Được: sinh viên tự rút bớt (hủy) học phần đã đăng ký trên Hệ thống quản lý đào tạo từ tài khoản cá nhân, hoặc nộp đơn tại Đơn vị quản lý đào tạo",
+   "Chỉ được chấp nhận tối đa trong tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ"
+  ],
+  "tep": "Qd753.md",
+  "vi_tri": "khoản 2, 3 Điều 10",
+  "trich_nguyen_van": [
+   "Sinh viên tự thực hiện việc rút bớt học phần đã đăng ký trên Hệ thống quản lý đào tạo từ tài khoản cá nhân hoặc trực tiếp nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo (Mẫu số 2 - Phiếu đăng ký/điều chỉnh học phần)",
+   "Việc rút bớt học phần trong khối lượng học tập đã đăng ký của SV chỉ được chấp nhận tối đa trong tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Đã kiểm tra quy định đăng ký, lớp bị xóa, học lại và học cải thiện; chỉ có quy định Trường xóa lớp học phần, không nêu việc SV tự hủy học phần.",
+  "bien_tap": "Sửa loại từ khong_co_trong_van_ban. Codex không được đọc QĐ 753; QĐ 1052 chỉ bãi bỏ quy định trái với nó nên Điều 10 QĐ 753 còn hiệu lực."
+ },
+ {
+  "id": "Q006",
+  "sinh_boi": "gpt-5.6-terra#5",
+  "chu_de": "A1",
+  "cau_hoi": "Em muốn rút một hp đã đk giữa kỳ thì có được hoàn tiền không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Rút bớt học phần chỉ được chấp nhận tối đa trong tuần thứ hai học kỳ chính (tuần thứ nhất học kỳ phụ); giữa kỳ đã quá hạn, học phần vẫn giữ nguyên như đã đăng ký",
+   "Văn bản không quy định việc hoàn học phí khi rút bớt học phần"
+  ],
+  "tep": "Qd753.md",
+  "vi_tri": "khoản 2 Điều 10",
+  "trich_nguyen_van": [
+   "Việc rút bớt học phần trong khối lượng học tập đã đăng ký của SV chỉ được chấp nhận tối đa trong tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ",
+   "Ngoài thời hạn trên, học phần vẫn được giữ nguyên như đã đăng ký và nếu SV không đi học được xem như tự ý bỏ học và phải nhận điểm 0 (không)"
+  ],
+  "ontology": "mot_phan",
+  "hanh_vi_dung": "tra_loi_phan_co_va_noi_phan_thieu",
+  "ghi_chu_codex": "Đã kiểm tra Điều 9–11 về đăng ký học phần, xóa lớp, học lại và học cải thiện; không có thủ tục rút học phần hoặc hoàn tiền do SV tự rút.",
+  "bien_tap": "Sửa loại từ khong_co_trong_van_ban. Codex không được đọc QĐ 753; QĐ 1052 chỉ bãi bỏ quy định trái với nó nên Điều 10 QĐ 753 còn hiệu lực. Vế hoàn tiền không có trong văn bản."
+ },
+ {
+  "id": "Q007",
+  "sinh_boi": "gpt-5.6-terra#6",
+  "chu_de": "A2",
+  "cau_hoi": "Em muốn học thêm một ngành song song từ năm hai, cần điều kiện học lực gì?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải được xếp từ trình độ năm thứ hai trở lên ở chương trình thứ nhất",
+   "Điểm trung bình tích lũy khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai, hoặc trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm a, b khoản 1 Điều 28",
+  "trich_nguyen_van": [
+   "a) Sinh viên được đăng ký học chương trình thứ hai khi đã được xếp từ trình độ năm thứ hai trở lên của chương trình thứ nhất.",
+   "b) Học lực tính theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai trong năm tuyển sinh; hoặc học lực tính theo điểm trung bình tích lũy xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Hai điều kiện cùng thuộc điều kiện học cùng lúc hai chương trình.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q008",
+  "sinh_boi": "gpt-5.6-terra#7",
+  "chu_de": "A2",
+  "cau_hoi": "Hoc song nganh ma diem TB hk cua nganh 1 xuong 5,4 thi sao a?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải dừng học chương trình thứ hai ở học kỳ tiếp theo",
+   "Không được đăng ký học phần chương trình thứ hai cho đến khi kết quả chương trình thứ nhất được cải thiện"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 2 Điều 28",
+  "trich_nguyen_van": [
+   "Trong quá trình SV học cùng lúc hai chương trình, nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo. Sinh viên sẽ không được phép đăng ký học phần của chương trình thứ 2 cho đến khi nào kết quả học tập chương trình thứ nhất được cải thiện mới được học tiếp chương trình thứ hai."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Ngưỡng áp dụng là dưới 5,50.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q009",
+  "sinh_boi": "gpt-5.6-terra#8",
+  "chu_de": "A2",
+  "cau_hoi": "Em đang học ở trường, muốn học thêm văn bằng thứ hai song song với ngành chính thì đăng ký lúc nào và dùng mẫu nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Đăng ký vào đầu mỗi học kỳ chính theo thông báo hằng năm của Trường",
+   "Dùng Mẫu số 15 - Phụ lục 4 kèm theo"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm a khoản 3 Điều 28",
+  "trich_nguyen_van": [
+   "a) Sinh viên đăng ký học chương trình thứ hai vào đầu mỗi học kỳ chính theo thông báo hàng năm của Trường *(Mẫu số 15 - Phụ lục 4 kèm theo)*."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Thủ tục này dành cho đăng ký học thêm chương trình thứ hai.",
+  "bien_tap": "Sửa câu hỏi: 'văn bằng thứ hai' vốn có hai nghĩa (học cùng lúc hai chương trình / liên thông văn bằng 2)."
+ },
+ {
+  "id": "Q010",
+  "sinh_boi": "gpt-5.6-terra#9",
+  "chu_de": "A2",
+  "cau_hoi": "Người đã tốt nghiệp cao đẳng muốn học liên thông lên đại học thì đăng ký vào thời điểm nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Người tốt nghiệp cao đẳng được xét tuyển và học liên thông lên đại học",
+   "Đăng ký vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hằng năm"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 1, 2 Điều 29",
+  "trich_nguyen_van": [
+   "Người đã tốt nghiệp trình độ trung cấp, trình độ cao đẳng được xét tuyển và học liên thông lên trình độ đại học.",
+   "Người học đăng ký học liên thông vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hàng năm của Nhà trường."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Quy định nêu cả đối tượng và thời điểm đăng ký.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q011",
+  "sinh_boi": "gpt-5.6-terra#10",
+  "chu_de": "A2",
+  "cau_hoi": "Đợt này trường đang mở song ngành những ngành nào vậy?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định danh sách ngành đang mở học cùng lúc hai chương trình theo từng đợt"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 28",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra Điều 28; văn bản chỉ nói đăng ký theo thông báo hằng năm của Trường, không có danh sách ngành mở của một đợt cụ thể.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q012",
+  "sinh_boi": "gpt-5.6-terra#11",
+  "chu_de": "A3",
+  "cau_hoi": "Em học CNTT khóa 65, học phần cơ sở và chuyên ngành của chương trình kiểm định tính bao nhiêu tiền một tín chỉ?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Áp dụng từ khóa 65 trở về sau",
+   "Mức học phí là 620.000 đ/TC"
+  ],
+  "tep": "Qd729.md",
+  "vi_tri": "Phụ lục I, mục V.2.2",
+  "trich_nguyen_van": [
+   "| *V.2.2*<br>*(Áp dụng từ khóa 65 trở về sau )* | 1. Quản trị kinh doanh<br>2. Kế toán (không bao gồm CTĐT Kiểm toán)<br>3. Quản trị khách sạn | 550.000 đ/TC |",
+   "| | 4. Công nghệ thông tin | 620.000 đ/TC |"
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Mức này thuộc danh mục chương trình đào tạo đạt kiểm định chất lượng đại học hình thức chính quy.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q013",
+  "sinh_boi": "gpt-5.6-terra#12",
+  "chu_de": "A3",
+  "cau_hoi": "Học phần giáo dục tổng quát bậc đại học khối kinh doanh và quản lý đóng bao nhiêu, còn môn cơ sở/chuyên ngành thì sao?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Học phần giáo dục tổng quát: 345.000 đ/TC",
+   "Học phần cơ sở và chuyên ngành: 500.000 đ/TC"
+  ],
+  "tep": "Qd729.md",
+  "vi_tri": "Phụ lục I, khối ngành III, dòng Đại học",
+  "trich_nguyen_van": [
+   "| 1 | **Đại học**<br>\\* Học phần giáo dục tổng quát<br>\\* Học phần cơ sở và chuyên ngành | <br>345.000 đ/TC<br>500.000 đ/TC |"
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Áp dụng cho khối ngành III: Kinh doanh và quản lý, pháp luật.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q014",
+  "sinh_boi": "gpt-5.6-terra#13",
+  "chu_de": "A3",
+  "cau_hoi": "Dong hoc phi qua VNPAY thi tai khoan can gi, VCB va ngan hang khac co phi khac nhau khong?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Tài khoản phải được mở chức năng thanh toán trực tuyến",
+   "Dùng Digital Banking hoặc iBanking Vietcombank được miễn lệ phí giao dịch",
+   "Dùng tài khoản ngân hàng khác Vietcombank đóng thêm 5.500 đồng phí giao dịch"
+  ],
+  "tep": "DongHocPhi_VCB_2021.md",
+  "vi_tri": "Nguyên văn, phần mở đầu và bước 2",
+  "trich_nguyen_van": [
+   "- Sinh viên có tài khoản ngân hàng Vietcombank hoặc tài khoản các ngân hàng được VNPay hỗ trợ đều có thể thanh toán.\n- Tài khoản ngân hàng cần được mở chức năng thanh toán trực tuyến.",
+   "- Nếu sinh viên có tài khoản Digital Banking hay iBanking của ngân hàng Vietcombank, chọn nút \"Nộp học phí qua Vietcombank\" để được miễn lệ phí giao dịch.",
+   "- Nếu sinh viên có tài khoản của ngân hàng khác Vietcombank chọn nút \"Nộp phí qua ngân hàng khác\", sinh viên sẽ đóng thêm 5.500 đồng phí giao dịch."
+  ],
+  "ontology": "mot_phan",
+  "hanh_vi_dung": "tra_loi_phan_co_va_noi_phan_thieu",
+  "ghi_chu_codex": "Hướng dẫn này chỉ áp dụng cho đường thanh toán VNPAY.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q015",
+  "sinh_boi": "gpt-5.6-terra#14",
+  "chu_de": "A3",
+  "cau_hoi": "Sau khi em đóng học phí thành công thì hóa đơn được gửi ở đâu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Hóa đơn điện tử được hệ thống VNPT tự động gửi vào email của người học"
+  ],
+  "tep": "Qd1314.md",
+  "vi_tri": "Bước 4. Thực hiện thu học phí",
+  "trich_nguyen_van": [
+   "Ngay sau khi thực hiện giao dich đóng học phí, người hoc sẽ nhận được hóa đơn điện tử do hệ thống của VNPT tự động gửi vào email của người học để xác nhận việc đóng học phí thành công (Ä⁄ấu 01)"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Quy trình mô tả việc gửi hóa đơn ngay sau giao dịch.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q016",
+  "sinh_boi": "gpt-5.6-terra#15",
+  "chu_de": "A3",
+  "cau_hoi": "Học phí chính xác kỳ này của riêng em là bao nhiêu?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định số học phí phải nộp của một sinh viên cụ thể trong một học kỳ cụ thể"
+  ],
+  "tep": "Qd1314.md",
+  "vi_tri": "Bước 2–3 của Quy trình thu học phí",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra mức học phí và quy trình; tài liệu chỉ nêu việc Nhà trường cập nhật số tiền phải nộp lên hệ thống để người học kiểm tra, không có dữ liệu học phí cá nhân.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q017",
+  "sinh_boi": "gpt-5.6-terra#16",
+  "chu_de": "A4",
+  "cau_hoi": "CT đặc biệt theo đặt hàng doanh nghiệp được đăng ký tối đa bao nhiêu TC một kỳ, có khác CT 4 năm thường không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Chương trình đào tạo 4 năm tối đa 27 tín chỉ",
+   "Chương trình đặc biệt theo đặt hàng của doanh nghiệp tối đa 32 tín chỉ",
+   "Không tính tín chỉ Giáo dục thể chất và Giáo dục Quốc phòng – An ninh"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 3 Điều 9",
+  "trich_nguyen_van": [
+   "tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp *(không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh)*."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Giới hạn này áp dụng cho sinh viên có học lực trung bình trở lên ở học kỳ liền trước.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q018",
+  "sinh_boi": "gpt-5.6-terra#17",
+  "chu_de": "A4",
+  "cau_hoi": "Em học chương trình đặc biệt Quản trị kinh doanh, IELTS 5.0 đã đạt mức yêu cầu chưa?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Yêu cầu bậc 4 hoặc B2",
+   "IELTS tối thiểu 5.5"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 2, mục I.2.1, dòng Quản trị kinh doanh",
+  "trich_nguyen_van": [
+   "| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Dòng bảng quy định yêu cầu chứng chỉ tiếng Anh quốc tế cho chương trình đào tạo đặc biệt.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q019",
+  "sinh_boi": "gpt-5.6-terra#18",
+  "chu_de": "A4",
+  "cau_hoi": "Học bổng loại giỏi của chương trình đặc biệt khác chương trình chuẩn bao nhiêu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Chương trình chuẩn: 6.000.000 VNĐ cho 05 tháng mỗi học kỳ",
+   "Chương trình đào tạo đặc biệt: 7.200.000 VNĐ cho 05 tháng mỗi học kỳ"
+  ],
+  "tep": "Qd317.md",
+  "vi_tri": "Điều 1 và Điều 2, dòng Giỏi",
+  "trich_nguyen_van": [
+   "| 2 | Giỏi | 6.000.000 |",
+   "| 2 | Giỏi | 7.200.000 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Mức tại Điều 1 là hệ chính quy; mức tại Điều 2 là chương trình đào tạo đặc biệt, năm học 2024-2025.",
+  "bien_tap": "Mức học bổng theo QĐ 317, áp dụng năm học 2024–2025."
+ },
+ {
+  "id": "Q020",
+  "sinh_boi": "gpt-5.6-terra#19",
+  "chu_de": "A4",
+  "cau_hoi": "Chứng chỉ ngoại ngữ quốc tế của sinh viên chương trình đặc biệt được tính như thế nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Được quy đổi đồng thời thành điểm 10",
+   "Được đồng thời công nhận đạt chuẩn đầu ra"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 2, ghi chú sau mục I.2.2",
+  "trich_nguyen_van": [
+   "*Ghi chú: Chứng chỉ ngoại ngữ quốc tế đối với chương trình đặc biệt được quy đổi đồng thời thành điểm 10 và đạt chuẩn đầu ra.*"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Ghi chú áp dụng cho chứng chỉ ngoại ngữ quốc tế của chương trình đào tạo đặc biệt.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q021",
+  "sinh_boi": "gpt-5.6-terra#21",
+  "chu_de": "B1",
+  "cau_hoi": "Em học được một kỳ rồi, có việc cá nhân muốn nghỉ tạm thì điều kiện và đơn thế nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải học ít nhất 01 học kỳ ở Trường và không thuộc diện bị xem xét buộc thôi học hoặc kỷ luật",
+   "Dùng Mẫu số 09 - Phụ lục 4 kèm theo",
+   "Gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm d khoản 1 và khoản 3 Điều 24",
+  "trich_nguyen_van": [
+   "d) Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường và không thuộc các trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật quy định tại Điều 20 của Quy chế này. Thời gian nghỉ học tạm thời vì nhu cầu cá nhân được tính vào thời gian học chính thức quy định tại khoản 4 Điều 2 của Quy chế này.",
+   "Sinh viên xin nghỉ học tạm thời phải viết đơn *(Mẫu số 09 - Phụ lục 4 kèm theo)*, xin thôi học *(Mẫu đơn 10 – Phụ lục 4 kèm theo)* gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Câu hỏi về nghỉ tạm thời vì lý do cá nhân.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q022",
+  "sinh_boi": "gpt-5.6-terra#22",
+  "chu_de": "B1",
+  "cau_hoi": "Em bi om, nghi hoc 3 ngay thi nop giay to va bao cho ai trong bao lau?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Viết đơn xin phép gửi giảng dạy học phần trong vòng 01 tuần kể từ ngày ốm",
+   "Kèm Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 1 Điều 30",
+  "trich_nguyen_van": [
+   "Sinh viên xin nghỉ ốm trong quá trình học, phải viết đơn xin phép gửi giảng dạy học phần trong vòng 01 tuần kể từ ngày ốm, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Trường hợp nghỉ ốm trong quá trình học.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q023",
+  "sinh_boi": "gpt-5.6-terra#23",
+  "chu_de": "B1",
+  "cau_hoi": "Nếu được chuyển ngành thì em có phải đóng lại học phí các môn đã học không?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định việc thu lại hoặc xử lý học phí các học phần đã học khi sinh viên chuyển ngành"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 25",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra Điều 25 về điều kiện, thủ tục và bảo lưu điểm khi chuyển ngành; không có quy định về học phí.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q024",
+  "sinh_boi": "gpt-5.6-terra#24",
+  "chu_de": "B2",
+  "cau_hoi": "Kỳ đầu mà điểm trung bình dưới bao nhiêu thì bị cảnh báo học tập?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Bị cảnh báo nếu điểm trung bình chung học kỳ dưới 4,00 ở học kỳ đầu khóa học"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm b khoản 1 Điều 20",
+  "trich_nguyen_van": [
+   "b) Điểm trung bình chung học kỳ đạt dưới 4,00 đối với học kỳ đầu khóa học; dưới 4,50 đối với học kỳ tiếp theo."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Đây là một trong các trường hợp áp dụng cảnh báo kết quả học tập.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q025",
+  "sinh_boi": "gpt-5.6-terra#25",
+  "chu_de": "B2",
+  "cau_hoi": "Mon ly thuyet nghi qua nhieu thi co du dieu kien thi khong, nghi co ly do phai nop don bao lau?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải tham dự tối thiểu 80% tổng số giờ học",
+   "Nghỉ có lý do chính đáng phải nộp đơn theo Mẫu số 03 kèm minh chứng cho Khoa/viện đào tạo trong vòng 03 ngày làm việc từ ngày bắt đầu nghỉ"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm a khoản 1 Điều 17",
+  "trich_nguyen_van": [
+   "- SV phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần.",
+   "- SV nghỉ học vì lý do chính đáng (ốm đau, tai nạn, thiên tai, việc gia đình đặc biệt...) phải nộp đơn xin nghỉ học theo Mẫu kèm minh chứng liên quan (Mẫu số 03 – Phụ lục 4 kèm theo). Đơn phải nộp cho Khoa/viện đào tạo trong vòng 03 ngày làm việc kể từ ngày bắt đầu nghỉ học."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Điều kiện áp dụng đối với học phần lý thuyết.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q026",
+  "sinh_boi": "gpt-5.6-terra#26",
+  "chu_de": "B2",
+  "cau_hoi": "Điểm thi cuối kỳ của em đã có trên hệ thống chưa?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định điểm thi của một sinh viên cụ thể trên hệ thống"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 15–17",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra quy định thang điểm, đánh giá học phần và thi; không có dữ liệu điểm hoặc trạng thái công bố điểm cá nhân.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q027",
+  "sinh_boi": "gpt-5.6-terra#27",
+  "chu_de": "B3",
+  "cau_hoi": "Tôi muốn xét tốt nghiệp sớm thì ngoài điều kiện học tập cần nộp mẫu gì và gửi đơn vị nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phải tích lũy đủ số học phần, khối lượng học tập, đạt chuẩn đầu ra và nội dung bắt buộc của chương trình",
+   "Điểm trung bình chung tích lũy toàn khóa từ 5,50 trở lên",
+   "Nộp Mẫu số 08 - Phụ lục 4 kèm theo cho đơn vị quản lý đào tạo"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm b, c khoản 1 và khoản 2 Điều 22",
+  "trich_nguyen_van": [
+   "b) Tích lũy đủ số học phần, khối lượng học tập của CTĐT được quy định tại Điều 2 của Quy chế này, đạt chuẩn đầu ra và các nội dung bắt buộc khác theo yêu cầu của chương trình đào tạo.\nc) Điểm trung bình chung tích lũy theo CTĐT của toàn khóa học phải đạt từ 5,50 trở lên.",
+   "Trong trường hợp đủ điều kiện tốt nghiệp sớm hơn thời gian thiết kế của khóa học, SV viết đơn theo mẫu *(Mẫu số 08 – Phụ lục 4 kèm theo)* gửi đơn vị quản lý đào tạo đề nghị được xét tốt nghiệp."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Các điều kiện trích dẫn là một phần điều kiện xét tốt nghiệp và thủ tục xét sớm.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q028",
+  "sinh_boi": "gpt-5.6-terra#28",
+  "chu_de": "B3",
+  "cau_hoi": "Nếu điểm tổng kết loại giỏi nhưng phải học lại nhiều môn, xếp loại tốt nghiệp có bị hạ không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Loại xuất sắc hoặc giỏi bị giảm một mức nếu khối lượng học phần phải học lại vượt quá 5% tổng số tín chỉ toàn chương trình",
+   "Cũng bị giảm một mức nếu đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 3 Điều 23",
+  "trich_nguyen_van": [
+   "Hạng tốt nghiệp của SV có điểm trung bình chung tích lũy loại xuất sắc và giỏi sẽ bị giảm đi một mức nếu thuộc một trong các trường hợp sau:\n    a) Khối lượng của các học phần phải học lại vượt quá 5% so với tổng số tín chỉ quy định của toàn chương trình.\n    b) Sinh viên đã bị kỷ luật từ mức cảnh cáo trở lên trong thời gian học."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Chỉ áp dụng cho hạng tốt nghiệp xuất sắc và giỏi.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q029",
+  "sinh_boi": "gpt-5.6-terra#29",
+  "chu_de": "B3",
+  "cau_hoi": "Em dang thieu chung chi tin hoc nao de du dieu kien ra truong?",
+  "khong_dau": true,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định tình trạng thiếu chứng chỉ tin học của một sinh viên cụ thể"
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 22 và Phụ lục 3",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra điều kiện tốt nghiệp và bảng quy đổi chứng chỉ tin học quốc tế; không có hồ sơ hoặc tình trạng điều kiện của từng sinh viên.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q030",
+  "sinh_boi": "gpt-5.6-terra#30",
+  "chu_de": "B4",
+  "cau_hoi": "HBKK loại xuất sắc của hệ chính quy và chương trình đặc biệt mỗi học kỳ là bao nhiêu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Hệ chính quy: 7.200.000 VNĐ cho 05 tháng mỗi học kỳ",
+   "Chương trình đào tạo đặc biệt: 8.640.000 VNĐ cho 05 tháng mỗi học kỳ"
+  ],
+  "tep": "Qd317.md",
+  "vi_tri": "Điều 1 và Điều 2, dòng Xuất sắc",
+  "trich_nguyen_van": [
+   "| 1 | Xuất sắc | 7.200.000 |",
+   "| 1 | Xuất sắc | 8.640.000 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Các mức được ban hành cho năm học 2024-2025.",
+  "bien_tap": "Mức học bổng theo QĐ 317, áp dụng năm học 2024–2025."
+ },
+ {
+  "id": "Q031",
+  "sinh_boi": "gpt-5.6-terra#31",
+  "chu_de": "B4",
+  "cau_hoi": "Muốn được xét học bổng khuyến khích thì một kỳ em phải đăng ký ít nhất bao nhiêu tín chỉ và điểm các môn lần đầu tối thiểu bao nhiêu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Đăng ký ít nhất 14 tín chỉ theo kế hoạch chương trình đào tạo của khóa học/chuyên ngành",
+   "Các học phần trong kỳ phải có kết quả kiểm tra, thi lần đầu từ 5.5 điểm (điểm C) trở lên"
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "mục II.2.1 và II.2.3",
+  "trich_nguyen_van": [
+   "2.1. Tổng số tín chỉ sinh viên đăng kí theo học một học kì theo kế hoạch trong chương trình đào tạo của khoá học/chuyên ngành phải lớn hơn hoặc bằng 14 tín chỉ.",
+   "2.3. Các học phần trong kỳ có kết quả kiểm tra, thi lần đầu đạt từ 5.5 điểm (điểm C) trở lên."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Đây là các điều kiện cụ thể trong tiêu chuẩn học bổng.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q032",
+  "sinh_boi": "gpt-5.6-terra#32",
+  "chu_de": "B4",
+  "cau_hoi": "Tôi có tên trong danh sách nhận học bổng kỳ này không?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định danh sách nhận học bổng của một học kỳ cụ thể"
+  ],
+  "tep": "Qd317.md",
+  "vi_tri": "Điều 1–2",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra mức học bổng và tiêu chuẩn xét; không có danh sách hoặc kết quả xét học bổng cá nhân theo kỳ.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q033",
+  "sinh_boi": "gpt-5.6-terra#33",
+  "chu_de": "C",
+  "cau_hoi": "Hôm nay ở Nha Trang có mưa không?",
+  "khong_dau": false,
+  "loai": "ngoai_hoc_vu",
+  "y_chinh": [
+   "Ngoài phạm vi học vụ"
+  ],
+  "tep": null,
+  "vi_tri": null,
+  "trich_nguyen_van": [],
+  "ontology": null,
+  "hanh_vi_dung": "tu_choi_ngoai_pham_vi",
+  "ghi_chu_codex": "Câu hỏi thời tiết, không liên quan học vụ.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q034",
+  "sinh_boi": "gpt-5.6-terra#34",
+  "chu_de": "C",
+  "cau_hoi": "Ke em nghe mot cau chuyen vui di",
+  "khong_dau": true,
+  "loai": "ngoai_hoc_vu",
+  "y_chinh": [
+   "Ngoài phạm vi học vụ"
+  ],
+  "tep": null,
+  "vi_tri": null,
+  "trich_nguyen_van": [],
+  "ontology": null,
+  "hanh_vi_dung": "tu_choi_ngoai_pham_vi",
+  "ghi_chu_codex": "Yêu cầu trò chuyện, không liên quan học vụ.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q035",
+  "sinh_boi": "gpt-5.6-sol#0",
+  "chu_de": "A1",
+  "cau_hoi": "Ky truoc em bi xep hoc luc yeu, ky nay duoc dang ky bao nhieu tin chi?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Học lực hạng yếu kém được đăng ký tối thiểu 12 tín chỉ và tối đa 18 tín chỉ.",
+   "Quy định không áp dụng cho học kỳ cuối khóa và các học kỳ phụ."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 4 Điều 9",
+  "trich_nguyen_van": [
+   "4. Khối lượng học tập của SV xếp loại học lực hạng yếu kém của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 12 tín chỉ và tối đa 18 tín chỉ ."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q036",
+  "sinh_boi": "gpt-5.6-sol#1",
+  "chu_de": "A1",
+  "cau_hoi": "Trước mỗi kỳ em có bắt buộc đăng ký học phần không, chốt đăng ký ở đâu vậy?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Đăng ký khối lượng học tập trước mỗi học kỳ là yêu cầu bắt buộc.",
+   "Sinh viên xác nhận đăng ký đúng thời gian bằng tài khoản cá nhân trên Hệ thống quản lý đào tạo."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 1 và điểm d khoản 2 Điều 9",
+  "trich_nguyen_van": [
+   "1. Đăng ký khối lượng học tập từng học kỳ là yêu cầu bắt buộc của mỗi SV trước khi bắt đầu một học kỳ mới.",
+   "   d) Xác nhận đăng ký học phần theo thời gian quy định từ tài khoản cá nhân trên Hệ thống quản lý đào tạo."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q037",
+  "sinh_boi": "gpt-5.6-sol#2",
+  "chu_de": "A1",
+  "cau_hoi": "Em trượt hp tự chọn thì bắt buộc học lại đúng môn đó hay đổi môn khác đc ạ?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Có thể đăng ký học lại học phần tự chọn đó.",
+   "Hoặc đăng ký một học phần tự chọn tương đương khác."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 2 Điều 11",
+  "trich_nguyen_van": [
+   "2. Sinh viên có học phần tự chọn bị điểm dưới 5,0 phải đăng ký học lại học phần đó hoặc đổi sang đăng ký học học phần tự chọn tương đương khác."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q038",
+  "sinh_boi": "gpt-5.6-sol#3",
+  "chu_de": "A1",
+  "cau_hoi": "Một lớp thực hành tại phòng máy tính cần tối thiểu và được phép có tối đa bao nhiêu sinh viên?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Theo Phụ lục 1 về điều kiện, số lượng sinh viên để tổ chức lớp học phần.",
+   "Lớp thực hành tại phòng máy tính có tối thiểu 25 và tối đa 30 sinh viên."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 1, dòng “Thực hành tại các phòng máy tính”",
+  "trich_nguyen_van": [
+   "### **Phụ lục 1: Điều kiện, số lượng sinh viên để tổ chức một lớp học phần**",
+   "| 11 | Thực hành tại các phòng máy tính | 25 | 30 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q039",
+  "sinh_boi": "gpt-5.6-sol#4",
+  "chu_de": "A1",
+  "cau_hoi": "Han cuoi de sinh vien tu huy mot lop hoc phan da xac nhan la ngay nao?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Hạn rút bớt (hủy) là tối đa trong tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; văn bản không nêu ngày cụ thể",
+   "Quá hạn, học phần giữ nguyên như đã đăng ký; không đi học thì nhận điểm 0"
+  ],
+  "tep": "Qd753.md",
+  "vi_tri": "khoản 2 Điều 10",
+  "trich_nguyen_van": [
+   "Việc rút bớt học phần trong khối lượng học tập đã đăng ký của SV chỉ được chấp nhận tối đa trong tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ",
+   "Ngoài thời hạn trên, học phần vẫn được giữ nguyên như đã đăng ký và nếu SV không đi học được xem như tự ý bỏ học và phải nhận điểm 0 (không)"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Đã kiểm tra Điều 8–11 và Phụ lục 1 của Qd1052.md. Nội dung gần nhất chỉ quy định sinh viên xác nhận đăng ký và Nhà trường xóa lớp không đủ điều kiện; Qd1314.md chỉ quy định đơn vị đào tạo xóa đăng ký của người học nợ học phí.",
+  "bien_tap": "Sửa loại từ khong_co_trong_van_ban. Codex không được đọc QĐ 753; QĐ 1052 chỉ bãi bỏ quy định trái với nó nên Điều 10 QĐ 753 còn hiệu lực."
+ },
+ {
+  "id": "Q040",
+  "sinh_boi": "gpt-5.6-sol#5",
+  "chu_de": "A1",
+  "cau_hoi": "Em muốn rút bớt một môn đã đăng ký thì dùng mẫu đơn nào và gửi cho phòng nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo, theo Mẫu số 2 - Phiếu đăng ký/điều chỉnh học phần",
+   "Hoặc tự rút bớt trên Hệ thống quản lý đào tạo từ tài khoản cá nhân"
+  ],
+  "tep": "Qd753.md",
+  "vi_tri": "khoản 3 Điều 10",
+  "trich_nguyen_van": [
+   "Sinh viên tự thực hiện việc rút bớt học phần đã đăng ký trên Hệ thống quản lý đào tạo từ tài khoản cá nhân hoặc trực tiếp nộp đơn đề nghị rút bớt học phần tại Đơn vị quản lý đào tạo (Mẫu số 2 - Phiếu đăng ký/điều chỉnh học phần)"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "Đã kiểm tra quy định đăng ký, xóa lớp, học lại tại Điều 9–11 và danh mục biểu mẫu của Qd1052.md; không có thủ tục để sinh viên chủ động rút học phần.",
+  "bien_tap": "Sửa loại từ khong_co_trong_van_ban. Codex không được đọc QĐ 753; QĐ 1052 chỉ bãi bỏ quy định trái với nó nên Điều 10 QĐ 753 còn hiệu lực. Đơn vị quản lý đào tạo tương ứng Phòng Đào tạo Đại học."
+ },
+ {
+  "id": "Q041",
+  "sinh_boi": "gpt-5.6-sol#6",
+  "chu_de": "A2",
+  "cau_hoi": "Học thêm ngành thứ 2 được duyệt rồi thì em dùng mã sv nào để đk môn, cần hỗ trợ thì hỏi đâu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Nhà trường cấp một mã số sinh viên riêng cho chương trình thứ hai.",
+   "Đăng ký học phần bằng mã số sinh viên của chương trình thứ hai.",
+   "Đơn vị quản lý đào tạo hỗ trợ đăng ký học phần khi cần thiết."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm b khoản 3 Điều 28",
+  "trich_nguyen_van": [
+   "Khi có Quyết định chấp thuận học cùng lúc hai chương trình, được Nhà trường cung cấp một mã số SV riêng,",
+   "SV tự nghiên cứu CTĐT của ngành thứ hai và bổ sung các học phần cần phải học vào kế hoạch học tập để đăng ký học phần (Đơn vị quản lý đào tạo hỗ trợ đăng ký học phần khi cần thiết) bằng mã số SV của chương trình thứ 2."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q042",
+  "sinh_boi": "gpt-5.6-sol#7",
+  "chu_de": "A2",
+  "cau_hoi": "Em học song ngành thì môn tương đương đã học ở ngành đầu có được giữ điểm không, quyền lợi sinh viên tính cho cả hai ngành à?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Học phần có nội dung và khối lượng kiến thức tương đương đã tích lũy ở chương trình thứ nhất được bảo lưu.",
+   "Sinh viên chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm c khoản 3 và khoản 4 Điều 28",
+  "trich_nguyen_van": [
+   "    c) Sinh viên học chương trình thứ hai được bảo lưu các học phần có nội dung và khối lượng kiến thức tương đương đã được học và tích lũy ở chương trình thứ nhất.",
+   "4. Sinh viên học hai chương trình chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất. Nhà trường cử GV theo dõi và hỗ trợ đối với SV học cùng lúc hai chương trình."
+  ],
+  "ontology": "mot_phan",
+  "hanh_vi_dung": "tra_loi_phan_co_va_noi_phan_thieu",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q043",
+  "sinh_boi": "gpt-5.6-sol#8",
+  "chu_de": "A2",
+  "cau_hoi": "Tôi cần đáp ứng điều kiện gì về chương trình thứ nhất và thời điểm đăng ký để được xét tốt nghiệp chương trình thứ hai?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất.",
+   "Phải đăng ký chương trình thứ hai muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai.",
+   "Thời gian học tối đa của hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 5 Điều 28",
+  "trich_nguyen_van": [
+   "5. Thời gian học tối đa được phép học đối với SV học cùng lúc hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất được quy định tại khoản 4 Điều 2 của Quy chế này.",
+   "Sinh viên chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp ở chương trình thứ nhất và đăng kí muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q044",
+  "sinh_boi": "gpt-5.6-sol#9",
+  "chu_de": "A2",
+  "cau_hoi": "Em đã có bằng ĐH, giờ nộp hồ sơ liên thông văn bằng 2 thì cần nhg giấy tờ gì?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Phiếu tuyển sinh theo mẫu do Trường cung cấp.",
+   "Bản sao hoặc bản công chứng bảng điểm đại học và bằng đại học.",
+   "Bản photo căn cước công dân.",
+   "02 ảnh chân dung 2x3 cm."
+  ],
+  "tep": "Qd626.md",
+  "vi_tri": "điểm d khoản 3 Điều 19",
+  "trich_nguyen_van": [
+   "     d) Đào tạo liên thông từ đại học (văn bằng 2): Phiếu tuyển sinh theo mẫu do Trường\ncung cấp; bản sao hoặc bản công chứng: bảng điểm đại học, bằng đại học; bản photo\ncăn cước công dân; 02 ảnh chân dung 2x3 cm;"
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q045",
+  "sinh_boi": "gpt-5.6-sol#10",
+  "chu_de": "A2",
+  "cau_hoi": "Em đóng thừa tiền ở mã sinh viên ngành đầu thì có chuyển khoản dư sang mã ngành hai được không?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định việc chuyển khoản học phí đóng thừa giữa hai mã số sinh viên của người học hai chương trình."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm b khoản 3 Điều 28",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra Điều 28–29 của Qd1052.md và các tài liệu học phí. Nội dung gần nhất là cấp mã số sinh viên riêng cho chương trình thứ hai; không có quy trình chuyển khoản dư giữa hai mã.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q046",
+  "sinh_boi": "gpt-5.6-sol#13",
+  "chu_de": "A3",
+  "cau_hoi": "Số học phí phải nộp trên tk cá nhân bị sai thì sv phản hồi thế nào để trường sửa?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Sinh viên đăng nhập tài khoản cá nhân để kiểm tra số liệu học phí phải nộp.",
+   "Nếu có sai sót thì phản hồi để Nhà trường điều chỉnh."
+  ],
+  "tep": "Qd1314.md",
+  "vi_tri": "Mục II.B, Bước 3 “Kiểm tra, phản hồi”",
+  "trich_nguyen_van": [
+   "Nhà trường thông báo cho người học kiểm tra, phản hồi, xác nhận dit liệu học\nphí. Sinh viên đăng nhập vào tài khoản cá nhân, vào kiểm tra số liệu học phí phải nộp,\nnếu có sai sót thì phản hồi lại để Nhà trường điều chỉnh."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q047",
+  "sinh_boi": "gpt-5.6-sol#14",
+  "chu_de": "A3",
+  "cau_hoi": "Nop hoc phi tien mat tai Nha Trang thi den ngan hang nao, co mat phi va can dua thong tin gi?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Có thể nộp tại quầy Agribank, Vietinbank hoặc Liên Việt PostBank.",
+   "Nộp tại Nha Trang được miễn phí.",
+   "Cung cấp MÃ SINH VIÊN để ngân hàng tra cứu và không gửi tài khoản của Trường."
+  ],
+  "tep": "huong_dan_dong_hoc_phi.md",
+  "vi_tri": "mục 3, phương thức nộp tại quầy giao dịch",
+  "trich_nguyen_van": [
+   "3) Đến quầy giao dịch của 03 ngân hàng Agribank, Vietinbank và Liên Việt PostBank để nộp tiền mặt (tại Nha Trang miễn phí, các huyện trong tỉnh Khánh Hòa và ngoại tỉnh mức lệ phí 3.300đ/lần đóng hoặc 5.500đ/lần đóng).",
+   "Gửi MÃ SINH VIÊN cho ngân hàng để tra cứu số tiền và đóng học phí, không gửi tài khoản của trường cho ngân hàng"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q048",
+  "sinh_boi": "gpt-5.6-sol#15",
+  "chu_de": "A3",
+  "cau_hoi": "Truong co cho chia hoc phi thanh nhieu dot de dong dan khong?",
+  "khong_dau": true,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định việc chia học phí thành nhiều đợt để sinh viên đóng dần."
+  ],
+  "tep": "Qd1314.md",
+  "vi_tri": "Mục II, Bước 4 và Bước 7",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra quy trình thu và xử lý hết hạn học phí trong Qd1314.md, các mức thu tại Qd729.md và hai hướng dẫn thanh toán. Nội dung gần nhất nhắc trường hợp được gia hạn nhưng không quy định đóng học phí thành nhiều đợt.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q049",
+  "sinh_boi": "gpt-5.6-sol#16",
+  "chu_de": "A4",
+  "cau_hoi": "Em hoc chuong trinh chuan, IELTS 5.5 thi duoc quy doi cho nhung mon tieng Anh nao?",
+  "khong_dau": true,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Áp dụng cho sinh viên không chuyên ngữ thuộc chương trình đào tạo chuẩn.",
+   "IELTS từ 5.5 thuộc mức Bậc 4/B2.",
+   "Được quy đổi cho Tiếng Anh B1.1 và Tiếng Anh B1.2."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 2, Mục I.1.1, dòng Bậc 4",
+  "trich_nguyen_van": [
+   "### 1. Chương trình đào tạo chuẩn",
+   "| Bậc 4 | B2 | ≥ 600 | ≥ 70 | ≥ 5.5 | ≥ 160 | ≥ 153 | ≥ 160 | Tiếng Anh B1.1, Tiếng Anh B1.2 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q050",
+  "sinh_boi": "gpt-5.6-sol#18",
+  "chu_de": "A4",
+  "cau_hoi": "Môn Ngoại ngữ B1.1 của ct chuẩn là hp bắt buộc hay hp điều kiện đối với khóa 67 và khóa 68 vậy?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Ngoại ngữ B1.1 có 4 tín chỉ và tương ứng Bậc 3.",
+   "Khóa 67 trở về trước: học phần bắt buộc (HPBB).",
+   "Khóa 68 trở đi: học phần điều kiện (HPĐK)."
+  ],
+  "tep": "Qd1965.md",
+  "vi_tri": "khoản 1.3 Mục 1 Phụ lục 2, dòng Ngoại ngữ B1.1",
+  "trich_nguyen_van": [
+   "| 4 | Ngoại ngữ B1.1 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q051",
+  "sinh_boi": "gpt-5.6-sol#19",
+  "chu_de": "A4",
+  "cau_hoi": "Môn Ngoại ngữ B1.2 chia điểm quá trình, giữa kỳ và cuối kỳ ra sao, bài cuối kỳ có điểm sàn không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Đánh giá quá trình chiếm 20%.",
+   "Thi giữa kỳ Nghe + Nói chiếm 40%.",
+   "Thi cuối kỳ Đọc + Viết chiếm 40%.",
+   "Thi kết thúc học phần phải đạt từ 5 điểm trở lên."
+  ],
+  "tep": "Qd1965.md",
+  "vi_tri": "khoản 1.4 Mục 1 Phụ lục 2, dòng Ngoại ngữ B1.2",
+  "trich_nguyen_van": [
+   "| 5 | Ngoại ngữ B1.2 | Đánh giá quá trình | 20% |",
+   "| | | Thi giữa kỳ: Nghe + Nói | 40% |",
+   "| | | Thi cuối kỳ: Đọc + Viết<br>Thi kết thúc học phần phải đạt từ 5 điểm trở lên | 40% |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q052",
+  "sinh_boi": "gpt-5.6-sol#20",
+  "chu_de": "A4",
+  "cau_hoi": "Sinh viên muốn chuyển từ chương trình đặc biệt về chương trình chuẩn trong cùng ngành phải đáp ứng điều kiện, hồ sơ và thời hạn nào?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định điều kiện, hồ sơ hoặc thời hạn chuyển từ chương trình đặc biệt về chương trình chuẩn trong cùng ngành."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm d khoản 1 Điều 8",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra các quy định về lớp sinh viên, chuyển ngành và chuyển hình thức đào tạo trong Qd1052.md. Nội dung gần nhất chỉ nói lớp sinh viên được điều chỉnh khi chuyển đổi chương trình đào tạo, không nêu thủ tục chuyển giữa chương trình đặc biệt và chuẩn.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q053",
+  "sinh_boi": "gpt-5.6-sol#21",
+  "chu_de": "B1",
+  "cau_hoi": "Em xin thôi học vì lý do cá nhân thì nộp đơn gì, sau này muốn quay lại trường có học tiếp luôn được không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Được xin thôi học vì lý do cá nhân, trừ trường hợp đang bị xem xét buộc thôi học hoặc kỷ luật.",
+   "Dùng Mẫu đơn 10, gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên.",
+   "Muốn quay lại học phải xét tuyển đầu vào như các thí sinh khác."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 2–3 Điều 24",
+  "trich_nguyen_van": [
+   "2. Sinh viên được xin thôi học vì lý do cá nhân, trừ trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật. Những SV này muốn quay trở lại học phải xét tuyển đầu vào như những thí sinh khác.",
+   "3. Sinh viên xin nghỉ học tạm thời phải viết đơn *(Mẫu số 09 - Phụ lục 4 kèm theo)*, xin thôi học *(Mẫu đơn 10 – Phụ lục 4 kèm theo)* gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q054",
+  "sinh_boi": "gpt-5.6-sol#23",
+  "chu_de": "B1",
+  "cau_hoi": "Mot sinh vien duoc chuyen nganh toi da bao nhieu lan trong ca khoa hoc?",
+  "khong_dau": true,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định số lần tối đa sinh viên được chuyển ngành trong cả khóa học."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 25",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra toàn bộ Điều 25 về điều kiện, thời điểm, bảo lưu điểm và thời gian học khi chuyển ngành; không có giới hạn số lần chuyển ngành.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q055",
+  "sinh_boi": "gpt-5.6-sol#24",
+  "chu_de": "B2",
+  "cau_hoi": "Em đủ đk thi nhưng bị tai nạn đúng hôm thi cuối kỳ thì được hoãn trong bao lâu, nộp mẫu nào ở đâu ạ?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Được dự thi cuối kỳ trong thời hạn 2 học kỳ chính tiếp theo.",
+   "Quá thời hạn này, điểm đánh giá cuối kỳ là 0.",
+   "Dùng Mẫu số 04 gửi Đơn vị quản lý đào tạo."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 4 Điều 17",
+  "trich_nguyen_van": [
+   "4. Sinh viên đủ điều kiện dự thi nhưng không thể dự thi cuối kỳ do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được phép hoãn thi và được dự thi cuối kỳ học phần đó trong thời hạn 2 học kỳ chính tiếp theo để hoàn thành điểm,",
+   "quá thời hạn trên điểm đánh giá cuối kỳ sẽ là điểm 0 (không). Sinh viên làm đơn xin hoãn thi theo mẫu *(Mẫu số 04 – Phụ lục 4 kèm theo)* gửi về Đơn vị quản lý đào tạo để được giải quyết."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q056",
+  "sinh_boi": "gpt-5.6-sol#25",
+  "chu_de": "B2",
+  "cau_hoi": "Nếu em bị cảnh báo học tập 3 kỳ chính liên tiếp thì bị xử lý sao, còn cách chuyển sang hệ vừa làm vừa học không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp thì bị buộc thôi học.",
+   "Có thể viết Mẫu số 05 gửi Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên để được xem xét chuyển sang chương trình vừa làm vừa học tương ứng.",
+   "Các học phần đạt từ 5,0 trở lên ở chương trình cũ được xem xét bảo lưu một phần."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "điểm a khoản 2 và khoản 3 Điều 20",
+  "trich_nguyen_van": [
+   "    a) Vượt quá 02 lần cảnh báo kết quả học tập liên tiếp.",
+   "3. Những SV thuộc diện bị buộc thôi học quy định tại khoản 2 của Điều này được quyền viết đơn *(Mẫu số 05 – Phụ lục 4 kèm theo)* gửi Hiệu trưởng (thông qua Phòng Công tác Chính trị và Sinh viên) để được xem xét chuyển qua CTĐT theo hình thức vừa làm vừa học tương ứng tổ chức tại Trường.",
+   "Sinh viên được xem xét bảo lưu một phần kết quả học tập ở chương trình cũ đối với các học phần đạt mức điểm 5,0 trở lên khi học ở chương trình mới."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q057",
+  "sinh_boi": "gpt-5.6-sol#27",
+  "chu_de": "B3",
+  "cau_hoi": "Sinh viên đã hết thời gian học tối đa nhưng chỉ còn thiếu ngoại ngữ hoặc tin học được phép hoàn thiện trong thời hạn nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Áp dụng khi đã hết thời gian học tối đa nhưng còn thiếu Giáo dục quốc phòng – An ninh, Giáo dục thể chất, chuẩn ngoại ngữ hoặc công nghệ thông tin.",
+   "Được hoàn thiện điều kiện còn thiếu và đề nghị xét công nhận tốt nghiệp trong 03 năm tính từ khi thôi học."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "khoản 6 Điều 22",
+  "trich_nguyen_van": [
+   "6. Sinh viên đã hết thời gian học tập tối đa theo quy định nhưng chưa đủ điều kiện tốt nghiệp do chưa hoàn thành các học phần Giáo dục quốc phòng – An ninh hoặc Giáo dục thể chất hoặc chưa đạt chuẩn đầu ra về ngoại ngữ, công nghệ thông tin,",
+   " trong thời hạn 03 năm tính từ khi thôi học được hoàn thiện các điều kiện còn thiếu và đề nghị xét công nhận tốt nghiệp."
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q058",
+  "sinh_boi": "gpt-5.6-sol#28",
+  "chu_de": "B3",
+  "cau_hoi": "Chứng chỉ MOS tổng 1.700 điểm đc quy đổi mấy điểm, tổng MOS này tính từ bao nhiêu mô-đun?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Theo bảng quy đổi chứng chỉ tin học quốc tế cho sinh viên.",
+   "MOS từ 1600 đến 1799 được quy đổi thành điểm 9.",
+   "Tổng điểm MOS là tổng điểm của 2 trong 3 mô-đun."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 3, dòng điểm MOS 1600–1799 và chú thích (iii)",
+  "trich_nguyen_van": [
+   "# Phụ lục 3: Bảng quy đổi điểm đối với chứng chỉ tin học quốc tế cho sinh viên",
+   "| 2 | 2330 - 2669 | 1446 - 1620 | 1600 - 1799 | 9 |",
+   "(iii) Tổng điểm ở cột điểm MOS là tổng điểm của 2 trong 3 mô-đun."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q059",
+  "sinh_boi": "gpt-5.6-sol#29",
+  "chu_de": "B3",
+  "cau_hoi": "Em làm mất bằng tốt nghiệp thì xin cấp lại ở đâu và lệ phí bao nhiêu?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định nơi làm thủ tục hoặc lệ phí cấp lại bằng tốt nghiệp bị mất."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 23",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra Điều 22–23 của Qd1052.md về công nhận tốt nghiệp, cấp bằng, phân loại và giấy chứng nhận tạm thời; không có thủ tục hoặc lệ phí cấp lại bằng bị mất.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q060",
+  "sinh_boi": "gpt-5.6-sol#30",
+  "chu_de": "B4",
+  "cau_hoi": "Em hoãn thi thì có được xét học bổng không, nếu chỉ hoãn vì trùng lịch rồi thi lại cùng đợt thì sao?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Sinh viên hoãn thi không được xét học bổng.",
+   "Nếu hoãn do trùng lịch thi và được thi lại cùng đợt thi thì vẫn được xét."
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "Mục II.2.5",
+  "trich_nguyen_van": [
+   "2.5. Sinh viên hoãn thi không xét học bổng (nếu sinh viên hoãn thi trùng lịch thi và được thi lại cùng đợt thi vẫn được xét)"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q061",
+  "sinh_boi": "gpt-5.6-sol#31",
+  "chu_de": "B4",
+  "cau_hoi": "ĐTB của em 3,7 nhưng điểm rèn luyện chỉ loại khá thì đc xét HBKK loại xuất sắc hay loại khá?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Điểm trung bình chung từ 3.60 đến 4.0 và rèn luyện loại xuất sắc là tiêu chuẩn học bổng loại xuất sắc.",
+   "Nếu điểm học tập loại xuất sắc hoặc giỏi nhưng rèn luyện chỉ loại khá thì chỉ được xét học bổng mức khá."
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "Mục II.3.3 và ghi chú sau Mục II.3",
+  "trich_nguyen_van": [
+   "3.3. Học bổng loại xuất sắc: có điểm trung bình chung học tập đạt 3.60 đến 4.0 (thang điểm 4), điểm rèn luyện đạt loại xuất sắc.",
+   "* Sinh viên có điểm trung bình chung đạt loại xuất sắc, giỏi có điểm rèn luyện loại khá chỉ được xét học bổng ở mức khá."
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q062",
+  "sinh_boi": "gpt-5.6-sol#32",
+  "chu_de": "B4",
+  "cau_hoi": "Sinh viên đủ tiêu chuẩn học bổng khuyến khích học tập có phải nộp hồ sơ đăng ký không, nếu có thì dùng mẫu nào và hạn nộp khi nào?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định sinh viên phải nộp hồ sơ đăng ký, mẫu hồ sơ hoặc hạn nộp để được xét học bổng khuyến khích học tập."
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "Mục II “Tiêu chuẩn, mức, quỹ HB KK học tập”",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra toàn bộ tieu-chuan-hoc-bong.txt và Qd317.md. Các tệp chỉ nêu đối tượng, tiêu chuẩn, phân loại, mức và quỹ học bổng; không nêu hồ sơ, mẫu đơn hay hạn đăng ký.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q063",
+  "sinh_boi": "gpt-5.6-luna#1",
+  "chu_de": "A1",
+  "cau_hoi": "Lớp thực hành còn ít người sau khi chia nhóm thì trường có mở thêm lớp không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Nếu số sinh viên còn lại từ một nửa định mức tối thiểu thì mở thêm lớp; nếu ít hơn một nửa thì bố trí vào lớp khác đã tổ chức."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 8, khoản 2 điểm e",
+  "trich_nguyen_van": [
+   "   - Nếu số SV còn lại từ một nửa định mức tối thiểu của một lớp học phần, thì Nhà trường mở thêm một lớp học phần mới.",
+   "   - Nếu số SV còn lại ít hơn một nửa định mức tối thiểu của một lớp học phần, thì Nhà trường sẽ bố trí SV vào các lớp học phần khác đã được tổ chức trước đó."
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q064",
+  "sinh_boi": "gpt-5.6-luna#3",
+  "chu_de": "A1",
+  "cau_hoi": "Lớp học phần bắt buộc đăng ký quá ít người nên không mở thì em phải học thế nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Sinh viên phải học học phần bắt buộc với khóa sau."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 8, khoản 2 điểm c",
+  "trich_nguyen_van": [
+   "   - Đối với HP bắt buộc, SV phải học với khóa sau;"
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q065",
+  "sinh_boi": "gpt-5.6-luna#6",
+  "chu_de": "A2",
+  "cau_hoi": "Nếu học hai chương trình thì thời gian học tối đa tính theo chương trình nào, và khi nào được xét tốt nghiệp chương trình thứ hai?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Thời gian học tối đa tính theo thời gian tối đa của chương trình thứ nhất.",
+   "Chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất và đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 28, khoản 5",
+  "trich_nguyen_van": [
+   "5. Thời gian học tối đa được phép học đối với SV học cùng lúc hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất được quy định tại khoản 4 Điều 2 của Quy chế này. Sinh viên chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp ở chương trình thứ nhất và đăng kí muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai."
+  ],
+  "ontology": "mot_phan",
+  "hanh_vi_dung": "tra_loi_phan_co_va_noi_phan_thieu",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q066",
+  "sinh_boi": "gpt-5.6-luna#8",
+  "chu_de": "A2",
+  "cau_hoi": "Người đã tốt nghiệp đại học muốn học thêm bằng đại học ngành khác theo diện liên thông thì có được không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Người đã tốt nghiệp đại học được xét tuyển và học liên thông để nhận thêm một bằng tốt nghiệp đại học của ngành đào tạo khác.",
+   "Đăng ký học liên thông vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hằng năm của Trường."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 29, khoản 1–2",
+  "trich_nguyen_van": [
+   "1. Người đã tốt nghiệp trình độ trung cấp, trình độ cao đẳng được xét tuyển và học liên thông lên trình độ đại học. Người đã tốt nghiệp đại học được xét tuyển và học liên thông để nhận thêm một bằng tốt nghiệp đại học của một ngành đào tạo khác.",
+   "2. Người học đăng ký học liên thông vào đầu mỗi năm học theo thông báo tuyển sinh liên thông hàng năm của Nhà trường."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q067",
+  "sinh_boi": "gpt-5.6-luna#14",
+  "chu_de": "A3",
+  "cau_hoi": "Nếu quá hạn mà em chưa đóng học phí thì sau bao lâu đăng ký học phần bị xóa?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Trong vòng 02 ngày sau khi nhận danh sách người học nợ học phí, các đơn vị đào tạo thực hiện xóa đăng ký học phần trong kỳ."
+  ],
+  "tep": "Qd1314.md",
+  "vi_tri": "Quy trình thu học phí, Bước 8",
+  "trich_nguyen_van": [
+   "Trong vòng 02 ngày sau khi nhận được danh sách người học nợ học phí (Madu 03) từ Phòng KHTC, các đơn vị: Phòng Đào tạo đại học, Phòng Đào tạo Sau đại học, Trung tâm Đào tạo và Bồi dưỡng thực hiện xóa đăng ký học phần trong kỳ đối với người học chưa hoàn thành nghĩa vụ học phí đúng hạn theo quy định."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q068",
+  "sinh_boi": "gpt-5.6-luna#17",
+  "chu_de": "A4",
+  "cau_hoi": "CT đặc biệt CNTT với Quản trị kinh doanh yêu cầu TOEIC khác nhau thế nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Chương trình đặc biệt Công nghệ thông tin yêu cầu TOEIC từ 600.",
+   "Chương trình đặc biệt Quản trị kinh doanh yêu cầu TOEIC từ 700."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Phụ lục 2, mục 2.1, dòng Công nghệ thông tin và Quản trị kinh doanh",
+  "trich_nguyen_van": [
+   "| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |",
+   "| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |"
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q069",
+  "sinh_boi": "gpt-5.6-luna#21",
+  "chu_de": "B1",
+  "cau_hoi": "Tôi muốn chuyển từ Trường Đại học Nha Trang sang trường khác giữa khóa, cần điều kiện và nộp hồ sơ ở đâu?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Không đang học năm nhất hoặc năm cuối, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học.",
+   "Hồ sơ xin chuyển trường nộp thông qua Phòng Công tác Chính trị và Sinh viên theo Mẫu số 13."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 26, khoản 1 điểm a và khoản 2 điểm a",
+  "trich_nguyen_van": [
+   "    a) Không đang là SV trình độ năm thứ nhất hoặc năm cuối khóa, không thuộc diện bị xem xét buộc thôi học và còn đủ thời gian học tập theo quy định tại khoản 4 Điều 2 của Quy chế này.",
+   "    a) Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang *(Mẫu số 13 - Phụ lục 4 kèm theo)*."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q070",
+  "sinh_boi": "gpt-5.6-luna#23",
+  "chu_de": "B1",
+  "cau_hoi": "Don xin nghi om phai nop online hay ban giay?",
+  "khong_dau": true,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định hình thức nộp trực tuyến hay bản giấy đối với đơn xin nghỉ ốm."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 30; Điều 17, khoản 1 điểm a",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra quy định về đơn xin nghỉ ốm, giấy chứng nhận y tế, nơi nhận và thời hạn; văn bản không nêu hình thức nộp đơn.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q071",
+  "sinh_boi": "gpt-5.6-luna#25",
+  "chu_de": "B2",
+  "cau_hoi": "Điểm trung bình học kỳ tính theo số tín chỉ từng môn hay cộng chia đều?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Điểm trung bình được tính theo điểm chính thức của học phần với trọng số là số tín chỉ của học phần.",
+   "Kết quả được làm tròn đến 2 chữ số thập phân."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 18, khoản 1",
+  "trich_nguyen_van": [
+   "1. Điểm trung bình chung theo học kỳ hoặc theo năm học được tính theo công thức sau và được làm tròn đến 2 chữ số thập phân.",
+   "   c) Điểm trung bình của các học phần mà SV đã học trong một học kỳ (điểm trung bình chung học kỳ), trong một năm học (điểm trung bình chung năm học) hoặc tính từ đầu khóa học đối với các học phần đã đạt (điểm trung bình chung tích lũy), được tính theo điểm chính thức của học phần và trọng số là số tín chỉ của học phần đó."
+  ],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q072",
+  "sinh_boi": "gpt-5.6-luna#27",
+  "chu_de": "B3",
+  "cau_hoi": "Để được công nhận tốt nghiệp, ngoài đủ tín chỉ còn phải hoàn thành những chuẩn và nghĩa vụ nào?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Điểm trung bình chung tích lũy toàn khóa phải từ 5,50 trở lên.",
+   "Phải đạt chuẩn ngoại ngữ, hoàn thành Giáo dục quốc phòng – An ninh, Giáo dục thể chất và các nghĩa vụ khác như học phí, thư viện nếu có."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 22, khoản 1 điểm c–e",
+  "trich_nguyen_van": [
+   "    c) Điểm trung bình chung tích lũy theo CTĐT của toàn khóa học phải đạt từ 5,50 trở lên.",
+   "    d) Đạt năng lực ngoại ngữ theo quy định đối với mỗi khóa đào tạo.",
+   "    đ) Hoàn thành các học phần Giáo dục quốc phòng – An ninh và Giáo dục thể chất và các học phần điều kiện khác (nếu có).",
+   "    e) Hoàn thành các nghĩa vụ khác theo quy định của Trường như mượn sách thư viện, thủ tục quyết toán đề tài Nghiên cứu khoa học, học phí và các thủ tục khác."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q073",
+  "sinh_boi": "gpt-5.6-luna#29",
+  "chu_de": "B3",
+  "cau_hoi": "Năm nay trường tổ chức lễ tốt nghiệp vào ngày nào?",
+  "khong_dau": false,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không nêu ngày tổ chức lễ tốt nghiệp trong năm cụ thể."
+  ],
+  "tep": "Qd1052.md",
+  "vi_tri": "Điều 23, khoản 4",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra quy định về lễ tốt nghiệp; văn bản chỉ nêu hệ chính quy tổ chức một lần trong năm học, không nêu ngày cụ thể.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q074",
+  "sinh_boi": "gpt-5.6-luna#30",
+  "chu_de": "B4",
+  "cau_hoi": "Sinh viên đạt học lực khá nhưng bị khiển trách thì có được xét học bổng khuyến khích không?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Sinh viên có kết quả học tập và rèn luyện từ loại khá trở lên được xét trong phạm vi quỹ học bổng.",
+   "Không bị kỷ luật từ mức khiển trách trở lên là điều kiện xét học bổng."
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "Mục II, khoản 1.2",
+  "trich_nguyen_van": [
+   "1.2. Trong học kì, sinh viên có kết quả học tập, rèn luyện từ loại khá trở lên, không bị kỉ luật từ mức khiển trách trở lên sẽ được xét, cấp HBKK học tập trong phạm vi quỹ học bổng khuyến khích học tập của Trường."
+  ],
+  "ontology": "co",
+  "hanh_vi_dung": "tra_loi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q075",
+  "sinh_boi": "gpt-5.6-luna#31",
+  "chu_de": "B4",
+  "cau_hoi": "Sv tạm dừng hoặc kéo dài thời gian học thì thời gian đó có được xét HBKK không? Còn chương trình thứ hai thì sao?",
+  "khong_dau": false,
+  "loai": "co_dap_an",
+  "y_chinh": [
+   "Thời gian tạm dừng hoặc kéo dài không được xét học bổng khuyến khích học tập.",
+   "Thời gian học văn bằng ở chương trình thứ hai chỉ được xét khi đã hoàn thành văn bằng ở chương trình thứ nhất."
+  ],
+  "tep": "tieu-chuan-hoc-bong.txt",
+  "vi_tri": "Mục I, khoản 1.2",
+  "trich_nguyen_van": [
+   "1.2. Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất."
+  ],
+  "ontology": "mot_phan",
+  "hanh_vi_dung": "tra_loi_phan_co_va_noi_phan_thieu",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q076",
+  "sinh_boi": "gpt-5.6-luna#32",
+  "chu_de": "B4",
+  "cau_hoi": "Ky nay truong cong bo danh sach HBKK vao ngay nao?",
+  "khong_dau": true,
+  "loai": "khong_co_trong_van_ban",
+  "y_chinh": [
+   "Văn bản không quy định ngày công bố danh sách học bổng khuyến khích học tập của một kỳ cụ thể."
+  ],
+  "tep": "Qd317.md",
+  "vi_tri": "Điều 1–3; tieu-chuan-hoc-bong.txt, mục II",
+  "trich_nguyen_van": [],
+  "ontology": "khong",
+  "hanh_vi_dung": "noi_khong_co_thong_tin",
+  "ghi_chu_codex": "Đã kiểm tra mức học bổng, tiêu chuẩn và điều kiện xét; các tệp không nêu lịch công bố danh sách của từng kỳ.",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q077",
+  "sinh_boi": "gpt-5.6-luna#33",
+  "chu_de": "C",
+  "cau_hoi": "Bạn biết nấu món gì ngon không?",
+  "khong_dau": false,
+  "loai": "ngoai_hoc_vu",
+  "y_chinh": [
+   "Ngoài phạm vi học vụ"
+  ],
+  "tep": null,
+  "vi_tri": null,
+  "trich_nguyen_van": [],
+  "ontology": null,
+  "hanh_vi_dung": "tu_choi_ngoai_pham_vi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ },
+ {
+  "id": "Q078",
+  "sinh_boi": "gpt-5.6-luna#34",
+  "chu_de": "C",
+  "cau_hoi": "Cho em xin một playlist nhạc để học bài với.",
+  "khong_dau": false,
+  "loai": "ngoai_hoc_vu",
+  "y_chinh": [
+   "Ngoài phạm vi học vụ"
+  ],
+  "tep": null,
+  "vi_tri": null,
+  "trich_nguyen_van": [],
+  "ontology": null,
+  "hanh_vi_dung": "tu_choi_ngoai_pham_vi",
+  "ghi_chu_codex": "",
+  "bien_tap": ""
+ }
+]
