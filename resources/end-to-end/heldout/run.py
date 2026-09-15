@@ -1,13 +1,14 @@
 """Hỏi chatbot toàn bộ bộ đề giữ kín, lưu câu trả lời và dữ liệu công cụ của từng câu.
 
 Chatbot được dựng đúng như máy chủ phục vụ: cùng lời hướng dẫn, cùng mô hình ngôn ngữ, cùng bộ máy tìm
-kiếm trả 3 mục mỗi lần tra. Chỗ khác duy nhất là công cụ tra cứu được bọc để ghi lại từ khoá, mục trả
+kiếm trả 5 mục mỗi lần tra. Chỗ khác duy nhất là công cụ tra cứu được bọc để ghi lại từ khoá, mục trả
 về, thời gian và nguyên văn dữ liệu của từng lần gọi. Script không chấm: câu trả lời được chấm riêng,
 so với đáp án gốc trong ``questions.json``.
 
     set -a; . ./.env; set +a
     uv run python resources/end-to-end/heldout/run.py --luot 1            # ghi results-1.json
     CHAY_BU=1 uv run python resources/end-to-end/heldout/run.py --luot 1  # chỉ hỏi lại câu bị lỗi
+    uv run python resources/end-to-end/heldout/run.py --luot 1 --bo-de <thư mục>  # bộ đề khác
 """
 
 from __future__ import annotations
@@ -31,8 +32,6 @@ from ontchatbot.search import SearchEngine, TriGFileSource
 from ontchatbot.settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
 
 HERE = Path(__file__).parent
-CAU_HOI = json.loads((HERE / "questions.json").read_text(encoding="utf-8"))
-THONG_TIN = HERE / "run-info.json"
 TOP_K = 5
 #: Số lần hỏi một câu khi khoá API bị giới hạn tốc độ.
 SO_LAN_THU = 6
@@ -114,7 +113,12 @@ async def hoi(agent: AgentLoop, cong_cu: CongCuCoVet, cau: dict) -> dict:
 async def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--luot", type=int, required=True, help="số thứ tự lượt chạy")
-    ket_qua = HERE / f"results-{parser.parse_args().luot}.json"
+    parser.add_argument("--bo-de", type=Path, default=HERE,
+                        help="thư mục chứa questions.json; kết quả và run-info.json ghi vào cùng thư mục")
+    args = parser.parse_args()
+    cau_hoi = json.loads((args.bo_de / "questions.json").read_text(encoding="utf-8"))
+    ket_qua = args.bo_de / f"results-{args.luot}.json"
+    thong_tin_tep = args.bo_de / "run-info.json"
     luot = ket_qua.stem.removeprefix("results-")
 
     model = os.environ.get("ONTCHATBOT_LLM_MODEL")
@@ -134,10 +138,10 @@ async def main() -> None:
 
     phien_ban = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
                                cwd=HERE).stdout.strip()
-    thong_tin = json.loads(THONG_TIN.read_text(encoding="utf-8")) if THONG_TIN.is_file() else {}
+    thong_tin = json.loads(thong_tin_tep.read_text(encoding="utf-8")) if thong_tin_tep.is_file() else {}
     thong_tin[luot] = {"mo_hinh": model, "ngay": date.today().isoformat(), "commit": phien_ban,
                        "top_k": TOP_K, "so_buoc_toi_da": MAX_MODEL_STEPS}
-    THONG_TIN.write_text(json.dumps(thong_tin, ensure_ascii=False, indent=1), encoding="utf-8")
+    thong_tin_tep.write_text(json.dumps(thong_tin, ensure_ascii=False, indent=1), encoding="utf-8")
 
     ban_ghi: list[dict] = []
     bat_dau = time.perf_counter()
@@ -147,7 +151,7 @@ async def main() -> None:
         timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
     ) as http:
         agent = AgentLoop(LightningClient(http, model=model), cong_cu, instructions=co_san, max_steps=MAX_MODEL_STEPS)
-        for cau in CAU_HOI:
+        for cau in cau_hoi:
             if cau["id"] in cu:
                 ban_ghi.append(cu[cau["id"]])
                 continue
