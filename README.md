@@ -81,7 +81,7 @@ văn bản chính thức → ontology gắn nguồn từng câu → công cụ t
 | API server | nhận câu hỏi, xếp hàng các lượt, chạy agent, đẩy sự kiện SSE | không tự viết câu trả lời |
 | LLM | quyết định có tra không và tra bằng từ khoá nào; viết câu trả lời từ kết quả tra | không phải nơi lưu quy định |
 | Công cụ tra cứu | giới hạn danh sách từ khoá, gọi search engine, viết kết quả thành JSON | không chọn câu trả lời |
-| Search engine | chấm điểm, chọn 3 mục, đọc dữ kiện của mục theo nguồn | không hiểu nghĩa câu hỏi |
+| Search engine | chấm điểm, chọn 5 mục, đọc dữ kiện của mục theo nguồn | không hiểu nghĩa câu hỏi |
 | Ontology và lược đồ | lưu dữ kiện cùng nguồn của từng câu; lược đồ khai báo mỗi loại mục có những ô nào | không tự trả lời |
 | Trang quản trị | thêm, sửa, xoá mục; xác thực dữ liệu theo lược đồ trước khi ghi | không ghi dữ liệu sai lược đồ |
 
@@ -108,7 +108,7 @@ Ví dụ với câu hỏi **"em muốn xin nghỉ học"**. Số bước khớp 
 | 3 | LLM → API | yêu cầu gọi công cụ với 3 từ khoá: `nghỉ học tạm thời`, `bảo lưu kết quả học tập`, `xin nghỉ học` |
 | 4 | API → công cụ | chạy công cụ; giao diện nhận sự kiện `lookup_started` |
 | 5 | Công cụ → search engine | danh sách từ khoá |
-| 6 | Search engine → công cụ | 3 mục điểm cao nhất, mỗi mục kèm dữ kiện gom theo nguồn |
+| 6 | Search engine → công cụ | 5 mục điểm cao nhất, mỗi mục kèm dữ kiện gom theo nguồn |
 | 7 | Công cụ → API | kết quả dạng JSON; giao diện nhận sự kiện `lookup_finished` |
 | 8 | API → LLM | hội thoại cùng kết quả công cụ |
 | 9 | LLM → API | câu trả lời, sinh từng đoạn, chỉ dựa trên kết quả công cụ |
@@ -387,7 +387,7 @@ Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính th�
 ## 6. Thuật toán tìm kiếm trên ontology
 
 - **Đầu vào:** danh sách từ khoá do LLM viết.
-- **Đầu ra:** 3 mục điểm cao nhất, mỗi mục kèm toàn bộ dữ kiện gom theo nguồn.
+- **Đầu ra:** 5 mục điểm cao nhất, mỗi mục kèm toàn bộ dữ kiện gom theo nguồn.
 
 | Bước | Việc | Thời điểm chạy |
 |---:|---|---|
@@ -395,8 +395,8 @@ Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính th�
 | 2 | Tách dòng chỉ mục và từ khoá thành token (6.3) | dòng: khi nạp; từ khoá: mỗi lần tìm |
 | 3 | Chấm điểm từng dòng với từng từ khoá bằng BM25 (6.4) | mỗi lần tìm |
 | 4 | Cộng điểm dòng thành điểm mục (6.5) | mỗi lần tìm |
-| 5 | Chọn 3 mục điểm cao nhất (6.6) | mỗi lần tìm |
-| 6 | Đọc hồ sơ của 3 mục (6.7) | mỗi lần tìm |
+| 5 | Chọn 5 mục điểm cao nhất (6.6) | mỗi lần tìm |
+| 6 | Đọc hồ sơ của 5 mục (6.7) | mỗi lần tìm |
 
 ### 6.1 Mục — đối tượng được tìm
 
@@ -546,14 +546,15 @@ Kết quả của Hình 7:
 - Mục 2 và 3: không dòng nào khớp "bảo lưu kết quả học tập" nên nhận 0 ở cột này; đây là
   nguyên nhân chính của khoảng cách với mục 1.
 
-### 6.6 Chọn 3 mục điểm cao nhất
+### 6.6 Chọn 5 mục điểm cao nhất
 
-- Sắp các mục theo điểm giảm dần, trả 3 mục đầu.
+- Sắp các mục theo điểm giảm dần, trả 5 mục đầu.
 - Không đặt ngưỡng điểm tối thiểu: có ít nhất một token trùng là có kết quả.
 
 | Lựa chọn | Lý do |
 |---|---|
-| Trả 3 mục thay vì 1 | LLM thấy cả ứng viên yếu hơn; cả ba lạc đề thì LLM có căn cứ để từ chối |
+| Trả nhiều mục thay vì 1 | LLM thấy cả ứng viên yếu hơn; mọi mục đều lạc đề thì LLM có căn cứ để từ chối |
+| 5 mục thay vì 3 | một thủ tục, biểu mẫu của nó và mục tải biểu mẫu có tên gần giống nhau nên thường chiếm liền 3 vị trí đầu; câu hỏi có hai chủ đề cần chỗ cho chủ đề thứ hai. Dữ liệu gửi LLM tăng khoảng 1,4 lần |
 | Không đặt ngưỡng | điểm BM25 phụ thuộc độ hiếm của token, nên mỗi truy vấn có thang điểm khác; một ngưỡng cố định sẽ cắt sai ở một số truy vấn |
 
 Việc loại mục không đúng ý hỏi thuộc về LLM. Trường `matched` (mục 4) liệt kê các dòng đã khớp
@@ -577,7 +578,7 @@ Với mỗi mục được chọn:
 | Thao tác | Thời gian |
 |---|---|
 | Nạp tệp TriG và dựng chỉ mục | khoảng 45 ms |
-| Một lần tìm, kể cả đọc hồ sơ 3 mục | trung vị 0,41 ms · p95 0,68 ms |
+| Một lần tìm, kể cả đọc hồ sơ 5 mục | trung vị 0,55 ms · p95 0,85 ms |
 
 - `p95`: ngưỡng mà 95% lần chạy không vượt quá.
 - Đo trên một máy tính cá nhân, với các từ khoá của bộ kiểm tìm kiếm (mục 8.1).
@@ -779,7 +780,7 @@ Kết quả **không** chứng minh hệ thống:
 | Độ phủ dữ liệu | nội dung phủ một phần phạm vi ở mục 1.3; câu hỏi vào phần chưa biểu diễn nhận "không có thông tin" dù quy định có tồn tại |
 | Tìm theo từ vựng | engine chỉ khớp chữ; cách gọi không có trong tên hay tên gọi khác của mục sẽ trượt; chất lượng phụ thuộc từ khoá LLM viết |
 | Không tra theo điều khoản | tầng nguồn không được tìm kiếm, nên câu hỏi dạng "khoản 2 Điều 11" không lấy được nội dung tương ứng (nhóm B) |
-| Không có ngưỡng | 3 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục không đúng ý hỏi và có thể dùng nhầm mục gần đúng |
+| Không có ngưỡng | 5 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục không đúng ý hỏi và có thể dùng nhầm mục gần đúng |
 | Có nguồn chưa đủ | LLM vẫn có thể ghép hai dữ kiện đúng thành một quan hệ mà dữ liệu không nói |
 | Biên soạn dữ liệu | đối chiếu thủ công, chưa có hai người rà độc lập; trang web có thể đổi sau khi thu thập; một số thông báo có hạn theo học kỳ |
 | Đánh giá | 85 câu, một lượt chạy; mô hình chấm trùng mô hình của chatbot; một câu nhóm A thực tế thiếu chi tiết được hỏi trong dữ liệu |

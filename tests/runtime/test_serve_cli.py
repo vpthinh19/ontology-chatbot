@@ -84,7 +84,7 @@ def test_defaults_are_bounded_and_point_at_the_packaged_ontology(monkeypatch) ->
 
     args = _parse_args(_flags())
 
-    assert (args.search_workers, args.top_k) == (4, 3)
+    assert (args.search_workers, args.top_k) == (4, 5)
     assert (args.turn_slots, args.turn_queue) == (16, 64)
     assert Path(args.ontology) == ONTOLOGY_PATH
 
@@ -97,14 +97,14 @@ def test_cloud_run_port_comes_from_the_environment(monkeypatch) -> None:
 
 def test_limits_and_ontology_path_can_come_from_the_environment(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_SEARCH_WORKERS", "2")
-    monkeypatch.setenv("ONTCHATBOT_SEARCH_TOP_K", "5")
+    monkeypatch.setenv("ONTCHATBOT_SEARCH_TOP_K", "3")
     monkeypatch.setenv("ONTCHATBOT_TURN_SLOTS", "4")
     monkeypatch.setenv("ONTCHATBOT_TURN_QUEUE", "6")
     monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_PATH", "/data/ontology.trig")
 
     args = _parse_args(_flags())
 
-    assert (args.search_workers, args.top_k) == (2, 5)
+    assert (args.search_workers, args.top_k) == (2, 3)
     assert (args.turn_slots, args.turn_queue) == (4, 6)
     assert Path(args.ontology) == Path("/data/ontology.trig")
 

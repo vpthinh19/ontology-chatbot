@@ -68,7 +68,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--top-k",
         type=_positive_int,
-        default=os.environ.get("ONTCHATBOT_SEARCH_TOP_K", "3"),
+        default=os.environ.get("ONTCHATBOT_SEARCH_TOP_K", "5"),
         help="số mục trả về cho mỗi lần tra; hoặc đặt ONTCHATBOT_SEARCH_TOP_K",
     )
     return parser.parse_args(argv)

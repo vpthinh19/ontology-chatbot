@@ -37,7 +37,7 @@ def _runtime_args(args: argparse.Namespace) -> argparse.Namespace:
         base_url=args.base_url
         or os.environ.get("ONTCHATBOT_LLM_BASE_URL", DEFAULT_BASE_URL),
         search_workers=2,
-        top_k=3,
+        top_k=5,
     )
 
 

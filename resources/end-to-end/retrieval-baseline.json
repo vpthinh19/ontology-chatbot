@@ -1,5 +1,5 @@
 {
- "ghi_chu": "Ghi lại mốc là hành động có chủ ý, phải nêu lý do. 2026-09-12 (1): engine chuyển sang ontology.trig, 44/51 → 42/51; mất question-000095 do bỏ tách từ ghép, mất question-000701 do 16 thuộc tính văn bản gộp về :noiDung. 2026-09-12 (2): 42/51 → 45/51 sau khi sửa hai chỗ trong engine — điểm của một thực thể là TỔNG điểm tốt nhất trên từng từ khoá thay vì điểm cao nhất, và nguồn thô trở lại tra cứu được. Mất question-002690 ('đơn xin bảo lưu học phần'): mô hình thêm hai từ khoá đoán sai nên luật cộng đẩy đáp án đúng xuống hạng 5. 2026-09-12 (3): 45/51 → 46/49. Hai câu rời phép đo vì đáp án của chúng là một văn bản nguồn, mà nguồn thì không tra cứu được. Ba thay đổi dữ liệu: hai cổng thông tin trực tuyến bị xếp nhầm thành nguồn nay là thực thể tri thức; 18 chứng chỉ có tên gọi phụ theo ngôn ngữ; sửa IRI rỗng của ТРКИ. 2026-09-12 (4): 46/49 → 48/49 sau khi sửa hai nhãn đáp án sai. Cả hai nhãn cũ trỏ vào thực thể chỉ có mỗi cái tên, không mang nội dung nào nên không trả lời được câu hỏi; nhãn cũ giữ lại trong trường nhan_dung_cu để đối chiếu. Câu duy nhất còn trượt là ca mô hình tự thêm hai từ khoá đoán sai.",
+ "ghi_chu": "Ghi lại mốc là hành động có chủ ý, phải nêu lý do. 2026-09-12 (1): engine chuyển sang ontology.trig, 44/51 → 42/51; mất question-000095 do bỏ tách từ ghép, mất question-000701 do 16 thuộc tính văn bản gộp về :noiDung. 2026-09-12 (2): 42/51 → 45/51 sau khi sửa hai chỗ trong engine — điểm của một thực thể là TỔNG điểm tốt nhất trên từng từ khoá thay vì điểm cao nhất, và nguồn thô trở lại tra cứu được. Mất question-002690 ('đơn xin bảo lưu học phần'): mô hình thêm hai từ khoá đoán sai nên luật cộng đẩy đáp án đúng xuống hạng 5. 2026-09-12 (3): 45/51 → 46/49. Hai câu rời phép đo vì đáp án của chúng là một văn bản nguồn, mà nguồn thì không tra cứu được. Ba thay đổi dữ liệu: hai cổng thông tin trực tuyến bị xếp nhầm thành nguồn nay là thực thể tri thức; 18 chứng chỉ có tên gọi phụ theo ngôn ngữ; sửa IRI rỗng của ТРКИ. 2026-09-12 (4): 46/49 → 48/49 sau khi sửa hai nhãn đáp án sai. Cả hai nhãn cũ trỏ vào thực thể chỉ có mỗi cái tên, không mang nội dung nào nên không trả lời được câu hỏi; nhãn cũ giữ lại trong trường nhan_dung_cu để đối chiếu. Câu duy nhất còn trượt là ca mô hình tự thêm hai từ khoá đoán sai. 2026-09-15: engine trả 5 mục thay vì 3 (một thủ tục, biểu mẫu của nó và mục tải biểu mẫu thường chiếm liền 3 vị trí đầu, câu hỏi hai chủ đề mất chủ đề thứ hai); 48/49 → 49/49, câu 'đơn xin bảo lưu học phần' đứng hạng 5.",
  "tong": 49,
  "dat": [
   "question-000095",
@@ -29,6 +29,7 @@
   "question-002014",
   "question-002677",
   "question-002688",
+  "question-002690",
   "question-002693",
   "question-002694",
   "question-002926",

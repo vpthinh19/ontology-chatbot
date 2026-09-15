@@ -72,7 +72,7 @@ class SearchEngine:
         index: SearchIndex,
         reader: ProfileReader | None = None,
         *,
-        top_k: int = 3,
+        top_k: int = 5,
         entries_per_keyword: int = 20,
     ) -> None:
         self.ontology = ontology
@@ -88,7 +88,7 @@ class SearchEngine:
         *,
         policy: IndexPolicy | None = None,
         analyzer: TextAnalyzer | None = None,
-        top_k: int = 3,
+        top_k: int = 5,
     ) -> SearchEngine:
         """Nạp ontology rồi dựng chỉ mục ngay trong bộ nhớ.
 

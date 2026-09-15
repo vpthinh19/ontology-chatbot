@@ -33,7 +33,7 @@ from ontchatbot.settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
 HERE = Path(__file__).parent
 CAU_HOI = json.loads((HERE / "questions.json").read_text(encoding="utf-8"))
 THONG_TIN = HERE / "run-info.json"
-TOP_K = 3
+TOP_K = 5
 #: Số lần hỏi một câu khi khoá API bị giới hạn tốc độ.
 SO_LAN_THU = 6
 #: Nghỉ giữa hai câu, để lượt đo không tự đẩy khoá API vào giới hạn tốc độ.
