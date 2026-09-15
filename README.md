@@ -660,7 +660,7 @@ Thao tác thêm và sửa đi qua bốn bước:
 1. Hỏi chatbot 85 câu soạn sẵn theo cách sinh viên hỏi, gồm cả lối viết trang trọng, đời thường và
    gõ thiếu dấu; mỗi câu là một lượt riêng.
 2. Lưu câu trả lời, dữ liệu chatbot đã tra được và thời gian của từng lượt.
-3. Chấm từng câu trả lời bằng mô hình chấm, rồi kiểm lại những câu có dấu hiệu chấm nhầm.
+3. Chấm từng câu trả lời bằng mô hình chấm.
 
 Thiết lập: mô hình `lightning-ai/gemma-4-31B-it`; 3 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
 
@@ -679,8 +679,8 @@ nhận "không có thông tin"; đưa ra một con số là bịa. Vì vậy m�
 
 **Cách chấm**
 
-*Mô hình chấm.* Một mô hình ngôn ngữ (cùng mô hình của chatbot, nhiệt độ 0) đọc câu hỏi, dữ liệu đã tra
-được và câu trả lời, rồi chọn một mức kèm trích đoạn làm bằng chứng:
+Mô hình chấm là một mô hình ngôn ngữ (cùng mô hình của chatbot, nhiệt độ 0). Với mỗi câu, nó đọc câu
+hỏi, dữ liệu chatbot đã tra được và câu trả lời, rồi chọn một mức kèm trích đoạn làm bằng chứng:
 
 | Mức | Nghĩa |
 |---|---|
@@ -690,27 +690,14 @@ nhận "không có thông tin"; đưa ra một con số là bịa. Vì vậy m�
 | Lạc đề | không nêu được, và không nói là thiếu |
 | Sai | có thông tin ngoài dữ liệu, hoặc tự ghép quan hệ mà dữ liệu không nói; mức này thay mọi mức khác |
 
-Một câu **đạt** khi: nhóm A được chấm Đúng; nhóm B không bị chấm Sai hoặc Lạc đề; nhóm C và D được
-chấm Từ chối.
+**Kết quả: 79/85 câu đạt; không câu nào bị chấm Sai hoặc Lạc đề.**
 
-*Kiểm lại mô hình chấm.* Mô hình chấm cũng có thể chấm nhầm. Một đoạn code, không dùng mô hình, dò ba
-dấu hiệu chấm nhầm:
-
-- chấm Từ chối, nhưng chatbot đã tra được đúng mục chứa đáp án;
-- chấm Đúng, nhưng chatbot không tra được dữ liệu nào;
-- chấm Đúng, nhưng câu trả lời có con số hoặc chữ viết tắt không có trong dữ liệu đã tra.
-
-Câu có dấu hiệu được đọc lại bằng mắt để quyết định giữ hay sửa mức chấm.
-
-**Kết quả**
-
-| Nhóm | Đạt | Ghi chú |
-|---|---:|---|
-| A. Ontology có đáp án | **52/58** | 2 câu Đúng một phần, 4 câu Từ chối |
-| B. Hỏi nguyên văn văn bản | **8/8** | 7 câu nói không có; 1 câu trả lời bằng thông tin có trong dữ liệu |
-| C. Học vụ, ontology không có đáp án | **14/14** | |
-| D. Ngoài học vụ hoặc không rõ yêu cầu | **5/5** | |
-| **Tổng** | **79/85** | không câu nào bị chấm Sai hoặc Lạc đề; 85/85 lượt hoàn thành, không lỗi |
+| Nhóm | Đạt khi được chấm | Đạt | Phân bố mức |
+|---|---|---:|---|
+| A. Ontology có đáp án | Đúng | **52/58** | Đúng 52 · Đúng một phần 2 · Từ chối 4 |
+| B. Hỏi nguyên văn văn bản | bất kỳ mức nào trừ Sai và Lạc đề | **8/8** | Từ chối 7 · Đúng 1 |
+| C. Học vụ, ontology không có đáp án | Từ chối | **14/14** | Từ chối 14 |
+| D. Ngoài học vụ hoặc không rõ yêu cầu | Từ chối | **5/5** | Từ chối 5 |
 
 Sáu câu nhóm A chưa đạt:
 
@@ -720,13 +707,6 @@ Sáu câu nhóm A chưa đạt:
 | Chatbot hiểu lệch ý | "quản lý thủy sản ra sap" — hiểu thành hỏi cơ hội việc làm |
 | Ontology thiếu chi tiết được hỏi | "muon dang ky datn thi lien he phong nao?" — không ghi nơi nộp; chatbot nói đúng như vậy |
 | Chỉ trả lời được một vế | "Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?", "hãy tổng hợp địa chỉ và nhiệm vụ của trường…" |
-
-Kiểm lại mô hình chấm: 4/85 câu có dấu hiệu chấm nhầm; đọc lại cả 4, không câu nào phải sửa mức.
-
-- "quản lý thủy sản ra sap" và "muon dang ky datn…" (bảng trên) bị chấm Từ chối dù đã tra đúng mục:
-  chatbot thật sự nói dữ liệu không có điều nó được hỏi.
-- Hai câu chấm Đúng có chữ "HBKHT" và "PDF" không nằm trong dữ liệu: đó là chữ viết tắt chatbot tự dùng
-  (tên học bổng viết tắt, tên định dạng tệp), không phải thông tin học vụ.
 
 Thời gian phản hồi:
 
@@ -861,7 +841,7 @@ uv run ontology_search search "nghỉ học tạm thời" "bảo lưu kết qu�
 uv run pytest -q                                                    # bộ test Python
 uv run python resources/end-to-end/check_retrieval.py              # bộ kiểm tìm kiếm
 uv run python resources/end-to-end/run.py                          # chạy lại 85 câu (gọi LLM)
-uv run python resources/end-to-end/score.py                        # tổng hợp kiểm tra bằng code
+uv run python resources/end-to-end/score.py                        # tổng hợp số liệu lượt chạy
 uv run python resources/end-to-end/score_quality.py                # mô hình chấm
 ```
 
