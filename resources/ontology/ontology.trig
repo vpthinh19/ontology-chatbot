@@ -11,7 +11,7 @@
 	skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi .
 :BangChuanTiengAnhChuongTrinhDacBiet a :Bang ;
 	rdfs:label "bảng chuẩn tiếng Anh chương trình đặc biệt"@vi ;
-	skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi , "yêu cầu tiếng Anh chương trình đặc biệt"@vi .
+	skos:altLabel "chuẩn đầu ra tiếng Anh theo từng chương trình đào tạo đặc biệt"@vi , "chứng chỉ ngoại ngữ quốc tế chương trình đặc biệt"@vi , "yêu cầu TOEIC IELTS chương trình đặc biệt"@vi , "yêu cầu tiếng Anh chương trình đặc biệt"@vi .
 :BangDanhGiaHocPhanNgoaiNgu :loaiBang :BangTrongTaiLieu ;
 	a :Bang ;
 	rdfs:label "bảng đánh giá học phần ngoại ngữ"@vi ;
@@ -67,7 +67,8 @@
 :BoMonVatLy a :ChuThe ;
 	rdfs:label "Bộ môn Vật lý"@vi .
 :BuocThoiHocDoCanhBaoLienTiep a :QuyTac ;
-	rdfs:label "Buộc thôi học do cảnh báo liên tiếp"@vi .
+	rdfs:label "Buộc thôi học do cảnh báo liên tiếp"@vi ;
+	skos:altLabel "bị cảnh báo học tập nhiều lần"@vi , "cảnh báo học tập liên tiếp"@vi .
 :BuocThoiHocDoQuaThoiGianDaoTao a :QuyTac ;
 	rdfs:label "Buộc thôi học do quá thời gian đào tạo"@vi .
 :BuocThucHien rdfs:label "Bước thực hiện"@vi .
@@ -332,6 +333,10 @@
 	a :KhaiNiem ;
 	rdfs:label "Điểm rèn luyện"@vi ;
 	skos:altLabel "kết quả rèn luyện"@vi , "ĐRL"@vi , "điểm RL"@vi .
+:DiemTrungBinhChung :loaiKhaiNiem :KhaiNiemHocVu ;
+	a :KhaiNiem ;
+	rdfs:label "Điểm trung bình chung"@vi ;
+	skos:altLabel "cách tính điểm trung bình"@vi , "ĐTB"@vi , "điểm trung bình học kỳ"@vi , "điểm trung bình năm học"@vi .
 :DiemX a :DanhMuc ;
 	rdfs:label "Điểm X"@vi .
 :Dieu rdfs:label "Điều"@vi .
@@ -366,9 +371,11 @@
 	rdfs:label "Giới hạn xếp loại rèn luyện khi bị kỷ luật"@vi ;
 	skos:altLabel "bị kỷ luật thì điểm rèn luyện"@vi .
 :HaHangTotNghiepDoBiKyLuat a :QuyTac ;
-	rdfs:label "Hạ hạng tốt nghiệp do bị kỷ luật"@vi .
+	rdfs:label "Hạ hạng tốt nghiệp do bị kỷ luật"@vi ;
+	skos:altLabel "hạ xếp loại tốt nghiệp do kỷ luật"@vi .
 :HaHangTotNghiepDoHocLaiQuaNhieu a :QuyTac ;
-	rdfs:label "Hạ hạng tốt nghiệp do học lại quá nhiều"@vi .
+	rdfs:label "Hạ hạng tốt nghiệp do học lại quá nhiều"@vi ;
+	skos:altLabel "giảm hạng tốt nghiệp do học lại nhiều"@vi , "hạ xếp loại tốt nghiệp do học lại"@vi .
 :HauQuaCuaViecBiCamThiHoacVangThi a :QuyTac ;
 	rdfs:label "Hậu quả của việc bị cấm thi hoặc vắng thi"@vi .
 :HeQuaVeSau rdfs:label "Hệ quả về sau"@vi .
@@ -1608,6 +1615,9 @@
 :TDNguon1052DiemCKhoan3Dieu28 :thuocNguon :Nguon1052 ;
 	:toaDo "điểm c khoản 3 Điều 28"@vi ;
 	a :DiaChiTrichDan .
+:TDNguon1052DiemEKhoan2Dieu8 :thuocNguon :Nguon1052 ;
+	:toaDo "điểm e khoản 2 Điều 8"@vi ;
+	a :DiaChiTrichDan .
 :TDNguon1052GhiChuBang1PhuLuc2Muc11 :thuocNguon :Nguon1052 ;
 	:toaDo "ghi chú bảng 1 Phụ lục 2 mục 1.1"@vi ;
 	a :DiaChiTrichDan .
@@ -1622,6 +1632,12 @@
 	a :DiaChiTrichDan .
 :TDNguon1052GhiChuPhuLuc3 :thuocNguon :Nguon1052 ;
 	:toaDo "ghi chú Phụ lục 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1052Khoan1Dieu10 :thuocNguon :Nguon1052 ;
+	:toaDo "khoản 1 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1052Khoan1Dieu18 :thuocNguon :Nguon1052 ;
+	:toaDo "khoản 1 Điều 18"@vi ;
 	a :DiaChiTrichDan .
 :TDNguon1052Khoan1Dieu1 :thuocNguon :Nguon1052 ;
 	:toaDo "khoản 1 Điều 1"@vi ;
@@ -1655,6 +1671,12 @@
 	a :DiaChiTrichDan .
 :TDNguon1052Khoan3Dieu17 :thuocNguon :Nguon1052 ;
 	:toaDo "khoản 3 Điều 17"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1052Khoan4Dieu28 :thuocNguon :Nguon1052 ;
+	:toaDo "khoản 4 Điều 28"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon1052Khoan6Dieu22 :thuocNguon :Nguon1052 ;
+	:toaDo "khoản 6 Điều 22"@vi ;
 	a :DiaChiTrichDan .
 :TDNguon1052PhanMoDauDieu28 :thuocNguon :Nguon1052 ;
 	:toaDo "phần mở đầu Điều 28"@vi ;
@@ -1740,6 +1762,12 @@
 :TDNguon1619PhanCanCu :thuocNguon :Nguon1619 ;
 	:toaDo "phần căn cứ"@vi ;
 	a :DiaChiTrichDan .
+:TDNguon626DiemCKhoan3Dieu19 :thuocNguon :Nguon626 ;
+	:toaDo "điểm c khoản 3 Điều 19"@vi ;
+	a :DiaChiTrichDan .
+:TDNguon626DiemDKhoan3Dieu19 :thuocNguon :Nguon626 ;
+	:toaDo "điểm d khoản 3 Điều 19"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonCongThongTinSinhVienThongBaoDongTienBhytBhttSinhVienNamHoc20262027 :thuocNguon :NguonCongThongTinSinhVien ;
 	:toaDo "thông báo Đóng tiền BHYT, BHTT sinh viên năm học 2026-2027"@vi ;
 	a :DiaChiTrichDan .
@@ -1760,6 +1788,9 @@
 	a :DiaChiTrichDan .
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 :thuocNguon :NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank ;
 	:toaDo "bước 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankPhanMoDau :thuocNguon :NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank ;
+	:toaDo "phần mở đầu"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "bước 1"@vi ;
@@ -1931,6 +1962,12 @@
 	a :DiaChiTrichDan .
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIiChuongTrinhChuanDongTt53 :thuocNguon :NguonThongBaoDiemChuanTrungTuyen2026 ;
 	:toaDo "mục II Chương trình chuẩn, dòng TT 53"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
+	:toaDo "mục I.1.2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucIi3PhanLoaiHocBong :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
+	:toaDo "mục II.3 Phân loại học bổng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 18"@vi ;
@@ -2431,7 +2468,7 @@
 	skos:altLabel "BHTT"@vi , "BHYT"@vi , "bảo hiểm thân thể"@vi , "bảo hiểm y tế sinh viên"@vi , "đóng bảo hiểm"@vi .
 :ThuTucHocLienThong a :ThuTucHocVu ;
 	rdfs:label "Thủ tục học liên thông"@vi ;
-	skos:altLabel "học liên thông"@vi , "học lên đại học"@vi , "liên thông lên đại học"@vi , "liên thông"@vi .
+	skos:altLabel "học liên thông"@vi , "học lên đại học"@vi , "hồ sơ liên thông"@vi , "liên thông lên đại học"@vi , "liên thông văn bằng 2"@vi , "liên thông"@vi .
 :ThuTucHocVu rdfs:label "Thủ tục học vụ"@vi .
 :ThuTucInTheSinhVien a :ThuTucHocVu ;
 	rdfs:label "Thủ tục in thẻ sinh viên"@vi ;
@@ -2456,7 +2493,7 @@
 	skos:altLabel "cấp học bổng"@vi , "hbkkht"@vi , "học bổng kkht"@vi , "nhận tiền học bổng"@vi , "tiêu chí học bổng"@vi , "xét cấp học bổng khuyến khích học tập"@vi , "xét học bổng"@vi .
 :ThuTucXetVaCongNhanTotNghiep a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xét và công nhận tốt nghiệp"@vi ;
-	skos:altLabel "công nhận tốt nghiệp"@vi , "ra trường"@vi , "xét tốt nghiệp"@vi .
+	skos:altLabel "công nhận tốt nghiệp"@vi , "hoàn thiện điều kiện tốt nghiệp sau khi hết thời gian học tối đa"@vi , "ra trường"@vi , "xét tốt nghiệp"@vi .
 :ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học"@vi ;
 	skos:altLabel "chuyển hình thức đào tạo khi bị buộc thôi học"@vi , "chuyển sang vừa làm vừa học"@vi , "xin chuyển chương trình đào tạo"@vi .
@@ -2533,6 +2570,9 @@
 	rdfs:label "Tỷ lệ tối đa đào tạo trực tuyến"@vi .
 :VanBanChuongTrinhDaoTao rdfs:label "Văn bản chương trình đào tạo"@vi .
 :VanBanHuongDan rdfs:label "Văn bản hướng dẫn"@vi .
+:XuLyLopHocPhanKhongDuSoLuongSinhVien a :QuyTac ;
+	rdfs:label "Xử lý lớp học phần không đủ số lượng sinh viên"@vi ;
+	skos:altLabel "chia nhóm lớp học phần thực hành"@vi , "lớp học phần bị xóa"@vi , "lớp học phần không mở"@vi , "lớp học phần không đủ sĩ số"@vi , "xóa lớp học phần"@vi .
 :apDungChoHinhThucDaoTao rdfs:label "áp dụng cho hình thức đào tạo"@vi .
 :apDungChoPhuongThucDong rdfs:label "áp dụng cho phương thức đóng"@vi .
 :apDungChoTrinhDo rdfs:label "áp dụng cho trình độ"@vi .
@@ -2733,6 +2773,8 @@
 		:doAiThucHien :SinhVien ;
 		:noiDung "Khi số lượng sinh viên đăng ký ít hơn số lượng tối thiểu theo quy định, với các trường hợp đặc thù hoặc có lý do chính đáng, nhóm sinh viên làm đơn xin mở lớp học phần (Mẫu số 01 - Phụ lục 4 kèm theo) để Hiệu trưởng xem xét và quyết định, thông qua Đơn vị quản lý đào tạo."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
+	:XuLyLopHocPhanKhongDuSoLuongSinhVien :loaiQuyTac :QuyTacHocVu ;
+		:noiDung "Trường hợp số lượng sinh viên đăng ký ít hơn số lượng tối thiểu theo quy định: đối với học phần bắt buộc, sinh viên phải học với khóa sau; đối với học phần tự chọn, sinh viên chọn lại học phần khác trong số học phần tự chọn đủ điều kiện mở lớp hoặc đăng ký học với khóa sau."@vi .
 }
 :TD1052_D09K02dA {
 	:ThuTucDangKyKhoiLuongHocTap :noiDung "Tìm hiểu chương trình đào tạo, kế hoạch giảng dạy trong học kỳ và kiểm tra lại kết quả học tập để lập kế hoạch học tập phù hợp."@vi .
@@ -3092,7 +3134,7 @@
 		:doAiThucHien :SinhVien .
 }
 :TD1052_D28K05 {
-	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai, và chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp chương trình thứ nhất."@vi .
+	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Thời gian học tối đa được phép học đối với sinh viên học cùng lúc hai chương trình là thời gian tối đa quy định cho chương trình thứ nhất được quy định tại khoản 4 Điều 2 của Quy chế này. Sinh viên chỉ được xét tốt nghiệp chương trình thứ hai khi đã đủ điều kiện tốt nghiệp ở chương trình thứ nhất và đăng ký muộn nhất 02 năm trước thời điểm xét tốt nghiệp chương trình thứ hai."@vi .
 }
 :TD1052_D29K01 {
 	:ThuTucHocLienThong :noiDung "Người đã tốt nghiệp trình độ trung cấp, trình độ cao đẳng được xét tuyển và học liên thông lên trình độ đại học. Người đã tốt nghiệp đại học được xét tuyển và học liên thông để nhận thêm một bằng tốt nghiệp đại học của một ngành đào tạo khác."@vi .
@@ -3273,13 +3315,16 @@
 		:noiDung "Hiệu trưởng trường xin chuyển đi quyết định đồng ý hoặc không đồng ý chuyển đi và Hiệu trưởng trường xin chuyển đến quyết định tiếp nhận hoặc không tiếp nhận sinh viên; công nhận và bảo lưu các học phần mà sinh viên chuyển đến được chuyển đổi tín chỉ và số học phần phải học bổ sung, trên cơ sở so sánh chương trình ở Trường sinh viên xin chuyển đi và Trường xin chuyển đến."@vi .
 }
 :TDNguon1052DiemBKhoan3Dieu28 {
-	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Khi có Quyết định chấp thuận học cùng lúc hai chương trình, được Nhà trường cung cấp một mã số sinh viên riêng, sinh viên tự nghiên cứu chương trình đào tạo của ngành thứ hai và bổ sung các học phần cần phải học vào kế hoạch học tập để đăng ký học phần bằng mã số sinh viên của chương trình thứ hai."@vi .
+	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Khi có Quyết định chấp thuận học cùng lúc hai chương trình, được Nhà trường cung cấp một mã số sinh viên riêng, sinh viên tự nghiên cứu chương trình đào tạo của ngành thứ hai và bổ sung các học phần cần phải học vào kế hoạch học tập để đăng ký học phần (Đơn vị quản lý đào tạo hỗ trợ đăng ký học phần khi cần thiết) bằng mã số sinh viên của chương trình thứ hai."@vi .
 }
 :TDNguon1052DiemBKhoan4Dieu27 {
 	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Sinh viên đăng ký học theo mẫu (Mẫu số 14 - Phụ lục 4 kèm theo) gửi về Đơn vị quản lý đào tạo."@vi .
 }
 :TDNguon1052DiemCKhoan3Dieu28 {
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Sinh viên học chương trình thứ hai được bảo lưu các học phần có nội dung và khối lượng kiến thức tương đương đã được học và tích lũy ở chương trình thứ nhất."@vi .
+}
+:TDNguon1052DiemEKhoan2Dieu8 {
+	:XuLyLopHocPhanKhongDuSoLuongSinhVien :noiDung "Đối với các lớp học phần thực hành, học phần lý thuyết kết hợp thực hành, Đơn vị quản lý đào tạo tổ chức chia nhóm lớp theo số lượng sinh viên đăng ký: nếu số sinh viên còn lại từ một nửa định mức tối thiểu của một lớp học phần thì Nhà trường mở thêm một lớp học phần mới; nếu số sinh viên còn lại ít hơn một nửa định mức tối thiểu thì Nhà trường bố trí sinh viên vào các lớp học phần khác đã được tổ chức trước đó."@vi .
 }
 :TDNguon1052GhiChuBang1PhuLuc2Muc11 {
 	:BangQuyDoiChungChiTiengAnhChuongTrinhChuan :noiDung "Việc quy đổi đối với mức điểm thấp hơn hoặc hình thức thi khác (nếu có) của các Chứng chỉ quốc tế sẽ do Khoa và đơn vị quản lý đào tạo xem xét quyết định và xây dựng bảng quy đổi điểm phù hợp."@vi .
@@ -3301,6 +3346,12 @@
 		:tenDayDuCuaChungChi "International Computer Driving Licence" .
 	:Mos :noiDung "MOS là bài thi đánh giá kỹ năng tin học văn phòng được sử dụng rộng rãi trên thế giới. Đây là chứng chỉ do Microsoft cấp nhằm công nhận mức độ hiểu biết và khả năng sử dụng của cá nhân đối với các ứng dụng văn phòng của Microsoft như: Word, Excel, Powerpoint, Access, Outlook."@vi ;
 		:tenDayDuCuaChungChi "Microsoft Office Specialist" .
+}
+:TDNguon1052Khoan1Dieu10 {
+	:XuLyLopHocPhanKhongDuSoLuongSinhVien :noiDung "Nhà trường xóa các lớp học phần có số lượng sinh viên đăng ký ít hơn quy định tại điểm b khoản 2 Điều 8; các trường hợp đặc biệt do Hiệu trưởng quyết định. Sinh viên đã đăng ký vào các lớp học phần bị xóa do không đủ điều kiện mở lớp được phép đăng ký thay thế bằng học phần khác trong nhóm tự chọn hoặc các học phần cùng mã được mở trong cùng học kỳ."@vi .
+}
+:TDNguon1052Khoan1Dieu18 {
+	:DiemTrungBinhChung :noiDung "Điểm trung bình chung theo học kỳ hoặc theo năm học được tính bằng tổng điểm của từng học phần nhân với số tín chỉ của học phần đó, chia cho tổng số tín chỉ các học phần (A = Σ aᵢ × nᵢ / Σ nᵢ), và được làm tròn đến 2 chữ số thập phân."@vi .
 }
 :TDNguon1052Khoan1Dieu1 {
 	:TrinhDoDaiHoc :loaiDanhMuc :TrinhDoDaoTao .
@@ -3335,6 +3386,12 @@
 }
 :TDNguon1052Khoan3Dieu17 {
 	:GiangVienGiangDayHocPhan :noiDung "Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do giảng viên giảng dạy học phần tổ chức."@vi .
+}
+:TDNguon1052Khoan4Dieu28 {
+	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Sinh viên học hai chương trình chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất. Nhà trường cử giảng viên theo dõi và hỗ trợ đối với sinh viên học cùng lúc hai chương trình."@vi .
+}
+:TDNguon1052Khoan6Dieu22 {
+	:ThuTucXetVaCongNhanTotNghiep :noiDung "Sinh viên đã hết thời gian học tập tối đa theo quy định nhưng chưa đủ điều kiện tốt nghiệp do chưa hoàn thành các học phần Giáo dục quốc phòng – An ninh hoặc Giáo dục thể chất hoặc chưa đạt chuẩn đầu ra về ngoại ngữ, công nghệ thông tin, trong thời hạn 03 năm tính từ khi thôi học được hoàn thiện các điều kiện còn thiếu và đề nghị xét công nhận tốt nghiệp."@vi .
 }
 :TDNguon1052PhanMoDauDieu28 {
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Sinh viên đều có quyền đăng ký học một chương trình đào tạo khác để lấy thêm văn bằng thứ hai trong quá trình học tập bằng hình thức tích lũy tín chỉ theo chương trình đào tạo thứ hai."@vi .
@@ -3426,6 +3483,12 @@
 :TDNguon1619PhanCanCu {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
+:TDNguon626DiemCKhoan3Dieu19 {
+	:ThuTucHocLienThong :noiDung "Hồ sơ dự tuyển đào tạo liên thông từ cao đẳng gồm phiếu tuyển sinh theo mẫu do Trường cung cấp; bản sao hoặc bản công chứng bảng điểm cao đẳng, bằng cao đẳng, bằng THPT hoặc giấy chứng nhận hoàn thành kiến thức THPT; bản photo căn cước công dân; 02 ảnh chân dung 2x3 cm."@vi .
+}
+:TDNguon626DiemDKhoan3Dieu19 {
+	:ThuTucHocLienThong :noiDung "Hồ sơ dự tuyển đào tạo liên thông từ đại học (văn bằng 2) gồm phiếu tuyển sinh theo mẫu do Trường cung cấp; bản sao hoặc bản công chứng bảng điểm đại học, bằng đại học; bản photo căn cước công dân; 02 ảnh chân dung 2x3 cm."@vi .
+}
 :TDNguonCongThongTinSinhVienThongBaoDongTienBhytBhttSinhVienNamHoc20262027 {
 	:ThuTucDongBaoHiemYTeBaoHiemThanThe :doAiThucHien :SinhVien ;
 		:noiDung "Sinh viên nghiêm chỉnh thực hiện việc đóng BHYT bắt buộc theo đúng thời gian quy định trong thông báo. Sinh viên có nhu cầu tham gia Bảo hiểm thân thể (tự nguyện) đóng tiền tại Phòng CTSV, mức phí 150.000đ/1 năm."@vi ;
@@ -3452,6 +3515,9 @@
 }
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankBuoc1 {
 	:CongThongTinSinhVien :noiDung "Sinh viên đăng nhập vào trang https://sinhvien.ntu.edu.vn bằng tài khoản mã sinh viên (không vào trang https://qldt.ntu.edu.vn) và chọn ô Học phí."@vi .
+}
+:TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankPhanMoDau {
+	:ThanhToanQuaCongVnpay :noiDung "Sinh viên có tài khoản ngân hàng Vietcombank hoặc tài khoản các ngân hàng được VNPay hỗ trợ đều có thể thanh toán; tài khoản ngân hàng cần được mở chức năng thanh toán trực tuyến."@vi .
 }
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
 	:ThuTucChuyenNganh :noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
@@ -3682,6 +3748,12 @@
 	:ChuyenNganhKhoaHocHangHai :thuocNganh :KhoaHocHangHai .
 	:ChuyenNganhQuanLyHangHaiVaLogistics :thuocNganh :KhoaHocHangHai .
 	:KhoaHocHangHai :maNganh "7840106" .
+}
+:TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 {
+	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất."@vi .
+}
+:TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucIi3PhanLoaiHocBong {
+	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng loại khá: điểm trung bình chung học tập đạt từ 2.50 đến 3.19 (thang điểm 4), điểm rèn luyện đạt loại khá trở lên. Học bổng loại giỏi: điểm trung bình chung học tập đạt từ 3.20 đến 3.59 (thang điểm 4), điểm rèn luyện đạt loại tốt trở lên. Học bổng loại xuất sắc: điểm trung bình chung học tập đạt từ 3.60 đến 4.0 (thang điểm 4), điểm rèn luyện đạt loại xuất sắc. Sinh viên có điểm trung bình chung đạt loại xuất sắc, giỏi có điểm rèn luyện loại khá chỉ được xét học bổng ở mức khá. Điểm trung bình chung học tập để phân loại học bổng sẽ được điều chỉnh theo quy chế đào tạo của Nhà trường khi có thay đổi."@vi .
 }
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 {
 	:MucTaiDonXacNhanDangHoc :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/18_%20XAC%20NHAN%20SVDHNT.doc" ;
