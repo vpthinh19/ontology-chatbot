@@ -5,7 +5,7 @@ triển hệ thống (``--tranh``, mỗi dòng một câu, giữ ngoài repo) v�
 chỉ được đọc một thư mục chép riêng các văn bản chính thức, đặt ngoài repo; lời nhắc đầy đủ và nhật ký của từng
 mô hình ghi cạnh thư mục đó.
 
-    uv run python resources/end-to-end/heldout/v2/generation/generate.py --nguon <thư mục ngoài repo> [--tranh <tệp>]
+    uv run python resources/end-to-end/heldout/generation/generate.py --nguon <thư mục ngoài repo> [--tranh <tệp>]
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import subprocess
 from pathlib import Path
 
 HERE = Path(__file__).parent
-ROOT = Path(__file__).resolve().parents[5]
+ROOT = Path(__file__).resolve().parents[4]
 VAN_BAN = ["Qd1052.md", "Qd1965.md", "Qd729.md", "Qd1314.md", "huong_dan_dong_hoc_phi.md",
            "DongHocPhi_VCB_2021.md", "Qd317.md", "tieu-chuan-hoc-bong.txt", "Qd626.md", "Qd753.md"]
 MO_HINH = ["sol", "terra", "luna"]

@@ -3,7 +3,6 @@
 Tỷ lệ đạt tính theo từng lượt rồi báo trung bình, thấp nhất và cao nhất qua các lượt.
 
     python resources/end-to-end/heldout/score.py
-    python resources/end-to-end/heldout/score.py --bo-de resources/end-to-end/heldout/v2
 """
 
 from __future__ import annotations

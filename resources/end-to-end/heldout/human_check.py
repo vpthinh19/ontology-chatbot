@@ -3,7 +3,7 @@
 Mẫu ngẫu nhiên với seed cố định, lấy trên mọi câu trả lời của mọi lượt, rồi xếp theo mã câu và lượt.
 Phiếu không chứa điểm của mô hình chấm.
 
-    python resources/end-to-end/heldout/human_check.py --bo-de resources/end-to-end/heldout/v2
+    python resources/end-to-end/heldout/human_check.py
     python resources/end-to-end/heldout/human_check.py --bo-de <thư mục> --ra <thư mục khác> --du-lieu-trang <tệp>
 """
 

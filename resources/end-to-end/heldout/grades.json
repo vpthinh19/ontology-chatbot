@@ -6,7 +6,7 @@
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "tối đa 27 tín chỉ, không tính GDTC và GDQP-AN, 28 là vượt; trích khoản 3 Điều 9"
+  "ly_do": "nêu trong thời gian đăng ký, đủ điều kiện mở lớp và Bộ môn chấp thuận thì Nhà trường mở thêm lớp theo đề nghị; trích khoản 2 Điều 10; thông tin thêm (điểm c, e khoản 2 Điều 8) có trong dữ liệu"
  },
  {
   "id": "Q001",
@@ -15,7 +15,7 @@
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "tối đa 27 tín chỉ, không tính GDTC và GDQP-AN, 28 là vượt; trích khoản 3 Điều 9"
+  "ly_do": "nêu trong thời gian đăng ký, đủ điều kiện mở lớp và Bộ môn chấp thuận thì Nhà trường mở thêm lớp theo đề nghị; trích khoản 2 Điều 10; thông tin thêm (điểm c, e khoản 2 Điều 8) có trong dữ liệu"
  },
  {
   "id": "Q001",
@@ -24,16 +24,16 @@
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "tối đa 27 tín chỉ, không tính GDTC và GDQP-AN, 28 là vượt; trích khoản 3 Điều 9"
+  "ly_do": "nêu trong thời gian đăng ký, đủ điều kiện mở lớp và Bộ môn chấp thuận thì Nhà trường mở thêm lớp theo đề nghị; trích khoản 2 Điều 10; thông tin thêm (điểm c, e khoản 2 Điều 8) có trong dữ liệu"
  },
  {
   "id": "Q002",
   "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "học lại ở các học kỳ tiếp theo đến khi đạt ≥ 5,0; trích khoản 1 Điều 11"
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "dữ liệu công cụ không có mục học cải thiện điểm, trả lời dữ liệu không cho phép đổi học phần đã đạt (tìm kiếm)"
  },
  {
   "id": "Q002",
@@ -42,1576 +42,10 @@
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "học lại ở các học kỳ tiếp theo đến khi đạt ≥ 5,0; trích khoản 1 Điều 11"
+  "ly_do": "nêu được học lại hoặc đổi sang học phần khác trong nhóm tự chọn để cải thiện ĐTB tích lũy; trích khoản 3 Điều 11"
  },
  {
   "id": "Q002",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "học lại ở các học kỳ tiếp theo đến khi đạt ≥ 5,0; trích khoản 1 Điều 11"
- },
- {
-  "id": "Q003",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có hướng dẫn khi lớp bị xóa; phần gợi ý chung lấy từ Điều 9 có trong dữ liệu"
- },
- {
-  "id": "Q003",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có hướng dẫn khi lớp bị xóa; phần gợi ý chung lấy từ Điều 9 có trong dữ liệu"
- },
- {
-  "id": "Q003",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có hướng dẫn khi lớp bị xóa; phần gợi ý chung lấy từ Điều 9 có trong dữ liệu"
- },
- {
-  "id": "Q004",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "ghi nhận lần học có điểm cao hơn; trích khoản 4 Điều 11"
- },
- {
-  "id": "Q004",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "ghi nhận lần học có điểm cao hơn; trích khoản 4 Điều 11"
- },
- {
-  "id": "Q004",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "ghi nhận lần học có điểm cao hơn; trích khoản 4 Điều 11"
- },
- {
-  "id": "Q005",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tự rút trên Hệ thống quản lý đào tạo hoặc nộp đơn (Mẫu số 2) tại Phòng ĐTĐH; hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; trích khoản 1–3 Điều 10 QĐ 753"
- },
- {
-  "id": "Q005",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tự rút trên Hệ thống quản lý đào tạo hoặc nộp đơn (Mẫu số 2) tại Phòng ĐTĐH; hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; trích khoản 1–3 Điều 10 QĐ 753"
- },
- {
-  "id": "Q005",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tự rút trên Hệ thống quản lý đào tạo hoặc nộp đơn (Mẫu số 2) tại Phòng ĐTĐH; hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; trích khoản 1–3 Điều 10 QĐ 753"
- },
- {
-  "id": "Q006",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu hạn rút đến tuần thứ hai, quá hạn giữ nguyên học phần; nói dữ liệu không có thông tin hoàn tiền; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q006",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu hạn rút đến tuần thứ hai, quá hạn giữ nguyên học phần; nói dữ liệu không có thông tin hoàn tiền; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q006",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu hạn rút đến tuần thứ hai, quá hạn giữ nguyên học phần; nói dữ liệu không có thông tin hoàn tiền; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q007",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "từ năm thứ hai; khá + ngưỡng bảo đảm chất lượng hoặc trung bình + điều kiện trúng tuyển; trích Điều 28"
- },
- {
-  "id": "Q007",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "từ năm thứ hai; khá + ngưỡng bảo đảm chất lượng hoặc trung bình + điều kiện trúng tuyển; trích Điều 28"
- },
- {
-  "id": "Q007",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "từ năm thứ hai; khá + ngưỡng bảo đảm chất lượng hoặc trung bình + điều kiện trúng tuyển; trích Điều 28"
- },
- {
-  "id": "Q008",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dừng chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện; trích khoản 2 Điều 28"
- },
- {
-  "id": "Q008",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dừng chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện; trích khoản 2 Điều 28"
- },
- {
-  "id": "Q008",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dừng chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện; trích khoản 2 Điều 28"
- },
- {
-  "id": "Q009",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "đầu mỗi học kỳ chính theo thông báo; Mẫu số 15; nguồn chỉ nêu Quy chế 1052, không nêu vị trí"
- },
- {
-  "id": "Q009",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "đầu mỗi học kỳ chính theo thông báo; Mẫu số 15; nguồn chỉ nêu Quy chế 1052, không nêu vị trí"
- },
- {
-  "id": "Q009",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "đầu mỗi học kỳ chính theo thông báo; Mẫu số 15; nguồn chỉ nêu Quy chế 1052, không nêu vị trí"
- },
- {
-  "id": "Q010",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đăng ký đầu mỗi năm học theo thông báo tuyển sinh liên thông; ý 'được xét tuyển liên thông' là tiền đề câu hỏi; trích khoản 2 Điều 29"
- },
- {
-  "id": "Q010",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đăng ký đầu mỗi năm học theo thông báo tuyển sinh liên thông; ý 'được xét tuyển liên thông' là tiền đề câu hỏi; trích khoản 2 Điều 29"
- },
- {
-  "id": "Q010",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đăng ký đầu mỗi năm học theo thông báo tuyển sinh liên thông; ý 'được xét tuyển liên thông' là tiền đề câu hỏi; trích khoản 2 Điều 29"
- },
- {
-  "id": "Q011",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh sách ngành mở song ngành; phần thông tin thêm lấy từ dữ liệu Điều 28"
- },
- {
-  "id": "Q011",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh sách ngành mở song ngành; phần thông tin thêm lấy từ dữ liệu Điều 28"
- },
- {
-  "id": "Q011",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh sách ngành mở song ngành; phần thông tin thêm lấy từ dữ liệu Điều 28"
- },
- {
-  "id": "Q012",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có học phí theo tín chỉ của CNTT"
- },
- {
-  "id": "Q012",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có học phí theo tín chỉ của CNTT"
- },
- {
-  "id": "Q012",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có học phí theo tín chỉ của CNTT"
- },
- {
-  "id": "Q013",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có mức học phí khối kinh doanh và quản lý"
- },
- {
-  "id": "Q013",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có mức học phí khối kinh doanh và quản lý"
- },
- {
-  "id": "Q013",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có mức học phí khối kinh doanh và quản lý"
- },
- {
-  "id": "Q014",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu Vietcombank miễn phí, ngân hàng khác 5.500 đ; không trả lời tài khoản cần gì và không nói phần này thiếu dữ liệu"
- },
- {
-  "id": "Q014",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu Vietcombank miễn phí, ngân hàng khác 5.500 đ; không trả lời tài khoản cần gì và không nói phần này thiếu dữ liệu"
- },
- {
-  "id": "Q014",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu Vietcombank miễn phí, ngân hàng khác 5.500 đ; không trả lời tài khoản cần gì và không nói phần này thiếu dữ liệu"
- },
- {
-  "id": "Q015",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hóa đơn điện tử VNPT gửi vào email; trích bước 4 mục III.B QĐ 1314"
- },
- {
-  "id": "Q015",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hóa đơn điện tử VNPT gửi vào email; trích bước 4 mục III.B QĐ 1314"
- },
- {
-  "id": "Q015",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hóa đơn điện tử VNPT gửi vào email; trích bước 4 mục III.B QĐ 1314"
- },
- {
-  "id": "Q016",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được học phí cá nhân, chỉ tới cổng sinh viên và Phòng KH-TC"
- },
- {
-  "id": "Q016",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được học phí cá nhân, chỉ tới cổng sinh viên và Phòng KH-TC"
- },
- {
-  "id": "Q016",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được học phí cá nhân, chỉ tới cổng sinh viên và Phòng KH-TC"
- },
- {
-  "id": "Q017",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 32 tín chỉ (đặc biệt), 27 (4 năm), không tính GDTC và GDQP-AN; trích khoản 3 Điều 9"
- },
- {
-  "id": "Q017",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 32 tín chỉ (đặc biệt), 27 (4 năm), không tính GDTC và GDQP-AN; trích khoản 3 Điều 9"
- },
- {
-  "id": "Q017",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 32 tín chỉ (đặc biệt), 27 (4 năm), không tính GDTC và GDQP-AN; trích khoản 3 Điều 9"
- },
- {
-  "id": "Q018",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu IELTS ≥ 5.5, Bậc 4/B2, kết luận chưa đạt"
- },
- {
-  "id": "Q018",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu IELTS ≥ 5.5, chưa đạt; thiếu ý Bậc 4 hoặc B2"
- },
- {
-  "id": "Q018",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu IELTS ≥ 5.5, chưa đạt; thiếu ý Bậc 4 hoặc B2"
- },
- {
-  "id": "Q019",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 6.000.000, đặc biệt 7.200.000 mỗi học kỳ; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q019",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 6.000.000, đặc biệt 7.200.000 mỗi học kỳ; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q019",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 6.000.000, đặc biệt 7.200.000 mỗi học kỳ; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q020",
-  "luot": 1,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính chứng chỉ của chương trình đặc biệt, dù ontology có ghi chú quy đổi điểm 10 và đạt chuẩn đầu ra"
- },
- {
-  "id": "Q020",
-  "luot": 2,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính chứng chỉ của chương trình đặc biệt, dù ontology có ghi chú quy đổi điểm 10 và đạt chuẩn đầu ra"
- },
- {
-  "id": "Q020",
-  "luot": 3,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính chứng chỉ của chương trình đặc biệt, dù ontology có ghi chú quy đổi điểm 10 và đạt chuẩn đầu ra"
- },
- {
-  "id": "Q021",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "điều kiện học ít nhất 01 học kỳ và không bị xem xét buộc thôi học/kỷ luật; Mẫu số 09; gửi Hiệu trưởng qua P.CTCT&SV; trích điểm d khoản 1 và khoản 3 Điều 24"
- },
- {
-  "id": "Q021",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "điều kiện học ít nhất 01 học kỳ và không bị xem xét buộc thôi học/kỷ luật; Mẫu số 09; gửi Hiệu trưởng qua P.CTCT&SV; trích điểm d khoản 1 và khoản 3 Điều 24"
- },
- {
-  "id": "Q021",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "điều kiện học ít nhất 01 học kỳ và không bị xem xét buộc thôi học/kỷ luật; Mẫu số 09; gửi Hiệu trưởng qua P.CTCT&SV; trích điểm d khoản 1 và khoản 3 Điều 24"
- },
- {
-  "id": "Q022",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đơn xin phép gửi giảng viên trong 01 tuần, kèm giấy chứng nhận y tế (khoản 1 Điều 30); thêm Mẫu số 03 trong 03 ngày (Điều 17) và mốc ốm từ 10 ngày, đều có trong dữ liệu công cụ"
- },
- {
-  "id": "Q022",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đơn xin phép gửi giảng viên trong 01 tuần, kèm giấy chứng nhận y tế (khoản 1 Điều 30); thêm Mẫu số 03 trong 03 ngày (Điều 17) và mốc ốm từ 10 ngày, đều có trong dữ liệu công cụ"
- },
- {
-  "id": "Q022",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đơn xin phép gửi giảng viên trong 01 tuần, kèm giấy chứng nhận y tế (khoản 1 Điều 30); thêm Mẫu số 03 trong 03 ngày (Điều 17) và mốc ốm từ 10 ngày, đều có trong dữ liệu công cụ"
- },
- {
-  "id": "Q023",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc đóng lại học phí khi chuyển ngành; chỉ nêu bảo lưu điểm có trong dữ liệu"
- },
- {
-  "id": "Q023",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc đóng lại học phí khi chuyển ngành; chỉ nêu bảo lưu điểm có trong dữ liệu"
- },
- {
-  "id": "Q023",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc đóng lại học phí khi chuyển ngành; chỉ nêu bảo lưu điểm có trong dữ liệu"
- },
- {
-  "id": "Q024",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dưới 4,00 ở học kỳ đầu; trích điểm b khoản 1 Điều 20"
- },
- {
-  "id": "Q024",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dưới 4,00 ở học kỳ đầu; trích điểm b khoản 1 Điều 20"
- },
- {
-  "id": "Q024",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dưới 4,00 ở học kỳ đầu; trích điểm b khoản 1 Điều 20"
- },
- {
-  "id": "Q025",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 80% giờ học; Mẫu số 03 kèm minh chứng cho Khoa/Viện trong 03 ngày làm việc; trích Điều 17"
- },
- {
-  "id": "Q025",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 80% giờ học; Mẫu số 03 kèm minh chứng cho Khoa/Viện trong 03 ngày làm việc; trích Điều 17"
- },
- {
-  "id": "Q025",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 80% giờ học; Mẫu số 03 kèm minh chứng cho Khoa/Viện trong 03 ngày làm việc; trích Điều 17"
- },
- {
-  "id": "Q026",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được điểm cá nhân"
- },
- {
-  "id": "Q026",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được điểm cá nhân"
- },
- {
-  "id": "Q026",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được điểm cá nhân"
- },
- {
-  "id": "Q027",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Mẫu số 08, gửi Đơn vị quản lý đào tạo (Phòng ĐTĐH); câu hỏi đã loại trừ điều kiện học tập nên hai ý điều kiện không bắt buộc; trích khoản 2 Điều 22"
- },
- {
-  "id": "Q027",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Mẫu số 08, gửi Đơn vị quản lý đào tạo (Phòng ĐTĐH); câu hỏi đã loại trừ điều kiện học tập nên hai ý điều kiện không bắt buộc; trích khoản 2 Điều 22"
- },
- {
-  "id": "Q027",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Mẫu số 08, gửi Đơn vị quản lý đào tạo (Phòng ĐTĐH); câu hỏi đã loại trừ điều kiện học tập nên hai ý điều kiện không bắt buộc; trích khoản 2 Điều 22"
- },
- {
-  "id": "Q028",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "chỉ nêu hạ hạng do kỷ luật; nói không có quy định hạ hạng do học lại, dù ontology có (vượt 5% tín chỉ)"
- },
- {
-  "id": "Q028",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "chỉ nêu hạ hạng do kỷ luật; nói không có quy định hạ hạng do học lại, dù ontology có (vượt 5% tín chỉ)"
- },
- {
-  "id": "Q028",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "chỉ nêu hạ hạng do kỷ luật; nói không có quy định hạ hạng do học lại, dù ontology có (vượt 5% tín chỉ)"
- },
- {
-  "id": "Q029",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nêu điều kiện tốt nghiệp chung có trong dữ liệu và nói không có chi tiết chứng chỉ tin học của cá nhân"
- },
- {
-  "id": "Q029",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nêu điều kiện tốt nghiệp chung có trong dữ liệu và nói không có chi tiết chứng chỉ tin học của cá nhân"
- },
- {
-  "id": "Q029",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nêu điều kiện tốt nghiệp chung có trong dữ liệu và nói không có chi tiết chứng chỉ tin học của cá nhân"
- },
- {
-  "id": "Q030",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 7.200.000, đặc biệt 8.640.000; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q030",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 7.200.000, đặc biệt 8.640.000; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q030",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "chuẩn 7.200.000, đặc biệt 8.640.000; trích Điều 1 và Điều 2 QĐ 317"
- },
- {
-  "id": "Q031",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 14 tín chỉ; mọi học phần ≥ 5,5 ở lần thi đầu; trích mục II.2 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q031",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 14 tín chỉ; mọi học phần ≥ 5,5 ở lần thi đầu; trích mục II.2 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q031",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 14 tín chỉ; mọi học phần ≥ 5,5 ở lần thi đầu; trích mục II.2 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q032",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được danh sách cá nhân"
- },
- {
-  "id": "Q032",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được danh sách cá nhân"
- },
- {
-  "id": "Q032",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không truy cập được danh sách cá nhân"
- },
- {
-  "id": "Q033",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q033",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q033",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q034",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q034",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q034",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q035",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 12–18 tín chỉ; thiếu ý không áp dụng cho học kỳ cuối khóa và học kỳ phụ"
- },
- {
-  "id": "Q035",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 12–18 tín chỉ; thiếu ý không áp dụng cho học kỳ cuối khóa và học kỳ phụ"
- },
- {
-  "id": "Q035",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu 12–18 tín chỉ; thiếu ý không áp dụng cho học kỳ cuối khóa và học kỳ phụ"
- },
- {
-  "id": "Q036",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng ký là bắt buộc; xác nhận trên Hệ thống quản lý đào tạo bằng tài khoản cá nhân; trích khoản 1 và điểm d khoản 2 Điều 9"
- },
- {
-  "id": "Q036",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng ký là bắt buộc; xác nhận trên Hệ thống quản lý đào tạo bằng tài khoản cá nhân; trích khoản 1 và điểm d khoản 2 Điều 9"
- },
- {
-  "id": "Q036",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng ký là bắt buộc; xác nhận trên Hệ thống quản lý đào tạo bằng tài khoản cá nhân; trích khoản 1 và điểm d khoản 2 Điều 9"
- },
- {
-  "id": "Q037",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "học lại chính học phần hoặc đổi học phần tự chọn tương đương; trích khoản 2 Điều 11"
- },
- {
-  "id": "Q037",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "học lại chính học phần hoặc đổi học phần tự chọn tương đương; trích khoản 2 Điều 11"
- },
- {
-  "id": "Q037",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "học lại chính học phần hoặc đổi học phần tự chọn tương đương; trích khoản 2 Điều 11"
- },
- {
-  "id": "Q038",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 25, tối đa 30 sinh viên; trích bảng 1 Phụ lục 1"
- },
- {
-  "id": "Q038",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 25, tối đa 30 sinh viên; trích bảng 1 Phụ lục 1"
- },
- {
-  "id": "Q038",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tối thiểu 25, tối đa 30 sinh viên; trích bảng 1 Phụ lục 1"
- },
- {
-  "id": "Q039",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; quá hạn giữ nguyên, không đi học nhận điểm 0; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q039",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; quá hạn giữ nguyên, không đi học nhận điểm 0; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q039",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hạn tuần thứ hai học kỳ chính, tuần thứ nhất học kỳ phụ; quá hạn giữ nguyên, không đi học nhận điểm 0; trích Điều 10 QĐ 753"
- },
- {
-  "id": "Q040",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "tự rút trên hệ thống hoặc nộp đơn Mẫu số 2 tại Đơn vị quản lý đào tạo (Phòng ĐTĐH)"
- },
- {
-  "id": "Q040",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "như lượt 1; nguồn chỉ nêu Quy chế 2021, không nêu vị trí"
- },
- {
-  "id": "Q040",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "như lượt 1; trích khoản 1–3 Điều 10 QĐ 753"
- },
- {
-  "id": "Q041",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu mã số sinh viên riêng và đăng ký bằng mã chương trình thứ hai; nói không có nơi hỗ trợ, trong khi điểm b khoản 3 Điều 28 ghi Đơn vị quản lý đào tạo hỗ trợ"
- },
- {
-  "id": "Q041",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu mã số sinh viên riêng và đăng ký bằng mã chương trình thứ hai; nói không có nơi hỗ trợ, trong khi điểm b khoản 3 Điều 28 ghi Đơn vị quản lý đào tạo hỗ trợ"
- },
- {
-  "id": "Q041",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nêu mã số sinh viên riêng và đăng ký bằng mã chương trình thứ hai; nói không có nơi hỗ trợ, trong khi điểm b khoản 3 Điều 28 ghi Đơn vị quản lý đào tạo hỗ trợ"
- },
- {
-  "id": "Q042",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu bảo lưu học phần tương đương và nói dữ liệu không có thông tin quyền lợi cho hai ngành; trích điểm c khoản 3 Điều 28"
- },
- {
-  "id": "Q042",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu bảo lưu học phần tương đương và nói dữ liệu không có thông tin quyền lợi cho hai ngành; trích điểm c khoản 3 Điều 28"
- },
- {
-  "id": "Q042",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu bảo lưu học phần tương đương và nói dữ liệu không có thông tin quyền lợi cho hai ngành; trích điểm c khoản 3 Điều 28"
- },
- {
-  "id": "Q043",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đủ điều kiện tốt nghiệp chương trình thứ nhất và đăng ký muộn nhất 02 năm; thiếu ý thời gian tối đa theo chương trình thứ nhất (ý này ontology không có, câu bị đánh dấu 'có' khi lọc)"
- },
- {
-  "id": "Q043",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đủ điều kiện tốt nghiệp chương trình thứ nhất và đăng ký muộn nhất 02 năm; thiếu ý thời gian tối đa theo chương trình thứ nhất (ý này ontology không có, câu bị đánh dấu 'có' khi lọc)"
- },
- {
-  "id": "Q043",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu đủ điều kiện tốt nghiệp chương trình thứ nhất và đăng ký muộn nhất 02 năm; thiếu ý thời gian tối đa theo chương trình thứ nhất (ý này ontology không có, câu bị đánh dấu 'có' khi lọc)"
- },
- {
-  "id": "Q044",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh mục giấy tờ hồ sơ liên thông; phần còn lại lấy từ Điều 29"
- },
- {
-  "id": "Q044",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh mục giấy tờ hồ sơ liên thông; phần còn lại lấy từ Điều 29"
- },
- {
-  "id": "Q044",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có danh mục giấy tờ hồ sơ liên thông; phần còn lại lấy từ Điều 29"
- },
- {
-  "id": "Q045",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc chuyển tiền dư giữa hai mã sinh viên"
- },
- {
-  "id": "Q045",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc chuyển tiền dư giữa hai mã sinh viên"
- },
- {
-  "id": "Q045",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có việc chuyển tiền dư giữa hai mã sinh viên"
- },
- {
-  "id": "Q046",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng nhập tài khoản kiểm tra, phản hồi để Nhà trường điều chỉnh; trích bước 3 QĐ 1314"
- },
- {
-  "id": "Q046",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng nhập tài khoản kiểm tra, phản hồi để Nhà trường điều chỉnh; trích bước 3 QĐ 1314"
- },
- {
-  "id": "Q046",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "đăng nhập tài khoản kiểm tra, phản hồi để Nhà trường điều chỉnh; trích bước 3 QĐ 1314"
- },
- {
-  "id": "Q047",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Agribank/Vietinbank/LienVietPostBank; miễn phí tại Nha Trang; cung cấp mã sinh viên, không đưa tài khoản Trường"
- },
- {
-  "id": "Q047",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Agribank/Vietinbank/LienVietPostBank; miễn phí tại Nha Trang; cung cấp mã sinh viên, không đưa tài khoản Trường"
- },
- {
-  "id": "Q047",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "Agribank/Vietinbank/LienVietPostBank; miễn phí tại Nha Trang; cung cấp mã sinh viên, không đưa tài khoản Trường"
- },
- {
-  "id": "Q048",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định chia đợt; nêu gia hạn có trong dữ liệu (bước 7 QĐ 1314)"
- },
- {
-  "id": "Q048",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định chia đợt; nêu gia hạn có trong dữ liệu (bước 7 QĐ 1314)"
- },
- {
-  "id": "Q048",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định chia đợt; nêu gia hạn có trong dữ liệu (bước 7 QĐ 1314)"
- },
- {
-  "id": "Q049",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu B1.1 và B1.2 cho chương trình chuẩn; thiếu ý Bậc 4/B2"
- },
- {
-  "id": "Q049",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu Bậc 4/B2, B1.1 và B1.2; trích bảng 1 Phụ lục 2"
- },
- {
-  "id": "Q049",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu Bậc 4/B2, B1.1 và B1.2"
- },
- {
-  "id": "Q050",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu khóa 67 HPBB, khóa 68 HPĐK; thiếu ý 4 tín chỉ, Bậc 3; trích khoản 1.3 QĐ 1965"
- },
- {
-  "id": "Q050",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu khóa 67 HPBB, khóa 68 HPĐK; thiếu ý 4 tín chỉ, Bậc 3; trích khoản 1.3 QĐ 1965"
- },
- {
-  "id": "Q050",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu khóa 67 HPBB, khóa 68 HPĐK; thiếu ý 4 tín chỉ, Bậc 3; trích khoản 1.3 QĐ 1965"
- },
- {
-  "id": "Q051",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "20% quá trình, 40% giữa kỳ Nghe+Nói, 40% cuối kỳ Đọc+Viết, thi kết thúc ≥ 5; trích khoản 1.4 QĐ 1965"
- },
- {
-  "id": "Q051",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "20% quá trình, 40% giữa kỳ Nghe+Nói, 40% cuối kỳ Đọc+Viết, thi kết thúc ≥ 5; trích khoản 1.4 QĐ 1965"
- },
- {
-  "id": "Q051",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "20% quá trình, 40% giữa kỳ Nghe+Nói, 40% cuối kỳ Đọc+Viết, thi kết thúc ≥ 5; trích khoản 1.4 QĐ 1965"
- },
- {
-  "id": "Q052",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có điều kiện và thời hạn chuyển chương trình; lượt 2–3 nêu Mẫu số 05 có trong dữ liệu"
- },
- {
-  "id": "Q052",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có điều kiện và thời hạn chuyển chương trình; lượt 2–3 nêu Mẫu số 05 có trong dữ liệu"
- },
- {
-  "id": "Q052",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có điều kiện và thời hạn chuyển chương trình; lượt 2–3 nêu Mẫu số 05 có trong dữ liệu"
- },
- {
-  "id": "Q053",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "khuyên làm nghỉ học tạm thời (Mẫu 09, học trở lại Mẫu 11) thay vì trả lời thủ tục thôi học; không nêu Mẫu số 10 và việc phải xét tuyển lại; không có thông tin sai"
- },
- {
-  "id": "Q053",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu Mẫu số 10, gửi Hiệu trưởng qua P.CTCT&SV, quay lại phải xét tuyển đầu vào; thiếu ý điều kiện được xin thôi học"
- },
- {
-  "id": "Q053",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "giống lượt 1: trả lời nghỉ học tạm thời thay cho thôi học"
- },
- {
-  "id": "Q054",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định số lần chuyển ngành tối đa"
- },
- {
-  "id": "Q054",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định số lần chuyển ngành tối đa"
- },
- {
-  "id": "Q054",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định số lần chuyển ngành tối đa"
- },
- {
-  "id": "Q055",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dự thi trong 2 học kỳ chính tiếp theo, quá hạn điểm 0; Mẫu số 04 gửi Đơn vị quản lý đào tạo; trích khoản 4 Điều 17, khoản 2 Điều 30"
- },
- {
-  "id": "Q055",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dự thi trong 2 học kỳ chính tiếp theo, quá hạn điểm 0; Mẫu số 04 gửi Đơn vị quản lý đào tạo; trích khoản 4 Điều 17, khoản 2 Điều 30"
- },
- {
-  "id": "Q055",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "dự thi trong 2 học kỳ chính tiếp theo, quá hạn điểm 0; Mẫu số 04 gửi Đơn vị quản lý đào tạo; trích khoản 4 Điều 17, khoản 2 Điều 30"
- },
- {
-  "id": "Q056",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nói không có thông tin xử lý khi cảnh báo nhiều lần, dù ontology có (vượt quá 02 lần liên tiếp thì buộc thôi học); nêu đúng Mẫu số 05 chuyển sang vừa làm vừa học và bảo lưu học phần ≥ 5,0"
- },
- {
-  "id": "Q056",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nói không có thông tin xử lý khi cảnh báo nhiều lần, dù ontology có (vượt quá 02 lần liên tiếp thì buộc thôi học); nêu đúng Mẫu số 05 chuyển sang vừa làm vừa học và bảo lưu học phần ≥ 5,0"
- },
- {
-  "id": "Q056",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": false,
-  "ly_do": "nói không có thông tin xử lý khi cảnh báo nhiều lần, dù ontology có (vượt quá 02 lần liên tiếp thì buộc thôi học); nêu đúng Mẫu số 05 chuyển sang vừa làm vừa học và bảo lưu học phần ≥ 5,0"
- },
- {
-  "id": "Q057",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có thời hạn hoàn thiện chuẩn ngoại ngữ, tin học"
- },
- {
-  "id": "Q057",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có thời hạn hoàn thiện chuẩn ngoại ngữ, tin học"
- },
- {
-  "id": "Q057",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có thời hạn hoàn thiện chuẩn ngoại ngữ, tin học"
- },
- {
-  "id": "Q058",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "1600–1799 quy đổi 9 điểm; tổng điểm của 2 trong 3 mô-đun; trích Phụ lục 3"
- },
- {
-  "id": "Q058",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "1600–1799 quy đổi 9 điểm; tổng điểm của 2 trong 3 mô-đun; trích Phụ lục 3"
- },
- {
-  "id": "Q058",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "1600–1799 quy đổi 9 điểm; tổng điểm của 2 trong 3 mô-đun; trích Phụ lục 3"
- },
- {
-  "id": "Q059",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có nơi và lệ phí cấp lại bằng; lượt 2 nêu mẫu đơn cấp bản sao có trong dữ liệu"
- },
- {
-  "id": "Q059",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có nơi và lệ phí cấp lại bằng; lượt 2 nêu mẫu đơn cấp bản sao có trong dữ liệu"
- },
- {
-  "id": "Q059",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có nơi và lệ phí cấp lại bằng; lượt 2 nêu mẫu đơn cấp bản sao có trong dữ liệu"
- },
- {
-  "id": "Q060",
-  "luot": 1,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có điều kiện học bổng khi hoãn thi, dù ontology có"
- },
- {
-  "id": "Q060",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "hoãn thi không được xét, trừ trùng lịch và thi lại cùng đợt; trích mục II.2 trang tiêu chuẩn"
- },
- {
-  "id": "Q060",
   "luot": 3,
   "muc": "Đúng",
   "dat": true,
@@ -1620,489 +54,1839 @@
   "ly_do": "như lượt 2"
  },
  {
-  "id": "Q061",
+  "id": "Q003",
   "luot": 1,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy tắc kết hợp điểm học tập và rèn luyện để xếp loại học bổng"
+  "ly_do": "nói dữ liệu không quy định phải đi đúng thứ tự chương trình; ý phải tích lũy học phần tiên quyết lấy từ định nghĩa học phần tiên quyết có trong dữ liệu công cụ (điểm c khoản 2 Điều 6) nên không phải bịa; mức ontology 'khong' khi lọc là chưa chính xác (có định nghĩa học phần tiên quyết)"
  },
  {
-  "id": "Q061",
+  "id": "Q003",
   "luot": 2,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy tắc kết hợp điểm học tập và rèn luyện để xếp loại học bổng"
+  "ly_do": "nói dữ liệu không quy định phải đi đúng thứ tự chương trình; ý phải tích lũy học phần tiên quyết lấy từ định nghĩa học phần tiên quyết có trong dữ liệu công cụ (điểm c khoản 2 Điều 6) nên không phải bịa; mức ontology 'khong' khi lọc là chưa chính xác (có định nghĩa học phần tiên quyết)"
  },
  {
-  "id": "Q061",
+  "id": "Q003",
   "luot": 3,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy tắc kết hợp điểm học tập và rèn luyện để xếp loại học bổng"
+  "ly_do": "nói dữ liệu không quy định phải đi đúng thứ tự chương trình; ý phải tích lũy học phần tiên quyết lấy từ định nghĩa học phần tiên quyết có trong dữ liệu công cụ (điểm c khoản 2 Điều 6) nên không phải bịa; mức ontology 'khong' khi lọc là chưa chính xác (có định nghĩa học phần tiên quyết)"
  },
  {
-  "id": "Q062",
+  "id": "Q004",
   "luot": 1,
-  "muc": "Bịa",
-  "dat": false,
+  "muc": "Từ chối đúng",
+  "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "khẳng định sinh viên không phải nộp hồ sơ đăng ký; dữ liệu công cụ chỉ ghi xét theo đề nghị của Trưởng phòng CTCT&SV, không nói việc này"
+  "ly_do": "nói dữ liệu không có cách xử lý lớp vượt sĩ số"
  },
  {
-  "id": "Q062",
+  "id": "Q004",
   "luot": 2,
-  "muc": "Bịa",
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có cách xử lý lớp vượt sĩ số"
+ },
+ {
+  "id": "Q004",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có cách xử lý lớp vượt sĩ số"
+ },
+ {
+  "id": "Q005",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập ưu tiên đăng ký giữa học đúng tiến độ và học lại"
+ },
+ {
+  "id": "Q005",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập ưu tiên đăng ký giữa học đúng tiến độ và học lại"
+ },
+ {
+  "id": "Q005",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập ưu tiên đăng ký giữa học đúng tiến độ và học lại"
+ },
+ {
+  "id": "Q006",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập lớp sinh hoạt khi học hai chương trình; thông tin thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q006",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập lớp sinh hoạt khi học hai chương trình; thông tin thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q006",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập lớp sinh hoạt khi học hai chương trình; thông tin thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q007",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập khoa quản lý sau khi tốt nghiệp chương trình thứ nhất"
+ },
+ {
+  "id": "Q007",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập khoa quản lý sau khi tốt nghiệp chương trình thứ nhất"
+ },
+ {
+  "id": "Q007",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập khoa quản lý sau khi tốt nghiệp chương trình thứ nhất"
+ },
+ {
+  "id": "Q008",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập nộp hồ sơ trực tuyến; nơi nộp Phòng Đào tạo Đại học có trong dữ liệu"
+ },
+ {
+  "id": "Q008",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập nộp hồ sơ trực tuyến; nơi nộp Phòng Đào tạo Đại học có trong dữ liệu"
+ },
+ {
+  "id": "Q008",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập nộp hồ sơ trực tuyến; nơi nộp Phòng Đào tạo Đại học có trong dữ liệu"
+ },
+ {
+  "id": "Q009",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập bằng cao đẳng nước ngoài; nêu đối tượng liên thông chung có trong dữ liệu"
+ },
+ {
+  "id": "Q009",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập bằng cao đẳng nước ngoài; nêu đối tượng liên thông chung có trong dữ liệu"
+ },
+ {
+  "id": "Q009",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập bằng cao đẳng nước ngoài; nêu đối tượng liên thông chung có trong dữ liệu"
+ },
+ {
+  "id": "Q010",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định giới hạn độ tuổi"
+ },
+ {
+  "id": "Q010",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định giới hạn độ tuổi"
+ },
+ {
+  "id": "Q010",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định giới hạn độ tuổi"
+ },
+ {
+  "id": "Q011",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo ngành"
+ },
+ {
+  "id": "Q011",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo ngành"
+ },
+ {
+  "id": "Q011",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo ngành"
+ },
+ {
+  "id": "Q012",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo loại học phần của ngành Ngôn ngữ Anh"
+ },
+ {
+  "id": "Q012",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo loại học phần của ngành Ngôn ngữ Anh"
+ },
+ {
+  "id": "Q012",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có học phí theo loại học phần của ngành Ngôn ngữ Anh"
+ },
+ {
+  "id": "Q013",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "3 tuần đầu học kỳ chính, 10 ngày đầu học kỳ hè; trích bước 4 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q013",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "3 tuần đầu học kỳ chính, 10 ngày đầu học kỳ hè; trích bước 4 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q013",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "3 tuần đầu học kỳ chính, 10 ngày đầu học kỳ hè; trích bước 4 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q014",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu vào sinhvien.ntu.edu.vn và chọn mục học phí; không nêu đăng nhập bằng mã sinh viên và không nói rõ không vào qldt.ntu.edu.vn"
+ },
+ {
+  "id": "Q014",
+  "luot": 2,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu vào sinhvien.ntu.edu.vn và chọn mục học phí; không nêu đăng nhập bằng mã sinh viên và không nói rõ không vào qldt.ntu.edu.vn"
+ },
+ {
+  "id": "Q014",
+  "luot": 3,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu vào sinhvien.ntu.edu.vn và chọn mục học phí; không nêu đăng nhập bằng mã sinh viên và không nói rõ không vào qldt.ntu.edu.vn"
+ },
+ {
+  "id": "Q015",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định tính lãi chậm nộp; nêu việc xóa đăng ký học phần có trong dữ liệu"
+ },
+ {
+  "id": "Q015",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định tính lãi chậm nộp; nêu việc xóa đăng ký học phần có trong dữ liệu"
+ },
+ {
+  "id": "Q015",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định tính lãi chậm nộp; nêu việc xóa đăng ký học phần có trong dữ liệu"
+ },
+ {
+  "id": "Q016",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu Kế toán chương trình đặc biệt yêu cầu Linguaskill ≥ 140 nên đạt; thiếu ý mức Bậc 4 hoặc B2"
+ },
+ {
+  "id": "Q016",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
   "dat": false,
   "trich_dan": null,
   "hoi_du": null,
+  "ly_do": "dữ liệu công cụ chỉ có bảng ngoại ngữ khác, nói không có yêu cầu Linguaskill (tìm kiếm)"
+ },
+ {
+  "id": "Q016",
+  "luot": 3,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
   "ly_do": "như lượt 1"
  },
  {
-  "id": "Q062",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
+  "id": "Q017",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói dữ liệu không đề cập việc phải nộp hồ sơ; nêu quy trình công bố danh sách có trong dữ liệu"
+  "ly_do": "nói không có mức TCF cho chương trình đặc biệt Quản trị dịch vụ du lịch và lữ hành dù ontology có bảng chuẩn ngoại ngữ khác; dữ liệu công cụ chỉ có mục TCF"
  },
  {
-  "id": "Q063",
+  "id": "Q017",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức TCF cho chương trình đặc biệt Quản trị dịch vụ du lịch và lữ hành dù ontology có bảng chuẩn ngoại ngữ khác; dữ liệu công cụ chỉ có mục TCF"
+ },
+ {
+  "id": "Q017",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức TCF cho chương trình đặc biệt Quản trị dịch vụ du lịch và lữ hành dù ontology có bảng chuẩn ngoại ngữ khác; dữ liệu công cụ chỉ có mục TCF"
+ },
+ {
+  "id": "Q018",
   "luot": 1,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy định mở thêm lớp sau chia nhóm; nêu sĩ số theo Phụ lục 1 có trong dữ liệu"
+  "ly_do": "nói không có quy định ngôn ngữ giảng dạy"
  },
  {
-  "id": "Q063",
+  "id": "Q018",
   "luot": 2,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy định mở thêm lớp sau chia nhóm; nêu sĩ số theo Phụ lục 1 có trong dữ liệu"
+  "ly_do": "nói không có quy định ngôn ngữ giảng dạy"
  },
  {
-  "id": "Q063",
+  "id": "Q018",
   "luot": 3,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có quy định mở thêm lớp sau chia nhóm; nêu sĩ số theo Phụ lục 1 có trong dữ liệu"
+  "ly_do": "nói không có quy định ngôn ngữ giảng dạy"
  },
  {
-  "id": "Q064",
+  "id": "Q019",
   "luot": 1,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "không bịa: nêu thủ tục nhóm sinh viên làm đơn xin mở lớp (Mẫu số 01), có trong dữ liệu, thay cho đáp án 'học với khóa sau' mà ontology không có"
+  "ly_do": "nói dữ liệu không đề cập xếp lớp và mã sinh viên khi trở lại; thủ tục xin học trở lại có trong dữ liệu"
  },
  {
-  "id": "Q064",
+  "id": "Q019",
   "luot": 2,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "như lượt 1"
+  "ly_do": "nói dữ liệu không đề cập xếp lớp và mã sinh viên khi trở lại; thủ tục xin học trở lại có trong dữ liệu"
  },
  {
-  "id": "Q064",
+  "id": "Q019",
   "luot": 3,
   "muc": "Từ chối đúng",
   "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói không có hướng dẫn, nêu sĩ số tối thiểu có trong dữ liệu"
+  "ly_do": "nói dữ liệu không đề cập xếp lớp và mã sinh viên khi trở lại; thủ tục xin học trở lại có trong dữ liệu"
  },
  {
-  "id": "Q065",
-  "luot": 1,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu xét tốt nghiệp chương trình thứ hai khi đủ điều kiện chương trình thứ nhất và nói không có thông tin thời gian tối đa; thiếu ý đăng ký muộn nhất 02 năm"
- },
- {
-  "id": "Q065",
-  "luot": 2,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu xét tốt nghiệp chương trình thứ hai khi đủ điều kiện chương trình thứ nhất và nói không có thông tin thời gian tối đa; thiếu ý đăng ký muộn nhất 02 năm"
- },
- {
-  "id": "Q065",
-  "luot": 3,
-  "muc": "Đúng một phần",
-  "dat": false,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "nêu xét tốt nghiệp chương trình thứ hai khi đủ điều kiện chương trình thứ nhất và nói không có thông tin thời gian tối đa; thiếu ý đăng ký muộn nhất 02 năm"
- },
- {
-  "id": "Q066",
+  "id": "Q020",
   "luot": 1,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "người đã tốt nghiệp đại học được xét tuyển liên thông nhận bằng thứ hai; đăng ký đầu mỗi năm học; trích Điều 29"
+  "ly_do": "bảo lưu điểm học phần tương đương, không được gia hạn thời gian tối đa; trích khoản 3 Điều 25"
  },
  {
-  "id": "Q066",
+  "id": "Q020",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định cho trường hợp chuyển ngành dù ontology có (tìm kiếm)"
+ },
+ {
+  "id": "Q020",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "như lượt 2"
+ },
+ {
+  "id": "Q021",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập số lần nghỉ học tạm thời tối đa"
+ },
+ {
+  "id": "Q021",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập số lần nghỉ học tạm thời tối đa"
+ },
+ {
+  "id": "Q021",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không đề cập số lần nghỉ học tạm thời tối đa"
+ },
+ {
+  "id": "Q022",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu đúng nghĩa điểm I, X, R; trích điểm c khoản 2 Điều 16"
+ },
+ {
+  "id": "Q022",
   "luot": 2,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "người đã tốt nghiệp đại học được xét tuyển liên thông nhận bằng thứ hai; đăng ký đầu mỗi năm học; trích Điều 29"
+  "ly_do": "nêu đúng nghĩa điểm I, X, R; trích điểm c khoản 2 Điều 16"
  },
  {
-  "id": "Q066",
+  "id": "Q022",
   "luot": 3,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "người đã tốt nghiệp đại học được xét tuyển liên thông nhận bằng thứ hai; đăng ký đầu mỗi năm học; trích Điều 29"
+  "ly_do": "nêu đúng nghĩa điểm I, X, R; trích điểm c khoản 2 Điều 16"
  },
  {
-  "id": "Q067",
+  "id": "Q023",
   "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "thực hành, thí nghiệm, thực tập ngoài trường phải dự 100%; nghỉ có lý do chính đáng do Khoa hoặc viện xem xét; trích điểm b khoản 1 Điều 17"
+ },
+ {
+  "id": "Q023",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "thực hành, thí nghiệm, thực tập ngoài trường phải dự 100%; nghỉ có lý do chính đáng do Khoa hoặc viện xem xét; trích điểm b khoản 1 Điều 17"
+ },
+ {
+  "id": "Q023",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "thực hành, thí nghiệm, thực tập ngoài trường phải dự 100%; nghỉ có lý do chính đáng do Khoa hoặc viện xem xét; trích điểm b khoản 1 Điều 17"
+ },
+ {
+  "id": "Q024",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có giấy chứng nhận tốt nghiệp tạm thời; thời hạn 03 tháng có trong dữ liệu"
+ },
+ {
+  "id": "Q024",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có giấy chứng nhận tốt nghiệp tạm thời; thời hạn 03 tháng có trong dữ liệu"
+ },
+ {
+  "id": "Q024",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có giấy chứng nhận tốt nghiệp tạm thời; thời hạn 03 tháng có trong dữ liệu"
+ },
+ {
+  "id": "Q025",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định cấp bảng điểm khi không tốt nghiệp"
+ },
+ {
+  "id": "Q025",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định cấp bảng điểm khi không tốt nghiệp"
+ },
+ {
+  "id": "Q025",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định cấp bảng điểm khi không tốt nghiệp"
+ },
+ {
+  "id": "Q026",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin gửi bằng qua bưu điện"
+ },
+ {
+  "id": "Q026",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin gửi bằng qua bưu điện"
+ },
+ {
+  "id": "Q026",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin gửi bằng qua bưu điện"
+ },
+ {
+  "id": "Q027",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ đầu sau khi chuyển ngành không được xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q027",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ đầu sau khi chuyển ngành không được xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q027",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ đầu sau khi chuyển ngành không được xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q028",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm GDTC và GDQP không tính vào điểm xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q028",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm GDTC và GDQP không tính vào điểm xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q028",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm GDTC và GDQP không tính vào điểm xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q029",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có số suất học bổng tối đa mỗi lớp"
+ },
+ {
+  "id": "Q029",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có số suất học bổng tối đa mỗi lớp"
+ },
+ {
+  "id": "Q029",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có số suất học bổng tối đa mỗi lớp"
+ },
+ {
+  "id": "Q030",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q030",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q030",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q031",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q031",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q031",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q032",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "kết quả học phần nhiệm ý ghi trong bảng điểm, không tính vào TBC tích lũy, phân loại, xếp hạng; trích điểm d khoản 2 Điều 6"
+ },
+ {
+  "id": "Q032",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "dữ liệu công cụ không có mục học phần nhiệm ý, nói không có quy định (tìm kiếm)"
+ },
+ {
+  "id": "Q032",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "như lượt 2"
+ },
+ {
+  "id": "Q033",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ III là học kỳ hè tối đa 8 tuần, để học vượt, học lại, học cải thiện; trích điểm b khoản 2 Điều 7"
+ },
+ {
+  "id": "Q033",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ III là học kỳ hè tối đa 8 tuần, để học vượt, học lại, học cải thiện; trích điểm b khoản 2 Điều 7"
+ },
+ {
+  "id": "Q033",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "học kỳ III là học kỳ hè tối đa 8 tuần, để học vượt, học lại, học cải thiện; trích điểm b khoản 2 Điều 7"
+ },
+ {
+  "id": "Q034",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "chỉ được rút nếu không vi phạm tối thiểu; học lực trung bình trở lên tối thiểu 15 tín chỉ trừ học kỳ cuối khóa và học kỳ phụ nên đang 15 tín chỉ thì không rút được; trích khoản 3 Điều 9 và khoản 1 Điều 10"
+ },
+ {
+  "id": "Q034",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "chỉ được rút nếu không vi phạm tối thiểu; học lực trung bình trở lên tối thiểu 15 tín chỉ trừ học kỳ cuối khóa và học kỳ phụ nên đang 15 tín chỉ thì không rút được; trích khoản 3 Điều 9 và khoản 1 Điều 10"
+ },
+ {
+  "id": "Q034",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "chỉ được rút nếu không vi phạm tối thiểu; học lực trung bình trở lên tối thiểu 15 tín chỉ trừ học kỳ cuối khóa và học kỳ phụ nên đang 15 tín chỉ thì không rút được; trích khoản 3 Điều 9 và khoản 1 Điều 10"
+ },
+ {
+  "id": "Q035",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có mức tiền phạt; thời hạn và cách rút có trong dữ liệu"
+ },
+ {
+  "id": "Q035",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có mức tiền phạt; thời hạn và cách rút có trong dữ liệu"
+ },
+ {
+  "id": "Q035",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có mức tiền phạt; thời hạn và cách rút có trong dữ liệu"
+ },
+ {
+  "id": "Q036",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": false,
+  "ly_do": "nêu điều kiện đã xếp từ trình độ năm thứ hai trở lên (điểm a khoản 1 Điều 28); nói dữ liệu không có số tín chỉ xếp năm thứ hai dù ontology có bảng xếp trình độ năm học (35 đến dưới 70 tín chỉ)"
+ },
+ {
+  "id": "Q036",
+  "luot": 2,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": false,
+  "ly_do": "nêu điều kiện đã xếp từ trình độ năm thứ hai trở lên (điểm a khoản 1 Điều 28); nói dữ liệu không có số tín chỉ xếp năm thứ hai dù ontology có bảng xếp trình độ năm học (35 đến dưới 70 tín chỉ)"
+ },
+ {
+  "id": "Q036",
+  "luot": 3,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": false,
+  "ly_do": "nêu điều kiện đã xếp từ trình độ năm thứ hai trở lên (điểm a khoản 1 Điều 28); nói dữ liệu không có số tín chỉ xếp năm thứ hai dù ontology có bảng xếp trình độ năm học (35 đến dưới 70 tín chỉ)"
+ },
+ {
+  "id": "Q037",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu học theo kế hoạch chung như sinh viên khác; nói dữ liệu không có ý bảo lưu, chỉ nhắc thủ tục công nhận kết quả học tập là thủ tục tiếp theo"
+ },
+ {
+  "id": "Q037",
+  "luot": 2,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "khong_co",
   "hoi_du": true,
-  "ly_do": "trong 02 ngày sau khi nhận danh sách nợ, đơn vị đào tạo xóa đăng ký học phần; lượt 1 chỉ nêu QĐ 1314, không nêu vị trí"
+  "ly_do": "nêu kế hoạch chung; phần bảo lưu lấy từ thủ tục công nhận kết quả học tập và chuyển đổi tín chỉ mà dữ liệu nối với thủ tục học liên thông, khớp đáp án gốc nên không phải tự điền; chỉ nêu tên văn bản"
  },
  {
-  "id": "Q067",
+  "id": "Q037",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "như lượt 1"
+ },
+ {
+  "id": "Q038",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức giảm học phí cho liên thông; thủ tục miễn giảm học phí chung có trong dữ liệu"
+ },
+ {
+  "id": "Q038",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức giảm học phí cho liên thông; thủ tục miễn giảm học phí chung có trong dữ liệu"
+ },
+ {
+  "id": "Q038",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức giảm học phí cho liên thông; thủ tục miễn giảm học phí chung có trong dữ liệu"
+ },
+ {
+  "id": "Q039",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "có tài khoản Agribank dùng Mobile Banking hoặc Internet Banking đóng học phí, miễn phí; trích phương thức 2 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q039",
   "luot": 2,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "như trên; trích bước 7–8 mục III.B QĐ 1314"
+  "ly_do": "có tài khoản Agribank dùng Mobile Banking hoặc Internet Banking đóng học phí, miễn phí; trích phương thức 2 hướng dẫn đóng học phí"
  },
  {
-  "id": "Q067",
+  "id": "Q039",
   "luot": 3,
   "muc": "Đúng",
   "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "có tài khoản Agribank dùng Mobile Banking hoặc Internet Banking đóng học phí, miễn phí; trích phương thức 2 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q040",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "quét mã QR bằng ứng dụng ngân hàng nộp học phí được miễn phí; trích phương thức 1 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q040",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "quét mã QR bằng ứng dụng ngân hàng nộp học phí được miễn phí; trích phương thức 1 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q040",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "quét mã QR bằng ứng dụng ngân hàng nộp học phí được miễn phí; trích phương thức 1 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q041",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin đóng học phí bằng ví MoMo; các phương thức nêu thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q041",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin đóng học phí bằng ví MoMo; các phương thức nêu thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q041",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin đóng học phí bằng ví MoMo; các phương thức nêu thêm có trong dữ liệu"
+ },
+ {
+  "id": "Q042",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định bắt buộc du học"
+ },
+ {
+  "id": "Q042",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định bắt buộc du học"
+ },
+ {
+  "id": "Q042",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có quy định bắt buộc du học"
+ },
+ {
+  "id": "Q043",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "được nghỉ học tạm thời và bảo lưu kết quả khi được điều động dự thi, giải đấu quốc tế; trích điểm b khoản 1 Điều 24"
+ },
+ {
+  "id": "Q043",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "được nghỉ học tạm thời và bảo lưu kết quả khi được điều động dự thi, giải đấu quốc tế; trích điểm b khoản 1 Điều 24"
+ },
+ {
+  "id": "Q043",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "được nghỉ học tạm thời và bảo lưu kết quả khi được điều động dự thi, giải đấu quốc tế; trích điểm b khoản 1 Điều 24"
+ },
+ {
+  "id": "Q044",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ốm điều trị từ 10 ngày trở lên phải làm thủ tục nghỉ học tạm thời, Mẫu số 09; trích khoản 1 Điều 30"
+ },
+ {
+  "id": "Q044",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ốm điều trị từ 10 ngày trở lên phải làm thủ tục nghỉ học tạm thời, Mẫu số 09; trích khoản 1 Điều 30"
+ },
+ {
+  "id": "Q044",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ốm điều trị từ 10 ngày trở lên phải làm thủ tục nghỉ học tạm thời, Mẫu số 09; trích khoản 1 Điều 30"
+ },
+ {
+  "id": "Q045",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định hỗ trợ ký túc xá khi nghỉ học tạm thời; thông tin ký túc xá chung có trong dữ liệu"
+ },
+ {
+  "id": "Q045",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định hỗ trợ ký túc xá khi nghỉ học tạm thời; thông tin ký túc xá chung có trong dữ liệu"
+ },
+ {
+  "id": "Q045",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định hỗ trợ ký túc xá khi nghỉ học tạm thời; thông tin ký túc xá chung có trong dữ liệu"
+ },
+ {
+  "id": "Q046",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có cách tính và làm tròn điểm học phần, chỉ nêu điểm trung bình chung; ontology có quy định làm tròn đến một chữ số thập phân nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q046",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có cách tính và làm tròn điểm học phần, chỉ nêu điểm trung bình chung; ontology có quy định làm tròn đến một chữ số thập phân nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q046",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có cách tính và làm tròn điểm học phần, chỉ nêu điểm trung bình chung; ontology có quy định làm tròn đến một chữ số thập phân nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q047",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin thi bù giữa kỳ và nêu thủ tục hoãn thi cuối kỳ; ontology có ý giảng viên giảng dạy học phần tổ chức thi bù nhưng dữ liệu công cụ không có (tìm kiếm)"
+ },
+ {
+  "id": "Q047",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin thi bù giữa kỳ và nêu thủ tục hoãn thi cuối kỳ; ontology có ý giảng viên giảng dạy học phần tổ chức thi bù nhưng dữ liệu công cụ không có (tìm kiếm)"
+ },
+ {
+  "id": "Q047",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin thi bù giữa kỳ và nêu thủ tục hoãn thi cuối kỳ; ontology có ý giảng viên giảng dạy học phần tổ chức thi bù nhưng dữ liệu công cụ không có (tìm kiếm)"
+ },
+ {
+  "id": "Q048",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ĐTB tích lũy toàn khóa 8,10 thuộc mức 8,00–8,99 xếp loại Giỏi; trích bảng khoản 2 Điều 23"
+ },
+ {
+  "id": "Q048",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ĐTB tích lũy toàn khóa 8,10 thuộc mức 8,00–8,99 xếp loại Giỏi; trích bảng khoản 2 Điều 23"
+ },
+ {
+  "id": "Q048",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "ĐTB tích lũy toàn khóa 8,10 thuộc mức 8,00–8,99 xếp loại Giỏi; trích bảng khoản 2 Điều 23"
+ },
+ {
+  "id": "Q049",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định chung bằng cấp theo ngành hay khoa; ví dụ văn bằng từng chương trình có trong dữ liệu kèm nguồn"
+ },
+ {
+  "id": "Q049",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định chung bằng cấp theo ngành hay khoa; ví dụ văn bằng từng chương trình có trong dữ liệu kèm nguồn"
+ },
+ {
+  "id": "Q049",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định chung bằng cấp theo ngành hay khoa; ví dụ văn bằng từng chương trình có trong dữ liệu kèm nguồn"
+ },
+ {
+  "id": "Q050",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin in hạng tốt nghiệp trên bằng"
+ },
+ {
+  "id": "Q050",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin in hạng tốt nghiệp trên bằng"
+ },
+ {
+  "id": "Q050",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có thông tin in hạng tốt nghiệp trên bằng"
+ },
+ {
+  "id": "Q051",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nguồn quỹ học bổng; phần 'xét theo nhóm' nêu phân loại xuất sắc/giỏi/khá và tách chương trình chuẩn/đặc biệt, đều có trong dữ liệu công cụ, không phải bịa; không nêu ý xét theo khóa, ngành hoặc lớp (ontology không có)"
+ },
+ {
+  "id": "Q051",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nguồn quỹ học bổng; phần 'xét theo nhóm' nêu phân loại xuất sắc/giỏi/khá và tách chương trình chuẩn/đặc biệt, đều có trong dữ liệu công cụ, không phải bịa; không nêu ý xét theo khóa, ngành hoặc lớp (ontology không có)"
+ },
+ {
+  "id": "Q051",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nguồn quỹ học bổng; phần 'xét theo nhóm' nêu phân loại xuất sắc/giỏi/khá và tách chương trình chuẩn/đặc biệt, đều có trong dữ liệu công cụ, không phải bịa; không nêu ý xét theo khóa, ngành hoặc lớp (ontology không có)"
+ },
+ {
+  "id": "Q052",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày tiền học bổng về tài khoản; việc cung cấp tài khoản Vietinbank có trong dữ liệu"
+ },
+ {
+  "id": "Q052",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày tiền học bổng về tài khoản; việc cung cấp tài khoản Vietinbank có trong dữ liệu"
+ },
+ {
+  "id": "Q052",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày tiền học bổng về tài khoản; việc cung cấp tài khoản Vietinbank có trong dữ liệu"
+ },
+ {
+  "id": "Q053",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q053",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q053",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q054",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q054",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q054",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói ngoài phạm vi học vụ, không gọi công cụ"
+ },
+ {
+  "id": "Q055",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "lớp Giáo dục tổng quát tối thiểu 50, tối đa 100 sinh viên; trích bảng Phụ lục 1"
+ },
+ {
+  "id": "Q055",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "lớp Giáo dục tổng quát tối thiểu 50, tối đa 100 sinh viên; trích bảng Phụ lục 1"
+ },
+ {
+  "id": "Q055",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "lớp Giáo dục tổng quát tối thiểu 50, tối đa 100 sinh viên; trích bảng Phụ lục 1"
+ },
+ {
+  "id": "Q056",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nội dung thời khóa biểu dự kiến"
+ },
+ {
+  "id": "Q056",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nội dung thời khóa biểu dự kiến"
+ },
+ {
+  "id": "Q056",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có nội dung thời khóa biểu dự kiến"
+ },
+ {
+  "id": "Q057",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu được đăng ký cùng lúc học phần mới, học lại, cải thiện (điểm b khoản 2 Điều 9); thiếu ý căn cứ danh sách học phần được mở và điều kiện đăng ký của từng học phần"
+ },
+ {
+  "id": "Q057",
+  "luot": 2,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu được đăng ký cùng lúc học phần mới, học lại, cải thiện (điểm b khoản 2 Điều 9); thiếu ý căn cứ danh sách học phần được mở và điều kiện đăng ký của từng học phần"
+ },
+ {
+  "id": "Q057",
+  "luot": 3,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu được đăng ký cùng lúc học phần mới, học lại, cải thiện (điểm b khoản 2 Điều 9); thiếu ý căn cứ danh sách học phần được mở và điều kiện đăng ký của từng học phần"
+ },
+ {
+  "id": "Q058",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "có quyền đăng ký chương trình khác lấy văn bằng thứ hai bằng hình thức tích lũy tín chỉ theo chương trình thứ hai; trích phần mở đầu Điều 28"
+ },
+ {
+  "id": "Q058",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "có quyền đăng ký chương trình khác lấy văn bằng thứ hai bằng hình thức tích lũy tín chỉ theo chương trình thứ hai; trích phần mở đầu Điều 28"
+ },
+ {
+  "id": "Q058",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "có quyền đăng ký chương trình khác lấy văn bằng thứ hai bằng hình thức tích lũy tín chỉ theo chương trình thứ hai; trích phần mở đầu Điều 28"
+ },
+ {
+  "id": "Q059",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có thời hạn áp dụng của mức học phí"
+ },
+ {
+  "id": "Q059",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có thời hạn áp dụng của mức học phí"
+ },
+ {
+  "id": "Q059",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có thời hạn áp dụng của mức học phí"
+ },
+ {
+  "id": "Q060",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "Phòng Kế hoạch - Tài chính phối hợp Phòng Hạ tầng và Công nghệ thông tin cập nhật mức học phí phải nộp; trích bước 2 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q060",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "Phòng Kế hoạch - Tài chính phối hợp Phòng Hạ tầng và Công nghệ thông tin cập nhật mức học phí phải nộp; trích bước 2 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q060",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "Phòng Kế hoạch - Tài chính phối hợp Phòng Hạ tầng và Công nghệ thông tin cập nhật mức học phí phải nộp; trích bước 2 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q061",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày thu học phí học kỳ II; nêu mốc chung 3 tuần đầu học kỳ chính có trong dữ liệu"
+ },
+ {
+  "id": "Q061",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày thu học phí học kỳ II; nêu mốc chung 3 tuần đầu học kỳ chính có trong dữ liệu"
+ },
+ {
+  "id": "Q061",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có ngày thu học phí học kỳ II; nêu mốc chung 3 tuần đầu học kỳ chính có trong dữ liệu"
+ },
+ {
+  "id": "Q062",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu số tín chỉ và cách đánh giá B2.1, B2.2 nhưng nói dữ liệu không có phân loại theo khóa 67 và 68; ontology có danh mục học phần ngoại ngữ (HPBB kỹ sư / HPBB) nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q062",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu số tín chỉ và cách đánh giá B2.1, B2.2 nhưng nói dữ liệu không có phân loại theo khóa 67 và 68; ontology có danh mục học phần ngoại ngữ (HPBB kỹ sư / HPBB) nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q062",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu số tín chỉ và cách đánh giá B2.1, B2.2 nhưng nói dữ liệu không có phân loại theo khóa 67 và 68; ontology có danh mục học phần ngoại ngữ (HPBB kỹ sư / HPBB) nhưng dữ liệu công cụ không có mục này (tìm kiếm)"
+ },
+ {
+  "id": "Q063",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức TOEFL iBT và IELTS của chương trình đặc biệt Quản trị khách sạn; dữ liệu công cụ chỉ có bảng ngoại ngữ khác, ontology có bảng chuẩn tiếng Anh (tìm kiếm)"
+ },
+ {
+  "id": "Q063",
+  "luot": 2,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức TOEFL iBT và IELTS của chương trình đặc biệt Quản trị khách sạn; dữ liệu công cụ chỉ có bảng ngoại ngữ khác, ontology có bảng chuẩn tiếng Anh (tìm kiếm)"
+ },
+ {
+  "id": "Q063",
+  "luot": 3,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có mức TOEFL iBT và IELTS của chương trình đặc biệt Quản trị khách sạn; dữ liệu công cụ chỉ có bảng ngoại ngữ khác, ontology có bảng chuẩn tiếng Anh (tìm kiếm)"
+ },
+ {
+  "id": "Q064",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "B2.2 yêu cầu thi kết thúc từ 5 điểm, B2.1 không có yêu cầu này; chỉ nêu tỷ trọng 20/40/40 của B2.1, không nêu của B2.2"
+ },
+ {
+  "id": "Q064",
+  "luot": 2,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "nêu đúng hai ý điểm sàn; thiếu ý cả hai học phần có tỷ trọng 20/40/40"
+ },
+ {
+  "id": "Q064",
+  "luot": 3,
+  "muc": "Đúng một phần",
+  "dat": false,
   "trich_dan": "dung",
   "hoi_du": true,
   "ly_do": "như lượt 2"
  },
  {
-  "id": "Q068",
+  "id": "Q065",
   "luot": 1,
-  "muc": "Từ chối nhầm",
-  "dat": false,
+  "muc": "Từ chối đúng",
+  "dat": true,
   "trich_dan": null,
   "hoi_du": null,
-  "ly_do": "nói dữ liệu không có yêu cầu TOEIC của chương trình đặc biệt, dù ontology có bảng chuẩn tiếng Anh chương trình đặc biệt"
+  "ly_do": "nói dữ liệu không có số tín chỉ của hai chương trình để so sánh"
+ },
+ {
+  "id": "Q065",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có số tín chỉ của hai chương trình để so sánh"
+ },
+ {
+  "id": "Q065",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói dữ liệu không có số tín chỉ của hai chương trình để so sánh"
+ },
+ {
+  "id": "Q066",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu thời gian xử lý đơn chuyển ngành (tham mưu 05 ngày, ký 01 ngày, thông báo và nhập dữ liệu 01 ngày) lấy từ quy trình xử lý công việc của Phòng CTCT&SV có trong dữ liệu công cụ, kèm nguồn; không phải bịa. Đáp án gốc và mức ontology 'khong' chưa chính xác: văn bản Codex đọc không có nhưng ontology có quy trình này"
+ },
+ {
+  "id": "Q066",
+  "luot": 2,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu thời gian xử lý đơn chuyển ngành (tham mưu 05 ngày, ký 01 ngày, thông báo và nhập dữ liệu 01 ngày) lấy từ quy trình xử lý công việc của Phòng CTCT&SV có trong dữ liệu công cụ, kèm nguồn; không phải bịa. Đáp án gốc và mức ontology 'khong' chưa chính xác: văn bản Codex đọc không có nhưng ontology có quy trình này"
+ },
+ {
+  "id": "Q066",
+  "luot": 3,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nêu thời gian xử lý đơn chuyển ngành (tham mưu 05 ngày, ký 01 ngày, thông báo và nhập dữ liệu 01 ngày) lấy từ quy trình xử lý công việc của Phòng CTCT&SV có trong dữ liệu công cụ, kèm nguồn; không phải bịa. Đáp án gốc và mức ontology 'khong' chưa chính xác: văn bản Codex đọc không có nhưng ontology có quy trình này"
+ },
+ {
+  "id": "Q067",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "bị cảnh báo khi tín chỉ không đạt vượt 50% khối lượng đăng ký trong học kỳ; trích điểm a khoản 1 Điều 20"
+ },
+ {
+  "id": "Q067",
+  "luot": 2,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "bị cảnh báo khi tín chỉ không đạt vượt 50% khối lượng đăng ký trong học kỳ; trích điểm a khoản 1 Điều 20"
+ },
+ {
+  "id": "Q067",
+  "luot": 3,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "bị cảnh báo khi tín chỉ không đạt vượt 50% khối lượng đăng ký trong học kỳ; trích điểm a khoản 1 Điều 20"
+ },
+ {
+  "id": "Q068",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm P từ 5 điểm cho học phần chỉ yêu cầu đạt, không tính vào điểm trung bình; trích điểm c khoản 2 Điều 16"
  },
  {
   "id": "Q068",
   "luot": 2,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có yêu cầu TOEIC của chương trình đặc biệt, dù ontology có bảng chuẩn tiếng Anh chương trình đặc biệt"
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm P từ 5 điểm cho học phần chỉ yêu cầu đạt, không tính vào điểm trung bình; trích điểm c khoản 2 Điều 16"
  },
  {
   "id": "Q068",
   "luot": 3,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có yêu cầu TOEIC của chương trình đặc biệt, dù ontology có bảng chuẩn tiếng Anh chương trình đặc biệt"
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "điểm P từ 5 điểm cho học phần chỉ yêu cầu đạt, không tính vào điểm trung bình; trích điểm c khoản 2 Điều 16"
  },
  {
   "id": "Q069",
   "luot": 1,
-  "muc": "Đúng",
+  "muc": "Từ chối đúng",
   "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "điều kiện không năm nhất, năm cuối, không bị xem xét buộc thôi học, còn thời gian; Mẫu số 13 nộp tại P.CTCT&SV; lượt 1–2 chỉ nêu Quy chế 1052, không nêu vị trí"
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định thi lại sau khi đóng bổ sung học phí; các ý điểm 0 khi cấm thi và xóa đăng ký học phần có trong dữ liệu"
  },
  {
   "id": "Q069",
   "luot": 2,
-  "muc": "Đúng",
+  "muc": "Từ chối đúng",
   "dat": true,
-  "trich_dan": "khong_co",
-  "hoi_du": true,
-  "ly_do": "như lượt 1"
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định thi lại sau khi đóng bổ sung học phí; các ý điểm 0 khi cấm thi và xóa đăng ký học phần có trong dữ liệu"
  },
  {
   "id": "Q069",
   "luot": 3,
-  "muc": "Đúng",
+  "muc": "Từ chối đúng",
   "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "như lượt 1; trích Điều 26"
+  "trich_dan": null,
+  "hoi_du": null,
+  "ly_do": "nói không có quy định thi lại sau khi đóng bổ sung học phí; các ý điểm 0 khi cấm thi và xóa đăng ký học phần có trong dữ liệu"
  },
  {
   "id": "Q070",
   "luot": 1,
-  "muc": "Từ chối đúng",
+  "muc": "Đúng",
   "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định nộp online hay bản giấy; nêu thủ tục nghỉ ốm có trong dữ liệu"
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "Hiệu trưởng ra quyết định công nhận và cấp bằng trong 03 tháng tính từ khi đủ điều kiện và hoàn thành nghĩa vụ; trích khoản 5 Điều 22"
  },
  {
   "id": "Q070",
   "luot": 2,
-  "muc": "Từ chối đúng",
+  "muc": "Đúng",
   "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định nộp online hay bản giấy; nêu thủ tục nghỉ ốm có trong dữ liệu"
+  "trich_dan": "dung",
+  "hoi_du": true,
+  "ly_do": "Hiệu trưởng ra quyết định công nhận và cấp bằng trong 03 tháng tính từ khi đủ điều kiện và hoàn thành nghĩa vụ; trích khoản 5 Điều 22"
  },
  {
   "id": "Q070",
   "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có quy định nộp online hay bản giấy; nêu thủ tục nghỉ ốm có trong dữ liệu"
- },
- {
-  "id": "Q071",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính điểm trung bình học kỳ"
- },
- {
-  "id": "Q071",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính điểm trung bình học kỳ"
- },
- {
-  "id": "Q071",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói dữ liệu không có cách tính điểm trung bình học kỳ"
- },
- {
-  "id": "Q072",
-  "luot": 1,
   "muc": "Đúng",
   "dat": true,
   "trich_dan": "dung",
   "hoi_du": true,
-  "ly_do": "ĐTB tích lũy ≥ 5,50; chuẩn ngoại ngữ; GDQP-AN, GDTC; nghĩa vụ thư viện, học phí; trích khoản 1 Điều 22"
- },
- {
-  "id": "Q072",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "ĐTB tích lũy ≥ 5,50; chuẩn ngoại ngữ; GDQP-AN, GDTC; nghĩa vụ thư viện, học phí; trích khoản 1 Điều 22"
- },
- {
-  "id": "Q072",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "ĐTB tích lũy ≥ 5,50; chuẩn ngoại ngữ; GDQP-AN, GDTC; nghĩa vụ thư viện, học phí; trích khoản 1 Điều 22"
- },
- {
-  "id": "Q073",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày lễ tốt nghiệp"
- },
- {
-  "id": "Q073",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày lễ tốt nghiệp"
- },
- {
-  "id": "Q073",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày lễ tốt nghiệp"
- },
- {
-  "id": "Q074",
-  "luot": 1,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "khá trở lên và không bị kỷ luật từ khiển trách trở lên nên không được xét; trích mục II.1 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q074",
-  "luot": 2,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "khá trở lên và không bị kỷ luật từ khiển trách trở lên nên không được xét; trích mục II.1 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q074",
-  "luot": 3,
-  "muc": "Đúng",
-  "dat": true,
-  "trich_dan": "dung",
-  "hoi_du": true,
-  "ly_do": "khá trở lên và không bị kỷ luật từ khiển trách trở lên nên không được xét; trích mục II.1 trang tiêu chuẩn học bổng"
- },
- {
-  "id": "Q075",
-  "luot": 1,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có thông tin cho cả hai vế; ontology chỉ có ý gián tiếp 'còn trong thời gian đào tạo theo kế hoạch'"
- },
- {
-  "id": "Q075",
-  "luot": 2,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có thông tin cho cả hai vế; ontology chỉ có ý gián tiếp 'còn trong thời gian đào tạo theo kế hoạch'"
- },
- {
-  "id": "Q075",
-  "luot": 3,
-  "muc": "Từ chối nhầm",
-  "dat": false,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có thông tin cho cả hai vế; ontology chỉ có ý gián tiếp 'còn trong thời gian đào tạo theo kế hoạch'"
- },
- {
-  "id": "Q076",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày công bố; nêu quy trình công bố dự kiến có trong dữ liệu"
- },
- {
-  "id": "Q076",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày công bố; nêu quy trình công bố dự kiến có trong dữ liệu"
- },
- {
-  "id": "Q076",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói không có ngày công bố; nêu quy trình công bố dự kiến có trong dữ liệu"
- },
- {
-  "id": "Q077",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q077",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q077",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q078",
-  "luot": 1,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q078",
-  "luot": 2,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
- },
- {
-  "id": "Q078",
-  "luot": 3,
-  "muc": "Từ chối đúng",
-  "dat": true,
-  "trich_dan": null,
-  "hoi_du": null,
-  "ly_do": "nói ngoài phạm vi học vụ"
+  "ly_do": "Hiệu trưởng ra quyết định công nhận và cấp bằng trong 03 tháng tính từ khi đủ điều kiện và hoàn thành nghĩa vụ; trích khoản 5 Điều 22"
  }
 ]

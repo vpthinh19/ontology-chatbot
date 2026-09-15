@@ -1,202 +1,177 @@
 [
  {
+  "id": "Q001",
+  "luot": 1,
   "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q007",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q009",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
   "id": "Q009",
   "luot": 3,
-  "muc": "Đúng một phần",
-  "trich_dan": "dung",
-  "ghi_chu": "theo file thì là mẫu số 13, khác với câu trả lời của chatbot, thiếu link dẫn tới quyết định 1052"
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
+  "id": "Q010",
+  "luot": 2,
   "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
   "id": "Q011",
   "luot": 1,
+  "nguoi_cham": "Thịnh",
   "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": "thiếu link dẫn tới quyết định 1052"
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q020",
   "luot": 1,
-  "muc": "Từ chối nhầm",
-  "trich_dan": null,
-  "ghi_chu": "đáp án gốc có vẻ đúng "
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
  },
  {
+  "id": "Q021",
+  "luot": 2,
   "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q025",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
   "id": "Q028",
   "luot": 1,
-  "muc": "Từ chối nhầm",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q036",
   "luot": 3,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng một phần",
+  "trich_dan": "dung"
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q038",
   "luot": 2,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q042",
   "luot": 3,
-  "muc": "Sai",
-  "trich_dan": null,
-  "ghi_chu": "dường như thiểu phần quyền lợi chỉ áp dụng cho ngành thứ nhất (tôi ko biết có chuẩn ko)"
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q043",
   "luot": 3,
-  "muc": "Đúng một phần",
-  "trich_dan": "dung",
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q044",
   "luot": 3,
-  "muc": "Bịa",
-  "trich_dan": null,
-  "ghi_chu": "trả lời thiếu so với đáp án"
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q047",
   "luot": 3,
-  "muc": "Sai",
-  "trich_dan": null,
-  "ghi_chu": "sai cả đáp án và câu trả lời, ko có nộp trực tiếp tại trường"
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối nhầm",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q048",
   "luot": 2,
-  "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q049",
   "luot": 3,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q051",
   "luot": 1,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q052",
   "luot": 1,
+  "nguoi_cham": "Thịnh",
   "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "trich_dan": null
  },
  {
+  "id": "Q053",
+  "luot": 2,
   "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
   "id": "Q054",
   "luot": 1,
+  "nguoi_cham": "Thịnh",
   "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q056",
   "luot": 1,
-  "muc": "Từ chối nhầm",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q063",
   "luot": 2,
-  "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": "nhưng đưa thông tin phụ ko cần thiết"
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối nhầm",
+  "trich_dan": null
  },
  {
-  "nguoi_cham": "Thịnh",
   "id": "Q065",
   "luot": 1,
-  "muc": "Đúng một phần",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
   "nguoi_cham": "Thịnh",
-  "id": "Q066",
-  "luot": 2,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q066",
-  "luot": 3,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q067",
-  "luot": 1,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q067",
-  "luot": 3,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q072",
-  "luot": 3,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q074",
-  "luot": 2,
-  "muc": "Đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
- },
- {
-  "nguoi_cham": "Thịnh",
-  "id": "Q076",
-  "luot": 2,
   "muc": "Từ chối đúng",
-  "trich_dan": null,
-  "ghi_chu": ""
+  "trich_dan": null
  }
 ]

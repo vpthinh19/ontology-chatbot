@@ -841,9 +841,8 @@ uv run chat_agent --hoi "em muốn xin nghỉ học"                      # hỏ
 uv run ontology_search search "nghỉ học tạm thời" "bảo lưu kết quả học tập"
 uv run pytest -q                                                    # bộ test Python
 uv run python resources/end-to-end/check_retrieval.py              # bộ kiểm tìm kiếm
-uv run python resources/end-to-end/run.py                          # chạy lại 85 câu (gọi LLM)
-uv run python resources/end-to-end/score.py                        # tổng hợp số liệu lượt chạy
-uv run python resources/end-to-end/score_quality.py                # mô hình chấm
+uv run python resources/end-to-end/heldout/run.py --luot 1         # hỏi bộ đề giữ kín một lượt (gọi LLM)
+uv run python resources/end-to-end/heldout/score.py                # tổng hợp điểm đã chấm
 ```
 
 Biến tuỳ chọn: `ONTCHATBOT_LLM_BASE_URL` (mặc định `https://lightning.ai/api/v1/`),
