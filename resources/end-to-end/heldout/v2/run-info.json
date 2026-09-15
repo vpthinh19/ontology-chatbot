@@ -1,0 +1,23 @@
+{
+ "1": {
+  "mo_hinh": "lightning-ai/gemma-4-31B-it",
+  "ngay": "2026-09-15",
+  "commit": "c66366d",
+  "top_k": 5,
+  "so_buoc_toi_da": 4
+ },
+ "2": {
+  "mo_hinh": "lightning-ai/gemma-4-31B-it",
+  "ngay": "2026-09-15",
+  "commit": "c66366d",
+  "top_k": 5,
+  "so_buoc_toi_da": 4
+ },
+ "3": {
+  "mo_hinh": "lightning-ai/gemma-4-31B-it",
+  "ngay": "2026-09-15",
+  "commit": "c66366d",
+  "top_k": 5,
+  "so_buoc_toi_da": 4
+ }
+}
