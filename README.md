@@ -660,7 +660,7 @@ Thao tác thêm và sửa đi qua bốn bước:
 1. Hỏi chatbot 85 câu soạn sẵn theo cách sinh viên hỏi, gồm cả lối viết trang trọng, đời thường và
    gõ thiếu dấu; mỗi câu là một lượt riêng.
 2. Lưu câu trả lời, dữ liệu chatbot đã tra được và thời gian của từng lượt.
-3. Chấm từng câu trả lời, rồi kiểm tra chéo bằng code.
+3. Chấm từng câu trả lời bằng mô hình chấm, rồi kiểm lại những câu có dấu hiệu chấm nhầm.
 
 Thiết lập: mô hình `lightning-ai/gemma-4-31B-it`; 3 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
 
@@ -693,15 +693,14 @@ nhận "không có thông tin"; đưa ra một con số là bịa. Vì vậy m�
 Một câu **đạt** khi: nhóm A được chấm Đúng; nhóm B không bị chấm Sai hoặc Lạc đề; nhóm C và D được
 chấm Từ chối.
 
-*Kiểm tra chéo bằng code*, không dùng mô hình:
+*Kiểm lại mô hình chấm.* Mô hình chấm cũng có thể chấm nhầm. Một đoạn code, không dùng mô hình, dò ba
+dấu hiệu chấm nhầm:
 
-| Chỉ tiêu | Cách tính |
-|---|---|
-| Tra đúng mục | nhóm A: mục chứa đáp án nằm trong các mục chatbot đã tra |
-| Bám dữ liệu | mọi con số từ hai chữ số và chữ viết tắt trong câu trả lời có trong dữ liệu đã tra, câu hỏi hoặc lời hướng dẫn |
+- chấm Từ chối, nhưng chatbot đã tra được đúng mục chứa đáp án;
+- chấm Đúng, nhưng chatbot không tra được dữ liệu nào;
+- chấm Đúng, nhưng câu trả lời có con số hoặc chữ viết tắt không có trong dữ liệu đã tra.
 
-Câu nào có kết quả code mâu thuẫn với mô hình chấm — ví dụ mô hình chấm Từ chối nhưng code thấy chatbot
-đã tra đúng mục — được đọc lại bằng mắt.
+Câu có dấu hiệu được đọc lại bằng mắt để quyết định giữ hay sửa mức chấm.
 
 **Kết quả**
 
@@ -722,13 +721,12 @@ Sáu câu nhóm A chưa đạt:
 | Ontology thiếu chi tiết được hỏi | "muon dang ky datn thi lien he phong nao?" — không ghi nơi nộp; chatbot nói đúng như vậy |
 | Chỉ trả lời được một vế | "Bảng điểm toàn khóa và danh hiệu tốt nghiệp quy định thế nào?", "hãy tổng hợp địa chỉ và nhiệm vụ của trường…" |
 
-Kiểm tra chéo bằng code:
+Kiểm lại mô hình chấm: 4/85 câu có dấu hiệu chấm nhầm; đọc lại cả 4, không câu nào phải sửa mức.
 
-- Tra đúng mục: 55/58 câu nhóm A.
-- Bám dữ liệu: 83/85 câu. Hai câu còn lại chứa "HBKHT" và "PDF" — chữ viết tắt chatbot tự dùng, không
-  phải thông tin học vụ.
-- Bốn câu mâu thuẫn với mô hình chấm: hai câu vừa nêu, câu "quản lý thủy sản" và câu "đăng ký đồ án" ở
-  bảng trên. Đọc lại cả bốn, mức chấm giữ nguyên.
+- "quản lý thủy sản ra sap" và "muon dang ky datn…" (bảng trên) bị chấm Từ chối dù đã tra đúng mục:
+  chatbot thật sự nói dữ liệu không có điều nó được hỏi.
+- Hai câu chấm Đúng có chữ "HBKHT" và "PDF" không nằm trong dữ liệu: đó là chữ viết tắt chatbot tự dùng
+  (tên học bổng viết tắt, tên định dạng tệp), không phải thông tin học vụ.
 
 Thời gian phản hồi:
 
