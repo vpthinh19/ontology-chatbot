@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cau_hoi"],
+  "properties": {
+    "cau_hoi": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["chu_de", "loai", "cau_hoi", "phong_cach", "y_chinh", "tep", "vi_tri", "trich_nguyen_van", "ghi_chu"],
+        "properties": {
+          "chu_de": {"type": "string", "enum": ["A1", "A2", "A3", "A4", "B1", "B2", "B3", "B4", "C"]},
+          "loai": {"type": "string", "enum": ["co_dap_an", "khong_co_trong_van_ban", "ngoai_hoc_vu"]},
+          "cau_hoi": {"type": "string"},
+          "phong_cach": {"type": "string", "enum": ["trang_trong", "doi_thuong", "khong_dau", "viet_tat_hoac_loi_go"]},
+          "y_chinh": {"type": "array", "items": {"type": "string"}},
+          "tep": {"type": ["string", "null"]},
+          "vi_tri": {"type": ["string", "null"]},
+          "trich_nguyen_van": {"type": "array", "items": {"type": "string"}},
+          "ghi_chu": {"type": "string"}
+        }
+      }
+    }
+  }
+}
