@@ -632,19 +632,17 @@ Thao tác thêm và sửa đi qua bốn bước:
 > đã được biểu diễn, không nói về một hệ thống có dữ liệu phủ hết phạm vi ở mục 1.3.
 
 - **Chatbot** trong mục này là toàn bộ chuỗi xử lý ở mục 3: LLM, công cụ tra cứu và search engine.
-- Ba phần đánh giá: bộ kiểm tìm kiếm (RQ1), bộ đề giữ kín (RQ2), test tự động (RQ3).
+- Ba phần đánh giá: bộ kiểm tìm kiếm (RQ1), bộ kiểm toàn hệ thống (RQ2), test tự động (RQ3).
 
 ### 8.1 Bộ kiểm tìm kiếm
 
 **Cách làm**
 
-- 49 câu hỏi; mỗi câu có sẵn từ khoá và mục chứa đáp án. Từ khoá lấy từ một lượt chạy của chatbot
-  rồi giữ cố định, nên kết quả chỉ phản ánh search engine.
+- 49 câu hỏi; mỗi câu có sẵn từ khoá và mục chứa đáp án. Từ khoá được giữ cố định, nên kết quả chỉ
+  phản ánh search engine.
 - Đưa từ khoá vào search engine. **Đạt** khi mục chứa đáp án nằm trong 5 mục trả về.
 - Ví dụ: câu "tỷ trọng điểm ngoại ngữ ra sao ạ"; từ khoá `tỷ trọng điểm ngoại ngữ`, `điểm ngoại ngữ`,
   `quy định điểm ngoại ngữ`; mục chứa đáp án "Bảng đánh giá học phần ngoại ngữ".
-- Bộ này được chạy lại sau mỗi lần sửa dữ liệu hoặc search engine để phát hiện câu tụt hạng, nên không
-  độc lập với quá trình xây dựng hệ thống. Phép đo độc lập ở mục 8.2.
 
 **Kết quả: 49/49 câu đạt**
 
@@ -656,110 +654,113 @@ Thao tác thêm và sửa đi qua bốn bước:
   về nghỉ học tạm thời.
 - Từ khoá cố định nên kết quả không cho biết chatbot tự viết từ khoá tốt đến đâu; mục 8.2 đo phần đó.
 
-### 8.2 Bộ đề giữ kín
+### 8.2 Bộ kiểm toàn hệ thống
 
-Câu hỏi và đáp án gốc được xây từ văn bản chính thức, độc lập với ontology và với chatbot, rồi chốt
-trước khi chạy.
+**Bộ câu hỏi**
 
-**Xây bộ đề**
+- 70 câu hỏi soạn từ văn bản chính thức của Trường: quy chế đào tạo, quy chế tuyển sinh, quy trình và
+  hướng dẫn thu học phí, quyết định và tiêu chuẩn học bổng.
+- Mỗi câu kèm **đáp án chuẩn**: các ý mà một câu trả lời đúng phải có, cùng văn bản và vị trí căn cứ
+  (điều, khoản, mục).
+- Chủ đề: đăng ký và rút học phần; học cùng lúc hai chương trình, văn bằng hai, liên thông; học phí;
+  chương trình đặc biệt và chương trình chuẩn; nghỉ học, thôi học; thi, điểm, cảnh báo học tập; tốt
+  nghiệp; học bổng; câu ngoài học vụ.
+- Lối viết: đời thường, không dấu, viết tắt hoặc gõ sai, trang trọng.
 
-1. Ba mô hình GPT-5.6 đọc bản chép các văn bản chính thức của Trường — không đọc ontology, không dùng
-   chatbot — và viết câu hỏi theo lối sinh viên nhắn tin, kèm đáp án gốc.
-2. Đáp án gốc của mỗi câu gồm các ý bắt buộc, văn bản và vị trí căn cứ (điều, khoản, mục) và đoạn trích
-   nguyên văn. Đoạn trích được đối chiếu với văn bản đến từng ký tự.
-3. Chủ đề:
-   - bốn nhóm sinh viên hỏi nhiều: đăng ký và rút học phần; học cùng lúc hai chương trình, văn bằng hai,
-     liên thông; học phí; chương trình đặc biệt và chương trình chuẩn;
-   - bốn nhóm học vụ khác: nghỉ học và thôi học; thi, điểm và cảnh báo học tập; tốt nghiệp; học bổng;
-   - câu ngoài học vụ.
-4. Lối viết: đời thường, không dấu, viết tắt hoặc gõ sai, trang trọng.
-5. Lọc bỏ câu trùng ý, câu có hai cách hiểu, câu có đáp án lẫn phần văn bản quy định với phần văn bản
-   không quy định, và câu dễ tranh cãi khi chấm. Từ 106 câu sinh ra còn 70 câu.
-6. Đối chiếu từng câu với ontology, ghi ontology có đủ, có một phần hay không có dữ liệu cho đáp án gốc;
-   từ đó định ra hành vi đúng. Việc này làm trước khi chạy chatbot.
-7. Chốt bộ đề và tiêu chí chấm, sau đó mới chạy. Bộ đề được sinh sau khi hệ thống hoàn thiện, không trùng
-   ý với các câu hỏi thử dùng khi phát triển và không được dùng để điều chỉnh hệ thống.
+**Nhóm câu hỏi**
 
-**Hành vi đúng**
+Câu trả lời đúng phụ thuộc vào dữ liệu chatbot có. Nếu văn bản có quy định mà ontology chưa biểu diễn,
+chatbot phải nói không có thông tin; đưa ra nội dung ngoài dữ liệu là bịa. Vì vậy mỗi câu thuộc một nhóm:
 
-Hành vi đúng đi theo dữ liệu chatbot có. Văn bản có quy định mà ontology chưa biểu diễn thì chatbot vẫn
-phải nói không có thông tin; đưa ra nội dung ngoài dữ liệu là bịa.
+| Nhóm | Ví dụ | Số câu | Đạt khi |
+|---|---|---:|---|
+| 1. Ontology có đáp án | "Em có tài khoản Agribank, đóng hp bằng Mobile Banking thay vì VNPAY được không và có mất phí không?" | 31 | trả lời đủ mọi ý của đáp án chuẩn |
+| 2. Ontology có một phần đáp án | "Hoc lien thong xong co dang ky mon theo ke hoach rieng khong, va mon cu co duoc bao luu?" | 2 | trả lời phần có và nói rõ phần còn thiếu |
+| 3. Ontology không có đáp án | "Em có thể đóng học phí bằng ví MoMo không?" | 33 | nói không có thông tin |
+| 4. Ngoài học vụ | "Cuối tuần ở Nha Trang có chỗ nào ngắm hoàng hôn đẹp không?" | 4 | từ chối |
 
-| Dữ liệu | Hành vi đúng | Ví dụ | Số câu |
-|---|---|---|---:|
-| ontology có đáp án | trả lời đủ các ý bắt buộc | "Em có tài khoản Agribank, đóng hp bằng Mobile Banking thay vì VNPAY được không và có mất phí không?" | 31 |
-| ontology có một phần đáp án | trả lời phần có, nói rõ phần thiếu | "Hoc lien thong xong co dang ky mon theo ke hoach rieng khong, va mon cu co duoc bao luu?" | 2 |
-| ontology không có đáp án, văn bản có | nói không có thông tin | "Em đã có quyết định tốt nghiệp nhưng chưa nhận bằng, có xin giấy chứng nhận tốt nghiệp tạm thời được không?" | 15 |
-| ontology và văn bản đều không có | nói không có thông tin | "Em có thể đóng học phí bằng ví MoMo không?" | 18 |
-| câu ngoài học vụ | từ chối | "Cuối tuần ở Nha Trang có chỗ nào ngắm hoàng hôn đẹp không?" | 4 |
+Nhóm 3 gồm 15 câu văn bản có quy định và 18 câu văn bản không quy định.
 
-**Chạy**
+**Cách chạy và chấm**
 
-- Mỗi câu hỏi 3 lượt; mỗi lượt là một hội thoại mới. Lưu câu trả lời, dữ liệu công cụ và thời gian.
-- Thiết lập: mô hình `lightning-ai/gemma-4-31B-it`; 5 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
+- Mỗi câu hỏi 3 lượt, mỗi lượt là một hội thoại mới: 210 câu trả lời. Mô hình
+  `lightning-ai/gemma-4-31B-it`; 5 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
+- Mỗi câu trả lời được đối chiếu với đáp án chuẩn và với dữ liệu công cụ của chính lượt đó, rồi xếp một
+  mức. Việc chấm do một mô hình ngôn ngữ khác mô hình của chatbot thực hiện; 25 câu trả lời chọn ngẫu nhiên
+  được nhóm nghiên cứu chấm lại độc lập.
 
-**Chấm**
+| Mức | Nghĩa |
+|---|---|
+| Đúng | có đủ mọi ý của đáp án chuẩn; với nhóm 2, có phần ontology có và nói rõ phần thiếu |
+| Đúng một phần | thiếu ít nhất một ý, không có thông tin sai |
+| Từ chối nhầm | nói không có thông tin trong khi ontology có đáp án |
+| Từ chối đúng | nói không có thông tin (nhóm 3) hoặc từ chối câu ngoài học vụ (nhóm 4) |
+| Sai | có thông tin trái đáp án chuẩn |
+| Bịa | có thông tin cụ thể không nằm trong dữ liệu công cụ trả về, dù thông tin đó đúng hay sai |
 
-- Người chấm là Claude Opus 5, khác họ mô hình với chatbot và với mô hình sinh câu hỏi. Với mỗi câu trả
-  lời, người chấm đọc câu hỏi, đáp án gốc, câu trả lời và dữ liệu công cụ của đúng lượt đó.
-
-| Hành vi đúng | Đạt | Không đạt |
-|---|---|---|
-| trả lời | **Đúng**: đủ mọi ý bắt buộc, không có thông tin trái đáp án gốc | Đúng một phần · Sai · Từ chối nhầm |
-| trả lời phần có, nói phần thiếu | **Đúng**: đúng phần có và nói rõ phần còn lại không có thông tin | Đúng một phần · Sai · Từ chối nhầm |
-| nói không có thông tin | **Từ chối đúng** | Bịa: đưa thông tin cụ thể mà dữ liệu công cụ không có, dù thông tin đó đúng hay sai |
-| từ chối | **Từ chối đúng** | Trả lời ngoài phạm vi |
-
-- Câu trả lời có thông tin sai hoặc bịa bị chấm Sai hoặc Bịa, bất kể phần còn lại.
-- Tiêu chí chặt: thiếu bất kỳ ý bắt buộc nào, kể cả ý câu hỏi không hỏi trực tiếp, là Đúng một phần.
-- Trích dẫn, chấm với câu Đúng hoặc Đúng một phần: đúng chỗ · sai chỗ · không nêu nguồn.
-- Nhóm nghiên cứu chấm lại độc lập 25 câu trả lời chọn ngẫu nhiên, không xem điểm của người chấm; báo
-  tỷ lệ trùng và hệ số kappa của Cohen (1: trùng hoàn toàn; 0: trùng ở mức ngẫu nhiên).
+Câu trả lời có thông tin sai hoặc bịa bị xếp Sai hoặc Bịa, bất kể phần còn lại. Một câu trả lời **đạt**
+khi được xếp Đúng (nhóm 1, 2) hoặc Từ chối đúng (nhóm 3, 4).
 
 **Chỉ số**
 
-| Chỉ số | Đo điều gì | Cách tính |
+| Chỉ số | Cách tính | Cho biết |
 |---|---|---|
-| A. Tỷ lệ đạt | chatbot xử lý đúng với dữ liệu nó có | số câu trả lời đạt / tổng số |
-| B. Sinh viên nhận đủ thông tin | sinh viên nhận được đáp án đầy đủ | như A, nhưng câu mà văn bản có đáp án còn ontology không có hoặc chỉ có một phần luôn tính là không đạt |
+| Tỷ lệ đạt | số câu trả lời đạt / 210 | chatbot xử lý đúng đến đâu so với dữ liệu nó có |
+| Tỷ lệ đủ thông tin | như tỷ lệ đạt, nhưng câu mà văn bản có quy định còn ontology không có hoặc chỉ có một phần luôn tính là không đạt | người hỏi nhận được đủ thông tin mà văn bản quy định đến đâu |
+| Số câu trả lời Sai, Bịa | đếm trên 210 câu trả lời | chatbot có đưa thông tin sai hoặc ngoài dữ liệu không |
+| Trích dẫn đúng chỗ | trong các câu trả lời Đúng hoặc Đúng một phần, số câu có nguồn trỏ tới đúng văn bản và vị trí chứa dữ kiện | câu trả lời có kiểm chứng lại được không |
+| Độ ổn định | số câu đạt ở cả 3 lượt, không đạt ở lượt nào, hoặc chỉ đạt ở một số lượt | kết quả có lặp lại giữa các lần hỏi không |
+| Mức trùng khi chấm lại | trên 25 câu trả lời: số câu nhóm nghiên cứu xếp cùng mức; hệ số kappa của Cohen trên quyết định đạt/không đạt (1: trùng hoàn toàn; 0: trùng không hơn ngẫu nhiên) | việc chấm có đáng tin không |
+| Thời gian | trung vị và p95 của một lượt hỏi và của một lần gọi công cụ | độ trễ người dùng chờ |
 
-Mỗi chỉ số tính theo từng lượt; báo trung bình và khoảng thấp nhất–cao nhất qua 3 lượt.
+Hai tỷ lệ đầu được tính riêng cho từng lượt; kết quả ghi trung bình và khoảng thấp nhất–cao nhất qua 3 lượt.
 
-**Kết quả: tỷ lệ đạt 83,3%; không câu trả lời nào Sai hoặc Bịa.**
+**Kết quả**
 
 | Chỉ số | Kết quả |
 |---|---|
-| A. Tỷ lệ đạt | **83,3%** (82,9–84,3%) |
-| B. Sinh viên nhận đủ thông tin | **60,5%** (60,0–61,4%) |
-| Sai · Bịa | 0 · 0 |
-| Trích dẫn đúng chỗ | 77/78 câu trả lời Đúng hoặc Đúng một phần; 1 câu chỉ nêu tên văn bản |
-| Đạt cả 3 lượt · dao động · không lượt nào đạt | 57 · 3 · 10 câu |
-| Nhóm chấm lại 25 câu trả lời | trùng mức 25/25 · kappa 1,00 |
+| Tỷ lệ đạt | **83,3%** (175/210; từng lượt 82,9–84,3%) |
+| Tỷ lệ đủ thông tin | **60,5%** (127/210; từng lượt 60,0–61,4%) |
+| Sai · Bịa | **0 · 0** |
+| Trích dẫn đúng chỗ | 77/78 |
+| Độ ổn định | 57 câu đạt cả 3 lượt · 3 câu chỉ đạt một số lượt · 10 câu không đạt lượt nào |
+| Mức trùng khi chấm lại | 25/25 · kappa 1,00 |
+| Thời gian một lượt hỏi · một lần gọi công cụ | trung vị 2,1 s (p95 3,1 s) · trung vị 3,5 ms (p95 5,7 ms) |
 
-| Hành vi đúng | Số câu | Đạt | Phân bố mức (3 lượt) |
+| Nhóm | Số câu | Tỷ lệ đạt | Phân bố mức (210 câu trả lời) |
 |---|---:|---:|---|
-| trả lời | 31 | 65,6% | Đúng 61 · Đúng một phần 14 · Từ chối nhầm 18 |
-| trả lời phần có, nói phần thiếu | 2 | 50,0% | Đúng 3 · Từ chối nhầm 3 |
-| nói không có thông tin | 33 | 100% | Từ chối đúng 99 |
-| từ chối ngoài phạm vi | 4 | 100% | Từ chối đúng 12 |
+| 1. Ontology có đáp án | 31 | 65,6% | Đúng 61 · Đúng một phần 14 · Từ chối nhầm 18 |
+| 2. Ontology có một phần đáp án | 2 | 50,0% | Đúng 3 · Từ chối nhầm 3 |
+| 3. Ontology không có đáp án | 33 | 100% | Từ chối đúng 99 |
+| 4. Ngoài học vụ | 4 | 100% | Từ chối đúng 12 |
 
-- Chênh lệch giữa A và B là 17 câu văn bản có đáp án nhưng ontology không có hoặc chỉ có một phần.
-- 11/14 câu trả lời Đúng một phần đã nêu đủ điều câu hỏi hỏi trực tiếp, chỉ thiếu ý phụ.
-- 16/25 câu trả lời trong mẫu chấm lại là câu cần từ chối, nên mức trùng chủ yếu phản ánh các câu dễ chấm.
+**Diễn giải**
 
-10 câu không lượt nào đạt:
+1. **Khi dữ liệu không có đáp án, chatbot không bịa.** Cả 111 câu trả lời của nhóm 3 và 4 đều đạt, và
+   trong 210 câu trả lời không có câu nào bị xếp Sai hoặc Bịa. Nguyên tắc chỉ trả lời từ dữ kiện tra được
+   (mục 3) giữ được trên toàn bộ các lượt.
+2. **Khi dữ liệu có đáp án, lỗi chính là không tìm ra dữ kiện.** Nhóm 1 đạt 61/93 câu trả lời. Cả 18 câu
+   trả lời Từ chối nhầm đều có cùng nguyên nhân: mục chứa đáp án không nằm trong 5 mục search engine trả
+   về, nên dữ liệu công cụ không có đáp án và chatbot nói không có thông tin. 14 câu trả lời Đúng một phần
+   không chứa thông tin sai; 11 câu trong số đó đã trả lời đủ điều câu hỏi hỏi trực tiếp và chỉ thiếu ý phụ
+   của đáp án chuẩn.
+3. **Khoảng cách giữa hai tỷ lệ là phần dữ liệu chưa biểu diễn.** 48 câu trả lời (16 câu × 3 lượt) được
+   tính đạt vì chatbot nói đúng là dữ liệu không có hoặc chỉ có một phần, nhưng văn bản có quy định; người
+   hỏi vì vậy không nhận đủ thông tin. Đây là giới hạn của độ phủ ontology, không phải lỗi xử lý: bổ sung dữ
+   liệu thu hẹp khoảng cách này mà không cần thay đổi chatbot.
+4. **Trích dẫn kiểm chứng được.** 77/78 câu trả lời có nội dung dẫn đúng văn bản và vị trí; câu còn lại chỉ
+   nêu tên văn bản, không nêu điều khoản.
+5. **Kết quả lặp lại giữa các lượt.** 57/70 câu đạt ở cả 3 lượt. 3 câu chỉ đạt một số lượt vì LLM viết từ
+   khoá khác nhau giữa các lượt: có lượt tìm được mục chứa đáp án, có lượt không.
+6. **Kết quả chấm tự động khớp với nhóm nghiên cứu.** Nhóm nghiên cứu xếp cùng mức ở cả 25 câu trả lời. Mẫu nhỏ và
+   16/25 câu thuộc nhóm 3, 4 — loại dễ phân định — nên mức trùng này là kiểm tra sơ bộ.
+
+10 câu không đạt ở lượt nào:
 
 | Nguyên nhân | Số câu | Ví dụ |
 |---|---:|---|
-| Mục chứa đáp án không nằm trong 5 mục tìm được | 6 | "Chương trình đặc biệt Quản trị khách sạn cần TOEFL iBT và IELTS tối thiểu bao nhiêu…" — từ khoá kéo bảng chuẩn ngoại ngữ khác lên thay bảng chuẩn tiếng Anh; "làm tròn điểm", "thi bù" chỉ nằm trong nội dung, không nằm trong tên của mục |
-| Câu trả lời thiếu ý bắt buộc | 4 | "Em có thể đk cùng lúc môn mới, môn chưa đạt để học lại và môn đã đạt để cải thiện điểm trong một kỳ không?" — thiếu ý việc đăng ký còn căn cứ danh sách học phần được mở |
-
-Thời gian phản hồi:
-
-| Phép đo | Trung vị | p95 |
-|---|---:|---:|
-| Một lượt hỏi, 210 lượt | 2,1 s | 3,1 s |
-| Một lần gọi công cụ, 198 lần | 3,5 ms | 5,7 ms |
+| Mục chứa đáp án không nằm trong 5 mục tìm được | 6 | "Chương trình đặc biệt Quản trị khách sạn cần TOEFL iBT và IELTS tối thiểu bao nhiêu để đạt chuẩn ngoại ngữ?" — từ khoá `chuẩn ngoại ngữ` trùng tên "bảng chuẩn ngoại ngữ khác chương trình đặc biệt" (tiếng Trung, Nhật, Pháp…), còn tên "bảng chuẩn tiếng Anh chương trình đặc biệt" không chứa từ `ngoại ngữ`, nên bảng chứa đáp án không được chọn. Hai câu khác hỏi "làm tròn điểm" và "thi bù": các cụm này chỉ có trong nội dung của mục, mà nội dung không được đưa vào chỉ mục (mục 6.2). |
+| Câu trả lời thiếu ý của đáp án chuẩn | 4 | "Em có thể đk cùng lúc môn mới, môn chưa đạt để học lại và môn đã đạt để cải thiện điểm trong một kỳ không?" — trả lời đúng là được, nhưng thiếu ý việc đăng ký còn phụ thuộc danh sách học phần được mở. |
 
 Thời gian một lượt gần như nằm hết ở LLM và mạng; lượt dài nhất 4,8 s.
 
@@ -796,7 +797,7 @@ trình duyệt.
 | Câu hỏi nghiên cứu | Kết quả |
 |---|---|
 | RQ1 — tìm kiếm | mục chứa đáp án nằm trong 5 mục ở 49/49 câu, đứng đầu ở 43/49 câu |
-| RQ2 — toàn hệ thống | bộ đề giữ kín 70 câu × 3 lượt: tỷ lệ đạt 83,3%, sinh viên nhận đủ thông tin 60,5%; không câu trả lời nào Sai hoặc Bịa; trung vị 2,1 giây mỗi lượt |
+| RQ2 — toàn hệ thống | 70 câu × 3 lượt: tỷ lệ đạt 83,3%, tỷ lệ đủ thông tin 60,5%; không câu trả lời nào Sai hoặc Bịa; khi ontology có đáp án, lỗi chủ yếu do không tìm ra mục chứa đáp án; trung vị 2,1 giây mỗi lượt |
 | RQ3 — nguồn và cập nhật | toàn bộ dữ liệu khớp lược đồ và quy tắc trích dẫn; mọi thao tác ghi đi qua xác thực theo lược đồ |
 
 Chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên phần nội dung đã được biểu diễn.
@@ -822,13 +823,13 @@ Kết quả **không** chứng minh hệ thống:
 
 | Hạn chế | Nội dung |
 |---|---|
-| Độ phủ dữ liệu | nội dung phủ một phần phạm vi ở mục 1.3; câu hỏi vào phần chưa biểu diễn nhận "không có thông tin" dù quy định có tồn tại — 17/70 câu của bộ đề giữ kín thuộc trường hợp này |
+| Độ phủ dữ liệu | nội dung phủ một phần phạm vi ở mục 1.3; câu hỏi vào phần chưa biểu diễn nhận "không có thông tin" dù quy định có tồn tại — 17/70 câu của bộ kiểm toàn hệ thống thuộc trường hợp này |
 | Tìm theo từ vựng | engine chỉ khớp chữ; cách gọi không có trong tên hay tên gọi khác của mục sẽ trượt; chất lượng phụ thuộc từ khoá LLM viết |
 | Không tra theo điều khoản | tầng nguồn không được tìm kiếm, nên câu hỏi dạng "khoản 2 Điều 11" không lấy được nội dung tương ứng |
 | Không có ngưỡng | 5 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục không đúng ý hỏi và có thể dùng nhầm mục gần đúng |
 | Có nguồn chưa đủ | LLM vẫn có thể ghép hai dữ kiện đúng thành một quan hệ mà dữ liệu không nói |
 | Biên soạn dữ liệu | đối chiếu thủ công, chưa có hai người rà độc lập; trang web có thể đổi sau khi thu thập; một số thông báo có hạn theo học kỳ |
-| Đánh giá | câu hỏi do mô hình sinh từ văn bản, chưa phải câu hỏi thật của sinh viên; người chấm là mô hình, nhóm chỉ chấm lại 25 câu trả lời, phần lớn là câu dễ chấm; mức dữ liệu ontology của từng câu do người đánh dấu và có câu đánh dấu chưa chính xác; hệ thống được điều chỉnh theo các câu hỏi thử soạn từ cùng văn bản, nên bộ đề có thể thuận lợi hơn câu hỏi thật; bộ kiểm tìm kiếm dùng trong quá trình phát triển |
+| Đánh giá | 70 câu soạn từ văn bản, chưa phải câu hỏi thực tế của sinh viên; việc chấm tự động chỉ được kiểm tra lại trên 25 câu trả lời, phần lớn là câu dễ phân định; nhóm dữ liệu của từng câu được xác định thủ công |
 | Trang quản trị | bản triển khai ghi vào tệp trong container nên thay đổi mất khi dịch vụ khởi động lại; một khoá quản trị chung, không phân quyền, không lưu lịch sử sửa; mỗi lần ghi kiểm lại toàn bộ đồ thị nên chậm dần khi dữ liệu lớn lên |
 | Chưa đối chứng | chưa so với **RAG** (*retrieval-augmented generation*: cắt văn bản gốc thành đoạn, tìm đoạn gần nghĩa rồi đưa cho LLM) hay cách tiếp cận khác trên cùng bộ câu hỏi |
 
@@ -839,10 +840,10 @@ Kết quả **không** chứng minh hệ thống:
    người sửa cùng lúc không ghi đè nhau.
 3. Thêm lịch sử sửa, xem khác biệt trước khi lưu, và phân quyền cho trang quản trị.
 4. Biểu diễn thời gian hiệu lực của văn bản để trả lời đúng theo khoá học.
-5. Xây bộ câu hỏi thật từ người dùng, cố định trước khi sửa hệ thống; chạy nhiều lượt; dùng mô
-   hình chấm khác mô hình trợ lý và thêm người chấm độc lập.
+5. Xây bộ câu hỏi từ câu hỏi thực tế của sinh viên; chấm lại bởi nhiều người trên mẫu lớn hơn.
 6. So sánh với RAG trên văn bản gốc, cùng bộ câu hỏi.
-7. Gợi ý tên gọi khác cho mục từ các từ khoá thật đã trượt.
+7. Gợi ý tên gọi khác cho mục từ các từ khoá đã trượt, và cho phép tìm cụm từ chỉ nằm trong nội dung
+   của mục (ví dụ "làm tròn điểm", "thi bù" ở mục 8.2).
 
 ## 12. Tài nguyên và cách chạy thử
 
@@ -886,7 +887,7 @@ uv run chat_agent --hoi "em muốn xin nghỉ học"                      # hỏ
 uv run ontology_search search "nghỉ học tạm thời" "bảo lưu kết quả học tập"
 uv run pytest -q                                                    # bộ test Python
 uv run python resources/end-to-end/check_retrieval.py              # bộ kiểm tìm kiếm
-uv run python resources/end-to-end/heldout/run.py --luot 1         # hỏi bộ đề giữ kín một lượt (gọi LLM)
+uv run python resources/end-to-end/heldout/run.py --luot 1         # hỏi bộ kiểm toàn hệ thống một lượt (gọi LLM)
 uv run python resources/end-to-end/heldout/score.py                # tổng hợp điểm đã chấm
 ```
 
