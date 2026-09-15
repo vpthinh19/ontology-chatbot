@@ -3,20 +3,26 @@
 Tỷ lệ đạt tính theo từng lượt rồi báo trung bình, thấp nhất và cao nhất qua các lượt.
 
     python resources/end-to-end/heldout/score.py
+    python resources/end-to-end/heldout/score.py --bo-de resources/end-to-end/heldout/v2
 """
 
 from __future__ import annotations
 
+import argparse
 import collections
 import json
 import statistics
 from pathlib import Path
 
 HERE = Path(__file__).parent
-CAU_HOI = {q["id"]: q for q in json.loads((HERE / "questions.json").read_text(encoding="utf-8"))}
-DIEM = json.loads((HERE / "grades.json").read_text(encoding="utf-8"))
+_parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+_parser.add_argument("--bo-de", type=Path, default=HERE,
+                     help="thư mục chứa questions.json, grades.json và results-*.json")
+BO_DE = _parser.parse_args().bo_de
+CAU_HOI = {q["id"]: q for q in json.loads((BO_DE / "questions.json").read_text(encoding="utf-8"))}
+DIEM = json.loads((BO_DE / "grades.json").read_text(encoding="utf-8"))
 KET_QUA = {p.stem.removeprefix("results-"): json.loads(p.read_text(encoding="utf-8"))
-           for p in sorted(HERE.glob("results-*.json"))}
+           for p in sorted(BO_DE.glob("results-*.json"))}
 LUOT = sorted({str(d["luot"]) for d in DIEM})
 TEN = {"tra_loi": "Trả lời", "tra_loi_phan_co_va_noi_phan_thieu": "Trả lời phần có, nói phần thiếu",
        "noi_khong_co_thong_tin": "Nói không có thông tin", "tu_choi_ngoai_pham_vi": "Từ chối (ngoài phạm vi)"}
@@ -82,7 +88,7 @@ on_dinh = collections.Counter("đạt mọi lượt" if all(v) else "không lư�
                               for v in theo_cau.values())
 print(f"Độ ổn định giữa các lượt: {dict(on_dinh)}")
 
-NGUOI = HERE / "human-check-grades.json"
+NGUOI = BO_DE / "human-check-grades.json"
 if NGUOI.is_file():
     theo_claude = {(d["id"], d["luot"]): d for d in DIEM}
     nguoi = json.loads(NGUOI.read_text(encoding="utf-8"))
