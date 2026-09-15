@@ -1,0 +1,177 @@
+[
+ {
+  "id": "Q001",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q007",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q009",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q009",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q010",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q011",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q020",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q021",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q025",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q028",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q036",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng một phần",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q038",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q042",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q043",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q044",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q047",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối nhầm",
+  "trich_dan": null
+ },
+ {
+  "id": "Q048",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Đúng",
+  "trich_dan": "dung"
+ },
+ {
+  "id": "Q049",
+  "luot": 3,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q051",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q052",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q053",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q054",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q056",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ },
+ {
+  "id": "Q063",
+  "luot": 2,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối nhầm",
+  "trich_dan": null
+ },
+ {
+  "id": "Q065",
+  "luot": 1,
+  "nguoi_cham": "Thịnh",
+  "muc": "Từ chối đúng",
+  "trich_dan": null
+ }
+]
