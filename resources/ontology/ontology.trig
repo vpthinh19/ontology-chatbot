@@ -253,6 +253,10 @@
 	rdfs:label "Chuyên ngành Tiếng Anh du lịch"@vi .
 :ChuyenNganhTruyenThongVaMangMayTinh a :ChuyenNganh ;
 	rdfs:label "Chuyên ngành Truyền thông và mạng máy tính"@vi .
+:CoCheMienGiamHocPhiHoTroHocPhiVaHoTroChiPhiHocTap :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Cơ chế miễn, giảm học phí, hỗ trợ học phí và hỗ trợ chi phí học tập"@vi ;
+	skos:altLabel "trường hợp không được miễn, giảm học phí"@vi .
 :CoKhiThuySanThongMinhChuongTrinhMinhPhuNtu a :ChuongTrinhDaoTao ;
 	rdfs:label "Cơ khí thủy sản thông minh (chương trình Minh Phú - NTU)"@vi .
 :CoSoVatChat rdfs:label "Cơ sở vật chất"@vi .
@@ -352,6 +356,14 @@
 	rdfs:label "Điều kiện dự thi học phần lý thuyết"@vi .
 :DieuKienDuThiHocPhanThucHanh a :QuyTac ;
 	rdfs:label "Điều kiện dự thi học phần thực hành"@vi .
+:DoiTuongDuocGiamHocPhi :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Đối tượng được giảm học phí"@vi ;
+	skos:altLabel "giảm 50% học phí"@vi , "giảm 70% học phí"@vi , "giảm học phí"@vi .
+:DoiTuongDuocMienHocPhi :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Đối tượng được miễn học phí"@vi ;
+	skos:altLabel "diện miễn học phí"@vi , "miễn học phí"@vi .
 :DonViTinh rdfs:label "Đơn vị tính"@vi .
 :DonViTrongTruong rdfs:label "Đơn vị trong trường"@vi .
 :DongTrenHocKy a :DanhMuc ;
@@ -433,6 +445,14 @@
 	rdfs:label "Học phần tự chọn"@vi .
 :HocPhanTuongDuong a :KhaiNiem ;
 	rdfs:label "Học phần tương đương"@vi .
+:HocPhiDaoTaoDaiHocTinhTheoTinChi :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Học phí đào tạo đại học tính theo tín chỉ"@vi ;
+	skos:altLabel "học phí khi học quá thời hạn"@vi , "học phí văn bằng 2"@vi .
+:HocPhiDaoTaoHinhThucVuaLamVuaHoc :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Học phí đào tạo hình thức vừa làm vừa học"@vi ;
+	skos:altLabel "học phí hệ vừa làm vừa học"@vi .
 :HoiDongChuyenMon :loaiChuThe :ChuTheThamGia ;
 	a :ChuThe ;
 	rdfs:label "Hội đồng chuyên môn"@vi ;
@@ -852,6 +872,13 @@
 	:soHieu "179/2026/NĐ-CP"@vi ;
 	a :Nguon ;
 	rdfs:label "Nghị định số 179/2026/NĐ-CP"@vi .
+:NguonNghiDinhSo2382025NdCp :banHanhNgay "2025-09-03"^^xsd:date ;
+	:duongDan "https://datafiles.chinhphu.vn/cpp/files/vbpq/2025/9/238-ndcp.signed.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "238/2025/NĐ-CP"@vi ;
+	a :Nguon ;
+	rdfs:label "Nghị định số 238/2025/NĐ-CP"@vi .
 :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc :banHanhNgay "2021-01-05"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
@@ -881,6 +908,11 @@
 	:ngayThuThap "2026-09-18"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo lịch phục vụ của Thư viện theo ca từ ngày 07/9/2026"@vi .
+:NguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027 :duongDan "https://phongctsv.ntu.edu.vn/thong-bao/nop-ho-so-mien-giam-hoc-phi--ho-tro-chi-phi-hoc-tap---tro-cap-xa-hoi-hki-nam-hoc-2026-2027"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Thông báo nộp hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập và trợ cấp xã hội HKI năm học 2026-2027"@vi .
 :NguonTieuChuanXetHocBongKhuyenKhichHocTap :duongDan "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -1888,6 +1920,60 @@
 :TDNguonNghiDinhSo1792026NdCpKhoan8Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
 	:toaDo "khoản 8 Điều 5"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan10Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 10 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan11Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 11 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan1Dieu16 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 1 Điều 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan1Dieu19 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 1 Điều 19"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan2Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 2 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan2Dieu16 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 2 Điều 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan3Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 3 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan3Dieu18 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 3 Điều 18"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan4Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 4 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan5Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 5 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan5Dieu19 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 5 Điều 19"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan6Dieu10 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 6 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan6Dieu19 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 6 Điều 19"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan7Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 7 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan7Dieu18 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 7 Điều 18"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan8Dieu15 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 8 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan8Dieu19 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 8 Điều 19"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo2382025NdCpKhoan9Dieu10 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
+	:toaDo "khoản 9 Điều 10"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "bước 1"@vi ;
 	a :DiaChiTrichDan .
@@ -2127,6 +2213,12 @@
 	a :DiaChiTrichDan .
 :TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc2TaiPhongDocKhuVucNhaTruyenThong :thuocNguon :NguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026 ;
 	:toaDo "mục 2 Tại phòng đọc Khu vực Nhà Truyền Thống"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027DongDauThongBao :thuocNguon :NguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027 ;
+	:toaDo "dòng đầu thông báo"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo :thuocNguon :NguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027 ;
+	:toaDo "mục Thời hạn nộp hồ sơ"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
 	:toaDo "mục I.1.2"@vi ;
@@ -3754,6 +3846,61 @@
 :TDNguonNghiDinhSo1792026NdCpKhoan8Dieu5 {
 	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Thời gian hưởng học bổng tối đa đối với mỗi trình độ đào tạo bằng thời gian đào tạo chuẩn của chương trình đào tạo."@vi .
 }
+:TDNguonNghiDinhSo2382025NdCpKhoan10Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Học sinh, sinh viên người dân tộc thiểu số rất ít người theo quy định của Chính phủ về quy định chính sách đối với trẻ mẫu giáo, học sinh, sinh viên dân tộc thiểu số rất ít người ở vùng có điều kiện kinh tế - xã hội khó khăn hoặc đặc biệt khó khăn theo quy định hiện hành của cơ quan có thẩm quyền."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan11Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Người học thuộc đối tượng của các chương trình, đề án được miễn học phí theo quy định của Chính phủ, Thủ tướng Chính phủ."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan1Dieu16 {
+	:DoiTuongDuocGiamHocPhi :noiDung "Các đối tượng được giảm 70% học phí gồm: a) Học sinh, sinh viên học các ngành nghệ thuật truyền thống và đặc thù trong các cơ sở giáo dục nghề nghiệp, cơ sở giáo dục đại học công lập, tư thục có đào tạo về văn hóa - nghệ thuật bao gồm: nhạc công kịch hát dân tộc, nhạc công truyền thống Huế, đờn ca tài tử Nam Bộ, diễn viên sân khấu kịch hát, nghệ thuật biểu diễn dân ca, nghệ thuật ca trù, nghệ thuật bài chòi, biểu diễn nhạc cụ truyền thống. b) Học sinh, sinh viên học các chuyên ngành nhã nhạc cung đình, chèo, tuồng, cải lương, múa, xiếc; một số nghề học nặng nhọc, độc hại, nguy hiểm đối với giáo dục nghề nghiệp theo danh mục các nghề học nặng nhọc, độc hại, nguy hiểm do cơ quan quản lý nhà nước về giáo dục nghề nghiệp ở trung ương quy định. c) Học sinh, sinh viên trong các cơ sở giáo dục nghề nghiệp, cơ sở giáo dục đại học là người dân tộc thiểu số (ngoài đối tượng dân tộc thiểu số rất ít người) mà bản thân và cha hoặc mẹ có nơi thường trú tại thôn/bản đặc biệt khó khăn, xã khu vực III vùng đồng bào dân tộc thiểu số và miền núi, xã đặc biệt khó khăn vùng bãi ngang, ven biển và hải đảo theo quy định của cơ quan có thẩm quyền."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan1Dieu19 {
+	:CoCheMienGiamHocPhiHoTroHocPhiVaHoTroChiPhiHocTap :noiDung "Việc miễn, giảm, hỗ trợ học phí, hỗ trợ chi phí học tập sẽ được thực hiện trong suốt thời gian học tập tại nhà trường."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan2Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Các đối tượng theo quy định tại Pháp lệnh Ưu đãi người có công với cách mạng nếu đang theo học tại các cơ sở giáo dục thuộc hệ thống giáo dục quốc dân."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan2Dieu16 {
+	:DoiTuongDuocGiamHocPhi :noiDung "Các đối tượng được giảm 50% học phí gồm: học sinh, sinh viên trong các cơ sở giáo dục nghề nghiệp, cơ sở giáo dục đại học có cha hoặc mẹ bị tai nạn lao động hoặc mắc bệnh nghề nghiệp được hưởng trợ cấp thường xuyên."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan3Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Học sinh, sinh viên trong các cơ sở giáo dục nghề nghiệp và giáo dục đại học là người khuyết tật."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan3Dieu18 {
+	:ThuTucNopHoSoCheDoChinhSach :noiDung "Hồ sơ thủ tục, trình tự thực hiện miễn, giảm học phí trong cơ sở giáo dục nghề nghiệp và giáo dục đại học công lập. Trong vòng 45 ngày làm việc kể từ ngày nhập học, người học thuộc đối tượng được miễn, giảm học phí nộp đơn theo mẫu tại Phụ lục III Nghị định này, kèm theo bản sao chứng thực hoặc bản sao kèm bản chính để đối chiếu hoặc bản sao từ sổ gốc giấy tờ trong các trường hợp sau: Giấy xác nhận của cơ quan quản lý đối với người có công áp dụng đối với đối tượng quy định tại khoản 2 Điều 15 Nghị định này; Giấy xác nhận khuyết tật áp dụng đối với đối tượng quy định tại khoản 3 Điều 15 Nghị định này; Quyết định về việc trợ cấp xã hội hoặc Giấy xác nhận mồ côi cả cha lẫn mẹ do Ủy ban nhân dân xã, phường, đặc khu trực thuộc cấp tỉnh áp dụng đối với đối tượng quy định tại khoản 3, khoản 4 Điều 15 Nghị định này; Giấy xác nhận hộ nghèo hoặc hộ cận nghèo do Ủy ban nhân dân xã, phường, đặc khu trực thuộc cấp tỉnh cấp áp dụng đối với đối tượng quy định tại khoản 7 Điều 15 Nghị định này; Bằng tốt nghiệp trung học cơ sở hoặc giấy xác nhận tốt nghiệp tạm thời hoặc xác nhận học bạ việc hoàn thành chương trình trung học cơ sở của hiệu trưởng áp dụng đối với đối tượng quy định tại khoản 12 Điều 15 Nghị định này; Quyết định hưởng trợ cấp hàng tháng của cha hoặc mẹ bị tai nạn lao động hoặc mắc bệnh nghề nghiệp do cơ quan bảo hiểm xã hội cấp áp dụng đối với đối tượng quy định tại khoản 2 Điều 16 Nghị định này và gửi cơ sở giáo dục theo một trong các hình thức gồm nộp trực tiếp hoặc qua bưu điện hoặc qua cổng dịch vụ công quốc gia (trường hợp người học nộp hồ sơ sau thời hạn quy định nêu trên thì được xem xét hưởng chính sách kể từ thời điểm nộp hồ sơ cho đơn vị tiếp nhận hồ sơ theo quy định). Trong vòng 10 ngày làm việc kể từ khi kết thúc thời hạn nộp hồ sơ đề nghị miễn, giảm học phí, Thủ trưởng cơ sở giáo dục nghề nghiệp và giáo dục đại học có trách nhiệm xét duyệt hồ sơ và phê duyệt danh sách người học được miễn, giảm học phí."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan4Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Người học từ 16 tuổi đến 22 tuổi đang học giáo dục đại học văn bằng thứ nhất thuộc đối tượng hưởng trợ cấp xã hội hàng tháng theo quy định tại khoản 1 và khoản 2 Điều 5 Nghị định số 20/2021/NĐ-CP ngày 15 tháng 3 năm 2021 của Chính phủ về chính sách trợ giúp xã hội đối với đối tượng bảo trợ xã hội. Người học các trình độ trung cấp, cao đẳng mồ côi cả cha lẫn mẹ, không nơi nương tựa theo quy định của Luật Giáo dục nghề nghiệp."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan5Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Học sinh, sinh viên hệ cử tuyển (kể cả học sinh cử tuyển học nghề nội trú với thời gian đào tạo từ 3 tháng trở lên) theo quy định của Chính phủ về chế độ cử tuyển vào các cơ sở giáo dục đại học và giáo dục nghề nghiệp thuộc hệ thống giáo dục quốc dân."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan5Dieu19 {
+	:CoCheMienGiamHocPhiHoTroHocPhiVaHoTroChiPhiHocTap :noiDung "Không áp dụng miễn, giảm, hỗ trợ học phí đối với trường hợp đang hưởng lương hoặc sinh hoạt phí khi đi học, các trường hợp học cao học, nghiên cứu sinh (trừ đối tượng quy định tại khoản 9, khoản 11 Điều 15 và điểm b khoản 3 Điều 16 Nghị định này)."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan6Dieu10 {
+	:HocPhiDaoTaoHinhThucVuaLamVuaHoc :apDungChoHinhThucDaoTao :DaoTaoVuaLamVuaHoc ;
+		:noiDung "Mức học phí đào tạo hình thức vừa làm vừa học; đào tạo từ xa được xác định trên cơ sở chi phí hợp lý thực tế với mức thu không vượt quá 150% mức thu học phí so với hệ đào tạo chính quy tương ứng."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan6Dieu19 {
+	:CoCheMienGiamHocPhiHoTroHocPhiVaHoTroChiPhiHocTap :noiDung "Không áp dụng chế độ miễn, giảm, hỗ trợ học phí đối với người học trong trường hợp đã hưởng chế độ này tại một cơ sở giáo dục nghề nghiệp hoặc cơ sở giáo dục đại học, nay tiếp tục học thêm ở một cơ sở giáo dục nghề nghiệp và giáo dục đại học khác cùng cấp học và trình độ đào tạo. Nếu người học thuộc đối tượng được miễn, giảm học phí đồng thời học ở nhiều cơ sở giáo dục hoặc nhiều khoa, nhiều ngành trong cùng một cơ sở giáo dục thì chỉ được hưởng một chế độ miễn, giảm học phí."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan7Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Học sinh, sinh viên học tại các cơ sở giáo dục nghề nghiệp và giáo dục đại học là người dân tộc thiểu số có cha hoặc mẹ hoặc cả cha và mẹ hoặc ông, bà (trong trường hợp ở với ông, bà) thuộc hộ nghèo hoặc hộ cận nghèo theo quy định của Thủ tướng Chính phủ."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan7Dieu18 {
+	:ThuTucNopHoSoCheDoChinhSach :noiDung "Người học thuộc diện miễn, giảm học phí và hỗ trợ chi phí học tập chỉ phải làm 01 bộ hồ sơ nộp lần đầu cho cả thời gian học tập. Riêng đối với người học thuộc diện hộ nghèo, hộ cận nghèo thì vào mỗi đầu học kỳ phải nộp bổ sung giấy xác nhận hộ nghèo, hộ cận nghèo để làm căn cứ xem xét miễn, giảm học phí và hỗ trợ chi phí học tập cho kỳ học tiếp theo."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan8Dieu15 {
+	:DoiTuongDuocMienHocPhi :noiDung "Sinh viên học chuyên ngành Mác-Lênin và Tư tưởng Hồ Chí Minh."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan8Dieu19 {
+	:CoCheMienGiamHocPhiHoTroHocPhiVaHoTroChiPhiHocTap :noiDung "Không áp dụng chế độ miễn, giảm, hỗ trợ học phí và hỗ trợ chi phí học tập trong thời gian người học bị kỷ luật ngừng học hoặc buộc thôi học, bảo lưu, học lưu ban, học lại, học bổ sung. Trường hợp người học phải dừng học; học lại, bảo lưu, lưu ban (không quá một lần) do ốm đau, tai nạn hoặc dừng học vì lý do bất khả kháng không do kỷ luật hoặc tự thôi học thì thủ trưởng cơ sở giáo dục xem xét cho tiếp tục học tập theo quy định và tiếp tục được hưởng chính sách hỗ trợ quy định tại Nghị định này."@vi .
+}
+:TDNguonNghiDinhSo2382025NdCpKhoan9Dieu10 {
+	:HocPhiDaoTaoDaiHocTinhTheoTinChi :noiDung "Học phí đào tạo đại học tính theo tín chỉ, mô-đun: a) Mức thu học phí của một tín chỉ, mô-đun được xác định căn cứ vào tổng thu học phí của toàn khóa học theo nhóm ngành, nghề đào tạo và tổng số tín chỉ, mô-đun toàn khóa theo công thức dưới đây: Học phí tín chỉ, mô-đun = Tổng học phí toàn khóa / Tổng số tín chỉ, mô-đun toàn khóa. Tổng học phí toàn khóa = mức thu học phí 1 sinh viên/1 tháng x 10 tháng x số năm học, bảo đảm nguyên tắc tổng học phí theo tín chỉ của chương trình đào tạo tối đa bằng tổng học phí tính theo niên chế. b) Trường hợp học quá thời hạn quy định của chương trình đào tạo, học phí tín chỉ áp dụng từ thời điểm quá hạn được xác định lại trên cơ sở thời gian học thực tế trên nguyên tắc bù đắp chi phí và thực hiện công khai, giải trình với người học; c) Trường hợp đào tạo bằng tốt nghiệp thứ 2 trình độ đại học, người đóng học phí của các tín chỉ thực học theo chương trình đào tạo."@vi .
+}
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
 	:ThuTucChuyenNganh :noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 	:ThuTucChuyenTruong :noiDung "Sinh viên hoàn thiện đơn, các khoa cho ý kiến đề nghị trong 02 tuần đầu tiên của học kỳ; Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
@@ -4054,6 +4201,12 @@
 :TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc2TaiPhongDocKhuVucNhaTruyenThong {
 	:PhongDocKhuVucNhaTruyenThong :loaiKhaiNiem :CoSoVatChat ;
 		:noiDung "Gồm phòng đọc Nhà Truyền thống và phòng đọc kế bên Nhà Truyền Thống tại tầng 2 khu tự học Cây si. Phục vụ từ thứ 2 đến chủ nhật hàng tuần, từ 7h00 đến 21h00 mỗi ngày. Phòng đọc Nhà Truyền thống chủ yếu phục vụ không gian học tập và sách văn học, lịch sử, địa lý. Người dùng có nhu cầu về các loại sách khác vui lòng đến Kho sách chính (Nhà TV1 - Thư viện)."@vi .
+}
+:TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027DongDauThongBao {
+	:ThuTucNopHoSoCheDoChinhSach :noiDung "Các mẫu đơn tải tại đường link: https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/bieu-mau"@vi .
+}
+:TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo {
+	:ThuTucNopHoSoCheDoChinhSach :noiDung "Sau khi hoàn tất thủ tục, tiền miễn giảm học phí sẽ được trừ trực tiếp vào học phí của SV."@vi .
 }
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất."@vi .
