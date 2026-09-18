@@ -1034,6 +1034,11 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang Liên hệ Trường Đại học Nha Trang"@vi .
+:NguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHoc :duongDan "https://pdtsaudaihoc.ntu.edu.vn/hoc-vien-cao-hoc/ngoai-ngu"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Ngoại ngữ dành cho học viên cao học - Phòng Đào tạo Sau đại học"@vi .
 :NguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySan :duongDan "https://ctdt.ntu.edu.vn/ctdt/168.pdf"^^xsd:anyURI ;
 	:loaiNguon :VanBanChuongTrinhDaoTao ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -1350,6 +1355,10 @@
 :QuanTriKinhDoanhChuongTrinhDaoTaoDacBietQuanTriKinhDoanhTongHopQuanTriKinhDoanhQuocTe a :ChuongTrinhDaoTao ;
 	rdfs:label "Quản trị kinh doanh (chương trình đào tạo đặc biệt: Quản trị kinh doanh tổng hợp; Quản trị kinh doanh quốc tế)"@vi .
 :QuyChe rdfs:label "Quy chế"@vi .
+:QuyDinhNgoaiNguDoiVoiHocVienCaoHoc :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Quy định ngoại ngữ đối với học viên cao học"@vi ;
+	skos:altLabel "ngoại ngữ cao học"@vi , "ngoại ngữ thạc sĩ"@vi .
 :QuyDoiGioHocCuaMotTinChi :loaiKhaiNiem :KhaiNiemHocVu ;
 	a :KhaiNiem ;
 	rdfs:label "Quy đổi giờ học của một tín chỉ"@vi .
@@ -2586,6 +2595,12 @@
 	a :DiaChiTrichDan .
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc9CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
 	:toaDo "mục 9 Các đơn vị chức năng"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHocMuc2 :thuocNguon :NguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHoc ;
+	:toaDo "mục 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHocMuc4 :thuocNguon :NguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHoc ;
+	:toaDo "mục 4"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
@@ -4928,6 +4943,12 @@
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc9CacDonViChucNang {
 	:TrungTamHoTroViecLamVaKhoiNghiep :loaiChuThe :DonViTrongTruong ;
 		:noiDung "Trung tâm Hỗ trợ việc làm và Khởi nghiệp: Sinh viên muốn học các lớp kỹ năng mềm, cần việc làm ngắn hạn, cần thông tin việc làm, thông tin tuyển dụng."@vi .
+}
+:TDNguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHocMuc2 {
+	:QuyDinhNgoaiNguDoiVoiHocVienCaoHoc :noiDung "Quyết định quy đổi điểm văn bằng chứng chỉ ngoại ngữ sang điểm các học phần ngoại ngữ ngày 22/12/2022. Mẫu đơn quy đổi điểm văn bằng chứng chỉ ngoại ngữ sang điểm các học phần ngoại ngữ 1,2. Học viên nộp đơn và chứng chỉ cho Phòng Đào tạo."@vi .
+}
+:TDNguonTrangNgoaiNguDanhChoHocVienCaoHocPhongDaoTaoSauDaiHocMuc4 {
+	:QuyDinhNgoaiNguDoiVoiHocVienCaoHoc :noiDung "Điều kiện ngoại ngữ đầu ra thạc sĩ, học viên phải đạt trình độ ngoại ngữ bậc 4 (B2) trở lên trước khi xét tốt nghiệp."@vi .
 }
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheCheBienThuySan :donViQuanLy :KhoaCongNgheThucPham ;
