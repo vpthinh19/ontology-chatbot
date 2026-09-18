@@ -83,92 +83,16 @@ a:focus-visible {
   overflow-x: hidden;
 }
 
-.app-header,
-.suggestions,
 .chats-container,
 .prompt-container {
   width: min(var(--content-width), calc(100% - var(--side-space)));
   margin-inline: auto;
 }
 
-.app-header { padding-top: clamp(4.5rem, 11vh, 8rem); }
-
-.heading {
-  margin: 0;
-  background: linear-gradient(100deg, #6e9fff 0%, #b48cff 58%, #ff8d9e 100%);
-  background-clip: text;
-  color: transparent;
-  font-size: clamp(2.6rem, 6vw, 4.8rem);
-  font-weight: 760;
-  letter-spacing: -0.055em;
-  line-height: 1;
-}
-
-.sub-heading {
-  margin: 0.6rem 0 0;
-  color: var(--muted);
-  font-size: clamp(1.35rem, 3vw, 2.25rem);
-  font-weight: 520;
-  letter-spacing: -0.025em;
-}
-
-.suggestions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: clamp(2.2rem, 6vh, 4.25rem);
-  padding: 0;
-}
-
-.suggestions-item {
-  display: grid;
-  min-width: 0;
-  min-height: 9rem;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 1.25rem;
-  padding: 1.3rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-main);
-  background: color-mix(in srgb, var(--surface) 91%, transparent);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
-}
-
-.suggestions-item:hover {
-  border-color: color-mix(in srgb, var(--brand) 52%, var(--border));
-  background: var(--surface-raised);
-  transform: translateY(-2px);
-}
-
-.suggestions-item .text {
-  align-self: start;
-  font-size: clamp(1rem, 1.4vw, 1.12rem);
-  font-weight: 590;
-  line-height: 1.5;
-}
-
-.suggestions-item .icon {
-  display: grid;
-  width: 2.7rem;
-  height: 2.7rem;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--brand-soft);
-  color: var(--brand);
-}
-
 .chats-container {
-  display: none;
   flex: 1;
   padding: 2.5rem 0 1.5rem;
 }
-
-body.chats-active .app-header,
-body.chats-active .suggestions { display: none; }
-body.chats-active .chats-container { display: block; }
 
 .message {
   display: flex;
@@ -368,19 +292,6 @@ body.bot-responding #send-prompt-btn { display: none; }
 
 @media (max-width: 700px) {
   :root { --side-space: 28px; }
-  .app-header { padding-top: 3.8rem; }
-
-  .suggestions {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-top: 2rem;
-  }
-
-  .suggestions-item {
-    min-height: 6.6rem;
-    padding: 1rem;
-  }
-
   .message-text { max-width: 91%; }
   .server-status { font-size: 0.78rem; }
 }

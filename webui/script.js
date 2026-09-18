@@ -456,6 +456,35 @@ const generateResponse = async (botMessage, userMessage) => {
   }
 };
 
+// Lời tự giới thiệu: nói trợ lý trả lời được gì, dựa vào đâu, không làm được gì, và rằng
+// câu hỏi được lưu lại. Nó không thuộc lịch sử gửi cho mô hình.
+const INTRODUCTION = [
+  "Xin chào, mình là trợ lý học vụ của Trường Đại học Nha Trang. Mình trả lời dựa trên văn bản và trang thông tin chính thức của Trường, kèm nguồn để bạn đối chiếu.",
+  "",
+  "Bạn có thể hỏi về:",
+  "- quy chế đào tạo: khối lượng học tập, điểm và xếp loại, cảnh báo học tập, thôi học, tốt nghiệp;",
+  "- thủ tục học vụ và biểu mẫu: nghỉ học tạm thời, chuyển ngành, chuyển trường, xin giấy xác nhận…;",
+  "- học phí, học bổng, điểm rèn luyện, chuẩn đầu ra ngoại ngữ và tin học;",
+  "- ngành, chương trình đào tạo, các phòng, khoa và thông tin liên hệ.",
+  "",
+  "Mình không xem được dữ liệu của riêng bạn như điểm, lịch học hay công nợ học phí. Khi nguồn chưa có thông tin, mình sẽ nói rõ thay vì đoán.",
+  "",
+  "Câu hỏi và câu trả lời được lưu lại để cải thiện hệ thống, vì vậy bạn đừng nhập thông tin cá nhân như mã số sinh viên hay số điện thoại.",
+].join("\n");
+
+const showIntroduction = () => {
+  const message = createMessageElement("bot-message", "introduction");
+  const avatar = document.createElement("span");
+  avatar.className = "avatar material-symbols-rounded";
+  avatar.setAttribute("aria-hidden", "true");
+  avatar.textContent = "school";
+  const text = document.createElement("div");
+  text.className = "message-text";
+  text.innerHTML = renderRichText(INTRODUCTION);
+  message.append(avatar, text);
+  chatsContainer.append(message);
+};
+
 const handleFormSubmit = (event) => {
   event.preventDefault();
   const userMessage = promptInput.value.trim();
@@ -490,23 +519,10 @@ deleteButton.addEventListener("click", () => {
   responseController?.abort();
   chatHistory.length = 0;
   chatsContainer.replaceChildren();
+  showIntroduction();
   document.body.classList.remove("chats-active", "bot-responding");
   updateControls();
   promptInput.focus();
-});
-
-document.querySelectorAll(".suggestions-item").forEach((item) => {
-  item.addEventListener("click", () => {
-    if (isResponding()) return;
-    promptInput.value = item.querySelector(".text").textContent;
-    updateControls();
-    if (serverState === "ready") {
-      promptForm.requestSubmit();
-    } else {
-      promptInput.focus();
-      void checkServer();
-    }
-  });
 });
 
 window.addEventListener("online", () => void checkServer());
@@ -516,5 +532,6 @@ document.addEventListener("visibilitychange", () => {
   if (Date.now() - lastReadyAt > 30_000) void checkServer();
 });
 
+showIntroduction();
 setServerState("waking");
 void checkServer();

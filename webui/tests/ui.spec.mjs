@@ -47,12 +47,12 @@ test("LaTeX arrows in an answer are displayed as ordinary arrows", async ({ page
   await page.locator(".prompt-input").fill("Kiểm tra mũi tên");
   await page.locator("#send-prompt-btn").click();
 
-  await expect(page.locator(".bot-message .message-text").last()).toHaveText(
+  await expect(page.locator(".bot-message:not(.introduction) .message-text").last()).toHaveText(
     "Bước 1 → bước 2",
   );
 });
 
-test("suggestions share the content column and remain comfortably readable", async ({ page }) => {
+test("the page opens with an introduction in the content column instead of suggested questions", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
   );
@@ -60,26 +60,19 @@ test("suggestions share the content column and remain comfortably readable", asy
 
   await page.goto("http://127.0.0.1:4173");
 
-  const header = await page.locator(".app-header").boundingBox();
-  const suggestions = await page.locator(".suggestions").boundingBox();
-  const firstCard = await page.locator(".suggestions-item").first().boundingBox();
-  expect(header).not.toBeNull();
-  expect(suggestions).not.toBeNull();
-  expect(firstCard).not.toBeNull();
-  expect(Math.abs(suggestions.x - header.x)).toBeLessThanOrEqual(1);
-  expect(Math.abs(suggestions.width - header.width)).toBeLessThanOrEqual(1);
-  expect(firstCard.width).toBeGreaterThan(320);
+  const introduction = page.locator(".bot-message.introduction");
+  await expect(introduction).toContainText("trợ lý học vụ của Trường Đại học Nha Trang");
+  await expect(introduction).toContainText("được lưu lại để cải thiện hệ thống");
+  await expect(page.locator(".suggestions-item")).toHaveCount(0);
+  const column = await page.locator(".chats-container").boundingBox();
+  const prompt = await page.locator(".prompt-container").boundingBox();
+  expect(Math.abs(column.x - prompt.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(column.width - prompt.width)).toBeLessThanOrEqual(1);
 
   await page.setViewportSize({ width: 390, height: 844 });
-  const mobileCards = await page.locator(".suggestions-item").evaluateAll((items) =>
-    items.map((item) => {
-      const { x, y, width, height } = item.getBoundingClientRect();
-      return { x, y, width, height };
-    }),
-  );
-  expect(mobileCards).toHaveLength(4);
-  expect(mobileCards.every((card) => card.x >= 0 && card.x + card.width <= 390)).toBe(true);
-  expect(mobileCards[1].y).toBeGreaterThan(mobileCards[0].y + mobileCards[0].height - 1);
+  const mobile = await introduction.boundingBox();
+  expect(mobile.x).toBeGreaterThanOrEqual(0);
+  expect(mobile.x + mobile.width).toBeLessThanOrEqual(390);
 });
 
 test("the composer stays pinned to the viewport bottom while the page scrolls", async ({ page }) => {
@@ -203,18 +196,29 @@ test("a streaming answer stops dragging the page down once the reader scrolls up
   expect(await bottomGap()).toBeLessThanOrEqual(64);
 });
 
-test("the landing header starts directly with the greeting", async ({ page }) => {
+test("clearing the conversation brings the introduction back", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
   );
-
+  await page.route("**/chat", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "text/event-stream",
+      body: 'data: {"type":"completed","content":"Câu trả lời thử"}\n\n',
+    }),
+  );
   await page.goto("http://127.0.0.1:4173");
+  await page.locator(".prompt-input").fill("Câu hỏi thử");
+  await page.locator("#send-prompt-btn").click();
+  await expect(page.locator(".bot-message:not(.introduction) .message-text").last()).toHaveText("Câu trả lời thử");
 
-  await expect(page.getByText("NTU Academic Assistant", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Xin chào" })).toBeVisible();
+  await page.locator("#delete-chats-btn").click();
+
+  await expect(page.locator(".message")).toHaveCount(1);
+  await expect(page.locator(".bot-message.introduction")).toBeVisible();
 });
 
-test("the prompt and recommendations use the same generous corner radius", async ({ page }) => {
+test("the prompt and its buttons use the same generous corner radius", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
   );
@@ -231,7 +235,6 @@ test("the prompt and recommendations use the same generous corner radius", async
       prompt: measure(".prompt-form"),
       send: measure("#send-prompt-btn"),
       theme: measure("#theme-toggle-btn"),
-      card: measure(".suggestions-item"),
     };
   });
 
@@ -240,7 +243,6 @@ test("the prompt and recommendations use the same generous corner radius", async
   expect(shapes.send.radius).toBeGreaterThanOrEqual(shapes.send.width / 2 - 1);
   expect(shapes.theme.width).toBeCloseTo(shapes.theme.height, 0);
   expect(shapes.theme.radius).toBeGreaterThanOrEqual(shapes.theme.width / 2 - 1);
-  expect(shapes.card.radius).toBeGreaterThanOrEqual(28);
 });
 
 test("focusing the prompt does not draw a rectangular outline", async ({ page }) => {
@@ -278,11 +280,12 @@ test("delete history stays visible and is enabled only while a conversation exis
 
   await page.locator(".prompt-input").fill("Câu hỏi");
   await page.locator("#send-prompt-btn").click();
-  await expect(page.locator(".bot-message .message-text")).toContainText("Câu trả lời");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text")).toContainText("Câu trả lời");
   await expect(deleteButton).toBeEnabled();
 
   await deleteButton.click();
-  await expect(page.locator(".message")).toHaveCount(0);
+  await expect(page.locator(".message:not(.introduction)")).toHaveCount(0);
+  await expect(page.locator(".bot-message.introduction")).toBeVisible();
   await expect(deleteButton).toBeDisabled();
 });
 
@@ -366,7 +369,7 @@ test("a truncated chat stream is not committed as a successful answer", async ({
   await page.locator(".prompt-input").fill("Cho tôi câu trả lời đầy đủ");
   await page.locator("#send-prompt-btn").click();
 
-  await expect(page.locator(".bot-message .message-text")).toContainText("bị gián đoạn");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text")).toContainText("bị gián đoạn");
 });
 
 test("a cold failure after send restores the question for a retry", async ({ page }) => {
@@ -379,7 +382,7 @@ test("a cold failure after send restores the question for a retry", async ({ pag
   await input.fill("Học phí bao nhiêu?");
   await page.locator("#send-prompt-btn").click();
 
-  await expect(page.locator(".bot-message .message-text")).toContainText("đánh thức lại");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text")).toContainText("đánh thức lại");
   await expect(input).toHaveValue("Học phí bao nhiêu?");
 });
 
@@ -432,13 +435,13 @@ test("fragmented successful streams complete and become history for the next tur
   const input = page.locator(".prompt-input");
   await input.fill("Câu đầu");
   await page.locator("#send-prompt-btn").click();
-  await expect(page.locator(".bot-message .message-text").last()).toContainText("Xin chào bạn");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text").last()).toContainText("Xin chào bạn");
   await expect(page.locator("#send-prompt-btn")).toBeDisabled();
 
   await input.fill("Câu nối tiếp");
   await expect(page.locator("#send-prompt-btn")).toBeEnabled();
   await page.locator("#send-prompt-btn").click();
-  await expect(page.locator(".bot-message .message-text").last()).toContainText("Lượt hai");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text").last()).toContainText("Lượt hai");
 
   const bodies = await page.evaluate(() => window.__chatBodies);
   expect(bodies[1].history).toEqual([
@@ -475,7 +478,7 @@ test("browser health and chat calls stay same-origin and carry no authorization"
   await page.goto("http://127.0.0.1:4173");
   await page.locator(".prompt-input").fill("Câu hỏi");
   await page.locator("#send-prompt-btn").click();
-  await expect(page.locator(".bot-message .message-text")).toContainText("Câu trả lời");
+  await expect(page.locator(".bot-message:not(.introduction) .message-text")).toContainText("Câu trả lời");
 
   expect(seen.health).toEqual({
     url: "http://127.0.0.1:4173/api/healthz",
