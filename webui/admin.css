@@ -88,54 +88,89 @@ button.danger { color: var(--danger); }
 .bar form input { width: 16rem; }
 .bar a { color: var(--brand); }
 
+/* Thông báo nổi ở góc dưới: không đẩy nội dung, vẫn thấy khi đang cuộn giữa một form dài. */
 #status {
-  margin: 16px 24px 0;
-  padding: 10px 14px;
-  border-radius: 10px;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  width: min(520px, calc(100vw - 32px));
+  max-height: 45vh;
+  overflow: auto;
+  padding: 12px 40px 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   background: var(--surface-raised);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
+#status.status-error { border-color: var(--danger); }
+#status.status-ok { border-color: var(--brand-strong); }
 #status p { margin: 0; }
 #status ul { margin: 6px 0 0; padding-left: 20px; color: var(--danger); }
+#status .close { position: absolute; top: 6px; right: 6px; padding: 2px 8px; border: 0; background: transparent; }
 
 .layout {
   display: grid;
-  grid-template-columns: 240px 300px minmax(0, 1fr);
+  grid-template-columns: 250px 310px minmax(0, 1fr);
   gap: 16px;
   align-items: start;
   padding: 16px 24px;
 }
 
-#classes, #list-panel, #editor {
+#class-panel, #list-panel, #editor {
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
 }
 
-#classes button, #items button {
+/* Hai cột trái đứng yên và tự cuộn bên trong; chỉ cột sửa đi theo trang. */
+#class-panel, #list-panel {
+  position: sticky;
+  top: 16px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+  min-height: 0;
+}
+
+#classes { min-height: 0; overflow-y: auto; }
+.add-class { margin-top: 8px; }
+
+#classes button, #items button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   gap: 8px;
   width: 100%;
   border: 0;
   background: transparent;
   text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 #classes button.active, #items button.active { background: var(--brand-soft); color: var(--brand); }
-.count { color: var(--muted); font-variant-numeric: tabular-nums; }
+.count { min-width: 2.5ch; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
 
-#list-title { margin: 4px 4px 10px; font-size: 1rem; }
+.list-title-row { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin: 4px 4px 10px; }
+#list-title { margin: 0; font-size: 1rem; }
 .list-head { display: flex; gap: 8px; margin-bottom: 8px; }
-#items { max-height: 72vh; margin: 0; padding: 0; overflow: auto; list-style: none; }
+#items { flex: 1; min-height: 0; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
 
 .entity-form { display: grid; gap: 8px; }
 .entity-form h2 { margin: 4px 0 0; font-size: 1.1rem; }
 .entity-form h3 { margin: 12px 0 0; font-size: 0.95rem; }
+.entity-form > label { margin-top: 4px; font-size: 0.9rem; }
 .muted { margin: 0; color: var(--muted); font-size: 0.85rem; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 12px; }
+.two label { display: grid; gap: 4px; font-size: 0.9rem; }
 
-.statements { display: grid; gap: 8px; }
+/* Ô chữ cao theo nội dung. */
+textarea.autosize { min-height: 2.6em; overflow: hidden; resize: none; }
+
+.statements, .field-cards { display: grid; gap: 8px; }
 
 /* Mỗi dòng hai hàng: ô và giá trị ở trên, nguồn và vị trí ở dưới, để giá trị dài vẫn đủ chỗ. */
 .statement {
@@ -143,7 +178,8 @@ button.danger { color: var(--danger); }
   grid-template-columns: 220px minmax(0, 1fr) auto;
   grid-template-areas:
     "property value remove"
-    ". source source";
+    "source source ."
+    "error error error";
   gap: 8px;
   align-items: start;
   padding: 8px;
@@ -155,14 +191,33 @@ button.danger { color: var(--danger); }
 .statement .value { grid-area: value; }
 .statement .remove { grid-area: remove; }
 .statement .source, .statement .no-source { grid-area: source; }
-.source { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 8px; }
+.statement .field-error { grid-area: error; }
+.source { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 8px; }
 .no-source { padding-top: 8px; color: var(--muted); font-size: 0.85rem; }
-.actions { display: flex; gap: 8px; margin-top: 8px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .add-row { justify-self: start; }
 .references ul { margin: 4px 0; padding-left: 20px; color: var(--muted); }
 
+/* Sửa loại: mỗi ô (thuộc tính) một thẻ. */
+.field-card { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; }
+.field-card .line { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.field-card .rules { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.field-card .rules select { width: auto; }
+.choice-box { display: grid; gap: 6px; padding: 8px; border-radius: 8px; background: var(--surface-raised); }
+.choices { display: grid; gap: 6px; }
+.choice { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 6px; }
+.check { display: inline-flex; gap: 6px; align-items: center; font-size: 0.9rem; }
+.check input { width: auto; }
+input:disabled { opacity: 0.6; }
+
+/* Chỗ sai: viền đỏ và lời giải thích ngay dưới. */
+.invalid { border-color: var(--danger) !important; box-shadow: inset 0 0 0 1px var(--danger); }
+.statement.invalid, .field-card.invalid { background: rgba(255, 125, 136, 0.06); }
+.field-error { margin: 0; color: var(--danger); font-size: 0.85rem; }
+
 @media (max-width: 1000px) {
   .layout { grid-template-columns: 1fr; }
-  .statement { grid-template-columns: 1fr; grid-template-areas: "property" "value" "source" "remove"; }
-  .source { grid-template-columns: 1fr; }
+  #class-panel, #list-panel { position: static; max-height: 50vh; }
+  .statement { grid-template-columns: 1fr; grid-template-areas: "property" "value" "source" "remove" "error"; }
+  .source, .two, .field-card .line, .choice { grid-template-columns: 1fr; }
 }

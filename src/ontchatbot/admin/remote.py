@@ -4,7 +4,8 @@ Container của Cloud Run không giữ tệp qua các lần khởi động lại
 nên sửa ở trang quản trị mà chỉ ghi tệp trong container thì mất. Bản gốc vì thế là một đối tượng
 Cloud Storage; mỗi bản dịch vụ giữ một bản sao trên đĩa để engine và trang quản trị đọc.
 
-- Khởi động: tải đối tượng về đè lên bản sao. Chưa có đối tượng thì đưa tệp trong ảnh lên làm bản đầu.
+- Khởi động: tải ontology.trig và shapes.ttl về đè lên bản sao. Chưa có đối tượng thì đưa tệp trong ảnh
+  lên làm bản đầu.
 - Lưu ở trang quản trị: ghi lên kèm điều kiện số thế hệ (generation) chưa đổi. Có người vừa lưu trước
   thì Cloud Storage từ chối (412) thay vì để hai lần sửa đè nhau.
 - Các bản dịch vụ khác định kỳ hỏi số thế hệ và tải lại khi nó đổi.
@@ -30,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 API = "https://storage.googleapis.com"
 METADATA_TOKEN_URL = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"
-CONTENT_TYPE = "application/trig"
+CONTENT_TYPES = {".trig": "application/trig", ".ttl": "text/turtle"}
 
 
 class StaleCopy(Exception):
@@ -115,7 +116,7 @@ class GcsObject:
         response = self.http.post(
             f"{API}/upload/storage/v1/b/{quote(self.bucket, safe='')}/o",
             params={"uploadType": "media", "name": self.name, "ifGenerationMatch": if_generation},
-            headers={**self._headers(), "Content-Type": CONTENT_TYPE},
+            headers={**self._headers(), "Content-Type": CONTENT_TYPES.get(Path(self.name).suffix, "text/plain")},
             content=data,
         )
         if response.status_code == 412:
@@ -126,51 +127,78 @@ class GcsObject:
 
 
 class RemoteOntology:
-    """Giữ bản sao trên đĩa khớp với đối tượng trên Cloud Storage."""
+    """Giữ các tệp trên đĩa (ontology.trig, shapes.ttl) khớp với các đối tượng trên Cloud Storage."""
 
-    def __init__(self, remote: GcsObject, path: Path | str) -> None:
-        self.remote = remote
-        self.path = Path(path)
-        self.generation: str | None = None
+    def __init__(self, files: dict[Path | str, GcsObject]) -> None:
+        self.files = {Path(path): remote for path, remote in files.items()}
+        self.generations: dict[Path, str | None] = dict.fromkeys(self.files)
         self._lock = threading.Lock()
+
+    @classmethod
+    def beside(cls, remote: GcsObject, ontology: Path | str) -> RemoteOntology:
+        """``remote`` giữ ontology.trig; lược đồ là đối tượng shapes.ttl cùng thư mục trên kho."""
+
+        folder = remote.name.rsplit("/", 1)[0] + "/" if "/" in remote.name else ""
+        shapes = GcsObject(remote.bucket, folder + "shapes.ttl", http=remote.http, token=remote.token)
+        return cls({ontology: remote, Path(ontology).with_name("shapes.ttl"): shapes})
 
     def start(self) -> None:
         """Gọi một lần trước khi nạp engine."""
 
         with self._lock:
-            if self.remote.generation() is None:
-                try:
-                    self.generation = self.remote.upload(self.path.read_bytes(), "0")
-                    logger.info("ontology seeded to Cloud Storage object=%s generation=%s",
-                                self.remote.name, self.generation)
-                    return
-                except StaleCopy:  # một bản dịch vụ khởi động cùng lúc vừa đưa lên trước
-                    pass
-            self._download()
-            logger.info("ontology loaded from Cloud Storage object=%s generation=%s",
-                        self.remote.name, self.generation)
+            for path, remote in self.files.items():
+                if remote.generation() is None:
+                    try:
+                        self.generations[path] = remote.upload(path.read_bytes(), "0")
+                        logger.info("ontology seeded to Cloud Storage object=%s generation=%s",
+                                    remote.name, self.generations[path])
+                        continue
+                    except StaleCopy:  # một bản dịch vụ khởi động cùng lúc vừa đưa lên trước
+                        pass
+                self._download(path)
+                logger.info("ontology loaded from Cloud Storage object=%s generation=%s",
+                            remote.name, self.generations[path])
 
     def refresh(self) -> bool:
-        """Tải bản mới nếu số thế hệ đã đổi; trả ``True`` khi bản sao trên đĩa vừa được thay."""
+        """Tải những tệp có số thế hệ đã đổi; trả ``True`` khi có tệp trên đĩa vừa được thay."""
 
         with self._lock:
-            current = self.remote.generation()
-            if current is None or current == self.generation:
-                return False
-            self._download()
-            logger.info("ontology refreshed from Cloud Storage generation=%s", self.generation)
-            return True
+            changed = False
+            for path, remote in self.files.items():
+                current = remote.generation()
+                if current is not None and current != self.generations[path]:
+                    self._download(path)
+                    logger.info("ontology refreshed from Cloud Storage object=%s generation=%s",
+                                remote.name, self.generations[path])
+                    changed = True
+            return changed
 
-    def push(self, data: bytes) -> None:
-        """Ghi một lần sửa; ``StaleCopy`` khi bản đang giữ đã cũ."""
+    def push(self, files: dict[Path, bytes]) -> None:
+        """Ghi một lần sửa; ``StaleCopy`` khi bản đang giữ đã cũ.
+
+        Mọi tệp phải còn đúng bản đang giữ, kể cả tệp lần này không đổi: một lần sửa mục dựng trên
+        lược đồ cũ không được ghi đè lên dữ liệu đã khớp với lược đồ mới của phiên khác.
+        """
 
         with self._lock:
-            self.generation = self.remote.upload(data, self.generation or "0")
+            for path, remote in self.files.items():
+                if remote.generation() != self.generations[path]:
+                    raise StaleCopy(remote.name)
+            written = []
+            try:
+                for path, data in files.items():
+                    self.generations[path] = self.files[path].upload(data, self.generations[path] or "0")
+                    written.append(path)
+            except BaseException:
+                # Tệp đã lên kho nhưng lần sửa bị huỷ: quên số thế hệ để lần hỏi sau tải lại đúng bản trên kho.
+                for path in written:
+                    self.generations[path] = None
+                raise
 
-    def _download(self) -> None:
-        data, generation = self.remote.download()
-        write_bytes(data, self.path)
-        self.generation = generation
+    def _download(self, path: Path) -> None:
+        data, generation = self.files[path].download()
+        write_bytes(data, path)
+        self.generations[path] = generation
 
 
 def watch(poll: Callable[[], None], every: float, stop: threading.Event) -> threading.Thread:

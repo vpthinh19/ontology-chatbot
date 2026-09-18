@@ -28,9 +28,9 @@ def _call(app, method: str, path: str, **kwargs):
 
 @pytest.fixture
 def app(tmp_path):
-    path = tmp_path / "ontology.trig"
+    path, shapes = tmp_path / "ontology.trig", tmp_path / "shapes.ttl"
     shutil.copy(ONTOLOGY_PATH, path)
-    shapes = ONTOLOGY_PATH.with_name("shapes.ttl")
+    shutil.copy(ONTOLOGY_PATH.with_name("shapes.ttl"), shapes)  # sửa loại ghi cả shapes.ttl: không đụng bản thật
     store = AdminStore(path, Schema.from_file(shapes), shapes_path=shapes)
     return create_app(object(), admin=store, admin_token="khoa-quan-tri")
 
@@ -60,3 +60,31 @@ def test_an_invalid_save_answers_with_the_reasons(app) -> None:
 
     assert response.status_code == 400
     assert response.json()["errors"] == ["Mục thiếu nội dung · nội dung: thiếu giá trị bắt buộc"]
+
+
+def test_a_class_can_be_created_and_deleted_over_http(app) -> None:
+    created = _call(app, "POST", "/admin/classes", headers=KEY, json={
+        "name": "LoaiThu", "label": "Loại thử", "altLabels": False,
+        "fields": [{"property": "noiDung", "name": "nội dung", "kind": "text", "required": True, "single": False,
+                    "sourced": True}],
+    })
+    assert created.status_code == 201
+    classes = {c["name"]: c for c in _call(app, "GET", "/admin/schema", headers=KEY).json()["classes"]}
+    assert classes["LoaiThu"]["count"] == 0
+
+    deleted = _call(app, "DELETE", f"/admin/classes/LoaiThu?version={classes['LoaiThu']['version']}", headers=KEY)
+
+    assert deleted.status_code == 200
+
+
+def test_an_invalid_class_answers_with_where_each_problem_is(app) -> None:
+    response = _call(app, "POST", "/admin/classes", headers=KEY, json={"name": "x", "label": "", "fields": []})
+
+    assert response.status_code == 400
+    assert {d.get("where") for d in response.json()["details"]} == {"label", "name"}
+
+
+def test_deleting_with_an_outdated_version_is_refused(app) -> None:
+    response = _call(app, "DELETE", "/admin/entities/HocKyHe?version=cu", headers=KEY)
+
+    assert response.status_code == 409

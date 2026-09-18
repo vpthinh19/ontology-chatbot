@@ -1,4 +1,4 @@
-"""Đường HTTP của trang quản trị ontology.
+"""Đường HTTP của trang quản trị ontology: mục (``/admin/entities``) và loại (``/admin/classes``).
 
 Mọi đường đòi hai lớp khoá: khoá dịch vụ như đường hỏi đáp, cộng khoá quản trị gửi trong
 header ``X-Admin-Token``. Không đặt khoá quản trị thì dịch vụ không mở các đường này. Việc
@@ -11,7 +11,7 @@ import asyncio
 import json
 import secrets
 
-from .store import AdminError, AdminStore
+from .store import CODE_NAMES, AdminError, AdminStore
 
 #: Đủ cho một mục có bảng nguyên văn dài, vẫn chặn được yêu cầu vô lý.
 MAX_ADMIN_BODY_BYTES = 1024 * 1024
@@ -31,7 +31,8 @@ def admin_routes(store: AdminStore, admin_token: str, authorize) -> list:
         return JSONResponse({"detail": "Khoá quản trị không đúng."}, status_code=403)
 
     def failure(exc: AdminError):
-        return JSONResponse({"detail": str(exc), "errors": exc.errors}, status_code=exc.status)
+        return JSONResponse({"detail": str(exc), "errors": exc.errors, "details": exc.details,
+                             "confirm": exc.confirm}, status_code=exc.status)
 
     async def read_body(request) -> dict:
         raw = await request.body()
@@ -47,24 +48,37 @@ def admin_routes(store: AdminStore, admin_token: str, authorize) -> list:
 
     def describe() -> dict:
         counts = store.counts()
-        return {"classes": [
-            {
-                "name": spec.name,
-                "label": spec.label,
-                "count": counts.get(spec.name, 0),
-                "altLabels": spec.alt_labels,
-                "fields": [
-                    {
-                        "property": field.property, "name": field.name, "kind": field.kind,
-                        "required": field.required, "single": field.single, "target": field.target,
-                        "sourced": field.sourced,
-                        "choices": [{"id": choice, "label": store.label(choice)} for choice in field.choices],
-                    }
-                    for field in spec.fields
-                ],
-            }
-            for spec in store.schema.classes.values()
-        ]}
+        classes = store.schema.classes
+        properties: dict[str, dict] = {}
+        for spec in classes.values():
+            for field in spec.fields:
+                entry = properties.setdefault(field.property, {"property": field.property, "name": field.name,
+                                                               "kind": field.kind, "target": field.target,
+                                                               "classes": []})
+                entry["classes"].append(spec.name)
+        return {
+            "classes": [
+                {
+                    "name": spec.name,
+                    "label": spec.label,
+                    "count": counts.get(spec.name, 0),
+                    "altLabels": spec.alt_labels,
+                    "version": store.class_version(spec.name),
+                    "locked": spec.name in CODE_NAMES,
+                    "fields": [
+                        {
+                            "property": field.property, "name": field.name, "kind": field.kind,
+                            "required": field.required, "single": field.single, "target": field.target,
+                            "sourced": field.sourced, "locked": field.property in CODE_NAMES,
+                            "choices": [{"id": choice, "label": store.label(choice)} for choice in field.choices],
+                        }
+                        for field in spec.fields
+                    ],
+                }
+                for spec in classes.values()
+            ],
+            "properties": sorted(properties.values(), key=lambda entry: entry["property"]),
+        }
 
     async def schema(request):
         return refuse(request) or JSONResponse(describe())
@@ -90,10 +104,34 @@ def admin_routes(store: AdminStore, admin_token: str, authorize) -> list:
             if request.method == "GET":
                 return JSONResponse(store.get(local))
             if request.method == "PUT":
-                await asyncio.to_thread(store.update, local, await read_body(request))
-                return JSONResponse({"id": local})
-            await asyncio.to_thread(store.delete, local)
+                renamed = await asyncio.to_thread(store.update, local, await read_body(request))
+                return JSONResponse({"id": renamed})
+            await asyncio.to_thread(store.delete, local, request.query_params.get("version"))
             return JSONResponse({"deleted": local})
+        except AdminError as exc:
+            return failure(exc)
+
+    async def classes(request):
+        denied = refuse(request)
+        if denied is not None:
+            return denied
+        try:
+            name = await asyncio.to_thread(store.save_class, None, await read_body(request))
+            return JSONResponse({"name": name}, status_code=201)
+        except AdminError as exc:
+            return failure(exc)
+
+    async def one_class(request):
+        denied = refuse(request)
+        if denied is not None:
+            return denied
+        name = request.path_params["name"]
+        try:
+            if request.method == "PUT":
+                renamed = await asyncio.to_thread(store.save_class, name, await read_body(request))
+                return JSONResponse({"name": renamed})
+            await asyncio.to_thread(store.delete_class, name, request.query_params.get("version"))
+            return JSONResponse({"deleted": name})
         except AdminError as exc:
             return failure(exc)
 
@@ -101,4 +139,6 @@ def admin_routes(store: AdminStore, admin_token: str, authorize) -> list:
         Route("/admin/schema", schema, methods=["GET"]),
         Route("/admin/entities", entities, methods=["GET", "POST"]),
         Route("/admin/entities/{id}", entity, methods=["GET", "PUT", "DELETE"]),
+        Route("/admin/classes", classes, methods=["POST"]),
+        Route("/admin/classes/{name}", one_class, methods=["PUT", "DELETE"]),
     ]

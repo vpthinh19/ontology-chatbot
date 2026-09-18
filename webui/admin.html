@@ -19,21 +19,27 @@
       <a href="/">Về trang hỏi đáp</a>
     </header>
 
-    <div id="status" role="status" hidden></div>
+    <div id="status" role="status" aria-live="polite" hidden></div>
 
     <main class="layout">
-      <nav id="classes" aria-label="Loại thông tin"></nav>
+      <nav id="class-panel" aria-label="Loại thông tin">
+        <div id="classes"></div>
+        <button id="new-class-btn" type="button" class="add-class">+ Thêm loại</button>
+      </nav>
 
       <section id="list-panel" aria-labelledby="list-title" hidden>
-        <h2 id="list-title"></h2>
+        <div class="list-title-row">
+          <h2 id="list-title"></h2>
+          <button id="edit-class-btn" type="button">Sửa loại</button>
+        </div>
         <div class="list-head">
           <input id="filter" type="search" placeholder="Lọc theo tên…" aria-label="Lọc theo tên" />
-          <button id="new-btn" type="button">Thêm</button>
+          <button id="new-btn" type="button">Thêm mục</button>
         </div>
         <ul id="items"></ul>
       </section>
 
-      <section id="editor" aria-label="Sửa mục" hidden></section>
+      <section id="editor" aria-label="Sửa mục hoặc loại" hidden></section>
     </main>
 
     <script type="module" src="/admin.js"></script>

@@ -135,7 +135,7 @@ def test_the_first_start_uploads_the_packaged_ontology(tmp_path) -> None:
     path.write_bytes(b"ban trong anh")
     bucket = FakeObject()
 
-    RemoteOntology(bucket, path).start()
+    RemoteOntology({path: bucket}).start()
 
     assert bucket.data == b"ban trong anh"
 
@@ -148,12 +148,12 @@ def test_an_instance_starting_at_the_same_moment_takes_the_copy_seeded_first(tmp
     original = bucket.generation
     bucket.generation = lambda: next(empty_then_seeded, None) or original()
     bucket.upload(b"ban cua ban kia", "0")
-    remote = RemoteOntology(bucket, path)
+    remote = RemoteOntology({path: bucket})
 
     remote.start()
 
     assert path.read_bytes() == b"ban cua ban kia"
-    assert remote.generation == "1"
+    assert remote.generations[path] == "1"
 
 
 def test_a_later_start_replaces_the_packaged_ontology_with_the_stored_one(tmp_path) -> None:
@@ -161,7 +161,7 @@ def test_a_later_start_replaces_the_packaged_ontology_with_the_stored_one(tmp_pa
     path.write_bytes(b"ban trong anh")
     bucket = FakeObject()
     bucket.upload(b"ban da sua", "0")
-    remote = RemoteOntology(bucket, path)
+    remote = RemoteOntology({path: bucket})
 
     remote.start()
 
@@ -172,13 +172,14 @@ def test_a_later_start_replaces_the_packaged_ontology_with_the_stored_one(tmp_pa
 def test_a_refresh_fetches_only_a_newer_version(tmp_path) -> None:
     bucket = FakeObject()
     bucket.upload(b"ban 1", "0")
-    remote = RemoteOntology(bucket, tmp_path / "ontology.trig")
+    path = tmp_path / "ontology.trig"
+    remote = RemoteOntology({path: bucket})
     remote.start()
 
     bucket.upload(b"ban 2", "1")
 
     assert remote.refresh() is True
-    assert remote.path.read_bytes() == b"ban 2"
+    assert path.read_bytes() == b"ban 2"
     assert remote.refresh() is False
 
 
@@ -208,7 +209,7 @@ def test_a_failed_persist_leaves_the_file_and_the_memory_unchanged(tmp_path) -> 
     shutil.copy(ONTOLOGY_PATH, path)
     before = path.read_bytes()
 
-    def persist(data: bytes) -> None:
+    def persist(files) -> None:
         raise Conflict("kho bền từ chối")
 
     store = AdminStore(path, Schema.from_file(SHAPES_PATH), shapes_path=SHAPES_PATH, persist=persist)
@@ -230,7 +231,7 @@ def instance(tmp_path, name: str, bucket: FakeObject) -> tuple[AdminStore, Remot
     shutil.copy(SHAPES_PATH, folder / "shapes.ttl")
     args = serve._parse_args(["--llm", "mo-hinh", "--ontology", str(folder / "ontology.trig")])
     agent = SimpleNamespace(lookup=SimpleNamespace(engine=None))
-    remote = RemoteOntology(bucket, args.ontology)
+    remote = RemoteOntology({args.ontology: bucket})
     remote.start()
     store, _token = serve._build_admin(args, agent, remote)
     return store, remote, agent
@@ -281,3 +282,29 @@ def test_when_cloud_storage_cannot_be_reached_the_editor_is_told_nothing_was_sav
 
     assert refused.value.status == 503
     assert store.path.read_bytes() == before == bucket.data
+
+
+def test_a_data_edit_is_refused_when_the_schema_changed_elsewhere(tmp_path) -> None:
+    """Sửa mục dựng trên lược đồ cũ không được đè lên dữ liệu đã khớp lược đồ mới của phiên khác."""
+
+    data, shapes = tmp_path / "ontology.trig", tmp_path / "shapes.ttl"
+    data.write_bytes(b"du lieu")
+    shapes.write_bytes(b"luoc do")
+    data_object, shapes_object = FakeObject(), FakeObject()
+    remote = RemoteOntology({data: data_object, shapes: shapes_object})
+    remote.start()
+    shapes_object.upload(b"luoc do moi", "1")
+
+    with pytest.raises(StaleCopy):
+        remote.push({data: b"du lieu da sua"})
+
+    assert data_object.data == b"du lieu"
+    assert remote.refresh() is True
+    assert shapes.read_bytes() == b"luoc do moi"
+
+
+def test_the_schema_object_sits_beside_the_ontology_object() -> None:
+    remote = RemoteOntology.beside(GcsObject("kho", "du-lieu/ontology.trig", http=object(), token=str),
+                                   ONTOLOGY_PATH)
+
+    assert sorted(obj.name for obj in remote.files.values()) == ["du-lieu/ontology.trig", "du-lieu/shapes.ttl"]

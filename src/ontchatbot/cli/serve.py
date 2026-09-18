@@ -128,6 +128,8 @@ def _build_instructions(lookup) -> str:
 def _open_remote(args: argparse.Namespace):
     """Khi có ONTCHATBOT_ONTOLOGY_GCS_URI, bản gốc nằm trên Cloud Storage: tải về trước khi nạp engine.
 
+    Lược đồ shapes.ttl nằm cùng thư mục với đối tượng ontology trên kho.
+
     Container của Cloud Run không giữ tệp, nên thiếu biến này thì mọi lần sửa ở trang quản trị mất
     khi dịch vụ khởi động lại.
     """
@@ -138,7 +140,7 @@ def _open_remote(args: argparse.Namespace):
 
     from ..admin.remote import GcsObject, RemoteOntology
 
-    remote = RemoteOntology(GcsObject.from_uri(uri), args.ontology)
+    remote = RemoteOntology.beside(GcsObject.from_uri(uri), args.ontology)
     remote.start()
     return remote
 
@@ -168,9 +170,9 @@ def _build_admin(args: argparse.Namespace, agent, remote=None):
     if remote is not None:
         from ..admin.remote import StaleCopy
 
-        def persist(data: bytes) -> None:
+        def persist(files: dict[Path, bytes]) -> None:
             try:
-                remote.push(data)
+                remote.push(files)
             except StaleCopy:
                 if store.reload(remote.refresh):
                     _reload_engine(args, agent, "from Cloud Storage after a conflicting edit")
