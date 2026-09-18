@@ -87,6 +87,9 @@
 	rdfs:label "Cảnh báo do điểm trung bình tích lũy"@vi .
 :CanhBaoDoNoTinChi a :QuyTac ;
 	rdfs:label "Cảnh báo do nợ tín chỉ"@vi .
+:ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Chính sách hỗ trợ chi phí học tập đối với sinh viên là người dân tộc thiểu số"@vi .
 :ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc a :QuyTac ;
 	rdfs:label "Chính sách học bổng cho người học các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược"@vi ;
 	skos:altLabel "học bổng ngành khoa học cơ bản"@vi , "học bổng ngành kỹ thuật then chốt và công nghệ chiến lược"@vi , "học bổng theo Nghị định 179/2026/NĐ-CP"@vi .
@@ -987,6 +990,13 @@
 	:soHieu "507/QĐ-ĐHNT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 507/QĐ-ĐHNT"@vi .
+:NguonQuyetDinhSo662013QdTtg :banHanhNgay "2013-11-11"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2021/quyet-dinh-66-2013-qd-ttg-thu-tuong-chinh-phu.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "66/2013/QĐ-TTg"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 66/2013/QĐ-TTg"@vi .
 :NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap :duongDan "https://phongctsv.ntu.edu.vn/danh-muc/hoc-bong-khuyen-khich-hoc-tap"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -2239,6 +2249,18 @@
 	:toaDo "khoản 1 Điều 1"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo507QdDhntKhoan2Dieu1 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
+	:toaDo "khoản 2 Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo662013QdTtgDieu2 :thuocNguon :NguonQuyetDinhSo662013QdTtg ;
+	:toaDo "Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo662013QdTtgKhoan1Dieu1 :thuocNguon :NguonQuyetDinhSo662013QdTtg ;
+	:toaDo "khoản 1 Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo662013QdTtgKhoan1Dieu6 :thuocNguon :NguonQuyetDinhSo662013QdTtg ;
+	:toaDo "khoản 1 Điều 6"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo662013QdTtgKhoan2Dieu1 :thuocNguon :NguonQuyetDinhSo662013QdTtg ;
 	:toaDo "khoản 2 Điều 1"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 :thuocNguon :NguonThongBaoDiemChuanTrungTuyen2026 ;
@@ -4470,6 +4492,18 @@
 :TDNguonQuyetDinhSo507QdDhntKhoan2Dieu1 {
 	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :apDungChoNganh :NgonNguAnh ;
 		:noiDung "Quy định này áp dụng đối với sinh viên đại học và cao đẳng ngành Ngôn ngữ Anh từ Khóa 61 trở đi. Không áp dụng đối với sinh viên nước ngoài học ngành Ngôn ngữ Anh và sinh viên học văn bằng hai tại Trường Đại học Nha Trang."@vi .
+}
+:TDNguonQuyetDinhSo662013QdTtgDieu2 {
+	:ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :noiDung "Mức hỗ trợ chi phí học tập bằng 60% mức lương tối thiểu chung và được hưởng không quá 10 tháng/năm học/sinh viên."@vi .
+}
+:TDNguonQuyetDinhSo662013QdTtgKhoan1Dieu1 {
+	:ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :noiDung "Quyết định này quy định chính sách hỗ trợ chi phí học tập đối với sinh viên là người dân tộc thiểu số thuộc hộ nghèo, hộ cận nghèo theo quy định của Nhà nước, thi đỗ vào học đại học, cao đẳng hệ chính quy tại các cơ sở giáo dục đại học, bao gồm: đại học, học viện, trường đại học, trường cao đẳng."@vi .
+}
+:TDNguonQuyetDinhSo662013QdTtgKhoan1Dieu6 {
+	:ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :noiDung "Quyết định có hiệu lực thi hành kể từ ngày 01 tháng 01 năm 2014."@vi .
+}
+:TDNguonQuyetDinhSo662013QdTtgKhoan2Dieu1 {
+	:ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :noiDung "Quyết định này không áp dụng đối với sinh viên: Cử tuyển, các đối tượng chính sách được xét tuyển, đào tạo theo địa chỉ, đào tạo liên thông, văn bằng hai và học đại học, cao đẳng sau khi hoàn thành chương trình dự bị đại học."@vi .
 }
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 {
 	:CongNgheCheBienThuySanChuongTrinhMinhPhuNtu :maNganh "7540105MP" ;
