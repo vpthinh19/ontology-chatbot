@@ -209,6 +209,36 @@ test("admin proxy forwards the admin key, the route and its query to /admin", as
   }
 });
 
+test("admin proxy carries the admin session cookie both ways; chat does not", async () => {
+  let seen;
+  const upstream = await listen((request, response) => {
+    seen = request.headers.cookie;
+    response.writeHead(200, {
+      "Content-Type": "application/json",
+      "Set-Cookie": "ontchatbot_admin=v1.1.x; HttpOnly; Secure; SameSite=Strict; Path=/api/admin",
+    });
+    response.end("{}");
+  });
+  process.env.CLOUD_RUN_SERVICE_URL = upstream.baseUrl;
+  process.env.BACKEND_API_TOKEN = "server-secret";
+
+  try {
+    const response = await adminGet(
+      new Request("https://frontend.example/api/admin?path=session", { headers: { Cookie: "ontchatbot_admin=phien" } }),
+    );
+    assert.equal(seen, "ontchatbot_admin=phien");
+    assert.match(response.headers.get("set-cookie"), /^ontchatbot_admin=v1\.1\.x; HttpOnly/);
+
+    await proxyToBackend(
+      new Request("https://frontend.example/api/chat", { method: "POST", headers: { Cookie: "a=b" }, body: "{}" }),
+      { method: "POST", path: "/chat" },
+    );
+    assert.equal(seen, undefined);
+  } finally {
+    await upstream.close();
+  }
+});
+
 test("admin proxy refuses a route that could leave /admin", async () => {
   const response = await adminGet(new Request("https://frontend.example/api/admin?path=../chat"));
 

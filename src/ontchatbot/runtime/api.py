@@ -19,7 +19,10 @@ import secrets
 import time
 import uuid
 from contextlib import asynccontextmanager
+from datetime import datetime
 from typing import Any, AsyncIterator, Sequence
+
+from .chatlog import new_id, summarize_lookup
 
 #: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
 #: gõ, mỗi lần trợ lý tra cứu, câu trả lời cuối, và thời gian cả lượt. Các tầng
@@ -197,19 +200,27 @@ class TurnGate:
 
 
 async def _stream(
-    agent, message: str, history: Sequence[Any], gate: TurnGate
+    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None
 ) -> AsyncIterator[str]:
     conversation, history_trimmed = _bounded_history(history)
     turn = uuid.uuid4().hex[:12]
     started = time.perf_counter()
+    started_at = datetime.now().astimezone()
     lookups = 0
     answer = ""
     queue_ms = 0.0
     sse_events = 0
     sse_bytes = 0
+    # Cho nhật ký hội thoại: phần trả lời đã gửi (khi lượt bị bỏ giữa chừng), lời báo lỗi, các lần tra cứu.
+    partial: list[str] = []
+    error_text = ""
+    searched: list[dict] = []
+    pending_keywords: tuple[str, ...] = ()
 
     def emit(kind: str, **fields: Any) -> str:
-        nonlocal sse_events, sse_bytes
+        nonlocal sse_events, sse_bytes, error_text
+        if kind == "error":
+            error_text = fields.get("content", "")
         chunk = _event(kind, **fields)
         sse_events += 1
         sse_bytes += len(chunk.encode("utf-8"))
@@ -268,13 +279,16 @@ async def _stream(
                 completed = False
                 async for event in agent.stream(conversation):
                     if event.kind == "text_delta" and event.content:
+                        partial.append(event.content)
                         yield emit("text_delta", content=event.content)
                     elif event.kind == "lookup_started":
                         keywords = " · ".join(event.keywords)
                         lookups += 1
+                        pending_keywords = event.keywords
                         logger.debug("turn=%s lookup=%r", turn, keywords)
                         yield emit("lookup_started", keywords=keywords)
                     elif event.kind == "lookup_finished":
+                        searched.append(summarize_lookup(pending_keywords, event.content))
                         yield emit("lookup_finished")
                     elif event.kind == "completed":
                         answer = event.content or _EMPTY_ANSWER
@@ -323,6 +337,19 @@ async def _stream(
             (time.perf_counter() - started) * 1000,
         )
         logger.debug("turn=%s answer=%r", turn, answer)
+        if chat_log is not None:
+            chat_log.submit({
+                "id": new_id(started_at),
+                "time": started_at.isoformat(timespec="seconds"),
+                "question": message,
+                "context": [{"role": item["role"], "content": str(item["content"])[:500]}
+                            for item in conversation[:-1][-4:]],
+                "answer": answer or "".join(partial),
+                "outcome": outcome,
+                "error": error_text,
+                "lookups": searched,
+                "duration_ms": round((time.perf_counter() - started) * 1000),
+            })
 
 
 def create_app(
@@ -332,6 +359,7 @@ def create_app(
     backend_token: str | None = None,
     admin=None,
     admin_token: str | None = None,
+    chat_log=None,
 ):
     try:
         from starlette.applications import Starlette
@@ -404,7 +432,7 @@ def create_app(
         if not isinstance(history, list):
             return error(400, "history must be a list")
         return StreamingResponse(
-            _stream(agent, message.strip(), history, gate),
+            _stream(agent, message.strip(), history, gate, chat_log),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -417,6 +445,8 @@ def create_app(
             close = getattr(agent, "aclose", None)
             if close is not None:
                 await close()
+            if chat_log is not None:
+                chat_log.flush()
 
     routes = [
         Route("/health", health, methods=["GET"]),
@@ -426,7 +456,7 @@ def create_app(
     if admin is not None and admin_token:
         from ..admin.http import admin_routes
 
-        routes.extend(admin_routes(admin, admin_token, authorize))
+        routes.extend(admin_routes(admin, admin_token, authorize, chat_log))
     app = Starlette(routes=routes, lifespan=lifespan)
     frontend_origins = [
         origin.strip().rstrip("/")

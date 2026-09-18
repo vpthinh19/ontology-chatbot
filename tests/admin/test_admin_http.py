@@ -40,7 +40,7 @@ def test_admin_routes_do_not_exist_when_no_admin_key_is_configured() -> None:
 
 
 def test_admin_routes_refuse_a_request_without_the_admin_key(app) -> None:
-    assert _call(app, "GET", "/admin/schema").status_code == 403
+    assert _call(app, "GET", "/admin/schema").status_code == 401
 
 
 def test_the_schema_route_describes_the_form_of_each_class(app) -> None:

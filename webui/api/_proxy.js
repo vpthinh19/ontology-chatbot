@@ -9,9 +9,11 @@ const jsonError = (status, detail, headers) =>
     },
   );
 
+// ``cookies``: chuyển cookie của trình duyệt tới dịch vụ và Set-Cookie của dịch vụ về trình duyệt.
+// Chỉ đường quản trị bật nó (phiên đăng nhập quản trị); đường hỏi đáp không mang cookie nào.
 export const proxyToBackend = async (
   request,
-  { method, path },
+  { method, path, cookies = false },
   { fetchImpl = globalThis.fetch } = {},
 ) => {
   if (request.method !== method) {
@@ -30,7 +32,7 @@ export const proxyToBackend = async (
   }
 
   const headers = new Headers({ Authorization: `Bearer ${token}` });
-  for (const name of ["accept", "content-type", "x-admin-token"]) {
+  for (const name of ["accept", "content-type", "x-admin-token", ...(cookies ? ["cookie"] : [])]) {
     const value = request.headers.get(name);
     if (value) headers.set(name, value);
   }
@@ -51,6 +53,9 @@ export const proxyToBackend = async (
   for (const name of RESPONSE_HEADERS) {
     const value = upstream.headers.get(name);
     if (value) responseHeaders.set(name, value);
+  }
+  if (cookies) {
+    for (const cookie of upstream.headers.getSetCookie?.() ?? []) responseHeaders.append("set-cookie", cookie);
   }
 
   return new Response(upstream.body, {

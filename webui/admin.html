@@ -11,17 +11,24 @@
   <body>
     <header class="bar">
       <h1>Quản trị ontology</h1>
-      <form id="token-form">
+      <nav id="tabs" class="tabs" aria-label="Khu vực quản trị" hidden>
+        <button type="button" data-view="data" class="active">Dữ liệu ontology</button>
+        <button type="button" data-view="chat">Lịch sử chat</button>
+      </nav>
+      <form id="login-form" hidden>
         <label class="sr-only" for="token">Khoá quản trị</label>
-        <input id="token" type="password" placeholder="Khoá quản trị" autocomplete="off" />
-        <button type="submit">Dùng khoá</button>
+        <input id="token" type="password" placeholder="Khoá quản trị" autocomplete="current-password" />
+        <button type="submit" class="primary">Đăng nhập</button>
       </form>
-      <a href="/">Về trang hỏi đáp</a>
+      <div class="bar-end">
+        <button id="logout-btn" type="button" hidden>Đăng xuất</button>
+        <a href="/">Về trang hỏi đáp</a>
+      </div>
     </header>
 
     <div id="status" role="status" aria-live="polite" hidden></div>
 
-    <main class="layout">
+    <main id="data-view" class="layout" hidden>
       <nav id="class-panel" aria-label="Các lớp">
         <div id="classes"></div>
         <button id="new-class-btn" type="button" class="add-class">+ Thêm lớp</button>
@@ -40,6 +47,51 @@
       </section>
 
       <section id="editor" aria-label="Sửa thực thể hoặc lớp" hidden></section>
+    </main>
+
+    <main id="chat-view" class="layout" hidden>
+      <form id="chat-filters" aria-label="Lọc lịch sử chat">
+        <h2>Lịch sử chat</h2>
+        <label>Hiển thị
+          <select id="chat-view-select">
+            <option value="review">Cần xem xét (có dấu hiệu, chưa xem)</option>
+            <option value="todo">Đã đánh dấu cần bổ sung</option>
+            <option value="flagged">Mọi lượt có dấu hiệu</option>
+            <option value="failed">Lượt không hoàn tất</option>
+            <option value="all">Tất cả</option>
+          </select>
+        </label>
+        <label>Khoảng thời gian
+          <select id="chat-days">
+            <option value="1">Hôm nay</option>
+            <option value="7" selected>7 ngày</option>
+            <option value="30">30 ngày</option>
+            <option value="90">90 ngày</option>
+            <option value="366">1 năm</option>
+          </select>
+        </label>
+        <label>Tìm trong câu hỏi
+          <input id="chat-query" type="search" placeholder="ví dụ: học bổng" />
+        </label>
+        <button type="submit" class="primary">Lọc</button>
+        <div class="muted legend">
+          <p>Dấu hiệu được tính từ chính bản ghi:</p>
+          <ul>
+            <li><b>Không thấy</b>: có lần tra cứu không trả về thực thể nào.</li>
+            <li><b>Báo thiếu</b>: câu trả lời nói dữ liệu không có (toàn bộ hoặc một phần).</li>
+            <li><b>Ngoài phạm vi</b>: câu trả lời nói câu hỏi nằm ngoài phạm vi hỗ trợ.</li>
+            <li><b>Không tra</b>: trả lời mà không tra cứu.</li>
+            <li><b>Lỗi</b>: lượt không hoàn tất.</li>
+          </ul>
+        </div>
+      </form>
+
+      <section id="chat-list-panel" aria-labelledby="chat-list-title">
+        <h2 id="chat-list-title" class="panel-title">Các lượt hỏi</h2>
+        <ul id="chat-items"></ul>
+      </section>
+
+      <section id="chat-detail" aria-label="Chi tiết lượt hỏi" hidden></section>
     </main>
 
     <script type="module" src="/admin.js"></script>

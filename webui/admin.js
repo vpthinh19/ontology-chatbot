@@ -2,7 +2,6 @@
 // trong shapes.ttl; máy chủ kiểm lại bằng SHACL trước khi ghi, nên trang này lo nhập,
 // chỉ chỗ sai, và sửa chính lược đồ (loại, thuộc tính).
 const $ = (selector) => document.querySelector(selector);
-const TOKEN_KEY = "ontchatbotAdminToken";
 const KIND_NAMES = {
   text: "Chữ (tiếng Việt)",
   string: "Chuỗi ký tự (mã, số hiệu, email…)",
@@ -20,21 +19,15 @@ const SOURCE_RULES = [
 ];
 const state = { schema: [], properties: [], className: null, items: [], options: new Map(), entityId: null };
 
-let adminToken = (() => {
-  try {
-    return sessionStorage.getItem(TOKEN_KEY) || "";
-  } catch {
-    return "";
-  }
-})();
-
 const api = async (path, { method = "GET", body } = {}) => {
   const response = await fetch(`/api/admin${path}`, {
     method,
-    headers: { "Content-Type": "application/json", "X-Admin-Token": adminToken },
+    headers: { "Content-Type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const data = await response.json().catch(() => ({}));
+  // Phiên đăng nhập hết hạn giữa chừng: quay về ô đăng nhập thay vì báo lỗi khó hiểu.
+  if (response.status === 401 && path !== "/login" && path !== "/session") showLogin();
   if (!response.ok) {
     const error = new Error(data.detail || `Máy chủ trả lỗi ${response.status}.`);
     Object.assign(error, {
@@ -833,28 +826,218 @@ const renderClassEditor = (spec) => {
   showEditor(form);
 };
 
-// --- khởi động --------------------------------------------------------------------
+// --- lịch sử chat -------------------------------------------------------------------
+
+const FLAG_NAMES = {
+  not_found: "Không thấy",
+  says_missing: "Báo thiếu",
+  out_of_scope: "Ngoài phạm vi",
+  no_lookup: "Không tra",
+  failed: "Lỗi",
+};
+const FLAG_TEXT = {
+  not_found: "Có lần tra cứu không trả về thực thể nào.",
+  says_missing: "Câu trả lời nói dữ liệu không có (toàn bộ hoặc một phần câu hỏi).",
+  out_of_scope: "Câu trả lời nói câu hỏi nằm ngoài phạm vi hỗ trợ.",
+  no_lookup: "Trả lời mà không tra cứu lần nào.",
+  failed: "Lượt không hoàn tất (quá hạn, lỗi, hàng đầy hoặc người dùng đóng trang).",
+};
+const REVIEW_NAMES = { "": "Chưa xem xét", "can-bo-sung": "Cần bổ sung", "da-xu-ly": "Đã xử lý", "bo-qua": "Không cần xử lý" };
+const OUTCOME_NAMES = {
+  ok: "hoàn tất",
+  timeout: "quá hạn chờ mô hình",
+  "too-many-steps": "chạm trần số bước",
+  busy: "hàng đợi đầy",
+  "queue-timeout": "chờ trong hàng quá lâu",
+  error: "lỗi",
+  abandoned: "người dùng đóng trang giữa chừng",
+};
+const chatState = { items: [], openId: null };
+const when = (iso) =>
+  iso ? new Date(iso).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "";
+const badges = (item) =>
+  element("span", { class: "badges" }, [
+    ...(item.flags || []).map((flag) => element("span", { class: "badge warn", text: FLAG_NAMES[flag] || flag })),
+    item.review && item.review.state
+      ? element("span", { class: "badge state", text: REVIEW_NAMES[item.review.state] })
+      : null,
+  ]);
+
+const renderChatList = () => {
+  const list = $("#chat-items");
+  $("#chat-list-title").textContent = `Các lượt hỏi (${chatState.items.length})`;
+  if (!chatState.items.length) {
+    list.replaceChildren(element("li", { class: "muted", text: "Không có lượt hỏi nào khớp bộ lọc." }));
+    return;
+  }
+  list.replaceChildren(
+    ...chatState.items.map((item) =>
+      element(
+        "li",
+        {},
+        element(
+          "button",
+          { type: "button", class: item.id === chatState.openId ? "active" : "", onclick: () => run(() => openChat(item.id)) },
+          [
+            element("span", { class: "when", text: when(item.time) }),
+            element("span", { class: "question", text: item.question }),
+            badges(item),
+          ],
+        ),
+      ),
+    ),
+  );
+};
+
+const loadChats = async () => {
+  const params = new URLSearchParams({
+    view: $("#chat-view-select").value,
+    days: $("#chat-days").value,
+    q: $("#chat-query").value.trim(),
+  });
+  chatState.items = (await api(`/chats?${params}`)).items;
+  renderChatList();
+};
+
+const openChat = async (id) => {
+  const record = await api(`/chats/${encode(id)}`);
+  chatState.openId = id;
+  renderChatList();
+  const note = growing({ "aria-label": "Ghi chú xem xét", placeholder: "Ghi chú: cần bổ sung gì, đã sửa ở đâu…", value: record.review.note || "" });
+  const stateSelect = element(
+    "select",
+    { "aria-label": "Trạng thái xem xét", value: record.review.state || "" },
+    Object.entries(REVIEW_NAMES).map(([value, text]) => option(value, text)),
+  );
+  const saveReview = () =>
+    run(async () => {
+      await api(`/chats/${encode(id)}`, { method: "PUT", body: { state: stateSelect.value, note: note.value } });
+      await loadChats();
+      await openChat(id);
+      showStatus("Đã lưu trạng thái xem xét.", [], "ok");
+    });
+  const remove = () =>
+    run(async () => {
+      if (!window.confirm("Xoá bản ghi này? Việc này không hoàn tác được.")) return;
+      await api(`/chats/${encode(id)}`, { method: "DELETE" });
+      chatState.openId = null;
+      $("#chat-detail").hidden = true;
+      await loadChats();
+      showStatus("Đã xoá bản ghi.", [], "ok");
+    });
+  const lookups = (record.lookups || []).map((lookup) =>
+    element("div", { class: "lookup" }, [
+      element("div", {}, [
+        element("b", { text: (lookup.keywords || []).join(" · ") }),
+        element("span", { text: lookup.status === "found" ? "  · có kết quả" : lookup.status === "not_found" ? "  · không thấy" : "" }),
+      ]),
+      lookup.results && lookup.results.length
+        ? element("ul", {}, lookup.results.map((label) => element("li", { text: label })))
+        : null,
+      lookup.unmatched && lookup.unmatched.length
+        ? element("p", { class: "muted", text: `Từ khoá không khớp gì: ${lookup.unmatched.join(", ")}` })
+        : null,
+    ]),
+  );
+  const detail = element("div", { class: "chat-record" }, [
+    element("h2", { text: `Lượt hỏi lúc ${when(record.time)}` }),
+    element("p", {
+      class: "muted",
+      text: `Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây · ${record.id}`,
+    }),
+    record.flags && record.flags.length
+      ? element("ul", { class: "muted" }, record.flags.map((flag) => element("li", { text: FLAG_TEXT[flag] || flag })))
+      : null,
+    record.context && record.context.length ? element("h3", { text: "Tin nhắn ngay trước đó" }) : null,
+    ...(record.context || []).map((message) =>
+      element("p", { class: "said context", text: `${message.role === "user" ? "Người hỏi" : "Trợ lý"}: ${message.content}` }),
+    ),
+    element("h3", { text: "Câu hỏi" }),
+    element("p", { class: "said", text: record.question }),
+    element("h3", { text: "Câu trả lời" }),
+    element("p", { class: "said", text: record.answer || "(không có)" }),
+    record.error ? element("p", { class: "field-error", text: `Lỗi: ${record.error}` }) : null,
+    element("h3", { text: `Các lần tra cứu (${lookups.length})` }),
+    ...(lookups.length ? lookups : [element("p", { class: "muted", text: "Không tra cứu lần nào." })]),
+    element("div", { class: "review-box" }, [
+      element("h3", { text: "Xem xét" }),
+      stateSelect,
+      note,
+      record.review.time ? element("p", { class: "muted", text: `Cập nhật lúc ${when(record.review.time)}` }) : null,
+      element("div", { class: "actions" }, [
+        element("button", { type: "button", class: "primary", text: "Lưu xem xét", onclick: saveReview }),
+        element("button", { type: "button", class: "danger", text: "Xoá bản ghi", onclick: remove }),
+      ]),
+    ]),
+  ]);
+  const panel = $("#chat-detail");
+  panel.replaceChildren(detail);
+  panel.hidden = false;
+  panel.scrollTop = 0;
+  fitAll(panel);
+};
+
+// --- đăng nhập và chuyển khu vực ------------------------------------------------------
+
+const showView = (view) => {
+  $("#data-view").hidden = view !== "data";
+  $("#chat-view").hidden = view !== "chat";
+  document.querySelectorAll("#tabs button").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
+  if (view === "chat") run(loadChats);
+};
+
+function showLogin() {
+  $("#tabs").hidden = true;
+  $("#logout-btn").hidden = true;
+  $("#data-view").hidden = true;
+  $("#chat-view").hidden = true;
+  $("#login-form").hidden = false;
+  $("#token").focus();
+}
+
+const enter = async () => {
+  $("#login-form").hidden = true;
+  $("#tabs").hidden = false;
+  $("#logout-btn").hidden = false;
+  await loadSchema();
+  showView("data");
+  showStatus("");
+};
 
 const start = () =>
   run(async () => {
-    if (!adminToken) {
-      showStatus("Nhập khoá quản trị để bắt đầu.");
-      return;
+    try {
+      await api("/session");
+    } catch (error) {
+      if (error.status === 401) {
+        showLogin();
+        showStatus("Nhập khoá quản trị để đăng nhập.");
+        return;
+      }
+      throw error;
     }
-    await loadSchema();
-    showStatus("");
+    await enter();
   });
 
-$("#token").value = adminToken;
-$("#token-form").addEventListener("submit", (event) => {
+$("#login-form").addEventListener("submit", (event) => {
   event.preventDefault();
-  adminToken = $("#token").value.trim();
-  try {
-    sessionStorage.setItem(TOKEN_KEY, adminToken);
-  } catch {
-    // Trình duyệt chặn lưu thì khoá chỉ sống tới khi tải lại trang.
-  }
-  start();
+  run(async () => {
+    await api("/login", { method: "POST", body: { key: $("#token").value } });
+    $("#token").value = "";
+    await enter();
+  });
+});
+$("#logout-btn").addEventListener("click", () =>
+  run(async () => {
+    await api("/logout", { method: "POST" });
+    showLogin();
+    showStatus("Đã đăng xuất.", [], "ok");
+  }),
+);
+document.querySelectorAll("#tabs button").forEach((button) => button.addEventListener("click", () => showView(button.dataset.view)));
+$("#chat-filters").addEventListener("submit", (event) => {
+  event.preventDefault();
+  run(loadChats);
 });
 $("#filter").addEventListener("input", renderItems);
 $("#new-btn").addEventListener("click", newEntity);

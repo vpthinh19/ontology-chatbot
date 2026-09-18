@@ -16,6 +16,7 @@ const handle = (request) => {
   return proxyToBackend(request, {
     method: request.method,
     path: `/admin/${path}${query ? `?${query}` : ""}`,
+    cookies: true,
   });
 };
 

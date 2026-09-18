@@ -65,7 +65,7 @@ def test_agent_loop_executes_a_streamed_tool_call_then_answers() -> None:
 
     assert events == [
         AgentEvent("lookup_started", keywords=("học phí",)),
-        AgentEvent("lookup_finished"),
+        AgentEvent("lookup_finished", content='{"trang_thai":"co_du_lieu","du_lieu":["mức phí..."]}'),
         AgentEvent("text_delta", content="Một tín chỉ "),
         AgentEvent("text_delta", content="có mức phí..."),
         AgentEvent("completed", content="Một tín chỉ có mức phí..."),

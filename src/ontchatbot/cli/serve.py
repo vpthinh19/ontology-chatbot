@@ -210,6 +210,26 @@ def _watch_remote(args: argparse.Namespace, agent, remote, admin) -> None:
     watch(poll, args.refresh_seconds, threading.Event())
 
 
+def _build_chat_log():
+    """Lưu lịch sử chat để người quản trị xem lại: cùng thư mục Cloud Storage với ontology khi có
+    ONTCHATBOT_ONTOLOGY_GCS_URI, không thì thư mục ONTCHATBOT_CHATLOG_DIR (mặc định logs/chat).
+    ONTCHATBOT_CHATLOG=off để tắt."""
+
+    if os.environ.get("ONTCHATBOT_CHATLOG", "").strip().lower() in ("off", "0", "false", "no"):
+        return None
+    uri = os.environ.get("ONTCHATBOT_ONTOLOGY_GCS_URI", "").strip()
+    if uri:
+        from ..admin.remote import GcsObject
+        from ..runtime.chatlog import GcsChatLog
+
+        ontology = GcsObject.from_uri(uri)
+        folder = ontology.name.rsplit("/", 1)[0] + "/" if "/" in ontology.name else ""
+        return GcsChatLog(ontology.bucket, folder + "chat-logs/", http=ontology.http, token=ontology.token)
+    from ..runtime.chatlog import LocalChatLog
+
+    return LocalChatLog(os.environ.get("ONTCHATBOT_CHATLOG_DIR", "logs/chat"))
+
+
 def _build_agent(args: argparse.Namespace):
     """Build the complete runtime before the server reports healthy."""
 
@@ -264,13 +284,16 @@ def main() -> None:
     admin, admin_token = _build_admin(args, agent, remote)
     if remote is not None:
         _watch_remote(args, agent, remote, admin)
-    admin_options = {"admin": admin, "admin_token": admin_token} if admin is not None else {}
+    options = {"admin": admin, "admin_token": admin_token} if admin is not None else {}
+    chat_log = _build_chat_log()
+    if chat_log is not None:
+        options["chat_log"] = chat_log
     uvicorn.run(
         create_app(
             agent,
             gate=TurnGate(slots=args.turn_slots, queue_size=args.turn_queue),
             backend_token=backend_token,
-            **admin_options,
+            **options,
         ),
         host=args.host,
         port=args.port,

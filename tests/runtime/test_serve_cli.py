@@ -216,7 +216,8 @@ def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
     monkeypatch.setattr(
         serve,
         "create_app",
-        lambda agent, *, gate, backend_token=None: configured.update(gate=gate, backend_token=backend_token) or object(),
+        lambda agent, *, gate, backend_token=None, **_options: configured.update(gate=gate, backend_token=backend_token)
+        or object(),
     )
 
     serve.main()
@@ -284,3 +285,21 @@ def test_without_a_cloud_storage_address_the_ontology_file_is_used_as_is(monkeyp
 
     assert serve._open_remote(_parse_args(_flags())) is None
     assert _parse_args(_flags()).refresh_seconds == 60
+
+
+def test_chat_history_is_kept_beside_the_ontology_in_cloud_storage(monkeypatch, tmp_path) -> None:
+    import ontchatbot.cli.serve as serve
+    from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog
+
+    monkeypatch.delenv("ONTCHATBOT_CHATLOG", raising=False)
+    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_GCS_URI", "gs://kho/du-lieu/ontology.trig")
+    monkeypatch.setenv("ONTCHATBOT_GCS_ACCESS_TOKEN", "khoa")
+    remote = serve._build_chat_log()
+    assert isinstance(remote, GcsChatLog) and (remote.bucket, remote.prefix) == ("kho", "du-lieu/chat-logs/")
+
+    monkeypatch.delenv("ONTCHATBOT_ONTOLOGY_GCS_URI")
+    monkeypatch.setenv("ONTCHATBOT_CHATLOG_DIR", str(tmp_path))
+    assert isinstance(serve._build_chat_log(), LocalChatLog)
+
+    monkeypatch.setenv("ONTCHATBOT_CHATLOG", "off")
+    assert serve._build_chat_log() is None

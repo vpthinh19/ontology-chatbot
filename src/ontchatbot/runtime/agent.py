@@ -209,7 +209,7 @@ class AgentLoop:
                     raise AgentProtocolError("invalid lookup keywords")
                 yield AgentEvent("lookup_started", keywords=tuple(keywords))
                 result = await self._lookup(keywords)
-                yield AgentEvent("lookup_finished")
+                yield AgentEvent("lookup_finished", content=result)
                 conversation.append(
                     {
                         "role": "tool",

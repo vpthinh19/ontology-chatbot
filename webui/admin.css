@@ -94,6 +94,10 @@ button.danger { color: var(--danger); }
 .bar form { display: flex; gap: 8px; }
 .bar form input { width: 16rem; }
 .bar a { color: var(--brand); }
+.bar-end { display: flex; gap: 12px; align-items: center; margin-left: auto; }
+.tabs { display: flex; gap: 4px; padding: 3px; border: 1px solid var(--border); border-radius: 10px; }
+.tabs button { border: 0; background: transparent; }
+.tabs button.active { background: var(--brand-soft); color: var(--brand); }
 
 /* Thông báo nổi ở góc dưới: không đẩy nội dung, vẫn thấy khi đang cuộn giữa một form dài. */
 #status {
@@ -128,20 +132,20 @@ button.danger { color: var(--danger); }
   padding: 16px 24px;
 }
 
-#class-panel, #list-panel, #editor {
+#class-panel, #list-panel, #editor, #chat-filters, #chat-list-panel, #chat-detail {
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
 }
 
-#class-panel, #list-panel {
+#class-panel, #list-panel, #chat-list-panel {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-#editor { min-height: 0; overflow-y: auto; }
+#editor, #chat-detail, #chat-filters { min-height: 0; overflow-y: auto; }
 
 #classes { min-height: 0; overflow-y: auto; }
 .add-class { margin-top: 8px; }
@@ -159,13 +163,13 @@ button.danger { color: var(--danger); }
   overflow-wrap: anywhere;
 }
 
-#classes button.active, #items button.active { background: var(--brand-soft); color: var(--brand); }
+#classes button.active, #items button.active, #chat-items button.active { background: var(--brand-soft); color: var(--brand); }
 .count { min-width: 2.5ch; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; }
 
 .list-title-row { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin: 4px 4px 10px; }
 #list-title { margin: 0; font-size: 1rem; }
 .list-head { display: flex; gap: 8px; margin-bottom: 8px; }
-#items { flex: 1; min-height: 0; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
+#items, #chat-items { flex: 1; min-height: 0; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
 
 .entity-form { display: grid; gap: 8px; }
 .entity-form h2 { margin: 4px 0 0; font-size: 1.1rem; }
@@ -217,6 +221,38 @@ textarea.autosize { min-height: 2.6em; overflow: hidden; resize: none; }
 .check { display: inline-flex; gap: 6px; align-items: center; font-size: 0.9rem; }
 .check input { width: auto; }
 input:disabled { opacity: 0.6; }
+
+/* Lịch sử chat. */
+#chat-filters { display: grid; align-content: start; gap: 10px; }
+#chat-filters h2, .panel-title { margin: 4px 0 6px; font-size: 1rem; }
+#chat-filters label { display: grid; gap: 4px; font-size: 0.9rem; }
+.legend ul { margin: 4px 0 0; padding-left: 18px; }
+.legend p { margin: 0; }
+#chat-items button {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  white-space: normal;
+}
+#chat-items .when { color: var(--muted); font-size: 0.8rem; }
+#chat-items .question { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.badges { display: flex; flex-wrap: wrap; gap: 4px; }
+.badge { padding: 1px 7px; border-radius: 999px; background: var(--surface-hover); color: var(--muted); font-size: 0.75rem; }
+.badge.warn { background: rgba(255, 125, 136, 0.15); color: var(--danger); }
+.badge.state { background: var(--brand-soft); color: var(--brand); }
+.chat-record { display: grid; gap: 10px; }
+.chat-record h2 { margin: 4px 0 0; font-size: 1.1rem; }
+.chat-record h3 { margin: 8px 0 0; font-size: 0.95rem; }
+.said { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--surface-raised); white-space: pre-wrap; overflow-wrap: anywhere; }
+.said.context { color: var(--muted); font-size: 0.9rem; }
+.lookup { padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; font-size: 0.9rem; }
+.lookup ul { margin: 4px 0 0; padding-left: 18px; }
+.review-box { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; }
 
 /* Chỗ sai: viền đỏ và lời giải thích ngay dưới. */
 .invalid { border-color: var(--danger) !important; box-shadow: inset 0 0 0 1px var(--danger); }

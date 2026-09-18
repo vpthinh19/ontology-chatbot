@@ -57,6 +57,13 @@ class MetadataToken:
         return self._token
 
 
+def default_token(http) -> Callable[[], str]:
+    """Khoá từ ONTCHATBOT_GCS_ACCESS_TOKEN nếu có, không thì từ máy chủ metadata của Cloud Run."""
+
+    fixed = os.environ.get("ONTCHATBOT_GCS_ACCESS_TOKEN", "").strip()
+    return (lambda: fixed) if fixed else MetadataToken(http)
+
+
 class GcsObject:
     """Một đối tượng Cloud Storage, đọc và ghi qua JSON API."""
 
@@ -68,8 +75,7 @@ class GcsObject:
         self.bucket = bucket
         self.name = name
         self.http = http
-        fixed = os.environ.get("ONTCHATBOT_GCS_ACCESS_TOKEN", "").strip()
-        self.token = token or ((lambda: fixed) if fixed else MetadataToken(http))
+        self.token = token or default_token(http)
 
     @classmethod
     def from_uri(cls, uri: str, **options) -> GcsObject:
