@@ -962,6 +962,13 @@
 	:ngayThuThap "2026-09-18"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo nộp hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập và trợ cấp xã hội HKI năm học 2026-2027"@vi .
+:NguonThongBaoTuyenSinhSo1455TbDhnt :banHanhNgay "2025-12-31"^^xsd:date ;
+	:duongDan "https://trungtamdtbd.ntu.edu.vn/uploads/40/files/tintuc/259-TBTS%201455%20%C4%90HNT%202026.pdf"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "1455/TB-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Thông báo tuyển sinh số 1455/TB-ĐHNT"@vi .
 :NguonTieuChuanXetHocBongKhuyenKhichHocTap :duongDan "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -2274,6 +2281,114 @@
 :TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo :thuocNguon :NguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027 ;
 	:toaDo "mục Thời hạn nộp hồ sơ"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc2 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "mục 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc3 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "mục 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc4 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "mục 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc5 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "mục 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntPhanMoDau :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "phần mở đầu"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt10Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 10 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt11Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 11 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt12Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 12 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt13Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 13 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt14Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 14 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt15Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 15 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt16Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 16 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt17Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 17 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt18Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 18 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt19Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 19 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt1Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 1 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt20Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 20 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt21Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 21 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt22Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 22 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt23Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 23 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt24Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 24 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt25Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 25 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt26Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 26 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt27Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 27 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt28Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 28 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt29Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 29 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt2Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 2 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt30Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 30 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt3Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 3 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt4Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 4 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt5Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 5 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt6Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 6 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt7Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 7 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt8Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 8 mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt9Muc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
+	:toaDo "TT 9 mục 1"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
 	:toaDo "mục I.1.2"@vi ;
 	a :DiaChiTrichDan .
@@ -2985,6 +3100,10 @@
 	rdfs:label "Trường Kỹ thuật và Công nghệ"@vi .
 :TruongThuySanVaKhoaHocSuSong a :ChuThe ;
 	rdfs:label "Trường Thủy sản và Khoa học sự sống"@vi .
+:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Tuyển sinh đại học hình thức vừa làm vừa học năm 2026"@vi ;
+	skos:altLabel "học văn bằng 2"@vi , "liên thông từ cao đẳng"@vi , "liên thông từ trung cấp"@vi , "tuyển sinh liên thông năm 2026"@vi , "tuyển sinh văn bằng 2 năm 2026"@vi , "văn bằng hai"@vi , "đại học vừa làm vừa học 4 năm"@vi .
 :TyLeToiDaDaoTaoTrucTuyen a :QuyTac ;
 	rdfs:label "Tỷ lệ tối đa đào tạo trực tuyến"@vi .
 :VanBanChuongTrinhDaoTao rdfs:label "Văn bản chương trình đào tạo"@vi .
@@ -4354,6 +4473,114 @@
 }
 :TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo {
 	:ThuTucNopHoSoCheDoChinhSach :noiDung "Sau khi hoàn tất thủ tục, tiền miễn giảm học phí sẽ được trừ trực tiếp vào học phí của SV."@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Loại hình đào tạo, thời gian: Đại học liên thông từ Đại học (VB2) (1,5 năm) – số 1; Đại học liên thông từ Cao đẳng (1,5 năm) – số 2; Đại học liên thông từ Trung cấp (2,5 năm) – số 3; Đại học vừa làm vừa học (4 năm) – số 4"@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc2 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Người đã được công nhận tốt nghiệp trung học phổ thông (THPT) tham gia dự tuyển ở loại hình đào tạo số 4. Người đã có bằng tốt nghiệp trung cấp của Việt Nam và đã hoàn thành đủ yêu cầu khối lượng kiến thức văn hóa cấp THPT theo quy định của pháp luật tham gia dự tuyển loại hình đào tạo số 3,4. Người đã có bằng tốt nghiệp cao đẳng và đã hoàn thành đủ yêu cầu khối lượng kiến thức văn hóa cấp THPT theo quy định của pháp luật tham gia dự tuyển loại hình đào tạo số 2,3,4. Người đã có bằng tốt nghiệp đại học tham gia dự tuyển cả 4 loại hình đào tạo. Người có bằng tốt nghiệp của nước ngoài được công nhận trình độ tương đương với các trình độ THPT; trung cấp; cao đẳng; đại học của Việt Nam."@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc3 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Trung tâm Đào tạo và Bồi dưỡng Trường Đại học Nha Trang – Tòa nhà A3, số 02 Nguyễn Đình Chiểu, P. Bắc Nha Trang, Tỉnh Khánh Hòa – Điện thoại: 0258.2220913."@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc4 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Xét tuyển vào các tháng 02, 5, 8 và tháng 11 năm 2026."@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntMuc5 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Lệ phí xét tuyển: 400.000 đ/SV (Bốn trăm nghìn đồng)."@vi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntPhanMoDau {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoHinhThucDaoTao :DaoTaoVuaLamVuaHoc .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt10Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :QuanTriDichVuDuLichVaLuHanh .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt11Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :QuanLyThuySan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt12Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatCoKhi .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt13Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :TaiChinhNganHang .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt14Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KinhDoanhThuongMai .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt15Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatOTo .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt16Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :NgonNguAnh .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt17Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatXayDung .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt18Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatDien .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt19Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :HeThongThongTinQuanLy .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt1Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :CongNgheCheBienThuySan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt20Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatNhiet .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt21Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatCoDienTu .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt22Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :Marketing .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt23Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KinhTePhatTrien .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt24Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KhoaHocThuySan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt25Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :Luat .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt26Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatMoiTruong .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt27Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatHoaHoc .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt28Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatCoKhiDongLuc .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt29Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :CongNgheCheTaoMay .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt2Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KyThuatTauThuy .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt30Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KinhTe .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt3Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :NuoiTrongThuySan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt4Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :CongNgheSinhHoc .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt5Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :CongNgheThongTin .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt6Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :QuanTriKhachSan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt7Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :KeToan .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt8Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :QuanTriKinhDoanh .
+}
+:TDNguonThongBaoTuyenSinhSo1455TbDhntTt9Muc1 {
+	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :apDungChoNganh :CongNgheThucPham .
 }
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất."@vi .
