@@ -966,6 +966,12 @@
 	:soHieu "57/2017/NĐ-CP"@vi ;
 	a :Nguon ;
 	rdfs:label "Nghị định số 57/2017/NĐ-CP"@vi .
+:NguonQuyTrinhNhanVaQuanLyHoSoSinhVien :banHanhNgay "2021-01-05"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Quy trình nhận và quản lý hồ sơ sinh viên"@vi .
 :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc :banHanhNgay "2021-01-05"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
@@ -2152,6 +2158,18 @@
 :TDNguonNghiDinhSo572017NdCpKhoan2Dieu4 :thuocNguon :NguonNghiDinhSo572017NdCp ;
 	:toaDo "khoản 2 Điều 4"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc1MucB :thuocNguon :NguonQuyTrinhNhanVaQuanLyHoSoSinhVien ;
+	:toaDo "bước 1 mục b"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc2MucB :thuocNguon :NguonQuyTrinhNhanVaQuanLyHoSoSinhVien ;
+	:toaDo "bước 2 mục b"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc5MucB :thuocNguon :NguonQuyTrinhNhanVaQuanLyHoSoSinhVien ;
+	:toaDo "bước 5 mục b"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc6MucB :thuocNguon :NguonQuyTrinhNhanVaQuanLyHoSoSinhVien ;
+	:toaDo "bước 6 mục b"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "bước 1"@vi ;
 	a :DiaChiTrichDan .
@@ -3283,6 +3301,9 @@
 :ThuTucNopHoSoCheDoChinhSach a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nộp hồ sơ chế độ chính sách"@vi ;
 	skos:altLabel "HTCPHT"@vi , "MGHP"@vi , "TCXH"@vi , "học bổng sinh viên khuyết tật"@vi , "hồ sơ chính sách"@vi , "hỗ trợ chi phí học tập"@vi , "miễn giảm học phí"@vi , "trợ cấp xã hội"@vi .
+:ThuTucNopHoSoSinhVien a :ThuTucHocVu ;
+	rdfs:label "Thủ tục nộp hồ sơ sinh viên"@vi ;
+	skos:altLabel "bổ sung hồ sơ sinh viên"@vi , "hồ sơ sinh viên"@vi .
 :ThuTucNopHocPhi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nộp học phí"@vi ;
 	skos:altLabel "nộp học phí"@vi , "nộp tiền học"@vi , "thanh toán học phí"@vi , "đóng học phí"@vi , "đóng tiền học"@vi .
@@ -4463,6 +4484,20 @@
 }
 :TDNguonNghiDinhSo572017NdCpKhoan2Dieu4 {
 	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Thời gian được hưởng hỗ trợ: 12 tháng/năm cho đối tượng có thời gian học đủ 9 tháng/năm trở lên; trường hợp đối tượng học không đủ 9 tháng/năm thì được hưởng theo thời gian học thực tế."@vi .
+}
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc1MucB {
+	:ThuTucNopHoSoSinhVien :doAiThucHien :SinhVien ;
+		:noiDung "Thông báo những giấy tờ sinh viên cần nộp; Gửi thông báo trước 01 tuần khi sinh viên nhập học; Giấy khai sinh (bản sao); Học bạ (bản sao) mang bản chính để đối chiếu; Bằng tốt nghiệp THPT (bản sao)/Giấy CNTN tạm thời (bản chính)"@vi .
+}
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc2MucB {
+	:ThuTucNopHoSoSinhVien :noiDung "Tiếp nhận hồ sơ; Phòng Công tác Chính trị &SV; Trong các đợt nhập học"@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
+}
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc5MucB {
+	:ThuTucNopHoSoSinhVien :noiDung "Thông báo kết quả kiểm tra và điều chỉnh bổ sung hồ sơ; 1 năm; Bổ sung các giấy tờ chưa trùng khớp; Bổ sung bằng tốt nghiệp THPT (đối với những sinh viên nộp giấy chứng nhận tạm thời khi nhập học"@vi .
+}
+:TDNguonQuyTrinhNhanVaQuanLyHoSoSinhVienBuoc6MucB {
+	:ThuTucNopHoSoSinhVien :noiDung "Ra Quyết định BTH vì lí do không đảm bảo hồ sơ sinh viên; Đầu học kỳ năm thứ 2; Không cung cấp đủ giấy tờ theo quy định"@vi .
 }
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
 	:ThuTucChuyenNganh :noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
