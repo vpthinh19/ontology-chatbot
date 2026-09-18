@@ -254,3 +254,33 @@ def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) ->
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
     with pytest.raises(SystemExit, match="ONTCHATBOT_BACKEND_TOKEN"):
         serve.main()
+
+
+def test_the_stored_ontology_is_fetched_before_the_search_index_is_built(monkeypatch) -> None:
+    """Trên Cloud Run, bản trong ảnh có thể đã cũ: engine phải dựng từ bản vừa tải về."""
+
+    import ontchatbot.cli.serve as serve
+
+    order = []
+    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
+    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setattr(serve, "_open_remote", lambda args: order.append("tai") or "kho")
+    monkeypatch.setattr(serve, "_build_agent", lambda args: order.append("engine") or "tro-ly")
+    monkeypatch.setattr(serve, "_build_admin", lambda args, agent, remote: (None, None))
+    monkeypatch.setattr(serve, "_watch_remote", lambda args, agent, remote, admin: order.append(("theo doi", remote)))
+    monkeypatch.setattr(serve, "create_app", lambda runtime, **_kwargs: object())
+    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
+
+    serve.main()
+
+    assert order == ["tai", "engine", ("theo doi", "kho")]
+
+
+def test_without_a_cloud_storage_address_the_ontology_file_is_used_as_is(monkeypatch) -> None:
+    import ontchatbot.cli.serve as serve
+
+    monkeypatch.delenv("ONTCHATBOT_ONTOLOGY_GCS_URI", raising=False)
+
+    assert serve._open_remote(_parse_args(_flags())) is None
+    assert _parse_args(_flags()).refresh_seconds == 60

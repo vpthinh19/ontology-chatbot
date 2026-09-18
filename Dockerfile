@@ -26,8 +26,10 @@ COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/resources/ontology /app/resources/ontology
 RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
-# Ontology nằm trong ảnh cho tới khi dịch vụ đọc nó từ Cloud Storage. Chỉ mục tìm
-# kiếm dựng trong bộ nhớ lúc khởi động, nên ảnh không mang tệp dẫn xuất nào.
+# Ontology trong ảnh là bản đầu tiên. Đặt ONTCHATBOT_ONTOLOGY_GCS_URI thì lúc khởi động
+# dịch vụ tải bản gốc từ Cloud Storage (chưa có thì đưa bản trong ảnh lên), và mọi lần sửa ở
+# trang quản trị được ghi lên đó. Chỉ mục tìm kiếm dựng trong bộ nhớ lúc khởi động, nên ảnh
+# không mang tệp dẫn xuất nào.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
     TZ=Asia/Ho_Chi_Minh MALLOC_ARENA_MAX=2 \

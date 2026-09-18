@@ -1,8 +1,9 @@
 """Thêm, sửa, xoá mục của ontology theo lược đồ.
 
 Mỗi lần ghi đi bốn bước: dựng bản mới trong bộ nhớ, kiểm bản đó bằng lược đồ SHACL, ghi
-tệp TriG theo thứ tự cố định, rồi báo để engine tìm kiếm nạp lại. Bước kiểm hỏng thì tệp
-trên đĩa giữ nguyên.
+tệp TriG theo thứ tự cố định, rồi báo để engine tìm kiếm nạp lại. Khi chạy trên Cloud Run,
+bản mới được ghi lên Cloud Storage ngay trước khi ghi tệp. Bước nào hỏng thì tệp trên đĩa
+giữ nguyên.
 
 "Sửa" là sửa thật: mục được thay bằng đúng những gì người sửa gửi lên, kể cả nguồn của
 từng câu. Địa chỉ trích dẫn được tạo khi người sửa chọn nguồn và ghi vị trí; địa chỉ không
@@ -21,7 +22,7 @@ import pyoxigraph as oxi
 
 from ..settings import ONTOLOGY_NS
 from .schema import RDFS_LABEL, SKOS_ALT_LABEL, XSD, Field, Schema
-from .trig import iri_name, load, write
+from .trig import iri_name, load, serialize, write_bytes
 
 RDF_TYPE = oxi.NamedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
 LABEL = oxi.NamedNode(RDFS_LABEL)
@@ -59,6 +60,10 @@ class NotFound(AdminError):
 
 class Conflict(AdminError):
     status = 409
+
+
+class Unavailable(AdminError):
+    status = 503
 
 
 def _node(local: str) -> oxi.NamedNode:
@@ -112,14 +117,33 @@ class AdminStore:
         *,
         shapes_path: Path | str | None = None,
         on_change: Callable[[Path], None] | None = None,
+        persist: Callable[[bytes], None] | None = None,
     ) -> None:
+        """``persist`` nhận đúng nội dung sắp ghi, trước khi tệp trên đĩa đổi: bản triển khai dùng nó để
+        ghi lên kho bền (Cloud Storage). Nó báo lỗi thì lần sửa bị huỷ, tệp và bộ nhớ giữ nguyên."""
+
         self.path = Path(path)
         self.schema = schema
         self.shapes_path = Path(shapes_path) if shapes_path else self.path.with_name("shapes.ttl")
         self.on_change = on_change
+        self.persist = persist
         self._store = load(self.path)
-        self._lock = threading.Lock()
+        # RLock: khi kho bền báo có bản mới hơn, việc nạp lại chạy ngay trong lượt ghi đang giữ khoá.
+        self._lock = threading.RLock()
         self._shapes = None
+
+    def reload(self, fetch: Callable[[], bool] | None = None) -> bool:
+        """Đọc lại tệp trên đĩa; trả ``True`` khi đã đọc.
+
+        ``fetch`` thay tệp bằng bản mới từ kho bền và trả ``False`` khi không có gì mới. Nó chạy trong
+        khoá ghi, để không lần sửa nào dựng trên bản cũ trong bộ nhớ trong lúc tệp đã là bản mới.
+        """
+
+        with self._lock:
+            if fetch is not None and not fetch():
+                return False
+            self._store = load(self.path)
+            return True
 
     # --- đọc ------------------------------------------------------------------
 
@@ -323,7 +347,10 @@ class AdminStore:
         errors = self._violations(store)
         if errors:
             raise AdminError("Dữ liệu không khớp lược đồ.", errors)
-        write(store, self.path)
+        data = serialize(store)
+        if self.persist is not None:
+            self.persist(data)
+        write_bytes(data, self.path)
         self._store = store
         if self.on_change is not None:
             self.on_change(self.path)

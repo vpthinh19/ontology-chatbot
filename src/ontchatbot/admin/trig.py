@@ -36,11 +36,20 @@ def _order(quad: oxi.Quad) -> tuple[str, str, str, str]:
     return bag, str(quad.subject), str(quad.predicate), str(quad.object)
 
 
+def serialize(store: oxi.Store) -> bytes:
+    """Nội dung TriG theo thứ tự cố định: cùng một đồ thị luôn ra cùng một chuỗi byte."""
+
+    return oxi.serialize(sorted(store, key=_order), format=oxi.RdfFormat.TRIG, prefixes=PREFIXES)
+
+
 def write(store: oxi.Store, path: Path | str) -> None:
+    write_bytes(serialize(store), path)
+
+
+def write_bytes(data: bytes, path: Path | str) -> None:
     """Ghi qua tệp tạm rồi thay tên, để một lần ghi hỏng giữa chừng không để lại tệp dở."""
 
     path = Path(path)
-    data = oxi.serialize(sorted(store, key=_order), format=oxi.RdfFormat.TRIG, prefixes=PREFIXES)
     handle, temporary = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
     try:
         with os.fdopen(handle, "wb") as file:

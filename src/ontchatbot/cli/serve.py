@@ -71,6 +71,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=os.environ.get("ONTCHATBOT_SEARCH_TOP_K", "5"),
         help="số mục trả về cho mỗi lần tra; hoặc đặt ONTCHATBOT_SEARCH_TOP_K",
     )
+    parser.add_argument(
+        "--refresh-seconds",
+        type=_positive_int,
+        default=os.environ.get("ONTCHATBOT_ONTOLOGY_REFRESH_SECONDS", "60"),
+        help="bao lâu hỏi Cloud Storage một lần xem ontology có bản mới; hoặc đặt ONTCHATBOT_ONTOLOGY_REFRESH_SECONDS",
+    )
     return parser.parse_args(argv)
 
 
@@ -119,24 +125,87 @@ def _build_instructions(lookup) -> str:
     return build_instructions(read_vocabulary(lookup.engine.ontology))
 
 
-def _build_admin(args: argparse.Namespace, agent):
-    """Mở trang quản trị khi có ONTCHATBOT_ADMIN_TOKEN; mỗi lần ghi, engine nạp lại tệp."""
+def _open_remote(args: argparse.Namespace):
+    """Khi có ONTCHATBOT_ONTOLOGY_GCS_URI, bản gốc nằm trên Cloud Storage: tải về trước khi nạp engine.
+
+    Container của Cloud Run không giữ tệp, nên thiếu biến này thì mọi lần sửa ở trang quản trị mất
+    khi dịch vụ khởi động lại.
+    """
+
+    uri = os.environ.get("ONTCHATBOT_ONTOLOGY_GCS_URI", "").strip()
+    if not uri:
+        return None
+
+    from ..admin.remote import GcsObject, RemoteOntology
+
+    remote = RemoteOntology(GcsObject.from_uri(uri), args.ontology)
+    remote.start()
+    return remote
+
+
+def _reload_engine(args: argparse.Namespace, agent, why: str) -> None:
+    from ..search import SearchEngine, TriGFileSource
+
+    agent.lookup.engine = SearchEngine.open(TriGFileSource(args.ontology), top_k=args.top_k)
+    logger.info("ontology reloaded %s path=%s", why, args.ontology)
+
+
+def _build_admin(args: argparse.Namespace, agent, remote=None):
+    """Mở trang quản trị khi có ONTCHATBOT_ADMIN_TOKEN; mỗi lần ghi, engine nạp lại tệp.
+
+    Có ``remote`` thì mỗi lần ghi đi lên Cloud Storage trước. Một phiên khác vừa ghi trước thì lần
+    sửa bị từ chối, bản mới được tải về, và người sửa mở lại mục để sửa trên bản đó.
+    """
 
     token = os.environ.get("ONTCHATBOT_ADMIN_TOKEN", "").strip()
     if not token:
         return None, None
 
-    from ..admin import AdminStore, Schema
-    from ..search import SearchEngine, TriGFileSource
+    from ..admin import AdminStore, Conflict, Schema, Unavailable
 
     shapes = Path(args.ontology).with_name("shapes.ttl")
+    persist = None
+    if remote is not None:
+        from ..admin.remote import StaleCopy
 
-    def reload(path: Path) -> None:
-        agent.lookup.engine = SearchEngine.open(TriGFileSource(path), top_k=args.top_k)
-        logger.info("ontology reloaded after an admin edit path=%s", path)
+        def persist(data: bytes) -> None:
+            try:
+                remote.push(data)
+            except StaleCopy:
+                if store.reload(remote.refresh):
+                    _reload_engine(args, agent, "from Cloud Storage after a conflicting edit")
+                raise Conflict(
+                    "Ontology vừa được sửa ở một phiên khác. Dữ liệu mới đã được tải; hãy mở lại mục và sửa lại."
+                ) from None
+            except Exception as exc:
+                logger.exception("could not save the ontology to Cloud Storage")
+                raise Unavailable(
+                    "Chưa lưu được lên kho lưu trữ nên chưa có gì thay đổi; hãy thử lại sau ít phút."
+                ) from exc
 
-    store = AdminStore(args.ontology, Schema.from_file(shapes), shapes_path=shapes, on_change=reload)
+    store = AdminStore(
+        args.ontology,
+        Schema.from_file(shapes),
+        shapes_path=shapes,
+        on_change=lambda _path: _reload_engine(args, agent, "after an admin edit"),
+        persist=persist,
+    )
     return store, token
+
+
+def _watch_remote(args: argparse.Namespace, agent, remote, admin) -> None:
+    """Nhiều bản dịch vụ chạy song song: mỗi bản định kỳ tải lần sửa mà bản khác đã ghi lên."""
+
+    import threading
+
+    from ..admin.remote import watch
+
+    def poll() -> None:
+        changed = admin.reload(remote.refresh) if admin is not None else remote.refresh()
+        if changed:
+            _reload_engine(args, agent, "from Cloud Storage")
+
+    watch(poll, args.refresh_seconds, threading.Event())
 
 
 def _build_agent(args: argparse.Namespace):
@@ -188,8 +257,11 @@ def main() -> None:
     # nó. Mặc định, các dòng của nó đi qua một khuôn khác hẳn và KHÔNG có mốc
     # thời gian, nên nhật ký trộn hai kiểu dòng: dòng của dịch vụ có giờ, dòng
     # của máy chủ web thì không. Bỏ cấu hình đó thì mọi dòng cùng một khuôn.
+    remote = _open_remote(args)
     agent = _build_agent(args)
-    admin, admin_token = _build_admin(args, agent)
+    admin, admin_token = _build_admin(args, agent, remote)
+    if remote is not None:
+        _watch_remote(args, agent, remote, admin)
     admin_options = {"admin": admin, "admin_token": admin_token} if admin is not None else {}
     uvicorn.run(
         create_app(

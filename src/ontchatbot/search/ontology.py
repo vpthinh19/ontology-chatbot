@@ -28,7 +28,8 @@ NGOAI_TUI = oxi.DefaultGraph()
 
 
 class OntologySource(ABC):
-    """Nơi cất ontology. Bản nháp đọc tệp; bản triển khai sẽ đọc GCS."""
+    """Nơi cất ontology. Dịch vụ đọc tệp trên đĩa; trên Cloud Run, tệp đó là bản sao của bản gốc
+    trên Cloud Storage (``admin.remote``)."""
 
     @abstractmethod
     def load(self) -> oxi.Store:
