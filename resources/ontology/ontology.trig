@@ -90,6 +90,9 @@
 :ChinhSachHoTroChiPhiHocTapDoiVoiSinhVienLaNguoiDanTocThieuSo :loaiQuyTac :ChinhSachHocVu ;
 	a :QuyTac ;
 	rdfs:label "Chính sách hỗ trợ chi phí học tập đối với sinh viên là người dân tộc thiểu số"@vi .
+:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :loaiQuyTac :ChinhSachHocVu ;
+	a :QuyTac ;
+	rdfs:label "Chính sách hỗ trợ học tập đối với sinh viên dân tộc thiểu số rất ít người"@vi .
 :ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc a :QuyTac ;
 	rdfs:label "Chính sách học bổng cho người học các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược"@vi ;
 	skos:altLabel "học bổng ngành khoa học cơ bản"@vi , "học bổng ngành kỹ thuật then chốt và công nghệ chiến lược"@vi , "học bổng theo Nghị định 179/2026/NĐ-CP"@vi .
@@ -956,6 +959,13 @@
 	:soHieu "238/2025/NĐ-CP"@vi ;
 	a :Nguon ;
 	rdfs:label "Nghị định số 238/2025/NĐ-CP"@vi .
+:NguonNghiDinhSo572017NdCp :banHanhNgay "2017-05-09"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2021/N%C4%90%2057_2017_N%C4%90-CP.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "57/2017/NĐ-CP"@vi ;
+	a :Nguon ;
+	rdfs:label "Nghị định số 57/2017/NĐ-CP"@vi .
 :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc :banHanhNgay "2021-01-05"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
@@ -2113,6 +2123,27 @@
 	a :DiaChiTrichDan .
 :TDNguonNghiDinhSo2382025NdCpKhoan9Dieu10 :thuocNguon :NguonNghiDinhSo2382025NdCp ;
 	:toaDo "khoản 9 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpDiemAKhoan1Dieu5 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "điểm a khoản 1 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpDiemAKhoan3Dieu4 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "điểm a khoản 3 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpDiemBKhoan3Dieu4 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "điểm b khoản 3 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpDiemDKhoan1Dieu4 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "điểm đ khoản 1 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpKhoan1Dieu10 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "khoản 1 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpKhoan1Dieu2 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "khoản 1 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo572017NdCpKhoan2Dieu4 :thuocNguon :NguonNghiDinhSo572017NdCp ;
+	:toaDo "khoản 2 Điều 4"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "bước 1"@vi ;
@@ -4389,6 +4420,27 @@
 }
 :TDNguonNghiDinhSo2382025NdCpKhoan9Dieu10 {
 	:HocPhiDaoTaoDaiHocTinhTheoTinChi :noiDung "Học phí đào tạo đại học tính theo tín chỉ, mô-đun: a) Mức thu học phí của một tín chỉ, mô-đun được xác định căn cứ vào tổng thu học phí của toàn khóa học theo nhóm ngành, nghề đào tạo và tổng số tín chỉ, mô-đun toàn khóa theo công thức dưới đây: Học phí tín chỉ, mô-đun = Tổng học phí toàn khóa / Tổng số tín chỉ, mô-đun toàn khóa. Tổng học phí toàn khóa = mức thu học phí 1 sinh viên/1 tháng x 10 tháng x số năm học, bảo đảm nguyên tắc tổng học phí theo tín chỉ của chương trình đào tạo tối đa bằng tổng học phí tính theo niên chế. b) Trường hợp học quá thời hạn quy định của chương trình đào tạo, học phí tín chỉ áp dụng từ thời điểm quá hạn được xác định lại trên cơ sở thời gian học thực tế trên nguyên tắc bù đắp chi phí và thực hiện công khai, giải trình với người học; c) Trường hợp đào tạo bằng tốt nghiệp thứ 2 trình độ đại học, người đóng học phí của các tín chỉ thực học theo chương trình đào tạo."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpDiemAKhoan1Dieu5 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Đầu khóa học, các trường dự bị đại học, các cơ sở giáo dục đại học, các cơ sở giáo dục nghề nghiệp có học sinh, sinh viên dân tộc thiểu số rất ít người theo học tổ chức phổ biến, thông báo rộng rãi cho học sinh, sinh viên thuộc đối tượng được hưởng chính sách làm đơn đề nghị hỗ trợ học tập (mẫu quy định tại Phụ lục kèm theo Nghị định này). Trong thời hạn 20 ngày làm việc, kể từ ngày niêm yết thông báo, cha mẹ (hoặc người chăm sóc) trẻ mẫu giáo; học sinh, sinh viên nộp đơn cho cơ sở giáo dục. Trong thời hạn 10 ngày làm việc, kể từ ngày hết hạn nhận đơn, các cơ sở giáo dục có trách nhiệm tổ chức xem xét đơn đề nghị hỗ trợ học tập, lập và phê duyệt danh sách đối tượng được hưởng, niêm yết công khai danh sách đối tượng được hưởng, gửi báo cáo cơ quan quản lý cấp trên trực tiếp và thực hiện việc chi trả."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpDiemAKhoan3Dieu4 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Học sinh, sinh viên dân tộc thiểu số rất ít người học tại các trường, khoa dự bị đại học, các cơ sở giáo dục đại học, cơ sở giáo dục nghề nghiệp, nếu học đồng thời ở nhiều khoa trong cùng một cơ sở giáo dục hoặc học ở nhiều cơ sở giáo dục khác nhau thì chỉ được hưởng hỗ trợ một lần. Trường hợp học sinh, sinh viên bị ngừng học thì thời gian ngừng học không được hưởng hỗ trợ. Trường hợp học sinh, sinh viên bị buộc thôi học thì thôi hưởng chính sách hỗ trợ ngay sau khi thôi học."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpDiemBKhoan3Dieu4 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Trường hợp trẻ mẫu giáo, học sinh, sinh viên thuộc đối tượng được hưởng nhiều chính sách hỗ trợ cùng tính chất thì chỉ được hưởng một chính sách với mức hỗ trợ cao nhất, cụ thể: Sinh viên dân tộc thiểu số rất ít người học tại các cơ sở giáo dục đại học được hưởng chính sách hỗ trợ học tập quy định tại Nghị định này không được hưởng hỗ trợ chi phí học tập quy định tại Quyết định số 66/2013/QĐ-TTg ngày 11 tháng 11 năm 2013 của Thủ tướng Chính phủ quy định chính sách hỗ trợ chi phí học tập đối với sinh viên là người dân tộc thiểu số học tại các cơ sở giáo dục đại học."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpDiemDKhoan1Dieu4 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Học sinh, sinh viên dân tộc thiểu số rất ít người học tại các trường, khoa dự bị đại học, các cơ sở giáo dục đại học, cơ sở giáo dục nghề nghiệp được hưởng mức hỗ trợ học tập bằng 100% mức lương cơ sở/người/tháng."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpKhoan1Dieu10 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Nghị định này có hiệu lực thi hành từ ngày 01 tháng 7 năm 2017."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpKhoan1Dieu2 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Trẻ mẫu giáo, học sinh, sinh viên thuộc 16 dân tộc có số dân dưới 10.000 người: Cống, Mảng, Pu Péo, Si La, Cờ Lao, Bố Y, La Ha, Ngái, Chứt, Ơ Đu, Brâu, Rơ Măm, Lô Lô, Lự, Pà Thẻn, La Hủ (sau đây gọi là dân tộc thiểu số rất ít người)."@vi .
+}
+:TDNguonNghiDinhSo572017NdCpKhoan2Dieu4 {
+	:ChinhSachHoTroHocTapDoiVoiSinhVienDanTocThieuSoRatItNguoi :noiDung "Thời gian được hưởng hỗ trợ: 12 tháng/năm cho đối tượng có thời gian học đủ 9 tháng/năm trở lên; trường hợp đối tượng học không đủ 9 tháng/năm thì được hưởng theo thời gian học thực tế."@vi .
 }
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
 	:ThuTucChuyenNganh :noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
