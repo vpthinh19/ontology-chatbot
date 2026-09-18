@@ -17,26 +17,26 @@
 
   <!-- 1 -->
   <rect x="40" y="62" width="1140" height="72" rx="10" class="o"/>
-  <text x="60" y="88" class="tieu">1 · Câu hỏi — chuỗi văn bản</text>
+  <text x="60" y="88" class="tieu">1 · Câu hỏi - chuỗi văn bản</text>
   <text x="60" y="118" class="ma">em muốn xin nghỉ học</text>
   <path class="mui" d="M610 134 V156"/>
 
   <!-- 2 -->
   <rect x="40" y="158" width="1140" height="76" rx="10" class="o"/>
-  <text x="60" y="184" class="tieu">2 · Yêu cầu tới API — JSON qua POST /chat</text>
+  <text x="60" y="184" class="tieu">2 · Yêu cầu tới API - JSON qua POST /chat</text>
   <text x="60" y="216" class="ma">{"message": "em muốn xin nghỉ học", "history": []}</text>
   <path class="mui" d="M610 234 V256"/>
 
   <!-- 3 -->
   <rect x="40" y="258" width="1140" height="100" rx="10" class="odam"/>
-  <text x="60" y="284" class="tieu">3 · Lời gọi công cụ — JSON do LLM sinh ra</text>
+  <text x="60" y="284" class="tieu">3 · Lời gọi công cụ - JSON do LLM sinh ra</text>
   <text x="60" y="314" class="ma">{"name": "lookup_academic_information", "arguments": {"keywords": [</text>
   <text x="60" y="340" class="ma">   "nghỉ học tạm thời", "bảo lưu kết quả học tập", "xin nghỉ học"]}}</text>
   <path class="mui" d="M610 358 V380"/>
 
   <!-- 4 -->
   <rect x="40" y="382" width="1140" height="230" rx="10" class="odam"/>
-  <text x="60" y="408" class="tieu">4 · Kết quả công cụ — JSON; đây là tất cả những gì LLM biết về quy định</text>
+  <text x="60" y="408" class="tieu">4 · Kết quả công cụ - JSON; đây là tất cả những gì LLM biết về quy định</text>
   <text x="60" y="438" class="ma">{"status": "found", "guidance": "Kiểm matched trước…", "results": [{</text>
   <text x="60" y="463" class="ma">   "label": "Thủ tục nghỉ học tạm thời",</text>
   <text x="60" y="488" class="ma">   "classes": ["Thủ tục học vụ"],</text>
@@ -48,7 +48,7 @@
 
   <!-- 5 -->
   <rect x="40" y="636" width="1140" height="128" rx="10" class="o"/>
-  <text x="60" y="662" class="tieu">5 · Sự kiện về giao diện — các dòng SSE nối nhau</text>
+  <text x="60" y="662" class="tieu">5 · Sự kiện về giao diện - các dòng SSE nối nhau</text>
   <text x="60" y="692" class="ma">data: {"type": "lookup_started", "keywords": "nghỉ học tạm thời · …"}</text>
   <text x="60" y="717" class="ma">data: {"type": "text_delta", "content": "…một đoạn câu trả lời…"}</text>
   <text x="60" y="742" class="ma">data: {"type": "completed", "content": "Để xin nghỉ học tạm thời…"}</text>
@@ -56,6 +56,6 @@
 
   <!-- 6 -->
   <rect x="40" y="788" width="1140" height="72" rx="10" class="o"/>
-  <text x="60" y="814" class="tieu">6 · Câu trả lời — Markdown, kèm trích dẫn và đường dẫn văn bản gốc</text>
+  <text x="60" y="814" class="tieu">6 · Câu trả lời - Markdown, kèm trích dẫn và đường dẫn văn bản gốc</text>
   <text x="60" y="844" class="ma">Bạn cần **Mẫu số 09 - Đơn xin nghỉ học tạm thời** … (khoản 3 Điều 24 …)</text>
 </svg>

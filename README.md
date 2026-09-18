@@ -5,7 +5,7 @@ Nguyên mẫu nghiên cứu về hỏi đáp học vụ tiếng Việt tại Tr�
 - **Đầu vào:** câu hỏi bằng ngôn ngữ tự nhiên.
 - **Đầu ra:** câu trả lời kèm trích dẫn và đường dẫn tới văn bản gốc.
 - **Nguyên tắc:** mô hình ngôn ngữ lớn (LLM) không phải nơi lưu quy định. Nội dung học vụ
-  chỉ lấy từ **ontology** — kho dữ kiện có cấu trúc, trong đó mỗi dữ kiện gắn với đúng chỗ
+  chỉ lấy từ **ontology** - kho dữ kiện có cấu trúc, trong đó mỗi dữ kiện gắn với đúng chỗ
   của văn bản đã nêu ra nó. Không tìm thấy dữ kiện phù hợp thì trả lời **"không có thông tin"**.
 
 Liên kết:
@@ -176,7 +176,7 @@ câu trả lời. Các trường:
 
 | Khái niệm | Bản chất | Ví dụ |
 |---|---|---|
-| Lớp (*class*) | nhóm các mục cùng kiểu | `:ThuTucHocVu` — lớp thủ tục học vụ |
+| Lớp (*class*) | nhóm các mục cùng kiểu | `:ThuTucHocVu` - lớp thủ tục học vụ |
 | Cá thể (*individual*), gọi tắt là **mục** | một đối tượng cụ thể thuộc một lớp | `:ThuTucNghiHocTamThoi` |
 | **Nhãn** (*label*) | tên hiển thị; một tên chính và có thể có nhiều tên gọi khác | `rdfs:label "Thủ tục nghỉ học tạm thời"`, `skos:altLabel "bảo lưu kết quả học tập"` |
 | **Quan hệ** (*object property*) | nối mục với một mục khác | `:nopTai` nối thủ tục với đơn vị tiếp nhận |
@@ -358,7 +358,7 @@ phòng ban, danh mục biểu mẫu.
 
 ### 5.7 Phạm vi dữ liệu
 
-- **Cố định:** cấu trúc của ontology — các loại mục, quan hệ giữa chúng, lược đồ ràng buộc.
+- **Cố định:** cấu trúc của ontology - các loại mục, quan hệ giữa chúng, lược đồ ràng buộc.
 - **Thay đổi:** khối lượng dữ liệu, phụ thuộc số văn bản đã được biểu diễn. Số mục của mỗi loại
   vì vậy không phải đặc trưng của phương pháp.
 - Phiên bản dữ liệu dùng cho các phép đo ở mục 8 phủ một phần phạm vi ở mục 1.3; kết quả gắn
@@ -398,7 +398,7 @@ Khi ontology mâu thuẫn với văn bản chính thức, văn bản chính th�
 | 5 | Chọn 5 mục điểm cao nhất (6.6) | mỗi lần tìm |
 | 6 | Đọc hồ sơ của 5 mục (6.7) | mỗi lần tìm |
 
-### 6.1 Mục — đối tượng được tìm
+### 6.1 Mục - đối tượng được tìm
 
 - **Mục** là một cá thể thuộc tầng tri thức (mục 5.4): một thủ tục, quy tắc, đơn vị, ngành,
   biểu mẫu…
@@ -608,9 +608,9 @@ Thao tác thêm và sửa đi qua bốn bước:
 | Bước | Việc | Không đạt thì |
 |---|---|---|
 | 1. Xác thực từng trường | ô thuộc đúng loại mục; giá trị đúng kiểu; ô bắt buộc gắn nguồn đã chọn nguồn và ghi vị trí; ô không gắn nguồn thì không nhận nguồn; tên mới sinh ra IRI chưa được dùng | báo lỗi theo từng dòng của form |
-| 2. Dựng bản thử | áp thay đổi lên một bản sao ontology trong bộ nhớ | — |
+| 2. Dựng bản thử | áp thay đổi lên một bản sao ontology trong bộ nhớ | - |
 | 3. Xác thực toàn bộ bằng SHACL | kiểm bản thử theo mọi shape: ô bắt buộc, số giá trị, kiểu dữ liệu, loại của mục được trỏ tới, ô chưa khai báo | báo từng vi phạm thành câu dễ đọc |
-| 4. Ghi | ghi tệp TriG theo thứ tự cố định; search engine dựng lại chỉ mục | — |
+| 4. Ghi | ghi tệp TriG theo thứ tự cố định; search engine dựng lại chỉ mục | - |
 
 - Bước 1 hoặc 3 không đạt: không ghi gì, dữ liệu cũ giữ nguyên.
 - Thao tác xoá bỏ qua bước 1, và bị chặn nếu còn mục khác trỏ tới mục cần xoá.
@@ -641,8 +641,6 @@ Thao tác thêm và sửa đi qua bốn bước:
 - 49 câu hỏi; mỗi câu có sẵn từ khoá và mục chứa đáp án. Từ khoá được giữ cố định, nên kết quả chỉ
   phản ánh search engine.
 - Đưa từ khoá vào search engine. **Đạt** khi mục chứa đáp án nằm trong 5 mục trả về.
-- Ví dụ: câu "tỷ trọng điểm ngoại ngữ ra sao ạ"; từ khoá `tỷ trọng điểm ngoại ngữ`, `điểm ngoại ngữ`,
-  `quy định điểm ngoại ngữ`; mục chứa đáp án "Bảng đánh giá học phần ngoại ngữ".
 
 **Kết quả: 49/49 câu đạt**
 
@@ -650,8 +648,8 @@ Thao tác thêm và sửa đi qua bốn bước:
 |---|---:|---:|---:|---:|---:|
 | Số câu | 43 | 3 | 2 | 0 | 1 |
 
-- Câu ở hạng 5: "đường tải xuống của đơn xin bảo lưu học phần nằm ở đâu zậy?" — bốn mục đầu là các mục
-  về nghỉ học tạm thời.
+- Câu ở hạng 5 hỏi nơi tải đơn xin bảo lưu học phần: bốn mục đầu đều là mục về thủ tục nghỉ học tạm
+  thời vì chia sẻ nhiều từ với nhóm từ khoá.
 - Từ khoá cố định nên kết quả không cho biết chatbot tự viết từ khoá tốt đến đâu; mục 8.2 đo phần đó.
 
 ### 8.2 Bộ kiểm toàn hệ thống
@@ -672,12 +670,12 @@ Thao tác thêm và sửa đi qua bốn bước:
 Câu trả lời đúng phụ thuộc vào dữ liệu chatbot có. Nếu văn bản có quy định mà ontology chưa biểu diễn,
 chatbot phải nói không có thông tin; đưa ra nội dung ngoài dữ liệu là bịa. Vì vậy mỗi câu thuộc một nhóm:
 
-| Nhóm | Ví dụ | Số câu | Đạt khi |
-|---|---|---:|---|
-| 1. Ontology có đáp án | "Em có tài khoản Agribank, đóng hp bằng Mobile Banking thay vì VNPAY được không và có mất phí không?" | 31 | trả lời đủ mọi ý của đáp án chuẩn |
-| 2. Ontology có một phần đáp án | "Hoc lien thong xong co dang ky mon theo ke hoach rieng khong, va mon cu co duoc bao luu?" | 2 | trả lời phần có và nói rõ phần còn thiếu |
-| 3. Ontology không có đáp án | "Em có thể đóng học phí bằng ví MoMo không?" | 33 | nói không có thông tin |
-| 4. Ngoài học vụ | "Cuối tuần ở Nha Trang có chỗ nào ngắm hoàng hôn đẹp không?" | 4 | từ chối |
+| Nhóm | Số câu | Đạt khi |
+|---|---:|---|
+| 1. Ontology có đáp án | 31 | trả lời đủ mọi ý của đáp án chuẩn |
+| 2. Ontology có một phần đáp án | 2 | trả lời phần có và nói rõ phần còn thiếu |
+| 3. Ontology không có đáp án | 33 | nói không có thông tin |
+| 4. Ngoài học vụ | 4 | từ chối |
 
 Nhóm 3 gồm 15 câu văn bản có quy định và 18 câu văn bản không quy định.
 
@@ -686,8 +684,8 @@ Nhóm 3 gồm 15 câu văn bản có quy định và 18 câu văn bản không q
 - Mỗi câu hỏi 3 lượt, mỗi lượt là một hội thoại mới: 210 câu trả lời. Mô hình
   `lightning-ai/gemma-4-31B-it`; 5 mục mỗi lần tìm; tối đa 4 bước LLM mỗi lượt.
 - Mỗi câu trả lời được đối chiếu với đáp án chuẩn và với dữ liệu công cụ của chính lượt đó, rồi xếp một
-  mức. Việc chấm do một mô hình ngôn ngữ khác mô hình của chatbot thực hiện; 25 câu trả lời chọn ngẫu nhiên
-  được nhóm nghiên cứu chấm lại độc lập.
+  mức. Việc chấm do một mô hình ngôn ngữ khác mô hình của chatbot thực hiện; 25 câu trả lời được chấm lại
+  độc lập theo cùng thang mức, không xem kết quả chấm tự động.
 
 | Mức | Nghĩa |
 |---|---|
@@ -710,7 +708,7 @@ khi được xếp Đúng (nhóm 1, 2) hoặc Từ chối đúng (nhóm 3, 4).
 | Số câu trả lời Sai, Bịa | đếm trên 210 câu trả lời | chatbot có đưa thông tin sai hoặc ngoài dữ liệu không |
 | Trích dẫn đúng chỗ | trong các câu trả lời Đúng hoặc Đúng một phần, số câu có nguồn trỏ tới đúng văn bản và vị trí chứa dữ kiện | câu trả lời có kiểm chứng lại được không |
 | Độ ổn định | số câu đạt ở cả 3 lượt, không đạt ở lượt nào, hoặc chỉ đạt ở một số lượt | kết quả có lặp lại giữa các lần hỏi không |
-| Mức trùng khi chấm lại | trên 25 câu trả lời: số câu nhóm nghiên cứu xếp cùng mức; hệ số kappa của Cohen trên quyết định đạt/không đạt (1: trùng hoàn toàn; 0: trùng không hơn ngẫu nhiên) | việc chấm có đáng tin không |
+| Mức trùng khi chấm lại | trong 25 câu trả lời được chấm lại, số câu xếp cùng mức với chấm tự động | việc chấm có đáng tin không |
 | Thời gian | trung vị và p95 của một lượt hỏi và của một lần gọi công cụ | độ trễ người dùng chờ |
 
 Hai tỷ lệ đầu được tính riêng cho từng lượt; kết quả ghi trung bình và khoảng thấp nhất–cao nhất qua 3 lượt.
@@ -724,7 +722,7 @@ Hai tỷ lệ đầu được tính riêng cho từng lượt; kết quả ghi t
 | Sai · Bịa | **0 · 0** |
 | Trích dẫn đúng chỗ | 77/78 |
 | Độ ổn định | 57 câu đạt cả 3 lượt · 3 câu chỉ đạt một số lượt · 10 câu không đạt lượt nào |
-| Mức trùng khi chấm lại | 25/25 · kappa 1,00 |
+| Mức trùng khi chấm lại | 25/25 câu trả lời |
 | Thời gian một lượt hỏi · một lần gọi công cụ | trung vị 2,1 s (p95 3,1 s) · trung vị 3,5 ms (p95 5,7 ms) |
 
 | Nhóm | Số câu | Tỷ lệ đạt | Phân bố mức (210 câu trả lời) |
@@ -752,15 +750,15 @@ Hai tỷ lệ đầu được tính riêng cho từng lượt; kết quả ghi t
    nêu tên văn bản, không nêu điều khoản.
 5. **Kết quả lặp lại giữa các lượt.** 57/70 câu đạt ở cả 3 lượt. 3 câu chỉ đạt một số lượt vì LLM viết từ
    khoá khác nhau giữa các lượt: có lượt tìm được mục chứa đáp án, có lượt không.
-6. **Kết quả chấm tự động khớp với nhóm nghiên cứu.** Nhóm nghiên cứu xếp cùng mức ở cả 25 câu trả lời. Mẫu nhỏ và
-   16/25 câu thuộc nhóm 3, 4 — loại dễ phân định — nên mức trùng này là kiểm tra sơ bộ.
+6. **Chấm lại khớp với chấm tự động.** Bản chấm lại xếp cùng mức ở cả 25 câu trả lời. Mẫu nhỏ và 16/25
+   câu thuộc nhóm 3 và nhóm 4, là loại dễ phân định, nên đây chỉ là kiểm tra sơ bộ.
 
 10 câu không đạt ở lượt nào:
 
-| Nguyên nhân | Số câu | Ví dụ |
+| Nguyên nhân | Số câu | Đặc điểm chung |
 |---|---:|---|
-| Mục chứa đáp án không nằm trong 5 mục tìm được | 6 | "Chương trình đặc biệt Quản trị khách sạn cần TOEFL iBT và IELTS tối thiểu bao nhiêu để đạt chuẩn ngoại ngữ?" — từ khoá `chuẩn ngoại ngữ` trùng tên "bảng chuẩn ngoại ngữ khác chương trình đặc biệt" (tiếng Trung, Nhật, Pháp…), còn tên "bảng chuẩn tiếng Anh chương trình đặc biệt" không chứa từ `ngoại ngữ`, nên bảng chứa đáp án không được chọn. Hai câu khác hỏi "làm tròn điểm" và "thi bù": các cụm này chỉ có trong nội dung của mục, mà nội dung không được đưa vào chỉ mục (mục 6.2). |
-| Câu trả lời thiếu ý của đáp án chuẩn | 4 | "Em có thể đk cùng lúc môn mới, môn chưa đạt để học lại và môn đã đạt để cải thiện điểm trong một kỳ không?" — trả lời đúng là được, nhưng thiếu ý việc đăng ký còn phụ thuộc danh sách học phần được mở. |
+| Mục chứa đáp án không nằm trong 5 mục tìm được | 6 | đáp án nằm trong một bảng hoặc trong nội dung của mục. Hai câu hỏi chuẩn ngoại ngữ của chương trình đặc biệt: từ khoá `chuẩn ngoại ngữ` trùng tên bảng chuẩn các ngoại ngữ khác (tiếng Trung, Nhật, Pháp…), còn tên bảng chuẩn tiếng Anh không chứa cụm đó, nên bảng chứa đáp án không được chọn. Hai câu hỏi về `làm tròn điểm` và `thi bù`: hai cụm này chỉ có trong nội dung của mục, mà nội dung không được đưa vào chỉ mục (mục 6.2). |
+| Câu trả lời thiếu ý của đáp án chuẩn | 4 | không có thông tin sai; phần thiếu là ý phụ bên cạnh ý được hỏi trực tiếp, chẳng hạn việc đăng ký học phần còn phụ thuộc danh sách học phần được mở. |
 
 Thời gian một lượt gần như nằm hết ở LLM và mạng; lượt dài nhất 4,8 s.
 
@@ -796,9 +794,9 @@ trình duyệt.
 
 | Câu hỏi nghiên cứu | Kết quả |
 |---|---|
-| RQ1 — tìm kiếm | mục chứa đáp án nằm trong 5 mục ở 49/49 câu, đứng đầu ở 43/49 câu |
-| RQ2 — toàn hệ thống | 70 câu × 3 lượt: tỷ lệ đạt 83,3%, tỷ lệ đủ thông tin 60,5%; không câu trả lời nào Sai hoặc Bịa; khi ontology có đáp án, lỗi chủ yếu do không tìm ra mục chứa đáp án; trung vị 2,1 giây mỗi lượt |
-| RQ3 — nguồn và cập nhật | toàn bộ dữ liệu khớp lược đồ và quy tắc trích dẫn; mọi thao tác ghi đi qua xác thực theo lược đồ |
+| RQ1 - tìm kiếm | mục chứa đáp án nằm trong 5 mục ở 49/49 câu, đứng đầu ở 43/49 câu |
+| RQ2 - toàn hệ thống | 70 câu × 3 lượt: tỷ lệ đạt 83,3%, tỷ lệ đủ thông tin 60,5%; không câu trả lời nào Sai hoặc Bịa; khi ontology có đáp án, lỗi chủ yếu do không tìm ra mục chứa đáp án; trung vị 2,1 giây mỗi lượt |
+| RQ3 - nguồn và cập nhật | toàn bộ dữ liệu khớp lược đồ và quy tắc trích dẫn; mọi thao tác ghi đi qua xác thực theo lược đồ |
 
 Chuỗi LLM → công cụ tìm kiếm → ontology có nguồn là khả thi trên phần nội dung đã được biểu diễn.
 Kết quả **không** chứng minh hệ thống:
@@ -823,7 +821,7 @@ Kết quả **không** chứng minh hệ thống:
 
 | Hạn chế | Nội dung |
 |---|---|
-| Độ phủ dữ liệu | nội dung phủ một phần phạm vi ở mục 1.3; câu hỏi vào phần chưa biểu diễn nhận "không có thông tin" dù quy định có tồn tại — 17/70 câu của bộ kiểm toàn hệ thống thuộc trường hợp này |
+| Độ phủ dữ liệu | nội dung phủ một phần phạm vi ở mục 1.3; câu hỏi vào phần chưa biểu diễn nhận "không có thông tin" dù quy định có tồn tại - 17/70 câu của bộ kiểm toàn hệ thống thuộc trường hợp này |
 | Tìm theo từ vựng | engine chỉ khớp chữ; cách gọi không có trong tên hay tên gọi khác của mục sẽ trượt; chất lượng phụ thuộc từ khoá LLM viết |
 | Không tra theo điều khoản | tầng nguồn không được tìm kiếm, nên câu hỏi dạng "khoản 2 Điều 11" không lấy được nội dung tương ứng |
 | Không có ngưỡng | 5 mục luôn được trả về khi có chữ trùng; LLM phải tự loại mục không đúng ý hỏi và có thể dùng nhầm mục gần đúng |
@@ -900,13 +898,13 @@ nằm trong trình duyệt.
 ### 12.3 Tài liệu tham khảo
 
 - Robertson, S. và Zaragoza, H. (2009). *The Probabilistic Relevance Framework: BM25 and Beyond.*
-  Foundations and Trends in Information Retrieval, 3(4), 333–389. — công thức xếp hạng ở mục 6.4.
-- W3C (2014). *RDF 1.1 TriG.* https://www.w3.org/TR/trig/ — định dạng ghi bốn vế ở mục 5.2.
-- W3C (2014). *RDF 1.1 Concepts and Abstract Syntax.* https://www.w3.org/TR/rdf11-concepts/ —
+  Foundations and Trends in Information Retrieval, 3(4), 333–389. - công thức xếp hạng ở mục 6.4.
+- W3C (2014). *RDF 1.1 TriG.* https://www.w3.org/TR/trig/ - định dạng ghi bốn vế ở mục 5.2.
+- W3C (2014). *RDF 1.1 Concepts and Abstract Syntax.* https://www.w3.org/TR/rdf11-concepts/ -
   phát biểu ba vế, IRI và named graph.
-- W3C (2017). *Shapes Constraint Language (SHACL).* https://www.w3.org/TR/shacl/ — ngôn ngữ
+- W3C (2017). *Shapes Constraint Language (SHACL).* https://www.w3.org/TR/shacl/ - ngôn ngữ
   ràng buộc ở mục 5.5.
 - W3C (2009). *SKOS Simple Knowledge Organization System Reference.*
-  https://www.w3.org/TR/skos-reference/ — `skos:altLabel` cho tên gọi khác.
+  https://www.w3.org/TR/skos-reference/ - `skos:altLabel` cho tên gọi khác.
 - Lù, X. H. (2024). *BM25S: Orders of magnitude faster lexical search via eager sparse scoring.*
-  https://github.com/xhluca/bm25s — thư viện cài đặt BM25 mà dịch vụ dùng.
+  https://github.com/xhluca/bm25s - thư viện cài đặt BM25 mà dịch vụ dùng.

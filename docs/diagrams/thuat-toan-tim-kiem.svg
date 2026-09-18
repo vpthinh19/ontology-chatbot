@@ -41,32 +41,32 @@
   <text x="500" y="192" class="loai">label</text>
   <rect x="676" y="176" width="126" height="24" rx="5" class="chon"/>
   <text x="739" y="193" class="diem" font-weight="700">6,44</text>
-  <text x="911" y="193" class="diem">—</text>
-  <text x="1083" y="193" class="diem">—</text>
+  <text x="911" y="193" class="diem">-</text>
+  <text x="1083" y="193" class="diem">-</text>
 
   <text x="56" y="222" class="ma">"Thủ tục nghỉ học tạm thời"</text>
   <text x="500" y="222" class="loai">label</text>
   <text x="739" y="223" class="diem">5,69</text>
-  <text x="911" y="223" class="diem">—</text>
-  <text x="1083" y="223" class="diem">—</text>
+  <text x="911" y="223" class="diem">-</text>
+  <text x="1083" y="223" class="diem">-</text>
 
   <text x="56" y="252" class="ma">"bảo lưu kết quả học tập"</text>
   <text x="500" y="252" class="loai">label</text>
   <rect x="848" y="236" width="126" height="24" rx="5" class="chon"/>
-  <text x="739" y="253" class="diem">—</text>
+  <text x="739" y="253" class="diem">-</text>
   <text x="911" y="253" class="diem" font-weight="700">10,43</text>
-  <text x="1083" y="253" class="diem">—</text>
+  <text x="1083" y="253" class="diem">-</text>
 
   <text x="56" y="282" class="ma">"bảo lưu kết quả"</text>
   <text x="500" y="282" class="loai">label</text>
-  <text x="739" y="283" class="diem">—</text>
+  <text x="739" y="283" class="diem">-</text>
   <text x="911" y="283" class="diem">9,53</text>
-  <text x="1083" y="283" class="diem">—</text>
+  <text x="1083" y="283" class="diem">-</text>
 
   <text x="56" y="312" class="ma">"tạm nghỉ học"</text>
   <text x="500" y="312" class="loai">label</text>
   <text x="739" y="313" class="diem">5,18</text>
-  <text x="911" y="313" class="diem">—</text>
+  <text x="911" y="313" class="diem">-</text>
   <rect x="1020" y="296" width="126" height="24" rx="5" class="chon"/>
   <text x="1083" y="313" class="diem" font-weight="700">2,73</text>
 
@@ -81,21 +81,21 @@
   <text x="500" y="432" class="loai">label</text>
   <rect x="676" y="416" width="126" height="24" rx="5" class="chon"/>
   <text x="739" y="433" class="diem" font-weight="700">5,09</text>
-  <text x="911" y="433" class="diem">—</text>
+  <text x="911" y="433" class="diem">-</text>
   <rect x="1020" y="416" width="126" height="24" rx="5" class="chon"/>
   <text x="1083" y="433" class="diem" font-weight="700">3,09</text>
 
   <text x="56" y="462" class="ma">"Mục tải: … | nội dung"</text>
   <text x="500" y="462" class="loai">datatype_property</text>
   <text x="739" y="463" class="diem">4,61</text>
-  <text x="911" y="463" class="diem">—</text>
+  <text x="911" y="463" class="diem">-</text>
   <text x="1083" y="463" class="diem">2,80</text>
 
   <text x="56" y="492" class="ma">"Mục tải: … | ứng với biểu mẫu | Mẫu số 09…"</text>
   <text x="500" y="492" class="loai">object_property</text>
   <text x="739" y="493" class="diem">4,04</text>
-  <text x="911" y="493" class="diem">—</text>
-  <text x="1083" y="493" class="diem">—</text>
+  <text x="911" y="493" class="diem">-</text>
+  <text x="1083" y="493" class="diem">-</text>
 
   <line x1="56" y1="506" x2="1164" y2="506" stroke="#999" stroke-width="1.2"/>
   <text x="1164" y="530" class="tong">Điểm mục = 5,09 + 0 + 3,09 = 8,18</text>
@@ -108,7 +108,7 @@
   <text x="500" y="612" class="loai">label</text>
   <rect x="676" y="596" width="126" height="24" rx="5" class="chon"/>
   <text x="739" y="613" class="diem" font-weight="700">4,84</text>
-  <text x="911" y="613" class="diem">—</text>
+  <text x="911" y="613" class="diem">-</text>
   <rect x="1020" y="596" width="126" height="24" rx="5" class="chon"/>
   <text x="1083" y="613" class="diem" font-weight="700">2,94</text>
 
@@ -118,5 +118,5 @@
   <!-- Chú giải -->
   <rect x="40" y="686" width="1140" height="52" rx="10" class="o"/>
   <rect x="60" y="700" width="26" height="22" rx="5" class="chon"/>
-  <text x="98" y="717" class="ghi">Ô tô đậm = dòng cao nhất của mục cho từ khoá ở cột đó; chỉ ô này được cộng. Dấu — nghĩa là dòng không khớp từ khoá ở cột đó.</text>
+  <text x="98" y="717" class="ghi">Ô tô đậm = dòng cao nhất của mục cho từ khoá ở cột đó; chỉ ô này được cộng. Dấu - nghĩa là dòng không khớp từ khoá ở cột đó.</text>
 </svg>

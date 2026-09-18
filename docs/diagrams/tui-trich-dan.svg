@@ -20,7 +20,7 @@
 
   <!-- Danh tính: ngoài túi -->
   <rect x="40" y="64" width="700" height="104" rx="10" class="o"/>
-  <text x="60" y="92" class="tieu">Danh tính của mục — nằm NGOÀI mọi túi, không cần trích dẫn</text>
+  <text x="60" y="92" class="tieu">Danh tính của mục - nằm NGOÀI mọi túi, không cần trích dẫn</text>
   <text x="60" y="122" class="ma">:ThuTucNghiHocTamThoi  a  :ThuTucHocVu</text>
   <text x="60" y="148" class="ma">   rdfs:label "Thủ tục nghỉ học tạm thời"</text>
 

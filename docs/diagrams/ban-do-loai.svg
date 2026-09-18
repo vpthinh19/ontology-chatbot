@@ -79,7 +79,7 @@
 
   <!-- Các loại còn lại -->
   <rect x="36" y="546" width="1148" height="104" rx="14" class="vung"/>
-  <text x="56" y="574" class="tv">CÁC LOẠI CÒN LẠI — tra cứu theo tên, không nối bắt buộc với loại khác</text>
+  <text x="56" y="574" class="tv">CÁC LOẠI CÒN LẠI - tra cứu theo tên, không nối bắt buộc với loại khác</text>
   <text x="56" y="608" style="font-size:17px">Quy tắc · Khái niệm · Bảng · Chứng chỉ · Mức tiền · Học phần · Hệ thống trực tuyến</text>
   <text x="56" y="636" style="font-size:15px; fill:#444">Ngoài các loại tri thức trên còn tầng nguồn: Nguồn và Địa chỉ trích dẫn.</text>
 </svg>
