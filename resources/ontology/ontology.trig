@@ -979,6 +979,13 @@
 	:soHieu "1128/QĐ-ĐHNT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 1128/QĐ-ĐHNT"@vi .
+:NguonQuyetDinhSo1413QdDhnt :banHanhNgay "2022-10-18"^^xsd:date ;
+	:duongDan "https://phongkhtc.ntu.edu.vn/uploads/1/Doc/240/quy-%C4%91%E1%BB%8Bnh-1413-(18102022)--%C4%91%C3%B3ng-h%E1%BB%8Dc-ph%C3%AD.pdf.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "1413/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 1413/QĐ-ĐHNT"@vi .
 :NguonQuyetDinhSo1826QdBgddt :banHanhNgay "2026-06-26"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2026/269-qd-1826.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
@@ -2187,6 +2194,18 @@
 :TDNguonQuyetDinhSo1128QdDhntPhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
 	:toaDo "Phụ lục"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1413QdDhntDiemAKhoan2Dieu2 :thuocNguon :NguonQuyetDinhSo1413QdDhnt ;
+	:toaDo "điểm a khoản 2 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1413QdDhntDiemCKhoan3Dieu4 :thuocNguon :NguonQuyetDinhSo1413QdDhnt ;
+	:toaDo "điểm c khoản 3 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1413QdDhntKhoan1Dieu3 :thuocNguon :NguonQuyetDinhSo1413QdDhnt ;
+	:toaDo "khoản 1 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1413QdDhntKhoan2Dieu3 :thuocNguon :NguonQuyetDinhSo1413QdDhnt ;
+	:toaDo "khoản 2 Điều 3"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
 	:toaDo "chú thích cuối Phụ lục"@vi ;
 	a :DiaChiTrichDan .
@@ -3282,6 +3301,9 @@
 :ThuTucXinChuyenChuongTrinhDaoTaoKhiThuocDienBuocThoiHoc a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xin chuyển chương trình đào tạo khi thuộc diện buộc thôi học"@vi ;
 	skos:altLabel "chuyển hình thức đào tạo khi bị buộc thôi học"@vi , "chuyển sang vừa làm vừa học"@vi , "xin chuyển chương trình đào tạo"@vi .
+:ThuTucXinGiaHanDongHocPhi a :ThuTucHocVu ;
+	rdfs:label "Thủ tục xin gia hạn đóng học phí"@vi ;
+	skos:altLabel "xin hoãn đóng học phí"@vi .
 :ThuTucXinGiayXacNhanDangHoc a :ThuTucHocVu ;
 	rdfs:label "Thủ tục xin giấy xác nhận đang học"@vi ;
 	skos:altLabel "giấy chứng nhận sinh viên"@vi , "giấy xác nhận sinh viên"@vi , "giấy xác nhận đang học"@vi .
@@ -4493,6 +4515,21 @@
 }
 :TDNguonQuyetDinhSo1128QdDhntPhuLuc {
 	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "| TT | Trình độ, ngành, chuyên ngành đào tạo | Khóa tuyển sinh 60 | Khóa tuyển sinh 61 trở đi | Ghi chú |\n| :---: | :--- | :---: | :---: | :--- |\n| I | TRÌNH ĐỘ ĐẠI HỌC | | | |\n| 1 | Quản trị dịch vụ du lịch và lữ hành, Quản trị khách sạn | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 2 | Quản trị kinh doanh | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 3 | Marketing | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 4 | Kinh doanh thương mại | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 5 | Kế toán, Kiểm toán | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 6 | Tài chính ngân hàng | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 7 | Công nghệ thông tin | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 8 | Hệ thống thông tin quản lý | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 9 | Công nghệ sinh học | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 10 | Kỹ thuật môi trường | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 11 | Kinh tế (Kinh tế thủy sản, Luật Kinh tế) | B1 | B1 |  |\n| 12 | Kinh tế phát triển | B1 | B1 |  |\n| 13 | Công nghệ thực phẩm | B1 | B1 |  |\n| 14 | Công nghệ sau thu hoạch | B1 | B1 |  |\n| 15 | Công nghệ chế biến thủy sản | B1 | B1 |  |\n| 16 | Công nghệ kỹ thuật hóa học | B1 | B1 |  |\n| 17 | Nuôi trồng thủy sản, Bệnh học thủy sản | B1 | B1 |  |\n| 18 | Khai thác thủy sản | B1 | B1 |  |\n| 19 | Quản lý thủy sản | B1 | B1 |  |\n| 20 | Công nghệ kỹ thuật điện, điện tử | A2 | B1 |  |\n| 21 | Kỹ thuật xây dựng | A2 | B1 |  |\n| 22 | Kỹ thuật cơ khí (Kỹ thuật cơ khí, Kỹ thuật cơ khí động lực) | A2 | B1 |  |\n| 23 | Kỹ thuật cơ điện tử | A2 | B1 |  |\n| 24 | Công nghệ chế tạo máy | A2 | B1 |  |\n| 25 | Kỹ thuật nhiệt | A2 | B1 |  |\n| 26 | Kỹ thuật ô tô | A2 | B1 |  |\n| 27 | Kỹ thuật tàu thủy | A2 | B1 |  |\n| 28 | Khoa học hàng hải | A2 | B1 |  |\n| 29 | Nhóm ngành kỹ thuật (*) | A2 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| 30 | Nhóm ngành quản lý và kinh tế (*) | B1 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| 31 | Nhóm ngành công nghệ và thủy sản (*) | B1 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| II | TRÌNH ĐỘ CAO ĐẲNG (TẤT CẢ CÁC NGÀNH) | A2 | A2 | |"@vi .
+}
+:TDNguonQuyetDinhSo1413QdDhntDiemAKhoan2Dieu2 {
+	:ThuTucNopHocPhi :noiDung "Đối với khóa mới nhập học, thời hạn nộp học phí là ngày cuối cùng của thời gian nhập học của khóa học theo thông báo nhập học của Nhà trường."@vi .
+}
+:TDNguonQuyetDinhSo1413QdDhntDiemCKhoan3Dieu4 {
+	:ThuTucXinGiaHanDongHocPhi :noiDung "Chủ trì hướng dẫn, tiếp nhận đơn xin gia hạn đóng học phí của sinh viên; phối hợp với Phòng Đào tạo Sau đại học hướng dẫn học viên cao học và nghiên cứu sinh nộp đơn xin gia hạn đóng học phí để trình Hiệu trưởng xem xét giải quyết."@vi .
+}
+:TDNguonQuyetDinhSo1413QdDhntKhoan1Dieu3 {
+	:ThuTucNopHocPhi :noiDung "Người học không hoàn thành nghĩa vụ học phí theo thời hạn quy định tại Điều 2 sẽ bị Nhà trường xóa các học phần đã đăng ký, không được tham gia học tập và đánh giá học phần trong học kỳ đó. Đồng thời, Người học sẽ bị xử lý theo quy định của Quy chế công tác sinh viên."@vi .
+}
+:TDNguonQuyetDinhSo1413QdDhntKhoan2Dieu3 {
+	:ThuTucXinGiaHanDongHocPhi :doAiQuyetDinh :HieuTruong ;
+		:doAiThucHien :SinhVien ;
+		:noiDung "Người học có hoàn cảnh đặc biệt, khó khăn cần làm đơn xin gia hạn đóng học phí (theo mẫu tại phụ lục). Người học gửi đơn xin Hiệu trưởng thông qua Phòng Công tác Chính trị và Sinh viên trong vòng 2 tuần đầu của học kỳ (đối với sinh viên) hoặc Phòng Đào tạo Sau đại học (đối với học viên cao học và nghiên cứu sinh) để được xem xét phê duyệt cho gia hạn đóng học phí. Khi được Hiệu trưởng phê duyệt, Người học gửi đơn đã được duyệt đến Phòng Đào tạo Đại học hoặc Phòng Đào tạo Sau đại học để được miễn xử lý theo chế tài được quy định tại Khoản 1 Điều này. Trường hợp Người học xin gia hạn thời gian đóng học phí theo Đơn được Hiệu trưởng duyệt nhưng không hoàn thành nghĩa vụ theo cam kết thì sẽ xử lý theo chế tài được quy định tại Khoản 1 Điều này."@vi ;
+		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
 :TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc {
 	:DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp :noiDung "Mã ngành gồm 6 ký tự số (không bao gồm ký tự số thể hiện trình độ đào tạo); ngành đào tạo thí điểm thuộc nhóm ngành có cùng 4 ký tự số đầu tiên của mã số (bao gồm cả Công nghệ bán dẫn, Thiết kế vi mạch)"@vi .
