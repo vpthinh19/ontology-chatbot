@@ -97,6 +97,9 @@
 	skos:altLabel "gian lận thi cử"@vi , "quay cóp"@vi , "xử lý vi phạm"@vi .
 :ChuThe rdfs:label "Chủ thể"@vi .
 :ChuTheThamGia rdfs:label "Chủ thể tham gia"@vi .
+:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Chuẩn đầu ra ngoại ngữ thứ hai cho sinh viên ngành Ngôn ngữ Anh"@vi .
 :ChungChi rdfs:label "Chứng chỉ"@vi .
 :ChungChiNgoaiNgu rdfs:label "Chứng chỉ ngoại ngữ"@vi .
 :ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
@@ -962,6 +965,13 @@
 	:soHieu "1826/QĐ-BGDĐT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 1826/QĐ-BGDĐT"@vi .
+:NguonQuyetDinhSo507QdDhnt :banHanhNgay "2019-05-17"^^xsd:date ;
+	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20190517_507%20QD%20Dao%20t%E1%BA%A1o%20NN%20thu%202%20cho%20SV%20ng%C3%A0nh%20NNA.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "507/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 507/QĐ-ĐHNT"@vi .
 :NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap :duongDan "https://phongctsv.ntu.edu.vn/danh-muc/hoc-bong-khuyen-khich-hoc-tap"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -2176,6 +2186,18 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
 	:toaDo "STT 89 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo507QdDhntBang1Dieu2 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
+	:toaDo "Bảng 1 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo507QdDhntDoanDauDieu2 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
+	:toaDo "đoạn đầu Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo507QdDhntKhoan1Dieu1 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
+	:toaDo "khoản 1 Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo507QdDhntKhoan2Dieu1 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
+	:toaDo "khoản 2 Điều 1"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 :thuocNguon :NguonThongBaoDiemChuanTrungTuyen2026 ;
 	:toaDo "mục I Chương trình đặc biệt, dòng TT 10"@vi ;
@@ -4366,6 +4388,19 @@
 }
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc {
 	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatMoiTruong .
+}
+:TDNguonQuyetDinhSo507QdDhntBang1Dieu2 {
+	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :noiDung "| TT | Trình độ | Chuẩn đầu ra |\n| :---: | :--- | :---: |\n| 1 | Đại học | B1 |\n| 2 | Cao đẳng | A2 |"@vi .
+}
+:TDNguonQuyetDinhSo507QdDhntDoanDauDieu2 {
+	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :noiDung "Chuẩn đầu ra ngoại ngữ thứ hai cho sinh viên ngành Ngôn ngữ Anh từ Khóa 61 trở đi được quy định tại Bảng 1."@vi .
+}
+:TDNguonQuyetDinhSo507QdDhntKhoan1Dieu1 {
+	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :noiDung "Văn bản này quy định tổ chức đào tạo ngoại ngữ thứ hai bằng tiếng Pháp, tiếng Trung, tiếng Nga, tiếng Nhật (sau đây gọi chung là ngoại ngữ) bao gồm: chuẩn đầu ra, xếp lớp học phần, kiểm tra và đánh giá học phần; các điều kiện được miễn học và thi các học phần ngoại ngữ."@vi .
+}
+:TDNguonQuyetDinhSo507QdDhntKhoan2Dieu1 {
+	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :apDungChoNganh :NgonNguAnh ;
+		:noiDung "Quy định này áp dụng đối với sinh viên đại học và cao đẳng ngành Ngôn ngữ Anh từ Khóa 61 trở đi. Không áp dụng đối với sinh viên nước ngoài học ngành Ngôn ngữ Anh và sinh viên học văn bằng hai tại Trường Đại học Nha Trang."@vi .
 }
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 {
 	:CongNgheCheBienThuySanChuongTrinhMinhPhuNtu :maNganh "7540105MP" ;

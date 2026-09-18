@@ -91,6 +91,10 @@ VERBATIM_TABLE_SOURCES = {
         "Tb106.md",
         "| STT | Tên ngành, chuyên ngành đào tạo | Khóa tuyển sinh K60 | Khóa tuyển sinh K61 trở đi |",
     ),
+    "ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh": (
+        "Qd507.md",
+        "| TT | Trình độ | Chuẩn đầu ra |",
+    ),
     "DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp": (
         "Qd1826.md",
         "| STT | Nhóm ngành/ Mã ngành* | Tên ngành đào tạo |",
