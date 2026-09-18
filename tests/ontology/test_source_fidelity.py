@@ -83,6 +83,14 @@ VERBATIM_TABLE_SOURCES = {
         "Qd1351.md",
         "| STT | Nội dung vi phạm | Nhắc nhở | Khiển trách | Cảnh cáo | Đình chỉ học tập có thời hạn | Buộc thôi học | Ghi chú |",
     ),
+    "BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu": (
+        "Qd1128.md",
+        "| TT | Trình độ, ngành, chuyên ngành đào tạo | Khóa tuyển sinh 60 | Khóa tuyển sinh 61 trở đi | Ghi chú |",
+    ),
+    "BangChuanDauRaNgoaiNguDaiHocLienThongBang2": (
+        "Tb106.md",
+        "| STT | Tên ngành, chuyên ngành đào tạo | Khóa tuyển sinh K60 | Khóa tuyển sinh K61 trở đi |",
+    ),
     "DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp": (
         "Qd1826.md",
         "| STT | Nhóm ngành/ Mã ngành* | Tên ngành đào tạo |",

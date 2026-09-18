@@ -6,6 +6,12 @@
 	rdfs:label "Aptis (General)"@vi ;
 	skos:altLabel "Aptis General"@vi , "chứng chỉ ngoại ngữ tiếng Anh"@vi , "chứng chỉ tiếng Anh"@vi , "tiếng Anh"@vi .
 :Bang rdfs:label "Bảng"@vi .
+:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :loaiBang :BangTrongTaiLieu ;
+	a :Bang ;
+	rdfs:label "Bảng chuẩn đầu ra ngoại ngữ chương trình đào tạo đại học không chuyên ngữ"@vi .
+:BangChuanDauRaNgoaiNguDaiHocLienThongBang2 :loaiBang :BangTrongTaiLieu ;
+	a :Bang ;
+	rdfs:label "Bảng chuẩn đầu ra ngoại ngữ đại học liên thông, bằng 2"@vi .
 :BangChuanNgoaiNguKhacChuongTrinhDacBiet a :Bang ;
 	rdfs:label "bảng chuẩn ngoại ngữ khác chương trình đặc biệt"@vi ;
 	skos:altLabel "chuẩn đầu ra ngoại ngữ quốc tế khác theo từng chương trình đào tạo đặc biệt"@vi .
@@ -294,6 +300,10 @@
 	rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 :DanhGiaCuoiKy a :KhaiNiem ;
 	rdfs:label "Đánh giá cuối kỳ"@vi .
+:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Đánh giá năng lực ngoại ngữ đầu vào và xếp lớp học phần ngoại ngữ"@vi ;
+	skos:altLabel "kiểm tra năng lực ngoại ngữ đầu vào"@vi , "xếp lớp học phần ngoại ngữ"@vi .
 :DanhGiaQuaTrinh a :KhaiNiem ;
 	rdfs:label "Đánh giá quá trình"@vi .
 :DanhMuc rdfs:label "Danh mục"@vi .
@@ -356,6 +366,10 @@
 	rdfs:label "Điều kiện dự thi học phần lý thuyết"@vi .
 :DieuKienDuThiHocPhanThucHanh a :QuyTac ;
 	rdfs:label "Điều kiện dự thi học phần thực hành"@vi .
+:DieuKienTichLuyNgoaiNguDoiVoiSinhVienLienThongBang2 :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Điều kiện tích lũy ngoại ngữ đối với sinh viên liên thông, bằng 2"@vi ;
+	skos:altLabel "ngoại ngữ cho sinh viên liên thông"@vi , "ngoại ngữ cho sinh viên văn bằng 2"@vi .
 :DoiTuongDuocGiamHocPhi :loaiQuyTac :ChinhSachHocVu ;
 	a :QuyTac ;
 	rdfs:label "Đối tượng được giảm học phí"@vi ;
@@ -934,6 +948,13 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Quy trình xét chuyển Ngành, chuyển Trường, chuyển Bậc đào tạo, nghỉ học có thời hạn và thôi học"@vi .
+:NguonQuyetDinhSo1128QdDhnt :banHanhNgay "2018-09-20"^^xsd:date ;
+	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20180920_QD%201128_Quy%20dinh%20dao%20tao%20ngoai%20ngu%20khoi%20khong%20chuyen%20ngu.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "1128/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 1128/QĐ-ĐHNT"@vi .
 :NguonQuyetDinhSo1826QdBgddt :banHanhNgay "2026-06-26"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2026/269-qd-1826.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
@@ -962,6 +983,13 @@
 	:ngayThuThap "2026-09-18"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo nộp hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập và trợ cấp xã hội HKI năm học 2026-2027"@vi .
+:NguonThongBaoSo106TbDhnt :banHanhNgay "2020-02-24"^^xsd:date ;
+	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20200224_Chu%E1%BA%A9n%20%C4%91%E1%BA%A7u%20ra%20Ngo%E1%BA%A1i%20ng%E1%BB%AF%20li%C3%AAn%20th%C3%B4ng-B2.pdf"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "106/TB-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Thông báo số 106/TB-ĐHNT"@vi .
 :NguonThongBaoTuyenSinhSo1455TbDhnt :banHanhNgay "2025-12-31"^^xsd:date ;
 	:duongDan "https://trungtamdtbd.ntu.edu.vn/uploads/40/files/tintuc/259-TBTS%201455%20%C4%90HNT%202026.pdf"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
@@ -2056,6 +2084,36 @@
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "ghi chú bước 1"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDieu2 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntGhiChuPhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "ghi chú Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan1Dieu5 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 1 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan4Dieu5 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 4 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan4Dieu8 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 4 Điều 8"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan5Dieu3 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 5 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan6Dieu3 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 6 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan7Dieu3 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 7 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntKhoan8Dieu3 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "khoản 8 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntPhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "Phụ lục"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
 	:toaDo "chú thích cuối Phụ lục"@vi ;
 	a :DiaChiTrichDan .
@@ -2289,6 +2347,18 @@
 	a :DiaChiTrichDan .
 :TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo :thuocNguon :NguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027 ;
 	:toaDo "mục Thời hạn nộp hồ sơ"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoSo106TbDhntBangMuc1 :thuocNguon :NguonThongBaoSo106TbDhnt ;
+	:toaDo "bảng mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoSo106TbDhntGhiChuMuc1 :thuocNguon :NguonThongBaoSo106TbDhnt ;
+	:toaDo "ghi chú mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoSo106TbDhntMuc1 :thuocNguon :NguonThongBaoSo106TbDhnt ;
+	:toaDo "mục 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoSo106TbDhntMuc3 :thuocNguon :NguonThongBaoSo106TbDhnt ;
+	:toaDo "mục 3"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonThongBaoTuyenSinhSo1455TbDhntMuc1 :thuocNguon :NguonThongBaoTuyenSinhSo1455TbDhnt ;
 	:toaDo "mục 1"@vi ;
@@ -4204,6 +4274,36 @@
 	:ThuTucNghiHocTamThoi :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 	:ThuTucXinThoiHoc :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 }
+:TDNguonQuyetDinhSo1128QdDhntDieu2 {
+	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "Chuẩn đầu ra ngoại ngữ được quy định theo Khung năng lực ngoại ngữ 6 bậc dùng cho Việt Nam, được áp dụng cho từng ngành đào tạo và khóa tuyển sinh, chi tiết tại Phụ lục của Quy định này."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntGhiChuPhuLuc {
+	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "Ghi chú: - Nhóm ngành 1 là các ngành đào tạo cần đạt trình độ bậc 2 (A2); - Nhóm ngành 2 là các ngành đào tạo cần đạt trình độ bậc 3 (B1)"@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan1Dieu5 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Miễn đánh giá năng lực đầu vào, miễn học và thi nếu sinh viên có các chứng chỉ ngoại ngữ quốc tế (còn hiệu lực) tính đến thời điểm nhập học."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan4Dieu5 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Sinh viên nộp chứng chỉ quốc tế (nộp bản sao chứng chỉ kèm theo bản gốc để đối chiếu) trong 2 tuần đầu của khóa học hoặc trong 2 tuần đầu của học kỳ: nộp tại Phòng Đào tạo Đại học để làm thủ tục miễn học, miễn thi hoặc cộng điểm khuyến khích theo quy định."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan4Dieu8 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Đối với khóa 60 trở đi: thực hiện theo Quy định này."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan5Dieu3 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Tùy vào kết quả đánh giá năng lực ngoại ngữ đầu vào của sinh viên, Nhà trường xếp sinh viên vào lớp HP tương ứng tại Bảng 1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan6Dieu3 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Sinh viên không tham gia đánh giá năng lực ngoại ngữ đầu vào thì bắt buộc phải học từ HP ngoại ngữ A1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan7Dieu3 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Sinh viên chuyển từ trường khác về hoặc sinh viên chuyển khóa học, ngành học, bậc học sẽ được Nhà trường đánh giá năng lực để xếp lớp học phù hợp."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntKhoan8Dieu3 {
+	:DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :noiDung "Sinh viên phải học các HP ngoại ngữ ngay từ học kỳ 1 của khóa học và học liên tục trong các học kỳ ngay sau đó cho đến khi hoàn thành chương trình ngoại ngữ theo quy định."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntPhuLuc {
+	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "| TT | Trình độ, ngành, chuyên ngành đào tạo | Khóa tuyển sinh 60 | Khóa tuyển sinh 61 trở đi | Ghi chú |\n| :---: | :--- | :---: | :---: | :--- |\n| I | TRÌNH ĐỘ ĐẠI HỌC | | | |\n| 1 | Quản trị dịch vụ du lịch và lữ hành, Quản trị khách sạn | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 2 | Quản trị kinh doanh | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 3 | Marketing | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 4 | Kinh doanh thương mại | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 5 | Kế toán, Kiểm toán | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 6 | Tài chính ngân hàng | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 7 | Công nghệ thông tin | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 8 | Hệ thống thông tin quản lý | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 9 | Công nghệ sinh học | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 10 | Kỹ thuật môi trường | B1 | B1 | Đã áp dụng chuẩn B1 (tương đương bậc 3/6) theo quy định |\n| 11 | Kinh tế (Kinh tế thủy sản, Luật Kinh tế) | B1 | B1 |  |\n| 12 | Kinh tế phát triển | B1 | B1 |  |\n| 13 | Công nghệ thực phẩm | B1 | B1 |  |\n| 14 | Công nghệ sau thu hoạch | B1 | B1 |  |\n| 15 | Công nghệ chế biến thủy sản | B1 | B1 |  |\n| 16 | Công nghệ kỹ thuật hóa học | B1 | B1 |  |\n| 17 | Nuôi trồng thủy sản, Bệnh học thủy sản | B1 | B1 |  |\n| 18 | Khai thác thủy sản | B1 | B1 |  |\n| 19 | Quản lý thủy sản | B1 | B1 |  |\n| 20 | Công nghệ kỹ thuật điện, điện tử | A2 | B1 |  |\n| 21 | Kỹ thuật xây dựng | A2 | B1 |  |\n| 22 | Kỹ thuật cơ khí (Kỹ thuật cơ khí, Kỹ thuật cơ khí động lực) | A2 | B1 |  |\n| 23 | Kỹ thuật cơ điện tử | A2 | B1 |  |\n| 24 | Công nghệ chế tạo máy | A2 | B1 |  |\n| 25 | Kỹ thuật nhiệt | A2 | B1 |  |\n| 26 | Kỹ thuật ô tô | A2 | B1 |  |\n| 27 | Kỹ thuật tàu thủy | A2 | B1 |  |\n| 28 | Khoa học hàng hải | A2 | B1 |  |\n| 29 | Nhóm ngành kỹ thuật (*) | A2 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| 30 | Nhóm ngành quản lý và kinh tế (*) | B1 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| 31 | Nhóm ngành công nghệ và thủy sản (*) | B1 | B1 | (*) Các ngành đào tạo mở trong tương lai |\n| II | TRÌNH ĐỘ CAO ĐẲNG (TẤT CẢ CÁC NGÀNH) | A2 | A2 | |"@vi .
+}
 :TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc {
 	:DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp :noiDung "Mã ngành gồm 6 ký tự số (không bao gồm ký tự số thể hiện trình độ đào tạo); ngành đào tạo thí điểm thuộc nhóm ngành có cùng 4 ký tự số đầu tiên của mã số (bao gồm cả Công nghệ bán dẫn, Thiết kế vi mạch)"@vi .
 }
@@ -4488,6 +4588,18 @@
 }
 :TDNguonThongBaoNopHoSoMienGiamHocPhiHoTroChiPhiHocTapVaTroCapXaHoiHkiNamHoc20262027MucThoiHanNopHoSo {
 	:ThuTucNopHoSoCheDoChinhSach :noiDung "Sau khi hoàn tất thủ tục, tiền miễn giảm học phí sẽ được trừ trực tiếp vào học phí của SV."@vi .
+}
+:TDNguonThongBaoSo106TbDhntBangMuc1 {
+	:BangChuanDauRaNgoaiNguDaiHocLienThongBang2 :noiDung "| STT | Tên ngành, chuyên ngành đào tạo | Khóa tuyển sinh K60 | Khóa tuyển sinh K61 trở đi |\n| :---: | :--- | :---: | :---: |\n| 1 | Quản trị dịch vụ du lịch và lữ hành | B1 | B1 |\n| 2 | Quản trị khách sạn | B1 | B1 |\n| 3 | Quản trị kinh doanh | B1 | B1 |\n| 4 | Marketing | B1 | B1 |\n| 5 | Kinh doanh thương mại | B1 | B1 |\n| 6 | Kế toán, Kiểm toán | B1 | B1 |\n| 7 | Tài chính - ngân hàng | B1 | B1 |\n| 8 | Luật | B1 | B1 |\n| 9 | Kinh tế phát triển | B1 | B1 |\n| 10 | Công nghệ thông tin | B1 | B1 |\n| 11 | Hệ thống thông tin quản lý | B1 | B1 |\n| 12 | Công nghệ sinh học | B1 | B1 |\n| 13 | Kỹ thuật môi trường | B1 | B1 |\n| 14 | Công nghệ thực phẩm | B1 | B1 |\n| 15 | Công nghệ chế biến thuỷ sản | B1 | B1 |\n| 16 | Công nghệ kỹ thuật hoá học | B1 | B1 |\n| 17 | Nuôi trồng thủy sản, Bệnh học thủy sản | A2 | B1 |\n| 18 | Khai thác thuỷ sản, Quản lý thuỷ sản | A2 | B1 |\n| 19 | Công nghệ kỹ thuật điện, điện tử | A2 | B1 |\n| 20 | Kỹ thuật xây dựng | A2 | B1 |\n| 21 | Kỹ thuật tàu thủy | A2 | B1 |\n| 22 | Khoa học hàng hải | A2 | B1 |\n| 23 | Kỹ thuật cơ khí động lực | A2 | B1 |\n| 24 | Kỹ thuật ô tô | A2 | B1 |\n| 25 | Kỹ thuật cơ điện tử | A2 | B1 |\n| 26 | Công nghệ chế tạo máy | A2 | B1 |\n| 27 | Kỹ thuật cơ khí | A2 | B1 |\n| 28 | Kỹ thuật nhiệt | A2 | B1 |"@vi .
+}
+:TDNguonThongBaoSo106TbDhntGhiChuMuc1 {
+	:BangChuanDauRaNgoaiNguDaiHocLienThongBang2 :noiDung "Ghi chú: - Nhóm ngành 1: Các ngành đào tạo cần đạt trình độ bậc 2 (A2); - Nhóm ngành 2: Các ngành đào tạo cần đạt trình độ bậc 3 (B1)"@vi .
+}
+:TDNguonThongBaoSo106TbDhntMuc1 {
+	:BangChuanDauRaNgoaiNguDaiHocLienThongBang2 :noiDung "Chuẩn đầu ra ngoại ngữ được quy định theo Khung năng lực ngoại ngữ 6 bậc dùng cho Việt Nam, được áp dụng từng ngành đào tạo và khóa tuyển sinh (K60 nhập học 9/2018, K61 nhập học 9/2019):"@vi .
+}
+:TDNguonThongBaoSo106TbDhntMuc3 {
+	:DieuKienTichLuyNgoaiNguDoiVoiSinhVienLienThongBang2 :noiDung "Sinh viên đăng ký theo học các lớp đào tạo tại trường hoặc nộp đơn bảo lưu kèm bảng điểm đã học đến Phòng Đào tạo ĐH hoặc TT Đào tạo-bồi dưỡng để được xem xét: Sinh viên liên thông được bảo lưu các HP Ngoại ngữ A2 đã học ở Cao đẳng. Sinh viên học đại học bằng 2 tùy theo trình độ đã học bằng đại học 1 sẽ được bảo lưu trình độ Ngoại ngữ tương đương."@vi .
 }
 :TDNguonThongBaoTuyenSinhSo1455TbDhntMuc1 {
 	:TuyenSinhDaiHocHinhThucVuaLamVuaHocNam2026 :noiDung "Loại hình đào tạo, thời gian: Đại học liên thông từ Đại học (VB2) (1,5 năm) – số 1; Đại học liên thông từ Cao đẳng (1,5 năm) – số 2; Đại học liên thông từ Trung cấp (2,5 năm) – số 3; Đại học vừa làm vừa học (4 năm) – số 4"@vi .
