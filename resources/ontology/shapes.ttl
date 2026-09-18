@@ -499,6 +499,10 @@
 		  sh:class :KhaiNiem ;
 		  sh:maxCount 1 ;
 		  :batBuocNguon true ] ,
+		[ sh:path :apDungChoNganh ;
+		  sh:name "áp dụng cho ngành"@vi ;
+		  sh:class :NganhDaoTao ;
+		  :batBuocNguon true ] ,
 		[ sh:path :loaiQuyTac ;
 		  sh:name "loại quy tắc"@vi ;
 		  sh:in ( :ChinhSachHocVu :QuyTacBuocThoiHoc :QuyTacCanhBaoKetQuaHocTap :QuyTacDieuKienDuThi :QuyTacGioiHanCongNhanVaChuyenDoiTinChi :QuyTacHaHangTotNghiep :QuyTacHocVu :QuyTacKhoiLuongDangKyMoiHocKy :QuyTacThoiGianDaoTao :QuyTacTyLeDaoTaoTrucTuyen ) ;

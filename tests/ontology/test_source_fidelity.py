@@ -83,6 +83,10 @@ VERBATIM_TABLE_SOURCES = {
         "Qd1351.md",
         "| STT | Nội dung vi phạm | Nhắc nhở | Khiển trách | Cảnh cáo | Đình chỉ học tập có thời hạn | Buộc thôi học | Ghi chú |",
     ),
+    "DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp": (
+        "Qd1826.md",
+        "| STT | Nhóm ngành/ Mã ngành* | Tên ngành đào tạo |",
+    ),
 }
 
 

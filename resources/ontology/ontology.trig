@@ -81,6 +81,9 @@
 	rdfs:label "Cảnh báo do điểm trung bình tích lũy"@vi .
 :CanhBaoDoNoTinChi a :QuyTac ;
 	rdfs:label "Cảnh báo do nợ tín chỉ"@vi .
+:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc a :QuyTac ;
+	rdfs:label "Chính sách học bổng cho người học các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược"@vi ;
+	skos:altLabel "học bổng ngành khoa học cơ bản"@vi , "học bổng ngành kỹ thuật then chốt và công nghệ chiến lược"@vi , "học bổng theo Nghị định 179/2026/NĐ-CP"@vi .
 :ChinhSachHocVu rdfs:label "Chính sách học vụ"@vi .
 :ChinhSachXuLySinhVienViPham :loaiQuyTac :ChinhSachHocVu ;
 	a :QuyTac ;
@@ -295,6 +298,10 @@
 	a :Bang ;
 	rdfs:label "danh mục học phần ngoại ngữ"@vi ;
 	skos:altLabel "các học phần ngoại ngữ và số tín chỉ"@vi , "phân loại học phần điều kiện và học phần bắt buộc của ngoại ngữ"@vi .
+:DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp :loaiBang :BangTrongTaiLieu ;
+	a :Bang ;
+	rdfs:label "Danh mục ngành đào tạo được áp dụng chính sách học bổng theo Nghị định 179/2026/NĐ-CP"@vi ;
+	skos:altLabel "danh mục 111 ngành được hưởng học bổng theo Nghị định 179"@vi .
 :DanhMucNganhDaoTaoTheoKhoiNganh :loaiBang :BangTrongTaiLieu ;
 	a :Bang ;
 	rdfs:label "danh mục ngành đào tạo theo khối ngành"@vi ;
@@ -838,12 +845,26 @@
 	:ngayThuThap "2026-08-10"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Hướng dẫn đóng học phí qua ngân hàng"@vi .
+:NguonNghiDinhSo1792026NdCp :banHanhNgay "2026-05-20"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2026/269-179-ndcp.signed.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "179/2026/NĐ-CP"@vi ;
+	a :Nguon ;
+	rdfs:label "Nghị định số 179/2026/NĐ-CP"@vi .
 :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc :banHanhNgay "2021-01-05"^^xsd:date ;
 	:duongDan "https://phongctsv.ntu.edu.vn/van-ban-bieu-mau/quy-trinh-xu-ly-cong-viec"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Quy trình xét chuyển Ngành, chuyển Trường, chuyển Bậc đào tạo, nghỉ học có thời hạn và thôi học"@vi .
+:NguonQuyetDinhSo1826QdBgddt :banHanhNgay "2026-06-26"^^xsd:date ;
+	:duongDan "https://phongctsv.ntu.edu.vn/uploads/46/files/2026/269-qd-1826.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "1826/QĐ-BGDĐT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 1826/QĐ-BGDĐT"@vi .
 :NguonThongBaoDanhSachDuKienHocBongKhuyenKhichHocTap :duongDan "https://phongctsv.ntu.edu.vn/danh-muc/hoc-bong-khuyen-khich-hoc-tap"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -1813,6 +1834,60 @@
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankPhanMoDau :thuocNguon :NguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombank ;
 	:toaDo "phần mở đầu"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpDieu1 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpDieu7 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "Điều 7"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu15 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 1 Điều 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu16 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 1 Điều 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu2 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 1 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu3 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 1 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu4 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 1 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu16 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 2 Điều 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu4 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 2 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu6 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 2 Điều 6"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu4 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 3 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 3 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu6 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 3 Điều 6"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan4Dieu4 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 4 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan5Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 5 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan6Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 6 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan7Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 7 Điều 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonNghiDinhSo1792026NdCpKhoan8Dieu5 :thuocNguon :NguonNghiDinhSo1792026NdCp ;
+	:toaDo "khoản 8 Điều 5"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "bước 1"@vi ;
 	a :DiaChiTrichDan .
@@ -1824,6 +1899,69 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 :thuocNguon :NguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHoc ;
 	:toaDo "ghi chú bước 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "chú thích cuối Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtKhoan1Dieu2 :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "khoản 1 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtKhoan1Dieu3 :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "khoản 1 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtKhoan2Dieu2 :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "khoản 2 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtKhoan3Dieu2 :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "khoản 3 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtPhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt101PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 101 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt105PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 105 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt49PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 49 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt4PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 4 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt56PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 56 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt60PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 60 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt62PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 62 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt63PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 63 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt64PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 64 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt69PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 69 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt70PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 70 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt74PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 74 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt83PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 83 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt84PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 84 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
+	:toaDo "STT 89 Phụ lục"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 :thuocNguon :NguonThongBaoDiemChuanTrungTuyen2026 ;
 	:toaDo "mục I Chương trình đặc biệt, dòng TT 10"@vi ;
@@ -2616,6 +2754,7 @@
 	rdfs:label "Xử lý lớp học phần không đủ số lượng sinh viên"@vi ;
 	skos:altLabel "chia nhóm lớp học phần thực hành"@vi , "lớp học phần bị xóa"@vi , "lớp học phần không mở"@vi , "lớp học phần không đủ sĩ số"@vi , "xóa lớp học phần"@vi .
 :apDungChoHinhThucDaoTao rdfs:label "áp dụng cho hình thức đào tạo"@vi .
+:apDungChoNganh rdfs:label "áp dụng cho ngành"@vi .
 :apDungChoPhuongThucDong rdfs:label "áp dụng cho phương thức đóng"@vi .
 :apDungChoTrinhDo rdfs:label "áp dụng cho trình độ"@vi .
 :apDungChoTruongHop rdfs:label "áp dụng cho trường hợp"@vi .
@@ -3561,6 +3700,60 @@
 :TDNguonHuongDanDongHocPhiQuaCongThanhToanVnpayVietcombankPhanMoDau {
 	:ThanhToanQuaCongVnpay :noiDung "Sinh viên có tài khoản ngân hàng Vietcombank hoặc tài khoản các ngân hàng được VNPay hỗ trợ đều có thể thanh toán; tài khoản ngân hàng cần được mở chức năng thanh toán trực tuyến."@vi .
 }
+:TDNguonNghiDinhSo1792026NdCpDieu1 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :loaiQuyTac :ChinhSachHocVu .
+}
+:TDNguonNghiDinhSo1792026NdCpDieu7 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Cơ sở đào tạo xét duyệt và chi trả học bổng thực hiện định kỳ theo năm học trên cơ sở kết quả tuyển sinh, kết quả học tập và rèn luyện của người học do cơ sở đào tạo quản lý; việc chi trả được thực hiện theo từng tháng và số tháng thực học của người học, bảo đảm đúng đối tượng, công khai, minh bạch; cơ sở đào tạo tổ chức thực hiện trên cơ sở sử dụng dữ liệu sẵn có, không yêu cầu người học nộp hồ sơ và không làm phát sinh thủ tục hành chính."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu15 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học phải hoàn trả toàn bộ số tiền học bổng đã nhận trong các trường hợp sau: Có hành vi gian lận trong hồ sơ để được hưởng học bổng; nhận học bổng không đúng đối tượng, tiêu chuẩn theo quy định."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu16 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Nghị định này có hiệu lực thi hành từ ngày 15 tháng 7 năm 2026."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu2 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học là công dân Việt Nam đang theo học hình thức đào tạo chính quy các chương trình đào tạo quy định tại Điều 3 của Nghị định này, bao gồm: sinh viên chương trình đào tạo cử nhân, kỹ sư; học viên chương trình đào tạo thạc sĩ; nghiên cứu sinh chương trình đào tạo tiến sĩ."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu3 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Chương trình đào tạo các ngành khoa học cơ bản, kỹ thuật then chốt và công nghệ chiến lược thuộc các nhóm ngành đào tạo quy định tại Phụ lục ban hành kèm theo Nghị định này."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan1Dieu4 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học thuộc đối tượng quy định tại khoản 1 Điều 2 Nghị định này được hưởng học bổng theo từng năm học, trong toàn khóa học khi đáp ứng tiêu chuẩn quy định tại Điều 5 của Nghị định này và được cơ sở đào tạo xét duyệt."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu16 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Chính sách học bổng quy định tại Nghị định này được áp dụng cho đối tượng tuyển sinh từ năm 2025 trở đi, thời điểm cấp học bổng tính từ ngày 01 tháng 9 năm 2026."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu4 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Trường hợp người học học đồng thời nhiều ngành, nhiều chương trình đào tạo tại một hoặc nhiều cơ sở đào tạo thì chỉ được hưởng chính sách học bổng quy định tại Nghị định này đối với một ngành học tại một cơ sở đào tạo."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan2Dieu6 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Mức học bổng: Mức học bổng theo tháng được quy định theo trình độ đào tạo và nhóm chương trình, ngành đào tạo như sau: a) Đối với sinh viên trình độ đại học: Chương trình đào tạo tài năng: 5.500.000 đồng/tháng; Chương trình đào tạo ngành vi mạch bán dẫn, các ngành khoa học cơ bản: 4.200.000 đồng/tháng; Chương trình đào tạo các ngành kỹ thuật then chốt và công nghệ chiến lược: 3.700.000 đồng/tháng. b) Đối với học viên trình độ thạc sĩ: Chương trình đào tạo tài năng: 7.400.000 đồng/tháng; Chương trình đào tạo ngành vi mạch bán dẫn, các ngành khoa học cơ bản: 6.300.000 đồng/tháng; Chương trình đào tạo các ngành kỹ thuật then chốt và công nghệ chiến lược: 5.500.000 đồng/tháng. c) Đối với nghiên cứu sinh trình độ tiến sĩ: Chương trình đào tạo tài năng, chương trình đào tạo ngành vi mạch bán dẫn, các ngành khoa học cơ bản: 8.400.000 đồng/tháng; Chương trình đào tạo các ngành kỹ thuật then chốt và công nghệ chiến lược: 7.400.000 đồng/tháng."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu4 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Trường hợp người học đồng thời thuộc nhiều chính sách học bổng có nguồn từ ngân sách nhà nước thì chỉ được lựa chọn hưởng 01 chính sách học bổng, trừ trường hợp pháp luật có quy định khác."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu5 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học trúng tuyển vào chương trình đào tạo cử nhân, kỹ sư các ngành thuộc nhóm ngành quy định tại Điều 3 của Nghị định này, đáp ứng một trong các điều kiện sau: a) Đạt giải nhất, nhì, ba trong kỳ thi chọn học sinh giỏi quốc gia hoặc quốc tế dành cho học sinh trung học phổ thông theo quy định của Bộ Giáo dục và Đào tạo; thời gian đạt giải không quá 03 năm tính tới thời điểm xét duyệt; b) Tổng điểm môn Toán và hai trong các môn Vật lí, Hoá học, Sinh học và Tiếng Anh của kỳ thi tốt nghiệp trung học phổ thông từ 22,50 trở lên theo thang điểm 30 không bao gồm điểm ưu tiên, điểm cộng và trúng tuyển thuộc nhóm 30% thí sinh đạt điểm trúng tuyển cao nhất cùng nhóm ngành đào tạo trên phạm vi toàn quốc trong đợt xét tuyển chung của năm tuyển sinh."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan3Dieu6 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Thời gian hưởng học bổng a) Sinh viên được hưởng học bổng 10 tháng/năm; tổng thời gian hưởng học bổng không quá 04 năm với chương trình đào tạo cử nhân và không quá 05 năm với chương trình đào tạo kỹ sư có tổng số tín chỉ từ 150 trở lên; b) Học viên cao học được hưởng học bổng 12 tháng/năm; tổng thời gian hưởng học bổng không quá 02 năm; c) Nghiên cứu sinh được hưởng học bổng 12 tháng/năm; tổng thời gian hưởng học bổng không quá 03 năm đối với nghiên cứu sinh có đầu vào trình độ thạc sĩ, không quá 04 năm đối với nghiên cứu sinh có đầu vào trình độ đại học; d) Người học chương trình đào tạo tích hợp trình độ đại học thạc sĩ được hưởng học bổng 12 tháng/năm trong thời gian không quá 3 năm theo chế độ sinh viên đại học và không quá 2 năm theo chế độ học viên cao học."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan4Dieu4 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học chuyển ngành học hoặc chuyển cơ sở đào tạo tiếp tục được xét hưởng học bổng tại ngành học mới hoặc cơ sở đào tạo mới nếu ngành học mới hoặc cơ sở đào tạo mới thuộc phạm vi điều chỉnh của Nghị định này và người học đáp ứng đầy đủ các tiêu chuẩn hưởng học bổng theo quy định."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan5Dieu5 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học được hưởng học bổng khi trúng tuyển chương trình đào tạo thạc sĩ, tiến sĩ về vi mạch bán dẫn thuộc danh mục các chương trình đào tạo do Bộ Giáo dục và Đào tạo phê duyệt hoặc trúng tuyển chương trình đào tạo thạc sĩ, tiến sĩ theo hình thức đào tạo chính quy tập trung toàn thời gian các ngành thuộc nhóm ngành quy định tại Điều 3 của Nghị định này."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan6Dieu5 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học tiếp tục được hưởng học bổng khi không bị kỷ luật từ mức khiển trách trở lên trong kỳ xét cấp học bổng và đáp ứng yêu cầu: a) Đối với sinh viên chương trình đào tạo cử nhân, kỹ sư, chương trình đào tạo tích hợp: kết quả học tập trung bình tích lũy của các năm học liền trước đạt loại khá trở lên và tích lũy tối thiểu 24 tín chỉ sau năm học đầu tiên, tối thiểu 28 tín chỉ trong một năm học kể từ năm học thứ hai; b) Đối với học viên chương trình đào tạo thạc sĩ, chương trình đào tạo tích hợp: sau năm thứ nhất tích lũy tối thiểu 40% tổng số tín chỉ của chương trình đào tạo, có điểm trung bình tích lũy đạt tối thiểu 3,0 trở lên theo thang điểm 4 và có kết quả nghiên cứu và công bố khoa học theo quy định của cơ sở đào tạo; c) Đối với nghiên cứu sinh chương trình đào tạo tiến sĩ: có kết quả nghiên cứu và công bố khoa học theo quy định của cơ sở đào tạo."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan7Dieu5 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Người học được hưởng học bổng theo Nghị định này không được chuyển sang ngành hoặc chương trình đào tạo không thuộc đối tượng được hưởng chính sách học bổng theo quy định tại Điều 3 của Nghị định này, trừ trường hợp có lý do khách quan, bất khả kháng theo quy định của cơ sở đào tạo. Trường hợp chuyển ngành hoặc chuyển chương trình đào tạo dẫn đến không còn thuộc đối tượng được hưởng chính sách học bổng thì phải hoàn trả ngân sách nhà nước phần kinh phí học bổng đã được hỗ trợ thông qua cơ sở đào tạo."@vi .
+}
+:TDNguonNghiDinhSo1792026NdCpKhoan8Dieu5 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Thời gian hưởng học bổng tối đa đối với mỗi trình độ đào tạo bằng thời gian đào tạo chuẩn của chương trình đào tạo."@vi .
+}
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocBuoc1 {
 	:ThuTucChuyenNganh :noiDung "Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
 	:ThuTucChuyenTruong :noiDung "Sinh viên hoàn thiện đơn, các khoa cho ý kiến đề nghị trong 02 tuần đầu tiên của học kỳ; Phòng Công tác Chính trị và Sinh viên tiếp nhận hồ sơ, kiểm tra rà soát các điều kiện và ý kiến tham mưu cho Hiệu trưởng trong 05 ngày sau khi nhận đơn."@vi .
@@ -3582,6 +3775,69 @@
 :TDNguonQuyTrinhXetChuyenNganhChuyenTruongChuyenBacDaoTaoNghiHocCoThoiHanVaThoiHocGhiChuBuoc1 {
 	:ThuTucNghiHocTamThoi :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
 	:ThuTucXinThoiHoc :noiDung "Ngoài thời gian theo quy định, các trường hợp nghỉ học và nghỉ học có thời hạn được xét theo trường hợp cụ thể."@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtChuThichCuoiPhuLuc {
+	:DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp :noiDung "Mã ngành gồm 6 ký tự số (không bao gồm ký tự số thể hiện trình độ đào tạo); ngành đào tạo thí điểm thuộc nhóm ngành có cùng 4 ký tự số đầu tiên của mã số (bao gồm cả Công nghệ bán dẫn, Thiết kế vi mạch)"@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtKhoan1Dieu2 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Ngành đào tạo quy định tại Phụ lục kèm theo Quyết định này được xác định theo mã ngành đào tạo thuộc Danh mục thống kê ngành đào tạo của giáo dục đại học do Bộ trưởng Bộ Giáo dục và Đào tạo ban hành."@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtKhoan1Dieu3 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Các cơ sở đào tạo căn cứ các ngành đào tạo quy định tại Quyết định này để xác định đối tượng hưởng chính sách học bổng."@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtKhoan2Dieu2 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Các chương trình đào tạo có thể có tên khác tên ngành nhưng được xếp vào một mã ngành đào tạo của một nhóm ngành."@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtKhoan3Dieu2 {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :noiDung "Trường hợp ngành đào tạo được sửa đổi tên gọi, mã ngành hoặc được thay thế trong Danh mục thống kê ngành đào tạo của giáo dục đại học thì việc áp dụng chính sách học bổng được thực hiện đối với ngành đào tạo thay thế có nội dung chuyên môn tương đương."@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtPhuLuc {
+	:DanhMucNganhDaoTaoDuocApDungChinhSachHocBongTheoNghiDinh1792026NdCp :noiDung "| STT | Nhóm ngành/ Mã ngành* | Tên ngành đào tạo |\n| :---: | :---: | :--- |\n| I | Sinh học | |\n| 1 | 420101 | Sinh học |\n| 2 | 420116 | Hóa sinh học |\n| 3 | 420121 | Di truyền học |\n| II | Sinh học ứng dụng | |\n| 4 | 420201 | Công nghệ sinh học |\n| 5 | 420202 | Kỹ thuật sinh học |\n| 6 | 420203 | Sinh học ứng dụng |\n| 7 | 420204 | Khoa học y sinh |\n| III | Khoa học vật chất | |\n| 8 | 440101 | Thiên văn học |\n| 9 | 440102 | Vật lý học |\n| 10 | 440103 | Vật lý lý thuyết và vật lý toán |\n| 11 | 440104 | Vật lý chất rắn |\n| 12 | 440105 | Vật lý vô tuyến và điện tử |\n| 13 | 440106 | Vật lý nguyên tử và hạt nhân |\n| 14 | 440107 | Cơ học vật rắn |\n| 15 | 440109 | Cơ học |\n| 16 | 440110 | Quang học |\n| 17 | 440112 | Hóa học |\n| 18 | 440113 | Hóa vô cơ |\n| 19 | 440114 | Hóa hữu cơ |\n| 20 | 440119 | Hóa lý thuyết và hóa lý |\n| 21 | 440120 | Hóa môi trường |\n| 22 | 440122 | Khoa học vật liệu |\n| 23 | 440123 | Vật liệu điện tử |\n| 24 | 440125 | Vật liệu cao phân tử và tổ hợp |\n| 25 | 440127 | Vật liệu quang học, quang điện tử và quang tử |\n| 26 | 440129 | Kim loại học |\n| IV | Khoa học trái đất | |\n| 27 | 440201 | Địa chất học |\n| 28 | 440205 | Khoáng vật học và địa hóa học |\n| 29 | 440217 | Địa lý tự nhiên |\n| 30 | 440220 | Địa lý tài nguyên và môi trường |\n| 31 | 440221 | Biến đổi khí hậu |\n| 32 | 440222 | Khí tượng và khí hậu học |\n| 33 | 440224 | Thủy văn học |\n| 34 | 440228 | Hải dương học |\n| V | Toán học | |\n| 35 | 460101 | Toán học |\n| 36 | 460102 | Toán giải tích |\n| 37 | 460103 | Phương trình vi phân và tích phân |\n| 38 | 460104 | Đại số và lý thuyết số |\n| 39 | 460105 | Hình học và tôpô |\n| 40 | 460106 | Lý thuyết xác suất và thống kê toán học |\n| 41 | 460107 | Khoa học tính toán |\n| 42 | 460108 | Khoa học dữ liệu |\n| 43 | 460110 | Cơ sở toán học cho tin học |\n| 44 | 460112 | Toán ứng dụng |\n| 45 | 460113 | Phương pháp toán sơ cấp |\n| 46 | 460115 | Toán cơ |\n| 47 | 460117 | Toán tin |\n| VI | Thống kê | |\n| 48 | 460201 | Thống kê |\n| VII | Máy tính | |\n| 49 | 480101 | Khoa học máy tính |\n| 50 | 480102 | Mạng máy tính và truyền thông dữ liệu |\n| 51 | 480103 | Kỹ thuật phần mềm |\n| 52 | 480104 | Hệ thống thông tin |\n| 53 | 480106 | Kỹ thuật máy tính |\n| 54 | 480107 | Trí tuệ nhân tạo |\n| 55 | 480108 | Công nghệ kỹ thuật máy tính |\n| VIII | Công nghệ thông tin | |\n| 56 | 480201 | Công nghệ thông tin |\n| 57 | 480202 | An toàn thông tin |\n| 58 | 480208 | An ninh mạng |\n| IX | Kỹ thuật cơ khí và cơ kỹ thuật | |\n| 59 | 520101 | Cơ kỹ thuật |\n| 60 | 520103 | Kỹ thuật cơ khí |\n| 61 | 520107 | Kỹ thuật Robot |\n| 62 | 520114 | Kỹ thuật cơ điện tử |\n| 63 | 520115 | Kỹ thuật nhiệt |\n| 64 | 520116 | Kỹ thuật cơ khí động lực |\n| 65 | 520117 | Kỹ thuật công nghiệp |\n| 66 | 520118 | Kỹ thuật hệ thống công nghiệp |\n| 67 | 520120 | Kỹ thuật hàng không |\n| 68 | 520121 | Kỹ thuật không gian |\n| 69 | 520122 | Kỹ thuật tàu thủy |\n| 70 | 520130 | Kỹ thuật ô tô |\n| 71 | 520135 | Kỹ thuật năng lượng |\n| 72 | 520137 | Kỹ thuật in |\n| 73 | 520138 | Kỹ thuật hàng hải |\n| X | Kỹ thuật điện, điện tử và viễn thông | |\n| 74 | 520201 | Kỹ thuật điện |\n| 75 | 520203 | Kỹ thuật điện tử |\n| 76 | 520204 | Kỹ thuật rađa - dẫn đường |\n| 77 | 520205 | Kỹ thuật thủy âm |\n| 78 | 520207 | Kỹ thuật điện tử - viễn thông |\n| 79 | 520208 | Kỹ thuật viễn thông |\n| 80 | 520209 | Kỹ thuật mật mã |\n| 81 | 520212 | Kỹ thuật y sinh |\n| 82 | 520215 | Kỹ thuật điện, điện tử |\n| 83 | 520216 | Kỹ thuật điều khiển và tự động hóa |\n| XI | Kỹ thuật hóa học, vật liệu, luyện kim và môi trường | |\n| 84 | 520301 | Kỹ thuật hóa học |\n| 85 | 520305 | Kỹ thuật hóa dầu và lọc dầu |\n| 86 | 520309 | Kỹ thuật vật liệu |\n| 87 | 520310 | Kỹ thuật vật liệu kim loại |\n| 88 | 520312 | Kỹ thuật dệt |\n| 89 | 520320 | Kỹ thuật môi trường |\n| XII | Vật lý kỹ thuật | |\n| 90 | 520401 | Vật lý kỹ thuật |\n| 91 | 520402 | Kỹ thuật hạt nhân |\n| XIII | Kỹ thuật địa chất, địa vật lý và trắc địa | |\n| 92 | 520501 | Kỹ thuật địa chất |\n| 93 | 520502 | Kỹ thuật địa vật lý |\n| 94 | 520503 | Kỹ thuật trắc địa - bản đồ |\n| XIV | Kỹ thuật mỏ | |\n| 95 | 520601 | Kỹ thuật mỏ |\n| 96 | 520602 | Kỹ thuật thăm dò và khảo sát |\n| 97 | 520603 | Khai thác mỏ |\n| 98 | 520604 | Kỹ thuật dầu khí |\n| 99 | 520605 | Kỹ thuật khí thiên nhiên |\n| 100 | 520607 | Kỹ thuật tuyển khoáng |\n| XV | Xây dựng | |\n| 101 | 580201 | Kỹ thuật xây dựng |\n| 102 | 580202 | Kỹ thuật xây dựng công trình thủy |\n| 103 | 580203 | Kỹ thuật xây dựng công trình biển |\n| 104 | 580204 | Kỹ thuật xây dựng công trình ngầm |\n| 105 | 580205 | Kỹ thuật xây dựng công trình giao thông |\n| 106 | 580206 | Kỹ thuật xây dựng công trình đặc biệt |\n| 107 | 580210 | Kỹ thuật cơ sở hạ tầng |\n| 108 | 580211 | Địa kỹ thuật xây dựng |\n| 109 | 580212 | Kỹ thuật tài nguyên nước |\n| 110 | 580213 | Kỹ thuật cấp thoát nước |\n| 111 | 580215 | Kỹ thuật an toàn giao thông |"@vi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt101PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatXayDung .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt105PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatXayDungCongTrinhGiaoThong .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt49PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KhoaHocMayTinh .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt4PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :CongNgheSinhHoc .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt56PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :CongNgheThongTin .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt60PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatCoKhi .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt62PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatCoDienTu .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt63PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatNhiet .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt64PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatCoKhiDongLuc .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt69PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatTauThuy .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt70PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatOTo .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt74PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatDien .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt83PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatDieuKhienVaTuDongHoa .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt84PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatHoaHoc .
+}
+:TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc {
+	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatMoiTruong .
 }
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIChuongTrinhDacBietDongTt10 {
 	:CongNgheCheBienThuySanChuongTrinhMinhPhuNtu :maNganh "7540105MP" ;
