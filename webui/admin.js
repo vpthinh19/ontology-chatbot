@@ -10,7 +10,7 @@ const KIND_NAMES = {
   decimal: "Số thập phân",
   date: "Ngày",
   uri: "Địa chỉ web",
-  link: "Trỏ tới một mục (thuộc tính đối tượng)",
+  link: "Trỏ tới một thực thể (thuộc tính đối tượng)",
   choice: "Chọn trong danh sách",
 };
 const SOURCE_RULES = [
@@ -299,7 +299,7 @@ const valueControl = async (field, value) => {
 };
 
 const sourceControl = async (field, statement) => {
-  if (field && field.sourced === null) return element("span", { class: "no-source", text: "Ô này không gắn nguồn" });
+  if (field && field.sourced === null) return element("span", { class: "no-source", text: "Thuộc tính này không gắn nguồn" });
   const source = element("input", {
     class: "source-id",
     list: await datalistFor("Nguon"),
@@ -334,12 +334,12 @@ const statementRow = async (spec, statement) => {
     const field = spec.fields.find((item) => item.property === current.property) || null;
     row.field = field;
     const choices = spec.fields.map((item) => option(item.property, item.required ? `${item.name} *` : item.name));
-    if (!field) choices.unshift(option(current.property, `${current.property} (không thuộc loại này)`));
+    if (!field) choices.unshift(option(current.property, `${current.property} (không thuộc lớp này)`));
     const picker = element(
       "select",
       {
         class: "property",
-        "aria-label": "Ô",
+        "aria-label": "Thuộc tính",
         value: current.property,
         onchange: (event) =>
           run(async () => {
@@ -368,8 +368,8 @@ const statementRow = async (spec, statement) => {
       element("button", {
         type: "button",
         class: "remove",
-        title: "Bỏ dòng này",
-        "aria-label": "Bỏ dòng này",
+        title: "Bỏ quan hệ này",
+        "aria-label": "Bỏ quan hệ này",
         text: "✕",
         onclick: () => row.remove(),
       }),
@@ -396,14 +396,14 @@ const collectStatements = async (rows) => {
         const target = classSpec(field.target);
         problems.push({
           row,
-          message: `Dòng ${row + 1} (${field.name}): không có mục «${shown.value.trim()}» trong loại «${target ? target.label : field.target}»; hãy chọn trong danh sách gợi ý.`,
+          message: `Quan hệ ${row + 1} (${field.name}): không có thực thể «${shown.value.trim()}» trong lớp «${target ? target.label : field.target}»; hãy chọn trong danh sách gợi ý.`,
         });
         continue;
       }
     }
     const source = await resolve("Nguon", shown.source);
     if (source === null) {
-      problems.push({ row, message: `Dòng ${row + 1}: không có nguồn «${shown.source.trim()}»; hãy chọn trong danh sách gợi ý.` });
+      problems.push({ row, message: `Quan hệ ${row + 1}: không có nguồn «${shown.source.trim()}»; hãy chọn trong danh sách gợi ý.` });
       continue;
     }
     statements.push({ row, property: shown.property, value, source: source || null, coordinate: coordinate || null });
@@ -524,10 +524,10 @@ const renderEditor = async (entity) => {
     });
 
   form = element("form", { class: "entity-form", onsubmit: save, novalidate: true }, [
-    element("h2", { text: isNew ? `Thêm mục mới: ${spec.label}` : entity.label }),
+    element("h2", { text: isNew ? `Thêm thực thể mới: ${spec.label}` : entity.label }),
     element("div", { class: "two" }, [
       element("label", {}, [element("span", { text: "Tên" }), labelInput]),
-      element("label", {}, [element("span", { text: "Loại" }), classSelect]),
+      element("label", {}, [element("span", { text: "Lớp" }), classSelect]),
     ]),
     element("label", { for: "entity-id", text: "Định danh (IRI)" }),
     idInput,
@@ -535,31 +535,31 @@ const renderEditor = async (entity) => {
       class: "muted",
       text: isNew
         ? "Để trống thì định danh sinh từ tên. Chỉ gồm chữ không dấu, chữ số, dấu gạch dưới."
-        : "Đổi định danh thì mọi mục đang trỏ tới mục này đổi theo.",
+        : "Đổi định danh thì mọi thực thể đang trỏ tới thực thể này đổi theo.",
     }),
     altInput && element("label", { for: "entity-alt", text: "Tên gọi khác, mỗi dòng một tên" }),
     altInput,
-    element("h3", { text: "Các câu" }),
+    element("h3", { text: "Các quan hệ" }),
     element("p", {
       class: "muted",
-      text: "Ô có dấu * là bắt buộc. Câu mang nội dung phải chọn nguồn và ghi vị trí trong nguồn. Gõ vài chữ để tìm nguồn hay mục cần trỏ tới.",
+      text: "Thuộc tính có dấu * là bắt buộc. Quan hệ mang nội dung phải có nguồn và vị trí trong nguồn. Gõ vài chữ để tìm nguồn hay thực thể cần trỏ tới.",
     }),
     rows,
     spec.fields.length
       ? element("button", {
           type: "button",
           class: "add-row",
-          text: "Thêm dòng",
+          text: "Thêm quan hệ",
           onclick: () => run(async () => (await addRow(blankStatement(spec.fields[0]))).scrollIntoView({ block: "nearest" })),
         })
       : null,
     element("div", { class: "actions" }, [
       element("button", { type: "submit", class: "primary", text: "Lưu" }),
-      isNew ? null : element("button", { type: "button", class: "danger", text: "Xoá mục", onclick: remove }),
+      isNew ? null : element("button", { type: "button", class: "danger", text: "Xoá thực thể", onclick: remove }),
     ]),
     entity.references.length
       ? element("section", { class: "references" }, [
-          element("h3", { text: "Đang được trỏ tới từ" }),
+          element("h3", { text: "Các thực thể trỏ tới thực thể này" }),
           element("ul", {}, entity.references.map((item) => element("li", { text: `${item.label} · ${item.property}` }))),
         ])
       : null,
@@ -604,7 +604,7 @@ const fieldCard = (field, className) => {
   const card = element("div", { class: "field-card" });
   const nameInput = element("input", {
     "data-key": "name",
-    "aria-label": "Tên hiển thị của ô",
+    "aria-label": "Tên hiển thị của thuộc tính",
     placeholder: "Tên hiển thị, ví dụ hạn nộp",
     value: field.name || "",
     oninput: () => {
@@ -634,13 +634,13 @@ const fieldCard = (field, className) => {
   });
   const kindSelect = element(
     "select",
-    { "data-key": "kind", "aria-label": "Kiểu của ô", value: field.kind || "text", onchange: () => refresh() },
+    { "data-key": "kind", "aria-label": "Kiểu giá trị", value: field.kind || "text", onchange: () => refresh() },
     Object.entries(KIND_NAMES).map(([kind, text]) => option(kind, text)),
   );
   const targetSelect = element(
     "select",
-    { "data-key": "target", "aria-label": "Loại được trỏ tới", value: field.target || "" },
-    [option("", "Trỏ tới loại nào…"), ...state.schema.map((item) => option(item.name, item.label))],
+    { "data-key": "target", "aria-label": "Lớp được trỏ tới", value: field.target || "" },
+    [option("", "Trỏ tới lớp nào…"), ...state.schema.map((item) => option(item.name, item.label))],
   );
   const required = checkbox("Bắt buộc", field.required, "required");
   const single = checkbox("Chỉ một giá trị", field.single, "single");
@@ -662,7 +662,7 @@ const fieldCard = (field, className) => {
     const known = state.properties.find((entry) => entry.property === (propInput.value.trim() || field.property));
     const others = known ? known.classes.filter((name) => name !== className).map((name) => classSpec(name)?.label || name) : [];
     shared.textContent = others.length
-      ? `Thuộc tính này dùng chung với: ${others.join(", ")}. Đổi tên hay định danh sẽ đổi ở cả những loại đó.`
+      ? `Thuộc tính này dùng chung với: ${others.join(", ")}. Đổi tên hay định danh sẽ đổi ở cả những lớp đó.`
       : "";
     shared.hidden = !others.length;
   };
@@ -674,8 +674,8 @@ const fieldCard = (field, className) => {
         type: "button",
         class: "remove",
         text: "✕",
-        title: field.locked ? "Mã nguồn của chatbot dùng ô này nên không bỏ được." : "Bỏ ô này",
-        "aria-label": "Bỏ ô này",
+        title: field.locked ? "Mã nguồn của chatbot dùng thuộc tính này nên không bỏ được." : "Bỏ thuộc tính này",
+        "aria-label": "Bỏ thuộc tính này",
         disabled: field.locked,
         onclick: () => card.remove(),
       }),
@@ -727,7 +727,7 @@ const renderClassEditor = (spec) => {
       if (isNew) nameInput.placeholder = iriName(labelInput.value) || "định danh, sinh từ tên";
     },
   });
-  const alt = checkbox("Mục có ô «tên gọi khác»", spec ? spec.altLabels : true, "altLabels");
+  const alt = checkbox("Thực thể có tên gọi khác", spec ? spec.altLabels : true, "altLabels");
   const cards = element("div", { class: "field-cards", "data-where": "fields" }, (spec ? spec.fields : []).map((field) => fieldCard(field, spec.name)));
 
   let form;
@@ -761,7 +761,7 @@ const renderClassEditor = (spec) => {
       await loadSchema();
       await selectClass(name, { keepEditor: true });
       renderClassEditor(classSpec(name));
-      showStatus("Đã lưu loại.", [], "ok");
+      showStatus("Đã lưu lớp.", [], "ok");
     } catch (error) {
       if (error.confirm && window.confirm(`${error.message}\n\n${error.errors.join("\n")}\n\nVẫn lưu?`)) return submit(true);
       showProblems(error.details || []);
@@ -770,7 +770,7 @@ const renderClassEditor = (spec) => {
   };
   const remove = () =>
     run(async () => {
-      if (!window.confirm(`Xoá loại «${spec.label}»? Việc này không hoàn tác được.`)) return;
+      if (!window.confirm(`Xoá lớp «${spec.label}»? Việc này không hoàn tác được.`)) return;
       await api(`/classes/${encode(spec.name)}?version=${encode(spec.version)}`, { method: "DELETE" });
       clearOptions();
       await loadSchema();
@@ -778,7 +778,7 @@ const renderClassEditor = (spec) => {
       renderClasses();
       $("#list-panel").hidden = true;
       $("#editor").hidden = true;
-      showStatus("Đã xoá loại.", [], "ok");
+      showStatus("Đã xoá lớp.", [], "ok");
     });
 
   form = element(
@@ -792,31 +792,31 @@ const renderClassEditor = (spec) => {
       },
     },
     [
-      element("h2", { text: isNew ? "Thêm loại mới" : `Sửa loại: ${spec.label}` }),
+      element("h2", { text: isNew ? "Thêm lớp mới" : `Sửa lớp: ${spec.label}` }),
       element("p", {
         class: "muted",
         text: isNew
-          ? "Loại là một lớp của ontology; mỗi ô là một thuộc tính của lớp."
-          : `${spec.count} mục thuộc loại này. Đổi định danh loại hay thuộc tính thì mọi câu đang dùng đổi theo; toàn bộ dữ liệu được kiểm lại trước khi lưu.`,
+          ? "Mỗi lớp có một tập thuộc tính; thực thể của lớp chỉ nhận các thuộc tính đó."
+          : `${spec.count} thực thể thuộc lớp này. Đổi định danh lớp hay thuộc tính thì mọi quan hệ đang dùng đổi theo; toàn bộ dữ liệu được kiểm lại trước khi lưu.`,
       }),
       element("div", { class: "two" }, [
-        element("label", {}, [element("span", { text: "Tên loại" }), labelInput]),
+        element("label", {}, [element("span", { text: "Tên lớp" }), labelInput]),
         element("label", {}, [element("span", { text: "Định danh (IRI)" }), nameInput]),
       ]),
       spec && spec.locked
-        ? element("p", { class: "muted", text: "Mã nguồn của chatbot dùng định danh loại này nên không đổi hay xoá được; tên và các ô vẫn sửa được." })
+        ? element("p", { class: "muted", text: "Mã nguồn của chatbot dùng định danh lớp này nên không đổi hay xoá được; tên và các thuộc tính vẫn sửa được." })
         : null,
       alt.label,
-      element("h3", { text: "Các ô (thuộc tính)" }),
+      element("h3", { text: "Các thuộc tính" }),
       element("p", {
         class: "muted",
-        text: "Chữ, số, ngày, địa chỉ web là thuộc tính dữ liệu; «Trỏ tới một mục» là thuộc tính đối tượng. Định danh để trống thì sinh từ tên.",
+        text: "Chữ, số, ngày, địa chỉ web là thuộc tính dữ liệu; «Trỏ tới một thực thể» là thuộc tính đối tượng. Định danh để trống thì sinh từ tên.",
       }),
       cards,
       element("button", {
         type: "button",
         class: "add-row",
-        text: "Thêm ô",
+        text: "Thêm thuộc tính",
         onclick: () => {
           const card = fieldCard({ kind: "text", sourced: true }, spec ? spec.name : null);
           cards.append(card);
@@ -824,8 +824,8 @@ const renderClassEditor = (spec) => {
         },
       }),
       element("div", { class: "actions" }, [
-        element("button", { type: "submit", class: "primary", text: isNew ? "Tạo loại" : "Lưu loại" }),
-        !isNew && !spec.locked ? element("button", { type: "button", class: "danger", text: "Xoá loại", onclick: remove }) : null,
+        element("button", { type: "submit", class: "primary", text: isNew ? "Tạo lớp" : "Lưu lớp" }),
+        !isNew && !spec.locked ? element("button", { type: "button", class: "danger", text: "Xoá lớp", onclick: remove }) : null,
         element("button", { type: "button", text: "Đóng", onclick: () => ($("#editor").hidden = true) }),
       ]),
     ],

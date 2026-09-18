@@ -61,9 +61,9 @@ _VIOLATIONS = {
     "MaxCountConstraintComponent": "chỉ được có một giá trị",
     "DatatypeConstraintComponent": "sai kiểu dữ liệu",
     "LanguageInConstraintComponent": "chữ phải gắn nhãn tiếng Việt",
-    "ClassConstraintComponent": "phải trỏ tới một mục đúng loại",
+    "ClassConstraintComponent": "phải trỏ tới một thực thể đúng lớp",
     "InConstraintComponent": "giá trị không nằm trong danh sách cho phép",
-    "ClosedConstraintComponent": "ô này không thuộc loại thông tin của mục",
+    "ClosedConstraintComponent": "thuộc tính này không thuộc lớp của thực thể",
 }
 _KIND_NAMES = {"integer": "số nguyên", "decimal": "số", "date": "ngày (YYYY-MM-DD)"}
 _ID_RULE = "chỉ gồm chữ không dấu, chữ số và dấu gạch dưới, bắt đầu bằng một chữ cái"
@@ -132,7 +132,7 @@ def _text(raw) -> str:
 def _label(payload: dict) -> str:
     label = payload.get("label")
     if not isinstance(label, str) or not label.strip():
-        raise AdminError("Mục phải có tên.", [_problem("Mục phải có tên.", where="label")])
+        raise AdminError("Thực thể phải có tên.", [_problem("Thực thể phải có tên.", where="label")])
     return label.strip()
 
 
@@ -261,7 +261,7 @@ class AdminStore:
 
     def list(self, class_name: str) -> list[dict[str, str]]:
         if class_name not in self.schema.classes:
-            raise NotFound(f"Không có loại thông tin «{class_name}».")
+            raise NotFound(f"Không có lớp «{class_name}».")
         items = [{"id": _local(quad.subject.value), "label": self.label(_local(quad.subject.value))}
                  for quad in self._store.quads_for_pattern(None, RDF_TYPE, _node(class_name), OUTSIDE)]
         return sorted(items, key=lambda item: item["label"].casefold())
@@ -275,7 +275,7 @@ class AdminStore:
     def _content(self, local: str) -> dict:
         class_name = self.class_of(local)
         if class_name is None or class_name == ADDRESS_CLASS:
-            raise NotFound(f"Không có mục «{local}».")
+            raise NotFound(f"Không có thực thể «{local}».")
         node = _node(local)
         statements = []
         for quad in self._store.quads_for_pattern(node, None, None, None):
@@ -346,7 +346,7 @@ class AdminStore:
         with self._lock:
             spec = self.schema.classes.get(payload.get("class"))
             if spec is None:
-                raise AdminError("Chọn loại thông tin của mục mới.")
+                raise AdminError("Chọn lớp cho thực thể mới.")
             label = _label(payload)
             chosen = str(payload.get("id") or "").strip()
             local = chosen or iri_name(label)
@@ -372,7 +372,7 @@ class AdminStore:
             self._check_version(payload.get("version"), current)
             spec = self.schema.classes.get(payload.get("class") or current["class"])
             if spec is None:
-                raise AdminError(f"Không có loại «{payload.get('class')}».")
+                raise AdminError(f"Không có lớp «{payload.get('class')}».")
             label = _label(payload)
             new_local = str(payload.get("id") or local).strip()
             if new_local != local:
@@ -400,15 +400,15 @@ class AdminStore:
             self._drop_unused_addresses(store)
             references = self._references(store, node)
             if references:
-                raise Conflict("Còn mục khác trỏ tới mục này; sửa hoặc xoá chúng trước.",
+                raise Conflict("Còn thực thể khác trỏ tới thực thể này; sửa hoặc xoá chúng trước.",
                                [f"{r['label']} · {r['property']}" for r in references])
             self._commit(store)
 
     @staticmethod
     def _check_version(version, content: dict) -> None:
         if version and version != _version(content):
-            raise Conflict("Mục này vừa được sửa ở nơi khác (tab khác hoặc người khác) nên chưa lưu, để khỏi đè "
-                           "lên thay đổi đó. Hãy mở lại mục để thấy bản mới rồi sửa tiếp.")
+            raise Conflict("Thực thể này vừa được sửa ở nơi khác (tab khác hoặc người khác) nên chưa lưu, để khỏi đè "
+                           "lên thay đổi đó. Hãy mở lại thực thể để thấy bản mới rồi sửa tiếp.")
 
     def _copy(self) -> oxi.Store:
         store = oxi.Store()
@@ -424,32 +424,32 @@ class AdminStore:
         for alt in alt_labels if isinstance(alt_labels, list) else []:
             if isinstance(alt, str) and alt.strip():
                 if not spec.alt_labels:
-                    errors.append(_problem(f"{spec.label} không có ô tên gọi khác.", where="altLabels"))
+                    errors.append(_problem(f"Lớp «{spec.label}» không có tên gọi khác.", where="altLabels"))
                     break
                 store.add(oxi.Quad(node, ALT_LABEL, oxi.Literal(alt.strip(), language="vi"), OUTSIDE))
 
         statements = payload.get("statements") or []
         if not isinstance(statements, list):
-            raise AdminError("Các câu phải là một danh sách.")
+            raise AdminError("Các quan hệ phải là một danh sách.")
         for number, statement in enumerate(statements):
             if not isinstance(statement, dict):
-                errors.append(_problem(f"Dòng {number + 1}: không đọc được.", row=number))
+                errors.append(_problem(f"Quan hệ {number + 1}: không đọc được.", row=number))
                 continue
             # ``row``: vị trí của dòng trên form, để lời báo lỗi chỉ đúng dòng người sửa đang thấy.
             row = statement["row"] if isinstance(statement.get("row"), int) else number
             field = spec.field(str(statement.get("property", "")))
             if field is None:
-                errors.append(_problem(f"Dòng {row + 1}: ô này không thuộc loại {spec.label}.", row=row))
+                errors.append(_problem(f"Quan hệ {row + 1}: thuộc tính này không thuộc lớp «{spec.label}».", row=row))
                 continue
-            where = f"Dòng {row + 1} ({field.name})"
+            where = f"Quan hệ {row + 1} ({field.name})"
             at = {"row": row, "property": field.property}
             value = _value(field, statement.get("value"), where, errors, at)
             source = str(statement.get("source") or "").strip()
             coordinate = _text(statement.get("coordinate"))
             if field.sourced is None and (source or coordinate):
-                errors.append(_problem(f"{where}: ô này không gắn nguồn.", **at))
+                errors.append(_problem(f"{where}: thuộc tính này không gắn nguồn.", **at))
             elif field.sourced and not source:
-                errors.append(_problem(f"{where}: phải chọn nguồn khẳng định câu này.", **at))
+                errors.append(_problem(f"{where}: phải chọn nguồn khẳng định quan hệ này.", **at))
             elif coordinate and not source:
                 errors.append(_problem(f"{where}: đã ghi vị trí thì phải chọn nguồn, hoặc xoá vị trí.", **at))
             elif source and not coordinate:
@@ -499,9 +499,9 @@ class AdminStore:
             if old is not None:
                 before = self.schema.classes.get(old)
                 if before is None:
-                    raise NotFound(f"Không có loại «{old}».")
+                    raise NotFound(f"Không có lớp «{old}».")
                 if payload.get("version") and payload["version"] != self.class_version(old):
-                    raise Conflict("Loại này vừa được sửa ở nơi khác nên chưa lưu. Hãy mở lại loại rồi sửa tiếp.")
+                    raise Conflict("Lớp này vừa được sửa ở nơi khác nên chưa lưu. Hãy mở lại lớp rồi sửa tiếp.")
             name, label, fields, renames, choice_labels = self._read_class(old, before, payload)
             store, schema = self._copy(), self.schema
 
@@ -522,8 +522,8 @@ class AdminStore:
                 counts: dict[str, int] = {}
                 for field_name, _ in doomed:
                     counts[field_name] = counts.get(field_name, 0) + 1
-                raise Conflict(f"Lưu thay đổi này sẽ xoá {len(doomed)} câu đang có của các mục loại «{before.label}».",
-                               [f"{field_name}: {count} câu" for field_name, count in counts.items()], confirm=True)
+                raise Conflict(f"Lưu thay đổi này sẽ xoá {len(doomed)} quan hệ đang có của các thực thể thuộc lớp «{before.label}».",
+                               [f"{field_name}: {count} quan hệ" for field_name, count in counts.items()], confirm=True)
             for _, quad in doomed:
                 store.remove(quad)
             if before and name != old:
@@ -551,17 +551,17 @@ class AdminStore:
         with self._lock:
             spec = self.schema.classes.get(name)
             if spec is None:
-                raise NotFound(f"Không có loại «{name}».")
+                raise NotFound(f"Không có lớp «{name}».")
             if version and version != self.class_version(name):
-                raise Conflict("Loại này vừa được sửa ở nơi khác nên chưa xoá. Hãy mở lại loại.")
+                raise Conflict("Lớp này vừa được sửa ở nơi khác nên chưa xoá. Hãy mở lại lớp.")
             if name in CODE_NAMES:
-                raise Conflict(f"Loại «{spec.label}» được mã nguồn của chatbot dùng trực tiếp nên không xoá được.")
+                raise Conflict(f"Lớp «{spec.label}» được mã nguồn của chatbot dùng trực tiếp nên không xoá được.")
             members = self.counts().get(name, 0)
             if members:
-                raise Conflict(f"Còn {members} mục thuộc loại «{spec.label}»; xoá chúng hoặc chuyển sang loại khác trước.")
+                raise Conflict(f"Còn {members} thực thể thuộc lớp «{spec.label}»; xoá chúng hoặc chuyển sang lớp khác trước.")
             targeting = self.schema.targeting(name)
             if targeting:
-                raise Conflict("Còn ô ở loại khác trỏ tới loại này; sửa các ô đó trước.",
+                raise Conflict("Còn thuộc tính ở lớp khác trỏ tới lớp này; sửa các thuộc tính đó trước.",
                                [f"{self.schema.all_classes[owner].label} · {field.name}" for owner, field in targeting])
             store, schema = self._copy(), self.schema.without_class(name)
             self._drop_unused_vocabulary(store, schema, {name} | {f.property for f in spec.fields}
@@ -575,19 +575,19 @@ class AdminStore:
         name = str(payload.get("name") or "").strip()
         label = _text(payload.get("label"))
         if not label:
-            errors.append(_problem("Loại phải có tên.", where="label"))
+            errors.append(_problem("Lớp phải có tên.", where="label"))
         if not _CLASS_ID.match(name):
-            errors.append(_problem(f"Định danh loại {_ID_RULE}, và chữ đầu viết hoa, ví dụ «QuyDinhMoi».", where="name"))
+            errors.append(_problem(f"Định danh lớp {_ID_RULE}, và chữ đầu viết hoa, ví dụ «QuyDinhMoi».", where="name"))
         elif name != old:
             if old in CODE_NAMES:
-                errors.append(_problem("Loại này được mã nguồn dùng trực tiếp nên không đổi định danh được.", where="name"))
+                errors.append(_problem("Lớp này được mã nguồn dùng trực tiếp nên không đổi định danh được.", where="name"))
             elif self._taken(self._store, name):
                 errors.append(_problem(f"Định danh «{name}» đã được dùng.", where="name"))
         existing = {field.property: field for spec in self.schema.all_classes.values() for field in spec.fields}
         known_choices = {c for field in existing.values() for c in field.choices}
         raw_fields = payload.get("fields") or []
         if not isinstance(raw_fields, list):
-            raise AdminError("Các ô phải là một danh sách.")
+            raise AdminError("Các thuộc tính phải là một danh sách.")
         fields, renames, choice_labels, seen = [], [], {}, set()
         for index, raw in enumerate(raw_fields):
             raw = raw if isinstance(raw, dict) else {}
@@ -600,30 +600,30 @@ class AdminStore:
             sourced = raw.get("sourced")
             count = len(errors)
             if not _PROPERTY_ID.match(prop):
-                errors.append(_problem(f"Ô {index + 1}: định danh thuộc tính {_ID_RULE}, và chữ đầu viết thường, "
+                errors.append(_problem(f"Thuộc tính {index + 1}: định danh thuộc tính {_ID_RULE}, và chữ đầu viết thường, "
                                        "ví dụ «thoiHanNop».", key="property", **at))
             elif prop in seen:
-                errors.append(_problem(f"Ô {index + 1}: thuộc tính «{prop}» đã có ở một ô khác của loại này.",
+                errors.append(_problem(f"Thuộc tính {index + 1}: «{prop}» trùng với một thuộc tính khác của lớp này.",
                                        key="property", **at))
             elif was and before is not None and before.field(was) is None:
-                errors.append(_problem(f"Ô {index + 1}: loại này không có thuộc tính «{was}».", key="property", **at))
+                errors.append(_problem(f"Thuộc tính {index + 1}: lớp này không có thuộc tính «{was}».", key="property", **at))
             elif was and was != prop:
                 if was in CODE_NAMES:
-                    errors.append(_problem(f"Ô {index + 1}: thuộc tính «{was}» được mã nguồn dùng trực tiếp nên không "
+                    errors.append(_problem(f"Thuộc tính {index + 1}: thuộc tính «{was}» được mã nguồn dùng trực tiếp nên không "
                                            "đổi định danh được.", key="property", **at))
                 elif self._taken(self._store, prop):
-                    errors.append(_problem(f"Ô {index + 1}: định danh «{prop}» đã được dùng; không gộp hai thuộc tính.",
+                    errors.append(_problem(f"Thuộc tính {index + 1}: định danh «{prop}» đã được dùng; không gộp hai thuộc tính.",
                                            key="property", **at))
             elif prop not in existing and self._taken(self._store, prop):
-                errors.append(_problem(f"Ô {index + 1}: định danh «{prop}» đã được dùng cho thứ khác.",
+                errors.append(_problem(f"Thuộc tính {index + 1}: định danh «{prop}» đã được dùng cho thứ khác.",
                                        key="property", **at))
             seen.add(prop)
             if not field_name:
-                errors.append(_problem(f"Ô {index + 1}: chưa có tên hiển thị.", key="name", **at))
+                errors.append(_problem(f"Thuộc tính {index + 1}: chưa có tên hiển thị.", key="name", **at))
             if kind not in KINDS:
-                errors.append(_problem(f"Ô {index + 1}: chọn kiểu của ô.", key="kind", **at))
+                errors.append(_problem(f"Thuộc tính {index + 1}: chọn kiểu giá trị.", key="kind", **at))
             if kind == "link" and target not in self.schema.classes and target != name:
-                errors.append(_problem(f"Ô {index + 1}: chọn loại mà ô này trỏ tới.", key="target", **at))
+                errors.append(_problem(f"Thuộc tính {index + 1}: chọn lớp mà thuộc tính này trỏ tới.", key="target", **at))
             choices = []
             if kind == "choice":
                 raw_choices = raw.get("choices") if isinstance(raw.get("choices"), list) else []
@@ -633,22 +633,22 @@ class AdminStore:
                     if not choice_id and not choice_label:
                         continue
                     if not _ID.match(choice_id):
-                        errors.append(_problem(f"Ô {index + 1}: giá trị «{choice_label or choice_id}»: định danh "
+                        errors.append(_problem(f"Thuộc tính {index + 1}: giá trị «{choice_label or choice_id}»: định danh "
                                                f"{_ID_RULE}.", key="choices", **at))
                     elif not choice_label:
-                        errors.append(_problem(f"Ô {index + 1}: giá trị «{choice_id}» chưa có tên.", key="choices", **at))
+                        errors.append(_problem(f"Thuộc tính {index + 1}: giá trị «{choice_id}» chưa có tên.", key="choices", **at))
                     elif choice_id in choices:
-                        errors.append(_problem(f"Ô {index + 1}: giá trị «{choice_id}» bị lặp.", key="choices", **at))
+                        errors.append(_problem(f"Thuộc tính {index + 1}: giá trị «{choice_id}» bị lặp.", key="choices", **at))
                     elif choice_id not in known_choices and self._taken(self._store, choice_id):
-                        errors.append(_problem(f"Ô {index + 1}: định danh «{choice_id}» đã được dùng cho thứ khác.",
+                        errors.append(_problem(f"Thuộc tính {index + 1}: định danh «{choice_id}» đã được dùng cho thứ khác.",
                                                key="choices", **at))
                     else:
                         choices.append(choice_id)
                         choice_labels[choice_id] = choice_label
                 if not choices:
-                    errors.append(_problem(f"Ô {index + 1}: cần ít nhất một giá trị để chọn.", key="choices", **at))
+                    errors.append(_problem(f"Thuộc tính {index + 1}: cần ít nhất một giá trị để chọn.", key="choices", **at))
             if sourced not in (True, False, None):
-                errors.append(_problem(f"Ô {index + 1}: chọn luật gắn nguồn.", key="sourced", **at))
+                errors.append(_problem(f"Thuộc tính {index + 1}: chọn luật gắn nguồn.", key="sourced", **at))
             if len(errors) > count:
                 continue
             fields.append(Field(prop, field_name, kind, bool(raw.get("required")), bool(raw.get("single")),
@@ -659,10 +659,10 @@ class AdminStore:
             kept = {field.property for field in fields} | {was for was, _, _ in renames}
             for field in before.fields:
                 if field.property not in kept and field.property in CODE_NAMES:
-                    errors.append(_problem(f"Ô «{field.name}» được mã nguồn dùng trực tiếp nên không bỏ được.",
+                    errors.append(_problem(f"Thuộc tính «{field.name}» được mã nguồn dùng trực tiếp nên không bỏ được.",
                                            where="fields"))
         if errors:
-            raise AdminError("Loại chưa hợp lệ.", errors)
+            raise AdminError("Lớp chưa hợp lệ.", errors)
         return name, label, fields, renames, choice_labels
 
     def _drop_unused_vocabulary(self, store: oxi.Store, schema: Schema, candidates: set[str]) -> None:
@@ -733,7 +733,7 @@ class AdminStore:
             field = spec.field(path) if spec else None
             message = _VIOLATIONS.get(component, str(results.value(result, sh.resultMessage)))
             if component == "ClassConstraintComponent" and field and field.target in schema.classes:
-                message = f"phải trỏ tới một mục loại «{schema.classes[field.target].label}»"
+                message = f"phải trỏ tới một thực thể thuộc lớp «{schema.classes[field.target].label}»"
             where = field.name if field else ("tên" if raw_path in (RDFS_LABEL, "") else path)
             text = f"{self.label(subject, store)} · {where}: {message}"
             found[text] = _problem(text, entity=subject, property="label" if raw_path == RDFS_LABEL else path,

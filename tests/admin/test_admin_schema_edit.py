@@ -115,7 +115,7 @@ def test_dropping_a_field_that_holds_data_asks_first_then_removes_its_statements
     with pytest.raises(AdminError) as asked:
         store.save_class("QuyDinhThu", without)
     assert (asked.value.status, asked.value.confirm) == (409, True)
-    assert "mức độ thử: 1 câu" in asked.value.errors
+    assert "mức độ thử: 1 quan hệ" in asked.value.errors
 
     store.save_class("QuyDinhThu", {**without, "confirm": True})
     assert "mucDoThu" not in {s["property"] for s in store.get(local)["statements"]}
@@ -196,7 +196,7 @@ def test_errors_point_at_the_row_the_editor_sees(store) -> None:
         store.create(payload)
 
     assert [(d["row"], d["message"].split(":")[0]) for d in refused.value.details] == [
-        (0, "Dòng 1 (loại khái niệm)"), (2, "Dòng 3 (nội dung)")]
+        (0, "Quan hệ 1 (loại khái niệm)"), (2, "Quan hệ 3 (nội dung)")]
 
 
 def test_a_source_link_must_be_a_web_address(store) -> None:

@@ -177,7 +177,7 @@ def _build_admin(args: argparse.Namespace, agent, remote=None):
                 if store.reload(remote.refresh):
                     _reload_engine(args, agent, "from Cloud Storage after a conflicting edit")
                 raise Conflict(
-                    "Ontology vừa được sửa ở một phiên khác. Dữ liệu mới đã được tải; hãy mở lại mục và sửa lại."
+                    "Ontology vừa được sửa ở một phiên khác. Dữ liệu mới đã được tải; hãy mở lại thực thể và sửa lại."
                 ) from None
             except Exception as exc:
                 logger.exception("could not save the ontology to Cloud Storage")

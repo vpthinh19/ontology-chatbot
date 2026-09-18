@@ -22,24 +22,24 @@
     <div id="status" role="status" aria-live="polite" hidden></div>
 
     <main class="layout">
-      <nav id="class-panel" aria-label="Loại thông tin">
+      <nav id="class-panel" aria-label="Các lớp">
         <div id="classes"></div>
-        <button id="new-class-btn" type="button" class="add-class">+ Thêm loại</button>
+        <button id="new-class-btn" type="button" class="add-class">+ Thêm lớp</button>
       </nav>
 
       <section id="list-panel" aria-labelledby="list-title" hidden>
         <div class="list-title-row">
           <h2 id="list-title"></h2>
-          <button id="edit-class-btn" type="button">Sửa loại</button>
+          <button id="edit-class-btn" type="button">Sửa lớp</button>
         </div>
         <div class="list-head">
           <input id="filter" type="search" placeholder="Lọc theo tên…" aria-label="Lọc theo tên" />
-          <button id="new-btn" type="button">Thêm mục</button>
+          <button id="new-btn" type="button">Thêm thực thể</button>
         </div>
         <ul id="items"></ul>
       </section>
 
-      <section id="editor" aria-label="Sửa mục hoặc loại" hidden></section>
+      <section id="editor" aria-label="Sửa thực thể hoặc lớp" hidden></section>
     </main>
 
     <script type="module" src="/admin.js"></script>
