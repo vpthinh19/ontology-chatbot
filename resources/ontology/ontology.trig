@@ -2782,6 +2782,9 @@
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc9 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "tệp mục 9"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangChuKhoaCongNgheSinhHocChanTrang :thuocNguon :NguonTrangChuKhoaCongNgheSinhHoc ;
+	:toaDo "chân trang"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang :thuocNguon :NguonTrangChuKhoaCongNgheSinhHoc ;
 	:toaDo "tên đơn vị ở đầu trang"@vi ;
 	a :DiaChiTrichDan .
@@ -3585,7 +3588,7 @@
 }
 :TD1052_D06K02dI {
 	:HocPhanThayThe :loaiKhaiNiem :LoaiHocPhan ;
-		:noiDung "Học phần được dùng thay cho một học phần có trong chương trình đào tạo khóa trước nhưng khóa sau không còn tổ chức đào tạo, hoặc học phần tự chọn thay cho học phần tự chọn khác mà sinh viên học không đạt."@vi .
+		:noiDung "Học phần được sử dụng thay thế cho một học phần có trong CTĐT khóa trước nhưng khóa sau không còn tổ chức đào tạo nữa, hoặc là một học phần tự chọn thay cho một học phần tự chọn khác mà SV học không đạt, hoặc cùng một học phần nhưng số tín chỉ của học phần khóa sau khác khóa trước."@vi .
 }
 :TD1052_D07K02dA {
 	:HocKyChinh :loaiKhaiNiem :LoaiHocKy ;
@@ -3634,7 +3637,7 @@
 		:noiDung "Sinh viên xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh."@vi ;
 		:soTinChiToiDa 27 ;
 		:soTinChiToiThieu 15 .
-	:ThuTucDangKyKhoiLuongHocTap :noiDung "Sinh viên xếp loại học lực trung bình trở lên đăng ký tối thiểu 15 tín chỉ và tối đa 27 tín chỉ với chương trình 4 năm, tối đa 32 tín chỉ với chương trình 4,5 năm và chương trình đặc biệt."@vi .
+	:ThuTucDangKyKhoiLuongHocTap :noiDung "Khối lượng học tập của mỗi SV xếp loại học lực trung bình trở lên của học kỳ liền trước được đăng ký trong một học kỳ (trừ học kỳ cuối khóa và các học kỳ phụ) tối thiểu 15 tín chỉ và tối đa 27 tín chỉ đối với chương trình đào tạo 4 năm, 32 tín chỉ đối với các chương trình đào tạo 4,5 năm và chương trình đặc biệt theo đặt hàng của doanh nghiệp (không tính tín chỉ của các học phần Giáo dục thể chất, Giáo dục Quốc phòng – An ninh)."@vi .
 }
 :TD1052_D09K04 {
 	:KhoiLuongDangKyCuaSinhVienHocLucYeuKem :loaiQuyTac :QuyTacKhoiLuongDangKyMoiHocKy ;
@@ -3727,7 +3730,6 @@
 	:DieuKienDuThiHocPhanLyThuyet :loaiQuyTac :QuyTacDieuKienDuThi ;
 		:noiDung "Đối với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần và thực hiện đầy đủ các yêu cầu bắt buộc ghi trong Đề cương chi tiết học phần."@vi ;
 		:tyLeToiThieu "80"^^xsd:decimal .
-	:ThuTucXinPhepNghiHoc :noiDung "Với học phần lý thuyết, sinh viên phải tham dự tối thiểu 80% tổng số giờ học của học phần."@vi .
 }
 :TD1052_D17K01dB {
 	:DieuKienDuThiHocPhanThucHanh :loaiQuyTac :QuyTacDieuKienDuThi ;
@@ -3866,12 +3868,12 @@
 	:ThuTucNghiHocTamThoi :apDungChoTruongHop :DuocDieuDongDuThiGiaiDauQuocTe .
 }
 :TD1052_D24K01dC {
-	:OmThaiSanHoacTaiNan :noiDung "Sinh viên bị ốm, thai sản hoặc tai nạn trong quá trình học."@vi .
+	:OmThaiSanHoacTaiNan :noiDung "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế."@vi .
 	:ThuTucNghiHocTamThoi :apDungChoTruongHop :OmThaiSanHoacTaiNan ;
 		:noiDung "Bị ốm, thai sản hoặc tai nạn phải điều trị thời gian dài, có giấy chứng nhận của cơ sở khám bệnh, chữa bệnh có thẩm quyền theo quy định của Bộ Y tế."@vi .
 }
 :TD1052_D24K01dD {
-	:LyDoCaNhanKhac :noiDung "Sinh viên nghỉ học tạm thời vì lý do cá nhân khác."@vi .
+	:LyDoCaNhanKhac :noiDung "Vì lý do cá nhân khác nhưng phải học ít nhất 01 học kỳ ở Trường và không thuộc các trường hợp bị xem xét buộc thôi học hoặc xem xét kỷ luật quy định tại Điều 20 của Quy chế này. Thời gian nghỉ học tạm thời vì nhu cầu cá nhân được tính vào thời gian học chính thức quy định tại khoản 4 Điều 2 của Quy chế này."@vi .
 	:ThuTucNghiHocTamThoi :apDungChoTruongHop :LyDoCaNhanKhac ;
 		:noiDung "Phải đã học ít nhất 01 học kỳ tại Trường và không thuộc diện bị xem xét buộc thôi học hoặc xem xét kỷ luật."@vi .
 }
@@ -3959,7 +3961,7 @@
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Đã được xếp từ trình độ năm thứ hai trở lên của chương trình thứ nhất."@vi .
 }
 :TD1052_D28K01dB {
-	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Học lực theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai; hoặc xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh."@vi .
+	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Học lực tính theo điểm trung bình tích lũy xếp loại khá trở lên và đáp ứng ngưỡng bảo đảm chất lượng của chương trình thứ hai trong năm tuyển sinh; hoặc học lực tính theo điểm trung bình tích lũy xếp loại trung bình và đáp ứng điều kiện trúng tuyển của chương trình thứ hai trong năm tuyển sinh."@vi .
 }
 :TD1052_D28K02 {
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Nếu điểm trung bình chung học kỳ của chương trình thứ nhất đạt dưới 5,50 thì phải dừng học chương trình thứ hai ở học kỳ tiếp theo cho đến khi kết quả được cải thiện."@vi .
@@ -3985,16 +3987,14 @@
 }
 :TD1052_D30K01 {
 	:ThuTucNghiHocTamThoi :noiDung "Ốm phải điều trị dài ngày từ 10 ngày trở lên."@vi .
-	:ThuTucXinNghiOmTrongQuaTrinhHoc :apDungChoTruongHop :OmThaiSanHoacTaiNan ;
-		:doAiThucHien :SinhVien ;
+	:ThuTucXinNghiOmTrongQuaTrinhHoc :doAiThucHien :SinhVien ;
 		:noiDung "Sinh viên xin nghỉ ốm trong quá trình học phải viết đơn xin phép gửi giảng viên giảng dạy học phần trong vòng 01 tuần kể từ ngày ốm, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên."@vi ;
 		:nopTai :GiangVienGiangDayHocPhan ;
 		:thuTucTiepTheo :ThuTucNghiHocTamThoi .
 }
 :TD1052_D30K02 {
 	:MauSo04DonXinHoanThi :soHieuMauTheoQuyetDinh "04" .
-	:ThuTucXinHoanThi :apDungChoTruongHop :OmThaiSanHoacTaiNan ;
-		:canBieuMau :MauSo04DonXinHoanThi ;
+	:ThuTucXinHoanThi :canBieuMau :MauSo04DonXinHoanThi ;
 		:doAiThucHien :SinhVien ;
 		:noiDung "Sinh viên xin nghỉ ốm trong đợt thi kết thúc học phần phải viết đơn xin phép hoãn thi gửi Đơn vị quản lý đào tạo trước ngày thi, kèm theo Giấy chứng nhận của cơ sở y tế Trường hoặc cơ sở y tế xã, phường trở lên (Mẫu số 04 - Phụ lục 4 kèm theo)."@vi ;
 		:nopTai :PhongDaoTaoDaiHoc .
@@ -4311,13 +4311,15 @@
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :doAiQuyetDinh :HieuTruong .
 }
 :TDNguon1618PhanCanCu {
-	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
+	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :duocXetBoi :PhongCongTacChinhTriVaSinhVien ;
+		:noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
 :TDNguon1619Dieu1 {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :doAiQuyetDinh :HieuTruong .
 }
 :TDNguon1619PhanCanCu {
-	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
+	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :duocXetBoi :PhongCongTacChinhTriVaSinhVien ;
+		:noiDung "Việc cấp học bổng khuyến khích học tập xét kết quả học tập và rèn luyện của sinh viên trong học kỳ và theo đề nghị của Trưởng phòng Công tác Chính trị và Sinh viên."@vi .
 }
 :TDNguon626DiemCKhoan3Dieu19 {
 	:ThuTucHocLienThong :noiDung "Hồ sơ dự tuyển đào tạo liên thông từ cao đẳng gồm phiếu tuyển sinh theo mẫu do Trường cung cấp; bản sao hoặc bản công chứng bảng điểm cao đẳng, bằng cao đẳng, bằng THPT hoặc giấy chứng nhận hoàn thành kiến thức THPT; bản photo căn cước công dân; 02 ảnh chân dung 2x3 cm."@vi .
@@ -5203,6 +5205,9 @@
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc9 {
 	:MucTaiDonXinNghiHocTamThoi :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa; Ý kiến của Phòng CTSV"@vi .
 }
+:TDNguonTrangChuKhoaCongNgheSinhHocChanTrang {
+	:KhoaCongNgheSinhHoc :viTri "Toà nhà A11, 09 Nguyễn Đình Chiểu, Phường Bắc Nha Trang, tỉnh Khánh Hoà" .
+}
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang {
 	:KhoaCongNgheSinhHoc :thuocDonVi :TruongThuySanVaKhoaHocSuSong .
 }
@@ -5218,7 +5223,6 @@
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaCongNgheSinhHoc {
 	:KhoaCongNgheSinhHoc :hopThu "khoacnsh@ntu.edu.vn" ;
 		:loaiChuThe :DonViTrongTruong ;
-		:viTri "Tầng 2 - Viện khai thác, 09 Nguyễn Đình Chiểu" ;
 		:websiteDonVi "https://khoacnsh.ntu.edu.vn" .
 }
 :TDNguonTrangCoCauToChucKhoiDaoTaoMucKhoaVaTrungTamKhoaCongNgheThongTin {
@@ -5951,9 +5955,7 @@
 		:noiDung "| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | Công nghệ thông tin | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 2 | Kế toán | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 3 | Tài chính - Ngân hàng | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 4 | Quản trị khách sạn | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |\n| 5 | Quản trị kinh doanh | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |\n| 6 | Quản trị dịch vụ du lịch và lữ hành | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |"@vi .
 }
 :TDScholarshipAnnouncementSection {
-	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :doAiThucHien :PhongCongTacChinhTriVaSinhVien , :SinhVien ;
-		:duocXetBoi :PhongCongTacChinhTriVaSinhVien ;
-		:noiDung "Phòng Công tác Chính trị và Sinh viên công bố danh sách dự kiến trên trang của phòng, tách riêng chương trình chuẩn và chương trình đào tạo đặc biệt. Sinh viên tự kiểm tra và gửi thắc mắc theo địa chỉ ghi trong thông báo."@vi , "Sinh viên có tên trong danh sách cung cấp số tài khoản Vietinbank và chi nhánh để nhận tiền, dùng địa chỉ thư điện tử do Trường cấp."@vi , "Thời hạn phản hồi ghi trong từng thông báo."@vi .
+	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :doAiThucHien :PhongCongTacChinhTriVaSinhVien .
 }
 :TDScholarshipCriteriaGeneralSection {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Còn trong thời gian đào tạo theo kế hoạch của khóa học."@vi , "Kết quả học tập và rèn luyện trong học kỳ đạt từ loại khá trở lên, và không bị kỷ luật từ mức khiển trách trở lên."@vi .
@@ -6069,7 +6071,7 @@
 		:soHieuMauTrenWebsite "10" .
 	:MucTaiDonXinChuyenNganhChuongTrinhMinhPhuCtDaiChuan :diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/20210917_Mẫu%20số%2010B%20-%20Đơn%20xin%20chuyển%20ngành%20(CT%20Minh%20Phú%20-%20NTU).docx" ;
 		:noiDung "Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi ;
-		:soHieuMauTrenWebsite "10B" .
+		:soHieuMauTrenWebsite "10" .
 	:MucTaiDonXinChuyenTruong :diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210917_M%E1%BA%ABu%20s%E1%BB%91%2011%20-%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng.docx" ;
 		:noiDung "Đơn xin chuyển trường"@vi ;
 		:soHieuMauTrenWebsite "11" .
@@ -6087,7 +6089,7 @@
 		:soHieuMauTrenWebsite "1" .
 	:MucTaiDonXinNghiHocTamThoi :diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2008a%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di.docx" ;
 		:noiDung "Đơn xin nghỉ học tạm thời"@vi ;
-		:soHieuMauTrenWebsite "8A" .
+		:soHieuMauTrenWebsite "8" .
 	:MucTaiDonXinPhepNghiHoc :diaChiTaiVe "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20210813_M%E1%BA%ABu%20s%E1%BB%91%2003%20-%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc.docx" ;
 		:noiDung "Đơn xin phép nghỉ học"@vi ;
 		:soHieuMauTrenWebsite "3" .
