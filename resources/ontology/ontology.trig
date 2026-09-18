@@ -976,6 +976,13 @@
 	:soHieu "1826/QĐ-BGDĐT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 1826/QĐ-BGDĐT"@vi .
+:NguonQuyetDinhSo1889QdDhnt :banHanhNgay "2025-12-09"^^xsd:date ;
+	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/Doc/808/qd-1889-ve-viec-ban-hanh-quy-dinh-trao-doi-sinh-vien--hoc-vien-cao-hoc-va-nghien-cuu-sinh-giua-truong-dai-hoc-nha-trang-va-cac-co-so-giao-duc-dai-hoc-trong-nuoc-pdf.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "1889/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 1889/QĐ-ĐHNT"@vi .
 :NguonQuyetDinhSo358QdDhnt :banHanhNgay "2019-04-02"^^xsd:date ;
 	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20190402_358QD_Quy%20dinh%20dao%20tao%20Tin%20hoc%20cho%20SV.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
@@ -2211,6 +2218,51 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
 	:toaDo "STT 89 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntDieu8 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "Điều 8"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu10 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu11 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu1 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu21 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 21"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu4 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu6 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 6"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu7 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 1 Điều 7"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan2Dieu21 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 2 Điều 21"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu10 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 3 Điều 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu22 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 3 Điều 22"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu7 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 3 Điều 7"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan4Dieu22 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 4 Điều 22"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan6Dieu21 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 6 Điều 21"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1889QdDhntKhoan7Dieu4 :thuocNguon :NguonQuyetDinhSo1889QdDhnt ;
+	:toaDo "khoản 7 Điều 4"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo358QdDhntDieu2QuyetDinhBanHanh :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
 	:toaDo "Điều 2 Quyết định ban hành"@vi ;
@@ -4452,6 +4504,52 @@
 }
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc {
 	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatMoiTruong .
+}
+:TDNguonQuyetDinhSo1889QdDhntDieu8 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Quy trình Trường ĐHNT cử người học tham gia chương trình trao đổi tại các cơ sở đối tác gồm các bước sau: Bước 1: Tiếp nhận thông tin và thông báo về các chương trình trao đổi; Bước 2: Tuyển chọn và quyết định cử người học tham gia chương trình trao đổi; Bước 3: Tiếp nhận người học, công nhận kết quả học tập và chuyển đổi tín chỉ cho người học sau khi hoàn thành chương trình trao đổi."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu10 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Tiếp nhận hồ sơ ứng tuyển của người học Người học nộp hồ sơ đăng ký ứng tuyển tham gia chương trình trao đổi về Khoa/Viện quản lý người học. Hồ sơ gồm: a) Đơn đăng ký tham gia chương trình trao đổi (theo Mẫu số 01, Phụ lục); b) Xác nhận kết quả học tập (do Phòng ĐTĐH hoặc Phòng ĐTSĐH cấp); c) Xác nhận kết quả rèn luyện (do Phòng Công tác Chính trị và Sinh viên (CTCT&SV) cấp); d) Các giấy tờ khác (nếu có)."@vi ;
+		:nopTai :KhoaHoacVienDaoTao .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu11 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Ngay sau khi kết thúc thời gian trao đổi, người học có trách nhiệm quay trở về Trường để tiếp tục chương trình học tập. Người học nộp đơn đề nghị quay trở lại học tập, công nhận kết quả và chuyển đổi tín chỉ (theo Mẫu số 03, Phụ lục), kèm theo kết quả học tập và giấy xác nhận hoàn thành học phí và các chi phí khác (nếu có) do cơ sở đối tác cấp cho Khoa/Viện quản lý."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu1 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Văn bản này quy định về việc tổ chức thực hiện và quản lý hoạt động trao đổi sinh viên trình độ đại học, học viên cao học và nghiên cứu sinh (sau đây gọi chung là người học) giữa Trường Đại học Nha Trang (Trường ĐHNT) và các cơ sở giáo dục đại học trong nước đã ký kết thỏa thuận hợp tác về việc trao đổi người học."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu21 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Người học trao đổi vẫn có tên trong danh sách lớp tại cơ sở chủ quản."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu4 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "“Trao đổi người học” là hoạt động cho phép sinh viên trình độ đại học, học viên cao học và nghiên cứu sinh của Trường ĐHNT được học một số học phần trao đổi tại cơ sở giáo dục đại học khác và ngược lại trên cơ sở công nhận lẫn nhau về quy trình đào tạo, nội dung đào tạo, chuẩn đầu ra và giá trị của tín chỉ."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu6 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Sinh viên trình độ đại học tham gia chương trình trao đổi cần đáp ứng các điều kiện sau: a) Sinh viên đại học chính quy đang theo học tại Trường ĐHNT hoặc tại các cơ sở đối tác có nguyện vọng tham gia chương trình trao đổi theo các thỏa thuận đã ký kết giữa Trường ĐHNT và các cơ sở đối tác; b) Sinh viên đang theo học ngành/chuyên ngành phù hợp với ngành/chuyên ngành thuộc chương trình trao đổi và đã kết thúc 01 (một) năm tại Trường và có điểm trung bình chung tích lũy đạt từ 6,00 trở lên; c) Sinh viên không vi phạm kỷ luật, không thuộc diện xem xét buộc thôi học trong thời gian học."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan1Dieu7 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Người học của Trường ĐHNT tham gia chương trình trao đổi tại cơ sở đối tác có trách nhiệm nộp học phí và các khoản chi phí khác (nếu có) cho cơ sở tiếp nhận theo quy định hiện hành của cơ sở này."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan2Dieu21 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Người học trao đổi được áp dụng tất cả các chế độ, chính sách phù hợp của cơ sở chủ quản."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu10 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :doAiQuyetDinh :HieuTruong .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu22 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Hoàn tất việc đóng học phí các học phần trao đổi và các chi phí khác (nếu có) cho cơ sở tiếp nhận khi tham gia chương trình trao đổi."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan3Dieu7 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Các khoản chi phí phát sinh khác liên quan đến việc tham gia chương trình trao đổi người học (như chi phí đi lại, ăn ở) do người học tự chi trả, trừ trường hợp có quy định hoặc thỏa thuận khác trong văn bản hợp tác giữa hai cơ sở đào tạo, hoặc được hỗ trợ từ các nguồn học bổng, tài trợ."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan4Dieu22 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Chịu trách nhiệm về chỗ ăn ở, sinh hoạt, các chi phí bảo hiểm y tế và các chi phí liên quan khác phát sinh trong thời gian học trao đổi tại cơ sở tiếp nhận."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan6Dieu21 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "Người học được đăng ký học cải thiện hoặc học lại học phần tại cơ sở tiếp nhận nếu nội dung thỏa thuận giữa Trường ĐHNT và cơ sở đối tác có quy định."@vi .
+}
+:TDNguonQuyetDinhSo1889QdDhntKhoan7Dieu4 {
+	:ThuTucDangKyChuongTrinhTraoDoiSinhVien :noiDung "“Thời gian trao đổi” là thời gian người học trao đổi tham gia học tập tại cơ sở tiếp nhận và không được quá hai học kỳ chính đối với sinh viên trình độ đại học; theo học phần trao đổi đối với học viên cao học và nghiên cứu sinh."@vi .
 }
 :TDNguonQuyetDinhSo358QdDhntDieu2QuyetDinhBanHanh {
 	:ChuanDauRaTinHoc :noiDung "Quy định này có hiệu lực thi hành kể từ khóa tuyển sinh năm 2019."@vi .
