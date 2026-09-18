@@ -100,6 +100,10 @@
 :ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :loaiQuyTac :QuyTacHocVu ;
 	a :QuyTac ;
 	rdfs:label "Chuẩn đầu ra ngoại ngữ thứ hai cho sinh viên ngành Ngôn ngữ Anh"@vi .
+:ChuanDauRaTinHoc :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Chuẩn đầu ra tin học"@vi ;
+	skos:altLabel "Chuẩn kỹ năng sử dụng công nghệ thông tin cơ bản"@vi .
 :ChungChi rdfs:label "Chứng chỉ"@vi .
 :ChungChiNgoaiNgu rdfs:label "Chứng chỉ ngoại ngữ"@vi .
 :ChungChiTinHoc rdfs:label "Chứng chỉ tin học"@vi .
@@ -303,6 +307,10 @@
 	rdfs:label "Đảm bảo chất lượng và an toàn thực phẩm"@vi .
 :DanhGiaCuoiKy a :KhaiNiem ;
 	rdfs:label "Đánh giá cuối kỳ"@vi .
+:DanhGiaNangLucCongNgheThongTinDauVao :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Đánh giá năng lực công nghệ thông tin đầu vào"@vi ;
+	skos:altLabel "đánh giá năng lực tin học đầu vào"@vi .
 :DanhGiaNangLucNgoaiNguDauVaoVaXepLopHocPhanNgoaiNgu :loaiQuyTac :QuyTacHocVu ;
 	a :QuyTac ;
 	rdfs:label "Đánh giá năng lực ngoại ngữ đầu vào và xếp lớp học phần ngoại ngữ"@vi ;
@@ -965,6 +973,13 @@
 	:soHieu "1826/QĐ-BGDĐT"@vi ;
 	a :Nguon ;
 	rdfs:label "Quyết định số 1826/QĐ-BGDĐT"@vi .
+:NguonQuyetDinhSo358QdDhnt :banHanhNgay "2019-04-02"^^xsd:date ;
+	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20190402_358QD_Quy%20dinh%20dao%20tao%20Tin%20hoc%20cho%20SV.pdf"^^xsd:anyURI ;
+	:loaiNguon :QuyetDinh ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	:soHieu "358/QĐ-ĐHNT"@vi ;
+	a :Nguon ;
+	rdfs:label "Quyết định số 358/QĐ-ĐHNT"@vi .
 :NguonQuyetDinhSo507QdDhnt :banHanhNgay "2019-05-17"^^xsd:date ;
 	:duongDan "https://pdtdaihoc.ntu.edu.vn/uploads/38/files/Van-Ban-Truong/20190517_507%20QD%20Dao%20t%E1%BA%A1o%20NN%20thu%202%20cho%20SV%20ng%C3%A0nh%20NNA.pdf"^^xsd:anyURI ;
 	:loaiNguon :QuyetDinh ;
@@ -2186,6 +2201,33 @@
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc :thuocNguon :NguonQuyetDinhSo1826QdBgddt ;
 	:toaDo "STT 89 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntDieu2QuyetDinhBanHanh :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "Điều 2 Quyết định ban hành"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan1Dieu2 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 1 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan1Dieu3 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 1 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu1 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 2 Điều 1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu2 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 2 Điều 2"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu3 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 2 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu4 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 2 Điều 4"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan3Dieu3 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 3 Điều 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo358QdDhntKhoan4Dieu3 :thuocNguon :NguonQuyetDinhSo358QdDhnt ;
+	:toaDo "khoản 4 Điều 3"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo507QdDhntBang1Dieu2 :thuocNguon :NguonQuyetDinhSo507QdDhnt ;
 	:toaDo "Bảng 1 Điều 2"@vi ;
@@ -4388,6 +4430,33 @@
 }
 :TDNguonQuyetDinhSo1826QdBgddtStt89PhuLuc {
 	:ChinhSachHocBongChoNguoiHocCacNganhKhoaHocCoBanKyThuatThenChotVaCongNgheChienLuoc :apDungChoNganh :KyThuatMoiTruong .
+}
+:TDNguonQuyetDinhSo358QdDhntDieu2QuyetDinhBanHanh {
+	:ChuanDauRaTinHoc :noiDung "Quy định này có hiệu lực thi hành kể từ khóa tuyển sinh năm 2019."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan1Dieu2 {
+	:ChuanDauRaTinHoc :noiDung "Sinh viên đại học và cao đẳng đạt Chuẩn kỹ năng sử dụng công nghệ thông tin cơ bản theo chuẩn do Bộ Thông tin và Truyền thông ban hành."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan1Dieu3 {
+	:DanhGiaNangLucCongNgheThongTinDauVao :noiDung "Nhà trường tổ chức đánh giá năng lực công nghệ thông tin đầu vào (không bắt buộc) vào đầu mỗi khóa học theo quy trình đánh giá tại Phụ lục 1."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu1 {
+	:ChuanDauRaTinHoc :noiDung "Quy định này áp dụng đối với sinh viên đại học và cao đẳng. Không áp dụng đối với sinh viên nước ngoài học tại Trường Đại học Nha Trang."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu2 {
+	:ChuanDauRaTinHoc :noiDung "Khuyến khích sinh viên đạt Chuẩn kỹ năng sử dụng công nghệ thông tin nâng cao theo chuẩn do Bộ Thông tin và Truyền thông ban hành."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu3 {
+	:DanhGiaNangLucCongNgheThongTinDauVao :noiDung "Căn cứ kết quả đánh giá năng lực đầu vào, Nhà trường cấp chứng chỉ công nghệ thông tin cơ bản, miễn học và miễn thi học phần (HP) Tin học cơ sở đối với sinh viên đạt yêu cầu. Đồng thời, sử dụng kết quả để chuyển thành điểm HP Tin học cơ sở cho sinh viên nếu điểm đánh giá đầu vào cả lý thuyết và thực hành ≥ 5,0 điểm."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan2Dieu4 {
+	:DanhGiaNangLucCongNgheThongTinDauVao :noiDung "Sinh viên chuyển từ cơ sở đào tạo đại học khác về trường, Nhà trường căn cứ vào bảng điểm của các học phần Tin học để xem xét bảo lưu kết quả học tập theo quy định đào tạo hiện hành."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan3Dieu3 {
+	:DanhGiaNangLucCongNgheThongTinDauVao :noiDung "Căn cứ kết quả đánh giá năng lực đầu vào để làm căn cứ xếp lớp học phần (HP) theo quy định."@vi .
+}
+:TDNguonQuyetDinhSo358QdDhntKhoan4Dieu3 {
+	:DanhGiaNangLucCongNgheThongTinDauVao :noiDung "Sinh viên không tham gia đánh giá năng lực công nghệ thông tin đầu vào thì bắt buộc phải học HP Tin học cơ sở theo chương trình đào tạo."@vi .
 }
 :TDNguonQuyetDinhSo507QdDhntBang1Dieu2 {
 	:ChuanDauRaNgoaiNguThuHaiChoSinhVienNganhNgonNguAnh :noiDung "| TT | Trình độ | Chuẩn đầu ra |\n| :---: | :--- | :---: |\n| 1 | Đại học | B1 |\n| 2 | Cao đẳng | A2 |"@vi .
