@@ -32,8 +32,14 @@ body.light-theme {
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
+/* Trang vừa khít chiều cao cửa sổ: thanh trên cố định, ba cột bên dưới mỗi cột tự cuộn. */
 body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
   margin: 0;
+  overflow: hidden;
   background: var(--page);
   color: var(--text);
 }
@@ -73,6 +79,7 @@ button.danger { color: var(--danger); }
 }
 
 .bar {
+  flex: none;
   display: flex;
   flex-wrap: wrap;
   gap: 12px 20px;
@@ -111,10 +118,13 @@ button.danger { color: var(--danger); }
 #status .close { position: absolute; top: 6px; right: 6px; padding: 2px 8px; border: 0; background: transparent; }
 
 .layout {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 250px 310px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: 16px;
-  align-items: start;
+  align-items: stretch;
   padding: 16px 24px;
 }
 
@@ -125,15 +135,13 @@ button.danger { color: var(--danger); }
   background: var(--surface);
 }
 
-/* Hai cột trái đứng yên và tự cuộn bên trong; chỉ cột sửa đi theo trang. */
 #class-panel, #list-panel {
-  position: sticky;
-  top: 16px;
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 32px);
   min-height: 0;
 }
+
+#editor { min-height: 0; overflow-y: auto; }
 
 #classes { min-height: 0; overflow-y: auto; }
 .add-class { margin-top: 8px; }
@@ -216,8 +224,11 @@ input:disabled { opacity: 0.6; }
 .field-error { margin: 0; color: var(--danger); font-size: 0.85rem; }
 
 @media (max-width: 1000px) {
-  .layout { grid-template-columns: 1fr; }
-  #class-panel, #list-panel { position: static; max-height: 50vh; }
+  /* Màn hẹp: các cột xếp chồng, trang cuộn bình thường. */
+  body { height: auto; overflow: visible; }
+  .layout { grid-template-columns: 1fr; grid-template-rows: none; }
+  #class-panel, #list-panel { max-height: 50vh; }
+  #editor { overflow: visible; }
   .statement { grid-template-columns: 1fr; grid-template-areas: "property" "value" "source" "remove" "error"; }
   .source, .two, .field-card .line, .choice { grid-template-columns: 1fr; }
 }

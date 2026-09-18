@@ -181,6 +181,13 @@ const mark = (node, message) => {
   else node.after(note);
   return true;
 };
+// Cột sửa tự cuộn: mở mục hay loại khác thì về đầu cột.
+const showEditor = (form) => {
+  const editor = $("#editor");
+  editor.replaceChildren(form);
+  editor.hidden = false;
+  editor.scrollTop = 0;
+};
 const focusFirstMark = (root) => root.querySelector(".invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
 
 // --- cột loại và cột mục -----------------------------------------------------------
@@ -557,8 +564,7 @@ const renderEditor = async (entity) => {
         ])
       : null,
   ]);
-  $("#editor").replaceChildren(form);
-  $("#editor").hidden = false;
+  showEditor(form);
   fitAll(form);
 };
 
@@ -824,8 +830,7 @@ const renderClassEditor = (spec) => {
       ]),
     ],
   );
-  $("#editor").replaceChildren(form);
-  $("#editor").hidden = false;
+  showEditor(form);
 };
 
 // --- khởi động --------------------------------------------------------------------
