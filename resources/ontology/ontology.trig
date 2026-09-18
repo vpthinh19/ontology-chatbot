@@ -667,9 +667,21 @@
 	skos:altLabel "chứng chỉ tin học quốc tế"@vi , "chứng chỉ tin học"@vi , "tin học"@vi .
 :MucBieuMauTrenWebsite rdfs:label "Mục biểu mẫu trên website"@vi .
 :MucHocBongKhuyenKhichHocTap rdfs:label "Mức học bổng khuyến khích học tập"@vi .
+:MucTaiDonDeNghiHoTroChiPhiHocTapSvDanTocThieuSoThuocHoNgheoCanNgheo a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn đề nghị hỗ trợ chi phí học tập - SV dân tộc thiểu số thuộc hộ nghèo/cận nghèo"@vi ;
+	skos:altLabel "mẫu đơn hỗ trợ chi phí học tập"@vi .
+:MucTaiDonDeNghiHoTroHocTapDanhChoSvLaDanTocThieuSoRatItNguoi a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn đề nghị hỗ trợ học tập - Dành cho SV là dân tộc thiểu số rất ít người"@vi .
+:MucTaiDonDeNghiMienGiamHocPhiTheoNd2382025NdCp a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn đề nghị miễn, giảm học phí (Theo NĐ 238/2025/NĐ-CP)"@vi ;
+	skos:altLabel "mẫu đơn miễn giảm học phí"@vi .
+:MucTaiDonXacNhanCoHoKhauThuongTruTaiDiaPhuongTren03Nam a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xác nhận có hộ khẩu thường trú tại địa phương trên 03 năm"@vi .
 :MucTaiDonXacNhanDangHoc a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xác nhận đang học"@vi ;
 	skos:altLabel "mẫu giấy xác nhận sinh viên"@vi .
+:MucTaiDonXacNhanHoanCanhKhoKhan a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xác nhận hoàn cảnh khó khăn"@vi .
 :MucTaiDonXinBaoLuuHocPhan a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin bảo lưu học phần"@vi .
 :MucTaiDonXinCapBanSaoBang a :MucBieuMauTrenWebsite ;
@@ -683,18 +695,41 @@
 :MucTaiDonXinChuyenNganh :ungVoiBieuMau :MauSo12DonXinChuyenNganh ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin chuyển ngành"@vi .
+:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietCungTruongCnKhoa2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin chuyển ngành ch.tr đào tạo đặc biệt (cùng Trường CN, Khoa) 2026"@vi ;
+	skos:altLabel "Đơn xin chuyển ngành chương trình đào tạo đặc biệt cùng Trường chuyên ngành/Khoa"@vi .
+:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietKhacTruongCnKhoa2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin chuyển ngành ch.tr đào tạo đặc biệt (khác Trường CN, Khoa) 2026"@vi ;
+	skos:altLabel "Đơn xin chuyển ngành chương trình đào tạo đặc biệt khác Trường chuyên ngành/Khoa"@vi .
 :MucTaiDonXinChuyenNganhChuongTrinhMinhPhuCtDaiChuan a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: - Đơn xin chuyển ngành chương trình Minh Phú -CT đại chuẩn"@vi .
+:MucTaiDonXinChuyenNganhCungTruongCnKhoa2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin chuyển ngành (cùng Trường CN, Khoa) 2026"@vi ;
+	skos:altLabel "Đơn xin chuyển đổi ngành học trong cùng Trường chuyên ngành/Khoa"@vi .
+:MucTaiDonXinChuyenNganhKhacTruongCnKhoa2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin chuyển ngành (khác Trường CN, Khoa) 2026"@vi ;
+	skos:altLabel "Đơn xin chuyển đổi ngành học khác Trường chuyên ngành/Khoa"@vi .
 :MucTaiDonXinChuyenTruong :ungVoiBieuMau :MauSo13DonXinChuyenTruong ;
 	a :MucBieuMauTrenWebsite ;
-	rdfs:label "Mục tải: Đơn xin chuyển trường"@vi .
+	rdfs:label "Mục tải: Đơn xin chuyển trường"@vi ;
+	skos:altLabel "Đơn xin chuyển Trường 2026"@vi .
+:MucTaiDonXinGiaHanDongHocPhi a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin gia hạn đóng học phí"@vi ;
+	skos:altLabel "mẫu đơn hoãn đóng học phí"@vi .
 :MucTaiDonXinHoanThi :ungVoiBieuMau :MauSo04DonXinHoanThi ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin hoãn thi"@vi .
+:MucTaiDonXinHocChuongTrinh2 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin học chương trình 2"@vi .
+:MucTaiDonXinHocLaiDanhChoSvBiTamDungHoc a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin học lại dành cho SV bị tạm dừng học"@vi .
 :MucTaiDonXinHocTroLai :ungVoiBieuMau :MauSo11DonXinHocTroLai ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin học trở lại"@vi ;
-	skos:altLabel "mẫu đơn học trở lại"@vi , "đơn quay lại học"@vi , "đơn xin quay lại học"@vi .
+	skos:altLabel "mẫu đơn học trở lại"@vi , "Đơn xin học lại 2026"@vi , "đơn quay lại học"@vi , "đơn xin quay lại học"@vi .
+:MucTaiDonXinHuongTroCapXaHoi a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin hưởng trợ cấp xã hội"@vi ;
+	skos:altLabel "mẫu đơn trợ cấp xã hội"@vi .
 :MucTaiDonXinMienHocMienThiVaCongDiemThuong :ungVoiBieuMau :MauSo07DonXinMienHocMienThiVaCongDiemThuong ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin miễn học, miễn thi và cộng điểm thưởng"@vi .
@@ -703,12 +738,26 @@
 	rdfs:label "Mục tải: Đơn xin mở lớp học phần"@vi .
 :MucTaiDonXinNghiHocTamThoi :ungVoiBieuMau :MauSo09DonXinNghiHocTamThoi ;
 	a :MucBieuMauTrenWebsite ;
-	rdfs:label "Mục tải: Đơn xin nghỉ học tạm thời"@vi .
+	rdfs:label "Mục tải: Đơn xin nghỉ học tạm thời"@vi ;
+	skos:altLabel "Đơn xin nghỉ học tạm thời 2026"@vi .
 :MucTaiDonXinPhepNghiHoc :ungVoiBieuMau :MauSo03DonXinNghiHoc ;
 	a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin phép nghỉ học"@vi .
+:MucTaiDonXinThoiHoc2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin thôi học 2026"@vi .
+:MucTaiDonXinTiepTucHocHeVuaHocVuaLam2026 a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Đơn xin tiếp tục học (hệ vừa học vừa làm) 2026"@vi .
 :MucTaiDonXinXetTotNghiep a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Đơn xin xét tốt nghiệp"@vi .
+:MucTaiGiayGioiThieu a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Giấy giới thiệu"@vi .
+:MucTaiHuongDanSinhVienXacNhanDangHocDeDuocHuongUuDaiTrongGiaoDucDaoTao a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo"@vi .
+:MucTaiMauBanTuongTrinh a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Mẫu bản tường trình"@vi .
+:MucTaiMauDonChinhSachChoSvKhuyetTat a :MucBieuMauTrenWebsite ;
+	rdfs:label "Mục tải: Mẫu đơn chính sách cho SV khuyết tật"@vi ;
+	skos:altLabel "mẫu đơn học bổng sinh viên khuyết tật"@vi .
 :MucTaiMauPhieuDanhGiaDiemRenLuyen a :MucBieuMauTrenWebsite ;
 	rdfs:label "Mục tải: Mẫu phiếu đánh giá điểm rèn luyện"@vi ;
 	skos:altLabel "phiếu rèn luyện"@vi , "phiếu đánh giá rèn luyện"@vi .
@@ -2226,17 +2275,107 @@
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucIi3PhanLoaiHocBong :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
 	:toaDo "mục II.3 Phân loại học bổng"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc10 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 10"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc11 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc12 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 12"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc14 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 14"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc15 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc161 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 16.1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc16 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc17 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 17"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 18"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc19 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 19"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc1 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 1"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc20 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 20"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc21 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 21"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc22 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 22"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc23 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 23"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc24 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 24"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc26 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 26"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc27 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 27"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc2 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 2"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc3 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 3"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc4 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 4"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
 	:toaDo "mục 5"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc6 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 6"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc7 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 7"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc9 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "mục 9"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc11 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 11"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc12 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 12"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc14 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 14"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc15 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 15"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc161 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 16.1"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc16 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 16"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc17 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 17"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc7 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 7"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc9 :thuocNguon :NguonTrangBieuMauPhongCongTacChinhTriVaSinhVien ;
+	:toaDo "tệp mục 9"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang :thuocNguon :NguonTrangChuKhoaCongNgheSinhHoc ;
 	:toaDo "tên đơn vị ở đầu trang"@vi ;
@@ -4214,20 +4353,133 @@
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucIi3PhanLoaiHocBong {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng loại khá: điểm trung bình chung học tập đạt từ 2.50 đến 3.19 (thang điểm 4), điểm rèn luyện đạt loại khá trở lên. Học bổng loại giỏi: điểm trung bình chung học tập đạt từ 3.20 đến 3.59 (thang điểm 4), điểm rèn luyện đạt loại tốt trở lên. Học bổng loại xuất sắc: điểm trung bình chung học tập đạt từ 3.60 đến 4.0 (thang điểm 4), điểm rèn luyện đạt loại xuất sắc. Sinh viên có điểm trung bình chung đạt loại xuất sắc, giỏi có điểm rèn luyện loại khá chỉ được xét học bổng ở mức khá. Điểm trung bình chung học tập để phân loại học bổng sẽ được điều chỉnh theo quy chế đào tạo của Nhà trường khi có thay đổi."@vi .
 }
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc10 {
+	:MucTaiDonXinHocLaiDanhChoSvBiTamDungHoc :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/269-10_%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20l%E1%BA%A1i_d%C3%A0nh%20cho%20sv%20b%E1%BB%8B%20t%E1%BA%A1m%20d%E1%BB%ABng%202026.doc" ;
+		:noiDung "Đơn xin học lại dành cho SV bị tạm dừng học: mục 10 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc11 {
+	:MucTaiDonXinHocTroLai :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-6.%20%C4%90%C6%A1n%20xin%20h%E1%BB%8Dc%20l%E1%BA%A1i%202026.docx" ;
+		:noiDung "Đơn xin học lại 2026: mục 11 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc12 {
+	:MucTaiDonXinChuyenTruong :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-1.%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20tr%C6%B0%E1%BB%9Dng%202026.docx" ;
+		:noiDung "Đơn xin chuyển Trường 2026: mục 12 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc14 {
+	:MucTaiDonXinChuyenNganhCungTruongCnKhoa2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-2.%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh%20%28c%C3%B9ng%20Tr%C6%B0%E1%BB%9Dng%20CN%2C%20Khoa%29%202026.docx" ;
+		:noiDung "Đơn xin chuyển ngành (cùng Trường CN, Khoa) 2026: mục 14 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc15 {
+	:MucTaiDonXinChuyenNganhKhacTruongCnKhoa2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-3.%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh%20%28kh%C3%A1c%20Tr%C6%B0%E1%BB%9Dng%20CN%2C%20Khoa%29%202026.docx" ;
+		:noiDung "Đơn xin chuyển ngành (khác Trường CN, Khoa) 2026: mục 15 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc161 {
+	:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietCungTruongCnKhoa2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-2.1.%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh%20ch.tr%20%C4%91%C3%A0o%20t%E1%BA%A1o%20%C4%91%E1%BA%B7c%20bi%E1%BB%87t%20%28c%C3%B9ng%20Tr%C6%B0%E1%BB%9Dng%20CN%2C%20Khoa%29%202026.docx" ;
+		:noiDung "Đơn xin chuyển ngành ch.tr đào tạo đặc biệt (cùng Trường CN, Khoa) 2026: mục 16.1 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc16 {
+	:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietKhacTruongCnKhoa2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-3.1.%20%C4%90%C6%A1n%20xin%20chuy%E1%BB%83n%20ng%C3%A0nh%20ch.tr%20%C4%91%C3%A0o%20t%E1%BA%A1o%20%C4%91%E1%BA%B7c%20bi%E1%BB%87t%20%28kh%C3%A1c%20Tr%C6%B0%E1%BB%9Dng%20CN%2C%20Khoa%29%202026.docx" ;
+		:noiDung "Đơn xin chuyển ngành ch.tr đào tạo đặc biệt (khác Trường CN, Khoa) 2026: mục 16 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc17 {
+	:MucTaiDonXinTiepTucHocHeVuaHocVuaLam2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-7.%20%C4%90%C6%A1n%20xin%20ti%E1%BA%BFp%20t%E1%BB%A5c%20h%E1%BB%8Dc%20%28t%E1%BB%91t%20nghi%E1%BB%87p%20v%E1%BB%ABa%20l%C3%A0m%20v%E1%BB%ABa%20h%E1%BB%8Dc%29%202026.docx" ;
+		:noiDung "Đơn xin tiếp tục học (hệ vừa học vừa làm) 2026: mục 17 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc18 {
 	:MucTaiDonXacNhanDangHoc :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/18_%20XAC%20NHAN%20SVDHNT.doc" ;
 		:noiDung "Đơn xác nhận đang học: mục 18 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc19 {
+	:MucTaiDonDeNghiMienGiamHocPhiTheoNd2382025NdCp :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/269-Don_de_nghi_mien_giam_hoc_phi%202025.docx" ;
+		:noiDung "Đơn đề nghị miễn, giảm học phí (Theo NĐ 238/2025/NĐ-CP): mục 19 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
 }
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc1 {
 	:MucTaiMauVayVon :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/1_%20%C4%91%C6%A1n%20vay%20v%E1%BB%91n.doc" ;
 		:noiDung "Mẫu vay vốn: mục 1 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
 }
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc20 {
+	:MucTaiDonDeNghiHoTroHocTapDanhChoSvLaDanTocThieuSoRatItNguoi :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/20_%20H%E1%BB%97%20tr%E1%BB%A3%20SV%20d%C3%A2n%20t%E1%BB%99c%20r%E1%BA%A5t%20%C3%ADt%20ng%C6%B0%E1%BB%9Di.docx" ;
+		:noiDung "Đơn đề nghị hỗ trợ học tập - Dành cho SV là dân tộc thiểu số rất ít người: mục 20 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc21 {
+	:MucTaiDonDeNghiHoTroChiPhiHocTapSvDanTocThieuSoThuocHoNgheoCanNgheo :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/269-269-21_%20%C4%90%C6%A1n%20h%E1%BB%97%20tr%E1%BB%A3%20chi%20ph%C3%AD%20HT-TT35%202026.doc" ;
+		:noiDung "Đơn đề nghị hỗ trợ chi phí học tập - SV dân tộc thiểu số thuộc hộ nghèo/cận nghèo: mục 21 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc22 {
+	:MucTaiDonXinHuongTroCapXaHoi :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/269-%C4%90%C6%A1n%20tr%E1%BB%A3%20c%E1%BA%A5p%20x%C3%A3%20h%E1%BB%99i-TT53%202025.doc" ;
+		:noiDung "Đơn xin hưởng trợ cấp xã hội: mục 22 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc23 {
+	:MucTaiDonXinHocChuongTrinh2 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/23_%20Don%20xin%20hoc%20hai%20chuong%20trinh.doc" ;
+		:noiDung "Đơn xin học chương trình 2: mục 23 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc24 {
+	:MucTaiDonXinGiaHanDongHocPhi :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/ch%E1%BB%89nh%20s%E1%BB%ADa_m%E1%BA%ABu%20%C4%91%C6%A1n%20ho%C3%A3n%20%C4%91%C3%B3ng%20h%E1%BB%8Dc%20ph%C3%AD.doc" ;
+		:noiDung "Đơn xin gia hạn đóng học phí: mục 24 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc26 {
+	:MucTaiMauBanTuongTrinh :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/4_%20BanTuongTrinh.doc" ;
+		:noiDung "Mẫu bản tường trình: mục 26 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc27 {
+	:MucTaiDonXacNhanCoHoKhauThuongTruTaiDiaPhuongTren03Nam :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/27.%C4%90%C6%A1n%20x%C3%A1c%20nh%E1%BA%ADn%20c%C3%B3%20h%E1%BB%99%20kh%E1%BA%A9u%20th%C6%B0%E1%BB%9Dng%20tr%C3%BA%20t%E1%BA%A1i%20%C4%91%E1%BB%8Ba%20ph%C6%B0%C6%A1ng%20tr%C3%AAn%203%20n%C4%83m%20%281%29.docx" ;
+		:noiDung "Đơn xác nhận có hộ khẩu thường trú tại địa phương trên 03 năm: mục 27 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc2 {
 	:MucTaiMauPhieuDanhGiaDiemRenLuyen :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/2_%20Phieu%20ren%20luyen.doc" ;
 		:noiDung "Mẫu phiếu đánh giá điểm rèn luyện: mục 2 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
 }
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc3 {
+	:MucTaiMauDonChinhSachChoSvKhuyetTat :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/269-Don%20cap%20HB%20nguoi%20khuyet%20tat%202025.doc" ;
+		:noiDung "Mẫu đơn chính sách cho SV khuyết tật: mục 3 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc4 {
+	:MucTaiDonXacNhanHoanCanhKhoKhan :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/%C4%90%C6%A0N%20XIN%20X%C3%81C%20NH%E1%BA%ACN%20HO%C3%80N%20C%E1%BA%A2NH%20KH%C3%93%20KH%C4%82N.docx" ;
+		:noiDung "Đơn xác nhận hoàn cảnh khó khăn: mục 4 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
 :TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc5 {
+	:MucTaiHuongDanSinhVienXacNhanDangHocDeDuocHuongUuDaiTrongGiaoDucDaoTao :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/5_%20M%E1%BA%ABu%20s%E1%BB%91%2002-x%C3%A1c%20nh%E1%BA%ADn%20%C6%B0u%20%C4%91%C3%A3i%20gi%C3%A1o%20d%E1%BB%A5c4-16.doc" ;
+		:noiDung "Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo: mục 5 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
 	:ThuTucXinGiayXacNhanDangHoc :noiDung "Danh mục biểu mẫu của Phòng Công tác Chính trị và Sinh viên có mục \"Hướng dẫn sinh viên xác nhận đang học để được hưởng ưu đãi trong giáo dục đào tạo\"."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc6 {
+	:MucTaiGiayGioiThieu :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/6_%20m%E1%BA%ABu%20gi%E1%BA%A5y%20gi%E1%BB%9Bi%20thi%E1%BB%87u.doc" ;
+		:noiDung "Giấy giới thiệu: mục 6 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc7 {
+	:MucTaiDonXinThoiHoc2026 :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-5.%20%C4%90%C6%A1n%20xin%20th%C3%B4i%20h%E1%BB%8Dc%202026.docx" ;
+		:noiDung "Đơn xin thôi học 2026: mục 7 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienMuc9 {
+	:MucTaiDonXinNghiHocTamThoi :diaChiTaiVe "https://phongctsv.ntu.edu.vn/uploads/46/files/Bi%E1%BB%83u%20m%E1%BA%ABu%20CTSV/BI%E1%BB%82U%20M%E1%BA%AAU%202026/269-4.%20%C4%90%C6%A1n%20xin%20ngh%E1%BB%89%20h%E1%BB%8Dc%20t%E1%BA%A1m%20th%E1%BB%9Di%202026.docx" ;
+		:noiDung "Đơn xin nghỉ học tạm thời 2026: mục 9 trang Biểu mẫu của Phòng Công tác Chính trị và Sinh viên."@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc11 {
+	:MucTaiDonXinHocTroLai :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Ý kiến của Phụ huynh; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc12 {
+	:MucTaiDonXinChuyenTruong :noiDung "Kính gửi: Hiệu trưởng Trường; Hiệu trưởng Trường; (Kèm theo đơn xin chuyển trường có giấy chứng nhận kết quả học tập và rèn luyện của trường đang học; giấy xác nhận di chuyển hộ khẩu hoặc chuyển công tác, địa điểm sản xuất kinh doanh của gia đình, của cơ quan quản lý hoặc phường/xã nếu đó là lý do xin chuyển trường); Ý kiến của Hiệu trưởng trường đang học; Ý kiến của Hiệu trưởng trường tiếp nhận"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc14 {
+	:MucTaiDonXinChuyenNganhCungTruongCnKhoa2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Điểm tuyển sinh năm: Theo điểm thi THPT; Theo điểm thi đánh giá năng lực; Điểm tiếng Anh; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc15 {
+	:MucTaiDonXinChuyenNganhKhacTruongCnKhoa2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Điểm tuyển sinh năm: Theo điểm thi THPT; Theo điểm thi đánh giá năng lực; Điểm tiếng Anh; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa nơi SV đang học; Ý kiến của Trường CN/Khoa nơi SV muốn chuyển đến; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc161 {
+	:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietCungTruongCnKhoa2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Điểm tuyển sinh năm: Theo điểm thi THPT; Theo điểm thi đánh giá năng lực; Điểm tiếng Anh; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa; Ý kiến của TT. Đào tạo Xuất sắc; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc16 {
+	:MucTaiDonXinChuyenNganhChTrDaoTaoDacBietKhacTruongCnKhoa2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Điểm tuyển sinh của tôi năm là: Theo điểm thi THPT; Theo điểm thi đánh giá năng lực; Điểm tiếng Anh; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa nơi SV đang học; Ý kiến của Trường CN/Khoa nơi SV muốn chuyển đến; Ý kiến của TT. Đào tạo Xuất sắc; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc17 {
+	:MucTaiDonXinTiepTucHocHeVuaHocVuaLam2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Nay tôi có nguyện vọng được tiếp tục học để hoàn thành chương trình đào tạo và nhận bằng tốt nghiệp theo chương trình vừa làm vừa học"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc7 {
+	:MucTaiDonXinThoiHoc2026 :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa; Ý kiến của Phòng CTSV"@vi .
+}
+:TDNguonTrangBieuMauPhongCongTacChinhTriVaSinhVienTepMuc9 {
+	:MucTaiDonXinNghiHocTamThoi :noiDung "Kính gửi: Hiệu trưởng Trường Đại học Nha Trang; Ý kiến của Phụ huynh; Ý kiến của Cố vấn học tập; Ý kiến của Trường CN/Khoa; Ý kiến của Phòng CTSV"@vi .
 }
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang {
 	:KhoaCongNgheSinhHoc :thuocDonVi :TruongThuySanVaKhoaHocSuSong .
