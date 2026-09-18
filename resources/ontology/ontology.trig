@@ -463,6 +463,9 @@
 :KhaiThacThuySan a :ChuyenNganh ;
 	rdfs:label "Chuyên ngành Khai thác thủy sản"@vi ;
 	skos:altLabel "Khai thác thủy sản"@vi .
+:KhoSachChinhCuaThuVien a :KhaiNiem ;
+	rdfs:label "Kho sách chính của Thư viện"@vi ;
+	skos:altLabel "Nhà TV1 - Thư viện"@vi .
 :KhoaCoKhi a :ChuThe ;
 	rdfs:label "Khoa Cơ khí"@vi .
 :KhoaCongNgheSinhHoc a :ChuThe ;
@@ -852,6 +855,11 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Thông báo Điểm chuẩn trúng tuyển 2026"@vi .
+:NguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026 :duongDan "https://thuvien.ntu.edu.vn/News.aspx?contentid=526"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Thông báo lịch phục vụ của Thư viện theo ca từ ngày 07/9/2026"@vi .
 :NguonTieuChuanXetHocBongKhuyenKhichHocTap :duongDan "https://htdnhtsv.ntu.edu.vn/a/74266/Hoc-bong-tieu-chuan-hoc-bong"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-08-10"^^xsd:date ;
@@ -897,6 +905,16 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang Cơ sở vật chất Trường Đại học Nha Trang"@vi .
+:NguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrang :duongDan "https://thuvien.ntu.edu.vn/contentbrowser.aspx?contentid=375"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Dịch vụ miễn phí - Thư viện Trường Đại học Nha Trang"@vi .
+:NguonTrangGioiThieuTrungTamDichVu :duongDan "https://trungtampvth.ntu.edu.vn/gioi-thieu/gioi-thieu-trung-tam"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Giới thiệu Trung tâm Dịch vụ"@vi .
 :NguonTrangLienHeTruongDaiHocNhaTrang :duongDan "https://ntu.edu.vn/lien-he"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -1173,6 +1191,9 @@
 :PhongDaoTaoDaiHoc a :ChuThe ;
 	rdfs:label "Phòng Đào tạo Đại học"@vi ;
 	skos:altLabel "phòng ĐT"@vi , "phòng đào tạo đại học"@vi , "phòng đào tạo"@vi , "đơn vị quản lý đào tạo"@vi .
+:PhongDocKhuVucNhaTruyenThong a :KhaiNiem ;
+	rdfs:label "Phòng đọc khu vực Nhà Truyền thống"@vi ;
+	skos:altLabel "phòng đọc Nhà Truyền thống"@vi .
 :PhongHaTangVaCongNgheThongTin a :ChuThe ;
 	rdfs:label "Phòng Hạ tầng và Công nghệ Thông tin"@vi ;
 	skos:altLabel "Phòng CNTT"@vi , "phòng IT"@vi .
@@ -1963,6 +1984,12 @@
 :TDNguonThongBaoDiemChuanTrungTuyen2026MucIiChuongTrinhChuanDongTt53 :thuocNguon :NguonThongBaoDiemChuanTrungTuyen2026 ;
 	:toaDo "mục II Chương trình chuẩn, dòng TT 53"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc1TaiKhoSachChinh :thuocNguon :NguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026 ;
+	:toaDo "mục 1 Tại kho sách chính"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc2TaiPhongDocKhuVucNhaTruyenThong :thuocNguon :NguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026 ;
+	:toaDo "mục 2 Tại phòng đọc Khu vực Nhà Truyền Thống"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 :thuocNguon :NguonTieuChuanXetHocBongKhuyenKhichHocTap ;
 	:toaDo "mục I.1.2"@vi ;
 	a :DiaChiTrichDan .
@@ -2025,6 +2052,18 @@
 	a :DiaChiTrichDan .
 :TDNguonTrangCoSoVatChatTruongDaiHocNhaTrangMuc4HeThongKyTucXa :thuocNguon :NguonTrangCoSoVatChatTruongDaiHocNhaTrang ;
 	:toaDo "mục 4 Hệ thống ký túc xá"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMuc1DocTaiCho :thuocNguon :NguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrang ;
+	:toaDo "mục 1 Đọc tại chỗ"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMuc2DichVuMuonTraTaiLieuIn :thuocNguon :NguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrang ;
+	:toaDo "mục 2 Dịch vụ mượn/trả tài liệu in"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMucDichVuMienPhi :thuocNguon :NguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrang ;
+	:toaDo "mục Dịch vụ miễn phí"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangGioiThieuTrungTamDichVuY2MucCongTacQuanLyKhaiThacCacHoatDongDichVu :thuocNguon :NguonTrangGioiThieuTrungTamDichVu ;
+	:toaDo "ý 2 mục Công tác quản lý, khai thác các hoạt động dịch vụ"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc10CacDonViChucNang :thuocNguon :NguonTrangLienHeTruongDaiHocNhaTrang ;
 	:toaDo "mục 10 Các đơn vị chức năng"@vi ;
@@ -2542,6 +2581,9 @@
 :TrinhDoDaoTao rdfs:label "Trình độ đào tạo"@vi .
 :TrungTamDaoTaoVaBoiDuong a :ChuThe ;
 	rdfs:label "Trung tâm Đào tạo và Bồi dưỡng"@vi .
+:TrungTamDichVu a :ChuThe ;
+	rdfs:label "Trung tâm Dịch vụ"@vi ;
+	skos:altLabel "Trung tâm Phục vụ trường học"@vi .
 :TrungTamGiaoDucQuocPhongVaAnNinh a :ChuThe ;
 	rdfs:label "Trung tâm Giáo dục quốc phòng và An ninh"@vi ;
 	skos:altLabel "Trung tâm GDQP-AN"@vi .
@@ -3749,6 +3791,14 @@
 	:ChuyenNganhQuanLyHangHaiVaLogistics :thuocNganh :KhoaHocHangHai .
 	:KhoaHocHangHai :maNganh "7840106" .
 }
+:TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc1TaiKhoSachChinh {
+	:KhoSachChinhCuaThuVien :loaiKhaiNiem :CoSoVatChat ;
+		:noiDung "Từ thứ 2 - thứ 6 hàng tuần: Phục vụ 3 ca mỗi ngày: Sáng: Từ 7h00 - 11h30; Chiều: Từ 13h30 - 17h00; Tối: Từ 17h00 - 21h00. Thứ 7 và Chủ nhật: Chỉ phục vụ trong giờ hành chính (ca ngày, không phục vụ ca buổi tối). Chiều chủ nhật hàng tuần, Bộ phận phục vụ dọn dẹp, vệ sinh kho sách. Sinh viên hạn chế giao dịch mượn, trả sách tại kho. Các khu vực tự học: Sinh viên vẫn sử dụng bình thường."@vi .
+}
+:TDNguonThongBaoLichPhucVuCuaThuVienTheoCaTuNgay0792026Muc2TaiPhongDocKhuVucNhaTruyenThong {
+	:PhongDocKhuVucNhaTruyenThong :loaiKhaiNiem :CoSoVatChat ;
+		:noiDung "Gồm phòng đọc Nhà Truyền thống và phòng đọc kế bên Nhà Truyền Thống tại tầng 2 khu tự học Cây si. Phục vụ từ thứ 2 đến chủ nhật hàng tuần, từ 7h00 đến 21h00 mỗi ngày. Phòng đọc Nhà Truyền thống chủ yếu phục vụ không gian học tập và sách văn học, lịch sử, địa lý. Người dùng có nhu cầu về các loại sách khác vui lòng đến Kho sách chính (Nhà TV1 - Thư viện)."@vi .
+}
 :TDNguonTieuChuanXetHocBongKhuyenKhichHocTapMucI12 {
 	:ThuTucXetVaCapHocBongKhuyenKhichHocTap :noiDung "Học bổng khuyến khích học tập chỉ được cấp trong thời gian kế hoạch của khóa đào tạo; thời gian tạm dừng, kéo dài không được xét cấp học bổng; thời gian học lấy văn bằng ở chương trình thứ hai chỉ được xét cấp khi đã hoàn thành văn bằng ở chương trình thứ nhất."@vi .
 }
@@ -3900,6 +3950,11 @@
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tòa nhà A3, 02 Nguyễn Đình Chiểu, Trường đại học Nha Trang" ;
 		:websiteDonVi "https://trungtamdtbd.ntu.edu.vn" .
+	:TrungTamDichVu :hopThu "ttpvth@ntu.edu.vn" ;
+		:loaiChuThe :DonViTrongTruong ;
+		:thuocDonVi :TruongDaiHocNhaTrang ;
+		:viTri "Tòa nhà A8, Trường đại học Nha Trang" ;
+		:websiteDonVi "https://trungtampvth.ntu.edu.vn" .
 	:TrungTamHoTroViecLamVaKhoiNghiep :hopThu "ttdmst@ntu.edu.vn" ;
 		:thuocDonVi :TruongDaiHocNhaTrang ;
 		:viTri "Tầng 2, tòa nhà A3, 02 Nguyễn Đình Chiểu" ;
@@ -3913,6 +3968,18 @@
 :TDNguonTrangCoSoVatChatTruongDaiHocNhaTrangMuc4HeThongKyTucXa {
 	:KyTucXa :loaiKhaiNiem :CoSoVatChat ;
 		:noiDung "Hệ thống Ký túc xá bao gồm 8 tòa nhà (K1-K8), được thiết kế xây dựng đặt trong Khuôn viên Trường. Nhà trường có 405 phòng ở nội trú với sức chứa hơn 2.682 chỗ. Có Ký túc xá Sau Đại học và Ký túc xá dành cho sinh viên xuất sắc; tất cả các ký túc xá đều được trang bị tốt và nằm bên trong khuôn viên chính."@vi .
+}
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMuc1DocTaiCho {
+	:TrungTamThongTinVaTuLieu :noiDung "Các tài liệu: Báo, Tạp chí, Luận văn, Luận án, Khóa luận chỉ được mượn đọc tại chỗ (Không mượn về nhà)."@vi .
+}
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMuc2DichVuMuonTraTaiLieuIn {
+	:TrungTamThongTinVaTuLieu :noiDung "Bạn đọc sau khi được cấp quyền sử dụng, có thể mượn tài liệu ra khỏi kho sách theo thời hạn quy định của Thư viện. Bạn đọc có thể gia hạn online vào ngày cuối cùng của hạn mượn sách (đăng nhập vào trang web thư viện, mục Tài khoản của cá nhân). Mượn sách tại quầy thủ thư, hoặc qua máy Mượn sách tự động tại kho. Trả sách: Trả sách tại quầy thủ thư, hoặc trả sách qua máy tự động 24/7 tại cửa thư viện."@vi .
+}
+:TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMucDichVuMienPhi {
+	:TrungTamThongTinVaTuLieu :noiDung "Dịch vụ miễn phí: Đọc tại chỗ; Dịch vụ mượn/trả tài liệu in; Sử dụng máy tra cứu tài liệu; Đọc và tải tài liệu số phục vụ học tập; Sử dụng không gian học tập; Tập huấn dành riêng cho bạn đọc sử dụng thư viện; Tư vấn, hỗ trợ tìm kiếm thông tin, tài liệu tại kho."@vi .
+}
+:TDNguonTrangGioiThieuTrungTamDichVuY2MucCongTacQuanLyKhaiThacCacHoatDongDichVu {
+	:TrungTamDichVu :noiDung "Tổ chức quản lý, vận hành các ký túc xá, nhà khách phục vụ nhu cầu của người học và khách đến Trường; thực hiện công tác quản lý sinh viên nội trú và tổ chức các hoạt động tập thể trong khu nội trú nhằm thúc đẩy sinh viên học tập tốt, rèn luyện tốt."@vi .
 }
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc10CacDonViChucNang {
 	:KhoaHoacVienDaoTao :noiDung "Khoa - Viện: Sinh viên cần làm đơn phúc khảo bài thi: nộp đơn tại Khoa/Viện quản lý ngành học. Xin cấp giấy chứng nhận là sinh viên đang học tại trường, liên hệ thư ký văn phòng khoa/viện quản lý ngành học."@vi .
