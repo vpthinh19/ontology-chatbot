@@ -405,7 +405,7 @@
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;
 		  :batBuocNguon true ] ,
 		[ sh:path :soTien ;
-		  sh:name "mức lệ phí"@vi ;
+		  sh:name "số tiền"@vi ;
 		  sh:datatype xsd:integer ;
 		  sh:minCount 1 ;
 		  :batBuocNguon true ] .
