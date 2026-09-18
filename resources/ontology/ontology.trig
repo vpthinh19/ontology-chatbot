@@ -977,6 +977,11 @@
 	:ngayThuThap "2026-09-13"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang chủ Khoa Công nghệ Sinh học"@vi .
+:NguonTrangChuTrungTamDoiMoiSangTao :duongDan "https://trungtamdmst.ntu.edu.vn/"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-18"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang chủ Trung tâm Đổi mới sáng tạo"@vi .
 :NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh :duongDan "https://phongkhtc.ntu.edu.vn/gioi-thieu/chuc-nang-nhiem-vu"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-13"^^xsd:date ;
@@ -1285,14 +1290,14 @@
 :PhiVnpayDoiVoiNganHangKhac a :MucTien ;
 	rdfs:label "Phí VNPAY đối với ngân hàng khác"@vi .
 :PhongBaoDamChatLuongVaKhaoThi a :ChuThe ;
-	rdfs:label "Phòng Bảo đảm Chất lượng và Khảo thí"@vi ;
-	skos:altLabel "Phòng Quản lý chất lượng"@vi , "Phòng Đảm bảo chất lượng và Khảo thí"@vi .
+	rdfs:label "Phòng Quản lý chất lượng"@vi ;
+	skos:altLabel "Phòng Bảo đảm Chất lượng và Khảo thí"@vi , "Phòng Đảm bảo chất lượng và Khảo thí"@vi .
 :PhongCongTacChinhTriVaSinhVien a :ChuThe ;
-	rdfs:label "Phòng Công tác Chính trị và Sinh viên"@vi ;
-	skos:altLabel "phòng CTCT&SV"@vi , "phòng CTSV"@vi , "phòng công tác chính trị và sinh viên"@vi , "phòng công tác sinh viên"@vi .
+	rdfs:label "Phòng Công tác Sinh viên"@vi ;
+	skos:altLabel "Phòng Công tác Chính trị và Sinh viên"@vi , "phòng CTCT&SV"@vi , "phòng CTSV"@vi , "phòng công tác chính trị và sinh viên"@vi .
 :PhongDaoTaoDaiHoc a :ChuThe ;
-	rdfs:label "Phòng Đào tạo Đại học"@vi ;
-	skos:altLabel "phòng ĐT"@vi , "phòng đào tạo đại học"@vi , "phòng đào tạo"@vi , "đơn vị quản lý đào tạo"@vi .
+	rdfs:label "Phòng Đào tạo"@vi ;
+	skos:altLabel "Phòng Đào tạo Đại học"@vi , "phòng ĐT"@vi , "phòng đào tạo đại học"@vi , "đơn vị quản lý đào tạo"@vi .
 :PhongDocKhuVucNhaTruyenThong a :KhaiNiem ;
 	rdfs:label "Phòng đọc khu vực Nhà Truyền thống"@vi ;
 	skos:altLabel "phòng đọc Nhà Truyền thống"@vi .
@@ -1300,14 +1305,14 @@
 	rdfs:label "Phòng Hạ tầng và Công nghệ Thông tin"@vi ;
 	skos:altLabel "Phòng CNTT"@vi , "phòng IT"@vi .
 :PhongHopTacQuocTe a :ChuThe ;
-	rdfs:label "Phòng Hợp tác quốc tế"@vi ;
-	skos:altLabel "Phòng Hợp tác đối ngoại"@vi .
+	rdfs:label "Phòng Hợp tác đối ngoại"@vi ;
+	skos:altLabel "Phòng Hợp tác quốc tế"@vi .
 :PhongKeHoachTaiChinh a :ChuThe ;
-	rdfs:label "Phòng Kế hoạch - Tài chính"@vi ;
-	skos:altLabel "Phòng KHTC"@vi , "Phòng Kế hoạch Tài chính"@vi , "Phòng Tài chính"@vi , "phòng học phí"@vi .
+	rdfs:label "Phòng Tài chính"@vi ;
+	skos:altLabel "Phòng KHTC"@vi , "Phòng Kế hoạch - Tài chính"@vi , "Phòng Kế hoạch Tài chính"@vi , "phòng học phí"@vi .
 :PhongKhoaHocCongNghe a :ChuThe ;
-	rdfs:label "Phòng Khoa học công nghệ"@vi ;
-	skos:altLabel "Phòng Khoa học và Công nghệ"@vi .
+	rdfs:label "Phòng Khoa học và Công nghệ"@vi ;
+	skos:altLabel "Phòng Khoa học công nghệ"@vi .
 :PhuLuc rdfs:label "Phụ lục"@vi .
 :PhuongThucDongHocPhi rdfs:label "Phương thức đóng học phí"@vi .
 :PhuongThucToChucDaoTaoTheoTinChi :loaiKhaiNiem :KhaiNiemHocVu ;
@@ -2380,6 +2385,9 @@
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang :thuocNguon :NguonTrangChuKhoaCongNgheSinhHoc ;
 	:toaDo "tên đơn vị ở đầu trang"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonTrangChuTrungTamDoiMoiSangTaoMucGioiThieuTrungTam :thuocNguon :NguonTrangChuTrungTamDoiMoiSangTao ;
+	:toaDo "mục Giới thiệu Trung tâm"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan :thuocNguon :NguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinh ;
 	:toaDo "điểm a mục 1 Công tác tài chính và kế toán"@vi ;
 	a :DiaChiTrichDan .
@@ -2957,8 +2965,8 @@
 	rdfs:label "Trung tâm Giáo dục quốc phòng và An ninh"@vi ;
 	skos:altLabel "Trung tâm GDQP-AN"@vi .
 :TrungTamHoTroViecLamVaKhoiNghiep a :ChuThe ;
-	rdfs:label "Trung tâm Hỗ trợ việc làm và Khởi nghiệp"@vi ;
-	skos:altLabel "Trung tâm việc làm"@vi , "Trung tâm Đổi mới sáng tạo"@vi .
+	rdfs:label "Trung tâm Đổi mới sáng tạo"@vi ;
+	skos:altLabel "Trung tâm Hỗ trợ việc làm và Khởi nghiệp"@vi , "Trung tâm việc làm"@vi .
 :TrungTamTheDucVaTheThao a :ChuThe ;
 	rdfs:label "Trung tâm Thể dục và Thể thao"@vi ;
 	skos:altLabel "Trung tâm Thể dục thể thao"@vi .
@@ -4483,6 +4491,9 @@
 }
 :TDNguonTrangChuKhoaCongNgheSinhHocTenDonViODauTrang {
 	:KhoaCongNgheSinhHoc :thuocDonVi :TruongThuySanVaKhoaHocSuSong .
+}
+:TDNguonTrangChuTrungTamDoiMoiSangTaoMucGioiThieuTrungTam {
+	:TrungTamHoTroViecLamVaKhoiNghiep :noiDung "Ngày 01/02/2026 Trung tâm Hỗ trợ việc làm và Khởi nghiệp được đổi tên thành Trung tâm Đổi mới sáng tạo theo Quyết định số 100/QĐ-ĐHNT của Hiệu trưởng Trường Đại học Nha Trang."@vi .
 }
 :TDNguonTrangChucNangNhiemVuCuaPhongKeHoachTaiChinhDiemAMuc1CongTacTaiChinhVaKeToan {
 	:PhongKeHoachTaiChinh :noiDung "Tham mưu Hiệu trưởng ban hành và quản lý mức thu học phí, phí, giá dịch vụ giáo dục theo quy định."@vi .
