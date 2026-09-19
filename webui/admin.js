@@ -3,6 +3,7 @@
 // chỉ chỗ sai, và sửa chính lược đồ (loại, thuộc tính).
 import { mountAccount } from "./account.js";
 import { renderMarkdown } from "./markdown.js";
+import { applySavedTheme } from "./theme.js";
 
 const $ = (selector) => document.querySelector(selector);
 const KIND_NAMES = {
@@ -1042,11 +1043,7 @@ $("#filter").addEventListener("input", renderItems);
 $("#new-btn").addEventListener("click", newEntity);
 $("#edit-class-btn").addEventListener("click", () => run(async () => renderClassEditor(classSpec(state.className))));
 $("#new-class-btn").addEventListener("click", () => run(async () => renderClassEditor(null)));
-try {
-  document.body.classList.toggle("light-theme", localStorage.getItem("themeColor") === "light_mode");
-} catch {
-  // Không đọc được lựa chọn giao diện thì dùng nền tối mặc định.
-}
+applySavedTheme();
 const account = mountAccount($("#account"), {
   other: { href: "/", label: "Hỏi đáp" },
   openWhenGuest: true,

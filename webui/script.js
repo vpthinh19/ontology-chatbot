@@ -1,410 +1,17 @@
+// Trang hỏi đáp: gửi câu hỏi kèm lịch sử, đọc câu trả lời chảy về (server-sent events) và vẽ dần.
 import { mountAccount } from "./account.js";
 import { renderMarkdown } from "./markdown.js";
+import { apiUrl, isRejectedKey, LABELS, ServerStatus } from "./server-status.js";
+import { applySavedTheme, toggleTheme } from "./theme.js";
 
-const container = document.querySelector(".container");
-const chatsContainer = document.querySelector(".chats-container");
-const promptForm = document.querySelector(".prompt-form");
-const promptInput = document.querySelector(".prompt-input");
-const sendButton = document.querySelector("#send-prompt-btn");
-const stopButton = document.querySelector("#stop-response-btn");
-const themeToggleButton = document.querySelector("#theme-toggle-btn");
-const deleteButton = document.querySelector("#delete-chats-btn");
-const serverStatus = document.querySelector(".server-status");
-const connectionCountdown = document.querySelector(".connection-countdown");
-const responseAnnouncer = document.querySelector("#response-announcer");
-
-const apiUrl = (path) => `/api${path}`;
-
-// Khoá sai thì thử lại bao nhiêu lần cũng vẫn sai, nên hai mã này phải tách khỏi
-// nhóm lỗi tạm thời để vòng đánh thức dừng ngay thay vì đợi hết ba phút.
-const isRejectedKey = (status) => status === 401 || status === 403;
+// Tên biểu tượng Material Symbols; mọi tên phải có trong icon_names của index.html.
+const ICON = { light: "light_mode", dark: "dark_mode", avatar: "school" };
 const MAX_HISTORY_MESSAGES = 20;
-const HEALTH_DEADLINE_MS = 180_000;
-const HEALTH_REQUEST_TIMEOUT_MS = 12_000;
-const HEALTH_WAITS_MS = [1_000, 2_000, 4_000, 8_000];
-const CONNECTION_COUNTDOWN_SECONDS = 5;
-// Trang chỉ tự bám theo dòng mới khi người đọc đang ở sát đáy. Rộng hơn một dòng
-// chữ để một cú chạm nhỏ hoặc nhịp nảy của trình duyệt không bị hiểu là họ muốn
-// đọc ngược lên.
+// Chỉ tự cuộn theo câu trả lời khi người đọc đang cách đáy không quá chừng này.
 const SCROLL_STICK_THRESHOLD_PX = 64;
+// Tab quay lại sau lâu hơn chừng này thì hỏi lại máy chủ trước khi cho gửi.
+const STALE_READY_MS = 30_000;
 
-let responseController;
-let healthCheckPromise;
-let connectionCountdownTimer;
-let serverState;
-let lastReadyAt = 0;
-const chatHistory = [];
-// Mã phiên do máy chủ cấp ở câu đầu (header X-Chat-Session), gửi lại ở các câu sau để lịch sử chat
-// gom các lượt của cuộc trò chuyện này; xoá hội thoại thì bắt đầu phiên mới.
-let chatSession = null;
-
-const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
-document.body.classList.toggle("light-theme", isLightTheme);
-themeToggleButton.textContent = isLightTheme ? "dark_mode" : "light_mode";
-
-const isResponding = () => document.body.classList.contains("bot-responding");
-
-const updateControls = () => {
-  sendButton.disabled =
-    serverState !== "ready" || isResponding() || !promptInput.value.trim();
-  deleteButton.disabled = !document.body.classList.contains("chats-active");
-};
-
-const stateLabels = {
-  waking: "Đang kết nối máy chủ",
-  ready: "Máy chủ sẵn sàng",
-  offline: "Thiết bị đang mất kết nối mạng.",
-  down: "Chưa kết nối được máy chủ. Hãy thử lại sau ít phút.",
-  blocked: "Máy chủ từ chối xác thực dịch vụ của trang này.",
-};
-
-const stopConnectionCountdown = () => {
-  window.clearInterval(connectionCountdownTimer);
-  connectionCountdownTimer = undefined;
-  connectionCountdown.textContent = "";
-};
-
-const startConnectionCountdown = () => {
-  stopConnectionCountdown();
-  let secondsRemaining = CONNECTION_COUNTDOWN_SECONDS;
-  connectionCountdown.textContent = ` (${secondsRemaining})`;
-  connectionCountdownTimer = window.setInterval(() => {
-    secondsRemaining -= 1;
-    connectionCountdown.textContent =
-      secondsRemaining >= 0 ? ` (${secondsRemaining})` : "…";
-    if (secondsRemaining < 0) {
-      window.clearInterval(connectionCountdownTimer);
-      connectionCountdownTimer = undefined;
-    }
-  }, 1_000);
-};
-
-const setServerState = (state, label = stateLabels[state]) => {
-  const previousState = serverState;
-  serverState = state;
-  const labelElement = serverStatus.querySelector(".label");
-  // Health probe có thể thất bại nhiều lần trong ba phút. Không ghi lại đúng
-  // cùng một nội dung vì role=status sẽ khiến trình đọc màn hình báo lặp.
-  if (serverStatus.dataset.state !== state || labelElement.textContent !== label) {
-    serverStatus.dataset.state = state;
-    labelElement.textContent = label;
-  }
-  // Sẵn sàng chỉ hiện chấm xanh; chữ vẫn còn cho trình đọc màn hình và khi rê chuột.
-  labelElement.classList.toggle("sr-only", state === "ready");
-  serverStatus.title = state === "ready" ? label : "";
-  if (state === "waking" && previousState !== "waking") {
-    startConnectionCountdown();
-  } else if (state !== "waking") {
-    stopConnectionCountdown();
-  }
-  if (state === "ready") lastReadyAt = Date.now();
-  updateControls();
-};
-
-const sleep = (milliseconds) =>
-  new Promise((resolve) => window.setTimeout(resolve, milliseconds));
-
-const probeHealth = async () => {
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), HEALTH_REQUEST_TIMEOUT_MS);
-  try {
-    const response = await fetch(apiUrl("/healthz"), {
-      cache: "no-store",
-      signal: controller.signal,
-    });
-    if (response.ok) return "ready";
-    return isRejectedKey(response.status) ? "blocked" : "waking";
-  } catch {
-    return "waking";
-  } finally {
-    window.clearTimeout(timeout);
-  }
-};
-
-const wakeServer = async () => {
-  if (!navigator.onLine) {
-    setServerState("offline");
-    return false;
-  }
-
-  // Một trạng thái ``ready`` cũ không bảo đảm replica còn sống. Mọi vòng probe
-  // mới đều đóng nút gửi cho tới khi có câu trả lời mới, tránh gửi chat đúng lúc
-  // Dịch vụ đang scale từ 0 lên 1.
-  setServerState("waking");
-  const deadline = Date.now() + HEALTH_DEADLINE_MS;
-  let attempt = 0;
-
-  while (Date.now() < deadline) {
-    if (!navigator.onLine) {
-      setServerState("offline");
-      return false;
-    }
-    const outcome = await probeHealth();
-    // Sự kiện offline có thể tới trong lúc fetch còn bay. Không kiểm lại ở đây
-    // thì response cũ sẽ ghi đè trạng thái offline bằng ready/waking.
-    if (!navigator.onLine) {
-      setServerState("offline");
-      return false;
-    }
-    if (outcome === "ready") {
-      setServerState("ready");
-      return true;
-    }
-    if (outcome === "blocked") {
-      setServerState("blocked");
-      return false;
-    }
-
-    setServerState("waking");
-    const baseWait = HEALTH_WAITS_MS[Math.min(attempt, HEALTH_WAITS_MS.length - 1)];
-    const jitter = Math.round(baseWait * Math.random() * 0.15);
-    await sleep(baseWait + jitter);
-    attempt += 1;
-  }
-
-  // Có thể vừa mất mạng trong nhịp sleep cuối cùng, khi vòng lặp không còn một
-  // lần probe kế tiếp để chạy nhánh kiểm tra ở đầu vòng.
-  setServerState(navigator.onLine ? "down" : "offline");
-  return false;
-};
-
-const checkServer = () => {
-  if (healthCheckPromise) return healthCheckPromise;
-  healthCheckPromise = wakeServer().finally(() => {
-    healthCheckPromise = undefined;
-  });
-  return healthCheckPromise;
-};
-
-const createMessageElement = (...classes) => {
-  const element = document.createElement("div");
-  element.classList.add("message", ...classes);
-  return element;
-};
-
-// Trang tự cuộn theo câu trả lời đang viết, nhưng chỉ khi người đọc chưa rời
-// đáy. Họ kéo lên để đọc lại đoạn trên là quyền của họ; kéo ngược về đáy sau mỗi
-// token thì không đọc được gì nữa, mà cũng không bấm được vào chữ nào.
-let followingBottom = true;
-
-const bottomGap = () =>
-  document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
-
-window.addEventListener(
-  "scroll",
-  () => {
-    followingBottom = bottomGap() <= SCROLL_STICK_THRESHOLD_PX;
-  },
-  { passive: true },
-);
-
-const jumpToBottom = (behavior) =>
-  window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
-
-// Nhảy dứt khoát về đáy và bám lại từ đó: dùng cho những mốc do người dùng tạo
-// ra, như vừa gửi một câu hỏi.
-const scrollToBottom = () => {
-  followingBottom = true;
-  window.requestAnimationFrame(() => jumpToBottom("smooth"));
-};
-
-// Bám đáy trong lúc chữ đang chảy. Cuộn tức thì chứ không mượt: một hoạt ảnh
-// cuộn bị khởi động lại mỗi khung hình thì không bao giờ chạy xong, và chính nó
-// là thứ làm trang giật.
-const followBottom = () => {
-  if (followingBottom) jumpToBottom("auto");
-};
-
-const escapeHtml = (value) =>
-  String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-
-const createUserMessage = (text) => {
-  const message = createMessageElement("user-message");
-  const paragraph = document.createElement("p");
-  paragraph.className = "message-text";
-  paragraph.textContent = text;
-  message.append(paragraph);
-  return message;
-};
-
-const createBotMessage = () => {
-  const message = createMessageElement("bot-message", "loading");
-  const avatar = document.createElement("span");
-  avatar.className = "avatar material-symbols-rounded";
-  avatar.setAttribute("aria-hidden", "true");
-  avatar.textContent = "school";
-  const text = document.createElement("div");
-  text.className = "message-text";
-  message.append(avatar, text);
-  return message;
-};
-
-const generateResponse = async (botMessage, userMessage) => {
-  const textElement = botMessage.querySelector(".message-text");
-  const controller = new AbortController();
-  responseController = controller;
-  const history = chatHistory.slice(-MAX_HISTORY_MESSAGES).map(({ role, text }) => ({
-    role: role === "bot" ? "assistant" : "user",
-    content: text,
-  }));
-
-  let answer = "";
-  let completed = false;
-  let progress = "Đang suy nghĩ…";
-
-  // Chữ về nhanh hơn nhiều lần nhịp vẽ của màn hình. Dựng lại cả khối trả lời
-  // sau mỗi token vừa thừa vừa chiếm luồng chính, khiến trang không kịp nhận cú
-  // cuộn hay phím gõ. Mọi token rơi vào cùng một khung hình gộp làm một lần vẽ.
-  let paintHandle;
-  let paintedHtml;
-
-  const render = () => {
-    const html = answer
-      ? renderMarkdown(answer)
-      : `<div class="reply-line status">${escapeHtml(progress)}</div>`;
-    if (html !== paintedHtml) {
-      textElement.innerHTML = html;
-      paintedHtml = html;
-    }
-    followBottom();
-  };
-
-  const cancelPaint = () => {
-    if (paintHandle === undefined) return;
-    window.cancelAnimationFrame(paintHandle);
-    paintHandle = undefined;
-  };
-
-  const paint = () => {
-    if (paintHandle !== undefined) return;
-    paintHandle = window.requestAnimationFrame(() => {
-      paintHandle = undefined;
-      render();
-    });
-  };
-
-  // Vẽ ngay thay vì đợi khung hình kế. Dùng ở những chỗ nội dung sẽ không đổi
-  // nữa, và ở tab ẩn - nơi khung hình không bao giờ tới.
-  const renderNow = () => {
-    cancelPaint();
-    render();
-  };
-
-  const consumeEvent = (chunk) => {
-    const line = chunk.split("\n").find((item) => item.startsWith("data: "));
-    if (!line) return;
-    const event = JSON.parse(line.slice(6));
-    const { type: eventType, content } = event;
-    if (eventType === "text_delta") {
-      answer += content;
-      botMessage.classList.remove("loading");
-    } else if (eventType === "lookup_started") {
-      progress = `Đang tra cứu: ${event.keywords}`;
-    } else if (eventType === "lookup_finished") {
-      progress = "Đang viết câu trả lời…";
-    } else if (eventType === "queued") {
-      progress = `Hệ thống đang bận, bạn đứng thứ ${event.position} trong hàng chờ…`;
-    } else if (eventType === "completed") {
-      completed = true;
-      if (!answer) answer = content;
-    } else if (eventType === "error") {
-      throw new Error(content);
-    }
-    paint();
-  };
-
-  renderNow();
-  try {
-    const response = await fetch(apiUrl("/chat"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMessage, history, ...(chatSession ? { session: chatSession } : {}) }),
-      signal: controller.signal,
-    });
-    chatSession = response.headers.get("X-Chat-Session") || chatSession;
-    if (!response.ok) {
-      if (isRejectedKey(response.status)) {
-        setServerState("blocked");
-        throw new Error(stateLabels.blocked);
-      }
-      const detail = await response.json().catch(() => ({}));
-      const error = new Error(detail.detail || `Máy chủ trả về lỗi ${response.status}.`);
-      error.mayBeCold = [502, 503, 504].includes(response.status);
-      throw error;
-    }
-    if (!response.body) throw new Error("Máy chủ không trả về luồng dữ liệu.");
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const chunks = buffer.split("\n\n");
-      buffer = chunks.pop() || "";
-      chunks.forEach(consumeEvent);
-    }
-    if (buffer.trim()) consumeEvent(buffer);
-    renderNow();
-    if (!completed) {
-      const error = new Error(
-        "Kết nối tới máy chủ bị gián đoạn trước khi câu trả lời hoàn tất.",
-      );
-      error.mayBeCold = true;
-      error.streamInterrupted = true;
-      throw error;
-    }
-    // Chỉ ghi lượt hoàn tất vào ngữ cảnh. Nếu backend vừa scale về 0 hoặc
-    // người dùng bấm dừng, lần thử sau không bị thấy một câu hỏi "mồ côi" mà
-    // trợ lý chưa từng trả lời.
-    if (answer) {
-      chatHistory.push(
-        { role: "user", text: userMessage },
-        { role: "bot", text: answer },
-      );
-      responseAnnouncer.textContent = "Đã có câu trả lời mới.";
-    }
-  } catch (error) {
-    // Một khung hình còn treo sẽ vẽ đè lên thông báo lỗi ngay sau đó.
-    cancelPaint();
-    const aborted = error.name === "AbortError";
-    textElement.textContent = aborted
-      ? "Đã dừng phản hồi."
-      : error.streamInterrupted
-        ? `${error.message} Mình đang kết nối lại máy chủ.`
-        : error.mayBeCold || error instanceof TypeError
-        ? "Máy chủ có thể vừa chuyển về 0 replica. Mình đang đánh thức lại; bạn gửi lại câu hỏi khi trạng thái chuyển sang sẵn sàng."
-        : error.message;
-    textElement.style.color = "var(--danger)";
-    responseAnnouncer.textContent = textElement.textContent;
-    if (!aborted && (error.mayBeCold || error instanceof TypeError)) {
-      // Nếu người dùng đã bắt đầu soạn câu kế tiếp thì không ghi đè. Nếu ô còn
-      // trống, trả câu vừa lỗi lại để họ chỉ cần bấm gửi sau khi server xanh.
-      if (!promptInput.value.trim()) promptInput.value = userMessage;
-      setServerState("waking");
-      void checkServer();
-    }
-  } finally {
-    botMessage.classList.remove("loading");
-    // Lượt cũ có thể hoàn tất abort sau khi người dùng đã xóa và bắt đầu lượt
-    // mới. Nó chỉ được mở UI/xóa controller nếu vẫn là lượt đang hoạt động.
-    if (responseController === controller) {
-      document.body.classList.remove("bot-responding");
-      responseController = undefined;
-    }
-    updateControls();
-    followBottom();
-  }
-};
-
-// Lời tự giới thiệu: nói trợ lý trả lời được gì, dựa vào đâu, không làm được gì, và rằng
-// câu hỏi được lưu lại. Nó không thuộc lịch sử gửi cho mô hình.
 const INTRODUCTION = [
   "Xin chào, mình là trợ lý học vụ của Trường Đại học Nha Trang. Mình trả lời dựa trên văn bản và trang thông tin chính thức của Trường, kèm nguồn để bạn đối chiếu.",
   "",
@@ -419,53 +26,339 @@ const INTRODUCTION = [
   "Câu hỏi và câu trả lời được lưu lại để cải thiện hệ thống, vì vậy bạn đừng nhập thông tin cá nhân như mã số sinh viên hay số điện thoại.",
 ].join("\n");
 
-const showIntroduction = () => {
-  const message = createMessageElement("bot-message", "introduction");
+const chatsContainer = document.querySelector(".chats-container");
+const promptForm = document.querySelector(".prompt-form");
+const promptInput = document.querySelector(".prompt-input");
+const sendButton = document.querySelector("#send-prompt-btn");
+const stopButton = document.querySelector("#stop-response-btn");
+const themeToggleButton = document.querySelector("#theme-toggle-btn");
+const deleteButton = document.querySelector("#delete-chats-btn");
+const responseAnnouncer = document.querySelector("#response-announcer");
+
+// --- cuộn theo câu trả lời ---------------------------------------------------------
+
+// Bám đáy khi chữ đang chảy, trừ khi người đọc đã kéo lên đọc đoạn trên.
+const scroller = {
+  following: true,
+  jump(behavior) {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
+  },
+  // Sau thao tác của người dùng (vừa gửi câu hỏi): về đáy và bám lại.
+  toBottom() {
+    this.following = true;
+    window.requestAnimationFrame(() => this.jump("smooth"));
+  },
+  // Trong lúc chữ chảy: cuộn tức thì, vì hoạt ảnh bị khởi động lại mỗi khung hình làm trang giật.
+  follow() {
+    if (this.following) this.jump("auto");
+  },
+};
+window.addEventListener(
+  "scroll",
+  () => {
+    const gap = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+    scroller.following = gap <= SCROLL_STICK_THRESHOLD_PX;
+  },
+  { passive: true },
+);
+
+// --- tin nhắn ----------------------------------------------------------------------
+
+const messageElement = (...classes) => {
+  const element = document.createElement("div");
+  element.classList.add("message", ...classes);
+  return element;
+};
+
+const botMessage = (...classes) => {
+  const message = messageElement("bot-message", ...classes);
   const avatar = document.createElement("span");
   avatar.className = "avatar material-symbols-rounded";
   avatar.setAttribute("aria-hidden", "true");
-  avatar.textContent = "school";
+  avatar.textContent = ICON.avatar;
   const text = document.createElement("div");
   text.className = "message-text";
-  text.innerHTML = renderMarkdown(INTRODUCTION);
   message.append(avatar, text);
+  return message;
+};
+
+const userMessage = (text) => {
+  const message = messageElement("user-message");
+  const paragraph = document.createElement("p");
+  paragraph.className = "message-text";
+  paragraph.textContent = text;
+  message.append(paragraph);
+  return message;
+};
+
+const showIntroduction = () => {
+  const message = botMessage("introduction");
+  message.querySelector(".message-text").innerHTML = renderMarkdown(INTRODUCTION);
   chatsContainer.append(message);
 };
 
-const handleFormSubmit = (event) => {
-  event.preventDefault();
-  const userMessage = promptInput.value.trim();
-  if (!userMessage || isResponding()) return;
-  if (serverState !== "ready") {
-    void checkServer();
-    return;
+// Một câu trả lời đang được vẽ. Chữ về nhanh hơn nhịp vẽ của màn hình, nên mọi mảnh tới trong cùng
+// một khung hình gộp thành một lần vẽ.
+class AnswerView {
+  constructor(message) {
+    this.message = message;
+    this.text = message.querySelector(".message-text");
+    this.answer = "";
+    this.progress = "Đang suy nghĩ…";
+    this.frame = undefined;
+    this.painted = undefined;
   }
 
-  promptInput.value = "";
-  document.body.classList.add("chats-active", "bot-responding");
-  chatsContainer.append(createUserMessage(userMessage));
-  const botMessage = createBotMessage();
-  chatsContainer.append(botMessage);
-  updateControls();
-  scrollToBottom();
-  void generateResponse(botMessage, userMessage);
+  append(text) {
+    this.answer += text;
+    this.message.classList.remove("loading");
+    this.paint();
+  }
+
+  status(text) {
+    this.progress = text;
+    this.paint();
+  }
+
+  paint() {
+    this.frame ??= window.requestAnimationFrame(() => {
+      this.frame = undefined;
+      this.render();
+    });
+  }
+
+  // Vẽ ngay: khi nội dung không đổi nữa, và ở tab ẩn (nơi khung hình không tới).
+  renderNow() {
+    this.cancel();
+    this.render();
+  }
+
+  render() {
+    let html;
+    if (this.answer) {
+      html = renderMarkdown(this.answer);
+    } else {
+      const line = document.createElement("div");
+      line.className = "reply-line status";
+      line.textContent = this.progress;
+      html = line.outerHTML;
+    }
+    if (html !== this.painted) {
+      this.text.innerHTML = html;
+      this.painted = html;
+    }
+    scroller.follow();
+  }
+
+  fail(text) {
+    this.cancel();
+    this.text.textContent = text;
+    this.text.style.color = "var(--danger)";
+  }
+
+  cancel() {
+    if (this.frame === undefined) return;
+    window.cancelAnimationFrame(this.frame);
+    this.frame = undefined;
+  }
+}
+
+// --- hội thoại ------------------------------------------------------------------------
+
+class StreamError extends Error {
+  // ``mayBeCold``: máy chủ có thể vừa ngủ; ``interrupted``: luồng đứt trước sự kiện completed.
+  constructor(message, { mayBeCold = false, interrupted = false } = {}) {
+    super(message);
+    this.mayBeCold = mayBeCold;
+    this.interrupted = interrupted;
+  }
+}
+
+// Lịch sử gửi kèm mỗi câu (máy chủ không giữ phiên) và mã phiên máy chủ cấp để gom các lượt
+// trong lịch sử chat. Chỉ lượt hoàn tất mới vào lịch sử.
+class Conversation {
+  constructor() {
+    this.history = [];
+    this.session = null;
+    this.controller = undefined;
+  }
+
+  get responding() {
+    return this.controller !== undefined;
+  }
+
+  stop() {
+    this.controller?.abort();
+  }
+
+  clear() {
+    this.stop();
+    this.controller = undefined;
+    this.history.length = 0;
+    this.session = null;
+  }
+
+  async ask(question, view) {
+    const controller = new AbortController();
+    this.controller = controller;
+    try {
+      const answer = await this.stream(question, view, controller.signal);
+      if (answer) {
+        this.history.push({ role: "user", content: question }, { role: "assistant", content: answer });
+      }
+      return answer;
+    } finally {
+      // Lượt cũ có thể kết thúc sau khi người dùng đã xoá hội thoại và bắt đầu lượt mới.
+      if (this.controller === controller) this.controller = undefined;
+    }
+  }
+
+  async stream(question, view, signal) {
+    const response = await fetch(apiUrl("/chat"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: question,
+        history: this.history.slice(-MAX_HISTORY_MESSAGES),
+        ...(this.session ? { session: this.session } : {}),
+      }),
+      signal,
+    });
+    this.session = response.headers.get("X-Chat-Session") || this.session;
+    if (!response.ok) {
+      if (isRejectedKey(response.status)) {
+        status.set("blocked");
+        throw new StreamError(LABELS.blocked);
+      }
+      const detail = await response.json().catch(() => ({}));
+      throw new StreamError(detail.detail || `Máy chủ trả về lỗi ${response.status}.`, {
+        mayBeCold: [502, 503, 504].includes(response.status),
+      });
+    }
+    if (!response.body) throw new StreamError("Máy chủ không trả về luồng dữ liệu.");
+
+    let answer = "";
+    let completed = false;
+    const consume = (chunk) => {
+      const line = chunk.split("\n").find((item) => item.startsWith("data: "));
+      if (!line) return;
+      const event = JSON.parse(line.slice(6));
+      if (event.type === "text_delta") {
+        answer += event.content;
+        view.append(event.content);
+      } else if (event.type === "lookup_started") {
+        view.status(`Đang tra cứu: ${event.keywords}`);
+      } else if (event.type === "lookup_finished") {
+        view.status("Đang viết câu trả lời…");
+      } else if (event.type === "queued") {
+        view.status(`Hệ thống đang bận, bạn đứng thứ ${event.position} trong hàng chờ…`);
+      } else if (event.type === "completed") {
+        completed = true;
+        if (!answer) {
+          answer = event.content;
+          view.append(event.content);
+        }
+      } else if (event.type === "error") {
+        throw new StreamError(event.content);
+      }
+    };
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const chunks = buffer.split("\n\n");
+      buffer = chunks.pop() || "";
+      chunks.forEach(consume);
+    }
+    if (buffer.trim()) consume(buffer);
+    view.renderNow();
+    if (!completed) {
+      throw new StreamError("Kết nối tới máy chủ bị gián đoạn trước khi câu trả lời hoàn tất.", {
+        mayBeCold: true,
+        interrupted: true,
+      });
+    }
+    return answer;
+  }
+}
+
+// --- nối giao diện ----------------------------------------------------------------------
+
+const conversation = new Conversation();
+
+const updateControls = () => {
+  sendButton.disabled = !status.ready || conversation.responding || !promptInput.value.trim();
+  deleteButton.disabled = !document.body.classList.contains("chats-active");
 };
 
-promptForm.addEventListener("submit", handleFormSubmit);
+const status = new ServerStatus(document.querySelector(".server-status"), { onChange: updateControls });
+
+const failureText = (error) => {
+  if (error.name === "AbortError") return "Đã dừng phản hồi.";
+  if (error.interrupted) return `${error.message} Mình đang kết nối lại máy chủ.`;
+  if (error.mayBeCold || error instanceof TypeError) {
+    return "Máy chủ vừa tạm nghỉ và đang được đánh thức lại. Khi chấm trạng thái chuyển xanh, bạn gửi lại câu hỏi nhé.";
+  }
+  return error.message;
+};
+
+const send = async (question) => {
+  document.body.classList.add("chats-active", "bot-responding");
+  chatsContainer.append(userMessage(question));
+  const view = new AnswerView(botMessage("loading"));
+  chatsContainer.append(view.message);
+  view.renderNow();
+  updateControls();
+  scroller.toBottom();
+  try {
+    if (await conversation.ask(question, view)) responseAnnouncer.textContent = "Đã có câu trả lời mới.";
+  } catch (error) {
+    view.fail(failureText(error));
+    responseAnnouncer.textContent = view.text.textContent;
+    if (error.name !== "AbortError" && (error.mayBeCold || error instanceof TypeError)) {
+      // Trả câu vừa lỗi lại ô nhập để gửi lại, trừ khi người dùng đã gõ câu khác.
+      if (!promptInput.value.trim()) promptInput.value = question;
+      status.set("waking");
+      void status.check();
+    }
+  } finally {
+    view.message.classList.remove("loading");
+    if (!conversation.responding) document.body.classList.remove("bot-responding");
+    updateControls();
+    scroller.follow();
+  }
+};
+
+promptForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const question = promptInput.value.trim();
+  if (!question || conversation.responding) return;
+  if (!status.ready) {
+    void status.check();
+    return;
+  }
+  promptInput.value = "";
+  void send(question);
+});
 promptInput.addEventListener("input", updateControls);
+stopButton.addEventListener("click", () => conversation.stop());
 
-stopButton.addEventListener("click", () => responseController?.abort());
-
+applySavedTheme();
+const showThemeIcon = () => {
+  themeToggleButton.textContent = document.body.classList.contains("light-theme") ? ICON.dark : ICON.light;
+};
+showThemeIcon();
 themeToggleButton.addEventListener("click", () => {
-  const light = document.body.classList.toggle("light-theme");
-  localStorage.setItem("themeColor", light ? "light_mode" : "dark_mode");
-  themeToggleButton.textContent = light ? "dark_mode" : "light_mode";
+  toggleTheme();
+  showThemeIcon();
 });
 
 deleteButton.addEventListener("click", () => {
-  responseController?.abort();
-  chatHistory.length = 0;
-  chatSession = null;
+  conversation.clear();
   chatsContainer.replaceChildren();
   showIntroduction();
   document.body.classList.remove("chats-active", "bot-responding");
@@ -473,15 +366,15 @@ deleteButton.addEventListener("click", () => {
   promptInput.focus();
 });
 
-window.addEventListener("online", () => void checkServer());
-window.addEventListener("offline", () => setServerState("offline"));
+window.addEventListener("online", () => void status.check());
+window.addEventListener("offline", () => status.set("offline"));
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState !== "visible" || isResponding()) return;
-  if (Date.now() - lastReadyAt > 30_000) void checkServer();
+  if (document.visibilityState !== "visible" || conversation.responding) return;
+  if (Date.now() - status.lastReadyAt > STALE_READY_MS) void status.check();
 });
 
 showIntroduction();
-setServerState("waking");
-void checkServer();
+status.set("waking");
+void status.check();
 
 mountAccount(document.querySelector("#account"), { other: { href: "/admin", label: "Quản trị" } });
