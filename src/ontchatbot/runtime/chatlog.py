@@ -47,15 +47,17 @@ MISSING_PHRASES = (
 OUT_OF_SCOPE_PHRASES = ("ngoài phạm vi",)
 #: Trạng thái xem xét: chưa xem · cần bổ sung dữ liệu hay sửa hệ thống · đã xử lý · không cần xử lý.
 REVIEW_STATES = ("", "can-bo-sung", "da-xu-ly", "bo-qua")
-_ID = re.compile(r"\d{8}T\d{6}-[0-9a-f]{6}")
+#: Thời điểm tạo tới phần triệu giây (để các lượt của một phiên sắp đúng thứ tự theo tên tệp) cộng sáu ký tự
+#: ngẫu nhiên. Mã tạo trước 19/09/2026 chỉ có tới giây, vẫn hợp lệ.
+_ID = re.compile(r"\d{8}T\d{6}(?:\d{6})?-[0-9a-f]{6}")
 
 
 def new_id(now: datetime) -> str:
-    return f"{now:%Y%m%dT%H%M%S}-{secrets.token_hex(3)}"
+    return f"{now:%Y%m%dT%H%M%S%f}-{secrets.token_hex(3)}"
 
 
 def valid_id(value: object) -> bool:
-    """Mã lượt và mã phiên có cùng dạng: thời điểm tạo cộng sáu ký tự ngẫu nhiên."""
+    """Mã lượt và mã phiên có cùng dạng (``_ID``)."""
 
     return isinstance(value, str) and _ID.fullmatch(value) is not None
 

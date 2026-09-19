@@ -264,3 +264,10 @@ def test_the_chat_route_issues_a_session_and_keeps_the_one_it_is_given(tmp_path)
     log.flush()
     assert again == session and forged != session and valid_id(forged)
     assert [turn["question"] for turn in log.session(session)["turns"]] == ["một", "hai"]
+
+
+def test_ids_sort_in_creation_order_and_old_ids_stay_valid() -> None:
+    ids = [new_id(datetime.now().astimezone()) for _ in range(50)]
+
+    assert ids == sorted(ids) and all(valid_id(value) for value in ids)
+    assert valid_id("20260918T171939-abcdef")
