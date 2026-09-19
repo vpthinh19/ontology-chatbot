@@ -255,7 +255,6 @@ input:disabled { opacity: 0.6; }
 .chat-record h2 { margin: 4px 0 0; font-size: 1.1rem; }
 .chat-record h3 { margin: 8px 0 0; font-size: 0.95rem; }
 .said { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--surface-raised); white-space: pre-wrap; overflow-wrap: anywhere; }
-.said.context { color: var(--muted); font-size: 0.9rem; }
 .said.answer { white-space: normal; }
 .said.answer > :first-child { margin-top: 0; }
 .said.answer > :last-child { margin-bottom: 0; }
