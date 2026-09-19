@@ -1,6 +1,8 @@
 // Trang quản trị ontology. Form của mỗi loại thông tin sinh từ lược đồ mà máy chủ đọc
 // trong shapes.ttl; máy chủ kiểm lại bằng SHACL trước khi ghi, nên trang này lo nhập,
 // chỉ chỗ sai, và sửa chính lược đồ (loại, thuộc tính).
+import { mountAccount } from "./account.js";
+
 const $ = (selector) => document.querySelector(selector);
 const KIND_NAMES = {
   text: "Chữ (tiếng Việt)",
@@ -26,8 +28,8 @@ const api = async (path, { method = "GET", body } = {}) => {
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const data = await response.json().catch(() => ({}));
-  // Phiên đăng nhập hết hạn giữa chừng: quay về ô đăng nhập thay vì báo lỗi khó hiểu.
-  if (response.status === 401 && path !== "/login" && path !== "/session") showLogin();
+  // Phiên đăng nhập hết hạn giữa chừng: về tài khoản khách thay vì báo lỗi khó hiểu.
+  if (response.status === 401) account.signedOut();
   if (!response.ok) {
     const error = new Error(data.detail || `Máy chủ trả lỗi ${response.status}.`);
     Object.assign(error, {
@@ -987,54 +989,20 @@ const showView = (view) => {
   if (view === "chat") run(loadChats);
 };
 
-function showLogin() {
+const showLogin = () => {
   $("#tabs").hidden = true;
-  $("#logout-btn").hidden = true;
   $("#data-view").hidden = true;
   $("#chat-view").hidden = true;
-  $("#login-form").hidden = false;
-  $("#token").focus();
-}
+  showStatus("Đăng nhập tài khoản quản trị để xem và sửa dữ liệu.");
+};
 
 const enter = async () => {
-  $("#login-form").hidden = true;
   $("#tabs").hidden = false;
-  $("#logout-btn").hidden = false;
   await loadSchema();
   showView("data");
   showStatus("");
 };
 
-const start = () =>
-  run(async () => {
-    try {
-      await api("/session");
-    } catch (error) {
-      if (error.status === 401) {
-        showLogin();
-        showStatus("Nhập khoá quản trị để đăng nhập.");
-        return;
-      }
-      throw error;
-    }
-    await enter();
-  });
-
-$("#login-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  run(async () => {
-    await api("/login", { method: "POST", body: { key: $("#token").value } });
-    $("#token").value = "";
-    await enter();
-  });
-});
-$("#logout-btn").addEventListener("click", () =>
-  run(async () => {
-    await api("/logout", { method: "POST" });
-    showLogin();
-    showStatus("Đã đăng xuất.", [], "ok");
-  }),
-);
 document.querySelectorAll("#tabs button").forEach((button) => button.addEventListener("click", () => showView(button.dataset.view)));
 $("#chat-filters").addEventListener("submit", (event) => {
   event.preventDefault();
@@ -1049,4 +1017,8 @@ try {
 } catch {
   // Không đọc được lựa chọn giao diện thì dùng nền tối mặc định.
 }
-start();
+const account = mountAccount($("#account"), {
+  other: { href: "/", label: "Hỏi đáp" },
+  openWhenGuest: true,
+  onChange: (role) => (role === "admin" ? run(enter) : showLogin()),
+});

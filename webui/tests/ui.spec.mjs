@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+// Không có máy chủ quản trị khi test: mặc định là khách. Test nào cần phiên quản trị thì tự đặt lại.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/admin/**", (route) =>
+    route.fulfill({ status: 401, json: { detail: "Chưa đăng nhập quản trị." } }),
+  );
+});
+
 test("the page announces a cold start before the first health probe returns", async ({ page }) => {
   await page.route("**/healthz", () => new Promise(() => {}));
 
@@ -510,4 +517,86 @@ test("a rejected key is reported plainly instead of being retried for minutes", 
   const after = probes;
   await page.waitForTimeout(2_500);
   expect(probes).toBe(after);
+});
+
+const quietServer = async (page) => {
+  await page.route("**/healthz", (route) =>
+    route.fulfill({ status: 200, json: { status: "ok" } }),
+  );
+};
+
+test("a visitor is a guest with a login button and no way into the admin page", async ({ page }) => {
+  await quietServer(page);
+  await page.goto("http://127.0.0.1:4173");
+
+  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+  await expect(page.locator("#account-login")).toBeVisible();
+  await expect(page.locator("#account-switch")).toBeHidden();
+  await expect(page.locator("#account-logout")).toBeHidden();
+  await expect(page.locator("#account-form")).toBeHidden();
+});
+
+test("a wrong admin password is reported next to the field", async ({ page }) => {
+  await quietServer(page);
+  await page.route("**/api/admin/login", (route) =>
+    route.fulfill({ status: 401, json: { detail: "Mật khẩu quản trị không đúng." } }),
+  );
+  await page.goto("http://127.0.0.1:4173");
+
+  await page.click("#account-login");
+  await page.fill("#account-password", "sai");
+  await page.press("#account-password", "Enter");
+
+  await expect(page.locator("#account-error")).toHaveText("Mật khẩu quản trị không đúng.");
+  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+});
+
+test("an admin switches pages and signs out from the account corner", async ({ page }) => {
+  await quietServer(page);
+  let signedIn = false;
+  let sentKey = null;
+  await page.route("**/api/admin/login", (route) => {
+    sentKey = route.request().postDataJSON().key;
+    signedIn = true;
+    return route.fulfill({ status: 200, json: { ok: true } });
+  });
+  await page.route("**/api/admin/logout", (route) => {
+    signedIn = false;
+    return route.fulfill({ status: 200, json: { ok: true } });
+  });
+  await page.goto("http://127.0.0.1:4173");
+
+  await page.click("#account-login");
+  await page.fill("#account-password", "quan-tri");
+  await page.press("#account-password", "Enter");
+
+  expect(sentKey).toBe("quan-tri");
+  await expect(page.getByRole("img", { name: "Tài khoản: quản trị" })).toBeVisible();
+  await expect(page.locator("#account-switch")).toHaveAttribute("href", "/admin");
+  await expect(page.locator("#account-login")).toBeHidden();
+  await expect(page.locator("#account-form")).toBeHidden();
+
+  await page.click("#account-logout");
+  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+  expect(signedIn).toBe(false);
+});
+
+test("an open admin session shows the admin account on arrival", async ({ page }) => {
+  await quietServer(page);
+  await page.route("**/api/admin/session", (route) =>
+    route.fulfill({ status: 200, json: { ok: true } }),
+  );
+  await page.goto("http://127.0.0.1:4173");
+
+  await expect(page.getByRole("img", { name: "Tài khoản: quản trị" })).toBeVisible();
+  await expect(page.locator("#account-switch")).toBeVisible();
+});
+
+test("the short admin address asks a guest for the password", async ({ page }) => {
+  await page.goto("http://127.0.0.1:4173/admin");
+
+  await expect(page.getByRole("heading", { name: "Quản trị ontology" })).toBeVisible();
+  await expect(page.locator("#account-password")).toBeFocused();
+  await expect(page.locator("#tabs")).toBeHidden();
+  await expect(page.locator("#account-switch")).toHaveAttribute("href", "/");
 });

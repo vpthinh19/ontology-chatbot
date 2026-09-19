@@ -7,6 +7,7 @@
     <title>Quản trị ontology · Trợ lý học vụ NTU</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/admin.css" />
+    <link rel="stylesheet" href="/account.css" />
   </head>
   <body>
     <header class="bar">
@@ -15,14 +16,8 @@
         <button type="button" data-view="data" class="active">Dữ liệu ontology</button>
         <button type="button" data-view="chat">Lịch sử chat</button>
       </nav>
-      <form id="login-form" hidden>
-        <label class="sr-only" for="token">Khoá quản trị</label>
-        <input id="token" type="password" placeholder="Khoá quản trị" autocomplete="current-password" />
-        <button type="submit" class="primary">Đăng nhập</button>
-      </form>
       <div class="bar-end">
-        <button id="logout-btn" type="button" hidden>Đăng xuất</button>
-        <a href="/">Về trang hỏi đáp</a>
+        <div id="account"></div>
       </div>
     </header>
 

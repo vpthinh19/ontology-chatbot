@@ -5,6 +5,7 @@
   "outputDirectory": "dist",
   "regions": ["sin1"],
   "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
     { "source": "/api/admin/:path*", "destination": "/api/admin?path=:path*" }
   ],
   "functions": {

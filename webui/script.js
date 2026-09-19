@@ -1,3 +1,5 @@
+import { mountAccount } from "./account.js";
+
 const container = document.querySelector(".container");
 const chatsContainer = document.querySelector(".chats-container");
 const promptForm = document.querySelector(".prompt-form");
@@ -524,3 +526,5 @@ document.addEventListener("visibilitychange", () => {
 showIntroduction();
 setServerState("waking");
 void checkServer();
+
+mountAccount(document.querySelector("#account"), { other: { href: "/admin", label: "Quản trị" } });

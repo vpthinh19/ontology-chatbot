@@ -192,7 +192,7 @@ def admin_routes(store: AdminStore, admin_token: str, authorize, chat_log=None) 
             return failure(exc)
         if not secrets.compare_digest(key.encode("utf-8"), admin_token.encode("utf-8")):
             failed_logins.append(now)
-            return JSONResponse({"detail": "Khoá quản trị không đúng."}, status_code=401)
+            return JSONResponse({"detail": "Mật khẩu quản trị không đúng."}, status_code=401)
         response = JSONResponse({"ok": True})
         response.set_cookie(SESSION_COOKIE, session_value(admin_token), max_age=SESSION_SECONDS, path=SESSION_PATH,
                             httponly=True, secure=True, samesite="strict")

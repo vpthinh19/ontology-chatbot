@@ -91,7 +91,7 @@ a:focus-visible {
 
 .chats-container {
   flex: 1;
-  padding: 2.5rem 0 1.5rem;
+  padding: 4rem 0 1.5rem;
 }
 
 .message {
