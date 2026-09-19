@@ -13,7 +13,7 @@ import pytest
 from ontchatbot.admin import AdminStore, Schema
 from ontchatbot.runtime import api
 from ontchatbot.runtime.agent import AgentEvent
-from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog, flags, new_id, summarize_lookup
+from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog, flags, new_id, summarize_lookup, valid_id
 from ontchatbot.settings import ONTOLOGY_PATH
 
 FOUND = json.dumps({"status": "found", "results": [{"label": "Thủ tục nghỉ học tạm thời"}]})
@@ -50,35 +50,46 @@ def test_a_lookup_keeps_its_keywords_status_and_the_labels_it_returned() -> None
     assert summarize_lookup(("x",), "không phải JSON")["status"] is None
 
 
-def test_a_local_log_lists_filters_reviews_and_deletes(tmp_path) -> None:
+def test_a_local_log_groups_turns_into_sessions_filters_reviews_and_deletes(tmp_path) -> None:
     log = LocalChatLog(tmp_path)
     today = datetime.now().astimezone()
-    plain = record(id=new_id(today), time=today.isoformat())
-    missing = record(id=new_id(today), time=today.isoformat(), question="Ký túc xá ở đâu?",
+    day = f"{today:%Y%m%d}"
+    first, other = f"{day}T100000-000001", f"{day}T110000-000002"
+    plain = record(id=f"{day}T100001-00000a", session=first, time=today.isoformat())
+    missing = record(id=f"{day}T100002-00000b", session=first, time=today.isoformat(), question="Ký túc xá ở đâu?",
                      lookups=[summarize_lookup(["ký túc xá"], NOT_FOUND)], answer="Không tìm thấy thông tin.")
-    log.submit(plain)
-    log.submit(missing)
+    alone = record(id=f"{day}T110001-00000c", session=other, time=today.isoformat(), question="Học phí?")
+    for turn in (plain, missing, alone):
+        log.submit(turn)
     log.flush()
 
-    assert {item["id"] for item in log.list()} == {plain["id"], missing["id"]}
-    assert [item["id"] for item in log.list(view="review")] == [missing["id"]]
-    assert [item["id"] for item in log.list(query="ký túc")] == [missing["id"]]
+    listed = log.list()
+    assert [item["session"] for item in listed] == [other, first]
+    assert {key: listed[1][key] for key in ("turns", "question", "flags", "open", "todo")} == {
+        "turns": 2, "question": "Hỏi thử", "flags": ["not_found", "says_missing"], "open": 1, "todo": 0}
+    assert [item["session"] for item in log.list(view="review")] == [first]
+    assert [item["session"] for item in log.list(query="ký túc")] == [first]
+    assert [turn["id"] for turn in log.session(first)["turns"]] == [plain["id"], missing["id"]]
 
-    reviewed = log.review(missing["id"], "can-bo-sung", "thêm thực thể ký túc xá")
+    reviewed = log.review(first, missing["id"], "can-bo-sung", "thêm thực thể ký túc xá")
     assert reviewed["review"]["state"] == "can-bo-sung"
     assert log.list(view="review") == []
-    assert [item["id"] for item in log.list(view="todo")] == [missing["id"]]
+    assert [(item["session"], item["todo"]) for item in log.list(view="todo")] == [(first, 1)]
 
-    log.delete(plain["id"])
+    log.delete(first, plain["id"])
+    assert [turn["id"] for turn in log.session(first)["turns"]] == [missing["id"]]
+    log.delete(other)
     with pytest.raises(KeyError):
-        log.get(plain["id"])
+        log.session(other)
 
 
-def test_a_record_id_cannot_reach_outside_the_log_folder(tmp_path) -> None:
+def test_an_id_cannot_reach_outside_the_log_folder(tmp_path) -> None:
     log = LocalChatLog(tmp_path / "chat")
-    for bad in ("../../etc/passwd", "20260918T171939-../../x", "x" * 22):
+    for bad in ("../../etc/passwd", "20260918T171939-../../x", "x" * 22, "20260918T171939-ABCDEF"):
         with pytest.raises(KeyError):
-            log.get(bad)
+            log.session(bad)
+        with pytest.raises(KeyError):
+            log.delete("20260918T171939-abcdef", bad)
 
 
 def test_a_cloud_log_keeps_the_summary_in_object_metadata() -> None:
@@ -88,21 +99,23 @@ def test_a_cloud_log_keeps_the_summary_in_object_metadata() -> None:
         seen.append(request)
         if request.method == "GET":
             return httpx.Response(200, json={"items": [{
-                "name": "du-lieu/chat-logs/2026-09-18/20260918T171939-abcdef.json",
+                "name": "du-lieu/chat-logs/2026-09-18/20260918T171900-aaaaaa/20260918T171939-abcdef.json",
                 "metadata": {"question": "Ký túc xá?", "time": "t", "outcome": "ok", "flags": "not_found",
                              "review": "", "note": "", "reviewed": "", "admin": "1"}}]})
         return httpx.Response(200, json={})
 
     log = GcsChatLog("kho", "du-lieu/chat-logs/", http=httpx.Client(transport=httpx.MockTransport(handler)),
                      token=lambda: "khoa")
-    log.write({**record(), "flags": ["not_found"], "review": {"state": "", "note": "", "time": None}, "admin": True})
+    log.write({**record(session="20260918T171900-aaaaaa"), "flags": ["not_found"],
+               "review": {"state": "", "note": "", "time": None}, "admin": True})
     items = log.list(days=3650)
 
     upload = seen[0]
     assert upload.url.params["uploadType"] == "multipart"
-    assert b'"name": "du-lieu/chat-logs/2026-09-18/' in upload.content
+    assert b'"name": "du-lieu/chat-logs/2026-09-18/20260918T171900-aaaaaa/' in upload.content
     assert b'"flags": "not_found"' in upload.content
     assert b'"admin": "1"' in upload.content
+    assert items[0]["session"] == "20260918T171900-aaaaaa"
     assert items[0]["flags"] == ["not_found"] and items[0]["question"] == "Ký túc xá?"
     assert items[0]["admin"] is True
     assert seen[1].url.params["startOffset"].startswith("du-lieu/chat-logs/")
@@ -128,9 +141,8 @@ def test_each_chat_turn_is_recorded_with_its_lookups(tmp_path) -> None:
     log.flush()
 
     [item] = log.list()
-    saved = log.get(item["id"])
-    assert saved["question"] == "Ký túc xá ở đâu?"
-    assert [m["content"] for m in saved["context"]] == ["Chào", "Chào bạn"]
+    [saved] = log.session(item["session"])["turns"]
+    assert saved["question"] == "Ký túc xá ở đâu?" and saved["session"] == item["session"]
     assert saved["lookups"] == [{"keywords": ["ký túc xá"], "status": "not_found", "results": [],
                                  "unmatched": ["ký túc xá"]}]
     assert saved["flags"] == ["not_found", "says_missing"]
@@ -204,10 +216,11 @@ def test_repeated_wrong_keys_are_blocked_for_a_minute(tmp_path) -> None:
     assert asyncio.run(run()) == [401] * 10 + [429, 429]
 
 
-def test_the_admin_reads_and_marks_chat_history(tmp_path) -> None:
+def test_the_admin_reads_marks_and_deletes_chat_sessions(tmp_path) -> None:
     log = LocalChatLog(tmp_path / "chat")
     today = datetime.now().astimezone()
-    turn = record(id=new_id(today), time=today.isoformat(), answer="Không có thông tin.")
+    session = new_id(today)
+    turn = record(id=new_id(today), session=session, time=today.isoformat(), answer="Không có thông tin.")
     log.submit(turn)
     log.flush()
     key = {"X-Admin-Token": "khoa-quan-tri"}
@@ -215,13 +228,39 @@ def test_the_admin_reads_and_marks_chat_history(tmp_path) -> None:
     async def run():
         async with _client(_app(tmp_path, log)) as client:
             listed = (await client.get("/admin/chats?view=review", headers=key)).json()
-            marked = await client.put(f"/admin/chats/{turn['id']}", headers=key,
+            opened = (await client.get(f"/admin/chats/{session}", headers=key)).json()
+            marked = await client.put(f"/admin/chats/{session}/{turn['id']}", headers=key,
                                       json={"state": "can-bo-sung", "note": "thêm dữ liệu"})
-            bad = await client.put(f"/admin/chats/{turn['id']}", headers=key, json={"state": "lung-tung"})
+            bad = await client.put(f"/admin/chats/{session}/{turn['id']}", headers=key, json={"state": "lung-tung"})
             missing = await client.get("/admin/chats/20990101T000000-abcdef", headers=key)
-            return listed, marked, bad, missing
+            deleted = await client.delete(f"/admin/chats/{session}", headers=key)
+            gone = await client.get(f"/admin/chats/{session}", headers=key)
+            return listed, opened, marked, bad, missing, deleted, gone
 
-    listed, marked, bad, missing = asyncio.run(run())
-    assert [item["id"] for item in listed["items"]] == [turn["id"]]
+    listed, opened, marked, bad, missing, deleted, gone = asyncio.run(run())
+    assert [item["session"] for item in listed["items"]] == [session]
+    assert [t["id"] for t in opened["turns"]] == [turn["id"]]
     assert marked.json()["review"]["note"] == "thêm dữ liệu"
-    assert (bad.status_code, missing.status_code) == (400, 404)
+    assert (bad.status_code, missing.status_code, deleted.status_code, gone.status_code) == (400, 404, 200, 404)
+
+
+def test_the_chat_route_issues_a_session_and_keeps_the_one_it_is_given(tmp_path) -> None:
+    class Agent:
+        async def stream(self, messages):
+            yield AgentEvent("completed", content="Có.")
+
+    log = LocalChatLog(tmp_path / "logs")
+    app = api.create_app(Agent(), chat_log=log)
+
+    async def run():
+        async with _client(app) as client:
+            first = await client.post("/chat", json={"message": "một"})
+            session = first.headers["x-chat-session"]
+            again = await client.post("/chat", json={"message": "hai", "session": session})
+            forged = await client.post("/chat", json={"message": "ba", "session": "../../x"})
+            return session, again.headers["x-chat-session"], forged.headers["x-chat-session"]
+
+    session, again, forged = asyncio.run(run())
+    log.flush()
+    assert again == session and forged != session and valid_id(forged)
+    assert [turn["question"] for turn in log.session(session)["turns"]] == ["một", "hai"]

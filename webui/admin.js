@@ -840,8 +840,8 @@ const FLAG_NAMES = {
 };
 const FLAG_TEXT = {
   not_found: "Có lần tra cứu không trả về thực thể nào.",
-  says_missing: "Câu trả lời nói dữ liệu không có (toàn bộ hoặc một phần câu hỏi).",
-  out_of_scope: "Câu trả lời nói câu hỏi nằm ngoài phạm vi hỗ trợ.",
+  says_missing: "Trợ lý tự đánh dấu dữ liệu không có (toàn bộ hoặc một phần câu hỏi).",
+  out_of_scope: "Trợ lý tự đánh dấu câu hỏi nằm ngoài phạm vi hỗ trợ.",
   no_lookup: "Trả lời mà không tra cứu lần nào.",
   failed: "Lượt không hoàn tất (quá hạn, lỗi, hàng đầy hoặc người dùng đóng trang).",
 };
@@ -856,23 +856,23 @@ const OUTCOME_NAMES = {
   error: "lỗi",
   abandoned: "người dùng đóng trang giữa chừng",
 };
-const chatState = { items: [], openId: null };
+// Lịch sử chat theo phiên: danh sách là các phiên (cuộc trò chuyện), mở một phiên thấy mọi lượt của nó;
+// xem xét và xoá làm trên từng lượt, hoặc xoá cả phiên.
+const chatState = { items: [], openSession: null };
 const when = (iso) =>
   iso ? new Date(iso).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "";
 const badges = (item) =>
   element("span", { class: "badges" }, [
     item.admin ? element("span", { class: "badge admin", text: "quản trị" }) : null,
     ...(item.flags || []).map((flag) => element("span", { class: "badge warn", text: FLAG_NAMES[flag] || flag })),
-    item.review && item.review.state
-      ? element("span", { class: "badge state", text: REVIEW_NAMES[item.review.state] })
-      : null,
+    item.todo ? element("span", { class: "badge state", text: `${REVIEW_NAMES["can-bo-sung"]} (${item.todo})` }) : null,
   ]);
 
 const renderChatList = () => {
   const list = $("#chat-items");
-  $("#chat-list-title").textContent = `Các lượt hỏi (${chatState.items.length})`;
+  $("#chat-list-title").textContent = `Các phiên (${chatState.items.length})`;
   if (!chatState.items.length) {
-    list.replaceChildren(element("li", { class: "muted", text: "Không có lượt hỏi nào khớp bộ lọc." }));
+    list.replaceChildren(element("li", { class: "muted", text: "Không có phiên nào khớp bộ lọc." }));
     return;
   }
   list.replaceChildren(
@@ -882,9 +882,13 @@ const renderChatList = () => {
         {},
         element(
           "button",
-          { type: "button", class: item.id === chatState.openId ? "active" : "", onclick: () => run(() => openChat(item.id)) },
+          {
+            type: "button",
+            class: item.session === chatState.openSession ? "active" : "",
+            onclick: () => run(() => openSession(item.session)),
+          },
           [
-            element("span", { class: "when", text: when(item.time) }),
+            element("span", { class: "when", text: `${when(item.time)} · ${item.turns} lượt` }),
             element("span", { class: "question", text: item.question }),
             badges(item),
           ],
@@ -904,10 +908,13 @@ const loadChats = async () => {
   renderChatList();
 };
 
-const openChat = async (id) => {
-  const record = await api(`/chats/${encode(id)}`);
-  chatState.openId = id;
-  renderChatList();
+const closeSession = () => {
+  chatState.openSession = null;
+  $("#chat-detail").hidden = true;
+};
+
+const turnView = (session, record, index) => {
+  const turnPath = `/chats/${encode(session)}/${encode(record.id)}`;
   const note = growing({ "aria-label": "Ghi chú xem xét", placeholder: "Ghi chú: cần bổ sung gì, đã sửa ở đâu…", value: record.review.note || "" });
   const stateSelect = element(
     "select",
@@ -916,19 +923,19 @@ const openChat = async (id) => {
   );
   const saveReview = () =>
     run(async () => {
-      await api(`/chats/${encode(id)}`, { method: "PUT", body: { state: stateSelect.value, note: note.value } });
+      await api(turnPath, { method: "PUT", body: { state: stateSelect.value, note: note.value } });
       await loadChats();
-      await openChat(id);
+      await openSession(session);
       showStatus("Đã lưu trạng thái xem xét.", [], "ok");
     });
   const remove = () =>
     run(async () => {
-      if (!window.confirm("Xoá bản ghi này? Việc này không hoàn tác được.")) return;
-      await api(`/chats/${encode(id)}`, { method: "DELETE" });
-      chatState.openId = null;
-      $("#chat-detail").hidden = true;
+      if (!window.confirm("Xoá lượt này? Việc này không hoàn tác được.")) return;
+      await api(turnPath, { method: "DELETE" });
       await loadChats();
-      showStatus("Đã xoá bản ghi.", [], "ok");
+      if (chatState.items.some((item) => item.session === session)) await openSession(session);
+      else closeSession();
+      showStatus("Đã xoá lượt.", [], "ok");
     });
   const lookups = (record.lookups || []).map((lookup) =>
     element("div", { class: "lookup" }, [
@@ -944,38 +951,57 @@ const openChat = async (id) => {
         : null,
     ]),
   );
-  const detail = element("div", { class: "chat-record" }, [
-    element("h2", { text: `Lượt hỏi lúc ${when(record.time)}` }),
+  return element("section", { class: "chat-turn" }, [
+    element("h3", { text: `Lượt ${index + 1} · ${when(record.time)}` }),
     element("p", {
       class: "muted",
-      text: `${record.admin ? "Câu quản trị tự hỏi thử · " : ""}Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây · ${record.id}`,
+      text: `${record.admin ? "Câu quản trị tự hỏi thử · " : ""}Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây`,
     }),
     record.flags && record.flags.length
       ? element("ul", { class: "muted" }, record.flags.map((flag) => element("li", { text: FLAG_TEXT[flag] || flag })))
       : null,
-    record.context && record.context.length ? element("h3", { text: "Tin nhắn ngay trước đó" }) : null,
-    ...(record.context || []).map((message) =>
-      element("p", { class: "said context", text: `${message.role === "user" ? "Người hỏi" : "Trợ lý"}: ${message.content}` }),
-    ),
-    element("h3", { text: "Câu hỏi" }),
     element("p", { class: "said", text: record.question }),
-    element("h3", { text: "Câu trả lời" }),
     record.answer
       ? Object.assign(element("div", { class: "said answer" }), { innerHTML: renderMarkdown(record.answer) })
-      : element("p", { class: "said", text: "(không có)" }),
+      : element("p", { class: "said", text: "(không có câu trả lời)" }),
     record.error ? element("p", { class: "field-error", text: `Lỗi: ${record.error}` }) : null,
-    element("h3", { text: `Các lần tra cứu (${lookups.length})` }),
-    ...(lookups.length ? lookups : [element("p", { class: "muted", text: "Không tra cứu lần nào." })]),
+    element("details", {}, [
+      element("summary", { text: `Các lần tra cứu (${lookups.length})` }),
+      ...(lookups.length ? lookups : [element("p", { class: "muted", text: "Không tra cứu lần nào." })]),
+    ]),
     element("div", { class: "review-box" }, [
-      element("h3", { text: "Xem xét" }),
       stateSelect,
       note,
       record.review.time ? element("p", { class: "muted", text: `Cập nhật lúc ${when(record.review.time)}` }) : null,
       element("div", { class: "actions" }, [
         element("button", { type: "button", class: "primary", text: "Lưu xem xét", onclick: saveReview }),
-        element("button", { type: "button", class: "danger", text: "Xoá bản ghi", onclick: remove }),
+        element("button", { type: "button", class: "danger", text: "Xoá lượt này", onclick: remove }),
       ]),
     ]),
+  ]);
+};
+
+const openSession = async (session) => {
+  const { turns } = await api(`/chats/${encode(session)}`);
+  chatState.openSession = session;
+  renderChatList();
+  const removeSession = () =>
+    run(async () => {
+      if (!window.confirm(`Xoá cả phiên (${turns.length} lượt)? Việc này không hoàn tác được.`)) return;
+      await api(`/chats/${encode(session)}`, { method: "DELETE" });
+      closeSession();
+      await loadChats();
+      showStatus("Đã xoá phiên.", [], "ok");
+    });
+  const detail = element("div", { class: "chat-record" }, [
+    element("div", { class: "session-head" }, [
+      element("div", {}, [
+        element("h2", { text: `Phiên bắt đầu lúc ${when(turns[0].time)}` }),
+        element("p", { class: "muted", text: `${turns.length} lượt · ${session}` }),
+      ]),
+      element("button", { type: "button", class: "danger", text: "Xoá cả phiên", onclick: removeSession }),
+    ]),
+    ...turns.map((record, index) => turnView(session, record, index)),
   ]);
   const panel = $("#chat-detail");
   panel.replaceChildren(detail);

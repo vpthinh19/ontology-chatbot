@@ -49,10 +49,10 @@
         <h2>Lịch sử chat</h2>
         <label>Hiển thị
           <select id="chat-view-select">
-            <option value="review">Cần xem xét (có dấu hiệu, chưa xem)</option>
-            <option value="todo">Đã đánh dấu cần bổ sung</option>
-            <option value="flagged">Mọi lượt có dấu hiệu</option>
-            <option value="failed">Lượt không hoàn tất</option>
+            <option value="review">Cần xem xét (có lượt có dấu hiệu, chưa xem)</option>
+            <option value="todo">Có lượt đã đánh dấu cần bổ sung</option>
+            <option value="flagged">Có lượt có dấu hiệu</option>
+            <option value="failed">Có lượt không hoàn tất</option>
             <option value="all">Tất cả</option>
           </select>
         </label>
@@ -73,8 +73,8 @@
           <p>Dấu hiệu được tính từ chính bản ghi:</p>
           <ul>
             <li><b>Không thấy</b>: có lần tra cứu không trả về thực thể nào.</li>
-            <li><b>Báo thiếu</b>: câu trả lời nói dữ liệu không có (toàn bộ hoặc một phần).</li>
-            <li><b>Ngoài phạm vi</b>: câu trả lời nói câu hỏi nằm ngoài phạm vi hỗ trợ.</li>
+            <li><b>Báo thiếu</b>: trợ lý tự đánh dấu dữ liệu không có (toàn bộ hoặc một phần).</li>
+            <li><b>Ngoài phạm vi</b>: trợ lý tự đánh dấu câu hỏi nằm ngoài phạm vi hỗ trợ.</li>
             <li><b>Không tra</b>: trả lời mà không tra cứu.</li>
             <li><b>Lỗi</b>: lượt không hoàn tất.</li>
           </ul>
@@ -82,7 +82,7 @@
       </form>
 
       <section id="chat-list-panel" aria-labelledby="chat-list-title">
-        <h2 id="chat-list-title" class="panel-title">Các lượt hỏi</h2>
+        <h2 id="chat-list-title" class="panel-title">Các phiên</h2>
         <ul id="chat-items"></ul>
       </section>
 

@@ -224,26 +224,39 @@ def admin_routes(store: AdminStore, admin_token: str, authorize, chat_log=None) 
                                         query=query.get("q", "").strip(), limit=500)
         return JSONResponse({"items": items})
 
-    async def chat_record(request):
+    async def chat_session(request):
         denied = refuse(request)
         if denied is not None:
             return denied
         if chat_log is None:
             return JSONResponse({"detail": "Dịch vụ chưa bật lưu lịch sử chat."}, status_code=404)
-        record_id = request.path_params["id"]
+        session_id = request.path_params["session"]
         try:
-            if request.method == "GET":
-                return JSONResponse(await asyncio.to_thread(chat_log.get, record_id))
             if request.method == "DELETE":
-                await asyncio.to_thread(chat_log.delete, record_id)
-                return JSONResponse({"deleted": record_id})
+                await asyncio.to_thread(chat_log.delete, session_id)
+                return JSONResponse({"deleted": session_id})
+            return JSONResponse(await asyncio.to_thread(chat_log.session, session_id))
+        except KeyError:
+            return JSONResponse({"detail": "Không có phiên này."}, status_code=404)
+
+    async def chat_turn(request):
+        denied = refuse(request)
+        if denied is not None:
+            return denied
+        if chat_log is None:
+            return JSONResponse({"detail": "Dịch vụ chưa bật lưu lịch sử chat."}, status_code=404)
+        session_id, turn_id = request.path_params["session"], request.path_params["id"]
+        try:
+            if request.method == "DELETE":
+                await asyncio.to_thread(chat_log.delete, session_id, turn_id)
+                return JSONResponse({"deleted": turn_id})
             body = await read_body(request)
             state, note = body.get("state", ""), str(body.get("note") or "")[:1000]
             if state not in REVIEW_STATES:
                 raise AdminError("Trạng thái xem xét không hợp lệ.")
-            return JSONResponse(await asyncio.to_thread(chat_log.review, record_id, state, note))
+            return JSONResponse(await asyncio.to_thread(chat_log.review, session_id, turn_id, state, note))
         except KeyError:
-            return JSONResponse({"detail": "Không có bản ghi này."}, status_code=404)
+            return JSONResponse({"detail": "Không có lượt này."}, status_code=404)
         except AdminError as exc:
             return failure(exc)
 
@@ -252,7 +265,8 @@ def admin_routes(store: AdminStore, admin_token: str, authorize, chat_log=None) 
         Route("/admin/logout", logout, methods=["POST"]),
         Route("/admin/session", session, methods=["GET"]),
         Route("/admin/chats", chats, methods=["GET"]),
-        Route("/admin/chats/{id}", chat_record, methods=["GET", "PUT", "DELETE"]),
+        Route("/admin/chats/{session}", chat_session, methods=["GET", "DELETE"]),
+        Route("/admin/chats/{session}/{id}", chat_turn, methods=["PUT", "DELETE"]),
         Route("/admin/schema", schema, methods=["GET"]),
         Route("/admin/entities", entities, methods=["GET", "POST"]),
         Route("/admin/entities/{id}", entity, methods=["GET", "PUT", "DELETE"]),

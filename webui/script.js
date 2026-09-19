@@ -34,6 +34,9 @@ let connectionCountdownTimer;
 let serverState;
 let lastReadyAt = 0;
 const chatHistory = [];
+// Mã phiên do máy chủ cấp ở câu đầu (header X-Chat-Session), gửi lại ở các câu sau để lịch sử chat
+// gom các lượt của cuộc trò chuyện này; xoá hội thoại thì bắt đầu phiên mới.
+let chatSession = null;
 
 const isLightTheme = localStorage.getItem("themeColor") === "light_mode";
 document.body.classList.toggle("light-theme", isLightTheme);
@@ -317,9 +320,10 @@ const generateResponse = async (botMessage, userMessage) => {
     const response = await fetch(apiUrl("/chat"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMessage, history }),
+      body: JSON.stringify({ message: userMessage, history, ...(chatSession ? { session: chatSession } : {}) }),
       signal: controller.signal,
     });
+    chatSession = response.headers.get("X-Chat-Session") || chatSession;
     if (!response.ok) {
       if (isRejectedKey(response.status)) {
         setServerState("blocked");
@@ -458,6 +462,7 @@ themeToggleButton.addEventListener("click", () => {
 deleteButton.addEventListener("click", () => {
   responseController?.abort();
   chatHistory.length = 0;
+  chatSession = null;
   chatsContainer.replaceChildren();
   showIntroduction();
   document.body.classList.remove("chats-active", "bot-responding");

@@ -23,7 +23,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from typing import Any, AsyncIterator, Sequence
 
-from .chatlog import new_id, summarize_lookup
+from .chatlog import new_id, summarize_lookup, valid_id
 
 #: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
 #: gõ, mỗi lần trợ lý tra cứu, câu trả lời cuối, và thời gian cả lượt. Các tầng
@@ -207,12 +207,14 @@ class TurnGate:
 
 
 async def _stream(
-    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None, *, by_admin: bool = False
+    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None, *,
+    by_admin: bool = False, session: str | None = None,
 ) -> AsyncIterator[str]:
     conversation = _bounded_history(history)
     turn = uuid.uuid4().hex[:12]
     started = time.perf_counter()
     started_at = datetime.now().astimezone()
+    session = session or new_id(started_at)  # gọi thẳng (kiểm thử, dòng lệnh): mỗi lượt một phiên
     lookups = 0
     answer = ""
     queue_ms = 0.0
@@ -359,8 +361,7 @@ async def _stream(
                 "id": new_id(started_at),
                 "time": started_at.isoformat(timespec="seconds"),
                 "question": message,
-                "context": [{"role": item["role"], "content": str(item["content"])[:500]}
-                            for item in conversation[:-1][-4:]],
+                "session": session,
                 "answer": answer or "".join(partial),
                 "outcome": outcome,
                 "error": error_detail or error_text,
@@ -455,10 +456,15 @@ def create_app(
         history = payload.get("history") or []
         if not isinstance(history, list):
             return error(400, "history must be a list")
+        # Mã phiên gom các lượt của một cuộc trò chuyện trong lịch sử chat. Trang gửi lại mã đã nhận;
+        # chưa có hoặc sai dạng thì cấp mã mới. Mã chỉ để gom nhóm, không phải quyền gì.
+        session = payload.get("session")
+        if not valid_id(session):
+            session = new_id(datetime.now().astimezone())
         return StreamingResponse(
-            _stream(agent, message.strip(), history, gate, chat_log, by_admin=is_admin(request)),
+            _stream(agent, message.strip(), history, gate, chat_log, by_admin=is_admin(request), session=session),
             media_type="text/event-stream",
-            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "X-Chat-Session": session},
         )
 
     @asynccontextmanager

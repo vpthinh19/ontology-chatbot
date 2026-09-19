@@ -1,6 +1,7 @@
 """Nhật ký hội thoại: mỗi lượt hỏi đáp một bản ghi, để người quản trị xem lại và cải thiện ontology.
 
-Một bản ghi giữ câu hỏi, vài tin nhắn trước đó (để hiểu câu hỏi nối tiếp), câu trả lời, kết cục,
+Các lượt của một cuộc trò chuyện chung một phiên (mã phiên do máy chủ cấp, trang gửi kèm mỗi câu),
+nên người xem đọc được cả cuộc trò chuyện. Một bản ghi giữ câu hỏi, câu trả lời, kết cục,
 và từng lần tra cứu: từ khoá, công cụ trả ``found`` hay ``not_found``, những mục nào được trả về.
 Nhờ đó người xem phân biệt được "ontology thiếu dữ liệu" với "tra sai từ khoá".
 
@@ -11,7 +12,7 @@ Dấu hiệu cần xem xét (``flags``) tính từ chính bản ghi, không đo�
 - ``no_lookup``: trả lời mà không tra cứu lần nào;
 - ``failed``: lượt không xong (quá hạn, lỗi, hàng đầy, người dùng đóng trang).
 
-Mỗi bản ghi là một tệp JSON riêng: ``<ngày>/<định danh>.json``. Nhiều bản dịch vụ ghi cùng lúc
+Mỗi bản ghi là một tệp JSON riêng: ``<ngày bắt đầu phiên>/<mã phiên>/<mã lượt>.json``. Nhiều bản dịch vụ ghi cùng lúc
 không đè nhau, và đánh dấu hay xoá một bản ghi chỉ đụng tới đúng tệp đó. Trên Cloud Run tệp nằm
 trong Cloud Storage (container không giữ tệp); chạy ở máy thì nằm trong một thư mục.
 Việc ghi chạy ở một luồng nền, không làm chậm câu trả lời.
@@ -22,6 +23,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import secrets
 from abc import ABC, abstractmethod
 from concurrent.futures import ThreadPoolExecutor
@@ -45,11 +47,17 @@ MISSING_PHRASES = (
 OUT_OF_SCOPE_PHRASES = ("ngoài phạm vi",)
 #: Trạng thái xem xét: chưa xem · cần bổ sung dữ liệu hay sửa hệ thống · đã xử lý · không cần xử lý.
 REVIEW_STATES = ("", "can-bo-sung", "da-xu-ly", "bo-qua")
-_ID_LENGTH = len("20260918T171939-abcdef")
+_ID = re.compile(r"\d{8}T\d{6}-[0-9a-f]{6}")
 
 
 def new_id(now: datetime) -> str:
     return f"{now:%Y%m%dT%H%M%S}-{secrets.token_hex(3)}"
+
+
+def valid_id(value: object) -> bool:
+    """Mã lượt và mã phiên có cùng dạng: thời điểm tạo cộng sáu ký tự ngẫu nhiên."""
+
+    return isinstance(value, str) and _ID.fullmatch(value) is not None
 
 
 def _day(record_id: str) -> str:
@@ -105,6 +113,10 @@ def _matches(record: dict, view: str, query: str) -> bool:
 
 
 class ChatLog(ABC):
+    """Lịch sử chat theo phiên. Mỗi lượt vẫn là một tệp riêng (Cloud Storage không ghi nối được, và
+    hai bản dịch vụ ghi cùng lúc không đè nhau), nằm trong thư mục của phiên:
+    ``<ngày bắt đầu phiên>/<mã phiên>/<mã lượt>.json``. Danh sách gom các lượt thành phiên."""
+
     def __init__(self) -> None:
         self._writer = ThreadPoolExecutor(max_workers=1, thread_name_prefix="chatlog")
 
@@ -126,29 +138,61 @@ class ChatLog(ABC):
 
         self._writer.submit(lambda: None).result()
 
+    def list(self, *, days: int = 7, view: str = "all", query: str = "", limit: int = 300) -> list[dict]:
+        """Các phiên bắt đầu trong ``days`` ngày có ít nhất một lượt khớp bộ lọc, mới nhất trước."""
+
+        sessions: dict[str, list[dict]] = {}
+        for turn in self._turns(days):
+            sessions.setdefault(turn["session"], []).append(turn)
+        found = []
+        for session_id in sorted(sessions, reverse=True):
+            turns = sorted(sessions[session_id], key=lambda turn: turn["id"])
+            if any(_matches(turn, view, query) for turn in turns):
+                found.append(_session_summary(session_id, turns))
+                if len(found) >= limit:
+                    break
+        return found
+
     @abstractmethod
     def write(self, record: dict) -> None: ...
 
     @abstractmethod
-    def list(self, *, days: int = 7, view: str = "all", query: str = "", limit: int = 300) -> list[dict]: ...
+    def _turns(self, days: int) -> list[dict]:
+        """Tóm tắt mọi lượt của các phiên bắt đầu trong ``days`` ngày (có ``session``)."""
 
     @abstractmethod
-    def get(self, record_id: str) -> dict: ...
+    def session(self, session_id: str) -> dict:
+        """``{"session": mã, "turns": [bản ghi đầy đủ theo thứ tự]}``."""
 
     @abstractmethod
-    def review(self, record_id: str, state: str, note: str) -> dict: ...
+    def review(self, session_id: str, turn_id: str, state: str, note: str) -> dict: ...
 
     @abstractmethod
-    def delete(self, record_id: str) -> None: ...
+    def delete(self, session_id: str, turn_id: str | None = None) -> None:
+        """Xoá một lượt, hoặc cả phiên khi không nêu lượt."""
 
     @staticmethod
-    def _check_id(record_id: str) -> None:
-        if len(record_id) != _ID_LENGTH or not record_id[:8].isdigit() or "/" in record_id or ".." in record_id:
-            raise KeyError(record_id)
+    def _check_id(value: str) -> None:
+        if not valid_id(value):
+            raise KeyError(value)
 
     @staticmethod
     def _summary(record: dict) -> dict:
-        return {key: record.get(key) for key in ("id", "time", "question", "outcome", "flags", "review", "admin")}
+        return {key: record.get(key) for key in
+                ("id", "session", "time", "question", "answer", "outcome", "flags", "review", "admin")}
+
+
+def _session_summary(session_id: str, turns: list[dict]) -> dict:
+    seen: list[str] = []
+    for turn in turns:
+        seen += [flag for flag in turn["flags"] if flag not in seen]
+    return {
+        "session": session_id, "time": turns[0]["time"], "last": turns[-1]["time"], "turns": len(turns),
+        "question": turns[0]["question"], "flags": seen, "admin": any(turn.get("admin") for turn in turns),
+        # Số lượt đã đánh dấu cần bổ sung, và số lượt có dấu hiệu mà chưa ai xem.
+        "todo": sum(turn["review"]["state"] == "can-bo-sung" for turn in turns),
+        "open": sum(bool(turn["flags"]) and not turn["review"]["state"] for turn in turns),
+    }
 
 
 class LocalChatLog(ChatLog):
@@ -158,48 +202,54 @@ class LocalChatLog(ChatLog):
         super().__init__()
         self.root = Path(root)
 
-    def _path(self, record_id: str) -> Path:
-        self._check_id(record_id)
-        return self.root / _day(record_id) / f"{record_id}.json"
+    def _folder(self, session_id: str) -> Path:
+        self._check_id(session_id)
+        return self.root / _day(session_id) / session_id
+
+    def _path(self, session_id: str, turn_id: str) -> Path:
+        self._check_id(turn_id)
+        return self._folder(session_id) / f"{turn_id}.json"
 
     def write(self, record: dict) -> None:
-        path = self._path(record["id"])
+        path = self._path(record["session"], record["id"])
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_suffix(".tmp")
         temporary.write_text(json.dumps(record, ensure_ascii=False, indent=1), encoding="utf-8")
         os.replace(temporary, path)
 
-    def list(self, *, days: int = 7, view: str = "all", query: str = "", limit: int = 300) -> list[dict]:
+    def _turns(self, days: int) -> list[dict]:
         since = (datetime.now() - timedelta(days=days - 1)).strftime("%Y-%m-%d")
-        found = []
-        folders = sorted((p for p in self.root.glob("????-??-??") if p.name >= since), reverse=True) \
-            if self.root.exists() else []
-        for folder in folders:
-            for path in sorted(folder.glob("*.json"), reverse=True):
-                record = json.loads(path.read_text(encoding="utf-8"))
-                if _matches(record, view, query):
-                    found.append(self._summary(record))
-                    if len(found) >= limit:
-                        return found
-        return found
+        if not self.root.exists():
+            return []
+        return [self._summary(json.loads(path.read_text(encoding="utf-8")))
+                for day in self.root.glob("????-??-??") if day.name >= since
+                for path in day.glob("*/*.json")]
 
-    def get(self, record_id: str) -> dict:
-        path = self._path(record_id)
+    def session(self, session_id: str) -> dict:
+        folder = self._folder(session_id)
+        paths = sorted(folder.glob("*.json")) if folder.exists() else []
+        if not paths:
+            raise KeyError(session_id)
+        return {"session": session_id, "turns": [json.loads(path.read_text(encoding="utf-8")) for path in paths]}
+
+    def review(self, session_id: str, turn_id: str, state: str, note: str) -> dict:
+        path = self._path(session_id, turn_id)
         if not path.exists():
-            raise KeyError(record_id)
-        return json.loads(path.read_text(encoding="utf-8"))
-
-    def review(self, record_id: str, state: str, note: str) -> dict:
-        record = self.get(record_id)
+            raise KeyError(turn_id)
+        record = json.loads(path.read_text(encoding="utf-8"))
         record["review"] = {"state": state, "note": note, "time": datetime.now().astimezone().isoformat(timespec="seconds")}
         self.write(record)
         return record
 
-    def delete(self, record_id: str) -> None:
-        path = self._path(record_id)
-        if not path.exists():
-            raise KeyError(record_id)
-        path.unlink()
+    def delete(self, session_id: str, turn_id: str | None = None) -> None:
+        paths = [self._path(session_id, turn_id)] if turn_id else list(self._folder(session_id).glob("*.json"))
+        if not paths or not all(path.exists() for path in paths):
+            raise KeyError(turn_id or session_id)
+        for path in paths:
+            path.unlink()
+        folder = self._folder(session_id)
+        if folder.exists() and not any(folder.iterdir()):
+            folder.rmdir()
 
 
 class GcsChatLog(ChatLog):
@@ -221,12 +271,16 @@ class GcsChatLog(ChatLog):
     def _headers(self) -> dict[str, str]:
         return {"Authorization": f"Bearer {self.token()}"}
 
-    def _name(self, record_id: str) -> str:
-        self._check_id(record_id)
-        return f"{self.prefix}{_day(record_id)}/{record_id}.json"
+    def _folder(self, session_id: str) -> str:
+        self._check_id(session_id)
+        return f"{self.prefix}{_day(session_id)}/{session_id}/"
 
-    def _object_url(self, record_id: str) -> str:
-        return f"{self._api}/storage/v1/b/{quote(self.bucket, safe='')}/o/{quote(self._name(record_id), safe='')}"
+    def _name(self, session_id: str, turn_id: str) -> str:
+        self._check_id(turn_id)
+        return f"{self._folder(session_id)}{turn_id}.json"
+
+    def _object_url(self, name: str) -> str:
+        return f"{self._api}/storage/v1/b/{quote(self.bucket, safe='')}/o/{quote(name, safe='')}"
 
     @staticmethod
     def _metadata(record: dict) -> dict[str, str]:
@@ -244,7 +298,7 @@ class GcsChatLog(ChatLog):
 
     def write(self, record: dict) -> None:
         boundary = secrets.token_hex(16)
-        head = json.dumps({"name": self._name(record["id"]), "contentType": "application/json",
+        head = json.dumps({"name": self._name(record["session"], record["id"]), "contentType": "application/json",
                            "metadata": self._metadata(record)}, ensure_ascii=False)
         body = json.dumps(record, ensure_ascii=False)
         content = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n{head}\r\n"
@@ -257,51 +311,68 @@ class GcsChatLog(ChatLog):
         )
         self._check(response, "ghi bản ghi hội thoại")
 
-    def list(self, *, days: int = 7, view: str = "all", query: str = "", limit: int = 300) -> list[dict]:
-        since = (datetime.now() - timedelta(days=days - 1)).strftime("%Y-%m-%d")
-        records, token = [], None
+    def _objects(self, **params: str) -> list[dict]:
+        items, token = [], None
         while True:
-            params = {"prefix": self.prefix, "startOffset": f"{self.prefix}{since}",
-                      "fields": "items(name,metadata),nextPageToken", "maxResults": "1000"}
+            page_params = {"fields": "items(name,metadata),nextPageToken", "maxResults": "1000", **params}
             if token:
-                params["pageToken"] = token
+                page_params["pageToken"] = token
             response = self.http.get(f"{self._api}/storage/v1/b/{quote(self.bucket, safe='')}/o",
-                                     params=params, headers=self._headers())
+                                     params=page_params, headers=self._headers())
             self._check(response, "liệt kê bản ghi hội thoại")
             page = response.json()
-            for item in page.get("items", []):
-                meta = item.get("metadata", {})
-                records.append({
-                    "id": item["name"].rsplit("/", 1)[-1].removesuffix(".json"),
-                    "time": meta.get("time"), "question": meta.get("question", ""), "outcome": meta.get("outcome"),
-                    "admin": meta.get("admin") == "1",
-                    "flags": [flag for flag in meta.get("flags", "").split(",") if flag],
-                    "review": {"state": meta.get("review", ""), "note": meta.get("note", ""),
-                               "time": meta.get("reviewed") or None},
-                })
+            items += page.get("items", [])
             token = page.get("nextPageToken")
             if not token:
-                break
-        records.sort(key=lambda record: record["id"], reverse=True)
-        return [record for record in records if _matches(record, view, query)][:limit]
+                return items
 
-    def get(self, record_id: str) -> dict:
-        response = self.http.get(self._object_url(record_id), params={"alt": "media"}, headers=self._headers())
+    def _turns(self, days: int) -> list[dict]:
+        since = (datetime.now() - timedelta(days=days - 1)).strftime("%Y-%m-%d")
+        turns = []
+        for item in self._objects(prefix=self.prefix, startOffset=f"{self.prefix}{since}"):
+            parts = item["name"][len(self.prefix):].split("/")
+            if len(parts) != 3:  # bản ghi từ trước khi có phiên
+                continue
+            meta = item.get("metadata", {})
+            turns.append({
+                "id": parts[2].removesuffix(".json"), "session": parts[1],
+                "time": meta.get("time"), "question": meta.get("question", ""), "outcome": meta.get("outcome"),
+                "admin": meta.get("admin") == "1",
+                "flags": [flag for flag in meta.get("flags", "").split(",") if flag],
+                "review": {"state": meta.get("review", ""), "note": meta.get("note", ""),
+                           "time": meta.get("reviewed") or None},
+            })
+        return turns
+
+    def _get(self, name: str) -> dict:
+        response = self.http.get(self._object_url(name), params={"alt": "media"}, headers=self._headers())
         self._check(response, "đọc bản ghi hội thoại")
         record = response.json()
-        meta = self.http.get(self._object_url(record_id), params={"fields": "metadata"}, headers=self._headers())
+        meta = self.http.get(self._object_url(name), params={"fields": "metadata"}, headers=self._headers())
         self._check(meta, "đọc bản ghi hội thoại")
         stored = meta.json().get("metadata", {})
         record["review"] = {"state": stored.get("review", ""), "note": stored.get("note", ""),
                             "time": stored.get("reviewed") or None}
         return record
 
-    def review(self, record_id: str, state: str, note: str) -> dict:
+    def session(self, session_id: str) -> dict:
+        names = sorted(item["name"] for item in self._objects(prefix=self._folder(session_id)))
+        if not names:
+            raise KeyError(session_id)
+        return {"session": session_id, "turns": [self._get(name) for name in names]}
+
+    def review(self, session_id: str, turn_id: str, state: str, note: str) -> dict:
+        name = self._name(session_id, turn_id)
         reviewed = datetime.now().astimezone().isoformat(timespec="seconds")
-        response = self.http.patch(self._object_url(record_id), headers=self._headers(),
+        response = self.http.patch(self._object_url(name), headers=self._headers(),
                                    json={"metadata": {"review": state, "note": note[:1000], "reviewed": reviewed}})
         self._check(response, "đánh dấu bản ghi hội thoại")
-        return self.get(record_id)
+        return self._get(name)
 
-    def delete(self, record_id: str) -> None:
-        self._check(self.http.delete(self._object_url(record_id), headers=self._headers()), "xoá bản ghi hội thoại")
+    def delete(self, session_id: str, turn_id: str | None = None) -> None:
+        names = ([self._name(session_id, turn_id)] if turn_id
+                 else [item["name"] for item in self._objects(prefix=self._folder(session_id))])
+        if not names:
+            raise KeyError(session_id)
+        for name in names:
+            self._check(self.http.delete(self._object_url(name), headers=self._headers()), "xoá bản ghi hội thoại")

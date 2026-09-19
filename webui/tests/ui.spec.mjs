@@ -600,3 +600,29 @@ test("the short admin address asks a guest for the password", async ({ page }) =
   await expect(page.locator("#tabs")).toBeHidden();
   await expect(page.locator("#account-switch")).toHaveAttribute("href", "/");
 });
+
+test("the chat keeps the session the server issued and starts a new one after clearing", async ({ page }) => {
+  await quietServer(page);
+  const sent = [];
+  await page.route("**/chat", (route) => {
+    sent.push(route.request().postDataJSON().session ?? null);
+    return route.fulfill({
+      status: 200,
+      headers: { "Content-Type": "text/event-stream", "X-Chat-Session": `20260919T10000${sent.length}-abcdef` },
+      body: 'data: {"type":"completed","content":"Có."}\n\n',
+    });
+  });
+  await page.goto("http://127.0.0.1:4173");
+  const ask = async (text) => {
+    await page.locator(".prompt-input").fill(text);
+    await page.locator("#send-prompt-btn").click();
+    await expect(page.locator("body")).not.toHaveClass(/bot-responding/);
+  };
+
+  await ask("một");
+  await ask("hai");
+  await page.locator("#delete-chats-btn").click();
+  await ask("ba");
+
+  expect(sent).toEqual([null, "20260919T100001-abcdef", null]);
+});

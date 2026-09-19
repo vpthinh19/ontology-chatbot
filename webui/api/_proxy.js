@@ -1,4 +1,4 @@
-const RESPONSE_HEADERS = ["content-type", "cache-control", "x-accel-buffering"];
+const RESPONSE_HEADERS = ["content-type", "cache-control", "x-accel-buffering", "x-chat-session"];
 
 const jsonError = (status, detail, headers) =>
   Response.json(

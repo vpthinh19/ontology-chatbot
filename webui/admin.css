@@ -246,7 +246,12 @@ input:disabled { opacity: 0.6; }
 .badge.warn { background: rgba(255, 125, 136, 0.15); color: var(--danger); }
 .badge.state { background: var(--brand-soft); color: var(--brand); }
 .badge.admin { border: 1px solid var(--brand); background: transparent; color: var(--brand); }
-.chat-record { display: grid; gap: 10px; }
+.chat-record { display: grid; gap: 14px; }
+.session-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.session-head p { margin: 2px 0 0; }
+.chat-turn { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
+.chat-turn details summary { cursor: pointer; color: var(--muted); font-size: 0.9rem; }
+.chat-turn details[open] summary { margin-bottom: 6px; }
 .chat-record h2 { margin: 4px 0 0; font-size: 1.1rem; }
 .chat-record h3 { margin: 8px 0 0; font-size: 0.95rem; }
 .said { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--surface-raised); white-space: pre-wrap; overflow-wrap: anywhere; }
