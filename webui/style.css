@@ -129,24 +129,40 @@ a:focus-visible {
   font-size: 1.25rem;
 }
 
-.reply-line + .reply-line { margin-top: 0.35rem; }
-.reply-line.spacer { height: 0.55rem; }
-
-.reply-line.bullet {
-  position: relative;
-  padding-left: 1.15rem;
+/* Câu trả lời markdown (markdown.js). */
+.bot-message .message-text > :first-child { margin-top: 0; }
+.bot-message .message-text > :last-child { margin-bottom: 0; }
+.bot-message .message-text p,
+.bot-message .message-text ul,
+.bot-message .message-text ol,
+.bot-message .message-text blockquote,
+.bot-message .message-text pre,
+.bot-message .message-text table { margin: 0 0 0.7rem; }
+.bot-message .message-text ul,
+.bot-message .message-text ol { padding-left: 1.4rem; }
+.bot-message .message-text li + li { margin-top: 0.25rem; }
+.bot-message .message-text li > ul,
+.bot-message .message-text li > ol { margin: 0.25rem 0 0; }
+.bot-message .message-text li::marker { color: var(--brand); }
+.bot-message .message-text h1,
+.bot-message .message-text h2,
+.bot-message .message-text h3,
+.bot-message .message-text h4,
+.bot-message .message-text h5,
+.bot-message .message-text h6 { margin: 0.9rem 0 0.4rem; font-size: 1rem; }
+.bot-message .message-text hr { margin: 0.9rem 0; border: 0; border-top: 1px solid var(--border); }
+.bot-message .message-text blockquote { padding-left: 0.8rem; border-left: 3px solid var(--border); color: var(--muted); }
+.bot-message .message-text code {
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.3rem;
+  background: var(--surface-raised);
+  font-size: 0.92em;
 }
-
-.reply-line.bullet::before {
-  position: absolute;
-  left: 0.2rem;
-  content: "•";
-  color: var(--brand);
-}
-
-.reply-line.depth-1 { margin-left: 1rem; }
-.reply-line.depth-2 { margin-left: 2rem; }
-.reply-line.depth-3 { margin-left: 3rem; }
+.bot-message .message-text pre { overflow-x: auto; padding: 0.6rem 0.8rem; border-radius: 0.6rem; background: var(--surface-raised); }
+.bot-message .message-text pre code { padding: 0; background: none; }
+.bot-message .message-text table { display: block; overflow-x: auto; border-collapse: collapse; }
+.bot-message .message-text th,
+.bot-message .message-text td { padding: 0.35rem 0.6rem; border: 1px solid var(--border); text-align: left; }
 
 .reply-line.status { color: var(--muted); }
 

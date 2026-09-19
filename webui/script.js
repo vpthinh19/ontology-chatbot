@@ -1,4 +1,5 @@
 import { mountAccount } from "./account.js";
+import { renderMarkdown } from "./markdown.js";
 
 const container = document.querySelector(".container");
 const chatsContainer = document.querySelector(".chats-container");
@@ -216,58 +217,6 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-const renderLineContent = (text) => {
-  const placeholder = "\uE000";
-  const links = [];
-  let rendered = text.replace(/\$\\rightarrow\$/g, "→");
-  rendered = rendered.replace(
-    /\[([^\]]+)\]\((https?:\/\/(?:\([^)]*\)|[^()\s])+)\)/g,
-    (_, label, url) => {
-      links.push(
-        `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`,
-      );
-      return placeholder;
-    },
-  );
-  rendered = escapeHtml(rendered);
-  rendered = rendered.replace(/(https?:\/\/[^\s<]+)/g, (match) => {
-    const suffix = match.match(/[*_]+$/);
-    const url = suffix ? match.slice(0, -suffix[0].length) : match;
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>${suffix ? suffix[0] : ""}`;
-  });
-  rendered = rendered.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  rendered = rendered.replace(/(?<![\w*])\*([^*\n]+)\*(?![\w*])/g, "<em>$1</em>");
-  let index = 0;
-  return rendered.replace(new RegExp(placeholder, "g"), () => links[index++]);
-};
-
-const renderRichText = (text) => {
-  let html = "";
-  for (const raw of String(text).split("\n")) {
-    if (/^\s*-{3,}\s*$/.test(raw)) {
-      html += "<hr>";
-      continue;
-    }
-    const content = raw.replace(/\s+$/, "");
-    if (!content) {
-      html += '<div class="reply-line spacer"></div>';
-      continue;
-    }
-    if (/^#{1,6}\s+/.test(content)) {
-      html += `<div class="reply-line"><strong>${renderLineContent(content.replace(/^#{1,6}\s+/, ""))}</strong></div>`;
-      continue;
-    }
-    const bullet = content.match(/^(\s*)(?:[-*+\u2022]|\d+[.)])\s+(.*)$/);
-    if (bullet) {
-      const depth = Math.min(Math.floor(bullet[1].length / 2), 3);
-      html += `<div class="reply-line bullet depth-${depth}">${renderLineContent(bullet[2])}</div>`;
-      continue;
-    }
-    html += `<div class="reply-line">${renderLineContent(content)}</div>`;
-  }
-  return html;
-};
-
 const createUserMessage = (text) => {
   const message = createMessageElement("user-message");
   const paragraph = document.createElement("p");
@@ -310,7 +259,7 @@ const generateResponse = async (botMessage, userMessage) => {
 
   const render = () => {
     const html = answer
-      ? renderRichText(answer)
+      ? renderMarkdown(answer)
       : `<div class="reply-line status">${escapeHtml(progress)}</div>`;
     if (html !== paintedHtml) {
       textElement.innerHTML = html;
@@ -471,7 +420,7 @@ const showIntroduction = () => {
   avatar.textContent = "school";
   const text = document.createElement("div");
   text.className = "message-text";
-  text.innerHTML = renderRichText(INTRODUCTION);
+  text.innerHTML = renderMarkdown(INTRODUCTION);
   message.append(avatar, text);
   chatsContainer.append(message);
 };

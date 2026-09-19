@@ -2,6 +2,7 @@
 // trong shapes.ttl; máy chủ kiểm lại bằng SHACL trước khi ghi, nên trang này lo nhập,
 // chỉ chỗ sai, và sửa chính lược đồ (loại, thuộc tính).
 import { mountAccount } from "./account.js";
+import { renderMarkdown } from "./markdown.js";
 
 const $ = (selector) => document.querySelector(selector);
 const KIND_NAMES = {
@@ -959,7 +960,9 @@ const openChat = async (id) => {
     element("h3", { text: "Câu hỏi" }),
     element("p", { class: "said", text: record.question }),
     element("h3", { text: "Câu trả lời" }),
-    element("p", { class: "said", text: record.answer || "(không có)" }),
+    record.answer
+      ? Object.assign(element("div", { class: "said answer" }), { innerHTML: renderMarkdown(record.answer) })
+      : element("p", { class: "said", text: "(không có)" }),
     record.error ? element("p", { class: "field-error", text: `Lỗi: ${record.error}` }) : null,
     element("h3", { text: `Các lần tra cứu (${lookups.length})` }),
     ...(lookups.length ? lookups : [element("p", { class: "muted", text: "Không tra cứu lần nào." })]),
