@@ -1,0 +1,9 @@
+{
+ "1": {
+  "mo_hinh": "lightning-ai/gemma-4-31B-it",
+  "ngay": "2026-09-19",
+  "commit": "a14ae78",
+  "top_k": 5,
+  "so_buoc_toi_da": 4
+ }
+}

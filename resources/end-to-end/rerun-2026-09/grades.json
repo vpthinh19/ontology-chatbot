@@ -1,0 +1,635 @@
+[
+ {
+  "id": "Q001",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "mục 1 nêu đủ: trong thời gian đăng ký, đủ điều kiện mở lớp và Bộ môn chấp thuận, mở thêm lớp theo đề nghị; trích khoản 2 Điều 10 QĐ 1052"
+ },
+ {
+  "id": "Q002",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu được đổi sang học phần khác trong nhóm tự chọn để cải thiện điểm; trích khoản 3 Điều 11 QĐ 1052"
+ },
+ {
+  "id": "Q003",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "vế tiên quyết lấy từ định nghĩa học phần tiên quyết có trong dữ liệu (Điều 6), nói rõ dữ liệu không quy định thứ tự; không bịa"
+ },
+ {
+  "id": "Q004",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có cách xử lý lớp vượt sĩ số"
+ },
+ {
+  "id": "Q005",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không đề cập thứ tự ưu tiên; phần kèm theo có trong dữ liệu"
+ },
+ {
+  "id": "Q006",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không đề cập chuyển sinh hoạt lớp; mã số riêng và quyền lợi lấy từ Điều 28 trong dữ liệu"
+ },
+ {
+  "id": "Q007",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không đề cập khoa quản lý sau khi tốt nghiệp chương trình thứ nhất; phần kèm theo có trong dữ liệu"
+ },
+ {
+  "id": "Q008",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nơi nộp Phòng Đào tạo lấy từ trang Liên hệ trong dữ liệu, nói rõ không có thông tin nộp online; không bịa"
+ },
+ {
+  "id": "Q009",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin cho liên thông chính quy, tách rõ quy định chỉ của hình thức vừa làm vừa học (TB 1455)"
+ },
+ {
+  "id": "Q010",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không tìm thấy giới hạn độ tuổi"
+ },
+ {
+  "id": "Q011",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có mức học phí theo tín chỉ của ngành"
+ },
+ {
+  "id": "Q012",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có mức học phí của ngành Ngôn ngữ Anh"
+ },
+ {
+  "id": "Q013",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thời gian thu học phí; thủ tục nộp học phí có dữ liệu nhưng không nằm trong 5 mục tìm được"
+ },
+ {
+  "id": "Q014",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "chỉ đúng trang sinhvien.ntu.edu.vn và mục học phí; không nói đăng nhập bằng mã sinh viên và không dùng qldt; trích hướng dẫn VCB 2021",
+  "hoi_du": true
+ },
+ {
+  "id": "Q015",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có quy định tính lãi; phần hậu quả chậm nộp có trong dữ liệu (QĐ 1413)"
+ },
+ {
+  "id": "Q016",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu yêu cầu Linguaskill từ 140 và 140 là đạt; thiếu mức tương ứng Bậc 4/B2; trích bảng 3 Phụ lục 2 QĐ 1052",
+  "hoi_du": true
+ },
+ {
+  "id": "Q017",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có mức TCF; bảng chuẩn ngoại ngữ khác của chương trình đặc biệt không nằm trong 5 mục tìm được"
+ },
+ {
+  "id": "Q018",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có quy định dạy hoàn toàn bằng tiếng Anh"
+ },
+ {
+  "id": "Q019",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin xếp lớp và mã sinh viên; phần thủ tục xin học trở lại có trong dữ liệu"
+ },
+ {
+  "id": "Q020",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu đủ bảo lưu điểm tương đương và không được gia hạn; trích khoản 3 Điều 25 QĐ 1052"
+ },
+ {
+  "id": "Q021",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không đề cập số lần nghỉ tối đa"
+ },
+ {
+  "id": "Q022",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu đủ nghĩa điểm I, X, R; trích điểm c khoản 2 Điều 16 QĐ 1052"
+ },
+ {
+  "id": "Q023",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu 100% số giờ và Khoa/viện xem xét; trích điểm b khoản 1 Điều 17 QĐ 1052"
+ },
+ {
+  "id": "Q024",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có giấy chứng nhận tốt nghiệp tạm thời"
+ },
+ {
+  "id": "Q025",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không có việc cấp bảng điểm khi không tốt nghiệp"
+ },
+ {
+  "id": "Q026",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin gửi bằng qua bưu điện"
+ },
+ {
+  "id": "Q027",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "học kỳ đầu sau chuyển ngành không được xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q028",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "GDTC, GDQP không tính vào điểm xét học bổng; trích mục II.2 tiêu chuẩn học bổng"
+ },
+ {
+  "id": "Q029",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có số suất tối đa mỗi lớp"
+ },
+ {
+  "id": "Q030",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": false,
+  "ly_do": "nói ngoài phạm vi hỗ trợ học vụ"
+ },
+ {
+  "id": "Q031",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": false,
+  "ly_do": "nói ngoài phạm vi hỗ trợ học vụ"
+ },
+ {
+  "id": "Q032",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "ghi trong bảng điểm, không tính vào trung bình tích lũy, phân loại, xếp hạng; trích điểm d khoản 2 Điều 6 QĐ 1052"
+ },
+ {
+  "id": "Q033",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "học kỳ III là học kỳ hè tối đa 8 tuần, để học vượt, học lại, cải thiện; trích điểm b khoản 2 Điều 7 QĐ 1052"
+ },
+ {
+  "id": "Q034",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "chỉ rút nếu không vi phạm tối thiểu, học lực trung bình trở lên tối thiểu 15 tín chỉ trừ học kỳ cuối và phụ; trích Điều 10 QĐ 753 và khoản 3 Điều 9 QĐ 1052 như dữ liệu công cụ ghi"
+ },
+ {
+  "id": "Q035",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có mức tiền phạt; thời hạn và hệ quả rút muộn có trong dữ liệu"
+ },
+ {
+  "id": "Q036",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "noi_thieu": true,
+  "ly_do": "nêu điều kiện từ năm thứ hai trở lên; nói không có mốc 35 tín chỉ (bảng xếp trình độ năm học không nằm trong 5 mục); trích điểm a khoản 1 Điều 28"
+ },
+ {
+  "id": "Q037",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": true,
+  "ly_do": "nêu đăng ký theo kế hoạch chung; nói dữ liệu không đề cập bảo lưu môn học nói chung (chỉ có bảo lưu ngoại ngữ A2, có trong dữ liệu); trích khoản 3 Điều 29"
+ },
+ {
+  "id": "Q038",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có mức giảm học phí cho người học liên thông"
+ },
+ {
+  "id": "Q039",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "Agribank dùng Mobile/Internet Banking được và miễn phí; trích phương thức 2 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q040",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "quét QR bằng ứng dụng ngân hàng được miễn phí; trích phương thức 1 hướng dẫn đóng học phí"
+ },
+ {
+  "id": "Q041",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin ví MoMo; các phương thức liệt kê có trong dữ liệu"
+ },
+ {
+  "id": "Q042",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin bắt buộc du học"
+ },
+ {
+  "id": "Q043",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "được nghỉ tạm và bảo lưu, trường hợp điều động dự thi quốc tế; trích điểm b khoản 1 Điều 24"
+ },
+ {
+  "id": "Q044",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "ốm từ 10 ngày phải làm thủ tục nghỉ học tạm thời, Mẫu số 09; trích khoản 1 Điều 30"
+ },
+ {
+  "id": "Q045",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không đề cập hỗ trợ ký túc xá khi nghỉ tạm"
+ },
+ {
+  "id": "Q046",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin cách tính và làm tròn điểm học phần, dù dữ liệu có thang 10 làm tròn một chữ số (thực thể Thang điểm đánh giá không nằm trong 5 mục); phần ĐTB chung kèm theo là khái niệm khác, nói rõ"
+ },
+ {
+  "id": "Q047",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không tìm thấy ai tổ chức thi bù; quy định thi bù giữa kỳ không nằm trong 5 mục tìm được"
+ },
+ {
+  "id": "Q048",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "8,10 xếp loại Giỏi theo mức 8,00 đến 8,99 của ĐTB tích lũy toàn khóa; trích bảng khoản 2 Điều 23"
+ },
+ {
+  "id": "Q049",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có quy định cấp bằng theo ngành hay khoa"
+ },
+ {
+  "id": "Q050",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin in hạng trên bằng"
+ },
+ {
+  "id": "Q051",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có nguồn quỹ; phần xét theo kết quả học tập, rèn luyện và mức loại có trong dữ liệu, không bịa nhóm xét"
+ },
+ {
+  "id": "Q052",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có ngày chuyển tiền, chỉ tới Phòng CTSV"
+ },
+ {
+  "id": "Q053",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": false,
+  "ly_do": "nói ngoài phạm vi hỗ trợ học vụ"
+ },
+ {
+  "id": "Q054",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": false,
+  "ly_do": "nói ngoài phạm vi hỗ trợ học vụ"
+ },
+ {
+  "id": "Q055",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "Giáo dục tổng quát tối thiểu 50, tối đa 100; trích bảng Phụ lục 1 QĐ 1052"
+ },
+ {
+  "id": "Q056",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có thông tin thời khóa biểu dự kiến"
+ },
+ {
+  "id": "Q057",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "nêu đăng ký cùng lúc ba loại học phần; thiếu ý còn căn cứ danh sách học phần mở và điều kiện từng học phần; trích điểm b khoản 2 Điều 9",
+  "hoi_du": true
+ },
+ {
+  "id": "Q058",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "được đăng ký chương trình khác lấy văn bằng thứ hai bằng tích lũy tín chỉ theo chương trình thứ hai; trích phần mở đầu Điều 28"
+ },
+ {
+  "id": "Q059",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không tìm thấy thời hạn áp dụng mức học phí"
+ },
+ {
+  "id": "Q060",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "Phòng KHTC phối hợp Phòng Hạ tầng và CNTT cập nhật mức học phí; trích bước 2 quy trình thu học phí QĐ 1314"
+ },
+ {
+  "id": "Q061",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có ngày thu cụ thể học kỳ II; quy tắc 3 tuần đầu và hạn khóa mới có trong dữ liệu"
+ },
+ {
+  "id": "Q062",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có loại học phần theo khóa; danh mục học phần ngoại ngữ (QĐ 1965) không nằm trong 5 mục tìm được"
+ },
+ {
+  "id": "Q063",
+  "luot": 1,
+  "muc": "Từ chối nhầm",
+  "dat": false,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có mức TOEFL iBT, IELTS; bảng chuẩn tiếng Anh chương trình đặc biệt không nằm trong 5 mục tìm được"
+ },
+ {
+  "id": "Q064",
+  "luot": 1,
+  "muc": "Đúng một phần",
+  "dat": false,
+  "trich_dan": "dung",
+  "noi_thieu": true,
+  "ly_do": "nêu B2.2 phải đạt từ 5; với B2.1 chỉ nói không có thông tin, không kết luận là không cùng yêu cầu; thiếu tỷ trọng 20/40/40; trích bảng khoản 1.4 QĐ 1965"
+ },
+ {
+  "id": "Q065",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói không có số tín chỉ chênh lệch"
+ },
+ {
+  "id": "Q066",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": false,
+  "ly_do": "không từ chối mà nêu mốc 05 ngày, 01 ngày lấy đúng từ quy trình xét chuyển ngành của Phòng CTSV có trong dữ liệu công cụ, không bịa (Quy chế 1052 không quy định; cùng cách chấm với bộ niêm phong)"
+ },
+ {
+  "id": "Q067",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "bị cảnh báo khi tín chỉ không đạt vượt 50% khối lượng đăng ký; trích điểm a khoản 1 Điều 20"
+ },
+ {
+  "id": "Q068",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "điểm P từ 5 cho học phần chỉ yêu cầu đạt, không tính vào điểm trung bình; trích điểm c khoản 2 Điều 16"
+ },
+ {
+  "id": "Q069",
+  "luot": 1,
+  "muc": "Từ chối đúng",
+  "dat": true,
+  "trich_dan": null,
+  "noi_thieu": true,
+  "ly_do": "nói dữ liệu không đề cập thi lại sau khi đóng bổ sung; phần hậu quả và gia hạn có trong dữ liệu"
+ },
+ {
+  "id": "Q070",
+  "luot": 1,
+  "muc": "Đúng",
+  "dat": true,
+  "trich_dan": "dung",
+  "noi_thieu": false,
+  "ly_do": "Hiệu trưởng ra quyết định trong 03 tháng từ khi đủ điều kiện và hoàn thành nghĩa vụ; trích khoản 5 Điều 22"
+ }
+]
