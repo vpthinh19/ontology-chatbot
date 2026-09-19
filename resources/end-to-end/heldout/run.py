@@ -26,7 +26,7 @@ import httpx
 
 from ontchatbot.runtime.agent import MODEL_REQUEST_TIMEOUT_SECONDS, AgentLoop, build_instructions, read_vocabulary
 from ontchatbot.runtime.api import MAX_MODEL_STEPS, MODEL_TURN_TIMEOUT_SECONDS
-from ontchatbot.runtime.llm import LightningBusyError, LightningClient
+from ontchatbot.runtime.llm import LightningClient
 from ontchatbot.runtime.lookup import bound_keywords, render_response
 from ontchatbot.search import SearchEngine, TriGFileSource
 from ontchatbot.settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
@@ -61,19 +61,19 @@ class CongCuCoVet:
         return du_lieu
 
 
-async def mot_luot(agent: AgentLoop, cau_hoi: str) -> tuple[str, list[str]]:
-    tra_loi, danh_dau = "", []
+async def mot_luot(agent: AgentLoop, cau_hoi: str) -> str:
+    tra_loi = ""
     async for event in agent.stream([{"role": "user", "content": cau_hoi}]):
         if event.kind == "completed":
-            tra_loi, danh_dau = event.content, list(event.marks)
-    return tra_loi.strip(), danh_dau
+            tra_loi = event.content
+    return tra_loi.strip()
 
 
-def cho_khi_bi_gioi_han(exc: LightningBusyError, lan: int) -> float:
-    """Số giây chờ khi dịch vụ vẫn quá tải sau các lần gọi lại của LightningClient: chờ
-    theo lời dịch vụ, và không dưới 30 giây nhân số lần đã thử."""
+def cho_khi_bi_gioi_han(exc: httpx.HTTPStatusError, lan: int) -> float:
+    """Số giây chờ sau lỗi 429: theo Retry-After nếu máy chủ gửi, không thì tăng dần."""
 
-    return max(exc.retry_after, 30.0 * (lan + 1))
+    retry_after = exc.response.headers.get("retry-after", "")
+    return float(retry_after) if retry_after.isdigit() else 30.0 * (lan + 1)
 
 
 async def hoi(agent: AgentLoop, cong_cu: CongCuCoVet, cau: dict) -> dict:
@@ -83,24 +83,23 @@ async def hoi(agent: AgentLoop, cong_cu: CongCuCoVet, cau: dict) -> dict:
         cong_cu.vet.clear()
         bat_dau = time.perf_counter()
         try:
-            (tra_loi, danh_dau), loi = await asyncio.wait_for(mot_luot(agent, cau["cau_hoi"]), MODEL_TURN_TIMEOUT_SECONDS), None
-        except LightningBusyError as exc:
-            tra_loi, danh_dau, loi = "", [], f"{type(exc).__name__}: {exc}"
-            if lan + 1 < SO_LAN_THU:
+            tra_loi, loi = await asyncio.wait_for(mot_luot(agent, cau["cau_hoi"]), MODEL_TURN_TIMEOUT_SECONDS), None
+        except httpx.HTTPStatusError as exc:
+            tra_loi, loi = "", f"{type(exc).__name__}: {exc}"
+            if exc.response.status_code == 429 and lan + 1 < SO_LAN_THU:
                 cho = cho_khi_bi_gioi_han(exc, lan)
                 print(f"  {cau['id']} bị giới hạn tốc độ, chờ {cho:.0f}s rồi hỏi lại", flush=True)
                 await asyncio.sleep(cho)
                 continue
         except Exception as exc:
-            tra_loi, danh_dau, loi = "", [], f"{type(exc).__name__}: {exc}"
+            tra_loi, loi = "", f"{type(exc).__name__}: {exc}"
         break
     giay = time.perf_counter() - bat_dau
 
     vet = list(cong_cu.vet)
     print(f"  {cau['id']} {giay:5.1f}s  goi={len(vet)}  {'OK' if not loi else loi[:60]}", flush=True)
     return {
-        "id": cau["id"], "cau_hoi": cau["cau_hoi"], "tra_loi": tra_loi, "danh_dau": danh_dau, "loi": loi,
-        "giay": round(giay, 2),
+        "id": cau["id"], "cau_hoi": cau["cau_hoi"], "tra_loi": tra_loi, "loi": loi, "giay": round(giay, 2),
         "so_lan_goi": len(vet),
         "tu_khoa": [goi["tu_khoa"] for goi in vet],
         "node_lay_ve": sorted({n for goi in vet for n in goi["node"]}),
