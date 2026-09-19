@@ -39,6 +39,20 @@ test("the connection status counts down without showing negative time", async ({
   await expect(status).not.toContainText("(-");
 });
 
+test("a ready server shows only the green dot, with the label kept for screen readers", async ({ page }) => {
+  await page.route("**/healthz", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
+  );
+  await page.goto("http://127.0.0.1:4173");
+
+  const status = page.locator(".server-status");
+  await expect(status).toHaveAttribute("data-state", "ready");
+  await expect(status.locator(".dot")).toBeVisible();
+  await expect(status.locator(".label")).toHaveClass(/sr-only/);
+  await expect(status.locator(".label")).toHaveText("Máy chủ sẵn sàng");
+  await expect(status).toHaveAttribute("title", "Máy chủ sẵn sàng");
+});
+
 test("LaTeX arrows in an answer are displayed as ordinary arrows", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),

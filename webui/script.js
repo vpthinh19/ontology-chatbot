@@ -89,6 +89,9 @@ const setServerState = (state, label = stateLabels[state]) => {
     serverStatus.dataset.state = state;
     labelElement.textContent = label;
   }
+  // Sẵn sàng chỉ hiện chấm xanh; chữ vẫn còn cho trình đọc màn hình và khi rê chuột.
+  labelElement.classList.toggle("sr-only", state === "ready");
+  serverStatus.title = state === "ready" ? label : "";
   if (state === "waking" && previousState !== "waking") {
     startConnectionCountdown();
   } else if (state !== "waking") {
