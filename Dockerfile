@@ -21,6 +21,9 @@ RUN set -eux; apt-get update; \
     groupadd --system ontchatbot; \
     useradd --system --gid ontchatbot --home-dir /home/ontchatbot \
       --create-home ontchatbot
+# Ảnh gốc bỏ hết .pyc của thư viện chuẩn, còn PYTHONDONTWRITEBYTECODE cấm ghi lại, nên thiếu bước
+# này thì mỗi lần khởi động phải biên dịch lại asyncio, logging, importlib.metadata... từ mã nguồn.
+RUN python -m compileall -q -j0 /usr/local/lib/python3.12
 WORKDIR /app
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/.venv /app/.venv
 COPY --from=builder --chown=ontchatbot:ontchatbot /app/src /app/src
@@ -32,7 +35,7 @@ RUN mkdir -p /app/logs && chown ontchatbot:ontchatbot /app/logs
 # không mang tệp dẫn xuất nào.
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
-    TZ=Asia/Ho_Chi_Minh MALLOC_ARENA_MAX=2 \
+    TZ=Asia/Ho_Chi_Minh MALLOC_ARENA_MAX=2 OPENBLAS_NUM_THREADS=1 \
     ONTCHATBOT_ONTOLOGY_PATH=/app/resources/ontology/ontology.trig \
     ONTCHATBOT_SEARCH_WORKERS=4 \
     ONTCHATBOT_TURN_SLOTS=4 ONTCHATBOT_TURN_QUEUE=8
