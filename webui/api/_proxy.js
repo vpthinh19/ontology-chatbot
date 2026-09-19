@@ -10,7 +10,7 @@ const jsonError = (status, detail, headers) =>
   );
 
 // ``cookies``: chuyển cookie của trình duyệt tới dịch vụ và Set-Cookie của dịch vụ về trình duyệt.
-// Chỉ đường quản trị bật nó (phiên đăng nhập quản trị); đường hỏi đáp không mang cookie nào.
+// Đường quản trị bật nó cho phiên đăng nhập; đường hỏi đáp bật nó để máy chủ nhận ra câu của quản trị.
 export const proxyToBackend = async (
   request,
   { method, path, cookies = false },

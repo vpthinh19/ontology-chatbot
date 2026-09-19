@@ -4,6 +4,7 @@ import { afterEach, test } from "node:test";
 
 import { proxyToBackend } from "../api/_proxy.js";
 import { GET as adminGet } from "../api/admin.js";
+import { POST as chatPost } from "../api/chat.js";
 import viteConfig from "../vite.config.js";
 
 const originalEnvironment = {
@@ -209,13 +210,13 @@ test("admin proxy forwards the admin key, the route and its query to /admin", as
   }
 });
 
-test("admin proxy carries the admin session cookie both ways; chat does not", async () => {
+test("admin proxy carries the admin session cookie both ways; chat forwards it too", async () => {
   let seen;
   const upstream = await listen((request, response) => {
     seen = request.headers.cookie;
     response.writeHead(200, {
       "Content-Type": "application/json",
-      "Set-Cookie": "ontchatbot_admin=v1.1.x; HttpOnly; Secure; SameSite=Strict; Path=/api/admin",
+      "Set-Cookie": "ontchatbot_admin=v1.1.x; HttpOnly; Secure; SameSite=Strict; Path=/api",
     });
     response.end("{}");
   });
@@ -229,11 +230,10 @@ test("admin proxy carries the admin session cookie both ways; chat does not", as
     assert.equal(seen, "ontchatbot_admin=phien");
     assert.match(response.headers.get("set-cookie"), /^ontchatbot_admin=v1\.1\.x; HttpOnly/);
 
-    await proxyToBackend(
-      new Request("https://frontend.example/api/chat", { method: "POST", headers: { Cookie: "a=b" }, body: "{}" }),
-      { method: "POST", path: "/chat" },
+    await chatPost(
+      new Request("https://frontend.example/api/chat", { method: "POST", headers: { Cookie: "ontchatbot_admin=phien" }, body: "{}" }),
     );
-    assert.equal(seen, undefined);
+    assert.equal(seen, "ontchatbot_admin=phien");
   } finally {
     await upstream.close();
   }

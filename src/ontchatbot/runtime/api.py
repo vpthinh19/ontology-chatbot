@@ -207,7 +207,7 @@ class TurnGate:
 
 
 async def _stream(
-    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None
+    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None, *, by_admin: bool = False
 ) -> AsyncIterator[str]:
     conversation = _bounded_history(history)
     turn = uuid.uuid4().hex[:12]
@@ -362,6 +362,8 @@ async def _stream(
                 "answer": answer or "".join(partial),
                 "outcome": outcome,
                 "error": error_detail or error_text,
+                # Câu người quản trị tự hỏi thử: gắn nhãn để tab Lịch sử chat tách khỏi câu của sinh viên.
+                "admin": by_admin,
                 "lookups": searched,
                 "duration_ms": round((time.perf_counter() - started) * 1000),
             })
@@ -415,6 +417,9 @@ def create_app(
         denied = authorize(request)
         return denied or JSONResponse({"status": "ok"})
 
+    def is_admin(_request: Request) -> bool:  # thay ở dưới khi trang quản trị được mở
+        return False
+
     async def chat(request: Request):
         denied = authorize(request)
         if denied is not None:
@@ -447,7 +452,7 @@ def create_app(
         if not isinstance(history, list):
             return error(400, "history must be a list")
         return StreamingResponse(
-            _stream(agent, message.strip(), history, gate, chat_log),
+            _stream(agent, message.strip(), history, gate, chat_log, by_admin=is_admin(request)),
             media_type="text/event-stream",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
         )
@@ -469,7 +474,10 @@ def create_app(
     ]
     # Trang quản trị ghi được vào ontology, nên chỉ mở khi có khoá quản trị riêng.
     if admin is not None and admin_token:
-        from ..admin.http import admin_routes
+        from ..admin.http import SESSION_COOKIE, admin_routes, valid_session
+
+        def is_admin(request: Request) -> bool:
+            return valid_session(admin_token, request.cookies.get(SESSION_COOKIE, ""))
 
         routes.extend(admin_routes(admin, admin_token, authorize, chat_log))
     app = Starlette(routes=routes, lifespan=lifespan)

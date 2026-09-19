@@ -82,19 +82,21 @@ def test_a_cloud_log_keeps_the_summary_in_object_metadata() -> None:
             return httpx.Response(200, json={"items": [{
                 "name": "du-lieu/chat-logs/2026-09-18/20260918T171939-abcdef.json",
                 "metadata": {"question": "Ký túc xá?", "time": "t", "outcome": "ok", "flags": "not_found",
-                             "review": "", "note": "", "reviewed": ""}}]})
+                             "review": "", "note": "", "reviewed": "", "admin": "1"}}]})
         return httpx.Response(200, json={})
 
     log = GcsChatLog("kho", "du-lieu/chat-logs/", http=httpx.Client(transport=httpx.MockTransport(handler)),
                      token=lambda: "khoa")
-    log.write({**record(), "flags": ["not_found"], "review": {"state": "", "note": "", "time": None}})
+    log.write({**record(), "flags": ["not_found"], "review": {"state": "", "note": "", "time": None}, "admin": True})
     items = log.list(days=3650)
 
     upload = seen[0]
     assert upload.url.params["uploadType"] == "multipart"
     assert b'"name": "du-lieu/chat-logs/2026-09-18/' in upload.content
     assert b'"flags": "not_found"' in upload.content
+    assert b'"admin": "1"' in upload.content
     assert items[0]["flags"] == ["not_found"] and items[0]["question"] == "Ký túc xá?"
+    assert items[0]["admin"] is True
     assert seen[1].url.params["startOffset"].startswith("du-lieu/chat-logs/")
 
 
@@ -146,7 +148,7 @@ def test_signing_in_gives_a_cookie_that_opens_the_admin_routes(tmp_path) -> None
             wrong = await client.post("/admin/login", json={"key": "sai"})
             before = await client.get("/admin/session")
             right = await client.post("/admin/login", json={"key": "khoa-quan-tri"})
-            # Cookie đặt cho đường trình duyệt thấy (/api/admin); ở đây gửi thẳng tới dịch vụ.
+            # Cookie đặt cho đường trình duyệt thấy (/api); ở đây gửi thẳng tới dịch vụ.
             cookie = {"Cookie": f"ontchatbot_admin={client.cookies.get('ontchatbot_admin')}"}
             after = await client.get("/admin/session", headers=cookie)
             await client.post("/admin/logout")
@@ -156,7 +158,32 @@ def test_signing_in_gives_a_cookie_that_opens_the_admin_routes(tmp_path) -> None
     assert (wrong.status_code, before.status_code, right.status_code, after.status_code) == (401, 401, 200, 200)
     set_cookie = right.headers["set-cookie"].lower()
     assert "httponly" in set_cookie and "secure" in set_cookie and "samesite=strict" in set_cookie
-    assert "path=/api/admin" in set_cookie
+    assert "path=/api;" in set_cookie or set_cookie.endswith("path=/api")
+
+
+def test_a_question_asked_while_signed_in_as_admin_is_labelled(tmp_path) -> None:
+    class Agent:
+        async def stream(self, messages):
+            yield AgentEvent("completed", content="Có.")
+
+    shutil.copy(ONTOLOGY_PATH, tmp_path / "ontology.trig")
+    shutil.copy(ONTOLOGY_PATH.with_name("shapes.ttl"), tmp_path / "shapes.ttl")
+    store = AdminStore(tmp_path / "ontology.trig", Schema.from_file(tmp_path / "shapes.ttl"))
+    log = LocalChatLog(tmp_path / "logs")
+    app = api.create_app(Agent(), admin=store, admin_token="khoa-quan-tri", chat_log=log)
+
+    async def run():
+        async with _client(app) as client:
+            await client.post("/chat", json={"message": "câu của sinh viên"})
+            await client.post("/admin/login", json={"key": "khoa-quan-tri"})
+            cookie = {"Cookie": f"ontchatbot_admin={client.cookies.get('ontchatbot_admin')}"}
+            await client.post("/chat", json={"message": "câu quản trị thử"}, headers=cookie)
+            await client.post("/chat", json={"message": "cookie giả"}, headers={"Cookie": "ontchatbot_admin=v1.9999999999.x"})
+
+    asyncio.run(run())
+    log.flush()
+    labelled = {item["question"]: item["admin"] for item in log.list()}
+    assert labelled == {"câu của sinh viên": False, "câu quản trị thử": True, "cookie giả": False}
 
 
 def test_repeated_wrong_keys_are_blocked_for_a_minute(tmp_path) -> None:

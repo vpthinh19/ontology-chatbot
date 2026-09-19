@@ -860,6 +860,7 @@ const when = (iso) =>
   iso ? new Date(iso).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "";
 const badges = (item) =>
   element("span", { class: "badges" }, [
+    item.admin ? element("span", { class: "badge admin", text: "quản trị" }) : null,
     ...(item.flags || []).map((flag) => element("span", { class: "badge warn", text: FLAG_NAMES[flag] || flag })),
     item.review && item.review.state
       ? element("span", { class: "badge state", text: REVIEW_NAMES[item.review.state] })
@@ -946,7 +947,7 @@ const openChat = async (id) => {
     element("h2", { text: `Lượt hỏi lúc ${when(record.time)}` }),
     element("p", {
       class: "muted",
-      text: `Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây · ${record.id}`,
+      text: `${record.admin ? "Câu quản trị tự hỏi thử · " : ""}Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây · ${record.id}`,
     }),
     record.flags && record.flags.length
       ? element("ul", { class: "muted" }, record.flags.map((flag) => element("li", { text: FLAG_TEXT[flag] || flag })))

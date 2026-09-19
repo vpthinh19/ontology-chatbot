@@ -26,8 +26,8 @@ from .store import CODE_NAMES, AdminError, AdminStore
 MAX_ADMIN_BODY_BYTES = 1024 * 1024
 SESSION_COOKIE = "ontchatbot_admin"
 SESSION_SECONDS = 8 * 3600
-#: Cookie chỉ đi kèm các yêu cầu tới đường quản trị (trình duyệt gọi chúng qua /api/admin).
-SESSION_PATH = "/api/admin"
+#: Cookie đi kèm các yêu cầu tới /api: đường quản trị, và đường hỏi đáp để câu quản trị tự hỏi thử được gắn nhãn.
+SESSION_PATH = "/api"
 MAX_FAILED_LOGINS = 10
 
 

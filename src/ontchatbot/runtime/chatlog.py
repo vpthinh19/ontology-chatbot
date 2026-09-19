@@ -142,7 +142,7 @@ class ChatLog(ABC):
 
     @staticmethod
     def _summary(record: dict) -> dict:
-        return {key: record.get(key) for key in ("id", "time", "question", "outcome", "flags", "review")}
+        return {key: record.get(key) for key in ("id", "time", "question", "outcome", "flags", "review", "admin")}
 
 
 class LocalChatLog(ChatLog):
@@ -227,7 +227,7 @@ class GcsChatLog(ChatLog):
         review = record["review"]
         return {"question": record["question"][:300], "time": record["time"], "outcome": record["outcome"],
                 "flags": ",".join(record["flags"]), "review": review["state"], "note": review["note"][:1000],
-                "reviewed": review["time"] or ""}
+                "reviewed": review["time"] or "", "admin": "1" if record.get("admin") else ""}
 
     @staticmethod
     def _check(response, action: str) -> None:
@@ -268,6 +268,7 @@ class GcsChatLog(ChatLog):
                 records.append({
                     "id": item["name"].rsplit("/", 1)[-1].removesuffix(".json"),
                     "time": meta.get("time"), "question": meta.get("question", ""), "outcome": meta.get("outcome"),
+                    "admin": meta.get("admin") == "1",
                     "flags": [flag for flag in meta.get("flags", "").split(",") if flag],
                     "review": {"state": meta.get("review", ""), "note": meta.get("note", ""),
                                "time": meta.get("reviewed") or None},

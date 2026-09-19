@@ -245,6 +245,7 @@ input:disabled { opacity: 0.6; }
 .badge { padding: 1px 7px; border-radius: 999px; background: var(--surface-hover); color: var(--muted); font-size: 0.75rem; }
 .badge.warn { background: rgba(255, 125, 136, 0.15); color: var(--danger); }
 .badge.state { background: var(--brand-soft); color: var(--brand); }
+.badge.admin { border: 1px solid var(--brand); background: transparent; color: var(--brand); }
 .chat-record { display: grid; gap: 10px; }
 .chat-record h2 { margin: 4px 0 0; font-size: 1.1rem; }
 .chat-record h3 { margin: 8px 0 0; font-size: 0.95rem; }
