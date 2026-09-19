@@ -33,10 +33,6 @@ def test_each_word_is_counted_once_per_row() -> None:
     ]
 
 
-def test_the_analyzer_names_itself_so_a_saved_index_is_not_mixed_up() -> None:
-    assert TextAnalyzer().name == "syllables"
-
-
 def test_an_empty_or_symbol_only_keyword_yields_no_terms() -> None:
     analyzer = TextAnalyzer()
 

@@ -15,20 +15,10 @@ from pathlib import Path
 
 import pyoxigraph as oxi
 
+from ..rdf import RDFS, SKOS, XSD
 from ..settings import ONTOLOGY_NS
 
-PREFIXES = {
-    "": ONTOLOGY_NS,
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-}
-
-
-def load(path: Path | str) -> oxi.Store:
-    store = oxi.Store()
-    store.load(path=str(path), format=oxi.RdfFormat.TRIG)
-    return store
+PREFIXES = {"": ONTOLOGY_NS, "rdfs": RDFS, "skos": SKOS, "xsd": XSD}
 
 
 def _order(quad: oxi.Quad) -> tuple[str, str, str, str]:
@@ -40,10 +30,6 @@ def serialize(store: oxi.Store) -> bytes:
     """Nội dung TriG theo thứ tự cố định: cùng một đồ thị luôn ra cùng một chuỗi byte."""
 
     return oxi.serialize(sorted(store, key=_order), format=oxi.RdfFormat.TRIG, prefixes=PREFIXES)
-
-
-def write(store: oxi.Store, path: Path | str) -> None:
-    write_bytes(serialize(store), path)
 
 
 def write_bytes(data: bytes, path: Path | str) -> None:

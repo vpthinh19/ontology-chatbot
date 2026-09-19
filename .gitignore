@@ -25,7 +25,7 @@ __pycache__/
 
 logs/
 
-# Chỉ mục tìm kiếm lưu ra đĩa bởi `ontology_search build`: dựng lại được từ ontology.
+# Thư mục dựng gói.
 /build/
 
 /dev/

@@ -7,9 +7,9 @@
 
 from .schema import ClassSpec, Field, Schema
 from .store import AdminError, AdminStore, Conflict, NotFound, Unavailable
-from .trig import iri_name, load, serialize, write, write_bytes
+from .trig import iri_name, serialize, write_bytes
 
 __all__ = [
     "AdminError", "AdminStore", "ClassSpec", "Conflict", "Field", "NotFound", "Schema",
-    "Unavailable", "iri_name", "load", "serialize", "write", "write_bytes",
+    "Unavailable", "iri_name", "serialize", "write_bytes",
 ]

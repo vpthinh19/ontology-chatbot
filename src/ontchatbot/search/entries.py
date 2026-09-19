@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -21,20 +21,3 @@ class IndexEntry:
     node: str
     property: str | None = None
     target: str | None = None
-
-    def to_dict(self) -> dict:
-        """Dạng lưu tệp: bỏ trường rỗng."""
-
-        payload = {key: value for key, value in asdict(self).items() if value is not None}
-        payload["kind"] = self.kind.value
-        return payload
-
-    @classmethod
-    def from_dict(cls, payload: dict) -> IndexEntry:
-        return cls(
-            kind=EntryKind(payload["kind"]),
-            text=payload["text"],
-            node=payload["node"],
-            property=payload.get("property"),
-            target=payload.get("target"),
-        )

@@ -1,4 +1,4 @@
-"""Engine: từ khoá → dòng khớp (BM25) → mục → hồ sơ gom theo nguồn."""
+"""Engine: từ khoá → dòng khớp (BM25) → thực thể → hồ sơ gom theo nguồn."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ from dataclasses import dataclass, field
 from .analyzer import TextAnalyzer
 from .builder import IndexBuilder
 from .index import EntryHit, SearchIndex
-from .ontology import Ontology, OntologySource
+from .ontology import Ontology, TriGFileSource
+from .policy import IndexPolicy
 from .profile import NodeProfile, ProfileReader
-from .vocabulary import IndexPolicy
 
 
 @dataclass
@@ -38,7 +38,7 @@ class SearchResult:
 class SearchResponse:
     keywords: list[str]
     results: list[SearchResult]
-    #: Từ khoá không khớp dòng nào trong chỉ mục.
+    #: Từ khoá không khớp dòng nào.
     unmatched_keywords: list[str] = field(default_factory=list)
 
     @property
@@ -55,15 +55,10 @@ class SearchResponse:
 
 
 class SearchEngine:
-    """Công cụ tìm kiếm cho LLM: nhận danh sách từ khoá, trả danh sách thực thể kèm hồ sơ.
+    """Nhận danh sách từ khoá, trả ``top_k`` thực thể kèm hồ sơ, không ngưỡng.
 
-    Quy tắc xếp hạng chỉ có một: với mỗi từ khoá, thực thể lấy điểm BM25 của dòng
-    khớp tốt nhất của nó; điểm của thực thể là **tổng** các điểm đó. Mô hình viết
-    vài từ khoá cho cùng một câu hỏi, nên mục trả lời được nhiều góc của câu hỏi
-    đáng đứng trên mục trả lời thật tốt đúng một góc.
-
-    Cộng theo TỪNG TỪ KHOÁ, không cộng theo dòng: một thực thể có nhiều dòng không
-    vì thế mà được cộng dồn điểm.
+    Điểm của thực thể: với mỗi từ khoá lấy điểm BM25 của dòng khớp tốt nhất của nó, rồi cộng qua
+    các từ khoá. Cộng theo từ khoá chứ không theo dòng, nên thực thể nhiều dòng không được cộng dồn.
     """
 
     def __init__(
@@ -84,49 +79,39 @@ class SearchEngine:
     @classmethod
     def open(
         cls,
-        source: OntologySource,
+        source: TriGFileSource,
         *,
         policy: IndexPolicy | None = None,
         analyzer: TextAnalyzer | None = None,
         top_k: int = 5,
     ) -> SearchEngine:
-        """Nạp ontology rồi dựng chỉ mục ngay trong bộ nhớ.
-
-        Không có đường nạp chỉ mục đã lưu: dựng lại chỉ tốn vài phần mười giây, còn
-        ontology thì sửa bất cứ lúc nào nên tệp chỉ mục hết hạn liên tục.
-        """
+        """Nạp ontology và dựng chỉ mục trong bộ nhớ."""
 
         ontology = Ontology.from_source(source, policy)
-        index = SearchIndex.build(IndexBuilder(ontology).build_entries(),
-                                  analyzer or TextAnalyzer(), source.fingerprint())
+        index = SearchIndex(IndexBuilder(ontology).build_entries(), analyzer or TextAnalyzer())
         return cls(ontology, index, top_k=top_k)
 
     def search(self, keywords: Sequence[str]) -> SearchResponse:
         cleaned = list(dict.fromkeys(keyword.strip() for keyword in keywords if keyword.strip()))
-        hits_by_node: dict[str, dict[str, EntryHit]] = {}
-        best_per_keyword: dict[str, dict[str, float]] = {}
+        best_rows: dict[str, dict[str, EntryHit]] = {}
+        keyword_scores: dict[str, dict[str, float]] = {}
         unmatched: list[str] = []
         for keyword in cleaned:
             hits = self.index.search(keyword, limit=self.entries_per_keyword)
             if not hits:
                 unmatched.append(keyword)
             for hit in hits:
-                best = hits_by_node.setdefault(hit.entry.node, {})
-                previous = best.get(hit.entry.text)
-                if previous is None or hit.score > previous.score:
-                    best[hit.entry.text] = hit
-                theo_tu_khoa = best_per_keyword.setdefault(hit.entry.node, {})
-                theo_tu_khoa[keyword] = max(theo_tu_khoa.get(keyword, 0.0), hit.score)
+                rows = best_rows.setdefault(hit.entry.node, {})
+                if hit.entry.text not in rows or hit.score > rows[hit.entry.text].score:
+                    rows[hit.entry.text] = hit
+                scores = keyword_scores.setdefault(hit.entry.node, {})
+                scores[keyword] = max(scores.get(keyword, 0.0), hit.score)
 
-        ranked = sorted(
-            hits_by_node.items(),
-            key=lambda item: (-sum(best_per_keyword[item[0]].values()), item[0]),
-        )[: self.top_k]
-
+        totals = {node: sum(scores.values()) for node, scores in keyword_scores.items()}
+        ranked = sorted(totals, key=lambda node: (-totals[node], node))[: self.top_k]
         results = []
-        for node, hits in ranked:
-            matched = sorted(hits.values(), key=lambda hit: -hit.score)
+        for node in ranked:
             profile = self.reader.read(node)
-            results.append(SearchResult(node, profile.label, sum(best_per_keyword[node].values()),
-                                        matched, profile))
+            matched = sorted(best_rows[node].values(), key=lambda hit: -hit.score)
+            results.append(SearchResult(node, profile.label, totals[node], matched, profile))
         return SearchResponse(cleaned, results, unmatched)

@@ -15,13 +15,9 @@ from pathlib import Path
 
 import pyoxigraph as oxi
 
+from ..rdf import RDF, RDFS_LABEL, SH, SKOS_ALT_LABEL, XSD, local_id
 from ..settings import ONTOLOGY_NS
 
-SH = "http://www.w3.org/ns/shacl#"
-RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-XSD = "http://www.w3.org/2001/XMLSchema#"
-RDFS_LABEL = "http://www.w3.org/2000/01/rdf-schema#label"
-SKOS_ALT_LABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
 #: Loại chỉ là bộ máy trích dẫn: được tạo và dọn tự động, không sửa tay.
 INTERNAL_CLASSES = frozenset({"DiaChiTrichDan"})
 KIND_BY_DATATYPE = {
@@ -81,10 +77,6 @@ class ClassSpec:
 
     def field(self, property_name: str) -> Field | None:
         return next((field for field in self.fields if field.property == property_name), None)
-
-
-def _local(value: str) -> str:
-    return value[len(ONTOLOGY_NS):] if value.startswith(ONTOLOGY_NS) else value
 
 
 def _literal(text: str) -> str:
@@ -158,21 +150,21 @@ class Schema:
         def members(head) -> list[str]:
             items = []
             while head is not None and head.value != RDF + "nil":
-                items.append(_local(one(head, RDF + "first").value))
+                items.append(local_id(one(head, RDF + "first").value))
                 head = one(head, RDF + "rest")
             return items
 
         classes = {}
         for quad in graph.quads_for_pattern(None, oxi.NamedNode(SH + "targetClass"), None, None):
-            name = _local(quad.object.value)
+            name = local_id(quad.object.value)
             shape = quad.subject
             alt_labels = False
             fields = []
             for prop in objects(shape, SH + "property"):
                 path = one(prop, SH + "path").value
-                if path == RDFS_LABEL:
+                if path == RDFS_LABEL.value:
                     continue
-                if path == SKOS_ALT_LABEL:
+                if path == SKOS_ALT_LABEL.value:
                     alt_labels = True
                     continue
                 target, choices, datatype = one(prop, SH + "class"), one(prop, SH + "in"), one(prop, SH + "datatype")
@@ -186,17 +178,17 @@ class Schema:
                 sourced = one(prop, ONTOLOGY_NS + "batBuocNguon")
                 label = one(prop, SH + "name")
                 fields.append(Field(
-                    property=_local(path),
-                    name=label.value if label is not None else _local(path),
+                    property=local_id(path),
+                    name=label.value if label is not None else local_id(path),
                     kind=kind,
                     required=min_count is not None and int(min_count.value) > 0,
                     single=max_count is not None and int(max_count.value) == 1,
-                    target=_local(target.value) if target is not None else None,
+                    target=local_id(target.value) if target is not None else None,
                     choices=tuple(members(choices)) if choices is not None else (),
                     sourced=None if sourced is None else sourced.value == "true",
                 ))
             fields.sort(key=lambda field: (not field.required, field.name))
-            label = one(shape, RDFS_LABEL)
+            label = one(shape, RDFS_LABEL.value)
             classes[name] = ClassSpec(name, label.value if label is not None else name, alt_labels, tuple(fields),
                                       internal=name in INTERNAL_CLASSES)
         return cls(classes)

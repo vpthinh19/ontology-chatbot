@@ -33,14 +33,13 @@ from urllib.parse import urlparse
 
 import pyoxigraph as oxi
 
-from ..settings import ONTOLOGY_NS
-from .schema import KINDS, RDFS_LABEL, SKOS_ALT_LABEL, XSD, ClassSpec, Field, Schema
-from .trig import iri_name, load, serialize, write_bytes
+from ..rdf import OUTSIDE, RDF_TYPE, SH, XSD, load_trig, local_id
+from ..rdf import RDFS_LABEL as LABEL
+from ..rdf import SKOS_ALT_LABEL as ALT_LABEL
+from ..rdf import term as _node
+from .schema import KINDS, ClassSpec, Field, Schema
+from .trig import iri_name, serialize, write_bytes
 
-RDF_TYPE = oxi.NamedNode("http://www.w3.org/1999/02/22-rdf-syntax-ns#type")
-LABEL = oxi.NamedNode(RDFS_LABEL)
-ALT_LABEL = oxi.NamedNode(SKOS_ALT_LABEL)
-OUTSIDE = oxi.DefaultGraph()
 IDENTITY = (RDF_TYPE, LABEL, ALT_LABEL)
 SOURCE_CLASS = "Nguon"
 ADDRESS_CLASS = "DiaChiTrichDan"
@@ -101,14 +100,6 @@ class Unavailable(AdminError):
 
 def _problem(message: str, **where) -> dict:
     return {"message": message, **where}
-
-
-def _node(local: str) -> oxi.NamedNode:
-    return oxi.NamedNode(ONTOLOGY_NS + local)
-
-
-def _local(value: str) -> str:
-    return value[len(ONTOLOGY_NS):] if value.startswith(ONTOLOGY_NS) else value
 
 
 def _any(quads) -> bool:
@@ -219,7 +210,7 @@ class AdminStore:
         self.shapes_path = Path(shapes_path) if shapes_path else self.path.with_name("shapes.ttl")
         self.on_change = on_change
         self.persist = persist
-        self._store = load(self.path)
+        self._store = load_trig(self.path)
         # RLock: khi kho bền báo có bản mới hơn, việc nạp lại chạy ngay trong lượt ghi đang giữ khoá.
         self._lock = threading.RLock()
         self._shapes = None
@@ -234,7 +225,7 @@ class AdminStore:
         with self._lock:
             if fetch is not None and not fetch():
                 return False
-            self._store = load(self.path)
+            self._store = load_trig(self.path)
             if self.shapes_path.exists():
                 self.schema = Schema.from_file(self.shapes_path)
                 self._shapes = None
@@ -250,7 +241,7 @@ class AdminStore:
     def class_of(self, local: str, store: oxi.Store | None = None, schema: Schema | None = None) -> str | None:
         classes = (schema or self.schema).classes
         for quad in (store or self._store).quads_for_pattern(_node(local), RDF_TYPE, None, OUTSIDE):
-            name = _local(quad.object.value)
+            name = local_id(quad.object.value)
             if name in classes or name == ADDRESS_CLASS:
                 return name
         return None
@@ -262,7 +253,7 @@ class AdminStore:
     def list(self, class_name: str) -> list[dict[str, str]]:
         if class_name not in self.schema.classes:
             raise NotFound(f"Không có lớp «{class_name}».")
-        items = [{"id": _local(quad.subject.value), "label": self.label(_local(quad.subject.value))}
+        items = [{"id": local_id(quad.subject.value), "label": self.label(local_id(quad.subject.value))}
                  for quad in self._store.quads_for_pattern(None, RDF_TYPE, _node(class_name), OUTSIDE)]
         return sorted(items, key=lambda item: item["label"].casefold())
 
@@ -283,8 +274,8 @@ class AdminStore:
                 continue
             source, coordinate = self._address_parts(self._store, quad.graph_name)
             statements.append({
-                "property": _local(quad.predicate.value),
-                "value": _local(quad.object.value) if isinstance(quad.object, oxi.NamedNode) else quad.object.value,
+                "property": local_id(quad.predicate.value),
+                "value": local_id(quad.object.value) if isinstance(quad.object, oxi.NamedNode) else quad.object.value,
                 "source": source,
                 "coordinate": coordinate,
             })
@@ -302,9 +293,9 @@ class AdminStore:
             return None, None
         source = coordinate = None
         for quad in store.quads_for_pattern(graph, None, None, OUTSIDE):
-            name = _local(quad.predicate.value)
+            name = local_id(quad.predicate.value)
             if name == "thuocNguon":
-                source = _local(quad.object.value)
+                source = local_id(quad.object.value)
             elif name == "toaDo":
                 coordinate = quad.object.value
         return source, coordinate
@@ -316,17 +307,17 @@ class AdminStore:
         for quad in store.quads_for_pattern(None, None, node, None):
             if quad.predicate == RDF_TYPE:
                 continue
-            subject = _local(quad.subject.value)
+            subject = local_id(quad.subject.value)
             if self.class_of(subject, store) == ADDRESS_CLASS:
                 for cited in store.quads_for_pattern(None, None, None, quad.subject):
-                    entity = _local(cited.subject.value)
+                    entity = local_id(cited.subject.value)
                     reference = {"id": entity, "label": self.label(entity, store), "property": "trích dẫn nguồn này"}
                     found[(entity, reference["property"])] = reference
                 continue
             spec = self.schema.classes.get(self.class_of(subject, store) or "")
-            field = spec.field(_local(quad.predicate.value)) if spec else None
+            field = spec.field(local_id(quad.predicate.value)) if spec else None
             reference = {"id": subject, "label": self.label(subject, store),
-                         "property": field.name if field else _local(quad.predicate.value)}
+                         "property": field.name if field else local_id(quad.predicate.value)}
             found[(subject, reference["property"])] = reference
         return sorted(found.values(), key=lambda r: (r["property"], r["label"].casefold()))
 
@@ -721,12 +712,12 @@ class AdminStore:
         conforms, results, _ = pyshacl.validate(data, shacl_graph=shapes, inference="none")
         if conforms:
             return []
-        sh = Namespace("http://www.w3.org/ns/shacl#")
+        sh = Namespace(SH)
         found = {}
         for result in results.subjects(RDF.type, sh.ValidationResult):
-            subject = _local(str(results.value(result, sh.focusNode)))
+            subject = local_id(str(results.value(result, sh.focusNode)))
             raw_path = str(results.value(result, sh.resultPath) or "")
-            path = _local(raw_path)
+            path = local_id(raw_path)
             value = results.value(result, sh.value)
             component = str(results.value(result, sh.sourceConstraintComponent)).rsplit("#", 1)[-1]
             spec = schema.classes.get(self.class_of(subject, store, schema) or "")
@@ -734,8 +725,8 @@ class AdminStore:
             message = _VIOLATIONS.get(component, str(results.value(result, sh.resultMessage)))
             if component == "ClassConstraintComponent" and field and field.target in schema.classes:
                 message = f"phải trỏ tới một thực thể thuộc lớp «{schema.classes[field.target].label}»"
-            where = field.name if field else ("tên" if raw_path in (RDFS_LABEL, "") else path)
+            where = field.name if field else ("tên" if raw_path in (LABEL.value, "") else path)
             text = f"{self.label(subject, store)} · {where}: {message}"
-            found[text] = _problem(text, entity=subject, property="label" if raw_path == RDFS_LABEL else path,
-                                   value=_local(str(value)) if value is not None else None)
+            found[text] = _problem(text, entity=subject, property="label" if raw_path == LABEL.value else path,
+                                   value=local_id(str(value)) if value is not None else None)
         return [found[text] for text in sorted(found)]

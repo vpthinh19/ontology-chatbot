@@ -1,12 +1,12 @@
-"""Chỉ mục BM25: tìm theo từ, không tìm thấy thì rỗng, lưu rồi nạp lại không đổi."""
+"""Chỉ mục BM25: tìm theo từ, không tìm thấy thì rỗng."""
 
 from __future__ import annotations
 
 from ontchatbot.search import IndexBuilder, SearchIndex, TextAnalyzer
 
 
-def _index(ontology, fingerprint="phien-ban-1") -> SearchIndex:
-    return SearchIndex.build(IndexBuilder(ontology).build_entries(), TextAnalyzer(), fingerprint)
+def _index(ontology) -> SearchIndex:
+    return SearchIndex(IndexBuilder(ontology).build_entries(), TextAnalyzer())
 
 
 def test_rows_sharing_the_keyword_words_rank_first(mini_ontology) -> None:
@@ -32,15 +32,3 @@ def test_matching_is_per_syllable_so_a_shared_syllable_is_enough(mini_ontology) 
 
     assert _index(mini_ontology).search("thời tiết")
 
-
-def test_saved_index_loads_back_with_the_same_results(mini_ontology, tmp_path) -> None:
-    index = _index(mini_ontology)
-    index.save(tmp_path)
-
-    loaded = SearchIndex.load(tmp_path, TextAnalyzer())
-
-    assert loaded.fingerprint == "phien-ban-1"
-    assert loaded.entries == index.entries
-    before = [(hit.entry, round(hit.score, 6)) for hit in index.search("nghỉ học tạm thời")]
-    after = [(hit.entry, round(hit.score, 6)) for hit in loaded.search("nghỉ học tạm thời")]
-    assert before == after
