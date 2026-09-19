@@ -583,6 +583,31 @@ def test_a_busy_model_service_reads_as_when_to_try_again(caplog) -> None:
     assert "outcome=rate-limited" in "\n".join(r.getMessage() for r in caplog.records)
 
 
+class _Log:
+    def __init__(self):
+        self.records = []
+
+    def submit(self, record):
+        self.records.append(record)
+
+
+def test_chat_history_keeps_the_technical_error_the_reader_does_not_see() -> None:
+    log = _Log()
+    run = _Run([], error=RuntimeError("upstream exploded"))
+
+    async def exercise():
+        return [
+            json.loads(chunk[len("data: ") :])
+            async for chunk in api._stream(run, "học phí", [], api.TurnGate(), log)
+        ]
+
+    events = asyncio.run(exercise())
+
+    assert events[-1]["content"] == api._MODEL_ERROR_MESSAGE
+    assert log.records[0]["outcome"] == "error"
+    assert log.records[0]["error"] == "RuntimeError: upstream exploded"
+
+
 def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> None:
     """Lời hứa chính của cửa vào, và nó chỉ lộ ra khi nhiều lượt cùng ập tới.
 

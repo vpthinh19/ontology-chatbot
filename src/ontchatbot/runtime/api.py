@@ -221,6 +221,8 @@ async def _stream(
     # Cho nhật ký hội thoại: phần trả lời đã gửi (khi lượt bị bỏ giữa chừng), lời báo lỗi, các lần tra cứu.
     partial: list[str] = []
     error_text = ""
+    # Người dùng thấy lời báo dễ hiểu; người quản trị cần chi tiết kỹ thuật của lỗi.
+    error_detail = ""
     searched: list[dict] = []
     pending_keywords: tuple[str, ...] = ()
 
@@ -318,11 +320,13 @@ async def _stream(
             return
         except LightningBusyError as exc:
             outcome = "rate-limited"
+            error_detail = str(exc)
             logger.warning("turn=%s rate limited, retry after %.0fs", turn, exc.retry_after)
             yield emit("error", content=_rate_limited_message(exc.retry_after))
             return
-        except Exception:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
+        except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
             outcome = "error"
+            error_detail = f"{type(exc).__name__}: {exc}"
             logger.exception("turn=%s failed", turn)
             yield emit("error", content=_MODEL_ERROR_MESSAGE)
             return
@@ -357,7 +361,7 @@ async def _stream(
                             for item in conversation[:-1][-4:]],
                 "answer": answer or "".join(partial),
                 "outcome": outcome,
-                "error": error_text,
+                "error": error_detail or error_text,
                 "lookups": searched,
                 "duration_ms": round((time.perf_counter() - started) * 1000),
             })
