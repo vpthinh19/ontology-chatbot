@@ -109,6 +109,41 @@ class AgentEvent:
     kind: str
     content: str = ""
     keywords: tuple[str, ...] = ()
+    #: Chỉ ở sự kiện ``completed``: các dòng đánh dấu mô hình đã viết (xem ``MARKS``).
+    marks: tuple[str, ...] = ()
+
+
+#: Dòng đánh dấu mô hình viết ở cuối câu trả lời. Người đọc không thấy: agent cắt nó khỏi chữ và
+#: báo lại thành nhãn, để lịch sử chat biết lượt nào thiếu dữ liệu mà không phải đoán qua câu chữ.
+MARKS = {"[[THIEU_DU_LIEU]]": "missing", "[[NGOAI_PHAM_VI]]": "out_of_scope"}
+
+
+class _MarkFilter:
+    """Cắt dòng đánh dấu khỏi chữ đang chảy về từng mảnh.
+
+    Một dấu có thể bị chia ở ranh giới hai mảnh, nên phần đuôi còn có thể là đầu của một dấu
+    được giữ lại tới mảnh sau; nhờ vậy người đọc không bao giờ thấy "[[THI" nháy lên.
+    """
+
+    def __init__(self) -> None:
+        self._pending = ""
+        self.marks: list[str] = []
+
+    def feed(self, text: str) -> str:
+        buffer = self._pending + text
+        for token, mark in MARKS.items():
+            if token in buffer:
+                buffer = buffer.replace(token, "")
+                if mark not in self.marks:
+                    self.marks.append(mark)
+        hold = max((size for token in MARKS for size in range(1, len(token))
+                    if buffer.endswith(token[:size])), default=0)
+        self._pending = buffer[len(buffer) - hold:] if hold else ""
+        return buffer[: len(buffer) - hold] if hold else buffer
+
+    def flush(self) -> str:
+        rest, self._pending = self._pending, ""
+        return rest
 
 
 class AgentLoopLimitError(RuntimeError):
@@ -152,15 +187,17 @@ class AgentLoop:
             {"role": "system", "content": self._instructions},
             *messages,
         ]
+        marks = _MarkFilter()
         for _step in range(self._max_steps):
             answer_parts: list[str] = []
             calls: dict[int, dict[str, str]] = {}
             async for delta in self._client.stream(
                 messages=conversation, tools=[TOOL_SCHEMA]
             ):
-                if delta.content:
-                    answer_parts.append(delta.content)
-                    yield AgentEvent("text_delta", content=delta.content)
+                text = marks.feed(delta.content) if delta.content else ""
+                if text:
+                    answer_parts.append(text)
+                    yield AgentEvent("text_delta", content=text)
                 for fragment in delta.tool_calls:
                     call = calls.setdefault(
                         fragment.index,
@@ -170,8 +207,14 @@ class AgentLoop:
                     call["name"] += fragment.name
                     call["arguments"] += fragment.arguments
 
+            rest = marks.flush()
+            if rest:
+                answer_parts.append(rest)
+                yield AgentEvent("text_delta", content=rest)
             if not calls:
-                yield AgentEvent("completed", content="".join(answer_parts))
+                yield AgentEvent(
+                    "completed", content="".join(answer_parts).rstrip(), marks=tuple(marks.marks)
+                )
                 return
 
             tool_calls = [
@@ -326,4 +369,8 @@ Câu hỏi không liên quan tới trường - thời tiết, nấu ăn, chuyệ
 lời thẳng là ngoài phạm vi, không gọi công cụ.
 
 Giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo.
+
+Dòng đánh dấu (hệ thống tự ẩn): thiếu thông tin học vụ được hỏi, kể cả một vế
+hay chi tiết, thì thêm dòng cuối `[[THIEU_DU_LIEU]]`; câu hỏi ngoài phạm vi thì
+thêm dòng cuối `[[NGOAI_PHAM_VI]]`; trả lời đủ thì không thêm.
 {topics}"""

@@ -124,8 +124,10 @@ def test_instructions_without_vocabulary_have_no_topic_list() -> None:
     assert "lookup_academic_information" in instructions
 
 
-def test_system_prompt_stays_below_four_hundred_words() -> None:
-    assert len(build_instructions(VOCABULARY).split()) < 400
+def test_system_prompt_stays_short() -> None:
+    # Mô hình nhỏ theo prompt ngắn tốt hơn. 400 từ cho tới 19/09/2026; nâng lên 480 khi thêm dòng
+    # đánh dấu và quy tắc định dạng, đo lại bằng bộ 70 câu.
+    assert len(build_instructions(VOCABULARY).split()) < 480
 
 
 def test_vocabulary_is_read_from_the_ontology_being_served() -> None:

@@ -133,3 +133,34 @@ def test_agent_loop_closes_its_runtime_resources() -> None:
 
     asyncio.run(loop.aclose())
     assert closed == [True]
+
+
+def _answer(chunks: list[str]) -> list[AgentEvent]:
+    client = _ScriptedClient([[ChatDelta(content=chunk) for chunk in chunks]])
+
+    async def lookup(_keywords: list[str]) -> str:
+        return "{}"
+
+    async def run() -> list[AgentEvent]:
+        return [event async for event in AgentLoop(client, lookup, instructions="x").stream([])]
+
+    return asyncio.run(run())
+
+
+def test_a_mark_split_across_chunks_never_reaches_the_reader() -> None:
+    events = _answer(["Dữ liệu không có hạn nộp.\n[", "[THIEU_DU", "_LIEU]", "]"])
+
+    shown = "".join(event.content for event in events if event.kind == "text_delta")
+    assert "[" not in shown and "THIEU" not in shown
+    assert events[-1] == AgentEvent("completed", content="Dữ liệu không có hạn nộp.", marks=("missing",))
+
+
+def test_an_out_of_scope_mark_is_reported_and_plain_brackets_pass_through() -> None:
+    events = _answer(["Xem [Quy chế", "](https://ntu.edu.vn). Ngoài phạm vi.\n[[NGOAI_PHAM_VI]]"])
+
+    assert events[-1].content == "Xem [Quy chế](https://ntu.edu.vn). Ngoài phạm vi."
+    assert events[-1].marks == ("out_of_scope",)
+
+
+def test_a_full_answer_has_no_marks() -> None:
+    assert _answer(["Học phí nộp qua ngân hàng."])[-1].marks == ()

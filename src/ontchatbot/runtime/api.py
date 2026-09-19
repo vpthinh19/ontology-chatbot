@@ -223,6 +223,7 @@ async def _stream(
     error_text = ""
     # Người dùng thấy lời báo dễ hiểu; người quản trị cần chi tiết kỹ thuật của lỗi.
     error_detail = ""
+    marks: list[str] = []
     searched: list[dict] = []
     pending_keywords: tuple[str, ...] = ()
 
@@ -300,6 +301,7 @@ async def _stream(
                         yield emit("lookup_finished")
                     elif event.kind == "completed":
                         answer = event.content or _EMPTY_ANSWER
+                        marks = list(event.marks)
                         outcome = "ok"
                         completed = True
                         yield emit("completed", content=answer)
@@ -365,6 +367,8 @@ async def _stream(
                 # Câu người quản trị tự hỏi thử: gắn nhãn để tab Lịch sử chat tách khỏi câu của sinh viên.
                 "admin": by_admin,
                 "lookups": searched,
+                # Nhãn mô hình tự đánh (``agent.MARKS``): thiếu dữ liệu, ngoài phạm vi.
+                "marks": marks,
                 "duration_ms": round((time.perf_counter() - started) * 1000),
             })
 

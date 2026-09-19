@@ -6,8 +6,8 @@ Nhờ đó người xem phân biệt được "ontology thiếu dữ liệu" v�
 
 Dấu hiệu cần xem xét (``flags``) tính từ chính bản ghi, không đoán:
 - ``not_found``: có lần tra cứu không trả về mục nào;
-- ``says_missing``: câu trả lời nói dữ liệu không có (khớp một trong các cụm ``MISSING_PHRASES``);
-- ``out_of_scope``: câu trả lời nói câu hỏi nằm ngoài phạm vi (có thể là chủ đề nên bổ sung);
+- ``says_missing``: mô hình đánh dấu thiếu dữ liệu (``agent.MARKS``; bản ghi cũ: khớp ``MISSING_PHRASES``);
+- ``out_of_scope``: mô hình đánh dấu câu hỏi ngoài phạm vi (có thể là chủ đề nên bổ sung);
 - ``no_lookup``: trả lời mà không tra cứu lần nào;
 - ``failed``: lượt không xong (quá hạn, lỗi, hàng đầy, người dùng đóng trang).
 
@@ -60,10 +60,16 @@ def flags(record: dict) -> list[str]:
     found = []
     if any(lookup.get("status") == "not_found" for lookup in record.get("lookups", [])):
         found.append("not_found")
-    answer = (record.get("answer") or "").casefold()
-    if any(phrase in answer for phrase in MISSING_PHRASES):
+    if "marks" in record:  # mô hình tự đánh dấu (từ 19/09/2026)
+        missing = "missing" in record["marks"]
+        outside = "out_of_scope" in record["marks"]
+    else:  # bản ghi cũ: đoán qua câu chữ
+        answer = (record.get("answer") or "").casefold()
+        missing = any(phrase in answer for phrase in MISSING_PHRASES)
+        outside = any(phrase in answer for phrase in OUT_OF_SCOPE_PHRASES)
+    if missing:
         found.append("says_missing")
-    if any(phrase in answer for phrase in OUT_OF_SCOPE_PHRASES):
+    if outside:
         found.append("out_of_scope")
     if record.get("outcome") == "ok" and not record.get("lookups"):
         found.append("no_lookup")

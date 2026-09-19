@@ -36,6 +36,14 @@ def test_turns_that_need_a_look_are_flagged_from_the_record_itself() -> None:
     assert flags(record(outcome="timeout", answer="")) == ["failed"]
 
 
+def test_the_model_marks_decide_the_missing_and_out_of_scope_flags() -> None:
+    # Câu dặn "không cung cấp số tài khoản" từng bị đoán nhầm là báo thiếu; có dấu thì chỉ tin dấu.
+    warning = "Tuyệt đối không cung cấp số tài khoản của Trường cho ngân hàng."
+    assert flags(record(answer=warning, marks=[])) == []
+    assert flags(record(answer="Đủ.", marks=["missing"])) == ["says_missing"]
+    assert flags(record(answer="Đủ.", marks=["out_of_scope"])) == ["out_of_scope"]
+
+
 def test_a_lookup_keeps_its_keywords_status_and_the_labels_it_returned() -> None:
     assert summarize_lookup(("ký túc xá",), NOT_FOUND) == {
         "keywords": ["ký túc xá"], "status": "not_found", "results": [], "unmatched": ["ký túc xá"]}
@@ -106,7 +114,7 @@ def test_each_chat_turn_is_recorded_with_its_lookups(tmp_path) -> None:
             yield AgentEvent("lookup_started", keywords=("ký túc xá",))
             yield AgentEvent("lookup_finished", content=NOT_FOUND)
             yield AgentEvent("text_delta", content="Không tìm thấy thông tin về ký túc xá.")
-            yield AgentEvent("completed", content="Không tìm thấy thông tin về ký túc xá.")
+            yield AgentEvent("completed", content="Không tìm thấy thông tin về ký túc xá.", marks=("missing",))
 
     log = LocalChatLog(tmp_path)
 
