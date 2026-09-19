@@ -223,7 +223,7 @@ def _run_with(responses: list[httpx.Response]) -> tuple[list, list[float], int]:
 
     try:
         result: list = asyncio.run(run())
-    except Exception as exc:  # noqa: BLE001 - test đọc lại lỗi
+    except Exception as exc:
         result = [exc]
     return result, waits, calls
 

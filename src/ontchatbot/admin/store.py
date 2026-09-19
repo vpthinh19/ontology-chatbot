@@ -1,21 +1,15 @@
-"""Thêm, sửa, xoá mục và loại của ontology theo lược đồ.
+"""Thêm, sửa, xoá thực thể và lớp của ontology theo lược đồ.
 
-Mỗi lần ghi đi bốn bước: dựng bản mới trong bộ nhớ, kiểm bản đó bằng lược đồ SHACL, ghi
-tệp TriG theo thứ tự cố định, rồi báo để engine tìm kiếm nạp lại. Khi chạy trên Cloud Run,
-bản mới được ghi lên Cloud Storage ngay trước khi ghi tệp. Bước nào hỏng thì tệp trên đĩa
-giữ nguyên.
+Mỗi lần ghi: dựng bản mới trong bộ nhớ, kiểm bằng SHACL, ghi lên kho bền (nếu có), ghi tệp TriG theo
+thứ tự cố định, rồi báo engine nạp lại. Bước nào hỏng thì tệp và bộ nhớ giữ nguyên.
 
-"Sửa" là sửa thật: mục được thay bằng đúng những gì người sửa gửi lên, kể cả nguồn của
-từng câu, loại và định danh. Địa chỉ trích dẫn được tạo khi người sửa chọn nguồn và ghi vị
-trí; địa chỉ không còn câu nào dùng thì bị dọn.
+"Sửa" là thay thực thể bằng đúng nội dung gửi lên, kể cả nguồn từng câu, lớp và định danh. Địa chỉ
+trích dẫn được tạo khi chọn nguồn và ghi vị trí; địa chỉ không còn câu nào dùng thì bị dọn.
 
-Sửa loại (lớp) ghi cả shapes.ttl lẫn ontology.trig: tên hiển thị của loại, thuộc tính và
-giá trị chọn nằm ở cả hai nơi (form đọc shapes.ttl, engine đọc nhãn trong ontology.trig).
-Đổi định danh loại hay thuộc tính thì mọi câu đang dùng nó đổi theo. Toàn bộ dữ liệu được
-kiểm lại với lược đồ mới trước khi ghi.
+Sửa lớp ghi cả shapes.ttl lẫn ontology.trig (tên hiển thị nằm ở cả hai: form đọc shapes.ttl, engine đọc
+nhãn trong ontology.trig); đổi định danh thì mọi câu đang dùng nó đổi theo.
 
-Mỗi mục và mỗi loại mang một ``version`` (dấu vân tay nội dung). Form gửi lại dấu đó khi
-lưu; mục đã bị sửa ở tab hay phiên khác thì lần lưu bị từ chối thay vì đè lên.
+Mỗi thực thể và lớp mang ``version`` (dấu vân tay nội dung): đã bị sửa ở nơi khác thì lần lưu bị từ chối.
 """
 
 from __future__ import annotations
@@ -33,11 +27,12 @@ from urllib.parse import urlparse
 
 import pyoxigraph as oxi
 
-from ..rdf import OUTSIDE, RDF_TYPE, SH, XSD, load_trig, local_id
+from ..rdf import OUTSIDE, RDF_TYPE, XSD, load_trig, local_id
 from ..rdf import RDFS_LABEL as LABEL
 from ..rdf import SKOS_ALT_LABEL as ALT_LABEL
 from ..rdf import term as _node
 from .schema import KINDS, ClassSpec, Field, Schema
+from .shacl import ShaclValidator
 from .trig import iri_name, serialize, write_bytes
 
 IDENTITY = (RDF_TYPE, LABEL, ALT_LABEL)
@@ -213,7 +208,7 @@ class AdminStore:
         self._store = load_trig(self.path)
         # RLock: khi kho bền báo có bản mới hơn, việc nạp lại chạy ngay trong lượt ghi đang giữ khoá.
         self._lock = threading.RLock()
-        self._shapes = None
+        self._validator = ShaclValidator(self.shapes_path)
 
     def reload(self, fetch: Callable[[], bool] | None = None) -> bool:
         """Đọc lại tệp trên đĩa; trả ``True`` khi đã đọc.
@@ -228,7 +223,7 @@ class AdminStore:
             self._store = load_trig(self.path)
             if self.shapes_path.exists():
                 self.schema = Schema.from_file(self.shapes_path)
-                self._shapes = None
+                self._validator.forget()
             return True
 
     # --- đọc ------------------------------------------------------------------
@@ -672,8 +667,10 @@ class AdminStore:
     # --- ghi ------------------------------------------------------------------
 
     def _commit(self, store: oxi.Store, schema: Schema | None = None) -> None:
+        """Kiểm bản mới bằng SHACL, ghi lên kho bền (nếu có) rồi ghi đĩa, và báo engine nạp lại."""
+
         self._drop_unused_addresses(store)
-        shapes = self._shapes_graph(schema)
+        shapes = self._validator.shapes(schema.to_turtle() if schema is not None else None)
         errors = self._violations(store, schema or self.schema, shapes)
         if errors:
             if len(errors) > MAX_LISTED:
@@ -689,44 +686,24 @@ class AdminStore:
             write_bytes(data, path)
         self._store = store
         if schema is not None:
-            self.schema, self._shapes = schema, shapes
+            self.schema = schema
+            self._validator.adopt(shapes)
         if self.on_change is not None:
             self.on_change(self.path)
 
-    def _shapes_graph(self, schema: Schema | None):
-        from rdflib import Graph
-
-        if schema is not None:
-            return Graph().parse(data=schema.to_turtle().decode("utf-8"), format="turtle")
-        if self._shapes is None:
-            self._shapes = Graph().parse(self.shapes_path, format="turtle")
-        return self._shapes
-
     def _violations(self, store: oxi.Store, schema: Schema, shapes) -> list[dict]:
-        """Kiểm toàn bộ đồ thị bằng SHACL và viết mỗi vi phạm thành một câu người sửa đọc được."""
+        """Mỗi vi phạm SHACL thành một câu người sửa đọc được, kèm chỗ sai."""
 
-        import pyshacl
-        from rdflib import RDF, Graph, Namespace
-
-        data = Graph().parse(data="".join(f"{q.subject} {q.predicate} {q.object} .\n" for q in store), format="nt")
-        conforms, results, _ = pyshacl.validate(data, shacl_graph=shapes, inference="none")
-        if conforms:
-            return []
-        sh = Namespace(SH)
         found = {}
-        for result in results.subjects(RDF.type, sh.ValidationResult):
-            subject = local_id(str(results.value(result, sh.focusNode)))
-            raw_path = str(results.value(result, sh.resultPath) or "")
-            path = local_id(raw_path)
-            value = results.value(result, sh.value)
-            component = str(results.value(result, sh.sourceConstraintComponent)).rsplit("#", 1)[-1]
-            spec = schema.classes.get(self.class_of(subject, store, schema) or "")
+        for violation in self._validator.check(store, shapes):
+            path = local_id(violation.path)
+            spec = schema.classes.get(self.class_of(violation.focus, store, schema) or "")
             field = spec.field(path) if spec else None
-            message = _VIOLATIONS.get(component, str(results.value(result, sh.resultMessage)))
-            if component == "ClassConstraintComponent" and field and field.target in schema.classes:
+            message = _VIOLATIONS.get(violation.component, violation.message)
+            if violation.component == "ClassConstraintComponent" and field and field.target in schema.classes:
                 message = f"phải trỏ tới một thực thể thuộc lớp «{schema.classes[field.target].label}»"
-            where = field.name if field else ("tên" if raw_path in (LABEL.value, "") else path)
-            text = f"{self.label(subject, store)} · {where}: {message}"
-            found[text] = _problem(text, entity=subject, property="label" if raw_path == LABEL.value else path,
-                                   value=local_id(str(value)) if value is not None else None)
+            where = field.name if field else ("tên" if violation.path in (LABEL.value, "") else path)
+            text = f"{self.label(violation.focus, store)} · {where}: {message}"
+            found[text] = _problem(text, entity=violation.focus,
+                                   property="label" if violation.path == LABEL.value else path, value=violation.value)
         return [found[text] for text in sorted(found)]

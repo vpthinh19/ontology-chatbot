@@ -1,18 +1,13 @@
 """Bản gốc của ontology trên Google Cloud Storage, cho dịch vụ chạy trên Cloud Run.
 
-Container của Cloud Run không giữ tệp qua các lần khởi động lại và có thể chạy nhiều bản cùng lúc,
-nên sửa ở trang quản trị mà chỉ ghi tệp trong container thì mất. Bản gốc vì thế là một đối tượng
-Cloud Storage; mỗi bản dịch vụ giữ một bản sao trên đĩa để engine và trang quản trị đọc.
+Container không giữ tệp và có thể chạy nhiều bản, nên bản gốc là đối tượng Cloud Storage; mỗi bản
+dịch vụ giữ một bản sao trên đĩa cho engine và trang quản trị.
 
-- Khởi động: tải ontology.trig và shapes.ttl về đè lên bản sao. Chưa có đối tượng thì đưa tệp trong ảnh
-  lên làm bản đầu.
-- Lưu ở trang quản trị: ghi lên kèm điều kiện số thế hệ (generation) chưa đổi. Có người vừa lưu trước
-  thì Cloud Storage từ chối (412) thay vì để hai lần sửa đè nhau.
+- Khởi động: tải ontology.trig và shapes.ttl về đè lên bản sao; kho chưa có thì đưa tệp trong ảnh lên.
+- Lưu: ghi kèm điều kiện số thế hệ (generation) chưa đổi; phiên khác vừa lưu thì kho từ chối (412).
 - Các bản dịch vụ khác định kỳ hỏi số thế hệ và tải lại khi nó đổi.
 
-Gọi thẳng JSON API bằng httpx, thư viện dịch vụ đã có, thay vì thêm google-cloud-storage vào ảnh.
-Khoá truy cập lấy từ máy chủ metadata của Cloud Run, hoặc từ ONTCHATBOT_GCS_ACCESS_TOKEN khi chạy ngoài
-Google Cloud (ví dụ khoá của ``gcloud auth print-access-token``).
+Gọi thẳng JSON API bằng httpx (không thêm google-cloud-storage vào ảnh).
 """
 
 from __future__ import annotations
@@ -212,7 +207,7 @@ def watch(poll: Callable[[], None], every: float, stop: threading.Event) -> thre
         while not stop.wait(every):
             try:
                 poll()
-            except Exception:  # noqa: BLE001 - một lần hỏi hỏng không được làm dừng dịch vụ
+            except Exception:  # một lần hỏi hỏng không được làm dừng dịch vụ
                 logger.warning("could not check the ontology in Cloud Storage", exc_info=True)
 
     thread = threading.Thread(target=run, name="ontology-watch", daemon=True)

@@ -1,9 +1,4 @@
-"""Công cụ tra cứu của trợ lý: từ khoá vào, kết quả tìm kiếm có nguồn ra.
-
-Lớp này là ranh giới giữa mô hình ngôn ngữ và engine tìm kiếm. Nó giới hạn đầu vào,
-chạy engine ở luồng riêng để không chặn vòng sự kiện của máy chủ, và viết kết quả
-thành JSON gọn mà mô hình đọc được.
-"""
+"""Công cụ tra cứu của trợ lý: giới hạn từ khoá, chạy engine ở luồng riêng, viết kết quả thành JSON cho mô hình."""
 
 from __future__ import annotations
 
@@ -20,9 +15,8 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-#: Công cụ chỉ cần vài cách gọi ngắn của cùng một ý; 20 từ khoá đã rộng hơn nhiều.
 MAX_KEYWORDS_PER_LOOKUP = 20
-#: 120 ký tự chặn một câu hỏi dài bị gửi nguyên vào công cụ, mà vẫn rộng hơn tên thủ tục dài nhất.
+#: Chặn cả câu hỏi dài bị gửi nguyên làm từ khoá; vẫn dài hơn tên thủ tục dài nhất.
 MAX_KEYWORD_CHARACTERS = 120
 
 FOUND = "found"
@@ -98,7 +92,7 @@ def render_response(response: SearchResponse, truncation: dict[str, int] | None 
 
 
 class OntologyLookup:
-    """Hàm tra cứu mà vòng trợ lý gọi: ``await lookup(keywords) -> str``."""
+    """Hàm tra cứu mà vòng trợ lý gọi: ``await lookup(keywords) -> str``. ``engine`` được thay khi ontology nạp lại."""
 
     def __init__(self, engine: SearchEngine, *, workers: int = 4) -> None:
         if workers < 1:

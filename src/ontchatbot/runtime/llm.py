@@ -1,4 +1,4 @@
-"""Minimal Lightning chat-completions streaming client."""
+"""Gọi mô hình qua giao thức chat-completions (tương thích OpenAI) và đọc câu trả lời chảy dần (SSE)."""
 
 from __future__ import annotations
 
@@ -15,16 +15,15 @@ import httpx
 
 #: Số lần gọi lại sau lần đầu khi dịch vụ mô hình trục trặc tạm thời.
 MAX_RETRIES = 3
-#: Chờ lâu hơn chừng này thì báo người dùng thử lại sau: màn hình đứng im lâu
-#: trông như treo, và cả lượt còn phải vừa hạn 45 giây của máy chủ.
+#: Phải chờ lâu hơn chừng này thì báo người dùng thử lại sau, thay vì để màn hình đứng im.
 MAX_RETRY_WAIT_SECONDS = 10.0
 _RETRYABLE_STATUS = {408, 409, 429}
-#: Hai mã này nghĩa là dịch vụ quá tải chứ không phải hỏng.
+#: Dịch vụ quá tải chứ không hỏng.
 _BUSY_STATUS = {429, 503}
 
 
 class LightningProtocolError(RuntimeError):
-    """The upstream stream did not follow the advertised SSE protocol."""
+    """Luồng trả về không đúng giao thức SSE (thiếu ``[DONE]``)."""
 
 
 class LightningBusyError(RuntimeError):
@@ -70,6 +69,12 @@ class ChatDelta:
 
 
 class LightningClient:
+    """Gửi hội thoại kèm khai báo công cụ, trả về từng mảnh ``ChatDelta``.
+
+    Lỗi tạm thời (mạng, 408/409/429, 5xx) được gọi lại tối đa ``MAX_RETRIES`` lần, nhưng chỉ khi chưa
+    có chữ nào tới người dùng.
+    """
+
     def __init__(
         self,
         http: httpx.AsyncClient,

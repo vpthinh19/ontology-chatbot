@@ -1,21 +1,18 @@
-"""Nhật ký hội thoại: mỗi lượt hỏi đáp một bản ghi, để người quản trị xem lại và cải thiện ontology.
+"""Lịch sử chat: mỗi lượt hỏi đáp một bản ghi, gom theo phiên, để người quản trị xem lại.
 
-Các lượt của một cuộc trò chuyện chung một phiên (mã phiên do máy chủ cấp, trang gửi kèm mỗi câu),
-nên người xem đọc được cả cuộc trò chuyện. Một bản ghi giữ câu hỏi, câu trả lời, kết cục,
-và từng lần tra cứu: từ khoá, công cụ trả ``found`` hay ``not_found``, những mục nào được trả về.
-Nhờ đó người xem phân biệt được "ontology thiếu dữ liệu" với "tra sai từ khoá".
+Bản ghi giữ câu hỏi, câu trả lời, kết cục và từng lần tra cứu (từ khoá, ``found``/``not_found``,
+các mục trả về), nên người xem phân biệt được ontology thiếu dữ liệu với tra sai từ khoá.
 
-Dấu hiệu cần xem xét (``flags``) tính từ chính bản ghi, không đoán:
-- ``not_found``: có lần tra cứu không trả về mục nào;
-- ``says_missing``: mô hình đánh dấu thiếu dữ liệu (``agent.MARKS``; bản ghi cũ: khớp ``MISSING_PHRASES``);
-- ``out_of_scope``: mô hình đánh dấu câu hỏi ngoài phạm vi (có thể là chủ đề nên bổ sung);
-- ``no_lookup``: trả lời mà không tra cứu lần nào;
-- ``failed``: lượt không xong (quá hạn, lỗi, hàng đầy, người dùng đóng trang).
+Dấu hiệu cần xem (``flags``) tính từ chính bản ghi:
+- ``not_found``: có lần tra cứu không ra mục nào;
+- ``says_missing``: mô hình đánh dấu thiếu dữ liệu (``agent.MARKS``);
+- ``out_of_scope``: mô hình đánh dấu câu hỏi ngoài phạm vi;
+- ``no_lookup``: trả lời mà không tra cứu;
+- ``failed``: lượt không xong (quá hạn, lỗi, hàng đầy, trang đóng giữa chừng).
 
-Mỗi bản ghi là một tệp JSON riêng: ``<ngày bắt đầu phiên>/<mã phiên>/<mã lượt>.json``. Nhiều bản dịch vụ ghi cùng lúc
-không đè nhau, và đánh dấu hay xoá một bản ghi chỉ đụng tới đúng tệp đó. Trên Cloud Run tệp nằm
-trong Cloud Storage (container không giữ tệp); chạy ở máy thì nằm trong một thư mục.
-Việc ghi chạy ở một luồng nền, không làm chậm câu trả lời.
+Mỗi lượt là một tệp JSON ``<ngày bắt đầu phiên>/<mã phiên>/<mã lượt>.json``: nhiều bản dịch vụ ghi
+cùng lúc không đè nhau (Cloud Storage không ghi nối được). Trên Cloud Run tệp nằm trong Cloud Storage,
+chạy ở máy thì trong một thư mục. Việc ghi chạy ở luồng nền.
 """
 
 from __future__ import annotations
@@ -33,22 +30,10 @@ from urllib.parse import quote
 
 logger = logging.getLogger(__name__)
 
-#: Cách mô hình nói "dữ liệu không có". Đo trên 210 câu trả lời đã chấm của bộ 70 câu: bắt 106/111
-#: câu từ chối đúng, 21/21 câu từ chối nhầm, 9/14 câu đúng một phần; chỉ gắn nhầm 4/64 câu đúng hẳn
-#: (các câu này cũng nói rõ một vế không có dữ liệu).
-MISSING_PHRASES = (
-    "không tìm thấy", "không thấy thông tin", "không có thông tin", "chưa có thông tin", "không chứa",
-    "chưa có dữ liệu", "không có dữ liệu", "không có trong dữ liệu", "chưa có trong dữ liệu",
-    "không cung cấp", "chưa cung cấp", "không đề cập", "chưa đề cập", "không được đề cập", "chưa được đề cập",
-    "không nêu", "chưa nêu", "không được nêu", "chưa được nêu", "không ghi", "chưa ghi", "không được ghi",
-    "chưa được ghi", "không có quy định", "chưa có quy định", "không được quy định", "không có nội dung",
-    "không bao gồm thông tin",
-)
-OUT_OF_SCOPE_PHRASES = ("ngoài phạm vi",)
 #: Trạng thái xem xét: chưa xem · cần bổ sung dữ liệu hay sửa hệ thống · đã xử lý · không cần xử lý.
 REVIEW_STATES = ("", "can-bo-sung", "da-xu-ly", "bo-qua")
-#: Thời điểm tạo tới phần triệu giây (để các lượt của một phiên sắp đúng thứ tự theo tên tệp) cộng sáu ký tự
-#: ngẫu nhiên. Mã tạo trước 19/09/2026 chỉ có tới giây, vẫn hợp lệ.
+#: Thời điểm tạo (tới phần triệu giây, để tên tệp sắp đúng thứ tự lượt) cộng sáu ký tự ngẫu nhiên.
+#: Phần triệu giây không bắt buộc: mã chỉ tới giây vẫn hợp lệ.
 _ID = re.compile(r"\d{8}T\d{6}(?:\d{6})?-[0-9a-f]{6}")
 
 
@@ -57,7 +42,7 @@ def new_id(now: datetime) -> str:
 
 
 def valid_id(value: object) -> bool:
-    """Mã lượt và mã phiên có cùng dạng (``_ID``)."""
+    """Mã lượt và mã phiên cùng dạng ``_ID``."""
 
     return isinstance(value, str) and _ID.fullmatch(value) is not None
 
@@ -70,16 +55,10 @@ def flags(record: dict) -> list[str]:
     found = []
     if any(lookup.get("status") == "not_found" for lookup in record.get("lookups", [])):
         found.append("not_found")
-    if "marks" in record:  # mô hình tự đánh dấu (từ 19/09/2026)
-        missing = "missing" in record["marks"]
-        outside = "out_of_scope" in record["marks"]
-    else:  # bản ghi cũ: đoán qua câu chữ
-        answer = (record.get("answer") or "").casefold()
-        missing = any(phrase in answer for phrase in MISSING_PHRASES)
-        outside = any(phrase in answer for phrase in OUT_OF_SCOPE_PHRASES)
-    if missing:
+    marks = record.get("marks") or []
+    if "missing" in marks:
         found.append("says_missing")
-    if outside:
+    if "out_of_scope" in marks:
         found.append("out_of_scope")
     if record.get("outcome") == "ok" and not record.get("lookups"):
         found.append("no_lookup")
@@ -115,9 +94,7 @@ def _matches(record: dict, view: str, query: str) -> bool:
 
 
 class ChatLog(ABC):
-    """Lịch sử chat theo phiên. Mỗi lượt vẫn là một tệp riêng (Cloud Storage không ghi nối được, và
-    hai bản dịch vụ ghi cùng lúc không đè nhau), nằm trong thư mục của phiên:
-    ``<ngày bắt đầu phiên>/<mã phiên>/<mã lượt>.json``. Danh sách gom các lượt thành phiên."""
+    """Lịch sử chat; ``list`` gom các lượt thành phiên."""
 
     def __init__(self) -> None:
         self._writer = ThreadPoolExecutor(max_workers=1, thread_name_prefix="chatlog")
@@ -130,7 +107,7 @@ class ChatLog(ABC):
         def write() -> None:
             try:
                 self.write(record)
-            except Exception:  # noqa: BLE001 - mất một bản ghi còn hơn làm hỏng câu trả lời
+            except Exception:  # mất một bản ghi còn hơn làm hỏng câu trả lời
                 logger.warning("could not record chat turn id=%s", record.get("id"), exc_info=True)
 
         self._writer.submit(write)
@@ -261,7 +238,7 @@ class LocalChatLog(ChatLog):
 
 class GcsChatLog(ChatLog):
     """Bản ghi là đối tượng Cloud Storage. Tóm tắt (câu hỏi, dấu hiệu, trạng thái xem xét) nằm trong
-    metadata của đối tượng, nên danh sách chỉ cần một lần liệt kê chứ không tải từng tệp."""
+    metadata, nên danh sách chỉ cần liệt kê đối tượng, không tải từng tệp."""
 
     def __init__(self, bucket: str, prefix: str, *, http=None, token=None) -> None:
         super().__init__()
@@ -338,7 +315,7 @@ class GcsChatLog(ChatLog):
         turns = []
         for item in self._objects(prefix=self.prefix, startOffset=f"{self.prefix}{since}"):
             parts = item["name"][len(self.prefix):].split("/")
-            if len(parts) != 3:  # bản ghi từ trước khi có phiên
+            if len(parts) != 3:  # không theo dạng <ngày>/<phiên>/<lượt>.json
                 continue
             meta = item.get("metadata", {})
             turns.append({

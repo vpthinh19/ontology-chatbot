@@ -13,7 +13,14 @@ import pytest
 from ontchatbot.admin import AdminStore, Schema
 from ontchatbot.runtime import api
 from ontchatbot.runtime.agent import AgentEvent
-from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog, flags, new_id, summarize_lookup, valid_id
+from ontchatbot.runtime.chatlog import (
+    GcsChatLog,
+    LocalChatLog,
+    flags,
+    new_id,
+    summarize_lookup,
+    valid_id,
+)
 from ontchatbot.settings import ONTOLOGY_PATH
 
 FOUND = json.dumps({"status": "found", "results": [{"label": "Thủ tục nghỉ học tạm thời"}]})
@@ -29,15 +36,12 @@ def record(**extra) -> dict:
 def test_turns_that_need_a_look_are_flagged_from_the_record_itself() -> None:
     assert flags(record()) == []
     assert flags(record(lookups=[summarize_lookup(["ký túc xá"], NOT_FOUND)])) == ["not_found"]
-    assert flags(record(answer="Dữ liệu hiện có không chứa mức phí này.")) == ["says_missing"]
-    assert flags(record(answer="Giá phòng không được đề cập trong dữ liệu.")) == ["says_missing"]
-    assert flags(record(answer="Câu hỏi này nằm ngoài phạm vi hỗ trợ học vụ.")) == ["out_of_scope"]
     assert flags(record(lookups=[])) == ["no_lookup"]
     assert flags(record(outcome="timeout", answer="")) == ["failed"]
 
 
 def test_the_model_marks_decide_the_missing_and_out_of_scope_flags() -> None:
-    # Câu dặn "không cung cấp số tài khoản" từng bị đoán nhầm là báo thiếu; có dấu thì chỉ tin dấu.
+    # Câu chữ không quyết định: chỉ dấu của mô hình.
     warning = "Tuyệt đối không cung cấp số tài khoản của Trường cho ngân hàng."
     assert flags(record(answer=warning, marks=[])) == []
     assert flags(record(answer="Đủ.", marks=["missing"])) == ["says_missing"]
@@ -57,7 +61,8 @@ def test_a_local_log_groups_turns_into_sessions_filters_reviews_and_deletes(tmp_
     first, other = f"{day}T100000-000001", f"{day}T110000-000002"
     plain = record(id=f"{day}T100001-00000a", session=first, time=today.isoformat())
     missing = record(id=f"{day}T100002-00000b", session=first, time=today.isoformat(), question="Ký túc xá ở đâu?",
-                     lookups=[summarize_lookup(["ký túc xá"], NOT_FOUND)], answer="Không tìm thấy thông tin.")
+                     lookups=[summarize_lookup(["ký túc xá"], NOT_FOUND)], answer="Không tìm thấy thông tin.",
+                     marks=["missing"])
     alone = record(id=f"{day}T110001-00000c", session=other, time=today.isoformat(), question="Học phí?")
     for turn in (plain, missing, alone):
         log.submit(turn)
@@ -220,7 +225,8 @@ def test_the_admin_reads_marks_and_deletes_chat_sessions(tmp_path) -> None:
     log = LocalChatLog(tmp_path / "chat")
     today = datetime.now().astimezone()
     session = new_id(today)
-    turn = record(id=new_id(today), session=session, time=today.isoformat(), answer="Không có thông tin.")
+    turn = record(id=new_id(today), session=session, time=today.isoformat(), answer="Không có thông tin.",
+                  marks=["missing"])
     log.submit(turn)
     log.flush()
     key = {"X-Admin-Token": "khoa-quan-tri"}
