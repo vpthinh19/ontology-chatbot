@@ -2,16 +2,57 @@
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Sequence
+import asyncio
+from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 import json
+import random
 from typing import Any
 
 import httpx
 
 
+#: Số lần gọi lại sau lần đầu khi dịch vụ mô hình trục trặc tạm thời.
+MAX_RETRIES = 3
+#: Chờ lâu hơn chừng này thì báo người dùng thử lại sau: màn hình đứng im lâu
+#: trông như treo, và cả lượt còn phải vừa hạn 45 giây của máy chủ.
+MAX_RETRY_WAIT_SECONDS = 10.0
+_RETRYABLE_STATUS = {408, 409, 429}
+#: Hai mã này nghĩa là dịch vụ quá tải chứ không phải hỏng.
+_BUSY_STATUS = {429, 503}
+
+
 class LightningProtocolError(RuntimeError):
     """The upstream stream did not follow the advertised SSE protocol."""
+
+
+class LightningBusyError(RuntimeError):
+    """Dịch vụ mô hình quá tải lâu hơn mức một người đang chat chờ được."""
+
+    def __init__(self, retry_after: float) -> None:
+        super().__init__(f"Lightning is rate limiting; retry after {retry_after:.0f}s")
+        self.retry_after = retry_after
+
+
+def _retry_after(response: httpx.Response) -> float | None:
+    """Số giây chờ trong header Retry-After: dạng số giây hoặc dạng ngày giờ HTTP."""
+
+    value = response.headers.get("retry-after", "").strip()
+    if not value:
+        return None
+    try:
+        return max(0.0, float(value))
+    except ValueError:
+        pass
+    try:
+        when = parsedate_to_datetime(value)
+    except (TypeError, ValueError):
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=timezone.utc)
+    return max(0.0, (when - datetime.now(timezone.utc)).total_seconds())
 
 
 @dataclass(frozen=True)
@@ -30,9 +71,18 @@ class ChatDelta:
 
 
 class LightningClient:
-    def __init__(self, http: httpx.AsyncClient, *, model: str) -> None:
+    def __init__(
+        self,
+        http: httpx.AsyncClient,
+        *,
+        model: str,
+        sleep: Callable[[float], Awaitable[Any]] = asyncio.sleep,
+        jitter: Callable[[], float] = random.random,
+    ) -> None:
         self._http = http
         self._model = model
+        self._sleep = sleep
+        self._jitter = jitter
 
     async def stream(
         self,
@@ -47,7 +97,7 @@ class LightningClient:
             "tool_choice": "auto",
             "stream": True,
         }
-        for attempt in range(2):
+        for retry in range(MAX_RETRIES + 1):
             emitted = False
             try:
                 async for delta in self._stream_once(body):
@@ -55,13 +105,20 @@ class LightningClient:
                     yield delta
                 return
             except (httpx.TransportError, httpx.HTTPStatusError) as exc:
-                retryable = isinstance(exc, httpx.TransportError) or (
-                    exc.response.status_code in {408, 409, 429}
-                    or exc.response.status_code >= 500
-                )
-                if attempt == 0 and not emitted and retryable:
-                    continue
-                raise
+                status = getattr(getattr(exc, "response", None), "status_code", None)
+                retryable = status is None or status in _RETRYABLE_STATUS or status >= 500
+                # Đã hiện chữ cho người dùng thì gọi lại sẽ làm câu trả lời lặp.
+                if emitted or not retryable:
+                    raise
+                told = _retry_after(exc.response) if status is not None else None
+                # Không được bảo chờ bao lâu thì chờ 1, 2, 4 giây, thêm một chút
+                # ngẫu nhiên để nhiều lượt cùng bị chặn không gọi lại cùng lúc.
+                wait = told if told is not None else 2**retry + 0.5 * self._jitter()
+                if retry == MAX_RETRIES or wait > MAX_RETRY_WAIT_SECONDS:
+                    if status in _BUSY_STATUS:
+                        raise LightningBusyError(wait) from exc
+                    raise
+                await self._sleep(wait)
 
     async def _stream_once(
         self, body: dict[str, Any]

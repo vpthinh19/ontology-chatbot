@@ -7,11 +7,17 @@ import httpx
 import pytest
 
 from ontchatbot.runtime.llm import (
+    MAX_RETRIES,
     ChatDelta,
+    LightningBusyError,
     LightningClient,
     LightningProtocolError,
     ToolCallDelta,
 )
+
+
+async def _no_wait(_seconds: float) -> None:
+    return None
 
 
 def test_stream_reconstructs_the_lightning_tool_call_protocol() -> None:
@@ -36,7 +42,7 @@ data: [DONE]\n\n"""
             base_url="https://lightning.test/api/v1/",
             transport=httpx.MockTransport(respond),
         ) as http:
-            client = LightningClient(http, model="gemma")
+            client = LightningClient(http, model="gemma", sleep=_no_wait)
             return [
                 delta
                 async for delta in client.stream(
@@ -91,7 +97,7 @@ def test_stream_sends_the_minimal_openai_compatible_request() -> None:
         ) as http:
             return [
                 item
-                async for item in LightningClient(http, model="gemma").stream(
+                async for item in LightningClient(http, model="gemma", sleep=_no_wait).stream(
                     messages=messages, tools=tools
                 )
             ]
@@ -121,7 +127,7 @@ def test_stream_rejects_a_truncated_response() -> None:
             base_url="https://lightning.test/api/v1/",
             transport=httpx.MockTransport(respond),
         ) as http:
-            async for _ in LightningClient(http, model="gemma").stream(
+            async for _ in LightningClient(http, model="gemma", sleep=_no_wait).stream(
                 messages=[], tools=[]
             ):
                 pass
@@ -151,7 +157,7 @@ def test_stream_retries_one_connection_failure_before_any_event() -> None:
         ) as http:
             return [
                 item
-                async for item in LightningClient(http, model="gemma").stream(
+                async for item in LightningClient(http, model="gemma", sleep=_no_wait).stream(
                     messages=[], tools=[]
                 )
             ]
@@ -181,10 +187,92 @@ def test_stream_retries_one_retryable_http_failure_before_any_event() -> None:
         ) as http:
             return [
                 item
-                async for item in LightningClient(http, model="gemma").stream(
+                async for item in LightningClient(http, model="gemma", sleep=_no_wait).stream(
                     messages=[], tools=[]
                 )
             ]
 
     assert asyncio.run(run()) == [ChatDelta(content="ok", finish_reason="stop")]
     assert attempts == 2
+
+
+_OK = b'data: {"choices":[{"delta":{"content":"ok"},"finish_reason":"stop"}]}\n\ndata: [DONE]\n\n'
+
+
+def _run_with(responses: list[httpx.Response]) -> tuple[list, list[float], int]:
+    """Chạy một lượt với chuỗi phản hồi dựng sẵn; trả về kết quả, các lần chờ, số lần gọi."""
+
+    waits: list[float] = []
+    calls = 0
+
+    async def sleep(seconds: float) -> None:
+        waits.append(seconds)
+
+    def respond(_request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        return responses[min(calls, len(responses)) - 1]
+
+    async def run() -> list:
+        async with httpx.AsyncClient(
+            base_url="https://lightning.test/api/v1/",
+            transport=httpx.MockTransport(respond),
+        ) as http:
+            client = LightningClient(http, model="gemma", sleep=sleep, jitter=lambda: 0.0)
+            return [item async for item in client.stream(messages=[], tools=[])]
+
+    try:
+        result: list = asyncio.run(run())
+    except Exception as exc:  # noqa: BLE001 - test đọc lại lỗi
+        result = [exc]
+    return result, waits, calls
+
+
+def _ok() -> httpx.Response:
+    return httpx.Response(200, headers={"Content-Type": "text/event-stream"}, content=_OK)
+
+
+def test_a_rate_limit_waits_as_long_as_the_service_asks() -> None:
+    result, waits, calls = _run_with([httpx.Response(429, headers={"Retry-After": "3"}), _ok()])
+
+    assert result == [ChatDelta(content="ok", finish_reason="stop")]
+    assert waits == [3.0]
+    assert calls == 2
+
+
+def test_without_retry_after_the_waits_double() -> None:
+    result, waits, _ = _run_with([httpx.Response(429)] * 3 + [_ok()])
+
+    assert result == [ChatDelta(content="ok", finish_reason="stop")]
+    assert waits == [1.0, 2.0, 4.0]
+
+
+def test_a_long_requested_wait_is_reported_at_once_instead_of_waited() -> None:
+    (error,), waits, calls = _run_with([httpx.Response(429, headers={"Retry-After": "40"})])
+
+    assert isinstance(error, LightningBusyError)
+    assert error.retry_after == 40.0
+    assert waits == [] and calls == 1
+
+
+def test_retry_after_may_be_an_http_date() -> None:
+    (error,), _, _ = _run_with(
+        [httpx.Response(429, headers={"Retry-After": "Wed, 21 Oct 2099 07:28:00 GMT"})]
+    )
+
+    assert isinstance(error, LightningBusyError)
+    assert error.retry_after > 60
+
+
+def test_a_rate_limit_that_never_lifts_ends_as_busy_after_the_last_retry() -> None:
+    (error,), waits, calls = _run_with([httpx.Response(429)])
+
+    assert isinstance(error, LightningBusyError)
+    assert len(waits) == MAX_RETRIES and calls == MAX_RETRIES + 1
+
+
+def test_a_rejected_key_is_not_retried() -> None:
+    (error,), waits, calls = _run_with([httpx.Response(401)])
+
+    assert isinstance(error, httpx.HTTPStatusError)
+    assert waits == [] and calls == 1

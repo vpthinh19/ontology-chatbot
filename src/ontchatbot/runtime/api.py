@@ -14,6 +14,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import math
 import os
 import secrets
 import time
@@ -83,6 +84,19 @@ _BUSY_MESSAGE = (
 _QUEUE_TIMEOUT_MESSAGE = (
     "Hệ thống vẫn đang bận nên chưa tới lượt bạn. Bạn thử gửi lại sau ít phút nhé."
 )
+#: Lỗi của dịch vụ mô hình là chuyện vận hành: người dùng cần biết nên làm gì,
+#: còn chi tiết kỹ thuật nằm trong log máy chủ.
+_MODEL_ERROR_MESSAGE = (
+    "Mình chưa kết nối được với mô hình ngôn ngữ. Bạn thử gửi lại sau ít phút nhé."
+)
+
+
+def _rate_limited_message(retry_after: float) -> str:
+    seconds = max(1, math.ceil(retry_after))
+    wait = f"{math.ceil(seconds / 60)} phút" if seconds >= 90 else f"{seconds} giây"
+    return f"Hệ thống đang nhận quá nhiều câu hỏi. Bạn thử gửi lại sau khoảng {wait} nhé."
+
+
 _TOO_MANY_STEPS_MESSAGE = (
     "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
     "hoặc tách thành từng ý nhỏ."
@@ -264,6 +278,7 @@ async def _stream(
         import httpx
 
         from .agent import AgentLoopLimitError
+        from .llm import LightningBusyError
 
         try:
             async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
@@ -301,10 +316,15 @@ async def _stream(
             logger.warning("turn=%s hit the ceiling of %d steps", turn, MAX_MODEL_STEPS)
             yield emit("error", content=_TOO_MANY_STEPS_MESSAGE)
             return
-        except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
+        except LightningBusyError as exc:
+            outcome = "rate-limited"
+            logger.warning("turn=%s rate limited, retry after %.0fs", turn, exc.retry_after)
+            yield emit("error", content=_rate_limited_message(exc.retry_after))
+            return
+        except Exception:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
             outcome = "error"
             logger.exception("turn=%s failed", turn)
-            yield emit("error", content=str(exc))
+            yield emit("error", content=_MODEL_ERROR_MESSAGE)
             return
     finally:
         # Trong ``finally`` để một lượt luôn nhả chỗ và luôn đóng sổ, kể cả khi

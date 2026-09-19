@@ -221,7 +221,7 @@ def test_a_failure_mid_answer_reaches_the_page(monkeypatch, tmp_path, caplog) ->
 
     events = _sse(response.text)
     assert events[-1]["type"] == "error"
-    assert "mất kết nối" in events[-1]["content"]
+    assert events[-1]["content"] == api._MODEL_ERROR_MESSAGE
     metrics = _terminal_metrics(caplog)
     assert metrics["sse_events"] == "2"
     assert metrics["sse_bytes"] == str(len(response.text.encode("utf-8")))
@@ -560,6 +560,27 @@ def test_hitting_the_step_ceiling_reads_as_a_sentence_not_a_stack_trace(
     assert events[-1]["type"] == "error"
     assert "tra đi tra lại" in events[-1]["content"]
     assert "outcome=too-many-steps" in "\n".join(r.getMessage() for r in caplog.records)
+
+
+def test_a_busy_model_service_reads_as_when_to_try_again(caplog) -> None:
+    from ontchatbot.runtime.llm import LightningBusyError
+
+    run = _Run([], error=LightningBusyError(40))
+
+    async def exercise():
+        return [
+            json.loads(chunk[len("data: ") :])
+            async for chunk in api._stream(run, "học phí", [], api.TurnGate())
+        ]
+
+    with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
+        events = asyncio.run(exercise())
+
+    assert events[-1] == {
+        "type": "error",
+        "content": "Hệ thống đang nhận quá nhiều câu hỏi. Bạn thử gửi lại sau khoảng 40 giây nhé.",
+    }
+    assert "outcome=rate-limited" in "\n".join(r.getMessage() for r in caplog.records)
 
 
 def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> None:

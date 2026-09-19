@@ -26,7 +26,7 @@ import httpx
 
 from ontchatbot.runtime.agent import MODEL_REQUEST_TIMEOUT_SECONDS, AgentLoop, build_instructions, read_vocabulary
 from ontchatbot.runtime.api import MAX_MODEL_STEPS, MODEL_TURN_TIMEOUT_SECONDS
-from ontchatbot.runtime.llm import LightningClient
+from ontchatbot.runtime.llm import LightningBusyError, LightningClient
 from ontchatbot.runtime.lookup import bound_keywords, render_response
 from ontchatbot.search import SearchEngine, TriGFileSource
 from ontchatbot.settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
@@ -69,11 +69,11 @@ async def mot_luot(agent: AgentLoop, cau_hoi: str) -> str:
     return tra_loi.strip()
 
 
-def cho_khi_bi_gioi_han(exc: httpx.HTTPStatusError, lan: int) -> float:
-    """Số giây chờ sau lỗi 429: theo Retry-After nếu máy chủ gửi, không thì tăng dần."""
+def cho_khi_bi_gioi_han(exc: LightningBusyError, lan: int) -> float:
+    """Số giây chờ khi dịch vụ vẫn quá tải sau các lần gọi lại của LightningClient: chờ
+    theo lời dịch vụ, và không dưới 30 giây nhân số lần đã thử."""
 
-    retry_after = exc.response.headers.get("retry-after", "")
-    return float(retry_after) if retry_after.isdigit() else 30.0 * (lan + 1)
+    return max(exc.retry_after, 30.0 * (lan + 1))
 
 
 async def hoi(agent: AgentLoop, cong_cu: CongCuCoVet, cau: dict) -> dict:
@@ -84,9 +84,9 @@ async def hoi(agent: AgentLoop, cong_cu: CongCuCoVet, cau: dict) -> dict:
         bat_dau = time.perf_counter()
         try:
             tra_loi, loi = await asyncio.wait_for(mot_luot(agent, cau["cau_hoi"]), MODEL_TURN_TIMEOUT_SECONDS), None
-        except httpx.HTTPStatusError as exc:
+        except LightningBusyError as exc:
             tra_loi, loi = "", f"{type(exc).__name__}: {exc}"
-            if exc.response.status_code == 429 and lan + 1 < SO_LAN_THU:
+            if lan + 1 < SO_LAN_THU:
                 cho = cho_khi_bi_gioi_han(exc, lan)
                 print(f"  {cau['id']} bị giới hạn tốc độ, chờ {cho:.0f}s rồi hỏi lại", flush=True)
                 await asyncio.sleep(cho)

@@ -849,6 +849,7 @@ const OUTCOME_NAMES = {
   "too-many-steps": "chạm trần số bước",
   busy: "hàng đợi đầy",
   "queue-timeout": "chờ trong hàng quá lâu",
+  "rate-limited": "dịch vụ mô hình quá tải",
   error: "lỗi",
   abandoned: "người dùng đóng trang giữa chừng",
 };
