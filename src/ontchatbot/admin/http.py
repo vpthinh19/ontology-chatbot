@@ -156,7 +156,7 @@ class AdminApi:
             return _failure(exc)
         if not secrets.compare_digest(key.encode("utf-8"), self.admin_token.encode("utf-8")):
             self._failed_logins.append(now)
-            return _json({"detail": "Mật khẩu quản trị không đúng."}, 401)
+            return _json({"detail": "KEY không đúng."}, 401)
         response = _json({"ok": True})
         response.set_cookie(SESSION_COOKIE, session_value(self.admin_token), max_age=SESSION_SECONDS,
                             path=SESSION_PATH, httponly=True, secure=True, samesite="strict")

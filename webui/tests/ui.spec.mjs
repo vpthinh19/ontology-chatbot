@@ -539,33 +539,59 @@ const quietServer = async (page) => {
   );
 };
 
-test("a visitor is a guest with a login button and no way into the admin page", async ({ page }) => {
+test("a visitor sees only an avatar; the guest box and its KEY field open on demand", async ({ page }) => {
   await quietServer(page);
   await page.goto("http://127.0.0.1:4173");
 
-  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+  const avatar = page.getByRole("button", { name: "Tài khoản: khách" });
+  await expect(avatar).toBeVisible();
+  await expect(page.locator("#account-panel")).toBeHidden();
+  await expect(page.getByText("Đăng nhập")).toBeHidden();
+
+  await avatar.click();
+  await expect(page.locator("#account-name")).toHaveText("Tài khoản: khách");
   await expect(page.locator("#account-login")).toBeVisible();
   await expect(page.locator("#account-switch")).toBeHidden();
   await expect(page.locator("#account-logout")).toBeHidden();
   await expect(page.locator("#account-form")).toBeHidden();
+
+  await page.click("#account-login");
+  await expect(page.locator("#account-password")).toBeFocused();
+  await expect(page.locator("#account-password")).toHaveAttribute("placeholder", "KEY");
+  await expect(page.locator("#account")).not.toContainText(/mật khẩu|quản trị viên/i);
+
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#account-panel")).toBeHidden();
+  await expect(avatar).toBeFocused();
 });
 
-test("a wrong admin password is reported next to the field", async ({ page }) => {
+test("clicking elsewhere closes the account box", async ({ page }) => {
+  await quietServer(page);
+  await page.goto("http://127.0.0.1:4173");
+
+  await page.getByRole("button", { name: "Tài khoản: khách" }).click();
+  await expect(page.locator("#account-panel")).toBeVisible();
+  await page.locator(".chats-container").click();
+  await expect(page.locator("#account-panel")).toBeHidden();
+});
+
+test("a wrong KEY is reported next to the field", async ({ page }) => {
   await quietServer(page);
   await page.route("**/api/admin/login", (route) =>
-    route.fulfill({ status: 401, json: { detail: "Mật khẩu quản trị không đúng." } }),
+    route.fulfill({ status: 401, json: { detail: "KEY không đúng." } }),
   );
   await page.goto("http://127.0.0.1:4173");
 
+  await page.getByRole("button", { name: "Tài khoản: khách" }).click();
   await page.click("#account-login");
   await page.fill("#account-password", "sai");
   await page.press("#account-password", "Enter");
 
-  await expect(page.locator("#account-error")).toHaveText("Mật khẩu quản trị không đúng.");
-  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+  await expect(page.locator("#account-error")).toHaveText("KEY không đúng.");
+  await expect(page.getByRole("button", { name: "Tài khoản: khách" })).toBeVisible();
 });
 
-test("an admin switches pages and signs out from the account corner", async ({ page }) => {
+test("an admin switches pages and signs out from the account box", async ({ page }) => {
   await quietServer(page);
   let signedIn = false;
   let sentKey = null;
@@ -580,18 +606,24 @@ test("an admin switches pages and signs out from the account corner", async ({ p
   });
   await page.goto("http://127.0.0.1:4173");
 
+  await page.getByRole("button", { name: "Tài khoản: khách" }).click();
   await page.click("#account-login");
   await page.fill("#account-password", "quan-tri");
   await page.press("#account-password", "Enter");
 
   expect(sentKey).toBe("quan-tri");
-  await expect(page.getByRole("img", { name: "Tài khoản: quản trị" })).toBeVisible();
+  const avatar = page.getByRole("button", { name: "Tài khoản: quản trị" });
+  await expect(avatar).toBeVisible();
+  await expect(page.locator("#account-panel")).toBeHidden();
+
+  await avatar.click();
+  await expect(page.locator("#account-name")).toHaveText("Tài khoản: quản trị");
   await expect(page.locator("#account-switch")).toHaveAttribute("href", "/admin");
   await expect(page.locator("#account-login")).toBeHidden();
   await expect(page.locator("#account-form")).toBeHidden();
 
   await page.click("#account-logout");
-  await expect(page.getByRole("img", { name: "Tài khoản: khách" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Tài khoản: khách" })).toBeVisible();
   expect(signedIn).toBe(false);
 });
 
@@ -602,16 +634,19 @@ test("an open admin session shows the admin account on arrival", async ({ page }
   );
   await page.goto("http://127.0.0.1:4173");
 
-  await expect(page.getByRole("img", { name: "Tài khoản: quản trị" })).toBeVisible();
+  await page.getByRole("button", { name: "Tài khoản: quản trị" }).click();
   await expect(page.locator("#account-switch")).toBeVisible();
 });
 
-test("the short admin address asks a guest for the password", async ({ page }) => {
+test("the short admin address asks a guest for the KEY", async ({ page }) => {
   await page.goto("http://127.0.0.1:4173/admin");
 
   await expect(page.getByRole("heading", { name: "Quản trị ontology" })).toBeVisible();
   await expect(page.locator("#account-password")).toBeFocused();
   await expect(page.locator("#tabs")).toBeHidden();
+  // Khách ở trang quản trị: hộp không đóng, vì trang không còn gì khác để làm.
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#account-password")).toBeVisible();
   await expect(page.locator("#account-switch")).toHaveAttribute("href", "/");
 });
 
