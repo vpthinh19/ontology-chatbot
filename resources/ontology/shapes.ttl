@@ -177,11 +177,6 @@
 		  sh:minCount 1 ;
 		  sh:maxCount 1 ;
 		  :batBuocNguon true ] ,
-		[ sh:path :tongSoTinChi ;
-		  sh:name "tổng số tín chỉ"@vi ;
-		  sh:datatype xsd:integer ;
-		  sh:maxCount 1 ;
-		  :batBuocNguon true ] ,
 		[ sh:path :vanBangTotNghiep ;
 		  sh:name "văn bằng tốt nghiệp"@vi ;
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ;

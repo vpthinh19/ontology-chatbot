@@ -2894,290 +2894,146 @@
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMayMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMay ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMayMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMay ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheSinhHoc ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheSinhHoc ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheTaiChinh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheTaiChinh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThucPhamMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheThucPham ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheThucPhamMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoCongNgheThucPham ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPohe ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPohe ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPhamMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPhamMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoHeThongNhungVaIotMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoHeThongNhungVaIot ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoHeThongNhungVaIotMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoHeThongNhungVaIot ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLyMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLy ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLyMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLy ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKeToanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKeToan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKeToanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKeToan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKhaiThacThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhaiThacThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKhaiThacThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhaiThacThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocHangHaiMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocHangHai ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocHangHaiMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocHangHai ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocMayTinhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocMayTinh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocMayTinhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocMayTinh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKhoaHocThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKiemToanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKiemToan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKiemToanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKiemToan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMaiMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMai ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMaiMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMai ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKinhTePhatTrienMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhTePhatTrien ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKinhTePhatTrienMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhTePhatTrien ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKinhTeThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhTeThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKinhTeThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKinhTeThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatBienMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatBien ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatBienMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatBien ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienTuMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoDienTu ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienTuMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoDienTu ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLucMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLuc ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLucMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLuc ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoKhi ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatCoKhi ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatDienDienTuMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatDienDienTu ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatDienDienTuMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatDienDienTu ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoaMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoa ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoaMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoa ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatHoaHocMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatHoaHoc ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatHoaHocMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatHoaHoc ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatMoiTruongMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatMoiTruong ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatMoiTruongMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatMoiTruong ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatNhietMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatNhiet ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatNhietMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatNhiet ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatOToMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatOTo ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatOToMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatOTo ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatTauThuyMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatTauThuy ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatTauThuyMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatTauThuy ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThongMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThong ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThongMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThong ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatXayDung ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoKyThuatXayDung ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoLuatMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoLuat ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoLuatMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoLuat ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoNgonNguAnhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoNgonNguAnh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoNgonNguAnhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoNgonNguAnh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoNuoiTrongThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoNuoiTrongThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoNuoiTrongThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoNuoiTrongThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogisticsMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogistics ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogisticsMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogistics ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyKinhTeMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyKinhTe ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyKinhTeMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyKinhTe ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyThuySanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyThuySan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanLyThuySan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBiet ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBiet ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapVietMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapViet ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapVietMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapViet ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuanMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuan ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuanMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuan ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanh ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanh ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTeMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTe ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTeMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTe ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhVietMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhViet ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhVietMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhViet ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoTaiChinhNganHangMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoTaiChinhNganHang ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
 	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoTaiChinhNganHangMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoTaiChinhNganHang ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
-	a :DiaChiTrichDan .
 :TDNguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSoMucIThongTinChungVeChuongTrinh :thuocNguon :NguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSo ;
 	:toaDo "mục I. Thông tin chung về chương trình"@vi ;
-	a :DiaChiTrichDan .
-:TDNguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSoMucViCauTrucChuongTrinhDaoTaoDongTongCong :thuocNguon :NguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSo ;
-	:toaDo "mục VI. Cấu trúc chương trình đào tạo, dòng Tổng cộng"@vi ;
 	a :DiaChiTrichDan .
 :TDOrganizationStructureListing :thuocNguon :NguonTrangCoCauToChucKhoiThamMuuQuanLy ;
 	:toaDo "danh sách đơn vị trên"@vi ;
@@ -3519,7 +3375,6 @@
 :tieuChi rdfs:label "tiêu chí"@vi .
 :tieuDeCuaPhan rdfs:label "tiêu đề của phần"@vi .
 :toaDo rdfs:label "toạ độ"@vi .
-:tongSoTinChi rdfs:label "tổng số tín chỉ"@vi .
 :trichDan rdfs:label "trích dẫn"@vi .
 :trichDanNguon rdfs:label "trích dẫn nguồn"@vi .
 :trichYeu rdfs:label "trích yếu"@vi .
@@ -4344,7 +4199,7 @@
 }
 :TDNguonCongThongTinSinhVienThongBaoNopHoSoChinhSachHki20262027 {
 	:ThuTucNopHoSoCheDoChinhSach :doAiThucHien :SinhVien ;
-		:noiDung "Học kỳ I năm học 2026-2027: hồ sơ miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật nộp đến hết ngày 21/09/2026; hồ sơ trợ cấp xã hội nộp đến hết ngày 30/09/2026."@vi , "Phòng CTSV thông báo về việc nộp hồ sơ chế độ chính sách bao gồm: miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật và trợ cấp xã hội. Hồ sơ nộp trực tiếp tại P.CTSV - P.114."@vi ;
+		:noiDung "Phòng CTSV thông báo về việc nộp hồ sơ chế độ chính sách bao gồm: miễn giảm học phí, hỗ trợ chi phí học tập, học bổng cho sinh viên khuyết tật và trợ cấp xã hội. Hồ sơ nộp trực tiếp tại P.CTSV - P.114."@vi ;
 		:nopTai :PhongCongTacChinhTriVaSinhVien .
 }
 :TDNguonDangKyGiayXacNhanVayVonOnlineToanMuc {
@@ -5448,9 +5303,6 @@
 		:thuocNganh :CongNgheCheBienThuySan ;
 		:vanBangTotNghiep "Kỹ sư Công nghệ Chế biến thủy sản"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheCheBienThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheCheBienThuySan :tongSoTinChi 150 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMayMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheCheTaoMay :donViQuanLy :KhoaCoKhi ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
@@ -5458,18 +5310,12 @@
 		:thuocNganh :CongNgheCheTaoMay ;
 		:vanBangTotNghiep "Cử nhân Công nghệ chế tạo máy"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheCheTaoMayMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheCheTaoMay :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheSinhHoc :donViQuanLy :KhoaCongNgheSinhHoc ;
 		:ngonNguDaoTao "Tiếng Việt / Tiếng Anh"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :CongNgheSinhHoc ;
 		:vanBangTotNghiep "Cử nhân Công nghệ sinh học"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheSinhHocMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheSinhHoc :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheTaiChinh :donViQuanLy :KhoaTaiChinhVaNganHang ;
@@ -5479,18 +5325,12 @@
 		:vanBangTotNghiep "Cử nhân Công nghệ tài chính"@vi .
 	:CongNgheTaiChinh :maNganh "7340205" .
 }
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheTaiChinhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheTaiChinh :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan :donViQuanLy :KhoaCongNgheThongTin ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :CongNgheThongTin ;
 		:vanBangTotNghiep "Cử nhân Công nghệ thông tin"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheThongTinChuongTrinhChuan :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoCongNgheThucPhamMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoCongNgheThucPham :donViQuanLy :KhoaCongNgheThucPham ;
@@ -5499,17 +5339,11 @@
 		:thuocNganh :CongNgheThucPham ;
 		:vanBangTotNghiep "Cử nhân Công nghệ Thực phẩm"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoCongNgheThucPhamMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoCongNgheThucPham :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucIThongTinChungVeChuongTrinh {
 	:QuanTriKhachSanChuongTrinhDaoTaoDacBiet :donViQuanLy :KhoaDuLich ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriKhachSan ;
 		:vanBangTotNghiep "Cử nhân Quản trị khách sạn"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoDacBietNganhQuanTriKhachSanPoheMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:QuanTriKhachSanChuongTrinhDaoTaoDacBiet :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPhamMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham :donViQuanLy :KhoaCongNgheThucPham ;
@@ -5518,18 +5352,12 @@
 		:thuocNganh :DamBaoChatLuongVaAnToanThucPham ;
 		:vanBangTotNghiep "Cử nhân Đảm bảo chất lượng và ATTP"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPhamMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoDamBaoChatLuongVaAnToanThucPham :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoHeThongNhungVaIotMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoHeThongNhungVaIot :donViQuanLy :KhoaCoKhi ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatCoDienTu ;
 		:vanBangTotNghiep "Cử nhân"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoHeThongNhungVaIotMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoHeThongNhungVaIot :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLyMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoHeThongThongTinQuanLy :donViQuanLy :KhoaCongNgheThongTin ;
@@ -5538,18 +5366,12 @@
 		:thuocNganh :HeThongThongTinQuanLy ;
 		:vanBangTotNghiep "Cử nhân Hệ thống thông tin quản lý"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoHeThongThongTinQuanLyMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoHeThongThongTinQuanLy :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKeToanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKeToan :donViQuanLy :KhoaKeToanVaKiemToan ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :KeToan ;
 		:vanBangTotNghiep "Cử nhân Kế toán"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKeToanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKeToan :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKhaiThacThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKhaiThacThuySan :donViQuanLy :KhoaKhoaHocThuySan ;
@@ -5558,18 +5380,12 @@
 		:thuocNganh :KhoaHocThuySan ;
 		:vanBangTotNghiep "Cử nhân"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKhaiThacThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKhaiThacThuySan :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocHangHaiMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKhoaHocHangHai :donViQuanLy :KhoaKyThuatBien ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KhoaHocHangHai ;
 		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải; Chuyên ngành: Khoa học Hàng hải"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocHangHaiMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKhoaHocHangHai :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocMayTinhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKhoaHocMayTinh :donViQuanLy :KhoaCongNgheThongTin ;
@@ -5578,18 +5394,12 @@
 		:thuocNganh :KhoaHocMayTinh ;
 		:vanBangTotNghiep "Cử nhân Khoa học máy tính"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocMayTinhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKhoaHocMayTinh :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKhoaHocThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKhoaHocThuySan :donViQuanLy :KhoaKhoaHocThuySan ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KhoaHocThuySan ;
 		:vanBangTotNghiep "Cử nhân"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKhoaHocThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKhoaHocThuySan :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKiemToanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKiemToan :donViQuanLy :KhoaKeToanVaKiemToan ;
@@ -5598,18 +5408,12 @@
 		:thuocNganh :KiemToan ;
 		:vanBangTotNghiep "Cử nhân Kiểm toán"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKiemToanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKiemToan :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMaiMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKinhDoanhThuongMai :donViQuanLy :KhoaKinhDoanh ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :KinhDoanhThuongMai ;
 		:vanBangTotNghiep "Cử nhân Kinh doanh thương mại"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKinhDoanhThuongMaiMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKinhDoanhThuongMai :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKinhTePhatTrienMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKinhTePhatTrien :donViQuanLy :KhoaKinhTe ;
@@ -5618,18 +5422,12 @@
 		:thuocNganh :KinhTePhatTrien ;
 		:vanBangTotNghiep "Cử nhân Kinh tế phát triển"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKinhTePhatTrienMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKinhTePhatTrien :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKinhTeThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKinhTeThuySan :donViQuanLy :KhoaKinhTe ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :KinhTe ;
 		:vanBangTotNghiep "Cử nhân Kinh tế"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKinhTeThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKinhTeThuySan :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatBienMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatBien :donViQuanLy :KhoaKyThuatBien ;
@@ -5638,18 +5436,12 @@
 		:thuocNganh :KyThuatBien ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật biển"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatBienMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatBien :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatCoDienLanh :donViQuanLy :KhoaKyThuatNangLuong ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatNhiet ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật cơ điện lạnh"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienLanhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatCoDienLanh :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienTuMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatCoDienTu :donViQuanLy :KhoaCoKhi ;
@@ -5658,18 +5450,12 @@
 		:thuocNganh :KyThuatCoDienTu ;
 		:vanBangTotNghiep "Cử nhân"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoDienTuMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatCoDienTu :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLucMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatCoKhiDongLuc :donViQuanLy :KhoaDongLucVaOTo ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatCoKhiDongLuc ;
 		:vanBangTotNghiep "Cử nhân kỹ thuật cơ khí động lực"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiDongLucMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatCoKhiDongLuc :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatCoKhi :donViQuanLy :KhoaCoKhi ;
@@ -5678,18 +5464,12 @@
 		:thuocNganh :KyThuatCoKhi ;
 		:vanBangTotNghiep "Cử nhân kỹ thuật cơ khí"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatCoKhiMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatCoKhi :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatDienDienTuMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatDienDienTu :donViQuanLy :KhoaDienVaDienTu ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatDien ;
 		:vanBangTotNghiep "Cử nhân"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatDienDienTuMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatDienDienTu :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoaMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoa :donViQuanLy :KhoaDienVaDienTu ;
@@ -5698,18 +5478,12 @@
 		:thuocNganh :KyThuatDieuKhienVaTuDongHoa ;
 		:vanBangTotNghiep "Cử nhân"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoaMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatDieuKhienVaTuDongHoa :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatHoaHocMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatHoaHoc :donViQuanLy :KhoaKyThuatHoaHocVaMoiTruong ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatHoaHoc ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật Hoá học"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatHoaHocMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatHoaHoc :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatMoiTruongMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatMoiTruong :donViQuanLy :KhoaKyThuatHoaHocVaMoiTruong ;
@@ -5718,18 +5492,12 @@
 		:thuocNganh :KyThuatMoiTruong ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật Môi trường"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatMoiTruongMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatMoiTruong :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatNhietMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatNhiet :donViQuanLy :KhoaKyThuatNangLuong ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4,0 năm"@vi ;
 		:thuocNganh :KyThuatNhiet ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật nhiệt"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatNhietMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatNhiet :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatOToMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatOTo :donViQuanLy :KhoaDongLucVaOTo ;
@@ -5738,18 +5506,12 @@
 		:thuocNganh :KyThuatOTo ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật ô tô"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatOToMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatOTo :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatTauThuyMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatTauThuy :donViQuanLy :KhoaKyThuatBien ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatTauThuy ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật tàu thủy"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatTauThuyMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatTauThuy :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThongMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThong :donViQuanLy :KhoaXayDung ;
@@ -5758,18 +5520,12 @@
 		:thuocNganh :KyThuatXayDungCongTrinhGiaoThong ;
 		:vanBangTotNghiep "Cử nhân Kỹ thuật xây dựng công trình giao thông"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThongMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatXayDungCongTrinhGiaoThong :tongSoTinChi 130 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoKyThuatXayDung :donViQuanLy :KhoaXayDung ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatXayDung ;
 		:vanBangTotNghiep "Cử nhân"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoKyThuatXayDungMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoKyThuatXayDung :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoLuatMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoLuat :donViQuanLy :KhoaKhoaHocXaHoiVaNhanVan ;
@@ -5778,18 +5534,12 @@
 		:thuocNganh :Luat ;
 		:vanBangTotNghiep "Cử nhân Luật"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoLuatMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoLuat :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoNgonNguAnhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoNgonNguAnh :donViQuanLy :KhoaNgoaiNgu ;
 		:ngonNguDaoTao "Tiếng Việt, tiếng Anh"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :NgonNguAnh ;
 		:vanBangTotNghiep "Cử nhân Ngôn ngữ Anh"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoNgonNguAnhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoNgonNguAnh :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoNuoiTrongThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoNuoiTrongThuySan :donViQuanLy :KhoaNuoiTrongThuySan ;
@@ -5798,18 +5548,12 @@
 		:thuocNganh :NuoiTrongThuySan ;
 		:vanBangTotNghiep "Kỹ sư Nuôi trồng thủy sản"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoNuoiTrongThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoNuoiTrongThuySan :tongSoTinChi 150 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogisticsMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanLyHangHaiVaLogistics :donViQuanLy :KhoaKyThuatBien ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KhoaHocHangHai ;
 		:vanBangTotNghiep "Cử nhân Khoa học Hàng hải; Chuyên ngành: Quản lý hàng hải và Logistics"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyHangHaiVaLogisticsMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanLyHangHaiVaLogistics :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyKinhTeMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanLyKinhTe :donViQuanLy :KhoaKinhTe ;
@@ -5818,18 +5562,12 @@
 		:thuocNganh :KinhTe ;
 		:vanBangTotNghiep "Cử nhân Kinh tế"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyKinhTeMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanLyKinhTe :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanLyThuySanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanLyThuySan :donViQuanLy :KhoaKhoaHocThuySan ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :QuanLyThuySan ;
 		:vanBangTotNghiep "Cử nhân Quản lý Thủy sản"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoQuanLyThuySanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanLyThuySan :tongSoTinChi 130 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucIThongTinChungVeChuongTrinh {
 	:QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet :donViQuanLy :KhoaDuLich ;
@@ -5838,9 +5576,6 @@
 		:thuocNganh :QuanTriDichVuDuLichVaLuHanh ;
 		:vanBangTotNghiep "Cử nhân Quản trị Dịch vụ Du lịch và Lữ hành"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhChuongTrinhDacBietMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh :donViQuanLy :KhoaDuLich ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
@@ -5848,17 +5583,11 @@
 		:thuocNganh :QuanTriDichVuDuLichVaLuHanh ;
 		:vanBangTotNghiep "Cử nhân ngành Quản trị Dịch vụ Du lịch và Lữ hành"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanh :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapVietMucIThongTinChungVeChuongTrinh {
 	:QuanTriDichVuDuLichVaLuHanhChuongTrinhSongNguPhapViet :donViQuanLy :KhoaDuLich ;
 		:ngonNguDaoTao "Tiếng Việt / Tiếng Pháp"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriDichVuDuLichVaLuHanh .
-}
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriDichVuDuLichVaLuHanhSongNguPhapVietMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:QuanTriDichVuDuLichVaLuHanhChuongTrinhSongNguPhapViet :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuanMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuan :donViQuanLy :KhoaDuLich ;
@@ -5867,18 +5596,12 @@
 		:thuocNganh :QuanTriKhachSan ;
 		:vanBangTotNghiep "Cử nhân Quản trị khách sạn"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuanMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriKhachSanChuongTrinhChuan :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriKinhDoanh :donViQuanLy :KhoaKinhDoanh ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriKinhDoanh ;
 		:vanBangTotNghiep "Cử nhân Quản trị kinh doanh"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriKinhDoanh :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTeMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriKinhDoanhQuocTe :donViQuanLy :KhoaKinhDoanh ;
@@ -5887,18 +5610,12 @@
 		:thuocNganh :QuanTriKinhDoanh ;
 		:vanBangTotNghiep "Cử nhân Quản trị kinh doanh"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhQuocTeMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriKinhDoanhQuocTe :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhVietMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhViet :donViQuanLy :KhoaKinhDoanh ;
 		:ngonNguDaoTao "Tiếng Việt và Tiếng Anh"@vi ;
 		:thoiGianDaoTao "3,5 năm"@vi ;
 		:thuocNganh :QuanTriKinhDoanh ;
 		:vanBangTotNghiep "Cử nhân Quản trị kinh doanh"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhVietMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoQuanTriKinhDoanhSongNguAnhViet :tongSoTinChi 120 .
 }
 :TDNguonVanBanChuongTrinhDaoTaoTaiChinhNganHangMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoTaiChinhNganHang :donViQuanLy :KhoaTaiChinhVaNganHang ;
@@ -5907,18 +5624,12 @@
 		:thuocNganh :TaiChinhNganHang ;
 		:vanBangTotNghiep "Cử nhân Tài chính - Ngân hàng"@vi .
 }
-:TDNguonVanBanChuongTrinhDaoTaoTaiChinhNganHangMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoTaiChinhNganHang :tongSoTinChi 120 .
-}
 :TDNguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSoMucIThongTinChungVeChuongTrinh {
 	:ChuongTrinhDaoTaoThietKeVaCheTaoSo :donViQuanLy :KhoaCoKhi ;
 		:ngonNguDaoTao "Tiếng Việt"@vi ;
 		:thoiGianDaoTao "4 năm"@vi ;
 		:thuocNganh :KyThuatCoKhi ;
 		:vanBangTotNghiep "Cử nhân"@vi .
-}
-:TDNguonVanBanChuongTrinhDaoTaoThietKeVaCheTaoSoMucViCauTrucChuongTrinhDaoTaoDongTongCong {
-	:ChuongTrinhDaoTaoThietKeVaCheTaoSo :tongSoTinChi 130 .
 }
 :TDOrganizationStructureListing {
 	:PhongBaoDamChatLuongVaKhaoThi :hopThu "qlcl@ntu.edu.vn" ;
