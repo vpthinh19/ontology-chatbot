@@ -18,7 +18,8 @@ httpx = pytest.importorskip("httpx")
 
 from ontchatbot.runtime import api
 from ontchatbot.runtime.agent import AgentEvent
-from ontchatbot.runtime.api import _conversation, create_app
+from ontchatbot.runtime.api import conversation, create_app
+from ontchatbot.runtime.service import Config
 
 
 def _sse(body: str) -> list[dict]:
@@ -65,7 +66,8 @@ def test_app_closes_agent_resources_on_shutdown() -> None:
         async def aclose(self):
             closed.append(True)
 
-    app = create_app(Agent())
+    agent = Agent()
+    app = create_app(agent, on_close=agent.aclose)
 
     async def run():
         async with app.router.lifespan_context(app):
@@ -87,7 +89,7 @@ def test_api_streams_the_manual_agent_events_without_a_framework_runner() -> Non
     async def run():
         return [
             json.loads(chunk[len("data: ") :])
-            async for chunk in api._stream(Agent(), "học phí", [], api.TurnGate())
+            async for chunk in api.Turn(Agent(), "học phí", [], api.TurnGate()).events()
         ]
 
     assert asyncio.run(run()) == [
@@ -277,9 +279,9 @@ def test_only_the_twenty_most_recent_history_messages_reach_the_agent() -> None:
         for index in range(25)
     ]
 
-    conversation = _conversation("câu mới", history)
+    turns = conversation("câu mới", history)
 
-    assert conversation == [
+    assert turns == [
         {"role": "user", "content": f"lượt cũ {index}"}
         for index in range(5, 25)
     ] + [{"role": "user", "content": "câu mới"}]
@@ -334,7 +336,7 @@ def test_an_oversized_streamed_request_is_rejected_with_http_413(tmp_path) -> No
 
 
 def test_a_new_question_still_works_without_any_history() -> None:
-    assert _conversation("học phí", []) == [{"role": "user", "content": "học phí"}]
+    assert conversation("học phí", []) == [{"role": "user", "content": "học phí"}]
 
 
 def test_a_turn_that_produces_no_words_still_says_something(monkeypatch, tmp_path) -> None:
@@ -421,7 +423,7 @@ def test_a_turn_the_reader_walks_away_from_still_closes_the_log(
     run = _Run([_delta("Đang"), _delta(" viết")], final_output="Đang viết")
 
     async def exercise():
-        stream = api._stream(run, "học phí", [], api.TurnGate())
+        stream = api.Turn(run, "học phí", [], api.TurnGate()).events()
         chunk = await anext(stream)
         await stream.aclose()
         return chunk
@@ -441,7 +443,7 @@ def _held(monkeypatch, gate, delay=0):
     """Một lượt đang giữ chỗ chạy, dừng lại ở sự kiện cuối chứ chưa đóng."""
 
     run = _Run([], final_output="xong", delay=delay)
-    return api._stream(run, "câu đang chạy", [], gate)
+    return api.Turn(run, "câu đang chạy", [], gate).events()
 
 
 def test_a_turn_that_finds_every_slot_busy_is_told_where_it_stands(monkeypatch) -> None:
@@ -456,7 +458,7 @@ def test_a_turn_that_finds_every_slot_busy_is_told_where_it_stands(monkeypatch) 
     async def exercise():
         first = _held(monkeypatch, gate)
         await anext(first)
-        second = api._stream(object(), "câu xếp hàng", [], gate)
+        second = api.Turn(object(), "câu xếp hàng", [], gate).events()
         try:
             return json.loads((await anext(second))[len("data: ") :])
         finally:
@@ -477,9 +479,9 @@ def test_a_turn_arriving_at_a_full_queue_is_turned_away_politely(monkeypatch) ->
     async def exercise():
         first = _held(monkeypatch, gate)
         await anext(first)
-        second = api._stream(object(), "câu xếp hàng", [], gate)
+        second = api.Turn(object(), "câu xếp hàng", [], gate).events()
         await anext(second)
-        third = api._stream(object(), "câu bị từ chối", [], gate)
+        third = api.Turn(object(), "câu bị từ chối", [], gate).events()
         try:
             return json.loads((await anext(third))[len("data: ") :])
         finally:
@@ -499,7 +501,7 @@ def test_a_turn_that_waits_too_long_is_told_instead_of_left_hanging(monkeypatch)
     async def exercise():
         first = _held(monkeypatch, gate)
         await anext(first)
-        second = api._stream(object(), "câu chờ mãi", [], gate)
+        second = api.Turn(object(), "câu chờ mãi", [], gate).events()
         try:
             await anext(second)
             return json.loads((await anext(second))[len("data: ") :])
@@ -525,11 +527,11 @@ def test_closing_a_tab_while_queued_gives_the_place_back(monkeypatch) -> None:
         first = _held(monkeypatch, gate)
         await anext(first)
 
-        walked_away = api._stream(object(), "câu bỏ đi", [], gate)
+        walked_away = api.Turn(object(), "câu bỏ đi", [], gate).events()
         await anext(walked_away)
         await walked_away.aclose()
 
-        after = api._stream(object(), "câu tới sau", [], gate)
+        after = api.Turn(object(), "câu tới sau", [], gate).events()
         try:
             return json.loads((await anext(after))[len("data: ") :])
         finally:
@@ -551,7 +553,7 @@ def test_hitting_the_step_ceiling_reads_as_a_sentence_not_a_stack_trace(
     async def exercise():
         return [
             json.loads(chunk[len("data: ") :])
-            async for chunk in api._stream(run, "học phí", [], api.TurnGate())
+            async for chunk in api.Turn(run, "học phí", [], api.TurnGate()).events()
         ]
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
@@ -570,7 +572,7 @@ def test_a_busy_model_service_reads_as_when_to_try_again(caplog) -> None:
     async def exercise():
         return [
             json.loads(chunk[len("data: ") :])
-            async for chunk in api._stream(run, "học phí", [], api.TurnGate())
+            async for chunk in api.Turn(run, "học phí", [], api.TurnGate()).events()
         ]
 
     with caplog.at_level(logging.INFO, logger="ontchatbot.runtime.api"):
@@ -598,7 +600,7 @@ def test_chat_history_keeps_the_technical_error_the_reader_does_not_see() -> Non
     async def exercise():
         return [
             json.loads(chunk[len("data: ") :])
-            async for chunk in api._stream(run, "học phí", [], api.TurnGate(), log)
+            async for chunk in api.Turn(run, "học phí", [], api.TurnGate(), log).events()
         ]
 
     events = asyncio.run(exercise())
@@ -636,7 +638,7 @@ def test_the_gate_never_lets_more_turns_run_than_it_promised(monkeypatch) -> Non
     gate = api.TurnGate(slots=16, queue_size=64, max_wait_seconds=10)
 
     async def one_turn():
-        async for _ in api._stream(agent, "câu hỏi", [], gate):
+        async for _ in api.Turn(agent, "câu hỏi", [], gate).events():
             pass
 
     async def exercise():
@@ -709,7 +711,8 @@ def test_the_configured_frontend_origin_can_call_the_api(monkeypatch) -> None:
     )
 
     async def exercise():
-        transport = httpx.ASGITransport(app=create_app(object()))
+        app = create_app(object(), cors_origins=Config.from_env().cors_origins)
+        transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             return await client.options(
                 "/chat",
@@ -733,7 +736,8 @@ def test_the_preflight_lets_the_frontend_send_its_api_key(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_CORS_ORIGINS", "https://ontchatbot.vercel.app")
 
     async def exercise():
-        transport = httpx.ASGITransport(app=create_app(object()))
+        app = create_app(object(), cors_origins=Config.from_env().cors_origins)
+        transport = httpx.ASGITransport(app=app)
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             return await client.options(
                 "/chat",

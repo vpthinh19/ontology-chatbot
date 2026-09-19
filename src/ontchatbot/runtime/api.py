@@ -1,12 +1,7 @@
-"""Giao diện HTTP: một trợ lý hội thoại, trả lời theo lối chảy dần.
+"""Giao diện HTTP của trợ lý: nhận câu hỏi, đẩy sự kiện ra ngay khi có (server-sent events).
 
-Người dùng nói chuyện với mô hình ngôn ngữ lớn, không nói chuyện với đồ thị.
-Đồ thị đứng sau một công cụ mà mô hình gọi khi cần dữ kiện, nên tầng này chỉ
-làm hai việc: chuyển lượt nói vào trợ lý, và đẩy sự kiện ra ngay khi có.
-
-Đẩy dần chứ không chờ trọn câu trả lời, vì một lượt có thể gồm vài lần tra cứu
-cộng một đoạn văn được viết ra từng chữ; chờ xong mới hiện là để người dùng nhìn
-màn hình trống suốt quãng đó.
+Máy chủ không giữ phiên hội thoại: trang gửi kèm lịch sử mỗi câu, nên nhiều bản dịch vụ chạy song
+song không cần chia sẻ trạng thái.
 """
 
 from __future__ import annotations
@@ -15,79 +10,58 @@ import asyncio
 import json
 import logging
 import math
-import os
 import secrets
 import time
 import uuid
+from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from contextlib import asynccontextmanager
 from datetime import datetime
-from typing import Any, AsyncIterator, Sequence
+from typing import Any
 
+import httpx
+from starlette.applications import Starlette
+from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse, StreamingResponse
+from starlette.routing import Route
+
+from .agent import AgentLoopLimitError
 from .chatlog import new_id, summarize_lookup, valid_id
+from .llm import LightningBusyError
 
-#: Nhật ký của tầng này là chỗ duy nhất thấy được trọn một lượt: câu người dùng
-#: gõ, mỗi lần trợ lý tra cứu, câu trả lời cuối, và thời gian cả lượt. Các tầng
-#: dưới chỉ thấy từ khoá đã được rút gọn, nên đọc riêng chúng thì không biết
-#: người hỏi gì và trợ lý đáp gì.
-#:
-#: Đánh đổi: nhật ký chứa nội dung người dùng nhập. Đây là dịch vụ học vụ không
-#: đăng nhập, không kèm danh tính, nhưng ai đọc được terminal thì đọc được câu hỏi.
+#: Ở mức debug, nhật ký ghi cả câu hỏi và câu trả lời.
 logger = logging.getLogger(__name__)
 
-#: Vai được phép có trong lịch sử hội thoại do trình duyệt gửi lên.
+#: Vai được phép trong lịch sử do trang gửi lên.
 _ROLES = ("user", "assistant")
-#: Mười cặp tin nhắn gần nhất đủ giữ mạch cho các câu hỏi nối tiếp, đồng thời
-#: chặn chi phí và ngữ cảnh mô hình tăng mãi theo tuổi của tab trình duyệt.
-#: System prompt thuộc ``Agent.instructions``, nằm ngoài lát cắt lịch sử này.
+#: Số tin nhắn lịch sử gần nhất đưa vào mô hình.
 MAX_HISTORY_MESSAGES = 20
-#: Hạn toàn lượt rộng hơn hai lần p95 10,8 giây và hơn hai lần đỉnh vận hành
-#: 20,3 giây. Nó bao trọn các vòng gọi công cụ nhưng vẫn kết thúc hữu hạn khi
-#: một luồng model không đóng hoặc nhiều lần gọi nối nhau cùng chậm.
+#: Hạn của cả lượt, gồm mọi lần gọi mô hình và tra cứu.
 MODEL_TURN_TIMEOUT_SECONDS = 45.0
-_MODEL_TIMEOUT_MESSAGE = (
-    "Mô hình đã quá thời gian chờ. Bạn vui lòng thử lại, hoặc hỏi ngắn hơn."
-)
-#: Số lượt trả lời được chạy cùng lúc. Hồ sơ khởi động có thể thu hẹp hoặc nới
-#: cửa này, nhưng mặc định luôn hữu hạn để một đợt dồn không chiếm hết tài nguyên.
-#:
-#: Cửa tính theo lượt trả lời chứ không theo request HTTP, vì một tin nhắn tiêu ít
-#: nhất hai lượt gọi mô hình - đếm request là đếm sai thứ cần giữ. Nhưng nó cũng
-#: không chặn từng lượt gọi một: chúng nằm giữa một lượt trả lời, mà chặn đúng lúc
-#: mô hình vừa tra cứu xong thì người dùng nhận nửa câu trả lời, tệ hơn là bị từ
-#: chối ngay từ đầu. Vào được thì chạy trọn vẹn.
+#: Số lượt chạy cùng lúc, và số lượt được xếp hàng chờ.
 MAX_CONCURRENT_TURNS = 16
-#: Hàng đợi có trần, để một đợt dồn bất ngờ không thành hàng dài mà ai cũng bỏ đi
-#: trước khi tới lượt.
 MAX_QUEUED_TURNS = 64
-#: Chờ quá mức này thì nói thẳng là đang bận, thay vì để người ta ngồi nhìn màn
-#: hình trống - đằng nào họ cũng bấm lại, và lần bấm đó chiếm thêm một chỗ.
-#:
-#: Nền tảng triển khai tự cắt một request đang mở, nên hạn này cộng với hạn chờ
-#: mô hình phải nằm gọn dưới mức đó, xem ``MAX_REQUEST_SECONDS``.
+#: Chờ trong hàng quá mức này thì báo bận. Cộng với hạn của lượt phải dưới ``MAX_REQUEST_SECONDS``.
 MAX_QUEUE_WAIT_SECONDS = 15.0
-#: Mức mà nền tảng triển khai cắt một request còn đang mở. Không phải hằng số ta
-#: chọn - nó là ràng buộc từ bên ngoài, chép vào đây để phép kiểm canh được.
-#:
-#: Vượt mức này thì kết nối bị cắt giữa chừng và người dùng mất câu trả lời, lại
-#: còn mất luôn câu báo lỗi tử tế của ta. Nới hạn chờ mô hình hay hạn chờ hàng
-#: đợi thì phải nhìn lại tổng, chứ hai con số đó cộng lại mới là thứ nền tảng đo.
+#: Mức nền tảng triển khai cắt một request còn mở (ràng buộc bên ngoài).
 MAX_REQUEST_SECONDS = 60.0
-#: Trần số bước mô hình được đi trong một lượt. Một câu hỏi bình thường đi hai
-#: bước: một để quyết định tra cứu, một để viết câu trả lời. Mặc định của thư viện
-#: là mười, nên nếu không đặt thì một câu làm mô hình loay hoay tốn gấp năm lần
-#: bình thường mà không có gì cản. Trần này nhân với số lượt chạy cùng lúc mới ra
-#: tổng số lượt gọi có thể đang bay.
+#: Trần số bước mô hình trong một lượt; câu thường cần hai bước: tra cứu rồi viết câu trả lời.
 MAX_MODEL_STEPS = 4
-_BUSY_MESSAGE = (
-    "Hệ thống đang có nhiều người hỏi cùng lúc. Bạn chờ một chút rồi gửi lại nhé."
+MAX_REQUEST_BODY_BYTES = 256 * 1024
+
+_MODEL_TIMEOUT_MESSAGE = "Mô hình đã quá thời gian chờ. Bạn vui lòng thử lại, hoặc hỏi ngắn hơn."
+_BUSY_MESSAGE = "Hệ thống đang có nhiều người hỏi cùng lúc. Bạn chờ một chút rồi gửi lại nhé."
+_QUEUE_TIMEOUT_MESSAGE = "Hệ thống vẫn đang bận nên chưa tới lượt bạn. Bạn thử gửi lại sau ít phút nhé."
+_MODEL_ERROR_MESSAGE = "Mình chưa kết nối được với mô hình ngôn ngữ. Bạn thử gửi lại sau ít phút nhé."
+_TOO_MANY_STEPS_MESSAGE = (
+    "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
+    "hoặc tách thành từng ý nhỏ."
 )
-_QUEUE_TIMEOUT_MESSAGE = (
-    "Hệ thống vẫn đang bận nên chưa tới lượt bạn. Bạn thử gửi lại sau ít phút nhé."
-)
-#: Lỗi của dịch vụ mô hình là chuyện vận hành: người dùng cần biết nên làm gì,
-#: còn chi tiết kỹ thuật nằm trong log máy chủ.
-_MODEL_ERROR_MESSAGE = (
-    "Mình chưa kết nối được với mô hình ngôn ngữ. Bạn thử gửi lại sau ít phút nhé."
+_REQUEST_TOO_LARGE_MESSAGE = "Yêu cầu quá lớn; kích thước tối đa là 256 KiB."
+#: Mô hình có thể dừng mà không viết gì; người dùng vẫn phải nhận một câu.
+_EMPTY_ANSWER = (
+    "Xin lỗi, mình chưa tạo được câu trả lời cho câu hỏi này. Bạn thử hỏi lại, "
+    "hoặc tách thành từng ý nhỏ hơn."
 )
 
 
@@ -97,65 +71,23 @@ def _rate_limited_message(retry_after: float) -> str:
     return f"Hệ thống đang nhận quá nhiều câu hỏi. Bạn thử gửi lại sau khoảng {wait} nhé."
 
 
-_TOO_MANY_STEPS_MESSAGE = (
-    "Câu hỏi này làm mình tra đi tra lại mà chưa ra kết quả. Bạn thử hỏi ngắn hơn, "
-    "hoặc tách thành từng ý nhỏ."
-)
-#: 256 KiB rộng hơn nhiều so với 20 tin nhắn hội thoại học vụ thông thường,
-#: nhưng đủ nhỏ để mỗi kết nối đang đọc body có mức dùng bộ nhớ hữu hạn.
-MAX_REQUEST_BODY_BYTES = 256 * 1024
-_REQUEST_TOO_LARGE_MESSAGE = "Yêu cầu quá lớn; kích thước tối đa là 256 KiB."
-#: Một lượt chạy có thể kết thúc mà mô hình không viết câu nào - nó gọi công cụ
-#: rồi dừng. Người dùng không phân biệt được chuyện đó với hệ thống treo, nên
-#: khoảng trống phải thành một câu nói rõ là chưa có câu trả lời.
-_EMPTY_ANSWER = (
-    "Xin lỗi, mình chưa tạo được câu trả lời cho câu hỏi này. Bạn thử hỏi lại, "
-    "hoặc tách thành từng ý nhỏ hơn."
-)
+def conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
+    """Lịch sử hợp lệ (bỏ vai lạ, tin rỗng; giữ ``MAX_HISTORY_MESSAGES`` tin cuối) cộng câu mới."""
 
-
-def _bounded_history(
-    history: Sequence[Any],
-) -> list[dict[str, str]]:
-    """Lọc lịch sử do trình duyệt giữ và cắt ở phía cũ nhất."""
-
-    turns: list[dict[str, str]] = []
-    for item in history:
-        if not isinstance(item, dict):
-            continue
-        role, content = item.get("role"), item.get("content")
-        if role in _ROLES and isinstance(content, str) and content.strip():
-            turns.append({"role": role, "content": content})
-    return turns[-MAX_HISTORY_MESSAGES:]
-
-
-def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
-    """Ghép lịch sử hợp lệ, có giới hạn với lượt mới của người dùng.
-
-    Máy chủ không giữ phiên nào, nhờ vậy chạy nhiều bản sao không cần chia sẻ
-    trạng thái. System prompt vẫn do Agent giữ và không đi qua hàm này.
-    """
-
-    turns = _bounded_history(history)
-    turns.append({"role": "user", "content": message})
-    return turns
-
-
-def _event(kind: str, **fields: Any) -> str:
-    """Một sự kiện theo khuôn server-sent events."""
-
-    payload = {"type": kind, **fields}
-    return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
+    turns = [
+        {"role": item["role"], "content": item["content"]}
+        for item in history
+        if isinstance(item, dict) and item.get("role") in _ROLES
+        and isinstance(item.get("content"), str) and item["content"].strip()
+    ]
+    return [*turns[-MAX_HISTORY_MESSAGES:], {"role": "user", "content": message}]
 
 
 class TurnGate:
-    """Cửa vào giữ số lượt trả lời chạy cùng lúc trong một mức đã định.
+    """Giữ số lượt chạy cùng lúc trong ``slots``, xếp hàng tối đa ``queue_size`` lượt.
 
-    Thả theo chỗ trống chứ không theo nhịp đồng hồ. Một lượt dài từ nửa giây tới
-    45 giây, nên nhịp thả cố định buộc phải đoán trước thời gian đó: đoán nhanh
-    thì các lượt chồng lên nhau - đúng cái cửa này sinh ra để tránh - còn đoán
-    chậm thì máy ngồi không trong lúc hàng vẫn dài. Xong một lượt là thả ngay
-    lượt kế tiếp, khỏi đoán, và khỏi chỉnh lại khi tốc độ mô hình thay đổi.
+    Xong một lượt là lượt kế tiếp vào ngay. Cửa tính theo lượt trả lời chứ không theo lần gọi
+    mô hình: lượt đã vào thì chạy trọn.
     """
 
     def __init__(
@@ -170,14 +102,10 @@ class TurnGate:
         self._waiting = 0
 
     def join(self) -> int | None:
-        """Giữ chỗ cho một lượt vừa tới.
+        """Giữ chỗ ngay: 0 là vào thẳng, số dương là vị trí trong hàng, ``None`` là hàng đầy.
 
-        Trả về 0 khi vào thẳng được, vị trí trong hàng đếm từ 1 khi phải chờ, và
-        ``None`` khi hàng đã đầy.
-
-        Chỗ được giữ ngay tại đây chứ không đợi tới lúc chờ thật, vì giữa hai
-        việc đó có một sự kiện đi ra trình duyệt - tức là một lần nhường quyền
-        chạy, đủ để những lượt tới sau chen vào và làm hàng dài quá trần.
+        Giữ ngay tại đây chứ không đợi lúc chờ thật, vì giữa hai việc đó có một lần nhường quyền
+        chạy (gửi vị trí cho trang), đủ để lượt tới sau chen vào làm hàng dài quá trần.
         """
 
         if not self._slots.locked():
@@ -188,16 +116,10 @@ class TurnGate:
         return self._waiting
 
     def leave(self) -> None:
-        """Trả lại chỗ trong hàng cho một lượt không còn chờ nữa."""
-
         self._waiting -= 1
 
     async def acquire(self, queued: bool) -> None:
-        """Chờ tới lượt; ném ``TimeoutError`` nếu chờ quá lâu.
-
-        Lượt vào thẳng không đặt hạn chờ: nó không hề chờ, và ``join`` vừa nói là
-        còn chỗ ngay trước đó mà không có lần nhường quyền chạy nào ở giữa.
-        """
+        """Chờ tới lượt; ``TimeoutError`` khi chờ quá lâu. Lượt vào thẳng không đặt hạn."""
 
         async with asyncio.timeout(self._max_wait if queued else None):
             await self._slots.acquire()
@@ -206,172 +128,248 @@ class TurnGate:
         self._slots.release()
 
 
-async def _stream(
-    agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None, *,
-    by_admin: bool = False, session: str | None = None,
-) -> AsyncIterator[str]:
-    conversation = _bounded_history(history)
-    turn = uuid.uuid4().hex[:12]
-    started = time.perf_counter()
-    started_at = datetime.now().astimezone()
-    session = session or new_id(started_at)  # gọi thẳng (kiểm thử, dòng lệnh): mỗi lượt một phiên
-    lookups = 0
-    answer = ""
-    queue_ms = 0.0
-    sse_events = 0
-    sse_bytes = 0
-    # Cho nhật ký hội thoại: phần trả lời đã gửi (khi lượt bị bỏ giữa chừng), lời báo lỗi, các lần tra cứu.
-    partial: list[str] = []
-    error_text = ""
-    # Người dùng thấy lời báo dễ hiểu; người quản trị cần chi tiết kỹ thuật của lỗi.
-    error_detail = ""
-    marks: list[str] = []
-    searched: list[dict] = []
-    pending_keywords: tuple[str, ...] = ()
+class Turn:
+    """Một lượt hỏi đáp: vào cửa, chạy trợ lý, đẩy sự kiện, rồi ghi nhật ký và lịch sử chat.
 
-    def emit(kind: str, **fields: Any) -> str:
-        nonlocal sse_events, sse_bytes, error_text
-        if kind == "error":
-            error_text = fields.get("content", "")
-        chunk = _event(kind, **fields)
-        sse_events += 1
-        sse_bytes += len(chunk.encode("utf-8"))
-        return chunk
-    # Người đọc nhật ký cần phân biệt từng kết cục, vì chúng đòi những cách sửa
-    # khác nhau: xong bình thường, quá hạn chờ model, chạm trần số bước, bị từ
-    # chối vì hàng đầy, chờ trong hàng quá lâu, lỗi, và người dùng đóng tab giữa
-    # chừng. Kết cục cuối không ghi lại thì nó trông y hệt một lượt treo. Ba kết
-    # cục dính tới cửa vào tách riêng nhau vì chúng đòi ba phản ứng khác hẳn:
-    # nới cửa, nới hàng, hay chấp nhận là đang quá tải thật.
-    outcome = "abandoned"
-    # Chỗ trong hàng và chỗ chạy đều được nhả ở ``finally``, nên phải biết mình
-    # đang giữ cái nào: một lượt bị đóng giữa chừng có thể đang giữ chỗ trong
-    # hàng mà chưa bao giờ được chạy.
-    queued = False
-    holding = False
-    logger.debug("turn=%s question=%r history=%d", turn, message, len(conversation))
-    conversation.append({"role": "user", "content": message})
-    try:
-        place = gate.join()
-        if place is None:
-            outcome = "busy"
-            yield emit("error", content=_BUSY_MESSAGE)
-            return
-        queued = place > 0
-        if queued:
-            # Xếp hàng mà im lặng thì nhìn y hệt hệ thống treo, nên vị trí phải
-            # ra tới trình duyệt trước khi bắt đầu chờ chứ không phải sau.
-            yield emit("queued", position=place)
+    Kết cục (``outcome``): ok · busy (hàng đầy) · queue-timeout · timeout · too-many-steps ·
+    rate-limited · error · abandoned (trang đóng giữa chừng).
+    """
+
+    def __init__(
+        self,
+        agent,
+        message: str,
+        history: Sequence[Any],
+        gate: TurnGate,
+        chat_log=None,
+        *,
+        by_admin: bool = False,
+        session: str | None = None,
+    ) -> None:
+        self.agent = agent
+        self.message = message
+        self.conversation = conversation(message, history)
+        self.gate = gate
+        self.chat_log = chat_log
+        self.by_admin = by_admin
+        self.id = uuid.uuid4().hex[:12]
+        self.started = time.perf_counter()
+        self.started_at = datetime.now().astimezone()
+        self.session = session or new_id(self.started_at)
+        self.outcome = "abandoned"
+        self.answer = ""
+        self.marks: list[str] = []
+        self.lookups: list[dict] = []
+        self.queue_ms = 0.0
+        self._partial: list[str] = []
+        self._error_text = ""
+        #: Chi tiết kỹ thuật của lỗi, cho người quản trị; người dùng chỉ thấy lời báo.
+        self._error_detail = ""
+        self._lookups_started = 0
+        self._pending_keywords: tuple[str, ...] = ()
+        self._sse_events = 0
+        self._sse_bytes = 0
+
+    async def events(self) -> AsyncIterator[str]:
+        logger.debug("turn=%s question=%r history=%d", self.id, self.message, len(self.conversation) - 1)
+        queued = holding = False
         try:
-            queue_started = time.perf_counter()
-            try:
-                await gate.acquire(queued)
-            finally:
-                queue_ms = (time.perf_counter() - queue_started) * 1000
-        except TimeoutError:
-            outcome = "queue-timeout"
-            yield emit("error", content=_QUEUE_TIMEOUT_MESSAGE)
-            return
-        finally:
-            # Nhả chỗ trong hàng ngay khi hết chờ, chờ được hay không cũng vậy.
-            # Giữ nó tới cuối lượt thì hàng trông đầy hơn thực tế và từ chối
-            # những người lẽ ra còn chỗ.
+            place = self.gate.join()
+            if place is None:
+                yield self._fail("busy", _BUSY_MESSAGE)
+                return
+            queued = place > 0
             if queued:
-                gate.leave()
-                queued = False
-        holding = True
-        import httpx
+                yield self._emit("queued", position=place)
+            waiting_since = time.perf_counter()
+            try:
+                await self.gate.acquire(queued)
+            except TimeoutError:
+                yield self._fail("queue-timeout", _QUEUE_TIMEOUT_MESSAGE)
+                return
+            finally:
+                self.queue_ms = (time.perf_counter() - waiting_since) * 1000
+                if queued:
+                    self.gate.leave()
+                    queued = False
+            holding = True
+            async for chunk in self._answer():
+                yield chunk
+        finally:
+            # Chạy cả khi trang đóng giữa chừng: không nhả chỗ thì cửa tự nghẽn dần.
+            if queued:
+                self.gate.leave()
+            if holding:
+                self.gate.release()
+            self._finish()
 
-        from .agent import AgentLoopLimitError
-        from .llm import LightningBusyError
-
+    async def _answer(self) -> AsyncIterator[str]:
         try:
             async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
-                completed = False
-                async for event in agent.stream(conversation):
-                    if event.kind == "text_delta" and event.content:
-                        partial.append(event.content)
-                        yield emit("text_delta", content=event.content)
-                    elif event.kind == "lookup_started":
-                        keywords = " · ".join(event.keywords)
-                        lookups += 1
-                        pending_keywords = event.keywords
-                        logger.debug("turn=%s lookup=%r", turn, keywords)
-                        yield emit("lookup_started", keywords=keywords)
-                    elif event.kind == "lookup_finished":
-                        searched.append(summarize_lookup(pending_keywords, event.content))
-                        yield emit("lookup_finished")
-                    elif event.kind == "completed":
-                        answer = event.content or _EMPTY_ANSWER
-                        marks = list(event.marks)
-                        outcome = "ok"
-                        completed = True
-                        yield emit("completed", content=answer)
-                if not completed:
-                    answer = _EMPTY_ANSWER
-                    outcome = "ok"
-                    yield emit("completed", content=answer)
+                async for event in self.agent.stream(self.conversation):
+                    chunk = self._on_event(event)
+                    if chunk is not None:
+                        yield chunk
+                if self.outcome != "ok":
+                    self.answer, self.outcome = _EMPTY_ANSWER, "ok"
+                    yield self._emit("completed", content=self.answer)
         except (TimeoutError, httpx.TimeoutException):
-            outcome = "timeout"
-            yield emit("error", content=_MODEL_TIMEOUT_MESSAGE)
-            return
+            yield self._fail("timeout", _MODEL_TIMEOUT_MESSAGE)
         except AgentLoopLimitError:
-            # Ghi ở mức cảnh báo chứ không phải lỗi: trần này do ta đặt, và nếu
-            # có câu hỏi thật cần nhiều bước hơn thì đây là chỗ nó lộ ra.
-            outcome = "too-many-steps"
-            logger.warning("turn=%s hit the ceiling of %d steps", turn, MAX_MODEL_STEPS)
-            yield emit("error", content=_TOO_MANY_STEPS_MESSAGE)
-            return
+            logger.warning("turn=%s hit the ceiling of %d steps", self.id, MAX_MODEL_STEPS)
+            yield self._fail("too-many-steps", _TOO_MANY_STEPS_MESSAGE)
         except LightningBusyError as exc:
-            outcome = "rate-limited"
-            error_detail = str(exc)
-            logger.warning("turn=%s rate limited, retry after %.0fs", turn, exc.retry_after)
-            yield emit("error", content=_rate_limited_message(exc.retry_after))
-            return
-        except Exception as exc:  # pragma: no cover - phụ thuộc dịch vụ bên ngoài.
-            outcome = "error"
-            error_detail = f"{type(exc).__name__}: {exc}"
-            logger.exception("turn=%s failed", turn)
-            yield emit("error", content=_MODEL_ERROR_MESSAGE)
-            return
-    finally:
-        # Trong ``finally`` để một lượt luôn nhả chỗ và luôn đóng sổ, kể cả khi
-        # trình duyệt ngắt kết nối giữa chừng và bộ sinh này bị đóng ngay tại một
-        # ``yield``. Không có nhánh này thì mỗi tab đóng lúc đang xếp hàng ăn mất
-        # một chỗ vĩnh viễn, và cửa vào tự bóp nghẹt chính nó.
-        if queued:
-            gate.leave()
-        if holding:
-            gate.release()
+            self._error_detail = str(exc)
+            logger.warning("turn=%s rate limited, retry after %.0fs", self.id, exc.retry_after)
+            yield self._fail("rate-limited", _rate_limited_message(exc.retry_after))
+        except Exception as exc:
+            self._error_detail = f"{type(exc).__name__}: {exc}"
+            logger.exception("turn=%s failed", self.id)
+            yield self._fail("error", _MODEL_ERROR_MESSAGE)
+
+    def _on_event(self, event) -> str | None:
+        if event.kind == "text_delta" and event.content:
+            self._partial.append(event.content)
+            return self._emit("text_delta", content=event.content)
+        if event.kind == "lookup_started":
+            self._lookups_started += 1
+            self._pending_keywords = event.keywords
+            keywords = " · ".join(event.keywords)
+            logger.debug("turn=%s lookup=%r", self.id, keywords)
+            return self._emit("lookup_started", keywords=keywords)
+        if event.kind == "lookup_finished":
+            self.lookups.append(summarize_lookup(self._pending_keywords, event.content))
+            return self._emit("lookup_finished")
+        if event.kind == "completed":
+            self.answer = event.content or _EMPTY_ANSWER
+            self.marks = list(event.marks)
+            self.outcome = "ok"
+            return self._emit("completed", content=self.answer)
+        return None
+
+    def _emit(self, kind: str, **fields: Any) -> str:
+        chunk = f"data: {json.dumps({'type': kind, **fields}, ensure_ascii=False)}\n\n"
+        self._sse_events += 1
+        self._sse_bytes += len(chunk.encode("utf-8"))
+        return chunk
+
+    def _fail(self, outcome: str, message: str) -> str:
+        self.outcome, self._error_text = outcome, message
+        return self._emit("error", content=message)
+
+    def _finish(self) -> None:
+        elapsed_ms = (time.perf_counter() - self.started) * 1000
         logger.info(
-            "turn=%s outcome=%s lookups=%d queue_ms=%.1f sse_events=%d "
-            "sse_bytes=%d answer_chars=%d total_ms=%.1f",
-            turn,
-            outcome,
-            lookups,
-            queue_ms,
-            sse_events,
-            sse_bytes,
-            len(answer),
-            (time.perf_counter() - started) * 1000,
+            "turn=%s outcome=%s lookups=%d queue_ms=%.1f sse_events=%d sse_bytes=%d answer_chars=%d total_ms=%.1f",
+            self.id, self.outcome, self._lookups_started, self.queue_ms, self._sse_events, self._sse_bytes,
+            len(self.answer), elapsed_ms,
         )
-        logger.debug("turn=%s answer=%r", turn, answer)
-        if chat_log is not None:
-            chat_log.submit({
-                "id": new_id(started_at),
-                "time": started_at.isoformat(timespec="seconds"),
-                "question": message,
-                "session": session,
-                "answer": answer or "".join(partial),
-                "outcome": outcome,
-                "error": error_detail or error_text,
-                # Câu người quản trị tự hỏi thử: gắn nhãn để tab Lịch sử chat tách khỏi câu của sinh viên.
-                "admin": by_admin,
-                "lookups": searched,
-                # Nhãn mô hình tự đánh (``agent.MARKS``): thiếu dữ liệu, ngoài phạm vi.
-                "marks": marks,
-                "duration_ms": round((time.perf_counter() - started) * 1000),
-            })
+        logger.debug("turn=%s answer=%r", self.id, self.answer)
+        if self.chat_log is None:
+            return
+        self.chat_log.submit({
+            "id": new_id(self.started_at),
+            "time": self.started_at.isoformat(timespec="seconds"),
+            "question": self.message,
+            "session": self.session,
+            "answer": self.answer or "".join(self._partial),
+            "outcome": self.outcome,
+            "error": self._error_detail or self._error_text,
+            "admin": self.by_admin,
+            "lookups": self.lookups,
+            "marks": self.marks,
+            "duration_ms": round(elapsed_ms),
+        })
+
+
+class BackendAuth:
+    """Khoá dịch vụ: frontend gửi ``Authorization: Bearer <khoá>``. Không đặt khoá thì không kiểm."""
+
+    def __init__(self, token: str | None) -> None:
+        self.token = token
+
+    def deny(self, request: Request) -> JSONResponse | None:
+        """``None`` khi request được phép, không thì phản hồi 401."""
+
+        if self.token is None:
+            return None
+        scheme, separator, candidate = request.headers.get("authorization", "").partition(" ")
+        if separator == " " and scheme.lower() == "bearer" and secrets.compare_digest(
+            candidate.encode("utf-8"), self.token.encode("utf-8")
+        ):
+            return None
+        return JSONResponse({"detail": "Unauthorized"}, status_code=401, headers={"WWW-Authenticate": "Bearer"})
+
+
+def _error(status_code: int, detail: str) -> JSONResponse:
+    return JSONResponse({"detail": detail}, status_code=status_code)
+
+
+class ChatApi:
+    """Đường ``/health`` và ``/chat``."""
+
+    def __init__(self, agent, gate: TurnGate, auth: BackendAuth, *, chat_log=None, admin=None) -> None:
+        self.agent = agent
+        self.gate = gate
+        self.auth = auth
+        self.chat_log = chat_log
+        #: ``AdminApi`` khi trang quản trị mở: câu quản trị tự hỏi thử được gắn nhãn trong lịch sử chat.
+        self.admin = admin
+
+    def routes(self) -> list[Route]:
+        return [Route("/health", self.health, methods=["GET"]), Route("/chat", self.chat, methods=["POST"])]
+
+    async def health(self, request: Request):
+        return self.auth.deny(request) or JSONResponse({"status": "ok"})
+
+    async def chat(self, request: Request):
+        denied = self.auth.deny(request)
+        if denied is not None:
+            return denied
+        payload = await self._read_json(request)
+        if isinstance(payload, JSONResponse):
+            return payload
+        message = payload.get("message")
+        if not isinstance(message, str) or not message.strip():
+            return _error(400, "message must be non-empty text")
+        history = payload.get("history") or []
+        if not isinstance(history, list):
+            return _error(400, "history must be a list")
+        # Mã phiên chỉ để gom các lượt trong lịch sử chat; sai dạng thì cấp mã mới.
+        session = payload.get("session")
+        if not valid_id(session):
+            session = new_id(datetime.now().astimezone())
+        by_admin = self.admin is not None and self.admin.has_session(request)
+        turn = Turn(self.agent, message.strip(), history, self.gate, self.chat_log, by_admin=by_admin, session=session)
+        return StreamingResponse(
+            turn.events(),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "X-Chat-Session": session},
+        )
+
+    @staticmethod
+    async def _read_json(request: Request) -> dict | JSONResponse:
+        """Body JSON dạng đối tượng, đọc có giới hạn kích thước; sai thì phản hồi lỗi."""
+
+        declared = request.headers.get("content-length")
+        if declared is not None:
+            try:
+                if int(declared) > MAX_REQUEST_BODY_BYTES:
+                    return _error(413, _REQUEST_TOO_LARGE_MESSAGE)
+            except ValueError:
+                return _error(400, "Content-Length must be an integer")
+        body = bytearray()
+        async for chunk in request.stream():
+            if len(body) + len(chunk) > MAX_REQUEST_BODY_BYTES:
+                return _error(413, _REQUEST_TOO_LARGE_MESSAGE)
+            body.extend(chunk)
+        try:
+            payload = json.loads(body)
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return _error(400, "request body must be valid JSON")
+        if not isinstance(payload, dict):
+            return _error(400, "request body must be an object")
+        return payload
 
 
 def create_app(
@@ -382,131 +380,39 @@ def create_app(
     admin=None,
     admin_token: str | None = None,
     chat_log=None,
-):
-    try:
-        from starlette.applications import Starlette
-        from starlette.middleware.cors import CORSMiddleware
-        from starlette.requests import Request
-        from starlette.responses import JSONResponse, StreamingResponse
-        from starlette.routing import Route
-    except ImportError as exc:  # pragma: no cover - requires inference extra.
-        raise RuntimeError("install the inference extra to serve the API") from exc
+    cors_origins: Sequence[str] = (),
+    on_close: Callable[[], Awaitable[None]] | None = None,
+) -> Starlette:
+    """Ứng dụng Starlette. Trang quản trị (``admin``: ``AdminStore``) chỉ mở khi có ``admin_token``.
 
-    gate = gate if gate is not None else TurnGate()
+    ``on_close`` chạy khi máy chủ tắt, để đóng tài nguyên của dịch vụ.
+    """
 
-    def authorize(request: Request):
-        if backend_token is None:
-            return None
-        scheme, separator, candidate = request.headers.get(
-            "authorization", ""
-        ).partition(" ")
-        authorized = (
-            separator == " "
-            and scheme.lower() == "bearer"
-            and secrets.compare_digest(
-                candidate.encode("utf-8"), backend_token.encode("utf-8")
-            )
-        )
-        if authorized:
-            return None
-        return JSONResponse(
-            {"detail": "Unauthorized"},
-            status_code=401,
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    auth = BackendAuth(backend_token)
+    admin_api = None
+    if admin is not None and admin_token:
+        from ..admin.http import AdminApi
 
-    def error(status_code: int, detail: str):
-        return JSONResponse({"detail": detail}, status_code=status_code)
-
-    async def health(request: Request):
-        denied = authorize(request)
-        return denied or JSONResponse({"status": "ok"})
-
-    def is_admin(_request: Request) -> bool:  # thay ở dưới khi trang quản trị được mở
-        return False
-
-    async def chat(request: Request):
-        denied = authorize(request)
-        if denied is not None:
-            return denied
-        content_length = request.headers.get("content-length")
-        if content_length is not None:
-            try:
-                declared_size = int(content_length)
-            except ValueError:
-                return error(400, "Content-Length must be an integer")
-            if declared_size > MAX_REQUEST_BODY_BYTES:
-                return error(413, _REQUEST_TOO_LARGE_MESSAGE)
-
-        body = bytearray()
-        async for chunk in request.stream():
-            if len(body) + len(chunk) > MAX_REQUEST_BODY_BYTES:
-                return error(413, _REQUEST_TOO_LARGE_MESSAGE)
-            body.extend(chunk)
-        try:
-            payload = json.loads(body)
-        except (UnicodeDecodeError, json.JSONDecodeError):
-            return error(400, "request body must be valid JSON")
-        if not isinstance(payload, dict):
-            return error(400, "request body must be an object")
-
-        message = payload.get("message")
-        if not isinstance(message, str) or not message.strip():
-            return error(400, "message must be non-empty text")
-        history = payload.get("history") or []
-        if not isinstance(history, list):
-            return error(400, "history must be a list")
-        # Mã phiên gom các lượt của một cuộc trò chuyện trong lịch sử chat. Trang gửi lại mã đã nhận;
-        # chưa có hoặc sai dạng thì cấp mã mới. Mã chỉ để gom nhóm, không phải quyền gì.
-        session = payload.get("session")
-        if not valid_id(session):
-            session = new_id(datetime.now().astimezone())
-        return StreamingResponse(
-            _stream(agent, message.strip(), history, gate, chat_log, by_admin=is_admin(request), session=session),
-            media_type="text/event-stream",
-            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "X-Chat-Session": session},
-        )
+        admin_api = AdminApi(admin, admin_token, auth.deny, chat_log)
+    chat_api = ChatApi(agent, gate or TurnGate(), auth, chat_log=chat_log, admin=admin_api)
+    routes = chat_api.routes() + (admin_api.routes() if admin_api is not None else [])
 
     @asynccontextmanager
     async def lifespan(_app):
         try:
             yield
         finally:
-            close = getattr(agent, "aclose", None)
-            if close is not None:
-                await close()
-            if chat_log is not None:
-                chat_log.flush()
+            if on_close is not None:
+                await on_close()
 
-    routes = [
-        Route("/health", health, methods=["GET"]),
-        Route("/chat", chat, methods=["POST"]),
-    ]
-    # Trang quản trị ghi được vào ontology, nên chỉ mở khi có khoá quản trị riêng.
-    if admin is not None and admin_token:
-        from ..admin.http import SESSION_COOKIE, admin_routes, valid_session
-
-        def is_admin(request: Request) -> bool:
-            return valid_session(admin_token, request.cookies.get(SESSION_COOKIE, ""))
-
-        routes.extend(admin_routes(admin, admin_token, authorize, chat_log))
     app = Starlette(routes=routes, lifespan=lifespan)
-    frontend_origins = [
-        origin.strip().rstrip("/")
-        for origin in os.environ.get("ONTCHATBOT_CORS_ORIGINS", "").split(",")
-        if origin.strip()
-    ]
-    if frontend_origins:
+    if cors_origins:
         app.add_middleware(
             CORSMiddleware,
-            allow_origins=frontend_origins,
+            allow_origins=list(cors_origins),
             allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            # ``Authorization`` mang khoá đi qua cổng đứng trước dịch vụ. Trình
-            # duyệt hỏi trước bằng một request ``OPTIONS`` và chỉ gửi request
-            # thật khi header đó nằm trong danh sách này, nên bỏ sót nó thì mọi
-            # lượt chat từ frontend khác domain đều chết ngay ở bước hỏi trước.
+            # Thiếu ``Authorization`` ở đây thì trình duyệt chặn ngay ở bước hỏi trước (OPTIONS).
             allow_headers=["Authorization", "Content-Type", "X-Admin-Token"],
             max_age=600,
         )
-
     return app

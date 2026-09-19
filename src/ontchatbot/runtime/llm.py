@@ -3,16 +3,15 @@
 from __future__ import annotations
 
 import asyncio
+import json
+import random
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
-import json
-import random
 from typing import Any
 
 import httpx
-
 
 #: Số lần gọi lại sau lần đầu khi dịch vụ mô hình trục trặc tạm thời.
 MAX_RETRIES = 3

@@ -18,7 +18,6 @@ Google Cloud (ví dụ khoá của ``gcloud auth print-access-token``).
 from __future__ import annotations
 
 import logging
-import os
 import threading
 import time
 from collections.abc import Callable
@@ -57,10 +56,9 @@ class MetadataToken:
         return self._token
 
 
-def default_token(http) -> Callable[[], str]:
-    """Khoá từ ONTCHATBOT_GCS_ACCESS_TOKEN nếu có, không thì từ máy chủ metadata của Cloud Run."""
+def default_token(http, fixed: str = "") -> Callable[[], str]:
+    """Khoá cố định nếu có (chạy ngoài Google Cloud), không thì khoá từ máy chủ metadata của Cloud Run."""
 
-    fixed = os.environ.get("ONTCHATBOT_GCS_ACCESS_TOKEN", "").strip()
     return (lambda: fixed) if fixed else MetadataToken(http)
 
 

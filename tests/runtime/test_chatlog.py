@@ -132,10 +132,10 @@ def test_each_chat_turn_is_recorded_with_its_lookups(tmp_path) -> None:
     log = LocalChatLog(tmp_path)
 
     async def run():
-        return [chunk async for chunk in api._stream(Agent(), "Ký túc xá ở đâu?",
-                                                     [{"role": "user", "content": "Chào"},
-                                                      {"role": "assistant", "content": "Chào bạn"}],
-                                                     api.TurnGate(), log)]
+        turn = api.Turn(Agent(), "Ký túc xá ở đâu?",
+                        [{"role": "user", "content": "Chào"}, {"role": "assistant", "content": "Chào bạn"}],
+                        api.TurnGate(), log)
+        return [chunk async for chunk in turn.events()]
 
     asyncio.run(run())
     log.flush()

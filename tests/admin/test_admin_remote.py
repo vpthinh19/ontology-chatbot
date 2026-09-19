@@ -4,13 +4,19 @@ from __future__ import annotations
 
 import shutil
 import threading
-from types import SimpleNamespace
 
 import httpx
 import pytest
 
 from ontchatbot.admin import AdminError, AdminStore, Conflict, Schema
-from ontchatbot.admin.remote import GcsObject, MetadataToken, RemoteOntology, StaleCopy, watch
+from ontchatbot.admin.remote import (
+    GcsObject,
+    MetadataToken,
+    RemoteOntology,
+    StaleCopy,
+    watch,
+)
+from ontchatbot.runtime.service import Config, Service
 from ontchatbot.settings import ONTOLOGY_PATH
 
 SHAPES_PATH = ONTOLOGY_PATH.with_name("shapes.ttl")
@@ -220,32 +226,25 @@ def test_a_failed_persist_leaves_the_file_and_the_memory_unchanged(tmp_path) -> 
     assert all(item["label"] != "Mục thử không được lưu" for item in store.list("KhaiNiem"))
 
 
-def instance(tmp_path, name: str, bucket: FakeObject) -> tuple[AdminStore, RemoteOntology, SimpleNamespace]:
+def instance(tmp_path, name: str, bucket: FakeObject) -> tuple[AdminStore, RemoteOntology, Service]:
     """Một bản dịch vụ như trên Cloud Run: bản sao riêng trên đĩa, chung một đối tượng Cloud Storage."""
-
-    import ontchatbot.cli.serve as serve
 
     folder = tmp_path / name
     folder.mkdir()
     shutil.copy(ONTOLOGY_PATH, folder / "ontology.trig")
     shutil.copy(SHAPES_PATH, folder / "shapes.ttl")
-    args = serve._parse_args(["--llm", "mo-hinh", "--ontology", str(folder / "ontology.trig")])
-    agent = SimpleNamespace(lookup=SimpleNamespace(engine=None))
-    remote = RemoteOntology({args.ontology: bucket})
-    remote.start()
-    store, _token = serve._build_admin(args, agent, remote)
-    return store, remote, agent
+    service = Service(Config(ontology=folder / "ontology.trig", admin_token="quan-tri"))
+    service.remote = RemoteOntology({service.config.ontology: bucket})
+    service.remote.start()
+    service.reloads = []
+    service.reload = service.reloads.append
+    return service.open_admin(), service.remote, service
 
 
 def test_two_instances_editing_at_once_never_overwrite_each_other(tmp_path, monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
-
-    reloads = []
-    monkeypatch.setattr(serve, "_reload_engine", lambda _args, runtime, why: reloads.append((runtime, why)))
-    monkeypatch.setenv("ONTCHATBOT_ADMIN_TOKEN", "quan-tri")
     bucket = FakeObject()
     first, first_remote, _ = instance(tmp_path, "a", bucket)
-    second, _, second_agent = instance(tmp_path, "b", bucket)
+    second, _, second_service = instance(tmp_path, "b", bucket)
 
     created = first.create(concept("Mục do phiên thứ nhất thêm"))
     assert bucket.data == first.path.read_bytes()
@@ -255,7 +254,7 @@ def test_two_instances_editing_at_once_never_overwrite_each_other(tmp_path, monk
     assert refused.value.status == 409
     assert second.get(created)["label"] == "Mục do phiên thứ nhất thêm", "bản mới đã được tải về"
     assert second.path.read_bytes() == bucket.data
-    assert (second_agent, "from Cloud Storage after a conflicting edit") in reloads, "engine của phiên thứ hai nạp lại"
+    assert "from Cloud Storage after a conflicting edit" in second_service.reloads, "engine của phiên thứ hai nạp lại"
 
     added = second.create(concept("Mục do phiên thứ hai thêm"))
 
@@ -265,10 +264,6 @@ def test_two_instances_editing_at_once_never_overwrite_each_other(tmp_path, monk
 
 
 def test_when_cloud_storage_cannot_be_reached_the_editor_is_told_nothing_was_saved(tmp_path, monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
-
-    monkeypatch.setattr(serve, "_reload_engine", lambda *_args: None)
-    monkeypatch.setenv("ONTCHATBOT_ADMIN_TOKEN", "quan-tri")
     bucket = FakeObject()
     store, _, _ = instance(tmp_path, "a", bucket)
     before = store.path.read_bytes()

@@ -4,24 +4,29 @@ import asyncio
 from argparse import Namespace
 from pathlib import Path
 
-import pytest
-
 from ontchatbot.cli import chat
-from ontchatbot.cli.chat import _parse_args, _runtime_args
+from ontchatbot.cli.chat import _config
 from ontchatbot.runtime.agent import AgentEvent
+
+
+async def _closed() -> None:
+    pass
 
 
 def _args(*, question=None) -> Namespace:
     return Namespace(llm="mô-hình", ontology=Path("ontology.trig"), base_url=None, hoi=question)
 
 
-def test_runtime_args_honors_the_llm_base_url_environment(monkeypatch) -> None:
+def test_the_cli_config_honors_the_llm_base_url_and_stays_local(monkeypatch) -> None:
     monkeypatch.setenv("ONTCHATBOT_LLM_BASE_URL", "https://llm.example/api/v1/")
+    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_GCS_URI", "gs://kho/ontology.trig")
+    monkeypatch.setenv("ONTCHATBOT_ADMIN_TOKEN", "quan-tri")
 
-    runtime = _runtime_args(_args())
+    config = _config(_args())
 
-    assert runtime.base_url == "https://llm.example/api/v1/"
-    assert runtime.ontology == Path("ontology.trig")
+    assert config.llm_base_url == "https://llm.example/api/v1/"
+    assert config.ontology == Path("ontology.trig")
+    assert (config.gcs_uri, config.admin_token, config.chat_log) == ("", "", False)
 
 
 def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
@@ -34,7 +39,7 @@ def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
 
     questions = iter(("câu một", "câu hai", ""))
     monkeypatch.setattr(chat, "_parse_args", lambda: _args())
-    monkeypatch.setattr(chat, "_build_agent", lambda _args: Agent())
+    monkeypatch.setattr(chat, "_open_agent", lambda _config: (Agent(), _closed))
     monkeypatch.setattr("builtins.input", lambda _: next(questions))
 
     chat.main()
@@ -45,7 +50,7 @@ def test_interactive_chat_session_uses_one_event_loop(monkeypatch) -> None:
 
 def test_interactive_chat_exits_cleanly_on_keyboard_interrupt(monkeypatch, capsys) -> None:
     monkeypatch.setattr(chat, "_parse_args", lambda: _args())
-    monkeypatch.setattr(chat, "_build_agent", lambda _args: object())
+    monkeypatch.setattr(chat, "_open_agent", lambda _config: (object(), _closed))
     monkeypatch.setattr("builtins.input", lambda _: (_ for _ in ()).throw(KeyboardInterrupt()))
 
     chat.main()
@@ -61,7 +66,7 @@ def test_cli_shows_the_lookup_keywords_from_the_shared_agent_loop(monkeypatch, c
             yield AgentEvent("completed", content="Kết quả")
 
     monkeypatch.setattr(chat, "_parse_args", lambda: _args(question="học phí"))
-    monkeypatch.setattr(chat, "_build_agent", lambda _args: Agent())
+    monkeypatch.setattr(chat, "_open_agent", lambda _config: (Agent(), _closed))
 
     chat.main()
 

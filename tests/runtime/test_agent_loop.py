@@ -118,23 +118,6 @@ def test_agent_loop_rejects_an_unknown_tool_without_executing_it() -> None:
     assert not called
 
 
-def test_agent_loop_closes_its_runtime_resources() -> None:
-    closed = []
-
-    async def close():
-        closed.append(True)
-
-    loop = AgentLoop(
-        _ScriptedClient([]),
-        lambda _keywords: None,
-        instructions="x",
-        close=close,
-    )
-
-    asyncio.run(loop.aclose())
-    assert closed == [True]
-
-
 def _answer(chunks: list[str]) -> list[AgentEvent]:
     client = _ScriptedClient([[ChatDelta(content=chunk) for chunk in chunks]])
 

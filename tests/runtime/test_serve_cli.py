@@ -1,3 +1,5 @@
+"""Khởi động dịch vụ: đọc cấu hình, dựng đủ thành phần trước khi mở cổng, đóng chúng khi tắt."""
+
 from __future__ import annotations
 
 import asyncio
@@ -6,12 +8,15 @@ import re
 import subprocess
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-from ontchatbot.cli.serve import _build_agent, _configure_logging, _parse_args
+import ontchatbot.cli.serve as serve
+from ontchatbot.cli.serve import _config, _configure_logging, _parse_args
+from ontchatbot.runtime.service import Config, Service
 from ontchatbot.settings import ONTOLOGY_PATH
 
 
@@ -19,8 +24,20 @@ def _flags(*extra: str) -> list[str]:
     return ["--llm", "mo-hinh-lon", *extra]
 
 
+@pytest.fixture
+def secrets(monkeypatch):
+    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
+    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
+    for name in ("ONTCHATBOT_ADMIN_TOKEN", "ONTCHATBOT_ONTOLOGY_GCS_URI", "ONTCHATBOT_CHATLOG"):
+        monkeypatch.delenv(name, raising=False)
+
+
+def _no_server(monkeypatch, run=lambda *_args, **_kwargs: None) -> None:
+    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=run))
+
+
 def test_importing_the_server_does_not_import_the_search_libraries() -> None:
-    """Máy chủ nhập nhanh; ontology và chỉ mục chỉ nạp khi dựng trợ lý."""
+    """Thư viện tìm kiếm và trang quản trị chỉ nạp trong ``Service.start``."""
 
     script = (
         "import sys; import ontchatbot.cli.serve; "
@@ -32,61 +49,20 @@ def test_importing_the_server_does_not_import_the_search_libraries() -> None:
     assert result.stdout.strip() == "0 0 0 0"
 
 
-def test_lookup_is_built_from_the_configured_ontology(monkeypatch, tmp_path) -> None:
-    import ontchatbot.cli.serve as serve
-
-    ontology = tmp_path / "ontology.trig"
-    args = _parse_args(_flags("--ontology", str(ontology), "--search-workers", "3", "--top-k", "5"))
-    opened = {}
-
-    def open_engine(source, *, top_k):
-        opened.update(path=source.path, top_k=top_k)
-        return "engine"
-
-    monkeypatch.setattr("ontchatbot.search.SearchEngine.open", open_engine)
-    monkeypatch.setattr(
-        "ontchatbot.runtime.lookup.OntologyLookup",
-        lambda engine, *, workers: ("lookup", engine, workers),
-    )
-
-    assert serve._build_lookup(args) == ("lookup", "engine", 3)
-    assert opened == {"path": ontology, "top_k": 5}
-
-
-def test_building_the_agent_eagerly_loads_lookup_before_health(monkeypatch) -> None:
-    """A health-ready agent must already be able to run its lookup tool."""
-
-    import ontchatbot.cli.serve as serve
-
-    built = []
-
-    class Lookup:
-        async def __call__(self, keywords):
-            return '{"ket_qua":[]}'
-
-        async def aclose(self):
-            built.append("closed")
-
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "khoa-thu")
-    monkeypatch.setattr(serve, "_build_lookup", lambda _args: built.append("lookup") or Lookup())
-    monkeypatch.setattr(serve, "_build_instructions", lambda _lookup: "loi-nhac")
-
-    agent = _build_agent(_parse_args(_flags()))
-    assert built == ["lookup"]
-    asyncio.run(agent.aclose())
-    assert built == ["lookup", "closed"]
+# --- cấu hình ---------------------------------------------------------------------
 
 
 def test_defaults_are_bounded_and_point_at_the_packaged_ontology(monkeypatch) -> None:
     for name in ("ONTCHATBOT_SEARCH_WORKERS", "ONTCHATBOT_SEARCH_TOP_K", "ONTCHATBOT_TURN_SLOTS",
-                 "ONTCHATBOT_TURN_QUEUE", "ONTCHATBOT_ONTOLOGY_PATH"):
+                 "ONTCHATBOT_TURN_QUEUE", "ONTCHATBOT_ONTOLOGY_PATH", "ONTCHATBOT_ONTOLOGY_REFRESH_SECONDS"):
         monkeypatch.delenv(name, raising=False)
 
-    args = _parse_args(_flags())
+    config = _config(_parse_args(_flags()))
 
-    assert (args.search_workers, args.top_k) == (4, 5)
-    assert (args.turn_slots, args.turn_queue) == (16, 64)
-    assert Path(args.ontology) == ONTOLOGY_PATH
+    assert (config.search_workers, config.top_k) == (4, 5)
+    assert (config.turn_slots, config.turn_queue) == (16, 64)
+    assert config.refresh_seconds == 60
+    assert config.ontology == ONTOLOGY_PATH
 
 
 def test_cloud_run_port_comes_from_the_environment(monkeypatch) -> None:
@@ -102,11 +78,11 @@ def test_limits_and_ontology_path_can_come_from_the_environment(monkeypatch) -> 
     monkeypatch.setenv("ONTCHATBOT_TURN_QUEUE", "6")
     monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_PATH", "/data/ontology.trig")
 
-    args = _parse_args(_flags())
+    config = _config(_parse_args(_flags()))
 
-    assert (args.search_workers, args.top_k) == (2, 3)
-    assert (args.turn_slots, args.turn_queue) == (4, 6)
-    assert Path(args.ontology) == Path("/data/ontology.trig")
+    assert (config.search_workers, config.top_k) == (2, 3)
+    assert (config.turn_slots, config.turn_queue) == (4, 6)
+    assert config.ontology == Path("/data/ontology.trig")
 
 
 @pytest.mark.parametrize(
@@ -127,37 +103,93 @@ def test_limits_reject_invalid_values(monkeypatch, flag, environment, value) -> 
         _parse_args(_flags())
 
 
-def test_serve_stops_when_it_cannot_reach_a_language_model(monkeypatch) -> None:
-    """Thiếu một trong hai thứ thì dừng ngay lúc khởi động.
+def test_secrets_and_storage_come_from_the_environment() -> None:
+    config = Config.from_env({
+        "ONTCHATBOT_LLM_API_KEY": "k", "ONTCHATBOT_BACKEND_TOKEN": "b", "ONTCHATBOT_ADMIN_TOKEN": " a ",
+        "ONTCHATBOT_ONTOLOGY_GCS_URI": "gs://kho/o.trig", "ONTCHATBOT_CHATLOG": "OFF",
+        "ONTCHATBOT_CORS_ORIGINS": "https://a.example/, https://b.example",
+    })
 
-    Nếu không, máy chủ lên bình thường rồi mọi câu hỏi mới hỏng, và triệu chứng
-    hiện ra ở phía người dùng chứ không phải ở nhật ký khởi động.
-    """
-
-    monkeypatch.delenv("ONTCHATBOT_LLM_API_KEY", raising=False)
-    monkeypatch.delenv("ONTCHATBOT_LLM_MODEL", raising=False)
-
-    with pytest.raises(SystemExit):
-        _build_agent(_parse_args([]))
-
-    monkeypatch.setenv("ONTCHATBOT_LLM_MODEL", "mo-hinh-lon")
-    with pytest.raises(SystemExit):
-        _build_agent(_parse_args([]))
+    assert (config.llm_api_key, config.backend_token, config.admin_token) == ("k", "b", "a")
+    assert config.gcs_uri == "gs://kho/o.trig"
+    assert config.chat_log is False
+    assert config.cors_origins == ("https://a.example", "https://b.example")
+    assert Config.from_env({}).chat_log is True
 
 
-def test_server_rejects_missing_llm_credentials_before_loading_the_ontology(monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
+def test_the_service_stops_when_it_cannot_reach_a_language_model() -> None:
+    """Thiếu mô hình hoặc khoá thì dừng ngay lúc khởi động, không để mọi câu hỏi hỏng về sau."""
 
-    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
-    monkeypatch.delenv("ONTCHATBOT_LLM_API_KEY", raising=False)
-    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    monkeypatch.setattr(serve, "_build_lookup", lambda _args: pytest.fail("ontology must not load"))
-    monkeypatch.setitem(
-        sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: pytest.fail("server must not start"))
-    )
-
+    with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_MODEL"):
+        Config(llm_api_key="k").check_llm()
     with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_API_KEY"):
-        serve.main()
+        Config(llm_model="m").check_llm()
+
+
+# --- khởi động và tắt ----------------------------------------------------------------
+
+
+def test_start_builds_a_ready_agent_and_aclose_releases_it() -> None:
+    service = Service(Config(llm_model="m", llm_api_key="k", chat_log=False, search_workers=3, top_k=4)).start()
+
+    assert service.lookup.engine.top_k == 4
+    assert service.lookup._executor._max_workers == 3
+    assert "lookup_academic_information" in service.agent._instructions
+    assert service.admin is None and service.remote is None
+
+    asyncio.run(service.aclose())
+    assert service._llm_http.is_closed
+    assert service.lookup._executor._shutdown
+
+
+def test_the_stored_ontology_is_fetched_before_the_search_index_is_built(monkeypatch) -> None:
+    """Trên Cloud Run, bản trong ảnh có thể đã cũ: engine phải dựng từ bản vừa tải về."""
+
+    order = []
+    monkeypatch.setattr(Service, "_open_remote", lambda self: order.append("tai") or "kho")
+    monkeypatch.setattr(Service, "_open_engine", lambda self: order.append("engine") or "engine")
+    monkeypatch.setattr(Service, "_build_agent", lambda self: order.append("tro ly") or "tro-ly")
+    monkeypatch.setattr(Service, "_watch_remote", lambda self: order.append(("theo doi", self.remote)))
+
+    Service(Config(llm_model="m", llm_api_key="k", gcs_uri="gs://kho/o.trig", chat_log=False)).start()
+
+    assert order == ["tai", "engine", "tro ly", ("theo doi", "kho")]
+
+
+def test_without_a_cloud_storage_address_the_ontology_file_is_used_as_is(monkeypatch) -> None:
+    monkeypatch.setattr(Service, "_open_remote", lambda self: pytest.fail("không có kho thì không tải"))
+    monkeypatch.setattr(Service, "_open_engine", lambda self: "engine")
+    monkeypatch.setattr(Service, "_build_agent", lambda self: "tro-ly")
+
+    service = Service(Config(llm_model="m", llm_api_key="k", chat_log=False)).start()
+
+    assert service.remote is None
+
+
+def test_chat_history_is_kept_beside_the_ontology_in_cloud_storage(tmp_path) -> None:
+    from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog
+
+    remote = Service(Config(gcs_uri="gs://kho/du-lieu/ontology.trig", gcs_access_token="khoa"))._open_chat_log()
+    assert isinstance(remote, GcsChatLog) and (remote.bucket, remote.prefix) == ("kho", "du-lieu/chat-logs/")
+    assert remote.token() == "khoa"
+
+    local = Service(Config(chat_log_dir=tmp_path))._open_chat_log()
+    assert isinstance(local, LocalChatLog) and local.root == tmp_path
+
+
+def test_aclose_stops_watching_cloud_storage(monkeypatch) -> None:
+    service = Service(Config())
+    watched = []
+    monkeypatch.setattr("ontchatbot.admin.remote.watch", lambda poll, every, stop: watched.append(stop))
+    service.remote = SimpleNamespace(refresh=lambda: False)
+
+    service._watch_remote()
+    asyncio.run(service.aclose())
+
+    assert watched == [service._stop] and service._stop.is_set()
+
+
+# --- dòng lệnh -------------------------------------------------------------------
 
 
 def test_serve_log_level_defaults_to_info_and_accepts_debug() -> None:
@@ -181,13 +213,6 @@ def test_configure_logging_uses_requested_level_and_trace_fields(monkeypatch) ->
 
 
 def test_the_log_timestamp_carries_its_time_zone(monkeypatch) -> None:
-    """Mốc thời gian phải tự nói nó thuộc múi giờ nào.
-
-    Máy chủ và người đọc nhật ký thường ở hai múi giờ khác nhau. Thiếu độ lệch
-    thì cùng một dòng được hai bên đọc ra hai thời điểm cách nhau nhiều tiếng,
-    và không có gì trên màn hình để lộ chuyện đó.
-    """
-
     calls = []
     monkeypatch.setattr(logging, "basicConfig", lambda **kwargs: calls.append(kwargs))
 
@@ -197,109 +222,55 @@ def test_the_log_timestamp_carries_its_time_zone(monkeypatch) -> None:
     assert re.fullmatch(r"\d{4}-\d\d-\d\d \d\d:\d\d:\d\d[+-]\d{4}", stamped)
 
 
-def test_the_web_server_logs_through_the_same_format(monkeypatch) -> None:
-    """Máy chủ web không được dựng khuôn nhật ký riêng.
-
-    Khuôn mặc định của nó không có mốc thời gian. Để nguyên thì nhật ký trộn hai
-    kiểu dòng, và các dòng ghi lượt truy cập mất giờ.
-    """
-
-    import ontchatbot.cli.serve as serve
-
-    seen = {}
-    configured = {}
-    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda app, **kwargs: seen.update(kwargs)))
-    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
-    monkeypatch.setattr(serve, "_build_agent", lambda args: object())
+def test_the_server_starts_the_whole_service_before_listening(monkeypatch, secrets) -> None:
+    order, seen, configured = [], {}, {}
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
+    monkeypatch.setattr(Service, "start", lambda self: order.append("start") or self)
     monkeypatch.setattr(
-        serve,
-        "create_app",
-        lambda agent, *, gate, backend_token=None, **_options: configured.update(gate=gate, backend_token=backend_token)
-        or object(),
+        "ontchatbot.runtime.service.create_app",
+        lambda agent, gate, **options: configured.update(gate=gate, **options) or "ung-dung",
     )
+    _no_server(monkeypatch, lambda app, **kwargs: order.append(app) or seen.update(kwargs))
 
     serve.main()
 
+    assert order == ["start", "ung-dung"]
+    # Máy chủ web không dựng khuôn nhật ký riêng (khuôn mặc định của nó không có mốc thời gian).
     assert seen["log_config"] is None
     assert configured["backend_token"] == "server-secret"
-    gate = configured["gate"]
-    assert (gate._slots._value, gate._queue_size) == (16, 64)
+    assert (configured["gate"]._slots._value, configured["gate"]._queue_size) == (16, 64)
+    assert configured["on_close"].__self__.__class__ is Service
 
 
-def test_the_web_server_builds_the_complete_runtime_before_listening(monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
-
-    built = []
-    configured = {}
-    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
+def test_the_server_refuses_to_start_without_a_backend_token(monkeypatch, secrets) -> None:
+    monkeypatch.delenv("ONTCHATBOT_BACKEND_TOKEN")
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    monkeypatch.setattr(serve, "_build_agent", lambda args: built.append(args) or "tro-ly")
-    monkeypatch.setattr(serve, "create_app", lambda runtime, **_kwargs: configured.update(runtime=runtime) or object())
-    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
+    monkeypatch.setattr(Service, "start", lambda self: pytest.fail("không được khởi động"))
+    _no_server(monkeypatch)
 
-    serve.main()
-
-    assert built == [_parse_args(_flags())]
-    assert configured["runtime"] == "tro-ly"
-
-
-def test_the_web_server_refuses_to_start_without_a_backend_token(monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
-
-    monkeypatch.delenv("ONTCHATBOT_BACKEND_TOKEN", raising=False)
-    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
-    monkeypatch.setattr(serve, "_build_agent", lambda _args: object())
-    monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
     with pytest.raises(SystemExit, match="ONTCHATBOT_BACKEND_TOKEN"):
         serve.main()
 
 
-def test_the_stored_ontology_is_fetched_before_the_search_index_is_built(monkeypatch) -> None:
-    """Trên Cloud Run, bản trong ảnh có thể đã cũ: engine phải dựng từ bản vừa tải về."""
-
-    import ontchatbot.cli.serve as serve
-
-    order = []
-    monkeypatch.setenv("ONTCHATBOT_BACKEND_TOKEN", "server-secret")
-    monkeypatch.setenv("ONTCHATBOT_LLM_API_KEY", "provider-secret")
+def test_the_server_rejects_missing_llm_credentials_before_loading_the_ontology(monkeypatch, secrets) -> None:
+    monkeypatch.delenv("ONTCHATBOT_LLM_API_KEY")
     monkeypatch.setattr(serve, "_parse_args", lambda: _parse_args(_flags()))
-    monkeypatch.setattr(serve, "_open_remote", lambda args: order.append("tai") or "kho")
-    monkeypatch.setattr(serve, "_build_agent", lambda args: order.append("engine") or "tro-ly")
-    monkeypatch.setattr(serve, "_build_admin", lambda args, agent, remote: (None, None))
-    monkeypatch.setattr(serve, "_watch_remote", lambda args, agent, remote, admin: order.append(("theo doi", remote)))
-    monkeypatch.setattr(serve, "create_app", lambda runtime, **_kwargs: object())
-    monkeypatch.setitem(sys.modules, "uvicorn", SimpleNamespace(run=lambda *_args, **_kwargs: None))
+    monkeypatch.setattr(Service, "_open_engine", lambda self: pytest.fail("ontology must not load"))
+    _no_server(monkeypatch, lambda *_args, **_kwargs: pytest.fail("server must not start"))
 
-    serve.main()
-
-    assert order == ["tai", "engine", ("theo doi", "kho")]
+    with pytest.raises(SystemExit, match="ONTCHATBOT_LLM_API_KEY"):
+        serve.main()
 
 
-def test_without_a_cloud_storage_address_the_ontology_file_is_used_as_is(monkeypatch) -> None:
-    import ontchatbot.cli.serve as serve
+def test_an_admin_key_opens_the_admin_store(tmp_path) -> None:
+    import shutil
 
-    monkeypatch.delenv("ONTCHATBOT_ONTOLOGY_GCS_URI", raising=False)
+    shutil.copy(ONTOLOGY_PATH, tmp_path / "ontology.trig")
+    shutil.copy(ONTOLOGY_PATH.with_name("shapes.ttl"), tmp_path / "shapes.ttl")
+    config = replace(Config(llm_model="m", llm_api_key="k", chat_log=False), ontology=tmp_path / "ontology.trig",
+                     admin_token="quan-tri")
 
-    assert serve._open_remote(_parse_args(_flags())) is None
-    assert _parse_args(_flags()).refresh_seconds == 60
+    service = Service(config).start()
 
-
-def test_chat_history_is_kept_beside_the_ontology_in_cloud_storage(monkeypatch, tmp_path) -> None:
-    import ontchatbot.cli.serve as serve
-    from ontchatbot.runtime.chatlog import GcsChatLog, LocalChatLog
-
-    monkeypatch.delenv("ONTCHATBOT_CHATLOG", raising=False)
-    monkeypatch.setenv("ONTCHATBOT_ONTOLOGY_GCS_URI", "gs://kho/du-lieu/ontology.trig")
-    monkeypatch.setenv("ONTCHATBOT_GCS_ACCESS_TOKEN", "khoa")
-    remote = serve._build_chat_log()
-    assert isinstance(remote, GcsChatLog) and (remote.bucket, remote.prefix) == ("kho", "du-lieu/chat-logs/")
-
-    monkeypatch.delenv("ONTCHATBOT_ONTOLOGY_GCS_URI")
-    monkeypatch.setenv("ONTCHATBOT_CHATLOG_DIR", str(tmp_path))
-    assert isinstance(serve._build_chat_log(), LocalChatLog)
-
-    monkeypatch.setenv("ONTCHATBOT_CHATLOG", "off")
-    assert serve._build_chat_log() is None
+    assert service.admin is not None and service.admin.path == tmp_path / "ontology.trig"
+    asyncio.run(service.aclose())

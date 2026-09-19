@@ -136,9 +136,14 @@ class ChatLog(ABC):
         self._writer.submit(write)
 
     def flush(self) -> None:
-        """Chờ các bản ghi đang xếp hàng ghi xong (dùng khi tắt dịch vụ và trong kiểm thử)."""
+        """Chờ các bản ghi đang xếp hàng ghi xong."""
 
         self._writer.submit(lambda: None).result()
+
+    def close(self) -> None:
+        """Ghi nốt các bản ghi đang xếp hàng rồi dừng luồng ghi."""
+
+        self._writer.shutdown(wait=True)
 
     def list(self, *, days: int = 7, view: str = "all", query: str = "", limit: int = 300) -> list[dict]:
         """Các phiên bắt đầu trong ``days`` ngày có ít nhất một lượt khớp bộ lọc, mới nhất trước."""

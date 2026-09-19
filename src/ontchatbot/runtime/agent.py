@@ -1,12 +1,4 @@
-"""Trợ lý học vụ: một mô hình ngôn ngữ lớn gọi công cụ tra cứu ontology.
-
-Mô hình ngôn ngữ lớn nhận câu hỏi của người dùng và viết câu trả lời cuối cùng.
-Nó không tự nhớ quy định; muốn biết dữ kiện thì phải gọi công cụ, và công cụ chỉ
-trả về những gì đọc được từ đồ thị tri thức kèm nguồn.
-
-Ranh giới đó là lý do hệ thống tồn tại: mô hình ngôn ngữ diễn đạt tốt nhưng nhớ
-sai, còn đồ thị nhớ đúng nhưng không biết diễn đạt.
-"""
+"""Trợ lý học vụ: mô hình ngôn ngữ lớn viết câu trả lời, dữ kiện lấy qua công cụ tra cứu ontology."""
 
 from __future__ import annotations
 
@@ -15,29 +7,17 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Sequence
 
-from ..settings import DEFAULT_LLM_BASE_URL
 from .lookup import MAX_KEYWORD_CHARACTERS, MAX_KEYWORDS_PER_LOOKUP
 
 if TYPE_CHECKING:
     from ..search import Ontology
 
-#: Điểm cuối mặc định dùng giao thức chat-completions tương thích OpenAI.
-DEFAULT_BASE_URL = DEFAULT_LLM_BASE_URL
-#: Một yêu cầu HTTP có 30 giây để hoàn tất: cao hơn gần 50% so với ngưỡng vận
-#: hành 20,3 giây nhưng vẫn đủ ngắn để lỗi mạng không giữ người dùng chờ lâu.
+#: Hạn của một yêu cầu HTTP tới mô hình.
 MODEL_REQUEST_TIMEOUT_SECONDS = 30.0
-#: Số tên mỗi loại nêu trong khuôn nhắc.
-#:
-#: Khuôn nhắc chỉ cần đủ để mô hình biết công cụ tra được những GÌ, rồi tự đoán
-#: từ khoá gần đúng. Liệt kê trọn danh mục làm khuôn nhắc phình ra mà không giúp
-#: thêm, vì mô hình đâu cần thuộc lòng danh sách - nó chỉ cần biết phạm vi.
+#: Số tên mỗi loại đọc từ ontology cho lời nhắc: đủ để mô hình biết phạm vi, không cần cả danh mục.
 NAMES_PER_KIND = 12
 
 #: Mô tả công cụ mà mô hình đọc trước khi quyết định gọi nó.
-#:
-#: Truyền tường minh chứ không để thư viện đọc từ chú thích: thư viện chỉ lấy
-#: câu tóm tắt và đoạn đầu, nên phần ví dụ - thứ dạy mô hình rút câu hỏi thành
-#: từ khoá - bị bỏ mất mà không báo gì.
 TOOL_DESCRIPTION = f"""Tra cứu ontology học vụ của trường: quy chế đào tạo, thủ tục,
 biểu mẫu, học phí, học bổng, chứng chỉ, ngành đào tạo và đơn vị.
 
@@ -109,20 +89,19 @@ class AgentEvent:
     kind: str
     content: str = ""
     keywords: tuple[str, ...] = ()
-    #: Chỉ ở sự kiện ``completed``: các dòng đánh dấu mô hình đã viết (xem ``MARKS``).
+    #: Chỉ ở sự kiện ``completed``: nhãn của các dòng đánh dấu mô hình đã viết (xem ``MARKS``).
     marks: tuple[str, ...] = ()
 
 
-#: Dòng đánh dấu mô hình viết ở cuối câu trả lời. Người đọc không thấy: agent cắt nó khỏi chữ và
-#: báo lại thành nhãn, để lịch sử chat biết lượt nào thiếu dữ liệu mà không phải đoán qua câu chữ.
+#: Dòng đánh dấu mô hình viết cuối câu trả lời. Agent cắt nó khỏi chữ và báo lại thành nhãn cho lịch sử chat.
 MARKS = {"[[THIEU_DU_LIEU]]": "missing", "[[NGOAI_PHAM_VI]]": "out_of_scope"}
 
 
 class _MarkFilter:
     """Cắt dòng đánh dấu khỏi chữ đang chảy về từng mảnh.
 
-    Một dấu có thể bị chia ở ranh giới hai mảnh, nên phần đuôi còn có thể là đầu của một dấu
-    được giữ lại tới mảnh sau; nhờ vậy người đọc không bao giờ thấy "[[THI" nháy lên.
+    Một dấu có thể bị chia ở ranh giới hai mảnh: phần đuôi có thể là đầu của một dấu thì được giữ
+    lại tới mảnh sau, nên người đọc không thấy "[[THI" nháy lên.
     """
 
     def __init__(self) -> None:
@@ -147,14 +126,19 @@ class _MarkFilter:
 
 
 class AgentLoopLimitError(RuntimeError):
-    """The model kept requesting more steps than this service permits."""
+    """Mô hình đòi nhiều bước hơn trần cho phép."""
 
 
 class AgentProtocolError(RuntimeError):
-    """The model emitted a tool call outside the declared contract."""
+    """Mô hình gọi công cụ sai khai báo."""
 
 
 class AgentLoop:
+    """Vòng hỏi đáp: gọi mô hình, chạy công cụ tra cứu khi mô hình yêu cầu, lặp tới khi có câu trả lời.
+
+    Phát ``AgentEvent``: text_delta · lookup_started · lookup_finished · completed.
+    """
+
     def __init__(
         self,
         client: Any,
@@ -162,23 +146,11 @@ class AgentLoop:
         *,
         instructions: str,
         max_steps: int = 4,
-        close: Callable[[], Awaitable[None]] | None = None,
     ) -> None:
         self._client = client
         self._lookup = lookup
         self._instructions = instructions
         self._max_steps = max_steps
-        self._close = close
-
-    @property
-    def lookup(self) -> Callable[[list[str]], Awaitable[str]]:
-        """Công cụ tra cứu; trang quản trị thay engine của nó sau mỗi lần ghi."""
-
-        return self._lookup
-
-    async def aclose(self) -> None:
-        if self._close is not None:
-            await self._close()
 
     async def stream(
         self, messages: Sequence[dict[str, Any]]
@@ -274,12 +246,7 @@ class OntologyVocabulary:
 
 
 def read_vocabulary(ontology: Ontology, limit: int = NAMES_PER_KIND) -> OntologyVocabulary:
-    """Đọc tên các thủ tục, đơn vị, biểu mẫu và ngành từ chính ontology đang phục vụ.
-
-    Khuôn nhắc phải sinh ra từ dữ liệu chứ không chép tay. Danh sách chép tay
-    mục dần: ontology thêm một thủ tục thì khuôn nhắc vẫn nói cái cũ, và mô hình
-    được dạy rằng thủ tục mới không tồn tại.
-    """
+    """Tên các thủ tục, đơn vị, biểu mẫu và ngành, đọc từ ontology đang phục vụ để lời nhắc luôn khớp dữ liệu."""
 
     def labels(class_name: str) -> tuple[str, ...]:
         return tuple(ontology.label(node) for node in ontology.individuals_of_class(class_name)[:limit])
@@ -313,15 +280,7 @@ def _line(title: str, names: Sequence[str], limit: int) -> str:
 
 
 def build_instructions(vocabulary: OntologyVocabulary | None = None) -> str:
-    """Dựng lời hướng dẫn hệ thống cho trợ lý.
-
-    Thứ tự trong lời hướng dẫn quyết định hành vi nhiều hơn nội dung. Quy tắc gọi
-    công cụ đứng đầu và đứng riêng; danh sách chủ đề đứng sau. Đảo lại thì quy
-    tắc bị chôn giữa một khối tên dài và tỉ lệ gọi công cụ tụt hẳn.
-
-    Danh sách chủ đề không phục vụ việc gọi công cụ - nó phục vụ lúc người dùng
-    hỏi trợ lý giúp được gì, và lúc trợ lý cần gợi ý hướng hỏi tiếp.
-    """
+    """Lời nhắc hệ thống. Quy tắc gọi công cụ đứng đầu; danh sách chủ đề (để gợi ý hướng hỏi) đứng cuối."""
 
     topics = ""
     if vocabulary is not None:
