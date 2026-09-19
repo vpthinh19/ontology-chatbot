@@ -317,6 +317,11 @@
 		[ sh:path skos:altLabel ;
 		  sh:name "tên gọi khác"@vi ;
 		  sh:datatype rdf:langString ; sh:languageIn ( "vi" ) ] ,
+		[ sh:path :donViQuanLy ;
+		  sh:name "đơn vị quản lý"@vi ;
+		  sh:class :ChuThe ;
+		  sh:maxCount 1 ;
+		  :batBuocNguon true ] ,
 		[ sh:path :loaiKhaiNiem ;
 		  sh:name "loại khái niệm"@vi ;
 		  sh:in ( :CoSoVatChat :HinhThucDaoTao :HinhThucToChucDayHoc :KhaiNiemHocVu :LoaiHocKy :LoaiHocPhan :ThanhPhanDanhGiaHocPhan ) ;

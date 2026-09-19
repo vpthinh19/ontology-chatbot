@@ -181,6 +181,8 @@
 	rdfs:label "Chương trình đào tạo Kỹ thuật xây dựng công trình giao thông"@vi .
 :ChuongTrinhDaoTaoLuat a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Luật"@vi .
+:ChuongTrinhDaoTaoMarketing a :ChuongTrinhDaoTao ;
+	rdfs:label "Chương trình đào tạo Marketing"@vi .
 :ChuongTrinhDaoTaoNgonNguAnh a :ChuongTrinhDaoTao ;
 	rdfs:label "Chương trình đào tạo Ngôn ngữ Anh"@vi .
 :ChuongTrinhDaoTaoNuoiTrongThuySan a :ChuongTrinhDaoTao ;
@@ -1117,6 +1119,11 @@
 	:ngayThuThap "2026-09-18"^^xsd:date ;
 	a :Nguon ;
 	rdfs:label "Trang Dịch vụ miễn phí - Thư viện Trường Đại học Nha Trang"@vi .
+:NguonTrangGioiThieuKhoaKinhDoanh :duongDan "https://khoakd.ntu.edu.vn/gioi-thieu"^^xsd:anyURI ;
+	:loaiNguon :VanBanHuongDan ;
+	:ngayThuThap "2026-09-19"^^xsd:date ;
+	a :Nguon ;
+	rdfs:label "Trang Giới thiệu Khoa Kinh doanh"@vi .
 :NguonTrangGioiThieuTrungTamDichVu :duongDan "https://trungtampvth.ntu.edu.vn/gioi-thieu/gioi-thieu-trung-tam"^^xsd:anyURI ;
 	:loaiNguon :VanBanHuongDan ;
 	:ngayThuThap "2026-09-18"^^xsd:date ;
@@ -2841,6 +2848,9 @@
 	a :DiaChiTrichDan .
 :TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMucDichVuMienPhi :thuocNguon :NguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrang ;
 	:toaDo "mục Dịch vụ miễn phí"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonTrangGioiThieuKhoaKinhDoanhMuc1ChucNangVaNhiemVu :thuocNguon :NguonTrangGioiThieuKhoaKinhDoanh ;
+	:toaDo "mục 1 Chức năng và nhiệm vụ"@vi ;
 	a :DiaChiTrichDan .
 :TDNguonTrangGioiThieuTrungTamDichVuY2MucCongTacQuanLyKhaiThacCacHoatDongDichVu :thuocNguon :NguonTrangGioiThieuTrungTamDichVu ;
 	:toaDo "ý 2 mục Công tác quản lý, khai thác các hoạt động dịch vụ"@vi ;
@@ -5368,7 +5378,12 @@
 :TDNguonTrangDichVuMienPhiThuVienTruongDaiHocNhaTrangMucDichVuMienPhi {
 	:TrungTamThongTinVaTuLieu :noiDung "Dịch vụ miễn phí: Đọc tại chỗ; Dịch vụ mượn/trả tài liệu in; Sử dụng máy tra cứu tài liệu; Đọc và tải tài liệu số phục vụ học tập; Sử dụng không gian học tập; Tập huấn dành riêng cho bạn đọc sử dụng thư viện; Tư vấn, hỗ trợ tìm kiếm thông tin, tài liệu tại kho."@vi .
 }
+:TDNguonTrangGioiThieuKhoaKinhDoanhMuc1ChucNangVaNhiemVu {
+	:ChuongTrinhDaoTaoMarketing :donViQuanLy :KhoaKinhDoanh ;
+		:thuocNganh :Marketing .
+}
 :TDNguonTrangGioiThieuTrungTamDichVuY2MucCongTacQuanLyKhaiThacCacHoatDongDichVu {
+	:KyTucXa :donViQuanLy :TrungTamDichVu .
 	:TrungTamDichVu :noiDung "Tổ chức quản lý, vận hành các ký túc xá, nhà khách phục vụ nhu cầu của người học và khách đến Trường; thực hiện công tác quản lý sinh viên nội trú và tổ chức các hoạt động tập thể trong khu nội trú nhằm thúc đẩy sinh viên học tập tốt, rèn luyện tốt."@vi .
 }
 :TDNguonTrangLienHeTruongDaiHocNhaTrangMuc10CacDonViChucNang {
