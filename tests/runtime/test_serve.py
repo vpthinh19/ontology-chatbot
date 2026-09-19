@@ -285,7 +285,7 @@ def test_only_the_twenty_most_recent_history_messages_reach_the_agent() -> None:
     ] + [{"role": "user", "content": "câu mới"}]
 
 
-def test_the_page_is_told_when_old_history_is_trimmed(monkeypatch, tmp_path) -> None:
+def test_old_history_is_trimmed_without_a_notice(monkeypatch, tmp_path) -> None:
     history = [
         {"role": "user", "content": f"lượt {index}"}
         for index in range(21)
@@ -298,9 +298,7 @@ def test_the_page_is_told_when_old_history_is_trimmed(monkeypatch, tmp_path) -> 
         {"message": "câu mới", "history": history},
     )
 
-    first = _sse(response.text)[0]
-    assert first["type"] == "warning"
-    assert "lượt cũ" in first["content"]
+    assert all(event["type"] != "warning" for event in _sse(response.text))
 
 
 def test_the_page_cannot_send_an_empty_turn(tmp_path) -> None:

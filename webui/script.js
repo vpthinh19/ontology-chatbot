@@ -291,7 +291,6 @@ const generateResponse = async (botMessage, userMessage) => {
   const textElement = botMessage.querySelector(".message-text");
   const controller = new AbortController();
   responseController = controller;
-  const historyWasTrimmed = chatHistory.length > MAX_HISTORY_MESSAGES;
   const history = chatHistory.slice(-MAX_HISTORY_MESSAGES).map(({ role, text }) => ({
     role: role === "bot" ? "assistant" : "user",
     content: text,
@@ -299,9 +298,6 @@ const generateResponse = async (botMessage, userMessage) => {
 
   let answer = "";
   let completed = false;
-  let notice = historyWasTrimmed
-    ? "Cuộc trò chuyện đã dài nên mình chỉ dùng 20 tin nhắn gần nhất."
-    : "";
   let progress = "Đang suy nghĩ…";
 
   // Chữ về nhanh hơn nhiều lần nhịp vẽ của màn hình. Dựng lại cả khối trả lời
@@ -311,14 +307,9 @@ const generateResponse = async (botMessage, userMessage) => {
   let paintedHtml;
 
   const render = () => {
-    const noticeHtml = notice
-      ? `<div class="reply-line notice">${escapeHtml(notice)}</div>`
-      : "";
-    const html =
-      noticeHtml +
-      (answer
-        ? renderRichText(answer)
-        : `<div class="reply-line status">${escapeHtml(progress)}</div>`);
+    const html = answer
+      ? renderRichText(answer)
+      : `<div class="reply-line status">${escapeHtml(progress)}</div>`;
     if (html !== paintedHtml) {
       textElement.innerHTML = html;
       paintedHtml = html;
@@ -361,8 +352,6 @@ const generateResponse = async (botMessage, userMessage) => {
       progress = "Đang viết câu trả lời…";
     } else if (eventType === "queued") {
       progress = `Hệ thống đang bận, bạn đứng thứ ${event.position} trong hàng chờ…`;
-    } else if (eventType === "warning") {
-      notice = content;
     } else if (eventType === "completed") {
       completed = true;
       if (!answer) answer = content;

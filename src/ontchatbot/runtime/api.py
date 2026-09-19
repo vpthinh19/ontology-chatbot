@@ -39,12 +39,6 @@ _ROLES = ("user", "assistant")
 #: chặn chi phí và ngữ cảnh mô hình tăng mãi theo tuổi của tab trình duyệt.
 #: System prompt thuộc ``Agent.instructions``, nằm ngoài lát cắt lịch sử này.
 MAX_HISTORY_MESSAGES = 20
-#: Thông báo này đi riêng khỏi câu trả lời để người dùng biết ngữ cảnh cũ đã bị
-#: bỏ mà nội dung vận hành không bị ghi ngược vào lịch sử như lời của trợ lý.
-_HISTORY_TRIMMED_MESSAGE = (
-    "Cuộc trò chuyện đã dài nên mình chỉ dùng 20 tin nhắn gần nhất; "
-    "các lượt cũ hơn không còn nằm trong ngữ cảnh."
-)
 #: Hạn toàn lượt rộng hơn hai lần p95 10,8 giây và hơn hai lần đỉnh vận hành
 #: 20,3 giây. Nó bao trọn các vòng gọi công cụ nhưng vẫn kết thúc hữu hạn khi
 #: một luồng model không đóng hoặc nhiều lần gọi nối nhau cùng chậm.
@@ -108,7 +102,7 @@ _EMPTY_ANSWER = (
 
 def _bounded_history(
     history: Sequence[Any],
-) -> tuple[list[dict[str, str]], bool]:
+) -> list[dict[str, str]]:
     """Lọc lịch sử do trình duyệt giữ và cắt ở phía cũ nhất."""
 
     turns: list[dict[str, str]] = []
@@ -118,8 +112,7 @@ def _bounded_history(
         role, content = item.get("role"), item.get("content")
         if role in _ROLES and isinstance(content, str) and content.strip():
             turns.append({"role": role, "content": content})
-    trimmed = len(turns) > MAX_HISTORY_MESSAGES
-    return turns[-MAX_HISTORY_MESSAGES:], trimmed
+    return turns[-MAX_HISTORY_MESSAGES:]
 
 
 def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
@@ -129,7 +122,7 @@ def _conversation(message: str, history: Sequence[Any]) -> list[dict[str, str]]:
     trạng thái. System prompt vẫn do Agent giữ và không đi qua hàm này.
     """
 
-    turns, _ = _bounded_history(history)
+    turns = _bounded_history(history)
     turns.append({"role": "user", "content": message})
     return turns
 
@@ -202,7 +195,7 @@ class TurnGate:
 async def _stream(
     agent, message: str, history: Sequence[Any], gate: TurnGate, chat_log=None
 ) -> AsyncIterator[str]:
-    conversation, history_trimmed = _bounded_history(history)
+    conversation = _bounded_history(history)
     turn = uuid.uuid4().hex[:12]
     started = time.perf_counter()
     started_at = datetime.now().astimezone()
@@ -274,8 +267,6 @@ async def _stream(
 
         try:
             async with asyncio.timeout(MODEL_TURN_TIMEOUT_SECONDS):
-                if history_trimmed:
-                    yield emit("warning", content=_HISTORY_TRIMMED_MESSAGE)
                 completed = False
                 async for event in agent.stream(conversation):
                     if event.kind == "text_delta" and event.content:

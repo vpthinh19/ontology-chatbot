@@ -148,12 +148,6 @@ a:focus-visible {
 .reply-line.depth-2 { margin-left: 2rem; }
 .reply-line.depth-3 { margin-left: 3rem; }
 
-.reply-line.notice {
-  margin-bottom: 0.65rem;
-  color: var(--warning);
-  font-size: 0.9rem;
-}
-
 .reply-line.status { color: var(--muted); }
 
 .message a {
