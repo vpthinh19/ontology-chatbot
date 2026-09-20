@@ -2198,6 +2198,78 @@
 :TDNguonQuyetDinhSo1128QdDhntDieu2 :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
 	:toaDo "Điều 2"@vi ;
 	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt10PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 10 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt11PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 11 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt12PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 12 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt13PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 13 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt15PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 15 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt17PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 17 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt19PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 19 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt1PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 1 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt21PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 21 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt22PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 22 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt23PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 23 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt24PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 24 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt25PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 25 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt26PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 26 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt27PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 27 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt28PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 28 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt2PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 2 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt3PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 3 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt4PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 4 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt5PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 5 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt6PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 6 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt7PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 7 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt8PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 8 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
+:TDNguonQuyetDinhSo1128QdDhntDongTt9PhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
+	:toaDo "dòng TT 9 Phụ lục"@vi ;
+	a :DiaChiTrichDan .
 :TDNguonQuyetDinhSo1128QdDhntGhiChuPhuLuc :thuocNguon :NguonQuyetDinhSo1128QdDhnt ;
 	:toaDo "ghi chú Phụ lục"@vi ;
 	a :DiaChiTrichDan .
@@ -3299,6 +3371,7 @@
 :canCu rdfs:label "căn cứ"@vi .
 :chiApDungChoTruongHop rdfs:label "chỉ áp dụng cho trường hợp"@vi .
 :chinhSachLePhi rdfs:label "chính sách lệ phí"@vi .
+:chuanDauRaNgoaiNgu rdfs:label "chuẩn đầu ra ngoại ngữ"@vi .
 :coBuoc rdfs:label "có bước"@vi .
 :coDieuKien rdfs:label "có điều kiện"@vi .
 :coHeQua rdfs:label "có hệ quả"@vi .
@@ -4410,6 +4483,81 @@
 }
 :TDNguonQuyetDinhSo1128QdDhntDieu2 {
 	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "Chuẩn đầu ra ngoại ngữ được quy định theo Khung năng lực ngoại ngữ 6 bậc dùng cho Việt Nam, được áp dụng cho từng ngành đào tạo và khóa tuyển sinh, chi tiết tại Phụ lục của Quy định này."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt10PhuLuc {
+	:KyThuatMoiTruong :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt11PhuLuc {
+	:KinhTe :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt12PhuLuc {
+	:KinhTePhatTrien :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt13PhuLuc {
+	:CongNgheThucPham :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt15PhuLuc {
+	:CongNgheCheBienThuySan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt17PhuLuc {
+	:NuoiTrongThuySan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt19PhuLuc {
+	:QuanLyThuySan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt1PhuLuc {
+	:QuanTriDichVuDuLichVaLuHanh :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+	:QuanTriKhachSan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt21PhuLuc {
+	:KyThuatXayDung :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt22PhuLuc {
+	:KyThuatCoKhi :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+	:KyThuatCoKhiDongLuc :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt23PhuLuc {
+	:KyThuatCoDienTu :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt24PhuLuc {
+	:CongNgheCheTaoMay :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt25PhuLuc {
+	:KyThuatNhiet :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt26PhuLuc {
+	:KyThuatOTo :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt27PhuLuc {
+	:KyThuatTauThuy :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt28PhuLuc {
+	:KhoaHocHangHai :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt A2, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt2PhuLuc {
+	:QuanTriKinhDoanh :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt3PhuLuc {
+	:Marketing :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt4PhuLuc {
+	:KinhDoanhThuongMai :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt5PhuLuc {
+	:KeToan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+	:KiemToan :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt6PhuLuc {
+	:TaiChinhNganHang :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt7PhuLuc {
+	:CongNgheThongTin :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt8PhuLuc {
+	:HeThongThongTinQuanLy :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
+}
+:TDNguonQuyetDinhSo1128QdDhntDongTt9PhuLuc {
+	:CongNgheSinhHoc :chuanDauRaNgoaiNgu "Trình độ đại học: khóa tuyển sinh 60 đạt B1, khóa tuyển sinh 61 trở đi đạt B1."@vi .
 }
 :TDNguonQuyetDinhSo1128QdDhntGhiChuPhuLuc {
 	:BangChuanDauRaNgoaiNguChuongTrinhDaoTaoDaiHocKhongChuyenNgu :noiDung "Ghi chú: - Nhóm ngành 1 là các ngành đào tạo cần đạt trình độ bậc 2 (A2); - Nhóm ngành 2 là các ngành đào tạo cần đạt trình độ bậc 3 (B1)"@vi .
