@@ -139,6 +139,10 @@ def test_the_endpoints_run_from_the_chosen_model_to_the_spare_provider() -> None
     assert [e.model for e in co_gemini.endpoints()] == ["chinh", "du-phong", "gemini-x"]
     assert co_gemini.endpoints()[-1].base_url == GEMINI_BASE_URL
 
+    # Mặc định không có mô hình dự phòng cùng nhà: một sự cố của Lightning thường làm cả nhà im lặng.
+    mac_dinh = Config(llm_model="chinh", llm_api_key="k", gemini_api_key="kg", gemini_model="gemini-x")
+    assert [e.model for e in mac_dinh.endpoints()] == ["chinh", "gemini-x"]
+
 
 # --- khởi động và tắt ----------------------------------------------------------------
 
