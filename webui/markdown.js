@@ -26,11 +26,16 @@ const markdown = new Marked({ gfm: true, breaks: true });
 // thành chữ thay vì để DOMPurify phải đoán.
 markdown.use({ renderer: { html: ({ text }) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") } });
 
+// Mô hình thỉnh thoảng đặt tên liên kết là "Link" thay vì gọi đúng tên nguồn. Người đọc là sinh viên,
+// nên chữ hiện lên phải là "Nguồn"; tên nguồn thật thì giữ nguyên.
+const VAGUE_LINK_TEXT = new Set(["link", "links", "liên kết", "url", "xem", "tại đây", "đây"]);
+
 const purifier = DOMPurify;
 purifier.addHook("afterSanitizeAttributes", (node) => {
   if (node.tagName === "A") {
     node.setAttribute("target", "_blank");
     node.setAttribute("rel", "noopener noreferrer");
+    if (VAGUE_LINK_TEXT.has(node.textContent.trim().toLowerCase())) node.textContent = "Nguồn";
   }
 });
 
