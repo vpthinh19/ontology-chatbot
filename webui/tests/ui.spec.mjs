@@ -7,52 +7,6 @@ test.beforeEach(async ({ page }) => {
   );
 });
 
-test("the page announces a cold start before the first health probe returns", async ({ page }) => {
-  await page.route("**/healthz", () => new Promise(() => {}));
-
-  await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
-
-  await expect(page.locator(".server-status")).toContainText(
-    "Đang kết nối máy chủ (5)",
-    { timeout: 500 },
-  );
-  await expect(page.locator(".prompt-input")).toBeEnabled();
-  await expect(page.locator("#send-prompt-btn")).toBeDisabled();
-});
-
-test("the connection status counts down without showing negative time", async ({ page }) => {
-  await page.clock.install();
-  await page.route("**/healthz", () => new Promise(() => {}));
-  await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
-
-  const status = page.locator(".server-status");
-  await expect(status).toContainText("Đang kết nối máy chủ (5)");
-
-  await page.clock.runFor(1_000);
-  await expect(status).toContainText("Đang kết nối máy chủ (4)");
-
-  await page.clock.runFor(4_000);
-  await expect(status).toContainText("Đang kết nối máy chủ (0)");
-
-  await page.clock.runFor(1_000);
-  await expect(status).toContainText("Đang kết nối máy chủ…");
-  await expect(status).not.toContainText("(-");
-});
-
-test("a ready server shows only the green dot, with the label kept for screen readers", async ({ page }) => {
-  await page.route("**/healthz", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
-  );
-  await page.goto("http://127.0.0.1:4173");
-
-  const status = page.locator(".server-status");
-  await expect(status).toHaveAttribute("data-state", "ready");
-  await expect(status.locator(".dot")).toBeVisible();
-  await expect(status.locator(".label")).toHaveClass(/sr-only/);
-  await expect(status.locator(".label")).toHaveText("Máy chủ sẵn sàng");
-  await expect(status).toHaveAttribute("title", "Máy chủ sẵn sàng");
-});
-
 test("LaTeX arrows in an answer are displayed as ordinary arrows", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
@@ -332,49 +286,6 @@ test("the built frontend sends health probes through the same-origin proxy", asy
   expect(authorization).toBeUndefined();
 });
 
-test("revalidating a stale ready tab disables send until the new probe succeeds", async ({ page }) => {
-  let probes = 0;
-  await page.route("**/healthz", (route) => {
-    probes += 1;
-    if (probes === 1) {
-      return route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' });
-    }
-    return new Promise(() => {});
-  });
-  await page.goto("http://127.0.0.1:4173");
-  await page.locator(".prompt-input").fill("Câu hỏi vẫn còn đây");
-  await expect(page.locator("#send-prompt-btn")).toBeEnabled();
-
-  await page.evaluate(() => {
-    const actualNow = Date.now;
-    Date.now = () => actualNow() + 31_000;
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
-
-  await expect(page.locator(".server-status")).toContainText("Đang kết nối", { timeout: 500 });
-  await expect(page.locator("#send-prompt-btn")).toBeDisabled();
-  await expect(page.locator(".prompt-input")).toHaveValue("Câu hỏi vẫn còn đây");
-});
-
-test("an old health probe cannot overwrite an offline state", async ({ page }) => {
-  let pendingProbe;
-  await page.route("**/healthz", (route) => {
-    pendingProbe = route;
-    return new Promise(() => {});
-  });
-  await page.goto("http://127.0.0.1:4173", { waitUntil: "domcontentloaded" });
-  await expect.poll(() => Boolean(pendingProbe)).toBe(true);
-
-  await page.evaluate(() => {
-    Object.defineProperty(navigator, "onLine", { configurable: true, get: () => false });
-    window.dispatchEvent(new Event("offline"));
-  });
-  await pendingProbe.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' });
-
-  await expect(page.locator(".server-status")).toContainText("mất kết nối", { timeout: 500 });
-  await expect(page.locator(".server-status")).toHaveAttribute("data-state", "offline");
-});
-
 test("a truncated chat stream is not committed as a successful answer", async ({ page }) => {
   await page.route("**/healthz", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: '{"status":"ok"}' }),
@@ -511,32 +422,52 @@ test("browser health and chat calls stay same-origin and carry no authorization"
   });
 });
 
-test("a rejected key is reported plainly instead of being retried for minutes", async ({ page }) => {
-  let probes = 0;
-  await page.route("**/healthz", (route) => {
-    probes += 1;
-    return route.fulfill({ status: 401, contentType: "application/json", body: "{}" });
-  });
-
+test("a rejected service key is reported when the question is sent", async ({ page }) => {
+  // Trang không còn vòng chờ máy chủ, nên khoá dịch vụ sai chỉ lộ ra lúc gửi câu hỏi.
+  await page.route("**/api/chat", (route) =>
+    route.fulfill({ status: 401, contentType: "application/json", body: "{}" }),
+  );
   await page.goto("http://127.0.0.1:4173");
 
-  await expect(page.locator(".server-status")).toContainText(
+  await page.locator(".prompt-input").fill("Học phí nộp ở đâu?");
+  await page.locator("#send-prompt-btn").click();
+
+  await expect(page.locator(".bot-message").last()).toContainText(
     "từ chối xác thực dịch vụ của trang này",
   );
-  await expect(page.locator(".server-status")).toHaveAttribute("data-state", "blocked");
-  await expect(page.locator("#send-prompt-btn")).toBeDisabled();
-
-  // Vòng đánh thức phải dừng hẳn: khoá sai thì lần probe thứ hai cũng sai, mà
-  // lịch giãn dần sẽ còn gõ cửa suốt ba phút nếu nó coi đây là lỗi tạm thời.
-  const after = probes;
-  await page.waitForTimeout(2_500);
-  expect(probes).toBe(after);
 });
 
-const quietServer = async (page) => {
-  await page.route("**/healthz", (route) =>
-    route.fulfill({ status: 200, json: { status: "ok" } }),
+test("the page wakes the server without making the visitor wait for it", async ({ page }) => {
+  let probes = 0;
+  // Máy chủ đang nguội: lượt đánh thức không bao giờ trả lời.
+  await page.route("**/healthz", () => {
+    probes += 1;
+    return new Promise(() => {});
+  });
+  await page.route("**/api/chat", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "text/event-stream",
+      body: 'data: {"type": "completed", "content": "Xong"}\n\n',
+    }),
   );
+  await page.goto("http://127.0.0.1:4173");
+
+  // Không có chấm trạng thái, không có chữ bảo chờ, và nút gửi mở ngay khi có câu hỏi.
+  await expect(page.locator(".server-status")).toHaveCount(0);
+  await expect(page.getByText("Đang kết nối máy chủ")).toHaveCount(0);
+  await page.locator(".prompt-input").fill("Thời gian thu học phí?");
+  await expect(page.locator("#send-prompt-btn")).toBeEnabled();
+
+  await page.locator("#send-prompt-btn").click();
+
+  await expect(page.locator(".bot-message").last()).toContainText("Xong");
+  expect(probes).toBeGreaterThan(0);
+});
+
+// Máy chủ trả lời ngay: các test dưới đây chỉ quan tâm tới ô tài khoản, không quan tâm lượt đánh thức.
+const quietServer = async (page) => {
+  await page.route("**/healthz", (route) => route.fulfill({ status: 200, json: { status: "ok" } }));
 };
 
 test("a visitor sees only an avatar; the guest box and its KEY field open on demand", async ({ page }) => {

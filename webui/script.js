@@ -1,7 +1,7 @@
 // Trang hỏi đáp: gửi câu hỏi kèm lịch sử, đọc câu trả lời chảy về (server-sent events) và vẽ dần.
 import { mountAccount } from "./account.js";
 import { renderMarkdown } from "./markdown.js";
-import { apiUrl, isRejectedKey, LABELS, ServerStatus } from "./server-status.js";
+import { apiUrl, isRejectedKey, REJECTED_KEY_TEXT, warmUp } from "./backend.js";
 import { applySavedTheme, toggleTheme } from "./theme.js";
 
 // Tên biểu tượng Material Symbols; mọi tên phải có trong icon_names của index.html.
@@ -9,9 +9,6 @@ const ICON = { light: "light_mode", dark: "dark_mode", avatar: "school" };
 const MAX_HISTORY_MESSAGES = 20;
 // Chỉ tự cuộn theo câu trả lời khi người đọc đang cách đáy không quá chừng này.
 const SCROLL_STICK_THRESHOLD_PX = 64;
-// Tab quay lại sau lâu hơn chừng này thì hỏi lại máy chủ trước khi cho gửi.
-const STALE_READY_MS = 30_000;
-
 const INTRODUCTION = [
   "Xin chào, mình là trợ lý học vụ của Trường Đại học Nha Trang. Mình trả lời dựa trên văn bản và trang thông tin chính thức của Trường, kèm nguồn để bạn đối chiếu.",
   "",
@@ -227,8 +224,7 @@ class Conversation {
     this.session = response.headers.get("X-Chat-Session") || this.session;
     if (!response.ok) {
       if (isRejectedKey(response.status)) {
-        status.set("blocked");
-        throw new StreamError(LABELS.blocked);
+        throw new StreamError(REJECTED_KEY_TEXT);
       }
       const detail = await response.json().catch(() => ({}));
       throw new StreamError(detail.detail || `Máy chủ trả về lỗi ${response.status}.`, {
@@ -291,17 +287,16 @@ class Conversation {
 const conversation = new Conversation();
 
 const updateControls = () => {
-  sendButton.disabled = !status.ready || conversation.responding || !promptInput.value.trim();
+  sendButton.disabled = conversation.responding || !promptInput.value.trim();
   deleteButton.disabled = !document.body.classList.contains("chats-active");
 };
 
-const status = new ServerStatus(document.querySelector(".server-status"), { onChange: updateControls });
 
 const failureText = (error) => {
   if (error.name === "AbortError") return "Đã dừng phản hồi.";
   if (error.interrupted) return `${error.message} Mình đang kết nối lại máy chủ.`;
   if (error.mayBeCold || error instanceof TypeError) {
-    return "Máy chủ vừa tạm nghỉ và đang được đánh thức lại. Khi chấm trạng thái chuyển xanh, bạn gửi lại câu hỏi nhé.";
+    return "Máy chủ vừa tạm nghỉ và đang được đánh thức lại, bạn gửi lại câu hỏi sau một chút nhé.";
   }
   return error.message;
 };
@@ -322,8 +317,8 @@ const send = async (question) => {
     if (error.name !== "AbortError" && (error.mayBeCold || error instanceof TypeError)) {
       // Trả câu vừa lỗi lại ô nhập để gửi lại, trừ khi người dùng đã gõ câu khác.
       if (!promptInput.value.trim()) promptInput.value = question;
-      status.set("waking");
-      void status.check();
+      // Câu vừa lỗi có thể là câu đánh thức máy chủ: hích thêm một lượt để lần gửi lại đã có máy sẵn.
+      warmUp();
     }
   } finally {
     view.message.classList.remove("loading");
@@ -337,10 +332,6 @@ promptForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const question = promptInput.value.trim();
   if (!question || conversation.responding) return;
-  if (!status.ready) {
-    void status.check();
-    return;
-  }
   promptInput.value = "";
   void send(question);
 });
@@ -366,15 +357,12 @@ deleteButton.addEventListener("click", () => {
   promptInput.focus();
 });
 
-window.addEventListener("online", () => void status.check());
-window.addEventListener("offline", () => status.set("offline"));
+// Tab quay lại sau một lúc thì máy chủ có thể đã ngủ: hích lại để lúc gửi câu hỏi máy đã lên.
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState !== "visible" || conversation.responding) return;
-  if (Date.now() - status.lastReadyAt > STALE_READY_MS) void status.check();
+  if (document.visibilityState === "visible" && !conversation.responding) warmUp();
 });
 
 showIntroduction();
-status.set("waking");
-void status.check();
+warmUp();
 
 mountAccount(document.querySelector("#account"), { other: { href: "/admin", label: "Quản trị" } });
