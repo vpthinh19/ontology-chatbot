@@ -70,15 +70,24 @@ class GcsObject:
         self.http = http
         self.token = token or default_token(http)
 
+    #: Tên tệp mặc định khi địa chỉ chỉ nêu bucket hoặc thư mục.
+    MAC_DINH = "ontology.trig"
+
     @classmethod
     def from_uri(cls, uri: str, **options) -> GcsObject:
-        """``gs://bucket/đường/dẫn/ontology.trig``."""
+        """``gs://bucket``, ``gs://bucket/thư-mục`` hay ``gs://bucket/thư-mục/ontology.trig``.
 
-        if not uri.startswith("gs://") or "/" not in uri[5:]:
-            raise ValueError(f"địa chỉ Cloud Storage phải có dạng gs://bucket/đối-tượng: {uri!r}")
-        bucket, name = uri[5:].split("/", 1)
-        if not bucket or not name:
-            raise ValueError(f"địa chỉ Cloud Storage phải có dạng gs://bucket/đối-tượng: {uri!r}")
+        Không nêu tên tệp thì lấy ``ontology.trig``; shapes.ttl và chat-logs/ nằm cùng thư mục với nó.
+        """
+
+        if not uri.startswith("gs://"):
+            raise ValueError(f"địa chỉ Cloud Storage phải bắt đầu bằng gs://: {uri!r}")
+        bucket, _, name = uri[5:].partition("/")
+        name = name.strip("/")
+        if not bucket:
+            raise ValueError(f"địa chỉ Cloud Storage phải nêu bucket: {uri!r}")
+        if "." not in name.rsplit("/", 1)[-1]:      # trống hoặc là thư mục
+            name = f"{name}/{cls.MAC_DINH}" if name else cls.MAC_DINH
         return cls(bucket, name, **options)
 
     def _headers(self) -> dict[str, str]:

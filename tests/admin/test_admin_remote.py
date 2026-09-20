@@ -67,7 +67,11 @@ def test_an_address_names_the_bucket_and_the_object() -> None:
     remote = GcsObject.from_uri("gs://kho-ntu/du-lieu/ontology.trig", http=object(), token=str)
 
     assert (remote.bucket, remote.name) == ("kho-ntu", "du-lieu/ontology.trig")
-    for wrong in ("kho-ntu/ontology.trig", "gs://kho-ntu", "gs://kho-ntu/", "gs:///ontology.trig"):
+    for short, expected in (("gs://kho-ntu", "ontology.trig"), ("gs://kho-ntu/", "ontology.trig"),
+                            ("gs://kho-ntu/du-lieu", "du-lieu/ontology.trig"),
+                            ("gs://kho-ntu/du-lieu/", "du-lieu/ontology.trig")):
+        assert GcsObject.from_uri(short, http=object(), token=str).name == expected
+    for wrong in ("kho-ntu/ontology.trig", "gs:///ontology.trig", "gs://"):
         with pytest.raises(ValueError):
             GcsObject.from_uri(wrong, http=object(), token=str)
 
