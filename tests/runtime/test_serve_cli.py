@@ -15,6 +15,7 @@ from types import SimpleNamespace
 import pytest
 
 import ontchatbot.cli.serve as serve
+from ontchatbot.settings import DEFAULT_LLM_BASE_URL, GEMINI_BASE_URL
 from ontchatbot.cli.serve import _config, _configure_logging, _parse_args
 from ontchatbot.runtime.service import Config, Service
 from ontchatbot.settings import ONTOLOGY_PATH
@@ -126,6 +127,19 @@ def test_the_service_stops_when_it_cannot_reach_a_language_model() -> None:
         Config(llm_model="m").check_llm()
 
 
+def test_the_endpoints_run_from_the_chosen_model_to_the_spare_provider() -> None:
+    """Mô hình chính trước, rồi mô hình dự phòng cùng nhà, cuối cùng mới sang nhà cung cấp khác."""
+
+    khong_gemini = Config(llm_model="chinh", llm_api_key="k", llm_fallback_models=("du-phong", "chinh"))
+    assert [(e.model, e.base_url) for e in khong_gemini.endpoints()] == [
+        ("chinh", DEFAULT_LLM_BASE_URL), ("du-phong", DEFAULT_LLM_BASE_URL)]
+
+    co_gemini = Config(llm_model="chinh", llm_api_key="k", llm_fallback_models=("du-phong",),
+                       gemini_api_key="kg", gemini_model="gemini-x")
+    assert [e.model for e in co_gemini.endpoints()] == ["chinh", "du-phong", "gemini-x"]
+    assert co_gemini.endpoints()[-1].base_url == GEMINI_BASE_URL
+
+
 # --- khởi động và tắt ----------------------------------------------------------------
 
 
@@ -138,7 +152,7 @@ def test_start_builds_a_ready_agent_and_aclose_releases_it() -> None:
     assert service.admin is None and service.remote is None
 
     asyncio.run(service.aclose())
-    assert service._llm_http.is_closed
+    assert service._llm._clients == {}
     assert service.lookup._executor._shutdown
 
 

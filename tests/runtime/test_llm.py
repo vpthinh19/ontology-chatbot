@@ -9,6 +9,8 @@ import pytest
 from ontchatbot.runtime.llm import (
     MAX_RETRIES,
     ChatDelta,
+    Endpoint,
+    FallbackClient,
     LightningBusyError,
     LightningClient,
     LightningProtocolError,
@@ -276,3 +278,75 @@ def test_a_rejected_key_is_not_retried() -> None:
 
     assert isinstance(error, httpx.HTTPStatusError)
     assert waits == [] and calls == 1
+
+
+# --- chuyển sang mô hình dự phòng ------------------------------------------------------
+
+_XONG = ('data: {"choices":[{"index":0,"delta":{"content":"%s"},"finish_reason":null}]}\n\n'
+         'data: {"choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}\n\ndata: [DONE]\n\n')
+
+
+def _diem_cuoi(*models: str) -> list[Endpoint]:
+    return [Endpoint(f"https://{ten.split('/')[0]}.test/v1/", "khoa", ten) for ten in models]
+
+
+def _chuoi(cach_tra_loi, **them):
+    """Chuỗi dự phòng mà mỗi điểm cuối trả lời theo ``cach_tra_loi[tên mô hình]``."""
+
+    goi: list[str] = []
+
+    def mo(endpoint: Endpoint) -> httpx.AsyncClient:
+        def respond(request: httpx.Request) -> httpx.Response:
+            goi.append(endpoint.model)
+            return cach_tra_loi[endpoint.model](request)
+
+        return httpx.AsyncClient(base_url=endpoint.base_url, transport=httpx.MockTransport(respond))
+
+    return goi, FallbackClient(_diem_cuoi(*cach_tra_loi), open_client=mo, sleep=_no_wait, **them)
+
+
+def _chay(client) -> list[str]:
+    async def run() -> list[str]:
+        return [d.content async for d in client.stream(messages=[{"role": "user", "content": "hỏi"}], tools=[])]
+
+    return asyncio.run(run())
+
+
+def test_a_silent_model_hands_the_turn_to_the_next_one() -> None:
+    def im_lang(_request: httpx.Request) -> httpx.Response:
+        raise httpx.ReadTimeout("không trả lời")
+
+    goi, client = _chuoi({"chinh/im": im_lang,
+                          "duphong/noi": lambda _r: httpx.Response(200, content=(_XONG % "xong").encode())})
+
+    assert "".join(_chay(client)) == "xong"
+    assert goi == ["chinh/im", "duphong/noi"]
+
+
+def test_the_broken_endpoint_is_skipped_on_the_next_turn() -> None:
+    """Lượt sau phải đi thẳng tới nơi đang trả lời, không dò lại từ đầu."""
+
+    def im_lang(_request: httpx.Request) -> httpx.Response:
+        raise httpx.ReadTimeout("không trả lời")
+
+    goi, client = _chuoi({"chinh/im": im_lang,
+                          "duphong/noi": lambda _r: httpx.Response(200, content=(_XONG % "xong").encode())},
+                         clock=lambda: 0.0)
+
+    _chay(client)
+    _chay(client)
+
+    assert goi == ["chinh/im", "duphong/noi", "duphong/noi"]
+
+
+def test_a_model_that_broke_after_speaking_does_not_answer_twice() -> None:
+    """Đã có chữ tới người dùng thì không được chuyển nơi khác, nếu không câu trả lời sẽ lặp."""
+
+    dang_do = 'data: {"choices":[{"index":0,"delta":{"content":"nửa câu"},"finish_reason":null}]}\n\n'
+
+    goi, client = _chuoi({"chinh/nua_chung": lambda _r: httpx.Response(200, content=dang_do.encode()),
+                          "duphong/noi": lambda _r: httpx.Response(200, content=(_XONG % "xong").encode())})
+
+    with pytest.raises(LightningProtocolError):
+        _chay(client)
+    assert goi == ["chinh/nua_chung"]

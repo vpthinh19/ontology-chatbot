@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import random
+import time
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -12,6 +14,8 @@ from email.utils import parsedate_to_datetime
 from typing import Any
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 #: Số lần gọi lại sau lần đầu khi dịch vụ mô hình trục trặc tạm thời.
 MAX_RETRIES = 3
@@ -80,11 +84,13 @@ class LightningClient:
         http: httpx.AsyncClient,
         *,
         model: str,
+        retries: int = MAX_RETRIES,
         sleep: Callable[[float], Awaitable[Any]] = asyncio.sleep,
         jitter: Callable[[], float] = random.random,
     ) -> None:
         self._http = http
         self._model = model
+        self._retries = retries
         self._sleep = sleep
         self._jitter = jitter
 
@@ -101,7 +107,7 @@ class LightningClient:
             "tool_choice": "auto",
             "stream": True,
         }
-        for retry in range(MAX_RETRIES + 1):
+        for retry in range(self._retries + 1):
             emitted = False
             try:
                 async for delta in self._stream_once(body):
@@ -118,7 +124,7 @@ class LightningClient:
                 # Không được bảo chờ bao lâu thì chờ 1, 2, 4 giây, thêm một chút
                 # ngẫu nhiên để nhiều lượt cùng bị chặn không gọi lại cùng lúc.
                 wait = told if told is not None else 2**retry + 0.5 * self._jitter()
-                if retry == MAX_RETRIES or wait > MAX_RETRY_WAIT_SECONDS:
+                if retry == self._retries or wait > MAX_RETRY_WAIT_SECONDS:
                     if status in _BUSY_STATUS:
                         raise LightningBusyError(wait) from exc
                     raise
@@ -167,3 +173,103 @@ class LightningClient:
                     )
             if not completed:
                 raise LightningProtocolError("Lightning stream ended without [DONE]")
+
+
+#: Chờ mảnh đầu tiên của một điểm cuối lâu hơn chừng này thì chuyển sang điểm cuối sau.
+#: Các mô hình lành lặn trả mảnh đầu trong khoảng một giây rưỡi.
+ENDPOINT_READ_TIMEOUT_SECONDS = 12.0
+#: Điểm cuối vừa hỏng bị bỏ qua trong chừng này, để lượt sau không phải dò lại từ đầu.
+ENDPOINT_COOLDOWN_SECONDS = 120.0
+
+
+@dataclass(frozen=True)
+class Endpoint:
+    """Một nơi có thể trả lời: địa chỉ giao thức chat-completions, khoá và tên mô hình."""
+
+    base_url: str
+    api_key: str
+    model: str
+
+    @property
+    def label(self) -> str:
+        return f"{self.model} @ {self.base_url.split('//', 1)[-1].split('/', 1)[0]}"
+
+
+class FallbackClient:
+    """Gọi lần lượt các điểm cuối cho tới khi có mảnh trả lời đầu tiên.
+
+    Điểm cuối hỏng bị ghi nhớ trong ``cooldown`` giây nên chỉ lượt đầu phải dò; các lượt sau đi thẳng
+    tới nơi đang trả lời. Đã có chữ tới người dùng thì KHÔNG đổi điểm cuối nữa, vì câu trả lời sẽ lặp.
+    Mỗi điểm cuối chỉ được gọi lại khi nó là điểm cuối cuối cùng: còn nơi khác để thử thì chuyển luôn.
+    """
+
+    def __init__(
+        self,
+        endpoints: Sequence[Endpoint],
+        *,
+        open_client: Callable[[Endpoint], httpx.AsyncClient],
+        sleep: Callable[[float], Awaitable[Any]] = asyncio.sleep,
+        jitter: Callable[[], float] = random.random,
+        clock: Callable[[], float] = time.monotonic,
+        cooldown: float = ENDPOINT_COOLDOWN_SECONDS,
+    ) -> None:
+        if not endpoints:
+            raise ValueError("cần ít nhất một điểm cuối mô hình")
+        self._endpoints = tuple(endpoints)
+        self._open_client = open_client
+        self._sleep = sleep
+        self._jitter = jitter
+        self._clock = clock
+        self._cooldown = cooldown
+        self._down: dict[str, float] = {}
+        self._clients: dict[str, tuple[httpx.AsyncClient, LightningClient]] = {}
+
+    def _client(self, endpoint: Endpoint, *, last: bool) -> LightningClient:
+        """Mở kết nối cho điểm cuối khi lần đầu cần tới, rồi dùng lại."""
+
+        cached = self._clients.get(endpoint.label)
+        if cached is None:
+            http = self._open_client(endpoint)
+            cached = (http, LightningClient(http, model=endpoint.model, retries=MAX_RETRIES if last else 0,
+                                            sleep=self._sleep, jitter=self._jitter))
+            self._clients[endpoint.label] = cached
+        return cached[1]
+
+    def _order(self) -> list[Endpoint]:
+        """Điểm cuối chưa bị đánh dấu hỏng trước, rồi tới những cái đang trong thời gian nghỉ."""
+
+        now = self._clock()
+        sang = [e for e in self._endpoints if self._down.get(e.label, 0.0) <= now]
+        return sang or list(self._endpoints)
+
+    async def stream(
+        self,
+        *,
+        messages: Sequence[dict[str, Any]],
+        tools: Sequence[dict[str, Any]],
+    ) -> AsyncIterator[ChatDelta]:
+        thu = self._order()
+        for vi_tri, endpoint in enumerate(thu):
+            emitted = False
+            try:
+                async for delta in self._client(endpoint, last=vi_tri == len(thu) - 1).stream(
+                    messages=messages, tools=tools
+                ):
+                    if not emitted:
+                        emitted = True
+                        self._down.pop(endpoint.label, None)
+                        if vi_tri:
+                            logger.warning("model fallback: trả lời bằng %s", endpoint.label)
+                    yield delta
+                return
+            except (httpx.TransportError, httpx.HTTPStatusError, LightningProtocolError, LightningBusyError) as exc:
+                if emitted or vi_tri == len(thu) - 1:
+                    raise
+                self._down[endpoint.label] = self._clock() + self._cooldown
+                logger.warning("model endpoint %s hỏng (%s: %s), chuyển sang %s",
+                               endpoint.label, type(exc).__name__, str(exc)[:120], thu[vi_tri + 1].label)
+
+    async def aclose(self) -> None:
+        for http, _ in self._clients.values():
+            await http.aclose()
+        self._clients.clear()

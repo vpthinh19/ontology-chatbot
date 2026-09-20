@@ -20,7 +20,13 @@ from pathlib import Path
 
 import httpx
 
-from ..settings import DEFAULT_LLM_BASE_URL, ONTOLOGY_PATH
+from ..settings import (
+    DEFAULT_GEMINI_MODEL,
+    DEFAULT_LLM_BASE_URL,
+    DEFAULT_LLM_FALLBACK_MODELS,
+    GEMINI_BASE_URL,
+    ONTOLOGY_PATH,
+)
 from .agent import (
     MODEL_REQUEST_TIMEOUT_SECONDS,
     AgentLoop,
@@ -34,7 +40,7 @@ from .api import (
     TurnGate,
     create_app,
 )
-from .llm import LightningClient
+from .llm import ENDPOINT_READ_TIMEOUT_SECONDS, Endpoint, FallbackClient
 from .lookup import OntologyLookup
 
 logger = logging.getLogger(__name__)
@@ -48,6 +54,11 @@ class Config:
     llm_model: str = ""
     llm_base_url: str = DEFAULT_LLM_BASE_URL
     llm_api_key: str = ""
+    #: Mô hình dự phòng cùng nhà cung cấp, thử lần lượt khi mô hình chính không trả lời.
+    llm_fallback_models: tuple[str, ...] = DEFAULT_LLM_FALLBACK_MODELS
+    #: Nhà cung cấp dự phòng cuối (Google AI Studio); không có khoá thì bỏ qua nấc này.
+    gemini_api_key: str = ""
+    gemini_model: str = DEFAULT_GEMINI_MODEL
     #: Khoá frontend dùng để gọi API.
     backend_token: str = ""
     #: Có thì mở trang quản trị; cũng là mật khẩu đăng nhập quản trị.
@@ -78,6 +89,10 @@ class Config:
 
         return cls(
             llm_api_key=value("ONTCHATBOT_LLM_API_KEY"),
+            llm_fallback_models=tuple(ten.strip() for ten in value("ONTCHATBOT_LLM_FALLBACK_MODELS").split(",")
+                                      if ten.strip()) or DEFAULT_LLM_FALLBACK_MODELS,
+            gemini_api_key=value("ONTCHATBOT_LLM_API_KEY_GEMINI"),
+            gemini_model=value("ONTCHATBOT_LLM_MODEL_GEMINI") or DEFAULT_GEMINI_MODEL,
             backend_token=value("ONTCHATBOT_BACKEND_TOKEN"),
             admin_token=value("ONTCHATBOT_ADMIN_TOKEN"),
             gcs_uri=value("ONTCHATBOT_ONTOLOGY_GCS_URI"),
@@ -97,6 +112,16 @@ class Config:
         if not self.llm_api_key:
             raise SystemExit("chưa đặt ONTCHATBOT_LLM_API_KEY")
 
+    def endpoints(self) -> list[Endpoint]:
+        """Mô hình chính trước, rồi các mô hình dự phòng cùng nhà, cuối cùng là nhà cung cấp khác."""
+
+        base = self.llm_base_url.rstrip("/") + "/"
+        ra = [Endpoint(base, self.llm_api_key, self.llm_model)]
+        ra += [Endpoint(base, self.llm_api_key, ten) for ten in self.llm_fallback_models if ten != self.llm_model]
+        if self.gemini_api_key:
+            ra.append(Endpoint(GEMINI_BASE_URL, self.gemini_api_key, self.gemini_model))
+        return ra
+
 
 class Service:
     def __init__(self, config: Config) -> None:
@@ -106,7 +131,7 @@ class Service:
         self.agent: AgentLoop | None = None
         self.admin = None
         self.chat_log = None
-        self._llm_http: httpx.AsyncClient | None = None
+        self._llm: FallbackClient | None = None
         self._gcs_object = None
         self._stop = threading.Event()
 
@@ -194,14 +219,22 @@ class Service:
 
     def _build_agent(self) -> AgentLoop:
         config = self.config
-        self._llm_http = httpx.AsyncClient(
-            base_url=config.llm_base_url.rstrip("/") + "/",
-            headers={"Authorization": f"Bearer {config.llm_api_key}", "Content-Type": "application/json"},
-            timeout=MODEL_REQUEST_TIMEOUT_SECONDS,
-        )
+        diem_cuoi = config.endpoints()
+        logger.info("model endpoints: %s", " → ".join(e.label for e in diem_cuoi))
+        self._llm = FallbackClient(diem_cuoi, open_client=self._open_llm_http)
         instructions = build_instructions(read_vocabulary(self.lookup.engine.ontology))
-        return AgentLoop(LightningClient(self._llm_http, model=config.llm_model), self.lookup,
-                         instructions=instructions, max_steps=MAX_MODEL_STEPS)
+        return AgentLoop(self._llm, self.lookup, instructions=instructions, max_steps=MAX_MODEL_STEPS)
+
+    @staticmethod
+    def _open_llm_http(endpoint: Endpoint) -> httpx.AsyncClient:
+        """Kết nối tới một điểm cuối; chỉ mở khi điểm cuối đó thật sự được dùng tới."""
+
+        return httpx.AsyncClient(
+            base_url=endpoint.base_url,
+            headers={"Authorization": f"Bearer {endpoint.api_key}", "Content-Type": "application/json"},
+            # Chờ mảnh đầu quá ENDPOINT_READ_TIMEOUT_SECONDS thì coi như điểm cuối này im, chuyển nơi khác.
+            timeout=httpx.Timeout(MODEL_REQUEST_TIMEOUT_SECONDS, read=ENDPOINT_READ_TIMEOUT_SECONDS),
+        )
 
     def open_admin(self):
         """Kho sửa ontology cho trang quản trị. Mỗi lần ghi xong, engine nạp lại."""
@@ -272,8 +305,8 @@ class Service:
         self._stop.set()
         if self.chat_log is not None:
             self.chat_log.close()
-        if self._llm_http is not None:
-            await self._llm_http.aclose()
+        if self._llm is not None:
+            await self._llm.aclose()
         if self.lookup is not None:
             await self.lookup.aclose()
         if self._gcs_object is not None:
