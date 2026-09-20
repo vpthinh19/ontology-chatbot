@@ -113,6 +113,16 @@ class LightningClient:
         self._sleep = sleep
         self._jitter = jitter
 
+    #: Dặn thêm cho riêng nhà này, nối vào cuối lời nhắc hệ thống. Lời nhắc chung phải giữ nguyên chữ
+    #: vì số liệu trong báo cáo đo trên nó, nên chỗ nào cần nói riêng thì nói ở đây.
+    DAN_THEM = ""
+
+    def _messages(self, messages: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+        ra = [dict(message) for message in messages]
+        if self.DAN_THEM and ra and ra[0].get("role") == "system":
+            ra[0]["content"] = f"{ra[0]['content']}\n\n{self.DAN_THEM}"
+        return ra
+
     async def stream(
         self,
         *,
@@ -121,7 +131,7 @@ class LightningClient:
     ) -> AsyncIterator[ChatDelta]:
         body = {
             "model": self._model,
-            "messages": list(messages),
+            "messages": self._messages(messages),
             "tools": list(tools),
             "tool_choice": "auto",
             "stream": True,
@@ -199,9 +209,34 @@ class LightningClient:
                 raise LightningProtocolError("Lightning stream ended without [DONE]")
 
 
-#: Chờ mảnh đầu tiên của một điểm cuối lâu hơn chừng này thì chuyển sang điểm cuối sau.
-#: Các mô hình lành lặn trả mảnh đầu trong khoảng một giây rưỡi.
+class GeminiClient(LightningClient):
+    """Google AI Studio. Cũng nói giao thức OpenAI, nhưng có mấy nết riêng.
+
+    Bản lite bám sát câu "giữ lại trích dẫn" tới mức nhắc lại cùng một nguồn sau từng ý, nên câu trả lời
+    rối mắt; dặn thêm ở đây thì gemma không thấy và số liệu báo cáo không đụng tới. Hai nết còn lại
+    (không gửi ``index``, đòi lại chữ ký suy nghĩ) đã lo ở lớp cha vì nhà khác cũng có thể như vậy.
+    """
+
+    DAN_THEM = (
+        "Mỗi nguồn chỉ nhắc MỘT lần: gom phần trích dẫn thành danh sách ở cuối câu trả lời, không chèn "
+        "vào giữa các ý. Giữ nguyên toạ độ (điều, khoản, phương thức, bước, ngày truy cập) và đường dẫn "
+        "mà công cụ đưa; không rút gọn trích dẫn thành mỗi tên văn bản. Mỗi mục trong danh sách là một "
+        "liên kết markdown lấy chính trích dẫn làm chữ, không viết thêm chữ như \"Link\" hay \"Nguồn\"."
+    )
+
+
+#: Lớp phụ trách từng nhà cung cấp. Hệ thống chỉ gọi ``stream(messages=..., tools=...)``, không cần biết là nhà nào.
+CLIENTS: dict[str, type[LightningClient]] = {"lightning": LightningClient, "gemini": GeminiClient}
+
+
+#: Im lặng giữa hai mảnh lâu hơn chừng này thì coi như đứt. Rộng tay, vì cắt một câu trả lời đang chảy
+#: là mất hẳn lượt: đã có chữ trên màn hình thì không được đổi nơi trả lời.
 ENDPOINT_READ_TIMEOUT_SECONDS = 12.0
+#: Chờ MẢNH ĐẦU của một điểm cuối còn đường lui lâu hơn chừng này thì chuyển sang điểm cuối sau.
+#: Đo 20/09 trên 3 câu hỏi: gemma 0,82-0,98 s ở vòng gọi đầu và 0,81-1,53 s ở vòng sau khi đã tra cứu,
+#: Gemini 1,1-1,3 s; nên ba giây là rộng gấp đôi mức chậm nhất đo được. Điểm cuối CUỐI không bị hạn này:
+#: không còn nơi nào khác thì chờ thêm vẫn hơn là bỏ lượt.
+FIRST_CHUNK_TIMEOUT_SECONDS = 3.0
 #: Điểm cuối vừa hỏng bị bỏ qua trong chừng này, để lượt sau không phải dò lại từ đầu.
 ENDPOINT_COOLDOWN_SECONDS = 120.0
 
@@ -247,10 +282,34 @@ class Endpoint:
     base_url: str
     api_key: str
     model: str
+    #: Khoá trong ``CLIENTS``: lớp nào biết nết riêng của nhà này.
+    provider: str = "lightning"
 
     @property
     def label(self) -> str:
         return f"{self.model} @ {self.base_url.split('//', 1)[-1].split('/', 1)[0]}"
+
+
+async def _cho_manh_dau(dong: AsyncIterator[ChatDelta], han: float | None) -> AsyncIterator[ChatDelta]:
+    """Chuyển tiếp một luồng mảnh, nhưng chỉ cho mảnh ĐẦU ``han`` giây; các mảnh sau chờ bao lâu cũng được.
+
+    Mô hình lành lặn lên tiếng trong khoảng một giây. Im lâu hơn thế ở mảnh đầu gần như luôn là hỏng, mà
+    lúc đó chưa có chữ nào tới người đọc nên chuyển nơi khác vẫn còn kịp và không ai thấy gì.
+    """
+
+    try:
+        if han is None:
+            dau = await anext(dong, None)
+        else:
+            async with asyncio.timeout(han):
+                dau = await anext(dong, None)
+        if dau is None:
+            return
+        yield dau
+        async for delta in dong:
+            yield delta
+    finally:
+        await dong.aclose()
 
 
 class FallbackClient:
@@ -270,6 +329,7 @@ class FallbackClient:
         jitter: Callable[[], float] = random.random,
         clock: Callable[[], float] = time.monotonic,
         cooldown: float = ENDPOINT_COOLDOWN_SECONDS,
+        first_chunk: float = FIRST_CHUNK_TIMEOUT_SECONDS,
     ) -> None:
         if not endpoints:
             raise ValueError("cần ít nhất một điểm cuối mô hình")
@@ -279,6 +339,7 @@ class FallbackClient:
         self._jitter = jitter
         self._clock = clock
         self._cooldown = cooldown
+        self._first_chunk = first_chunk
         self._down: dict[str, float] = {}
         self._clients: dict[str, tuple[httpx.AsyncClient, LightningClient]] = {}
 
@@ -288,8 +349,9 @@ class FallbackClient:
         cached = self._clients.get(endpoint.label)
         if cached is None:
             http = self._open_client(endpoint)
-            cached = (http, LightningClient(http, model=endpoint.model, retries=MAX_RETRIES if last else 0,
-                                            sleep=self._sleep, jitter=self._jitter))
+            lop = CLIENTS.get(endpoint.provider, LightningClient)
+            cached = (http, lop(http, model=endpoint.model, retries=MAX_RETRIES if last else 0,
+                                sleep=self._sleep, jitter=self._jitter))
             self._clients[endpoint.label] = cached
         return cached[1]
 
@@ -312,9 +374,13 @@ class FallbackClient:
             emitted = False
             if vi_tri and ke_lai is None:
                 ke_lai = _ke_lai_bang_loi(messages)
+            cuoi = vi_tri == len(thu) - 1
             try:
-                async for delta in self._client(endpoint, last=vi_tri == len(thu) - 1).stream(
-                    messages=messages if not vi_tri else ke_lai, tools=tools
+                async for delta in _cho_manh_dau(
+                    self._client(endpoint, last=cuoi).stream(
+                        messages=messages if not vi_tri else ke_lai, tools=tools
+                    ),
+                    None if cuoi else self._first_chunk,
                 ):
                     if not emitted:
                         emitted = True
@@ -323,8 +389,9 @@ class FallbackClient:
                             logger.warning("model fallback: trả lời bằng %s", endpoint.label)
                     yield delta
                 return
-            except (httpx.TransportError, httpx.HTTPStatusError, LightningProtocolError, LightningBusyError) as exc:
-                if emitted or vi_tri == len(thu) - 1:
+            except (httpx.TransportError, httpx.HTTPStatusError, LightningProtocolError, LightningBusyError,
+                    TimeoutError) as exc:
+                if emitted or cuoi:
                     raise
                 self._down[endpoint.label] = self._clock() + self._cooldown
                 logger.warning("model endpoint %s hỏng (%s: %s%s), chuyển sang %s",

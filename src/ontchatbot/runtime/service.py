@@ -119,7 +119,7 @@ class Config:
         ra = [Endpoint(base, self.llm_api_key, self.llm_model)]
         ra += [Endpoint(base, self.llm_api_key, ten) for ten in self.llm_fallback_models if ten != self.llm_model]
         if self.gemini_api_key:
-            ra.append(Endpoint(GEMINI_BASE_URL, self.gemini_api_key, self.gemini_model))
+            ra.append(Endpoint(GEMINI_BASE_URL, self.gemini_api_key, self.gemini_model, provider="gemini"))
         return ra
 
 

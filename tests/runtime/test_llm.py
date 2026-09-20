@@ -11,6 +11,7 @@ from ontchatbot.runtime.llm import (
     ChatDelta,
     Endpoint,
     FallbackClient,
+    GeminiClient,
     LightningBusyError,
     LightningClient,
     LightningProtocolError,
@@ -450,3 +451,65 @@ def test_another_provider_is_told_the_lookup_in_words() -> None:
         {"role": "user", "content": "học phí"},
         {"role": "user", "content": "Kết quả tra cứu:\nstatus=ok; nộp qua VNPAY"},
     ]]
+
+
+def _cham(giay: float, than: bytes):
+    """Điểm cuối trả lời sau ``giay``, để thử hạn chờ mảnh đầu."""
+
+    async def respond(_request: httpx.Request) -> httpx.Response:
+        await asyncio.sleep(giay)
+        return httpx.Response(200, content=than)
+
+    return respond
+
+
+def test_a_slow_first_chunk_moves_on_while_nobody_is_reading() -> None:
+    """Chưa có chữ nào tới người đọc thì đổi nơi trả lời còn kịp, không ai thấy gì."""
+
+    goi, client = _chuoi({"chinh/cham": _cham(0.2, (_XONG % "muộn").encode()),
+                          "duphong/nhanh": lambda _r: httpx.Response(200, content=(_XONG % "xong").encode())},
+                         first_chunk=0.02)
+
+    assert "".join(_chay(client)) == "xong"
+    assert goi == ["chinh/cham", "duphong/nhanh"]
+
+
+def test_the_last_endpoint_is_given_all_the_time_it_needs() -> None:
+    """Không còn nơi nào khác thì chờ thêm vẫn hơn là bỏ lượt."""
+
+    goi, client = _chuoi({"chinh/im": lambda _r: (_ for _ in ()).throw(httpx.ReadTimeout("không trả lời")),
+                          "duphong/cham": _cham(0.2, (_XONG % "muộn nhưng có").encode())},
+                         first_chunk=0.02)
+
+    assert "".join(_chay(client)) == "muộn nhưng có"
+    assert goi == ["chinh/im", "duphong/cham"]
+
+
+def test_the_spare_provider_is_given_its_own_extra_instructions() -> None:
+    """Lời nhắc chung phải giữ nguyên chữ, nên dặn riêng một nhà thì dặn ở lớp của nhà đó."""
+
+    seen: list[list[dict]] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        seen.append(json.loads(request.content)["messages"])
+        return httpx.Response(200, content=(_XONG % "xong").encode())
+
+    async def run() -> None:
+        async with httpx.AsyncClient(
+            base_url="https://gemini.test/v1/", transport=httpx.MockTransport(respond)
+        ) as http:
+            for lop in (LightningClient, GeminiClient):
+                async for _ in lop(http, model="m", sleep=_no_wait).stream(
+                    messages=[{"role": "system", "content": "lời nhắc chung"},
+                              {"role": "user", "content": "hỏi"}],
+                    tools=[],
+                ):
+                    pass
+
+    asyncio.run(run())
+
+    assert seen[0][0]["content"] == "lời nhắc chung"
+    assert seen[1][0]["content"].startswith("lời nhắc chung\n\n")
+    assert "Mỗi nguồn chỉ nhắc MỘT lần" in seen[1][0]["content"]
+    # Câu hỏi của người dùng không bị đụng vào.
+    assert seen[1][1] == {"role": "user", "content": "hỏi"}
