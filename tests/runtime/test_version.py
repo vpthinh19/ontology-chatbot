@@ -20,7 +20,7 @@ def _names(requirements: list[str]) -> set[str]:
 
 def test_release_version_and_service_dependencies() -> None:
     project = _project()
-    assert project["version"] == ontchatbot.__version__ == "4.1.2"
+    assert project["version"] == ontchatbot.__version__ == "4.1.3"
     assert _names(project["optional-dependencies"]["inference"]) == {"httpx", "pyshacl", "starlette", "uvicorn"}
 
 

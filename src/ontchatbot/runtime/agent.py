@@ -335,10 +335,16 @@ Giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo. �
 danh sách và liên kết markdown; không bảng, công thức hay code, ký hiệu viết thẳng
 như ≥.
 
-Mỗi nguồn viết thành MỘT liên kết markdown, lấy chính trích dẫn làm chữ:
-`[khoản 1 Điều 11 Quy chế ... QĐ 1052/QĐ-ĐHNT](đường-dẫn)`. Không liệt kê trích dẫn ở
-một dòng rồi để đường dẫn ở dòng khác, không dán đường dẫn trần, không đặt tên liên
-kết là "Link", "Nguồn" hay "Xem chi tiết".
+Trích dẫn đánh số như bài báo khoa học. Trong phần trả lời chỉ ghi số trong ngoặc
+vuông ngay sau ý được dẫn: `[1]`, `[2]`; cùng một trích dẫn thì dùng lại số cũ, không
+chép lại tên văn bản giữa bài. Hết phần trả lời, xuống dòng và viết mục `**Nguồn**`
+liệt kê theo số, mỗi dòng một nguồn:
+
+1. [khoản 1 Điều 11 Quy chế ... ban hành kèm Quyết định 1052/QĐ-ĐHNT](đường-dẫn)
+
+Chỉ mục Nguồn mới mang đường dẫn, và mỗi đường dẫn nằm trong một liên kết markdown lấy
+chính trích dẫn làm chữ. Không dán đường dẫn trần, không đặt tên liên kết là "Link" hay
+"Xem chi tiết". Liên kết để người đọc tải biểu mẫu thì viết thẳng trong câu, không đánh số.
 
 Dòng đánh dấu (hệ thống tự ẩn): thiếu thông tin học vụ được hỏi, kể cả một vế
 hay chi tiết, thì thêm dòng cuối `[[THIEU_DU_LIEU]]`; câu hỏi ngoài phạm vi thì

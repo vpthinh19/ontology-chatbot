@@ -127,8 +127,8 @@ def test_instructions_without_vocabulary_have_no_topic_list() -> None:
 def test_system_prompt_stays_short() -> None:
     # Mô hình nhỏ theo prompt ngắn tốt hơn. 400 từ cho tới 19/09/2026; 480 khi thêm dòng đánh dấu và
     # quy tắc định dạng, đo lại bằng bộ 70 câu; 520 ngày 21/09/2026 khi thêm cách viết nguồn thành
-    # liên kết (sửa theo lỗi thấy trên trang thật, user quyết không đo lại).
-    assert len(build_instructions(VOCABULARY).split()) < 520
+    # liên kết, rồi 600 khi đổi sang trích dẫn đánh số kiểu bài báo (user quyết không đo lại).
+    assert len(build_instructions(VOCABULARY).split()) < 600
 
 
 def test_vocabulary_is_read_from_the_ontology_being_served() -> None:
