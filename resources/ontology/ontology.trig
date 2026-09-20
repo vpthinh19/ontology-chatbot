@@ -363,6 +363,9 @@
 :DiaChiTrichDan rdfs:label "Địa chỉ trích dẫn"@vi .
 :Diem rdfs:label "Điểm"@vi .
 :DiemChu rdfs:label "Điểm chữ"@vi .
+:DiemHocPhan :loaiKhaiNiem :KhaiNiemHocVu ;
+	a :KhaiNiem ;
+	rdfs:label "Điểm học phần"@vi .
 :DiemI a :DanhMuc ;
 	rdfs:label "Điểm I"@vi .
 :DiemP a :DanhMuc ;
@@ -1838,6 +1841,9 @@
 :TDGraduationClassificationTable :thuocNguon :Nguon1052 ;
 	:toaDo "bảng 1 khoản 2 Điều 23"@vi ;
 	a :DiaChiTrichDan .
+:TDNguon1052DiemAKhoan2Dieu16 :thuocNguon :Nguon1052 ;
+	:toaDo "điểm a khoản 2 Điều 16"@vi ;
+	a :DiaChiTrichDan .
 :TDNguon1052DiemAKhoan2Dieu26 :thuocNguon :Nguon1052 ;
 	:toaDo "điểm a khoản 2 Điều 26"@vi ;
 	a :DiaChiTrichDan .
@@ -3105,6 +3111,9 @@
 	rdfs:label "Thanh toán bằng Mobile Banking hoặc Internet Banking"@vi .
 :ThanhToanQuaCongVnpay a :DanhMuc ;
 	rdfs:label "Thanh toán qua cổng VNPAY"@vi .
+:ThiBu :loaiQuyTac :QuyTacHocVu ;
+	a :QuyTac ;
+	rdfs:label "Thi bù"@vi .
 :ThoiGianDaoTaoChuanToanKhoa a :QuyTac ;
 	rdfs:label "Thời gian đào tạo chuẩn toàn khóa"@vi .
 :ThoiGianDaoTaoHinhThucVuaLamVuaHoc a :QuyTac ;
@@ -3175,7 +3184,7 @@
 	skos:altLabel "bổ sung hồ sơ sinh viên"@vi , "hồ sơ sinh viên"@vi .
 :ThuTucNopHocPhi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục nộp học phí"@vi ;
-	skos:altLabel "nộp học phí"@vi , "nộp tiền học"@vi , "thanh toán học phí"@vi , "đóng học phí"@vi , "đóng tiền học"@vi .
+	skos:altLabel "nộp học phí"@vi , "nộp tiền học"@vi , "quy trình thu học phí"@vi , "thanh toán học phí"@vi , "đóng học phí"@vi , "đóng tiền học"@vi .
 :ThuTucPhucKhaoBaiThi a :ThuTucHocVu ;
 	rdfs:label "Thủ tục phúc khảo bài thi"@vi ;
 	skos:altLabel "chấm lại bài thi"@vi , "phúc khảo"@vi , "xin phúc khảo"@vi .
@@ -3277,6 +3286,7 @@
 :XuLyLopHocPhanKhongDuSoLuongSinhVien a :QuyTac ;
 	rdfs:label "Xử lý lớp học phần không đủ số lượng sinh viên"@vi ;
 	skos:altLabel "chia nhóm lớp học phần thực hành"@vi , "lớp học phần bị xóa"@vi , "lớp học phần không mở"@vi , "lớp học phần không đủ sĩ số"@vi , "xóa lớp học phần"@vi .
+:apDungChoChuongTrinh rdfs:label "áp dụng cho chương trình"@vi .
 :apDungChoHinhThucDaoTao rdfs:label "áp dụng cho hình thức đào tạo"@vi .
 :apDungChoNganh rdfs:label "áp dụng cho ngành"@vi .
 :apDungChoPhuongThucDong rdfs:label "áp dụng cho phương thức đóng"@vi .
@@ -3313,6 +3323,7 @@
 :duongDan rdfs:label "đường dẫn"@vi .
 :duongDanNguon rdfs:label "đường dẫn nguồn"@vi .
 :duongDanVanBanGoc rdfs:label "đường dẫn văn bản gốc"@vi .
+:gomHocPhan rdfs:label "gồm học phần"@vi .
 :hieuLucTu rdfs:label "hiệu lực từ"@vi .
 :hieuLucTuHocKy rdfs:label "hiệu lực từ học kỳ"@vi .
 :hieuLucTuNamHoc rdfs:label "hiệu lực từ năm học"@vi .
@@ -3567,6 +3578,7 @@
 		:noiDung "Gồm điểm chuyên cần, điểm kiểm tra, bài tập, sản phẩm học tập và điểm đánh giá giữa kỳ nếu có."@vi .
 }
 :TD1052_D16K02dB {
+	:DiemHocPhan :noiDung "Điểm đánh giá học phần được chấm theo thang điểm 10 (từ 0,0 đến 10), làm tròn đến một chữ số thập phân."@vi .
 	:ThangDiemDanhGia :noiDung "Điểm đánh giá học phần được chấm theo thang điểm 10 (từ 0,0 đến 10), làm tròn đến một chữ số thập phân."@vi .
 }
 :TD1052_D16K02dC {
@@ -3949,7 +3961,8 @@
 	:Linguaskill :loaiChungChi :ChungChiNgoaiNgu .
 }
 :TDEnglishRequirementTableSpecialProgram {
-	:BangChuanTiengAnhChuongTrinhDacBiet :loaiBang :BangQuyDoiChungChi ;
+	:BangChuanTiengAnhChuongTrinhDacBiet :apDungChoChuongTrinh :CongNgheThongTinChuongTrinhDaoTaoDacBiet , :KeToanChuongTrinhDaoTaoDacBiet , :QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet , :QuanTriKhachSanChuongTrinhDaoTaoDacBiet , :QuanTriKinhDoanhChuongTrinhDaoTaoDacBietQuanTriKinhDoanhTongHopQuanTriKinhDoanhQuocTe , :TaiChinhNganHangChuongTrinhDaoTaoDacBiet ;
+		:loaiBang :BangQuyDoiChungChi ;
 		:noiDung "| TT | Chương trình | KNLNN / CEFR | TOEIC | IELTS | TOEFL iBT | Linguaskill | Aptis (General) | Cambridge English Scale |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | Công nghệ thông tin | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |\n| 2 | Kế toán | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |\n| 3 | Tài chính - Ngân hàng | Bậc 4 hoặc B2 | ≥ 600 | ≥ 5.0 | ≥ 65 | ≥ 140 | ≥ 131 | ≥ 151 |\n| 4 | Quản trị khách sạn | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |\n| 5 | Quản trị kinh doanh | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |\n| 6 | Quản trị dịch vụ du lịch và lữ hành | Bậc 4 hoặc B2 | ≥ 700 | ≥ 5.5 | ≥ 70 | ≥ 160 | ≥ 153 | ≥ 160 |"@vi .
 }
 :TDForeignLanguageCertificateAbbreviationTable {
@@ -3980,7 +3993,8 @@
 		:tenDayDuCuaChungChi "Test of Proficiency in Korean" .
 }
 :TDForeignLanguageCourseAssessmentTable {
-	:BangDanhGiaHocPhanNgoaiNgu :noiDung "| STT | Học phần | Thành phần đánh giá | Tỷ trọng |\n| :---: | :--- | :--- | :---: |\n| 1 | Ngoại ngữ A1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 2 | Ngoại ngữ A2.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 3 | Ngoại ngữ A2.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 4 | Ngoại ngữ B1.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 5 | Ngoại ngữ B1.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết<br>Thi kết thúc học phần phải đạt từ 5 điểm trở lên | 40% |\n| 6 | Ngoại ngữ B2.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 7 | Ngoại ngữ B2.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết<br>Thi kết thúc học phần phải đạt từ 5 điểm trở lên | 40% |"@vi .
+	:BangDanhGiaHocPhanNgoaiNgu :gomHocPhan :NgoaiNguA1 , :NgoaiNguA21 , :NgoaiNguA22 , :NgoaiNguB11 , :NgoaiNguB12 , :NgoaiNguB21 , :NgoaiNguB22 ;
+		:noiDung "| STT | Học phần | Thành phần đánh giá | Tỷ trọng |\n| :---: | :--- | :--- | :---: |\n| 1 | Ngoại ngữ A1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 2 | Ngoại ngữ A2.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 3 | Ngoại ngữ A2.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 4 | Ngoại ngữ B1.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 5 | Ngoại ngữ B1.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết<br>Thi kết thúc học phần phải đạt từ 5 điểm trở lên | 40% |\n| 6 | Ngoại ngữ B2.1 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết | 40% |\n| 7 | Ngoại ngữ B2.2 | Đánh giá quá trình | 20% |\n| | | Thi giữa kỳ: Nghe + Nói | 40% |\n| | | Thi cuối kỳ: Đọc + Viết<br>Thi kết thúc học phần phải đạt từ 5 điểm trở lên | 40% |"@vi .
 	:NgoaiNguA1 :noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi .
 	:NgoaiNguA21 :noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi .
 	:NgoaiNguA22 :noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%."@vi .
@@ -3990,7 +4004,8 @@
 	:NgoaiNguB22 :noiDung "Đánh giá quá trình 20%, thi giữa kỳ Nghe và Nói 40%, thi cuối kỳ Đọc và Viết 40%. Ngoài ra, thi kết thúc học phần phải đạt từ 5 điểm trở lên."@vi .
 }
 :TDForeignLanguageCourseCatalogueTable {
-	:DanhMucHocPhanNgoaiNgu :noiDung "| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |\n| :---: | :--- | :---: | :--- | :--- | :--- |\n| 1 | Ngoại ngữ A1 | 4 | Bậc 1 | Học phần điều kiện (HPĐK) | HPĐK |\n| 2 | Ngoại ngữ A2.1 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |\n| 3 | Ngoại ngữ A2.2 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |\n| 4 | Ngoại ngữ B1.1 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |\n| 5 | Ngoại ngữ B1.2 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |\n| 6 | Ngoại ngữ B2.1 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |\n| 7 | Ngoại ngữ B2.2 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |"@vi .
+	:DanhMucHocPhanNgoaiNgu :gomHocPhan :NgoaiNguA1 , :NgoaiNguA21 , :NgoaiNguA22 , :NgoaiNguB11 , :NgoaiNguB12 , :NgoaiNguB21 , :NgoaiNguB22 ;
+		:noiDung "| STT | Học phần | Tín chỉ | Khung NLNN tương ứng | Khóa 67 trở về trước | Khóa 68 trở đi |\n| :---: | :--- | :---: | :--- | :--- | :--- |\n| 1 | Ngoại ngữ A1 | 4 | Bậc 1 | Học phần điều kiện (HPĐK) | HPĐK |\n| 2 | Ngoại ngữ A2.1 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |\n| 3 | Ngoại ngữ A2.2 | 4 | Bậc 2 | Học phần điều kiện (HPĐK) | HPĐK |\n| 4 | Ngoại ngữ B1.1 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |\n| 5 | Ngoại ngữ B1.2 | 4 | Bậc 3 | Học phần bắt buộc (HPBB) | HPĐK |\n| 6 | Ngoại ngữ B2.1 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |\n| 7 | Ngoại ngữ B2.2 | 4 | Bậc 4 | HPBB (chương trình kỹ sư) | HPBB |"@vi .
 	:NgoaiNguA1 :soTinChi 4 .
 	:NgoaiNguA21 :soTinChi 4 .
 	:NgoaiNguA22 :soTinChi 4 .
@@ -4001,6 +4016,9 @@
 }
 :TDGraduationClassificationTable {
 	:BangXepHangTotNghiep :noiDung "| **TT.** | **Điểm trung bình chung tích lũy của toàn khoá** | **Xếp loại** |\n| :---: | :---: | :---: |\n| 1 | 9,00 ÷ 10 | Xuất sắc |\n| 2 | 8,00 ÷ 8,99 | Giỏi |\n| 3 | 7,00 ÷ 7,99 | Khá |\n| 4 | 5,50 ÷ 6,99 | Trung bình |"@vi .
+}
+:TDNguon1052DiemAKhoan2Dieu16 {
+	:DiemHocPhan :noiDung "Điểm học phần là tổng của điểm đánh giá quá trình, giữa kỳ và cuối kỳ nhân với trọng số tương ứng được quy định trong Đề cương chi tiết học phần."@vi .
 }
 :TDNguon1052DiemAKhoan2Dieu26 {
 	:ThuTucChuyenTruong :noiDung "Sinh viên làm hồ sơ xin chuyển Trường theo quy định thông qua Phòng Công tác Chính trị và Sinh viên của Trường Đại học Nha Trang (Mẫu số 13 - Phụ lục 4 kèm theo)."@vi .
@@ -4086,7 +4104,7 @@
 	:SinhVien :noiDung "Khi tham gia học tập, sinh viên có nhiệm vụ sau: a) Thường xuyên cập nhật và thực hiện đúng kế hoạch dạy học, kiểm tra, đánh giá theo Đề cương chi tiết học phần trên hệ thống NTU E-learning lớp học phần; b) Thực hiện đầy đủ và trung thực các nhiệm vụ học tập, kiểm tra, đánh giá theo Đề cương chi tiết học phần và hướng dẫn của giảng viên giảng dạy học phần; c) Thực hiện đầy đủ các quy định khác của Nhà trường và của giảng viên giảng dạy học phần."@vi .
 }
 :TDNguon1052Khoan3Dieu17 {
-	:GiangVienGiangDayHocPhan :noiDung "Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do giảng viên giảng dạy học phần tổ chức."@vi .
+	:ThiBu :noiDung "Sinh viên đủ điều kiện dự thi giữa kỳ nhưng không dự thi do bị ốm, tai nạn hoặc vì lý do đặc biệt khác được bố trí thi bù do giảng viên giảng dạy học phần tổ chức."@vi .
 }
 :TDNguon1052Khoan4Dieu28 {
 	:ThuTucDangKyHocCungLucHaiChuongTrinh :noiDung "Sinh viên học hai chương trình chỉ được hưởng các chế độ quyền lợi đối với chương trình thứ nhất. Nhà trường cử giảng viên theo dõi và hỗ trợ đối với sinh viên học cùng lúc hai chương trình."@vi .
@@ -5677,7 +5695,8 @@
 		:noiDung "| Khung NLNN 6 bậc | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) | Tiếng Hàn (KLPT) | Quy đổi thành điểm 10 (Thang điểm 10) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| Bậc 1 | HSK 1 | TOCFL 1 | N6 | < 315 | TEU | A1 | ≥ 100 | TOPIK 1 | ≥ 200 | Đạt học phần điều kiện: A1, A2.1, A2.2 |\n| Bậc 2 | HSK 2 | TOCFL 2 | N5 | 315 | TBU | A2 | ≥ 200 | TOPIK 2 | ≥ 250 | Đạt học phần điều kiện: A1, A2.1, A2.2 |\n| Bậc 3 | HSK 3 | TOCFL 3 | N4 | 469 | TRKI 1 | B1 | ≥ 300 | TOPIK 3 | ≥ 300 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |\n| Bậc 4 | HSK 4 | TOCFL 4 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 4 | ≥ 350 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |\n| Bậc 5 | - | - | N2 | 740 | TRKI 3 | - | - | TOPIK 5 | ≥ 400 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |\n| Bậc 6 | - | - | N1 | 880 | TRKI 4 | - | - | TOPIK 6 | ≥ 450 | Ngoại ngữ B1.1, Ngoại ngữ B1.2 |"@vi .
 }
 :TDOtherLanguageRequirementTableSpecialProgram {
-	:BangChuanNgoaiNguKhacChuongTrinhDacBiet :loaiBang :BangQuyDoiChungChi ;
+	:BangChuanNgoaiNguKhacChuongTrinhDacBiet :apDungChoChuongTrinh :CongNgheThongTinChuongTrinhDaoTaoDacBiet , :KeToanChuongTrinhDaoTaoDacBiet , :QuanTriDichVuDuLichVaLuHanhChuongTrinhDaoTaoDacBiet , :QuanTriKhachSanChuongTrinhDaoTaoDacBiet , :QuanTriKinhDoanhChuongTrinhDaoTaoDacBietQuanTriKinhDoanhTongHopQuanTriKinhDoanhQuocTe , :TaiChinhNganHangChuongTrinhDaoTaoDacBiet ;
+		:loaiBang :BangQuyDoiChungChi ;
 		:noiDung "| TT | Chương trình | Tiếng Trung (HSK) | Tiếng Trung (TOCFL) | Tiếng Nhật (JLPT) | Tiếng Nhật (JPT) | Tiếng Nga (TPKN) | Tiếng Pháp (DELF) | Tiếng Pháp (TCF) | Tiếng Hàn (TOPIK) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | Công nghệ thông tin | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 2 | Kế toán | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 3 | Tài chính - Ngân hàng | HSK 3 | TOCFL 2 | N4 | 469 | TRKI 1 | B1 | ≥ 320 | TOPIK 3 |\n| 4 | Quản trị khách sạn | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |\n| 5 | Quản trị kinh doanh | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |\n| 6 | Quản trị dịch vụ du lịch và lữ hành | HSK 4 | TOCFL 3 | N3 | 610 | TRKI 2 | B2 | ≥ 400 | TOPIK 3 |"@vi .
 }
 :TDScholarshipAnnouncementSection {
