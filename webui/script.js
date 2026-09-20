@@ -7,6 +7,8 @@ import { applySavedTheme, toggleTheme } from "./theme.js";
 // Tên biểu tượng Material Symbols; mọi tên phải có trong icon_names của index.html.
 const ICON = { light: "light_mode", dark: "dark_mode", avatar: "school" };
 const MAX_HISTORY_MESSAGES = 20;
+// Chỗ chữ đang chờ được nhả hết trong chừng này, nên chữ hiện đều tay thay vì nhảy theo cụm.
+const SMOOTH_MS = 120;
 // Chỉ tự cuộn theo câu trả lời khi người đọc đang cách đáy không quá chừng này.
 const SCROLL_STICK_THRESHOLD_PX = 64;
 const INTRODUCTION = [
@@ -100,14 +102,17 @@ class AnswerView {
   constructor(message) {
     this.message = message;
     this.text = message.querySelector(".message-text");
+    //: phần đã hiện trên màn hình, và phần đã nhận nhưng còn chờ được nhả ra.
     this.answer = "";
+    this.waiting = "";
     this.progress = "Đang suy nghĩ…";
     this.frame = undefined;
+    this.lastFrame = 0;
     this.painted = undefined;
   }
 
   append(text) {
-    this.answer += text;
+    this.waiting += text;
     this.message.classList.remove("loading");
     this.paint();
   }
@@ -117,16 +122,31 @@ class AnswerView {
     this.paint();
   }
 
+  // Mô hình trả chữ theo cụm, cụm to nhỏ và cách nhau không đều. Mỗi khung hình chỉ nhả một phần
+  // chỗ đang chờ, tính theo thời gian thật nên màn hình 60 hay 120 Hz đều chảy như nhau; chỗ chờ
+  // luôn cạn trong khoảng SMOOTH_MS nên chữ không bị tụt lại sau câu trả lời.
+  reveal(now) {
+    const share = Math.min(1, (now - this.lastFrame) / SMOOTH_MS);
+    const take = Math.max(1, Math.ceil(this.waiting.length * share));
+    this.answer += this.waiting.slice(0, take);
+    this.waiting = this.waiting.slice(take);
+    this.lastFrame = now;
+  }
+
   paint() {
-    this.frame ??= window.requestAnimationFrame(() => {
+    this.frame ??= window.requestAnimationFrame((now) => {
       this.frame = undefined;
+      if (this.waiting) this.reveal(now);
       this.render();
+      if (this.waiting) this.paint();
     });
   }
 
-  // Vẽ ngay: khi nội dung không đổi nữa, và ở tab ẩn (nơi khung hình không tới).
+  // Vẽ ngay và hết chỗ chờ: khi câu trả lời không đổi nữa, và ở tab ẩn (nơi khung hình không tới).
   renderNow() {
     this.cancel();
+    this.answer += this.waiting;
+    this.waiting = "";
     this.render();
   }
 
