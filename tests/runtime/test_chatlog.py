@@ -74,6 +74,11 @@ def test_a_local_log_groups_turns_into_sessions_filters_reviews_and_deletes(tmp_
         "turns": 2, "question": "Hỏi thử", "flags": ["not_found", "says_missing"], "open": 1, "todo": 0}
     assert [item["session"] for item in log.list(view="review")] == [first]
     assert [item["session"] for item in log.list(query="ký túc")] == [first]
+    # Bộ lọc của trang quản trị: hai nhãn mô hình tự gắn, và phép hợp của chúng.
+    assert [item["session"] for item in log.list(view="says_missing")] == [first]
+    assert log.list(view="out_of_scope") == []
+    assert [item["session"] for item in log.list(view="marked")] == [first]
+    assert [item["session"] for item in log.list(view="all")] == [other, first]
     assert [turn["id"] for turn in log.session(first)["turns"]] == [plain["id"], missing["id"]]
 
     reviewed = log.review(first, missing["id"], "can-bo-sung", "thêm thực thể ký túc xá")

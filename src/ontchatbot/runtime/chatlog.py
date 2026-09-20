@@ -81,14 +81,21 @@ def summarize_lookup(keywords, result: str) -> dict:
     return summary
 
 
+#: Bộ lọc của trang quản trị. ``marked``: một trong hai nhãn do mô hình tự gắn khi trả lời.
+VIEWS = {
+    "all": lambda record: True,
+    "says_missing": lambda record: "says_missing" in record["flags"],
+    "out_of_scope": lambda record: "out_of_scope" in record["flags"],
+    "marked": lambda record: bool({"says_missing", "out_of_scope"} & set(record["flags"])),
+    "review": lambda record: bool(record["flags"]) and not record["review"]["state"],
+    "flagged": lambda record: bool(record["flags"]),
+    "todo": lambda record: record["review"]["state"] == "can-bo-sung",
+    "failed": lambda record: "failed" in record["flags"],
+}
+
+
 def _matches(record: dict, view: str, query: str) -> bool:
-    if view == "review" and not (record["flags"] and not record["review"]["state"]):
-        return False
-    if view == "flagged" and not record["flags"]:
-        return False
-    if view == "todo" and record["review"]["state"] != "can-bo-sung":
-        return False
-    if view == "failed" and "failed" not in record["flags"]:
+    if not VIEWS.get(view, VIEWS["all"])(record):
         return False
     return not query or query.casefold() in f"{record['question']} {record.get('answer', '')}".casefold()
 

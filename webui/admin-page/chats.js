@@ -4,26 +4,26 @@ import { api } from "./api.js";
 import { $, element, encode, fitAll, growing, option, run, showStatus } from "./ui.js";
 
 const FLAG_NAMES = {
-  not_found: "Không thấy",
-  says_missing: "Báo thiếu",
+  not_found: "Tra cứu không ra",
+  says_missing: "Không có thông tin",
   out_of_scope: "Ngoài phạm vi",
-  no_lookup: "Không tra",
-  failed: "Lỗi",
+  no_lookup: "Không tra cứu",
+  failed: "Không hoàn tất",
 };
 const FLAG_TEXT = {
   not_found: "Có lần tra cứu không trả về thực thể nào.",
-  says_missing: "Trợ lý tự đánh dấu dữ liệu không có (toàn bộ hoặc một phần câu hỏi).",
-  out_of_scope: "Trợ lý tự đánh dấu câu hỏi nằm ngoài phạm vi hỗ trợ.",
+  says_missing: "Mô hình đánh dấu ontology không có điều được hỏi, cả câu hoặc một phần.",
+  out_of_scope: "Mô hình đánh dấu câu hỏi không thuộc phạm vi học vụ.",
   no_lookup: "Trả lời mà không tra cứu lần nào.",
-  failed: "Lượt không hoàn tất (quá hạn, lỗi, hàng đầy hoặc người dùng đóng trang).",
+  failed: "Lượt không hoàn tất: quá hạn, lỗi, hàng đợi đầy hoặc người dùng đóng trang.",
 };
 const REVIEW_NAMES = { "": "Chưa xem xét", "can-bo-sung": "Cần bổ sung", "da-xu-ly": "Đã xử lý", "bo-qua": "Không cần xử lý" };
 const OUTCOME_NAMES = {
   ok: "hoàn tất",
   timeout: "quá hạn chờ mô hình",
-  "too-many-steps": "chạm trần số bước",
+  "too-many-steps": "vượt số bước tối đa",
   busy: "hàng đợi đầy",
-  "queue-timeout": "chờ trong hàng quá lâu",
+  "queue-timeout": "chờ trong hàng đợi quá lâu",
   "rate-limited": "dịch vụ mô hình quá tải",
   error: "lỗi",
   abandoned: "người dùng đóng trang giữa chừng",
@@ -113,13 +113,15 @@ const turnView = (session, record, index) => {
     element("div", { class: "lookup" }, [
       element("div", {}, [
         element("b", { text: (lookup.keywords || []).join(" · ") }),
-        element("span", { text: lookup.status === "found" ? "  · có kết quả" : lookup.status === "not_found" ? "  · không thấy" : "" }),
+        element("span", {
+          text: lookup.status === "found" ? "  · có kết quả" : lookup.status === "not_found" ? "  · không ra thực thể nào" : "",
+        }),
       ]),
       lookup.results && lookup.results.length
         ? element("ul", {}, lookup.results.map((label) => element("li", { text: label })))
         : null,
       lookup.unmatched && lookup.unmatched.length
-        ? element("p", { class: "muted", text: `Từ khoá không khớp gì: ${lookup.unmatched.join(", ")}` })
+        ? element("p", { class: "muted", text: `Từ khoá không khớp thực thể nào: ${lookup.unmatched.join(", ")}` })
         : null,
     ]),
   );
@@ -127,7 +129,9 @@ const turnView = (session, record, index) => {
     element("h3", { text: `Lượt ${index + 1} · ${when(record.time)}` }),
     element("p", {
       class: "muted",
-      text: `${record.admin ? "Câu quản trị tự hỏi thử · " : ""}Kết cục: ${OUTCOME_NAMES[record.outcome] || record.outcome} · ${(record.duration_ms / 1000).toFixed(1)} giây`,
+      text: `${record.admin ? "Câu quản trị tự hỏi thử · " : ""}Kết quả: ${
+        OUTCOME_NAMES[record.outcome] || record.outcome
+      } · ${(record.duration_ms / 1000).toFixed(1).replace(".", ",")} giây`,
     }),
     record.flags && record.flags.length
       ? element("ul", { class: "muted" }, record.flags.map((flag) => element("li", { text: FLAG_TEXT[flag] || flag })))
