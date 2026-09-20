@@ -30,6 +30,10 @@
 		  sh:name "áp dụng cho chương trình"@vi ;
 		  sh:class :ChuongTrinhDaoTao ;
 		  :batBuocNguon true ] ,
+		[ sh:path :apDungChoNganh ;
+		  sh:name "áp dụng cho ngành"@vi ;
+		  sh:class :NganhDaoTao ;
+		  :batBuocNguon true ] ,
 		[ sh:path :gomHocPhan ;
 		  sh:name "gồm học phần"@vi ;
 		  sh:class :HocPhan ;
