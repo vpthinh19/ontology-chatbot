@@ -350,3 +350,103 @@ def test_a_model_that_broke_after_speaking_does_not_answer_twice() -> None:
     with pytest.raises(LightningProtocolError):
         _chay(client)
     assert goi == ["chinh/nua_chung"]
+
+
+def test_a_tool_call_without_an_index_is_still_one_call() -> None:
+    """Google AI Studio đánh dấu lời gọi bằng ``id`` chứ không gửi ``index``."""
+
+    stream = (
+        'data: {"choices":[{"index":0,"delta":{"tool_calls":[{"id":"call_1","type":"function",'
+        '"extra_content":{"google":{"thought_signature":"chu-ky"}},'
+        '"function":{"name":"lookup_academic_information","arguments":"{\\"keywords\\":[\\"học phí\\"]}"}}]},'
+        '"finish_reason":null}]}\n\n'
+        'data: {"choices":[{"index":0,"delta":{},"finish_reason":"tool_calls"}]}\n\n'
+        "data: [DONE]\n\n"
+    )
+
+    def respond(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"Content-Type": "text/event-stream"}, content=stream.encode())
+
+    async def run() -> list[ChatDelta]:
+        async with httpx.AsyncClient(
+            base_url="https://gemini.test/v1/", transport=httpx.MockTransport(respond)
+        ) as http:
+            return [
+                delta
+                async for delta in LightningClient(http, model="gemini", sleep=_no_wait).stream(
+                    messages=[{"role": "user", "content": "học phí"}], tools=[]
+                )
+            ]
+
+    deltas = asyncio.run(run())
+
+    assert deltas[0].tool_calls == (
+        ToolCallDelta(
+            index=0,
+            call_id="call_1",
+            name="lookup_academic_information",
+            arguments='{"keywords":["học phí"]}',
+            # Chữ ký phải về tới agent để gửi lại nguyên vẹn, không thì Gemini 3 từ chối lượt sau.
+            extra_content={"google": {"thought_signature": "chu-ky"}},
+        ),
+    )
+
+
+def test_two_calls_without_an_index_stay_apart() -> None:
+    """Hai lời gọi trong cùng một luồng không được nhập làm một."""
+
+    stream = (
+        'data: {"choices":[{"delta":{"tool_calls":[{"id":"call_1","function":{"name":"lookup","arguments":"{}"}},'
+        '{"id":"call_2","function":{"name":"lookup","arguments":"{}"}}]},"finish_reason":null}]}\n\n'
+        "data: [DONE]\n\n"
+    )
+
+    def respond(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, headers={"Content-Type": "text/event-stream"}, content=stream.encode())
+
+    async def run() -> list[ChatDelta]:
+        async with httpx.AsyncClient(
+            base_url="https://gemini.test/v1/", transport=httpx.MockTransport(respond)
+        ) as http:
+            return [
+                delta
+                async for delta in LightningClient(http, model="gemini", sleep=_no_wait).stream(
+                    messages=[], tools=[]
+                )
+            ]
+
+    (delta,) = asyncio.run(run())
+
+    assert [call.index for call in delta.tool_calls] == [0, 1]
+
+
+def test_another_provider_is_told_the_lookup_in_words() -> None:
+    """Lời gọi công cụ mang chữ ký của nơi sinh ra nó, nhà khác nhận lại sẽ từ chối."""
+
+    thay: list[list[dict]] = []
+
+    def im_lang(_request: httpx.Request) -> httpx.Response:
+        raise httpx.ReadTimeout("không trả lời")
+
+    def noi(request: httpx.Request) -> httpx.Response:
+        thay.append(json.loads(request.content)["messages"])
+        return httpx.Response(200, content=(_XONG % "xong").encode())
+
+    goi, client = _chuoi({"chinh/im": im_lang, "duphong/noi": noi})
+    hoi_thoai = [
+        {"role": "user", "content": "học phí"},
+        {"role": "assistant", "content": None, "tool_calls": [{"id": "call_1", "type": "function"}]},
+        {"role": "tool", "tool_call_id": "call_1", "content": "status=ok; nộp qua VNPAY"},
+    ]
+
+    async def run() -> None:
+        async for _ in client.stream(messages=hoi_thoai, tools=[]):
+            pass
+
+    asyncio.run(run())
+
+    assert goi == ["chinh/im", "duphong/noi"]
+    assert thay == [[
+        {"role": "user", "content": "học phí"},
+        {"role": "user", "content": "Kết quả tra cứu:\nstatus=ok; nộp qua VNPAY"},
+    ]]

@@ -63,6 +63,9 @@ class ToolCallDelta:
     call_id: str = ""
     name: str = ""
     arguments: str = ""
+    #: Trường riêng của nhà cung cấp đi kèm lời gọi. Gemini 3 gửi chữ ký suy nghĩ ở đây và BẮT BUỘC
+    #: nhận lại nguyên vẹn khi ta trả kết quả công cụ về, không thì từ chối với 400.
+    extra_content: Any = None
 
 
 @dataclass(frozen=True)
@@ -70,6 +73,22 @@ class ChatDelta:
     content: str = ""
     tool_calls: tuple[ToolCallDelta, ...] = ()
     finish_reason: str | None = None
+
+
+def _chi_so(tool_call: dict[str, Any], vi_tri: int, thu_tu: dict[str, int]) -> int:
+    """Chỉ số để gom các mảnh của cùng một lời gọi công cụ.
+
+    Google AI Studio không gửi ``index`` mà chỉ gửi ``id``, nên khi thiếu ``index`` thì đánh số theo
+    thứ tự mã lời gọi xuất hiện; mảnh không mang mã thì thuộc về lời gọi vừa mở.
+    """
+
+    chi_so = tool_call.get("index")
+    if isinstance(chi_so, int):
+        return chi_so
+    ma = tool_call.get("id") or ""
+    if not ma:
+        return max(thu_tu.values()) if thu_tu else vi_tri
+    return thu_tu.setdefault(ma, len(thu_tu))
 
 
 class LightningClient:
@@ -133,9 +152,13 @@ class LightningClient:
     async def _stream_once(
         self, body: dict[str, Any]
     ) -> AsyncIterator[ChatDelta]:
+        thu_tu: dict[str, int] = {}
         async with self._http.stream(
             "POST", "chat/completions", json=body
         ) as response:
+            if response.is_error:
+                # Đọc thân phản hồi trước khi đóng luồng: lời nhắn của dịch vụ nói rõ sai ở đâu.
+                await response.aread()
             response.raise_for_status()
             completed = False
             async for line in response.aiter_lines():
@@ -156,13 +179,14 @@ class LightningClient:
                     content = ""
                 tool_calls = tuple(
                     ToolCallDelta(
-                        index=tool_call["index"],
+                        index=_chi_so(tool_call, vi_tri, thu_tu),
                         call_id=tool_call.get("id") or "",
                         name=(tool_call.get("function") or {}).get("name") or "",
                         arguments=(tool_call.get("function") or {}).get("arguments")
                         or "",
+                        extra_content=tool_call.get("extra_content"),
                     )
-                    for tool_call in delta.get("tool_calls") or ()
+                    for vi_tri, tool_call in enumerate(delta.get("tool_calls") or ())
                 )
                 finish_reason = choice.get("finish_reason")
                 if content or tool_calls or finish_reason:
@@ -180,6 +204,40 @@ class LightningClient:
 ENDPOINT_READ_TIMEOUT_SECONDS = 12.0
 #: Điểm cuối vừa hỏng bị bỏ qua trong chừng này, để lượt sau không phải dò lại từ đầu.
 ENDPOINT_COOLDOWN_SECONDS = 120.0
+
+
+def _than_loi(exc: Exception) -> str:
+    """Lời nhắn dịch vụ mô hình gửi kèm mã lỗi, để log nói được sai ở đâu."""
+
+    response = getattr(exc, "response", None)
+    if response is None:
+        return ""
+    try:
+        than = response.text
+    except Exception:  # thân phản hồi chưa đọc được (luồng đã đóng)
+        return ""
+    than = " ".join(than.split())
+    return f" - {than[:200]}" if than else ""
+
+
+def _ke_lai_bang_loi(messages: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Hội thoại kể cho một nhà cung cấp khác nghe, không còn lời gọi công cụ.
+
+    Lời gọi công cụ mang dấu riêng của nơi sinh ra nó: Gemini 3 đòi lại đúng chữ ký suy nghĩ của mình và từ
+    chối lời gọi của nhà khác. Nên khi đổi nơi trả lời giữa chừng, kết quả tra cứu được kể lại như một tin
+    nhắn thường; nội dung không mất gì, mô hình mới vẫn viết tiếp được câu trả lời.
+    """
+
+    ra: list[dict[str, Any]] = []
+    for message in messages:
+        if message.get("role") == "assistant" and message.get("tool_calls"):
+            if message.get("content"):
+                ra.append({"role": "assistant", "content": message["content"]})
+        elif message.get("role") == "tool":
+            ra.append({"role": "user", "content": f"Kết quả tra cứu:\n{message.get('content') or ''}"})
+        else:
+            ra.append(message)
+    return ra
 
 
 @dataclass(frozen=True)
@@ -249,11 +307,14 @@ class FallbackClient:
         tools: Sequence[dict[str, Any]],
     ) -> AsyncIterator[ChatDelta]:
         thu = self._order()
+        ke_lai: list[dict[str, Any]] | None = None
         for vi_tri, endpoint in enumerate(thu):
             emitted = False
+            if vi_tri and ke_lai is None:
+                ke_lai = _ke_lai_bang_loi(messages)
             try:
                 async for delta in self._client(endpoint, last=vi_tri == len(thu) - 1).stream(
-                    messages=messages, tools=tools
+                    messages=messages if not vi_tri else ke_lai, tools=tools
                 ):
                     if not emitted:
                         emitted = True
@@ -266,8 +327,9 @@ class FallbackClient:
                 if emitted or vi_tri == len(thu) - 1:
                     raise
                 self._down[endpoint.label] = self._clock() + self._cooldown
-                logger.warning("model endpoint %s hỏng (%s: %s), chuyển sang %s",
-                               endpoint.label, type(exc).__name__, str(exc)[:120], thu[vi_tri + 1].label)
+                logger.warning("model endpoint %s hỏng (%s: %s%s), chuyển sang %s",
+                               endpoint.label, type(exc).__name__, str(exc)[:120], _than_loi(exc),
+                               thu[vi_tri + 1].label)
 
     async def aclose(self) -> None:
         for http, _ in self._clients.values():

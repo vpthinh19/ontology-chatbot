@@ -162,7 +162,7 @@ class AgentLoop:
         marks = _MarkFilter()
         for _step in range(self._max_steps):
             answer_parts: list[str] = []
-            calls: dict[int, dict[str, str]] = {}
+            calls: dict[int, dict[str, Any]] = {}
             async for delta in self._client.stream(
                 messages=conversation, tools=[TOOL_SCHEMA]
             ):
@@ -173,11 +173,13 @@ class AgentLoop:
                 for fragment in delta.tool_calls:
                     call = calls.setdefault(
                         fragment.index,
-                        {"id": "", "name": "", "arguments": ""},
+                        {"id": "", "name": "", "arguments": "", "extra_content": None},
                     )
                     call["id"] += fragment.call_id
                     call["name"] += fragment.name
                     call["arguments"] += fragment.arguments
+                    if fragment.extra_content is not None:
+                        call["extra_content"] = fragment.extra_content
 
             rest = marks.flush()
             if rest:
@@ -197,6 +199,8 @@ class AgentLoop:
                         "name": call["name"],
                         "arguments": call["arguments"],
                     },
+                    # Trả lại nguyên vẹn thứ nhà cung cấp gửi kèm: Gemini 3 đòi lại chữ ký suy nghĩ.
+                    **({"extra_content": call["extra_content"]} if call["extra_content"] else {}),
                 }
                 for _, call in sorted(calls.items())
             ]

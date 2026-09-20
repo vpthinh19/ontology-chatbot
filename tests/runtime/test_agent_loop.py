@@ -147,3 +147,41 @@ def test_an_out_of_scope_mark_is_reported_and_plain_brackets_pass_through() -> N
 
 def test_a_full_answer_has_no_marks() -> None:
     assert _answer(["Học phí nộp qua ngân hàng."])[-1].marks == ()
+
+
+def test_the_tool_call_goes_back_with_the_mark_its_model_put_on_it() -> None:
+    """Gemini 3 đòi lại đúng chữ ký suy nghĩ nó gửi kèm lời gọi, thiếu là từ chối cả lượt."""
+
+    client = _ScriptedClient(
+        [
+            [
+                ChatDelta(
+                    tool_calls=(
+                        ToolCallDelta(
+                            index=0,
+                            call_id="call-1",
+                            name="lookup_academic_information",
+                            arguments='{"keywords":["học phí"]}',
+                            extra_content={"google": {"thought_signature": "chu-ky"}},
+                        ),
+                    ),
+                    finish_reason="tool_calls",
+                )
+            ],
+            [ChatDelta(content="Một tín chỉ...", finish_reason="stop")],
+        ]
+    )
+
+    async def lookup(_keywords: list[str]) -> str:
+        return '{"trang_thai":"co_du_lieu","du_lieu":["mức phí..."]}'
+
+    async def run() -> None:
+        loop = AgentLoop(client, lookup, instructions="system prompt")
+        async for _event in loop.stream([{"role": "user", "content": "Học phí bao nhiêu?"}]):
+            pass
+
+    asyncio.run(run())
+
+    assert client.requests[1][-2]["tool_calls"][0]["extra_content"] == {
+        "google": {"thought_signature": "chu-ky"}
+    }
