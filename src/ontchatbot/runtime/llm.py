@@ -215,13 +215,17 @@ class GeminiClient(LightningClient):
     Bản lite bám sát câu "giữ lại trích dẫn" tới mức nhắc lại cùng một nguồn sau từng ý, nên câu trả lời
     rối mắt; dặn thêm ở đây thì gemma không thấy và số liệu báo cáo không đụng tới. Hai nết còn lại
     (không gửi ``index``, đòi lại chữ ký suy nghĩ) đã lo ở lớp cha vì nhà khác cũng có thể như vậy.
+
+    Chữ hiện lên của một liên kết KHÔNG quyết định ở đây: mô hình nào cũng có thể đặt tên liên kết là
+    "Link", nên trang web đổi những tên chung chung đó thành "Nguồn" (``webui/markdown.js``). Dặn ở đây
+    chỉ để Gemini gọi đúng tên nguồn ngay từ đầu, khỏi phải chữa.
     """
 
     DAN_THEM = (
         "Mỗi nguồn chỉ nhắc MỘT lần: gom phần trích dẫn thành danh sách ở cuối câu trả lời, không chèn "
         "vào giữa các ý. Giữ nguyên toạ độ (điều, khoản, phương thức, bước, ngày truy cập) và đường dẫn "
         "mà công cụ đưa; không rút gọn trích dẫn thành mỗi tên văn bản. Mỗi mục trong danh sách là một "
-        "liên kết markdown lấy chính trích dẫn làm chữ, không viết thêm chữ như \"Link\" hay \"Nguồn\"."
+        "liên kết markdown lấy chính trích dẫn làm chữ."
     )
 
 
