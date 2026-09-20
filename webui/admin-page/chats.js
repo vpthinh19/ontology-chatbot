@@ -166,7 +166,10 @@ const openSession = async (session) => {
       if (!window.confirm(`Xoá cả phiên (${turns.length} lượt)? Việc này không hoàn tác được.`)) return;
       await api(`/chats/${encode(session)}`, { method: "DELETE" });
       closeSession();
-      await loadChats();
+      // Bỏ phiên khỏi danh sách đang hiện thay vì hỏi lại máy chủ cả danh sách: mỗi lượt gọi tốn
+      // khoảng nửa giây đường truyền, mà ta đã biết chắc phiên vừa xoá không còn.
+      chatState.items = chatState.items.filter((item) => item.session !== session);
+      renderChatList();
       showStatus("Đã xoá phiên.", [], "ok");
     });
   const detail = element("div", { class: "chat-record" }, [

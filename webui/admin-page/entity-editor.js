@@ -252,7 +252,7 @@ export const renderEditor = async (entity, nav) => {
         const { id } = isNew
           ? await api("/entities", { method: "POST", body: payload })
           : await api(`/entities/${encode(entity.id)}`, { method: "PUT", body: payload });
-        clearOptions();
+        clearOptions(payload.class);
         await nav.saved(payload.class, id);
         showStatus("Đã lưu. Trợ lý dùng dữ liệu mới từ lượt hỏi kế tiếp.", [], "ok");
       } catch (error) {
@@ -265,7 +265,7 @@ export const renderEditor = async (entity, nav) => {
     run(async () => {
       if (!window.confirm(`Xoá «${entity.label}»? Việc này không hoàn tác được.`)) return;
       await api(`/entities/${encode(entity.id)}?version=${encode(entity.version || "")}`, { method: "DELETE" });
-      clearOptions();
+      clearOptions(spec.name);
       await nav.deleted(spec.name);
       showStatus("Đã xoá.", [], "ok");
     });
