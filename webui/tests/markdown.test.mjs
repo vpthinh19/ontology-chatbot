@@ -63,11 +63,18 @@ test("simple formulas become symbols", () => {
   assert.equal(shown("Điểm $\\ge 140$ và $A = \\Sigma a_i \\times n_i$").textContent.trim(), "Điểm ≥ 140 và A = Σ a_i × n_i");
 });
 
-test("a link the model only called \"Link\" is shown as Nguồn", () => {
-  const node = shown("Xem ([Link](https://ntu.edu.vn/a)) và [khoản 1 Điều 11 Quy chế](https://ntu.edu.vn/b)");
+test("a link named with filler words is shown as Nguồn", () => {
+  // Các kiểu tên đếm được trên 140 câu trả lời đã ghi lại.
+  const node = shown(
+    "[Link](https://ntu.edu.vn/a) [Xem chi tiết](https://ntu.edu.vn/b) [Chi tiết tại đây](https://ntu.edu.vn/c)"
+      + " [Link tải 2](https://ntu.edu.vn/d) [khoản 1 Điều 11 Quy chế](https://ntu.edu.vn/e)"
+      + " [Trang Cơ sở vật chất](https://ntu.edu.vn/f)",
+  );
 
   const links = [...node.querySelectorAll("a")];
-  assert.deepEqual(links.map((a) => a.textContent), ["Nguồn", "khoản 1 Điều 11 Quy chế"]);
+  assert.deepEqual(links.map((a) => a.textContent), [
+    "Nguồn", "Nguồn", "Nguồn", "Nguồn", "khoản 1 Điều 11 Quy chế", "Trang Cơ sở vật chất",
+  ]);
   // Đường dẫn không đổi, chỉ chữ hiện lên mới đổi.
-  assert.deepEqual(links.map((a) => a.getAttribute("href")), ["https://ntu.edu.vn/a", "https://ntu.edu.vn/b"]);
+  assert.deepEqual(links.map((a) => a.getAttribute("href")).slice(0, 2), ["https://ntu.edu.vn/a", "https://ntu.edu.vn/b"]);
 });

@@ -26,16 +26,27 @@ const markdown = new Marked({ gfm: true, breaks: true });
 // thành chữ thay vì để DOMPurify phải đoán.
 markdown.use({ renderer: { html: ({ text }) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") } });
 
-// Mô hình thỉnh thoảng đặt tên liên kết là "Link" thay vì gọi đúng tên nguồn. Người đọc là sinh viên,
-// nên chữ hiện lên phải là "Nguồn"; tên nguồn thật thì giữ nguyên.
-const VAGUE_LINK_TEXT = new Set(["link", "links", "liên kết", "url", "xem", "tại đây", "đây"]);
+// Mô hình hay đặt tên liên kết bằng chữ dẫn dắt rỗng nghĩa: đếm trên 140 câu trả lời đã ghi lại thì
+// gặp "Link", "link", "chi tiết", "Xem chi tiết", "Xem tại đây", "Chi tiết tại đây", "Link tải 1".
+// Người đọc là sinh viên, "Xem chi tiết" dễ tưởng là trang khác của hệ thống chứ không phải văn bản
+// gốc, nên chữ hiện lên phải là "Nguồn". Tên gọi đúng nguồn, như "khoản 1 Điều 11 Quy chế", giữ nguyên.
+const FILLER_WORDS = new Set([
+  "link", "links", "url", "liên", "kết", "xem", "chi", "tiết", "tại", "đây", "ở", "vào",
+  "nhấn", "bấm", "truy", "cập", "tải", "về", "nguồn", "here", "click",
+]);
+// Rỗng nghĩa khi MỌI chữ đều là từ dẫn dắt (số thứ tự không tính), nên "Link tải 2" cũng là rỗng
+// nghĩa còn "Trang Cơ sở vật chất" thì không.
+const vagueLinkText = (text) => {
+  const words = text.toLowerCase().split(/[\s.,:;!?()[\]{}"'`/\\-]+/).filter(Boolean);
+  return words.length > 0 && words.every((word) => FILLER_WORDS.has(word) || /^\d+$/.test(word));
+};
 
 const purifier = DOMPurify;
 purifier.addHook("afterSanitizeAttributes", (node) => {
   if (node.tagName === "A") {
     node.setAttribute("target", "_blank");
     node.setAttribute("rel", "noopener noreferrer");
-    if (VAGUE_LINK_TEXT.has(node.textContent.trim().toLowerCase())) node.textContent = "Nguồn";
+    if (vagueLinkText(node.textContent.trim())) node.textContent = "Nguồn";
   }
 });
 
