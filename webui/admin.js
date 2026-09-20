@@ -9,7 +9,7 @@
 //   admin-page/chats.js          lịch sử chat
 import { mountAccount } from "./account.js";
 import { api, onUnauthorized } from "./admin-page/api.js";
-import { loadChats } from "./admin-page/chats.js";
+import { loadChats, refreshChats } from "./admin-page/chats.js";
 import { renderClassEditor } from "./admin-page/class-editor.js";
 import { blankStatement, renderEditor } from "./admin-page/entity-editor.js";
 import { classSpec, state } from "./admin-page/schema.js";
@@ -151,6 +151,7 @@ $("#chat-filters").addEventListener("submit", (event) => {
   event.preventDefault();
   run(loadChats);
 });
+$("#chat-refresh").addEventListener("click", () => run(refreshChats));
 $("#filter").addEventListener("input", renderItems);
 $("#new-btn").addEventListener("click", newEntity);
 $("#edit-class-btn").addEventListener("click", () => run(async () => renderClassEditor(classSpec(state.className), classNav)));

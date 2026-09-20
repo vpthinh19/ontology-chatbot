@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "test": "npm run test:node && playwright test",
-    "test:node": "node --test tests/proxy.test.mjs tests/markdown.test.mjs tests/icons.test.mjs tests/admin-options.test.mjs"
+    "test:node": "node --test tests/proxy.test.mjs tests/markdown.test.mjs tests/icons.test.mjs tests/admin-options.test.mjs tests/chat-counts.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",

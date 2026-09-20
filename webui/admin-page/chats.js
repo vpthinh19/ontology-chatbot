@@ -30,7 +30,7 @@ const OUTCOME_NAMES = {
 };
 // Lịch sử chat theo phiên: danh sách là các phiên (cuộc trò chuyện), mở một phiên thấy mọi lượt của nó;
 // xem xét và xoá làm trên từng lượt, hoặc xoá cả phiên.
-const chatState = { items: [], openSession: null };
+const chatState = { items: [], openSession: null, turns: [] };
 const when = (iso) =>
   iso ? new Date(iso).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" }) : "";
 const badges = (item) =>
@@ -70,6 +70,14 @@ const renderChatList = () => {
   );
 };
 
+// Lấy lại từ máy chủ những gì đang mở: dùng khi người khác vừa sửa dữ liệu, hoặc khi muốn chắc.
+export const refreshChats = async () => {
+  const open = chatState.openSession;
+  await loadChats();
+  if (open && chatState.items.some((item) => item.session === open)) await openSession(open);
+  else closeSession();
+};
+
 export const loadChats = async () => {
   const params = new URLSearchParams({
     view: $("#chat-view-select").value,
@@ -82,7 +90,21 @@ export const loadChats = async () => {
 
 const closeSession = () => {
   chatState.openSession = null;
+  chatState.turns = [];
   $("#chat-detail").hidden = true;
+};
+
+// Hai con số trên nhãn phiên là đếm thuần các lượt của phiên đó (xem _session_summary ở máy chủ), mà
+// trang đang giữ đủ các lượt, nên đếm lại tại chỗ cho ra đúng con số ấy: đỡ một lượt hỏi cả danh sách.
+export const sessionCounts = (turns) => ({
+  turns: turns.length,
+  todo: turns.filter((turn) => turn.review?.state === "can-bo-sung").length,
+  open: turns.filter((turn) => (turn.flags || []).length && !turn.review?.state).length,
+});
+const recountSession = (session) => {
+  const item = chatState.items.find((entry) => entry.session === session);
+  if (item) Object.assign(item, sessionCounts(chatState.turns));
+  renderChatList();
 };
 
 const turnView = (session, record, index) => {
@@ -95,18 +117,25 @@ const turnView = (session, record, index) => {
   );
   const saveReview = () =>
     run(async () => {
-      await api(turnPath, { method: "PUT", body: { state: stateSelect.value, note: note.value } });
-      await loadChats();
-      await openSession(session);
+      const saved = await api(turnPath, { method: "PUT", body: { state: stateSelect.value, note: note.value } });
+      chatState.turns = chatState.turns.map((turn) => (turn.id === record.id ? saved : turn));
+      recountSession(session);
+      showSession(session, chatState.turns);
       showStatus("Đã lưu trạng thái xem xét.", [], "ok");
     });
   const remove = () =>
     run(async () => {
       if (!window.confirm("Xoá lượt này? Việc này không hoàn tác được.")) return;
       await api(turnPath, { method: "DELETE" });
-      await loadChats();
-      if (chatState.items.some((item) => item.session === session)) await openSession(session);
-      else closeSession();
+      chatState.turns = chatState.turns.filter((turn) => turn.id !== record.id);
+      if (chatState.turns.length) {
+        recountSession(session);
+        showSession(session, chatState.turns);
+      } else {
+        chatState.items = chatState.items.filter((item) => item.session !== session);
+        closeSession();
+        renderChatList();
+      }
       showStatus("Đã xoá lượt.", [], "ok");
     });
   const lookups = (record.lookups || []).map((lookup) =>
@@ -159,7 +188,14 @@ const turnView = (session, record, index) => {
 
 const openSession = async (session) => {
   const { turns } = await api(`/chats/${encode(session)}`);
+  showSession(session, turns);
+};
+
+// Vẽ phiên từ các lượt đang có trong tay. Tách khỏi việc tải để lưu hay xoá một lượt xong thì vẽ lại
+// ngay, không phải hỏi máy chủ những gì trang vừa gửi lên.
+function showSession(session, turns) {
   chatState.openSession = session;
+  chatState.turns = turns;
   renderChatList();
   const removeSession = () =>
     run(async () => {
@@ -187,4 +223,4 @@ const openSession = async (session) => {
   panel.hidden = false;
   panel.scrollTop = 0;
   fitAll(panel);
-};
+}
