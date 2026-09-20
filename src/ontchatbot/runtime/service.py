@@ -125,8 +125,13 @@ class Service:
 
         self.config.check_llm()
         if self.config.gcs_uri:
+            # Tải ontology về là chờ mạng, nạp thư viện tìm kiếm là chờ CPU: làm cùng lúc.
+            nap = threading.Thread(target=self._import_search, name="nap-thu-vien-tim-kiem", daemon=True)
+            nap.start()
             self.remote = self._open_remote()
             xong("cloud storage")
+            nap.join()
+            xong("chờ nạp thư viện")
         self.lookup = OntologyLookup(self._open_engine(), workers=self.config.search_workers)
         xong("engine")
         self.agent = self._build_agent()
@@ -175,6 +180,12 @@ class Service:
         remote = RemoteOntology.beside(self._gcs(), self.config.ontology)
         remote.start()
         return remote
+
+    @staticmethod
+    def _import_search() -> None:
+        """Nạp sẵn gói tìm kiếm (kéo theo numpy, bm25s, pyoxigraph): phần nặng nhất của lần khởi động nguội."""
+
+        from ..search import SearchEngine  # noqa: F401
 
     def _open_engine(self):
         from ..search import SearchEngine, TriGFileSource
