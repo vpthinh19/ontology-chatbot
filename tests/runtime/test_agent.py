@@ -93,7 +93,7 @@ def test_instructions_forbid_answering_from_memory() -> None:
 def test_instructions_keep_multi_topic_and_no_inference_rules() -> None:
     instructions = build_instructions(VOCABULARY)
 
-    assert "Câu hỏi có nhiều chủ đề độc lập" in instructions
+    assert "đưa từ khoá của mọi vế vào CÙNG một lần gọi" in instructions
     assert "không bỏ sót vế nào" in instructions
     assert "bảng chung cho một ngành cụ thể" in instructions
 
@@ -125,9 +125,10 @@ def test_instructions_without_vocabulary_have_no_topic_list() -> None:
 
 
 def test_system_prompt_stays_short() -> None:
-    # Mô hình nhỏ theo prompt ngắn tốt hơn. 400 từ cho tới 19/09/2026; nâng lên 480 khi thêm dòng
-    # đánh dấu và quy tắc định dạng, đo lại bằng bộ 70 câu.
-    assert len(build_instructions(VOCABULARY).split()) < 480
+    # Mô hình nhỏ theo prompt ngắn tốt hơn. 400 từ cho tới 19/09/2026; 480 khi thêm dòng đánh dấu và
+    # quy tắc định dạng, đo lại bằng bộ 70 câu; 640 từ ngày 20/09/2026 khi chia lời nhắc thành mục và
+    # thêm ba quy tắc tra cứu, đo bằng mười câu lấy từ bộ 70 (xem _lam-viec/prompt-10).
+    assert len(build_instructions(VOCABULARY).split()) < 640
 
 
 def test_vocabulary_is_read_from_the_ontology_being_served() -> None:
