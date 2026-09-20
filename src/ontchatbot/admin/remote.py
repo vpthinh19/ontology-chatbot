@@ -170,7 +170,9 @@ class RemoteOntology:
 
     def _pull(self, path: Path) -> None:
         remote = self.files[path]
+        moc = time.perf_counter()
         got = remote.download(missing_ok=True)
+        tai_ms = round((time.perf_counter() - moc) * 1000)
         if got is None:
             try:
                 self.generations[path] = remote.upload(path.read_bytes(), "0")
@@ -182,7 +184,8 @@ class RemoteOntology:
         data, generation = got
         write_bytes(data, path)
         self.generations[path] = generation
-        logger.info("ontology loaded from Cloud Storage object=%s generation=%s", remote.name, generation)
+        logger.info("ontology loaded from Cloud Storage object=%s generation=%s bytes=%d in %d ms",
+                    remote.name, generation, len(data), tai_ms)
 
     def refresh(self) -> bool:
         """Tải những tệp có số thế hệ đã đổi; trả ``True`` khi có tệp trên đĩa vừa được thay."""
