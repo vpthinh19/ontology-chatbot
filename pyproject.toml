@@ -4,7 +4,7 @@
 
 [project]
 name = "ontchatbot"
-version = "4.1.1"
+version = "4.1.2"
 description = "Vietnamese academic-affairs chatbot: an LLM answers from a sourced ontology found through a BM25 index of labels and properties"
 readme = "README.md"
 requires-python = "==3.12.*"
