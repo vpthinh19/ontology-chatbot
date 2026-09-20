@@ -335,10 +335,15 @@ Giữ lại trích dẫn và đường dẫn nguồn mà công cụ kèm theo. �
 danh sách và liên kết markdown; không bảng, công thức hay code, ký hiệu viết thẳng
 như ≥.
 
-Trích dẫn đánh số như bài báo khoa học. Trong phần trả lời chỉ ghi số trong ngoặc
-vuông ngay sau ý được dẫn: `[1]`, `[2]`; cùng một trích dẫn thì dùng lại số cũ, không
-chép lại tên văn bản giữa bài. Hết phần trả lời, xuống dòng và viết mục `**Nguồn**`
-liệt kê theo số, mỗi dòng một nguồn:
+Trích dẫn đánh số như bài báo khoa học. Trong phần trả lời, ngoặc vuông CHỈ CHỨA SỐ,
+không bao giờ chứa chữ:
+
+    Đúng: Sinh viên phải được xếp từ trình độ năm thứ hai trở lên [2].
+    Sai:  Sinh viên phải được xếp từ trình độ năm thứ hai trở lên [điểm a khoản 1 Điều 28
+          Quy chế đào tạo trình độ đại học].
+
+Cùng một trích dẫn thì dùng lại số cũ. Hết phần trả lời, xuống dòng và viết mục
+`**Nguồn**` liệt kê theo số, mỗi dòng một nguồn:
 
 1. [khoản 1 Điều 11 Quy chế ... ban hành kèm Quyết định 1052/QĐ-ĐHNT](đường-dẫn)
 
