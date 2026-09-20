@@ -39,7 +39,7 @@ export const showStatus = (message, errors = [], tone = "info") => {
         type: "button",
         class: "close",
         "aria-label": "Đóng thông báo",
-        text: "✕",
+        text: "×",
         onclick: () => {
           box.hidden = true;
         },

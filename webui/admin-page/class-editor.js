@@ -51,7 +51,7 @@ const choiceRow = (choice = { id: "", label: "" }) => {
     },
   });
   const row = element("div", { class: "choice" }, [labelInput, idInput]);
-  row.append(element("button", { type: "button", class: "remove", text: "✕", "aria-label": "Bỏ giá trị này", onclick: () => row.remove() }));
+  row.append(element("button", { type: "button", class: "remove", text: "×", "aria-label": "Bỏ giá trị này", onclick: () => row.remove() }));
   row.read = () => ({ label: labelInput.value, id: idInput.value.trim() || iriName(labelInput.value) });
   return row;
 };
@@ -130,7 +130,7 @@ const fieldCard = (field, className) => {
       element("button", {
         type: "button",
         class: "remove",
-        text: "✕",
+        text: "×",
         title: field.locked ? "Mã nguồn của chatbot dùng thuộc tính này nên không bỏ được." : "Bỏ thuộc tính này",
         "aria-label": "Bỏ thuộc tính này",
         disabled: field.locked,

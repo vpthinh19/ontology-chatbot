@@ -116,7 +116,7 @@ const statementRow = async (spec, statement) => {
         class: "remove",
         title: "Bỏ quan hệ này",
         "aria-label": "Bỏ quan hệ này",
-        text: "✕",
+        text: "×",
         onclick: () => row.remove(),
       }),
     );
