@@ -8,7 +8,9 @@ import { applySavedTheme, toggleTheme } from "./theme.js";
 const ICON = { light: "light_mode", dark: "dark_mode", avatar: "school" };
 const MAX_HISTORY_MESSAGES = 20;
 // Chỗ chữ đang chờ được nhả hết trong chừng này, nên chữ hiện đều tay thay vì nhảy theo cụm.
-const SMOOTH_MS = 120;
+// Đo trên trang thật (Việt Nam qua Vercel tới Cloud Run): đường truyền gom các cụm nhỏ của mô hình
+// thành cục 15-140 ký tự cách nhau 80-500 ms, nên 120 ms là quá ngắn để trải một cục ra.
+const SMOOTH_MS = 400;
 // Chỉ tự cuộn theo câu trả lời khi người đọc đang cách đáy không quá chừng này.
 const SCROLL_STICK_THRESHOLD_PX = 64;
 const INTRODUCTION = [
@@ -126,7 +128,10 @@ class AnswerView {
   // chỗ đang chờ, tính theo thời gian thật nên màn hình 60 hay 120 Hz đều chảy như nhau; chỗ chờ
   // luôn cạn trong khoảng SMOOTH_MS nên chữ không bị tụt lại sau câu trả lời.
   reveal(now) {
-    const share = Math.min(1, (now - this.lastFrame) / SMOOTH_MS);
+    // Khung hình đầu tiên chưa có mốc trước để so: coi như một khung hình, không thì nó nhả sạch
+    // cụm chữ đầu tiên và câu trả lời mở đầu bằng một cú phụt.
+    const troi_qua = this.lastFrame ? now - this.lastFrame : 16;
+    const share = Math.min(1, troi_qua / SMOOTH_MS);
     const take = Math.max(1, Math.ceil(this.waiting.length * share));
     this.answer += this.waiting.slice(0, take);
     this.waiting = this.waiting.slice(take);
