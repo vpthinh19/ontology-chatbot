@@ -78,3 +78,22 @@ test("a link named with filler words is shown as Nguồn", () => {
   // Đường dẫn không đổi, chỉ chữ hiện lên mới đổi.
   assert.deepEqual(links.map((a) => a.getAttribute("href")).slice(0, 2), ["https://ntu.edu.vn/a", "https://ntu.edu.vn/b"]);
 });
+
+
+test("a link that shows the address itself is shown as Nguồn", () => {
+  // Đúng cách mô hình viết trong lịch sử chat: lấy chính đường dẫn làm chữ.
+  const url = "https://pdtdaihoc.ntu.edu.vn/uploads/38//245-Quyet%20dinh%201052%20(17-7-2025).pdf";
+  const node = shown(`Chi tiết xem tại: [${url}](${url})`);
+
+  const link = node.querySelector("a");
+  assert.equal(link.textContent, "Nguồn");
+  assert.equal(link.getAttribute("href"), url);
+});
+
+test("a bare address the page turns into a link is shown as Nguồn too", () => {
+  const node = shown("Xem https://ntu.edu.vn/lien-he để biết thêm");
+
+  const link = node.querySelector("a");
+  assert.equal(link.textContent, "Nguồn");
+  assert.equal(link.getAttribute("href"), "https://ntu.edu.vn/lien-he");
+});

@@ -46,7 +46,10 @@ purifier.addHook("afterSanitizeAttributes", (node) => {
   if (node.tagName === "A") {
     node.setAttribute("target", "_blank");
     node.setAttribute("rel", "noopener noreferrer");
-    if (vagueLinkText(node.textContent.trim())) node.textContent = "Nguồn";
+    // Chữ hiện lên là chính đường dẫn (mô hình hay viết [URL](URL), 8 lần trong 140 câu trả lời đã
+    // ghi lại): một dòng địa chỉ mã hoá dài loằng ngoằng không nói cho sinh viên biết gì hơn "Nguồn".
+    const text = node.textContent.trim();
+    if (vagueLinkText(text) || /^(https?:\/\/|www\.)/i.test(text)) node.textContent = "Nguồn";
   }
 });
 
