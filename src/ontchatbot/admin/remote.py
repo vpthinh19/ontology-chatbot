@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from collections.abc import Callable
 from pathlib import Path
 from urllib.parse import quote
@@ -110,10 +111,15 @@ class GcsObject:
             self._fail(response, "đọc thông tin đối tượng")
         return str(response.json()["generation"])
 
-    def download(self) -> tuple[bytes, str]:
-        """Nội dung và số thế hệ của đúng nội dung đó."""
+    def download(self, *, missing_ok: bool = False) -> tuple[bytes, str] | None:
+        """Nội dung và số thế hệ của đúng nội dung đó; ``missing_ok``: ``None`` khi đối tượng chưa có.
+
+        Số thế hệ về cùng nội dung trong một lượt gọi, nên không cần hỏi ``generation()`` trước.
+        """
 
         response = self.http.get(self._object_url(), params={"alt": "media"}, headers=self._headers())
+        if missing_ok and response.status_code == 404:
+            return None
         if response.status_code != 200:
             self._fail(response, "tải đối tượng")
         return response.content, response.headers["x-goog-generation"]
@@ -151,21 +157,32 @@ class RemoteOntology:
         return cls({ontology: remote, Path(ontology).with_name("shapes.ttl"): shapes})
 
     def start(self) -> None:
-        """Gọi một lần trước khi nạp engine."""
+        """Gọi một lần trước khi nạp engine.
+
+        Mỗi tệp chỉ tốn MỘT lượt gọi kho (tải thẳng, số thế hệ về kèm nội dung), và các tệp tải song song:
+        đây là phần nặng nhất của lần khởi động nguội trên Cloud Run.
+        """
 
         with self._lock:
-            for path, remote in self.files.items():
-                if remote.generation() is None:
-                    try:
-                        self.generations[path] = remote.upload(path.read_bytes(), "0")
-                        logger.info("ontology seeded to Cloud Storage object=%s generation=%s",
-                                    remote.name, self.generations[path])
-                        continue
-                    except StaleCopy:  # một bản dịch vụ khởi động cùng lúc vừa đưa lên trước
-                        pass
-                self._download(path)
-                logger.info("ontology loaded from Cloud Storage object=%s generation=%s",
+            with ThreadPoolExecutor(max_workers=len(self.files) or 1) as pool:
+                for done in [pool.submit(self._pull, path) for path in self.files]:
+                    done.result()
+
+    def _pull(self, path: Path) -> None:
+        remote = self.files[path]
+        got = remote.download(missing_ok=True)
+        if got is None:
+            try:
+                self.generations[path] = remote.upload(path.read_bytes(), "0")
+                logger.info("ontology seeded to Cloud Storage object=%s generation=%s",
                             remote.name, self.generations[path])
+                return
+            except StaleCopy:  # một bản dịch vụ khởi động cùng lúc vừa đưa lên trước
+                got = remote.download()
+        data, generation = got
+        write_bytes(data, path)
+        self.generations[path] = generation
+        logger.info("ontology loaded from Cloud Storage object=%s generation=%s", remote.name, generation)
 
     def refresh(self) -> bool:
         """Tải những tệp có số thế hệ đã đổi; trả ``True`` khi có tệp trên đĩa vừa được thay."""
@@ -204,7 +221,7 @@ class RemoteOntology:
                 raise
 
     def _download(self, path: Path) -> None:
-        data, generation = self.files[path].download()
+        data, generation = self.files[path].download()  # type: ignore[misc]
         write_bytes(data, path)
         self.generations[path] = generation
 

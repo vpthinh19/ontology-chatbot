@@ -45,7 +45,11 @@ class FakeObject:
     def generation(self) -> str | None:
         return None if self.data is None else str(self.number)
 
-    def download(self) -> tuple[bytes, str]:
+    def download(self, *, missing_ok: bool = False) -> tuple[bytes, str] | None:
+        if self.data is None:
+            if missing_ok:
+                return None
+            raise RuntimeError("đối tượng chưa có")
         return self.data, str(self.number)
 
     def upload(self, data: bytes, if_generation: str) -> str:
@@ -148,6 +152,27 @@ def test_the_first_start_uploads_the_packaged_ontology(tmp_path) -> None:
     RemoteOntology({path: bucket}).start()
 
     assert bucket.data == b"ban trong anh"
+
+
+def test_starting_costs_one_call_per_file(tmp_path) -> None:
+    """Khởi động nguội trên Cloud Run tốn nhất ở đây: mỗi tệp chỉ được phép một lượt gọi kho."""
+
+    goi = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        goi.append(request.url.path)
+        return httpx.Response(200, content=b"noi dung", headers={"x-goog-generation": "7"})
+
+    http = httpx.Client(transport=httpx.MockTransport(handler))
+    ontology = tmp_path / "ontology.trig"
+    ontology.write_bytes(b"ban trong anh")
+    (tmp_path / "shapes.ttl").write_bytes(b"lam gi co")
+    remote = RemoteOntology.beside(GcsObject("kho", "du-lieu/ontology.trig", http=http, token=lambda: "khoa"), ontology)
+
+    remote.start()
+
+    assert len(goi) == 2
+    assert ontology.read_bytes() == b"noi dung"
 
 
 def test_an_instance_starting_at_the_same_moment_takes_the_copy_seeded_first(tmp_path) -> None:

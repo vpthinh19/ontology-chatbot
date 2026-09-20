@@ -13,6 +13,7 @@ from __future__ import annotations
 import logging
 import os
 import threading
+import time
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
@@ -112,17 +113,34 @@ class Service:
     # --- khởi động -------------------------------------------------------------
 
     def start(self) -> Service:
+        """Dựng mọi thành phần; ghi lại thời gian từng chặng để còn biết lần khởi động nguội tốn ở đâu."""
+
+        moc, chang = time.perf_counter(), {}
+
+        def xong(ten: str) -> None:
+            nonlocal moc
+            gio = time.perf_counter()
+            chang[ten] = round((gio - moc) * 1000)
+            moc = gio
+
         self.config.check_llm()
         if self.config.gcs_uri:
             self.remote = self._open_remote()
+            xong("cloud storage")
         self.lookup = OntologyLookup(self._open_engine(), workers=self.config.search_workers)
+        xong("engine")
         self.agent = self._build_agent()
+        xong("agent")
         if self.config.admin_token:
             self.open_admin()
+            xong("admin")
         if self.config.chat_log:
             self.chat_log = self._open_chat_log()
         if self.remote is not None:
             self._watch_remote()
+        xong("phần còn lại")
+        logger.info("service started in %d ms (%s)", sum(chang.values()),
+                    ", ".join(f"{ten} {ms} ms" for ten, ms in chang.items()))
         return self
 
     def app(self):
