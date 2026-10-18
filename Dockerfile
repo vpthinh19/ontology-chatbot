@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.12-slim-bookworm AS builder
+FROM python:3.14-slim-bookworm AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.11.32 /uv /bin/uv
 WORKDIR /app
 ENV UV_LINK_MODE=copy UV_COMPILE_BYTECODE=1 UV_PYTHON_DOWNLOADS=never
@@ -13,7 +13,7 @@ COPY resources/ontology/ ./resources/ontology/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --python /usr/local/bin/python --extra inference --no-dev
 
-FROM python:3.12-slim-bookworm AS runtime
+FROM python:3.14-slim-bookworm AS runtime
 RUN set -eux; apt-get update; \
     apt-get upgrade -y --no-install-recommends; \
     apt-get install -y --no-install-recommends ca-certificates; \
